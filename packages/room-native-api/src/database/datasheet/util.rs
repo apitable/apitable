@@ -3,7 +3,7 @@ use crate::database::types::DatasheetPack;
 use crate::types::HashSet;
 
 /// Collect all resource IDs contained in the data pack for real-time collaboration.
-pub fn collect_datasheet_pack_resource_ids(data_pack: &DatasheetPack) -> Vec<String> {
+pub fn collect_datasheet_pack_resource_ids(data_pack: &DatasheetPack, is_datasheet: bool) -> Vec<String> {
   let mut resource_ids: HashSet<_> = if let Some(foreign_datasheet_map) = &data_pack.foreign_datasheet_map {
     foreign_datasheet_map.keys().cloned().collect()
   } else {
@@ -11,10 +11,14 @@ pub fn collect_datasheet_pack_resource_ids(data_pack: &DatasheetPack) -> Vec<Str
   };
   // collect resource ids in widget panels
   let DatasheetMeta { widget_panels, .. } = &data_pack.snapshot.meta;
-  if let Some(widget_panels) = widget_panels {
-    for panel in widget_panels {
-      resource_ids.extend(panel.widgets.iter().map(|widget| widget.id.clone()));
+  if is_datasheet {
+    if let Some(widget_panels) = widget_panels {
+      for panel in widget_panels {
+        resource_ids.extend(panel.widgets.iter().map(|widget| widget.id.clone()));
+      }
     }
+  } else {
+    resource_ids.insert(data_pack.datasheet.id.clone());
   }
   resource_ids.into_iter().collect()
 }
@@ -71,127 +75,132 @@ mod tests {
 
   #[test]
   fn single_datasheet() {
-    let resource_ids = collect_datasheet_pack_resource_ids(&DatasheetPack {
-      snapshot: DatasheetSnapshot {
-        meta: DatasheetMeta {
-          field_map: hashmap! {
-            "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+    let resource_ids = collect_datasheet_pack_resource_ids(
+      &DatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: DatasheetMeta {
+            field_map: hashmap! {
+              "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+            },
+            views: vec![json!({
+              "columns": [
+                { "fieldId": "fld1w1" },
+              ]
+            })],
+            widget_panels: None,
           },
-          views: vec![json!({
-            "columns": [
-              { "fieldId": "fld1w1" },
-            ]
-          })],
-          widget_panels: None,
+          record_map: hashmap! {},
+          datasheet_id: "dst1".into(),
         },
-        record_map: hashmap! {},
-        datasheet_id: "dst1".into(),
+        datasheet: mock_node_info("dst1"),
+        field_permission_map: None,
+        foreign_datasheet_map: None,
+        units: vec![],
       },
-      datasheet: mock_node_info("dst1"),
-      field_permission_map: None,
-      foreign_datasheet_map: None,
-      units: vec![],
-    });
+      true,
+    );
 
     assert_eq!(resource_ids, Vec::<String>::new());
   }
 
   #[test]
   fn multiple_datasheets() {
-    let mut resource_ids = collect_datasheet_pack_resource_ids(&DatasheetPack {
-      snapshot: DatasheetSnapshot {
-        meta: DatasheetMeta {
-          field_map: hashmap! {
-            "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+    let mut resource_ids = collect_datasheet_pack_resource_ids(
+      &DatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: DatasheetMeta {
+            field_map: hashmap! {
+              "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+            },
+            views: vec![json!({
+              "columns": [
+                { "fieldId": "fld1w1" },
+              ]
+            })],
+            widget_panels: None,
           },
-          views: vec![json!({
-            "columns": [
-              { "fieldId": "fld1w1" },
-            ]
-          })],
-          widget_panels: None,
+          record_map: hashmap! {},
+          datasheet_id: "dst1".into(),
         },
-        record_map: hashmap! {},
-        datasheet_id: "dst1".into(),
+        datasheet: mock_node_info("dst1"),
+        field_permission_map: None,
+        foreign_datasheet_map: Some(hashmap! {
+          "dst2".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: DatasheetMeta {
+                field_map: hashmap! {
+                  "fld2w1".into() => new_field("fld2w1", FieldKind::Text, json!({})),
+                },
+                views: vec![json!({
+                  "columns": [
+                    { "fieldId": "fld2w1" },
+                  ]
+                })],
+                widget_panels: Some(vec![
+                  WidgetPanel {
+                    id: "wpl4".into(),
+                    widgets: vec![
+                      WidgetInPanel {
+                        id: "wdt8".into(),
+                        others: Some(json!({ "height": 10.0, "y": 10.0 }))
+                      }
+                    ],
+                    others: Some(json!({
+                      "name": "wp 4",
+                    })),
+                  }
+                ]),
+              },
+              record_map: hashmap! {},
+              datasheet_id: "dst2".into(),
+            },
+            datasheet: serde_json::to_value(mock_node_info("dst2")).unwrap(),
+            field_permission_map: None,
+          },
+          "dst3".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: DatasheetMeta {
+                field_map: hashmap! {
+                  "fld3w1".into() => new_field("fld3w1", FieldKind::Text, json!({})),
+                },
+                views: vec![json!({
+                  "columns": [
+                    { "fieldId": "fld3w1" },
+                  ]
+                })],
+                widget_panels: Some(vec![
+                  WidgetPanel {
+                    id: "wpl5".into(),
+                    widgets: vec![
+                      WidgetInPanel {
+                        id: "wdt8".into(),
+                        others: Some(json!({ "height": 10.0, "y": 10.0 }))
+                      }
+                    ],
+                    others: Some(json!({
+                      "name": "wp 5",
+                    })),
+                  }
+                ]),
+              },
+              record_map: hashmap! {},
+              datasheet_id: "dst3".into(),
+            },
+            datasheet: serde_json::to_value(mock_node_info("dst3")).unwrap(),
+            field_permission_map: None,
+          },
+        }),
+        units: vec![],
       },
-      datasheet: mock_node_info("dst1"),
-      field_permission_map: None,
-      foreign_datasheet_map: Some(hashmap! {
-        "dst2".into() => BaseDatasheetPack {
-          snapshot: DatasheetSnapshot {
-            meta: DatasheetMeta {
-              field_map: hashmap! {
-                "fld2w1".into() => new_field("fld2w1", FieldKind::Text, json!({})),
-              },
-              views: vec![json!({
-                "columns": [
-                  { "fieldId": "fld2w1" },
-                ]
-              })],
-              widget_panels: Some(vec![
-                WidgetPanel {
-                  id: "wpl4".into(),
-                  widgets: vec![
-                    WidgetInPanel {
-                      id: "wdt8".into(),
-                      others: Some(json!({ "height": 10.0, "y": 10.0 }))
-                    }
-                  ],
-                  others: Some(json!({
-                    "name": "wp 4",
-                  })),
-                }
-              ]),
-            },
-            record_map: hashmap! {},
-            datasheet_id: "dst2".into(),
-          },
-          datasheet: serde_json::to_value(mock_node_info("dst2")).unwrap(),
-          field_permission_map: None,
-        },
-        "dst3".into() => BaseDatasheetPack {
-          snapshot: DatasheetSnapshot {
-            meta: DatasheetMeta {
-              field_map: hashmap! {
-                "fld3w1".into() => new_field("fld3w1", FieldKind::Text, json!({})),
-              },
-              views: vec![json!({
-                "columns": [
-                  { "fieldId": "fld3w1" },
-                ]
-              })],
-              widget_panels: Some(vec![
-                WidgetPanel {
-                  id: "wpl5".into(),
-                  widgets: vec![
-                    WidgetInPanel {
-                      id: "wdt8".into(),
-                      others: Some(json!({ "height": 10.0, "y": 10.0 }))
-                    }
-                  ],
-                  others: Some(json!({
-                    "name": "wp 5",
-                  })),
-                }
-              ]),
-            },
-            record_map: hashmap! {},
-            datasheet_id: "dst3".into(),
-          },
-          datasheet: serde_json::to_value(mock_node_info("dst3")).unwrap(),
-          field_permission_map: None,
-        },
-      }),
-      units: vec![],
-    });
+      true,
+    );
 
     resource_ids.sort();
     assert_eq!(resource_ids, vec!["dst2".to_owned(), "dst3".into()]);
   }
 
-  #[test]
-  fn multiple_datasheets_and_widgets() {
-    let mut resource_ids = collect_datasheet_pack_resource_ids(&DatasheetPack {
+  fn multiple_datasheets_and_widgets_fixture() -> DatasheetPack {
+    DatasheetPack {
       snapshot: DatasheetSnapshot {
         meta: DatasheetMeta {
           field_map: hashmap! {
@@ -296,12 +305,25 @@ mod tests {
         },
       }),
       units: vec![],
-    });
+    }
+  }
+
+  #[test]
+  fn multiple_datasheets_and_widgets() {
+    let mut resource_ids = collect_datasheet_pack_resource_ids(&multiple_datasheets_and_widgets_fixture(), true);
 
     resource_ids.sort();
     assert_eq!(
       resource_ids,
       vec!["dst2".to_owned(), "dst3".into(), "wdt1".into(), "wdt2".into()]
     );
+  }
+
+  #[test]
+  fn multiple_datasheets_and_widgets_not_datasheet() {
+    let mut resource_ids = collect_datasheet_pack_resource_ids(&multiple_datasheets_and_widgets_fixture(), false);
+
+    resource_ids.sort();
+    assert_eq!(resource_ids, vec!["dst1".to_owned(), "dst2".into(), "dst3".into()],);
   }
 }

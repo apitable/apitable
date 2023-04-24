@@ -16,16 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IconButton, Typography, useContextMenu, useThemeColors } from '@apitable/components';
+import { IconButton, LinkButton, Radio, RadioGroup, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t, TrackEvents,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
 import {
-  AddOutlined, StarFilled, SearchOutlined, FolderNormalFilled, UserAddOutlined, ChevronUpOutlined, DeleteOutlined, PlanetOutlined
+  SearchOutlined, UserAddOutlined, DeleteOutlined, PlanetOutlined, AddOutlined, ImportOutlined, FolderAddOutlined,
 } from '@apitable/icons';
-import { Collapse } from 'antd';
-import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
@@ -54,8 +52,7 @@ import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
 import { usePostHog } from 'posthog-js/react';
-
-const { Panel } = Collapse;
+import { useCatalog } from 'pc/hooks/use_catalog';
 
 export interface IDatasheetPanelInfo {
   folderId: string;
@@ -66,8 +63,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
-  const [activeKey, setActiveKey] = useState<string[]>([]);
+  const [activeKey, setActiveKey] = useState<string>('');
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
+  const { addTreeNode } = useCatalog();
   const {
     spaceId,
     treeNodesMap,
@@ -186,7 +184,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   useEffect(() => {
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : [ConfigConstant.Modules.CATALOG];
+    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
     setActiveKey(defaultActiveKey);
   }, []);
 
@@ -197,8 +195,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     // eslint-disable-next-line
   }, [loading, activeNodeId]);
 
-  const changeHandler = (key: string | string[]) => {
-    setActiveKey(key as string[]);
+  const changeHandler = (key: string) => {
+    setActiveKey(key);
     localStorage.setItem('vika_workbench_active_key', JSON.stringify(key));
   };
 
@@ -236,13 +234,13 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   const openCatalog = () => {
     if (!activeKey.includes(ConfigConstant.Modules.CATALOG)) {
-      changeHandler([...activeKey, ConfigConstant.Modules.CATALOG]);
+      changeHandler(ConfigConstant.Modules.CATALOG);
     }
   };
 
   const openFavorite = () => {
     if (!activeKey.includes(ConfigConstant.Modules.FAVORITE)) {
-      changeHandler([...activeKey, ConfigConstant.Modules.FAVORITE]);
+      changeHandler(ConfigConstant.Modules.FAVORITE);
     }
   };
 
@@ -295,57 +293,74 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           }}
         >
           <div className={styles.mainContainer} id={WORKBENCH_SIDE_ID.NODE_WRAPPER}>
-            <Collapse className={styles.collapse} onChange={changeHandler} activeKey={activeKey} ghost>
-              <Panel
-                className={styles.favorite}
-                key={ConfigConstant.Modules.FAVORITE}
-                header={
-                  <div className={styles.groupName}>
-                    <StarFilled color={colors.warningColor} />
-                    <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
-                      {t(Strings.favorite)}
-                    </Typography>
-                    <ChevronUpOutlined
-                      className={classnames(styles.arrow, {
-                        [styles.active]: activeKey.includes(ConfigConstant.Modules.FAVORITE),
-                      })}
-                    />
-                  </div>
-                }
-                showArrow={false}
+            <div className={styles.btnGroup}>
+              <RadioGroup
+                name="workbench-btn-group"
+                isBtn
+                block
+                value={activeKey}
+                onChange={(_e, value) => changeHandler(value)}
               >
-                <div className={styles.scrollContainer}>
-                  <Favorite />
+                <Radio value={ConfigConstant.Modules.CATALOG}>
+                  {t(Strings.catalog)}
+                </Radio>
+                <Radio value={ConfigConstant.Modules.FAVORITE}>
+                  {t(Strings.favorite)}
+                </Radio>
+              </RadioGroup>
+            </div>
+            {activeKey === ConfigConstant.Modules.FAVORITE ? (
+              <div className={styles.scrollContainer}>
+                <Favorite />
+              </div>
+            ) : (
+              <>
+                <div className={styles.catalogActions}>
+                  <LinkButton
+                    underline={false}
+                    component="div"
+                    prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12} />}
+                    color={colors.textCommonSecondary}
+                    disabled={!rootManageable}
+                    onClick={openDefaultMenu}
+                  >
+                    <Tooltip title={t(Strings.new_node_tooltip)}>
+                      {t(Strings.new_node_btn_title)}
+                    </Tooltip>
+                  </LinkButton>
+                  <LinkButton
+                    underline={false}
+                    component="div"
+                    prefixIcon={<ImportOutlined color={colors.textCommonSecondary} size={12} />}
+                    color={colors.textCommonSecondary}
+                    onClick={() => {
+                      dispatch(StoreActions.updateImportModalNodeId(rootId));
+                    }}
+                  >
+                    <Tooltip title={t(Strings.import_from_excel_tooltip)}>
+                      {t(Strings.import_file_btn_title)}
+                    </Tooltip>
+                  </LinkButton>
+                  <LinkButton
+                    underline={false}
+                    component="div"
+                    prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} size={12} />}
+                    color={colors.textCommonSecondary}
+                    onClick={() => {
+                      addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);
+                    }}
+                  >
+                    <Tooltip title={t(Strings.new_folder_tooltip)}>
+                      {t(Strings.folder)}
+                    </Tooltip>
+                  </LinkButton>
                 </div>
-              </Panel>
-              <Panel
-                className={styles.catalog}
-                key={ConfigConstant.Modules.CATALOG}
-                header={
-                  <div className={styles.groupName}>
-                    <FolderNormalFilled color={colors.primaryColor} />
-                    <Typography className={styles.text} variant='h9' color={colors.secondLevelText}>
-                      {t(Strings.catalog)}
-                    </Typography>
-                    <ChevronUpOutlined
-                      className={classnames(styles.arrow, {
-                        [styles.active]: activeKey.includes(ConfigConstant.Modules.CATALOG),
-                      })}
-                    />
-                  </div>
-                }
-                extra={
-                  rootManageable ? (
-                    <IconButton style={{ margin: '4px 10px 0 0' }} onClick={openDefaultMenu} icon={AddOutlined} id={WORKBENCH_SIDE_ID.ADD_NODE_BTN} />
-                  ) : null
-                }
-                showArrow={false}
-              >
                 <div className={styles.scrollContainer}>
-                  <Catalog />
+                  <Catalog/>
                 </div>
-              </Panel>
-            </Collapse>
+              </>
+            )}
+
           </div>
         </div>
         <div className={styles.fixedGroup}>

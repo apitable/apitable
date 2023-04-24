@@ -59,7 +59,7 @@ export class DatasheetController {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
-    return this.datasheetService.fetchDataPackNative('main datasheet', dstId, { cookie }, { recordIds: query.recordIds });
+    return this.datasheetService.fetchDataPack(dstId, { cookie }, true, { recordIds: query.recordIds });
   }
 
   @Get(['shares/:shareId/datasheets/:dstId/dataPack', 'share/:shareId/datasheet/:dstId/dataPack'])
@@ -68,14 +68,14 @@ export class DatasheetController {
     @Headers('cookie') cookie: string,
     @Param('shareId') shareId: string,
     @Param('dstId') dstId: string,
-  ): Promise<DatasheetPack> {
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
-    return await this.datasheetService.fetchShareDataPack(shareId, dstId, { cookie });
+    return await this.datasheetService.fetchShareDataPack(shareId, dstId, { cookie }, true);
   }
 
   @Get(['templates/datasheets/:dstId/dataPack', 'template/datasheet/:dstId/dataPack'])
-  async getTemplateDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<DatasheetPack> {
+  async getTemplateDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<DatasheetPack | DatasheetPackResponse> {
     const isTemplate = await this.nodeService.isTemplate(dstId);
     if (!isTemplate) {
       throw new ServerException(PermissionException.ACCESS_DENIED);

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
+import { Field, FieldType, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
 import { InfoCircleOutlined, IIconProps, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -85,7 +85,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
   const isGanttNoWrap = viewType === ViewType.Gantt && !autoHeadHeight;
 
   const hasError = useMemo(() => {
-    return Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
+    return (Field.bindModel(field).isComputed || field.type === FieldType.Cascader) && Field.bindModel(field).hasError;
   }, [field]);
 
   const iconInfoList = useMemo(() => ([
@@ -235,7 +235,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
           fill={colors.warningColor}
           background={isSelected ? colors.cellSelectedColorSolid : colors.defaultBg}
           onMouseEnter={() => onTooltipShown(
-            t(Strings.field_configuration_err), 
+            (Field.bindModel(field).warnText || t(Strings.field_configuration_err)),
             GRID_ICON_COMMON_SIZE, 
             iconOffsetMap[FieldHeadIconType.Error].x, 
             iconOffsetMap[FieldHeadIconType.Error].y + commonIconOffsetY

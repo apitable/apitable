@@ -33,7 +33,7 @@ impl ReferenceManager for ReferenceManagerImpl {
     foreign_dst_id: &str,
     foreign_field_ids: &HashSet<String>,
   ) -> anyhow::Result<HashSet<String>> {
-    tracing::info!(
+    tracing::debug!(
       "CreateComputeFieldReference: \
       mainDstId: {main_dst_id}, mainFieldId: {main_field_id}; \
       foreignDstId: {foreign_dst_id}, foreignFieldIds: {foreign_field_ids:?}"
@@ -55,7 +55,7 @@ impl ReferenceManager for ReferenceManagerImpl {
         .with_context(|| format!("check if {ref_key_suffix} exists in back ref {back_ref_key} cache"))?;
       // May be referenced in many places, only creation, no replacing
       if !exist {
-        tracing::info!("CreateComputeFieldReference: {ref_key_suffix} not exist in {back_ref_key} back ref");
+        tracing::debug!("CreateComputeFieldReference: {ref_key_suffix} not exist in {back_ref_key} back ref");
         self
           .client
           .sadd(&back_ref_key, &ref_key_suffix)
@@ -78,7 +78,7 @@ impl ReferenceManager for ReferenceManagerImpl {
       .await
       .with_context(|| format!("get existing refs of ref key {ref_key} in cache"))?;
     if !members.is_empty() {
-      tracing::info!("CreateComputeFieldReference: Re {ref_key_suffix} exist");
+      tracing::debug!("CreateComputeFieldReference: Re {ref_key_suffix} exist");
       // Compute difference, if not empty then invalid references exist, needs to break these backward reference
       let mut diff = members.difference(&ref_values).peekable();
       if diff.peek().is_some() {
@@ -122,7 +122,7 @@ impl ReferenceManager for ReferenceManagerImpl {
       }
     }
 
-    tracing::info!("CreateComputeFieldReference: Create or cover Re: {ref_key_suffix},Values: {ref_values:?}");
+    tracing::debug!("CreateComputeFieldReference: Create or cover Re: {ref_key_suffix},Values: {ref_values:?}");
     self
       .client
       .sadd(&ref_key, IntoMultipleValues(ref_values.iter()))

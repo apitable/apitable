@@ -16,23 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import style from 'pc/components/editors/date_time_editor/mobile/style.module.less';
+import { Typography, useThemeColors } from '@apitable/components';
 import { DateRange, Strings, t } from '@apitable/core';
 import { DatePicker } from 'antd-mobile';
-import { CustomChildren } from 'pc/components/editors/date_time_editor/mobile/picker_content';
 import dayjs, { Dayjs } from 'dayjs';
-import styles from '../style.module.less';
+import { CustomChildren } from 'pc/components/editors/date_time_editor/mobile/picker_content';
+import style from 'pc/components/editors/date_time_editor/mobile/style.module.less';
 import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
-import { Typography, useThemeColors } from '@apitable/components';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import styles from '../style.module.less';
 
 export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDateProps & {
   rangePickerChange: (date: (Dayjs | null)[] | null) => void;
-  dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null
+  dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null;
+  disabled?: boolean
 }>> = (props) => {
   const colors = useThemeColors();
-  const { rangePickerChange, dataValue } = props;
+  const { rangePickerChange, dataValue, disabled } = props;
   const [startVisible, setStartVisible] = useState(false);
   const [endVisible, setEndVisible] = useState(false);
   const [startDate, setStartDate] = useState<Date | undefined>(() => {
@@ -83,7 +84,7 @@ export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDate
 
   return <div className={styles.mobileRangePicker}>
     <div>
-      <CustomChildren value={startDate} arrowIcon={null} onClick={() => setStartVisible(true)}>
+      <CustomChildren value={startDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setStartVisible(true)}>
         {startDate ? dayjs(startDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
       </CustomChildren>
       <DatePicker
@@ -107,7 +108,7 @@ export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDate
     </div>
     <div style={{ color: colors.thirdLevelText }}> -</div>
     <div>
-      <CustomChildren value={endDate} arrowIcon={null} onClick={() => setEndVisible(true)}>
+      <CustomChildren value={endDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setEndVisible(true)}>
         {endDate ? dayjs(endDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
       </CustomChildren>
       <DatePicker

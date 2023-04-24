@@ -18,15 +18,9 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
@@ -44,12 +38,12 @@ import com.apitable.space.vo.MainAdminInfoVo;
 import com.apitable.workspace.dto.MemberInfoDTO;
 import com.apitable.workspace.vo.FieldRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
-
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Resource;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Disabled
 public class MemberMapperTest extends AbstractMyBatisMapperTest {
 
     @Resource

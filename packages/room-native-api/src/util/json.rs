@@ -1,14 +1,28 @@
 use serde_json::{Number, Value};
 
 pub trait JsonExt {
+  type PropValue;
+
   fn is_truthy(&self) -> bool;
+
+  fn is_falsy(&self) -> bool {
+    !self.is_truthy()
+  }
 
   fn prop_is_truthy<K>(&self, key: K) -> bool
   where
     K: AsRef<str>;
+
+  /// Returns the property if the key exists, returns self otherwise.
+  fn into_prop<K>(self, key: K) -> Result<Self::PropValue, Self>
+  where
+    K: AsRef<str>,
+    Self: Sized;
 }
 
 impl JsonExt for Value {
+  type PropValue = Value;
+
   fn is_truthy(&self) -> bool {
     match self {
       Self::Array(_) => true,
@@ -33,9 +47,27 @@ impl JsonExt for Value {
   {
     self.get(key.as_ref()).map_or(false, |prop| prop.is_truthy())
   }
+
+  fn into_prop<K>(self, key: K) -> Result<Self::PropValue, Self>
+  where
+    K: AsRef<str>,
+  {
+    match self {
+      Self::Object(mut obj) => {
+        let prop = obj.remove(key.as_ref());
+        if let Some(prop) = prop {
+          return Ok(prop);
+        }
+        Err(Self::Object(obj))
+      }
+      _ => Err(self),
+    }
+  }
 }
 
 impl JsonExt for Option<Value> {
+  type PropValue = Value;
+
   fn is_truthy(&self) -> bool {
     matches!(self, Some(value) if value.is_truthy())
   }
@@ -45,6 +77,22 @@ impl JsonExt for Option<Value> {
     K: AsRef<str>,
   {
     matches!(self, Some(value) if value.prop_is_truthy(key))
+  }
+
+  fn into_prop<K>(self, key: K) -> Result<Self::PropValue, Self>
+  where
+    K: AsRef<str>,
+  {
+    match self {
+      Some(Value::Object(mut obj)) => {
+        let prop = obj.remove(key.as_ref());
+        if let Some(prop) = prop {
+          return Ok(prop);
+        }
+        Err(Some(Value::Object(obj)))
+      }
+      _ => Err(self),
+    }
   }
 }
 
@@ -181,5 +229,32 @@ mod tests {
   #[test]
   fn none_json_prop_is_truthy() {
     assert!(!None.prop_is_truthy("any"));
+  }
+
+  #[template]
+  #[rstest]
+  #[case(Value::Null, "a", None)]
+  #[case(Value::Bool(false), "a", None)]
+  #[case(json!(""), "a", None)]
+  #[case(json!([]), "0", None)]
+  #[case(json!(["0"]), "0", None)]
+  #[case(json!(13), "13", None)]
+  #[case(json!({ "a": { "b": 3 } }), "a", Some(json!({ "b": 3 })))]
+  #[case(json!({ "a": { "b": 3 } }), "A", None)]
+  fn json_into_prop_cases(#[case] input: Value, #[case] key: &'static str, #[case] expected: Option<Value>) {}
+
+  #[apply(json_into_prop_cases)]
+  fn json_into_prop(input: Value, key: &'static str, expected: Option<Value>) {
+    assert_eq!(input.clone().into_prop(key), expected.ok_or(input));
+  }
+
+  #[apply(json_into_prop_cases)]
+  fn some_json_into_prop(input: Value, key: &'static str, expected: Option<Value>) {
+    assert_eq!(Some(input.clone()).into_prop(key), expected.ok_or(Some(input)));
+  }
+
+  #[test]
+  fn none_json_into_prop() {
+    assert_eq!(None::<Value>.into_prop("a"), Err(None::<Value>));
   }
 }

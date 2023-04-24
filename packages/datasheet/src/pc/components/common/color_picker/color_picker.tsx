@@ -43,7 +43,7 @@ const MARGIN_BOTTOM = 40;
 const MARGIN_TOP = 8;
 
 const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPicker> = (props, ref) => {
-  const { showRenameInput, onChange, option, mask, triggerComponent } = props;
+  const { showRenameInput, onChange, option, mask, triggerComponent, disabled } = props;
   const [adjustX, setAdjustX] = useState(false);
   const [arrowOffsetY, setArrowOffsetY] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -147,7 +147,7 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
             pointerEvents: 'none',
             position: 'absolute',
           }}
-          popupVisible={visible}
+          popupVisible={disabled ? false : visible}
           onPopupVisibleChange={visible => setVisible(visible)}
           zIndex={1100}
         >

@@ -77,11 +77,19 @@
         WHERE vs.is_deleted = 0
     </select>
 
-    <select id="selectAdminInfoDto" resultType="com.apitable.space.dto.SpaceAdminInfoDTO">
-        SELECT t.owner memberId, u.code as areaCode, u.mobile_phone AS mobile, u.email, m.member_name, t.name spaceName
+    <select id="selectAdminInfoDto"
+            resultType="com.apitable.space.dto.SpaceAdminInfoDTO">
+        SELECT t.owner        AS memberId,
+               u.avatar,
+               u.code         AS areaCode,
+               u.mobile_phone AS mobile,
+               u.email,
+               m.member_name,
+               t.name            spaceName
         FROM ${tablePrefix}space t
-                 JOIN ${tablePrefix}unit_member m ON t.space_id = m.space_id AND t.owner = m.id AND m.is_deleted = 0
-                 JOIN ${tablePrefix}user u ON m.user_id = u.id AND u.is_deleted = 0
+        JOIN ${tablePrefix}unit_member m ON t.space_id = m.space_id
+            AND t.owner = m.id AND m.is_deleted = 0
+        JOIN ${tablePrefix}user u ON m.user_id = u.id AND u.is_deleted = 0
         WHERE t.space_id = #{spaceId}
           AND t.is_deleted = 0
     </select>

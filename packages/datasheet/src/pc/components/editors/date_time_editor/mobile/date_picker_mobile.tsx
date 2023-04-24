@@ -41,6 +41,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     onSave,
     commandFn,
     curAlarm,
+    disabled
   } = props;
 
   const { dateFormat, timeZone, includeTimeZone } = Field.bindModel(field);
@@ -143,6 +144,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       setVisible={setVisible}
       timeZone={timeZone}
       includeTimeZone={includeTimeZone}
+      disabled={disabled}
     />
   );
 };

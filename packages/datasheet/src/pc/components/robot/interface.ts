@@ -27,8 +27,9 @@ export interface IRobotRunHistoryDetail {
       endAt?: number;
       errorStacks?: any[];
     }
-  }
+  };
 }
+
 export interface IUISchemaLayoutGroup {
   title: string;
   items: string[];
@@ -55,7 +56,11 @@ interface INodeBaseType {
     slug: string;
     name: string;
     logo: string;
-  }
+    themeLogo: {
+      dark: string;
+      light: string
+    }
+  };
 }
 
 export interface ITriggerType extends INodeBaseType {
@@ -74,32 +79,38 @@ export interface IRobotAction {
   typeId: string;
   input: any;
 }
+
 export interface IRobotTrigger {
   triggerId: string;
   triggerTypeId: string;
   input: any;
 }
+
 export interface INodeOutputSchema {
   id: string;
   title: string;
   schema: IJsonSchema | undefined;
   uiSchema?: any;
 }
+
 export interface IRobot {
   name?: string;
   robotId: string;
   description?: string;
   isActive: boolean;
 }
+
 export interface IRobotBaseInfo extends IRobot {
   nodes: any[];
 }
+
 export interface IRobotNodeTypeInfo {
   nodeTypeId: string;
   service: {
     logo: string;
-  }
+  };
 }
+
 export interface IRobotCardInfo extends IRobot {
   nodeTypeList: IRobotNodeTypeInfo[];
 }
@@ -243,7 +254,7 @@ export interface IJsonSchema {
    * Enumerates the values that this schema can be
    * e.g.
    * {"type": "string",
-     *  "enum": ["red", "green", "blue"]}
+   *  "enum": ["red", "green", "blue"]}
    */
   'enum'?: any[];
   enumNames?: any[];
@@ -270,7 +281,7 @@ export interface IJsonSchema {
 
 export interface INodeSchema {
   schema: IJsonSchema;
-  // An extension to IJsonSchema. 
+  // An extension to IJsonSchema.
   // The ui of the control form, i.e. the uiSchema in the react json schema form, is placed here in the schema of the described data.
   uiSchema?: object;
 }

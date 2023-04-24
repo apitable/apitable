@@ -27,12 +27,15 @@ import {
   ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
+  IWidget,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
+import { skipUsageVerification } from 'app.environment';
 import {
   InternalCreateDatasheetVo,
   InternalSpaceInfoVo,
+  InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
   InternalSpaceUsageView,
   WidgetMap,
@@ -58,6 +61,7 @@ export class RestService {
   private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
   private GET_WIDGET = 'widget/get';
+  private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
   private GET_MULTI_NODE_PERMISSION = 'internal/node/field/permission';
@@ -90,6 +94,8 @@ export class RestService {
   private UNIT_LOAD_OR_SEARCH = 'internal/org/loadOrSearch';
 
   private SPACE_INFO = 'internal/space/%(spaceId)s';
+
+  private SPACE_STATISTICS = 'internal/space/%(spaceId)s/statistics';
 
   private readonly logger = new Logger(RestService.name);
 
@@ -195,6 +201,10 @@ export class RestService {
   }
 
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipCapacityOverLimit:${spaceId}`);
+      return true;
+    }
     const authHeaders = HttpHelper.createAuthHeaders(headers);
     // No headers, internal request does not relate to attachment field temporarily
     if (!authHeaders) {
@@ -260,6 +270,19 @@ export class RestService {
     return keyBy(data, 'id');
   }
 
+  async createWidget(headers: IAuthHeader, dashboardId: string, widgetPackageId: string, name?: string): Promise<IWidget> {
+    const response = await lastValueFrom(
+      this.httpService.post(this.CREATE_WIDGET, {
+        nodeId: dashboardId,
+        widgetPackageId,
+        name
+      }, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+    );
+    return response!.data;
+  }
+
   /**
    * Calculates the number of references of attachments in a datasheet
    *
@@ -305,6 +328,14 @@ export class RestService {
    * @param spaceId space ID
    */
   getApiUsage(headers: IAuthHeader, spaceId: string): Promise<any> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipApiUsage:${spaceId}`);
+      return Promise.resolve({
+        data: {
+          isAllowOverLimit: true,
+        }
+      });
+    }
     return lastValueFrom(
       this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
         headers: HttpHelper.createAuthHeaders(headers)
@@ -382,6 +413,18 @@ export class RestService {
    * @returns {Promise<InternalSpaceSubscriptionView>}
    */
   async getSpaceSubscription(spaceId: string): Promise<InternalSpaceSubscriptionView> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipSpaceSubscription:${spaceId}`);
+      return {
+        maxRowsPerSheet: -1,
+        maxRowsInSpace: -1,
+        maxGalleryViewsInSpace: -1,
+        maxKanbanViewsInSpace: -1,
+        maxGanttViewsInSpace: -1,
+        maxCalendarViewsInSpace: -1,
+        allowEmbed: true,
+      };
+    }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })));
     return response!.data;
   }
@@ -393,6 +436,16 @@ export class RestService {
    * @returns {Promise<InternalSpaceUsageView>}
    */
   async getSpaceUsage(spaceId: string): Promise<InternalSpaceUsageView> {
+    if (skipUsageVerification) {
+      this.logger.log(`skipSpaceUsage:${spaceId}`);
+      return {
+        recordNums: 0,
+        galleryViewNums: 0,
+        kanbanViewNums: 0,
+        ganttViewNums: 0,
+        calendarViewNums: 0,
+      };
+    }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceUsageView>(sprintf(this.SPACE_USAGES, { spaceId })));
     return response!.data;
   }
@@ -550,5 +603,11 @@ export class RestService {
   async getSpaceInfo(spaceId: string): Promise<InternalSpaceInfoVo> {
     const response = await lastValueFrom(this.httpService.get(sprintf(this.SPACE_INFO, { spaceId })));
     return response.data;
+  }
+
+  async updateSpaceStatistics(spaceId: string, ro: InternalSpaceStatisticsRo): Promise<void> {
+    await lastValueFrom(
+      this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro),
+    );
   }
 }

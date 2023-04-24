@@ -92,6 +92,16 @@
 
 .outerTrigger,
 .trigger {
+
+  &.disabled{
+    span {
+      opacity: 0.5;
+    }
+
+    svg {
+      opacity: 0.5;
+    }
+  }
   span {
     .ellipsis();
   }

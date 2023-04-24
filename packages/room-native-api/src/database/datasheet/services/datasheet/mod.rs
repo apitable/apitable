@@ -153,12 +153,8 @@ impl DatasheetService for DatasheetServiceImpl {
         datasheet_id: dst_id.to_owned(),
       },
       datasheet: node,
-      field_permission_map,
-      foreign_datasheet_map: if is_template {
-        None
-      } else {
-        Some(dependency_result.foreign_datasheet_map)
-      },
+      field_permission_map: if is_template { None } else { field_permission_map },
+      foreign_datasheet_map: Some(dependency_result.foreign_datasheet_map),
       units: dependency_result.units,
     })
   }
@@ -205,7 +201,7 @@ impl DatasheetServiceImpl {
     linked_record_map: Option<HashMap<String, HashSet<String>>>,
     without_permission: bool,
     auth: AuthHeader,
-    origin: FetchDataPackOrigin,
+    mut origin: FetchDataPackOrigin,
   ) -> anyhow::Result<DependencyAnalysisOutput> {
     let start = Instant::now();
     tracing::info!("Start analyzing dependencies of {main_dst_id}");
@@ -213,6 +209,7 @@ impl DatasheetServiceImpl {
     let ref_man = Arc::new(Mutex::new(ReferenceManagerImpl::new(
       self.redis_service.get_connection().await?,
     )));
+    origin.main = Some(false);
     let frn_dst_loader = Arc::new(ForeignDatasheetLoaderImpl::new(
       self.meta_service.clone(),
       self.node_service.clone(),
@@ -225,6 +222,7 @@ impl DatasheetServiceImpl {
     let analyzer = dependency_analyzer::DependencyAnalyzer::new(main_dst_id, ref_man, frn_dst_loader);
 
     // Process all fields of the datasheet
+    let main_dst_num_records = main_record_map.lock().await.len();
     let DependencyAnalysisResult {
       foreign_datasheet_map,
       member_field_unit_ids,
@@ -259,14 +257,24 @@ impl DatasheetServiceImpl {
         .await?,
     );
 
+    let foreign_datasheet_map = foreign_datasheet_map
+      .into_iter()
+      .map(|(dst_id, dst_pack)| (dst_id, dst_pack.into()))
+      .collect::<HashMap<_, BaseDatasheetPack>>();
+
     let duration = start.elapsed().as_millis();
-    tracing::info!("Finished analyzing dependencies of {main_dst_id}, duration {duration}ms");
+    let mut num_records: HashMap<_, _> = foreign_datasheet_map
+      .iter()
+      .map(|(id, dst)| (id.as_str(), dst.snapshot.record_map.len()))
+      .collect();
+    num_records.insert(main_dst_id, main_dst_num_records);
+    tracing::info!(
+      "Finished analyzing dependencies of {main_dst_id}, duration {duration}ms. \
+      Loaded datasheets and number of records: {num_records:?}"
+    );
 
     Ok(DependencyAnalysisOutput {
-      foreign_datasheet_map: foreign_datasheet_map
-        .into_iter()
-        .map(|(dst_id, dst_pack)| (dst_id, dst_pack.into()))
-        .collect::<HashMap<_, BaseDatasheetPack>>(),
+      foreign_datasheet_map,
       units,
     })
   }
@@ -360,14 +368,37 @@ mod tests {
             }) => mock_dst11_detail_info(),
             ("dst12", FetchDataPackOrigin {
               internal: true,
-              main: Some(true),
+              main: Some(false),
               ..Default::default()
             }) => mock_dst12_detail_info(),
             ("dst13", FetchDataPackOrigin {
               internal: true,
-              main: Some(true),
+              main: Some(false),
               ..Default::default()
             }) => mock_dst13_detail_info(),
+            ("dst11", FetchDataPackOrigin {
+              internal: false,
+              main: Some(true),
+              share_id: Some("shr1".into()),
+              ..Default::default()
+            }) => mock_dst11_detail_info(),
+            ("dst12", FetchDataPackOrigin {
+              internal: false,
+              main: Some(false),
+              share_id: Some("shr1".into()),
+              ..Default::default()
+            }) => mock_dst12_detail_info(),
+            ("dst13", FetchDataPackOrigin {
+              internal: false,
+              main: Some(false),
+              share_id: Some("shr1".into()),
+              ..Default::default()
+            }) => mock_dst13_detail_info(),
+            ("dst1", FetchDataPackOrigin {
+              internal: false,
+              main: Some(true),
+              ..Default::default()
+            }) => mock_dst1_detail_info(),
           })
           .build(),
       )
@@ -1584,6 +1615,245 @@ mod tests {
           MockValue::Set(hashset!["dst12:fld12w1".into()])
         ),
       ]
+    );
+  }
+
+  #[tokio::test]
+  async fn share_linked_datasheets() {
+    let mock_redis = Arc::new(MockRedis::new());
+    let module = init_module(
+      [
+        mock_rows([("space_id", ColumnType::MYSQL_TYPE_VARCHAR)], [["spc1".into()]]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([("is_enabled", ColumnType::MYSQL_TYPE_VARCHAR)], [[false.into()]]),
+      ],
+      mock_redis.clone(),
+    )
+    .await;
+    let datasheet_service: &dyn DatasheetService = module.resolve_ref();
+
+    let data_pack = assert_ok!(
+      datasheet_service
+        .fetch_data_pack(
+          "shared datasheet",
+          "dst11",
+          Default::default(),
+          FetchDataPackOrigin {
+            internal: false,
+            main: Some(true),
+            share_id: Some("shr1".into()),
+            ..Default::default()
+          },
+          Some(FetchDataPackOptions {
+            record_ids: Some(vec!["rec11w10".into(), "rec11w11".into(), "rec11w12".into()]),
+            ..Default::default()
+          }),
+        )
+        .await
+    );
+
+    assert_eq!(
+      data_pack,
+      DatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: mock_dst11_meta(),
+          record_map: mock_dst11_record_map(Some(vec!["rec11w10", "rec11w11", "rec11w12"])),
+          datasheet_id: "dst11".into()
+        },
+        datasheet: mock_dst11_detail_info().node,
+        field_permission_map: None,
+        foreign_datasheet_map: Some(hashmap! {
+          "dst12".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: mock_dst12_meta(),
+              record_map: mock_dst12_record_map(Some(vec!["rec12w10", "rec12w11", "rec12w12"])),
+              datasheet_id: "dst12".into(),
+            },
+            datasheet: serde_json::to_value(mock_dst12_detail_info().node).unwrap(),
+            field_permission_map: None,
+          },
+          "dst13".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: mock_dst13_meta(),
+              record_map: mock_dst13_record_map(Some(vec!["rec13w10"])),
+              datasheet_id: "dst13".into(),
+            },
+            datasheet: serde_json::to_value(mock_dst13_detail_info().node).unwrap(),
+            field_permission_map: None,
+          },
+        }),
+        units: vec![mock_unit_infos()["u3"].clone(), mock_unit_infos()["u2"].clone(),]
+      },
+    );
+
+    let repo: Arc<dyn Repository> = module.resolve();
+
+    assert_eq!(
+      repo.take_logs().await,
+      [MockSqlLog {
+        sql: MOCK_SPACE_ID_QUERY_SQL.into(),
+        params: params! {
+          "dst_id" => "dst11"
+        }
+      }]
+    );
+  }
+
+  #[tokio::test]
+  async fn template_self_linking() {
+    let mock_redis = Arc::new(MockRedis::new());
+    let module = init_module(
+      [
+        mock_rows([("space_id", ColumnType::MYSQL_TYPE_VARCHAR)], [["spc1".into()]]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([("is_enabled", ColumnType::MYSQL_TYPE_VARCHAR)], [[false.into()]]),
+      ],
+      mock_redis.clone(),
+    )
+    .await;
+    let datasheet_service: &dyn DatasheetService = module.resolve_ref();
+
+    let data_pack = assert_ok!(
+      datasheet_service
+        .fetch_data_pack(
+          "main datasheet",
+          "dst1",
+          Default::default(),
+          FetchDataPackOrigin {
+            internal: false,
+            main: Some(true),
+            ..Default::default()
+          },
+          Default::default()
+        )
+        .await
+    );
+
+    assert_eq!(
+      data_pack,
+      DatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: mock_dst1_meta(),
+          record_map: mock_dst1_record_map(None),
+          datasheet_id: "dst1".into()
+        },
+        datasheet: mock_dst1_detail_info().node,
+        field_permission_map: None,
+        foreign_datasheet_map: Some(hashmap! {}),
+        units: vec![
+          mock_unit_infos()["u1"].clone(),
+          mock_unit_infos()["u2"].clone(),
+          mock_user_infos()["7197"].clone(),
+        ]
+      },
+    );
+
+    let repo: Arc<dyn Repository> = module.resolve();
+
+    assert_eq!(
+      repo.take_logs().await,
+      [MockSqlLog {
+        sql: MOCK_SPACE_ID_QUERY_SQL.into(),
+        params: params! {
+          "dst_id" => "dst1"
+        }
+      }]
+    );
+
+    assert_eq!(
+      mock_redis.take_store(),
+      hashmap! {
+        "vikadata:nest:fieldRef:dst1:fld1w2".into() =>
+          MockValue::Set(hashset!["dst1:fld1w30000000".into(), "dst1:fld1w50000000".into()]),
+        "vikadata:nest:fieldReRef:dst1:fld1w30000000".into() => MockValue::Set(hashset!["dst1:fld1w2".into()]),
+        "vikadata:nest:fieldReRef:dst1:fld1w50000000".into() => MockValue::Set(hashset!["dst1:fld1w2".into()]),
+      }
+    );
+  }
+
+  #[tokio::test]
+  async fn specify_linked_record_map() {
+    let mock_redis = Arc::new(MockRedis::new());
+    let module = init_module(
+      [
+        mock_rows([("space_id", ColumnType::MYSQL_TYPE_VARCHAR)], [["spc1".into()]]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([], [] as [Vec<Value>; 0]),
+        mock_rows([("is_enabled", ColumnType::MYSQL_TYPE_VARCHAR)], [[false.into()]]),
+      ],
+      mock_redis.clone(),
+    )
+    .await;
+    let datasheet_service: &dyn DatasheetService = module.resolve_ref();
+
+    let data_pack = assert_ok!(
+      datasheet_service
+        .fetch_data_pack(
+          "main datasheet",
+          "dst11",
+          Default::default(),
+          FetchDataPackOrigin {
+            internal: true,
+            main: Some(true),
+            ..Default::default()
+          },
+          Some(FetchDataPackOptions {
+            record_ids: Some(vec!["rec11w10".into(), "rec11w11".into(), "rec11w12".into()]),
+            linked_record_map: Some(hashmap! {
+              "dst12".into() => vec!["rec12w11".into()],
+            }),
+            ..Default::default()
+          }),
+        )
+        .await
+    );
+
+    assert_eq!(
+      data_pack,
+      DatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: mock_dst11_meta(),
+          record_map: mock_dst11_record_map(Some(vec!["rec11w10", "rec11w11", "rec11w12"])),
+          datasheet_id: "dst11".into()
+        },
+        datasheet: mock_dst11_detail_info().node,
+        field_permission_map: None,
+        foreign_datasheet_map: Some(hashmap! {
+          "dst12".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: mock_dst12_meta(),
+              record_map: mock_dst12_record_map(Some(vec!["rec12w11"])),
+              datasheet_id: "dst12".into(),
+            },
+            datasheet: serde_json::to_value(mock_dst12_detail_info().node).unwrap(),
+            field_permission_map: None,
+          },
+          "dst13".into() => BaseDatasheetPack {
+            snapshot: DatasheetSnapshot {
+              meta: mock_dst13_meta(),
+              record_map: mock_dst13_record_map(Some(vec![])),
+              datasheet_id: "dst13".into(),
+            },
+            datasheet: serde_json::to_value(mock_dst13_detail_info().node).unwrap(),
+            field_permission_map: None,
+          },
+        }),
+        units: vec![mock_unit_infos()["u3"].clone(), mock_unit_infos()["u2"].clone(),]
+      },
+    );
+
+    let repo: Arc<dyn Repository> = module.resolve();
+
+    assert_eq!(
+      repo.take_logs().await,
+      [MockSqlLog {
+        sql: MOCK_SPACE_ID_QUERY_SQL.into(),
+        params: params! {
+          "dst_id" => "dst11"
+        }
+      }]
     );
   }
 }

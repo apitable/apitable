@@ -18,14 +18,10 @@
 
 package com.apitable.space.service.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import com.apitable.AbstractIntegrationTest;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
@@ -65,24 +61,20 @@ import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
+import java.time.LocalDate;
+import java.util.List;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
-@Disabled
 public class SpaceServiceImplTest extends AbstractIntegrationTest {
-
-    @MockBean
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Test
     void getSpaceListWithAll() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
         condition.setManageable(false);
-        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
+        List<SpaceVO> spaceVOList =
+            iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
         assertThat(spaceVOList).isNotEmpty().hasSize(1);
     }
 
@@ -91,7 +83,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         MockUserSpace userSpace = createSingleUserAndSpace();
         GetSpaceListFilterCondition condition = new GetSpaceListFilterCondition();
         condition.setManageable(true);
-        List<SpaceVO> spaceVOList = iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
+        List<SpaceVO> spaceVOList =
+            iSpaceService.getSpaceListByUserId(userSpace.getUserId(), condition);
         assertThat(spaceVOList).isNotEmpty().hasSize(1);
     }
 
@@ -99,7 +92,7 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     void givenExitMemberWhenCheckUserInSpaceWhenSuccess() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         iSpaceService.checkUserInSpace(userSpace.getUserId(), userSpace.getSpaceId(),
-                status -> assertThat(status).isNotNull().isTrue());
+            status -> assertThat(status).isNotNull().isTrue());
     }
 
     @Test
@@ -107,10 +100,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         MockUserSpace userSpace = createSingleUserAndSpace();
         UserEntity user = iUserService.createUserByEmail("boy@apitable.com");
         iSpaceService.checkUserInSpace(user.getId(), userSpace.getSpaceId(),
-                status -> assertThat(status).isNotNull().isFalse());
+            status -> assertThat(status).isNotNull().isFalse());
     }
 
     @Test
+    @Disabled
     void testGetSpaceCapacityUsedInfoIsOverUsed() {
         String spaceId = "spc01";
         Long capacityUsedSize = 2147483648L;
@@ -118,13 +112,16 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         // given
         given(entitlementServiceFacade.getSpaceSubscription(spaceId)).willReturn(subscriptionInfo);
         // when
-        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo =
+            iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
         // then
-        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(
+            1073741824L);
         assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(314572800L);
     }
 
     @Test
+    @Disabled
     void testGetSpaceCapacityUsedInfoAndGiftCapacityIsNotUse() {
         String spaceId = "spc01";
         Long capacityUsedSize = 1073741824L;
@@ -132,13 +129,16 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         // given
         given(entitlementServiceFacade.getSpaceSubscription(spaceId)).willReturn(subscriptionInfo);
         // when
-        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo =
+            iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
         // then
-        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(
+            1073741824L);
         assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(0L);
     }
 
     @Test
+    @Disabled
     void testGetSpaceCapacityUsedInfoAndGiftCapacityIsUse() {
         String spaceId = "spc01";
         Long capacityUsedSize = 1073741830L;
@@ -146,9 +146,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         // given
         given(entitlementServiceFacade.getSpaceSubscription(spaceId)).willReturn(subscriptionInfo);
         // when
-        SpaceCapacityUsedInfo spaceCapacityUsedInfo = iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
+        SpaceCapacityUsedInfo spaceCapacityUsedInfo =
+            iSpaceService.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
         // then
-        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(1073741824L);
+        assertThat(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes()).isEqualTo(
+            1073741824L);
         assertThat(spaceCapacityUsedInfo.getGiftCapacityUsedSizes()).isEqualTo(6L);
     }
 

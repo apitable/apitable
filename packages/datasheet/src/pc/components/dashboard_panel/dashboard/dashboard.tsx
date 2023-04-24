@@ -369,7 +369,7 @@ export const Dashboard = () => {
           />
         }
         <WidgetContextProvider>
-          <div className={styles.widgetArea} style={{ pointerEvents: 'auto' }}>
+          <div className={styles.widgetArea} style={{ pointerEvents: 'auto', height: (!embedId || embedInfo.viewControl?.tabBar) ? '' : '100%' }}>
             {installedWidgetInDashboard && (
               <ResponsiveGridLayout
                 isDroppable={!readonly}

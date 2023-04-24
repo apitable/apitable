@@ -29,7 +29,6 @@ import { AutomationTriggerRepository } from './repositories/automation.trigger.r
 import { AutomationTriggerTypeRepository } from './repositories/automation.trigger.type.repository';
 import { RobotController } from './controller/robot.controller';
 import { RobotRunHistoryController } from './controller/run.history.controller';
-import { RobotServiceController } from './controller/service.controller';
 import { AutomationService } from './services/automation.service';
 import { RobotTriggerController } from './controller/trigger.controller';
 import { RobotTriggerTypeController } from './controller/trigger.type.controller';
@@ -40,7 +39,6 @@ import { FormSubmittedListener } from './events/listeners/form.submitted.listene
 import { TriggerEventHelper } from './events/helpers/trigger.event.helper';
 import { RecordCreatedListener } from './events/listeners/record.created.listener';
 import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
-import { RobotServiceService } from './services/robot.service.service';
 import { NodeModule } from 'node/node.module';
 import { UserModule } from 'user/user.module';
 import { RobotActionService } from './services/robot.action.service';
@@ -68,13 +66,11 @@ import { RobotRobotService } from './services/robot.robot.service';
     RobotTriggerTypeController,
     RobotActionController,
     RobotTriggerController,
-    RobotServiceController,
   ],
   providers: [
     AutomationService,
     RobotTriggerService,
     RobotTriggerTypeService,
-    RobotServiceService,
     FormSubmittedListener,
     TriggerEventHelper,
     RecordCreatedListener,

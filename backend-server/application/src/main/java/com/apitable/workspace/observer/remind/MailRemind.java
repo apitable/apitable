@@ -18,15 +18,7 @@
 
 package com.apitable.workspace.observer.remind;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -34,8 +26,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.exception.BusinessException;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotifyMailFactory;
 import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
@@ -44,13 +35,17 @@ import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.observer.remind.NotifyDataSheetMeta.RemindParameter;
-import com.apitable.core.exception.BusinessException;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.stereotype.Component;
-
-import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
 @Slf4j
 @Component
@@ -114,18 +109,24 @@ public class MailRemind extends AbstractRemind {
         // When the sender is anonymous, the recipients in different languages are batched,
         // and the sender name is filled with the anonymous person in the corresponding language.
         if (meta.remindParameter.fromMemberName == null) {
-            Map<String, List<MailWithLang>> map = toEmailWithLang.stream().collect(Collectors.groupingBy(MailWithLang::getLocale));
+            Map<String, List<MailWithLang>> map = toEmailWithLang.stream()
+                .collect(Collectors.groupingBy(MailWithLang::getLocale));
             // batch send
             for (Map.Entry<String, List<MailWithLang>> entry : map.entrySet()) {
                 Locale locale = Locale.forLanguageTag(entry.getKey());
-                Dict mapDict = Dict.create().set("MEMBER_NAME", I18nStringsUtil.t("anonymous", locale));
-                dict.set("MEMBER_NAME", I18nStringsUtil.t("anonymous", locale));
-                TaskManager.me().execute(() -> NotifyMailFactory.me().sendMail(MailPropConstants.SUBJECT_DATASHEET_REMIND, mapDict, dict, entry.getValue()));
+                String anonymous = I18nStringsUtil.t("anonymous", locale);
+                Dict subjectDict = this.createSubjectDict(meta).set("MEMBER_NAME", anonymous);
+                dict.set("MEMBER_NAME", anonymous);
+                TaskManager.me().execute(() -> NotifyMailFactory.me()
+                    .sendMail(MailPropConstants.SUBJECT_DATASHEET_REMIND,
+                        subjectDict, dict, entry.getValue()));
             }
             return;
         }
-        Dict mapDict = Dict.create().set("MEMBER_NAME", meta.remindParameter.fromMemberName);
-        TaskManager.me().execute(() -> NotifyMailFactory.me().sendMail(MailPropConstants.SUBJECT_DATASHEET_REMIND, mapDict, dict, toEmailWithLang));
+        Dict subjectDict = this.createSubjectDict(meta);
+        TaskManager.me().execute(() -> NotifyMailFactory.me()
+            .sendMail(MailPropConstants.SUBJECT_DATASHEET_REMIND, subjectDict,
+                dict, toEmailWithLang));
     }
 
     @Override
@@ -134,8 +135,10 @@ public class MailRemind extends AbstractRemind {
         Dict dict = createDict(meta)
                 .set("CONTENT", HtmlUtil.unescape(HtmlUtil.filter(meta.extra.getContent())))
                 .set("CREATED_AT", meta.extra.getCreatedAt());
-        Dict mapDict = Dict.create().set("MEMBER_NAME", meta.remindParameter.fromMemberName);
-        TaskManager.me().execute(() -> NotifyMailFactory.me().sendMail(MailPropConstants.SUBJECT_RECORD_COMMENT, mapDict, dict, toEmailWithLang));
+        Dict subjectDict = this.createSubjectDict(meta);
+        TaskManager.me().execute(() -> NotifyMailFactory.me()
+            .sendMail(MailPropConstants.SUBJECT_RECORD_COMMENT, subjectDict,
+                dict, toEmailWithLang));
     }
 
     /**
@@ -149,8 +152,14 @@ public class MailRemind extends AbstractRemind {
                 .set("NODE_NAME", meta.remindParameter.nodeName)
                 .set("RECORD_TITLE", meta.recordTitle)
                 .set("URL", meta.remindParameter.notifyUrl)
-                .set("YEARS", LocalDate.now().getYear())
+                .set("AVATAR", meta.getFromUserAvatar())
                 .set("CREATED_AT", meta.createdAt);
     }
 
+    private Dict createSubjectDict(NotifyDataSheetMeta meta) {
+        return Dict.create()
+            .set("MEMBER_NAME", meta.remindParameter.fromMemberName)
+            .set("NODE_NAME", meta.remindParameter.nodeName)
+            .set("RECORD_TITLE", meta.recordTitle);
+    }
 }

@@ -178,9 +178,6 @@
         LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
         LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vsmrr.member_id = vom.id
         WHERE vom.space_id = #{spaceId}
-        <if test="isActive != null">
-            AND vom.is_active = #{isActive}
-        </if>
         AND vom.is_deleted = 0
         GROUP BY vom.id
     </select>

@@ -18,18 +18,14 @@
 
 package com.apitable.space.mapper;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.SpaceApplyDTO;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Disabled
 public class SpaceApplyMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
@@ -43,9 +39,11 @@ public class SpaceApplyMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/space-apply-data.sql", "/sql/player-notification-data.sql" })
+    @Sql({"/sql/space-apply-data.sql", "/sql/player-notification-data.sql"})
     void testSelectSpaceApplyDto() {
-        SpaceApplyDTO entity = spaceApplyMapper.selectSpaceApplyDto(45L, 41L, "assigned_to_group", "\"id\"", "\"status\"");
+        SpaceApplyDTO entity =
+            spaceApplyMapper.selectSpaceApplyDto(45L, 41L, "assigned_to_group", "\"id\"",
+                "\"status\"");
         assertThat(entity).isNotNull();
     }
 

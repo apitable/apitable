@@ -64,7 +64,7 @@ COPY --from=builder /app /app
 
 RUN npm install pm2@latest --global  \
     && rm -fr packages/*/src \
-    && rm -fr packages/room-native-api/target
+    && rm -fr packages/room-native-api/src
 
 # (room|socket):http
 EXPOSE 3001

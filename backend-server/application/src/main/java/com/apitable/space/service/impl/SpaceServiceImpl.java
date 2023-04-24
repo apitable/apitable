@@ -122,7 +122,6 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.INodeShareSettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -582,8 +581,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             typeStaticsMap.containsKey(NodeType.FORM.getNodeType())
                 ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // table view statistics
-        DatasheetStaticsDTO viewVO =
-            iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
+        DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder().spaceName(entity.getName())
             .spaceLogo(entity.getLogo()).createTime(entity.getCreatedAt())
             .deptNumber(teamCount).seats(memberNumber).sheetNums(sheetNums)
@@ -817,20 +815,24 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (ObjectUtil.isNotNull(newMember)
             && StrUtil.isNotBlank(newMember.getEmail())) {
             Dict dict = Dict.create();
+            //TODO remove user_name at next version
             dict.set("USER_NAME", dto.getMemberName());
             dict.set("SPACE_NAME", dto.getSpaceName());
-            String url = StrUtil.format(
-                constProperties.getServerDomain() + "/space/{}/workbench",
-                spaceId);
+            dict.set("MEMBER_NAME", dto.getMemberName());
+            dict.set("AVATAR", constProperties.spliceAssetUrl(dto.getAvatar()));
+            String url = StrUtil.format("{}/space/{}/workbench",
+                constProperties.getServerDomain(), spaceId);
             dict.set("URL", url);
-            dict.set("YEARS", LocalDate.now().getYear());
+            Dict subjectDict = Dict.create();
+            subjectDict.set("SPACE_NAME", dto.getSpaceName());
+            subjectDict.set("MEMBER_NAME", dto.getMemberName());
             final String lang;
             lang = userService.getLangByEmail(
                 LocaleContextHolder.getLocale().toLanguageTag(),
                 newMember.getEmail());
             NotifyMailFactory.me()
                 .sendMail(lang, MailPropConstants.SUBJECT_CHANGE_ADMIN,
-                    dict,
+                    subjectDict, dict,
                     Collections.singletonList(newMember.getEmail()));
         }
         NotificationRenderFieldHolder.set(NotificationRenderField.builder()

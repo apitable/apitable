@@ -68,15 +68,6 @@ export interface IUpdateMemberListPageAction {
   payload: IMemberInfoInAddressList[];
 }
 
-export interface ITeamList {
-  teamId: string;
-  teamName: string;
-  parentId?: string;
-  memberCount?: number;
-  sequence?: number;
-  children?: ITeamList[];
-}
-
 export interface ITeamData {
   teamId: string;
   fullHierarchyTeamName?: string;

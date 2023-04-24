@@ -37,7 +37,8 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
     defaultValue,
     onChange: _onChange,
     className,
-    style
+    style,
+    disabled
   } = props;
   const colors = useThemeColors();
   const onChange = useCallback(
@@ -57,8 +58,8 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
     <>
       {!hasOuterTrigger && (
         <div
-          className={classNames(styles.trigger, className)}
-          onClick={() => setVisible(true)}
+          className={classNames(styles.trigger, className, { [styles.disabled]: disabled })}
+          onClick={() => !disabled && setVisible(true)}
           style={style}
         >
           <span>{optionData?.find(item => item.value === defaultValue)?.label}</span>
@@ -71,8 +72,8 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
       )}
       {hasOuterTrigger && (
         <div
-          className={classNames('outerTrigger', styles.outerTrigger)}
-          onClick={() => setVisible(true)}
+          className={classNames('outerTrigger', styles.outerTrigger, { [styles.disabled]: disabled })}
+          onClick={() => !disabled && setVisible(true)}
         >
           {triggerComponent}
         </div>

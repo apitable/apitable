@@ -39,6 +39,7 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.interfaces.social.event.NotificationEvent;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
@@ -54,6 +55,7 @@ import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
@@ -83,6 +85,7 @@ import com.apitable.workspace.ro.MetaMapRo;
 import com.apitable.workspace.ro.MetaOpRo;
 import com.apitable.workspace.ro.RecordMapRo;
 import com.apitable.workspace.ro.RemindMemberRo;
+import com.apitable.workspace.ro.RemindUnitRecRo;
 import com.apitable.workspace.ro.SnapshotMapRo;
 import com.apitable.workspace.ro.ViewMapRo;
 import com.apitable.workspace.service.IDatasheetMetaService;
@@ -433,6 +436,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
+                    break;
+                case CASCADER:
+                    fieldMapRo.getProperty().set("linkedDatasheetId", "");
+                    fieldMapRo.getProperty().set("linkedViewId", "");
+                    fieldMapRo.getProperty().set("linkedFields", new ArrayList<>());
+                    fieldMapRo.getProperty().set("fullLinkedFields", new ArrayList<>());
+                    fieldMapRo.getProperty().set("showAll", false);
                     break;
                 case AUTO_NUMBER:
                     autoNumberFieldIds.add(fieldMapRo.getId());
@@ -827,147 +837,154 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             .orElseThrow(() -> new BusinessException("submit data across spaces"));
         // refresh the mentioned member record cache
         userSpaceRemindRecordCacheService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
-        if (notify) {
-            // split roles into members and teams
-            Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
-            // self don't need to send notifications, filter
-            Long memberId =
-                userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
-            // Gets the organizational unit of the member type, the corresponding member.
-            Map<Long, Long> unitIdToMemberIdMap = units.stream()
-                .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
-                    && unit.getSpaceId().equals(spaceId) && !unit.getUnitRefId().equals(memberId))
+        if (!notify) {
+            return;
+        }
+        // split roles into members and teams
+        Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
+        // self don't need to send notifications, filter
+        Long memberId =
+            userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+        // Gets the organizational unit of the member type, the corresponding member.
+        Map<Long, Long> unitIdToMemberIdMap = units.stream()
+            .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
+                && unit.getSpaceId().equals(spaceId) && !unit.getUnitRefId().equals(memberId))
+            // Only members with read permission to the node send notifications
+            .filter(unitEntity -> controlTemplate.hasNodePermission(unitEntity.getUnitRefId(),
+                ro.getNodeId(), NodePermission.READ_NODE))
+            .collect(Collectors.toMap(UnitEntity::getId, UnitEntity::getUnitRefId));
+        List<Long> memberIds = new ArrayList<>(unitIdToMemberIdMap.values());
+        // Obtain the organizational unit of the department type and the list of members.
+        Map<Long, List<Long>> unitIdToMemberIdsMap = MapUtil.newHashMap();
+        Map<Long, Long> teamIdToUnitIdMap =
+            units.stream().filter(unit -> unit.getUnitType().equals(UnitType.TEAM.getType())
+                    && unit.getSpaceId().equals(spaceId))
+                .collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
+        List<Long> teamIds = new ArrayList<>(teamIdToUnitIdMap.keySet());
+        if (CollUtil.isNotEmpty(teamIds)) {
+            List<TeamMemberRelEntity> teamMemberRelEntities =
+                teamMemberRelMapper.selectByTeamIds(teamIds);
+            teamMemberRelEntities.stream()
+                .filter(rel -> !rel.getMemberId().equals(memberId))
                 // Only members with read permission to the node send notifications
-                .filter(unitEntity -> controlTemplate.hasNodePermission(unitEntity.getUnitRefId(),
-                    ro.getNodeId(), NodePermission.READ_NODE))
-                .collect(Collectors.toMap(UnitEntity::getId, UnitEntity::getUnitRefId));
-            List<Long> memberIds = new ArrayList<>(unitIdToMemberIdMap.values());
-            // Obtain the organizational unit of the department type and the list of members.
-            Map<Long, List<Long>> unitIdToMemberIdsMap = MapUtil.newHashMap();
-            Map<Long, Long> teamIdToUnitIdMap =
-                units.stream().filter(unit -> unit.getUnitType().equals(UnitType.TEAM.getType())
-                        && unit.getSpaceId().equals(spaceId))
-                    .collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
-            List<Long> teamIds = new ArrayList<>(teamIdToUnitIdMap.keySet());
-            if (CollUtil.isNotEmpty(teamIds)) {
-                List<TeamMemberRelEntity> teamMemberRelEntities =
-                    teamMemberRelMapper.selectByTeamIds(teamIds);
-                teamMemberRelEntities.stream()
-                    .filter(rel -> !rel.getMemberId().equals(memberId))
-                    // Only members with read permission to the node send notifications
-                    .filter(
-                        rel -> controlTemplate.hasNodePermission(rel.getMemberId(), ro.getNodeId(),
-                            NodePermission.READ_NODE))
-                    .forEach(rel -> {
-                        Long unitId = teamIdToUnitIdMap.get(rel.getTeamId());
-                        List<Long> members = unitIdToMemberIdsMap.get(unitId);
-                        if (CollUtil.isNotEmpty(members)) {
-                            members.add(rel.getMemberId());
-                        } else {
-                            unitIdToMemberIdsMap.put(unitId,
-                                CollUtil.newArrayList(rel.getMemberId()));
-                        }
-                    });
-                unitIdToMemberIdsMap.values().forEach(memberIds::addAll);
-            }
-
-            if (CollUtil.isNotEmpty(roleUnitIdToRoleMemberUnitIds)) {
-                getRoleMemberIds(roleUnitIdToRoleMemberUnitIds, unitIdToMemberIdMap,
-                    unitIdToMemberIdsMap);
-            }
-
-            if (CollUtil.isEmpty(memberIds)) {
-                return;
-            }
-            // distinct, build notification message
-            List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
-            List<Long> userIds = memberMapper.selectUserIdsByMemberIds(distinctMemberIds);
-            CollUtil.removeNull(userIds);
-            if (CollUtil.isEmpty(userIds)) {
-                return;
-            }
-            ro.getUnitRecs().forEach(remindUnitRecRo -> {
-                String recordTitle = StrUtil.blankToDefault(remindUnitRecRo.getRecordTitle(),
-                    I18nStringsUtil.t("record_unnamed"));
-                List<Long> toMemberIds = new ArrayList<>();
-                remindUnitRecRo.getUnitIds().forEach(unitId -> {
-                    if (unitIdToMemberIdMap.get(unitId) != null) {
-                        toMemberIds.add(unitIdToMemberIdMap.get(unitId));
-                    } else if (unitIdToMemberIdsMap.get(unitId) != null) {
-                        toMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
+                .filter(
+                    rel -> controlTemplate.hasNodePermission(rel.getMemberId(), ro.getNodeId(),
+                        NodePermission.READ_NODE))
+                .forEach(rel -> {
+                    Long unitId = teamIdToUnitIdMap.get(rel.getTeamId());
+                    List<Long> members = unitIdToMemberIdsMap.get(unitId);
+                    if (CollUtil.isNotEmpty(members)) {
+                        members.add(rel.getMemberId());
+                    } else {
+                        unitIdToMemberIdsMap.put(unitId,
+                            CollUtil.newArrayList(rel.getMemberId()));
                     }
                 });
-                if (CollUtil.isNotEmpty(remindUnitRecRo.getRecordIds())
-                    && CollUtil.isNotEmpty(toMemberIds)) {
-                    JSONObject body = JSONUtil.createObj();
-                    JSONObject extras = JSONUtil.createObj()
-                        .set("fieldName", remindUnitRecRo.getFieldName())
-                        .set("recordTitle", recordTitle)
-                        .set("viewId", ro.getViewId())
-                        .set("recordIds", remindUnitRecRo.getRecordIds());
-                    if (null != ro.getExtra() && null != ro.getExtra().getContent()) {
-                        // comments
-                        extras.set("commentContent",
-                            HtmlUtil.unescape(HtmlUtil.cleanHtmlTag(ro.getExtra().getContent())));
-                    }
-                    body.set(BODY_EXTRAS, extras);
-                    // send notification
-                    NotificationCreateRo notifyRo = new NotificationCreateRo();
-                    notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
-                    notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
-                    notifyRo.setNodeId(ro.getNodeId());
-                    notifyRo.setSpaceId(spaceId);
-                    // used to mark message jump read
-                    String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
-                    notifyRo.setNotifyId(notifyId);
-                    String templateId;
-                    if (RemindType.MEMBER.getRemindType() == ro.getType()
-                        && remindUnitRecRo.getRecordIds().size() == 1) {
-                        templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
-                    } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
-                        templateId = NotificationTemplateId.USER_FIELD.getValue();
-                    } else {
-                        templateId =
-                            NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
-                    }
-                    notifyRo.setTemplateId(templateId);
-                    notifyRo.setBody(body);
-                    // save notification record
-                    playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
-                    NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
-                        .setRemindType(RemindType.of(ro.getType()))
-                        .setSpaceId(spaceId)
-                        .setNodeId(ro.getNodeId())
-                        .setViewId(ro.getViewId())
-                        .setRecordId(remindUnitRecRo.getRecordIds().get(0))
-                        .setFieldName(remindUnitRecRo.getFieldName())
-                        .setCreatedAt(LocalDateTime.now().format(
-                            DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
-                        .setExtra(ro.getExtra())
-                        .setFromMemberId(memberId)
-                        .setToMemberIds(toMemberIds)
-                        .setNotifyId(notifyId)
-                        .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
-                        .setRecordTitle(recordTitle);
+            unitIdToMemberIdsMap.values().forEach(memberIds::addAll);
+        }
 
-                    RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
-                    // Default-Subscribe to Mail Notifications
-                    if (!templateId.equals(
-                        NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
-                        remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(
-                            StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
-                    }
-                    // Check whether the space is bound to third-party integration
-                    SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
-                    if (connectInfo != null && connectInfo.isEnabled()
-                        && StrUtil.isNotBlank(connectInfo.getAppId())) {
-                        // transform social connect app type, register remind observer
-                        socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
-                    }
-                    // message pushed to observer
-                    remindMemberOpSubject.sendNotify(meta);
+        if (CollUtil.isNotEmpty(roleUnitIdToRoleMemberUnitIds)) {
+            getRoleMemberIds(roleUnitIdToRoleMemberUnitIds, unitIdToMemberIdMap,
+                unitIdToMemberIdsMap);
+        }
+
+        if (CollUtil.isEmpty(memberIds)) {
+            return;
+        }
+        // distinct, build notification message
+        List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
+        List<Long> userIds = memberMapper.selectUserIdsByMemberIds(distinctMemberIds);
+        CollUtil.removeNull(userIds);
+        if (CollUtil.isEmpty(userIds)) {
+            return;
+        }
+        for (RemindUnitRecRo remindUnitRecRo : ro.getUnitRecs()) {
+            String recordTitle = StrUtil.blankToDefault(remindUnitRecRo.getRecordTitle(),
+                I18nStringsUtil.t("record_unnamed"));
+            List<Long> toMemberIds = new ArrayList<>();
+            remindUnitRecRo.getUnitIds().forEach(unitId -> {
+                if (unitIdToMemberIdMap.get(unitId) != null) {
+                    toMemberIds.add(unitIdToMemberIdMap.get(unitId));
+                } else if (unitIdToMemberIdsMap.get(unitId) != null) {
+                    toMemberIds.addAll(unitIdToMemberIdsMap.get(unitId));
                 }
             });
+            if (CollUtil.isEmpty(remindUnitRecRo.getRecordIds())
+                || CollUtil.isEmpty(toMemberIds)) {
+                continue;
+            }
+            JSONObject body = JSONUtil.createObj();
+            JSONObject extras = JSONUtil.createObj()
+                .set("fieldName", remindUnitRecRo.getFieldName())
+                .set("recordTitle", recordTitle)
+                .set("viewId", ro.getViewId())
+                .set("recordIds", remindUnitRecRo.getRecordIds());
+            if (null != ro.getExtra() && null != ro.getExtra().getContent()) {
+                // comments
+                extras.set("commentContent",
+                    HtmlUtil.unescape(HtmlUtil.cleanHtmlTag(ro.getExtra().getContent())));
+            }
+            body.set(BODY_EXTRAS, extras);
+            // send notification
+            NotificationCreateRo notifyRo = new NotificationCreateRo();
+            notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
+            notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
+            notifyRo.setNodeId(ro.getNodeId());
+            notifyRo.setSpaceId(spaceId);
+            // used to mark message jump read
+            String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
+            notifyRo.setNotifyId(notifyId);
+            String templateId;
+            if (RemindType.MEMBER.getRemindType() == ro.getType()
+                && remindUnitRecRo.getRecordIds().size() == 1) {
+                templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
+            } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
+                templateId = NotificationTemplateId.USER_FIELD.getValue();
+            } else {
+                templateId =
+                    NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
+            }
+            notifyRo.setTemplateId(templateId);
+            notifyRo.setBody(body);
+            // save notification record
+            playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
+            NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
+                .setRemindType(RemindType.of(ro.getType()))
+                .setSpaceId(spaceId)
+                .setNodeId(ro.getNodeId())
+                .setViewId(ro.getViewId())
+                .setRecordId(remindUnitRecRo.getRecordIds().get(0))
+                .setFieldName(remindUnitRecRo.getFieldName())
+                .setCreatedAt(LocalDateTime.now().format(
+                    DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
+                .setExtra(ro.getExtra())
+                .setFromMemberId(memberId)
+                .setToMemberIds(toMemberIds)
+                .setNotifyId(notifyId)
+                .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
+                .setRecordTitle(recordTitle);
+            if (userId != null) {
+                String avatar = SpringContextHolder.getBean(ConstProperties.class)
+                    .spliceAssetUrl(userMapper.selectAvatarById(userId));
+                meta.setFromUserAvatar(avatar);
+            }
+
+            RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
+            // Default-Subscribe to Mail Notifications
+            if (!templateId.equals(
+                NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
+                remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(
+                    StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
+            }
+            // Check whether the space is bound to third-party integration
+            SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
+            if (connectInfo != null && connectInfo.isEnabled()
+                && StrUtil.isNotBlank(connectInfo.getAppId())) {
+                // transform social connect app type, register remind observer
+                socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
+            }
+            // message pushed to observer
+            remindMemberOpSubject.sendNotify(meta);
         }
     }
 

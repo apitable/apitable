@@ -89,7 +89,15 @@ public class ConstProperties {
 
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)
-            .getOrDefault(BucketKey.ASSETS_LTD, new OssBucketInfo());
+            .getOrDefault(BucketKey.ASSETS, new OssBucketInfo());
+    }
+
+    public String spliceAssetUrl(String token) {
+        if (token == null || token.equals(StrUtil.EMPTY)
+            || token.startsWith("http")) {
+            return token;
+        }
+        return StrUtil.format("{}/{}", this.getOssBucketByAsset(), token);
     }
 
     public String defaultServerDomain() {
@@ -101,7 +109,7 @@ public class ConstProperties {
      * bucket key.
      */
     public enum BucketKey {
-        ASSETS_LTD,
+        ASSETS,
     }
 
     /**

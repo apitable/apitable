@@ -21,6 +21,7 @@ import { useClickAway, useToggle } from 'ahooks';
 import Color from 'color';
 import { SelectItem } from 'components/select/select_item';
 import { convertChildrenToData } from 'components/select/utils';
+import { WrapperTooltip } from 'components/tooltip';
 import { IUseListenTriggerInfo, stopPropagation } from 'helper';
 import { useProviderTheme } from 'hooks';
 import Trigger from 'rc-trigger';
@@ -47,7 +48,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
     openSearch = false, searchPlaceholder, highlightStyle, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
-    onSelected, hideSelectedOption, dropdownRender, disabled, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240,
+    onSelected, hideSelectedOption, dropdownRender, disabled, disabledTip, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240,
     popupStyle = {}
   } = props;
   const [isInit, setIsInit] = useState(true);
@@ -204,43 +205,47 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
       ref={triggerRef}
       popupVisible={visible}
     >
-      <StyledSelectTrigger
-        onClick={triggerClick}
-        style={triggerStyle}
-        className={triggerCls}
-        tabIndex={-1}
-        ref={containerRef}
-        disabled={Boolean(disabled)}
-        focus={visible}
-        data-name="select"
-      >
-        <StyledSelectedContainer
-          className={'ellipsis'}
-          {...selectedOption}
-          disabled={Boolean(disabled || (selectedOption && selectedOption.disabled))}
-          suffixIcon={suffixIcon || selectedOption?.suffixIcon}
-          prefixIcon={prefixIcon || selectedOption?.prefixIcon}
+      <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
+        <StyledSelectTrigger
+          onClick={triggerClick}
+          style={triggerStyle}
+          className={triggerCls}
+          tabIndex={-1}
+          ref={containerRef}
+          disabled={Boolean(disabled)}
+          focus={visible}
+          data-name='select'
         >
-          {triggerLabel}
-          {!triggerLabel && (
-            value != null && selectedOption ? <SelectItem
-              item={{
-                ...selectedOption,
-                suffixIcon: suffixIcon || selectedOption.suffixIcon,
-                prefixIcon: prefixIcon || selectedOption.prefixIcon,
-              }}
-              renderValue={renderValue}
-            /> :
-              <span className={'placeholder ellipsis'}>
-                {placeholder || 'please select option'}
-              </span>
-          )
+          <StyledSelectedContainer
+            className={'ellipsis'}
+            {...selectedOption}
+            disabled={Boolean(disabled || (selectedOption && selectedOption.disabled))}
+            suffixIcon={suffixIcon || selectedOption?.suffixIcon}
+            prefixIcon={prefixIcon || selectedOption?.prefixIcon}
+          >
+            {triggerLabel}
+            {!triggerLabel && (
+              value != null && selectedOption ? <SelectItem
+                item={{
+                  ...selectedOption,
+                  suffixIcon: suffixIcon || selectedOption.suffixIcon,
+                  prefixIcon: prefixIcon || selectedOption.prefixIcon,
+                }}
+                renderValue={renderValue}
+              /> :
+                <span className={'placeholder ellipsis'}>
+                  {placeholder || 'please select option'}
+                </span>
+            )
+            }
+          </StyledSelectedContainer>
+          {
+            !hiddenArrow && <StyledArrowIcon rotated={visible}>
+              <ChevronDownOutlined color={disabled ? Color(theme.color.black[500]).alpha(0.5).hsl().string() : theme.color.black[500]} />
+            </StyledArrowIcon>
           }
-        </StyledSelectedContainer>
-        {!hiddenArrow && <StyledArrowIcon rotated={visible}>
-          <ChevronDownOutlined color={disabled ? Color(theme.color.black[500]).alpha(0.5).hsl().string() : theme.color.black[500]} />
-        </StyledArrowIcon>}
-      </StyledSelectTrigger>
+        </StyledSelectTrigger>
+      </WrapperTooltip>
     </Trigger>
   </>;
 };

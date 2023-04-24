@@ -2,6 +2,7 @@ use super::datasheet::types::{DatasheetMeta, Field};
 use crate::node::types::NodeInfo;
 use crate::types::{HashMap, Json};
 use crate::unit::types::UnitInfo;
+use crate::util::JsonExt;
 use serde::Serialize;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -10,7 +11,7 @@ pub struct DatasheetPack {
   pub snapshot: DatasheetSnapshot,
   pub datasheet: NodeInfo,
 
-  #[serde(skip_serializing_if = "Option::is_none")]
+  #[serde(skip_serializing_if = "JsonExt::is_falsy")]
   pub field_permission_map: Option<Json>,
 
   #[serde(skip_serializing_if = "Option::is_none")]
@@ -34,7 +35,7 @@ pub struct BaseDatasheetPack {
   pub snapshot: DatasheetSnapshot,
   pub datasheet: Json,
 
-  #[serde(skip_serializing_if = "Option::is_none")]
+  #[serde(skip_serializing_if = "JsonExt::is_falsy")]
   pub field_permission_map: Option<Json>,
 }
 

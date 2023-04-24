@@ -40,6 +40,7 @@ import { IAuthHeader, IFetchDataOptions, ILoadBasePackOptions } from 'shared/int
 import { Logger } from 'winston';
 import util from 'util';
 import { NativeService } from 'shared/services/native/native.service';
+import { DatasheetPack } from 'database/interfaces';
 
 export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   private readonly datasheetService: DatasheetService;
@@ -91,7 +92,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       if (USE_NATIVE_MODULE) {
         datasheetPack = await this.nativeService.fetchDataPack('main datasheet', dstId, auth, { internal: true, main: true }, options);
       } else {
-        datasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, options);
+        datasheetPack = (await this.datasheetService.fetchDataPack(dstId, auth, false, options)) as DatasheetPack;
       }
     }
 
@@ -121,7 +122,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
         return null;
       }
 
-      const dstPack = await this.datasheetService.fetchDataPack(dstId, options.auth, options);
+      const dstPack = (await this.datasheetService.fetchDataPack(dstId, options.auth, false, options)) as DatasheetPack;
 
       let remainRetries = 3;
       let results: [Error | null, any][];

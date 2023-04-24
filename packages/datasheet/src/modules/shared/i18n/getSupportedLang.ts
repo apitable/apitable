@@ -21,6 +21,15 @@ type IOptions<T extends string> = {
   fallbackLng?: { [key: string]: T },
   defaultLng: T,
 };
+
+/**
+ * read Settings in config
+ */
+declare const window: any;
+declare const global: any;
+
+const _global = global || window;
+
 /**
  * Fallback language
  * @param code Language identifier 1
@@ -50,16 +59,21 @@ export const fallbackLang = <T extends string>(code: string, { supportedLngs, fa
  * @param lang Language identifiers
  */
 export const getSupportedLang = (lang: string) => {
-  type ISupportedLngs= 'zh-CN' | 'en-US';
-
+  type ISupportedLngs = string;
+  const languageManifest = _global.languageManifest;
+  const langKeys = { zh: 'zh-CN' };
+  Object.keys(languageManifest).forEach(item => {
+    const keys = item.split('-');
+    if (keys.length === 2 && !langKeys[keys[0]]) {
+      langKeys[keys[0]] = item;
+      langKeys[keys[1]] = item;
+    }
+  });
   return fallbackLang<ISupportedLngs>(
     lang,
     {
-      supportedLngs: ['zh-CN', 'en-US'],
-      fallbackLng: {
-        zh: 'zh-CN',
-        en: 'en-US'
-      },
+      supportedLngs: Object.keys(languageManifest),
+      fallbackLng: langKeys,
       defaultLng: 'en-US'
     }
   );

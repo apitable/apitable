@@ -54,43 +54,18 @@
     display: flex;
     flex-direction: column;
     padding-top: @shadowMaxWidthForGuide; 
-    border-radius: 4px; 
-  }
-
-  .groupName {
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-    flex-shrink: 0;
-    cursor: pointer;
-    user-select: none;
-
-    .text {
-      font-weight: bold;
-    }
-
-    .arrow {
-      margin-left: 4px;
-      fill: var(--thirdLevelText);
-
-      &.active {
-        transform: rotate(180deg);
-      }
-    }
-
-    svg {
-      width: 16px;
-      height: 16px;
-      margin-right: 2px;
-    }
+    border-radius: 4px;
+    height: calc(100% - 90px);
   }
 
   .favorite {
     height: fit-content;
     max-height: 40%;
+  }
+
+  .scrollContainer {
+    overflow-y: scroll;
+    height: calc(100% - 84px);
   }
 
   .catalog {
@@ -172,6 +147,49 @@
     position: relative;
     flex: 1;
     border-radius: 4px;
+
+    .btnGroup {
+      margin-right: 16px;
+      margin-bottom: 8px;
+      :global {
+        .radio-label-btn-checked {
+          background-color: var(--bgControlsElevateDefault);
+          .radio-text {
+            color: var(--primaryColor);
+          }
+        }
+      }
+    }
+
+    .catalogActions {
+      margin-top: 4px;
+      margin-right: 12px;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      & > div {
+        width: 33%;
+        border-right: 1px solid var(--borderCommonDefault);
+        &:last-child {
+          border: 0;
+        }
+        &:hover {
+          color: var(--textBrandHover);
+          svg {
+            fill: var(--textBrandHover);
+          }
+        }
+        &:active {
+          color: var(--textBrandActive);
+          svg {
+            fill: var(--textBrandActive);
+          }
+        }
+        & > span {
+          font-size: 12px;
+        }
+      }
+    }
 
     :global {
       .ant-collapse {

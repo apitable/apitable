@@ -18,7 +18,6 @@
 
 package com.apitable.player.service.impl;
 
-import static com.apitable.shared.constants.NotificationConstants.EMAIL_CONTACT_URL;
 import static com.apitable.shared.constants.NotificationConstants.EMAIL_CREATED_AT;
 import static com.apitable.shared.constants.NotificationConstants.EMAIL_DATASHEET_URL;
 import static com.apitable.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
@@ -96,7 +95,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -675,7 +673,6 @@ public class PlayerNotificationServiceImpl
     private Dict formatEmailDetailVo(NotificationCreateRo ro) {
         NotificationTemplate template = notificationFactory.getTemplateById(ro.getTemplateId());
         Dict dict = Dict.create();
-        dict.set("YEARS", LocalDate.now().getYear());
         if (ObjectUtil.isNotNull(ro.getSpaceId())) {
             dict.set(EMAIL_SPACE_NAME,
                 StrUtil.blankToDefault(iSpaceService.getNameBySpaceId(ro.getSpaceId()), ""));
@@ -731,9 +728,7 @@ public class PlayerNotificationServiceImpl
             }
         } else {
             String url = constProperties.getServerDomain() + template.getUrl();
-            String contactUrl = constProperties.getServerDomain() + "/?home=1";
             dict.set(EMAIL_URL, url);
-            dict.set(EMAIL_CONTACT_URL, contactUrl);
         }
         return dict;
     }

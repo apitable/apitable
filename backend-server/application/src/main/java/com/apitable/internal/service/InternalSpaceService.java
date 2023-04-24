@@ -18,6 +18,7 @@
 
 package com.apitable.internal.service;
 
+import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
@@ -51,5 +52,11 @@ public interface InternalSpaceService {
      */
     InternalSpaceInfoVo getSpaceInfo(String spaceId);
 
-
+    /**
+     * update space statistics which stored in cache.
+     *
+     * @param spaceId space id
+     * @param data    data
+     */
+    void updateSpaceStatisticsInCache(String spaceId, SpaceStatisticsRo data);
 }

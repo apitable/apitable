@@ -16,34 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useRef, useCallback, useState, useEffect } from 'react';
-import * as React from 'react';
-import RcTrigger, { TriggerProps } from 'rc-trigger';
-import { ToolHandleType, HideFieldType } from '../interface';
-import { ChangeRowHeight } from '../change_row_height';
-import { useSelector, useDispatch } from 'react-redux';
-import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { IUseListenTriggerInfo } from '@apitable/components';
-import { ViewFilter } from '../view_filter';
-import { ViewSort, ViewGroup } from '../view_sort_and_group';
-import { HiddenField } from '../hidden_field';
-import { ViewSwitcher } from '../view_switcher';
-import { SetGalleryLayout } from '../set_gallery_layout';
-import { batchActions } from 'redux-batched-actions';
+import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useKeyPress } from 'ahooks';
-import { useDisabledOperateWithMirror, useToolbarMenuCardOpen } from '../hooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import styles from './style.module.less';
-import { useResponsive } from 'pc/hooks';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { SetCalendarLayout } from '../set_calendar_layout';
 import classNames from 'classnames';
-import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import { HiddenKanbanGroup } from '../hidden_kanban_group';
-import { closeAllExpandRecord } from 'pc/components/expand_record';
-import { store } from 'pc/store';
 import { Share } from 'pc/components/catalog/share';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { closeAllExpandRecord } from 'pc/components/expand_record';
+import { useResponsive } from 'pc/hooks';
+import { store } from 'pc/store';
+import RcTrigger, { TriggerProps } from 'rc-trigger';
+import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import { ChangeRowHeight } from '../change_row_height';
+import { HiddenField } from '../hidden_field';
+import { HiddenKanbanGroup } from '../hidden_kanban_group';
+import { useDisabledOperateWithMirror, useToolbarMenuCardOpen } from '../hooks';
+import { HideFieldType, ToolHandleType } from '../interface';
+import { SetCalendarLayout } from '../set_calendar_layout';
+import { SetGalleryLayout } from '../set_gallery_layout';
+import { ViewFilter } from '../view_filter';
+import { ViewGroup, ViewSort } from '../view_sort_and_group';
+import { ViewSwitcher } from '../view_switcher';
+import styles from './style.module.less';
 
 interface IDisplay extends Partial<TriggerProps> {
   style?: React.CSSProperties;
@@ -70,13 +68,11 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
   });
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state)!);
   const activeView = useSelector(state => Selectors.getCurrentView(state))!;
-  const mirrorId = useSelector(state => state.pageParams.mirrorId);
   const ref = useRef<any>();
   const dispatch = useDispatch();
   const [action, setAction] = useState(['click']);
   const { open, setToolbarMenuCardOpen } = useToolbarMenuCardOpen(type);
   const disabledToolBarWithMirror = useDisabledOperateWithMirror();
-  const showViewLockModal = useShowViewLockModal();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
 
@@ -103,11 +99,6 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
     const hasCurrentRecordId = visibleRows.find(row => row.recordId === recordId);
     if (!popupVisible && type === ToolHandleType.ViewFilter && !hasCurrentRecordId) {
       await closeAllExpandRecord();
-    }
-
-    if (type !== ToolHandleType.ViewSwitcher && type !== ToolHandleType.Share && showViewLockModal && !mirrorId) {
-      expandViewLock(activeView.id);
-      return;
     }
 
     if (disabledToolBarWithMirror && type !== ToolHandleType.Share) {

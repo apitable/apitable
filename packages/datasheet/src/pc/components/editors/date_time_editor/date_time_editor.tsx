@@ -92,6 +92,7 @@ export interface IDateTimeEditorProps extends IBaseEditorProps {
   recordId?: string;
   curAlarm?: WithOptional<IRecordAlarmClient, 'id'>;
   setCurAlarm?: (val?: WithOptional<IRecordAlarmClient, 'id'>) => void;
+  disabled?: boolean;
 }
 
 const DATE_COMPONENT_HEIGHT = 264;

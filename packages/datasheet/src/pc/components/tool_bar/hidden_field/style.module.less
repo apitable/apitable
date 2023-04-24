@@ -4,7 +4,6 @@
 
 .noResult {
   font-size: 11px;
-  padding-bottom: 8px;
   padding: 0 10px;
   height: 30px;
   line-height: 30px;
@@ -37,16 +36,14 @@
   overflow: auto;
   border-radius: 4px;
   box-shadow: var(--shadowCommonHighest);
-  border-radius: 4px;
   z-index: var(--viewSortBoxIndex);
   max-height: 500px;
   font-size: 13px;
-  padding: 0px;
   color: var(--firstLevelText);
   display: flex;
   flex-direction: column;
   cursor: default;
-  padding-top: 16px;
+  padding: 16px 0 0;
   .noSelect();
 
   .header {
@@ -65,24 +62,21 @@
     .searchField {
       width: 188px;
       height: 30px;
-      // box-shadow:0px 1px 0px 0px var(--shadowColor);
-      // border: none;
-      // outline: none;
       margin-top: 8px;
     }
   }
 
   .fields {
     .light-scroll-bar();
-    // overflow-y: scroll;
-    // overflow-x: hidden;
-    // max-height: 227px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: calc(100% - 160px);
     padding: 0 12px 16px;
   }
 
   .coverSetting {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     font-weight: normal;
     color: var(--textCommonPrimary);
     line-height: 18px;
@@ -92,13 +86,11 @@
   }
 
   .opAll {
-    // padding: 0 16px 16px 16px;
     display: flex;
     height: 30px;
     width: 188px;
     justify-content: space-between;
-    margin: 0 auto;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
   }
 
   .hover {
@@ -116,7 +108,6 @@
 
   .hideFieldItem {
     display: flex;
-    // margin-bottom: 13px;
     height: 35px;
     align-items: center;
     cursor: pointer;

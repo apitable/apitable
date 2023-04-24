@@ -154,6 +154,7 @@ const renderUser = (info: IFromUserInfo, spaceName: string) => {
       <UserCardTrigger
         {...triggerBase}
         memberId={''}
+        userId={info.uuid}
         spaceName={spaceName}
         spareName={info.userName || t(Strings.guests_per_space)}
         spareSrc={info.avatar}

@@ -224,5 +224,6 @@ export const getEnvVars = () => {
     RENDER_NORMAL_INFO_IMAGE: process.env.RENDER_NORMAL_INFO_IMAGE,
     VIEW_MANUAL_SAVE_INFO_IMAGE: process.env.VIEW_MANUAL_SAVE_INFO_IMAGE,
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
+    IS_CANVAS_IMAGE_CROSS_ORIGIN: process.env.IS_CANVAS_IMAGE_CROSS_ORIGIN === 'true',
   };
 };
