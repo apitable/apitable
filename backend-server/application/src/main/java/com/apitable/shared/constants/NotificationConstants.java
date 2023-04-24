@@ -103,8 +103,6 @@ public class NotificationConstants {
 
     public static final String EMAIL_CREATED_AT = "CREATED_AT";
 
-    public static final String EMAIL_CONTACT_URL = "CONTACT_URL";
-
     /**
      * notification toast
      */

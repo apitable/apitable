@@ -30,6 +30,7 @@ import com.apitable.shared.component.notification.annotation.Notification;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
+import com.apitable.space.service.IStaticsService;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -56,6 +57,9 @@ public class ChainOnNotificationAspect extends BaseAspectSupport {
 
     @Resource
     private NotificationManager notificationManager;
+
+    @Resource
+    private IStaticsService iStaticsService;
 
     /**
      * pointcut.
@@ -97,6 +101,8 @@ public class ChainOnNotificationAspect extends BaseAspectSupport {
                         () -> notificationManager.spaceNotify(requestStorage, templateId,
                             fromUserId, spaceId,
                             result));
+                    // any node operation delete the record count cache
+                    iStaticsService.deleteDatasheetRecordCountStatistics(spaceId);
                 } else {
                     TaskManager.me().execute(
                         () -> notificationManager.playerNotify(templateId, playerIds, fromUserId,

@@ -26,6 +26,7 @@ import {
 import { Tooltip } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FieldPermissionLock } from 'pc/components/field_permission';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -56,6 +57,7 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
   const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IOrgChartViewProperty;
   const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state));
   const fieldMap = useSelector((state) => Selectors.getFieldMap(state))!;
+  const isViewLock = useShowViewLockModal();
 
   const options = useMemo(() => {
     const options: IOption[] = [];
@@ -170,6 +172,8 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
               triggerStyle={{
                 border: (isFieldDeleted || isFieldInvalid) ? `1px solid ${colors.rc08}` : 'none'
               }}
+              disabled={isViewLock}
+              disabledTip={t(Strings.view_lock_setting_desc)}
             />
             {(isFieldDeleted || isFieldInvalid) && linkFieldId && (
               <span className={styles.errorText}>
@@ -190,11 +194,21 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
           {t(Strings.design_chart_style)}
         </Typography>
         <div className={styles.settingLayout}>
-          <div className={styles.selectField}>
-            <Switch
-              onChange={handleSwitch}
-              checked={horizontal}
-            />
+          <div className={styles.selectField} style={{ display: 'flex', alignItems: 'center' }}>
+            {
+              isViewLock ? <Tooltip title={t(Strings.view_lock_setting_desc)}>
+                <span>
+                  <Switch
+                    onChange={handleSwitch}
+                    checked={horizontal}
+                    disabled={isViewLock}
+                  />
+                </span>
+              </Tooltip> : <Switch
+                onChange={handleSwitch}
+                checked={horizontal}
+              />
+            }
             <span style={{ marginLeft: 8 }}>{t(Strings.org_chart_layout_horizontal)}</span>
           </div>
         </div>

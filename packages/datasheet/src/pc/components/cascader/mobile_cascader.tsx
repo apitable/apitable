@@ -14,7 +14,7 @@ export const MobileCascader = (props: IMobileCascader) => {
 
   return (
     <>
-      <div className={styles.mobileCascaderText} onClick={() => setVisible(true)}>
+      <div className={`${styles.mobileCascaderText} mobileCascaderText`} onClick={() => setVisible(true)}>
         {!isEmpty(value) ?
           (typeof value[0] === 'string' ? value[0] : value[0].join('/'))
           : <AddOutlined color={colorVars.secondLevelText} size={16}/>

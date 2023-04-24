@@ -16,14 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant } from '@apitable/core';
-import { TriangleRightFilled } from '@apitable/icons';
-import { isEqual, xor } from 'lodash';
+import { ConfigConstant, Navigation, t, Strings } from '@apitable/core';
+import { AddOutlined, TriangleRightFilled } from '@apitable/icons';
+import { isEmpty, isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
+import styles from './style.module.less';
+import { Button, Typography } from '@apitable/components';
+import { Router } from '../../../route_manager/router';
 
 export type ExpandAction = false | 'click';
 
@@ -224,7 +227,6 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
   };
 
   return (
-
     <TreeViewContext.Provider
       value={{
         module,
@@ -258,7 +260,23 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
         onKeyDown={keyDownHandler}
         tabIndex={0}
       >
-        {treeData ? renderTree(treeData) : React.Children.map(children, renderTreeItem)}
+        {treeData ? renderTree(treeData) : isEmpty(children) ? (
+          <div className={styles.empty}>
+            <Typography variant="body2">
+              {t(Strings.catalog_empty_tips)}
+            </Typography>
+            <Button
+              color="primary"
+              prefixIcon={<AddOutlined/>}
+              block
+              onClick={() => {
+                Router.push(Navigation.TEMPLATE);
+              }}
+            >
+              {t(Strings.catalog_add_from_template_btn_title)}
+            </Button>
+          </div>
+        ) : React.Children.map(children, renderTreeItem)}
       </ul>
     </TreeViewContext.Provider>
 

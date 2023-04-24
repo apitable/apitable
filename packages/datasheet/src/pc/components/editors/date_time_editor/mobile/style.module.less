@@ -5,12 +5,14 @@
 
 .mobileDatePicker {
   position: relative;
+
   .alarm {
     position: absolute;
     right: 0;
     top: 0;
     display: flex;
     align-items: center;
+
     .alarmTime {
       color: var(--primaryColor);
       padding-left: 4px;
@@ -30,11 +32,14 @@
     .am-picker-popup-item {
       user-select: none;
       color: var(--secondLevelText);
+
       &:active {
         color: var(--firstLevelText);
       }
+
       font-size: 15px;
       height: 56px;
+
       &.am-picker-popup-header-right {
         color: var(--primaryColor);
       }
@@ -79,6 +84,7 @@
   position: absolute;
   right: 76px;
   top: 12px;
+
   &:active {
     color: var(--firstLevelText);
   }
@@ -89,6 +95,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &.disabled {
+    & > * {
+      opacity: 0.5;
+    }
+  }
 }
 
 .clear {
@@ -100,6 +112,7 @@
   align-items: center;
   font-size: 15px;
   color: var(--secondLevelText);
+
   &:active {
     color: var(--firstLevelText);
   }

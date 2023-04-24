@@ -88,6 +88,9 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
     if (isCreateSpace && user) {
       Router.push(Navigation.HOME);
     }
+    if (user?.isPaused) {
+      Router.push(Navigation.APPLY_LOGOUT);
+    }
   }, [isCreateSpace, dispatch, user]);
 
   const handleSubmit = () => {

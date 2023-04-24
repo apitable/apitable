@@ -18,26 +18,21 @@
 
 package com.apitable.space.mapper;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.entity.LabsApplicantEntity;
-
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * <p>
- *     Data access layer test: experimental function internal test application form test
+ * Data access layer test: experimental function internal test application form test
  * </p>
  */
-@Disabled
 public class LabsApplicantMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
@@ -46,7 +41,8 @@ public class LabsApplicantMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/labs-applicant-data.sql")
     void testSelectUserFeaturesByApplicant() {
-        List<String> entities = labsApplicantMapper.selectUserFeaturesByApplicant(CollUtil.newArrayList("spca33AJDEVhL"));
+        List<String> entities = labsApplicantMapper.selectUserFeaturesByApplicant(
+            CollUtil.newArrayList("spca33AJDEVhL"));
         assertThat(entities).isNotEmpty();
     }
 
@@ -60,7 +56,8 @@ public class LabsApplicantMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/labs-applicant-data.sql")
     void testSelectApplicantAndFeatureKey() {
-        LabsApplicantEntity entity = labsApplicantMapper.selectApplicantAndFeatureKey("spca33AJDEVhL", "ROBOT");
+        LabsApplicantEntity entity =
+            labsApplicantMapper.selectApplicantAndFeatureKey("spca33AJDEVhL", "ROBOT");
         assertThat(entity).isNotNull();
     }
 

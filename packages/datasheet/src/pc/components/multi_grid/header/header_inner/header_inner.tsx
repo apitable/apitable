@@ -17,8 +17,8 @@
  */
 
 import { colorVars, useContextMenu, useThemeColors } from '@apitable/components';
-import { DATASHEET_ID, Field, FieldOperateType, IField, Selectors, Strings, t } from '@apitable/core';
-import { MoreOutlined, WarnCircleFilled, InfoCircleOutlined } from '@apitable/icons';
+import { DATASHEET_ID, Field, FieldOperateType, FieldType, IField, Selectors, Strings, t } from '@apitable/core';
+import { InfoCircleOutlined, MoreOutlined, WarnCircleFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLockEnhance } from 'pc/components/field_permission';
@@ -91,7 +91,7 @@ export const HeaderInner: React.FC<React.PropsWithChildren<IHeadInnerProps>> = p
           </div>
         </Tooltip>
         {
-          Field.bindModel(field).isComputed && renderComputeFieldError(
+          (Field.bindModel(field).isComputed || field.type === FieldType.Cascader) && renderComputeFieldError(
             field,
             t(Strings.field_configuration_err),
             false,

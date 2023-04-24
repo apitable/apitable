@@ -80,7 +80,9 @@ public enum FieldType {
 
     CREATED_BY(23),
 
-    LAST_MODIFIED_BY(24);
+    LAST_MODIFIED_BY(24),
+
+    CASCADER(25);
 
     private final int fieldType;
 

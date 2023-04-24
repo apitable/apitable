@@ -231,6 +231,7 @@
         IFNULL(vu.is_social_name_modified, 2) > 0 AS is_nick_name_modified,
         IFNULL(vom.is_social_name_modified, 2) > 0 AS is_member_name_modified
         FROM ${tablePrefix}unit_member vom
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr ON vodmr.member_id = vom.id
         LEFT JOIN ${tablePrefix}user vu ON vom.user_id = vu.id
         LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vom.id = vsmrr.member_id
         WHERE vodmr.team_id IN
@@ -394,7 +395,7 @@
 
     <select id="selectAdminBySpaceId" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
-        FROM `${tablePrefix}unit_member`
+        FROM ${tablePrefix}unit_member
         WHERE `space_id` = #{spaceId}
         AND `is_admin` = 1
         AND `is_deleted` = 0
@@ -402,7 +403,7 @@
 
     <select id="selectAdminListBySpaceId" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
-        FROM `${tablePrefix}unit_member`
+        FROM ${tablePrefix}unit_member
         WHERE `space_id` = #{spaceId}
         AND `is_admin` = 1
         AND `is_deleted` = 0
@@ -648,7 +649,7 @@
 
     <select id="selectBindSocialListBySpaceIdWithOffset" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
-        FROM `${tablePrefix}unit_member`
+        FROM ${tablePrefix}unit_member
         WHERE `space_id` = #{spaceId}
         AND `open_id` IS NOT NULL
         AND `is_deleted` = 0

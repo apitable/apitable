@@ -11,7 +11,7 @@
   .light-scroll-bar();
   overflow-y: scroll;
   overflow-x: hidden;
-   
+
   .header {
     display: flex;
     align-items: center;
@@ -44,29 +44,36 @@
     height: 36px;
     cursor: pointer;
     transition: all 0.3s;
+
     .left {
       display: inline-flex;
       align-items: center;
+
       svg {
         margin-right: 8px;
       }
     }
+
     &:hover {
       background-color: var(--fc16);
     }
+
     &:active {
       background-color: var(--fc9);
     }
   }
+
   .setting.firstSetting {
     margin-top: 24px;
   }
+
   .setting:not(.firstSetting) {
     margin-top: 32px;
   }
 
   .setting {
     position: relative;
+
     .settingHeader {
       display: flex;
       justify-content: flex-start;
@@ -77,11 +84,13 @@
         display: flex;
         align-items: center;
       }
-      
+
     }
+
     .settingTitle {
       padding-left: 6px;
       position: relative;
+
       &::before {
         content: "";
         width: 2px;
@@ -119,6 +128,7 @@
       font-size: 13px;
       line-height: 20px;
       margin-top: 8px;
+
       svg {
         margin-right: 4px;
         vertical-align: -0.2em;
@@ -148,19 +158,20 @@
 
     :global {
       .ant-select-selector {
-        border: none!important;
-        background-color: var(--fc6)!important;
+        border: none !important;
+        background-color: var(--fc6) !important;
         box-shadow: none !important;
         padding-left: 8px;
 
-        &>span {
+        & > span {
           pointer-events: none;
         }
       }
+
       .ant-tag {
         height: 28px;
         line-height: 26px;
-        margin-left: 4px; 
+        margin-left: 4px;
         margin-right: 0;
         padding: 0 4px;
       }
@@ -173,14 +184,28 @@
     .ant-select-item {
       transition: none;
     }
+
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: var(--highestBg) !important;
     }
+
     .ant-select-item-option-active {
       background-color: var(--highestBg) !important;
     }
+
     .ant-select-item-option:hover {
       background-color: var(--fc6) !important;
+    }
+  }
+}
+
+.workDaySelect {
+  &.disabled {
+    :global {
+      .ant-select-selection-overflow, svg {
+        color: var(--fc1);
+        opacity: 0.5;
+      }
     }
   }
 }

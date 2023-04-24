@@ -61,6 +61,8 @@ public class NotifyDataSheetMeta {
 
     Long fromUserId;
 
+    String fromUserAvatar;
+
     List<Long> toMemberIds;
 
     String notifyId;

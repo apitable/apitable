@@ -61,7 +61,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setRightClickInfo, onSetContextMenu } = useContext(WorkbenchSideContext);
   const treeViewRef = useRef<ITreeViewRef>(null);
-
+  
   const favoriteTreeNodeIds = useMemo(() => [...new Set(_favoriteTreeNodeIds)], [_favoriteTreeNodeIds]);
 
   const expandHandler = (nodeIds: string[]) => {

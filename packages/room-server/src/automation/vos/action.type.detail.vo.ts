@@ -29,7 +29,8 @@ export interface ActionTypeDetailVo {
   service: {
     serviceId: string,
     name: string,
-    logo: string,
+    logo?: string,
+    themeLogo: { light: string, dark?: string },
     slug: string
   }
 }

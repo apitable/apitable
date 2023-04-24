@@ -227,6 +227,7 @@ test-ut-backend:
 	MYSQL_DATABASE=apitable_test \
 	REDIS_HOST=127.0.0.1 \
 	REDIS_PORT=6379 \
+	REDIS_PASSWORD= \
 	RABBITMQ_HOST=127.0.0.1 \
 	RABBITMQ_PORT=5672 \
 	RABBITMQ_USERNAME=apitable \
@@ -480,6 +481,37 @@ changelog: ## make changelog with github api
 	echo "FROM: $$GIT_FROM" ;\
 	echo "TO: $$GIT_TO" ;\
 	npx github-changelog-builder --token $$GITHUB_TOKEN -o apitable -r apitable -f $$GIT_FROM -t $$GIT_TO -a CHANGELOG.md
+
+.PHONY: l10n-apitable-ce
+l10n-apitable-ce: move_setting_file
+	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/l10n-apitable-ce ./
+
+move_setting_file:
+	@if [ -f ./packages/datasheet/.env.development ]; then \
+  		mv -f ./packages/datasheet/.env.development ./packages/datasheet/.env.development.origin; \
+  	fi
+	@if [ -f ./packages/i18n-lang/src/config/strings.en-US.json ]; then \
+  		mv -f ./packages/i18n-lang/src/config/strings.en-US.json ./packages/i18n-lang/src/config/strings.en-US.origin.json; \
+  	fi
+	@if [ -f ./packages/core/src/config/api_tip_config.auto.json ]; then \
+  		mv -f ./packages/core/src/config/api_tip_config.auto.json ./packages/core/src/config/api_tip_config.auto.origin.json; \
+  	fi
+	@if [ -f ./packages/core/src/config/emojis.auto.json ]; then \
+  		mv -f ./packages/core/src/config/emojis.auto.json ./packages/core/src/config/emojis.auto.origin.json; \
+  	fi
+	@if [ -f ./enterprise/core/config/billing.auto.json ]; then \
+  		mv -f ./enterprise/core/config/billing.auto.json ./enterprise/core/config/billing.auto.origin.json; \
+  	fi
+	@if [ -f ./packages/core/src/config/system_config.auto.json ]; then \
+  		mv -f ./packages/core/src/config/system_config.auto.json ./packages/core/src/config/system_config.auto.origin.json; \
+  	fi
+	@if [ -f ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties ]; then \
+  		mv -f ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties.origin; \
+  	fi
+	@if [ -f ./backend-server/application/src/main/resources/sysconfig/notification.json ]; then \
+  		mv -f ./backend-server/application/src/main/resources/sysconfig/notification.json ./backend-server/application/src/main/resources/sysconfig/notification.origin.json; \
+  	fi
+
 
 ### help
 .PHONY: search

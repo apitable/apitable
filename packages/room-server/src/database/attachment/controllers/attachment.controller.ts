@@ -16,22 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AttachmentService } from 'database/attachment/services/attachment.service';
 
 @Controller('nest/v1')
-
 export class AttachmentController {
-  constructor(
-    private readonly attachService: AttachmentService,
-  ) { }
+  constructor(private readonly attachService: AttachmentService) {}
 
   @Post('attach/getContentDisposition')
-  @UseInterceptors(ResourceDataInterceptor)
+  // @UseInterceptors(ResourceDataInterceptor)
   async getContentDisposition(@Body() data: { url: string }): Promise<string> {
     const response = await this.attachService.getContentDisposition(data.url);
     return response;
   }
 }
-

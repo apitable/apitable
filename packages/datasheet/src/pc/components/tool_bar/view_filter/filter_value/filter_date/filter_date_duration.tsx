@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
 import styles from '../style.module.less';
 import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@apitable/core';
@@ -48,6 +49,7 @@ export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDur
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const isViewLock = useShowViewLockModal();
 
   function createOptionData() {
     const operate = condition.operator;
@@ -93,6 +95,7 @@ export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDur
         defaultValue={!condition.value ? '' : condition.value[0]}
         optionData={createOptionData()}
         title={t(Strings.please_choose)}
+        disabled={isViewLock}
         style={{
           background: colors.lowestBg,
           justifyContent: 'space-between',
@@ -116,6 +119,8 @@ export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDur
       dropdownMatchSelectWidth={false}
       openSearch={false}
       triggerStyle={{ width: 100 }}
+      disabled={isViewLock}
+      disabledTip={'123'}
     />
   );
 };

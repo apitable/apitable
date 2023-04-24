@@ -26,6 +26,7 @@ import { DatasheetPack, MirrorInfo } from '../../interfaces';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 @Injectable()
 export class MirrorService {
@@ -51,11 +52,16 @@ export class MirrorService {
   }
 
   @Span()
-  async fetchDataPack(mirrorId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions, recordIds?: string[]): Promise<DatasheetPack> {
+  async fetchDataPack(
+    mirrorId: string,
+    auth: IAuthHeader,
+    origin: IFetchDataOriginOptions,
+    recordIds?: string[],
+  ): Promise<DatasheetPack | DatasheetPackResponse> {
     // Query info of referenced database and view
     const datasheetId = await this.nodeService.getMainNodeId(mirrorId);
 
-    return this.datasheetService.fetchCommonDataPack('mirror', datasheetId, auth, origin, {
+    return this.datasheetService.fetchCommonDataPack('mirror', datasheetId, auth, origin, true, {
       recordIds,
       metadataException: DatasheetException.DATASHEET_NOT_EXIST,
     });

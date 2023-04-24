@@ -15,13 +15,13 @@ spring:
     timeout: ${SESSION_TIMEOUT:30d}
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true
-    username: ${MYSQL_USERNAME:apitable}
+    username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:apitable@com}
   # Redis
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     username: ${REDIS_USERNAME:}
-    password: ${REDIS_PASSWORD:}
+    password: ${REDIS_PASSWORD:apitable@com}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:0}
     timeout: 30000
@@ -68,13 +68,13 @@ const:
   callback-domain: ${CALLBACK_DOMAIN:}
   oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
   ossBuckets:
-    assets_ltd:
-      resource-url: ${ASSETS_LTD_URL:}
-      bucket-name: ${ASSETS_LTD_BUCKET:}
-      type: ${ASSETS_LTD_TYPE:QNY1}
+    assets:
+      resource-url: ${ASSETS_URL:}
+      bucket-name: ${ASSETS_BUCKET:}
+      type: ${ASSETS_TYPE:QNY1}
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
-  quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
-  quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
+  quote-template-id: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
+  quoteEn-template-id: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
   cooling-off-period: ${COOLING_OFF_PERIOD:30}
   close-paused-user-cron: ${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}
@@ -175,4 +175,6 @@ grpc:
 
 springdoc:
   api-docs:
+    enabled: ${API_DOCS_ENABLED:false}
+  swagger-ui:
     enabled: ${API_DOCS_ENABLED:false}

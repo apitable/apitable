@@ -17,6 +17,7 @@
  */
 
 import { Selectors, Strings, t, UN_GROUP } from '@apitable/core';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
@@ -28,6 +29,8 @@ export const KANBAN_GROUP_MORE = 'KANBAN_GROUP_MORE';
 export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { rowCreatable, fieldPropertyEditable } = useSelector(Selectors.getPermissions);
   const colors = useThemeColors();
+  const isViewLock = useShowViewLockModal();
+
   return <ContextMenu
     menuId={KANBAN_GROUP_MORE}
     overlay={flatContextData([
@@ -60,6 +63,8 @@ export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
           icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
           text: t(Strings.hide_kanban_grouping),
           onClick: ({ props: { hideGroup }}: any) => { hideGroup(); },
+          disabled: isViewLock,
+          disabledTip: t(Strings.view_lock_setting_desc),
         },
         {
           icon: <NarrowOutlined color={colors.thirdLevelText} />,

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { black, IOption, Select, Switch, Tooltip, Typography } from '@apitable/components';
+import { black, IOption, Select, Switch, Tooltip, Typography, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
   GanttStyleKeyType, getNewId, getUniqName, IDPrefix, IGanttViewColumn, IGanttViewProperty, IGanttViewStatus, ILinkField, ISetRecordOptions,
@@ -38,6 +38,7 @@ import { FieldPermissionLock } from 'pc/components/field_permission';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -142,6 +143,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
   const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
   const linkField = fieldMap[linkFieldId];
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const isViewLock = useShowViewLockModal();
 
   const fieldOptions = columns
     .map(({ fieldId }) => {
@@ -302,6 +304,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
   };
 
   const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
+    if (isViewLock) return;
     if (type === OptionSetting.SETCOLOR) {
       onGanttStyleChange(GanttStyleKeyType.ColorOption, {
         ...colorOption,
@@ -443,6 +446,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
                     width: 128,
                     border: fieldId == null ? `1px solid ${colors.rc08}` : 'none',
                   }}
+                  disabled={isViewLock}
+                  disabledTip={t(Strings.view_lock_setting_desc)}
                 >
                   {fieldOptions.map((option, index) => {
                     return (
@@ -497,6 +502,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
             onSelected={onColorOptionSelect}
             dropdownMatchSelectWidth
             triggerStyle={{ width: 128 }}
+            disabled={isViewLock}
+            disabledTip={t(Strings.view_lock_setting_desc)}
           />
           {colorOption.type === GanttColorType.SingleSelect && (
             <Select
@@ -521,10 +528,12 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
                 }}
                 onChange={onColorPick}
                 style={{ flexWrap: 'unset' }}
+                disabled={isViewLock}
               />
             </div>
             <ColorPicker
               onChange={onColorPick}
+              disabled={isViewLock}
               option={{
                 id: '',
                 name: '',
@@ -532,9 +541,14 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               }}
               mask
               triggerComponent={
-                <Typography variant='body3' className={styles.more} component={'span'}>
-                  {t(Strings.gantt_color_more)}
-                </Typography>
+                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                  <div
+                    style={{ display: 'inline-block', cursor: isViewLock ? 'not-allowed' : '', color: isViewLock ? colors.textCommonDisabled : '' }}>
+                    <Typography variant='body3' className={styles.more} component={'span'}>
+                      {t(Strings.gantt_color_more)}
+                    </Typography>
+                  </div>
+                </WrapperTooltip>
               }
             />
           </>
@@ -550,42 +564,48 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
         <Typography className={styles.settingDesc} variant='body4'>
           {t(Strings.gantt_config_workdays_a_week)}
         </Typography>
-
-        <div className={styles.settingLayout}>
-          <MultiSelect
-            mode='multiple'
-            showArrow
-            showSearch={false}
-            className={styles.workDaySelect}
-            style={{ width: '100%' }}
-            dropdownClassName={styles.workDaySelectDropdown}
-            virtual={false}
-            tagRender={({ label }) => <span className={styles.workDayTag}>{label}</span>}
-            onChange={onWorkDayChange}
-            tokenSeparators={[',']}
-            defaultValue={workDays}
-            size={'middle'}
-            suffixIcon={<ChevronDownOutlined color={colors.black[500]} />}
-          >
-            {weekOptions.map(item => {
-              return (
-                <MultiOption
-                  key={item.value}
-                  value={item.value}
-                  style={{
-                    margin: '0 8px',
-                    borderRadius: 8,
-                  }}
-                >
-                  {item.selectLabel}
-                </MultiOption>
-              );
-            })}
-          </MultiSelect>
-        </div>
+        <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+          <div className={styles.settingLayout}>
+            <MultiSelect
+              mode='multiple'
+              showArrow
+              showSearch={false}
+              className={classNames(styles.workDaySelect, { [styles.disabled]: isViewLock })}
+              style={{ width: '100%' }}
+              dropdownClassName={styles.workDaySelectDropdown}
+              virtual={false}
+              tagRender={({ label }) => <span className={styles.workDayTag}>{label}</span>}
+              onChange={onWorkDayChange}
+              tokenSeparators={[',']}
+              defaultValue={workDays}
+              size={'middle'}
+              suffixIcon={<ChevronDownOutlined color={colors.black[500]} />}
+              disabled={isViewLock}
+            >
+              {weekOptions.map(item => {
+                return (
+                  <MultiOption
+                    key={item.value}
+                    value={item.value}
+                    style={{
+                      margin: '0 8px',
+                      borderRadius: 8,
+                    }}
+                  >
+                    {item.selectLabel}
+                  </MultiOption>
+                );
+              })}
+            </MultiSelect>
+          </div>
+        </WrapperTooltip>
 
         <div className={styles.settingLayout} style={{ marginTop: 16 }}>
-          <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} />
+          {
+            isViewLock ? <Tooltip content={t(Strings.view_lock_setting_desc)}>
+              <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} disabled={isViewLock} />
+            </Tooltip> : <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} />
+          }
           <span style={{ marginLeft: 4 }}>{t(Strings.gantt_config_only_count_workdays)}</span>
         </div>
       </div>
@@ -608,12 +628,18 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               options={linkFieldOptions}
               dropdownMatchSelectWidth
               placeholder={t(Strings.org_chart_pick_link_field)}
+              disabled={isViewLock}
+              disabledTip={t(Strings.view_lock_setting_desc)}
             />
           </div>
         </div>
         {linkField && (
           <div className={styles.settingLayout} style={{ marginTop: 16 }}>
-            <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
+            {
+              isViewLock ? <Tooltip content={t(Strings.view_lock_setting_desc)}>
+                <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
+              </Tooltip> : <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} />
+            }
             <span style={{ marginLeft: 4 }}>{t(Strings.gantt_open_auto_schedule_switch)}</span>
           </div>
         )}

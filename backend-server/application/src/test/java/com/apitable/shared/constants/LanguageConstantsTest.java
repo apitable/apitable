@@ -39,6 +39,6 @@ public class LanguageConstantsTest {
                 .map(locale -> I18nTypes.aliasOf(locale.toLanguageTag()))
                 .collect(Collectors.toList());
         Assertions.assertThat(languages).isNotEmpty()
-                .containsExactly(I18nTypes.ZH_CN, I18nTypes.EN_US);
+                .containsExactly(I18nTypes.EN_US, I18nTypes.ZH_CN);
     }
 }

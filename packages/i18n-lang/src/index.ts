@@ -15,20 +15,44 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import strings from './config/strings.json';
-// @ts-ignore
-import { strings as _strings } from './enterprise';
+import * as languageManifest from './config/language.manifest.json';
 
 declare const window: any;
 declare const global: any;
 
-function loadAllLang() {
-  if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
-  } else {
-    (global as any).apitable_i18n = _strings ? { ...strings, ..._strings } : strings;
-  }
+const currentLang = typeof window !== 'undefined' ? (window as any).currentLang : (global as any).currentLang;
+
+if (typeof window !== 'undefined') {
+  (window as any).languageManifest = languageManifest;
+} else {
+  (global as any).languageManifest = languageManifest;
 }
 
-loadAllLang();
+loadStrings(currentLang).then(i => {});
 
+export async function loadStrings(locale: string) {
+  if (!locale) {
+    return;
+  }
+
+  if (typeof window !== 'undefined') {
+    (window as any).apitable_i18n = {};
+    (window as any).apitable_i18n[locale] = {};
+  }else {
+    (global as any).apitable_i18n = {};
+    (global as any).apitable_i18n[locale] = {};
+  }
+
+  try {
+    const strings = await import(`./config/strings.${locale}.json`);
+    if (typeof window !== 'undefined') {
+      Object.assign((window as any).apitable_i18n[locale], strings);
+    }else {
+      Object.assign((global as any).apitable_i18n[locale], strings);
+    }
+    return strings;
+  } catch (error) {
+    console.warn(`Failed to load strings for locale "${locale}"`, error);
+    return {};
+  }
+}

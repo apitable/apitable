@@ -130,7 +130,7 @@
 
     &.common {
       margin-bottom: 0;
-      
+
       &:nth-child(2) {
         padding: 0 10px;
         margin-bottom: 10px;
@@ -210,18 +210,26 @@
       border-radius: 50%;
     }
 
-  
+
     .inner {
       width: 16px;
       height: 16px;
       border-radius: 50%;
     }
 
-    &.colorSelected {
-      border-color: var(--rc01) !important;
+    &.disabled{
+      cursor: not-allowed;
     }
 
-  
+    &.disabled.colorSelected{
+      border-color: var(--borderBrandDisabled) !important;
+    }
+
+    &.colorSelected {
+      border-color: var(--borderBrandDefault) !important;
+    }
+
+
     &.active::after {
       position: absolute;
       content: "";
@@ -234,7 +242,7 @@
     }
 
     @media (any-hover: hover) {
-      &:hover {
+      &:hover(not:disabled) {
         border-color: rgba(var(--rc01-rgb), 50%);
       }
     }

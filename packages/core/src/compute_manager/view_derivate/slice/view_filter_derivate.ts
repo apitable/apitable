@@ -106,6 +106,10 @@ export class ViewFilterDerivate {
     if (repeatRows?.includes(record.id)) {
       return true;
     }
+    // If the condition is isRepeat, and no duplicate records are hit, return false early
+    if (condition.operator === FOperator.IsRepeat) {
+      return false;
+    }
     const snapshot = this.state.datasheetMap[this.datasheetId]?.datasheet!.snapshot;
     if (!snapshot) {
       return false;
@@ -197,7 +201,8 @@ export class ViewFilterDerivate {
 
     const mirrorId = this.state.pageParams.mirrorId!;
     const mirrorFilter = this.state.mirrorMap[mirrorId]?.mirror?.temporaryView?.filterInfo;
-    if (!mirrorFilter) {
+    const mirrorSourceDatasheetId = this.state.mirrorMap[mirrorId]?.mirror?.sourceInfo?.datasheetId;
+    if (!mirrorFilter || snapshot.datasheetId !== mirrorSourceDatasheetId) {
       return viewRows;
     }
 

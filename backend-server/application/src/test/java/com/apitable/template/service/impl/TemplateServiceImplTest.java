@@ -18,19 +18,14 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willReturn;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.shared.cache.service.TemplateConfigCacheService;
 import com.apitable.template.dto.TemplateDto;
 import com.apitable.template.enums.TemplateException;
@@ -43,20 +38,20 @@ import com.apitable.workspace.service.IFieldRoleService;
 import com.apitable.workspace.service.INodeRelService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.FieldPermissionInfo;
-import com.apitable.core.exception.BusinessException;
-
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 
 @Disabled("no assert")
 public class TemplateServiceImplTest extends AbstractIntegrationTest {
 
-    @SpyBean
+    @MockBean
     private TemplateMapper templateMapper;
 
     @MockBean
@@ -77,12 +72,13 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
     @MockBean
     private NodeMapper nodeMapper;
 
-    @SpyBean
+    @MockBean
     private TemplateConfigCacheService templateConfigCacheService;
 
     private final static String CATEGORIES_LIST_CONFIG =
-            "[{\"templateIds\":[\"tpl1\",\"tpl2\"],\"categoryCode\":\"pc1\",\"categoryName\":\"cn1\"},"
-                    + "{\"templateIds\":[\"tpl3\",\"tpl4\"],\"categoryCode\":\"pc2\",\"categoryName\":\"cn2\"}]";
+        "[{\"templateIds\":[\"tpl1\",\"tpl2\"],\"categoryCode\":\"pc1\",\"categoryName\":\"cn1\"},"
+            +
+            "{\"templateIds\":[\"tpl3\",\"tpl4\"],\"categoryCode\":\"pc2\",\"categoryName\":\"cn2\"}]";
 
     @Test
     void testGetDirectoryVo() {
@@ -91,12 +87,13 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         TemplateDto templateDto = new TemplateDto();
         templateDto.setType(NodeType.DATASHEET.getNodeType());
         willReturn(templateDto)
-                .given(templateMapper)
-                .selectDtoByTempId(templateId);
+            .given(templateMapper)
+            .selectDtoByTempId(templateId);
         willReturn(CATEGORIES_LIST_CONFIG)
-                .given(templateConfigCacheService)
-                .getCategoriesListConfigCacheByLang(lang);
-        TemplateDirectoryVo directory = templateService.getDirectoryVo("pc1", templateId, false, lang);
+            .given(templateConfigCacheService)
+            .getCategoriesListConfigCacheByLang(lang);
+        TemplateDirectoryVo directory =
+            templateService.getDirectoryVo("pc1", templateId, false, lang);
         assertThat(directory).isNotNull();
         assertThat(directory.getCategoryName()).isEqualTo("cn1");
     }
@@ -111,8 +108,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         try {
             templateService.checkTemplateForeignNode(memberId, nodeId);
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -129,8 +125,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         try {
             templateService.checkTemplateForeignNode(memberId, nodeId);
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -147,8 +142,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         try {
             templateService.checkTemplateForeignNode(memberId, nodeId);
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -160,13 +154,15 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         Map<String, List<String>> foreignDstMap = new HashMap<>();
         foreignDstMap.put("dst123", CollUtil.newArrayList("test filed"));
         // given
-        given(iDatasheetService.getForeignFieldNames(Collections.singletonList("dst123"))).willReturn(foreignDstMap);
+        given(
+            iDatasheetService.getForeignFieldNames(Collections.singletonList("dst123"))).willReturn(
+            foreignDstMap);
         // when
         boolean isException = false;
         try {
-            templateService.checkDatasheetTemplate(CollUtil.newArrayList("dst123"), true, TemplateException.NODE_LINK_FOREIGN_NODE);
-        }
-        catch (BusinessException e) {
+            templateService.checkDatasheetTemplate(CollUtil.newArrayList("dst123"), true,
+                TemplateException.NODE_LINK_FOREIGN_NODE);
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -189,9 +185,9 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         boolean isException = false;
         try {
-            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 3, TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
-        }
-        catch (BusinessException e) {
+            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 3,
+                TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -211,9 +207,9 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         boolean isException = false;
         try {
-            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 3, TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
-        }
-        catch (BusinessException e) {
+            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 3,
+                TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE);
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -236,9 +232,9 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         boolean isException = false;
         try {
-            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 5, TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
-        }
-        catch (BusinessException e) {
+            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 5,
+                TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -258,9 +254,9 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         // when
         boolean isException = false;
         try {
-            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 5, TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
-        }
-        catch (BusinessException e) {
+            templateService.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, 5,
+                TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -272,19 +268,19 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         Long member = 123L;
         String nodeId = "dst123";
         FieldPermissionInfo fieldPermissionInfo = FieldPermissionInfo.builder()
-                .fieldId("dst123")
-                .hasRole(true)
-                .build();
+            .fieldId("dst123")
+            .hasRole(true)
+            .build();
         boolean isException = false;
         Map<String, FieldPermissionInfo> fieldPermissionMap = new HashMap<>();
         fieldPermissionMap.put(nodeId, fieldPermissionInfo);
         // given
-        given(iFieldRoleService.getFieldPermissionMap(member, nodeId, null)).willReturn(fieldPermissionMap);
+        given(iFieldRoleService.getFieldPermissionMap(member, nodeId, null)).willReturn(
+            fieldPermissionMap);
         // when
         try {
             templateService.checkFieldPermission(member, nodeId);
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -296,19 +292,19 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         Long member = 123L;
         String nodeId = "dst123";
         FieldPermissionInfo fieldPermissionInfo = FieldPermissionInfo.builder()
-                .fieldId("dst123")
-                .hasRole(false)
-                .build();
+            .fieldId("dst123")
+            .hasRole(false)
+            .build();
         boolean isException = false;
         Map<String, FieldPermissionInfo> fieldPermissionMap = new HashMap<>();
         fieldPermissionMap.put(nodeId, fieldPermissionInfo);
         // given
-        given(iFieldRoleService.getFieldPermissionMap(member, nodeId, null)).willReturn(fieldPermissionMap);
+        given(iFieldRoleService.getFieldPermissionMap(member, nodeId, null)).willReturn(
+            fieldPermissionMap);
         // when
         try {
             templateService.checkFieldPermission(member, nodeId);
-        }
-        catch (BusinessException e) {
+        } catch (BusinessException e) {
             isException = true;
         }
         // then
@@ -316,18 +312,20 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     void testGetNodeIdsByTemplateId() {
         // query un exist template
-        assertThrows(BusinessException.class, () -> templateService.getNodeIdsByTemplateId("no_exist"));
+        assertThrows(BusinessException.class,
+            () -> templateService.getNodeIdsByTemplateId("no_exist"));
 
         // query a template with single node
         String singleNodeTemplateId = "tpl123";
         String nodeId = "dst123";
         willReturn(nodeId)
-                .given(templateMapper)
-                .selectNodeIdByTempId(singleNodeTemplateId);
+            .given(templateMapper)
+            .selectNodeIdByTempId(singleNodeTemplateId);
         given(iNodeService.getTypeByNodeId(nodeId))
-                .willReturn(NodeType.DATASHEET);
+            .willReturn(NodeType.DATASHEET);
         List<String> templateNodeIds = templateService.getNodeIdsByTemplateId(singleNodeTemplateId);
         assertThat(templateNodeIds).isNotEmpty().hasSize(1);
     }

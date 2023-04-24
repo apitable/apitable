@@ -19,6 +19,7 @@
 package com.apitable.internal.controller;
 
 import com.apitable.core.support.ResponseData;
+import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
@@ -28,6 +29,7 @@ import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
+import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.space.service.ISpaceService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +39,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -117,5 +120,20 @@ public class InternalSpaceController {
     public ResponseData<InternalSpaceInfoVo> labs(@PathVariable("spaceId") String spaceId) {
         iSpaceService.checkExist(spaceId);
         return ResponseData.success(internalSpaceService.getSpaceInfo(spaceId));
+    }
+
+    /**
+     * update space statistics which stored in cache.
+     *
+     * @param spaceId space id
+     * @param data    data
+     */
+    @PostResource(path = "/space/{spaceId}/statistics", requiredPermission = false, requiredLogin = false)
+    @Operation(summary = "get space information")
+    public ResponseData<Void> statistics(@PathVariable("spaceId") String spaceId,
+                                         @RequestBody SpaceStatisticsRo data) {
+        iSpaceService.checkExist(spaceId);
+        internalSpaceService.updateSpaceStatisticsInCache(spaceId, data);
+        return ResponseData.success();
     }
 }

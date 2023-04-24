@@ -91,6 +91,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
     });
     if (!view) {
       switchView(null, views![0].id);
+      return;
     }
     setCurrentView(view);
     const showSyncIcon = getShowViewStatus(view!);
@@ -225,7 +226,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
                 </p>
                 {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
               </div>
-            } 
+            }
           </div> : (
             isShowNodeInfoBar && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
               {

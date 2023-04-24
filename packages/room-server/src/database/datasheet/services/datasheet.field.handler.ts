@@ -77,7 +77,7 @@ export class DatasheetFieldHandler {
       origin,
       // linked datasheet data
       // { [foreignDatasheetId: string]: IBaseDatasheetPack }
-      foreignDstMap: {},
+      foreignDstMap: {} as IForeignDatasheetMap['foreignDatasheetMap'],
       // datasheet ID -> primary field ID
       dstIdToHeadFieldIdMap: new Map<string, string>(),
       // unit IDs of a member field
@@ -112,8 +112,8 @@ export class DatasheetFieldHandler {
     const fldIds = Object.keys(mainMeta.fieldMap);
     await this.parseField(mainDstId, mainMeta.fieldMap, mainRecordMap, fldIds, globalParam, linkedRecordMap);
 
-    const combineResult: IForeignDatasheetMap & IDatasheetUnits = {};
-    combineResult.foreignDatasheetMap = globalParam.foreignDstMap;
+    const foreignDatasheetMap = globalParam.foreignDstMap;
+    const combineResult: IForeignDatasheetMap & IDatasheetUnits = { foreignDatasheetMap };
     // Get the space ID which the datasheet belongs to
     const spaceId = await this.getSpaceIdByDstId(mainDstId);
     let tempUnitMap: (IUnitValue | IUserValue)[] = [];
@@ -131,7 +131,14 @@ export class DatasheetFieldHandler {
     }
 
     const endTime = +new Date();
-    this.logger.info(`Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms`);
+    const numRecords: Record<string, number> = { [mainDstId]: Object.keys(mainRecordMap).length };
+    for (const id in foreignDatasheetMap) {
+      numRecords[id] = Object.keys(foreignDatasheetMap[id]!.snapshot.recordMap).length;
+    }
+    this.logger.info(
+      `Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms. ` +
+        `Loaded datasheets and number of records: ${JSON.stringify(numRecords)}`,
+    );
     return combineResult;
   }
 

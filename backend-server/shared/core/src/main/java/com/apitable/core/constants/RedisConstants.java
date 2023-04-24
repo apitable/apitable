@@ -23,129 +23,107 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * Redis Capacity Key
+ * Redis Capacity Key.
  * </p>
- *
  */
 public class RedisConstants {
 
     /**
-     * login user information
+     * login consecutive incorrect password times.
      */
-    private static final String LOGIN_USER_KEY = "cache:user:{}:information";
-
+    public static final String ERROR_PWD_NUM_DIR = "cache:login:error:";
     /**
-     * user's main active space ID
+     * user authorization information token.
      */
-    private static final String USER_ACTIVE_SPACE_KEY = "cache:user:{}:space:active";
-
+    public static final String USER_AUTH_INFO_TOKEN = "cache:auth:{}";
     /**
-     * user corresponding space information
+     * resource: menus are grouped with resources.
      */
-    private static final String USER_SPACE_KEY = "cache:user:{}:space:{}:information";
-
+    public static final String SPACE_MENU_RESOURCE_GROUP_KEY = "cache:resources:space:group";
     /**
-     * data table information opened by the user in the space
+     * general config ---> config:business type:config object.
      */
-    private static final String USER_OPENED_SHEET_KEY = "cache:user:{}:space:{}:openedSheet";
-
+    public static final String GENERAL_CONFIG = "config:{}:{}";
     /**
-     * new users are invited to join the space station
+     * geneal lock ---> business type:lock:lock object.
      */
-    private static final String NEW_USER_INVITED_JOIN_SPACE_KEY = "cache:user{}:space{}:invited";
-
+    public static final String GENERAL_LOCKED = "{}:lock:{}";
     /**
-     * members recently mentioned by users in the space
+     * general statistical value ---> statics:business type:config object.
      */
-    private static final String USER_SPACE_REMIND_KEY = "cache:user:{}:space:{}:remind";
-
+    public static final String GENERAL_STATICS = "statics:{}:{}";
+    /**
+     * version release notice ---> lock:lock object.
+     */
+    public static final String NOTIFICATION_LOCKED = "notify:lock:{}:{}";
+    /**
+     * notification ---> notification temporary ID.
+     */
+    public static final String NOTIFY_TEMPORARY_KEY = "notify:cache:temporary:{}";
     /**
      * storage structure of verification code ---> verification Code Type（SMS/EMAIL）：business type（login/register/...）：storage object（phone or email）
      */
     private static final String CAPTCHA_KEY = "captcha:{}:{}:{}";
-
     /**
-     * scope of the verification code, corresponds to the global verification code service type ---> verification Code Type：scope：storage object
+     * scope of the verification code, corresponds to the global verification code service type ---> verification Code Type：scope：storage object.
      */
     private static final String CAPTCHA_SCOPE_KEY = "captcha:{}:scope:{}";
-
     /**
-     * obtain the verification code record in the same service scenario, construction ---> business type：storage object（phone or email）
+     * login user information.
+     */
+    private static final String LOGIN_USER_KEY = "cache:user:{}:information";
+    /**
+     * user's main active space ID.
+     */
+    private static final String USER_ACTIVE_SPACE_KEY = "cache:user:{}:space:active";
+    /**
+     * user corresponding space information.
+     */
+    private static final String USER_SPACE_KEY = "cache:user:{}:space:{}:information";
+    /**
+     * data table information opened by the user in the space.
+     */
+    private static final String USER_OPENED_SHEET_KEY = "cache:user:{}:space:{}:openedSheet";
+    /**
+     * new users are invited to join the space station.
+     */
+    private static final String NEW_USER_INVITED_JOIN_SPACE_KEY = "cache:user{}:space{}:invited";
+    /**
+     * members recently mentioned by users in the space.
+     */
+    private static final String USER_SPACE_REMIND_KEY = "cache:user:{}:space:{}:remind";
+    /**
+     * obtain the verification code record in the same service scenario, construction ---> business type：storage object(phone or email).
      */
     private static final String CAPTCHA_RECORD_KEY = "captcha:record:{}:{}";
-
     /**
-     * records the success of verification code verification
+     * records the success of verification code verification.
      */
     private static final String CAPTCHA_VALIDATE_SUCCESS_KEY = "captcha:validate:success:{}";
-
     /**
-     * number of verification code errors
+     * number of verification code errors.
      */
     private static final String CAPTCHA_VALIDATE_ERROR_NUM_KEY = "captcha:validate:error:{}";
-
     /**
-     * send a verification code restricts the lock, lock object: phone or email
+     * send a verification code restricts the lock, lock object: phone or email.
      */
     private static final String SEND_CAPTCHA_LOCKED_KEY = "captcha:lock:{}";
-
     /**
-     * number of verification codes sent
+     * number of verification codes sent.
      */
     private static final String SEND_CAPTCHA_COUNT_DIR = "captcha:count:";
-
     /**
-     * login consecutive incorrect password times
-     */
-    public static final String ERROR_PWD_NUM_DIR = "cache:login:error:";
-
-    /**
-     * user authorization information token
-     */
-    public static final String USER_AUTH_INFO_TOKEN = "cache:auth:{}";
-
-    /**
-     * resource: menus are grouped with resources
-     */
-    public static final String SPACE_MENU_RESOURCE_GROUP_KEY = "cache:resources:space:group";
-
-    /**
-     * general config ---> config:business type:config object
-     */
-    public static final String GENERAL_CONFIG = "config:{}:{}";
-
-    /**
-     * geneal lock ---> business type:lock:lock object
-     */
-    public static final String GENERAL_LOCKED = "{}:lock:{}";
-
-    /**
-     * general statistical value ---> statics:business type:config object
-     */
-    public static final String GENERAL_STATICS = "statics:{}:{}";
-
-    /**
-     * version release notice ---> lock:lock object
-     */
-    public static final String NOTIFICATION_LOCKED = "notify:lock:{}:{}";
-
-    /**
-     * notification ---> notification temporary ID
-     */
-    public static final String NOTIFY_TEMPORARY_KEY = "notify:cache:temporary:{}";
-
-    /**
-     * space template reference
+     * space template reference.
      */
     private static final String SPACE_TEMPLATE_QUOTE = "template:quote:{}:{}";
 
     /**
-     * notification frequency limit person/day
+     * notification frequency limit person/day.
      */
     private static final String NOTIFY_FREQUENCY_LIMIT = "notify:cache:frequency:{}:{}:{}";
 
     /**
-     * Get the key stored by the login user
+     * Get the key stored by the login user.
      *
      * @param userId user's id
      * @return login user storage key
@@ -156,7 +134,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get user active space
+     * Get user active space.
      *
      * @param userId user's id
      * @return user information storage key
@@ -167,7 +145,7 @@ public class RedisConstants {
     }
 
     /**
-     * Key for obtaining user space information storage
+     * Key for obtaining user space information storage.
      *
      * @param userId  user's id
      * @param spaceId space's id
@@ -180,9 +158,9 @@ public class RedisConstants {
     }
 
     /**
-     * Get the data table information opened by the user in the space
+     * Get the data table information opened by the user in the space.
      *
-     * @param userId  user's id
+     * @param userId user's id
      * @return user information storage key
      */
     public static String getUserSpaceOpenedSheetKey(Long userId, String spaceId) {
@@ -192,7 +170,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the information about new users being invited to join the space station
+     * Get the information about new users being invited to join the space station.
      *
      * @param userId  user's id
      * @param spaceId space's id
@@ -205,7 +183,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the member record recently mentioned by the user in the space
+     * Get the member record recently mentioned by the user in the space.
      *
      * @param userId  user's id
      * @param spaceId space's id
@@ -218,7 +196,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the key of verification code storage
+     * Get the key of verification code storage.
      *
      * @param codeType code type
      * @param scope    business type
@@ -233,7 +211,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the key of verification code scope storage
+     * Get the key of verification code scope storage.
      *
      * @param codeType code type
      * @param target   phone number or email
@@ -246,7 +224,7 @@ public class RedisConstants {
     }
 
     /**
-     * Number of times to obtain verification code errors
+     * Number of times to obtain verification code errors.
      *
      * @param target phone number or email
      * @return key
@@ -257,7 +235,7 @@ public class RedisConstants {
     }
 
     /**
-     * Number of times to obtain verification code success
+     * Number of times to obtain verification code success.
      *
      * @param target phone number or email
      * @return key
@@ -268,7 +246,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the record of successful verification of verification code
+     * Get the record of successful verification of verification code.
      *
      * @param target phone number or email
      * @return key
@@ -280,7 +258,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the blacklist lock of sending verification code
+     * Get the blacklist lock of sending verification code.
      *
      * @param target lock object: phone number or email
      * @return key
@@ -291,7 +269,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the total number of verification codes sent by the specified type and object
+     * Get the total number of verification codes sent by the specified type and object.
      *
      * @param target ip address, phone number or email
      * @param type   statistical type
@@ -304,7 +282,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get the frequency of sending verification code for the specified object
+     * Get the frequency of sending verification code for the specified object.
      *
      * @param target id address, phone number or email
      * @return key
@@ -315,7 +293,7 @@ public class RedisConstants {
     }
 
     /**
-     * Get notification message lock
+     * Get notification message lock.
      *
      * @param templateId lock object: template id
      * @param version    lock object: version
@@ -327,7 +305,8 @@ public class RedisConstants {
     }
 
     /**
-     * Get the key corresponding to the notification userId and ID
+     * Get the key corresponding to the notification userId and ID.
+     *
      * @param keyId temporary notification ID
      * @return String
      */
@@ -337,10 +316,10 @@ public class RedisConstants {
     }
 
     /**
-     * Get template reference key
+     * Get template reference key.
      *
      * @param spaceId space's id
-     * @param nodeId id of the file created after reference
+     * @param nodeId  id of the file created after reference
      * @return String
      */
     public static String getTemplateQuoteKey(String spaceId, String nodeId) {
@@ -351,16 +330,38 @@ public class RedisConstants {
 
 
     /**
-     * Get the frequency key of user notification
+     * Get the frequency key of user notification.
      *
-     * @param userId user's id
+     * @param userId     user's id
      * @param templateId notification template id
-     * @param nonce random string
+     * @param nonce      random string
      * @return String
      */
     public static String getUserNotifyFrequencyKey(Long userId, String templateId, String nonce) {
         Assert.notNull(userId, "user does not exist");
         Assert.notBlank(templateId, "notification template does not exist");
         return StrUtil.format(NOTIFY_FREQUENCY_LIMIT, templateId, userId, nonce);
+    }
+
+    /**
+     * get the view count statics cache key.
+     *
+     * @param spaceId space id
+     * @return string
+     */
+    public static String getGeneralStaticsOfViewKey(String spaceId) {
+        Assert.notBlank(spaceId, "space does not exist");
+        return StrUtil.format(GENERAL_STATICS, "count:view", spaceId);
+    }
+
+    /**
+     * get the record count statics cache key.
+     *
+     * @param spaceId space id
+     * @return string
+     */
+    public static String getGeneralStaticsOfRecordKey(String spaceId) {
+        Assert.notBlank(spaceId, "space does not exist");
+        return StrUtil.format(GENERAL_STATICS, "count:record", spaceId);
     }
 }

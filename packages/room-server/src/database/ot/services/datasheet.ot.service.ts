@@ -142,6 +142,8 @@ export class DatasheetOtService {
       toDeleteAlarms: new Map<string, IRecordAlarm[]>(),
       updatedAlarmIds: [],
       addViews: [],
+      deleteViews: [],
+      spaceId: ''
     };
   }
 
@@ -161,6 +163,7 @@ export class DatasheetOtService {
     auth: IAuthHeader,
     sourceType?: SourceTypeEnum,
   ) {
+    resultSet.spaceId = spaceId;
     resultSet.datasheetId = datasheetId;
     resultSet.auth = auth;
     resultSet.sourceType = sourceType;
@@ -748,6 +751,7 @@ export class DatasheetOtService {
           if (!permission.viewRemovable || view?.lockInfo) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
           }
+          resultSet.deleteViews.push(action['ld']);
           return;
         }
         // ====== Move view ======

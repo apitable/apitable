@@ -21,7 +21,7 @@
 <mapper namespace="com.apitable.space.mapper.SpaceMemberRoleRelMapper">
 
     <select id="selectSubAdminBySpaceId" resultType="java.lang.Long">
-        SELECT member_id
+        SELECT vsmrr.member_id
         FROM ${tablePrefix}space_member_role_rel vsmrr
         JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code AND vsrrr.resource_code = 'MANAGE_WORKBENCH_SETTING'
         WHERE vsmrr.space_id = #{spaceId}

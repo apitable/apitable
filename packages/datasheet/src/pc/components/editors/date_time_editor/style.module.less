@@ -55,6 +55,7 @@
 
 .timeInput {
   width: 42px !important;
+
   input {
     padding-right: 0 !important;
   }
@@ -85,6 +86,11 @@
       box-sizing: border-box;
       padding: 3px 10px;
 
+      &[disabled] {
+        color: var(--thirdLevelText) !important;
+        cursor: not-allowed;
+      }
+
       &.cp-calendar-picker-input {
         padding-right: 0;
 
@@ -105,11 +111,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .dateContent {
     display: flex;
     flex: auto;
     align-items: center;
   }
+
   .limitDateWidth {
     :global {
       .cp-calendar-picker {
@@ -117,6 +125,7 @@
       }
     }
   }
+
   .alarm {
     margin-right: 8px;
     display: flex;

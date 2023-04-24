@@ -21,12 +21,13 @@
     display: flex;
     align-items: center;
     margin-right: 4px;
+    flex-shrink: 0;
   }
 
   .cardTool {
    position: absolute;
-   top: 8px;
-   right: 8px;
+   top: 16px;
+   right: 16px;
    display: flex;
    justify-content: flex-end;
    align-items: center;
@@ -48,22 +49,25 @@
   }
 
   .settingPermissionBtn {
-    margin-left: 8px;
+    margin-right: 4px;
     width: 20px;
     height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    svg {
+      fill: var(--textCommonSecondary)!important;
+    }
   }
 
   .name {
-    margin-right: 4px;
+    margin-right: 8px;
   }
   
   .email {
     color: var(--textCommonSecondary);
-    padding: 4px 16px 14px;
+    padding: 0px 16px 8px;
     p {
       margin: 0;
     }
@@ -98,16 +102,28 @@
 }
 
 .infoWrapper {
+  margin-top: 8px;
+  .infoText {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    svg {
+      flex-shrink: 0;
+      margin: 2px 5px 0 0;
+      fill: var(--textCommonTertiary)!important;
+    }
+  }
   
   p {
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
     line-height: 20px;
-    color: var(--textCommonSecondary);
+    color: var(--textCommonTertiary);
     margin: 0;
     margin-bottom: 4px;
     min-width: 30px;
+    
   }
 
   .teamList {
