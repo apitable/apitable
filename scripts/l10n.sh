@@ -34,7 +34,7 @@ else
     cp "${L10N_GEN_DIR}/language.manifest.json" "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
 
     ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
-    cp "${L10N_GEN_DIR}/strings.*-*.json" "${L10N_SCRIPT_DIR}/config/"
+    cp "${L10N_GEN_DIR}"/strings.*-*.json "${L10N_SCRIPT_DIR}/config/"
     echo "successfully generate language json file"
     if [ -e "${L10N_GEN_DIR}/stringkeys.interface.ts" ]; then
         cp "${L10N_GEN_DIR}/stringkeys.interface.ts" "${APITABLE_BASE_DIR}packages/core/src/config/stringkeys.interface.ts"
