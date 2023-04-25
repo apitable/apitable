@@ -6,20 +6,22 @@ import { Switch } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';
 import { CascaderDatasourceViewSelect } from './cascader_datasource_view_select';
 import { CascaderRulesModal } from './cascader_rules_modal/cascader_rules_modal';
 
 import commonStyles from '../styles.module.less';
 import styles from './styles.module.less';
+import * as React from 'react';
+import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 
 export interface IFormatCascaderProps {
   currentField: ICascaderField;
   setCurrentField: React.Dispatch<React.SetStateAction<IField>>;
+  optionErrMsg?: IFieldCascaderErrors;
 }
 
-export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascaderProps): JSX.Element => {
+export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: IFormatCascaderProps): JSX.Element => {
   const { linkedFields, linkedDatasheetId, linkedViewId, showAll } = currentField.property;
 
   const dispatch = useDispatch();
@@ -65,6 +67,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
             currentField={currentField}
             setCurrentField={setCurrentField}
           />
+          {optionErrMsg?.errors?.linkedDatasheetId && <section className={styles.error}>{optionErrMsg?.errors?.linkedDatasheetId}</section>}
         </div>
         <div className={commonStyles.section}>
           <div className={commonStyles.sectionTitle}>
@@ -75,6 +78,7 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
             linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
           />
+          {optionErrMsg?.errors?.linkedViewId && <section className={styles.error}>{optionErrMsg?.errors?.linkedViewId}</section>}
         </div>
         <div className={commonStyles.sectionTitle}>
           <span>{`3.${t(Strings.cascader_rules)}`}</span>
@@ -99,15 +103,18 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
               </LinkButton>
             </div>
           ) : (
-            <Button
-              className={styles.rulesButton}
-              disabled={ruleBtnDisabled}
-              onClick={() => setRulesModalVisible(true)}
-              prefixIcon={<SettingOutlined />}
-              variant="fill"
-            >
-              <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
-            </Button>
+            <>
+              <Button
+                className={styles.rulesButton}
+                disabled={ruleBtnDisabled}
+                onClick={() => setRulesModalVisible(true)}
+                prefixIcon={<SettingOutlined />}
+                variant="fill"
+              >
+                <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
+              </Button>
+              {optionErrMsg?.errors?.linkedFields && <section className={styles.error}>{optionErrMsg?.errors?.linkedFields}</section>}
+            </>
           )}
         </div>
       </section>
