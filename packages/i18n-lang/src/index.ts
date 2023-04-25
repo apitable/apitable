@@ -33,8 +33,8 @@ if (typeof window !== 'undefined') {
 }
 
 const langMap = {
-  'en-US': langEnUs,
-  'zh-CN': langZhCn,
+  'en-US': langEnUs.default,
+  'zh-CN': langZhCn.default,
 };
 
 if (currentLang in langMap) {
@@ -56,7 +56,7 @@ export async function loadStrings(locale: string) {
   }
 
   try {
-    const strings = await import(`./config/strings.${locale}.json`);
+    const strings = await import(`./config/strings.${locale}.json`).then(module => module.default);
     if (typeof window !== 'undefined') {
       Object.assign((window as any).apitable_i18n[locale], strings);
     }else {
