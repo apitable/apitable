@@ -33,6 +33,7 @@ import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.IRoleService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
+import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.SubUnitResultVo;
 import com.apitable.organization.vo.UnitInfoVo;
 import com.apitable.organization.vo.UnitMemberVo;
@@ -45,6 +46,7 @@ import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -98,7 +100,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord,
-                                               String highlightClassName) {
+        String highlightClassName) {
         log.info("search organizational unit");
         UnitSearchResultVo unitSearchResultVo = new UnitSearchResultVo();
         String all = "*";
@@ -119,7 +121,13 @@ public class OrganizationServiceImpl implements IOrganizationService {
             List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
             if (CollUtil.isNotEmpty(memberIds)) {
                 List<UnitMemberVo> unitMemberList = findUnitMemberVo(memberIds);
+                // handle member's team name，get full hierarchy team name
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                    iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 unitMemberList.forEach(member -> {
+                    if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                        member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+                    }
                     member.setOriginName(member.getMemberName());
                     member.setMemberName(
                         InformationUtil.keywordHighlight(member.getMemberName(), likeWord,
@@ -137,7 +145,13 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, openIds);
                 if (CollUtil.isNotEmpty(socialMemberIds)) {
                     List<UnitMemberVo> unitMemberList = findUnitMemberVo(socialMemberIds);
+                    // handle member's team name，get full hierarchy team name
+                    Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                        iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                     unitMemberList.forEach(member -> {
+                        if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+                            member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+                        }
                         member.setOriginName(member.getMemberName());
                         // Wecom usernames need to be front-end rendered,
                         // and search results do not return highlighting
@@ -243,7 +257,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params,
-                                             Long sharer) {
+        Long sharer) {
         log.info("load or search unit");
         List<Long> unitIds = this.getLoadedUnitIds(userId, spaceId, params, sharer);
         // Specifies the ID of the organizational unit to filter
@@ -257,7 +271,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     private List<Long> getLoadedUnitIds(Long userId, String spaceId, LoadSearchDTO params,
-                                        Long sharer) {
+        Long sharer) {
         if (CollUtil.isNotEmpty(params.getUnitIds())) {
             return params.getUnitIds();
         }

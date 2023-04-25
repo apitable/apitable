@@ -18,28 +18,20 @@
 
 package com.apitable.shared.context;
 
-import java.util.Locale;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import com.apitable.shared.constants.LanguageConstants;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- *
- * @author Shawn Deng
- * @date 2022-03-18 16:16:07
- */
-@Disabled
-public class I18nContextTest {
+import com.apitable.AbstractIntegrationTest;
+import com.apitable.shared.constants.LanguageConstants;
+import java.util.Locale;
+import org.junit.jupiter.api.Test;
+
+public class I18nContextTest extends AbstractIntegrationTest {
 
     @Test
     public void testTransform() {
         LanguageConstants.SUPPORTED_LANGUAGE.stream()
-                .map(locale -> I18nContext.me().transform("SEND_CAPTCHA_TOO_MUSH", locale))
-                .forEach(System.out::println);
+            .map(locale -> I18nContext.me().transform("SEND_CAPTCHA_TOO_MUSH", locale))
+            .forEach(System.out::println);
     }
 
     @Test

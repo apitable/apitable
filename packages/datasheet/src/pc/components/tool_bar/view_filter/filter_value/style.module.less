@@ -21,8 +21,20 @@
       &:focus {
         outline: none;
         border: none;
-        box-shadow: 0px 0px 0px 1px var(--primaryColor);
-        background: var(--defaultBg);
+      }
+    }
+  }
+
+  .cascaderEditorContainer {
+    background: var(--lowestBg);
+    border-radius: 4px;
+    :global {
+      .mobileCascaderText {
+        line-height: 38px;
+        padding-left: 8px;
+      }
+      .ant-select-selector .ant-select-selection-item {
+        line-height: 38px !important;
       }
     }
   }
@@ -54,6 +66,11 @@
     justify-content: space-between;
     height: 100%;
     cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
 
     .content {
       flex: 1;
@@ -198,6 +215,9 @@
 }
 
 @media screen and (max-width: @w-md) {
+  .cascaderEditorContainer {
+    min-height: 48px;
+  }
   .ratingContainer {
     padding-top: 0;
   }

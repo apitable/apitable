@@ -27,7 +27,7 @@ export const getTimeZoneAbbrByUtc = (utc: string) => {
   if (isNaN(abbrNum)) {
     return abbr;
   }
-  return `UTC${abbrNum > 0 ? '+' : ''}${abbr}`;
+  return `UTC${abbrNum > 0 ? '+' : ''}${abbrNum}`;
 };
 
 export const getUtcOptionList = () => {

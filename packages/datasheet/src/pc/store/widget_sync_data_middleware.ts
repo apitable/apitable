@@ -145,6 +145,10 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
       syncActionBroadcast(action);
       return;
     }
+    case ActionConstants.REFRESH_SNAPSHOT: {
+      // refresh snapshot for update cellValue cache.
+      syncActionDatasheet(store, action);
+    }
   }
   return;
 };

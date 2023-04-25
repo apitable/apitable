@@ -177,6 +177,12 @@ public class IdUtil {
         return id.startsWith(IdRulePrefixEnum.FORM.getIdRulePrefixEnum());
     }
 
+    /**
+     * is embed.
+     *
+     * @param id node id
+     * @return boolean
+     */
     public static boolean isEmbed(String id) {
         if (null == id) {
             return false;

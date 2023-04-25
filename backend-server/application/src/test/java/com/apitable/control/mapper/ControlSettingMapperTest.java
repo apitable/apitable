@@ -18,18 +18,15 @@
 
 package com.apitable.control.mapper;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.control.entity.ControlSettingEntity;
-
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
@@ -58,7 +55,7 @@ public class ControlSettingMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/control-setting-data.sql")
-    void test() {
+    void testSelectDeletedByControlId() {
         ControlSettingEntity entity = controlSettingMapper.selectDeletedByControlId("dstYC0guLbv91jawRb-fld4c0bJCN4Cz");
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(1387695187619319809L);

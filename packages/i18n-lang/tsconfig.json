@@ -5,7 +5,6 @@
       "jest",
       "node"
     ],
-    // "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": "src",
@@ -22,7 +21,8 @@
     ]
   },
   "include": [
-    "src"
+    "src/index.ts",
+    "src/**/*.json"
   ],
   "exclude": [
     "dist",

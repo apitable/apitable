@@ -49,6 +49,10 @@ export const datasheetPack = combineReducers<IWidgetDatasheetState>({
         state = { ...state, snapshot: action.payload };
         return state;
       }
+      case ActionConstants.REFRESH_SNAPSHOT: {
+        state.snapshot = { ...state.snapshot };
+        return state;
+      }
     }
     return state;
   }),

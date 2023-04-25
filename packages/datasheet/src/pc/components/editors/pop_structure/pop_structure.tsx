@@ -32,15 +32,16 @@ interface IPopStructureProps {
   height: number;
   width: number;
   className: string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   disableMinWidth?: boolean;
+  disableMobile?: boolean;
   onClose(): void;
 }
 
 const SECURITY_PADDING = 30; 
 
 export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>> = props => {
-  const { children, editing, height, className, style, width, onClose, disableMinWidth } = props;
+  const { children, editing, height, className, style, width, onClose, disableMinWidth, disableMobile } = props;
 
   const [position, setPosition] = useState({});
   const [restHeight, setRestHeight] = useState(0);
@@ -96,6 +97,25 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
 
   const context = { restHeight };
 
+  if (disableMobile) {
+    return (
+      <div
+        className={className}
+        ref={editContainerRef}
+        onClick={stopPropagation}
+        onWheel={stopPropagation}
+        style={{
+          ...style,
+          ...position,
+          minHeight: 'auto',
+          minWidth: disableMinWidth ? 'auto' : (style?.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
+        }}
+      >
+        <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>
+      </div>
+    )
+  }
+
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
@@ -108,7 +128,7 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
             ...style,
             ...position,
             minHeight: 'auto',
-            minWidth: disableMinWidth ? 'auto' : (style.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
+            minWidth: disableMinWidth ? 'auto' : (style?.width ? MIN_POP_STRUCTURE_WIDTH : 'auto'),
           }}
         >
           <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>

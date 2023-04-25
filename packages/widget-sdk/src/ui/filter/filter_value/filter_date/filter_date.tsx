@@ -4,7 +4,7 @@ import { IFilterDateProps } from '../interface';
 import { FilterDateDuration } from './filter_date_duration';
 import { FilterDateWrap, DateEditorWrap } from './styled';
 import { EditorNumber } from '../editor/editor_number';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker, LocalFormat } from './date_picker';
 import { getLanguage } from 'utils';
 
@@ -15,7 +15,10 @@ type IDateRangeValue= (Dayjs | null)[] | null;
 export const FilterDate: React.FC<IFilterDateProps> = (props) => {
   const { value, operator, onChange } = props;
   const [filterDuration, date] = value || [];
-  const [range, setRange] = useState<IDateRangeValue>();
+  const [range, setRange] = useState<IDateRangeValue>(() => {
+    if (filterDuration !== FilterDuration.DateRange) return null;
+    return date ? date.split('-').map(timeStamp => dayjs(Number(timeStamp))) : null;
+  });
   const lang = getLanguage().split('-')[0];
 
   const filterDurationChange = (val: any) => {
@@ -57,6 +60,7 @@ export const FilterDate: React.FC<IFilterDateProps> = (props) => {
     if (filterDuration === FilterDuration.ExactDate) {
       return (
         <DatePicker
+          value={date ? dayjs(date) : null}
           placeholder='YYYY-MM-DD'
           allowClear={false}
           suffixIcon={null}

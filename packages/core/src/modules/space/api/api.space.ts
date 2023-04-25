@@ -678,9 +678,10 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
-export function checkoutOrder(spaceId: string, priceId: string) {
+export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string) {
   return axios.post(Url.CHECKOUT_ORDER, {
     spaceId,
     priceId,
+    clientReferenceId
   });
 }

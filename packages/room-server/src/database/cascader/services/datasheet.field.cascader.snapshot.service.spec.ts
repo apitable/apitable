@@ -26,6 +26,7 @@ import { CommandService } from 'database/command/services/command.service';
 import { WinstonModule } from 'nest-winston';
 import { DatasheetCascaderFieldRepository } from '../repositories/datasheet.cascader.field.repository';
 import { IFieldMap, IMeta, IRecordMap, IViewProperty, Role } from '@apitable/core';
+import { NodeService } from 'node/services/node.service';
 
 function getDepthOfNode(root: CascaderChildren): number {
   let depth = 0;
@@ -53,6 +54,7 @@ describe('DatasheetFieldTreeSelectService', () => {
   let restService: RestService;
   let datasheetService: DatasheetService;
   let datasheetCascaderFieldRepository: DatasheetCascaderFieldRepository;
+  // let nodeService: NodeService;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
@@ -63,6 +65,12 @@ describe('DatasheetFieldTreeSelectService', () => {
       ],
       providers: [
         CommandService,
+        {
+          provide: NodeService,
+          useValue: {
+            getSpaceIdByNodeId: jest.fn(),
+          }
+        },
         {
           provide: RestService,
           useValue: {
@@ -81,9 +89,12 @@ describe('DatasheetFieldTreeSelectService', () => {
           provide: DatasheetCascaderFieldRepository,
           useValue: {
             selectRecordData: jest.fn(),
-            delete: jest.fn(),
+            update: jest.fn(),
             save: jest.fn(),
             create: jest.fn(),
+            manager: {
+              transaction: jest.fn(),
+            }
           },
         },
       ],
@@ -91,6 +102,7 @@ describe('DatasheetFieldTreeSelectService', () => {
     restService = module.get<RestService>(RestService);
     datasheetService = module.get<DatasheetService>(DatasheetService);
     datasheetFieldCascaderSnapshotService = module.get<DatasheetFieldCascaderSnapshotService>(DatasheetFieldCascaderSnapshotService);
+    // nodeService = module.get<NodeService>(NodeService);
     datasheetCascaderFieldRepository = module.get<DatasheetCascaderFieldRepository>(DatasheetCascaderFieldRepository);
   });
 
@@ -170,7 +182,6 @@ describe('DatasheetFieldTreeSelectService', () => {
       },
     ] as any[]);
     const cascaderNodes = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: 'spc41',
       datasheetId: 'dst41',
       fieldId: 'fld41',
       linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24'],
@@ -197,6 +208,59 @@ describe('DatasheetFieldTreeSelectService', () => {
     expect(getDepthOfNode(cascaderNodes.treeSelectNodes[1]!)).toEqual(2);
     expect(cascaderNodes.treeSelectNodes[1]!.children[0]!.text).toEqual('level-2-4');
     expect(cascaderNodes.treeSelectNodes[1]!.children[0]!.children[0]!.text).toEqual('level-3-6');
+  });
+
+  it('unique branch', async() => {
+    jest.spyOn(datasheetCascaderFieldRepository, 'selectRecordData').mockResolvedValue([
+      {
+        spaceId: 'spc41',
+        datasheetId: 'dst41',
+        fieldId: 'fld41',
+        linkedRecordData: {
+          linkedFld41: { text: 'level-1-1' },
+          linkedFld35: { text: 'level-2-1' },
+          linkedFld24: { text: 'level-3-1' },
+        },
+        linkedRecordId: 'linked1',
+        createdBy: '41',
+      },
+      {
+        spaceId: 'spc41',
+        datasheetId: 'dst41',
+        fieldId: 'fld41',
+        linkedRecordData: {
+          linkedFld41: { text: 'level-1-2' },
+          linkedFld35: { text: 'level-2-1' },
+          linkedFld24: { text: 'level-3-2' },
+        },
+        linkedRecordId: 'linked2',
+        createdBy: '41',
+      },
+      {
+        spaceId: 'spc41',
+        datasheetId: 'dst41',
+        fieldId: 'fld41',
+        linkedRecordData: {
+          linkedFld41: { text: 'level-1-3' },
+          linkedFld35: { text: 'level-2-1' },
+          linkedFld24: { text: 'level-3-3' },
+        },
+        linkedRecordId: 'linked3',
+        createdBy: '41',
+      },
+    ] as any[]);
+    const treeSelects = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
+      datasheetId: 'dst41',
+      fieldId: 'fld41',
+      linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24'],
+    });
+    expect(treeSelects.treeSelectNodes.length).toEqual(3);
+    expect(treeSelects.treeSelectNodes[0]!.children.length).toEqual(1);
+    expect(treeSelects.treeSelectNodes[0]!.children[0]!.children.length).toEqual(1);
+    expect(treeSelects.treeSelectNodes[1]!.children.length).toEqual(1);
+    expect(treeSelects.treeSelectNodes[1]!.children[0]!.children.length).toEqual(1);
+    expect(treeSelects.treeSelectNodes[2]!.children.length).toEqual(1);
+    expect(treeSelects.treeSelectNodes[2]!.children[0]!.children.length).toEqual(1);
   });
 
   it('given lack text cell record when given snapshot records', async() => {
@@ -241,7 +305,6 @@ describe('DatasheetFieldTreeSelectService', () => {
       },
     ] as any[]);
     const cascaderNodes = await datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: 'spc24',
       datasheetId: 'dst24',
       fieldId: 'fld24',
       linkedFieldIds: ['linkedFld41', 'linkedFld35', 'linkedFld24', 'linkedFld22', 'linkedFld21'],

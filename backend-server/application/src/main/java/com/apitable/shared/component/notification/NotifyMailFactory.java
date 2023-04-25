@@ -64,6 +64,8 @@ import cn.hutool.json.JSONUtil;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.interfaces.notification.facade.MailFacade;
+import com.apitable.shared.clock.spring.ClockManager;
+import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.EmailSendProperties;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.starter.mail.autoconfigure.EmailMessage;
@@ -194,6 +196,11 @@ public class NotifyMailFactory {
             log.warn("Lost mail subject.");
             return;
         }
+        // Uniformly add variables
+        dict.set("YEARS", ClockManager.me().getLocalDateNow().getYear());
+        String contactUrl = StrUtil.format("{}/?home=1",
+            SpringContextHolder.getBean(ConstProperties.class).getServerDomain());
+        dict.set("CONTACT_URL", contactUrl);
         if (cloudMailSender != null) {
             cloudMailSend(subject, lang, subjectType, dict, to);
             return;

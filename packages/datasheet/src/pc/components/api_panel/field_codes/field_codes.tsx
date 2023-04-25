@@ -70,10 +70,6 @@ enum RecordType {
 const API_BASE = 'https://api.vika.cn';
 const MORE_SDK_URL = getEnvVariables().API_PANEL_MORE_URL;
 const VARIABLE_REG = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
-const INVALID_FIELD_NAME_TIPS = `
-A field name exists that does not match the variable rules, please turn on "Use FieldId" or the code example below may not work! 
-[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.
-`;
 
 export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props => {
   const { codeType, byFieldId, token, language, setLanguage, showApiToken } = props;
@@ -216,7 +212,7 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
       apiBase: window.location.origin.includes('vika.cn') ? API_BASE : window.location.origin,
       viewId,
       pyGetParams: getSearchParams('get'),
-      fieldNameTips: !byFieldId && hasInvalidFieldNames() ? INVALID_FIELD_NAME_TIPS : '',
+      fieldNameTips: !byFieldId && hasInvalidFieldNames() ? t(Strings.field_map_tips_for_python) : '',
     };
 
     switch (codeType) {

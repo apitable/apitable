@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUseListenTriggerInfo, useListenVisualHeight, useThemeColors } from '@apitable/components';
+import { IUseListenTriggerInfo, useListenVisualHeight, useThemeColors, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, Field, FilterConjunction as CoreFilterConjunction, FilterDuration, getNewId, IDPrefix, IFilterInfo,
   IGridViewProperty, Selectors, Strings, t
@@ -25,6 +25,7 @@ import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { PopUpTitle } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -54,6 +55,8 @@ const ViewFilterBase = (props: IViewFilter) => {
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const activeViewFilter = useSelector(state => Selectors.getFilterInfo(state))!;
   const scrollShadowRef = useRef<HTMLDivElement>(null);
+  const isViewLock = useShowViewLockModal();
+
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,
     childNode: childRef,
@@ -112,6 +115,7 @@ const ViewFilterBase = (props: IViewFilter) => {
     const exitIds = activeViewFilter ? activeViewFilter.conditions.map(item => item.conditionId) : [];
     const acceptFilterOperators = Field.bindModel(firstColumns).acceptFilterOperators;
     const newOperate = acceptFilterOperators[0];
+
     filterCommand({
       conjunction: activeViewFilter ? activeViewFilter.conjunction : CoreFilterConjunction.And,
       conditions: [
@@ -138,6 +142,7 @@ const ViewFilterBase = (props: IViewFilter) => {
   }, [activeViewFilter?.conditions.length, onListenResize]);
 
   function deleteFilter(idx: number) {
+    if (isViewLock) return;
     if (activeViewFilter!.conditions.length === 1) {
       filterCommand(null);
       return;
@@ -160,12 +165,20 @@ const ViewFilterBase = (props: IViewFilter) => {
         <ConditionList filterInfo={activeViewFilter} fieldMap={fieldMap} changeFilter={changeFilter} deleteFilter={deleteFilter} />
         <div ref={scrollShadowRef} className={classNames(!isMobile && styles.scrollShadow)} />
       </div>
-      <div className={styles.addNewButton} onClick={commandForAddViewFilter}>
-        <div className={styles.iconAdd}>
-          <AddOutlined size={16} color={colors.thirdLevelText} />
-        </div>
-        {t(Strings.add_filter)}
-      </div>
+      {
+        <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+          <div
+            className={classNames(styles.addNewButton, { [styles.disabled]: isViewLock })}
+            onClick={!isViewLock ? commandForAddViewFilter : undefined}
+          >
+            <div className={styles.iconAdd}>
+              <AddOutlined size={16} color={colors.thirdLevelText} />
+            </div>
+            {t(Strings.add_filter)}
+          </div>
+        </WrapperTooltip>
+      }
+
     </div>
   );
 };

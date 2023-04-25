@@ -99,7 +99,7 @@
         FROM ${tablePrefix}widget_package vwp,
              ${tablePrefix}widget_package_release vwpr
         WHERE vwp.package_id = vwpr.package_id
-          AND vwp.widget_body - > '$.fatherWidgetId' = #{fatherWidgetId}
+          AND vwp.widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
           AND vwpr.version = #{version}
           AND vwp.is_deleted = 0
           AND vwp.release_type = 10

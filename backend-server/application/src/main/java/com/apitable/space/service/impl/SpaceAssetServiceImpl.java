@@ -21,6 +21,7 @@ package com.apitable.space.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -129,7 +130,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
                         .sourceName(asset.getSourceName())
                         .cite(asset.getCite())
                         .fileSize(asset.getFileSize())
-                        .isTemplate(asset.getIsTemplate())
+                        .isTemplate(Optional.ofNullable(asset.getIsTemplate()).orElse(false))
                         .build();
                 entities.add(entity);
             });

@@ -32,7 +32,6 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
@@ -172,8 +171,8 @@ const ToolbarBase = () => {
   const hiddenRightToolbar = Boolean(
     size && size.width && (size.width < HIDDEN_TOOLBAR_RIGHT_WIDTH || (size.width < HIDDEN_TREE_WIDTH - SIDERBAR_WIDTH && !sideBarVisible)),
   );
-  const showIconBarLabel = Boolean(size && size.width && size.width > (isGanttView ? GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH : HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH) - offsetWidth);
-  const showViewLockModal = useShowViewLockModal();
+  const showIconBarLabel = Boolean(size && size.width && size.width > (isGanttView ?
+    GANTT_HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH : HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH) - offsetWidth);
 
   const hiddenKanbanGroupCount = useMemo(() => {
     return Object.keys(hiddenGroupMap || {})
@@ -511,7 +510,6 @@ const ToolbarBase = () => {
             text={t(Strings.kanban_group_tip, {
               kanban_field_id: getKanbanFieldType(kanbanFieldId),
             })}
-            showViewLockModal={showViewLockModal}
           />
         )}
         {isGanttView && !isMobile && embedSetting.basicTools && (
@@ -523,7 +521,6 @@ const ToolbarBase = () => {
             onClick={toggleGanttSetting}
             icon={<SettingFilled size={16} className={styles.toolIcon} />}
             text={t(Strings.gantt_setting)}
-            showViewLockModal={showViewLockModal}
           />
         )}
         {isCalendarView && !isMobile && embedSetting.basicTools && (
@@ -535,7 +532,6 @@ const ToolbarBase = () => {
             onClick={toggleCalendarSetting}
             icon={<SettingFilled size={16} className={styles.toolIcon} />}
             text={t(Strings.calendar_setting)}
-            showViewLockModal={showViewLockModal}
           />
         )}
         {isOrgView && !isMobile && embedSetting.basicTools && (
@@ -548,7 +544,6 @@ const ToolbarBase = () => {
             isActive={orgChartViewStatus?.settingPanelVisible}
             className={styles.toolbarItem}
             onClick={toggleOrgChartSetting}
-            showViewLockModal={showViewLockModal}
           />
         )}
         {!((isCalendarView || isGanttView) && isMobile) && embedSetting.basicTools && (
@@ -611,7 +606,6 @@ const ToolbarBase = () => {
               <FilterNode
                 showLabel={showIconBarLabel}
                 disabled={!visualizationEditable || disabledWithMirror}
-                showViewLockModal={showViewLockModal}
               />
             </div>
           </Display>
@@ -637,7 +631,6 @@ const ToolbarBase = () => {
                   })
                   : t(Strings.group)
               }
-              showViewLockModal={showViewLockModal}
             />
           </Display>
         )}
@@ -653,7 +646,6 @@ const ToolbarBase = () => {
               })}
               icon={<RankOutlined size={16} color={keepSort ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
               text={keepSort && !isMobile ? t(Strings.sort_count_tip, { count: activeView.sortInfo!.rules.length }) : t(Strings.sort)}
-              showViewLockModal={showViewLockModal}
             />
           </Display>
         )}
@@ -670,7 +662,6 @@ const ToolbarBase = () => {
                 size: 16,
               })}
               text={t(Strings.row_height)}
-              showViewLockModal={showViewLockModal}
             />
           </Display>
         )}
@@ -758,7 +749,7 @@ function GalleryLayoutNode(activeView: IViewProperty, showLabel: boolean, disabl
   );
 }
 
-function FilterNode(props: { showLabel: boolean; disabled: boolean; showViewLockModal: boolean }) {
+function FilterNode(props: { showLabel: boolean; disabled: boolean }) {
   const { disabled, showLabel } = props;
 
   const { filterInfo } = useSelector(state => {

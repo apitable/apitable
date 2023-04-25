@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useState, useEffect, FC } from 'react';
 import {
   ConfigConstant,
@@ -31,7 +32,7 @@ import {
 } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Col, Row } from 'antd';
-import { IconButton, colorVars } from '@apitable/components';
+import { IconButton, colorVars, WrapperTooltip } from '@apitable/components';
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
@@ -61,6 +62,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
     return view!.columns as IViewColumn[];
   });
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const isViewLock = useShowViewLockModal();
 
   // Check if the magic lookup filter is circularly referenced
   const [warnTextObj, setWarnTextObj] = useState<{ string?: string }>({});
@@ -119,17 +121,23 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
               ) : (
                 <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
               )}
-              <IconButton
-                onClick={deleteFilter.bind(null, index)}
-                icon={() => <DeleteOutlined size={15} color={colorVars.thirdLevelText} />}
-              />
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <div>
+                  <IconButton
+                    onClick={deleteFilter.bind(null, index)}
+                    icon={() => <DeleteOutlined size={15} color={colorVars.thirdLevelText} />}
+                    disabled={isViewLock}
+                  />
+                </div>
+              </WrapperTooltip>
+
             </ComponentDisplay>
 
             <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
               <FilterConjunction conditionIndex={index} conjunction={conjunction} changeFilter={changeFilter} />
-              <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
+              <Row align='middle' style={{ width: '100%' }} gutter={[0, 8]}>
                 <Col span={22}>
-                  <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
+                  <Row align='middle' style={{ width: '100%' }} gutter={[0, 8]}>
                     <Col span={16}>
                       <FilterFieldList columns={columns} fieldMap={fieldMap} warnTextObj={warnTextObj} {...publicProps} />
                     </Col>
@@ -142,7 +150,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                     </Col>
                   </Row>
                   {!isCryptoField && !fieldNotFound && (
-                    <Row align="middle" style={{ width: '100%' }}>
+                    <Row align='middle' style={{ width: '100%' }}>
                       <Col span={24} style={{ paddingLeft: 1 }}>
                         <FilterValue field={field} {...publicProps} />
                       </Col>
@@ -159,6 +167,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                   <IconButton
                     onClick={deleteFilter.bind(null, index)}
                     icon={() => <DeleteOutlined size={15} color={colorVars.thirdLevelText} />}
+                    disabled={isViewLock}
                   />
                 </Col>
               </Row>

@@ -126,8 +126,8 @@ export const MemberList: FC<React.PropsWithChildren<IMemberList>> = props => {
             };
             const identity = getIdentity({
               ...item,
-              isMainAdmin: item.isSubAdmin,
-              isAdmin: item.isPrimary,
+              isMainAdmin: item.isPrimary,
+              isAdmin: item.isSubAdmin,
             });
             return (
               <List.Item 

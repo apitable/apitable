@@ -3,7 +3,6 @@
 
 .kanbanFieldSetting {
   width: 100%;
-  background: var(--defaultBg);
   overflow: hidden;
 }
 
@@ -15,7 +14,7 @@
 .submitButton {
   position: absolute;
   right: 24px;
-  bottom: 0;
+  bottom: 24px;
 }
 
 .slide {
@@ -32,6 +31,10 @@
   cursor: pointer;
   padding-left: 4px;
   margin-right: 8px;
+
+  &.disabled {
+    opacity: 0.25;
+  }
 
   svg {
     vertical-align: -0.125em;
@@ -98,9 +101,16 @@
 .modalWrap {
   position: absolute !important;
 
+
+
   :global {
     .ant-modal-body {
       padding: 24px 0;
+    }
+
+    .ant-modal-content{
+      border: 1px solid var(--borderCommonDefault);
+      box-shadow: unset !important;
     }
   }
 }

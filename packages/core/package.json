@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -87,6 +87,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [
+      "../jest.setup.js",
       "@apitable/i18n-lang"
     ]
   }

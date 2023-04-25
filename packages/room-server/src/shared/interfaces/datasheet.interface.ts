@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField, IMeta } from '@apitable/core';
-import { Store } from 'redux';
+import type { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField, IMeta } from '@apitable/core';
+import type { Store } from 'redux';
+import type { IBaseException } from 'shared/exception/base.exception';
 
 export interface IApiRecord {
   recordId: string;
@@ -142,6 +143,16 @@ export interface IFetchDataOptions {
   meta?: IMeta;
 }
 
+export interface IFetchDataPackOptions extends IFetchDataOptions {
+  isTemplate?: boolean;
+  metadataException?: IBaseException;
+  /**
+  * If true, the returned `resourceIds` will contain foreign datasheet IDs and widget IDs. Otherwise,
+  * `resourceIds` will contain the datasheet ID and foreign datasheet IDs.
+  */
+  isDatasheet?: boolean;
+}
+
 /**
  * origin options of fetching data
  */
@@ -166,10 +177,6 @@ export interface IFetchDataOriginOptions {
    * form flag
    */
   form?: boolean;
-  /**
-   * record IDs
-   */
-  recordIds?: string[];
 }
 
 export interface INodeExtra {

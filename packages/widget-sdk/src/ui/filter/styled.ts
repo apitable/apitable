@@ -2,7 +2,6 @@
 import styled from 'styled-components';
 
 export const GroupWrapperWithButton = styled.div`
-  padding: 8px;
   overflow: auto;
 `;
 
@@ -10,7 +9,7 @@ export const FilterGroupWrap = styled.div`
   display: grid;
   grid-template-columns: [boolean-start] 80px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];
   grid-auto-rows: minmax(32px, auto);
-  gap: 8px;
+  gap: 16px 8px;
   place-items: start stretch;
   align-items: center;
 `;

@@ -44,7 +44,7 @@ const ColorWheel = Object.keys(lightColors).reduce<string[]>((pre, cur) => {
 }, []);
 
 export const getAvatarRandomColor = (str: string) => {
-  const index = str.charCodeAt(Math.floor(str.length / 2));
+  const index = (str + '').charCodeAt(Math.floor(str.length / 2));
   return ColorWheel[index % ColorWheel.length];
 };
 

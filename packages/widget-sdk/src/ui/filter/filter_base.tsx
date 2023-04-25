@@ -1,8 +1,7 @@
 import { Box, Button, IconButton, Typography, useTheme, Select } from '@apitable/components';
 import {
   ConfigConstant, EmptyNullOperand, Field, FieldType, IExpression, IExpressionOperand,
-  IReduxState,
-  OperandTypeEnums, OperatorEnums, Selectors, Strings, t
+  OperandTypeEnums, OperatorEnums, Strings, t
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import produce from 'immer';
@@ -18,6 +17,7 @@ import {
 } from './helper';
 import { FilterButtonWrap, FilterGroupWrap, GroupWrapperWithButton, SubGroupWrap, OperatorWrap } from './styled';
 import { FilterButton } from './filter_button';
+import { getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot } from 'store';
 
 const transformNullFilter = (filter?: IExpression) => {
   return filter == null || isEqual(filter, EmptyNullOperand) ? {
@@ -63,6 +63,7 @@ export const FilterBase = (props: IFilterProps) => {
   const { datasheetId, hasParent = false, onChange, depth = 0 } = props;
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
+  const theme = useTheme();
   const isRoot = !hasParent;
   const updateFilter = useCallback((filter: any) => {
     setFilter(filter);
@@ -117,11 +118,11 @@ export const FilterBase = (props: IFilterProps) => {
   };
 
   const snapshot = useSelector(state => {
-    return Selectors.getSnapshot(state as any as IReduxState, datasheetId)!;
+    return getSnapshot(state, datasheetId)!;
   });
 
   const fieldPermissionMap = useSelector(state => {
-    return Selectors.getFieldPermissionMap(state as any as IReduxState, datasheetId);
+    return getFieldPermissionMap(state, datasheetId);
   });
 
   // Here are all the fields, with or without permissions.
@@ -150,7 +151,7 @@ export const FilterBase = (props: IFilterProps) => {
         </WarningTip>
       </>;
     }
-    const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId) === ConfigConstant.Role.None;
+    const isCryptoField = getFieldRoleByFieldId(fieldPermissionMap, fieldId) === ConfigConstant.Role.None;
     if (isCryptoField) {
       return <>
         <WarningTip>
@@ -214,10 +215,9 @@ export const FilterBase = (props: IFilterProps) => {
                   }}
                 />
                 <IconButton
-                  shape="square"
-                  icon={DeleteOutlined} onClick={() => {
-                    deleteOperandByIndex(index);
-                  }} />
+                  icon={() => <DeleteOutlined size={16} color={theme.color.textCommonTertiary} />}
+                  onClick={() => deleteOperandByIndex(index)} 
+                />
               </React.Fragment>;
             })
           }

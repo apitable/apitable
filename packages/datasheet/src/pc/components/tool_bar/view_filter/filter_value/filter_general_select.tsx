@@ -27,6 +27,7 @@ import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
 import { useThemeColors } from '@apitable/components';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import Trigger from 'rc-trigger';
 import { useRef, useState } from 'react';
 import * as React from 'react';
@@ -51,6 +52,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
   let TriggerComponent: any;
+  const isViewLock = useShowViewLockModal();
 
   switch (field.type) {
     case FieldType.Member:
@@ -112,11 +114,14 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
           destroyPopupOnHide
           popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}}
           popupVisible={visible}
-          onPopupVisibleChange={visible => setVisible(visible)}
-          stretch="width,height"
+          onPopupVisibleChange={visible => {
+            if (isViewLock) return;
+            setVisible(visible);
+          }}
+          stretch='width,height'
           popupStyle={{ height: 'max-content' }}
         >
-          <div className={classNames(styles.displayBox, styles.option)}>
+          <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
             {!cellValue && placeholder ? (
               <div className={styles.placeholder}>{placeholder}</div>
             ) : (
@@ -130,7 +135,8 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div className={classNames(styles.displayBox, styles.option)} onClick={() => setVisible(!visible)}>
+        <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}
+          onClick={() => !isViewLock && setVisible(!visible)}>
           <DisplayComponent cellValue={cellValue as any} field={field as any} />
           <div className={styles.iconArrow}>
             <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
@@ -138,7 +144,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
         </div>
         <Popup
           title={t(Strings.please_choose)}
-          height="90%"
+          height='90%'
           open={visible}
           onClose={() => setVisible(false)}
           className={styles.filterGeneralPopupWrapper}

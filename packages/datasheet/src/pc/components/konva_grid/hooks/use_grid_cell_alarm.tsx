@@ -18,7 +18,7 @@
 
 import { AlarmUsersType, CellType, CollaCommandName, FieldType, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { NotificationOutlined } from '@apitable/icons';
-import { generateTargetName, getDayjs, IScrollState, PointPosition } from 'pc/components/gantt_view';
+import { generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon } from 'pc/components/konva_components';
 import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { resourceService } from 'pc/resource_service';
@@ -159,7 +159,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
               fieldId: pointFieldId,
               alarm: {
                 subtract: '',
-                time: pointField.property.includeTime ? getDayjs(pointCellValue as number).format('HH:mm') : '09:00',
+                alarmAt: pointCellValue,
                 alarmUsers: [{
                   type: AlarmUsersType.Member,
                   data: user?.unitId!

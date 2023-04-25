@@ -36,15 +36,10 @@ const getUuid = () => {
   seed += 1;
   return `apitable-message_${now}_${id}`;
 };
-// const uiPropsMap: Record<React.Key,IMessageUIProps> = {}
 
 const MessageUiContainer = (props: IMessageUIProps) => {
   const [uuids, setUuids] = useState<React.Key[]>([]);
   const [uiPropsMap, setUiPropsMap] = useState<Record<React.Key, IMessageUIProps>>({});
-  // const remove = useRefCallback((removeKey: React.Key) => {
-  //   setUuids(uuids.filter(key => key !== removeKey));
-  //   console.log(uiPropsMap)
-  // });
   const remove = (removeKey: React.Key) => {
     setUuids(uuids => uuids.filter(key => key !== removeKey));
   };
@@ -80,7 +75,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
   }, [props]);
 
   return (
-    <div style={{ position: 'fixed', top: '80px', textAlign: 'center', width: '100%', pointerEvents: 'none' }}>
+    <div style={{ position: 'fixed', top: '80px', textAlign: 'center', width: '100%', pointerEvents: 'none', zIndex: 1000 }}>
       <CSSMotionList keys={uuids} motionName='apitable'>
         {({ key, className: motionClassName }) =>
           <MessageUI

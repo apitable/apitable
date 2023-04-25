@@ -93,7 +93,7 @@ export const MemberEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorPr
         showSearchInput
         showMoreTipButton
         onClickItem={command}
-        multiMode={isMulti}
+        multiMode={Boolean(isMulti)}
         existValues={cellValue as IUnitIds | IUuids | null}
         listData={listData}
         uniqId={isMemberField ? 'unitId' : 'userId'}

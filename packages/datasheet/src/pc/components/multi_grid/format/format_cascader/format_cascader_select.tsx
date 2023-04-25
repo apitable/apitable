@@ -1,6 +1,6 @@
-import { Button, LinkButton, useThemeColors } from '@apitable/components';
+import { Button, LinkButton, useThemeColors, Typography } from '@apitable/components';
 import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { SettingFilled } from '@apitable/icons';
+import { SettingOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Switch } from 'antd';
 import classNames from 'classnames';
@@ -20,9 +20,11 @@ export interface IFormatCascaderProps {
 }
 
 export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascaderProps): JSX.Element => {
+  const { linkedFields, linkedDatasheetId, linkedViewId, showAll } = currentField.property;
+
   const dispatch = useDispatch();
 
-  const linkedDatasheetLoading = useSelector((state: IReduxState) => Selectors.getDatasheetLoading(state, currentField.property.linkedDatasheetId));
+  const linkedDatasheetLoading = useSelector((state: IReduxState) => Selectors.getDatasheetLoading(state, linkedDatasheetId));
 
   const [rulesModalVisible, setRulesModalVisible] = useState(false);
 
@@ -33,75 +35,98 @@ export const FormatCascader = ({ currentField, setCurrentField }: IFormatCascade
       ...currentField,
       property: {
         ...currentField.property,
-        showAll: !currentField.property.showAll,
+        showAll: !showAll,
       },
     });
   };
 
   useMount(() => {
-    const linkedDatasheetId = currentField.property.linkedDatasheetId;
     if (!linkedDatasheetId) return;
 
     dispatch(StoreActions.fetchDatasheet(linkedDatasheetId) as any);
   });
 
+  const ruleBtnDisabled = !linkedDatasheetId ||
+    !linkedViewId ||
+    linkedDatasheetLoading === undefined ||
+    linkedDatasheetLoading;
+
   return (
     <div className={commonStyles.section} style={{ marginBottom: 8 }}>
       <section className={commonStyles.section}>
         <div className={classNames(commonStyles.sectionTitle, styles.sectionTitleWithTip)}>
-          <span>{`1 ${t(Strings.cascader_datasource)}`}</span>
-          <LinkButton color={colors.thirdLevelText} href="" className={styles.tip}>
+          <span>{`1.${t(Strings.cascader_datasource)}`}</span>
+          <LinkButton target="_blank" color={colors.thirdLevelText} href={t(Strings.field_help_cascader)} className={styles.tip}>
             {t(Strings.cascader_how_to_label)}
           </LinkButton>
         </div>
         <div className={styles.datasourceSelectRow}>
           <CascaderDatasourceDatasheetSelect
             currentField={currentField}
-            linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
           />
+        </div>
+        <div className={commonStyles.section}>
+          <div className={commonStyles.sectionTitle}>
+            2.{t(Strings.cascader_select_view)}
+          </div>
           <CascaderDatasourceViewSelect
             currentField={currentField}
             linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
           />
         </div>
-      </section>
-      <section className={commonStyles.section}>
         <div className={commonStyles.sectionTitle}>
-          <span>{`2 ${t(Strings.cascader_rules)}`}</span>
+          <span>{`3.${t(Strings.cascader_rules)}`}</span>
         </div>
         <div>
-          <Button
-            className={styles.rulesButton}
-            disabled={
-              !currentField.property.linkedDatasheetId ||
-              !currentField.property.linkedViewId ||
-              linkedDatasheetLoading === undefined ||
-              linkedDatasheetLoading
-            }
-            onClick={() => setRulesModalVisible(true)}
-            prefixIcon={<SettingFilled />}
-            variant="fill"
-          >
-            <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
-          </Button>
+          {linkedFields?.length > 0 ? (
+            <div className={styles.cascaderRulesShow}>
+              <Typography
+                variant="body3"
+                className={styles.rulesText}
+                ellipsis
+              >
+                {linkedFields.map(lf => lf.name).join('/')}
+              </Typography>
+              <LinkButton
+                className={styles.rulesButton}
+                disabled={ruleBtnDisabled}
+                onClick={() => setRulesModalVisible(true)}
+                underline={false}
+              >
+                <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
+              </LinkButton>
+            </div>
+          ) : (
+            <Button
+              className={styles.rulesButton}
+              disabled={ruleBtnDisabled}
+              onClick={() => setRulesModalVisible(true)}
+              prefixIcon={<SettingOutlined />}
+              variant="fill"
+            >
+              <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
+            </Button>
+          )}
         </div>
       </section>
-      {currentField.property.linkedDatasheetId && currentField.property.linkedViewId && currentField.property.linkedFields?.length > 0 && (
+      {linkedDatasheetId && linkedViewId && linkedFields?.length > 0 && (
         <section className={commonStyles.section} style={{ marginBottom: 0 }}>
           <div className={classNames(commonStyles.sectionTitle, commonStyles.sub)} style={{ marginBottom: 0 }}>
-            <Switch checked={currentField.property.showAll} onChange={onSwitchShowLastField} size="small" style={{ marginRight: 8 }} />
+            <Switch checked={showAll} onChange={onSwitchShowLastField} size="small" style={{ marginRight: 8 }} />
             {t(Strings.cascader_show_all)}
           </div>
         </section>
       )}
-      <CascaderRulesModal
-        visible={rulesModalVisible}
-        setVisible={setRulesModalVisible}
-        currentField={currentField}
-        setCurrentField={setCurrentField}
-      />
+      {rulesModalVisible && (
+        <CascaderRulesModal
+          visible={rulesModalVisible}
+          setVisible={setRulesModalVisible}
+          currentField={currentField}
+          setCurrentField={setCurrentField}
+        />
+      )}
     </div>
   );
 };

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RadioGroupContext } from '../context';
 import { IRadioGroup } from './interface';
 import { RadioGroupStyled } from './styled';
@@ -28,9 +28,13 @@ export const RadioGroup = React.forwardRef(({
   disabled,
   onChange,
   options,
+  value: _value,
   ...restProps
 }: IRadioGroup, ref: React.Ref<HTMLDivElement>) => {
-  const [value, setValue] = React.useState(() => restProps.value);
+  const [value, setValue] = React.useState(() => _value);
+  useEffect(() => {
+    setValue(_value);
+  }, [_value]);
   const handleChange = (event: React.ChangeEvent<any>) => {
     const targetValue = event.target.value;
     setValue(targetValue);

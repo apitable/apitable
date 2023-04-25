@@ -26,7 +26,7 @@ import { CascaderVo } from '../vos/cascader.vo';
 import { DatasheetFieldCascaderSnapshotService } from '../services/datasheet.field.cascader.snapshot.service';
 import { CascaderSnapshotVo } from '../vos/cascader.snapshot.vo';
 import { CascaderSnapshotQueryRo } from '../ros/cascader.snapshot.query.ro';
-import { CascaderSnapshotParam } from '../ros/cascader.snapshot.param';
+import { CascaderSnapshotParam, GetCascaderSnapshotParam } from '../ros/cascader.snapshot.param';
 import { CascaderSnapshotPutRo } from '../ros/cascader.snapshot.put.ro';
 import { NodeService } from 'node/services/node.service';
 
@@ -52,21 +52,17 @@ export class CascaderController {
     return await this.datasheetFieldCascaderService.cascaderPack({ cookie, userId }, param.datasheetId, query.linkedViewId, query.linkedFieldIds);
   }
 
-  @Get(['spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot'])
+  @Get(['datasheets/:datasheetId/fields/:fieldId/cascader-snapshot'])
   @ApiOperation({
     summary: 'Get datasheet snapshot cascader data struct',
   })
   @ApiProduces('application/json')
   @ApiOkResponse({ type: CascaderSnapshotVo })
   public async cascaderSnapshot(
-    @Headers('cookie') cookie: string,
-    @Param() param: CascaderSnapshotParam,
+    @Param() param: GetCascaderSnapshotParam,
     @Query() query: CascaderSnapshotQueryRo
   ): Promise<CascaderSnapshotVo> {
-    const { userId } = await this.userService.getMe({ cookie });
-    await this.nodeService.checkUserForNode(userId, param.datasheetId);
     return await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      spaceId: param.spaceId,
       datasheetId: param.datasheetId,
       fieldId: param.fieldId,
       linkedFieldIds: query.linkedFieldIds,

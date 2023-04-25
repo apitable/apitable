@@ -128,7 +128,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     const start = Date.now();
     const result = await promise;
     const end = Date.now();
-    this.logger.log(`${key} TIME [${func}]: ${end - start}ms`, {
+    this.logger.info(`${key} TIME [${func}]: ${end - start}ms`, {
       logger: key,
       func: func,
       time: end - start,

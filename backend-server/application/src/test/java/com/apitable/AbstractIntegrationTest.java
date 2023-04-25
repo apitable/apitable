@@ -18,18 +18,7 @@
 
 package com.apitable;
 
-import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.apitable.auth.service.IAuthService;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.internal.service.IFieldService;
@@ -44,7 +33,6 @@ import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.config.ServerConfig;
-import com.apitable.shared.config.initializers.EnterpriseEnvironmentInitializers;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.space.service.IInvitationService;
@@ -55,10 +43,15 @@ import com.apitable.user.service.IUserService;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.service.INodeService;
-
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,13 +59,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(classes = { Application.class })
-@ContextConfiguration(initializers = EnterpriseEnvironmentInitializers.class)
-@AutoConfigureMockMvc
-@ExtendWith({ MockitoExtension.class })
+@SpringBootTest(classes = Application.class)
 @TestPropertySource(value = {
-        "classpath:test.properties",
-}, properties = { "TEST_ENABLED=true" })
+    "classpath:test.properties", "classpath:spring.properties"
+}, properties = {"TEST_ENABLED=true"})
+@ContextConfiguration
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
@@ -175,11 +166,15 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected UserEntity createUserRandom() {
-        return createUserWithEmail(IdWorker.getIdStr() + "@apitable.com");
+        return createUserWithEmailAndPassword(IdWorker.getIdStr() + "@apitable.com");
     }
 
     protected UserEntity createUserWithEmail(String email) {
         return iUserService.createUserByEmail(email);
+    }
+
+    protected UserEntity createUserWithEmailAndPassword(String email) {
+        return iUserService.createUserByEmail(email, "123456");
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
@@ -224,35 +219,40 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         Long userId = user.getId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createDstId())
-                .type(NodeType.DATASHEET.getNodeType())
-                .build());
-        String token = invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+            .spaceId(spaceId)
+            .newNodeId(IdUtil.createDstId())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build());
+        String token =
+            invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         return MockInvitation.builder()
-                .token(token)
-                .nodeId(nodeId)
-                .userId(userId)
-                .spaceId(spaceId)
-                .memberId(iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId)).build();
+            .token(token)
+            .nodeId(nodeId)
+            .userId(userId)
+            .spaceId(spaceId)
+            .memberId(iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId)).build();
     }
 
     protected Long addRoleMembers(MockUserSpace userSpace) {
         UserEntity user = iUserService.createUserByEmail("body@apitable.com");
         Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
-        Long memberId = iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
+        Long memberId =
+            iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
         RoleMemberUnitRo rootTeamUnit = new RoleMemberUnitRo();
         RoleMemberUnitRo adminUnit = new RoleMemberUnitRo();
         RoleMemberUnitRo memberUnit = new RoleMemberUnitRo();
         rootTeamUnit.setId(rootTeamId);
         rootTeamUnit.setType(1);
-        Long adminMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        Long adminMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
+            userSpace.getSpaceId());
         adminUnit.setId(adminMemberId);
         adminUnit.setType(3);
         memberUnit.setId(memberId);
         memberUnit.setType(3);
-        Long allPart = iRoleService.createRole(userSpace.getUserId(), userSpace.getSpaceId(), "apitable boys");
-        iRoleMemberService.addRoleMembers(allPart, CollUtil.newArrayList(rootTeamUnit, adminUnit, memberUnit));
+        Long allPart =
+            iRoleService.createRole(userSpace.getUserId(), userSpace.getSpaceId(), "apitable boys");
+        iRoleMemberService.addRoleMembers(allPart,
+            CollUtil.newArrayList(rootTeamUnit, adminUnit, memberUnit));
         return allPart;
     }
 }

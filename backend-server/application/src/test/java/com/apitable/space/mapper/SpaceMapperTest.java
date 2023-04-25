@@ -18,22 +18,19 @@
 
 package com.apitable.space.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.BaseSpaceInfoDTO;
 import com.apitable.space.dto.SpaceAdminInfoDTO;
 import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.entity.SpaceEntity;
-import org.junit.jupiter.api.Disabled;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Disabled
 public class SpaceMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
@@ -43,7 +40,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/space-data.sql")
     void testSelectSpaceNameBySpaceId() {
         String name = spaceMapper.selectSpaceNameBySpaceId("spc41");
-        assertThat(name).isEqualTo("41'space");
+        assertThat(name).isEqualTo("41 Space");
     }
 
     @Test
@@ -92,7 +89,8 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/space-data.sql")
     void testSelectPropsBySpaceId() {
         String props = spaceMapper.selectPropsBySpaceId("spc41");
-        assertThat(props).isEqualTo("{\"joinable\": 1, \"invitable\": 1, \"mobileShowable\": 0, \"nodeExportable\": 0, \"watermarkEnable\": 0}");
+        assertThat(props).isEqualTo(
+            "{\"joinable\": 1, \"invitable\": 1, \"mobileShowable\": 0, \"nodeExportable\": 0, \"watermarkEnable\": 0}");
     }
 
     @Test
@@ -112,7 +110,8 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/space-data.sql")
     void testSelectBaseSpaceInfo() {
-        List<BaseSpaceInfoDTO> entities = spaceMapper.selectBaseSpaceInfo(CollUtil.newArrayList("spc41"));
+        List<BaseSpaceInfoDTO> entities =
+            spaceMapper.selectBaseSpaceInfo(CollUtil.newArrayList("spc41"));
         assertThat(entities).isNotEmpty();
     }
 

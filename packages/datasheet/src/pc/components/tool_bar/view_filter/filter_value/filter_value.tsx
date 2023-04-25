@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { assertNever, Field, FieldType, FOperator, IField } from '@apitable/core';
+import { TextInput, WrapperTooltip } from '@apitable/components';
+import { assertNever, Field, FieldType, FOperator, IField, Strings, t } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
-import { Input } from 'antd';
 import produce from 'immer';
 import { get, isEqual } from 'lodash';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { IFilterValueProps } from '../interface';
@@ -32,12 +33,15 @@ import { FilterOptions } from './filter_options';
 import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
+import { FilterCascader } from './filter_cascader';
 
 export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
+  console.log('condition', condition);
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
+  const isViewLock = useShowViewLockModal();
 
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {
     changeFilter && changeFilter(value => {
@@ -114,14 +118,27 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           />
         );
       case EditorType.Text:
+        if (field.type === FieldType.Cascader) {
+          return (
+            <FilterCascader
+              field={field}
+              onChange={(value) => {
+                setValue(value ? value.join('/') : '' );
+                submitFilterValue(value ? [value.join('/')] : null);
+              }}
+              value={[value]}
+            />
+          );
+        }
         return (
           (
             <div className={styles.inputContainer}>
-              <Input
+              <TextInput
                 value={value}
                 className={styles.input}
                 onChange={inputChange}
                 suffix={''}
+                disabled={isViewLock}
               />
             </div>
           )
@@ -185,8 +202,10 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
   const isDisplay = ![FOperator.IsEmpty, FOperator.IsNotEmpty, FOperator.IsRepeat].includes(condition.operator);
 
   return (
-    <div className={styles.filterValue} style={style}>
-      {isDisplay && Editor(editorType)}
-    </div>
+    <WrapperTooltip wrapper={isViewLock && editorType !== EditorType.DateTime} tip={t(Strings.view_lock_setting_desc)}>
+      <div className={styles.filterValue} style={style}>
+        {isDisplay && Editor(editorType)}
+      </div>
+    </WrapperTooltip>
   );
 };

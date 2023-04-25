@@ -40,7 +40,7 @@ export const widgetMap = {
   },
   string: {
     text: 'TextWidget',
-    // password: "PasswordWidget",
+    password: 'PasswordWidget',
     // email: "EmailWidget",
     // hostname: "TextWidget",
     // ipv4: "TextWidget",

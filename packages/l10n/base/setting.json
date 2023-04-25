@@ -1,0 +1,479 @@
+{
+	"share_iframe_brand_dark": {
+		"value": "space/2022/11/28/94e87bd1fd25472e99556c9b5f72c62e?attname=logo-reverse.svg"
+	},
+	"integration_wecom_bind_help_center_url": {
+		"value": "/help"
+	},
+	"share_iframe_brand": {
+		"value": "space/2021/12/09/3b09b857cee04a12b6b02cd63bb90a81?attname=%E7%BB%B4%E6%A0%BC%E8%A1%A8logo.svg"
+	},
+	"server_error_page_bg": {
+		"value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
+	},
+	"page_apply_logout": {
+		"value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
+	},
+	"education_url": {
+		"value": "https://edu.vika.cn"
+	},
+	"agree_terms_of_service": {
+		"value": "75"
+	},
+	"widget_center_help_link": {
+		"value": "#"
+	},
+	"grades_info": {
+		"value": "/pricing/"
+	},
+	"permission_config_in_workbench_page": {
+		"value": "[{\"key\":0,\"title\":\"表格内的操作权限\",\"detail\":[{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删维格列\",\"permissions\":[0,1]},{\"title\":\"编辑维格列属性（列名/类型/描述）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏）\",\"permissions\":[0,1]},{\"title\":\"编辑行（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"将继承切换为指定权限\",\"permissions\":[0,1]},{\"title\":\"将指定切换为继承权限\",\"permissions\":[0]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]"
+	},
+	"introduction_video": {
+		"value": "space/2022/04/14/aff988f37b6849b1bf438a73d8721ae2"
+	},
+	"official_avatar": {
+		"value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
+	},
+	"_version_type": {
+		"value": "local"
+	},
+	"billing_default_billing_period": {
+		"value": "annual"
+	},
+	"billing_default_seats": {
+		"value": "50"
+	},
+	"billing_default_grade": {
+		"value": "silver"
+	},
+	"_build_branch": {
+		"value": "local"
+	},
+	"_build_id": {
+		"value": "0"
+	},
+	"activity_center_end_time": {
+		"value": "2021-05-30 19:30"
+	},
+	"activity_train_camp_start_time": {
+		"value": "2022-03-31 00:00"
+	},
+	"activity_center_url": {
+		"value": "https://mp.weixin.qq.com/s/s2IRoAMHzsGq697TP0CCrQ"
+	},
+	"activity_train_camp_end_time": {
+		"value": "2022-08-31 23:59"
+	},
+	"page_apply_logout_bg": {
+		"value": "space/2022/01/11/35106645c2614d11bea689a540d13787"
+	},
+	"api_apifox_get_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/api-13867447-run?path[datasheetId]=${datasheetId}&query[viewId]=${viewId}&environment[token]=${token}"
+	},
+	"api_apiffox_post_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/api-13867671-run?path[datasheetId]=${datasheetId}&query[viewId]=${viewId}&environment[token]=${token}&environment[body]=${body}"
+	},
+	"api_apiffox_patch_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/api-13867672-run?path[datasheetId]=${datasheetId}&query[viewId]=${viewId}&environment[token]=${token}&environment[body]=${body}"
+	},
+	"api_apifox_delete_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/api-13867673-run?path[datasheetId]=${datasheetId}&query[viewId]=${viewId}&query[recordIds]=${recordId}&environment[token]=${token}"
+	},
+	"api_apifox_upload_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/api-13867674-run?path[datasheetId]=${datasheetId}&environment[token]=${token}"
+	},
+	"datasheet_max_view_count_per_sheet": {
+		"value": "60"
+	},
+	"space_setting_upgrade": {
+		"value": "true"
+	},
+	"field_cascade": {
+		"value": "true"
+	},
+	"space_setting_invite_user_to_get_v_coins": {
+		"value": "true"
+	},
+	"user_setting_account_bind_qq": {
+		"value": "true"
+	},
+	"user_setting_account_bind_wechat": {
+		"value": "true"
+	},
+	"user_setting_account_bind_dingtalk": {
+		"value": "true"
+	},
+	"user_setting_account_bind": {
+		"value": "true"
+	},
+	"automation_action_send_msg_to_dingtalk": {
+		"value": "true"
+	},
+	"automation_action_send_msg_to_feishu": {
+		"value": "true"
+	},
+	"automation_action_send_msg_to_wecom": {
+		"value": "true"
+	},
+	"assistant": {
+		"value": "true"
+	},
+	"help_contact_us_type": {
+		"value": "qrcode"
+	},
+	"help_download_app": {
+		"value": "true"
+	},
+	"help_join_chatgroup_url": {
+		"value": "https://vika.cn/chatgroup/"
+	},
+	"help_official_website_url": {
+		"value": "vika.cn?home=1"
+	},
+	"help_assistant": {
+		"value": "true"
+	},
+	"space_setting_integrations_feishu": {
+		"value": "true"
+	},
+	"space_setting_integrations_dingtalk": {
+		"value": "true"
+	},
+	"space_setting_integrations_wecom": {
+		"value": "true"
+	},
+	"space_setting_integrations_preview_office_file": {
+		"value": "true"
+	},
+	"user_guide_welcome_template1_icon": {
+		"value": "现有的 icon 链接"
+	},
+	"user_guide_welcome_template2_icon": {
+		"value": "现有的 icon 链接"
+	},
+	"user_guide_welcome_template3_icon": {
+		"value": "现有的 icon 链接"
+	},
+	"assistant_ai_course_url": {
+		"value": "https://vika.cn/ai-course/"
+	},
+	"datasheet_unlogin_user_avatar": {
+		"value": "space/2020/09/11/744b39b7ed5240e1b257553f683ed6cd"
+	},
+	"api_times_per_hour": {
+		"value": "0"
+	},
+	"api_times_per_day": {
+		"value": "1000000"
+	},
+	"api_times_per_minute": {
+		"value": "100"
+	},
+	"api_times_per_second": {
+		"value": "10"
+	},
+	"integration_apifox_url": {
+		"value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
+	},
+	"view_mirror_list_empty_img": {
+		"value": "space/2022/05/23/d880e95a4a204492b20d8725c61c998c"
+	},
+	"view_calendar_guide_create": {
+		"value": "space/2021/08/16/bda3a4c51ebc444ea9f26d4573987257"
+	},
+	"view_calendar_guide_no_permission": {
+		"value": "space/2022/05/23/4206adbf0aaa43bf90342fd0e568dc73"
+	},
+	"view_calendar_guide_video": {
+		"value": "space/2021/08/06/e3a4e480768c4b4d8d01ea4a269bf2bb"
+	},
+	"login_join_chatgroup_url": {
+		"value": "https://vika.cn/chatgroup/"
+	},
+	"user_setting_default_avatar": {
+		"value": "space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e"
+	},
+	"help_developers_center_url": {
+		"value": "https://vika.cn/developers"
+	},
+	"integration_dingtalk_upgrade_url": {
+		"value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
+	},
+	"emoji_apple_32": {
+		"value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"
+	},
+	"emoji_apple_64": {
+		"value": "space/2021/03/23/c88653f7b7424d10bef058c345f6df6d"
+	},
+	"billing_enterprise_qr_code": {
+		"value": "space/2022/02/16/cf2f386d300142a19268c487b351d6bb"
+	},
+	"integration_feishu_help": {
+		"value": "vika维格表 使用指南"
+	},
+	"integration_feishu_manage_open_url": {
+		"value": "https://applink.feishu.cn/client/bot/open"
+	},
+	"integration_feishu_seats_form_url": {
+		"value": "https://u.vika.cn/pb7cj"
+	},
+	"integration_feishu_upgrade_url": {
+		"value": "https://feishu.cn/admin/appCenter/manage/cli_9f614b454434500e"
+	},
+	"integration_feishu_upgrade_url_dev": {
+		"value": "https://feishu.cn/admin/appCenter/manage/cli_a28611a8b9e2900d"
+	},
+	"integration_feisu_register_now_url": {
+		"value": "https://u.vika.cn/qmdp3"
+	},
+	"workbench_folder_default_cover_list": {
+		"value": "space/2021/12/29/7306be86fc6d4cac9d8de9b4a787b1fa,space/2021/12/29/58073bbfe0f64dc7bd2f5f44a123c172,space/2021/12/29/e36e93966aa049e1ba7fd53907c2265f,space/2021/12/29/ebd570b6ee3b429f8c2e51e1b1df6657,space/2021/12/29/7eb38331f61240dcb74b1fce3a90c6bc,space/2021/12/29/a8c5df5eba2e4c07a78bdca6b9613579"
+	},
+	"view_form_guide_video": {
+		"value": "space/2020/12/25/f0ecc536d7324df888d165cb73cd22c6"
+	},
+	"view_gallery_guide_video": {
+		"value": "space/2020/09/15/4383ec2f8eb041599396df0f18d99f5a"
+	},
+	"view_gantt_guide_video": {
+		"value": "space/2021/06/02/8bd6c5263ba444aabc138ed051b83c8c"
+	},
+	"view_grid_guide_video": {
+		"value": "space/2020/09/16/77e941353d8141b69f684e2592350ec7"
+	},
+	"integration_wecom_custom_subdomain_help_url": {
+		"value": "https://help.vika.cn/docs/guide/intro_custom_subdomain"
+	},
+	"login_icp1_url": {
+		"value": "https://beian.miit.gov.cn/"
+	},
+	"login_icp2_url": {
+		"value": "http://www.beian.gov.cn/portal/registerSystemInfo"
+	},
+	"view_kanban_guide_video": {
+		"value": "space/2020/09/11/c964bcf3ec48458dae7fbdc55a59856b"
+	},
+	"space_setting_list_of_enable_all_lab_features": {
+		"value": "[\"spcXXXXX\"]"
+	},
+	"integration_yozosoft_help_url": {
+		"value": "https://help.vika.cn/docs/guide/integration-yozosoft"
+	},
+	"integration_dingtalk_help_url": {
+		"value": "https://help.vika.cn/docs/guide/integration-dingtalk"
+	},
+	"integration_dingtalk_da": {
+		"value": "https://h5.dingtalk.com/dingtalk-da/index.html"
+	},
+	"integration_feishu_help_url": {
+		"value": "https://help.vika.cn/docs/guide/integration-lark"
+	},
+	"login_privacy_policy": {
+		"value": "维格隐私政策"
+	},
+	"login_service_agreement": {
+		"value": "维格服务协议"
+	},
+	"integration_wecom_help_url": {
+		"value": "https://help.vika.cn/docs/guide/integration-wecom"
+	},
+	"integration_wecom_shop_cms": {
+		"value": "https://help.vika.cn/docs/guide/integration-wecom"
+	},
+	"system_configuration_minmum_version_require": {
+		"value": "0.5.0"
+	},
+	"delete_account_step1_cover": {
+		"value": "space/2022/01/11/05fb6ad3c03b4b4da95156313b5d7777"
+	},
+	"delete_account_step2_email_icon": {
+		"value": "space/2022/01/11/b0d06adfb14d457b9db266349edbf656"
+	},
+	"delete_account_step2_mobile_icon": {
+		"value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
+	},
+	"workbench_no_permission_img": {
+		"value": "/space/2022/09/07/6e95e804d5f44fe4a0dec81d228b0286?attname=filecannotbeaccessed%402x.png"
+	},
+	"workbench_max_node_number_show_invite_and_new_node": {
+		"value": "13"
+	},
+	"view_architecture_empty_record_list_img": {
+		"value": "space/2021/11/19/73c1cda56b3d4d448416d9b69c757598"
+	},
+	"view_architecture_empty_graphics_img": {
+		"value": "space/2021/11/19/b1c660a317fb4068bd312d16671308a1"
+	},
+	"view_architecture_guide_video": {
+		"value": "space/2021/11/18/428b94bb262845afabf46efff8e082b5"
+	},
+	"billing_pay_contact_us": {
+		"value": "space/2022/02/17/b32ecd3a5dcb43a1add4d320632c6d2a"
+	},
+	"billing_pay_success_qr_code": {
+		"value": "space/2022/02/17/b7cd077fca35444aa02fba4d11f2c1ba"
+	},
+	"login_private_deployment_form_url": {
+		"value": "https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL"
+	},
+	"help_product_roadmap_url": {
+		"value": "https://bbs.vika.cn/page/product_roadmap"
+	},
+	"assistant_release_history_url": {
+		"value": "https://bbs.vika.cn/column/details/13"
+	},
+	"space_setting_role_empty_img": {
+		"value": "space/2022/08/03/3fbdff65d66547a8ab796e1b808d45b0"
+	},
+	"help_solution_url": {
+		"value": "https://vika.cn/solutions/"
+	},
+	"help_subscribe_demonstrate_form_url": {
+		"value": "https://vika.cn/share/shrFVCtHXQwYm3DVgNn91"
+	},
+	"help_user_feedback_url": {
+		"value": "https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP"
+	},
+	"system_configuration_version": {
+		"value": "0.5.0"
+	},
+	"experimental_features_unsynchronized_view_intro_img": {
+		"value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
+	},
+	"help_video_tutorials_url": {
+		"value": "https://edu.vika.cn"
+	},
+	"help_user_community_url": {
+		"value": "{\"dev\":\"https://bbs.vika.cn\",\"prod\":\"https://bbs.vika.cn\"}"
+	},
+	"help_user_community_url_dev": {
+		"value": "https://bbs.vika.cn"
+	},
+	"help_user_community_url_prod": {
+		"value": "https://bbs.vika.cn"
+	},
+	"integration_wecom_bind_help_center": {
+		"value": "/help"
+	},
+	"integration_wecom_bind_success_icon_img": {
+		"value": "/space/2021/09/16/124e249b651f4934949ae39839e3ee77"
+	},
+	"integration_wecom_login_qrcode_js": {
+		"value": "http://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.4.js"
+	},
+	"integration_wecom_qrcode_css": {
+		"value": "/space/2021/08/02/6b5374b4b3ba42aba69022ae2b13a577"
+	},
+	"integration_wecom_shop_corpid_dev": {
+		"value": "ww11761d11177ae10b"
+	},
+	"integration_wecom_shop_corpid_prod": {
+		"value": "ww11761d11177ae10b"
+	},
+	"integration_wecom_shop_corpid_staging": {
+		"value": "ww11761d11177ae10b"
+	},
+	"integration_wecom_shop_corpid_test": {
+		"value": "ww11761d11177ae10b"
+	},
+	"integration_wecom_shop_suiteid_dev": {
+		"value": "wwc98ec5fc01dfdaeb"
+	},
+	"integration_wecom_shop_suiteid_prod": {
+		"value": "ww0506baa4d734acb9"
+	},
+	"integration_wecom_shop_suiteid_staging": {
+		"value": "ww514bd11dfd0f294f"
+	},
+	"integration_wecom_shop_suiteid_test": {
+		"value": "ww3dd616a360b3ce97"
+	},
+	"integration_wecom_upgrade_guide_url": {
+		"value": "/wecom-integration/#upgrade"
+	},
+	"user_guide_welcome_introduction_video": {
+		"value": "{ \"title\":\"玩转一张维格表\", \"video\":\"space/2020/12/21/cb7bdf6fe22146068111d46915587fb2\", \"autoPlay\":true }"
+	},
+	"user_guide_welcome_template1_url": {
+		"value": "/template/tpchFkNFaaJMC/tplDYzZqqwpRQ"
+	},
+	"user_guide_welcome_template2_url": {
+		"value": "/template/tpc76og2J6D8p/tplDBUKmXFo7c"
+	},
+	"user_guide_welcome_template3_url": {
+		"value": "/template/tpcMixDKM5f3s/tplaglc40487X"
+	},
+	"user_guide_welcome_developer_center_url": {
+		"value": "/help/developers/"
+	},
+	"user_guide_welcome_quick_start_video": {
+		"value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
+	},
+	"user_guide_welcome_what_is_datasheet_video": {
+		"value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"
+	},
+	"widget_center_feature_not_unturned_on_img": {
+		"value": "/space/2021/12/27/cc7c3d706c8e4443a0e9b79673a078e0"
+	},
+	"widget_center_space_widget_empty_img": {
+		"value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
+	},
+	"widget_cli_miumum_version": {
+		"value": "0.0.1"
+	},
+	"widget_default_cover_img": {
+		"value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
+	},
+	"widget_panel_empty_img": {
+		"value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
+	},
+	"widget_custom_widget_empty_img": {
+		"value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
+	},
+	"assistant_activity_train_camp_end_time": {
+		"value": "2022-08-31 23:59"
+	},
+	"assistant_activity_train_camp_start_time": {
+		"value": "2022-03-31 00:00"
+	},
+	"login_agree_terms_of_service": {
+		"value": "75"
+	},
+	"login_introduction_video": {
+		"value": "space/2022/04/14/aff988f37b6849b1bf438a73d8721ae2"
+	},
+	"user_account_deleted_img": {
+		"value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
+	},
+	"user_account_deleted_bg_img": {
+		"value": "space/2022/01/11/35106645c2614d11bea689a540d13787"
+	},
+	"system_configuration_server_error_bg_img": {
+		"value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
+	},
+	"system_configuration_logo_with_name_white_font": {
+		"value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
+	},
+	"apitable_login_logo": {
+		"value": "space/2022/12/05/1e36972963f64c85a7ce998c6abc075d"
+	},
+	"twitter_icon": {
+		"value": "space/2022/12/05/09cc01ee1f894fb2923bd08b715226b6"
+	},
+	"email_icon": {
+		"value": "space/2022/12/05/0d3881bd9d3c4be59845739090d06051"
+	},
+	"linkedin_icon": {
+		"value": "space/2022/12/05/762594b3353141f6a7a83d10a3e47ea4"
+	},
+	"github_icon": {
+		"value": "space/2022/12/14/08393af8ffc84039a75f99b8ff01b61f"
+	},
+	"quick_search_default_light": {
+		"value": "space/2023/03/15/0fd81978a8c04d96a483f4c785736b62"
+	},
+	"quick_search_default_dark": {
+		"value": "space/2023/03/15/42dc46843161478fb56d27efb43a50b8"
+	}
+}

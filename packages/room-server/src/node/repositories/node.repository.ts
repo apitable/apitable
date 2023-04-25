@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { NodeBaseInfo } from 'database/interfaces';
 import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
 import { EntityRepository, Repository } from 'typeorm';
-import { NodeBaseInfo } from '../../database/interfaces';
 
 @EntityRepository(NodeEntity)
 export class NodeRepository extends Repository<NodeEntity> {

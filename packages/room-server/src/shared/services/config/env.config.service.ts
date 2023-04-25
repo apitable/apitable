@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { EnvConfigKey } from '../../common';
 import { IActuatorConfig, IBaseRateLimiter, IOssConfig, IRateLimiter, IServerConfig } from '../../interfaces';
 import { ConfigStoreInMemory } from './config.store';
@@ -25,11 +25,11 @@ import { ConfigStoreInMemory } from './config.store';
  * environment variables, store them in the memory
  */
 @Injectable()
-export class EnvConfigService implements OnApplicationBootstrap, OnApplicationShutdown {
+export class EnvConfigService implements OnApplicationShutdown {
 
   private configStore: ConfigStoreInMemory = new ConfigStoreInMemory();
 
-  onApplicationBootstrap() {
+  constructor() {
     // server constants configuration
     const server: IServerConfig = {
       url: process.env.BACKEND_BASE_URL!,

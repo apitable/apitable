@@ -206,7 +206,7 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
                   </ModalHeader>
                 }
 
-                <Box padding={'0 24px 24px 24px'} style={bodyStyle}>
+                <Box padding={'0 24px'} style={bodyStyle}>
                   {props.children}
                 </Box>
 

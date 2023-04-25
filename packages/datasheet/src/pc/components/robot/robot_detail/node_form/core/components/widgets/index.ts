@@ -28,7 +28,7 @@ import { CheckboxesWidget } from './CheckboxesWidget';
 // import EmailWidget from "./EmailWidget";
 // import FileWidget from "./FileWidget";
 import HiddenWidget from './HiddenWidget';
-// import PasswordWidget from "./PasswordWidget";
+import PasswordWidget from './PasswordWidget';
 // import RadioWidget from "./RadioWidget";
 // import RangeWidget from "./RangeWidget";
 import SelectWidget from './SelectWidget';
@@ -40,7 +40,7 @@ import { RadioGroupWidget } from './RadioGroupWidget';
 
 export default {
   BaseInput,
-  // PasswordWidget,
+  PasswordWidget,
   // RadioWidget,
   // UpDownWidget,
   // RangeWidget,

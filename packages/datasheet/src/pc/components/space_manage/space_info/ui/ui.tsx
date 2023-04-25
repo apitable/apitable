@@ -42,7 +42,7 @@ export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
 
   const handleClick = () => {
     if (adData) {
-      window.open(props.linkUrl || adData.linkUrl, '_blank');
+      window.open(props.linkUrl || adData.linkUrl.text, '_blank');
     }
   };
 

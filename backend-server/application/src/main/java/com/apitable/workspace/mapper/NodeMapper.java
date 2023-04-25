@@ -29,7 +29,6 @@ import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.RubbishNodeVo;
-import com.apitable.workspace.vo.SimpleSortableNodeInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -100,8 +99,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     String selectRootNodeIdBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * Fuzzy search node, return node ID
-     * the root node cannot be searched.
+     * Fuzzy search node, return node ID the root node cannot be searched.
      *
      * @param spaceId  space id
      * @param likeName keyword
@@ -111,8 +109,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
         @Param("likeName") String likeName);
 
     /**
-     * Fuzzy search node
-     * does not contain root node and template node.
+     * Fuzzy search node does not contain root node and template node.
      *
      * @param spaceId  space id
      * @param likeName keyword
@@ -142,8 +139,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
         @Param("memberId") Long memberId);
 
     /**
-     * node basic information
-     * no logical deletion judgment.
+     * node basic information no logical deletion judgment.
      *
      * @param nodeId node id
      * @return BaseNodeInfo
@@ -192,14 +188,6 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return children node
      */
     List<String> selectSubNodeIds(@Param("parentId") String parentId);
-
-    /**
-     * Query the ID of the direct child node.
-     *
-     * @param parentId parent node id
-     * @return children node
-     */
-    List<SimpleSortableNodeInfo> selectSubNodeInfo(@Param("parentId") String parentId);
 
     /**
      * share tree view according to node ids query.
@@ -304,7 +292,8 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param isRubbish flag of node whether rubbish (yes for deletion, no for recovery)
      * @return affected rows
      */
-    int updateIsRubbishByNodeIdIn(@Param("userId") Long userId, @Param("nodeIds") Collection<String> nodeIds,
+    int updateIsRubbishByNodeIdIn(@Param("userId") Long userId,
+        @Param("nodeIds") Collection<String> nodeIds,
         @Param("isRubbish") Boolean isRubbish);
 
     /**
@@ -327,7 +316,8 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
         @Param("nodeId") String nodeId, @Param("delPath") String delPath);
 
     /**
-     * According to the old front node ID, modify the new front node ID (self-associated real-time).
+     * According to the old front node ID, modify the new front node ID (self-associated
+     * real-time).
      *
      * @param preNodeId new pre node id
      * @param parentId  parent node id
@@ -418,7 +408,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     /**
      * Query node information with permission.
      *
-     * @param nodeId    nodeId
+     * @param nodeId nodeId
      * @return SimpleNodeInfo
      * @author Chambers
      */
@@ -435,7 +425,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     /**
      * Batch query node base info.
      *
-     * @param nodeIds node ids
+     * @param nodeIds       node ids
      * @param ignoreRubbish ignore rubbish status(no require.default:false)
      * @return List<NodeBaseInfoDTO>
      */
@@ -445,8 +435,8 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     /**
      * Query all parent node id list.
      *
-     * @param nodeIds       node ids
-     * @param includeRoot   whether include root node
+     * @param nodeIds     node ids
+     * @param includeRoot whether include root node
      * @return List<NodeBaseInfoDTO>
      */
     List<NodeBaseInfoDTO> selectAllParentNodeIds(@Param("nodeIds") List<String> nodeIds,
@@ -568,5 +558,5 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return Integer
      */
     String selectNodeIdByParentIdAndNodeName(@Param("parentId") String parentId,
-                                             @Param("nodeName") String nodeName);
+        @Param("nodeName") String nodeName);
 }

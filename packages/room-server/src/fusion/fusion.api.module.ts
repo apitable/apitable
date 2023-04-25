@@ -19,7 +19,8 @@
 import { CacheModule, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  AttachmentField, AutoNumberField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
+  AttachmentField, AutoNumberField,
+  CascaderField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
   LastModifiedByField, LastModifiedTimeField, LinkField, LookUpField, MemberField, MultiSelectField, NumberField, PercentField, PhoneField,
   RatingField, SingleSelectField, SingleTextField, TextField, UrlField,
 } from 'fusion/field';
@@ -41,6 +42,8 @@ import { FusionApiFilter } from './filter/fusion.api.filter';
 import { UserModule } from 'user/user.module';
 import { NodeModule } from 'node/node.module';
 import { UnitModule } from 'unit/unit.module';
+import { FusionApiV2Controller } from './fusion.api.v2.controller';
+import { FusionNodeApiService } from './services/fusion.node.api.service';
 
 @Module({
   imports: [
@@ -55,10 +58,11 @@ import { UnitModule } from 'unit/unit.module';
       ApiUsageRepository,
     ]),
   ],
-  controllers: [FusionApiController],
+  controllers: [FusionApiController, FusionApiV2Controller],
   providers: [
     FusionApiRecordService,
     FusionApiService,
+    FusionNodeApiService,
     DataBusService,
     QueryPipe,
     FieldPipe,
@@ -67,6 +71,7 @@ import { UnitModule } from 'unit/unit.module';
     // field service
     AttachmentField,
     AutoNumberField,
+    CascaderField,
     CheckboxField,
     CreatedByField,
     CreatedTimeField,

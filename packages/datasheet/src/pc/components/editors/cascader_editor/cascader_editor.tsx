@@ -1,15 +1,21 @@
 import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Cascader } from 'pc/components/cascader';
-import { string2Segment, ILinkedField, DatasheetApi, Selectors, ISegment, ICascaderNode } from '@apitable/core';
+import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode } from '@apitable/core';
 import { PopStructure } from '../pop_structure';
-import { IEditor } from '../interface';
-import { IEditorProps } from '../options_editor';
+import { IBaseEditorProps, IEditor } from '../interface';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
 import classNames from 'classnames';
+import * as React from 'react';
 
-const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
+export interface ICascaderEditorProps extends IBaseEditorProps {
+  style?: React.CSSProperties;
+  editing: boolean;
+  editable: boolean;
+  toggleEditing?: (next?: boolean) => void;
+}
+
+const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps> = ({
   field,
   style,
   datasheetId,
@@ -20,8 +26,6 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
   onSave,
   editable,
 }, ref) => {
-  const spaceId = useSelector(Selectors.activeSpaceId)!;
-
   const cascaderRef = useRef<any>(null);
 
   useImperativeHandle(ref, (): IEditor => ({
@@ -39,7 +43,6 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
   const loadTreeSnapshot = useCallback(async() => {
     setLoading(true);
     const res = await DatasheetApi.getCascaderSnapshot({
-      spaceId,
       datasheetId,
       fieldId: field.id,
       linkedFieldIds: field.property.linkedFields.map((linkedField: ILinkedField) => linkedField.id),
@@ -51,7 +54,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
 
     setOptions(options);
     setLoading(false);
-  }, [spaceId, datasheetId, field.id, field.property.linkedFields]);
+  }, [datasheetId, field.id, field.property.linkedFields]);
 
   const onStartEdit = (value?: ISegment[] | null) => {
     if (!value) {
@@ -88,6 +91,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
       onClose={onClose}
       className={styles.cascaderEditor}
       disableMinWidth
+      disableMobile
     >
       <div className={classNames(styles.cascaderContainer, 'cascaderContainer')}>
         <Cascader
@@ -97,6 +101,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, IEditorProps> = ({
           editing={editing}
           disabled={!editable}
           cascaderRef={cascaderRef}
+          style={{
+            height: `${height}px`,
+            lineHeight: `${height}px`,
+          }}
           displayRender={label => {
             return field.property.showAll ? label.join('/') : label[label.length - 1];
           }}

@@ -18,12 +18,10 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.template.enums.TemplatePropertyType;
@@ -32,22 +30,22 @@ import com.apitable.template.mapper.TemplatePropertyRelMapper;
 import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
 import com.apitable.template.service.ITemplatePropertyService;
+import java.util.List;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import org.springframework.boot.test.mock.mockito.SpyBean;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
-@Disabled("no assert")
+@Disabled
 public class TemplatePropertyServiceImplTest extends AbstractIntegrationTest {
 
-    @SpyBean
+    @MockBean
     private TemplatePropertyMapper templatePropertyMapper;
 
-    @SpyBean
+    @MockBean
     private TemplatePropertyRelMapper templatePropertyRelMapper;
 
-    @SpyBean
+    @Autowired
     private ITemplatePropertyService templatePropertyService;
 
     @Test

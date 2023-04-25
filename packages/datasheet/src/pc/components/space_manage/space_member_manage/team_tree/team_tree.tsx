@@ -259,7 +259,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       if (success) {
         const tempData: any = { ...data };
         delete tempData.tags;
-        tempData.teams = data.teams!.map(item => item.teamName).join(',');
+        tempData.teams = data.teamData!.map(item => item.fullHierarchyTeamName).join(',');
         props.setSearchMemberRes([tempData]);
       }
     });

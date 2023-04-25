@@ -22,6 +22,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoC
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { MobileGrid } from 'pc/components/mobile_grid';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { store } from 'pc/store';
@@ -63,6 +64,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
   }, shallowEqual);
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
   const router = useRouter();
+  const isViewLock = useShowViewLockModal();
 
   useEffect(() => {
     if (!activeRecordId) {
@@ -106,7 +108,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
   const { isShowEmbedToolBar = true } = embedInfo;
-  
+
   return (
     <div
       id={DATASHEET_VIEW_CONTAINER_ID}
@@ -123,7 +125,7 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
     >
       {isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
-      </ComponentDisplay> }
+      </ComponentDisplay>}
       <div style={{ flex: '1 1 auto', height: '100%', paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : '' }}>
         <AutoSizer className={classNames(styles.viewContainer, 'viewContainer')} style={{ width: '100%', height: '100%' }}>
           {({ height, width }) => {
@@ -193,6 +195,8 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
                 text: t(Strings.hide_fields),
                 hidden: ({ props }: any) => !props?.onHiddenField,
                 onClick: ({ props }: any) => props?.onHiddenField && props.onHiddenField(),
+                disabled: isViewLock,
+                disabledTip: t(Strings.view_lock_setting_desc),
               },
               {
                 icon: <DeleteOutlined color={colors.thirdLevelText} />,

@@ -112,6 +112,11 @@ export interface ISelectProps {
   disabled?: boolean;
 
   /**
+   * Whether disabled or not
+   */
+  disabledTip?: string;
+
+  /**
    * Customize the text portion of the value in the trigger
    */
   renderValue?: (option: IOption) => string;

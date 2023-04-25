@@ -1198,6 +1198,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.URL:
         case FieldType.Text:
         case FieldType.SingleText:
+        case FieldType.Cascader:
           realRenderProps.realField = realField;
           return this.renderCellText(realRenderProps, ctx);
         case FieldType.NotSupport:

@@ -53,8 +53,9 @@ export class HttpResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data: any) => {
         response.header('Cache-Control', 'no-cache,no-store,must-revalidate');
-        if (data instanceof Buffer) {
-          return data;
+        if (data?.response instanceof Buffer) {
+          response.header('Content-Type', 'application/json');
+          return data!.response;
         }
         if (data?.code) {
           return data;

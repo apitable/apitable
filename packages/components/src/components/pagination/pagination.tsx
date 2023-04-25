@@ -40,10 +40,10 @@ const SHOW_START_ELLIPSE = 4;
 const SHOW_END_ELLIPSE = 4;
 
 enum PageEllipse {
-  START,
-  CENTER,
-  END,
-  NONE,
+  START='START',
+  CENTER='CENTER',
+  END='END',
+  NONE='NONE',
 }
 
 enum PageArrow {
@@ -257,7 +257,7 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
    * @param start Page number drop down start position
    * @param end Page number drop down end position
    */
-  const renderEllipse = (key: number, start: number, end: number) => {
+  const renderEllipse = (key: string, start: number, end: number) => {
     const options: IOption[] = [];
     for (let i = start; i <= end; i++) {
       options.push({ value: i, label: i.toString() });

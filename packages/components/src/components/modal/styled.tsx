@@ -91,16 +91,15 @@ export const ModalContent = styled.div.attrs(applyDefaultTheme)`
 `;
 
 export const ModalHeader = styled.div`
-  height: 64px;
   box-sizing: border-box;
-  padding: 16px 24px;
+  padding: 24px;
 `;
 
 export const CloseIconBox = styled.div`
   position: absolute;
   width: 24px;
   height: 24px;
-  top: 16px;
+  top: 24px;
   right: 24px;
 `;
 

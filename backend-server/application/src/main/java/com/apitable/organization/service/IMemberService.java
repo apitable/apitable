@@ -72,6 +72,15 @@ public interface IMemberService extends IService<MemberEntity> {
     List<MemberEntity> getByUserIdsAndSpaceId(List<Long> userIds, String spaceId);
 
     /**
+     * Get Member Information View
+     *
+     * @param memberId member id
+     * @return MemberInfoVo
+     * @author Chambers
+     */
+    MemberInfoVo getMemberInfoVo(Long memberId);
+
+    /**
      * check whether user exists space
      *
      * @param userId user id

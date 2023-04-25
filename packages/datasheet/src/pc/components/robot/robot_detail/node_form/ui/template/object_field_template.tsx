@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isSumLessThanOrEqualTo100 } from 'pc/components/robot/robot_detail/node_form/ui/template/utils';
 import { useState } from 'react';
 import { utils } from '../../core';
 import { IObjectFieldTemplateProps } from '../../core/interface';
@@ -29,6 +30,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
   const { properties, uiSchema } = props;
   const isInline = Boolean(uiSchema['ui:options']?.inline);
   const layout = uiSchema['ui:options']?.layout;
+  const inlineWidths = uiSchema['ui:options']?.inlineWidths as unknown as (undefined | string[]);
   const marginRight = isInline ? 8 : 4;
   if (layout) {
     return (
@@ -38,7 +40,8 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
             const thisRowFields = properties.filter(ele => rowFieldNames.includes(ele.name));
             if (thisRowFields.length) {
               const width = isInline ? `${Math.round(100 / thisRowFields.length)}%` : '100%';
-              return <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })} key={index}>
+              return <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })}
+                key={index}>
                 {thisRowFields.map((element, index: number) => (
                   <div
                     key={index} // FIXME: better key
@@ -56,13 +59,21 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
     );
   }
 
-  const width = isInline ? `${Math.round(100 / properties.length)}%` : '100%';
+  const allowCustomWidth = inlineWidths && isInline && inlineWidths.length === properties.length && isSumLessThanOrEqualTo100(inlineWidths);
+
+  const getWidth = (index: number) => {
+    if (allowCustomWidth) {
+      return inlineWidths[index];
+    }
+    return isInline ? `${Math.round(100 / properties.length)}%` : '100%';
+  };
+
   return (
     <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })}>
       {properties.map((element: any, index: number) => (
         <div
           key={index} // FIXME: better key
-          style={{ marginRight, width }}
+          style={{ marginRight, width: getWidth(index) }}
         >
           {element.content}
         </div>
@@ -82,8 +93,10 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
     schema,
     formData,
     onAddClick,
+    description
   } = props;
 
+  const DescriptionField = props.registry.fields.DescriptionField as any;
   const TitleField = props.registry.fields.TitleField as any;
   const hasCollapse = 'ui:options' in uiSchema && 'collapse' in uiSchema['ui:options']!;
   const showTitle = 'ui:options' in uiSchema && 'showTitle' in uiSchema['ui:options']! ? Boolean(uiSchema['ui:options']!['showTitle']) : true;
@@ -92,6 +105,7 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
   const [collapse, setCollapse] = useState<boolean>(defaultCollapse);
   // const isInline = Boolean(uiSchema['ui:options']?.inline);
   // if (currentObjectDepth > 3) return null;
+
   return (
     <div className={styles.objectFieldTemplateWrapper}>
       {(uiSchema['ui:title'] || title) && (
@@ -106,12 +120,12 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
           style={{ fontSize: 14, fontWeight: 'bold', color: '#636363', paddingTop: 16 }}
         />
       )}
-      {/* {description && (
+      {description && (
         <DescriptionField
           id={`${idSchema.$id}-description`}
           description={description}
         />
-      )} */}
+      )}
       {
         !collapse && <div>
           <ObjectFieldLayout {...props} />

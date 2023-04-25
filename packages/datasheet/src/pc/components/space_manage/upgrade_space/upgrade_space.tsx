@@ -33,6 +33,10 @@ const upperCaseFirstWord = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+function getClientReferenceId() {
+  return window['Rewardful'] && window['Rewardful'].referral || ('checkout_' + (new Date).getTime());
+}
+
 const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useSelector(state => state.space.activeId);
@@ -80,7 +84,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId);
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -101,7 +105,7 @@ const UpgradeSpace = () => {
             cancelText: t(Strings.cancel),
             zIndex: 1100,
             onOk: async() => {
-              const res = await Api.checkoutOrder(spaceId!, priceId);
+              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
               const { url } = res.data;
               location.href = url;
               // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -121,7 +125,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId);
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');

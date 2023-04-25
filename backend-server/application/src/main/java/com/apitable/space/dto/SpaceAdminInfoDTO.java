@@ -25,6 +25,8 @@ public class SpaceAdminInfoDTO {
 
     private Long memberId;
 
+    private String avatar;
+
     private String areaCode;
 
     private String mobile;

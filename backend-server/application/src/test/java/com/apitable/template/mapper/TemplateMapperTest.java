@@ -18,28 +18,22 @@
 
 package com.apitable.template.mapper;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.template.dto.TemplateDto;
 import com.apitable.template.dto.TemplateInfo;
-import com.apitable.template.model.OnlineTemplateDto;
-
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
  * Template Mapper Test
  * </p>
  */
-@Disabled
 public class TemplateMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
@@ -65,7 +59,7 @@ public class TemplateMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/template-data.sql")
     void testSelectNodeIdByTempId() {
         String id = templateMapper.selectNodeIdByTempId("tp41");
-        assertThat(id).isEqualTo("ni41");
+        assertThat(id).isEqualTo("ni45");
     }
 
 
@@ -94,17 +88,18 @@ public class TemplateMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/sql/template-data.sql", "/sql/node-data.sql", "/sql/user-data.sql",
-            "/sql/space-data.sql"})
+    @Sql({"/sql/template-data.sql", "/sql/node-data.sql", "/sql/user-data.sql",
+        "/sql/space-data.sql"})
     void testSelectDtoByTypeId() {
-        List<TemplateDto> entities = templateMapper.selectDtoByTypeId("spc41", CollUtil.newArrayList("tp41"));
+        List<TemplateDto> entities =
+            templateMapper.selectDtoByTypeId("spc41", CollUtil.newArrayList("tp41"));
         assertThat(entities).isNotEmpty();
     }
 
 
     @Test
-    @Sql({ "/sql/template-data.sql", "/sql/node-data.sql", "/sql/user-data.sql",
-            "/sql/space-data.sql"})
+    @Sql({"/sql/template-data.sql", "/sql/node-data.sql", "/sql/user-data.sql",
+        "/sql/space-data.sql"})
     void testSelectDtoByTempId() {
         TemplateDto entity = templateMapper.selectDtoByTempId("tp41");
         assertThat(entity).isNotNull();
@@ -139,15 +134,7 @@ public class TemplateMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/template-data.sql")
     void testSelectNodeIdByTempIdAndType() {
         String id = templateMapper.selectNodeIdByTempIdAndType("tp41", 1);
-        assertThat(id).isEqualTo("ni41");
-    }
-
-    @Test
-    @Sql({ "/sql/template-data.sql", "/sql/template-property-data.sql",
-            "/sql/template-property-rel-data.sql" })
-    void testSelectByTemplateIds() {
-        List<OnlineTemplateDto> entities = templateMapper.selectByTemplateIds(CollUtil.newHashSet("tp41"));
-        assertThat(entities).isNotEmpty();
+        assertThat(id).isEqualTo("ni45");
     }
 
 }

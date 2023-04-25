@@ -17,14 +17,15 @@
  */
 
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
-import { ResourceType, ResourceIdPrefix, IWidget } from '@apitable/core';
+import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
-import { ApiResponse } from '../../../fusion/vos/api.response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
+import { DashboardDataPack, DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Resource data interceptor
@@ -37,7 +38,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
     @InjectLogger() private readonly logger: Logger,
     private readonly roomResourceRelService: RoomResourceRelService,
     private readonly nodeService: NodeService,
-  ) { }
+  ) {}
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
     const info = await this.parseResourceType(request);
@@ -45,7 +46,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
       return next.handle().pipe();
     }
     return next.handle().pipe(
-      tap(async(data: ApiResponse<any>) => {
+      tap(async(data: any) => {
         const resourceIds = await this.getResourceIds(info.resourceType, data);
         // no need to create a new resource for mirror
         if (info.resourceType != ResourceType.Mirror) {
@@ -60,36 +61,48 @@ export class ResourceDataInterceptor implements NestInterceptor {
     );
   }
 
-  private async getResourceIds(resourceType: ResourceType, data: any): Promise<string[]> {
+  private async getResourceIds(
+    resourceType: ResourceType,
+    data: DatasheetPack | DatasheetPackResponse | DashboardDataPack | MirrorInfo | FormDataPack,
+  ): Promise<string[]> {
+    if ('resourceIds' in data && Array.isArray(data.resourceIds)) {
+      return data.resourceIds;
+    }
     const resourceIds: string[] = [];
     switch (resourceType) {
       case ResourceType.Datasheet:
+        data = data as DatasheetPack;
         // related datasheet
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         // widget panels
         if (data.snapshot.meta.widgetPanels) {
-          data.snapshot.meta.widgetPanels.filter((panel: any) => panel.widgets.size !== 0)
+          data.snapshot.meta.widgetPanels
+            .filter((panel: IWidgetPanel) => panel.widgets.length !== 0)
             .map((panel: any) => panel.widgets.map((widget: any) => resourceIds.push(widget.id)));
         }
         break;
       case ResourceType.Form:
+        data = data as DatasheetPack | FormDataPack;
         // 1. get form data by calling fetch data API
-        if (data.sourceInfo) {
+        if (data['sourceInfo']) {
+          data = data as FormDataPack;
           // reference datasheet
           resourceIds.push(data.sourceInfo.datasheetId);
           break;
         }
         // 2. get related datasheets data by calling fetch data API
+        data = data as DatasheetPack;
         resourceIds.push(data.datasheet.id);
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         break;
       case ResourceType.Dashboard:
+        data = data as DashboardDataPack;
         const sourceDatasheetIds: Set<string> = new Set();
-        for (const widget of Object.values(data.widgetMap as Record<string, IWidget>)) {
+        for (const widget of Object.values((data.widgetMap as any) as Record<string, IWidget>)) {
           resourceIds.push(widget.id);
           // reference count of the widget
           if (widget.snapshot.datasheetId && !sourceDatasheetIds.has(widget.snapshot.datasheetId)) {
@@ -101,9 +114,11 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         break;
       case ResourceType.Mirror:
+        data = data as MirrorInfo | DatasheetPack;
         // 1. call mirror information API
-        if (data.sourceInfo) {
+        if (data['sourceInfo']) {
           // exit if the mirror room has resource
+          data = data as MirrorInfo;
           const hasResource = await this.roomResourceRelService.hasResource(data.mirror.id);
           if (hasResource) {
             break;
@@ -115,9 +130,10 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         // 2. get the original datasheet by mirror
         // original datasheet
+        data = data as DatasheetPack;
         resourceIds.push(data.datasheet.id);
         // original datasheet related datasheet
-        if (Object.keys(data.foreignDatasheetMap).length > 0) {
+        if (data.foreignDatasheetMap && Object.keys(data.foreignDatasheetMap).length > 0) {
           resourceIds.push(...Object.keys(data.foreignDatasheetMap));
         }
         break;

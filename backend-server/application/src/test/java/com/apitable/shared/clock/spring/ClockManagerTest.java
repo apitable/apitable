@@ -28,10 +28,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 @Disabled
-@TestPropertySource(properties = {"DEFAULT_TIME_ZONE=UTC"})
 public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
@@ -55,7 +53,7 @@ public class ClockManagerTest extends AbstractIntegrationTest {
     public void testGetLocalDateNow() {
         final OffsetDateTime initialCreateDate =
             OffsetDateTime.of(2022, 2, 1,
-                19, 10, 30, 0, getTestTimeZone());
+                19, 10, 30, 0, ZoneOffset.UTC);
         getClock().setTime(initialCreateDate);
 
         LocalDate date = ClockManager.me().getLocalDateNow();
@@ -69,7 +67,7 @@ public class ClockManagerTest extends AbstractIntegrationTest {
     public void testGetLocalDateTimeNow() {
         final OffsetDateTime initialCreateDate =
             OffsetDateTime.of(2022, 2, 1,
-                19, 10, 30, 0, getTestTimeZone());
+                19, 10, 30, 0, ZoneOffset.UTC);
         getClock().setTime(initialCreateDate);
 
         LocalDateTime dateTime = ClockManager.me().getLocalDateTimeNow();

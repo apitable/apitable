@@ -58,6 +58,7 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 enum IFormContentType {
   Form = 'Form',
@@ -150,6 +151,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const colors = useThemeColors();
   const theme = useSelector(Selectors.getTheme);
+  const { IS_APITABLE } = getEnvVariables();
 
   const dispatch = useDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
@@ -411,6 +413,9 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         className={styles.loginBtn}
         onClick={() => {
           localStorage.setItem('reference', window.location.href);
+          if(IS_APITABLE) {
+            Router.push(Navigation.WORKBENCH);
+          }
           Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
         }}
       >

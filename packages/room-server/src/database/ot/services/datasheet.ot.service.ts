@@ -18,7 +18,7 @@
 
 import {
   CollaCommandName, Field, FieldType, IAttachmentValue, IComments, IField, IFieldMap, IFieldUpdatedMap, IJOTAction, IMeta, INodePermissions,
-  IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState,
+  IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMap, IRecordMeta, IReduxState,
   IRemoteChangeset, isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
@@ -39,7 +39,6 @@ import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
-import { RecordMap } from '../../interfaces';
 import { WidgetService } from '../../widget/services/widget.service';
 import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
 import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
@@ -143,6 +142,8 @@ export class DatasheetOtService {
       toDeleteAlarms: new Map<string, IRecordAlarm[]>(),
       updatedAlarmIds: [],
       addViews: [],
+      deleteViews: [],
+      spaceId: ''
     };
   }
 
@@ -162,6 +163,7 @@ export class DatasheetOtService {
     auth: IAuthHeader,
     sourceType?: SourceTypeEnum,
   ) {
+    resultSet.spaceId = spaceId;
     resultSet.datasheetId = datasheetId;
     resultSet.auth = auth;
     resultSet.sourceType = sourceType;
@@ -749,6 +751,7 @@ export class DatasheetOtService {
           if (!permission.viewRemovable || view?.lockInfo) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
           }
+          resultSet.deleteViews.push(action['ld']);
           return;
         }
         // ====== Move view ======
@@ -1715,6 +1718,14 @@ export class DatasheetOtService {
       if (!recordMetaMap[recordId] && !oldRecord?.recordMeta) {
         const recordAction = DatasheetOtService.generateJotAction(OTActionName.ObjectInsert, ['recordMap', recordId, 'recordMeta'], newRecordMeta);
         recordMapActions.push(recordAction);
+      } else if (!recordMetaMap[recordId] && oldRecord?.recordMeta && !oldRecord?.recordMeta.fieldUpdatedMap) {
+        // fix: https://github.com/vikadata/vikadata/issues/4628
+        const recordAction = DatasheetOtService.generateJotAction(
+          OTActionName.ObjectInsert,
+          ['recordMap', recordId, 'recordMeta', 'fieldUpdatedMap'],
+          {},
+        );
+        recordMapActions.push(recordAction);
       } else {
         const recordAction = DatasheetOtService.generateJotAction(
           OTActionName.ObjectReplace,
@@ -2126,7 +2137,7 @@ export class DatasheetOtService {
       }
 
       // The view contains records
-      const prevRecordMap: RecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+      const prevRecordMap: IRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
       const recordMetaMap: Map<string, IRecordMeta> = effectMap.get(EffectConstantName.RecordMetaMap);
       const recordIdMap = new Map<string, number>();
       let nextId = 1;

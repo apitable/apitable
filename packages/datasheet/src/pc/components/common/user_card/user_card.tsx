@@ -17,8 +17,8 @@
  */
 
 import { Typography, useThemeColors } from '@apitable/components';
-import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { SettingOutlined } from '@apitable/icons';
+import { Api, ConfigConstant, IShareSettings, Selectors, StoreActions, Strings, t, IMemberInfoInAddressList } from '@apitable/core';
+import { SettingOutlined, InfoCircleOutlined } from '@apitable/icons';
 import { Avatar, Loading, Tag } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
@@ -67,41 +67,54 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   const [tagType, setTagType] = useState('');
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const activeNodeId = useSelector(state => Selectors.getNodeId(state));
-  const { getNodeRoleListReq, shareSettingsReq } = useCatalogTreeRequest();
+  const { shareSettingsReq } = useCatalogTreeRequest();
   const { data: memberInfo, loading } = useRequest(getMemberInfo);
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });
   const dispatch = useDispatch();
 
   // Get member information
-  function getMemberInfo() {
-    return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        setTagType(TAGTYPE.Member);
-        permissionVisible && getMemberRole(data.memberId);
-        return data;
-      }
+  function getMemberInfo(): Promise<IMemberInfoInAddressList | null> {
+    if(memberId) {
+      return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
+        const { success, data } = res.data;
+        if (success) {
+          setTagType(TAGTYPE.Member);
+          permissionVisible && getMemberRole(data.memberId);
+          return data;
+        }
+       
+        permissionVisible && getMemberRole();
+        setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
+        return null;
+       
+      });
+    }
+    if(userId) {
+      return Api.getNodeCollaboratorInfo({ uuid: userId, nodeId: activeNodeId }).then(res => {
+        const { success, data } = res.data;
+        if (success) {
+          setTagType(TAGTYPE.Member);
+          permissionVisible && getMemberRole(data.memberId, data.role);
+          return data;
+        }
+        permissionVisible && getMemberRole();
+        setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
+        return null;
+      });
+    }
+    return new Promise((resolve) => {
       permissionVisible && getMemberRole();
       setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
-      return null;
+      resolve(null);
     });
+  
   }
 
   // Get the member's role by memberId
-  async function getMemberRoleReq(memberId?: string) {
+  async function getMemberRoleReq(memberId?: string, role?: string) {
+
     if (memberId) {
-      try {
-        const data = await getNodeRoleListReq(activeNodeId!);
-        if (data) {
-          const members: IRoleMember[] = data.members;
-          const member = members.filter(item => item.memberId === memberId);
-          if (member[0]?.role) {
-            return member[0].role;
-          }
-        }
-      } catch (e) {
-        console.log('Get member role error', e);
-      }
+      return role;
     }
 
     // External visitors
@@ -123,16 +136,9 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
     if (!isActive || (memberInfo && !memberInfo.isActive)) {
       return t(Strings.added_not_yet);
     }
-
-    // Aliens
-    if (isAlien) {
-      return t(Strings.anonymous);
-    } else if (!memberInfo) { // External visitors
-      return t(Strings.guests_per_space);
-    }
-
     return '';
-  }, [isDeleted, isActive, isAlien, memberInfo]);
+
+  }, [isDeleted, isActive, memberInfo]);
 
   const tooltipZIndex = 10001;
 
@@ -175,7 +181,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                 />
                 <div className={styles.nameWrapper}>
                   <Typography className={styles.name} variant='h7' color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                    {title || spareName}
+                    { spareName || title }
                   </Typography>
                   {permissionVisible && memberRole &&
                     <div className={styles.permissionWrapper}>
@@ -185,29 +191,37 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                   <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
                 </div>
               </div>
+              { memberInfo?.email && 
               <div className={styles.infoWrapper}>
                 <div className={styles.email}>
-                  {
-                    memberInfo?.email &&
-                    <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
-                      {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-                    </Typography>
-                  }
+                  <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                    {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                  </Typography>
                 </div>
               </div>
+              }
               <div className={styles.infoContent}>
                 {
                   getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
-                    <p>{t(Strings.role_member_table_header_team)}</p>
-                    <div className={styles.teamList}>
-                      {memberInfo ?
-                        memberInfo?.teamData?.map((item, index) => {
-                          return (
-                            <div key={index} className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
-                          );
-                        }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-'
-                      }
-                    </div>
+                    { (isAlien || !memberInfo) ? <div className={styles.infoText}>
+                      <InfoCircleOutlined size={16} />
+                      <p>{t(Strings.alien_tip_in_user_card)}</p>
+                    </div> :
+                      <>
+                        <p>{t(Strings.role_member_table_header_team)}</p>
+                        <div className={styles.teamList}>
+                          { memberInfo ?
+                            memberInfo?.teamData?.map((item, index) => {
+                              return (
+                                <div key={index} className={styles.teamItem}>
+                                  <p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p>
+                                </div>
+                              );
+                            }) : '-'
+                          }
+                        </div>
+                      </>
+                    }
                   </div>
                 }
 

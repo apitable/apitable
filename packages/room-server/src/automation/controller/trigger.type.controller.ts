@@ -16,46 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Body, Controller, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
-import { isProdMode } from 'app.environment';
-import { UserService } from 'user/services/user.service';
-import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
-import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
+import { Controller, Get, Query } from '@nestjs/common';
 import { RobotTriggerTypeService } from '../services/robot.trigger.type.service';
 
 @Controller('nest/v1/robots/trigger-types')
 export class RobotTriggerTypeController {
   constructor(
     private readonly robotTriggerTypeService: RobotTriggerTypeService,
-    private readonly userService: UserService,
   ) { }
 
   @Get(['/'])
   getTriggerTypes(@Query('lang') lang: string | string[]) {
     const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
     return this.robotTriggerTypeService.getTriggerType(language);
-  }
-
-  @Post('/')
-  async createTriggerType(@Body() triggerType: TriggerTypeCreateRo, @Headers('cookie') cookie: string) {
-    if (isProdMode) {
-      throw new Error('cant create trigger type in production mode');
-    }
-    const user = await this.userService.getMe({ cookie });
-    return this.robotTriggerTypeService.createTriggerType(triggerType, user);
-  }
-
-  @Patch('/:triggerTypeId')
-  async updateTriggerType(
-    @Param('triggerTypeId') triggerTypeId: string,
-    @Body() data: TriggerTypeUpdateRo,
-    @Headers('cookie') cookie: string
-  ) {
-    if (isProdMode) {
-      throw new Error('cant update trigger type in production mode');
-    }
-    const user = await this.userService.getMe({ cookie });
-    return this.robotTriggerTypeService.updateTriggerType(triggerTypeId, data, user);
   }
 
 }

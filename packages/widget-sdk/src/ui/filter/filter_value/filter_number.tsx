@@ -13,8 +13,11 @@ export const FilterNumber: React.FC<IFilterTextProps> = props => {
     if (isNaN(numValue)) {
       return undefined;
     }
-    return value == null ? value : String(times(Number(value), 100));
-  }, [_value]);
+    if (field.type === FieldType.Percent) {
+      return value == null ? value : String(times(Number(value), 100));
+    }
+    return value;
+  }, [_value, field.type]);
 
   const toolTip = useMemo(() => {
     switch (field.type) {

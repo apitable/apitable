@@ -491,27 +491,16 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     }
   }, [isSideRecordOpen, pageParamsRecordId, activeId]);
 
-  const hasMirrorId = Boolean(mirrorId);
-  const hasShareId = Boolean(shareId);
-
   const [showHiddenField, setShowHiddenField] = useState(() => {
-    if (hasMirrorId && hasShareId) {
-      return false;
-    }
-
     const list = getStorage(StorageName.ShowHiddenFieldInExpand) || [];
     return list.includes(`${datasheetId},${view.id}`);
   });
 
   const _setShowHiddenField = useCallback(
     (state: React.SetStateAction<boolean>) => {
-      if (hasMirrorId && hasShareId) {
-        return;
-      }
-
       setShowHiddenField(state);
     },
-    [hasMirrorId, hasShareId],
+    [],
   );
 
   useUpdateEffect(() => {

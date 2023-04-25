@@ -68,15 +68,6 @@ export interface IUpdateMemberListPageAction {
   payload: IMemberInfoInAddressList[];
 }
 
-export interface ITeamList {
-  teamId: string;
-  teamName: string;
-  parentId?: string;
-  memberCount?: number;
-  sequence?: number;
-  children?: ITeamList[];
-}
-
 export interface ITeamData {
   teamId: string;
   fullHierarchyTeamName?: string;
@@ -89,7 +80,6 @@ export interface IMemberInfoInAddressList {
   memberId: string;
   email: string;
   mobile?: string;
-  teams?: ITeams[];
   memberName?: string;
   isMemberNameModified?: boolean;
   jobNumber?: string;
@@ -103,20 +93,12 @@ export interface IMemberInfoInAddressList {
   avatarColor?: number;
   nickName?: string;
   isActive?: string;
-  tags?: ITags[];
   teamData?: ITeamData[];
   isPrimary?: boolean;
   isSubAdmin?: boolean;
+  role?: string;
 }
 
-export interface ITeams {
-  teamId: string;
-  teamName: string;
-}
-export interface ITags {
-  tagId: string;
-  tagName: string;
-}
 export interface IAddressList {
   teamList: ITeamTreeNode[] | [];
   memberList: IMemberInfoInAddressList[];

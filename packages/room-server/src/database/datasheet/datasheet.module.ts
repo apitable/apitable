@@ -73,7 +73,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
     RecordCommentService,
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
-    DatasheetWidgetService,
+    DatasheetWidgetService
   ],
   controllers: [DatasheetController],
   exports: [
@@ -86,7 +86,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
     RecordCommentService,
     DatasheetFieldHandler,
     ComputeFieldReferenceManager,
-    DatasheetWidgetService,
+    DatasheetWidgetService
   ],
 })
 export class DatasheetModule {}

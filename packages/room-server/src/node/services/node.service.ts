@@ -121,7 +121,7 @@ export class NodeService {
     // Node description
     const description = await this.nodeDescService.getDescription(nodeId);
     // Node revision
-    const revision = origin.notDst ? await this.getReversionByResourceId(nodeId) : await this.resourceMetaService.getRevisionByDstId(nodeId);
+    const revision = origin.notDst ? await this.getRevisionByResourceId(nodeId) : await this.resourceMetaService.getRevisionByDstId(nodeId);
     // Obtain node sharing state
     const nodeShared = await this.nodeShareSettingService.getShareStatusByNodeId(nodeId);
     // Obtain node permissions
@@ -163,8 +163,8 @@ export class NodeService {
     return (await this.nodeRepository.selectTemplateCountByNodeId(nodeId)) > 0;
   }
 
-  async getReversionByResourceId(resourceId: string): Promise<number | undefined> {
-    const entity = await this.resourceMetaService.selectReversionByResourceId(resourceId);
+  async getRevisionByResourceId(resourceId: string): Promise<number | undefined> {
+    const entity = await this.resourceMetaService.selectRevisionByResourceId(resourceId);
     return entity && Number(entity.revision);
   }
 

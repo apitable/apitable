@@ -20,10 +20,6 @@ import { Injectable } from '@nestjs/common';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { IServiceSlugTriggerTypeVo } from '../vos/service.slug.trigger.type.vo';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
-import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
-import { IUserBaseInfo } from 'shared/interfaces';
-import { TriggerTypeCreateRo } from '../ros/trigger.type.create.ro';
-import { generateRandomString } from '@apitable/core';
 import { getTypeByItem } from '../utils';
 
 @Injectable()
@@ -91,29 +87,6 @@ export class RobotTriggerTypeService {
 
     return triggerTypeDetails.map(triggerType => {
       return getTypeByItem(triggerType, lang, 'trigger');
-    });
-  }
-
-  async createTriggerType(props: TriggerTypeCreateRo, user: IUserBaseInfo) {
-    const { name, description, serviceId, inputJSONSchema, outputJSONSchema, endpoint } = props;
-    const triggerType = this.automationTriggerTypeRepository.create({
-      triggerTypeId: `att${generateRandomString(15)}`,
-      name,
-      description,
-      serviceId,
-      inputJSONSchema,
-      outputJSONSchema,
-      endpoint,
-      createdBy: user.userId,
-      updatedBy: user.userId,
-    });
-    return await this.automationTriggerTypeRepository.save(triggerType);
-  }
-
-  async updateTriggerType(triggerTypeId: string, data: TriggerTypeUpdateRo, user: IUserBaseInfo) {
-    return await this.automationTriggerTypeRepository.update({ triggerTypeId }, {
-      ...data,
-      updatedBy: user.userId,
     });
   }
 }
