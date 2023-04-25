@@ -12,12 +12,15 @@
 
 ### Bug fixes
 
+* fix: widget filter ([#714](https://github.com/apitable/apitable/pull/714)) @yort-feng 
 * fix: init the custom widget command error ([#719](https://github.com/apitable/apitable/pull/719)) @Sky-FE 
 * fix: folder favorite click crash ([#735](https://github.com/apitable/apitable/pull/735)) @wangkailang 
+* fix: strings default crash ([#740](https://github.com/apitable/apitable/pull/740)) @wangkailang 
 
 ### What's more
 
-* sync: hosted cloud ([#730](https://github.com/apitable/apitable/pull/730)) @yort-feng 
+* release: v0.20.0-alpha ([#698](https://github.com/apitable/apitable/pull/698)) @yort-feng 
+* docs: add Scripting Widget documentation link ([#711](https://github.com/apitable/apitable/pull/711)) @mr-kelly 
 * sync: hosted cloud ([#739](https://github.com/apitable/apitable/pull/739)) @yort-feng 
 ## [v0.20.0-beta](https://github.com/apitable/apitable/releases/tag/v0.20.0-beta) (2023-04-17)
 
