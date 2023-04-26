@@ -252,7 +252,7 @@ Docker Composeを使用してapitableをインストールするには、ター�
 curl https://apitable.github.io/install.sh | bash
 ```
 
-次に、ブラウザで [http://localhost:80](http://localhost:80) を開いて、Apitableにアクセスしてください
+ブラウザで [https://localhost:80](https://localhost:80) を開きます。
 
 また、 [pm2](https://pm2.keymetrics.io/) をベースにしたオールインワンの画像をデモやテスト用に提供しています(企業や本番での使用には推奨されません)。
 
@@ -326,7 +326,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 - [👩‍💻 開発者センター](https://developers.apitable.com/)
   - [<unk> REST API ドキュメント](https://developers.apitable.com/api/introduction/)
   - [ウィジェットSDK](https://developers.apitable.com/widget/introduction/)
-  - スクリプト (近日公開...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Roadmap
 

@@ -252,7 +252,7 @@ APITable 將提供一個數據表查詢語言(DQL)來查詢您的數據庫電子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-然後打開瀏覽器並訪問 [http://localhost:80](http://localhost:80) 即可
+然後在您的瀏覽器中打開 [https://localhost:80](http://localhost:80) 訪問它。
 
 我們還提供了一個基於 [pm2](https://pm2.keymetrics.io/) 的一體化鏡像，用於演示或測試目的（不推薦用於企業或生產用途）：
 
@@ -326,7 +326,7 @@ APITable 使用以下常見約定：
 - [👩‍💻 開發者中心](https://developers.apitable.com/)
   - [🪡 REST API](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
-  - 腳本 (即將到來...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 路線圖
 

@@ -326,7 +326,7 @@ APITable использует эти общие соглашения:
 - [👩‍💻 Центр разработчиков](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - [Виджет SDK](https://developers.apitable.com/widget/introduction/)
-  - Скриптинг (скоро будет...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Дорожная карта
 

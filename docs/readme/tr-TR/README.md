@@ -326,7 +326,7 @@ APITable bu ortak kuralları kullanır:
 - [👩‍💻 Geliştirici Merkezi](https://developers.apitable.com/)
   - [🪡 REST API Dokümanları](https://developers.apitable.com/api/introduction/)
   - [Widget SDK'sı](https://developers.apitable.com/widget/introduction/)
-  - Scripting (Çok yakında...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Yol Haritası
 
