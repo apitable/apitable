@@ -18,7 +18,6 @@
 
 import { SegmentType } from 'types';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { mockGetViewInfo } from './mock.view';
 
 const db = MockDataBus.getDatabase();
 
@@ -32,9 +31,7 @@ describe('record info', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     expect(view1).toBeTruthy();
 
     expect(view1!.id).toStrictEqual('viw1');
@@ -88,9 +85,7 @@ describe('getViewInfo', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     expect(view1).toBeTruthy();
 
     expect(view1!.id).toStrictEqual('viw1');

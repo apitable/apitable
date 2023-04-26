@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IStoreProvider } from '../providers';
+import { IStoreOptions, IStoreProvider } from '../providers';
 import { Store, AnyAction, createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
-import { IBaseDatasheetPack, IReduxState, Reducers, StoreActions } from 'exports/store';
+import { IBaseDatasheetPack, IReduxState, IServerDashboardPack, Reducers, StoreActions } from 'exports/store';
 
-export const fulfillStore = (datasheetPack: IBaseDatasheetPack) => {
+export const fulfillDatasheetStore = (datasheetPack: IBaseDatasheetPack) => {
   const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
   store.dispatch(
     StoreActions.setPageParams({
@@ -39,8 +39,22 @@ export const fulfillStore = (datasheetPack: IBaseDatasheetPack) => {
   return store;
 };
 
+export const fulfillDashboardStore = (dashboardPack: IServerDashboardPack) => {
+  const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
+  store.dispatch(StoreActions.setDashboard(dashboardPack.dashboard, dashboardPack.dashboard.id));
+  store.dispatch(StoreActions.setPageParams({ dashboardId: dashboardPack.dashboard.id }));
+  return store;
+};
+
 export class MockStoreProvider implements IStoreProvider {
-  createStore(datasheetPack: IBaseDatasheetPack): Promise<Store<IReduxState, AnyAction>> {
-    return Promise.resolve(fulfillStore(datasheetPack));
+  createDatasheetStore(datasheetPack: IBaseDatasheetPack): Promise<Store<IReduxState, AnyAction>> {
+    return Promise.resolve(fulfillDatasheetStore(datasheetPack));
+  }
+
+  createDashboardStore(
+    dashboardPack: IServerDashboardPack,
+    _options: IStoreOptions,
+  ): Store<IReduxState, AnyAction> | Promise<Store<IReduxState, AnyAction>> {
+    return Promise.resolve(fulfillDashboardStore(dashboardPack));
   }
 }

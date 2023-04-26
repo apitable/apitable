@@ -16,23 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICollaCommandExecuteResult } from 'command_manager';
-import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewRow, Selectors, ViewType } from 'exports/store';
+import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewLockInfo, IViewProperty, IViewRow, Selectors, ViewType } from 'exports/store';
 import { keyBy } from 'lodash';
-import { ICellValue } from 'model';
+import { ICellValue, getViewClass } from 'model';
 import { Store } from 'redux';
-import { Datasheet, ISaveOptions } from './datasheet';
+import { Datasheet, ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { Field } from './field';
 import { IRecordVoTransformOptions, Record } from './record';
+import { CollaCommandName, IModifySelfView } from 'commands';
 
 export class View {
-  public readonly type: ViewType;
-  public readonly id: string;
-  public readonly name: string;
-
-  public readonly rows: IViewRow[];
-  public readonly columns: IViewColumn[];
   private readonly fieldMap: IFieldMap;
+
+  public readonly property: IViewProperty;
 
   /**
    * Create a `View` instance from `IViewInfo`.
@@ -40,14 +36,30 @@ export class View {
    * @internal This constructor is not intended for public use.
    */
   constructor(private readonly datasheet: Datasheet, private readonly store: Store<IReduxState>, info: IViewInfo) {
-    const { name, type, id, rows, columns, fieldMap } = info;
+    const { property, fieldMap } = info;
 
-    this.name = name;
-    this.type = type;
-    this.id = id;
-    this.rows = rows;
-    this.columns = columns;
+    this.property = property;
     this.fieldMap = fieldMap;
+  }
+
+  public get id(): string {
+    return this.property.id;
+  }
+
+  public get name(): string {
+    return this.property.name;
+  }
+
+  public get type(): ViewType {
+    return this.property.type;
+  }
+
+  public get rows(): IViewRow[] {
+    return this.property.rows;
+  }
+
+  public get columns(): IViewColumn[] {
+    return this.property.columns;
   }
 
   /**
@@ -125,7 +137,7 @@ export class View {
    * @param saveOptions Options for the data saver.
    * @return If the command execution succeeded, the `data` field of the return value is an array of record IDs.
    */
-  public addRecords(recordOptions: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICollaCommandExecuteResult<string[]>> {
+  public addRecords(recordOptions: IAddRecordsOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<string[]>> {
     return this.datasheet.addRecords(
       {
         ...recordOptions,
@@ -133,6 +145,65 @@ export class View {
       },
       saveOptions,
     );
+  }
+
+  /**
+   * Delete this view.
+   *
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public delete(saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.datasheet.deleteViews([this.id], saveOptions);
+  }
+
+  /**
+   * Modify view property.
+   *
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public modify(view: IModifySelfView, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.datasheet.modifyViews([{ ...view, viewId: this.id }], saveOptions);
+  }
+
+  /**
+   * Set lock info of the view.
+   *
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public setLockInfo(lockInfo: IViewLockInfo | null, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.datasheet.doCommand<void>(
+      {
+        cmd: CollaCommandName.SetViewLockInfo,
+        data: lockInfo,
+        viewId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  /**
+   * Set autoSave of the view.
+   *
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public setAutoSave(autoSave: boolean, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.datasheet.doCommand<void>(
+      {
+        cmd: CollaCommandName.SetViewAutoSave,
+        autoSave,
+        viewId: this.id,
+      },
+      saveOptions,
+    );
+  }
+
+  /**
+   * generate default view property
+   *
+   * @param viewType view type, if omitted, defaults to the type of this view.
+   */
+  public deriveDefaultViewProperty(viewType?: ViewType): IViewProperty | null {
+    return getViewClass(viewType ?? this.type).generateDefaultProperty(this.datasheet.snapshot, this.id, this.store.getState());
   }
 }
 
@@ -150,11 +221,7 @@ export interface IViewOptions {
  * The data that are required to create a `View` instance.
  */
 export interface IViewInfo {
-  name: string;
-  type: ViewType;
-  id: string;
-  rows: IViewRow[];
-  columns: IViewColumn[];
+  property: IViewProperty;
   fieldMap: IFieldMap;
 }
 

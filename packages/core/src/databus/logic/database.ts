@@ -17,11 +17,12 @@
  */
 
 import { CollaCommandManager, IResourceOpsCollect } from 'command_manager';
-import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler, IEventEmitter } from 'databus/common/event';
+import { CommandExecutionResultType, ResourceEventType, IResourceEventHandler, IEventEmitter, IResourceEvent } from 'databus/common/event';
 import { IReduxState } from 'exports/store';
 import { Store } from 'redux';
 import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Datasheet, IDatasheetOptions } from './datasheet';
+import { Dashboard, IDashboardOptions } from './dashboard';
 
 /**
  * A database is responsible for providing `Datasheet` instances.
@@ -53,58 +54,82 @@ export class Database implements IEventEmitter {
 
   /**
    * Load a datasheet in the database.
-   * 
+   *
    * **NOTE**: A data storage provider and a store provider must be set before loading datasheets.
    */
   async getDatasheet(dstId: string, options: IDatasheetOptions): Promise<Datasheet | null> {
     const { loadOptions } = options;
-    const { datasheetPack } = await this.storageProvider.loadDatasheetPack(dstId, loadOptions);
+    const datasheetPack = await this.storageProvider.loadDatasheetPack(dstId, loadOptions);
     if (datasheetPack === null) {
       return null;
     }
     const store =
-      'createStore' in options ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack, options.storeOptions);
-    let commandManager: CollaCommandManager;
-    if (this.commandManagers.has(store)) {
-      commandManager = this.commandManagers.get(store)!;
-    } else {
-      commandManager = new CollaCommandManager(
-        {
-          handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
-            this.fireEvent({
-              type: DatasheetEventType.CommandExecuted,
-              execResult: CommandExecutionResultType.Success,
-              resourceOpCollections,
-            });
-          },
-          handleCommandExecuteError: (error, errorType) => {
-            this.fireEvent({
-              type: DatasheetEventType.CommandExecuted,
-              execResult: CommandExecutionResultType.Error,
-              error,
-              errorType,
-            });
-          },
-        },
-        store,
-      );
-    }
+      'createStore' in options
+        ? await options.createStore(datasheetPack)
+        : await this.storeProvider.createDatasheetStore(datasheetPack, options.storeOptions);
     const datasheet = new Datasheet(dstId, {
       store,
       saver: this.storageProvider,
-      commandManager,
+      commandManager: this.getCommandManager(store),
     });
     return datasheet;
   }
 
-  private _eventHandlers: Map<DatasheetEventType, Set<IDatasheetEventHandler>> = new Map();
+  async getDashboard(dsbId: string, options: IDashboardOptions): Promise<Dashboard | null> {
+    const { loadOptions } = options;
+    const dashboardPack = await this.storageProvider.loadDashboardPack(dsbId, loadOptions);
+    if (dashboardPack === null) {
+      return null;
+    }
+    const store =
+      'createStore' in options
+        ? await options.createStore(dashboardPack)
+        : await this.storeProvider.createDashboardStore(dashboardPack, options.storeOptions);
+    const dashboard = new Dashboard(dsbId, {
+      store,
+      saver: this.storageProvider,
+      widgetMap: dashboardPack.widgetMap,
+      commandManager: this.getCommandManager(store),
+    });
+    return dashboard;
+  }
+
+  private getCommandManager(store: Store<IReduxState>): CollaCommandManager {
+    if (this.commandManagers.has(store)) {
+      return this.commandManagers.get(store)!;
+    } 
+    const commandManager = new CollaCommandManager(
+      {
+        handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
+          this.fireEvent({
+            type: ResourceEventType.CommandExecuted,
+            execResult: CommandExecutionResultType.Success,
+            resourceOpCollections,
+          });
+        },
+        handleCommandExecuteError: (error, errorType) => {
+          this.fireEvent({
+            type: ResourceEventType.CommandExecuted,
+            execResult: CommandExecutionResultType.Error,
+            error,
+            errorType,
+          });
+        },
+      },
+      store,
+    );
+    this.commandManagers.set(store, commandManager);
+    return commandManager;
+  }
+
+  private _eventHandlers: Map<ResourceEventType, Set<IResourceEventHandler>> = new Map();
 
   /**
    * Add an event handler to the database.
    *
    * @returns `true` if the event handler was successfully added. `false` if the same handler was previously added.
    */
-  public addEventHandler(handler: IDatasheetEventHandler): boolean {
+  public addEventHandler(handler: IResourceEventHandler): boolean {
     let handlers = this._eventHandlers.get(handler.type);
     if (handlers === undefined) {
       handlers = new Set();
@@ -122,7 +147,7 @@ export class Database implements IEventEmitter {
    *
    * @returns `true` if the event handler was successfully removed. `false` if the handler did not exist in the datasheet.
    */
-  public removeEventHandler(handler: IDatasheetEventHandler & { type: DatasheetEventType }): boolean {
+  public removeEventHandler(handler: IResourceEventHandler & { type: ResourceEventType }): boolean {
     let handlers = this._eventHandlers.get(handler.type);
     if (handlers === undefined) {
       handlers = new Set();
@@ -134,14 +159,14 @@ export class Database implements IEventEmitter {
   /**
    * Remove all event handles of a specific type from the database.
    */
-  public removeEventHandlers(type: DatasheetEventType): void {
+  public removeEventHandlers(type: ResourceEventType): void {
     this._eventHandlers.delete(type);
   }
 
   /**
    * Fire an event in the database, invoking corresponding event handlers.
    */
-  public async fireEvent(event: IDatasheetEvent): Promise<void> {
+  public async fireEvent(event: IResourceEvent): Promise<void> {
     const handlers = this._eventHandlers.get(event.type);
     if (handlers) {
       for (const handler of handlers) {

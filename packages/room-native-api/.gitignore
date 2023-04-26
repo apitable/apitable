@@ -186,6 +186,7 @@ $RECYCLE.BIN/
 #Added by cargo
 
 /target
+Cargo.lock
 
 .pnp.*
 .yarn/*

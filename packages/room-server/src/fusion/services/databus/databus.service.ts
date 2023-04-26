@@ -27,7 +27,9 @@ import { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
 import { NativeService } from 'shared/services/native/native.service';
 import { Logger } from 'winston';
-import { IServerLoadDatasheetPackOptions, ServerDataStorageProvider } from './server.data.storage.provider';
+import { IServerLoadDashboardPackOptions, IServerLoadDatasheetPackOptions, ServerDataStorageProvider } from './server.data.storage.provider';
+import { DashboardService } from 'database/dashboard/services/dashboard.service';
+import { ServerStoreProvider } from './server.store.provider';
 
 @Injectable()
 export class DataBusService {
@@ -36,6 +38,7 @@ export class DataBusService {
 
   constructor(
     datasheetService: DatasheetService,
+    dashboardService: DashboardService,
     commandService: CommandService,
     redisService: RedisService,
     otService: OtService,
@@ -47,6 +50,7 @@ export class DataBusService {
       dataStorageProvider: new ServerDataStorageProvider(
         {
           datasheetService,
+          dashboardService,
           redisService,
           otService,
           nativeService,
@@ -57,14 +61,12 @@ export class DataBusService {
         },
         logger,
       ),
-      storeProvider: {
-        createStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)),
-      },
+      storeProvider: new ServerStoreProvider(commandService),
     });
     this.database = this.databus.getDatabase();
     this.database.addEventHandler({
-      type: databus.event.DatasheetEventType.CommandExecuted,
-      handle: (event: databus.event.IDatasheetCommandExecutedEvent) => {
+      type: databus.event.ResourceEventType.CommandExecuted,
+      handle: (event: databus.event.IResourceCommandExecutedEvent) => {
         if (event.execResult === databus.event.CommandExecutionResultType.Error) {
           this.logger.error('CommandExecuteError', { error: event.error });
           return;
@@ -86,6 +88,15 @@ export class DataBusService {
 
     return datasheet;
   }
+
+  async getDashboard(dsbId: string, options: IServerDashboardOptions): Promise<databus.Dashboard | null> {
+    const dashboard = await this.database.getDashboard(dsbId, { storeOptions: {}, ...options });
+    if (dashboard === null) {
+      return null;
+    }
+
+    return dashboard;
+  }
 }
 
 export interface IServerDatasheetOptions {
@@ -95,4 +106,8 @@ export interface IServerDatasheetOptions {
   createStore?: (dst: IServerDatasheetPack) => Promise<Store<IReduxState>> | Store<IReduxState>;
 
   loadOptions: IServerLoadDatasheetPackOptions;
+}
+
+export interface IServerDashboardOptions {
+  loadOptions: IServerLoadDashboardPackOptions;
 }

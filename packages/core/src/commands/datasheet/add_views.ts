@@ -27,7 +27,7 @@ import { IViewProperty } from '../../exports/store/interfaces';
 import { ResourceType } from 'types';
 
 export interface IAddView {
-  startIndex: number;
+  startIndex?: number;
   view: IViewProperty;
 }
 

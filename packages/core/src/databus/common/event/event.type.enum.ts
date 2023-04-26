@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const enum DatasheetEventType {
+export const enum ResourceEventType {
   /**
-   * The data of the datasheet has changed.
+   * The data of the resource has changed.
    */
   DataChange,
 

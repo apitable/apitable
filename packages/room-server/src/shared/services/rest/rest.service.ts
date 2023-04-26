@@ -28,6 +28,7 @@ import {
   IUnitValue,
   IUserInfo,
   IWidget,
+  IWidgetMap,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -38,7 +39,6 @@ import {
   InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
   InternalSpaceUsageView,
-  WidgetMap,
 } from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
@@ -255,7 +255,7 @@ export class RestService {
     return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   }
 
-  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<WidgetMap> {
+  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IWidgetMap> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_WIDGET, {
         headers: HttpHelper.createAuthHeaders(headers),
