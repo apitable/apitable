@@ -26,7 +26,7 @@ import { useQuery, useRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import inviteImageLight from 'static/icon/common/invitation_ink_page_light.png';
+import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
