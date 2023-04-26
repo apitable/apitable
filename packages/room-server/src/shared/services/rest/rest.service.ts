@@ -47,7 +47,15 @@ import { lastValueFrom } from 'rxjs';
 import { CommonStatusCode } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
-import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
+import {
+  IAuthHeader,
+  IHttpSuccessResponse,
+  INotificationCreateRo,
+  IOpAttachCiteRo,
+  IUserBaseInfo,
+  NodePermission,
+  UserNodePermissionMap
+} from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
@@ -63,6 +71,7 @@ export class RestService {
   private GET_WIDGET = 'widget/get';
   private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
+  private GET_USERS_NODE_PERMISSION = 'internal/nodes/%(nodeId)s/users/permissions';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
   private GET_MULTI_NODE_PERMISSION = 'internal/node/field/permission';
   private DEL_FIELD_PERMISSION = 'internal/datasheet/%(dstId)s/field/permission/disable';
@@ -167,6 +176,17 @@ export class RestService {
       this.httpService.get(sprintf(this.GET_NODE_PERMISSION, { nodeId }), {
         headers: HttpHelper.createAuthHeaders(headers),
         params: { shareId },
+      })
+    );
+    return response!.data;
+  }
+
+  async getUsersNodePermission(headers: IAuthHeader, nodeId: string, userIds: string[]): Promise<UserNodePermissionMap> {
+    const response = await lastValueFrom(
+      this.httpService.post(sprintf(this.GET_USERS_NODE_PERMISSION, { nodeId }), {
+        userIds,
+      }, {
+        headers: HttpHelper.createAuthHeaders(headers),
       })
     );
     return response!.data;

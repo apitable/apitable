@@ -21,10 +21,12 @@ package com.apitable.internal.controller;
 import com.apitable.control.annotation.ThirdPartControl;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.InternalPermissionRo;
+import com.apitable.internal.ro.InternalUserNodePermissionRo;
 import com.apitable.internal.service.IPermissionService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.DatasheetPermissionView;
@@ -37,10 +39,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,6 +61,7 @@ public class InternalNodePermissionController {
     private IPermissionService iPermissionService;
     @Resource
     private INodeService iNodeService;
+
 
     /**
      * Get Node permission.
@@ -97,4 +103,26 @@ public class InternalNodePermissionController {
             iPermissionService.getDatasheetPermissionView(userId, existNodeIds, data.getShareId()));
     }
 
+    /**
+     * Get the space station id to which the node belongs.
+     */
+    @PostResource(name = "Get the node permissions of the specified users",
+        path = "/nodes/{nodeId}/users/permissions", requiredPermission = false)
+    @Operation(summary = "Get the node permissions of the specified users", description = "Get the node permissions of the specified users", hidden = true)
+    public ResponseData<Map<String, DatasheetPermissionView>> getUsersPermissions(
+        @RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest,
+        @PathVariable("nodeId") String nodeId,
+        @RequestBody @Valid InternalUserNodePermissionRo data) {
+        if (!"yes".equals(internalRequest)) {
+            return ResponseData.success(null);
+        }
+        List<DatasheetPermissionView> permission = new ArrayList<>();
+        data.getUserIds().forEach(userId -> permission.addAll(
+            iPermissionService.getDatasheetPermissionView(Long.parseLong(userId),
+                Collections.singletonList(nodeId),
+                null)));
+        Map<String, DatasheetPermissionView> permissionMap = permission.stream().collect(
+            Collectors.toMap(key -> key.getUserId().toString(), dto -> dto, (k1, k2) -> k2));
+        return ResponseData.success(permissionMap);
+    }
 }
