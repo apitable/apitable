@@ -17,7 +17,7 @@
  */
 
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
-import { CollaCommandName, ILinkField, Selectors, Strings, t } from '@apitable/core';
+import { CollaCommandName, ILinkField, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';
 import Image from 'next/image';
@@ -28,10 +28,11 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import UnlinkImg from 'static/icon/datasheet/datasheet_img_disassociate.png';
 import { TComponent } from '../t_component';
 import styles from './styles.module.less';
 import { CloseOutlined } from '@apitable/icons';
+import DisconnectedDark from 'static/icon/common/disconnected_file_dark.png';
+import DisconnectedLight from 'static/icon/common/disconnected_file_light.png';
 
 const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datasheetId?: string, onClose: (confirm?: boolean) => void }>> = props => {
   const { fieldId, datasheetId, onClose } = props;
@@ -46,6 +47,9 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datas
    * default conversion of sibling fields in related tables to text fields
    **/ 
   const shouldDelForeign = foreignDatasheetEditable ? _shouldDelForeign : false;
+
+  const theme = useSelector(state => state.theme);
+  const Disconnected = theme === ThemeName.Light ? DisconnectedLight : DisconnectedDark;
 
   function onConfirm() {
     resourceService.instance!.commandManager.execute({
@@ -63,7 +67,7 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datas
       <h1 className={styles.title}>{t(Strings.delete_field)}</h1>
       <CloseOutlined className={styles.close} onClick={() => onClose()} />
       <div className={styles.unLinkImg}>
-        <Image src={UnlinkImg} alt={t(Strings.delete_field)} />
+        <Image src={Disconnected} alt={t(Strings.delete_field)} width={160} height={120} />
       </div>
       <div className={styles.datasheetInfo}>
         <h4 className={styles.datasheetName}>{t(Strings.current_datasheet)}：{datasheet.name}</h4>
