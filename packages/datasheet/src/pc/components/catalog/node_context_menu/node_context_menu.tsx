@@ -45,7 +45,7 @@ export interface INodeContextMenuProps {
 export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>> = memo(({ onHidden, openDatasheetPanel, openCatalog, contextMenu }) => {
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
-  const { rightClickInfo, openFavorite } = useContext(WorkbenchSideContext);
+  const { rightClickInfo } = useContext(WorkbenchSideContext);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const spaceId = useSelector(state => state.space.activeId);
@@ -147,9 +147,6 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
           contextItemMap.get(ContextItemKey.Favorite)(() => {
             updateNodeFavoriteStatus(nodeId);
-            if (!treeNodesMap[nodeId].nodeFavorite) {
-              openFavorite();
-            }
           }, nodeFavorite),
           contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
           contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
