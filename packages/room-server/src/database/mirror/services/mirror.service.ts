@@ -18,15 +18,15 @@
 
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
-import { IPermissions } from '@apitable/core';
+import type { IPermissions } from '@apitable/core';
 import { DatasheetException } from '../../../shared/exception';
-import { IFetchDataOriginOptions, IAuthHeader } from '../../../shared/interfaces';
+import type { IFetchDataOriginOptions, IAuthHeader } from '../../../shared/interfaces';
 import { omit } from 'lodash';
-import { DatasheetPack, MirrorInfo } from '../../interfaces';
+import type { DatasheetPack, MirrorInfo } from '../../interfaces';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 @Injectable()
 export class MirrorService {
