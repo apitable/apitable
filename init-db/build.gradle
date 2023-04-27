@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
   liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
-  liquibaseRuntime 'org.liquibase:liquibase-core:4.21.1'
+  liquibaseRuntime 'org.liquibase:liquibase-core:4.8.0'
 }
 
 liquibase {
