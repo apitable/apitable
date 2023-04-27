@@ -223,7 +223,7 @@ export class RestService {
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
     if (skipUsageVerification) {
       this.logger.log(`skipCapacityOverLimit:${spaceId}`);
-      return true;
+      return false;
     }
     const authHeaders = HttpHelper.createAuthHeaders(headers);
     // No headers, internal request does not relate to attachment field temporarily
