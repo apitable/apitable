@@ -19,13 +19,13 @@
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
 import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IResourceDataInfo as IResourceInfo } from './interface';
+import type { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
-import { DashboardDataPack, DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DashboardDataPack, DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Resource data interceptor
