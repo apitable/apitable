@@ -19,7 +19,6 @@
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import {
   expressionTransform,
-  Field,
   FormulaExprLexer,
   FormulaExprParser,
   FormulaFuncType,
