@@ -21,30 +21,20 @@ else
     fi
 fi
 
-# language file
-if [ -e "${L10N_SCRIPT_DIR}/config/strings.en-US.json" ]; then
-    echo "language file exists"
+# language manifest file
+if [ -e "${L10N_SCRIPT_DIR}/config/language.manifest.json" ]; then
+    echo "language manifest file exists"
 else
     ts-node "${L10N_SCRIPT_DIR}/mergeJsonFile.ts" "${L10N_GEN_DIR}/language.manifest.json" "language.manifest" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
     cp ${L10N_GEN_DIR}/language.manifest.json "${L10N_SCRIPT_DIR}/config/"
     cp ${L10N_GEN_DIR}/language.manifest.json "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
-
-    ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
-    cp ${L10N_GEN_DIR}/strings.*-*.json "${L10N_SCRIPT_DIR}/config/"
-    echo "successfully generate language json file"
-    if [ -e "${L10N_GEN_DIR}/stringkeys.interface.ts" ]; then
-        cp "${L10N_GEN_DIR}/stringkeys.interface.ts" "${APITABLE_BASE_DIR}packages/core/src/config/stringkeys.interface.ts"
-        echo "successfully generate stringkeys.interface.ts"
-    else
-        echo "not find the file ${L10N_GEN_DIR}/stringkeys.interface.ts"
-    fi
 fi
 
 # properties file
 if [ -e "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties" ]; then
     echo "backend server language file exists"
 else
-    ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "backend" "properties" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
+    ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "backend" "${L10N_BASE_DIR}/language.manifest.json" "properties" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
     if [ -e "${L10N_GEN_DIR}/messages.properties" ]; then
       SRC_DIR="${L10N_GEN_DIR}"
       DEST_DIR="${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/i18n/exception/"

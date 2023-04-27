@@ -23,10 +23,13 @@ if (process.argv.length < 5) {
   throw new Error('Expected at least 4 arguments, but got ' + process.argv.length);
 }
 
-const sourceFolders = process.argv.slice(5);
+const sourceFolders = process.argv.slice(6);
 const sourceName = process.argv[2];
-const generateType = process.argv[3];
-const outputFolder = process.argv[4];
+const languageManifestFile = process.argv[3];
+const generateType = process.argv[4];
+const outputFolder = process.argv[5];
+
+const languageManifest = new Set(Object.keys(JSON.parse(fs.readFileSync(languageManifestFile, 'utf-8'))));
 
 const readFolder = (folderPath: string): Record<string, any> => {
   const files = fs.readdirSync(folderPath);
@@ -39,7 +42,9 @@ const readFolder = (folderPath: string): Record<string, any> => {
       const locale = file.replace(sourceName, '')
         .replace('.', '')
         .replace('.json', '');
-      result[locale] = fileJson;
+      if (languageManifest.has(locale)) {
+        result[locale] = fileJson;
+      }
     }
   }
   return result;
@@ -49,6 +54,9 @@ const mergeFolders = (folders: string[]): Record<string, any> => {
   const mergedContent: Record<string, any> = {};
 
   for (const folder of folders) {
+    if (!folder){
+      continue;
+    }
     const folderContent = readFolder(folder);
     for (const locale in folderContent) {
       mergedContent[locale] = {
@@ -92,6 +100,7 @@ const writeMergedContent = (outputFolder: string, mergedContent: Record<string, 
     Object.keys(sortedMergedContent).forEach(key => {
       fs.writeFileSync(path.join(outputFolder, `strings.${key}.json`), JSON.stringify(sortedMergedContent[key], null, 2), 'utf-8');
     });
+    fs.writeFileSync(path.join(outputFolder, 'strings.json'), JSON.stringify(sortedMergedContent, null, 2), 'utf-8');
   }
   if (generateType === 'properties') {
     for (const locale in sortedMergedContent) {
@@ -107,7 +116,6 @@ const writeMergedContent = (outputFolder: string, mergedContent: Record<string, 
     }
   }
 };
-
 const mergedContent = mergeFolders(sourceFolders);
 writeMergedContent(outputFolder, mergedContent);
 
