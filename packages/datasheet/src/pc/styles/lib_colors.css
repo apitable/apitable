@@ -198,7 +198,10 @@
   --successActive: rgba(141, 235, 203, 1);
   --success: rgba(60, 214, 163, 1);
   --scrollBar: rgba(255, 255, 255, 0.16);
-  --reverse0: rgba(51, 51, 51, 1);
+  --reverse1: #E0E0E0;
+  --reverse1-rgb: 224, 224, 224;
+  --reverse0: #333333;
+  --reverse0-rgb: 51, 51, 51;
   --extraLightTeal: rgba(60, 214, 163, 0.16);
   --extraLightRed: rgba(238, 83, 71, 0.16);
   --extraLightPrimary: rgba(144, 127, 240, 0.16);
@@ -253,7 +256,8 @@
   --fc11: rgba(61, 61, 61, 1);
   --fc10: rgba(240, 115, 105, 1);
   --fc1: rgba(255, 255, 255, 0.85);
-  --fc0: rgba(144, 127, 240, 1);
+  --fc0: #907FF0;
+  --fc0-rgb: 144, 127, 240;
   --dc03: #3A3C4D;
   --dc03-rgb: 58, 60, 77;
   --dc02: #262838;
@@ -281,7 +285,8 @@
   --shadowColor: rgba(61, 61, 61, 1);
   --errorColor: rgba(240, 115, 105, 1);
   --firstLevelText: rgba(255, 255, 255, 0.85);
-  --primaryColor: rgba(144, 127, 240, 1);
+  --primaryColor: #907FF0;
+  --primaryColor-rgb: 144, 127, 240;
   --bgControlsDegradeHigh: rgba(0, 0, 0, 0.24);
   --bgControlsDegradeDefault: rgba(0, 0, 0, 0.12);
   --bgControlsHoverSolid: rgba(67, 67, 67, 1);
