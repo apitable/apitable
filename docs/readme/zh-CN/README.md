@@ -327,6 +327,7 @@ APITable 可适用这些通用的约定：
   - [REST API 文档](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 规划路线
 
@@ -368,7 +369,7 @@ APITable 可适用这些通用的约定：
 
 - **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
 - **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 And you like to write high quality code with clear documentation and unit tests.
 
 无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 <talent@apitable.com>。
 
@@ -402,7 +403,7 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-it.png" alt="APITable屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable屏幕截图图像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 许可协议
