@@ -327,6 +327,7 @@ Utilisez ces conventions communes APITables :
   - [<unk> Docs REST API](https://developers.apitable.com/api/introduction/)
   - [SDK du widget](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Feuille de route
 
@@ -368,7 +369,7 @@ Nous recherchons toujours de bons talents pour APITables :
 
 - **Développeur Full-stack**: Vous avez de l'expérience avec React, NestJS, TypeScript, Spring Boot, Java, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
 - **Développeur Back-end**: Vous avez de l'expérience avec NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
-- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
+- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l'équipe d'APITable, n'hésitez pas et envoyez votre CV à [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -402,7 +403,7 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
     <img src="docs/static/screenshot-it.png" alt="Image de capture d'écran APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licence
