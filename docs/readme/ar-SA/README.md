@@ -327,6 +327,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
   - [<unk> مستندات REST API](https://developers.apitable.com/api/introduction/)
   - [أداة SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 خارطة الطريق
 
@@ -368,7 +369,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 - **المطور الخلفي**: لديك تجربة مع NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
 - **مطور المكدس الكامل**: لديك تجربة مع React. NestJS, TypeScript, Spring Boot, Java, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
-- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة.
+- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 بغض النظر عن الوقت والشروط، إذا كنت ترغب في المشاركة في فريق APITable، لا تتردد في إرسال السيرة الذاتية الخاصة بك إلى talent@apitable .
 
@@ -402,7 +403,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
     <img src="docs/static/screenshot-it.png" alt="صورة لقطة شاشة APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="صورة لقطة شاشة APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 ترخيص
