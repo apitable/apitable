@@ -327,6 +327,7 @@ APITable utilizza queste convenzioni comuni:
   - [🪡 Documenti API REST](https://developers.apitable.com/api/introduction/)
   - [SDK Widget](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Tabella di marcia
 
@@ -368,7 +369,7 @@ Siamo sempre alla ricerca di buoni talenti per APITable:
 
 - Sviluppatore full-stack: Hai esperienza con React, NestJS, TypeScript, Spring Boot, Java, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
 - Sviluppatore back-end: Hai esperienza con NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
-- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. E vi piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
+- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel team di APITable, non esitare e invia il tuo CV a talent@apitable.com.
 
@@ -402,7 +403,7 @@ Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel tea
     <img src="docs/static/screenshot-it.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Immagine dello screenshot della APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licenza
