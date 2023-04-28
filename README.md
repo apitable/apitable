@@ -328,6 +328,7 @@ APITable use these common conventions:
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Roadmap
 
