@@ -327,6 +327,7 @@ APITableに貢献するためのクイックガイドはこちらです。
   - [<unk> REST API ドキュメント](https://developers.apitable.com/api/introduction/)
   - [ウィジェットSDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Roadmap
 
@@ -368,7 +369,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 And you like to write high quality code with clear documentation and unit tests.
 
 時間や状況に関係なく、APITableのチームに参加したい場合は、ためらわずに履歴書を talent@apitable.com に送信してください。
 
@@ -402,7 +403,7 @@ APITableに貢献するためのクイックガイドはこちらです。
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 ライセンス
