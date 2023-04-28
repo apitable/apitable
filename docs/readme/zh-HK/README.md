@@ -327,6 +327,7 @@ APITable 使用以下常見約定：
   - [🪡 REST API](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 路線圖
 
@@ -368,7 +369,7 @@ APITable 使用以下常見約定：
 
 - **後端開發者**: 擁有 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **前端開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
-- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
+- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 And you like to write high quality code with clear documentation and unit tests.
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
@@ -402,7 +403,7 @@ APITable 使用以下常見約定：
     <img src="docs/static/screenshot-it.png" alt="APITable 界面截圖" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable 界面截圖" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 許可證
