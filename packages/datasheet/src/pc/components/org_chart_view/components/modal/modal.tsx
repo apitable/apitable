@@ -134,7 +134,6 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
         left: modalLeft,
         top,
         width: QUICK_ADD_MODAL_WIDTH,
-        height: QUICK_ADD_MODAL_HEIGHT,
       }}
     >
       <header>
