@@ -306,10 +306,10 @@ export const useNodeTypeByIds = () => {
     const nodeTypeByIds: {
       [nodeTypeId: string]: INodeType;
     } = {};
-    state.triggerTypes.forEach(triggerType => {
+    state.triggerTypes?.forEach(triggerType => {
       nodeTypeByIds[triggerType.triggerTypeId] = triggerType;
     });
-    state.actionTypes.forEach(actionType => {
+    state.actionTypes?.forEach(actionType => {
       nodeTypeByIds[actionType.actionTypeId] = actionType;
     });
     return nodeTypeByIds;
