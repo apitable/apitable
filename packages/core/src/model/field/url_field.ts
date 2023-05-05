@@ -68,7 +68,7 @@ export class URLField extends TextBaseField {
 
   override cellValueToString(cellValue: ICellValue): string | null {
     if (cellValue === null) {
-      return '';
+      return null;
     }
 
     const cv = [cellValue].flat();
