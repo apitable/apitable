@@ -399,19 +399,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       {/* In the pinning browser, join the monitoring center */}
       <meta name='wpk-bid' content='dta_2_83919' />
     </Head>
-    {
-      env.ENABLED_REWARDFUL && <>
-        <Script id={'rewardful'}>
-          {
-            `
-        (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-        `
-          }
-        </Script>
-        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
-
-      </>
-    }
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`
             window.addEventListener('error', function(event) {
@@ -422,18 +409,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
               event.stopImmediatePropagation();
             }
           })
-        `}
-    </Script>}
-    {/*Baidu Statistics*/}
-    {env.BAIDU_ANALYSE_ID && <Script id={'baiduAnalyse'}>
-      {`
-          var _hmt = _hmt || [];
-          (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?${env.BAIDU_ANALYSE_ID}";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-          })();
         `}
     </Script>}
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
