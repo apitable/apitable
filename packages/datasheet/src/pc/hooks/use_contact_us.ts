@@ -17,29 +17,27 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
+// @ts-ignore
+import { clearWizardsData } from 'enterprise';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
 import { useCallback } from 'react';
-import { useIntercom } from 'react-use-intercom';
-// @ts-ignore
-import { clearWizardsData } from 'enterprise';
 
 export const useContactUs = () => {
-  const { showMessages } = useIntercom();
   return useCallback(() => {
     const { HELP_MENU_CONTACT_US_URL, HELP_MENU_CONTACT_US_TYPE } = getEnvVariables();
 
     if (HELP_MENU_CONTACT_US_URL) {
       navigationToUrl(HELP_MENU_CONTACT_US_URL);
     }
-    
+
     if (HELP_MENU_CONTACT_US_TYPE !== 'qrcode') {
-      showMessages();
+      window.LiveChatWidget?.call('maximize');
     } else {
       clearWizardsData?.();
       localStorage.setItem('vika_guide_start', 'vikaby');
       TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.CONTACT_US_GUIDE);
     }
-  }, [showMessages]);
+  }, []);
 };

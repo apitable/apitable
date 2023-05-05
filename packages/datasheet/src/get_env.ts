@@ -28,7 +28,6 @@ export const getEnvVars = () => {
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,
     WECHAT_MP_QR_CODE: process.env.WECHAT_MP_QR_CODE,
-    INTERCOM_APPID: process.env.INTERCOM_APPID,
     FORCE_HTTPS: process.env.FORCE_HTTPS,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SHOW_RECORD_CARD_SETTING: process.env.SHOW_RECORD_CARD_SETTING,
@@ -164,7 +163,7 @@ export const getEnvVars = () => {
     LOGO_TEXT_DARK: process.env.LOGO_TEXT_DARK,
     CUSTOMER_SERVICE_QRCODE_VISIBLE: process.env.CUSTOMER_SERVICE_QRCODE_VISIBLE === 'true',
     LOGIN_LOGO: process.env.LOGIN_LOGO,
-    INTERCOM_VISIBLE: process.env.INTERCOM_VISIBLE === 'true',
+    LIVECHAT_VISIBLE: process.env.LIVECHAT_VISIBLE === 'true',
     EMBED_ERROR_PAGE_HELP_URL: process.env.EMBED_ERROR_PAGE_HELP_URL,
     // private config
     LOGIN_OFFICIAL_WEBSITE_URL: process.env.LOGIN_OFFICIAL_WEBSITE_URL,
@@ -223,6 +222,7 @@ export const getEnvVars = () => {
     WIDGET_CENTER_INFO_IMAGE: process.env.WIDGET_CENTER_INFO_IMAGE,
     RENDER_NORMAL_INFO_IMAGE: process.env.RENDER_NORMAL_INFO_IMAGE,
     VIEW_MANUAL_SAVE_INFO_IMAGE: process.env.VIEW_MANUAL_SAVE_INFO_IMAGE,
+    GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
   };
 };
