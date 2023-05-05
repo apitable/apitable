@@ -30,8 +30,8 @@ import { useSelector } from 'react-redux';
 import { DelSuccess } from '../del_success/del.success';
 import styles from './style.module.less';
 import { UndoFilled } from '@apitable/icons';
-import SpaceDeleteDark from 'static/icon/common/space_delete_dark.png';
-import SpaceDeleteLight from 'static/icon/common/space_delete_light.png';
+import SpaceDeleteDark from 'static/icon/common/space_delete_img_dark.png';
+import SpaceDeleteLight from 'static/icon/common/space_delete_img_light.png';
 
 export const RecoverSpace = () => {
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
