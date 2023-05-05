@@ -174,14 +174,14 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                 <Avatar
                   id={memberInfo?.memberId || userId || '0'}
                   src={memberInfo?.avatar || spareSrc}
-                  title={memberInfo?.nickName || memberInfo?.memberName || spareName || ''}
+                  title={memberInfo?.memberName || memberInfo?.nickName || spareName || ''}
                   avatarColor={memberInfo?.avatarColor}
                   {...avatarProps}
                   size={40}
                 />
                 <div className={styles.nameWrapper}>
                   <h6>
-                    <span>{ spareName || title }</span>
+                    <span>{ title || spareName }</span>
                     {permissionVisible && memberRole &&
                       <Tag className={styles.permissionWrapper} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     }
