@@ -29,7 +29,7 @@ import cn.hutool.core.util.ObjectUtil;
  */
 public enum NotificationTemplateId implements BaseTemplateId{
 
-/**
+    /**
      * Notify administrators when user invites others to join a space
      */
     INVITE_MEMBER_TO_ADMIN("invite_member_toadmin"),
@@ -341,7 +341,7 @@ public enum NotificationTemplateId implements BaseTemplateId{
     /**
      * Notify administrators when the space rainbow label limit is reached
      */
-    SPACE_RAINBOW_LABEL_LIMIT("space_rainbow_label_limit")
+    SPACE_RAINBOW_LABEL_LIMIT("space_rainbow_label_limit"),
 
     /**
      * new user welcome notify---->to users
