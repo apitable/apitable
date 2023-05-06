@@ -284,7 +284,7 @@ export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
     dispatch({
       type: 'setActionTypes',
       payload: {
-        triggerTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
+        actionTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
       }
     });
   }, [actionTypeData?.data.data, dispatch, themeName]);
@@ -306,10 +306,10 @@ export const useNodeTypeByIds = () => {
     const nodeTypeByIds: {
       [nodeTypeId: string]: INodeType;
     } = {};
-    state.triggerTypes?.forEach(triggerType => {
+    state.triggerTypes.forEach(triggerType => {
       nodeTypeByIds[triggerType.triggerTypeId] = triggerType;
     });
-    state.actionTypes?.forEach(actionType => {
+    state.actionTypes.forEach(actionType => {
       nodeTypeByIds[actionType.actionTypeId] = actionType;
     });
     return nodeTypeByIds;
