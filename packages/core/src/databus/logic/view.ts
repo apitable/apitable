@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { CollaCommandName, IModifySelfView, IMoveSelfView } from 'commands';
 import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewLockInfo, IViewProperty, IViewRow, Selectors, ViewType } from 'exports/store';
 import { keyBy } from 'lodash';
-import { ICellValue, getViewClass } from 'model';
+import { getViewClass, ICellValue } from 'model';
 import { Store } from 'redux';
 import { Datasheet, ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { Field } from './field';
 import { IRecordVoTransformOptions, Record } from './record';
-import { CollaCommandName, IModifySelfView } from 'commands';
 
 export class View {
   private readonly fieldMap: IFieldMap;
@@ -60,6 +60,15 @@ export class View {
 
   public get columns(): IViewColumn[] {
     return this.property.columns;
+  }
+
+  /**
+   * get view index, begin with 0.
+   *
+   * @return index of view
+   */
+  public get index(): number {
+    return Selectors.getViewIndex(this.datasheet.snapshot, this.id);
   }
 
   /**
@@ -159,10 +168,21 @@ export class View {
   /**
    * Modify view property.
    *
+   * @param view view info
    * @param saveOptions The options that will be passed to the data saver.
    */
   public modify(view: IModifySelfView, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
     return this.datasheet.modifyViews([{ ...view, viewId: this.id }], saveOptions);
+  }
+
+  /**
+   * move view.
+   *
+   * @param view view move info
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public move(view: IMoveSelfView, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.datasheet.moveViews([{ ...view, viewId: this.id }], saveOptions);
   }
 
   /**
@@ -250,42 +270,42 @@ export interface IRecordsOptions {
 
 export type IAddRecordsOptions =
   | {
-      /**
-       * The position where new records will be inserted.
-       */
-      index: number;
+  /**
+   * The position where new records will be inserted.
+   */
+  index: number;
 
-      /**
-       * The number of new records. All cells of new records are set to default values, or left empty if no
-       * default values are set for corresponding fields.
-       */
-      count: number;
+  /**
+   * The number of new records. All cells of new records are set to default values, or left empty if no
+   * default values are set for corresponding fields.
+   */
+  count: number;
 
-      /**
-       * The cell values of the group which the new records belongs to.
-       */
-      groupCellValues?: ICellValue[];
+  /**
+   * The cell values of the group which the new records belongs to.
+   */
+  groupCellValues?: ICellValue[];
 
-      ignoreFieldPermission?: boolean;
-    }
+  ignoreFieldPermission?: boolean;
+}
   | {
-      /**
-       * The position where new records will be inserted.
-       */
-      index: number;
+  /**
+   * The position where new records will be inserted.
+   */
+  index: number;
 
-      /**
-       * New record values.
-       */
-      recordValues: IRecordCellValue[];
+  /**
+   * New record values.
+   */
+  recordValues: IRecordCellValue[];
 
-      /**
-       * The cell values of the group which the new records belongs to.
-       */
-      groupCellValues?: ICellValue[];
+  /**
+   * The cell values of the group which the new records belongs to.
+   */
+  groupCellValues?: ICellValue[];
 
-      ignoreFieldPermission?: boolean;
-    };
+  ignoreFieldPermission?: boolean;
+};
 
 /**
  * The options for getting fields in a view.

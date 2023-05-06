@@ -16,11 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field } from '.';
-import { ILoadDatasheetPackOptions, ISaveOpsOptions, IDataSaver, IStoreOptions } from '../providers';
-import { Store } from 'redux';
-import { IAddRecordsOptions, IViewOptions, View } from './view';
-import { IResource } from './resource.interface';
 import {
   CollaCommandManager,
   ExecuteResult,
@@ -28,9 +23,23 @@ import {
   ICollaCommandExecuteNoneResult,
   ICollaCommandExecuteSuccessResult,
 } from 'command_manager';
-import { IField, ResourceType } from 'types';
+import {
+  CollaCommandName,
+  IAddFieldOptions,
+  IAddView,
+  ICollaCommandOptions,
+  IDeleteFieldData,
+  IModifyView,
+  IMoveView,
+  ISetRecordOptions
+} from 'commands';
 import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors } from 'exports/store';
-import { CollaCommandName, IAddFieldOptions, IAddView, ICollaCommandOptions, IDeleteFieldData, IModifyView, ISetRecordOptions } from 'commands';
+import { Store } from 'redux';
+import { IField, ResourceType } from 'types';
+import { Field } from '.';
+import { IDataSaver, ILoadDatasheetPackOptions, ISaveOpsOptions, IStoreOptions } from '../providers';
+import { IResource } from './resource.interface';
+import { IAddRecordsOptions, IViewOptions, View } from './view';
 
 interface IDatasheetCtorOptions {
   store: Store<IReduxState>;
@@ -92,7 +101,7 @@ export class Datasheet implements IResource {
 
   /**
    * TODO This is a temporary getter needed by front-end. All dependencies of CommandManager in the front-end will be removed in the future.
-   * 
+   *
    * @deprecated
    */
   get commandManager(): CollaCommandManager {
@@ -277,6 +286,7 @@ export class Datasheet implements IResource {
   /**
    * Modify view property.
    *
+   * @param views view info
    * @param saveOptions The options that will be passed to the data saver.
    */
   public modifyViews(views: IModifyView[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
@@ -290,18 +300,34 @@ export class Datasheet implements IResource {
   }
 
   /**
+   * move view.
+   *
+   * @param views view info
+   * @param saveOptions The options that will be passed to the data saver.
+   */
+  public moveViews(views: IMoveView[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.doCommand<void>(
+      {
+        cmd: CollaCommandName.MoveViews,
+        data: views,
+      },
+      saveOptions,
+    );
+  }
+
+  /**
    * Get the first view of the datasheet.
    */
   public async getView(): Promise<View>;
   /**
    * Get the view specified by `id`.
-   * 
+   *
    * @returns If the view if not found, null is returned.
    */
   public async getView(id: string): Promise<View | null>;
   /**
    * Get the view specified by options.
-   * 
+   *
    * @returns If the view if not found, null is returned.
    */
   public async getView(options: IViewOptions): Promise<View | null>;
