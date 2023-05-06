@@ -1,5 +1,5 @@
 {
-  "FRONT_VERSION_ERROR": "前端版本不匹配",
+  "FRONT_VERSION_ERROR": "",
   "UNAUTHORIZED": "未授权或者访问失效",
   "SERVER_ERROR": "服务器异常",
   "ROBOT_FORM_CHECK_ERROR": "机器人表单校验失败",
@@ -350,8 +350,8 @@
   "RELEASES_FAIL_WIDGET_DISABLED": "小程序发布失败，小程序已禁用请联系GM",
   "RELEASES_FAIL_VERSION_NUM_ERROR": "小程序发布失败，版本号不符合规范",
   "RELEASES_FAIL_VERSION_NUM_REPEAT": "小程序发布失败，版本号重复",
-  "SPACE_ALREADY_CERTIFIED": "空间已经进行了认证，请不要重复操作",
-  "NOT_SPACE_ADMIN": "只有空间管理员才能操作",
+  "SPACE_ALREADY_CERTIFIED": "",
+  "NOT_SPACE_ADMIN": "",
   "ROLLBACK_FAIL_VERSION_NUM_ERROR": "小程序回滚失败，版本号不符合规范",
   "ROLLBACK_FAIL_SELECT_VERSION_ERROR": "小程序回滚失败，回滚版本号错误或未通过审核",
   "RELEASES_FAIL_INCOMPLETE_PARAME": "小程序发布失败，发布参数不完整",
