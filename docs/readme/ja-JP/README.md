@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="適用可能なカバー画像" />
+        <img src="docs/static/cover.png" alt="APITable Cover Image" />
     </a>
 </p>
 
@@ -129,7 +129,7 @@ APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable
       <a href="#">強力な行/列の権限管理</a>
     </th>
     <th>
-      <a href="#">埋め込み</a>
+      <a href="#">Embed</a>
     </th>
   </tr>
 
@@ -264,14 +264,14 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
-## 🧑<unk> 💻 コントリビュート
+## 🧑‍💻 Contributing
 
 APITableに貢献していただき、ありがとうございます！
 
 コードを書く以外にも、貢献できる方法はたくさんあります。
 
 以下の方法で貢献することができます：
-- Crowdin 翻訳プロジェクトに参加して翻訳を修正する
+- Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
 - [Twitter](https://twitter.com/apitable_com) をフォロー
 - [ドキュメント](./docs) を作成する
@@ -308,7 +308,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 ### 作業条件
 
-これらの一般的な規約を使用できます。
+APITable use these common conventions:
 
 - Gitのブランチモデルは何ですか？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - フォークプロジェクトでコラボレーションする方法は? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
@@ -369,7 +369,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 And you like to write high quality code with clear documentation and unit tests.
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 
 時間や状況に関係なく、APITableのチームに参加したい場合は、ためらわずに履歴書を talent@apitable.com に送信してください。
 
@@ -403,7 +403,7 @@ APITableに貢献するためのクイックガイドはこちらです。
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
 </p>
 
 ## 🥰 ライセンス
