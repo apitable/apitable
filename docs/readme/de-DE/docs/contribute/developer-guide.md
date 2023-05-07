@@ -130,7 +130,13 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 Wir haben zwei Möglichkeiten, die Übersetzung von APITable zu verbessern:
 
 1. Sie können die Markdown-Dateien im Quellcode ändern und direkt eine PR-Datei erstellen
-2. Treten Sie unserem [Crowdin](https://crowdin.com/project/apitablecode) bei, um die `strings` zu finden, um sie zu ändern
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 In Zusammenarbeit mit mehrsprachigen Übersetzungen folgen wir dem folgenden Prozess:
 
