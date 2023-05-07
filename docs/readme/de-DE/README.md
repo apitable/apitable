@@ -279,7 +279,7 @@ Sie können wie folgt beitragen:
 
 
 So wie folgendermaßen:
-- Treten Sie [Crowdin-Übersetzungsprojekt](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - [Tickets](https://github.com/apitable/apitable/issues/new/choose) erstellen
 - Unserem [Twitter](https://twitter.com/apitable_com) folgen
 - [Dokumentation](./docs) erstellen
@@ -329,7 +329,7 @@ APITable use these common convention:
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 - [Design System](https://figma.com/@apitable)
 
-## 🛣 Roadmap
+## :Autobahn: Fahrplan
 
 Bitte beachten Sie die [Roadmap von APITable](https://apitable.com/roadmap)
 
@@ -351,7 +351,7 @@ Bitte beachten Sie die [Roadmap von APITable](https://apitable.com/roadmap)
 - Audit
 - Datenbanksicherung
 - Integrieren Sie mit ChatGPT, Zapier, Slack, Google Workspace......
-- Watermark
+- Und Sie schreiben gerne qualitativ hochwertigen Code mit klarer Dokumentation und Unit-Tests.
 
 Für weitere Informationen kontaktieren Sie uns bitte unter <support@apitable.com>.
 
@@ -369,7 +369,7 @@ Wir suchen immer nach guten Talenten für APITable:
 
 - **Vollstack-Entwickler**: Sie haben Erfahrung mit React, NestJS, TypeScript, Spring Boot, Java, Terraform. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
 - **Back-End-Entwickler**: Sie haben Erfahrung mit NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
-- **Front-End-Entwickler**: Sie haben Erfahrung mit React, NextJS, TypeScript, WebPack. Und Sie schreiben gerne qualitativ hochwertigen Code mit klaren Dokumentationen und Unit-Tests.
+- **Front-End-Entwickler**: Sie haben Erfahrung mit React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Unabhängig von Zeit und Bedingungen, wenn Sie sich an das APITable-Team beteiligen möchten zögern Sie nicht und senden Sie Ihren Lebenslauf an [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -403,7 +403,7 @@ Unabhängig von Zeit und Bedingungen, wenn Sie sich an das APITable-Team beteili
     <img src="docs/static/screenshot-it.png" alt="APITable Screenshot-Bild" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot-Bild" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Lizenz
