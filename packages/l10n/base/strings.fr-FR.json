@@ -1871,6 +1871,7 @@
   "copy_folder_url": "Copier l'URL",
   "api_request_success": "Succès",
   "api_datasheet_not_exist": "le jeu de données spécifié n'existe pas",
+  "api_dashboard_not_exist": "the specified dashboard does not exist",
   "api_upload_attachment_error": "Échec du chargement de la pièce jointe ",
   "api_upload_attachment_exceed_limit": "Vous avez téléchargé le nombre maximum de pièces jointes",
   "api_node_permission_error": "Pas de permission d'opérer sur le noeud",
