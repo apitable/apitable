@@ -27,6 +27,7 @@ import {
   IInternalFix,
   IBaseDatasheetPack,
   IServerDatasheetPack,
+  IServerDashboardPack,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
@@ -41,9 +42,11 @@ import { Logger } from 'winston';
 import util from 'util';
 import { NativeService } from 'shared/services/native/native.service';
 import { DatasheetPack } from 'database/interfaces';
+import { DashboardService } from 'database/dashboard/services/dashboard.service';
 
 export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   private readonly datasheetService: DatasheetService;
+  private readonly dashboardService: DashboardService;
   private readonly nativeService: NativeService;
   private readonly redisService: RedisService;
   private readonly otService: OtService;
@@ -51,8 +54,9 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   private readonly loadOptions: IServerDataLoadOptions;
 
   constructor(options: IServerDataStorageProviderOptions, private readonly logger: Logger) {
-    const { datasheetService, redisService, otService, changesetSourceService, loadOptions, nativeService } = options;
+    const { datasheetService, dashboardService, redisService, otService, changesetSourceService, loadOptions, nativeService } = options;
     this.datasheetService = datasheetService;
+    this.dashboardService = dashboardService;
     this.nativeService = nativeService;
     this.redisService = redisService;
     this.otService = otService;
@@ -60,7 +64,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     this.loadOptions = loadOptions;
   }
 
-  async loadDatasheetPack(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<databus.ILoadDatasheetPackResult> {
+  async loadDatasheetPack(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {
     const { auth, loadBasePacks } = options;
     if (loadBasePacks) {
       const { foreignDstIds, options } = loadBasePacks;
@@ -78,10 +82,8 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       // NOTE the first data pack of `packs` is always the datasheet specified by `dstId`.
       delete foreignDatasheetMap[packs[0]!.datasheet.id];
       return {
-        datasheetPack: {
-          ...packs[0]!,
-          foreignDatasheetMap,
-        },
+        ...packs[0]!,
+        foreignDatasheetMap,
       };
     }
 
@@ -96,9 +98,11 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       }
     }
 
-    return {
-      datasheetPack,
-    };
+    return datasheetPack;
+  }
+
+  loadDashboardPack(dsbId: string, options: IServerLoadDashboardPackOptions): Promise<IServerDashboardPack | null> {
+    return this.dashboardService.fetchDashboardPack(dsbId, options.auth);
   }
 
   private async loadDstPackWithCache(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {
@@ -156,18 +160,22 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   }
 
   saveOps(ops: IResourceOpsCollect[], options: IServerSaveOpsOptions): Promise<any> {
-    const { prependOps, store, datasheet, auth, internalFix, applyChangesets = true } = options;
+    const { prependOps, store, resource, auth, internalFix, applyChangesets = true } = options;
     const changesets = resourceOpsToChangesets(ops, store.getState());
     changesets.forEach(cs => {
       store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
     });
 
     if (prependOps) {
-      this.combChangeSetsOp(changesets, datasheet.id, prependOps);
+      this.combChangeSetsOp(changesets, resource.id, prependOps);
     }
 
     if (applyChangesets) {
-      return this.applyChangeSet(datasheet.id, changesets, auth, internalFix);
+      if (resource instanceof databus.Datasheet) {
+        return this.applyDatasheetChangesets(resource.id, changesets, auth, internalFix);
+      } else if (resource instanceof databus.Dashboard) {
+        return this.applyDashboardChangesets(resource.id, changesets, auth);
+      }
     }
 
     return Promise.resolve(changesets);
@@ -194,16 +202,21 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   }
 
   /**
-   * Call otServer to apply changeSet
+   * Call otServer to apply changesets to datasheet
    *
    * @param dstId         datasheet id
    * @param changesets    array of changesets
    * @param auth          authorization info (developer token)
    * @param internalFix   [optional] use when repairing data
    */
-  private async applyChangeSet(dstId: string, changesets: ILocalChangeset[], auth: IAuthHeader, internalFix?: IInternalFix): Promise<string> {
-    this.logger.info('API:ApplyChangeSet');
-    const applyChangeSetProfiler = this.logger.startTimer();
+  private async applyDatasheetChangesets(
+    dstId: string,
+    changesets: ILocalChangeset[],
+    auth: IAuthHeader,
+    internalFix?: IInternalFix,
+  ): Promise<string> {
+    // this.logger.info('API:ApplyChangeSet');
+    // const applyChangeSetProfiler = this.logger.startTimer();
     let applyAuth = auth;
     const message = {
       roomId: dstId,
@@ -226,11 +239,18 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     // Notify Socket Service Broadcast
     await this.otService.nestRoomChange(dstId, changeResult);
 
-    applyChangeSetProfiler.done({
-      message: `applyChangeSet ${dstId} profiler`,
-    });
+    // applyChangeSetProfiler.done({
+    //   message: `applyChangeSet ${dstId} profiler`,
+    // });
 
     return changeResult && changeResult[0]!.userId!;
+  }
+
+  private async applyDashboardChangesets(dsbId: string, changesets: ILocalChangeset[], auth: IAuthHeader) {
+    const changeResult = await this.otService.applyChangesets(dsbId, changesets, auth);
+    await this.changesetSourceService.batchCreateChangesetSource(changeResult, SourceTypeEnum.OPEN_API);
+    // Notify Socket Service Broadcast
+    await this.otService.nestRoomChange(dsbId, changeResult);
   }
 }
 
@@ -247,6 +267,10 @@ export interface IServerLoadDatasheetPackOptions extends databus.ILoadDatasheetP
   };
 }
 
+export interface IServerLoadDashboardPackOptions extends databus.ILoadDashboardPackOptions {
+  auth: IAuthHeader;
+}
+
 export interface IServerDataLoadOptions {
   /**
    * If the data loader uses a datasheet pack cache to avoid loading the same datasheet pack repeatedly.
@@ -258,6 +282,7 @@ export interface IServerDataStorageProviderOptions {
   loadOptions: IServerDataLoadOptions;
 
   datasheetService: DatasheetService;
+  dashboardService: DashboardService;
   redisService: RedisService;
   otService: OtService;
   changesetSourceService: DatasheetChangesetSourceService;

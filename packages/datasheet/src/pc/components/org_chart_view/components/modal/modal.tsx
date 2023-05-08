@@ -28,13 +28,16 @@ import styles from './styles.module.less';
 import { FlowContext } from '../../context/flow_context';
 import { useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { QUICK_ADD_MODAL_WIDTH, QUICK_ADD_MODAL_HEIGHT } from '../../constants';
+import { KeyCode } from 'pc/utils';
 
 interface IModalProps {
   recordId?: string;
+  setQuickAddRecId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
   recordId,
+  setQuickAddRecId,
 }) => {
 
   const {
@@ -63,10 +66,19 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
   const [focusFieldId, setFocusFieldId] = useState<string | null>(primaryFieldId);
 
   const titleFieldRef = useRef(null);
+  const mountRef = useRef(false);
 
   useClickAway(() => {
-    setFocusFieldId(null);
-  }, [titleFieldRef]);
+    if (mountRef.current) {
+      setFocusFieldId(null);
+    }
+  }, [titleFieldRef], 'click');
+
+  const keyDownHandler = (e: React.KeyboardEvent) => {
+    if (e.keyCode === KeyCode.Enter && !e.shiftKey) {
+      setQuickAddRecId(undefined);
+    }
+  };
 
   const node = nodesMap[recordId!]!;
   const { x, y } = node.position;
@@ -108,10 +120,13 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
       y: translateY - (_offsetY > 0 ? _offsetY : 0),
       zoom: scale,
     });
+    setTimeout(() => {
+      mountRef.current = true;
+    });
   });
 
   if (!recordId || !node) return null;
-
+  
   return (
     <div
       className={styles.modal}
@@ -119,7 +134,6 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
         left: modalLeft,
         top,
         width: QUICK_ADD_MODAL_WIDTH,
-        height: QUICK_ADD_MODAL_HEIGHT,
       }}
     >
       <header>
@@ -129,7 +143,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
         <IconButton icon={ExpandOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
       </header>
       <div className={styles.content}>
-        <div ref={titleFieldRef}>
+        <div ref={titleFieldRef} onKeyDown={keyDownHandler}>
           <FieldEditor
             datasheetId={datasheetId}
             fieldId={primaryFieldId}

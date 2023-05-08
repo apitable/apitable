@@ -18,6 +18,7 @@
 
 import { ICollaborator, INodeMeta } from './datasheet';
 import * as ActionConstants from '../../../../shared/store/action_constants';
+import { IWidgetMap } from './widget';
 
 // support store multi states of dashboard
 export interface IDashboardMap {
@@ -28,20 +29,25 @@ export interface IDashboardPack {
   /**
    * whether the data is under collaboration
    */
-  syncing: boolean; 
+  syncing: boolean;
   /**
    * whether the data is under loading
    */
-  loading: boolean; 
+  loading: boolean;
   /**
    * whether the dashboard is connected
-   * 
+   *
    * see also the IDatasheetPack's comments
    */
-  connected: boolean; 
+  connected: boolean;
   dashboard?: IDashboard | null;
   errorCode?: number | null;
   client: IDashboardClient;
+}
+
+export interface IServerDashboardPack {
+  dashboard: IDashboard;
+  widgetMap: IWidgetMap;
 }
 
 // INodeMeta see code below

@@ -165,6 +165,7 @@
   "api_add": "Add records",
   "api_call": "Maximum number of API requests per month",
   "api_cumulative_usage_info": "Excessive use is allowed during the public beta",
+  "api_dashboard_not_exist": "the specified dashboard does not exist",
   "api_datasheet_not_exist": "Can't find the specified datasheet",
   "api_datasheet_not_visible": "Datasheet not visible",
   "api_delete": "Delete records",

@@ -40,6 +40,7 @@ export interface INodePermissionBase {
 }
 
 export type NodePermission = INodePermissionBase & IPermissions;
+export type UserNodePermissionMap = { [userId: string]: NodePermission };
 
 export interface IUserBaseInfo {
   userId: string;

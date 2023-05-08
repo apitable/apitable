@@ -341,8 +341,8 @@ export const client = combineReducers<IDatasheetClientState>({
       if (!state) {
         return [viewId];
       }
-      state.push(viewId);
-      return state;
+
+      return [...state, viewId];
     }
     if (action.type === RESET_OPERATE_VIEW_ID) {
       if (!state) {

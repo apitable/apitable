@@ -9,6 +9,13 @@
         "message": "error_add_row_failed_wrong_length_of_value",
         "statusCode": 200
       },
+      "api_dashboard_not_exist": {
+        "apiTypes": "fusion_api",
+        "code": 301,
+        "id": "api_dashboard_not_exist",
+        "message": "api_dashboard_not_exist",
+        "statusCode": 200
+      },
       "api_datasheet_not_exist": {
         "apiTypes": "fusion_api",
         "code": 301,

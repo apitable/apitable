@@ -21,9 +21,10 @@ import { Field } from 'model';
 import { BasicValueType } from 'types';
 import { Strings, t } from '../../exports/i18n';
 import {
-  CalendarColorType,
+  GanttColorType,
   ICalendarViewColumn,
   ICalendarViewProperty,
+  ICalendarViewStyle,
   IFieldMap,
   IReduxState,
   ISetCalendarStyle,
@@ -57,16 +58,16 @@ export class CalendarView extends View {
     return filterIds;
   }
 
-  static defaultStyle(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState) {
+  static defaultStyle(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState): ICalendarViewStyle {
     const srcView = this.getSrcView(snapshot, activeViewId);
     const dateTimeFieldIds = this.findDateTimeFieldIds(srcView, snapshot.meta.fieldMap, state);
 
     return {
-      startFieldId: dateTimeFieldIds[0],
-      endFieldId: dateTimeFieldIds[1],
+      startFieldId: dateTimeFieldIds[0]!,
+      endFieldId: dateTimeFieldIds[1]!,
       isColNameVisible: false,
       colorOption: {
-        type: CalendarColorType.Custom,
+        type: GanttColorType.Custom,
         fieldId: '',
         color: -1,
       }
@@ -89,7 +90,7 @@ export class CalendarView extends View {
     return columns;
   }
 
-  static generateDefaultProperty(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState): any {
+  static generateDefaultProperty(snapshot: ISnapshot, activeViewId: string | null | undefined, state?: IReduxState): ICalendarViewProperty {
     const srcView = this.getSrcView(snapshot, activeViewId);
     const views = snapshot.meta.views;
 

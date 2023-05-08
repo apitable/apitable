@@ -27,7 +27,7 @@ import { DatasheetService } from '../../datasheet/services/datasheet.service';
 import { NodeService } from '../../../node/services/node.service';
 import { WidgetService } from '../../widget/services/widget.service';
 import { DatasheetPack } from 'database/interfaces';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 @Injectable()
 export class ResourceService {

@@ -17,7 +17,6 @@
  */
 
 import { mockDatasheetMap } from './mock.datasheets';
-import { mockGetViewInfo } from './mock.view';
 import { MockDataBus, resetDataLoader } from './mock.databus';
 import { DateFormat, FieldType, ResourceType, SegmentType, TimeFormat } from 'types';
 import { CollaCommandName } from 'commands';
@@ -25,6 +24,7 @@ import { ExecuteFailReason, ExecuteResult, ExecuteType, ICollaCommandExecuteSucc
 import { ICommandExecutionSuccessResult } from 'databus/logic';
 import { mockOperationOfAddRecords } from './mock.record';
 import { IOperation, OTActionName } from 'engine';
+import { IGanttViewStyle, IViewProperty, ViewType } from 'exports/store';
 
 const db = MockDataBus.getDatabase();
 
@@ -54,9 +54,7 @@ describe('get view', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
 
     expect(view1).toBeTruthy();
     expect(view1!.id).toStrictEqual('viw1');
@@ -69,9 +67,7 @@ describe('get view', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw100'),
-    });
+    const view1 = await dst1!.getView('viw100');
 
     expect(view1).toBeNull();
   });
@@ -190,6 +186,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 3 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
       },
       {
@@ -197,6 +194,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 4 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
       },
     ]);
@@ -272,6 +270,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 3 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'first' }],
@@ -283,6 +282,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 4 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'second' }],
@@ -428,6 +428,13 @@ describe('deleteRecords', () => {
           p: ['meta', 'views', 1, 'rows', 0],
         },
         {
+          ld: {
+            recordId: 'rec2',
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 2, 'rows', 2],
+        },
+        {
           n: OTActionName.ObjectDelete,
           od: {
             commentCount: 0,
@@ -533,6 +540,14 @@ describe('addFields', () => {
           },
           n: OTActionName.ListInsert,
           p: ['meta', 'views', 1, 'columns', 2],
+        },
+        {
+          li: {
+            fieldId,
+            hidden: false,
+          },
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', 2, 'columns', 2],
         },
         {
           n: OTActionName.ObjectInsert,
@@ -649,6 +664,11 @@ describe('deleteFields', () => {
           },
           n: OTActionName.ListDelete,
           p: ['meta', 'views', 1, 'columns', 1],
+        },
+        {
+          ld: { fieldId: 'fld2' },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 2, 'columns', 1],
         },
         {
           n: OTActionName.ObjectDelete,
@@ -818,6 +838,305 @@ describe('updateField', () => {
           operations: [operation],
           resourceId: 'dst1',
           resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('addViews', () => {
+  beforeEach(resetDataLoader);
+
+  test('add a grid view', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.addViews(
+      [
+        {
+          view: {
+            id: 'viw12',
+            name: 'New View Gantt 12',
+            type: ViewType.Gantt,
+            style: {} as IGanttViewStyle,
+            rows: [],
+            columns: [],
+            frozenColumnCount: 1,
+          },
+        },
+      ],
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          li: {
+            id: 'viw12',
+            name: 'New View Gantt 12',
+            type: ViewType.Gantt,
+            style: {} as IGanttViewStyle,
+            rows: [],
+            columns: [],
+            frozenColumnCount: 1,
+          } as IViewProperty,
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', 3],
+        },
+      ],
+      cmd: CollaCommandName.AddViews,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: ResourceType.Datasheet,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+
+  test('add a gantt view in middle', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.addViews(
+      [
+        {
+          startIndex: 1,
+          view: {
+            id: 'viw11',
+            name: 'New View 111',
+            type: ViewType.Grid,
+            rows: [],
+            columns: [],
+            frozenColumnCount: 1,
+          },
+        },
+      ],
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          li: {
+            id: 'viw11',
+            name: 'New View 111',
+            type: ViewType.Grid,
+            rows: [],
+            columns: [],
+            frozenColumnCount: 1,
+          } as IViewProperty,
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', 1],
+        },
+      ],
+      cmd: CollaCommandName.AddViews,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: ResourceType.Datasheet,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('deleteViews', () => {
+  beforeEach(resetDataLoader);
+
+  test('delete single view', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.deleteViews(['viw2'], {});
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          ld: {
+            id: 'viw2',
+            type: ViewType.Grid,
+            columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2', hidden: true }],
+            frozenColumnCount: 1,
+            name: 'view 2',
+            rows: [{ recordId: 'rec2' }, { recordId: 'rec3' }, { recordId: 'rec5' }, { recordId: 'rec1' }, { recordId: 'rec4' }],
+          } as IViewProperty,
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 1],
+        },
+      ],
+      cmd: CollaCommandName.DeleteViews,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: ResourceType.Datasheet,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+
+  test('delete multiple views', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const result = await dst1!.deleteViews(['viw2', 'viw3'], {});
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<void>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      actions: [
+        {
+          ld: {
+            id: 'viw2',
+            type: ViewType.Grid,
+            columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2', hidden: true }],
+            frozenColumnCount: 1,
+            name: 'view 2',
+            rows: [{ recordId: 'rec2' }, { recordId: 'rec3' }, { recordId: 'rec5' }, { recordId: 'rec1' }, { recordId: 'rec4' }],
+          } as IViewProperty,
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 1],
+        },
+        {
+          ld: {
+            id: 'viw3',
+            type: ViewType.Grid,
+            columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2' }],
+            frozenColumnCount: 1,
+            name: 'view 3',
+            rows: [{ recordId: 'rec3' }, { recordId: 'rec1' }, { recordId: 'rec2' }, { recordId: 'rec6' }, { recordId: 'rec4' }],
+          },
+          n: OTActionName.ListDelete,
+          p: ['meta', 'views', 1],
+        },
+      ],
+      cmd: CollaCommandName.DeleteViews,
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: ResourceType.Datasheet,
         },
       ],
       saveResult: [

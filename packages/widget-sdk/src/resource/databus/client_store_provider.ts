@@ -1,11 +1,11 @@
-import { databus, IReduxState, IServerDatasheetPack, StoreActions } from '@apitable/core';
+import { databus, IReduxState, IServerDashboardPack, IServerDatasheetPack, StoreActions } from '@apitable/core';
 import { AnyAction, Store } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 
 export class ClientStoreProvider implements databus.IStoreProvider {
   constructor(private readonly store: Store<IReduxState>) {}
 
-  createStore(dataPack: IServerDatasheetPack, options: IClientStoreOptions): Store<IReduxState> {
+  createDatasheetStore(dataPack: IServerDatasheetPack, options: IClientStoreOptions): Store<IReduxState> {
     // TODO outdated. Refer to fetchDatasheetPackSuccess for latest code.
     const { isPartOfData, needLoad } = options;
     if (!needLoad) {
@@ -44,6 +44,10 @@ export class ClientStoreProvider implements databus.IStoreProvider {
     }
 
     this.store.dispatch(batchActions(dispatchActions));
+    return this.store;
+  }
+
+  createDashboardStore(_dataPack: IServerDashboardPack): Store<IReduxState> {
     return this.store;
   }
 }

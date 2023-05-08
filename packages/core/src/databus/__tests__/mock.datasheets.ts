@@ -60,8 +60,16 @@ export const mockDatasheetMap: Record<string, IBaseDatasheetPack> = {
             type: ViewType.Grid,
             columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2', hidden: true }],
             frozenColumnCount: 1,
-            name: 'view 1',
+            name: 'view 2',
             rows: [{ recordId: 'rec2' }, { recordId: 'rec3' }, { recordId: 'rec5' }, { recordId: 'rec1' }, { recordId: 'rec4' }],
+          },
+          {
+            id: 'viw3',
+            type: ViewType.Grid,
+            columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2' }],
+            frozenColumnCount: 1,
+            name: 'view 3',
+            rows: [{ recordId: 'rec3' }, { recordId: 'rec1' }, { recordId: 'rec2' }, { recordId: 'rec6' }, { recordId: 'rec4' }],
           },
         ],
       },
@@ -180,6 +188,13 @@ export const mockOpsCollectOfAddOneDefaultRecord = (recordId: string): IResource
             },
             n: OTActionName.ListInsert,
             p: ['meta', 'views', 1, 'rows', 5],
+          },
+          {
+            li: {
+              recordId,
+            },
+            n: OTActionName.ListInsert,
+            p: ['meta', 'views', 2, 'rows', 5],
           },
           {
             n: OTActionName.ObjectInsert,

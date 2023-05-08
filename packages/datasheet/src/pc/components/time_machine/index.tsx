@@ -19,7 +19,7 @@
 import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@apitable/components';
 import {
   Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset,
-  PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
+  PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t, ThemeName
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
@@ -39,6 +39,9 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Image from 'next/image';
+import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
+import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
 import styles from './style.module.less';
 import { getForeignDatasheetIdsByOp } from './utils';
@@ -69,6 +72,9 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   const currentDatasheetIds = useSelector(Selectors.getDatasheetIds);
   const [rollbackIng, setRollbackIng] = useState(false);
   const dispatch = useAppDispatch();
+
+  const theme = useSelector(state => state.theme);
+  const DataEmpty = theme === ThemeName.Light ? DataEmptyLight : DataEmptyDark;
 
   const fetchChangesets = (lastRevision: number) => {
     setFetching(true);
@@ -246,7 +252,10 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
       <div className={styles.content} ref={contentRef}>
 
         {isEmpty ?
-          <div className={styles.noList}>{t(Strings.rollback_history_empty)}</div> :
+          <div className={styles.noList}>
+            <Image src={DataEmpty} width={240} height={180} alt='' />
+            <p>{t(Strings.rollback_history_empty)}</p>
+          </div> :
           changesetList.map((item, index) => {
             const memberInfo = uuidMap && uuidMap[item.userId!];
             const title = memberInfo ? (getSocialWecomUnitName?.({

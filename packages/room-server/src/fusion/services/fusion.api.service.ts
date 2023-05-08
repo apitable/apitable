@@ -174,11 +174,10 @@ export class FusionApiService {
           }
 
           return {
-            id: viewId,
-            type: view.type,
-            name: view.name,
-            rows: [],
-            columns: view.columns,
+            property: {
+              ...view,
+              rows: [],
+            },
             fieldMap,
           };
         }
@@ -186,11 +185,10 @@ export class FusionApiService {
         // When no view ID is specified, the full list of fields is returned in the order of the first view, regardless of the field display.
         const firstView = snapshot.meta.views[0]!;
         return {
-          id: firstView.id,
-          type: firstView.type,
-          name: firstView.name,
-          rows: [],
-          columns: firstView.columns,
+          property: {
+            ...firstView,
+            rows: [],
+          },
           fieldMap,
         };
       },
@@ -264,11 +262,11 @@ export class FusionApiService {
         const rows = await this.filter.getVisibleRows(query.filterByFormula || undefined, view, state);
         if (rows.length === 0) {
           return {
-            id: view.id,
-            name: view.name,
-            type: view.type,
-            rows: [],
-            columns: [],
+            property: {
+              ...view,
+              rows: [],
+              columns: [],
+            },
             fieldMap: {},
           };
         }
@@ -277,11 +275,10 @@ export class FusionApiService {
         const fieldMap = this.filter.fieldMapFilter(snapshot.meta.fieldMap, query.fieldKey, query.fields);
 
         return {
-          id: view.id,
-          name: view.name,
-          type: view.type,
-          rows,
-          columns: view.columns,
+          property: {
+            ...view,
+            rows,
+          },
           fieldMap,
         };
       },
@@ -476,11 +473,10 @@ export class FusionApiService {
       const firstView = meta.views[0]!;
       const view = await datasheet.getView({
         getViewInfo: () => ({
-          id: firstView.id,
-          type: firstView.type,
-          name: firstView.name,
-          rows,
-          columns: firstView.columns,
+          property: {
+            ...firstView,
+            rows,
+          },
           fieldMap,
         }),
       });
@@ -528,12 +524,12 @@ export class FusionApiService {
             return null;
           }
           return {
-            id: viewId,
-            name: view.name,
-            type: view.type,
-            rows,
+            property: {
+              ...view,
+              rows,
+              columns: this.filter.getColumnsByViewId(state, newDatasheet.id, view),
+            },
             fieldMap,
-            columns: this.filter.getColumnsByViewId(state, newDatasheet.id, view),
           };
         },
       });
@@ -542,12 +538,12 @@ export class FusionApiService {
         getViewInfo: state => {
           const firstView = Selectors.getSnapshot(state)!.meta.views[0]!;
           return {
-            id: firstView.id,
-            name: firstView.name,
-            type: firstView.type,
-            rows,
+            property: {
+              ...firstView,
+              rows,
+              columns: this.filter.getColumnsByViewId(state, newDatasheet.id),
+            },
             fieldMap,
-            columns: this.filter.getColumnsByViewId(state, newDatasheet.id),
           };
         },
       });
@@ -565,22 +561,7 @@ export class FusionApiService {
 
   private async checkViewExists(datasheet: databus.Datasheet, viewId: string): Promise<void> {
     // test if viewId exists
-    const view = await datasheet.getView({
-      getViewInfo: state => {
-        const view = Selectors.getViewById(Selectors.getSnapshot(state, datasheet.id)!, viewId)!;
-        if (!view) {
-          return null;
-        }
-        return {
-          id: viewId,
-          name: view.name,
-          type: view.type,
-          rows: [],
-          fieldMap: {},
-          columns: [],
-        };
-      },
-    });
+    const view = await datasheet.getView(viewId);
     if (view === null) {
       throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
     }
@@ -654,11 +635,7 @@ export class FusionApiService {
     return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
-  private getRecordViewObjects(
-    records: databus.Record[],
-    userTimeZone?: string,
-    cellFormat: CellFormatEnum = CellFormatEnum.JSON,
-  ): ApiRecordDto[] {
+  private getRecordViewObjects(records: databus.Record[], userTimeZone?: string, cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
     return records.map(record =>
       record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, userTimeZone, cellFormat)),
     );

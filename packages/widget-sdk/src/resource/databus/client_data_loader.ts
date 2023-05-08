@@ -1,14 +1,12 @@
 import { AxiosResponse } from 'axios';
-import { StatusCode, databus, IApiWrapper, IReduxState, IServerDatasheetPack, StoreActions } from '@apitable/core';
+import { StatusCode, databus, IApiWrapper, IReduxState, IServerDatasheetPack, StoreActions, IServerDashboardPack } from '@apitable/core';
 
 export class ClientDataLoader implements databus.IDataLoader {
-  async loadDatasheetPack(datasheetId: string, options: IClientLoadDatasheetPackOptions): Promise<databus.ILoadDatasheetPackResult> {
+  async loadDatasheetPack(datasheetId: string, options: IClientLoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {
     const { shareId, templateId, embedId, recordIds, dispatch, getState, needLoad } = options;
 
     if (!needLoad) {
-      return {
-        datasheetPack: {} as any,
-      };
+      return {} as any;
     }
 
     const state = getState();
@@ -26,11 +24,15 @@ export class ClientDataLoader implements databus.IDataLoader {
     }
 
     if (response.data.success) {
-      return { datasheetPack: response.data.data };
+      return response.data.data;
     }
 
     dispatch(StoreActions.datasheetErrorCode(datasheetId, response.data.code));
-    return { datasheetPack: null };
+    return null;
+  }
+
+  loadDashboardPack(_dashboardId: string): Promise<IServerDashboardPack | null> {
+    return Promise.resolve(null);
   }
 }
 
