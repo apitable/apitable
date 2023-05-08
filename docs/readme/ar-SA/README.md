@@ -326,7 +326,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 - [👩‍💻 مركز المطور](https://developers.apitable.com/)
   - [<unk> مستندات REST API](https://developers.apitable.com/api/introduction/)
   - [أداة SDK](https://developers.apitable.com/widget/introduction/)
-  - سكريبت (قريبًا...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 خارطة الطريق
 

@@ -326,7 +326,7 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - [👩‍💻 개발자 센터](https://developers.apitable.com/)
   - [🪡 REST API 문서](https://developers.apitable.com/api/introduction/)
   - [SDK 받기](https://developers.apitable.com/widget/introduction/)
-  - 스크립팅 (곧 출시 예정)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 로드맵
 
