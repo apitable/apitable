@@ -18,6 +18,11 @@
 
 package com.apitable.auth.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.mockito.BDDMockito.given;
+
 import cn.hutool.core.util.IdUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.auth.enums.LoginType;
@@ -27,28 +32,15 @@ import com.apitable.base.enums.SmsCodeType;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.shared.captcha.CodeValidateScope;
 import com.apitable.shared.captcha.ValidateTarget;
-import com.apitable.shared.captcha.email.EmailValidateCodeProcessor;
-import com.apitable.shared.captcha.sms.SmsValidateCodeProcessor;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.vo.UserInfoVo;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.util.concurrent.atomic.AtomicReference;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
+import org.junit.jupiter.api.Test;
 
 public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     private static final String SOLID_CODE = "123456";
-
-    @MockBean
-    EmailValidateCodeProcessor emailValidateCodeProcessor;
-
-    @MockBean
-    SmsValidateCodeProcessor smsValidateCodeProcessor;
 
     @Test
     public void testLoginUsingPasswordWithMobilePhoneNotExist() {
@@ -58,7 +50,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername("13633333333");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
-        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
+        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
+            BusinessException.class);
     }
 
     @Test
@@ -69,7 +62,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername("13633333333");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
-        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
+        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
+            BusinessException.class);
     }
 
     @Test
@@ -97,7 +91,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername("dengguiheng@apitable.com");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
-        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
+        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
+            BusinessException.class);
     }
 
     @Test
@@ -107,7 +102,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername("dengguiheng@apitable.com");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
-        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(BusinessException.class);
+        assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
+            BusinessException.class);
     }
 
     @Test
@@ -141,7 +137,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
         AtomicReference<Long> userId = new AtomicReference<>();
 
-        assertThatNoException().isThrownBy(() -> userId.set(iAuthService.loginUsingSmsCode(loginRo).getUserId()));
+        assertThatNoException().isThrownBy(
+            () -> userId.set(iAuthService.loginUsingSmsCode(loginRo).getUserId()));
 
         checkUserHasSpace(userId.get());
     }
@@ -182,7 +179,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
         AtomicReference<Long> userId = new AtomicReference<>();
 
-        assertThatNoException().isThrownBy(() -> userId.set(iAuthService.loginUsingEmailCode(loginRo).getUserId()));
+        assertThatNoException().isThrownBy(
+            () -> userId.set(iAuthService.loginUsingEmailCode(loginRo).getUserId()));
 
         checkUserHasSpace(userId.get());
     }
@@ -215,7 +213,8 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     public String sendLoginEmailCode(String email) {
         CodeValidateScope scope = CodeValidateScope.fromName(EmailCodeType.fromName(2).name());
         ValidateTarget target = ValidateTarget.create(email);
-        given(emailValidateCodeProcessor.createAndSend(target, scope, false)).willReturn(SOLID_CODE);
+        given(emailValidateCodeProcessor.createAndSend(target, scope, false)).willReturn(
+            SOLID_CODE);
         return emailValidateCodeProcessor.createAndSend(target, scope, false);
     }
 

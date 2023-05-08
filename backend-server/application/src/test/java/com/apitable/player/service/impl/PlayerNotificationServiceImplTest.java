@@ -18,8 +18,10 @@
 
 package com.apitable.player.service.impl;
 
-import java.util.Collections;
-import java.util.List;
+import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
@@ -27,20 +29,13 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.player.dto.NotificationModelDTO;
-import com.apitable.player.service.IPlayerNotificationService;
-import com.apitable.shared.component.notification.INotificationFactory;
 import com.apitable.shared.component.notification.NotificationManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
-import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
@@ -48,11 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * </p>
  */
 public class PlayerNotificationServiceImplTest extends AbstractIntegrationTest {
-    @Autowired
-    private IPlayerNotificationService iPlayerNotificationService;
-
-    @Autowired
-    private INotificationFactory notificationFactory;
 
     @Test
     public void testCreateNewUserWelcomeNotification() {

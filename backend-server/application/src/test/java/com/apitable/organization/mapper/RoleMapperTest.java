@@ -18,24 +18,20 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.List;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.organization.dto.RoleBaseInfoDto;
 import com.apitable.organization.dto.RoleInfoDTO;
-
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleMapperTest extends AbstractMyBatisMapperTest {
 
-    @Resource
+    @Autowired
     RoleMapper roleMapper;
 
     @Test
@@ -76,7 +72,8 @@ public class RoleMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/unit-role-data.sql", "/sql/unit-data.sql"})
     void givenWhenSelectRoleInfoDTOByIdsThen() {
-        List<RoleInfoDTO> roles = roleMapper.selectRoleInfoDtoByIds(CollUtil.newArrayList(20220824L));
+        List<RoleInfoDTO> roles =
+            roleMapper.selectRoleInfoDtoByIds(CollUtil.newArrayList(20220824L));
         assertThat(roles.size()).isEqualTo(1);
         assertThat(roles.get(0).getUnitId()).isEqualTo(20220824L);
     }
@@ -92,7 +89,8 @@ public class RoleMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/unit-role-data.sql")
     void givenWhenSelectRoleBaseInfoDtoByIdThen() {
-        List<RoleBaseInfoDto> roleBaseInfoDtoList = roleMapper.selectRoleBaseInfoDtoByIds(CollUtil.newArrayList(20220824L));
+        List<RoleBaseInfoDto> roleBaseInfoDtoList =
+            roleMapper.selectRoleBaseInfoDtoByIds(CollUtil.newArrayList(20220824L));
         assertThat(roleBaseInfoDtoList.size()).isEqualTo(1);
         assertThat(roleBaseInfoDtoList.get(0).getRoleName()).isEqualTo("apitable boy");
     }
@@ -100,7 +98,9 @@ public class RoleMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/unit-role-data.sql", "/sql/unit-data.sql"})
     void givenWhenSelectRoleInfoDtoByIdsAndSpaceIdThen() {
-        List<RoleInfoDTO> roleInfos = roleMapper.selectRoleInfoDtoByIdsAndSpaceId(CollUtil.newArrayList(20220824L), "spc20220824");
+        List<RoleInfoDTO> roleInfos =
+            roleMapper.selectRoleInfoDtoByIdsAndSpaceId(CollUtil.newArrayList(20220824L),
+                "spc20220824");
         assertThat(roleInfos.size()).isEqualTo(1);
     }
 

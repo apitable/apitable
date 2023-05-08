@@ -19,7 +19,11 @@
 package com.apitable;
 
 import cn.hutool.core.collection.CollUtil;
+import com.apitable.asset.service.IAssetCallbackService;
+import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.auth.service.IAuthService;
+import com.apitable.control.service.IControlRoleService;
+import com.apitable.control.service.IControlService;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.internal.service.IFieldService;
 import com.apitable.mock.bean.MockInvitation;
@@ -30,22 +34,43 @@ import com.apitable.organization.service.IRoleMemberService;
 import com.apitable.organization.service.IRoleService;
 import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.ITeamService;
+import com.apitable.organization.service.IUnitService;
+import com.apitable.player.service.IPlayerNotificationService;
+import com.apitable.shared.cache.service.TemplateConfigCacheService;
+import com.apitable.shared.captcha.email.EmailValidateCodeProcessor;
+import com.apitable.shared.captcha.sms.SmsValidateCodeProcessor;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.clock.spring.ClockManager;
-import com.apitable.shared.config.ServerConfig;
+import com.apitable.shared.component.notification.INotificationFactory;
+import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.space.mapper.InvitationMapper;
+import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
+import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
 import com.apitable.space.service.IInvitationService;
+import com.apitable.space.service.ISpaceInviteLinkService;
+import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
+import com.apitable.space.service.IStaticsService;
 import com.apitable.sql.script.enhance.TablePrefixUtil;
+import com.apitable.template.service.ITemplateAlbumService;
+import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
+import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.service.IUserService;
+import com.apitable.widget.service.IWidgetPackageService;
+import com.apitable.widget.service.IWidgetUploadService;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.service.IDatasheetMetaService;
+import com.apitable.workspace.service.IFieldRoleService;
+import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
+import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -53,30 +78,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = Application.class)
 @TestPropertySource(value = {
     "classpath:test.properties", "classpath:spring.properties"
-}, properties = {"TEST_ENABLED=true"})
-@ContextConfiguration
+})
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
     @Autowired
-    protected MybatisPlusProperties mybatisPlusProperties;
-
-    @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    protected ServerConfig serverConfig;
+    protected MybatisPlusProperties mybatisPlusProperties;
+
+    @Autowired
+    protected SystemProperties systemProperties;
 
     @Autowired
     protected IAuthService iAuthService;
@@ -103,7 +127,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected PasswordEncoder passwordEncoder;
 
     @Autowired
-    protected IFieldService fieldService;
+    protected IFieldService iFieldService;
 
     @Autowired
     protected IInvitationService invitationService;
@@ -115,10 +139,88 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IRoleMemberService iRoleMemberService;
 
     @Autowired
+    protected ITemplateService iTemplateService;
+
+    @Autowired
     protected EntitlementServiceFacade entitlementServiceFacade;
+
+    @Autowired
+    protected IAssetCallbackService iAssetCallbackService;
+
+    @Autowired
+    protected IAssetUploadTokenService iAssetUploadTokenService;
+
+    @Autowired
+    protected IPlayerNotificationService iPlayerNotificationService;
+
+    @Autowired
+    protected INotificationFactory notificationFactory;
+
+    @Autowired
+    protected TemplateConfigCacheService templateConfigCacheService;
+
+    @Autowired
+    protected ISpaceInviteLinkService iSpaceInviteLinkService;
+
+    @Autowired
+    protected IControlRoleService iControlRoleService;
+
+    @Autowired
+    protected IUnitService iUnitService;
+
+    @Autowired
+    protected ISpaceRoleService iSpaceRoleService;
+
+    @Autowired
+    protected IStaticsService iStaticsService;
+
+    @Autowired
+    protected ITemplateAlbumService iTemplateAlbumService;
+
+    @Autowired
+    protected IWidgetUploadService iWidgetUploadService;
+
+    @Autowired
+    protected IWidgetPackageService iWidgetPackageService;
+
+    @Autowired
+    protected IFieldRoleService iFieldRoleService;
+
+    @Autowired
+    protected INodeRoleService iNodeRoleService;
+
+    @Autowired
+    protected IControlService iControlService;
+
+    @Autowired
+    protected IDatasheetMetaService iDatasheetMetaService;
+
+    @Autowired
+    protected IResourceMetaService iResourceMetaService;
 
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
+
+    @MockBean
+    protected EmailValidateCodeProcessor emailValidateCodeProcessor;
+
+    @MockBean
+    protected SmsValidateCodeProcessor smsValidateCodeProcessor;
+
+    @Autowired
+    protected InvitationMapper invitationMapper;
+
+    @Autowired
+    protected SpaceMapper spaceMapper;
+
+    @Autowired
+    protected UserMapper userMapper;
+
+    @Autowired
+    protected SpaceMemberRoleRelMapper spaceMemberRoleRelMapper;
+
+    @Autowired
+    protected SpaceRoleResourceRelMapper spaceRoleResourceRelMapper;
 
     @BeforeEach
     public void beforeMethod() {
@@ -161,10 +263,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         return ClockManager.me().getMockClock();
     }
 
-    protected ZoneOffset getTestTimeZone() {
-        return serverConfig.getTimeZone();
-    }
-
     protected UserEntity createUserRandom() {
         return createUserWithEmailAndPassword(IdWorker.getIdStr() + "@apitable.com");
     }
@@ -178,11 +276,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
-        return createSpaceWithName(user, "test space");
-    }
-
-    protected String createSpaceWithName(UserEntity user, String name) {
-        return iSpaceService.createSpace(user, name);
+        return iSpaceService.createSpace(user, "test space");
     }
 
     protected Long createMember(Long userId, String spaceId) {
