@@ -3,6 +3,28 @@
 
 
 
+## [v0.20.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc.1) (2023-05-08)
+
+
+### Features and enhancements
+
+* feat(l10n):support french && chinese traditional ([#741](https://github.com/apitable/apitable/pull/741)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: avoid loading room-native-api if USE_NATIVE_MODULE is disabled ([#743](https://github.com/apitable/apitable/pull/743)) @arucil 
+* fix: disable forbid unknow values ([#750](https://github.com/apitable/apitable/pull/750)) @yort-feng 
+* fix: add multi language images ([#751](https://github.com/apitable/apitable/pull/751)) @luoyunyao 
+
+### What's more
+
+* Crowdin add French strings([#684](https://github.com/apitable/apitable/pull/684)) @mr-kelly 
+* docs: design system ([#748](https://github.com/apitable/apitable/pull/748)) @mr-kelly 
+* docs: discord invite link update ([#726](https://github.com/apitable/apitable/pull/726)) @mr-kelly 
+* docs: update Crowdin translate link ([#760](https://github.com/apitable/apitable/pull/760)) @Exclamation-mark 
+* docs: submit a detail PRD issue ([#762](https://github.com/apitable/apitable/pull/762)) @mr-kelly 
+* chore: sorts of chores ([#763](https://github.com/apitable/apitable/pull/763)) @mr-kelly 
+* sync: hosted cloud ([#766](https://github.com/apitable/apitable/pull/766)) @yort-feng 
 ## [v0.20.0-rc](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc) (2023-04-25)
 
 
