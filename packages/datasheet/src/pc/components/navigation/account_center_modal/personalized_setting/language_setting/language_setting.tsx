@@ -23,13 +23,24 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import styles from './style.module.less';
 
-const options = [{
-  label: '简体中文',
-  value: 'zh-CN'
-}, {
-  label: 'English',
-  value: 'en-US'
-}];
+/**
+ * read Settings in config
+ */
+declare const window: any;
+declare const global: any;
+
+const _global = global || window;
+
+const options: any[] = [];
+
+Object.keys(_global.languageManifest).forEach(item => {
+  if (item.indexOf('-') !== -1) {
+    options.push({
+      label: _global.languageManifest[item],
+      value: item
+    });
+  }
+});
 
 export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const lang = getLanguage();

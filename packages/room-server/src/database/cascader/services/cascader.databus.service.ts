@@ -33,7 +33,12 @@ export class CascaderDatabusService {
   constructor(readonly datasheetService: DatasheetService, private readonly restService: RestService, readonly commandService: CommandService) {
     this.databus = databus.DataBus.create({
       dataStorageProvider: new CascaderDataStorageProvider(datasheetService),
-      storeProvider: { createStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)) },
+      storeProvider: {
+        createDatasheetStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)),
+        createDashboardStore: dashboardPack => {
+          throw new Error('unreachable ' + dashboardPack.dashboard.id);
+        },
+      },
     });
 
     this.database = this.databus.getDatabase();
@@ -68,11 +73,10 @@ export class CascaderDatabusService {
           fieldMethods[key] = Field.bindContext(fieldMap[key]!, state);
         }
         return {
-          id: viewId,
-          type: view.type,
-          name: view.name,
-          rows,
-          columns: view.columns,
+          property: {
+            ...view,
+            rows,
+          },
           fieldMap,
         };
       },

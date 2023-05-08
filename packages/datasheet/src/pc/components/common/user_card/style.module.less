@@ -14,14 +14,10 @@
 
   .avatarWrapper {
    
-    padding: 16px 16px 0;
+    padding: 16px 16px 0px;
   }
 
-  .permissionWrapper {
-    display: flex;
-    align-items: center;
-    margin-right: 4px;
-  }
+  
 
   .cardTool {
    position: absolute;
@@ -42,28 +38,42 @@
 
   .nameWrapper {
     margin-top: 8px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    h6 {
+      display: inline-block;
+      color: var(--firstLevelText);
+      font-size: 14px;
+      line-height: 22px;
+      margin-bottom: 0;
+      vertical-align: middle;
+      span {
+        line-height: 22px;
+      }
+    }
+    .permissionWrapper {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 14px;
+      line-height: 22px;
+    }
   }
 
   .settingPermissionBtn {
-    margin-left: 8px;
+    margin-right: 4px;
     width: 20px;
     height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-  }
-
-  .name {
-    margin-right: 8px;
+    svg {
+      fill: var(--textCommonTertiary)!important;
+    }
+    
   }
   
   .email {
     color: var(--textCommonSecondary);
-    padding: 4px 16px 14px;
+    padding: 4px 16px 0px;
     p {
       margin: 0;
     }
@@ -72,20 +82,29 @@
   .tag {
     display: inline-block;
     border-radius: 2px;
-    padding: 1px 8px;
+    padding: 0px 8px;
     background-color: var(--lowestBg);
-    margin-right: 4px;
+    margin-left: 4px;
     max-width: 100%;
+    font-size: 14px;
+    line-height: 22px;
+    p {
+      margin: 0 0;
+    }
   }
   
   .dangerTag {
     display: inline-block;
     border-radius: 2px;
-    padding: 1px 8px;
-    margin-right: 4px;
+    padding: 0px 8px;
+    margin-left: 4px;
     max-width: 100%;
-    // background-color: var(--lowestBg);
     border: 1px solid var(--borderDangerDefault);
+    font-size: 14px;
+    line-height: 22px;
+    p {
+      margin: 0 0;
+    }
   }
   
 }
@@ -103,8 +122,9 @@
     justify-content: left;
     align-items: flex-start;
     svg {
-      margin: 3px 5px 0 0;
-      color: var(--textCommonSecondary);
+      flex-shrink: 0;
+      margin: 2px 5px 0 0;
+      fill: var(--textCommonTertiary)!important;
     }
   }
   
@@ -113,7 +133,7 @@
     font-weight: normal;
     font-size: 13px;
     line-height: 20px;
-    color: var(--textCommonSecondary);
+    color: var(--textCommonTertiary);
     margin: 0;
     margin-bottom: 4px;
     min-width: 30px;

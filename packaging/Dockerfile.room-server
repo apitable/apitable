@@ -40,7 +40,7 @@ COPY packages/room-server ./packages/room-server
 
 RUN yarn build:sr
 
-RUN yarn build:room-native-api:arm64
+# RUN yarn build:room-native-api:arm64
 
 RUN rm -rf packages/room-native-api/target
 

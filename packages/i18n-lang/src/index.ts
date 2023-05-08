@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import strings from './config/strings.json';
+import languageManifest from './config/language.manifest.json';
 // @ts-ignore
 import { strings as _strings } from './enterprise';
 
@@ -31,8 +32,10 @@ function loadAllLang() {
   }
   if (typeof window !== 'undefined') {
     (window as any).apitable_i18n = newStrings;
+    (window as any).languageManifest = languageManifest;
   } else {
     (global as any).apitable_i18n = newStrings;
+    (global as any).languageManifest = languageManifest;
   }
 }
 

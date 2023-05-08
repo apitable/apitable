@@ -113,6 +113,7 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
                           nickName,
                           name: memberName,
                           info: teams,
+                          isMemberNameModified: (item as any).isMemberNameModified,
                           isTeam: false,
                         }}
                         identity={{

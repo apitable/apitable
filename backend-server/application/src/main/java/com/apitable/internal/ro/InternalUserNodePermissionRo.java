@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,18 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IDashboardSnapshot, IWidgetMap } from '@apitable/core';
-import { NodeInfo } from './node.model';
+package com.apitable.internal.ro;
 
-export class DashboardSnapshot {
-  snapshot!: IDashboardSnapshot;
-}
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Data;
 
-export type DashboardData = NodeInfo & DashboardSnapshot;
+/**
+ * Internal User Node Permission Ro.
+ */
+@Data
+@Schema(description = "Internal Interface - User's Node Permission Request Parameters")
+public class InternalUserNodePermissionRo {
 
-export type WidgetMap = IWidgetMap;
-
-export class DashboardDataPack {
-  dashboard!: DashboardData;
-  widgetMap!: WidgetMap;
+    @Schema(description = "User Id List", requiredMode = Schema.RequiredMode.REQUIRED,
+        example = "[\"132143242\", \"4324242\"]")
+    private List<String> userIds;
 }

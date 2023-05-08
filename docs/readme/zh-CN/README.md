@@ -228,7 +228,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-##  💝 嵌入友好
+## ## 💝 嵌入友好
 
 #### 分享和嵌入
 
@@ -252,7 +252,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-用您的浏览器打开[http://localhost:80](http://localhost:80)并浏览。
+然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。
 
 我们还提供了一个基于 [pm2](https://pm2.keymetrics.io/) 的完整镜像，用于演示或测试目的(不推荐用于企业或生产用途)：
 
@@ -326,7 +326,7 @@ APITable 可适用这些通用的约定：
 - [👩‍💻 开发者中心](https://developers.apitable.com/)
   - [REST API 文档](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
-  - 脚本（即将到来...）
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 规划路线
 

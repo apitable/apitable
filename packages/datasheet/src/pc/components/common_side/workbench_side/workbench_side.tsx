@@ -40,7 +40,7 @@ import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_
 import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import { Router } from 'pc/components/route_manager/router';
 import { sendRemind } from 'pc/events/notification_verification';
-import { useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest, useWorkbenchSideSync } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
@@ -115,6 +115,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
 
+  useWorkbenchSideSync();
+
   useEffect(() => {
     const eventBundle = new Map([
       [
@@ -184,7 +186,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   useEffect(() => {
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : [ConfigConstant.Modules.CATALOG];
+    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
     setActiveKey(defaultActiveKey);
   }, []);
 
@@ -316,44 +318,47 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
             ) : (
               <>
                 <div className={styles.catalogActions}>
-                  <LinkButton
-                    underline={false}
-                    component="div"
-                    prefixIcon={<AddOutlined color={colors.textCommonSecondary} />}
-                    color={colors.textCommonSecondary}
-                    disabled={!rootManageable}
-                    onClick={openDefaultMenu}
-                  >
-                    <Tooltip title={t(Strings.new_node_tooltip)}>
-                      {t(Strings.new_node_btn_title)}
-                    </Tooltip>
-                  </LinkButton>
-                  <LinkButton
-                    underline={false}
-                    component="div"
-                    prefixIcon={<ImportOutlined color={colors.textCommonSecondary} />}
-                    color={colors.textCommonSecondary}
-                    onClick={() => {
-                      dispatch(StoreActions.updateImportModalNodeId(rootId));
-                    }}
-                  >
-                    <Tooltip title={t(Strings.import_from_excel_tooltip)}>
-                      {t(Strings.import_file_btn_title)}
-                    </Tooltip>
-                  </LinkButton>
-                  <LinkButton
-                    underline={false}
-                    component="div"
-                    prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} />}
-                    color={colors.textCommonSecondary}
-                    onClick={() => {
-                      addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);
-                    }}
-                  >
-                    <Tooltip title={t(Strings.new_folder_tooltip)}>
-                      {t(Strings.folder)}
-                    </Tooltip>
-                  </LinkButton>
+                  {rootManageable && (
+                    <>
+                      <LinkButton
+                        underline={false}
+                        component="div"
+                        prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12} />}
+                        color={colors.textCommonSecondary}
+                        onClick={openDefaultMenu}
+                      >
+                        <Tooltip title={t(Strings.new_node_tooltip)}>
+                          {t(Strings.new_node_btn_title)}
+                        </Tooltip>
+                      </LinkButton>
+                      <LinkButton
+                        underline={false}
+                        component="div"
+                        prefixIcon={<ImportOutlined color={colors.textCommonSecondary} size={12} />}
+                        color={colors.textCommonSecondary}
+                        onClick={() => {
+                          dispatch(StoreActions.updateImportModalNodeId(rootId));
+                        }}
+                      >
+                        <Tooltip title={t(Strings.import_from_excel_tooltip)}>
+                          {t(Strings.import_file_btn_title)}
+                        </Tooltip>
+                      </LinkButton>
+                      <LinkButton
+                        underline={false}
+                        component="div"
+                        prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} size={12} />}
+                        color={colors.textCommonSecondary}
+                        onClick={() => {
+                          addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);
+                        }}
+                      >
+                        <Tooltip title={t(Strings.new_folder_tooltip)}>
+                          {t(Strings.folder)}
+                        </Tooltip>
+                      </LinkButton>
+                    </>
+                  )}
                 </div>
                 <div className={styles.scrollContainer}>
                   <Catalog/>

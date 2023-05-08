@@ -165,7 +165,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
               {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE &&
                 <div className={styles.cardTool} onClick={openPermissionModal}>
                   <div className={styles.settingPermissionBtn}>
-                    <SettingOutlined color={colors.textCommonPrimary} />
+                    <SettingOutlined size={20} color={colors.textCommonPrimary} />
                   </div>
                   <span>{t(Strings.permission)}</span>
                 </div>
@@ -174,38 +174,40 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                 <Avatar
                   id={memberInfo?.memberId || userId || '0'}
                   src={memberInfo?.avatar || spareSrc}
-                  title={memberInfo?.nickName || memberInfo?.memberName || spareName || ''}
+                  title={memberInfo?.memberName || memberInfo?.nickName || spareName || ''}
                   avatarColor={memberInfo?.avatarColor}
                   {...avatarProps}
                   size={40}
                 />
                 <div className={styles.nameWrapper}>
-                  <Typography className={styles.name} variant='h7' color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                    { spareName || title }
-                  </Typography>
-                  {permissionVisible && memberRole &&
-                    <div className={styles.permissionWrapper}>
-                      <Tag className={styles.permission} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
-                    </div>
-                  }
-                  <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
+                  <h6>
+                    <span>{ title || spareName }</span>
+                    {permissionVisible && memberRole &&
+                      <Tag className={styles.permissionWrapper} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
+                    }
+                    <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
+                  </h6>
                 </div>
               </div>
+              { memberInfo?.email && 
               <div className={styles.infoWrapper}>
                 <div className={styles.email}>
-                  {
-                    memberInfo?.email &&
-                    <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
-                      {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
-                    </Typography>
-                  }
+                  <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                    {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
+                  </Typography>
                 </div>
               </div>
-              <div className={styles.infoContent}>
+              }
+              <div 
+                className={styles.infoContent} 
+                style={{
+                  marginTop: memberInfo ? '16px' : '8px'
+                }}
+              >
                 {
                   getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
                     { (isAlien || !memberInfo) ? <div className={styles.infoText}>
-                      <InfoCircleOutlined />
+                      <InfoCircleOutlined size={16} />
                       <p>{t(Strings.alien_tip_in_user_card)}</p>
                     </div> :
                       <>
@@ -254,7 +256,7 @@ const TeamTag: FC<React.PropsWithChildren<ITeamTag>> = (props) => {
       [styles.tag]: isActive,
       [styles.dangerTag]: !isActive
     })}>
-      <Typography variant='body4' color={isActive ? colors.secondLevelText : colors.borderDangerDefault} ellipsis>{tagText}</Typography>
+      <p style={{ color: isActive ? colors.secondLevelText : colors.borderDangerDefault }}>{tagText}</p>
     </div>
   );
 };

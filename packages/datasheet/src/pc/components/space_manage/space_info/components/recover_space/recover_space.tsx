@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, Strings, t } from '@apitable/core';
+import { Api, IReduxState, Strings, t, ThemeName } from '@apitable/core';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Modal as ModalMobile } from 'antd-mobile';
 import cls from 'classnames';
@@ -27,10 +27,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import DeleteIcon from 'static/icon/space/space_img_delete.png';
 import { DelSuccess } from '../del_success/del.success';
 import styles from './style.module.less';
 import { UndoFilled } from '@apitable/icons';
+import SpaceDeleteDark from 'static/icon/common/space_delete_img_dark.png';
+import SpaceDeleteLight from 'static/icon/common/space_delete_img_light.png';
 
 export const RecoverSpace = () => {
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
@@ -40,7 +41,8 @@ export const RecoverSpace = () => {
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-
+  const theme = useSelector(state => state.theme);
+  const DeleteIcon = theme === ThemeName.Light ? SpaceDeleteLight : SpaceDeleteDark;
   const recoverSpaceConfirm = () => {
     if (!spaceId) return;
     Api.recoverSpace(spaceId).then(res => {

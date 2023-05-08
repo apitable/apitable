@@ -25,6 +25,9 @@ export const CascaderDatasourceViewSelect = ({
       property: {
         ...currentField?.property,
         linkedViewId: option.value as string,
+        // toggle view should clear cache fields
+        linkedFields: [],
+        fullLinkedFields: [],
       },
     });
   };

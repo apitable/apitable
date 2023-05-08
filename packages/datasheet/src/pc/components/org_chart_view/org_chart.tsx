@@ -250,7 +250,7 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
       {quickAddRecId &&
         ReactDOM.createPortal(
           <>
-            <Modal recordId={quickAddRecId} />
+            <Modal recordId={quickAddRecId} setQuickAddRecId={setQuickAddRecId} />
             <div
               className={styles.mask}
               onClick={() => {

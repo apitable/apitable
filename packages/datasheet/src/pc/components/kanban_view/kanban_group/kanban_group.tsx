@@ -277,9 +277,8 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
               ) : (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   <VariableSizeList
-                    // height={
-                    //   isMobile ? (virtualHeight - (2 * MARGIN_DISTANCE)) : virtualHeight
-                    // }
+                    // change display record count will change virtualHeight, itemSize should rerender right-now.
+                    key={virtualHeight}
                     height={virtualHeight}
                     itemCount={itemCount}
                     itemSize={rowIndex => cardHeight(rowIndex, MARGIN_DISTANCE)}

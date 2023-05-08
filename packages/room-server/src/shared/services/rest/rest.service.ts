@@ -28,6 +28,7 @@ import {
   IUnitValue,
   IUserInfo,
   IWidget,
+  IWidgetMap,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -38,7 +39,6 @@ import {
   InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
   InternalSpaceUsageView,
-  WidgetMap,
 } from 'database/interfaces';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { AssetVo } from 'fusion/vos/attachment.vo';
@@ -47,7 +47,15 @@ import { lastValueFrom } from 'rxjs';
 import { CommonStatusCode } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
-import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
+import {
+  IAuthHeader,
+  IHttpSuccessResponse,
+  INotificationCreateRo,
+  IOpAttachCiteRo,
+  IUserBaseInfo,
+  NodePermission,
+  UserNodePermissionMap
+} from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
@@ -63,6 +71,7 @@ export class RestService {
   private GET_WIDGET = 'widget/get';
   private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
+  private GET_USERS_NODE_PERMISSION = 'internal/nodes/%(nodeId)s/users/permissions';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
   private GET_MULTI_NODE_PERMISSION = 'internal/node/field/permission';
   private DEL_FIELD_PERMISSION = 'internal/datasheet/%(dstId)s/field/permission/disable';
@@ -172,6 +181,17 @@ export class RestService {
     return response!.data;
   }
 
+  async getUsersNodePermission(headers: IAuthHeader, nodeId: string, userIds: string[]): Promise<UserNodePermissionMap> {
+    const response = await lastValueFrom(
+      this.httpService.post(sprintf(this.GET_USERS_NODE_PERMISSION, { nodeId }), {
+        userIds,
+      }, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+    );
+    return response!.data;
+  }
+
   async getFieldPermission(headers: IAuthHeader, nodeId: string, shareId?: string): Promise<IFieldPermissionMap> {
     const response = await lastValueFrom(
       this.httpService.get(sprintf(this.GET_FIELD_PERMISSION, { nodeId }), {
@@ -203,7 +223,7 @@ export class RestService {
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
     if (skipUsageVerification) {
       this.logger.log(`skipCapacityOverLimit:${spaceId}`);
-      return true;
+      return false;
     }
     const authHeaders = HttpHelper.createAuthHeaders(headers);
     // No headers, internal request does not relate to attachment field temporarily
@@ -255,7 +275,7 @@ export class RestService {
     return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   }
 
-  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<WidgetMap> {
+  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IWidgetMap> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_WIDGET, {
         headers: HttpHelper.createAuthHeaders(headers),

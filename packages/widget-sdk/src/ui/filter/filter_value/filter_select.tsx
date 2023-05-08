@@ -92,7 +92,7 @@ const OptionList: React.FC<IOptionListProps> = (props) => {
       <div>
         {field.property.options.map(option => (
           <OptionItemWrap key={option.id} onClick={() => clickOption(option)}>
-            <Box flex={'1'}>
+            <Box flex={'1'} width={'100%'}>
               <SelectValueBox
                 options={field.property.options}
                 selectOptions={getSelectOptions([option.id], field.property.options) as ISelectFieldBaseOpenValue[]}

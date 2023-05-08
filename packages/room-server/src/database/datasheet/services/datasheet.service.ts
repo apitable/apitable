@@ -30,13 +30,13 @@ import {
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { DatasheetEntity } from '../entities/datasheet.entity';
+import type { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
 import { isEmpty } from 'lodash';
-import { Store } from 'redux';
+import type { Store } from 'redux';
 import { InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
-import {
+import type {
   IAuthHeader,
   IFetchDataOptions,
   IFetchDataOriginOptions,
@@ -45,7 +45,7 @@ import {
   ILoadBasePackOptions,
 } from 'shared/interfaces';
 import { Logger } from 'winston';
-import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
+import type { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../repositories/datasheet.repository';
 import { NodeService } from 'node/services/node.service';
 import { UserService } from '../../../user/services/user.service';
@@ -53,7 +53,7 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 import { NativeService } from 'shared/services/native/native.service';
 
 @Injectable()

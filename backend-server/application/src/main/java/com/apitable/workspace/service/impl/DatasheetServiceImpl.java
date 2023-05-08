@@ -437,6 +437,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
                     break;
+                case CASCADER:
+                    fieldMapRo.getProperty().set("linkedDatasheetId", "");
+                    fieldMapRo.getProperty().set("linkedViewId", "");
+                    fieldMapRo.getProperty().set("linkedFields", new ArrayList<>());
+                    fieldMapRo.getProperty().set("fullLinkedFields", new ArrayList<>());
+                    fieldMapRo.getProperty().set("showAll", false);
+                    break;
                 case AUTO_NUMBER:
                     autoNumberFieldIds.add(fieldMapRo.getId());
                     originDstId = fieldMapRo.getProperty().get("datasheetId");

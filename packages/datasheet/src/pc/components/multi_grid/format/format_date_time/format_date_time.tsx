@@ -253,7 +253,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
                 }, ...getUtcOptionList()]}
                 openSearch
                 searchPlaceholder={t(Strings.search)}
-                highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: colorVars.fc1, borderRadius: '4px' }}
+                highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: 'inherit', borderRadius: '4px' }}
               />
               <div className={styles.showTimeZone}>
                 <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>

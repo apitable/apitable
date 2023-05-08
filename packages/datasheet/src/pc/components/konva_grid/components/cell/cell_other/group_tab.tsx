@@ -91,6 +91,7 @@ export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props
         transformsEnabled={'all'}
         data={isCollapse ? TriangleRight16FilledPath : TriangleDown16FilledPath}
         onClick={clickExpandToggle}
+        onTap={clickExpandToggle}
       />
     </Group>
   );

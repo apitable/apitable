@@ -18,14 +18,14 @@
 
 import { Controller, Headers, Get, Param, UseInterceptors, Query, Body, Post, Delete } from '@nestjs/common';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
-import { DatasheetPack, MirrorInfo } from '../../interfaces';
+import type { DatasheetPack, MirrorInfo } from '../../interfaces';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { UserService } from 'user/services/user.service';
-import { DatasheetPackRo } from '../../datasheet/ros/datasheet.pack.ro';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackRo } from '../../datasheet/ros/datasheet.pack.ro';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * mirror interface
