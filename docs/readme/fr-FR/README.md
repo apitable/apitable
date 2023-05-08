@@ -68,7 +68,7 @@
 
 Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
 
-If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
 
 Si vous voulez installer APITable dans votre environnement de calcul local ou cloud, voir [💾 Installation](#installation)
 
@@ -129,7 +129,7 @@ Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.
       <a href="#">Autorisations puissantes/colonnes</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">Intégrer</a>
     </th>
   </tr>
 
@@ -191,7 +191,7 @@ APITable offre une gamme de fonctionnalités étonnantes, du personnel à l'entr
   - Audit
   - Sauvegarde automatique de la base de données
   - Exportateur de données
-  - Watermark
+  - Filigrane
 - ....
 
 Avec des widgets extensibles et des plugins, vous pouvez ajouter plus de fonctionnalités.
@@ -278,7 +278,7 @@ Vous pouvez contribuer de la manière suivante :
 - [Contribuer au code](./docs/contribute/developer-guide.md)
 
 
-Such as the following:
+Voici ce qui suit :
 - Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
@@ -347,11 +347,11 @@ Veuillez vous référer à la [Feuille de route de l'APITable](https://apitable.
 
 - En tant qu'IdP ;
 - SAML
-- Single-Sign-On
+- Authentification unique
 - Audit
 - Sauvegarde de la base de données
 - Intégrer avec ChatGPT, Zapier, Slack, Google Workspace......
-- Watermark
+- Filigrane
 
 For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
@@ -369,7 +369,7 @@ Nous recherchons toujours de bons talents pour APITables :
 
 - **Développeur Full-stack**: Vous avez de l'expérience avec React, NestJS, TypeScript, Spring Boot, Java, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
 - **Développeur Back-end**: Vous avez de l'expérience avec NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
-- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
+- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l'équipe d'APITable, n'hésitez pas et envoyez votre CV à [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -403,7 +403,7 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
     <img src="docs/static/screenshot-it.png" alt="Image de capture d'écran APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licence
@@ -418,4 +418,4 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: Licencié avec AGPL-3.0. Conçu par [APITable Ltd](https://apitable.com).
