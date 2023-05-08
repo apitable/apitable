@@ -73,10 +73,11 @@ export class CascaderDatabusService {
           fieldMethods[key] = Field.bindContext(fieldMap[key]!, state);
         }
         return {
-          property: {
-            ...view,
-            rows,
-          },
+          id: viewId,
+          type: view.type,
+          name: view.name,
+          rows,
+          columns: view.columns,
           fieldMap,
         };
       },
