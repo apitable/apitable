@@ -353,7 +353,7 @@ APITable 可适用这些通用的约定：
 - 与ChatGPT、Zapier、Slack、Google Workspace等软件集成
 - 水印
 
-欲了解更多信息，请通过 <support@apitable.com> 联系我们。
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 参与进来
 
