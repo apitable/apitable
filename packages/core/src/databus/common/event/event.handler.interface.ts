@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IDatasheetCommandExecutedEvent, IDatasheetDataChangeEvent } from './event.interface';
-import { DatasheetEventType } from './event.type.enum';
+import { IResourceCommandExecutedEvent, IResourceDataChangeEvent } from './event.interface';
+import { ResourceEventType } from './event.type.enum';
 
-export type IDatasheetEventHandler = IDatasheetDataChangeEventHandler | IDatasheetCommandExecutedEventHandler;
+export type IResourceEventHandler = IResourceDataChangeEventHandler | IResourceCommandExecutedEventHandler;
 
-export interface IDatasheetDataChangeEventHandler {
-  type: DatasheetEventType.DataChange;
-  handle(event: IDatasheetDataChangeEvent): Promise<void> | void;
+export interface IResourceDataChangeEventHandler {
+  type: ResourceEventType.DataChange;
+  handle(event: IResourceDataChangeEvent): Promise<void> | void;
 }
 
-export interface IDatasheetCommandExecutedEventHandler {
-  type: DatasheetEventType.CommandExecuted;
-  handle(event: IDatasheetCommandExecutedEvent): Promise<void> | void;
+export interface IResourceCommandExecutedEventHandler {
+  type: ResourceEventType.CommandExecuted;
+  handle(event: IResourceCommandExecutedEvent): Promise<void> | void;
 }

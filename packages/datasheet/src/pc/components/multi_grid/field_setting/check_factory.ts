@@ -215,11 +215,37 @@ class CheckFieldFormula {
   }
 }
 
+export interface IFieldCascaderErrors {
+  errors: {
+    linkedDatasheetId?: string;
+    linkedViewId?: string;
+    linkedFields?: string;
+  }
+}
+
 class CheckFieldCascader {
   static checkCascaderDatasource(curField: ICascaderField) {
-    if (!curField.property.linkedDatasheetId) return t(Strings.cascader_no_datasheet_error);
-    if (!curField.property.linkedViewId) return t(Strings.cascader_no_view_error);
-    if (curField.property.linkedFields.length < 1) return t(Strings.cascader_no_rules_error);
+    if (!curField.property.linkedDatasheetId) {
+      return {
+        errors: {
+          linkedDatasheetId: t(Strings.cascader_no_datasheet_error)
+        }
+      };
+    }
+    if (!curField.property.linkedViewId) {
+      return {
+        errors: {
+          linkedViewId: t(Strings.cascader_no_view_error)
+        }
+      };
+    }
+    if (curField.property.linkedFields.length < 1) {
+      return {
+        errors: {
+          linkedFields: t(Strings.cascader_no_rules_error)
+        }
+      };
+    }
 
     return curField;
   }

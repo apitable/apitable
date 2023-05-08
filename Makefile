@@ -484,14 +484,18 @@ changelog: ## make changelog with github api
 
 .PHONY: l10n-apitable-ce
 l10n-apitable-ce: move_setting_file
+	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base y ./packages/i18n-lang/src ./ ./packages/l10n/l10n-apitable-ce
 	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/l10n-apitable-ce ./
 
 move_setting_file:
 	@if [ -f ./packages/datasheet/.env.development ]; then \
   		mv -f ./packages/datasheet/.env.development ./packages/datasheet/.env.development.origin; \
   	fi
-	@if [ -f ./packages/i18n-lang/src/config/strings.en-US.json ]; then \
-  		mv -f ./packages/i18n-lang/src/config/strings.en-US.json ./packages/i18n-lang/src/config/strings.en-US.origin.json; \
+	@if [ -f ./packages/i18n-lang/src/config/strings.json ]; then \
+  		mv -f ./packages/i18n-lang/src/config/strings.json ./packages/i18n-lang/src/config/strings.origin.json; \
+  	fi
+	@if [ -f ./packages/i18n-lang/src/config/language.manifest.json ]; then \
+  		mv -f ./packages/i18n-lang/src/config/language.manifest.json ./packages/i18n-lang/src/config/language.manifest.origin.json; \
   	fi
 	@if [ -f ./packages/core/src/config/api_tip_config.auto.json ]; then \
   		mv -f ./packages/core/src/config/api_tip_config.auto.json ./packages/core/src/config/api_tip_config.auto.origin.json; \

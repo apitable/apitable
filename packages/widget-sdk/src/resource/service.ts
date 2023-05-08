@@ -371,7 +371,7 @@ export class ResourceService implements IResourceService {
   private createDatabase(): databus.Database {
     const database = this.databus.getDatabase();
     database.addEventHandler({
-      type: databus.event.DatasheetEventType.CommandExecuted,
+      type: databus.event.ResourceEventType.CommandExecuted,
       handle: event => {
         if (event.execResult === databus.event.CommandExecutionResultType.Error) {
           const { error, errorType: type } = event;

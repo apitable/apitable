@@ -196,6 +196,10 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Formula,
     value: IFilterText,
   };
+  [FieldType.Cascader]: {
+    fieldType: FieldType.Text;
+    value: IFilterText;
+  };
 }
 
 export type IFilterCondition<T extends FieldType = FieldType> = IFilterBaseCondition & IFilterConditionMap[T];

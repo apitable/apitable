@@ -17,7 +17,7 @@
  */
 
 import { Button } from '@apitable/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Message, Wrapper } from 'pc/components/common';
@@ -26,7 +26,8 @@ import { useQuery, useRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import InviteImage from 'static/icon/common/invitation_link_page.png';
+import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
+import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
 import { HomeWrapper } from 'pc/components/home/home_wrapper';
@@ -41,6 +42,9 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
   const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0, IS_ENTERPRISE } = getEnvVariables();
+  const themeName = useSelector(state => state.theme);
+
+  const InviteImage = themeName === ThemeName.Light ? inviteImageLight : inviteImageDark;
 
   const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
     onSuccess: res => {

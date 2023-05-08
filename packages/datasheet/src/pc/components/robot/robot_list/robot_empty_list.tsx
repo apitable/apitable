@@ -56,7 +56,7 @@ export const RobotEmptyList = () => {
       display="flex"
       flexDirection="column"
       margin="0 auto"
-      marginTop="80px"
+      marginTop="24vh"
       alignItems="center"
     >
       <Image src={ImageNoRecord} alt="没有机器人哦" width={200} height={150} />

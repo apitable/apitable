@@ -19,7 +19,7 @@
 import { IResourceOpsCollect } from 'command_manager';
 import { IReduxState } from 'exports/store';
 import { Store } from 'redux';
-import { Datasheet } from '../logic';
+import { IResource } from '../logic';
 
 /**
  * A data saver is responsible for saving the results of command execution into various storage system.
@@ -41,6 +41,6 @@ export interface IDataSaver {
  * The options for saving command execution results. Implementors of `IDataSaver` can derive this interface, adding necessary fields.
  */
 export interface ISaveOpsOptions {
-  datasheet: Datasheet;
+  resource: IResource;
   store: Store<IReduxState>;
 }

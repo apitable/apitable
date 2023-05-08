@@ -24,6 +24,13 @@
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
+            "api_dashboard_not_exist": {
+                "code": 301,
+                "id": "api_dashboard_not_exist",
+                "message": "api_dashboard_not_exist",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
             "api_upload_attachment_error": {
                 "code": 426,
                 "id": "api_upload_attachment_error",

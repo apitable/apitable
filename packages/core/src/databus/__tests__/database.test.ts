@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { fulfillStore } from './mock.store.provider';
+import { fulfillDatasheetStore } from './mock.store.provider';
 import { MockDataBus, resetDataLoader } from './mock.databus';
 import { StoreActions } from 'exports/store';
 import { ResourceType } from 'types';
-import { CommandExecutionResultType, DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from 'databus/common/event';
+import { CommandExecutionResultType, ResourceEventType, IResourceEvent, IResourceEventHandler } from 'databus/common/event';
 import { ExecuteResult, ICollaCommandExecuteSuccessResult } from 'command_manager';
 import { CollaCommandName } from 'commands';
 import { mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
@@ -31,7 +31,7 @@ describe('store provider', () => {
   it('should use custom store if createStore is given', async() => {
     const dst = await db.getDatasheet('dst1', {
       createStore(datasheetPack) {
-        const store = fulfillStore(datasheetPack);
+        const store = fulfillDatasheetStore(datasheetPack);
         store.dispatch(StoreActions.updateRevision(12408, 'dst1', ResourceType.Datasheet));
         return Promise.resolve(store);
       },
@@ -44,8 +44,25 @@ describe('store provider', () => {
 });
 
 describe('getDatasheet', () => {
+  it('should return non-null if datasheet exists', async() => {
+    const dst = await db.getDatasheet('dst1', { loadOptions: {}, storeOptions: {}});
+    expect(dst).toBeTruthy();
+  });
+
   it('should return null if datasheet does not exist', async() => {
     const dst = await db.getDatasheet('dst7', { loadOptions: {}, storeOptions: {}});
+    expect(dst).toBeNull();
+  });
+});
+
+describe('getDashboard', () => {
+  it('should return non-null if dashboard exists', async() => {
+    const dst = await db.getDashboard('dsb1', { loadOptions: {}, storeOptions: {}});
+    expect(dst).toBeTruthy();
+  });
+
+  it('should return null if dashboard does not exist', async() => {
+    const dst = await db.getDashboard('dsb7', { loadOptions: {}, storeOptions: {}});
     expect(dst).toBeNull();
   });
 });
@@ -55,7 +72,7 @@ describe('event handlers', () => {
 
   test('add an event listener', () => {
     const result = db.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     });
 
@@ -64,7 +81,7 @@ describe('event handlers', () => {
 
   test('add the same event listener twice', () => {
     const listener = {
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
@@ -76,7 +93,7 @@ describe('event handlers', () => {
 
   test('remove an event listener', () => {
     const listener = {
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
@@ -89,7 +106,7 @@ describe('event handlers', () => {
 
   test('remove the same event listener twice', () => {
     const listener = {
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
@@ -103,7 +120,7 @@ describe('event handlers', () => {
 
   test('remove a non-existent event listener', () => {
     const listener = {
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle: () => Promise.resolve(),
     };
 
@@ -116,15 +133,15 @@ describe('event handlers', () => {
     test('fire an event with one event listeners', async() => {
       let result: any;
       db.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
+        type: ResourceEventType.CommandExecuted,
         handle(event) {
           result = event;
           return Promise.resolve();
         },
       });
 
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
+      const event: IResourceEvent = {
+        type: ResourceEventType.CommandExecuted,
         execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
@@ -138,22 +155,22 @@ describe('event handlers', () => {
       let result1: any;
       let result2: any;
       db.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
+        type: ResourceEventType.CommandExecuted,
         handle(event) {
           result1 = event;
           return Promise.resolve();
         },
       });
       db.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
+        type: ResourceEventType.CommandExecuted,
         handle(event) {
           result2 = event;
           return Promise.resolve();
         },
       });
 
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
+      const event: IResourceEvent = {
+        type: ResourceEventType.CommandExecuted,
         execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
@@ -166,8 +183,8 @@ describe('event handlers', () => {
 
     it('should not be invoked after being removed', async() => {
       let result: any = undefined;
-      const handler: IDatasheetEventHandler & { type: DatasheetEventType } = {
-        type: DatasheetEventType.CommandExecuted,
+      const handler: IResourceEventHandler & { type: ResourceEventType } = {
+        type: ResourceEventType.CommandExecuted,
         handle(event) {
           result = event;
           return Promise.resolve();
@@ -177,8 +194,8 @@ describe('event handlers', () => {
 
       db.removeEventHandler(handler);
 
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
+      const event: IResourceEvent = {
+        type: ResourceEventType.CommandExecuted,
         execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
@@ -191,17 +208,17 @@ describe('event handlers', () => {
     it('should not be invoked after the kind of handlers is removed', async() => {
       let result: any = undefined;
       db.addEventHandler({
-        type: DatasheetEventType.CommandExecuted,
+        type: ResourceEventType.CommandExecuted,
         handle(event) {
           result = event;
           return Promise.resolve();
         },
       });
 
-      db.removeEventHandlers(DatasheetEventType.CommandExecuted);
+      db.removeEventHandlers(ResourceEventType.CommandExecuted);
 
-      const event: IDatasheetEvent = {
-        type: DatasheetEventType.CommandExecuted,
+      const event: IResourceEvent = {
+        type: ResourceEventType.CommandExecuted,
         execResult: CommandExecutionResultType.Success,
         resourceOpCollections: [],
       };
@@ -220,7 +237,7 @@ describe('event handlers', () => {
     expect(dst1).toBeTruthy();
     let event: any = undefined;
     db.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle(e) {
         event = e;
         return Promise.resolve();
@@ -244,7 +261,7 @@ describe('event handlers', () => {
     expect(event).toBeTruthy();
 
     expect(event).toStrictEqual({
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       execResult: CommandExecutionResultType.Success,
       resourceOpCollections: mockOpsCollectOfAddOneDefaultRecord(recordId),
     });
@@ -258,7 +275,7 @@ describe('event handlers', () => {
     expect(dst1).toBeTruthy();
     let event: any = undefined;
     db.addEventHandler({
-      type: DatasheetEventType.CommandExecuted,
+      type: ResourceEventType.CommandExecuted,
       handle(e) {
         event = e;
         return Promise.resolve();

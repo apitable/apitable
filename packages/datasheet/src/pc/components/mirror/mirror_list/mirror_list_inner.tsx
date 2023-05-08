@@ -18,7 +18,7 @@
 
 import { Button, Checkbox, Skeleton, Typography, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, Events, ICollaCommandOptions, integrateCdnHost, Navigation, Player, Selectors, Settings, Strings, t
+  CollaCommandName, ConfigConstant, Events, ICollaCommandOptions, Navigation, Player, Selectors, Strings, t, ThemeName
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import Image from 'next/image';
@@ -32,6 +32,8 @@ import { useSelector } from 'react-redux';
 import { IMirrorItem } from './interface';
 import styles from './style.module.less';
 import { gstMirrorIconByViewType } from './utils';
+import MirrorEmptyDark from 'static/icon/common/mirror_empty_dark.png';
+import MirrorEmptyLight from 'static/icon/common/mirror_empty_light.png';
 
 interface IMirrorListInner {
   mirrorList: IMirrorItem[];
@@ -45,10 +47,12 @@ interface IBlankInner {
 }
 
 const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
+  const theme = useSelector(state => state.theme);
+  const MirrorEmpty = theme === ThemeName.Light ? MirrorEmptyLight : MirrorEmptyDark;
   return (
     <div className={styles.blackInner}>
       <div className={styles.imgBox}>
-        <Image src={integrateCdnHost(Settings.view_mirror_list_empty_img.value)} alt='' width={160} height={120} />
+        <Image src={MirrorEmpty} alt='' width={160} height={120} />
       </div>
       <span className={styles.emptyText}>{t(Strings.black_mirror_list_tip)}</span>
       <Button color={'primary'} onClick={createMirrorNode} disabled={!mirrorCreatable}>

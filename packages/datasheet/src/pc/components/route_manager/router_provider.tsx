@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
+import { RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { ConfigProvider, message } from 'antd';
 import axios from 'axios';
@@ -39,23 +39,28 @@ import { comlinkStore } from 'pc/worker';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
-import { useDispatch } from 'react-redux';
-import NoDataImg from 'static/icon/workbench/workbench_account_nodata.png';
+import { useDispatch, useSelector } from 'react-redux';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
 message.config({
   maxCount: 1,
 });
 
-const customizeRenderEmpty = () => (
-  <div className='emptyPlaceholder'>
-    <Image alt='no data' src={NoDataImg} className='img' width={160} height={120} />
-    <div className='title'>{t(Strings.no_data)}</div>
-  </div>
-);
+const RenderEmpty = () => {
+  const theme = useSelector(state => state.theme);
+  const NoDataImg = theme === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
+  return(
+    <div className='emptyPlaceholder'>
+      <Image alt='no data' src={NoDataImg} className='img' width={200} height={150} />
+      <div className='title'>{t(Strings.no_data)}</div>
+    </div>
+  );
+};
 
 export const antdConfig = {
   autoInsertSpaceInButton: false,
-  renderEmpty: customizeRenderEmpty,
+  renderEmpty: () => <RenderEmpty />,
 };
 
 const RouterProvider = ({ children }: any) => {

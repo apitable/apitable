@@ -1,4 +1,4 @@
-import { IServerDatasheetPack } from 'exports/store';
+import { IServerDashboardPack, IServerDatasheetPack } from 'exports/store';
 
 /**
  * A data loader is responsible for loading internal datasheet packs for `Datasheet`s from different data sources.
@@ -11,8 +11,19 @@ export interface IDataLoader {
    * Loads a datasheet pack for a datasheet from the data source.
    *
    * The implementor can derive `ILoadDatasheetPackOptions` and add custom fields.
+   * 
+   * @returns If the datasheet is not found, null is returned.
    */
-  loadDatasheetPack(dstId: string, options: ILoadDatasheetPackOptions): Promise<ILoadDatasheetPackResult> | ILoadDatasheetPackResult;
+  loadDatasheetPack(datasheetId: string, options: ILoadDatasheetPackOptions): Promise<IServerDatasheetPack | null>;
+
+  /**
+   * Loads a dashboard pack for a dashboard from the data source.
+   *
+   * The implementor can derive `ILoadDataboardPackOptions` and add custom fields.
+   * 
+   * @returns If the dashboard is not found, null is returned.
+   */
+  loadDashboardPack(dashboardId: string, options: ILoadDashboardPackOptions): Promise<IServerDashboardPack | null>
 }
 
 /**
@@ -22,11 +33,7 @@ export interface IDataLoader {
 export interface ILoadDatasheetPackOptions {}
 
 /**
- * The result of loading a datasheet pack.
+ * The options of loading dashboard packs. Implementors of `IDataLoader` can derive this interface, adding necessary fields.
  */
-export interface ILoadDatasheetPackResult {
-  /**
-   * If the datasheet is not found, this field is null.
-   */
-  datasheetPack: IServerDatasheetPack | null;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ILoadDashboardPackOptions {}
