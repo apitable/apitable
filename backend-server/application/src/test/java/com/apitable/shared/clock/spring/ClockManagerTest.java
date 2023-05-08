@@ -25,12 +25,13 @@ import com.apitable.AbstractIntegrationTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Disabled
 public class ClockManagerTest extends AbstractIntegrationTest {
+
+    private static final Logger log = LoggerFactory.getLogger(ClockManagerTest.class);
 
     @Test
     public void testGetMockClock() {
@@ -39,9 +40,10 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetUTCNow() {
+        log.info("current time zone: {}", systemProperties.getTimeZone());
         final OffsetDateTime initialCreateDate =
             OffsetDateTime.of(2022, 2, 1,
-                19, 10, 30, 0, ZoneOffset.UTC);
+                19, 10, 30, 0, systemProperties.getTimeZone());
         getClock().setTime(initialCreateDate);
 
         OffsetDateTime utcNow = ClockManager.me().getUtcNow();
@@ -51,9 +53,10 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocalDateNow() {
+        log.info("current time zone: {}", systemProperties.getTimeZone());
         final OffsetDateTime initialCreateDate =
             OffsetDateTime.of(2022, 2, 1,
-                19, 10, 30, 0, ZoneOffset.UTC);
+                19, 10, 30, 0, systemProperties.getTimeZone());
         getClock().setTime(initialCreateDate);
 
         LocalDate date = ClockManager.me().getLocalDateNow();
@@ -65,20 +68,22 @@ public class ClockManagerTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetLocalDateTimeNow() {
+        log.info("current time zone: {}", systemProperties.getTimeZone());
+        // set expect time
+        LocalDateTime expectTime = LocalDateTime.of(2022, 2, 1, 19, 10, 30, 0);
+        log.info("expect time: {}", expectTime);
+        // initial clock time
+        OffsetDateTime instant =
+            OffsetDateTime.ofInstant(expectTime.toInstant(systemProperties.getTimeZone()),
+                systemProperties.getTimeZone());
+        log.info("test instant offset: {}", instant);
         final OffsetDateTime initialCreateDate =
-            OffsetDateTime.of(2022, 2, 1,
-                19, 10, 30, 0, ZoneOffset.UTC);
+            OffsetDateTime.of(expectTime, systemProperties.getTimeZone());
         getClock().setTime(initialCreateDate);
-
-        LocalDateTime dateTime = ClockManager.me().getLocalDateTimeNow();
-
-        System.out.println(dateTime);
-
-        LocalDateTime expectTime = LocalDateTime.of(2022, 2, 1,
-            19, 10, 30, 0);
-
-        System.out.println(expectTime);
-
-        assertThat(dateTime).isEqualToIgnoringSeconds(expectTime);
+        // system clock now localDateTime
+        LocalDateTime now = ClockManager.me().getLocalDateTimeNow();
+        log.info("system now date time: {}", now);
+        // assert
+        assertThat(now).isEqualToIgnoringSeconds(expectTime);
     }
 }

@@ -18,45 +18,42 @@
 
 package com.apitable.space.service.impl;
 
-import cn.hutool.core.collection.ListUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import cn.hutool.core.collection.ListUtil;
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.mock.bean.MockInvitation;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.space.dto.InvitationUserDTO;
 import com.apitable.space.entity.InvitationEntity;
-import com.apitable.space.mapper.InvitationMapper;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.enums.NodeType;
-import com.apitable.core.exception.BusinessException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Test;
 
 public class InvitationServiceImplTest extends AbstractIntegrationTest {
-    @Autowired
-    private InvitationMapper invitationMapper;
 
     @Test
     public void createMemberInvitationTokenByNodeId() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String spaceId = userSpace.getSpaceId();
         String nodeId = iNodeService.createChildNode(userSpace.getUserId(), CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
-        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
-        String token = invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
-        String realToken = invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+            .spaceId(spaceId)
+            .newNodeId(IdUtil.createNodeId())
+            .type(NodeType.ROOT.getNodeType())
+            .build());
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
+            userSpace.getSpaceId());
+        String token =
+            invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+        String realToken =
+            invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         assertThat(realToken).isEqualTo(token);
     }
 
@@ -64,15 +61,17 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
     public void testCloseMemberInvitationBySpaceId() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String spaceId = userSpace.getSpaceId();
-        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), spaceId);
+        Long memberId =
+            iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), spaceId);
         String nodeId = iNodeService.createChildNode(userSpace.getUserId(), CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
+            .spaceId(spaceId)
+            .newNodeId(IdUtil.createNodeId())
+            .type(NodeType.ROOT.getNodeType())
+            .build());
         invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         invitationService.closeMemberInvitationBySpaceId(userSpace.getSpaceId());
-        InvitationEntity entity = invitationMapper.selectByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
+        InvitationEntity entity =
+            invitationMapper.selectByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
         assertThat(entity.getStatus()).isEqualTo(false);
     }
 
@@ -83,14 +82,16 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         Long userId = userSpace.getUserId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
-        iSpaceService.switchSpacePros(userId, spaceId, SpaceGlobalFeature.builder().invitable(false).build());
+            .spaceId(spaceId)
+            .newNodeId(IdUtil.createNodeId())
+            .type(NodeType.ROOT.getNodeType())
+            .build());
+        iSpaceService.switchSpacePros(userId, spaceId,
+            SpaceGlobalFeature.builder().invitable(false).build());
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId));
+            assertThrows(BusinessException.class,
+                () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId,
+                    nodeId));
         assertEquals(411, exception.getCode());
 
     }
@@ -103,8 +104,9 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         String nodeId = IdUtil.createNodeId();
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId));
+            assertThrows(BusinessException.class,
+                () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId,
+                    nodeId));
         assertEquals(600, exception.getCode());
     }
 
@@ -115,13 +117,14 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         Long userId = userSpace.getUserId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
-                .spaceId(IdUtil.createSpaceId())
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
+            .spaceId(IdUtil.createSpaceId())
+            .newNodeId(IdUtil.createNodeId())
+            .type(NodeType.ROOT.getNodeType())
+            .build());
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId));
+            assertThrows(BusinessException.class,
+                () -> invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId,
+                    nodeId));
         assertEquals(403, exception.getCode());
     }
 
@@ -132,13 +135,15 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         Long userId = userSpace.getUserId();
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
-        String token = invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+            .spaceId(spaceId)
+            .newNodeId(IdUtil.createNodeId())
+            .type(NodeType.ROOT.getNodeType())
+            .build());
+        String token =
+            invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         invitationService.closeMemberInvitationBySpaceId(userSpace.getSpaceId());
-        String newToken = invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
+        String newToken =
+            invitationService.getMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         assertThat(newToken).isNotEqualTo(token);
     }
 
@@ -146,7 +151,8 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
     public void testInvitedUserJoinSpaceByToken() {
         MockInvitation dto = prepareInvitationToken();
         UserEntity user = iUserService.createUserByEmail(IdWorker.getIdStr() + "@apitable.com");
-        InvitationUserDTO result = invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken());
+        InvitationUserDTO result =
+            invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken());
         assertThat(result).isNotNull();
     }
 
@@ -154,8 +160,8 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
     public void testInvitedUserJoinSpaceByTokenWithTokenNotExists() {
         UserEntity user = iUserService.createUserByEmail(IdWorker.getIdStr() + "@apitable.com");
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), "testtoken"));
+            assertThrows(BusinessException.class,
+                () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), "testtoken"));
         assertEquals(517, exception.getCode());
     }
 
@@ -165,26 +171,28 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         invitationService.closeMemberInvitationBySpaceId(dto.getSpaceId());
         UserEntity user = iUserService.createUserByEmail(IdWorker.getIdStr() + "@apitable.com");
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken()));
         assertEquals(517, exception.getCode());
     }
 
     @Test
     public void testInvitedUserJoinSpaceByTokenWithNotAllowMemberInvitation() {
         MockInvitation dto = prepareInvitationToken();
-        iSpaceService.switchSpacePros(dto.getUserId(), dto.getSpaceId(), SpaceGlobalFeature.builder().invitable(false).build());
+        iSpaceService.switchSpacePros(dto.getUserId(), dto.getSpaceId(),
+            SpaceGlobalFeature.builder().invitable(false).build());
         UserEntity user = iUserService.createUserByEmail(IdWorker.getIdStr() + "@apitable.com");
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.invitedUserJoinSpaceByToken(user.getId(), dto.getToken()));
         assertEquals(517, exception.getCode());
     }
 
     @Test
     public void testInvitedUserJoinSpaceByTokenWithMemberExists() {
         MockInvitation dto = prepareInvitationToken();
-        InvitationUserDTO result = invitationService.invitedUserJoinSpaceByToken(dto.getUserId(), dto.getToken());
+        InvitationUserDTO result =
+            invitationService.invitedUserJoinSpaceByToken(dto.getUserId(), dto.getToken());
         assertThat(result).isNull();
     }
 
@@ -192,8 +200,9 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
     public void testValidInvitationTokenWithWrongNodeId() {
         MockInvitation dto = prepareInvitationToken();
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(dto.getToken(), IdUtil.createNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(dto.getToken(),
+                    IdUtil.createNodeId()));
         assertEquals(517, exception.getCode());
     }
 
@@ -201,8 +210,9 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
     public void testValidInvitationTokenWithWrongToken() {
         MockInvitation dto = prepareInvitationToken();
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(cn.hutool.core.util.IdUtil.fastSimpleUUID(), dto.getNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(
+                    cn.hutool.core.util.IdUtil.fastSimpleUUID(), dto.getNodeId()));
         assertEquals(517, exception.getCode());
     }
 
@@ -211,8 +221,8 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         MockInvitation dto = prepareInvitationToken();
         iSpaceService.deleteSpace(dto.getUserId(), ListUtil.toList(dto.getSpaceId()));
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
         assertEquals(404, exception.getCode());
     }
 
@@ -221,8 +231,8 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         MockInvitation dto = prepareInvitationToken();
         iSpaceService.preDeleteById(dto.getUserId(), dto.getSpaceId());
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
         assertEquals(404, exception.getCode());
     }
 
@@ -231,18 +241,19 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         MockInvitation dto = prepareInvitationToken();
         iNodeService.deleteById(dto.getSpaceId(), dto.getMemberId(), dto.getNodeId());
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
         assertEquals(600, exception.getCode());
     }
 
     @Test
     public void testValidInvitationTokenWithSpaceNotAllowInvitation() {
         MockInvitation dto = prepareInvitationToken();
-        iSpaceService.switchSpacePros(dto.getUserId(), dto.getSpaceId(), SpaceGlobalFeature.builder().invitable(false).build());
+        iSpaceService.switchSpacePros(dto.getUserId(), dto.getSpaceId(),
+            SpaceGlobalFeature.builder().invitable(false).build());
         BusinessException exception =
-                assertThrows(BusinessException.class,
-                        () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
+            assertThrows(BusinessException.class,
+                () -> invitationService.validInvitationToken(dto.getToken(), dto.getNodeId()));
         assertEquals(517, exception.getCode());
     }
 }

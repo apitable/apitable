@@ -178,3 +178,8 @@ springdoc:
     enabled: ${API_DOCS_ENABLED:false}
   swagger-ui:
     enabled: ${API_DOCS_ENABLED:false}
+
+system:
+  default-time-zone: ${DEFAULT_TIME_ZONE:UTC}
+  test-enabled: ${TEST_ENABLED:false}
+
