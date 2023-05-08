@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  * user task class.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(value = "TEST_ENABLED", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(value = "system.test-enabled", havingValue = "false", matchIfMissing = true)
 @Slf4j
 public class UserTasks {
 

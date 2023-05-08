@@ -18,33 +18,26 @@
 
 package com.apitable.template.service.impl;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.io.IoUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.FileHelper;
 import com.apitable.template.vo.AlbumContentVo;
 import com.apitable.template.vo.AlbumVo;
-import com.apitable.template.service.ITemplateAlbumService;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class TemplateAlbumServiceImplTest extends AbstractIntegrationTest {
-
-    @Resource
-    private ITemplateAlbumService iTemplateAlbumService;
 
     @Test
     void getAlbumVosByAlbumIds() {
         this.initAlbumData();
-        List<AlbumVo> albums = iTemplateAlbumService.getAlbumVosByAlbumIds(Collections.singletonList("albSr5vHPgzGG"));
+        List<AlbumVo> albums =
+            iTemplateAlbumService.getAlbumVosByAlbumIds(Collections.singletonList("albSr5vHPgzGG"));
         assertThat(albums).isNotEmpty();
     }
 
@@ -87,7 +80,8 @@ public class TemplateAlbumServiceImplTest extends AbstractIntegrationTest {
     }
 
     private void initAlbumRelData() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("sql/template/album-rel.sql");
+        InputStream inputStream =
+            FileHelper.getInputStreamFromResource("sql/template/album-rel.sql");
         String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
         execute(sql);
     }
