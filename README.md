@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -280,7 +280,7 @@ You can contribute as following:
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)

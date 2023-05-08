@@ -18,6 +18,8 @@
 import * as languageManifest from './config/language.manifest.json';
 import * as langEnUs from './config/strings.en-US.json';
 import * as langZhCn from './config/strings.zh-CN.json';
+import langFrFr from './config/strings.fr-FR.json';
+import langZhHk from './config/strings.zh-HK.json';
 
 declare const window: any;
 declare const global: any;
@@ -35,6 +37,8 @@ if (typeof window !== 'undefined') {
 const langMap = {
   'en-US': langEnUs.default,
   'zh-CN': langZhCn.default,
+  'fr-FR': langFrFr,
+  'zh-HK': langZhHk,
 };
 
 if (currentLang in langMap) {
