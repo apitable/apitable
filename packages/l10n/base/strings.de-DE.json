@@ -1871,6 +1871,7 @@
   "copy_folder_url": "Copy URL",
   "api_request_success": "Success",
   "api_datasheet_not_exist": "the specified datasheet does not exist",
+  "api_dashboard_not_exist": "the specified dashboard does not exist",
   "api_upload_attachment_error": "Failed to upload attachment ",
   "api_upload_attachment_exceed_limit": "You have uploaded the maximum number of attachments",
   "api_node_permission_error": "No permission to operate on the node",
