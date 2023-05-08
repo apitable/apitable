@@ -26,8 +26,8 @@ if [ -e "${L10N_SCRIPT_DIR}/config/language.manifest.json" ]; then
     echo "language manifest file exists"
 else
     ts-node "${L10N_SCRIPT_DIR}/mergeJsonFile.ts" "${L10N_GEN_DIR}/language.manifest.json" "language.manifest" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
-    cp ${L10N_GEN_DIR}/language.manifest.json "${L10N_SCRIPT_DIR}/config/"
-    cp ${L10N_GEN_DIR}/language.manifest.json "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
+    cp "${L10N_GEN_DIR}"/language.manifest.json "${L10N_SCRIPT_DIR}/config/"
+    cp "${L10N_GEN_DIR}"/language.manifest.json "${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/"
 fi
 
 # properties file
