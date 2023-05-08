@@ -353,7 +353,7 @@ Por favor, consulte el mapa de ruta [de APITable](https://apitable.com/roadmap)
 - Integración con ChatGPT, Zapier, Slack, Google Workspace...
 - Marca de agua
 
-Para más información, por favor contáctenos en <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Participar
 
