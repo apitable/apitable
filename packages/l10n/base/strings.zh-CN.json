@@ -1871,6 +1871,7 @@
   "copy_folder_url": "复制文件夹的URL",
   "api_request_success": "Success",
   "api_datasheet_not_exist": "找不到指定的维格表",
+  "api_dashboard_not_exist": "找不到指定的仪表盘",
   "api_upload_attachment_error": "上传附件失败 {message}",
   "api_upload_attachment_exceed_limit": "上传附件个数超出限制",
   "api_node_permission_error": "无节点权限操作",
