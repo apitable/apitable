@@ -20,6 +20,7 @@ package com.apitable.shared.support.serializer;
 
 import static java.time.ZoneId.getAvailableZoneIds;
 
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.context.LoginContext;
@@ -32,7 +33,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Set;
-import javax.annotation.Resource;
 
 /**
  * LocalDateTime to timestamp（mills）.
@@ -41,12 +41,10 @@ import javax.annotation.Resource;
  */
 public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime> {
 
-    @Resource
-    private SystemProperties systemProperties;
-
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider)
         throws IOException {
+        SystemProperties systemProperties = SpringContextHolder.getBean(SystemProperties.class);
         // Get user timeZone
         Long userId = SessionContext.getUserIdWithoutException();
         String userTimeZone;
