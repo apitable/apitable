@@ -51,8 +51,11 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     @Resource
     private TemplatePropertyRelMapper propertyRelMapper;
 
-    @Resource
-    private TemplatePropertyRelMapper templatePropertyRelMapper;
+    @Override
+    public TemplatePropertyEntity getTemplateCategoryByName(String name) {
+        return baseMapper.selectByPropertyTypeAndPropertyName(
+            TemplatePropertyType.CATEGORY.getType(), name);
+    }
 
     @Override
     public TemplatePropertyEntity getTemplateCategory(String propertyCode) {
@@ -139,7 +142,8 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
             return CollUtil.newArrayList();
         }
         List<String> propertyCodes = properties.stream().map(TemplatePropertyDto::getPropertyCode).collect(Collectors.toList());
-        List<TemplatePropertyRelDto> templatePropertyRelList = templatePropertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);
+        List<TemplatePropertyRelDto> templatePropertyRelList =
+            propertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);
         Map<String, List<String>> propertyCode2TemplateId = templatePropertyRelList.stream()
                 .collect(Collectors.groupingBy(TemplatePropertyRelDto::getPropertyCode,
                         Collectors.mapping(TemplatePropertyRelDto::getTemplateId, Collectors.toList())));
