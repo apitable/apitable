@@ -471,7 +471,7 @@ export const removeFavorite = (nodeId: string) => {
     const type = state.catalogTree.treeNodesMap[nodeId]!.type;
     dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }));
     dispatch({
-      type: actions.REMOVE_FAVORITE_NODE,
+      type: actions.DELETE_NODE_FROM_FAVORITE_LIST,
       payload: nodeId,
     });
   };
