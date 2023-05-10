@@ -687,7 +687,7 @@ __metadata:
     "@types/marked": ^4
     "@types/minio": ^7.0.11
     "@types/node": ^14.0.27
-    "@types/node-fetch": ^2.6.2
+    "@types/node-fetch": ^2.6.0
     "@types/node-os-utils": ^1.2.0
     "@types/nodemailer": ^6
     "@types/pump": ^1.1.1
@@ -728,6 +728,7 @@ __metadata:
     nest-winston: ^1.8.0
     nestjs-i18n: ^8.3.2
     nestjs-proto-gen-ts: ^1.0.19
+    node-fetch: ^2.6.0
     node-os-utils: ^1.3.5
     nodemailer: ^6.9.1
     piscina: ^3.2.0
@@ -743,7 +744,9 @@ __metadata:
     rxjs: ^7.5.7
     sha1: ^1.1.1
     socket.io: ^4.5.2
+    sprintf-js: ^1.0.3
     supertest: ^4.0.2
+    triple-beam: ^1.3.0
     ts-jest: 28.0.3
     ts-loader: ^6.2.1
     ts-md5: ^1.3.1
@@ -12919,13 +12922,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-fetch@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@types/node-fetch@npm:2.6.2"
+"@types/node-fetch@npm:^2.6.0":
+  version: 2.6.3
+  resolution: "@types/node-fetch@npm:2.6.3"
   dependencies:
     "@types/node": "*"
     form-data: ^3.0.0
-  checksum: 6f73b1470000d303d25a6fb92875ea837a216656cb7474f66cdd67bb014aa81a5a11e7ac9c21fe19bee9ecb2ef87c1962bceeaec31386119d1ac86e4c30ad7a6
+  checksum: b68cda58e91535a42dd5337932443c37f8e198ca1e8deeb95bd92a64a9a84d92071867b91c5eb84ee8e13f33d45a70549fe2bc11dd070a894dd561909f4d39f5
   languageName: node
   linkType: hard
 
@@ -35062,6 +35065,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:^2.6.0":
+  version: 2.6.11
+  resolution: "node-fetch@npm:2.6.11"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^2.6.1":
   version: 2.6.1
   resolution: "node-fetch@npm:2.6.1"
@@ -43689,6 +43706,13 @@ resolve@^2.0.0-next.3:
   version: 4.1.0
   resolution: "split2@npm:4.1.0"
   checksum: ec581597cb74c13cdfb5e2047543dd40cb1e8e9803c7b1e0c29ede05f2b4f049b2d6e7f2788a225d544549375719658b8f38e9366364dec35dc7a12edfda5ee5
+  languageName: node
+  linkType: hard
+
+"sprintf-js@npm:^1.0.3":
+  version: 1.1.2
+  resolution: "sprintf-js@npm:1.1.2"
+  checksum: d4bb46464632b335e5faed381bd331157e0af64915a98ede833452663bc672823db49d7531c32d58798e85236581fb7342fd0270531ffc8f914e186187bf1c90
   languageName: node
   linkType: hard
 
