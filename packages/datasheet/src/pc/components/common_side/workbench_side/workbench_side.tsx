@@ -240,6 +240,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const openFavorite = () => {
     if (!activeKey.includes(ConfigConstant.Modules.FAVORITE)) {
       changeHandler(ConfigConstant.Modules.FAVORITE);
@@ -254,7 +255,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       onSetContextMenu,
       // eslint-disable-next-line
     }),
-    [rightClickInfo, setRightClickInfo, onSetContextMenu, activeKey, setActiveKey],
+    [rightClickInfo, openFavorite, onSetContextMenu],
   );
 
   const permissionCommitRemindStatus = useSelector(state => state.catalogTree.permissionCommitRemindStatus);

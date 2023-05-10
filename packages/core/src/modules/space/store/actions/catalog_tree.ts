@@ -472,7 +472,7 @@ export const removeFavorite = (nodeId: string) => {
     dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }));
     dispatch({
       type: actions.DELETE_NODE_FROM_FAVORITE_LIST,
-      payload: nodeId,
+      payload: { nodeId },
     });
   };
 };

@@ -62,7 +62,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const datasheetName = treeNodesMap[datasheetId!]?.nodeName || datasheet?.name;
   const datasheetIcon = datasheet?.icon;
   const role = datasheet?.role;
-  const nodeFavorite = datasheet?.nodeFavorite;
+  const nodeFavorite = treeNodesMap[datasheetId!]?.nodeFavorite;
   const views = datasheet?.snapshot.meta.views;
   const isShowViewbar = get(embedInfo, 'viewControl.tabBar', true);
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);

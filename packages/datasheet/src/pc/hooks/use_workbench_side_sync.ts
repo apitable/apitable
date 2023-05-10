@@ -455,7 +455,8 @@ export const useWorkbenchSideSync = () => {
         shareNodeSync(data);
         break;
       case NodeChangeInfoType.Favorite:
-        updateFavoriteSync(data);
+        // TODO:sync favorite will cause star action not work
+        // updateFavoriteSync(data);
         break;
       default:
         console.log('Invalid socket message: ', data);
