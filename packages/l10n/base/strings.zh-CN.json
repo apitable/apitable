@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "参数 collaboratorStatusBar 只接受 boolean 类型的值",
   "api_param_add_widget_btn_type_error": "参数 addWidgetBtn 只接受 boolean 类型的值",
   "api_param_full_screen_btn_type_error": "参数 fullScreenBtn 只接受 boolean 类型的值",
+  "api_param_form_setting_btn_type_error": "参数 formSettingBtn 只接受 boolean 类型的值",
   "confirm_link_inconsistency_detected": "关联字段发现异常数据，是否自动修复？",
   "archive_record_in_menu": "归档记录",
   "archive_records_in_menu": "归档 ${chose_num} 条记录",
