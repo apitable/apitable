@@ -137,8 +137,7 @@ export const useUserRequest = () => {
         if (
           !getEnvVariables().IS_APITABLE &&
           data?.isNewUser && 
-          loginData.type === ConfigConstant.LoginTypes.EMAIL && 
-          loginData.mode === ConfigConstant.LoginMode.IDENTIFYING_CODE
+          loginData.type === ConfigConstant.LoginTypes.EMAIL
         ) {
           const query: any = { improveType: ConfigConstant.ImproveType.Phone };
           const inviteLinkToken = urlParams.get('inviteLinkToken');
