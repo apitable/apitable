@@ -17,9 +17,9 @@
  */
 
 import { FieldType, FOperator } from '@apitable/core';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import { useEffect, useState } from 'react';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IFilterOptionProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
@@ -29,7 +29,7 @@ export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>
   // The field passed in here is the entity field. fieldType inside the condition is the real field.
   const fieldType = condition.fieldType === FieldType.LookUp ? FieldType.MultiSelect : condition.fieldType;
   const fieldValue = field.property.options;
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
   const filterValue = condition.value ? fieldValue.filter((item: { id: any; }) => condition.value.includes(item.id)) : [];
 
   useEffect(() => {
