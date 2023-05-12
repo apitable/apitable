@@ -43,7 +43,7 @@
   "add_sort_empty": "Wählen Sie ein Feld zum Sortieren",
   "add_reader": "Schreibgeschützt",
   "add_record": "Neuer Datensatz",
-  "add_new_record_by_name": "Neuer Datensatz ${span}",
+  "add_new_record_by_name": "New record ${span}",
   "add_sort": "Wählen Sie ein anderes Feld zum Sortieren",
   "add_or_cancel_favorite_fail": "Pin/Unpin fehlgeschlagen",
   "add_sub_admin_workbench_configuration": "Die Sub-Admins haben die höchste Autorität aller Dateien in \"Workbench\" und können Dateien hinzufügen, löschen, ändern und Berechtigungen festlegen",
