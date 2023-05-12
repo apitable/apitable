@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="Cambia immagine di copertina" />
+        <img src="docs/static/cover.png" alt="APITable Cover Image" />
     </a>
 </p>
 
@@ -107,7 +107,7 @@ Unisciti a [Discord](https://discord.gg/TwNb9nfdBU) o [Twitter](https://twitter.
       <a href="#">Pannello API-first</a>
     </th>
     <th>
-      <a href="#">Permessi potenti per righe e colonne</a>
+      <a href="#">Unlimited cross-table links</a>
     </th>
 </tr>
 
@@ -191,7 +191,7 @@ APITable offre una serie di funzioni sorprendenti, da quelle personali a quelle 
   - Audit
   - Backup automatico del database
   - Esportatore di dati
-  - Filigrana
+  - Watermark
 - ....
 
 Grazie ai widget e ai plugin estensibili, è possibile aggiungere altre funzionalità.
@@ -205,12 +205,12 @@ Perché dovete conoscere APITable per il vostro prossimo software?
   - Gestione dei lead di marketing.
   - Il CRM più flessibile e collegabile.
   - Business Intelligence (BI) flessibile.
-  - Moduli e sondaggi a misura d'uomo.
+  - People-Friendly Forms and Surveys
   - ERP flessibile.
   - Piattaforma low-code e no-code.
   - ... e altro ancora, APITable mette 1000 software in tasca.
 - Come infrastruttura di database visuale
-  - Incorporate APITable nelle interfacce utente dei vostri software.
+  - **Embed** APITable into your own software UIs.
   - Database visivo con API REST.
   - Cruscotto amministrativo.
   - Gestione centrale della configurazione.
@@ -323,13 +323,13 @@ APITable utilizza queste convenzioni comuni:
 ### Documentazione
 
 - [Centro assistenza](https://help.apitable.com/)
-- [👩‍💻Centro sviluppatori ](https://developers.apitable.com/)
+- [👩‍💻Centro sviluppatori](https://developers.apitable.com/)
   - [🪡 Documenti API REST](https://developers.apitable.com/api/introduction/)
   - [SDK Widget](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 - [Design System](https://figma.com/@apitable)
 
-## 🛣 Tabella di marcia
+## 🛣 Roadmap
 
 Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 
@@ -351,7 +351,7 @@ Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 - Audit
 - Backup del database
 - Integrazione con ChatGPT, Zapier, Slack, Google Workspace......
-- Filigrana
+- Watermark
 
 For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
@@ -369,7 +369,7 @@ Siamo sempre alla ricerca di buoni talenti per APITable:
 
 - Sviluppatore full-stack: Hai esperienza con React, NestJS, TypeScript, Spring Boot, Java, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
 - Sviluppatore back-end: Hai esperienza con NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
-- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. E vi piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
 
 Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel team di APITable, non esitare e invia il tuo CV a talent@apitable.com.
 
@@ -403,7 +403,7 @@ Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel tea
     <img src="docs/static/screenshot-it.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="Immagine dello screenshot della APITable" />
 </p>
 
 ## 🥰 Licenza
