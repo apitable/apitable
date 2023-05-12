@@ -33,7 +33,7 @@ import {
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
-import { difference, head, intersection } from 'lodash';
+import { difference, head } from 'lodash';
 import { InjectLogger } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
@@ -46,6 +46,7 @@ import { UserService } from 'user/services/user.service';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
+import { ILinkIds } from '@apitable/core';
 
 /**
  * <p>
@@ -280,11 +281,12 @@ export class DatasheetFieldHandler {
     // ======= Load linked datasheet structure data (not including records) END =======
 
     // Traverse records, obtain linked datasheet ID and corresponding linked records
-    const foreignDstIdRecordIdsMap = linkedRecordMap || this.forEachRecordMap(dstId, recordMap, fieldIdToLinkDstIdMap);
+    const foreignDstIdRecordIdsMap = linkedRecordMap || DatasheetFieldHandler.forEachRecordMap(dstId, recordMap, fieldIdToLinkDstIdMap, this.logger);
     // All linking records in link field of main datasheet are stored in foreignDstIdRecordIdsMap
     if (!isEmpty(foreignDstIdRecordIdsMap)) {
       // Query linked datasheet data and linked records
-      for (const [foreignDstId, recordIds] of Object.entries(foreignDstIdRecordIdsMap)) {
+      for (const foreignDstId in foreignDstIdRecordIdsMap) {
+        const recordIds = Array.from(foreignDstIdRecordIdsMap[foreignDstId]!);
         const foreignDatasheetDataPack = globalParam.foreignDstMap[foreignDstId];
         if (this.logger.isDebugEnabled()) {
           this.logger.debug(`Query new record [${foreignDstId}] --- [${recordIds}]`);
@@ -297,9 +299,9 @@ export class DatasheetFieldHandler {
         if (foreignDatasheetDataPack.snapshot.recordMap) {
           const existRecordIds = [...Object.keys(foreignDatasheetDataPack.snapshot.recordMap)];
           if (this.logger.isDebugEnabled()) {
-            this.logger.debug(`New record: ${Array.from(recordIds)} - original record: ${existRecordIds} `);
+            this.logger.debug(`New record: ${recordIds} - original record: ${existRecordIds} `);
           }
-          const theDiff = difference(Array.from(recordIds), existRecordIds);
+          const theDiff = difference(recordIds, existRecordIds);
           if (this.logger.isDebugEnabled()) {
             this.logger.debug(`after filter: ${theDiff}`);
           }
@@ -310,7 +312,7 @@ export class DatasheetFieldHandler {
             globalParam.dstIdToNewRecFlagMap.set(foreignDstId, true);
           }
         } else {
-          foreignDatasheetDataPack.snapshot.recordMap = await this.fetchRecordMap(foreignDstId, Array.from(recordIds));
+          foreignDatasheetDataPack.snapshot.recordMap = await this.fetchRecordMap(foreignDstId, recordIds);
         }
       }
     }
@@ -389,46 +391,48 @@ export class DatasheetFieldHandler {
    * @param fieldLinkDstMap field ID -> linked datasheet ID
    * @returns linked records in linked datasheets
    */
-  private forEachRecordMap(dstId: string, recordMap: IRecordMap, fieldLinkDstMap: Map<string, string>) {
+  static forEachRecordMap(
+    dstId: string,
+    recordMap: IRecordMap,
+    fieldLinkDstMap: Map<string, string>,
+    logger: Logger,
+  ): Record<string, Set<string>> {
+    if (fieldLinkDstMap.size == 0) {
+      return {};
+    }
+
     const beginTime = +new Date();
     if (Object.keys(recordMap).length === 0) return {};
-    this.logger.info(`Start traverse main datasheet ${dstId} records`);
-    const foreignDstIdRecordIdsMap = Object.values(recordMap).reduce<{ [foreignDstId: string]: string[] }>((pre, cur) => {
-      if (!isEmpty(cur) && !isEmpty(cur.data)) {
-        // Only process records with link fields
-        if (fieldLinkDstMap.size > 0) {
-          // All cells containing data
-          const fieldIds = [...Object.keys(cur.data)];
-          // Process cell data of link field, get linking records from cell data
-          // get linked field IDs
-          const linkFieldIds = [...fieldLinkDstMap.keys()];
-          const inter = intersection<string>(fieldIds, linkFieldIds);
-          // If difference is not empty, there are linked datasheet records
-          if (inter.length > 0) {
-            // corresponding records from linked datasheet
-            for (const [fieldId, foreignDstId] of fieldLinkDstMap.entries()) {
-              // Only get record IDs if field is in fieldIds
-              if (fieldIds.includes(fieldId)) {
-                // record IDs of linked datasheet
-                const recordIds = cur.data[fieldId] as string[];
-                if (recordIds?.length > 0) {
-                  // filter out invalid cell values of linked fields
-                  const filterRecordIds = recordIds.filter(recId => typeof recId === 'string');
-                  if (filterRecordIds.length === 0) {
-                    continue;
-                  }
-                  // Store linked datasheet and corresponding record IDs
-                  DatasheetFieldHandler.setIfExist(pre, foreignDstId, filterRecordIds);
-                }
-              }
-            }
+    logger.info(`Start traverse main datasheet ${dstId} records`);
+    const foreignDstIdRecordIdsMap: { [foreignDstId: string]: Set<string> } = {};
+    for (const recordId in recordMap) {
+      const record = recordMap[recordId];
+      if (isEmpty(record) || isEmpty(record!.data)) {
+        continue;
+      }
+
+      const recordData = record!.data;
+      for (const [fieldId, foreignDstId] of fieldLinkDstMap) {
+        let linkedRecordIds = recordData[fieldId];
+        if (!linkedRecordIds) {
+          continue;
+        }
+
+        linkedRecordIds = (linkedRecordIds as ILinkIds).filter(recId => typeof recId === 'string');
+        if (linkedRecordIds.length) {
+          let foreignRecIds = foreignDstIdRecordIdsMap[foreignDstId];
+          if (!foreignRecIds) {
+            foreignRecIds = new Set();
+            foreignDstIdRecordIdsMap[foreignDstId] = foreignRecIds;
+          }
+          for (const linkedRecordId of linkedRecordIds as ILinkIds) {
+            foreignRecIds.add(linkedRecordId);
           }
         }
       }
-      return pre;
-    }, {});
+    }
     const endTime = +new Date();
-    this.logger.info(`Finished traversing main datasheet ${dstId} records, duration: ${endTime - beginTime}ms`);
+    logger.info(`Finished traversing main datasheet ${dstId} records, duration: ${endTime - beginTime}ms`);
     return foreignDstIdRecordIdsMap;
   }
 

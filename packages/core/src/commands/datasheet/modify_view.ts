@@ -31,24 +31,23 @@ export interface IModifyViewBase {
 }
 
 export interface IModifyViewColumns extends IModifyViewBase {
-  viewId: string;
   key: 'columns';
   value: IViewColumn[];
 }
 
 export interface IModifyViewStrings extends IModifyViewBase {
-  viewId: string;
   key: 'name' | 'description';
   value: string;
 }
 
 export interface IModifyViewBoolean extends IModifyViewBase {
-  viewId: string;
   key: 'displayHiddenColumnWithinMirror';
   value: boolean;
 }
 
-type IModifyView = IModifyViewColumns | IModifyViewStrings | IModifyViewBoolean;
+export type IModifyView = IModifyViewColumns | IModifyViewStrings | IModifyViewBoolean;
+
+export type IModifySelfView = Omit<IModifyViewColumns, 'viewId'> | Omit<IModifyViewStrings, 'viewId'> | Omit<IModifyViewBoolean, 'viewId'>;
 
 export interface IModifyViewsOptions {
   cmd: CollaCommandName.ModifyViews;

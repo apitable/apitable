@@ -19,7 +19,7 @@
 import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { useWorkbenchSideSync, useRootManageable } from 'pc/hooks';
+import { useRootManageable } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { useContext, useEffect, useState } from 'react';
 import * as React from 'react';
@@ -44,7 +44,6 @@ export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
   const { rootManageable } = useRootManageable();
   const { addTreeNode } = useCatalog();
-  useWorkbenchSideSync();
 
   /* Shortcut keys for operations related to mounting/unmounting the directory tree */
   useEffect(() => {

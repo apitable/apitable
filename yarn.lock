@@ -687,7 +687,7 @@ __metadata:
     "@types/marked": ^4
     "@types/minio": ^7.0.11
     "@types/node": ^14.0.27
-    "@types/node-fetch": ^2.6.2
+    "@types/node-fetch": ^2.6.0
     "@types/node-os-utils": ^1.2.0
     "@types/nodemailer": ^6
     "@types/pump": ^1.1.1
@@ -728,6 +728,7 @@ __metadata:
     nest-winston: ^1.8.0
     nestjs-i18n: ^8.3.2
     nestjs-proto-gen-ts: ^1.0.19
+    node-fetch: ^2.6.0
     node-os-utils: ^1.3.5
     nodemailer: ^6.9.1
     piscina: ^3.2.0
@@ -743,7 +744,9 @@ __metadata:
     rxjs: ^7.5.7
     sha1: ^1.1.1
     socket.io: ^4.5.2
+    sprintf-js: ^1.0.3
     supertest: ^4.0.2
+    triple-beam: ^1.3.0
     ts-jest: 28.0.3
     ts-loader: ^6.2.1
     ts-md5: ^1.3.1
@@ -12919,13 +12922,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-fetch@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@types/node-fetch@npm:2.6.2"
+"@types/node-fetch@npm:^2.6.0":
+  version: 2.6.3
+  resolution: "@types/node-fetch@npm:2.6.3"
   dependencies:
     "@types/node": "*"
     form-data: ^3.0.0
-  checksum: 6f73b1470000d303d25a6fb92875ea837a216656cb7474f66cdd67bb014aa81a5a11e7ac9c21fe19bee9ecb2ef87c1962bceeaec31386119d1ac86e4c30ad7a6
+  checksum: b68cda58e91535a42dd5337932443c37f8e198ca1e8deeb95bd92a64a9a84d92071867b91c5eb84ee8e13f33d45a70549fe2bc11dd070a894dd561909f4d39f5
   languageName: node
   linkType: hard
 
@@ -35062,6 +35065,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:^2.6.0":
+  version: 2.6.11
+  resolution: "node-fetch@npm:2.6.11"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^2.6.1":
   version: 2.6.1
   resolution: "node-fetch@npm:2.6.1"
@@ -43692,6 +43709,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"sprintf-js@npm:^1.0.3":
+  version: 1.1.2
+  resolution: "sprintf-js@npm:1.1.2"
+  checksum: d4bb46464632b335e5faed381bd331157e0af64915a98ede833452663bc672823db49d7531c32d58798e85236581fb7342fd0270531ffc8f914e186187bf1c90
+  languageName: node
+  linkType: hard
+
 "sprintf-js@npm:~1.0.2":
   version: 1.0.3
   resolution: "sprintf-js@npm:1.0.3"
@@ -48353,7 +48377,7 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
-"winston@npm:^3.8.2":
+"winston@npm:3.8.2":
   version: 3.8.2
   resolution: "winston@npm:3.8.2"
   dependencies:
@@ -48369,6 +48393,25 @@ typescript@~3.2.1:
     triple-beam: ^1.3.0
     winston-transport: ^4.5.0
   checksum: f7b901798b92ab9e93c850110bf6e98500e9a0e762b62dab410cf928b2a4145533dfa6d3d2b24f7bf0dc94b53808d5bd28aaaeff9a4b43b89ea4c798cce308ea
+  languageName: node
+  linkType: hard
+
+"winston@patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch::locator=root%40workspace%3A.":
+  version: 3.8.2
+  resolution: "winston@patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch::version=3.8.2&hash=4e6c34&locator=root%40workspace%3A."
+  dependencies:
+    "@colors/colors": 1.5.0
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.4.0
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.5.0
+  checksum: 5cbc44d372e0727a95752900ff5f311241bfb33a2cd089c1d3108ee736c70d1a53f82fe66bef1db6d1d858dc1b7740ea531bc8aa30f41c4ad2bf0bb829bd5497
   languageName: node
   linkType: hard
 

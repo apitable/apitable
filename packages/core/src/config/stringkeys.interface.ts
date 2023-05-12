@@ -166,6 +166,7 @@ export type StringKeysMapType = {
   'api_add': 'api_add',
   'api_call': 'api_call',
   'api_cumulative_usage_info': 'api_cumulative_usage_info',
+  'api_dashboard_not_exist': 'api_dashboard_not_exist',
   'api_datasheet_not_exist': 'api_datasheet_not_exist',
   'api_datasheet_not_visible': 'api_datasheet_not_visible',
   'api_delete': 'api_delete',

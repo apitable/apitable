@@ -198,7 +198,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     } as IField);
   const [currentField, setCurrentField] = useState(fieldInfoForState);
   const [baseErrMsg, setBaseErrMsg] = useState('');
-  const [optionErrMsg, setOptionErrMsg] = useState('');
+  const [optionErrMsg, setOptionErrMsg] = useState<string | object>('');
 
   const { hasOptSetting } = FieldTypeDescriptionMap[currentField.type];
 
@@ -423,9 +423,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
       ? checkFactory[currentField.type](currentField, propDatasheetId)
       : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
 
-    if (typeof checkResult === 'string') {
+    if (typeof checkResult === 'string' || checkResult.errors) {
       setOptionErrMsg(checkResult);
-      isModal && renderModal(checkResult);
+      const _checkResult = checkResult.errors ? Object.values(checkResult.errors)[0] as string : checkResult;
+      isModal && renderModal(_checkResult);
       return;
     }
 
@@ -520,9 +521,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
             setCurrentField={setCurrentField}
             hideOperateBox={hideOperateBox}
             datasheetId={propDatasheetId}
+            optionErrMsg={optionErrMsg as object}
           />
         </>)}
-      {optionErrMsg && <section className={styles.error}>{optionErrMsg}</section>}
+      {typeof optionErrMsg === 'string' && <section className={styles.error}>{optionErrMsg}</section>}
 
       {!isComputedField && (
         <>

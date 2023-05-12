@@ -863,6 +863,60 @@ export enum FieldType {
    * 
    */
   LastModifiedBy = CoreFieldType.LastModifiedBy,
+  /**
+   * Cascader, select from a set of associated data collections
+   *
+   * ** Cell read format **
+   *
+   * `string`
+   *
+   * ```
+   *
+   * ** Cell write format **
+   *
+   * `string`
+   *
+   * ** Field property read format **
+   *
+   * ``` ts
+   * {
+   *  showAll: boolean;
+   *  linkedDatasheetId: string;
+   *  linkedViewId: string;
+   *  linkedFields: {
+   *    id: string;
+   *    name: string;
+   *    type: number;
+   *  }[],
+   *  fullLinkedFields: {
+   *    id: string;
+   *    name: string;
+   *    type: number;
+   *  }[];
+   * }
+   * ```
+   *
+   * ** Field property write format **
+   *
+   *
+   * ``` ts
+   * {
+   *  showAll: boolean;
+   *  linkedDatasheetId: string;
+   *  linkedViewId: string;
+   *  linkedFields: {
+   *    id: string;
+   *    name: string;
+   *    type: number;
+   *  }[],
+   *  fullLinkedFields: {
+   *    id: string;
+   *    name: string;
+   *    type: number;
+   *  }[];
+   * }
+   * ```
+   */
   Cascader = CoreFieldType.Cascader
 }
 
@@ -941,5 +995,6 @@ export enum NumFieldType {
   LastModifiedTime = 22,
   CreatedBy = 23,
   LastModifiedBy = 24,
+  Cascader = 25,
   DeniedField = 999, // no permission column
 }

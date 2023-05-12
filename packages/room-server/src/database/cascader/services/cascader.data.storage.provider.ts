@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus, IBaseDatasheetPack, IResourceOpsCollect } from '@apitable/core';
+import { databus, IBaseDatasheetPack, IResourceOpsCollect, IServerDatasheetPack } from '@apitable/core';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 
 export class CascaderDataStorageProvider implements databus.IDataStorageProvider {
   constructor(private readonly datasheetService: DatasheetService) {}
 
-  public async loadDatasheetPack(dstId: string, _options: databus.ILoadDatasheetPackOptions): Promise<databus.ILoadDatasheetPackResult> {
+  public async loadDatasheetPack(dstId: string, _options: databus.ILoadDatasheetPackOptions): Promise<IServerDatasheetPack | null> {
     const dstIds = [dstId];
     const packs: IBaseDatasheetPack[] = [];
     for (const dstId of dstIds) {
@@ -39,11 +39,13 @@ export class CascaderDataStorageProvider implements databus.IDataStorageProvider
     // NOTE the first data pack of `packs` is always the datasheet specified by `dstId`.
     delete foreignDatasheetMap[packs[0]!.datasheet.id];
     return {
-      datasheetPack: {
-        ...packs[0]!,
-        foreignDatasheetMap,
-      },
+      ...packs[0]!,
+      foreignDatasheetMap,
     };
+  }
+
+  public loadDashboardPack(): never {
+    throw new Error('unreachable');
   }
 
   public saveOps(_ops: IResourceOpsCollect[], _options: databus.ISaveOpsOptions) {

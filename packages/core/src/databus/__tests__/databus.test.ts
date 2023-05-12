@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { mockGetViewInfo } from './mock.view';
 import { mockRecordValues, mockRecords, mockDefaultRecord, mockRecordVoTransformer } from './mock.record';
 import { MockDataBus, resetDataLoader } from './mock.databus';
 import { IRecord } from 'exports/store';
@@ -47,9 +46,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      const view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      const view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const records = await view1!.getRecords({});
 
@@ -63,9 +60,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      const view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      const view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const records = await view1!.getRecords({});
 
@@ -140,9 +135,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      let view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      let view1 = await dst1!.getView('viw1');
       const succeeded = await view1!.addRecords(
         {
           index: 0,
@@ -164,9 +157,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
 
       const records = await view1!.getRecords({});
@@ -181,9 +172,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      let view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      let view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const result = await view1!.addRecords(
         {
@@ -200,9 +189,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      view1 = await dst1!.getView('viw1');
 
       expect(view1).toBeTruthy();
       const records = await view1!.getRecords({});
@@ -222,9 +209,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      let view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      let view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const result = await view1!.addRecords(
         {
@@ -241,9 +226,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
 
       const records = await view1!.getRecords({});
@@ -263,9 +246,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      let view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      let view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const result = await view1!.addRecords(
         {
@@ -282,9 +263,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
 
       const records = await view1!.getRecords({});
@@ -304,9 +283,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      let view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      let view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
       const result = await view1!.addRecords(
         {
@@ -323,9 +300,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
 
       const records = await view1!.getRecords({});
@@ -370,9 +345,7 @@ describe('record operations', () => {
         storeOptions: {},
       });
       expect(dst1).toBeTruthy();
-      const view1 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-      });
+      const view1 = await dst1!.getView('viw1');
       expect(view1).toBeTruthy();
 
       const records = await view1!.getRecords({});

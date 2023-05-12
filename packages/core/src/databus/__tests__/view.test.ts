@@ -21,8 +21,9 @@ import { ICommandExecutionSuccessResult } from '../logic';
 import { ViewType } from 'exports/store';
 import { ResourceType, SegmentType } from 'types';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { mockGetViewInfo } from './mock.view';
 import { mockOperationOfAddRecords } from './mock.record';
+import { IOperation, OTActionName } from 'engine';
+import { CollaCommandName } from 'commands';
 
 const db = MockDataBus.getDatabase();
 
@@ -36,9 +37,7 @@ describe('view info', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     expect(view1).toBeTruthy();
 
     expect(view1!.id).toStrictEqual('viw1');
@@ -57,9 +56,7 @@ describe('getFields', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     expect(view2!.id).toStrictEqual('viw2');
@@ -78,9 +75,7 @@ describe('getFields', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     expect(view2!.id).toStrictEqual('viw2');
@@ -103,9 +98,7 @@ describe('getRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     const records = await view2!.getRecords({});
@@ -122,9 +115,7 @@ describe('getRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     const records = await view2!.getRecords({
@@ -143,9 +134,7 @@ describe('getRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     const records = await view2!.getRecords({
@@ -165,9 +154,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -189,9 +176,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -213,9 +198,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -237,9 +220,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -261,9 +242,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -285,9 +264,7 @@ describe('getRecords', () => {
       });
       expect(dst1).toBeTruthy();
 
-      const view2 = await dst1!.getView({
-        getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-      });
+      const view2 = await dst1!.getView('viw2');
       expect(view2).toBeTruthy();
 
       const records = await view2!.getRecords({
@@ -310,9 +287,7 @@ describe('getRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw2'),
-    });
+    const view2 = await dst1!.getView('viw2');
     expect(view2).toBeTruthy();
 
     const records = await view2!.getRecords({
@@ -339,9 +314,7 @@ describe('addRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     expect(view1).toBeTruthy();
 
     const result = await view1!.addRecords(
@@ -371,6 +344,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 3 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
       },
       {
@@ -378,6 +352,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 4 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
       },
     ]);
@@ -415,9 +390,7 @@ describe('addRecords', () => {
     });
     expect(dst1).toBeTruthy();
 
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     expect(view1).toBeTruthy();
 
     const result = await view1!.addRecords(
@@ -456,6 +429,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 3 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'first' }],
@@ -467,6 +441,7 @@ describe('addRecords', () => {
         rows: [
           { view: 0, index: 4 },
           { view: 1, index: 5 },
+          { view: 2, index: 5 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'second' }],
@@ -474,6 +449,209 @@ describe('addRecords', () => {
         },
       },
     ]);
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('modify view', () => {
+  beforeEach(resetDataLoader);
+
+  test('modify view name', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const view1 = await dst1!.getView('viw1');
+    expect(view1).toBeTruthy();
+
+    const result = await view1!.modify(
+      {
+        key: 'name',
+        value: 'VIEW_1',
+      },
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      cmd: CollaCommandName.ModifyViews,
+      actions: [
+        {
+          n: OTActionName.ObjectReplace,
+          od: 'view 1',
+          oi: 'VIEW_1',
+          p: ['meta', 'views', 0, 'name'],
+        },
+      ],
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+
+  test('modify view columns', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const view1 = await dst1!.getView('viw1');
+    expect(view1).toBeTruthy();
+
+    const result = await view1!.modify(
+      {
+        key: 'columns',
+        value: [{ fieldId: 'fld2', hidden: true }],
+      },
+      {},
+    );
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      cmd: CollaCommandName.ModifyViews,
+      actions: [
+        {
+          n: OTActionName.ListReplace,
+          ld: { fieldId: 'fld2' },
+          li: { fieldId: 'fld2', hidden: true },
+          p: ['meta', 'views', 0, 'columns', 1],
+        },
+      ],
+    };
+
+    expect(result).toStrictEqual({
+      resourceId: 'dst1',
+      resourceType: ResourceType.Datasheet,
+      result: ExecuteResult.Success,
+      operation,
+      linkedActions: [],
+      executeType: ExecuteType.Execute,
+      resourceOpsCollects: [
+        {
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+      saveResult: [
+        {
+          baseRevision: 12,
+          messageId: 'msg1',
+          operations: [operation],
+          resourceId: 'dst1',
+          resourceType: 0,
+        },
+      ],
+    });
+  });
+});
+
+describe('delete view', () => {
+  beforeEach(resetDataLoader);
+
+  test('delete single view', async() => {
+    const dst1 = await db.getDatasheet('dst1', {
+      loadOptions: {},
+      storeOptions: {},
+    });
+    expect(dst1).toBeTruthy();
+
+    const view1 = await dst1!.getView('viw1');
+    expect(view1).toBeTruthy();
+
+    const result = await view1!.delete({});
+
+    expect(result.result).toStrictEqual(ExecuteResult.Success);
+
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult).toBeTruthy();
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult.length).toBe(1);
+    expect((result as ICommandExecutionSuccessResult<string[]>).saveResult[0].messageId).toBeTruthy();
+
+    delete (result as ICollaCommandExecuteSuccessResult<any>).data;
+    (result as ICommandExecutionSuccessResult<any>).saveResult[0].messageId = 'msg1';
+
+    const operation: IOperation = {
+      cmd: CollaCommandName.DeleteViews,
+      actions: [
+        {
+          n: OTActionName.ListDelete,
+          ld: {
+            id: 'viw1',
+            type: ViewType.Grid,
+            columns: [{ fieldId: 'fld1' }, { fieldId: 'fld2' }],
+            frozenColumnCount: 1,
+            name: 'view 1',
+            rows: [{ recordId: 'rec1' }, { recordId: 'rec2' }, { recordId: 'rec3' }, { recordId: 'rec4' }, { recordId: 'rec5' }],
+          },
+          p: ['meta', 'views', 0],
+        },
+      ],
+    };
 
     expect(result).toStrictEqual({
       resourceId: 'dst1',

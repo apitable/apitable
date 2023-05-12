@@ -17,15 +17,15 @@
  */
 
 import { Injectable, NestInterceptor, Logger, ExecutionContext, CallHandler } from '@nestjs/common';
-import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel } from '@apitable/core';
+import { ResourceType, ResourceIdPrefix, IWidget, IWidgetPanel, IServerDashboardPack } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
 import type { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import type { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
-import type { DashboardDataPack, DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import { DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
+import { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Resource data interceptor
@@ -63,7 +63,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
 
   private async getResourceIds(
     resourceType: ResourceType,
-    data: DatasheetPack | DatasheetPackResponse | DashboardDataPack | MirrorInfo | FormDataPack,
+    data: DatasheetPack | DatasheetPackResponse | IServerDashboardPack | MirrorInfo | FormDataPack,
   ): Promise<string[]> {
     if ('resourceIds' in data && Array.isArray(data.resourceIds)) {
       return data.resourceIds;
@@ -100,7 +100,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
         }
         break;
       case ResourceType.Dashboard:
-        data = data as DashboardDataPack;
+        data = data as IServerDashboardPack;
         const sourceDatasheetIds: Set<string> = new Set();
         for (const widget of Object.values((data.widgetMap as any) as Record<string, IWidget>)) {
           resourceIds.push(widget.id);
