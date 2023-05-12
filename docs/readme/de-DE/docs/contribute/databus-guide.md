@@ -1,6 +1,6 @@
 ## What is DataBus?
 
-DataBus is a data layer that abstracts over data management and collaboration logic. The hierarchy of entity classes in DataBus follows that of resources in APITable, i.e. datasheets, mirrors, dashboards, widgets, views, etc. The developer writes code that manipulates datasheets through DataBus, without needing to tackle the complexity of the underlying database/storage system.
+DataBus is a data layer that abstracts over data management and collaboration logic. The hierarchy of entity classes in DataBus follows that of resources in APITable, i.e. datasheets, mirrors, dashboards, widgets, views, etc. The developer writes code that manipulates datasheets through DataBus, without needing to tackle the complexity of the underlying database/storage system. The developer writes code that manipulates datasheets through DataBus, without needing to tackle the complexity of the underlying database/storage system.
 
 The core module of DataBus is https://github.com/apitable/apitable/tree/develop/packages/core/src/databus.
 
@@ -34,6 +34,24 @@ const databus = DataBus.create({
      },
 })
 
+// Get a Database instance.
+    }
+
+    saveOps(ops, options) {
+        // save changesets into database and update  corresponding datasheet data ...
+    }
+}
+
+// Create a DataBus instance
+const databus = DataBus.create({
+     dataStorageProvider: new ServerDataStorageProvider(),
+     storeProvider: {
+        createStore: datasheetPack => {
+             // create a redux store from data pack ...
+        }
+     },
+})
+
 // Get a Database instance. A Database corresponds to a space in APITable.
 const database = databus.getDatabase();
 
@@ -48,6 +66,11 @@ const datasheet = database.getDatasheet(datasheetId, {
 const view = datasheet.getView({
     getViewInfo(state) {
         // create view info from redux state ...
+    }
+})
+
+// Get record list from the view
+const records = view.getRecords({});
     }
 })
 

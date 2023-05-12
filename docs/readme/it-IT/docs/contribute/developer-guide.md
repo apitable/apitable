@@ -134,7 +134,13 @@ Basta aprire la cartella principale di APITable con l'IDE.
 Abbiamo due modi per migliorare la traduzione di APITable:
 
 1. È possibile modificare i file markdown nel codice sorgente e creare una PR direttamente
-2. Unisciti alla nostra [Crowdin](https://crowdin.com/project/apitablecode) per trovare le `strings` per modificare
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 In collaborazione con la traduzione multilingue, seguiamo il seguente processo:
 
@@ -181,7 +187,7 @@ Nel file `.env.default` di `room-server`ci sono due parametri che possono regola
 
 1. È possibile impostare `LIMIT_POINTS` e `LIMIT_DURATION` per indicare il numero di richieste che possono essere fatte in un periodo di tempo unitario. Dove LIMIT_POINTS è il numero di volte e LIMIT_DURATION è la durata, misurata in secondi.
 
-2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a ` Map <string, IBaseRateLimiter>`.
+2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a `Map <string, IBaseRateLimiter>`.
 
 ## Come aumentare il numero di record inseriti per chiamata API? (10 di default)
 
