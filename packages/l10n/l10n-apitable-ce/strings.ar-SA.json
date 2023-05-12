@@ -45,7 +45,7 @@
   "social_plat_bind_space_seats_err": "الفضاء المشترك الخاص بك يمكن أن يكون ما يصل إلى $ { عد } الأعضاء . إذا كنت ترغب في دعوة أكثر ، يرجى الاتصال بنا > < أ href = https://help.apitable.com/docs/guide/how-contact-service ' الهدف ' = ' u blank '",
   "how_create_template": "هذا الفضاء المشترك لم يتم تخصيص قالب > < أ href = https://help.apitable.com/docs/guide/faq-how-create-template كيفية إنشاء",
   "assistant": "مساعد",
-  "view_restrictions": "أ href = \" https://apitable.com/pricing/ \" عرض القيود",
+  "view_restrictions": "<a href=\"https://apitable.com/pricing/\">View restrictions</a>",
   "assistant_hide": "إخفاء مساعد",
   "system_configuration_company_name_short": "APITable",
   "official_template_centre_description": "Recommended by APITable",
