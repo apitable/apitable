@@ -21,6 +21,8 @@
  */
 export const getEnvVars = () => {
   return {
+    LOGIN_MOTTO: process.env.LOGIN_MOTTO,
+    LOGIN_SOCIAL_ICONS_DISABLE: process.env.LOGIN_SOCIAL_ICONS_DISABLE,
     DINGTALK_LOGIN_APPID: process.env.DINGTALK_LOGIN_APPID,
     QQ_CONNECT_WEB_APPID: process.env.QQ_CONNECT_WEB_APPID,
     integration_feishu_login_appid: process.env.integration_feishu_login_appid,
