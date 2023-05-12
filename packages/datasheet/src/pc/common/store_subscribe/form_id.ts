@@ -24,7 +24,7 @@ let formId: string | undefined;
 
 store.subscribe(function formIdChange() {
   const state = store.getState();
-  const spaceId = state.space.activeId || state.share.spaceId;
+  const spaceId = state.space.activeId || state.share.spaceId || state.embedInfo.spaceId;
   const { shareId, templateId, embedId } = state.pageParams;
 
   if ((!spaceId && !shareId && !templateId && !embedId)) {
