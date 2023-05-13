@@ -18,4 +18,4 @@ datasheet는 다중 협업을 위해 실시간으로 여러 협력자가 동시�
 - Nest Server: datasheets, records, views 등에 대한 HTTP GET 요청 처리.
 - MySQL: datasheets, records, views 등과 같은 지속적인 데이터를 저장합니다.
 - Redis: 로그인 세션, 핫 데이터 등 캐시를 저장합니다.
-- Redis: 로그인 세션, 핫 데이터 등 캐시를 저장합니다.
+- `S3`: stores uploaded files

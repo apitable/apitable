@@ -10,7 +10,7 @@ Ein konkreteres Diagramm ist unten zu sehen:
 
 ![Architektur-Übersicht](../static/architecture-overview.png)
 
-- UI: bietet eine extrem glatte, benutzerfreundliche, superschnelle Datenbank-Tabellenschnittstelle in. <canvas> Webserver: erstellt mit Hilfe von Nextjs superschnelle, SEO-freundliche und extrem benutzerfreundliche statische Websites und Webanwendungen
+- UI: bietet eine extrem glatte, benutzerfreundliche, superschnelle Datenbank-Tabellenschnittstelle in. <canvas> Rendering Engine
 - Web Server: erstellt mit Hilfe von Nextjs superschnelle, SEO-freundliche und extrem benutzerfreundliche statische Websites und Webanwendungen
 - Backend Server: verarbeitet HTTP-Anfragen über Knoten, Benutzer, Organisationen, etc.
 - Socket Server: stellt eine lange Verbindung mit Clients über das WebSocket-Protokoll her, was eine Zwei-Wege-Kommunikation und Echtzeit-Zusammenarbeit, Benachrichtigungen und andere Funktionen ermöglicht

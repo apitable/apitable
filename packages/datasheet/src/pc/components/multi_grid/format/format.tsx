@@ -33,6 +33,7 @@ import { FormatSingleText } from './format_single_text';
 import { FormatLastModifiedBy } from './format_last_modified_by';
 import { FormatCascader } from './format_cascader';
 import { FormatURL } from './format_url';
+import { IFieldCascaderErrors } from '../field_setting/check_factory';
 
 interface IFieldFormatProps {
   from?: string;
@@ -40,10 +41,11 @@ interface IFieldFormatProps {
   setCurrentField: Dispatch<SetStateAction<IField>>;
   hideOperateBox: () => void;
   datasheetId?: string;
+  optionErrMsg?: object;
 }
 
 export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = props => {
-  const { from, currentField, setCurrentField, hideOperateBox, datasheetId } = props;
+  const { from, currentField, setCurrentField, hideOperateBox, datasheetId, optionErrMsg } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
     setCurrentField({
@@ -96,7 +98,7 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
     case FieldType.URL:
       return <FormatURL currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.Cascader:
-      return <FormatCascader currentField={currentField} setCurrentField={setCurrentField} />;
+      return <FormatCascader currentField={currentField} setCurrentField={setCurrentField} optionErrMsg={optionErrMsg as IFieldCascaderErrors} />;
     default:
       return <></>;
   }

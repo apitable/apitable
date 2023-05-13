@@ -15,60 +15,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import * as languageManifest from './config/language.manifest.json';
-import * as langEnUs from './config/strings.en-US.json';
-import * as langZhCn from './config/strings.zh-CN.json';
-import langFrFr from './config/strings.fr-FR.json';
-import langZhHk from './config/strings.zh-HK.json';
+import strings from './config/strings.json';
+import languageManifest from './config/language.manifest.json';
+// @ts-ignore
+import { strings as _strings } from './enterprise';
 
 declare const window: any;
 declare const global: any;
 
-const currentLang = typeof window !== 'undefined' ? (window as any).currentLang : (global as any).currentLang;
-
-if (typeof window !== 'undefined') {
-  (window as any).languageManifest = languageManifest;
-  (window as any).apitable_i18n = {};
-}else {
-  (global as any).languageManifest = languageManifest;
-  (global as any).apitable_i18n = {};
-}
-
-const langMap = {
-  'en-US': langEnUs.default,
-  'zh-CN': langZhCn.default,
-  'fr-FR': langFrFr,
-  'zh-HK': langZhHk,
-};
-
-if (currentLang in langMap) {
-  const target = typeof window !== 'undefined' ? window : global;
-  target.apitable_i18n[currentLang] = langMap[currentLang];
-} else {
-  loadStrings(currentLang).then(i => {});
-}
-
-export async function loadStrings(locale: string) {
-  if (!locale) {
-    return;
-  }
-
-  if (typeof window !== 'undefined') {
-    (window as any).apitable_i18n[locale] = {};
-  }else {
-    (global as any).apitable_i18n[locale] = {};
-  }
-
-  try {
-    const strings = await import(`./config/strings.${locale}.json`).then(module => module.default);
-    if (typeof window !== 'undefined') {
-      Object.assign((window as any).apitable_i18n[locale], strings);
-    }else {
-      Object.assign((global as any).apitable_i18n[locale], strings);
+function loadAllLang() {
+  const newStrings = strings;
+  if (_strings) {
+    for (const key in strings) {
+      newStrings[key] = { ...strings[key], ..._strings[key] };
     }
-    return strings;
-  } catch (error) {
-    console.warn(`Failed to load strings for locale "${locale}"`, error);
-    return {};
+  }
+  if (typeof window !== 'undefined') {
+    (window as any).apitable_i18n = newStrings;
+    (window as any).languageManifest = languageManifest;
+  } else {
+    (global as any).apitable_i18n = newStrings;
+    (global as any).languageManifest = languageManifest;
   }
 }
+
+loadAllLang();
+

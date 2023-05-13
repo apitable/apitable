@@ -90,3 +90,4 @@ eslint-results.sarif
 /backend-server/application/src/main/resources/sysconfig/notification.origin.json
 /packages/datasheet/.env.development.origin
 /packages/i18n-lang/src/config/strings.en-US.origin.json
+/packages/i18n-lang/src/config/language.manifest.origin.json

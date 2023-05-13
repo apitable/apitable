@@ -817,10 +817,10 @@ export class OtService {
 
   async applyChangesets(roomId: string, changesets: ILocalChangeset[], auth: IAuthHeader, shareId?: string) {
     const changeResult = await this.applyRoomChangeset({ allowAllEntrance: true, roomId, shareId, changesets }, auth);
-    this.logger.info(`room[${roomId}] Resource:ApplyChangeSet Success!`);
+    // this.logger.info(`room[${roomId}] Resource:ApplyChangeSet Success!`);
     // Notify socket service to broadcast
     await this.nestRoomChange(roomId, changeResult);
-    this.logger.info(`room[${roomId}] Resource:NotifyChangeSet Success!`);
+    // this.logger.info(`room[${roomId}] Resource:NotifyChangeSet Success!`);
     return changeResult;
   }
 }

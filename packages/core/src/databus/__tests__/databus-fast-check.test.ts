@@ -3,7 +3,6 @@ import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
 import { ExecuteResult } from 'command_manager';
 import * as fc from 'fast-check';
-import { mockGetViewInfo } from 'databus/__tests__/mock.view';
 import * as console from 'console';
 
 const db = MockDataBus.getDatabase();
@@ -77,9 +76,7 @@ describe('fast check doCommand Operation', () => {
       return;
     }
     const dstId = dst1?.id || '';
-    const view1 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view1 = await dst1!.getView('viw1');
     const oldViewColumnCount = view1?.columns.length || 0;
     expect(oldViewColumnCount).toStrictEqual(2);
     let expectFieldAddedCount = 0;
@@ -123,9 +120,7 @@ describe('fast check doCommand Operation', () => {
       }),
       { verbose: true, timeout: 30000 },
     );
-    const view2 = await dst1!.getView({
-      getViewInfo: mockGetViewInfo('dst1', 'viw1'),
-    });
+    const view2 = await dst1!.getView('viw1');
     expect(view2?.columns.length).toStrictEqual(oldViewColumnCount + expectFieldAddedCount);
   });
 });

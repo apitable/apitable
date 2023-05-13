@@ -19,20 +19,20 @@
 import { IResourceOpsCollect } from 'command_manager';
 import { IError } from 'types';
 import { CommandExecutionResultType } from './command.execution.result.type.enum';
-import { DatasheetEventType } from './event.type.enum';
+import { ResourceEventType } from './event.type.enum';
 
-export type IDatasheetEvent = IDatasheetDataChangeEvent | IDatasheetCommandExecutedEvent;
+export type IResourceEvent = IResourceDataChangeEvent | IResourceCommandExecutedEvent;
 
-export type IDatasheetDataChangeEvent = INewRecordsEvent;
+export type IResourceDataChangeEvent = INewRecordsEvent;
 
 export interface INewRecordsEvent {
-  type: DatasheetEventType.DataChange;
+  type: ResourceEventType.DataChange;
 }
 
-export type IDatasheetCommandExecutedEvent = IDatasheetCommandExecutedSuccessEvent | IDatasheetCommandExecutedFailEvent;
+export type IResourceCommandExecutedEvent = IResourceCommandExecutedSuccessEvent | IResourceCommandExecutedFailEvent;
 
-export interface IDatasheetCommandExecutedSuccessEvent {
-  type: DatasheetEventType.CommandExecuted;
+export interface IResourceCommandExecutedSuccessEvent {
+  type: ResourceEventType.CommandExecuted;
 
   /**
    * The result of the command execution.
@@ -45,8 +45,8 @@ export interface IDatasheetCommandExecutedSuccessEvent {
   resourceOpCollections: IResourceOpsCollect[];
 }
 
-export interface IDatasheetCommandExecutedFailEvent {
-  type: DatasheetEventType.CommandExecuted;
+export interface IResourceCommandExecutedFailEvent {
+  type: ResourceEventType.CommandExecuted;
 
   /**
    * The result of the command execution.

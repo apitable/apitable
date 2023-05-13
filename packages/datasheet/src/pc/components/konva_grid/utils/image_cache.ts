@@ -26,7 +26,6 @@ export const imageCache = (() => {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
-      img.crossOrigin = 'Anonymous';
       img.referrerPolicy = 'no-referrer';
 
       if (getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {

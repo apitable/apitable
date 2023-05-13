@@ -17,11 +17,14 @@
  */
 
 import { Typography, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
+import { Strings, t, ThemeName } from '@apitable/core';
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { FC } from 'react';
 import styles from './styles.module.less';
+import { useSelector } from 'react-redux';
+import InfoStateDark from 'static/icon/common/info_state_dark.png';
+import InfoStateLight from 'static/icon/common/info_state_light.png';
 
 interface IReadingProps {
   [key: string]: any;
@@ -31,13 +34,17 @@ const size = 160;
 
 export const Reading: FC<React.PropsWithChildren<IReadingProps>> = () => {
   const colors = useThemeColors();
+  const theme = useSelector(state => state.theme);
+  const InfoState = theme === ThemeName.Light ? InfoStateLight : InfoStateDark;
+
   return (
     <div className={styles.content}>
       <div className={styles.top}>
         <Image
-          src={integrateCdnHost(Settings.delete_account_step1_cover.value)}
+          src={InfoState}
           width={size}
           height={size}
+          alt="Info"
         />
       </div>
 

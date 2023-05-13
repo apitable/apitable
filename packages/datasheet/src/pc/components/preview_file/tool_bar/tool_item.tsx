@@ -44,6 +44,7 @@ export const PreviewToolItem: React.FC<React.PropsWithChildren<IPreviewToolItem>
     style,
     className,
     divider,
+    icon
   } = props;
 
   if (!visible) {
@@ -54,9 +55,9 @@ export const PreviewToolItem: React.FC<React.PropsWithChildren<IPreviewToolItem>
     <>
       {
         group &&
-        <div 
+        <div
           className={classNames(styles.group, {
-            [styles.borderRight]: divider,    
+            [styles.borderRight]: divider,
           })}
         >
           {group?.map((toolItemProps, index) =>
@@ -67,17 +68,29 @@ export const PreviewToolItem: React.FC<React.PropsWithChildren<IPreviewToolItem>
           )}
         </div>
       }
-      {component && (
-        <Tooltip title={typeof tip === 'function' ? tip() : tip}>
-          <div
-            className={classNames(styles.componentWrapper, className)}
-            onClick={onClick}
-            style={style}
-          >
-            {typeof component === 'function' ? component() : component}
-          </div>
-        </Tooltip>
-      )}
+      {
+        component ? (
+          <Tooltip title={typeof tip === 'function' ? tip() : tip}>
+            <div
+              className={classNames(styles.componentWrapper, className)}
+              onClick={onClick}
+              style={style}
+            >
+              {typeof component === 'function' ? component() : component}
+            </div>
+          </Tooltip>
+        ) : (
+          <Tooltip title={typeof tip === 'function' ? tip() : tip}>
+            <div
+              className={classNames(styles.componentWrapper, className)}
+              onClick={onClick}
+              style={{ alignItems: 'inherit' }}
+            >
+              {icon && React.createElement(icon)}
+            </div>
+          </Tooltip>
+        )
+      }
     </>
   );
 };

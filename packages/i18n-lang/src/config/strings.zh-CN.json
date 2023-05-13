@@ -165,6 +165,7 @@
   "api_add": "Add 新增",
   "api_call": "每月 API 请求次数上限",
   "api_cumulative_usage_info": "公测阶段，允许超量使用。",
+  "api_dashboard_not_exist": "找不到指定的仪表盘",
   "api_datasheet_not_exist": "找不到指定的表格",
   "api_datasheet_not_visible": "表格不可见",
   "api_delete": "Delete 删除",
