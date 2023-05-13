@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug report (zh-CN)
 about: Create a report to help APITable improve (zh-CN)
 title: 'fix: BUG...'
 labels: 'bug'
