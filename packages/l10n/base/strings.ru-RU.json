@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "Параметры CollaboratorStatusBar должны быть булевыми.",
   "api_param_add_widget_btn_type_error": "Параметры addWidgetBtn должны быть логического типа",
   "api_param_full_screen_btn_type_error": "Параметры FullScreenBtn должны быть булевыми.",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "Обнаружение аномальных данных в связанных ячейках, будет ли это автоматически исправлено?",
   "archive_record_in_menu": "Архив",
   "archive_records_in_menu": "Archive ${chose_num} records",
