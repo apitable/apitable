@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "Il parametro collaboratorStatusBar deve essere un tipo booleano",
   "api_param_add_widget_btn_type_error": "il parametro addWidgetBtn deve essere un tipo booleano",
   "api_param_full_screen_btn_type_error": "il parametro fullScreenBtn deve essere un tipo booleano",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "Dati anomali sono stati trovati nelle celle di collegamento, correggerli automaticamente?",
   "archive_record_in_menu": "Archivio record",
   "archive_records_in_menu": "Archive ${chose_num} records",
