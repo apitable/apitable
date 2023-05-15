@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "le paramètre réduit doit être un type booléen",
   "api_param_add_widget_btn_type_error": "le paramètre addWidgetBtn doit être un type booléen",
   "api_param_full_screen_btn_type_error": "le paramètre fullScreenBtn doit être un type booléen",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "Des données anormales ont été trouvées dans les cellules de lien, les corriger automatiquement ?",
   "archive_record_in_menu": "Dossier d'archive",
   "archive_records_in_menu": "Archive ${chose_num} records",
