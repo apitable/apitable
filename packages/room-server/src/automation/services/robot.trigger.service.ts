@@ -20,23 +20,17 @@ import { Injectable } from '@nestjs/common';
 import {
   AutomationTriggerTypeRepository,
   AutomationTriggerRepository,
-  AutomationServiceRepository,
   AutomationRobotRepository
 } from '../repositories';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
-import { InjectLogger } from 'shared/common';
-import { Logger } from 'winston';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
-import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 @Injectable()
 export class RobotTriggerService {
 
   constructor(
-    @InjectLogger() private readonly logger: Logger,
     private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
-    private readonly automationServiceRepository: AutomationServiceRepository,
     private readonly automationRobotRepository: AutomationRobotRepository,
   ) {
   }
@@ -44,13 +38,8 @@ export class RobotTriggerService {
   public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]> {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
-      const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
-      this.logger.info(
-        `get officialServiceCount: ${officialServiceCount} serviceId: ${triggerTypeServiceRel.serviceId} slug: ${OFFICIAL_SERVICE_SLUG}`);
-      if (officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
-      }
     }
     return [];
   }

@@ -19,19 +19,9 @@
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { ServiceBaseUrlDto, ServiceInfoDto } from '../dtos/service.dto';
-import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {
-
-  public async countOfficialServiceByServiceId(serviceId: string): Promise<number> {
-    return await this.count({
-      where: {
-        serviceId: serviceId,
-        slug: OFFICIAL_SERVICE_SLUG,
-      }
-    });
-  }
 
   public async countServiceByServiceIdAndSlug(serviceId: string, slug: string): Promise<number> {
     return await this.count({

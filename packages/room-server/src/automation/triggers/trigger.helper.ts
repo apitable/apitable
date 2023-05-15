@@ -47,5 +47,3 @@ export const getTriggerOutput = (datasheetId: string, datasheetName: string, rec
     }
   } as ITriggerOutput;
 }
-
-export const OFFICIAL_SERVICE_SLUG = process.env.ROBOT_OFFICIAL_SERVICE_SLUG ? process.env.ROBOT_OFFICIAL_SERVICE_SLUG : 'apitable';

@@ -17,7 +17,6 @@
  */
 import { Injectable } from '@nestjs/common';
 import { AutomationTriggerTypeRepository, AutomationServiceRepository } from '../repositories';
-import { IServiceSlugTriggerTypeVo } from '../vos/service.slug.trigger.type.vo';
 import { getTypeByItem } from '../utils';
 
 @Injectable()
@@ -27,30 +26,6 @@ export class RobotTriggerTypeService {
     private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
     private readonly automationServiceRepository: AutomationServiceRepository,
   ) {
-  }
-
-  public async getServiceSlugToTriggerTypeId(endpoints: string[], serviceSlug: string): Promise<IServiceSlugTriggerTypeVo> {
-    const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoints(endpoints);
-    const triggerTypes: {
-      triggerTypeId: string,
-      endpoint: string,
-      serviceSlug: string,
-    }[] = [];
-    for (const triggerTypeServiceRelDto of triggerTypeServiceRelDtos) {
-      const number = await this.automationServiceRepository.countServiceByServiceIdAndSlug(triggerTypeServiceRelDto.serviceId, serviceSlug);
-      if (number > 0) {
-        triggerTypes.push({
-          triggerTypeId: triggerTypeServiceRelDto.triggerTypeId,
-          endpoint: triggerTypeServiceRelDto.endpoint!,
-          serviceSlug: serviceSlug,
-        });
-      }
-    }
-    return triggerTypes.reduce((serviceSlugToTriggerTypeId, item) => {
-      const triggerSlug = `${item.endpoint}@${item.serviceSlug}`;
-      serviceSlugToTriggerTypeId[triggerSlug] = item.triggerTypeId;
-      return serviceSlugToTriggerTypeId;
-    }, {} as IServiceSlugTriggerTypeVo);
   }
 
   /**
