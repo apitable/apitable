@@ -18,8 +18,8 @@
 
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
-import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
 import { ServiceBaseUrlDto, ServiceInfoDto } from '../dtos/service.dto';
+import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 @EntityRepository(AutomationServiceEntity)
 export class AutomationServiceRepository extends Repository<AutomationServiceEntity> {

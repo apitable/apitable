@@ -17,15 +17,17 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
-import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
-import { AutomationServiceRepository } from '../repositories/automation.service.repository';
-import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import {
+  AutomationTriggerTypeRepository,
+  AutomationTriggerRepository,
+  AutomationServiceRepository,
+  AutomationRobotRepository
+} from '../repositories';
 import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
+import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 @Injectable()
 export class RobotTriggerService {
@@ -36,15 +38,16 @@ export class RobotTriggerService {
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly automationServiceRepository: AutomationServiceRepository,
     private readonly automationRobotRepository: AutomationRobotRepository,
-  ) { }
+  ) {
+  }
 
-  public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]>{
+  public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]> {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
       this.logger.info(
-        `get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`);
-      if(officialServiceCount > 0) {
+        `get officialServiceCount: ${officialServiceCount} serviceId: ${triggerTypeServiceRel.serviceId} slug: ${OFFICIAL_SERVICE_SLUG}`);
+      if (officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
       }
@@ -57,7 +60,7 @@ export class RobotTriggerService {
     const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
       robotIdToResourceId[item.robotId] = item.resourceId;
       return robotIdToResourceId;
-    }, {} as {[key: string]: string});
+    }, {} as { [key: string]: string });
     const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
     return triggers.reduce((resourceIdToTriggers, item) => {
       const resourceId = robotIdToResourceId[item.robotId]!;

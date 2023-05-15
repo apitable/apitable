@@ -15,11 +15,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { CommonEvent, CommonEventContext, CommonEventMetaContext } from './common.event';
-
-export type RecordUpdatedEvent = CommonEvent;
-
-export type RecordUpdatedEventMetaContext = CommonEventMetaContext;
-
-export type RecordUpdatedEventContext = CommonEventContext;
+export * from './action.worker';
+export * from './flow.worker';

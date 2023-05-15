@@ -63,11 +63,11 @@ const IMagicOperatorMap = {
 const makeFunction = (operator: OperatorEnums, funcName: string) => {
   const func = (...args: any[]) => {
     const [ctx, fieldId, b] = args;
-    const fieldMap = ctx.state.datasheetMap[ctx.datasheetId].datasheet?.snapshot.meta.fieldMap!;
+    const fieldMap = ctx.fieldMap;
     const field = fieldMap[fieldId];
     // if the field is deleted, the filter should be invalid. return false
     if (!field) return false;
-    return Field.bindContext(field, ctx.state).isMeetFilter(
+    return Field.bindContext(field, { } as IReduxState).isMeetFilter(
       IMagicOperatorMap[operator],
       getFieldValue(ctx, fieldId),
       b

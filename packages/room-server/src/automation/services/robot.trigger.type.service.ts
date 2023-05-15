@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { Injectable } from '@nestjs/common';
-import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
+import { AutomationTriggerTypeRepository, AutomationServiceRepository } from '../repositories';
 import { IServiceSlugTriggerTypeVo } from '../vos/service.slug.trigger.type.vo';
-import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { getTypeByItem } from '../utils';
 
 @Injectable()
@@ -48,7 +46,7 @@ export class RobotTriggerTypeService {
         });
       }
     }
-    return triggerTypes.reduce((serviceSlugToTriggerTypeId, item)=> {
+    return triggerTypes.reduce((serviceSlugToTriggerTypeId, item) => {
       const triggerSlug = `${item.endpoint}@${item.serviceSlug}`;
       serviceSlugToTriggerTypeId[triggerSlug] = item.triggerTypeId;
       return serviceSlugToTriggerTypeId;

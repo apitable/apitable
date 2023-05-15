@@ -15,19 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { redisModuleOptions } from 'shared/services/config/redis.config.service';
 
-import { Controller, Get, Query } from '@nestjs/common';
-import { RobotActionTypeService } from '../services';
+export const AUTOMATION_REDIS_CLIENT = 'AUTOMATION_REDIS_CLIENT';
 
-@Controller('nest/v1/robots/action-types')
-export class RobotActionTypeController {
-  constructor(
-    private readonly robotActionTypeService: RobotActionTypeService,
-  ) { }
-
-  @Get(['/'])
-  getActionTypes(@Query('lang') lang: string | string[]) {
-    const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.robotActionTypeService.getActionType(language);
-  }
-}
+const { host, port, password, db } = redisModuleOptions();
+export const AUTOMATION_REDIS_HOST = host;
+export const AUTOMATION_REDIS_PORT = port;
+export const AUTOMATION_REDIS_PASSWORD = password;
+export const AUTOMATION_REDIS_DB = db;

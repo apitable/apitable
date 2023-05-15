@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { Injectable } from '@nestjs/common';
-import { AutomationActionRepository } from '../repositories/automation.action.repository';
+import { AutomationActionRepository } from '../repositories';
 
 @Injectable()
 export class RobotActionService {

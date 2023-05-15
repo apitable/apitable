@@ -20,8 +20,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RobotTriggerTypeService } from './robot.trigger.type.service';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
-import { EventTypeEnums } from '../events/domains/event.type.enums';
-import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
+import { EventTypeEnums } from '../workers/worker.helper';
+import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 describe('RobotTriggerTypeServiceTest', () => {
   let module: TestingModule;

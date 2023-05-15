@@ -23,10 +23,10 @@ import { AutomationTriggerRepository } from '../repositories/automation.trigger.
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
-import { EventTypeEnums } from '../events/domains/event.type.enums';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { WinstonModule } from 'nest-winston';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
+import { EventTypeEnums } from '../workers/worker.helper';
 
 describe('RobotTriggerServiceTest', () => {
   let module: TestingModule;

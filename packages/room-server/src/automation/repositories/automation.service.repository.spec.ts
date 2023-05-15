@@ -21,9 +21,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationServiceRepository } from './automation.service.repository';
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { DeepPartial } from 'typeorm';
-import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { ConfigModule } from '@nestjs/config';
+import { OFFICIAL_SERVICE_SLUG } from '../triggers/trigger.helper';
 
 describe('AutomationServiceRepository', () => {
   let module: TestingModule;

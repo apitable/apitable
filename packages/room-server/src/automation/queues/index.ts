@@ -15,19 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { Controller, Get, Query } from '@nestjs/common';
-import { RobotActionTypeService } from '../services';
-
-@Controller('nest/v1/robots/action-types')
-export class RobotActionTypeController {
-  constructor(
-    private readonly robotActionTypeService: RobotActionTypeService,
-  ) { }
-
-  @Get(['/'])
-  getActionTypes(@Query('lang') lang: string | string[]) {
-    const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.robotActionTypeService.getActionType(language);
-  }
-}
+export * from './action.queue';
+export * from './flow.queue';
+export * from './queue.module';

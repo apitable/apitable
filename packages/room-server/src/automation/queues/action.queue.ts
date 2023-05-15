@@ -15,19 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { Inject, Injectable } from '@nestjs/common';
+import { ConnectionOptions, Job, Queue } from 'bullmq';
+import IORedis from 'ioredis';
+import { ACTION_QUEUE } from '../constants';
 
-import { Controller, Get, Query } from '@nestjs/common';
-import { RobotActionTypeService } from '../services';
+@Injectable()
+export class ActionQueue {
 
-@Controller('nest/v1/robots/action-types')
-export class RobotActionTypeController {
+  private actionQueue: Queue;
+
   constructor(
-    private readonly robotActionTypeService: RobotActionTypeService,
-  ) { }
-
-  @Get(['/'])
-  getActionTypes(@Query('lang') lang: string | string[]) {
-    const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.robotActionTypeService.getActionType(language);
+    @Inject('AUTOMATION_REDIS_CLIENT') readonly redisClient: IORedis
+  ) {
+    this.actionQueue = new Queue(ACTION_QUEUE, { connection: redisClient as ConnectionOptions });
+ }
+  
+  public async add(jobId: string): Promise<Job> {
+    return await this.actionQueue.add(jobId, {});
   }
 }
