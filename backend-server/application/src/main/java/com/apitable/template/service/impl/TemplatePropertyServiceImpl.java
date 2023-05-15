@@ -70,6 +70,18 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     }
 
     @Override
+    public TemplatePropertyEntity getTemplateCategory(String propertyCode) {
+        return baseMapper.selectByPropertyCodeAndPropertyType(propertyCode,
+            TemplatePropertyType.CATEGORY.getType());
+    }
+
+    @Override
+    public List<String> getTemplateCategoryCodeByLang(String lang) {
+        return baseMapper.selectPropertyCodeByPropertyTypeAndI18nName(
+            TemplatePropertyType.CATEGORY.getType(), lang);
+    }
+
+    @Override
     public List<TemplatePropertyDto> getTemplatePropertiesWithLangAndOrder(TemplatePropertyType type, String rawLang) {
         String lang = ifNotCategoryReturnDefaultElseRaw(rawLang);
         return baseMapper.selectTemplatePropertiesWithLangAndOrder(type.getType(), lang);
