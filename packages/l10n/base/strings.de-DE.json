@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "Der Parameter collaboratorStatusBar muss ein boolescher Typ sein",
   "api_param_add_widget_btn_type_error": "Der Parameter addWidgetBtn muss ein boolescher Typ sein",
   "api_param_full_screen_btn_type_error": "Der Parameter fullScreenBtn muss ein boolescher Typ sein",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "Abnormale Daten wurden in Linkzellen gefunden, diese automatisch beheben?",
   "archive_record_in_menu": "Datensatz archivieren",
   "archive_records_in_menu": " ${chose_num} Datensätze archivieren",
