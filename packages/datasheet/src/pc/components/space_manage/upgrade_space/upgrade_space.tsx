@@ -40,7 +40,7 @@ function getClientReferenceId() {
 const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useSelector(state => state.space.activeId);
-  const { product, recurringInterval } = useSelector(state => state.billing?.subscription) || {};
+  const { product, recurringInterval, onTrial } = useSelector(state => state.billing?.subscription) || {};
   const [loading, setLoading] = useState(true);
   const vars = getEnvVariables();
 
@@ -57,6 +57,7 @@ const UpgradeSpace = () => {
           msg: 'fromVikaUpgrade',
           product,
           recurringInterval,
+          trial: onTrial
         },
         '*',
       );

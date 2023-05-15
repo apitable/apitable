@@ -2,7 +2,7 @@
 
 هذا الدليل يساعدك على البدء في تطوير APITable.
 
-## التبعيات
+## Dependencies
 
 تأكد من أن لديك التبعيات التالية ولغات البرمجة مثبتة قبل إعداد بيئة المطور الخاص بك:
 
@@ -134,7 +134,13 @@ make run # enter 3
 لدينا طريقتان لتحسين ترجمة APITable:
 
 1. يمكنك تعديل ملفات markdown في التعليمات البرمجية المصدر وإنشاء PR مباشرة
-2. انضم إلى [Crowdin](https://crowdin.com/project/apitablecode) للعثور على `strings` لتعديل
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 وبالتعاون مع الترجمة المتعددة اللغات، نتابع العملية التالية:
 
@@ -156,8 +162,6 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email</code>
 ```
-
-</code>
 
 بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
