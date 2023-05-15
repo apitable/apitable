@@ -4850,9 +4850,9 @@
         "commandArgs": "[21]"
       },
       {
-        "id": "open_guide_wizards([24, 1])",
+        "id": "open_guide_wizards([1, 24])",
         "command": "open_guide_wizards",
-        "commandArgs": "[24, 1]"
+        "commandArgs": "[1, 24]"
       },
       {
         "id": "open_guide_wizards([29, 76, 109])",
@@ -5748,7 +5748,7 @@
       },
       {
         "actions": [
-          "open_guide_wizards([24, 1])"
+          "open_guide_wizards([1, 24])"
         ],
         "rules": [
           "device_IS_pc",
@@ -5757,7 +5757,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-04-06 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([24, 1])]",
+        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-04-06 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
         "event": [
           "workbench_shown"
         ]

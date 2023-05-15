@@ -57,6 +57,7 @@ export const EditorNumber: React.FC<IEditorNumber> = (props) => {
     placement="top"
   >
     <TextInput
+      className={'widgetFilterTextInput'}
       style={{ textAlign: 'right' }}
       block
       value={input}

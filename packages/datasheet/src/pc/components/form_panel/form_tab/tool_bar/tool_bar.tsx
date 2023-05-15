@@ -65,6 +65,13 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
       formContainer?.scrollTo(0, 0);
     }
   };
+  const { embedId } = useSelector(state => state.pageParams);
+
+  const embedInfo = useSelector(state => state.embedInfo);
+
+  const showSetting = embedId ? embedInfo.viewControl?.toolBar?.formSettingBtn : true;
+
+  const showShareBtn = embedId ? embedInfo.viewControl?.toolBar?.shareBtn : true;
 
   const commonProps = {
     formId,
@@ -74,7 +81,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
 
   return (
     <>
-      {!isMobile && manageable && (
+      {!isMobile && manageable && showSetting && (
         <Trigger
           action={['click']}
           popup={<SettingPanel {...commonProps} />}
@@ -97,7 +104,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
           />
         </Trigger>
       )}
-      <ToolItem
+      {showShareBtn && <ToolItem
         icon={<ShareOutlined size={16} color={nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
         text={t(Strings.form_tab_share)}
         isActive={nodeShared}
@@ -105,7 +112,8 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = props =
         onClick={() => setVisible(true)}
         showLabel={showLabel}
       />
-      {<ShareModal formId={formId} visible={visible} onClose={() => setVisible(false)} />}
+      }
+      { <ShareModal formId={formId} visible={visible} onClose={() => setVisible(false)} />}
     </>
   );
 };

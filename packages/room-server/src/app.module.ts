@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
-import { defaultLanguage, enableScheduler, enableSocket } from 'app.environment';
+import { defaultLanguage, enableOtelJaeger, enableScheduler, enableSocket } from 'app.environment';
 import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
 import { DeveloperModule } from 'developer/developer.module';
@@ -37,6 +37,7 @@ import { I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { redisModuleOptions } from 'shared/services/config/redis.config.service';
+import { JaegerDynamicModule } from 'shared/services/jaeger/jaeger.dynamic.module';
 import { SchedTaskDynamicModule } from 'shared/services/sched_task/sched.task.dynamic.module';
 import { SharedModule } from 'shared/shared.module';
 import { SocketModule } from 'socket/socket.module';
@@ -70,6 +71,7 @@ import { UserModule } from 'user/user.module';
         path: path.join(__dirname, '/i18n/'),
       },
     }),
+    JaegerDynamicModule.register(enableOtelJaeger),
     ScheduleModule.forRoot(),
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),

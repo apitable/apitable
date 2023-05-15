@@ -35,6 +35,8 @@ export enum IDPrefix {
   SPACE = 'spc',
   DateTimeAlarm = 'dta',
   EmbedLink = 'emb',
+  Form = 'fom',
+  Dashboard = 'dsb'
 }
 
 /**

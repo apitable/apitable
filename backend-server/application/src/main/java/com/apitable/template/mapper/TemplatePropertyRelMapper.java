@@ -67,6 +67,11 @@ public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRe
         @Param("templateId") String templateId);
 
     /**
+     * Delete by property code.
+     */
+    int deleteByPropertyCode(@Param("propertyCode") String propertyCode);
+
+    /**
      * Batch delete
      */
     int deleteBatch();

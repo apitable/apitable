@@ -24,6 +24,7 @@ import com.apitable.auth.enums.LoginType;
 import com.apitable.auth.ro.LoginRo;
 import com.apitable.auth.ro.RegisterRO;
 import com.apitable.auth.service.IAuthService;
+import com.apitable.auth.vo.LoginResultVO;
 import com.apitable.auth.vo.LogoutVO;
 import com.apitable.core.support.ResponseData;
 import com.apitable.interfaces.auth.facade.AuthServiceFacade;
@@ -117,12 +118,12 @@ public class AuthController {
     @PostResource(name = "Login", path = "/signIn", requiredLogin = false)
     @Operation(summary = "login",
         description = AUTH_DESC)
-    public ResponseData<Void> login(@RequestBody @Valid final LoginRo data,
+    public ResponseData<LoginResultVO> login(@RequestBody @Valid final LoginRo data,
                                     final HttpServletRequest request) {
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(request,
             false, true);
         // Login Type Routing
-        Map<LoginType, Function<LoginRo, Long>> loginActionFunc =
+        Map<LoginType, Function<LoginRo, LoginResultVO>> loginActionFunc =
             new HashMap<>();
         // password login
         loginActionFunc.put(LoginType.PASSWORD, loginRo -> {
@@ -135,7 +136,7 @@ public class AuthController {
             eventBusFacade.onEvent(
                 new UserLoginEvent(userId, LoginType.PASSWORD, false,
                     origin));
-            return userId;
+            return LoginResultVO.builder().userId(userId).build();
         });
         // SMS verification code login
         loginActionFunc.put(LoginType.SMS_CODE, loginRo -> {
@@ -150,7 +151,10 @@ public class AuthController {
                     new UserLoginEvent(result.getUserId(), LoginType.SMS_CODE,
                         false, origin));
             }
-            return result.getUserId();
+            return LoginResultVO.builder()
+                .userId(result.getUserId())
+                .isNewUser(Boolean.TRUE.equals(result.getIsSignUp()))
+                .build();
         });
         // Email verification code login
         loginActionFunc.put(LoginType.EMAIL_CODE, loginRo -> {
@@ -165,21 +169,26 @@ public class AuthController {
                     new UserLoginEvent(result.getUserId(), LoginType.EMAIL_CODE,
                         false, origin));
             }
-            return result.getUserId();
+            return LoginResultVO.builder()
+                .userId(result.getUserId())
+                .isNewUser(Boolean.TRUE.equals(result.getIsSignUp()))
+                .build();
         });
         // SSO login (private user use)
         loginActionFunc.put(LoginType.SSO_AUTH, loginRo -> {
             UserAuth userAuth = authServiceFacade.ssoLogin(
                 new AuthParam(data.getUsername(), data.getCredential()));
-            return userAuth != null ? userAuth.getUserId() : null;
+            Long userId = userAuth != null ? userAuth.getUserId() : null;
+            return LoginResultVO.builder().userId(userId).build();
         });
         // Handling login logic
-        Long userId = loginActionFunc.get(data.getType()).apply(data);
+        LoginResultVO resultVO = loginActionFunc.get(data.getType()).apply(data);
+        Long userId = resultVO.getUserId();
         // Banned account verification
         blackListServiceFacade.checkUser(userId);
         // save session
         SessionContext.setUserId(userId);
-        return ResponseData.success();
+        return ResponseData.success(resultVO);
     }
 
     /**

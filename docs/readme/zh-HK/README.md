@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable AGPL 許可證徽章" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -279,7 +279,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 
 比如下面的：
-- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
 - 創建 [文檔](./docs)
@@ -327,6 +327,7 @@ APITable 使用以下常見約定：
   - [🪡 REST API](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 路線圖
 
@@ -352,7 +353,7 @@ APITable 使用以下常見約定：
 - 與 ChatGPT, Zapier, Slack, Google Workspace…… 整合
 - 水印
 
-欲瞭解更多信息，請通過 <support@apitable.com> 聯繫我們。
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 獲得參與
 
@@ -368,7 +369,7 @@ APITable 使用以下常見約定：
 
 - **後端開發者**: 擁有 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **前端開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
-- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
+- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 And you like to write high quality code with clear documentation and unit tests.
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
@@ -402,7 +403,7 @@ APITable 使用以下常見約定：
     <img src="docs/static/screenshot-it.png" alt="APITable 界面截圖" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable 界面截圖" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 許可證
