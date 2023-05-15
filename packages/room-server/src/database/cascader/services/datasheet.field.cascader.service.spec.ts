@@ -187,7 +187,7 @@ describe('DatasheetFieldTreeSelectService', () => {
                       name: 'Grid View',
                       rows: [],
                       type: 1,
-                      columns: [{ fieldId: 'fldA',  hidden: true }, { fieldId: 'fldB' }, { fieldId: 'fldC'}],
+                      columns: [{ fieldId: 'fldA', hidden: true }, { fieldId: 'fldB' }, { fieldId: 'fldC' }],
                       autoSave: false,
                       frozenColumnCount: 1,
                     },
