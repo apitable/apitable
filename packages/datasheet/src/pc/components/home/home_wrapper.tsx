@@ -73,10 +73,8 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
             {getEnvVariables().LOGIN_MOTTO || "let's make the world more productive!"}
           </Typography>
         </div>
+        {socialIconsContent}
       </div>
-
-      {socialIconsContent}
-
       <div className={styles.main}>{children}</div>
       <div className={styles.footer}>
         <NavBar />
