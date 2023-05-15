@@ -20,9 +20,9 @@ import { IDateTimeField, Selectors } from '@apitable/core';
 import debounce from 'lodash/debounce';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { IEditor } from 'pc/components/editors/interface';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import { useEffect, useRef } from 'react';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
@@ -31,7 +31,7 @@ export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckb
   const { condition, onChange, field } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const checkboxRef = useRef<IEditor>(null);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   useEffect(() => {
     checkboxRef.current!.onStartEdit(condition.value != null ? condition.value : null);

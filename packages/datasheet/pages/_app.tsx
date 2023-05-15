@@ -28,6 +28,7 @@ import {
   t,
   IUserInfo,
   getTimeZoneOffsetByUtc,
+  getTimeZone,
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -352,8 +353,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
-      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const timeZone = getTimeZone();
       const offset = getTimeZoneOffsetByUtc(timeZone)!;
       if (!timeZone) return;
       // set default timeZone

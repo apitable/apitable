@@ -327,6 +327,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                         prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12} />}
                         color={colors.textCommonSecondary}
                         onClick={openDefaultMenu}
+                        id={WORKBENCH_SIDE_ID.ADD_NODE_BTN}
                       >
                         <Tooltip title={t(Strings.new_node_tooltip)}>
                           {t(Strings.new_node_btn_title)}
