@@ -43,7 +43,7 @@ const FormTabBase = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setSideBarVisible } = useSideBarVisible();
-  const { formId, shareId, templateId } = useSelector(state => state.pageParams);
+  const { formId, shareId, templateId, embedId } = useSelector(state => state.pageParams);
 
   const {
     icon,
@@ -98,6 +98,11 @@ const FormTabBase = () => {
   const jumpHandler = () => {
     Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId }});
   };
+
+  const embedInfo = useSelector(state => state.embedInfo);
+
+  const showNodeInfoBar = embedId ? embedInfo.viewControl?.nodeInfoBar : true;
+  const showCollaborator = embedId ? embedInfo.viewControl?.collaboratorStatusBar : true;
   return (
     <div
       className={classNames(styles.nav, {
@@ -113,7 +118,7 @@ const FormTabBase = () => {
       {!isMobile && (
         <div className={styles.left} style={{ paddingLeft: !sideBarVisible ? 60 : '' }}>
           <div className={styles.container}>
-            <div className={styles.nodeInfo}>
+            { showNodeInfoBar && <div className={styles.nodeInfo}>
               <NodeInfoBar
                 data={{
                   nodeId: formId!,
@@ -125,12 +130,13 @@ const FormTabBase = () => {
                   nameEditable: renamable,
                   iconEditable: iconEditable,
                 }}
-                hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+                hiddenModule={{ favorite: Boolean(shareId || templateId || embedId) }}
                 style={{ maxWidth: showLabel ? 256 : 120 }}
               />
             </div>
+            }
             {/* Source information */}
-            {!shareId && !templateId && (
+            {!shareId && !templateId && !embedId && (
               <div className={styles.sourceInfo}>
                 {t(Strings.form_source_text)}：
                 <InlineNodeName
@@ -164,12 +170,12 @@ const FormTabBase = () => {
             [styles.rightMobile]: isMobile,
           })}
         >
-          {!isMobile && <CollaboratorStatus resourceId={formId!} resourceType={ResourceType.Form} />}
-          <a href={t(Strings.form_tour_link)} target='_blank' rel='noreferrer'>
+          {!isMobile && showCollaborator && <CollaboratorStatus resourceId={formId!} resourceType={ResourceType.Form} />}
+          {!embedId && <a href={t(Strings.form_tour_link)} target='_blank' rel='noreferrer'>
             <LinkButton component='button' className={styles.tourDesc} underline={false} id={WORKBENCH_SIDE_ID.FORM_USE_GUIDE_BTN}>
               {t(Strings.form_tour_desc)}
             </LinkButton>
-          </a>
+          </a>}
           {!shareId && editable && <ToolBar nodeShared={nodeShared} showLabel={showLabel} />}
         </div>
       )}

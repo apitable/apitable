@@ -16,6 +16,16 @@ export interface IUtcOption {
   value: string;
 }
 
+export const isValidTimezone = (timezone: string) => {
+  return momentTimezone.tz.zone(timezone) != null;
+};
+
+export const getTimeZone = () => {
+  // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return isValidTimezone(timeZone) ? timeZone : 'Asia/Shanghai';
+};
+
 export const getTimeZoneOffsetByUtc = (utc: string) => {
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
   return currentTimeZoneData?.offset;
@@ -51,7 +61,7 @@ export const getUtcOptionList = () => {
 
 export const getClientTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
-  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const clientTimeZone = getTimeZone();
   const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(clientTimeZone))!;
   const { offset } = currentTimeZoneData;
   return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;

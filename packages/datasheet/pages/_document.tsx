@@ -53,7 +53,7 @@ class MyDocument extends Document<IClientInfo> {
             JSON.parse(envVars).EMBED_BAIDU_CATCH_SDK &&
             <script src='https://rte-fe-static.bj.bcebos.com/rte-online/rte-fe-static/MultiSheetMonitor/index.js' />
           }
-          <script src='/file/js/browser_check.2.js' async />
+          <script src='/file/js/browser_check.3.js' async />
           {/* injection of custom configs of editions, e.g. APITable */}
           <script src='/custom/custom_config.js' defer />
           {

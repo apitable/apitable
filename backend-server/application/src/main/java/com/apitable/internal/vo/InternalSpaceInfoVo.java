@@ -48,6 +48,10 @@ public class InternalSpaceInfoVo {
         @Schema(description = "view manual save", example = "false")
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean viewManualSave;
+
+        @Schema(description = "robot", example = "false")
+        @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+        private Boolean robot;
     }
 
 }

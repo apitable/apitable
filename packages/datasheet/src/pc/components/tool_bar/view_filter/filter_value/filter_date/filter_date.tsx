@@ -27,11 +27,11 @@ import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_t
 import { IEditor } from 'pc/components/editors/interface';
 import { NumberEditor } from 'pc/components/editors/number_editor';
 import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { IFilterDateProps } from '../../interface';
 import styles from '../style.module.less';
@@ -62,7 +62,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
 
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   const showRangeCalendar = durationValue === FilterDuration.DateRange;
 

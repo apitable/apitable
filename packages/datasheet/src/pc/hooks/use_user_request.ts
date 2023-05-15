@@ -134,6 +134,28 @@ export const useUserRequest = () => {
           }
         }
 
+        if (
+          !getEnvVariables().IS_APITABLE &&
+          data?.isNewUser && 
+          loginData.type === ConfigConstant.LoginTypes.EMAIL
+        ) {
+          const query: any = { improveType: ConfigConstant.ImproveType.Phone };
+          const inviteLinkToken = urlParams.get('inviteLinkToken');
+          const inviteMailToken = urlParams.get('inviteMailToken');
+          if (reference) {
+            query.reference = reference;
+            localStorage.removeItem('reference');
+          }
+          if (inviteLinkToken) {
+            query.inviteLinkToken = inviteLinkToken;
+          }
+          if (inviteMailToken) {
+            query.inviteLinkToken = inviteLinkToken;
+          }
+          Router.redirect(Navigation.IMPROVING_INFO, { query });
+          return;
+        }
+
         if (reference) {
           localStorage.removeItem('reference');
           if (isLocalSite(window.location.href, reference)) {
@@ -143,7 +165,7 @@ export const useUserRequest = () => {
         }
 
         if (data) {
-          Router.redirect(Navigation.WORKBENCH,);
+          Router.redirect(Navigation.WORKBENCH);
           return res.data;
         }
         const shareReference = localStorage.getItem('share_login_reference');
@@ -155,7 +177,7 @@ export const useUserRequest = () => {
           window.location.href = reference;
           return res.data;
         }
-        Router.redirect(Navigation.WORKBENCH,);
+        Router.redirect(Navigation.WORKBENCH);
         return res.data;
       }
 
@@ -169,6 +191,56 @@ export const useUserRequest = () => {
         })
       );
       return res.data;
+    });
+  };
+
+  const bindPhoneReq = ({
+    areaCode,
+    phone,
+    code,
+    reference,
+    inviteLinkToken,
+    inviteMailToken
+  }: {
+    areaCode: string;
+    phone: string;
+    code: string;
+    reference?: string;
+    inviteLinkToken?: string;
+    inviteMailToken?: string;
+  }) => {
+    return Api.bindMobile(areaCode, phone, code).then((res) => {
+      const { success, message } = res.data;
+      if (success) {
+        Message.success({
+          content: t(Strings.binding_success),
+        });
+
+        if (inviteLinkToken) {
+          join();
+          return;
+        }
+        if (inviteMailToken && inviteEmailInfo) {
+          Router.redirect(Navigation.WORKBENCH, {
+            params: { spaceId: inviteEmailInfo.data.spaceId },
+            clearQuery: true,
+          });
+          return;
+        }
+        if (reference) {
+          localStorage.removeItem('reference');
+          if (isLocalSite(window.location.href, reference)) {
+            window.location.href = reference;
+            return;
+          }
+        }
+
+        Router.redirect(Navigation.WORKBENCH);
+        return;
+      }
+      Message.success({
+        content: message,
+      });
     });
   };
 
@@ -556,6 +628,7 @@ export const useUserRequest = () => {
     updateLangReq,
     submitInviteCodeReq,
     updateAvatarColor,
-    registerReq
+    registerReq,
+    bindPhoneReq,
   };
 };

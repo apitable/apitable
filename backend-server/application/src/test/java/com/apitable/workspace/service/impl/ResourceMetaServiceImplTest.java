@@ -18,29 +18,20 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.io.IoUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.workspace.dto.NodeDescParseDTO;
-import com.apitable.workspace.service.IResourceMetaService;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
  * resource meta service test
  */
 public class ResourceMetaServiceImplTest extends AbstractIntegrationTest {
-
-    @Resource
-    private IResourceMetaService iResourceMetaService;
 
     @Test
     public void testParsFormDescWithNull() {
@@ -76,7 +67,8 @@ public class ResourceMetaServiceImplTest extends AbstractIntegrationTest {
     }
 
     private void prepareFormMetaData(String formId, String fileName) {
-        InputStream resourceAsStream = ClassPathResource.class.getClassLoader().getResourceAsStream(fileName);
+        InputStream resourceAsStream =
+            ClassPathResource.class.getClassLoader().getResourceAsStream(fileName);
         if (resourceAsStream == null) {
             return;
         }

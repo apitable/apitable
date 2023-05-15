@@ -54,11 +54,10 @@ export const useWorkbenchSideSync = () => {
   const dispatch = useAppDispatch();
   const { getChildNodeListReq, updateNextNode, getPositionNodeReq } = useCatalogTreeRequest();
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
-  const { treeNodesMap, socketData, favoriteTreeNodeIds, expandedKeys, spaceId } =
+  const { treeNodesMap, socketData, expandedKeys, spaceId } =
     useSelector((state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,
-      favoriteTreeNodeIds: state.catalogTree.favoriteTreeNodeIds,
       expandedKeys: state.catalogTree.expandedKeys,
       spaceId: state.space.activeId,
     }), shallowEqual);
@@ -295,30 +294,30 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Handling of starred status change messages
-  const updateFavoriteSync = (data: INodeChangeSocketData) => {
-    const { nodeId } = data.data;
-    // Cancel Starred
-    if (favoriteTreeNodeIds.findIndex(id => id === nodeId) !== -1) {
-      dispatch(StoreActions.removeFavorite(nodeId));
-      return;
-    }
-    // Set star (node data already exists in the data source)
-    if (treeNodesMap[nodeId]) {
-      dispatch(
-        StoreActions.generateFavoriteTree([{ ...treeNodesMap[nodeId], preFavoriteNodeId: '', nodeFavorite: true }]),
-      );
-      dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeFavorite: true }));
-      return;
-    }
-    // Set star (node data does not exist in the data source)
-    Api.getNodeInfo(nodeId).then(res => {
-      const { success, data } = res.data;
-      if (success) {
-        dispatch(StoreActions.generateFavoriteTree([{ ...data[0], preFavoriteNodeId: '', nodeFavorite: true }]));
-        dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeFavorite: true }));
-      }
-    });
-  };
+  // const updateFavoriteSync = (data: INodeChangeSocketData) => {
+  //   const { nodeId } = data.data;
+  //   // Cancel Starred
+  //   if (favoriteTreeNodeIds.findIndex(id => id === nodeId) !== -1) {
+  //     dispatch(StoreActions.removeFavorite(nodeId));
+  //     return;
+  //   }
+  //   // Set star (node data already exists in the data source)
+  //   if (treeNodesMap[nodeId]) {
+  //     dispatch(
+  //       StoreActions.generateFavoriteTree([{ ...treeNodesMap[nodeId], preFavoriteNodeId: '', nodeFavorite: true }]),
+  //     );
+  //     dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeFavorite: true }));
+  //     return;
+  //   }
+  //   // Set star (node data does not exist in the data source)
+  //   Api.getNodeInfo(nodeId).then(res => {
+  //     const { success, data } = res.data;
+  //     if (success) {
+  //       dispatch(StoreActions.generateFavoriteTree([{ ...data[0], preFavoriteNodeId: '', nodeFavorite: true }]));
+  //       dispatch(StoreActions.updateNodeInfo(nodeId, treeNodesMap[nodeId].type, { nodeFavorite: true }));
+  //     }
+  //   });
+  // };
 
   // Handling of permission change messages
   const updateRoleSync = (data: INodeChangeSocketData) => {
@@ -455,7 +454,8 @@ export const useWorkbenchSideSync = () => {
         shareNodeSync(data);
         break;
       case NodeChangeInfoType.Favorite:
-        updateFavoriteSync(data);
+        // TODO:sync favorite will cause star action not work
+        // updateFavoriteSync(data);
         break;
       default:
         console.log('Invalid socket message: ', data);

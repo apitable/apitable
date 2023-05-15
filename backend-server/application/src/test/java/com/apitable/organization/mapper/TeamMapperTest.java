@@ -33,13 +33,13 @@ import com.apitable.organization.vo.UnitTeamVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
-import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 public class TeamMapperTest extends AbstractMyBatisMapperTest {
 
-    @Resource
+    @Autowired
     private TeamMapper teamMapper;
 
     @Test

@@ -16,36 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IOption, Select, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType,
-  checkTypeSwitch,
-  Field,
-  FieldType,
-  FilterDuration,
-  IFieldMap,
-  IFilterCondition,
-  IViewColumn,
-  Selectors,
-  Strings,
-  t,
+  BasicValueType, checkTypeSwitch, Field, FieldType, FilterDuration, IFieldMap, IFilterCondition, IViewColumn, Selectors, Strings, t,
 } from '@apitable/core';
+import { ChevronDownOutlined, WarnCircleFilled } from '@apitable/icons';
+import classNames from 'classnames';
 import produce from 'immer';
+import { MobileSelect, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
+import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
-import { useMemo } from 'react';
 import * as React from 'react';
-import { ExecuteFilterFn } from '../interface';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { IOption, Select, useThemeColors } from '@apitable/components';
-import { FieldPermissionLock } from 'pc/components/field_permission';
+import { useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Tooltip } from 'pc/components/common';
-import { ChevronDownOutlined, WarnCircleFilled } from '@apitable/icons';
+import { ExecuteFilterFn } from '../interface';
+import styles from './style.module.less';
 
 interface IFilterFieldListProps {
   conditionIndex: number;
@@ -63,7 +52,7 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
   const { conditionIndex, changeFilter, condition, fieldMap, columns, warnTextObj, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 

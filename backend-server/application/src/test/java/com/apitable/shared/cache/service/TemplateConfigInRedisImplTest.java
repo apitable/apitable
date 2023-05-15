@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class TemplateConfigInRedisImplTest extends AbstractIntegrationTest {
 
@@ -31,9 +30,6 @@ public class TemplateConfigInRedisImplTest extends AbstractIntegrationTest {
         "[{\"templateIds\":[\"tpl1\",\"tpl2\"],\"categoryCode\":\"pc1\",\"categoryName\":\"cn1\"},"
             +
             "{\"templateIds\":[\"tpl3\",\"tpl4\"],\"categoryCode\":\"pc2\",\"categoryName\":\"cn2\"}]";
-
-    @Autowired
-    private TemplateConfigCacheService templateConfigCacheService;
 
     @Test
     void testGetCategoriesListConfigCacheByLangFromCache() {

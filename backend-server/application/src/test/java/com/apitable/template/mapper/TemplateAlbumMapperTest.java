@@ -18,24 +18,20 @@
 
 package com.apitable.template.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.apitable.AbstractMyBatisMapperTest;
+import com.apitable.template.entity.TemplateAlbumEntity;
+import com.apitable.template.model.TemplateAlbumDto;
+import com.apitable.template.vo.AlbumContentVo;
+import com.apitable.template.vo.AlbumVo;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
-
-import com.apitable.AbstractMyBatisMapperTest;
-import com.apitable.template.vo.AlbumContentVo;
-import com.apitable.template.vo.AlbumVo;
-import com.apitable.template.model.TemplateAlbumDto;
-import com.apitable.template.entity.TemplateAlbumEntity;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
@@ -44,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
 
-    @Resource
+    @Autowired
     private TemplateAlbumMapper templateAlbumMapper;
 
     @Test
@@ -61,7 +57,8 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/template/album.sql")
     void selectAlbumVosByAlbumIds() {
-        List<AlbumVo> notExistedAlbum = templateAlbumMapper.selectAlbumVosByAlbumIds(Collections.singletonList("alb4uFzSy2vbg"));
+        List<AlbumVo> notExistedAlbum = templateAlbumMapper.selectAlbumVosByAlbumIds(
+            Collections.singletonList("alb4uFzSy2vbg"));
         assertThat(notExistedAlbum).isEmpty();
 
         List<String> albumIds = new ArrayList<>();
@@ -75,7 +72,8 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/template/album.sql")
     void selectAlbumVosByI18nNameAndNameLike() {
-        List<AlbumVo> albums = templateAlbumMapper.selectAlbumVosByI18nNameAndNameLike("en_US", "a");
+        List<AlbumVo> albums =
+            templateAlbumMapper.selectAlbumVosByI18nNameAndNameLike("en_US", "a");
         assertThat(albums).isNotEmpty();
         assertThat(albums.size()).isEqualTo(2);
     }
@@ -99,13 +97,13 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     void insertBatch() {
         String albumId = "albSr5vHPgzGG";
         TemplateAlbumEntity entity = TemplateAlbumEntity.builder()
-                .id(IdWorker.getId())
-                .albumId(albumId)
-                .i18nName("en_US")
-                .name("Test Album")
-                .description("description")
-                .content("{}")
-                .build();
+            .id(IdWorker.getId())
+            .albumId(albumId)
+            .i18nName("en_US")
+            .name("Test Album")
+            .description("description")
+            .content("{}")
+            .build();
         int count = templateAlbumMapper.insertBatch(Collections.singletonList(entity));
         assertThat(count).isEqualTo(1);
     }
@@ -113,7 +111,8 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/template/album.sql")
     void removeByAlbumIds() {
-        int count = templateAlbumMapper.removeByAlbumIds(Collections.singletonList("albNXV6wY6mME"), 0L);
+        int count =
+            templateAlbumMapper.removeByAlbumIds(Collections.singletonList("albNXV6wY6mME"), 0L);
         assertThat(count).isEqualTo(1);
     }
 }

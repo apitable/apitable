@@ -12,22 +12,12 @@ import com.apitable.widget.enums.WidgetPackageStatus;
 import com.apitable.widget.enums.WidgetPackageType;
 import com.apitable.widget.enums.WidgetReleaseType;
 import com.apitable.widget.ro.WidgetPackageBaseRo.I18nField;
-import com.apitable.widget.service.IWidgetPackageService;
-import com.apitable.widget.service.IWidgetUploadService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
-
-    @Autowired
-    private IWidgetUploadService iWidgetUploadService;
-
-    @Autowired
-    private IWidgetPackageService iWidgetPackageService;
 
     @Test
     public void testCreateWidgetAssetsUploadAuth() {
@@ -35,8 +25,7 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
         WidgetPackageEntity widgetPackage;
         try {
             widgetPackage = initWidget(testUser);
-        }
-        catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
@@ -46,7 +35,8 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
         ro.setFileType(0);
         ro.setFilenames(Collections.singletonList("test.jpg"));
 
-        List<WidgetUploadTokenVo> result = iWidgetUploadService.createWidgetAssetPreSignedUrl(opUserId, packageId, ro);
+        List<WidgetUploadTokenVo> result =
+            iWidgetUploadService.createWidgetAssetPreSignedUrl(opUserId, packageId, ro);
 
         assertThat(result).isNotEmpty();
         assertThat(result).extracting(WidgetUploadTokenVo::getUploadUrl).isNotEmpty();
@@ -62,16 +52,16 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
         i18nName.setEnUS("single_test_applet");
 
         WidgetPackageEntity widgetPack = new WidgetPackageEntity()
-                .setPackageId(IdUtil.createWidgetPackageId())
-                .setI18nName(i18nName.toJson())
-                .setPackageType(WidgetPackageType.THIRD_PARTY.getValue())
-                .setReleaseType(WidgetReleaseType.GLOBAL.getValue())
-                // The space station applet takes effect by default, and the global applet does not take effect by default
-                .setIsEnabled(true)
-                .setIsTemplate(false)
-                .setStatus(WidgetPackageStatus.DEVELOP.getValue())
-                .setSandbox(true)
-                .setOwner(testOpUser.getId());
+            .setPackageId(IdUtil.createWidgetPackageId())
+            .setI18nName(i18nName.toJson())
+            .setPackageType(WidgetPackageType.THIRD_PARTY.getValue())
+            .setReleaseType(WidgetReleaseType.GLOBAL.getValue())
+            // The space station applet takes effect by default, and the global applet does not take effect by default
+            .setIsEnabled(true)
+            .setIsTemplate(false)
+            .setStatus(WidgetPackageStatus.DEVELOP.getValue())
+            .setSandbox(true)
+            .setOwner(testOpUser.getId());
         iWidgetPackageService.save(widgetPack);
         return widgetPack;
     }

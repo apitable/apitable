@@ -70,7 +70,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
     return set;
   });
   const product = useSelector(state => state.billing?.subscription?.product);
-
+  const { embedId } = useSelector(state => state.pageParams);
   const updateProps = (id: IFormOptionType, selected: boolean) => {
     switch (id) {
       case IFormOptionType.CoverVisible:
@@ -102,27 +102,32 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
         id: IFormOptionType.CoverVisible,
         name: t(Strings.form_cover_visible),
         disabled: false,
+        show: true,
       },
       {
         id: IFormOptionType.LogoVisible,
         name: t(Strings.form_logo_visible),
         disabled: false,
+        show: true,
       },
       {
         id: IFormOptionType.IndexVisible,
         name: t(Strings.form_index_visible),
         disabled: false,
+        show: true,
       },
       {
         id: IFormOptionType.FullScreen,
         name: t(Strings.form_full_screen),
         disabled: false,
+        show: true,
       },
       {
         id: IFormOptionType.CompactMode,
         name: t(Strings.form_compact_option_mode),
         disabled: false,
         tooltipText: t(Strings.form_compact_option_desc),
+        show: true,
       },
       {
         id: IFormOptionType.BrandVisible,
@@ -132,10 +137,11 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
             {isEnterprise && <SubscribeLabel grade={SubscribeGrade.Gold} />}
           </>
         ),
-        disabled: productName ? !FORM_BRAND_ENABLE_LEVELS.includes(productName as LevelType) : true,
+        disabled: (productName ? !FORM_BRAND_ENABLE_LEVELS.includes(productName as LevelType) : true),
+        show: !embedId,
       },
     ];
-  }, [product]);
+  }, [product, embedId]);
 
   const onChange = (id: IFormOptionType) => {
     const temp = new Set([...checkedList]);
@@ -159,7 +165,7 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
         value={[...checkedList]}
       >
         {
-          optionList.map(item => (
+          optionList.filter(item => item.show).map(item => (
             <div className={styles.optionItem} key={item.id}>
               <Checkbox
                 value={item.id}

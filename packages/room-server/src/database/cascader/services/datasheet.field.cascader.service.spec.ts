@@ -15,7 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { IBaseDatasheetPack, IFieldMap, IFieldPermissionMap, IMeta, IRecordMap, IViewProperty, Role } from '@apitable/core';
+import {
+  FieldType,
+  IBaseDatasheetPack,
+  IFieldMap,
+  IFieldPermissionMap,
+  IMeta,
+  IRecordMap,
+  IViewProperty,
+  Role
+} from '@apitable/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DatasheetFieldCascaderService } from './datasheet.field.cascader.service';
@@ -26,6 +35,7 @@ import { DatasheetService } from 'database/datasheet/services/datasheet.service'
 import { CascaderDatabusService } from './cascader.databus.service';
 import { IAuthHeader } from '../../../shared/interfaces';
 import { CommonException, ServerException } from 'shared/exception';
+import { slice } from 'lodash';
 
 describe('DatasheetFieldTreeSelectService', () => {
   let module: TestingModule;
@@ -152,6 +162,64 @@ describe('DatasheetFieldTreeSelectService', () => {
             },
           ]);
         }
+        if(dstId === 'advancedDatasheet') {
+          return Promise.resolve([
+            {
+              datasheet: {
+                id: 'advancedDatasheet',
+                name: 'datasheet name',
+                revision: 1,
+              } as any,
+              snapshot: {
+                meta: {
+                  views: [
+                    {
+                      id: 'viewId',
+                      name: 'Grid View',
+                      rows: [],
+                      type: 1,
+                      columns: [{ fieldId: 'fldA' }, { fieldId: 'fldB' }, { fieldId: 'fldC' }],
+                      autoSave: false,
+                      frozenColumnCount: 1,
+                    },
+                    {
+                      id: 'viewId02',
+                      name: 'Grid View',
+                      rows: [],
+                      type: 1,
+                      columns: [{ fieldId: 'fldA', hidden: true }, { fieldId: 'fldB' }, { fieldId: 'fldC' }],
+                      autoSave: false,
+                      frozenColumnCount: 1,
+                    },
+                  ] as IViewProperty[],
+
+                  fieldMap: {
+                    fldC: {
+                      id: 'fldC',
+                      name: 'level-3',
+                      type: FieldType.AutoNumber,
+                      property: {},
+                    } as any,
+                    fldA: {
+                      id: 'fldA',
+                      name: 'level-1',
+                      type: 19,
+                      property: {},
+                    },
+                    fldB: {
+                      id: 'fldB',
+                      name: 'level-2',
+                      type: 19,
+                      property: {},
+                    },
+                  } as IFieldMap,
+                } as IMeta,
+                recordMap: { } as IRecordMap,
+                datasheetId: 'advancedDatasheet',
+              },
+            },
+          ]);
+        }
         return Promise.resolve([]);
       },
     );
@@ -231,9 +299,10 @@ describe('DatasheetFieldTreeSelectService', () => {
             },
           });
         }
-        if (headers?.token === 'normalToken' && nodeId === 'datasheetId') {
+        if (headers?.token === 'normalToken' && (nodeId === 'datasheetId' || nodeId === 'advancedDatasheet')) {
           return Promise.resolve(null as any);
         }
+
         throw new ServerException(CommonException.SERVER_ERROR);
       },
     );
@@ -267,6 +336,29 @@ describe('DatasheetFieldTreeSelectService', () => {
       const view = await cascaderDataBusService.getView(datasheet!, { auth: { token: 'normalToken' }, viewId: 'viewId' });
       const linkedFields = await datasheetFieldCascaderService.getCascaderLinkedFields(view!.view);
       expect(linkedFields.length).toEqual(3);
+    });
+
+    it('should be filter advanced field', async() => {
+      const datasheet = await cascaderDataBusService.getDatasheet('advancedDatasheet');
+      const view = await cascaderDataBusService.getView(datasheet!, { auth: { token: 'normalToken' }, viewId: 'viewId' });
+      const linkedFields = await datasheetFieldCascaderService.getCascaderLinkedFields(view!.view);
+      expect(linkedFields.length).toEqual(2);
+    });
+
+    it('should be filter advanced field', async() => {
+      const datasheet = await cascaderDataBusService.getDatasheet('advancedDatasheet');
+      const view = await cascaderDataBusService.getView(datasheet!, { auth: { token: 'normalToken' }, viewId: 'viewId' });
+      const linkedFields = await datasheetFieldCascaderService.getCascaderLinkedFields(view!.view);
+      expect(linkedFields.length).toEqual(2);
+    });
+
+    it('should be filter advanced field then only one field', async() => {
+      const datasheet = await cascaderDataBusService.getDatasheet('advancedDatasheet');
+      const view = await cascaderDataBusService.getView(datasheet!, { auth: { token: 'normalToken' }, viewId: 'viewId02' });
+      const linkedFields = await datasheetFieldCascaderService.getCascaderLinkedFields(view!.view);
+      const fieldIds: string[] = slice(linkedFields, 0, 2).map(i => i.id);
+      expect(linkedFields.length).toEqual(1);
+      expect(fieldIds.length).toEqual(1);
     });
   });
 
