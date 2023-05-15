@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "collaboratorStatusBar 매개 변수는 부울 유형이어야 합니다.",
   "api_param_add_widget_btn_type_error": "addWidgetBtn 매개 변수는 부울 유형이어야 합니다.",
   "api_param_full_screen_btn_type_error": "fullScreenBtn 매개 변수는 부울 유형이어야 합니다.",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "링크된 셀에서 예외 데이터가 발견되었습니다. 자동으로 수정하시겠습니까?",
   "archive_record_in_menu": "아카이브 레코드",
   "archive_records_in_menu": "Archive ${chose_num} records",
