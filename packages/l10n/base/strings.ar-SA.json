@@ -5324,6 +5324,7 @@
   "api_param_collaborator_status_bar_type_error": "المعلمة collaborator statusbar يجب أن يكون نوع منطقي",
   "api_param_add_widget_btn_type_error": "المعلمة addwidgetbtn يجب أن يكون نوع منطقي",
   "api_param_full_screen_btn_type_error": "المعلمة fullscreenbtn يجب أن يكون نوع منطقي",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
   "confirm_link_inconsistency_detected": "تم العثور على بيانات غير طبيعية في ربط الخلايا . هل تريد إصلاح تلقائيا ؟",
   "archive_record_in_menu": "حفظ السجلات",
   "archive_records_in_menu": "أرشيف $ { اختيار u num } سجل",
