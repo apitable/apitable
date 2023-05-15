@@ -3,6 +3,29 @@
 
 
 
+## [v0.21.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.21.0-alpha) (2023-05-15)
+
+
+### Features and enhancements
+
+* feat:support language de-DE,es-ES,it-IT,es-ES,it-IT,ja-JP,ko-KR,ru-RU @Exclamation-mark 
+* feat: update node-gyp to latest version ([#793](https://github.com/apitable/apitable/pull/793)) @arucil 
+
+### Bug fixes
+
+* fix(room-server): missing dependencies in image ([#4926](https://github.com/apitable/apitable/pull/4926)) (#777) @arucil 
+* fix:add missing architecture-overview.png ([#782](https://github.com/apitable/apitable/pull/782)) @Exclamation-mark 
+* fix: login icon bug @laboonly 
+* fix: login icon bug ([#799](https://github.com/apitable/apitable/pull/799)) @laboonly 
+
+### What's more
+
+* docs: README ([#769](https://github.com/apitable/apitable/pull/769)) @mr-kelly 
+* New Crowdin updates ([#749](https://github.com/apitable/apitable/pull/749)) @mr-kelly 
+* docs: create bug report in zh-CN ([#788](https://github.com/apitable/apitable/pull/788)) @mr-kelly 
+* docs: issue template of bug report cn ([#789](https://github.com/apitable/apitable/pull/789)) @mr-kelly 
+* sync: hosted cloud ([#794](https://github.com/apitable/apitable/pull/794)) @yort-feng 
+* chore: changelog for v0.20.0-rc.1 release ([#795](https://github.com/apitable/apitable/pull/795)) @yort-feng 
 ## [v0.20.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc.1) (2023-05-08)
 
 
