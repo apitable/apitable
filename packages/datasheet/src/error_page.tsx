@@ -25,6 +25,7 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const ErrorPage = () => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const ErrorPage = () => {
       message: 'pageCrash',
     }, '*');
   }, []);
+  const { embedId } = useSelector(state => state.pageParams);
 
   const handleClick = () => {
     window.location.href = '/workbench';
@@ -50,7 +52,7 @@ const ErrorPage = () => {
       <div className={'errorText'}>
         {t(Strings.error_boundary_crashed)}<span role='img' aria-label='sick'>🤒</span>
       </div>
-      <Button color='primary' onClick={handleClick}>{t(Strings.error_boundary_back)}</Button>
+      { !embedId && <Button color='primary' onClick={handleClick}>{t(Strings.error_boundary_back)}</Button> }
       <LinkButton underline={false} onClick={handleContactUs}>
         <Typography className={'contactUs'} variant='body2' color={colorVars.fc0}>{t(Strings.contact_us)}</Typography>
       </LinkButton>
