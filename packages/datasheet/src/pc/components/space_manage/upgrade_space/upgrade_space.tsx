@@ -51,17 +51,6 @@ const UpgradeSpace = () => {
       return;
     }
 
-    const initIframe = () => {
-      iframeRef.current?.contentWindow?.postMessage(
-        {
-          msg: 'fromVikaUpgrade',
-          product,
-          recurringInterval,
-          trial: onTrial
-        },
-        '*',
-      );
-    };
     const receiveMes = (event: any) => {
       if (!event) {
         return;
@@ -71,6 +60,15 @@ const UpgradeSpace = () => {
       } = event;
 
       if (msg === 'pageLoaded') {
+        iframeRef.current?.contentWindow?.postMessage(
+          {
+            msg: 'fromVikaUpgrade',
+            product,
+            recurringInterval,
+            trial: onTrial
+          },
+          '*',
+        );
         setLoading(false);
       }
 
@@ -144,18 +142,16 @@ const UpgradeSpace = () => {
       }
 
     };
-    const dom = iframeRef.current;
-    dom?.addEventListener('load', initIframe);
+
     window.addEventListener('message', receiveMes);
 
     return () => {
-      dom?.removeEventListener('load', initIframe);
       window.removeEventListener('message', receiveMes);
     };
   }, [spaceId, product]);
 
   if (showTrialModal) {
-    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)} />;
+    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
   const iframeSrc = location.origin + '/pricing/';
@@ -164,20 +160,20 @@ const UpgradeSpace = () => {
   return <div className={styles.container}>
     {
       loading && <div className={styles.loading}>
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
 
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
 
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
       </div>
     }
-    <iframe src={iframeSrc} ref={iframeRef} />
+    <iframe src={iframeSrc} ref={iframeRef}/>
   </div>;
 };
 
