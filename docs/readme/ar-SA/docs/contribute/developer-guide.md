@@ -2,7 +2,7 @@
 
 هذا الدليل يساعدك على البدء في تطوير APITable.
 
-## Dependencies
+## التبعيات
 
 تأكد من أن لديك التبعيات التالية ولغات البرمجة مثبتة قبل إعداد بيئة المطور الخاص بك:
 
@@ -11,10 +11,9 @@
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### لغة البرمجة
-
-إذا كنت تستخدم macOS أو Linux. نوصي بتثبيت لغة البرمجة مع مدير SDK `sdkman` و `nvm`.
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # التثبيت السريع nvm
@@ -29,33 +28,46 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 نوصي باستخدام [Homebrew](https://brew.sh/) لتثبيت أي تبعيات مفقودة:
 
 ```bash
-## مطلوب
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-في CentOS / RHEL أو أي توزيع آخر لـ Linux مع `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-على Ubuntu / Debian أو أي توزيع آخر لـ Linux مع `Apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ sudo apt install make
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## أي أداة بناء نستخدمها؟
+## What build tools do we use?
 
-نحن نستخدم `صنع` كإدخال لأداة البناء المركزي لدينا التي تقود أداة بناء أخرى مثل `صف` / `npm` / `yarn`.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-لذا يمكنك فقط إدخال `صنع أمر` ومشاهدة جميع أوامر الإنشاء:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## كيفية بدء بيئة التطوير؟
+## How to start the development environment?
 
 يتكون APITable من 3 عمليات:
 
@@ -129,7 +143,7 @@ make run # enter 3
 
 
 
-## ساهم في الترجمة؟
+## How to contribute to translations?
 
 لدينا طريقتان لتحسين ترجمة APITable:
 
@@ -162,6 +176,8 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email</code>
 ```
+
+</code>
 
 بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
