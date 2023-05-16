@@ -57,6 +57,10 @@ export class AttachmentService {
    */
   public async uploadAttachment(dstId: string, file: IFileInterface, auth: IAuthHeader): Promise<AttachmentDto> {
     if (!file) throw ApiException.tipError(ApiTipConstant.api_upload_invalid_file);
+    if (fs.statSync(file.path).size === 0) {
+      this.unlinkFile(file.path);
+      throw ApiException.tipError(ApiTipConstant.api_attachment_file_size_error);
+    }
     const newPath = path.join(file.destination, file.originalName);
     let res;
     try {
@@ -71,11 +75,12 @@ export class AttachmentService {
       await form.append('type', AttachmentTypeEnum.DATASHEET_ATTACH.toString());
       res = await this.javaService.setHeaders(auth, form.getHeaders()).post(JavaApiPath.UPLOAD_ATTACHMENT, form);
       upstream.close();
-      this.unlinkFile(newPath);
     } catch (e) {
-      this.unlinkFile(newPath);
       this.logger.error('Uploading attachment failed', { e });
       throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });
+    } finally {
+      this.unlinkFile(file.path);
+      this.unlinkFile(newPath);
     }
 
     if (!res) throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });

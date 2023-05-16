@@ -180,13 +180,13 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
       () => {
         // @ts-ignore
         this.context.changeCacheScroll && this.context.changeCacheScroll(
-            {
-              scrollTop: this.state.scrollTop,
-              scrollLeft: this.state.scrollLeft,
-            },
-            this.props.datasheetId,
-            this.props.viewId,
-          );
+          {
+            scrollTop: this.state.scrollTop,
+            scrollLeft: this.state.scrollLeft,
+          },
+          this.props.datasheetId,
+          this.props.viewId,
+        );
       },
     );
   }, 300);
@@ -340,13 +340,13 @@ export class MultiGridsBase extends React.PureComponent<IMultiGridProps, IMultiG
       gridRef.changeScroll(GridReg.BottomLeftReg, { scrollTop: bottomLeftRegTop + _scrollObj.columnSpeed, scrollLeft: 0 });
       // @ts-ignore
       this.context.changeCacheScroll && this.context.changeCacheScroll(
-          {
-            scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
-            scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,
-          },
-          this.props.datasheetId,
-          this.props.viewId,
-        );
+        {
+          scrollTop: bottomRightRegTop + _scrollObj.columnSpeed,
+          scrollLeft: bottomRightRegLeft + _scrollObj.rowSpeed,
+        },
+        this.props.datasheetId,
+        this.props.viewId,
+      );
       window.requestAnimationFrame(columnScrollByValue);
     };
 

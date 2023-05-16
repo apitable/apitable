@@ -371,7 +371,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
     groupRows,
     _visibleRecords,
   };
-  const itemKey = ({ columnIndex, rowIndex }: { columnIndex: number; rowIndex: number  }) => {
+  const itemKey = ({ columnIndex, rowIndex }: { columnIndex: number; rowIndex: number }) => {
     const realIndex = columnIndex + rowIndex * columnCount;
     const record = linearRows[realIndex];
     if (!record) return realIndex;

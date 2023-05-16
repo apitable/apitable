@@ -28,6 +28,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
+import classNames from 'classnames';
 
 const MAX_SHOW_NUMBER = 3;
 
@@ -68,6 +69,14 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{ resourceType
 
   const unitMap = useSelector(Selectors.getUnitMap);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const { embedId } = useSelector(state => state.pageParams);
+  const embedInfo = useSelector(state => state.embedInfo);
+
+  const showSetting = embedId ? embedInfo.viewControl?.toolBar?.formSettingBtn : true;
+
+  const showShareBtn = embedId ? embedInfo.viewControl?.toolBar?.shareBtn : true;
+
+  const showStatusBarLine = (showShareBtn || showSetting) ? true : false;
 
   useEffect(() => {
     window.parent.postMessage({
@@ -88,8 +97,8 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{ resourceType
   const isOverMax: boolean = collaborators.length > MAX_SHOW_NUMBER;
 
   return (
-    <div className={styles.statusbar} style={props.style}>
-      <div className={styles.collaboratorsAvatars}>
+    <div className={classNames(styles.statusbar, showStatusBarLine ? styles.statusbarLine : styles.statusbarMargin)} style={props.style}>
+      <div className={styles.collaboratorsAvatars} >
         {showCollaborators.reverse().map((collaborator) => {
           const unit = find(values(unitMap), { userId: collaborator.userId });
           const title = unit ? (getSocialWecomUnitName?.({

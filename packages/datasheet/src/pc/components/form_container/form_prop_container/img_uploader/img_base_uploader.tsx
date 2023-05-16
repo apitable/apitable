@@ -83,7 +83,7 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
     });
   };
 
-  const uploadConfirm = (data:  ISelectInfo) => {
+  const uploadConfirm = (data: ISelectInfo) => {
     const { customFile, officialToken } = data;
     if (officialToken) {
       onChange(officialToken, IFileType.Default);

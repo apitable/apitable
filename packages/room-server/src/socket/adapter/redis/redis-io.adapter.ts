@@ -78,10 +78,10 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     });
 
     // record error log
-    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function (error: any) {
+    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function(error: any) {
       _nestedLogger.error(error.message, error?.stack);
     });
-    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function (error: any) {
+    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function(error: any) {
       _nestedLogger.error(error.message, error?.stack);
     });
     return server;

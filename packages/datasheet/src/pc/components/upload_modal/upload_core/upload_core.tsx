@@ -72,7 +72,7 @@ interface ISortableList {
   deleteUploadItem: (fileId: string) => void;
   onSave?: (cellValue: IAttachmentValue[]) => void;
   getCellValueFn?: (datasheetId: string | undefined, recordId: string, fieldId: string) => IAttachmentValue[];
-  onMove: ({oldIndex, newIndex}: { oldIndex: number, newIndex: number }) => void;
+  onMove: ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => void;
 }
 
 interface ISortableItem {
@@ -86,7 +86,7 @@ interface ISortableItem {
   onSave?: (cellValue: IAttachmentValue[]) => void;
   datasheetId: string;
   onSortEnd: () => void;
-  onMove: ({oldIndex, newIndex}: { oldIndex: number, newIndex: number }) => void;
+  onMove: ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => void;
 }
 
 const SortableItem = (

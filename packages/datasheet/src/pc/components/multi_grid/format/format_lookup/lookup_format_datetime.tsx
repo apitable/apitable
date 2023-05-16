@@ -172,7 +172,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
               onSelected={handleTimeZoneChange}
               renderValue={option => {
                 if (!option.value) {
-                  return `${option.label} ${getClientTimeZone()}`
+                  return `${option.label} ${getClientTimeZone()}`;
                 }
                 return option.label;
               }}

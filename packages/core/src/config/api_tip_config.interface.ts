@@ -8,6 +8,7 @@ export interface API {
 
 export interface Tips {
     api_add_row_failed_wrong_length_of_value:             APIAddRowFailedWrongLengthOfValueClass;
+    api_attachment_file_size_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_dashboard_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_visible:                            APIAddRowFailedWrongLengthOfValueClass;
