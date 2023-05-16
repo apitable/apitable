@@ -144,13 +144,15 @@ SIKP_INITDB=false
 
 _test_init_db:
 	@echo "${YELLOW}init-db initializing..${RESET}"
-	docker compose -f docker-compose.unit-test.yaml run -u $(shell id -u):$(shell id -g) --rm \
-    	-e DB_HOST=test-mysql \
-    	test-initdb
+	docker compose -f docker-compose.unit-test.yaml build test-init-db
+	docker compose -f docker-compose.unit-test.yaml run --rm test-init-db
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
+
+_test_docker_mysql: ## only run mysql container
+	docker compose -f docker-compose.unit-test.yaml up -d test-mysql
 
 _test_dockers: ## run depends container in test step
 	docker compose -f docker-compose.unit-test.yaml up -d test-mysql ;\
@@ -211,13 +213,14 @@ _clean_room_coverage:
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
-	make _test_clean
-	docker compose -f docker-compose.ut-backend.yaml up -d
-	make test-ut-backend
+	make _test_dockers
+	sleep 20
+	make _test_init_db
+	make test-ut-backend-run
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	make _test_clean
 
-test-ut-backend:
+test-ut-backend-run:
 	cd backend-server ;\
 	DATABASE_TABLE_PREFIX=apitable_ \
 	MYSQL_HOST=127.0.0.1  \
@@ -235,6 +238,16 @@ test-ut-backend:
 	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
+
+###### 【init-db test】 ######
+test-init-db-docker:
+	@echo "${LIGHTPURPLE}Working dir, $(shell pwd)${RESET}"
+	@echo "${LIGHTPURPLE}$$(docker compose version)${RESET}"
+	make _test_clean
+	make _test_docker_mysql
+	sleep 20
+	make _test_init_db
+	@echo "${GREEN}finished testing, clean up images...${RESET}"
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
 	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin || true;\
