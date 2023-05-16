@@ -82,6 +82,7 @@ export const FilterValue: React.FC<IFilterValueProps> = props => {
             field={field}
             value={value}
             onChange={onChange}
+            operator={operator}
           />
         );
       }
