@@ -11,10 +11,9 @@ Asegúrese de tener instalados los siguientes lenguajes de programación y depen
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### Lenguaje de programación
-
-Si está utilizando macOS o Linux. Recomendamos instalar el lenguaje de programación con SDK manager `sdkman` y `nvm`.
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # instalación rápida nvm
@@ -29,33 +28,46 @@ instalar sdk env
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### Mac OS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 Recomendamos usar [Homebrew](https://brew.sh/) para instalar las dependencias que falten:
 
 ```bash
-## necesario
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-En CentOS/RHEL u otra distribución de Linux con `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-En Ubuntu/Debian u otra distribución de Linux con `apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ Instale las dependencias que faltan en Ubuntu usando `apt`:
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## ¿Qué herramienta de compilación usamos?
+## What build tools do we use?
 
-Usamos `make` como nuestra entrada de herramienta de compilación centrada que impulsa otra herramienta de compilación como `gradle` / `npm` / `yarn`.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-Así que puedes ingresar el comando `make` y ver todos los comandos de compilación:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## ¿Cómo iniciar el entorno de desarrollo?
+## How to start the development environment?
 
 APITable consta de 3 procesos:
 
@@ -129,7 +143,7 @@ Simplemente abra el directorio raíz de APITable con IDE.
 
 
 
-## ¿Cómo contribuir con las traducciones?
+## How to contribute to translations?
 
 Tenemos dos maneras de mejorar la traducción de APITable:
 
@@ -177,11 +191,11 @@ Puede acceder a la documentación de la API iniciando un servidor local:
 
 Si está interesado en las interfaces de la API del servicio en la nube, también puede acceder directamente a la documentación de la API en línea en https://developers.apitable.com/api/introduction.
 
-## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto) (30 by default)
+## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto)
 
 Esto se puede lograr configurando el parámetro `DSB_WIDGET_MAX_COUNT` en el archivo `.env`.
 
-## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto) (5 by default)
+## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto)
 
 En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden ajustar la frecuencia de la solicitud:
 
@@ -189,7 +203,7 @@ En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden aj
 
 2. Puede configurar el parámetro `LIMIT_WHITE_LIST` para establecer una frecuencia de solicitud separada para usuarios específicos. Su valor es una cadena JSON y su estructura puede hacer referencia a `Map<string, IBaseRateLimiter>`.
 
-## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto) (10 by default)
+## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto)
 
 Esto se puede lograr configurando el parámetro `API_MAX_MODIFY_RECORD_COUNTS` en el archivo `.env.default` de `room-server`.
 
