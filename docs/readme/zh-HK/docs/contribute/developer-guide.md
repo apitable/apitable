@@ -11,10 +11,9 @@
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### 編程語言
-
-如果您使用 macOS 或 Linux。 我們建議使用 SDK 管理器 `sdkman` 和 `nvm` 安裝編程語言。
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # 安裝 nvm
@@ -29,7 +28,9 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 我們建議使用 [Homebrew](https://brew.sh/) 來安裝任何缺失的依賴包：
 
@@ -38,24 +39,35 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-在 CentOS / RHEL或其他 Linux 發行版使用 `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-在 Ubuntu / Debian 或其他 Linux 發行版使用 `apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ sudo apt install make
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## 我們使用什麼構建工具？
+## What build tools do we use?
 
-我們使用 `make` 作為我們的中心構建工具，來驅動其他構建工具，如 `gradle` / `npm` / `yarn`
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-所以您可以只輸入 `make` 命令並看到所有構建命令：
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## 如何設置開發環境？
+## How to start the development environment?
 
 APITable 由 3 個進程組成:
 
@@ -125,7 +139,7 @@ APITable 已準備好這兩個IDE調試配置。
 
 
 
-## 如何貢獻翻譯？
+## How to contribute to translations?
 
 我們有兩種方法來改進 APITable 的翻譯：
 
@@ -196,14 +210,14 @@ MAIL_USERNAME=your_email
 ## 如何更改默認的80端口?
 `.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
 
-For example. 例如： NGINX_HTTP_PORT=8080
+例如： NGINX_HTTP_PORT=8080
 
 ## How to add supported Languages?
 
 To add a new language to APITable, follow these steps:
 
 1. Determine the code of the language to be added, for example `uk-UA`.
-2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`. For example, create a file named `strings.uk-UA.json`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
 3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
 4. Add the language item in `packages/l10n/base/language.manifest.json`.
     ```json
