@@ -85,7 +85,7 @@ services:
       - DB_USERNAME=apitable
       - DB_PASSWORD=password
       - DATABASE_TABLE_PREFIX=apitable_
-    entrypoint: ./gradlew update
+    entrypoint: ./gradlew clearChecksums update
 
   unit-test-room:
     container_name: unit-test-room
