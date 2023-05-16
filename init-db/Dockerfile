@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM liquibase/liquibase:4.8
+FROM liquibase/liquibase:4.22.0
 RUN lpm add mysql --global
 ADD src/main/resources /liquibase/changelog
 
@@ -31,5 +31,5 @@ CMD ["sh", "-c", "echo ${ACTION}; docker-entrypoint.sh \
                     --database-changelog-table-name=\"${DATABASE_TABLE_PREFIX:=apitable_}db_changelog\" \
                     --database-changelog-lock-table-name=\"${DATABASE_TABLE_PREFIX:=apitable_}db_changelog_lock\" \
                     --url=\"jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&autoReconnect=true&useSSL=true\" \
-                     ${ACTION:=update} \
+                     ${ACTION:=clearChecksums update} \
                     -Dtable.prefix=${DATABASE_TABLE_PREFIX:=apitable_}"]
