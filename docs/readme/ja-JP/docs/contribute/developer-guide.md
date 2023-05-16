@@ -11,10 +11,9 @@
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### プログラミング言語
-
-macOS または Linux を使用している場合。 SDKマネージャー`sdkman`と`nvm`でプログラミング言語をインストールすることをお勧めします。
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # クイック インストール nvm
@@ -29,33 +28,46 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profileminimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 不足している依存関係をインストールするには、[Homebrew](https://brew.sh/) を使用することをお勧めします。
 
 ```bash
-## necessary
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-CentOS / RHEL または `yum` を使用するその他の Linux ディストリビューション
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-`apt` を使用した Ubuntu / Debian またはその他の Linux ディストリビューション
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ Windows 10/11 で APITable を実行している場合は、[Windows に Docker 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## 使用するビルド ツールは?
+## What build tools do we use?
 
-`gradle` / `npm` / `yarn` などの他のビルド ツールを駆動する中心的なビルド ツール エントリとして `make` を使用します。
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-したがって、`make` コマンドを入力するだけで、すべてのビルド コマンドを表示できます。
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## 開発環境の起動方法は?
+## How to start the development environment?
 
 APITable は 3 つのプロセスで構成されています。
 
@@ -125,7 +139,7 @@ APITable のルート ディレクトリを IDE で開くだけです。
 
 
 
-## 翻訳に貢献するには?
+## How to contribute to translations?
 
 APITableの翻訳を改善するには2つの方法があります。
 
@@ -158,7 +172,7 @@ MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
 ```
 
-さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
+さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックス smtp チュートリアルを検索してください。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
 
 
 ## macOS M1 docker run でのパフォーマンスの問題?
@@ -175,11 +189,11 @@ MAIL_USERNAME=your_email
 
 ## ダッシュボードでウィジェット数の制限を設定するには? (デフォルトでは 30)
 
-これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS</0>パラメータを設定することで実現できます。
+これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS</0>パラメータを設定することで実現できます。</p>
 
-## API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)
+<h2 spaces-before="0">API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)</h2>
 
-<code>room-server`の`.env.default`ファイルには、リクエスト頻度を調整できる2つのパラメータがあります。
+<p spaces-before="0"><code>room-server` の `.env.default`ファイルには、リクエスト頻度を調整できる2つのパラメータがあります。
 
 1. `LIMIT_POINTS` と `LIMIT_DURATION` を設定して、単位時間内に行うことができるリクエストの数を示すことができます。 ここで、LIMIT_POINTS は回数、LIMIT_DURATION は継続時間で、秒単位で測定されます。
 
@@ -196,7 +210,7 @@ MAIL_USERNAME=your_email
 ## デフォルトの 80 ポートを変更するには?
 `.env` ファイルの構成プロパティは、環境変数 `NGINX_HTTP_PORT` を指定することでオーバーライドすることもできます
 
-For example. 例えば： NGINX_HTTP_PORT=8080 として設定されます
+例えば： NGINX_HTTP_PORT=8080 として設定されます
 
 ## How to add supported Languages?
 
