@@ -11,10 +11,9 @@ Assicuratevi di avere installato le seguenti dipendenze e linguaggi di programma
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### Linguaggio di programmazione
-
-Se si utilizza macOS o Linux. Si consiglia di installare il linguaggio di programmazione con i gestori SDK sdkman e nvm.
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # quick install nvm
@@ -29,33 +28,46 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 Si consiglia di utilizzare Homebrew per installare le dipendenze mancanti:
 
 ```bash
-## necessario
+## necessary required
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-Su CentOS / RHEL o altre distribuzioni Linux con `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-Su Ubuntu / Debian o altre distribuzioni Linux con `apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ Installa le dipendenze mancanti su Ubuntu usando `apt`:
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## Quale strumento di costruzione utilizziamo?
+## What build tools do we use?
 
-Utilizziamo `make` come strumento di compilazione centrale che gestisce altri strumenti di compilazione come `gradle` / `npm` / `yarn`.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-Quindi è sufficiente inserire il comando  `make` per vedere tutti i comandi di compilazione:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## Avviare l'ambiente di sviluppo?
+## How to start the development environment?
 
 APITable è composto da 3 processi:
 
@@ -129,7 +143,7 @@ Basta aprire la cartella principale di APITable con l'IDE.
 
 
 
-## Contribuisci alle traduzioni?
+## How to contribute to translations?
 
 Abbiamo due modi per migliorare la traduzione di APITable:
 
@@ -187,7 +201,7 @@ Nel file `.env.default` di `room-server`ci sono due parametri che possono regola
 
 1. È possibile impostare `LIMIT_POINTS` e `LIMIT_DURATION` per indicare il numero di richieste che possono essere fatte in un periodo di tempo unitario. Dove LIMIT_POINTS è il numero di volte e LIMIT_DURATION è la durata, misurata in secondi.
 
-2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a `Map <string, IBaseRateLimiter>`.
+2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a ` Map <string, IBaseRateLimiter>`.
 
 ## Come aumentare il numero di record inseriti per chiamata API? (10 di default)
 
