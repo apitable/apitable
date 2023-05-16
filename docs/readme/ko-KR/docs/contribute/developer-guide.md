@@ -8,13 +8,12 @@
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
-- [docker-compose v2](https://docs.docker.com/engine/install/)
+- [docker-compose v2 ](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### 프로그래밍 언어
-
-macOS 또는 Linux를 사용하는 경우. SDK 관리자 sdkman과 nvm으로 프로그래밍 언어를 설치하는 것을 권장합니다.
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # quick install nvm
@@ -29,33 +28,46 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+### MacOS
+
+누락된 종속성을 설치하려면 홈브루를 사용하는 것이 좋습니다:
 
 ```bash
 ## necessary required
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-CentOS/RHEL 또는 기타 Linux 배포판에서 yum을 사용하여
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-Ubuntu/Debian 또는 기타 Linux 배포판에서 apt을 사용하여
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -63,20 +75,22 @@ sudo apt install make
 
 Windows 10/11에서 APITable을 실행하는 경우 Windows에 Docker Desktop, WSL에 Ubuntu 및 Windows 터미널을 설치하는 것이 좋으며, 공식 사이트에서 WSL(Windows 서브 시스템 for Linux)에 대해 자세히 알아볼 수 있습니다.
 
-Install missing dependencies on Ubuntu using `apt`:
+apt를 사용하여 우분투에 누락된 종속성을 설치합니다:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## 우리가 사용하는 빌드 도구는 무엇입니까?
+## What build tools do we use?
 
-우리는 make를 중심 빌드 도구 항목으로 사용하여 gradle / npm / yarn과 같은 다른 빌드 도구를 구동합니다.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-따라서 make 명령만 입력하면 모든 빌드 명령어를 볼 수 있습니다:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## 개발 환경 시작?
+## How to start the development environment?
 
 에이피테이블은 3개의 프로세스로 구성됩니다
 
@@ -133,7 +147,7 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 
 
-## 번역에 기여하는 방법?
+## How to contribute to translations?
 
 APITable의 번역을 개선하는 두 가지 방법이 있습니다.
 
@@ -204,7 +218,7 @@ MAIL_USERNAME=your_email
 ## 기본 80 포트를 변경하는 방법은 무엇입니까?
 `.env` 파일의 구성 속성은 env vars `NGINX_HTTP_PORT`를 지정하여 재정의할 수도 있습니다.
 
-For example. 예: NGINX_HTTP_PORT=8080으로 설정됩니다.
+예: NGINX_HTTP_PORT=8080으로 설정됩니다.
 
 ## How to add supported Languages?
 
