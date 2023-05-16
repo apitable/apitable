@@ -6,7 +6,7 @@ The core module of DataBus is https://github.com/apitable/apitable/tree/develop/
 
 ## Why you need to know how to use DataBus?
 
-DataBus plays an important role in data processing of front-end and  back-end. DataBus plays an important role in data processing of front-end and  back-end. Understanding DataBus leads to a better grasp of how the data flow works in APITable.
+DataBus plays an important role in data processing of front-end and  back-end. Understanding DataBus leads to a better grasp of how the data flow works in APITable.
 
 ## How to use DataBus in web-server/room-server?
 
