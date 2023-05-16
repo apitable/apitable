@@ -83,7 +83,7 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
     });
   };
 
-  const uploadConfirm = (data:  ISelectInfo) => {
+  const uploadConfirm = (data: ISelectInfo) => {
     const { customFile, officialToken } = data;
     if (officialToken) {
       onChange(officialToken, IFileType.Default);
@@ -92,6 +92,14 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
     if (customFile) {
       uploadCoverImg(customFile as File);
     }
+  };
+
+  const previewImgConfig = previewShape === IPreviewShape.Square ? {
+    width: 200,
+    height: 200,
+  } : {
+    width: 210,
+    height: 70,
   };
 
   return (
@@ -108,10 +116,10 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
           >
             {imgUrl ? (
               <span style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
-                <Image src={imgUrl} alt="banner" width={210} height={70} />
+                <Image src={imgUrl} alt="banner" {...previewImgConfig} />
               </span>
             ) : (
-              <Image src={EmptyState} width={106} height={80} />
+              <Image src={EmptyState} alt="empty" width={106} height={80} />
             )}
           </div>
         }
