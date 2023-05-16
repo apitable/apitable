@@ -44,7 +44,7 @@ export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IFie
 export function getOptionNameColor(id: string, field: IField) {
   const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (item == null) return colors.firstLevelText;
-  return item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
+  return item.color >= COLOR_INDEX_THRESHOLD ? colors.textStaticPrimary : colors.textCommonPrimary;
 }
 
 const AddOutlinedPath = AddOutlined.toString();

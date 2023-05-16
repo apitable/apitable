@@ -19,7 +19,6 @@
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import {
   expressionTransform,
-  Field,
   FormulaExprLexer,
   FormulaExprParser,
   FormulaFuncType,
@@ -49,6 +48,7 @@ import { FormulaGuiding } from './formula_guiding';
 import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
 import { ValueTypeIcon } from './value_type_icon';
+import { getFieldTypeIcon } from '../../field_setting';
 
 const FORMULA_TEXTAREA_ELEMENT = 'FORMULA_TEXTAREA_ELEMENT';
 const FORMULA_COLORANT_ELEMENT = 'FORMULA_COLORANT_ELEMENT';
@@ -393,7 +393,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
                     onClick={() => onItemClick(fld.name, 'field')}
                     className={classNames(styles.listItem, active && styles.active, active && 'active')}
                   >
-                    {<ValueTypeIcon valueType={Field.bindModel(fld).basicValueType} />}
+                    {getFieldTypeIcon(fld.type)}
                     <span className={styles.fieldName}>{fld.name}</span>
                     {<FieldPermissionLock fieldId={fld.id} />}
                   </div>

@@ -20,8 +20,9 @@ package com.apitable.shared.support.serializer;
 
 import static java.time.ZoneId.getAvailableZoneIds;
 
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.shared.cache.bean.LoginUserDto;
-import com.apitable.shared.config.ServerConfig;
+import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -32,7 +33,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Set;
-import javax.annotation.Resource;
 
 /**
  * LocalDateTime to timestamp（mills）.
@@ -41,27 +41,25 @@ import javax.annotation.Resource;
  */
 public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime> {
 
-    @Resource
-    private ServerConfig serverConfig;
-
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider provider)
         throws IOException {
+        SystemProperties systemProperties = SpringContextHolder.getBean(SystemProperties.class);
         // Get user timeZone
         Long userId = SessionContext.getUserIdWithoutException();
         String userTimeZone;
         if (userId != null) {
             LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
             userTimeZone = loginUserDto != null && loginUserDto.getTimeZone() != null
-                ? loginUserDto.getTimeZone() : serverConfig.getTimeZoneId().toString();
+                ? loginUserDto.getTimeZone() : systemProperties.getTimeZoneId().toString();
         } else {
-            userTimeZone = serverConfig.getTimeZoneId().toString();
+            userTimeZone = systemProperties.getTimeZoneId().toString();
         }
         // get Available ZoneIds
         Set<String> zoneIds = getAvailableZoneIds();
-        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : serverConfig.getTimeZone().toString();
+        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : systemProperties.getTimeZone().toString();
         // server config timeZone time
-        ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, serverConfig.getTimeZoneId());
+        ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, systemProperties.getTimeZoneId());
         // target timeZone time
         ZonedDateTime targetZonedDateTime =
             originalZonedDateTime.withZoneSameInstant(ZoneId.of(userTimeZone));

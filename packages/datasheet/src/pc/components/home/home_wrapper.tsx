@@ -24,23 +24,45 @@ import { NavBar } from './components/nav_bar';
 import styles from './style.module.less';
 
 export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
- 
   const colors = useThemeColors();
-  
+
   const linkIcons = [
     {
       icon: SystemConfig.settings.twitter_icon.value,
-      link: 'https://twitter.com/apitable_com'
+      link: 'https://twitter.com/apitable_com',
     },
     {
       icon: SystemConfig.settings.linkedin_icon.value,
-      link: 'https://www.linkedin.com/company/APITable'
+      link: 'https://www.linkedin.com/company/APITable',
     },
     {
       icon: SystemConfig.settings.email_icon.value,
-      link: 'mailto:support@apitable.com'
-    }
+      link: 'mailto:support@apitable.com',
+    },
   ];
+
+  let socialIconsContent;
+  const disableLoginSocialIcons = getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE;
+  if (disableLoginSocialIcons && disableLoginSocialIcons == 'true') {
+    socialIconsContent = '';
+  } else {
+    socialIconsContent = (
+      <div className={styles.iconContent}>
+        <div className={styles.linkLine}>
+          {linkIcons.map(({ icon, link }) => {
+            return (
+              <a key={link} href={link} target="_blank" rel="noreferrer">
+                <img src={integrateCdnHost(icon)} alt="apitable" />
+              </a>
+            );
+          })}
+        </div>
+        <Box marginLeft={24}>
+          <GithubButton />
+        </Box>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pcHome}>
@@ -48,27 +70,12 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
         <div className={styles.brand}>
           <img src={integrateCdnHost(getEnvVariables().LOGIN_LOGO!)} width={132} alt="logo" />
           <Typography variant={'h7'} color={colors.textCommonSecondary}>
-            {"let's make the world more productive!"}
+            {getEnvVariables().LOGIN_MOTTO || "let's make the world more productive!"}
           </Typography>
         </div>
-        <div className={styles.iconContent}>
-          <div className={styles.linkLine}>
-            {linkIcons.map(({ icon, link }) => {
-              return (
-                <a key={link} href={link} target="_blank" rel="noreferrer">
-                  <img src={integrateCdnHost(icon)} alt="apitable" />
-                </a>
-              );
-            })}
-          </div>
-          <Box marginLeft={24}>
-            <GithubButton/>
-          </Box>
-        </div>
+        {socialIconsContent}
       </div>
-      <div className={styles.main}>
-        { children }
-      </div>
+      <div className={styles.main}>{children}</div>
       <div className={styles.footer}>
         <NavBar />
       </div>

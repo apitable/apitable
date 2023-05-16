@@ -43,6 +43,7 @@ export interface Tips {
     api_param_embed_link_id_not_empty:                    APIAddRowFailedWrongLengthOfValueClass;
     api_param_embed_permission_type_error:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_form_btn_type_error:                        APIAddRowFailedWrongLengthOfValueClass;
+    api_param_form_setting_btn_type_error:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_error:                              APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_function_content_empty:             APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_function_err_end_of_right_bracket:  APIAddRowFailedWrongLengthOfValueClass;

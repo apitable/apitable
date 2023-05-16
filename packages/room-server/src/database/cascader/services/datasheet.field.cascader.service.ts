@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { databus, IRecordMap, IViewRow } from '@apitable/core';
+import { databus, IRecordMap, isBasicField, IViewRow } from '@apitable/core';
 import { IAuthHeader } from 'shared/interfaces';
 import { CascaderLinkedField } from '../models/cascader.link.field';
 import { CascaderVo } from '../vos/cascader.vo';
@@ -44,6 +44,12 @@ export class DatasheetFieldCascaderService {
     }
     const linkedFields: CascaderLinkedField[] = await this.getCascaderLinkedFields(cascaderSourceDataView.view);
     const fieldIds: string[] = linkedFieldIds || slice(linkedFields, 0, 2).map(i => i.id);
+    if (fieldIds.length === 0) {
+      return {
+        linkedFields: [],
+        treeSelects: [],
+      };
+    }
     const treeSelects = this.getCascaderLinkedRecords(datasheet, cascaderSourceDataView, fieldIds);
     return {
       linkedFields,
@@ -55,7 +61,7 @@ export class DatasheetFieldCascaderService {
     const fields = await view.getFields({});
     const fieldMap = groupBy(fields, 'id');
     return view.columns.reduce((result, column) => {
-      if (fieldMap[column.fieldId]) {
+      if (fieldMap[column.fieldId] && isBasicField(fieldMap[column.fieldId]![0]!.type)) {
         result.push({
           id: column.fieldId,
           name: fieldMap[column.fieldId]![0]!.name,

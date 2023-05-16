@@ -24,25 +24,20 @@ import {
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
+// @ts-ignore
+import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
 import { AnimationItem } from 'lottie-web/index';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import {
-  IDingTalkModalType,
-  showModalInDingTalk,
-  showModalInFeiShu,
-  showModalInWecom,
-  UpgradeInDDContent,
-  UpgradeInFeiShuContent,
-  UpgradeInWecomContent,
+  IDingTalkModalType, showModalInDingTalk, showModalInFeiShu, showModalInWecom, UpgradeInDDContent, UpgradeInFeiShuContent, UpgradeInWecomContent,
 } from 'pc/components/economy/upgrade_modal';
-// @ts-ignore
-import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
 import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
-import { isMobileApp, isHiddenIntercom } from 'pc/utils/env';
+import { isHiddenLivechat, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -50,6 +45,7 @@ import AnimationJson from 'static/json/notification_new.json';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Popup } from '../common/mobile/popup';
 import { openEruda } from '../development/dev_tools_panel';
+import { expandSearch } from '../quick_search';
 import { CreateSpaceModal } from './create_space_modal';
 import { Help } from './help';
 import { NavigationContext } from './navigation_context';
@@ -57,9 +53,6 @@ import { SpaceListDrawer } from './space_list_drawer';
 import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
-import { useIntercom } from 'react-use-intercom';
-import { expandSearch } from '../quick_search';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -97,7 +90,6 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
-  const { update: updateIntercom } = useIntercom();
   useRequest(notificationStatistics);
   // Check if there is a system banner notification to be displayed
   useRequest(getNotificationList);
@@ -278,11 +270,11 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
 
   useEffect(() => {
-    if (!isHiddenIntercom() || isMobile) {
+    if (!isHiddenLivechat() || isMobile) {
       return;
     }
-    updateIntercom({ hideDefaultLauncher: !router.pathname.includes('workbench') });
-  }, [router.pathname, isMobile, updateIntercom]);
+    !!router.pathname.includes('workbench') && window.LiveChatWidget?.call('hide');
+  }, [router.pathname, isMobile]);
 
   const onNoticeClose = () => {
     setNotice(false);

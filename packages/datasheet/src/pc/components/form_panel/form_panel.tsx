@@ -30,7 +30,7 @@ import { ShareContext } from 'pc/components/share/share';
 import { WeixinShareWrapper } from 'enterprise';
 
 const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props => {
-  const { shareId, templateId } = useSelector(state => state.pageParams);
+  const { shareId, templateId, embedId } = useSelector(state => state.pageParams);
   const formErrCode = useSelector(state => Selectors.getFormErrorCode(state));
   const loading = useSelector(state => {
     const form = Selectors.getForm(state);
@@ -63,6 +63,10 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
 
   const noPermissionDesc = formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ? t(Strings.current_form_is_invalid) : '';
 
+  const embedInfo = useSelector(state => state.embedInfo);
+
+  const showTabBar = embedId ? embedInfo.viewControl?.tabBar : true;
+
   const childComponent = (
     <div
       className={classNames(styles.formSpace, loading && styles.loading)}
@@ -74,7 +78,7 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
         !formErrCode ? (
           <>
             {
-              !shareId && <TabBar loading={loading} />
+              !shareId && showTabBar && <TabBar loading={loading} />
             }
             <ViewContainer loading={loading || (shareId && (!shareInfo || userLoading)) || props.loading} />
           </>

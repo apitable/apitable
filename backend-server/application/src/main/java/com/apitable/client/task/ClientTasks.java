@@ -39,7 +39,7 @@ import org.springframework.web.client.RestTemplate;
  * Client task class.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(value = "TEST_ENABLED", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(value = "system.test-enabled", havingValue = "false", matchIfMissing = true)
 @Slf4j
 public class ClientTasks {
 

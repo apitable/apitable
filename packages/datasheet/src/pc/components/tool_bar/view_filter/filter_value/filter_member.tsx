@@ -18,8 +18,9 @@
 
 import { FieldType, FOperator, integrateCdnHost, IUnitValue, MemberType, OtherTypeUnitId, Settings, Strings, t } from '@apitable/core';
 import { memberStash } from 'modules/space/member_stash/member_stash';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { IFilterMemberProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
@@ -35,7 +36,7 @@ export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps
   const fieldType = condition.fieldType;
   const filterValue = condition.value || [];
   const stashList = memberStash.getMemberStash();
-
+  const { isViewLock } = useContext(ViewFilterContext);
   const unitList = useMemo(() => {
 
     let tempUnitList: IUnitValue[] = [...new Set(stashList)];
@@ -96,6 +97,7 @@ export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps
       onChange={onChange}
       cellValue={filterValue}
       listData={unitList}
+      isViewLock={isViewLock}
     />
   );
 };

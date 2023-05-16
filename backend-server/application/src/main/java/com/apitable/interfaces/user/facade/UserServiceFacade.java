@@ -27,6 +27,13 @@ import com.apitable.interfaces.user.model.RewardedUser;
  * user service facade.
  */
 public interface UserServiceFacade {
+
+    /**
+     * event on user change email.
+     *
+     * @param userId user id
+     * @param email  email address
+     */
     void onUserChangeEmailAction(Long userId, String email);
 
     /**

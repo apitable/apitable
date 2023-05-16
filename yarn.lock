@@ -514,7 +514,6 @@ __metadata:
     react-sortable-hoc: ^2.0.0
     react-split-pane: ^0.1.92
     react-transition-group: ^4.4.2
-    react-use-intercom: ^2.0.0
     react-virtualized-auto-sizer: 1.0.2
     react-window: ^1.8.8
     redux: 4.2.0
@@ -40882,16 +40881,6 @@ fsevents@^1.2.7:
     raf: ^3.1.0
     tween-functions: ^1.0.1
   checksum: 8be7ff643aa7033fb39b1d1c75438f48bd144c4fe1083d2707eb6c244cb5f883c17adade9a03bd15b9bc45851a8833c85fd2169a3ffe5981d30798c75e50c1a7
-  languageName: node
-  linkType: hard
-
-"react-use-intercom@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-use-intercom@npm:2.0.0"
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 1cc2d3d4ded72371ab9c5a62f6cff5b3d4a6e35db59ef2a153cdba228d13b009c1adfddc0d2b26c9ffe8c189b31c0c8792ccd12f0f22afdc3cbc31a15b5bd793
   languageName: node
   linkType: hard
 

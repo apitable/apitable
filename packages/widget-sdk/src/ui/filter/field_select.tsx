@@ -1,5 +1,5 @@
 import { ITheme, Select, useTheme } from '@apitable/components';
-import { FieldType, IField, Strings, t } from '@apitable/core';
+import { Field, FieldType, IField, Strings, t } from '@apitable/core';
 import {
   UserOutlined, AttachmentOutlined,
   AutonumberOutlined,
@@ -52,7 +52,13 @@ const FieldIconMap = {
 
 const transformOptions = (fields: IField[], theme: ITheme) => {
   const notSupportField = [FieldType.CreatedBy, FieldType.LastModifiedBy, FieldType.Member];
-  return fields.filter(field => !notSupportField.includes(field.type)).map(field => {
+  return fields.filter(field => {
+    if (field.type === FieldType.LookUp) {
+      const entityField = Field.bindModel(field).getLookUpEntityField();
+      return entityField ? !notSupportField.includes(entityField.type) : true;
+    }
+    return !notSupportField.includes(field.type);
+  }).map(field => {
     const res = {
       label: field.name,
       value: field.id,
