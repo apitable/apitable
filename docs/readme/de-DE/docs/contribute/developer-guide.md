@@ -11,10 +11,9 @@ Stellen Sie sicher, dass Sie die folgenden Abhängigkeiten und Programmiersprach
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+### Programming Languages
 
-### Programmiersprache
-
-Wenn Sie macOS oder Linux verwenden. Wir empfehlen, die Programmiersprache mit dem SDK-Manager „sdkman“ und „nvm“ zu installieren.
+If you are using MacOS or Linux. We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # schnell installieren nvm
@@ -29,7 +28,9 @@ SDK-Env installieren
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren fehlender Abhängigkeiten:
 
@@ -38,24 +39,35 @@ Wir empfehlen die Verwendung von [Homebrew](https://brew.sh/) zum Installieren f
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install python3
 ```
 
 ### Linux
 
-Auf CentOS / RHEL oder anderen Linux-Distributionen mit `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-Auf Ubuntu / Debian oder anderen Linux-Distributionen mit `apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -68,15 +80,17 @@ Installieren Sie fehlende Abhängigkeiten auf Ubuntu mit `apt`:
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## Welches Build-Tool verwenden wir?
+## What build tools do we use?
 
-Wir verwenden `make` als unseren zentrischen Buildwerkzeug, der andere Buildwerkzeuge wie `Gradle` / `npm` / `Garn` antreibt.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-So können Sie einfach `make` Befehl eingeben und alle Build-Befehle sehen:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -86,7 +100,7 @@ make
 
 
 
-## Wie starte ich die Entwicklungsumgebung?
+## How to start the development environment?
 
 APITable besteht aus 3 Prozessen:
 
@@ -125,7 +139,7 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 
 
-## Wie kann ich zur Übersetzung beitragen?
+## How to contribute to translations?
 
 Wir haben zwei Möglichkeiten, die Übersetzung von APITable zu verbessern:
 
