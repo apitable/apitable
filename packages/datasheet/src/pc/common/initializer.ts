@@ -70,7 +70,7 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
   return false;
 }
 
-function initAxios(store:  Store<IReduxState>) {
+function initAxios(store: Store<IReduxState>) {
   axios.defaults.paramsSerializer = (params) => {
     return Object.keys(params).filter(it => {
       return params.hasOwnProperty(it);

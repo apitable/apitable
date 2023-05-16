@@ -70,7 +70,7 @@ export class FormService {
       auth,
       { internal: !templateId, main: true, notDst: true }
     );
-    const {formProps, nodeRelInfo, dstId, meta} = await this.getRelDatasheetInfo(formId);
+    const { formProps, nodeRelInfo, dstId, meta } = await this.getRelDatasheetInfo(formId);
     // Get source datasheet permission in space
     if (!templateId) {
       const permissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
