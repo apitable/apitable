@@ -10,8 +10,6 @@ Make sure you have the following dependencies and programming languages installe
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
-- A proper C/C++ compiler toolchain, such as GCC or clang.
-
 
 ### Programming Languages
 
@@ -31,7 +29,7 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-Also, Python 3.7 or above is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
 
 ### MacOS
 
