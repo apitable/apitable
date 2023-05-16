@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.liquibase.gradle' version "2.0.4"
+  id 'org.liquibase.gradle' version "2.2.0"
 }
 
 repositories {
@@ -9,7 +9,10 @@ repositories {
 
 dependencies {
   liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
-  liquibaseRuntime 'org.liquibase:liquibase-core:4.8.0'
+  liquibaseRuntime 'org.liquibase:liquibase-core:4.22.0'
+  liquibaseRuntime 'info.picocli:picocli:4.6.1'
+  liquibaseRuntime "ch.qos.logback:logback-core:1.2.3"
+  liquibaseRuntime "ch.qos.logback:logback-classic:1.2.3"
 }
 
 liquibase {
@@ -19,13 +22,12 @@ liquibase {
       url "jdbc:mysql://${System.getenv("DB_HOST")}:${System.getenv("DB_PORT")}/${System.getenv("DB_NAME")}?characterEncoding=utf8&autoReconnect=true&useSSL=true"
       username "${System.getenv("DB_USERNAME")}"
       password "${System.getenv("DB_PASSWORD")}"
-      changeLogFile "src/main/resources/db/changelog/db.changelog-master.xml"
+      changelogFile "src/main/resources/db/changelog/db.changelog-master.xml"
       logLevel "warning"
       changeLogParameters(['table.prefix': "${System.getenv("DATABASE_TABLE_PREFIX")}"])
       classpath "src/main/resources/"
-      databaseChangeLogTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog"
-      databaseChangeLogLockTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog_lock"
-      outputFile "update.sql"
+      databaseChangelogTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog"
+      databaseChangelogLockTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog_lock"
     }
   }
 }
