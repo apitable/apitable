@@ -2,7 +2,7 @@
 
 本指南帮助您开始开发 APITable 。
 
-## 依赖包
+## Dependencies
 
 请确保您在设置开发者环境之前安装了以下依赖关系和编程语言：
 
@@ -210,14 +210,14 @@ MAIL_USERNAME=your_email
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如： NGINX_HTTP_PORT=8080
+For example. 例如： NGINX_HTTP_PORT=8080
 
 ## How to add supported Languages?
 
 To add a new language to APITable, follow these steps:
 
 1. Determine the code of the language to be added, for example `uk-UA`.
-2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`. For example, create a file named `strings.uk-UA.json`.
 3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
 4. Add the language item in `packages/l10n/base/language.manifest.json`.
     ```json
