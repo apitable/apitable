@@ -223,14 +223,14 @@ MAIL_USERNAME=your_email
 ## 如何更改默認的80端口?
 `.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
 
-For example. 例如： NGINX_HTTP_PORT=8080
+例如： NGINX_HTTP_PORT=8080
 
 ## How to add supported Languages?
 
 To add a new language to APITable, follow these steps:
 
 1. Determine the code of the language to be added, for example `uk-UA`.
-2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`. For example, create a file named `strings.uk-UA.json`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
 3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
 4. Add the language item in `packages/l10n/base/language.manifest.json`.
     ```json
