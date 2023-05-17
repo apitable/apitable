@@ -151,7 +151,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const colors = useThemeColors();
   const theme = useSelector(Selectors.getTheme);
-  const { IS_APITABLE } = getEnvVariables();
+  const { FORM_LOGIN_URL } = getEnvVariables();
 
   const dispatch = useDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
@@ -413,10 +413,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         className={styles.loginBtn}
         onClick={() => {
           localStorage.setItem('reference', window.location.href);
-          if(IS_APITABLE) {
-            Router.push(Navigation.WORKBENCH);
-          }
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareInfo.spaceId }});
+          location.href = `${FORM_LOGIN_URL}?reference=${window.location.href}&spaceId=${shareInfo.spaceId}`;
         }}
       >
         {t(Strings.login)}
@@ -657,7 +654,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
     >
       <Head>
         <meta property='og:description'
-          content={serialize(formProps.description)} />
+          content={serialize(formProps.description)}/>
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* Form completion page */}
@@ -711,7 +708,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
                 onClick={onSubmit}
                 disabled={loading || !editable}
               >
-                {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')} />}
+                {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')}/>}
                 {animationLoading && !loading && t(Strings.form_submit_success)}
                 {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.button_submit_anonymous) : t(Strings.form_submit))}
                 {animationLoading && loading && t(Strings.form_submit_loading)}
@@ -730,7 +727,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
             <div className={styles.welcome}>
               <div className={styles.welcomeInner}>
                 <span className={styles.iconSuccess}>
-                  <Image src={IconSuccess} alt='submit_success' width={100} height={80} />
+                  <Image src={IconSuccess} alt='submit_success' width={100} height={80}/>
                 </span>
                 <span className={styles.thankText}>{t(Strings.form_thank_text)}</span>
                 {submitLimit === 0 && (
@@ -801,24 +798,24 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
             [
               [
                 {
-                  icon: <EditOutlined color={colors.thirdLevelText} />,
+                  icon: <EditOutlined color={colors.thirdLevelText}/>,
                   text: t(Strings.modify_field),
                   hidden: ({ props }: any) => !props?.onEdit,
                   onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
-                  icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
+                  icon: <InfoCircleOutlined color={colors.thirdLevelText}/>,
                   text: t(Strings.editing_field_desc),
                   onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },
                 {
-                  icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
+                  icon: <ArrowUpOutlined color={colors.thirdLevelText}/>,
                   text: t(Strings.insert_field_above),
                   disabled: ({ props }: any) => !props.onInsertAbove,
                   onClick: ({ props }: any) => props?.onInsertAbove && props.onInsertAbove(),
                 },
                 {
-                  icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
+                  icon: <ArrowDownOutlined color={colors.thirdLevelText}/>,
                   text: t(Strings.insert_field_below),
                   onClick: ({ props }: any) => props?.onInsertBelow && props.onInsertBelow(),
                 },
