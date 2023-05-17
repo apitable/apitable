@@ -144,9 +144,8 @@ SIKP_INITDB=false
 
 _test_init_db:
 	@echo "${YELLOW}init-db initializing..${RESET}"
-	docker compose -f docker-compose.unit-test.yaml run -u $(shell id -u):$(shell id -g) --rm \
-    	-e DB_HOST=test-mysql \
-    	test-initdb
+	docker compose -f docker-compose.unit-test.yaml build test-init-db
+	docker compose -f docker-compose.unit-test.yaml run --rm test-init-db
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
@@ -212,12 +211,14 @@ _clean_room_coverage:
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
 	make _test_clean
-	docker compose -f docker-compose.ut-backend.yaml up -d
-	make test-ut-backend
+	make _test_dockers
+	sleep 20
+	make _test_init_db
+	make test-ut-backend-run
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 	make _test_clean
 
-test-ut-backend:
+test-ut-backend-run:
 	cd backend-server ;\
 	DATABASE_TABLE_PREFIX=apitable_ \
 	MYSQL_HOST=127.0.0.1  \

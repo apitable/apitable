@@ -94,6 +94,14 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
     }
   };
 
+  const previewImgConfig = previewShape === IPreviewShape.Square ? {
+    width: 200,
+    height: 200,
+  } : {
+    width: 210,
+    height: 70,
+  };
+
   return (
     <div className={styles.uploadContainer}>
       <Spin spinning={coverLoading}>{props.children}</Spin>
@@ -108,10 +116,10 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
           >
             {imgUrl ? (
               <span style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
-                <Image src={imgUrl} alt="banner" width={210} height={70} />
+                <Image src={imgUrl} alt="banner" {...previewImgConfig} />
               </span>
             ) : (
-              <Image src={EmptyState} width={106} height={80} />
+              <Image src={EmptyState} alt="empty" width={106} height={80} />
             )}
           </div>
         }

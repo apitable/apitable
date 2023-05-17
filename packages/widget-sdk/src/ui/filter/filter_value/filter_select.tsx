@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Trigger from 'rc-trigger';
 import { Box, useTheme } from '@apitable/components';
-import { ISelectField, ISelectFieldBaseOpenValue, getFieldOptionColor, ISelectFieldOption, FieldType } from '@apitable/core';
+import { ISelectField, ISelectFieldBaseOpenValue, getFieldOptionColor, ISelectFieldOption, FieldType, FOperator } from '@apitable/core';
 import { ChevronDownOutlined, CheckOutlined } from '@apitable/icons';
 
 import { CellOptions } from 'ui/cell_value';
@@ -26,8 +26,8 @@ const getSelectOptions = (value: string[] | null, options: IOption[]) => {
 export const FilterSelect: React.FC<IFilterSelectProps> = (props) => {
   const [visible, setVisible] = useState<boolean>(false);
   const { color } = useTheme();
-  const { value, field, onChange } = props;
-  const isMulti = field.type === FieldType.MultiSelect;
+  const { value, field, onChange, operator } = props;
+  const isMulti = field.type === FieldType.MultiSelect || [FOperator.Contains, FOperator.DoesNotContain].includes(operator);
 
   return (
     <Trigger

@@ -75,6 +75,15 @@ const UpgradeSpace = () => {
       } = event;
 
       if (msg === 'pageLoaded') {
+        iframeRef.current?.contentWindow?.postMessage(
+          {
+            msg: 'fromVikaUpgrade',
+            product,
+            recurringInterval,
+            trial: onTrial
+          },
+          '*',
+        );
         setLoading(false);
       }
 
@@ -148,12 +157,10 @@ const UpgradeSpace = () => {
       }
 
     };
-    const dom = iframeRef.current;
-    dom?.addEventListener('load', initIframe);
+
     window.addEventListener('message', receiveMes);
 
     return () => {
-      dom?.removeEventListener('load', initIframe);
       window.removeEventListener('message', receiveMes);
     };
   }, [spaceId, product]);

@@ -25,6 +25,7 @@ export interface IFilterRatingProps extends IFilterValueBaseProps {
 }
 
 export interface IFilterSelectProps extends IFilterValueBaseProps {
+  operator: FOperator;
   value: string[] | null;
 }
 

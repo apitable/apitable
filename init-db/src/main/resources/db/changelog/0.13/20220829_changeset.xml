@@ -83,7 +83,6 @@
     <changeSet id="V0.13-20220829-004" author="wuyitao" labels="unit">
         <comment>Add space role management resource data</comment>
         <sql>
-            BEGIN;
             INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
             VALUES (1560560432907862018, 'MANAGE_ROLE', 'CREATE_ROLE', 'Add Role', NULL, 'Roles with this resource can add role in the directory tree', 1);
             INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
@@ -96,11 +95,8 @@
             VALUES (1560560432907862027, 'MANAGE_ROLE', 'ADD_ROLE_MEMBER', 'Add role members', NULL, 'Roles with this resource can add members or departments to the role', 1);
             INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
             VALUES (1560560432907862030, 'MANAGE_ROLE', 'REMOVE_ROLE_MEMBER', 'Remove role members', NULL, 'Roles with this resource can remove members or departments from the role', 1);
-
-
             INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
             VALUES (1560560432907862035 , 'MANAGE_ROLE', 'Management role', 'You can add, update, and delete roles');
-            COMMIT;
         </sql>
     </changeSet>
 
