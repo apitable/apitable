@@ -204,11 +204,11 @@ Puede acceder a la documentación de la API iniciando un servidor local:
 
 Si está interesado en las interfaces de la API del servicio en la nube, también puede acceder directamente a la documentación de la API en línea en https://developers.apitable.com/api/introduction.
 
-## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto) (30 by default)
+## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto)
 
 Esto se puede lograr configurando el parámetro `DSB_WIDGET_MAX_COUNT` en el archivo `.env`.
 
-## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto) (5 by default)
+## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto)
 
 En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden ajustar la frecuencia de la solicitud:
 
@@ -216,7 +216,7 @@ En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden aj
 
 2. Puede configurar el parámetro `LIMIT_WHITE_LIST` para establecer una frecuencia de solicitud separada para usuarios específicos. Su valor es una cadena JSON y su estructura puede hacer referencia a `Map<string, IBaseRateLimiter>`.
 
-## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto) (10 by default)
+## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto)
 
 Esto se puede lograr configurando el parámetro `API_MAX_MODIFY_RECORD_COUNTS` en el archivo `.env.default` de `room-server`.
 
