@@ -2,7 +2,7 @@
 
 هذا الدليل يساعدك على البدء في تطوير APITable.
 
-## Dependencies
+## التبعيات
 
 Before you start contributing to APITable, make sure you have the following tools and programming languages installed.
 
@@ -189,6 +189,8 @@ MAIL_SSL_ENABLE=true
 MAIL_TYPE=smtp
 MAIL_USERNAME=your_email</code>
 ```
+
+</code>
 
 بالإضافة إلى ذلك ، يجب تمكين بعض صناديق البريد في الخلفية لاستخدام بروتوكول smtp. لمزيد من التفاصيل ، يمكنك البحث عن برنامج تعليمي لـ xxx mailbox smtp.
 
