@@ -5390,5 +5390,7 @@
   "robot_action_send_mails_config_6_pleaseholder": "Enter message content",
   "cascader_snapshot_updating": "The cascader configuration is being updated, please be patient",
   "view_lock_setting_desc": "This view is locked, please unlock it before you edit it and save the view settings",
-  "cascader_field_configuration_err": "Please re-link the cascader configuration datasheet"
+  "cascader_field_configuration_err": "Please re-link the cascader configuration datasheet",
+  "give_feedback_to_translation": "To give feedback on the translation or help with localization, ",
+  "give_feedback_to_translation_learn_more": "learn more"
 }

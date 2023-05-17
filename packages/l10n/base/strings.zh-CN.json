@@ -5390,5 +5390,7 @@
   "robot_action_send_mails_config_6_pleaseholder": "填写邮件内容",
   "cascader_snapshot_updating": "正在更新级联配置，请耐心等待",
   "view_lock_setting_desc": "此视图已锁定，请在编辑并保存视图设置之前解锁。",
-  "cascader_field_configuration_err": "请重新关联级联配置表"
+  "cascader_field_configuration_err": "请重新关联级联配置表",
+  "give_feedback_to_translation": "反馈翻译问题或提供本地化建议，",
+  "give_feedback_to_translation_learn_more": "了解更多"
 }
