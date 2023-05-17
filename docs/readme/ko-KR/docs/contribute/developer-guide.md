@@ -10,7 +10,7 @@ Required tools:
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
-- [docker-compose v2](https://docs.docker.com/engine/install/)
+- [docker-compose v2 ](https://docs.docker.com/engine/install/)
 - `make`
 
 Required programming languages:
@@ -44,7 +44,7 @@ On MacOS and Linux, Python is usually pre-installed, but its version may not mee
 
 ### MacOS
 
-We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
+누락된 종속성을 설치하려면 홈브루를 사용하는 것이 좋습니다:
 
 ```bash
 ## necessary required
@@ -88,7 +88,7 @@ sudo pacman -Syyu git base-devel python3
 
 Windows 10/11에서 APITable을 실행하는 경우 Windows에 Docker Desktop, WSL에 Ubuntu 및 Windows 터미널을 설치하는 것이 좋으며, 공식 사이트에서 WSL(Windows 서브 시스템 for Linux)에 대해 자세히 알아볼 수 있습니다.
 
-Install missing dependencies on Ubuntu using `apt`:
+apt를 사용하여 우분투에 누락된 종속성을 설치합니다:
 
 ```bash
 sudo apt update
@@ -231,7 +231,7 @@ MAIL_USERNAME=your_email
 ## 기본 80 포트를 변경하는 방법은 무엇입니까?
 `.env` 파일의 구성 속성은 env vars `NGINX_HTTP_PORT`를 지정하여 재정의할 수도 있습니다.
 
-For example. 예: NGINX_HTTP_PORT=8080으로 설정됩니다.
+예: NGINX_HTTP_PORT=8080으로 설정됩니다.
 
 ## How to add supported Languages?
 
