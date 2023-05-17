@@ -34,6 +34,7 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Deprecated
 @Schema(description = "Node Role View")
 public class NodeRoleVo implements Serializable {
 

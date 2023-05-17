@@ -29,6 +29,7 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Deprecated
 @Schema(description = "Member list view of the tag")
 public class TagMemberVo {
 

@@ -43,7 +43,10 @@ import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.space.enums.SpaceUpdateOperate;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.space.vo.SpaceGlobalFeature;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -69,6 +72,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Contacts Team Api")
 @ApiResource(path = "/org/team")
 public class TeamController {
+
+    @Resource
+    private ISpaceService iSpaceService;
 
     @Resource
     private ITeamService iTeamService;
@@ -154,8 +160,10 @@ public class TeamController {
     })
     public ResponseData<List<MemberPageVo>> getTeamMembers(
         @RequestParam(name = "teamId") Long teamId) {
+        String spaceId = LoginContext.me().getSpaceId();
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        SpaceHolder.setGlobalFeature(feature);
         if (teamId == 0) {
-            String spaceId = LoginContext.me().getSpaceId();
             teamId = teamMapper.selectRootIdBySpaceId(spaceId);
         }
         List<MemberPageVo> resultList =

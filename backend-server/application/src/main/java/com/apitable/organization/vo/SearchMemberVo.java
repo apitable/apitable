@@ -19,6 +19,7 @@
 package com.apitable.organization.vo;
 
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.MobilePhoneHideSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -56,6 +57,8 @@ public class SearchMemberVo {
     private Boolean isActive;
 
     @Schema(description = "Phone number", example = "13610102020")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = MobilePhoneHideSerializer.class)
     private String mobile;
 
     @Schema(description = "Is the administrator already", example = "true")

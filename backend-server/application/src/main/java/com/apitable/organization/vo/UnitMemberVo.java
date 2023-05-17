@@ -19,6 +19,7 @@
 package com.apitable.organization.vo;
 
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.MobilePhoneHideSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -63,6 +64,8 @@ public class UnitMemberVo {
     private String email;
 
     @Schema(description = "Member mobile number", example = "136****9061")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = MobilePhoneHideSerializer.class)
     private String mobile;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)

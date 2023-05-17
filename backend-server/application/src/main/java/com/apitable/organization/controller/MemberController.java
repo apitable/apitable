@@ -198,6 +198,8 @@ public class MemberController {
         }
 
         String spaceId = LoginContext.me().getSpaceId();
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        SpaceHolder.setGlobalFeature(feature);
         List<SearchMemberVo> resultList =
             iMemberSearchService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter,
                 className);
@@ -265,6 +267,8 @@ public class MemberController {
         @RequestParam(name = "isActive", required = false) Integer isActive,
         @PageObjectParam Page page) {
         String spaceId = LoginContext.me().getSpaceId();
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        SpaceHolder.setGlobalFeature(feature);
         if (teamId == 0) {
             // query the members of the root department
             IPage<MemberPageVo> pageResult =
