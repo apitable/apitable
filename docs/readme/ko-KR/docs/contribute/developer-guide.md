@@ -4,12 +4,24 @@
 
 ## 종속성
 
-개발자 환경을 설정하기 전에 다음 종속 요소와 프로그래밍 언어가 설치되어 있는지 확인하세요:
+Before you start contributing to APITable, make sure you have the following tools and programming languages installed.
+
+Required tools:
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
+
+Required programming languages:
+
+- Nodejs 16.15
+- Java 8
+- Rust (nightly)
+- Python 3.7 or above
+- A proper C/C++ compiler toolchain, e.g. GCC 4.8 or above, Clang 3.5 or above.
+
+The following subsections show the recommended way to install these dependencies. Note that on MacOS some libraries are also required, see the MacOS subsection for more information.
 
 ### Programming Languages
 
@@ -28,7 +40,7 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-Also, Python 3.7 or above, and a proper C/C++ compiler toolchain (e.g. GCC) is required. On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
 
 ### MacOS
 
@@ -39,7 +51,8 @@ We recommend using [Homebrew](https://brew.sh/) for installing any missing depen
 brew install git
 brew install --cask docker
 brew install make
-brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman gcc
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install gcc
 brew install python3
 ```
 
