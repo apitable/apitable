@@ -18,7 +18,7 @@
 
 import { Body, Controller, Headers, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from 'user/services/user.service';
-import { AutomationTriggerRepository } from '../repositories';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 
 @Controller('nest/v1/robots/triggers')

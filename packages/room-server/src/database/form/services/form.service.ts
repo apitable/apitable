@@ -30,18 +30,19 @@ import { DatasheetRecordSourceService } from 'database/datasheet/services/datash
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { omit } from 'lodash';
 import { InjectLogger } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
+import { getRecordUrl } from 'shared/helpers/env';
 import { RedisLock } from 'shared/helpers/redis.lock';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
-import { FlowQueue } from '../../../automation/queues';
 
 @Injectable()
 export class FormService {
@@ -57,7 +58,7 @@ export class FormService {
     private resourceMetaService: MetaService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly redisService: RedisService,
-    private readonly flowQueue: FlowQueue,
+    private readonly eventEmitter: EventEmitter2,
   ) { }
 
   async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
@@ -172,23 +173,37 @@ export class FormService {
         datasheetId: dstId,
         recordId
       });
+      const eventContext = {
+        // TODO: Old structure left for Qianfan, delete later
+        datasheet: {
+          id: dstId,
+          name: nodeRelInfo.datasheetName
+        },
+        record: {
+          id: recordId,
+          url: getRecordUrl(dstId, recordId),
+          fields: eventFields
+        },
+        formId: formId,
+        // Flattened new structure
+        datasheetId: dstId,
+        datasheetName: nodeRelInfo.datasheetName,
+        recordId,
+        recordUrl: getRecordUrl(dstId, recordId),
+        ...eventFields
+      };
       this.logger.info(
         'dispatchFormSubmittedEvent eventContext',
+        eventContext,
         eventFields
       );
-      await this.flowQueue.add(OPEventNameEnums.FormSubmitted, {
+      this.eventEmitter.emit(OPEventNameEnums.FormSubmitted, {
         eventName: OPEventNameEnums.FormSubmitted,
         scope: ResourceType.Form,
         realType: EventRealTypeEnums.REAL,
         atomType: EventAtomTypeEnums.ATOM,
         sourceType: EventSourceTypeEnums.ALL,
-        context: {
-          datasheetName: nodeRelInfo.datasheetName,
-          datasheetId: dstId,
-          recordId,
-          formId,
-          eventFields,
-        },
+        context: eventContext,
         beforeApply: false,
       });
     } catch (error) {

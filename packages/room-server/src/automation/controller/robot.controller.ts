@@ -18,9 +18,12 @@
 
 import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 import { UserService } from 'user/services/user.service';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { RobotCreateRo } from '../ros/robot.create.ro';
-import { AutomationService, RobotRobotService } from '../services';
-import { AutomationRobotRepository, AutomationTriggerRepository, AutomationActionRepository } from '../repositories';
+import { AutomationService } from '../services/automation.service';
+import { RobotRobotService } from '../services/robot.robot.service';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { NodeService } from 'node/services/node.service';
 
 @Controller('nest/v1/robots')

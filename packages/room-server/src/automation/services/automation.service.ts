@@ -29,7 +29,8 @@ import { IUserBaseInfo } from 'shared/interfaces';
 import * as services from '../actions';
 import { customActionMap } from '../actions/decorators/automation.action.decorator';
 import { IActionResponse } from '../actions/interface/action.response';
-import { AutomationRobotRepository, AutomationRunHistoryRepository } from '../repositories';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
 import { RobotRobotService } from './robot.robot.service';
 
 /**
@@ -230,4 +231,7 @@ export class AutomationService {
     };
   }
 
+  async isResourcesHasRobots(resourceIds: string[]) {
+    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+  }
 }
