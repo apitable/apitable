@@ -55,17 +55,6 @@ const UpgradeSpace = () => {
       return;
     }
 
-    const initIframe = () => {
-      iframeRef.current?.contentWindow?.postMessage(
-        {
-          msg: 'fromVikaUpgrade',
-          product,
-          recurringInterval,
-          trial: onTrial
-        },
-        '*',
-      );
-    };
     const receiveMes = (event: any) => {
       if (!event) {
         return;
