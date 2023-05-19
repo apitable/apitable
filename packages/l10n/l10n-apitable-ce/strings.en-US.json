@@ -317,5 +317,6 @@
   "login_register": "Log in",
   "bronze_grade": "Community",
   "new_user_welcome_notify": "Welcome to APITable. We have prepared a free meeting gift for you to learn APITable. Click here to learn more.",
-  "field_map_tips_for_python": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem."
+  "field_map_tips_for_python": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
+  "share_permisson_model_space_admin_tip": "You can change the admin"
 }
