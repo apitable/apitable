@@ -15,25 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Inject, Injectable } from '@nestjs/common';
-import { ConnectionOptions, Job, Queue } from 'bullmq';
-import IORedis from 'ioredis';
-import { AUTOMATION_REDIS_CLIENT, FLOW_QUEUE } from '../constants';
 
+import { IEventInstance, IOPEvent } from '@apitable/core';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 
-@Injectable()
-export class FlowQueue {
+export type CommonEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
+  context: CommonEventContext,
+  beforeApply: boolean,
+  metaContext: CommonEventMetaContext,
+};
 
-  private flowQueue: Queue;
+export type CommonEventMetaContext = {
+  dstIdTriggersMap: { [datasheetId: string]: AutomationTriggerEntity[] },
+  triggerSlugTypeIdMap: { [serviceSlug: string]: string},
+  msgIds: string[]
+};
 
-  constructor(
-    @Inject(AUTOMATION_REDIS_CLIENT) readonly redisClient: IORedis
-  ) {
-    this.flowQueue = new Queue(FLOW_QUEUE, { connection: redisClient as ConnectionOptions });
-  }
-
-  public async add(jobName: string, data: any): Promise<Job> {
-    return await this.flowQueue.add(jobName, data);
-  }
-
-}
+export type CommonEventContext = {
+  datasheetId: string,
+  datasheetName: string,
+  recordId: string,
+  [key: string]: any,
+};

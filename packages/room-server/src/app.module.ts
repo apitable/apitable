@@ -23,7 +23,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
 import { defaultLanguage, enableOtelJaeger, enableScheduler, enableSocket } from 'app.environment';
-import { AutomationModule } from 'automation/automation.module';
+import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
 import { DeveloperModule } from 'developer/developer.module';
 import { EmbedDynamicModule } from 'embed/embed.dynamic.module';
@@ -85,7 +85,7 @@ import { UserModule } from 'user/user.module';
     UnitModule,
     DeveloperModule,
     GrpcModule,
-    AutomationModule,
+    RobotModule,
   ],
   providers: [],
 })

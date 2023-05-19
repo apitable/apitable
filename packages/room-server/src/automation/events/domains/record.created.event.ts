@@ -15,9 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export * from './automation.service';
-export * from './robot.action.service';
-export * from './robot.action.type.service';
-export * from './robot.robot.service';
-export * from './robot.trigger.type.service';
-export * from './robot.trigger.service';
+
+import { CommonEvent, CommonEventContext, CommonEventMetaContext } from './common.event';
+
+export type RecordCreatedEvent = CommonEvent;
+
+export type RecordCreatedEventMetaContext = CommonEventMetaContext;
+
+export type RecordCreatedEventContext = CommonEventContext;
