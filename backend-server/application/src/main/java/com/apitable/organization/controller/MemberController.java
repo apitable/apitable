@@ -326,6 +326,9 @@ public class MemberController {
         @RequestParam(value = "uuid", required = false) String uuid) {
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
         String spaceId = LoginContext.me().getSpaceId();
+        // For member information hiding use
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        SpaceHolder.setGlobalFeature(feature);
         if (StrUtil.isNotBlank(uuid)) {
             List<Long> userIds = userMapper.selectIdByUuidList(Collections.singletonList(uuid));
             ExceptionUtil.isNotEmpty(userIds, NOT_EXIST_MEMBER);
