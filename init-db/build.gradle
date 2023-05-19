@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     liquibaseRuntime 'mysql:mysql-connector-java:8.0.28'
-    liquibaseRuntime 'org.liquibase:liquibase-core:4.22.0'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.21.1'
     liquibaseRuntime 'info.picocli:picocli:4.6.1'
     liquibaseRuntime "ch.qos.logback:logback-core:1.2.3"
     liquibaseRuntime "ch.qos.logback:logback-classic:1.2.3"

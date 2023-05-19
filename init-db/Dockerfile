@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM liquibase/liquibase:4.22.0
+FROM liquibase/liquibase:4.21.1
 RUN lpm add mysql --global
 ADD src/main/resources /liquibase/changelog
 
