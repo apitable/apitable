@@ -228,6 +228,7 @@ export const getEnvVars = () => {
     IS_CANVAS_IMAGE_CROSS_ORIGIN: process.env.IS_CANVAS_IMAGE_CROSS_ORIGIN === 'true',
     GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
-    FORM_LOGIN_URL: process.env.FORM_LOGIN_URL
+    FORM_LOGIN_URL: process.env.FORM_LOGIN_URL,
+    TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
   };
 };
