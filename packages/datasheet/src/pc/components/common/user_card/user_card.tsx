@@ -151,7 +151,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   };
 
   const title = getSocialWecomUnitName?.({
-    name: memberInfo?.memberName,
+    name: memberInfo?.memberName || memberInfo?.nickName || spareName,
     isModified: memberInfo?.isMemberNameModified,
     spaceInfo
   }) || memberInfo?.memberName;
@@ -181,7 +181,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
                 />
                 <div className={styles.nameWrapper}>
                   <h6>
-                    <span>{ title || spareName }</span>
+                    <span>{ title }</span>
                     {permissionVisible && memberRole &&
                       <Tag className={styles.permissionWrapper} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
                     }
