@@ -1,4 +1,4 @@
-{{MEMBER_NAME}} mentioned you in the "{{NODE_NAME}}" datasheet
+{{MEMBER_NAME}} mentioned you in the "{{RECORD_TITLE}}" of the "{{NODE_NAME}}" datasheet.
 
 --------------------------------------------------------------------------------
 
@@ -15,4 +15,4 @@ View record
 
 © {{YEARS}} APITable Ltd.
 
-Contact us (https://apitable.com/?home=1)
+Contact us (https://apitable.com?home=1)
