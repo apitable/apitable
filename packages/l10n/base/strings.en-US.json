@@ -5325,10 +5325,7 @@
   "api_param_add_widget_btn_type_error": "the parameter addWidgetBtn must be a boolean type",
   "api_param_full_screen_btn_type_error": "the parameter fullScreenBtn must be a boolean type",
   "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
-<<<<<<< HEAD
   "api_attachment_file_size_error": "Uploaded attachment size is 0",
-=======
->>>>>>> a6848e01549ddaf6175acc835cc8d77b90ba277e
   "confirm_link_inconsistency_detected": "Abnormal data have been found in link cells, fix them automatically?",
   "archive_record_in_menu": "Archive record",
   "archive_records_in_menu": "Archive ${chose_num} records",
