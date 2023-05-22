@@ -146,7 +146,6 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
-    entrypoint: ./gradlew testCodeCoverageReport --stacktrace
 
 networks:
   unit-test:

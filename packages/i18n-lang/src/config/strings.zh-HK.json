@@ -1586,7 +1586,7 @@
   "field_help_tree_select": "這裡是多級聯動的幫助頁面",
   "field_help_url": "https://help.apitable.com/docs/guide/manual-field-url",
   "field_incluede_time_and_time_zone_title": "顯示時間與時區",
-  "field_map_tips_for_python": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
+  "field_map_tips_for_python": "存在與變量規則不匹配的字段名稱，請打開“使用 Field ID”，否則下面的代碼示例可能無法運行！[字段映射](https://github.com/vikadata/vika.py#%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84)可以幫你解決這個問題。",
   "field_member_property_multi": "允許添加多個成員",
   "field_member_property_notify": "選擇成員後發送消息通知",
   "field_name_formula": "公式",

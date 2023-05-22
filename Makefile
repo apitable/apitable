@@ -151,6 +151,9 @@ _test_init_db:
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
+_test_docker_mysql: ## only run mysql container
+	docker compose -f docker-compose.unit-test.yaml up -d test-mysql
+
 _test_dockers: ## run depends container in test step
 	docker compose -f docker-compose.unit-test.yaml up -d test-mysql ;\
 	docker compose -f docker-compose.unit-test.yaml up -d test-redis ;\
@@ -210,7 +213,6 @@ _clean_room_coverage:
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
-	make _test_clean
 	make _test_dockers
 	sleep 20
 	make _test_init_db
@@ -236,6 +238,16 @@ test-ut-backend-run:
 	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
+
+###### 【init-db test】 ######
+test-init-db-docker:
+	@echo "${LIGHTPURPLE}Working dir, $(shell pwd)${RESET}"
+	@echo "${LIGHTPURPLE}$$(docker compose version)${RESET}"
+	make _test_clean
+	make _test_docker_mysql
+	sleep 20
+	make _test_init_db
+	@echo "${GREEN}finished testing, clean up images...${RESET}"
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
 	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin || true;\
