@@ -113,7 +113,7 @@ export const PopStructure: React.FC<React.PropsWithChildren<IPopStructureProps>>
       >
         <PopStructureContext.Provider value={context}>{children}</PopStructureContext.Provider>
       </div>
-    )
+    );
   }
 
   return (

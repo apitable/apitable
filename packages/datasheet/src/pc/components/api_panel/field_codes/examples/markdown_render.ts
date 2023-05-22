@@ -86,7 +86,7 @@ const defaultRender = md.renderer.rules.link_open || function render(tokens: any
   return self.renderToken(tokens, idx, options);
 };
 
-md.renderer.rules.link_open = (tokens: any[], idx:  number, options: any, env: any, self: any) => {
+md.renderer.rules.link_open = (tokens: any[], idx: number, options: any, env: any, self: any) => {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
   if (aIndex < 0) {

@@ -17,6 +17,7 @@
  */
 
 import styles from './style.module.less';
+import { getEnvVariables } from '../../../../utils/env';
 
 export const NavBar: React.FC<React.PropsWithChildren<{gap?: number}>> = (props) => {
   const { gap = 32 } = props;
@@ -32,6 +33,11 @@ export const NavBar: React.FC<React.PropsWithChildren<{gap?: number}>> = (props)
       text: 'About'
     }
   ];
+
+  if (getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE) {
+    return null;
+  }
+
   return (
     <div className={styles.navBarWrap}>
       {

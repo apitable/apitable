@@ -73,7 +73,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
     return getRecordName(cellValue, snapshot.meta.fieldMap[firstColumn.fieldId]) || '';
   }
 
-  function notifyEffect(content:  ITextNode[]) {
+  function notifyEffect(content: ITextNode[]) {
     const unitIds: string[] = walk(content);
     if (!unitIds.length) {
       return;

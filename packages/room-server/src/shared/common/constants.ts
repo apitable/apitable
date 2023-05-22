@@ -114,7 +114,7 @@ export const USE_NATIVE_MODULE = Boolean(process.env.USE_NATIVE_MODULE);
 /**
  * API Cache prefix
  */
-export const API_CACHE_KEY = 'vikadata:cache:fusion:';
+export const API_CACHE_KEY = 'apitable:cache:fusion:';
 /**
  * the maximum number of records could be changed in the API
  */
@@ -130,7 +130,7 @@ export const API_DEFAULT_PAGE_SIZE = 100;
 /**
  * current-limiting redis key prefix
  */
-export const NODE_LIMITER_PREFIX = 'vikadata:nest:limiter';
+export const NODE_LIMITER_PREFIX = 'apitable:nest:limiter';
 
 export class NodeExtraConstant {
   /**
