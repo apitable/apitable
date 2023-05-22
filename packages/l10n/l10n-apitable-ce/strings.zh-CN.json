@@ -317,6 +317,6 @@
   "login_register": "登录",
   "bronze_grade": "社区版",
   "new_user_welcome_notify": "欢迎加入 APITable，我们为你准备了一份免费学习 APITable 的见面礼，点击这条消息即可跳转了解详情。",
-  "field_map_tips_for_python": "存在与变量规则不匹配的字段名称，请打开“使用 Field ID”，否则下面的代码示例可能无法运行！[字段映射](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping)可以帮你解决这个问题。",
+  "field_map_tips_for_python": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem.",
   "share_permisson_model_space_admin_tip": "You can change the admin"
 }
