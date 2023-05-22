@@ -186,7 +186,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   useEffect(() => {
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    const defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
+    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
+    // Compatible with older versions, which is array
+    if (Array.isArray(defaultActiveKey)) {
+      defaultActiveKey = defaultActiveKey[0];
+    }
     setActiveKey(defaultActiveKey);
   }, []);
 

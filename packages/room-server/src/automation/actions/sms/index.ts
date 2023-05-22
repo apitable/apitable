@@ -48,7 +48,7 @@ const jsdomWindow = new JSDOM('').window;
 const purify = DOMPurify(jsdomWindow as any);
 
 export async function sendMail(request: IMailMessageRequest): Promise<IActionResponse<IMailMessageResponse>> {
-  const {mailServer, server, port, account, password, to, subject, message, template} = request;
+  const { mailServer, server, port, account, password, to, subject, message, template } = request;
   const transporter = nodemailer.createTransport({
     host: mailServer?.domain || server,
     port: mailServer ? Number(mailServer.port) : Number(port),

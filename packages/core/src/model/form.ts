@@ -33,7 +33,7 @@ export class FormAction {
     const actions: IJOTAction[] = [];
     for (const key in partialProps) {
       const oi = partialProps[key];
-      const od = formProps[key]
+      const od = formProps[key];
       if (!isEqual(oi, od)) {
         actions.push({
           n: OTActionName.ObjectReplace,
