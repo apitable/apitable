@@ -3,6 +3,26 @@
 
 
 
+## [v0.21.0-beta](https://github.com/apitable/apitable/releases/tag/v0.21.0-beta) (2023-05-22)
+
+
+### Features and enhancements
+
+* feat: upgrade liquibase version ([#801](https://github.com/apitable/apitable/pull/801)) @shawndenggh 
+* feat: add new email templates @xukecheng 
+* feat: add new email templates ([#831](https://github.com/apitable/apitable/pull/831)) @xukecheng 
+
+### Bug fixes
+
+* fix: remove pre-init-db since upgrade liquibase ([#824](https://github.com/apitable/apitable/pull/824)) @shawndenggh 
+
+### What's more
+
+* docs: guide on setting up python and gcc ([#802](https://github.com/apitable/apitable/pull/802)) @arucil 
+* docs: add clearer description of language versions ([#827](https://github.com/apitable/apitable/pull/827)) @arucil 
+* sync: hosted cloud ([#840](https://github.com/apitable/apitable/pull/840)) @yort-feng 
+* chore: update translation feedback help url @wmEvie 
+* chore: update translation feedback help url ([#841](https://github.com/apitable/apitable/pull/841)) @wmEvie 
 ## [v0.21.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.21.0-alpha) (2023-05-15)
 
 
