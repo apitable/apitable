@@ -430,6 +430,26 @@
       "to_tag": "members",
       "url": "/management"
     },
+    "auto_cancel_record_subscription": {
+      "can_jump": true,
+      "format_string": "auto_cancel_record_subscription",
+      "id": "auto_cancel_record_subscription",
+      "is_browser": true,
+      "is_notification": true,
+      "notifications_type": "record",
+      "to_tag": "members",
+      "url": "/workbench"
+    },
+    "auto_create_record_subscription": {
+      "can_jump": true,
+      "format_string": "auto_create_record_subscription",
+      "id": "auto_create_record_subscription",
+      "is_browser": true,
+      "is_notification": true,
+      "notifications_type": "record",
+      "to_tag": "members",
+      "url": "/workbench"
+    },
     "capacity_limit": {
       "billing_notify": "max_capacity_size_in_bytes",
       "can_jump": true,

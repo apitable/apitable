@@ -376,6 +376,26 @@
             "id": "subscribed_record_cell_updated",
             "url": "/workbench"
         },
+        "auto_create_record_subscription": {
+            "can_jump": true,
+            "to_tag": "members",
+            "notifications_type": "record",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "auto_create_record_subscription",
+            "id": "auto_create_record_subscription",
+            "url": "/workbench"
+        },
+        "auto_cancel_record_subscription": {
+            "can_jump": true,
+            "to_tag": "members",
+            "notifications_type": "record",
+            "is_notification": true,
+            "is_browser": true,
+            "format_string": "auto_cancel_record_subscription",
+            "id": "auto_cancel_record_subscription",
+            "url": "/workbench"
+        },
         "subscribed_record_commented": {
             "can_jump": true,
             "to_tag": "members",

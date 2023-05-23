@@ -2702,10 +2702,20 @@
             "en_US": "Auto",
             "zh_HK": "自動"
         },
+        "auto_cancel_record_subscription": {
+            "zh_CN": "<a class=\"memberName\"></a>  将你移出了  \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者，你已自动取消关注该记录",
+            "en_US": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record",
+            "zh_HK": "<a class=\"memberName\"></a>  將你移出了  \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的關注者，你已自動取消關注該記錄"
+        },
         "auto_cover": {
             "zh_CN": "自适应",
             "en_US": "Auto",
             "zh_HK": "自適應"
+        },
+        "auto_create_record_subscription": {
+            "zh_CN": "<a class=\"memberName\"></a> 将你添加为 \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者 , 你将会自动关注该记录",
+            "en_US": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically follow this record",
+            "zh_HK": "<a class=\"memberName\"></a> 將你添加為 \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的關注者，你將會自動關注該記錄"
         },
         "auto_save_has_been_opend": {
             "zh_CN": "自动保存视图配置已开启",

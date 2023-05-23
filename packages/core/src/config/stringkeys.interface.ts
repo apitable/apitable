@@ -4643,6 +4643,8 @@ export type StringKeysMapType = {
   'subscribe_upgrade_choose_member_tips': 'subscribe_upgrade_choose_member_tips',
   'subscribe_welcome_tip': 'subscribe_welcome_tip',
   'subscribed_record_cell_updated': 'subscribed_record_cell_updated',
+  'auto_create_record_subscription': 'auto_create_record_subscription',
+  'auto_cancel_record_subscription': 'auto_cancel_record_subscription',
   'subscribed_record_commented': 'subscribed_record_commented',
   'subscription_expire_error': 'subscription_expire_error',
   'subscription_fee': 'subscription_fee',

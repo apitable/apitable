@@ -4590,6 +4590,8 @@
   "widget_more_settings_tooltip": "More settings",
   "space_certification_notify": "Congratulation. You have completed the certification of space. Go through 「Settings-Overview-Attachments storage」 to receive your <a class=\"specification\"></a>GB capacity package.",
   "subscribed_record_cell_updated": "<a class=\"memberName\"></a> modified the \"<a class=\"recordTitle\"></a>\" contents from the \"<a class=\"nodeName\"></a>\" datasheet：\nReplace \"<a class=\"oldDisplayValue\"></a>\" with \"<a class=\"newDisplayValue\"></a>\"",
+  "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically follow this record",
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record",
   "subscribed_record_commented": "<a class=\"memberName\"></a> made comments from the \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\" datasheet：\"<a class=\"content\"></a>\"",
   "color": "Color",
   "warning_filter_limit": "The limit of filter number is 10",

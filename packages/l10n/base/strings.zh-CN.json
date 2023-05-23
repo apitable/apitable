@@ -4588,6 +4588,8 @@
   "widget_more_settings_tooltip": "更多设置",
   "space_certification_notify": " 恭喜你完成维格空间站认证，获得<a class=\"specification\"></a>GB 附件容量，详情请前往「空间站设置-空间站驾驶舱-附件容量」查看",
   "subscribed_record_cell_updated": "<a class=\"memberName\"></a>修改了「<a class=\"nodeName\"></a>」维格表「<a class=\"recordTitle\"></a>」的记录：\n由 \"<a class=\"oldDisplayValue\"></a>\" 修改为了 \"<a class=\"newDisplayValue\"></a>\"",
+  "auto_create_record_subscription": "<a class=\"memberName\"></a> 将你添加为 \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者 , 你将会自动关注该记录",
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a>  将你移出了  \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者，你已自动取消关注该记录",
   "subscribed_record_commented": "<a class=\"memberName\"></a>在「<a class=\"nodeName\"></a>」维格表「<a class=\"recordTitle\"></a>」的记录进行了评论：「<a class=\"content\"></a>」",
   "color": "颜色",
   "warning_filter_limit": "最多可添加 10 个条件",

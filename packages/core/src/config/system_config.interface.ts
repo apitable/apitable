@@ -355,6 +355,8 @@ export interface Templates {
     apply_space_beta_feature_success_notify_me:  ActivityIntegralIncomeNotify;
     assigned_to_group:                           AssignedToGroupClass;
     assigned_to_role:                            AssignedToGroupClass;
+    auto_cancel_record_subscription:             CommentMentioned;
+    auto_create_record_subscription:             CommentMentioned;
     capacity_limit:                              ActivityIntegralIncomeNotify;
     changed_ordinary_user:                       AdminTransferSpaceWidgetNotify;
     comment_mentioned:                           CommentMentioned;

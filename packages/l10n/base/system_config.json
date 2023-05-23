@@ -7328,6 +7328,28 @@
                 "format_string": "subscribed_record_cell_updated",
                 "url": "/workbench"
             },
+            "auto_create_record_subscription": {
+                "can_jump": true,
+                "format_string": "auto_create_record_subscription",
+                "is_browser": true,
+                "is_mail": false,
+                "is_mobile": false,
+                "is_notification": true,
+                "notifications_type": [],
+                "to_tag": "members",
+                "url": "/workbench"
+              },
+              "auto_cancel_record_subscription": {
+                "can_jump": true,
+                "format_string": "auto_cancel_record_subscription",
+                "is_browser": true,
+                "is_mail": false,
+                "is_mobile": false,
+                "is_notification": true,
+                "notifications_type": [],
+                "to_tag": "members",
+                "url": "/workbench"
+              },
             "subscribed_record_commented": {
                 "can_jump": true,
                 "to_tag": "members",
