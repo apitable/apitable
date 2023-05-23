@@ -188,8 +188,11 @@ export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disa
     ${(props) => {
     return !props.disabled && css`
         &:hover {
-          ${props => css`background: ${props.theme.color.fc6};`}
+          ${props => css`background: ${props.theme.color.bgBglessHover};`}
           border-radius: 8px;
+        }
+        &:active {
+          ${props => css`background: ${props.theme.color.bgBglessActive};`}
         }
       `;
   }}

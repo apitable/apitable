@@ -18,65 +18,26 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.control.infrastructure.role.RoleConstants;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
-import com.apitable.control.service.IControlRoleService;
 import com.apitable.mock.bean.MockUserSpace;
-import com.apitable.organization.service.IMemberService;
-import com.apitable.organization.service.ITeamService;
-import com.apitable.organization.service.IUnitService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.dto.DatasheetSnapshot.Field;
 import com.apitable.workspace.dto.DatasheetSnapshot.View;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
-import com.apitable.workspace.service.IDatasheetMetaService;
-import com.apitable.workspace.service.IFieldRoleService;
-import com.apitable.workspace.service.INodeRoleService;
-import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.FieldCollaboratorVO;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author tao
- */
 public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
-
-    @Autowired
-    private IFieldRoleService iFieldRoleService;
-
-    @Autowired
-    private INodeRoleService iNodeRoleService;
-
-    @Autowired
-    private INodeService iNodeService;
-
-    @Autowired
-    private ITeamService iTeamService;
-
-    @Autowired
-    private IUnitService iUnitService;
-
-    @Autowired
-    private IMemberService iMemberService;
-
-    @Autowired
-    private IDatasheetMetaService iDatasheetMetaService;
-
-    @Autowired
-    private IControlRoleService iControlRoleService;
 
     @Test
     void givenRootTeamWhenGetFieldRolesThenReturnRootTeamWithEditRole() {
@@ -189,9 +150,12 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenNodeControlRolesWhenDeleteFieldRolesThenSuccess() {
-        iControlRoleService.addControlRole(1L, "fld", CollUtil.newArrayList(1L, 2L), RoleConstants.Field.READER);
-        iControlRoleService.addControlRole(1L, "fld", CollUtil.newArrayList(3L, 4L), RoleConstants.Field.EDITOR);
-        Map<String, List<Long>> roleToUnitIds = iFieldRoleService.deleteFieldRoles("fld", CollUtil.newArrayList(1L, 3L));
+        iControlRoleService.addControlRole(1L, "fld", CollUtil.newArrayList(1L, 2L),
+            RoleConstants.Field.READER);
+        iControlRoleService.addControlRole(1L, "fld", CollUtil.newArrayList(3L, 4L),
+            RoleConstants.Field.EDITOR);
+        Map<String, List<Long>> roleToUnitIds =
+            iFieldRoleService.deleteFieldRoles("fld", CollUtil.newArrayList(1L, 3L));
         assertThat(roleToUnitIds.keySet().size()).isEqualTo(2);
         assertThat(roleToUnitIds.get(RoleConstants.Field.READER).get(0)).isEqualTo(1L);
         assertThat(roleToUnitIds.get(RoleConstants.Field.EDITOR).get(0)).isEqualTo(3L);
@@ -201,17 +165,18 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         String controlNodeId = null;
         NodeOpRo ro = new NodeOpRo().toBuilder()
-                .parentId(rootNodeId)
-                .type(NodeType.DATASHEET.getNodeType())
-                .nodeName("datasheet")
-                .build();
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .nodeName("datasheet")
+            .build();
         if (isExtend) {
             NodeOpRo parentOp = new NodeOpRo().toBuilder()
-                    .parentId(rootNodeId)
-                    .type(NodeType.FOLDER.getNodeType())
-                    .nodeName("folder")
-                    .build();
-            String parentNodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), parentOp);
+                .parentId(rootNodeId)
+                .type(NodeType.FOLDER.getNodeType())
+                .nodeName("folder")
+                .build();
+            String parentNodeId =
+                iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), parentOp);
             controlNodeId = parentNodeId;
             ro.setParentId(parentNodeId);
         }
@@ -220,18 +185,22 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
             controlNodeId = nodeId;
         }
         if (isAddControl) {
-            iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), controlNodeId, false);
+            iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(),
+                controlNodeId, false);
             // add users to the space root department
             UserEntity user = iUserService.createUserByEmail("test2@apitable.com");
             Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
             iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
             // node adds new entry members to manageable roles
-            Long newMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), userSpace.getSpaceId());
+            Long newMemberId =
+                iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), userSpace.getSpaceId());
             Long newUnitId = iUnitService.getUnitIdByRefId(newMemberId);
-            iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.MANAGER, CollUtil.newArrayList(newUnitId));
+            iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.MANAGER,
+                CollUtil.newArrayList(newUnitId));
             // add a readable role to the root department
             Long rootTeamUnitId = iTeamService.getRootTeamUnitId(userSpace.getSpaceId());
-            iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.READER, CollUtil.newArrayList(rootTeamUnitId));
+            iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.READER,
+                CollUtil.newArrayList(rootTeamUnitId));
         }
         return nodeId;
     }
@@ -257,15 +226,18 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         NodeOpRo ro = new NodeOpRo().toBuilder()
-                .parentId(rootNodeId)
-                .type(NodeType.DATASHEET.getNodeType())
-                .nodeName("datasheet")
-                .build();
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .nodeName("datasheet")
+            .build();
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
-        iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), nodeId, false);
-        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
+        iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), nodeId,
+            false);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
+            userSpace.getSpaceId());
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
-        iNodeRoleService.addNodeRole(userSpace.getUserId(), nodeId, Node.READER, CollUtil.newArrayList(unitId));
+        iNodeRoleService.addNodeRole(userSpace.getUserId(), nodeId, Node.READER,
+            CollUtil.newArrayList(unitId));
         DatasheetSnapshot datasheetSnapshot = iDatasheetMetaService.getMetaByDstId(nodeId);
         Map<String, Field> fieldMap = datasheetSnapshot.getMeta().getFieldMap();
         Iterator<String> iterator = fieldMap.keySet().iterator();

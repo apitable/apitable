@@ -1,11 +1,10 @@
-{{MEMBER_NAME}} mentioned you in {{ROW_NUM}} comments from the "{{NODE_NAME}}" datasheet
+{{MEMBER_NAME}} mentioned you at "{{FIELD_NAME}}" of the "{{RECORD_TITLE}}" record in the "{{NODE_NAME}}" datasheet
 
 --------------------------------------------------------------------------------
 
-Click on the link to enter the Space:
-https://apitable.com/
+Click on the link to enter the Space: {{URL}}
 
 
 © {{YEARS}} APITable Ltd.
 
-Contact us (https://apitable.com/?home=1)
+Contact us (https://apitable.com?home=1)

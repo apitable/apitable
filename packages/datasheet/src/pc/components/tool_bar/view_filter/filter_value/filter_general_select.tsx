@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useThemeColors } from '@apitable/components';
 import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
@@ -26,11 +27,9 @@ import { OptionList } from 'pc/components/list';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
-import { useThemeColors } from '@apitable/components';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import Trigger from 'rc-trigger';
-import { useRef, useState } from 'react';
 import * as React from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CellOptions } from '../../../multi_grid/cell/cell_options/cell_options';
 import styles from './style.module.less';
@@ -44,15 +43,15 @@ interface IFilterGeneralSelectProps {
   onChange: (value: string | IMultiSelectedIds | null) => void;
   cellValue?: ICellValue;
   listData: (IUnitValue | IUserValue)[] | ISelectFieldOption[];
+  isViewLock?: boolean;
 }
 
 export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = props => {
   const colors = useThemeColors();
-  const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData } = props;
+  const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData, isViewLock } = props;
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
   let TriggerComponent: any;
-  const isViewLock = useShowViewLockModal();
 
   switch (field.type) {
     case FieldType.Member:

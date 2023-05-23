@@ -18,31 +18,24 @@
 
 package com.apitable.organization.service.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.FileHelper;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamTreeVo;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
 
 public class TeamServiceImplTest extends AbstractIntegrationTest {
-
-    @Resource
-    private TeamMemberRelServiceImpl teamMemberRelService;
 
     @Test
     void testGetTeamTree() throws IOException {
@@ -67,7 +60,9 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void testGetMemberTeamTree() throws IOException {
-        List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
+        List<Long> teamIds =
+            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
+                1283285207447699457L);
         String resourceName = "sql/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
@@ -79,7 +74,9 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void testGetMemberAllTeamsVO() throws IOException {
-        List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
+        List<Long> teamIds =
+            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
+                1283285207447699457L);
         String resourceName = "sql/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
@@ -102,7 +99,9 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void testBuildTree() throws IOException {
-        List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
+        List<Long> teamIds =
+            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
+                1283285207447699457L);
         String resourceName = "sql/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
@@ -118,13 +117,16 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         this.prepareMemberAndTeamInfo();
 
         // prepare member and team rel
-        TeamMemberRelEntity rel = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(1L).build();
-        teamMemberRelService.save(rel);
+        TeamMemberRelEntity rel =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(1L).build();
+        iTeamMemberRelService.save(rel);
 
         List<Long> memberIds = CollUtil.newArrayList(101L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(1);
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("root team");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "root team");
     }
 
     @Test
@@ -133,13 +135,16 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         this.prepareMemberAndTeamInfo();
 
         // prepare member and team rel
-        TeamMemberRelEntity rel = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
-        teamMemberRelService.save(rel);
+        TeamMemberRelEntity rel =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
+        iTeamMemberRelService.save(rel);
 
         List<Long> memberIds = CollUtil.newArrayList(101L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(11);
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team");
     }
 
     @Test
@@ -148,17 +153,22 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         this.prepareMemberAndTeamInfo();
 
         // prepare member and team rel
-        TeamMemberRelEntity rel1 = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
-        teamMemberRelService.save(rel1);
-        TeamMemberRelEntity rel2 = TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(31L).build();
-        teamMemberRelService.save(rel2);
+        TeamMemberRelEntity rel1 =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
+        iTeamMemberRelService.save(rel1);
+        TeamMemberRelEntity rel2 =
+            TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(31L).build();
+        iTeamMemberRelService.save(rel2);
 
         List<Long> memberIds = CollUtil.newArrayList(101L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(11);
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team");
         assertThat(memberToTeamMap.get(101L).get(1).getTeamId()).isEqualTo(31);
-        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
+        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
     }
 
     @Test
@@ -167,93 +177,123 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         this.prepareMemberAndTeamInfo();
 
         // prepare team and member rel
-        TeamMemberRelEntity rel1 = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(1L).build();
-        teamMemberRelService.save(rel1);
+        TeamMemberRelEntity rel1 =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(1L).build();
+        iTeamMemberRelService.save(rel1);
 
-        TeamMemberRelEntity rel2 = TeamMemberRelEntity.builder().id(222L).memberId(102L).teamId(11L).build();
-        teamMemberRelService.save(rel2);
+        TeamMemberRelEntity rel2 =
+            TeamMemberRelEntity.builder().id(222L).memberId(102L).teamId(11L).build();
+        iTeamMemberRelService.save(rel2);
 
-        TeamMemberRelEntity rel3 = TeamMemberRelEntity.builder().id(333L).memberId(102L).teamId(31L).build();
-        teamMemberRelService.save(rel3);
+        TeamMemberRelEntity rel3 =
+            TeamMemberRelEntity.builder().id(333L).memberId(102L).teamId(31L).build();
+        iTeamMemberRelService.save(rel3);
 
-        TeamMemberRelEntity rel4 = TeamMemberRelEntity.builder().id(444L).memberId(102L).teamId(22L).build();
-        teamMemberRelService.save(rel4);
+        TeamMemberRelEntity rel4 =
+            TeamMemberRelEntity.builder().id(444L).memberId(102L).teamId(22L).build();
+        iTeamMemberRelService.save(rel4);
 
         List<Long> memberIds = CollUtil.newArrayList(101L, 102L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("root team");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "root team");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(1);
-        assertThat(memberToTeamMap.get(102L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
+        assertThat(memberToTeamMap.get(102L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team");
         assertThat(memberToTeamMap.get(102L).get(0).getTeamId()).isEqualTo(11);
-        assertThat(memberToTeamMap.get(102L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
+        assertThat(memberToTeamMap.get(102L).get(1).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
         assertThat(memberToTeamMap.get(102L).get(1).getTeamId()).isEqualTo(31);
-        assertThat(memberToTeamMap.get(102L).get(2).getFullHierarchyTeamName()).isEqualTo("NO.2 first-level team/NO.2 second-level team");
+        assertThat(memberToTeamMap.get(102L).get(2).getFullHierarchyTeamName()).isEqualTo(
+            "NO.2 first-level team/NO.2 second-level team");
         assertThat(memberToTeamMap.get(102L).get(2).getTeamId()).isEqualTo(22);
     }
 
     @Test
-    public void  testBatchGetFullHierarchyTeamNamesThatTeamWithSameParentTeam(){
+    public void testBatchGetFullHierarchyTeamNamesThatTeamWithSameParentTeam() {
         // prepare member and team info
         this.prepareMemberAndTeamInfo();
 
         // prepare member and team rel
-        TeamMemberRelEntity rel = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(21L).build();
-        teamMemberRelService.save(rel);
-        TeamMemberRelEntity rel2 = TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(221L).build();
-        teamMemberRelService.save(rel2);
+        TeamMemberRelEntity rel =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(21L).build();
+        iTeamMemberRelService.save(rel);
+        TeamMemberRelEntity rel2 =
+            TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(221L).build();
+        iTeamMemberRelService.save(rel2);
 
         List<Long> memberIds = CollUtil.newArrayList(101L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(21);
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level team");
         assertThat(memberToTeamMap.get(101L).get(1).getTeamId()).isEqualTo(221);
-        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level 2 team");
+        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level 2 team");
     }
 
     @Test
-    public void testBatchGetFullHierarchyTeamNamesThatMemberInDifferentTeamsWithSameBranch(){
+    public void testBatchGetFullHierarchyTeamNamesThatMemberInDifferentTeamsWithSameBranch() {
         // prepare member and team info
         this.prepareMemberAndTeamInfo();
 
         // prepare member and team rel
-        TeamMemberRelEntity rel = TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
-        teamMemberRelService.save(rel);
-        TeamMemberRelEntity rel2 = TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(21L).build();
-        teamMemberRelService.save(rel2);
-        TeamMemberRelEntity rel3 = TeamMemberRelEntity.builder().id(333L).memberId(101L).teamId(31L).build();
-        teamMemberRelService.save(rel3);
+        TeamMemberRelEntity rel =
+            TeamMemberRelEntity.builder().id(111L).memberId(101L).teamId(11L).build();
+        iTeamMemberRelService.save(rel);
+        TeamMemberRelEntity rel2 =
+            TeamMemberRelEntity.builder().id(222L).memberId(101L).teamId(21L).build();
+        iTeamMemberRelService.save(rel2);
+        TeamMemberRelEntity rel3 =
+            TeamMemberRelEntity.builder().id(333L).memberId(101L).teamId(31L).build();
+        iTeamMemberRelService.save(rel3);
 
         List<Long> memberIds = CollUtil.newArrayList(101L);
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
-        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team");
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, "spc1");
+        assertThat(memberToTeamMap.get(101L).get(0).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team");
         assertThat(memberToTeamMap.get(101L).get(0).getTeamId()).isEqualTo(11);
-        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team");
+        assertThat(memberToTeamMap.get(101L).get(1).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level team");
         assertThat(memberToTeamMap.get(101L).get(1).getTeamId()).isEqualTo(21);
-        assertThat(memberToTeamMap.get(101L).get(2).getFullHierarchyTeamName()).isEqualTo("NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
+        assertThat(memberToTeamMap.get(101L).get(2).getFullHierarchyTeamName()).isEqualTo(
+            "NO.1 first-level team/NO.1 second-level team/NO.1 third-level team");
         assertThat(memberToTeamMap.get(101L).get(2).getTeamId()).isEqualTo(31);
     }
 
     private void prepareMemberAndTeamInfo() {
         // prepare root team
-        TeamEntity rootTeam = TeamEntity.builder().id(1L).spaceId("spc1").parentId(0L).teamName("root team").build();
+        TeamEntity rootTeam =
+            TeamEntity.builder().id(1L).spaceId("spc1").parentId(0L).teamName("root team").build();
         iTeamService.save(rootTeam);
 
         // prepare first-level teams
-        TeamEntity firstLevelOneTeam = TeamEntity.builder().id(11L).spaceId("spc1").parentId(1L).teamName("NO.1 first-level team").build();
+        TeamEntity firstLevelOneTeam = TeamEntity.builder().id(11L).spaceId("spc1").parentId(1L)
+            .teamName("NO.1 first-level team").build();
         iTeamService.save(firstLevelOneTeam);
-        TeamEntity firstLevelSecondTeam = TeamEntity.builder().id(12L).spaceId("spc1").parentId(1L).teamName("NO.2 first-level team").build();
+        TeamEntity firstLevelSecondTeam = TeamEntity.builder().id(12L).spaceId("spc1").parentId(1L)
+            .teamName("NO.2 first-level team").build();
         iTeamService.save(firstLevelSecondTeam);
 
         // prepare second-level teams
-        TeamEntity secondLevelOneTeam = TeamEntity.builder().id(21L).spaceId("spc1").parentId(11L).teamName("NO.1 second-level team").build();
+        TeamEntity secondLevelOneTeam = TeamEntity.builder().id(21L).spaceId("spc1").parentId(11L)
+            .teamName("NO.1 second-level team").build();
         iTeamService.save(secondLevelOneTeam);
-        TeamEntity secondLevelOneTeamWithSameParentTeam = TeamEntity.builder().id(221L).spaceId("spc1").parentId(11L).teamName("NO.1 second-level 2 team").build();
+        TeamEntity secondLevelOneTeamWithSameParentTeam =
+            TeamEntity.builder().id(221L).spaceId("spc1").parentId(11L)
+                .teamName("NO.1 second-level 2 team").build();
         iTeamService.save(secondLevelOneTeamWithSameParentTeam);
-        TeamEntity secondLevelSecondTeam = TeamEntity.builder().id(22L).spaceId("spc1").parentId(12L).teamName("NO.2 second-level team").build();
+        TeamEntity secondLevelSecondTeam =
+            TeamEntity.builder().id(22L).spaceId("spc1").parentId(12L)
+                .teamName("NO.2 second-level team").build();
         iTeamService.save(secondLevelSecondTeam);
 
         // prepare third-level team
-        TeamEntity thirdLevelOneTeam = TeamEntity.builder().id(31L).spaceId("spc1").parentId(21L).teamName("NO.1 third-level team").build();
+        TeamEntity thirdLevelOneTeam = TeamEntity.builder().id(31L).spaceId("spc1").parentId(21L)
+            .teamName("NO.1 third-level team").build();
         iTeamService.save(thirdLevelOneTeam);
     }
 }

@@ -54,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -78,18 +79,19 @@ public class StaticsServiceImpl implements IStaticsService {
     @Resource
     private RedisTemplate<String, Long> redisTemplate;
 
+    @Value("${SKIP_USAGE_VERIFICATION:false}")
+    private Boolean skipUsageVerification;
+
     @Override
     public long getCurrentMonthApiUsage(String spaceId) {
+        if (Boolean.TRUE.equals(skipUsageVerification)) {
+            return 0;
+        }
         // Get the API usage of this month up to yesterday
         Long apiUsageUntilYesterday = this.getCurrentMonthApiUsageUntilYesterday(spaceId);
         // If it is NULL, it indicates that the daily API usage statistics table is empty, and the old method is adopted
         if (apiUsageUntilYesterday == null) {
-            Long minId = this.getApiUsageTableMinId();
-            // The minimum table ID of this month does not exist, that is, there is no call record
-            if (minId == null) {
-                return 0;
-            }
-            return SqlTool.retCount(staticsMapper.countApiUsageBySpaceId(spaceId, minId));
+            return this.getCurrentMonthApiUsageWithCache(spaceId);
         } else {
             return apiUsageUntilYesterday + this.getTodayApiUsage(spaceId);
         }
@@ -143,6 +145,25 @@ public class StaticsServiceImpl implements IStaticsService {
                 .set(monthKey, totalSum, DateHelper.todayTimeLeft(), TimeUnit.SECONDS);
             return totalSum;
         }
+    }
+
+    private Long getCurrentMonthApiUsageWithCache(String spaceId) {
+        Long minId = this.getApiUsageTableMinId();
+        // The minimum table ID of this month does not exist, that is, there is no call record
+        if (minId == null) {
+            return 0L;
+        }
+        // Get today's API usage cache
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String cacheKey =
+            StrUtil.format(GENERAL_STATICS, "api-" + format.format(new Date()), spaceId);
+        Object apiUsageToday = redisTemplate.opsForValue().get(cacheKey);
+        if (apiUsageToday == null) {
+            apiUsageToday = staticsMapper.countApiUsageBySpaceId(spaceId, minId);
+            redisTemplate.opsForValue()
+                .set(cacheKey, Long.valueOf(apiUsageToday.toString()), 2, TimeUnit.HOURS);
+        }
+        return Long.valueOf(apiUsageToday.toString());
     }
 
     private Long getApiUsageTableMinId() {

@@ -370,3 +370,21 @@ export const computedFormattingToFormat = (format: IOpenComputedFormat): IComput
   }
   return formatting;
 };
+
+export const isBasicField = (fieldType: FieldType) => {
+  return fieldType === FieldType.Text ||
+    fieldType === FieldType.Number ||
+    fieldType === FieldType.SingleSelect ||
+    fieldType === FieldType.MultiSelect ||
+    fieldType === FieldType.DateTime ||
+    fieldType === FieldType.URL ||
+    fieldType === FieldType.Email ||
+    fieldType === FieldType.Phone ||
+    fieldType === FieldType.Checkbox ||
+    fieldType === FieldType.Rating ||
+    fieldType === FieldType.Member ||
+    fieldType === FieldType.Currency ||
+    fieldType === FieldType.Percent ||
+    fieldType === FieldType.SingleText ||
+    fieldType === FieldType.Attachment;
+};

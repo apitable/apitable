@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import * as React from 'react';
+import { Select, useThemeColors } from '@apitable/components';
 import { FilterConjunction as CoreFilterConjunction, FilterConjunctionDescMap, IFilterInfo, Strings, t } from '@apitable/core';
-import styles from './style.module.less';
-import { ExecuteFilterFn } from '../interface';
 import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
-import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Select, useThemeColors } from '@apitable/components';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useResponsive } from 'pc/hooks';
+import * as React from 'react';
+import { useContext } from 'react';
+import { ExecuteFilterFn } from '../interface';
+import styles from './style.module.less';
 
 interface IConjunctionProps {
   conjunction: string;
@@ -35,7 +36,7 @@ interface IConjunctionProps {
 
 export const FilterConjunction: React.FC<React.PropsWithChildren<IConjunctionProps>> = props => {
   const { conjunction, conditionIndex, changeFilter } = props;
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const color = useThemeColors();

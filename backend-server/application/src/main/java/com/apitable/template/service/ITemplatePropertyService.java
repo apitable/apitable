@@ -36,6 +36,11 @@ import java.util.Map;
 public interface ITemplatePropertyService extends IService<TemplatePropertyEntity> {
 
     /**
+     * Get template category entity by name.
+     */
+    TemplatePropertyEntity getTemplateCategoryByName(String name);
+
+    /**
      * Get template category entity.
      */
     TemplatePropertyEntity getTemplateCategory(String propertyCode);

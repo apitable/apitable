@@ -30,6 +30,7 @@ import {
   IUpdateSaveAsTemplateModalNodeIdAction, IUpdateShareModalNodeIdAction, IUpdateSocketDataAction, IUpdateTreeNodesMapAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
+import { uniq } from 'lodash';
 
 const defaultState: ICatalogTree = {
   /**
@@ -290,7 +291,7 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
         draftCatalogTree.favoriteTreeNodeIds = nodeIds;
         return draftCatalogTree;
       }
-      draftCatalogTree.favoriteTreeNodeIds = [...nodeIds, ...draftCatalogTree.favoriteTreeNodeIds];
+      draftCatalogTree.favoriteTreeNodeIds = uniq([...nodeIds, ...draftCatalogTree.favoriteTreeNodeIds]);
       return draftCatalogTree;
     }
     case actions.REMOVE_FAVORITE_NODE: {

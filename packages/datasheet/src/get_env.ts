@@ -21,6 +21,8 @@
  */
 export const getEnvVars = () => {
   return {
+    LOGIN_MOTTO: process.env.LOGIN_MOTTO,
+    LOGIN_SOCIAL_ICONS_DISABLE: process.env.LOGIN_SOCIAL_ICONS_DISABLE,
     DINGTALK_LOGIN_APPID: process.env.DINGTALK_LOGIN_APPID,
     QQ_CONNECT_WEB_APPID: process.env.QQ_CONNECT_WEB_APPID,
     integration_feishu_login_appid: process.env.integration_feishu_login_appid,
@@ -28,7 +30,6 @@ export const getEnvVars = () => {
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,
     WECHAT_MP_QR_CODE: process.env.WECHAT_MP_QR_CODE,
-    INTERCOM_APPID: process.env.INTERCOM_APPID,
     FORCE_HTTPS: process.env.FORCE_HTTPS,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SHOW_RECORD_CARD_SETTING: process.env.SHOW_RECORD_CARD_SETTING,
@@ -164,7 +165,7 @@ export const getEnvVars = () => {
     LOGO_TEXT_DARK: process.env.LOGO_TEXT_DARK,
     CUSTOMER_SERVICE_QRCODE_VISIBLE: process.env.CUSTOMER_SERVICE_QRCODE_VISIBLE === 'true',
     LOGIN_LOGO: process.env.LOGIN_LOGO,
-    INTERCOM_VISIBLE: process.env.INTERCOM_VISIBLE === 'true',
+    LIVECHAT_VISIBLE: process.env.LIVECHAT_VISIBLE === 'true',
     EMBED_ERROR_PAGE_HELP_URL: process.env.EMBED_ERROR_PAGE_HELP_URL,
     // private config
     LOGIN_OFFICIAL_WEBSITE_URL: process.env.LOGIN_OFFICIAL_WEBSITE_URL,
@@ -202,6 +203,7 @@ export const getEnvVars = () => {
     INVITE_USER_BY_AUTH0: process.env.INVITE_USER_BY_AUTH0 === 'true',
     ALARM_TIME_UTC_VISIBLE: process.env.ALARM_TIME_UTC_VISIBLE === 'true',
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
+    APITABLE_NAME: process.env.APITABLE_NAME,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
@@ -223,7 +225,10 @@ export const getEnvVars = () => {
     WIDGET_CENTER_INFO_IMAGE: process.env.WIDGET_CENTER_INFO_IMAGE,
     RENDER_NORMAL_INFO_IMAGE: process.env.RENDER_NORMAL_INFO_IMAGE,
     VIEW_MANUAL_SAVE_INFO_IMAGE: process.env.VIEW_MANUAL_SAVE_INFO_IMAGE,
-    ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
     IS_CANVAS_IMAGE_CROSS_ORIGIN: process.env.IS_CANVAS_IMAGE_CROSS_ORIGIN === 'true',
+    GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
+    ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
+    FORM_LOGIN_URL: process.env.FORM_LOGIN_URL,
+    TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
   };
 };

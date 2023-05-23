@@ -24,7 +24,8 @@ spring:
     password: ${REDIS_PASSWORD:apitable@com}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:0}
-    timeout: 30000
+    timeout: ${REDIS_TIMEOUT:30000}
+    ssl: ${REDIS_SSL_ENABLED:false}
   rabbitmq:
     addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:apitable}
@@ -62,6 +63,9 @@ spring:
 
 cookie:
   domain-name: ${DOMAIN_NAME:}
+  http-only: ${COOKIES_HTTP_ONLY:true}
+  secure: ${COOKIES_SECURE:false}
+  same-site: ${COOKIES_SAME_SITE:}
 const:
   language-tag: ${DEFAULT_LOCALE:en-US}
   server-domain: ${SERVER_DOMAIN:}
@@ -87,7 +91,7 @@ limit:
   dsb-widget-max-count: ${DSB_WIDGET_MAX_COUNT:30}
   dst-robot-max-count: ${DST_ROBOT_MAX_COUNT:10}
 socket:
-  domain: ${SOCKET_DOMAIN:http://127.0.0.1:3001/socket}
+  domain: ${SOCKET_DOMAIN:http://127.0.0.1:3333/socket}
 
 email:
   personal: ${EMAIL_PERSONAL:APITable}
@@ -178,3 +182,8 @@ springdoc:
     enabled: ${API_DOCS_ENABLED:false}
   swagger-ui:
     enabled: ${API_DOCS_ENABLED:false}
+
+system:
+  default-time-zone: ${DEFAULT_TIME_ZONE:UTC}
+  test-enabled: ${TEST_ENABLED:false}
+

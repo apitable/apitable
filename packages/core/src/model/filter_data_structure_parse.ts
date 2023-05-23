@@ -172,14 +172,18 @@ export function parseInnerFilter(filterInfo: IOpenFilterInfo, context: {
     const fieldBind = Field.bindContext(field, state);
     const conditionId = getNewId(IDPrefix.Condition, exitIds);
     const valueMapKey = getFieldTypeString(field.type);
-    const operator = Object.keys(valueMap[valueMapKey])[0];
+    const filterValueMap = valueMap[valueMapKey];
+    if (filterValueMap == null) {
+      return;
+    }
+    const operator = Object.keys(filterValueMap)[0];
     exitIds.push(conditionId);
     return {
       conditionId,
       fieldId: fieldKey,
       fieldType: field.type,
       operator,
-      value: fieldBind.openFilterValueToFilterValue(valueMap[valueMapKey][operator])
+      value: fieldBind.openFilterValueToFilterValue(filterValueMap[operator])
     } as IFilterCondition;
   };
   const parseConditionGroup = (conditionGroup: IOpenFilterConditionGroup) => {
@@ -261,7 +265,7 @@ export function parseFilterExpressByOpenFilter(filterInfo: IOpenFilterInfo, cont
     }
     const fieldBind = Field.bindContext(field, state);
     const fieldType = Object.keys(valueMap)[0];
-    if (!fieldType) {
+    if (!fieldType || getFieldTypeString(field.type) !== fieldType) {
       return;
     }
     const value = valueMap[fieldType];

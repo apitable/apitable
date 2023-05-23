@@ -22,8 +22,7 @@ import com.apitable.core.util.SpringContextHolder;
 import com.apitable.shared.clock.Clock;
 import com.apitable.shared.clock.DefaultClock;
 import com.apitable.shared.clock.MockClock;
-import com.apitable.shared.component.SystemEnvironmentVariable;
-import com.apitable.shared.config.ServerConfig;
+import com.apitable.shared.config.properties.SystemProperties;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -41,13 +40,10 @@ public class ClockManager implements InitializingBean {
 
     private Clock clock;
 
-    private final ServerConfig serverConfig;
+    private final SystemProperties systemProperties;
 
-    private final SystemEnvironmentVariable environmentVariable;
-
-    public ClockManager(ServerConfig serverConfig, SystemEnvironmentVariable environmentVariable) {
-        this.serverConfig = serverConfig;
-        this.environmentVariable = environmentVariable;
+    public ClockManager(SystemProperties systemProperties) {
+        this.systemProperties = systemProperties;
     }
 
     public static ClockManager me() {
@@ -60,7 +56,7 @@ public class ClockManager implements InitializingBean {
      * @return MockClock
      */
     public MockClock getMockClock() {
-        if (!environmentVariable.isTestEnabled()) {
+        if (!systemProperties.isTestEnabled()) {
             throw new UnsupportedOperationException(
                 "System has not been configured to update the time");
         }
@@ -74,7 +70,6 @@ public class ClockManager implements InitializingBean {
      */
     public OffsetDateTime getUtcNow() {
         if ((clock instanceof MockClock)) {
-            log.info("mock clock");
             MockClock mockClock = (MockClock) clock;
             return mockClock.getUTCNow();
         }
@@ -90,7 +85,8 @@ public class ClockManager implements InitializingBean {
     public LocalDate getLocalDateNow() {
         OffsetDateTime utcNow = getUtcNow();
         log.info("utc now: {}", utcNow);
-        return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDate();
+        log.info("time zone: {}", systemProperties.getTimeZone());
+        return utcNow.withOffsetSameInstant(systemProperties.getTimeZone()).toLocalDate();
     }
 
     /**
@@ -101,7 +97,9 @@ public class ClockManager implements InitializingBean {
     public LocalDateTime getLocalDateTimeNow() {
         OffsetDateTime utcNow = getUtcNow();
         log.info("utc now: {}", utcNow);
-        return utcNow.withOffsetSameInstant(serverConfig.getTimeZone()).toLocalDateTime();
+        log.info("serverConfig hashCode in clock: " + systemProperties.hashCode());
+        log.info("time zone: {}", systemProperties.getTimeZone());
+        return utcNow.withOffsetSameInstant(systemProperties.getTimeZone()).toLocalDateTime();
     }
 
     /**
@@ -110,12 +108,12 @@ public class ClockManager implements InitializingBean {
      * @return ZoneId
      */
     public ZoneId getDefaultTimeZone() {
-        return this.serverConfig.getTimeZoneId();
+        return this.systemProperties.getTimeZoneId();
     }
 
     @Override
     public void afterPropertiesSet() {
-        if (environmentVariable.isTestEnabled()) {
+        if (systemProperties.isTestEnabled()) {
             clock = new MockClock();
         } else {
             clock = new DefaultClock();

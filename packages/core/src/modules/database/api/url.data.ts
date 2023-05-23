@@ -105,7 +105,7 @@ export const READ_SHARE_DATAPACK = '/share/:shareId/datasheet/:dstId/dataPack';
 // template packet
 export const READ_TEMPLATE_DATAPACK = '/template/datasheet/:dstId/dataPack';
 // Get the form  Data of the embed page
-export const READ_EMBED_DATAPACK = '/embedlinks/:embedId/datasheets/:dstId/dataPack';
+export const READ_EMBED_DATAPACK = '/embedlinks/:embedId/resources/:dstId/dataPack';
 // get user list
 export const GET_USER_LIST = '/datasheet/:nodeId/users';
 // Get the Meta corresponding to the datasheet

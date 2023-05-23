@@ -1,7 +1,6 @@
-{{USER_NAME}} invited you to join the "{{SPACE_NAME}}" Space
+{{MEMBER_NAME}} invited you to join the "{{SPACE_NAME}}"
 
 --------------------------------------------------------------------------------
-
 
 
 Click on the link to enter the Space: {{INVITE_URL}}
@@ -9,4 +8,4 @@ Click on the link to enter the Space: {{INVITE_URL}}
 
 © {{YEARS}} APITable Ltd.
 
-Contact us (https://apitable.com/?home=1)
+Contact us (https://apitable.com?home=1)

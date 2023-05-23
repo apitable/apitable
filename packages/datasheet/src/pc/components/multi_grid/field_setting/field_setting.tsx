@@ -303,8 +303,12 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
 
     // If a mounted dom is specified, no prompt will be given
     if (ExecuteResult.Success === result.result && !targetDOM) {
-      // cascader field linkedDatasheetId changes need update cascader snapshot
-      if (newField.type === FieldType.Cascader && fieldInfoForState.property?.linkedDatasheetId !== newField.property.linkedDatasheetId) {
+      // cascader field linkedDatasheetId or linkedViewId changes need update cascader snapshot
+      if (newField.type === FieldType.Cascader &&
+        (fieldInfoForState.property?.linkedDatasheetId !== newField.property.linkedDatasheetId ||
+          fieldInfoForState.property?.linkedViewId !== newField.property.linkedViewId
+        )
+      ) {
         setSubmitPending(true);
         DatasheetApi.updateCascaderSnapshot({
           spaceId,

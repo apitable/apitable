@@ -51,7 +51,7 @@ describe('Test FusionNodeApiService', () => {
 
   it('should be return edit space\'s datasheets', async() => {
     jest.spyOn(restService, 'getNodesList').mockResolvedValue([
-      {nodeId: 'datasheetId', nodeName: 'datasheetId', type: 2, icon: '100', parentId: 'parentId'}
+      { nodeId: 'datasheetId', nodeName: 'datasheetId', type: 2, icon: '100', parentId: 'parentId' }
     ] as any);
     const nodes = await service.getNodeList('spaceId', 2,'editor');
     expect(nodes.length).toEqual(1);

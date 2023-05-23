@@ -284,7 +284,7 @@ public class NotificationFactory implements INotificationFactory {
                     .memberId(a.getMemberId())
                     .memberName(StrUtil.nullToDefault(a.getMemberName(), CharSequenceUtil.EMPTY))
                     .team(StrUtil.nullToDefault(a.getTeam(), CharSequenceUtil.EMPTY))
-                    .avatarColor(a.getColor())
+                    .avatarColor(ObjectUtil.defaultIfNull(a.getColor(), 1))
                     .nickName(StrUtil.nullToDefault(a.getNickName(), CharSequenceUtil.EMPTY))
                     .isNickNameModified(a.getIsNickNameModified())
                     .isMemberNameModified(a.getIsMemberNameModified())
@@ -296,10 +296,13 @@ public class NotificationFactory implements INotificationFactory {
                 players.putAll(users.stream()
                     .collect(Collectors.toMap(UserEntity::getId,
                         a -> PlayerBaseVo.builder().playerType(PlayerType.VISITORS.getType())
-                            .userName(a.getNickName())
+                            .userName(
+                                StrUtil.nullToDefault(a.getNickName(), CharSequenceUtil.EMPTY))
                             .isNickNameModified(Objects.isNull(a.getIsSocialNameModified())
                                 || a.getIsSocialNameModified() != 0)
-                            .uuid(a.getUuid()).avatar(a.getAvatar()).email(a.getEmail())
+                            .uuid(StrUtil.nullToDefault(a.getUuid(), CharSequenceUtil.EMPTY))
+                            .avatar(StrUtil.nullToDefault(a.getAvatar(), CharSequenceUtil.EMPTY))
+                            .email(StrUtil.nullToDefault(a.getEmail(), CharSequenceUtil.EMPTY))
                             .isDeleted(true).build(),
                         (k1, k2) -> k1)));
             }

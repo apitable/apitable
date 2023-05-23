@@ -1,5 +1,5 @@
 import { IReduxState, IViewProperty, IViewRow, ViewType, ViewDerivateFactory, Selectors } from '@apitable/core';
-import { IWidgetContext } from 'interface';
+import { ISortedField, IWidgetContext } from 'interface';
 import { getSnapshot } from 'store';
 import { Record } from './record';
 
@@ -105,8 +105,8 @@ export class View {
    */
   public getRecordsAsync(
     options?: {
-      recordIds?: []
-      sorts: [],
+      recordIds?: string[],
+      sorts?: ISortedField[],
     }
   ): Record[] {
     const { rows } = this.viewData;

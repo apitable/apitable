@@ -70,4 +70,13 @@ public interface AssetMapper extends BaseMapper<AssetEntity> {
      * @return updated rows
      */
     Integer updateFileSizeMimeTypeById(@Param("entity") AssetEntity asset);
+
+    /**
+     * Query Invalid Asset
+     *
+     * @param minutes waiting minutes
+     * @return List<AssetEntity>
+     * @author Chambers
+     */
+    List<AssetEntity> selectInvalidAsset(@Param("minutes") Integer minutes);
 }

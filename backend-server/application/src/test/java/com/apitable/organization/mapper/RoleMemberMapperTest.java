@@ -18,26 +18,22 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.organization.dto.RoleMemberInfoDTO;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
 
-    @Resource
+    @Autowired
     RoleMemberMapper roleMemberMapper;
 
     @Test
@@ -51,7 +47,8 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/unit-role-member-data.sql")
     void givenTwoRoleMembersWhenDeleteByRoleIdAndUnitRefIdsThenGetZeroMemberIds() {
-        Integer count = roleMemberMapper.deleteByRoleIdAndUnitRefIds(20220824L, CollUtil.newArrayList(2022082401L, 2022082402L));
+        Integer count = roleMemberMapper.deleteByRoleIdAndUnitRefIds(20220824L,
+            CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(count).isEqualTo(2);
         Set<Long> memberIds = roleMemberMapper.selectUnitRefIdsByRoleId(20220824L);
         assertThat(memberIds.size()).isEqualTo(0);
@@ -69,7 +66,8 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTwoRoleMembersWhenSelectRoleMembersByRoleIdsThenTwoRoleMebers() {
-        List<RoleMemberInfoDTO> roleMembers = roleMemberMapper.selectRoleMembersByRoleIds(CollUtil.newArrayList(20220824L));
+        List<RoleMemberInfoDTO> roleMembers =
+            roleMemberMapper.selectRoleMembersByRoleIds(CollUtil.newArrayList(20220824L));
         assertThat(roleMembers.size()).isEqualTo(2);
     }
 
@@ -77,14 +75,16 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTwoRoleMembersWhenSelectRoleMembersByRoleIdThenPageRecordsEqualsTwo() {
         Page<Void> page = new Page<>();
-        IPage<RoleMemberInfoDTO> roleMemberPage = roleMemberMapper.selectRoleMembersByRoleId(20220824L, page);
+        IPage<RoleMemberInfoDTO> roleMemberPage =
+            roleMemberMapper.selectRoleMembersByRoleId(20220824L, page);
         assertThat(roleMemberPage.getRecords().size()).isEqualTo(2);
     }
 
     @Test
     @Sql("/sql/unit-role-member-data.sql")
     void givenTowRoleMembersWhenDeleteByUnitRefIdsThenSuccess() {
-        int count = roleMemberMapper.deleteByUnitRefIds(CollUtil.newArrayList(2022082401L, 2022082402L));
+        int count =
+            roleMemberMapper.deleteByUnitRefIds(CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(count).isEqualTo(2);
         Set<Long> memberIds = roleMemberMapper.selectUnitRefIdsByRoleId(20220824L);
         assertThat(memberIds.size()).isEqualTo(0);
@@ -101,7 +101,9 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTowRoleMembersWhenSelectRoleMembersByRoleIdAndUnitRefIdsThenRoleMembers() {
-        List<RoleMemberInfoDTO> roleMembers = roleMemberMapper.selectRoleMembersByRoleIdAndUnitRefIds(20220824L, CollUtil.newArrayList(2022082401L, 2022082402L));
+        List<RoleMemberInfoDTO> roleMembers =
+            roleMemberMapper.selectRoleMembersByRoleIdAndUnitRefIds(20220824L,
+                CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(roleMembers.size()).isEqualTo(2);
     }
 

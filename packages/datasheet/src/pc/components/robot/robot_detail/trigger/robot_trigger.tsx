@@ -45,7 +45,7 @@ interface IRobotTriggerBase {
   trigger: IRobotTrigger;
   mutate: any;
   triggerTypes: ITriggerType[];
-  formList:  IFormNodeItem[];
+  formList: IFormNodeItem[];
   datasheetId?: string;
   datasheetName?: string;
 }

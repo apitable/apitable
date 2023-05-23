@@ -23,16 +23,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.space.dto.DatasheetStaticsDTO;
-import com.apitable.space.service.IStaticsService;
 import com.apitable.workspace.enums.ViewType;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 
 public class StatisticsServiceImplTest extends AbstractIntegrationTest {
-    @Resource
-    private IStaticsService iStaticsService;
 
     @Test
     void testGetDatasheetStaticsBySpaceIdFromCacheForNull() {
@@ -41,7 +37,6 @@ public class StatisticsServiceImplTest extends AbstractIntegrationTest {
             iStaticsService.getDatasheetStaticsBySpaceIdFromCache(userSpace.getSpaceId());
         assertThat(dto).isNull();
     }
-
 
     @Test
     void testGetDatasheetStaticsBySpaceIdFromCache() {
@@ -54,7 +49,6 @@ public class StatisticsServiceImplTest extends AbstractIntegrationTest {
         assertThat(result).isNotNull();
         assertThat(result.getGanttViews()).isEqualTo(1L);
     }
-
 
     @Test
     void setDatasheetStaticsBySpaceIdAndViewTypeWhileNotCacheable() {

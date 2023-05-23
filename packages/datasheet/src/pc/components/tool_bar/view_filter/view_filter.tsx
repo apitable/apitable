@@ -25,6 +25,7 @@ import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { PopUpTitle } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
@@ -156,30 +157,33 @@ const ViewFilterBase = (props: IViewFilter) => {
   }
 
   return (
-    <div ref={containerRef} className={classNames(styles.viewFilter, styles.shadow)}>
-      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <PopUpTitle title={t(Strings.set_filter)} infoUrl={t(Strings.filter_help_url)} variant={'h7'} className={styles.boxTop} />
-        <SyncViewTip />
-      </ComponentDisplay>
-      <div ref={childRef} style={{ ...style, overflow: 'auto' }}>
-        <ConditionList filterInfo={activeViewFilter} fieldMap={fieldMap} changeFilter={changeFilter} deleteFilter={deleteFilter} />
-        <div ref={scrollShadowRef} className={classNames(!isMobile && styles.scrollShadow)} />
-      </div>
-      {
-        <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-          <div
-            className={classNames(styles.addNewButton, { [styles.disabled]: isViewLock })}
-            onClick={!isViewLock ? commandForAddViewFilter : undefined}
-          >
-            <div className={styles.iconAdd}>
-              <AddOutlined size={16} color={colors.thirdLevelText} />
+    <ViewFilterContext.Provider value={{ isViewLock }}>
+      <div ref={containerRef} className={classNames(styles.viewFilter, styles.shadow)}>
+        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+          <PopUpTitle title={t(Strings.set_filter)} infoUrl={t(Strings.filter_help_url)} variant={'h7'} className={styles.boxTop} />
+          <SyncViewTip />
+        </ComponentDisplay>
+        <div ref={childRef} style={{ ...style, overflow: 'auto' }}>
+          <ConditionList filterInfo={activeViewFilter} fieldMap={fieldMap} changeFilter={changeFilter} deleteFilter={deleteFilter} />
+          <div ref={scrollShadowRef} className={classNames(!isMobile && styles.scrollShadow)} />
+        </div>
+        {
+          <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+            <div
+              className={classNames(styles.addNewButton, { [styles.disabled]: isViewLock })}
+              onClick={!isViewLock ? commandForAddViewFilter : undefined}
+            >
+              <div className={styles.iconAdd}>
+                <AddOutlined size={16} color={colors.thirdLevelText} />
+              </div>
+              {t(Strings.add_filter)}
             </div>
-            {t(Strings.add_filter)}
-          </div>
-        </WrapperTooltip>
-      }
+          </WrapperTooltip>
+        }
 
-    </div>
+      </div>
+    </ViewFilterContext.Provider>
+
   );
 };
 

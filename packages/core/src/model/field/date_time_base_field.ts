@@ -46,7 +46,7 @@ import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'ut
 import { ICellToStringOption, ICellValue } from '../record';
 import { Field, ICellApiStringValueOptions } from './field';
 import { StatTranslate, StatType } from './stat';
-import { getTimeZoneAbbrByUtc } from '../../config';
+import { getTimeZoneAbbrByUtc, getTimeZone } from '../../config';
 import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
 import Joi from 'joi';
 import { DEFAULT_TIME_ZONE } from 'model';
@@ -121,7 +121,7 @@ const defaultProps = {
   dateFormat: DateFormat['YYYY/MM/DD'],
   timeFormat: TimeFormat['HH:mm'],
   includeTime: false,
-  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+  timeZone: getTimeZone(),
 };
 
 export const getDateTimeFormat = (props: IOptionalDateTimeFieldProperty) => {

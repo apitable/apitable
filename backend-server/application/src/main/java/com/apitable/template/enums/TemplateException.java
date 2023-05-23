@@ -59,6 +59,8 @@ public enum TemplateException implements BaseException {
 
     TEMPLATE_CATEGORY_NOT_EXIST(432, "Template category does not exist"),
 
+    TEMPLATE_CATEGORY_HAVE_BEEN_EXIST(432, "This template category have been existed."),
+
     ;
 
     private final Integer code;

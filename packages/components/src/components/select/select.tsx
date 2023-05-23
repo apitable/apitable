@@ -48,8 +48,8 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
     openSearch = false, searchPlaceholder, highlightStyle, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
-    onSelected, hideSelectedOption, dropdownRender, disabled, disabledTip, listStyle, listCls, renderValue = _renderValue, children, maxListWidth = 240,
-    popupStyle = {}
+    onSelected, hideSelectedOption, dropdownRender, disabled, disabledTip, listStyle, listCls, renderValue = _renderValue,
+    children, maxListWidth = 240, popupStyle = {}
   } = props;
   const [isInit, setIsInit] = useState(true);
   const theme = useProviderTheme();

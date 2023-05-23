@@ -22,15 +22,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.asset.enums.AssetType;
-import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.core.exception.BusinessException;
-import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 
 public class AssetUploadTokenServiceImplTest extends AbstractIntegrationTest {
-
-    @Resource
-    private IAssetUploadTokenService iAssetUploadTokenService;
 
     @Test
     public void testCreateSpaceAssetPreSignedUrlParameterException() {

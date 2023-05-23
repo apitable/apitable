@@ -40,6 +40,12 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
         @Param("propertyCode") String propertyCode, @Param("propertyType") Integer propertyType);
 
     /**
+     * Query entity by property type and name.
+     */
+    TemplatePropertyEntity selectByPropertyTypeAndPropertyName(
+        @Param("propertyType") Integer propertyType, @Param("propertyName") String propertyName);
+
+    /**
      * query property names by property codes
      */
     List<String> selectPropertyNameByPropertyCodeIn(@Param("propertyCodes") List<String> propertyCodes);

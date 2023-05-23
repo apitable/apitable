@@ -37,10 +37,14 @@ function getClientReferenceId() {
   return window['Rewardful'] && window['Rewardful'].referral || ('checkout_' + (new Date).getTime());
 }
 
+function getStripeCoupon() {
+  return window['Rewardful'] && window['Rewardful'].coupon || '';
+}
+
 const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useSelector(state => state.space.activeId);
-  const { product, recurringInterval } = useSelector(state => state.billing?.subscription) || {};
+  const { product, recurringInterval, onTrial } = useSelector(state => state.billing?.subscription) || {};
   const [loading, setLoading] = useState(true);
   const vars = getEnvVariables();
 
@@ -51,16 +55,6 @@ const UpgradeSpace = () => {
       return;
     }
 
-    const initIframe = () => {
-      iframeRef.current?.contentWindow?.postMessage(
-        {
-          msg: 'fromVikaUpgrade',
-          product,
-          recurringInterval,
-        },
-        '*',
-      );
-    };
     const receiveMes = (event: any) => {
       if (!event) {
         return;
@@ -70,6 +64,15 @@ const UpgradeSpace = () => {
       } = event;
 
       if (msg === 'pageLoaded') {
+        iframeRef.current?.contentWindow?.postMessage(
+          {
+            msg: 'fromVikaUpgrade',
+            product,
+            recurringInterval,
+            trial: onTrial
+          },
+          '*',
+        );
         setLoading(false);
       }
 
@@ -84,7 +87,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -105,7 +108,7 @@ const UpgradeSpace = () => {
             cancelText: t(Strings.cancel),
             zIndex: 1100,
             onOk: async() => {
-              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
+              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
               const { url } = res.data;
               location.href = url;
               // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -125,7 +128,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId());
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -143,18 +146,16 @@ const UpgradeSpace = () => {
       }
 
     };
-    const dom = iframeRef.current;
-    dom?.addEventListener('load', initIframe);
+
     window.addEventListener('message', receiveMes);
 
     return () => {
-      dom?.removeEventListener('load', initIframe);
       window.removeEventListener('message', receiveMes);
     };
   }, [spaceId, product]);
 
   if (showTrialModal) {
-    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)} />;
+    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
   const iframeSrc = location.origin + '/pricing/';
@@ -163,20 +164,20 @@ const UpgradeSpace = () => {
   return <div className={styles.container}>
     {
       loading && <div className={styles.loading}>
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
 
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
 
-        <Skeleton width='38%' />
-        <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width='38%'/>
+        <Skeleton count={2}/>
+        <Skeleton width='61%'/>
       </div>
     }
-    <iframe src={iframeSrc} ref={iframeRef} />
+    <iframe src={iframeSrc} ref={iframeRef}/>
   </div>;
 };
 

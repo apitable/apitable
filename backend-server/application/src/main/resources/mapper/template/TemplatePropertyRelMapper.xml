@@ -64,6 +64,12 @@
           AND template_id = #{templateId}
     </delete>
 
+    <delete id="deleteByPropertyCode">
+        DELETE
+        FROM ${tablePrefix}template_property_rel
+        WHERE property_code = #{propertyCode}
+    </delete>
+
     <delete id="deleteBatch">
         DELETE
         from ${tablePrefix}template_property_rel;

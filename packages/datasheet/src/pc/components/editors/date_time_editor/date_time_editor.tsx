@@ -22,7 +22,7 @@ import {
   DateFormat, diffTimeZone,
   Field,
   getDay,
-  getLanguage, getTimeZoneAbbrByUtc,
+  getLanguage, getTimeZone, getTimeZoneAbbrByUtc,
   getToday,
   IDateTimeField,
   IRecordAlarmClient,
@@ -445,7 +445,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
     let abbr = '';
     if (includeTimeZone) {
-      const tz = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const tz = timeZone || getTimeZone();
       abbr = getTimeZoneAbbrByUtc(tz)!;
     }
 

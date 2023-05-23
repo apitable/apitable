@@ -29,6 +29,14 @@
           AND is_deleted = 0 LIMIT 1
     </select>
 
+    <select id="selectByPropertyTypeAndPropertyName"
+            resultType="com.apitable.template.entity.TemplatePropertyEntity">
+        SELECT *
+        FROM ${tablePrefix}template_property
+        WHERE property_type = #{propertyType}
+          AND property_name = #{propertyName} LIMIT 1
+    </select>
+
     <select id="selectPropertyNameByPropertyCodeIn" resultType="java.lang.String">
         SELECT property_name
         FROM ${tablePrefix}template_property

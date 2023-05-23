@@ -4,7 +4,7 @@
   "new_folder_tooltip": "Create folder",
   "new_folder_btn_title": "Folder",
   "import_from_excel_tooltip": "Import .xlsx/.csv files",
-  "import_file_btn_title":  "Import",
+  "import_file_btn_title": "Import",
   "new_node_tooltip": "Create folders, datasheets, forms and more",
   "new_node_btn_title": "Add",
   "tool_bar_hidden": "Hide",
@@ -5324,6 +5324,8 @@
   "api_param_collaborator_status_bar_type_error": "the parameter collaboratorStatusBar must be a boolean type",
   "api_param_add_widget_btn_type_error": "the parameter addWidgetBtn must be a boolean type",
   "api_param_full_screen_btn_type_error": "the parameter fullScreenBtn must be a boolean type",
+  "api_param_form_setting_btn_type_error": "the parameter formSettingBtn must be a boolean type",
+  "api_attachment_file_size_error": "Uploaded attachment size is 0",
   "confirm_link_inconsistency_detected": "Abnormal data have been found in link cells, fix them automatically?",
   "archive_record_in_menu": "Archive record",
   "archive_records_in_menu": "Archive ${chose_num} records",
@@ -5388,5 +5390,7 @@
   "robot_action_send_mails_config_6_pleaseholder": "Enter message content",
   "cascader_snapshot_updating": "The cascader configuration is being updated, please be patient",
   "view_lock_setting_desc": "This view is locked, please unlock it before you edit it and save the view settings",
-  "cascader_field_configuration_err": "Please re-link the cascader configuration datasheet"
+  "cascader_field_configuration_err": "Please re-link the cascader configuration datasheet",
+  "give_feedback_to_translation": "To give feedback on the translation or help with localization, ",
+  "give_feedback_to_translation_learn_more": "learn more"
 }

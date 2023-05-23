@@ -30,9 +30,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useWxTitleMap } from '../konva_grid';
-import { IntercomProvider } from 'react-use-intercom';
 // @ts-ignore
-import { IntercomWrapper, WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
+import { WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
 
 export const SideWrapper = (props: { children: any }) => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
@@ -107,23 +106,22 @@ export const SideWrapper = (props: { children: any }) => {
     </div>
   );
 
-  const Wrapper = IntercomWrapper || IntercomProvider;
   const wrapperChildComponent = (
-    <Wrapper>
+    <>
       {
-        WatermarkWrapper ? 
+        WatermarkWrapper ?
           <WatermarkWrapper unitTitle={unitTitle}>
             {childComponent}
           </WatermarkWrapper> :
           childComponent
       }
-    </Wrapper>
+    </>
   );
 
   return (
     <>
       {
-        WecomContactWrapper ? 
+        WecomContactWrapper ?
           <WecomContactWrapper>
             {wrapperChildComponent}
           </WecomContactWrapper> :

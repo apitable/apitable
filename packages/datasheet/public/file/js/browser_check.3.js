@@ -28,7 +28,7 @@ const isClient = typeof window === 'object';
  */
 (function() {
   if (isClient && (!!window['ActiveXObject'] || 'ActiveXObject' in window)) {
-    window.location.pathname = '/not_support';
+    window.location.pathname = `/not_support?reference=${window.location.href}`;
   }
 })();
 
@@ -95,7 +95,7 @@ function versionCheck() {
     if (window['REACT_APP_DEPLOYMENT_MODELS']) {
       window.location.pathname = '/404';
     }
-    window.location.pathname = '/not_support';
+    window.location.pathname = `/not_support?reference=${window.location.href}`;
   }
 }
 
