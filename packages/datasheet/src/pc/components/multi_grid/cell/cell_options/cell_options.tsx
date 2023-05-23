@@ -68,7 +68,9 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
       return <></>;
     }
     const color = cacheTheme === ThemeName.Light ? getOptionNameColor(content, field) : colors.staticWhite0;
-    const iconColor = cacheTheme === ThemeName.Light ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
+    const iconColor = cacheTheme === ThemeName.Light ? 
+      (color === colors.firstLevelText ? 
+        colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
     const style: React.CSSProperties = {
       background: inquiryValueByKey('color', content, field, cacheTheme),
       color,
@@ -152,7 +154,9 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
               color,
             };
             const classname = classNames('tabItem', styles.tabItem, styles.multi);
-            const iconColor = cacheTheme === ThemeName.Light ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
+            const iconColor = cacheTheme === ThemeName.Light ?
+              (color === colors.firstLevelText ?
+                colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
             return (
               <div
                 style={style}
