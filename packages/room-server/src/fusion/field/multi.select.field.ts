@@ -28,7 +28,7 @@ import { FieldManager } from '../field.manager';
 @Injectable()
 export class MultiSelectField extends BaseField implements OnApplicationBootstrap {
   override validate(fieldValue: IFieldValue, field: IField, extra?: { [key: string]: string }) {
-    if (fieldValue === null) return;
+    if (fieldValue === null || fieldValue === '') return;
     if (isArray(fieldValue)) {
       for (const value of Object.values(fieldValue)) {
         if (!isString(value)) {
@@ -42,6 +42,9 @@ export class MultiSelectField extends BaseField implements OnApplicationBootstra
 
   // eslint-disable-next-line require-await
   override async roTransform(fieldValue: IFieldValue, field: IField): Promise<ICellValue> {
+    if (fieldValue === '') {
+      return null;
+    }
     const optionIds: string[] = [];
     for (const value of Object.values(fieldValue as string[])) {
       (field.property as ISelectFieldProperty).options.map(option => {

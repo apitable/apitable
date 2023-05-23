@@ -22,7 +22,7 @@ import { REQUEST } from '@nestjs/core';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { FastifyRequest } from 'fastify';
 import { FieldManager } from 'fusion/field.manager';
-import { flatten, isEmpty, keyBy } from 'lodash';
+import { flatten, keyBy } from 'lodash';
 import {
   API_MAX_MODIFY_RECORD_COUNTS,
   DATASHEET_ENRICH_SELECT_FIELD,
@@ -75,7 +75,7 @@ export class FieldPipe implements PipeTransform {
               fields[field.id] = null;
               continue;
             }
-            const transformedOptionIds = flatten([fieldValue]).filter(value => !isEmpty(value)).map(optionValue => {
+            const transformedOptionIds = flatten([fieldValue]).map(optionValue => {
               const { option, isCreated } = SelectField.getOrCreateNewOption({ name: optionValue }, existOptions);
               if (isCreated) {
                 existOptions.push(option);
