@@ -220,7 +220,7 @@
     </select>
 
     <select id="selectNodeInfo" resultType="com.apitable.workspace.vo.NodeInfo">
-        SELECT n.node_id, n.node_name, n.type, n.icon, IF(n2.parent_id = '0', NULL, n.parent_id), IF(nf.id IS NULL, 0 ,1) as node_favorite
+        SELECT n.node_id, n.node_name, n.type, n.icon, IF(n2.parent_id = '0', NULL, n.parent_id) as parent_id, IF(nf.id IS NULL, 0 ,1) as node_favorite
         FROM ${tablePrefix}node n
         LEFT JOIN ${tablePrefix}node n2 ON n2.node_id = n.parent_id
         LEFT JOIN ${tablePrefix}node_favorite nf ON nf.node_id = n.node_id AND nf.member_id = #{memberId}
