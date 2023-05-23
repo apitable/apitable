@@ -22,7 +22,6 @@ import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus } from 'pc/components/common';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { store } from 'pc/store';
 import { COLOR_INDEX_THRESHOLD, stopPropagation } from 'pc/utils';
 import { useCallback } from 'react';
@@ -33,6 +32,7 @@ import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './style.module.less';
+import { MouseDownType } from '../../enum';
 
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
   const item = field.property.options.find((item: { id: string; }) => item.id === id);
@@ -47,7 +47,7 @@ export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IFie
 
 interface ICellOptionsProps extends ICellComponentProps {
   keyPrefix?: string;
-  deletable?: boolean; 
+  deletable?: boolean;
   rowHeightLevel?: RowHeightLevel
 }
 

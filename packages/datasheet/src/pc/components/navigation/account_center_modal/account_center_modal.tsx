@@ -17,13 +17,13 @@
  */
 
 import { IconButton, useThemeColors } from '@apitable/components';
-import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@apitable/core';
+import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@apitable/core';
 import { CloseOutlined, ListOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 // @ts-ignore
-import { isSocialWecom, AccountWallet } from 'enterprise';
+import { AccountWallet, isSocialWecom } from 'enterprise';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
@@ -36,7 +36,6 @@ import { ModifyPassword } from './modify_password';
 import { Nav } from './nav';
 import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
-import { TestFunction } from './test_function';
 import { useResponsive } from 'pc/hooks';
 import { compact } from 'lodash';
 
@@ -108,11 +107,6 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
       key: AccountCenterModules.PersonalizedSetting,
       name: t(Strings.personalized_setting),
       component: <PersonalizedSetting />,
-    },
-    getEnvVariables().USER_SETTING_EXPERIMENTAL_FEATURES_VISIBLE && {
-      key: AccountCenterModules.TestFunction,
-      name: t(Strings.test_function),
-      component: <TestFunction isUser />,
     },
   ]);
 

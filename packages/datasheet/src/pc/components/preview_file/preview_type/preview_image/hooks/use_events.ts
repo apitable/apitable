@@ -17,10 +17,10 @@
  */
 
 import { ITransFormInfo, ITranslatePosition } from 'pc/components/preview_file/preview_file.interface';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { isWindowsOS } from 'pc/utils/os';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import getFixedState from '../get_fixed_state';
+import { MouseDownType } from '../../../../multi_grid';
 
 interface IImageEventsProps {
   imageEle: HTMLImageElement;

@@ -18,7 +18,7 @@
 
 import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import classNames from 'classnames';
-import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
+import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
 import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import styles from '../../styles.module.less';
@@ -109,7 +109,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
         data-test-id={'addRecord'}
       >
         {
-          !rightRegion && actualColumnIndex === 0 && createAble && 
+          !rightRegion && actualColumnIndex === 0 && createAble &&
           <AddOutlined color={colors.thirdLevelText} size={12} />
         }
       </div>

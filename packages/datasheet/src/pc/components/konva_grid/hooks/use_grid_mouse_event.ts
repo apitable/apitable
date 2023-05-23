@@ -54,12 +54,12 @@ import {
   KonvaGridViewContext,
   useAttachEvent,
 } from 'pc/components/konva_grid';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { createdBySubscritionMessage } from 'pc/utils/created_by_subscrition_message';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { batchActions } from 'redux-batched-actions';
+import { MouseDownType } from '../../multi_grid';
 
 const openDialog = (groupTab: any, tabCanvasX: number, tabCanvasY: number, data: any, groupField: ILinkField) => {
   const { width, height, canvasX, canvasY } = groupTab;
@@ -176,7 +176,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     activeUICell && setTimeout(() => {
       scrollToItem(activeUICell);
     }, 100);
-    
+
   }, [activeCell]);
 
   // Search

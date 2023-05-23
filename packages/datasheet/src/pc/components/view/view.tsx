@@ -17,11 +17,16 @@
  */
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
+import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import {
-  ConfigConstant, ICellUpdatedContext, IReduxState, OPEventNameEnums,
-  Selectors, StoreActions, Strings, t, ViewType, FieldType
-} from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined, EyeOpenOutlined } from '@apitable/icons';
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeOpenOutlined,
+  InfoCircleOutlined
+} from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { MobileGrid } from 'pc/components/mobile_grid';
@@ -32,7 +37,7 @@ import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
 import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { CalendarView } from '../calendar_view';
@@ -42,7 +47,6 @@ import { GalleryView } from '../gallery_view';
 import { GanttView } from '../gantt_view';
 import { KanbanView } from '../kanban_view';
 import { KonvaGridView } from '../konva_grid';
-import { GridViewContainer } from '../multi_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
@@ -50,7 +54,7 @@ import styles from './style.module.less';
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren> = () => {
   const colors = useThemeColors();
-  const { currentView, rows, linearRows, fieldMap } = useSelector((state: IReduxState) => {
+  const { currentView, rows } = useSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
@@ -122,11 +126,6 @@ export const View: React.FC<React.PropsWithChildren> = () => {
 
   useExpandWidget();
 
-  const useKonva = useMemo(() => {
-    return true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentView.id]);
-
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
@@ -149,19 +148,20 @@ export const View: React.FC<React.PropsWithChildren> = () => {
       {isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
       </ComponentDisplay>}
-      <div style={{ flex: '1 1 auto', height: '100%', paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : '' }}>
-        <AutoSizer className={classNames(styles.viewContainer, 'viewContainer')} style={{ width: '100%', height: '100%' }}>
+      <div style={{
+        flex: '1 1 auto',
+        height: '100%',
+        paddingTop: !isShowEmbedToolBar && embedInfo.viewControl?.tabBar ? '16px' : ''
+      }}>
+        <AutoSizer className={classNames(styles.viewContainer, 'viewContainer')}
+          style={{ width: '100%', height: '100%' }}>
           {({ height, width }) => {
             switch (currentView.type) {
               case ViewType.Grid: {
                 if (isMobile) {
                   return <MobileGrid width={width} height={height - 40} />;
                 }
-                return useKonva ? (
-                  <KonvaGridView width={width} height={height} />
-                ) : (
-                  <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />
-                );
+                return <KonvaGridView width={width} height={height} />;
               }
               case ViewType.Gallery:
                 return <GalleryView height={height} width={width} />;
@@ -174,7 +174,7 @@ export const View: React.FC<React.PropsWithChildren> = () => {
               case ViewType.OrgChart:
                 return <OrgChartView width={width} height={height - (isMobile ? 40 : 0)} isMobile={isMobile} />;
               default:
-                return <GridViewContainer linearRows={linearRows} rows={rows} rowCount={linearRows?.length} height={height} width={width} />;
+                return <KonvaGridView width={width} height={height} />;
             }
           }}
         </AutoSizer>

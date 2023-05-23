@@ -27,13 +27,13 @@ import { AreaType, GanttCoordinate, KonvaGanttViewContext, PointPosition, Scroll
 import { GridCoordinate, KonvaGridContext } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { dependsGroup2ChangeData } from 'pc/components/multi_grid/drag';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getParentNodeByClass } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { useCallback, useContext, useEffect } from 'react';
 import { checkFieldEditable } from './use_gantt_tasks';
+import { MouseDownType } from '../../multi_grid';
 
 interface IGanttMouseEventProps {
   gridInstance: GridCoordinate;
@@ -89,7 +89,7 @@ export const useGanttMouseEvent = ({
     setMouseStyle,
     scrollHandler
   } = useContext(KonvaGridContext);
-  
+
   const { startFieldId, endFieldId } = ganttStyle;
   const startField = fieldMap[startFieldId];
   const endField = fieldMap[endFieldId];
@@ -260,7 +260,7 @@ export const useGanttMouseEvent = ({
         visible: true
       });
     }
-    
+
   };
 
   const onHighlightSplitterMove = (e: KonvaEventObject<MouseEvent>) => {
@@ -344,7 +344,7 @@ export const useGanttMouseEvent = ({
       });
       return recordsData;
     }, []);
-    
+
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       data: recordsData,
@@ -420,7 +420,7 @@ export const useGanttMouseEvent = ({
   };
 
   const handleMouseStyle = (targetName: string) => {
-  
+
     if(isTaskLineDrawing) {
       setMouseStyle('grabbing');
       return;
@@ -433,9 +433,9 @@ export const useGanttMouseEvent = ({
       case KONVA_DATASHEET_ID.GANTT_ERROR_TASK_TIP:
       case KONVA_DATASHEET_ID.GANTT_GROUP_TOGGLE_BUTTON:
       case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_LEFT:
-      case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT: 
+      case KONVA_DATASHEET_ID.GANTT_BACK_TO_TASK_BUTTON_RIGHT:
       case KONVA_DATASHEET_ID.GANTT_LINE_POINT:
-      case KONVA_DATASHEET_ID.GANTT_LINE_TASK: 
+      case KONVA_DATASHEET_ID.GANTT_LINE_TASK:
       case KONVA_DATASHEET_ID.GANTT_LINE_SETTING: {
         return setMouseStyle('pointer');
       }
@@ -455,7 +455,7 @@ export const useGanttMouseEvent = ({
     document.addEventListener('mouseup', mouseUp);
     return () => document.removeEventListener('mouseup', mouseUp);
   }, [mouseUp]);
-  
+
   return {
     onClick,
     onMouseUp,
