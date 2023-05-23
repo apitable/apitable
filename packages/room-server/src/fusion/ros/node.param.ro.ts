@@ -17,8 +17,11 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsArray, IsOptional, IsString, IsEnum, IsInt, Max, Min } from 'class-validator';
+import { NodeTypeEnum } from 'shared/enums/node.enum';
+import { integerStringToArray } from 'shared/helpers/fusion.helper';
+import { ApiTipConstant } from '@apitable/core';
 
 export class NodeListParamRo {
   @ApiProperty({
@@ -65,25 +68,37 @@ export class NodeDetailParamRo {
 export class NodeListQueryRo {
 
   @ApiProperty({
-    type: Number,
+    type: String,
     required: true,
-    example: '2',
-    description: '1: folder 2: datasheet 3:form 4:dashboard 5: mirror',
+    example: 'Datasheet',
+    description: 'value in ("Folder", "Datasheet", "Form", "Mirror", "Dashboard")',
   })
-  @IsInt()
-  @Min(1)
-  @Max(5)
-  @Type(() => Number)
-  type!: number;
+  @IsEnum(NodeTypeEnum, {message: ApiTipConstant.api_node_node_type_value_error})
+  type!: NodeTypeEnum;
+
+  @ApiProperty({
+    type: Array,
+    required: false,
+    example: '[0, 1]',
+    default: '[0, 1, 2, 3]',
+    description: '0 - Manger, 1 - Editor, 2 - Update-only, 3 - Read-only',
+  })
+  @Transform(value => integerStringToArray(value), { toClassOnly: true })
+  @IsOptional()
+  @IsArray()
+  @IsInt({each: true, message: ApiTipConstant.api_node_permission_value_error})
+  @Max(3, {each: true, message: ApiTipConstant.api_node_permission_value_error})
+  @Min(0, {each: true, message: ApiTipConstant.api_node_permission_value_error})
+  permissions?: number[];
 
   @ApiProperty({
     type: String,
     required: false,
-    example: 'reader',
-    description: 'reader | editor',
+    example: 'datasheet',
+    description: 'Specify the name of node when performing a partial match search.',
   })
-  @IsString()
   @IsOptional()
-  role?: 'reader' | 'editor';
+  @IsString()
+  query?: string;
 }
 

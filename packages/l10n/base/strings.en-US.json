@@ -1875,6 +1875,8 @@
   "api_upload_attachment_error": "Failed to upload attachment ",
   "api_upload_attachment_exceed_limit": "You have uploaded the maximum number of attachments",
   "api_node_permission_error": "No permission to operate on the node",
+  "api_node_node_type_value_error": "The type must be one of the following values: \"Folder\", \"Datasheet\", \"Form\", \"Dashboard\", \"Mirror\".",
+  "api_node_permission_value_error": "The permissions argument must be one of the following integer values: 0,1,2,3.",
   "api_unauthorized": "Unauthorized",
   "api_forbidden": "Access forbidden",
   "api_not_exists": "The API does not exist",

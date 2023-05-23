@@ -143,7 +143,7 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
       newFields[fieldId] = cellValue;
     }
     eventFields[fieldId] = field.type === FieldType.Formula
-      ? eventFields[fieldId] = Field.bindContext(field, state).cellValueToString(cellValue)
+      ? Field.bindContext(field, state).cellValueToString(cellValue)
       : Field.bindContext(field, state).cellValueToOpenValue(cellValue);
   });
   return {

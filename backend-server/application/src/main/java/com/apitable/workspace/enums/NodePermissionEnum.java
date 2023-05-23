@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeTypeEnum } from '../enums/node.enum';
+package com.apitable.workspace.enums;
 
-export interface IAPINode {
-  id: string;
-  name: string;
-  type: NodeTypeEnum;
-  icon: string; // emoji id
-  isFav: boolean;
-  permission?: number;
+public enum NodePermissionEnum {
+  MANAGER(0),
+  EDITOR(1),
+  UPDATE_ONLY(2),
+  READ_ONLY(3);
+
+  private int value;
+
+  NodePermissionEnum(int value) {
+    this.value = value;
+  }
+
+  public int getValue() {
+    return value;
+  }
+
+  public static NodePermissionEnum toEnum(int value) {
+    for (NodePermissionEnum e : NodePermissionEnum.values()) {
+      if (e.getValue() == value) {
+        return e;
+      }
+    }
+    throw new RuntimeException("unknown node permission");
+  }
 }
-
-export interface IAPIFolderNode extends IAPINode {
-  children: IAPINode[]
-}
-
-export interface IAPINodeInfo {
-  id: string;
-  name: string;
-  type: NodeTypeEnum;
-  icon: string;
-  parentId?: string;
-  isFav: boolean;
-  permission: number;
-}
-
-export type IAPINodeDetail = IAPINode | IAPIFolderNode;
