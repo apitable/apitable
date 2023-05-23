@@ -1,0 +1,14 @@
+spec:
+  name: apitable
+  services:
+  - name: apitable
+    image:
+      registry_type: DOCKER_HUB
+      registry: apitable
+      repository: all-in-one
+      tag: latest
+    instance_size_slug: professional-l
+    health_check:
+      initial_delay_seconds: 30
+      http_path: /login
+    http_port: 80
