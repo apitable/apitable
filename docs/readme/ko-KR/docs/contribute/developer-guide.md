@@ -8,7 +8,7 @@
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
-- [docker-compose v2 ](https://docs.docker.com/engine/install/)
+- [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
 
@@ -31,7 +31,7 @@ curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile 
 
 ### macOS
 
-누락된 종속성을 설치하려면 홈브루를 사용하는 것이 좋습니다:
+We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
 
 ```bash
 ## necessary required
@@ -39,7 +39,6 @@ brew install git
 brew install --cask docker
 brew install make
 brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
-
 ```
 
 ### Linux
@@ -64,7 +63,7 @@ sudo apt install make
 
 Windows 10/11에서 APITable을 실행하는 경우 Windows에 Docker Desktop, WSL에 Ubuntu 및 Windows 터미널을 설치하는 것이 좋으며, 공식 사이트에서 WSL(Windows 서브 시스템 for Linux)에 대해 자세히 알아볼 수 있습니다.
 
-apt를 사용하여 우분투에 누락된 종속성을 설치합니다:
+Install missing dependencies on Ubuntu using `apt`:
 
 ```bash
 sudo apt update
@@ -139,7 +138,13 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 APITable의 번역을 개선하는 두 가지 방법이 있습니다.
 
 1. 소스 코드에서 마크다운 파일을 수정하여 직접 PR을 생성할 수 있습니다.
-2. [Crowdin](https://crowdin.com/project/apitablecode)에 가입하여 수정할 `strings`을 찾으세요.
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 다국어 번역 협력에서 우리는 다음 프로세스를 따릅니다.
 
@@ -199,4 +204,23 @@ MAIL_USERNAME=your_email
 ## 기본 80 포트를 변경하는 방법은 무엇입니까?
 `.env` 파일의 구성 속성은 env vars `NGINX_HTTP_PORT`를 지정하여 재정의할 수도 있습니다.
 
-예: NGINX_HTTP_PORT=8080으로 설정됩니다.
+For example. 예: NGINX_HTTP_PORT=8080으로 설정됩니다.
+
+## How to add supported Languages?
+
+To add a new language to APITable, follow these steps:
+
+1. Determine the code of the language to be added, for example `uk-UA`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
+3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
+4. Add the language item in `packages/l10n/base/language.manifest.json`.
+    ```json
+    {
+      "en-US": "English",
+      "uk-UA": "українська",
+      "zh-CN": "简体中文"
+    }
+    ```
+5. Once the translation is complete, execute the command: `make l10n-apitable-ce`.
+
+By following these steps, you can easily add support for new languages to your project.

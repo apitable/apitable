@@ -21,10 +21,11 @@ import { assertNever, Field, FieldType, FOperator, IField, Strings, t } from '@a
 import { useDebounceFn } from 'ahooks';
 import produce from 'immer';
 import { get, isEqual } from 'lodash';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { IFilterValueProps } from '../interface';
+import { FilterCascader } from './filter_cascader';
 import { FilterCheckbox } from './filter_checkbox';
 import { FilterDate } from './filter_date';
 import { FilterMember } from './filter_member';
@@ -33,7 +34,6 @@ import { FilterOptions } from './filter_options';
 import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
-import { FilterCascader } from './filter_cascader';
 
 export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
@@ -41,7 +41,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {
     changeFilter && changeFilter(value => {

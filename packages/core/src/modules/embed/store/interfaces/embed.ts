@@ -33,7 +33,8 @@ export interface IEmbedInfo {
       historyBtn?: boolean,
       robotBtn?: boolean,
       addWidgetBtn?: boolean;
-      fullScreenBtn?: boolean
+      fullScreenBtn?: boolean;
+      formSettingBtn?: boolean;
     },
   },
   primarySideBar?: boolean,

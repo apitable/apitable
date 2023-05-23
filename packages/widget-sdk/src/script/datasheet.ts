@@ -302,7 +302,7 @@ export class Datasheet {
    */
   public getRecordsAsync(
     options?: {
-      recordIds?: string[]
+      recordIds?: string[],
       sorts?: ISortedField[],
     }
   ) {

@@ -152,7 +152,13 @@ export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
 /**
  * Add Node
  */
-export function addNode(nodeInfo: { parentId: string; type: number; nodeName?: string; preNodeId?: string; extra?: { [key: string]: any } }) {
+export function addNode(nodeInfo: {
+    parentId: string;
+    type: number;
+    nodeName?: string;
+    preNodeId?: string;
+    extra?: { [key: string]: any }
+}) {
   return axios.post(Url.ADD_NODE, nodeInfo);
 }
 
@@ -178,7 +184,12 @@ export function getSpecifyNodeList(nodeType: NodeType) {
  * @param nodeId Node ID
  * @param data
  */
-export function editNode(nodeId: string, data: { nodeName?: string; icon?: string; cover?: string; showRecordHistory?: ShowRecordHistory }) {
+export function editNode(nodeId: string, data: {
+    nodeName?: string;
+    icon?: string;
+    cover?: string;
+    showRecordHistory?: ShowRecordHistory
+}) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
 
@@ -654,10 +665,10 @@ export function getShareSettings(nodeId: string) {
 export function updateShare(
   nodeId: string,
   permission: {
-    onlyRead?: boolean;
-    canBeEdited?: boolean;
-    canBeStored?: boolean;
-  },
+        onlyRead?: boolean;
+        canBeEdited?: boolean;
+        canBeStored?: boolean;
+    },
 ) {
   return axios.post(Url.UPDATE_SHARE + nodeId, {
     props: JSON.stringify(permission),
@@ -678,10 +689,12 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
-export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string) {
+export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, coupon: string) {
   return axios.post(Url.CHECKOUT_ORDER, {
     spaceId,
     priceId,
-    clientReferenceId
+    clientReferenceId,
+    coupon
   });
 }
+

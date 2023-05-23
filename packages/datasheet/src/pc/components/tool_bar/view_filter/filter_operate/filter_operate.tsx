@@ -16,28 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Select, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType,
-  Field,
-  FieldType,
-  FilterDuration,
-  FOperator,
-  IField,
-  IFilterCondition,
-  IFieldMap,
-  IFilterInfo,
-  Strings,
-  t,
+  BasicValueType, Field, FieldType, FilterDuration, FOperator, IField, IFieldMap, IFilterCondition, IFilterInfo, Strings, t,
 } from '@apitable/core';
 import produce from 'immer';
-import { ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
+import { useContext } from 'react';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
-import { Select, useThemeColors } from '@apitable/components';
 
 interface IFilterOperateProps {
   conditions: IFilterCondition[];
@@ -57,7 +48,7 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
   function generateValue(operator: FOperator) {
     const field = fieldMap[condition.fieldId];
     const { valueType } = Field.bindModel(field);

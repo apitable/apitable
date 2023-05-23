@@ -28,6 +28,7 @@ import {
   t,
   IUserInfo,
   getTimeZoneOffsetByUtc,
+  getTimeZone,
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -352,8 +353,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
-      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const timeZone = getTimeZone();
       const offset = getTimeZoneOffsetByUtc(timeZone)!;
       if (!timeZone) return;
       // set default timeZone
@@ -382,12 +382,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return <>
     <Head>
       <title>
-        {env.IS_APITABLE ? 'APITable' : t(Strings.system_configuration_product_name)}
+        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
       <meta name='description' content='' />
       <meta
         name='keywords'
-        content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
+        content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
       <meta name='renderer' content='webkit' />
@@ -433,18 +433,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           })
         `}
     </Script>}
-    {/*Baidu Statistics*/}
-    {env.BAIDU_ANALYSE_ID && <Script id={'baiduAnalyse'}>
-      {`
-          var _hmt = _hmt || [];
-          (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?${env.BAIDU_ANALYSE_ID}";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-          })();
-        `}
-    </Script>}
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
       {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
@@ -487,6 +475,23 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       </>
     }
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
+    {
+      env.GOOGLE_TAG_MANAGER_ID && <>
+        <Script id={'googleTag'}>
+          {`
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',window.__initialization_data__.envVars.GOOGLE_TAG_MANAGER_ID);
+        `}
+        </Script>
+        <noscript>
+          <iframe src={`https://www.googletagmanager.com/ns.html?id=${env.GOOGLE_TAG_MANAGER_ID}`}
+            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }} />
+        </noscript>
+      </>
+    }
     {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
       <div className={'__next_main'}>
         {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
@@ -516,20 +521,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         }
       </div>
     </Sentry.ErrorBoundary>}
-    {
-      env.GOOGLE_ANALYTICS_ID &&
-      <>
-        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${env.GOOGLE_ANALYTICS_ID}`} />
-        <Script id={'googleTag'}>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', window.__initialization_data__.envVars.GOOGLE_ANALYTICS_ID);
-          `}
-        </Script>
-      </>
-    }
+
   </>;
 }
 

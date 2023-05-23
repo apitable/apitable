@@ -2,7 +2,7 @@
 
 本指南帮助您开始开发 APITable 。
 
-## 依赖包
+## Dependencies
 
 请确保您在设置开发者环境之前安装了以下依赖关系和编程语言：
 
@@ -130,7 +130,13 @@ APITable 已准备好这两个IDE调试配置。
 我们有两种方法改进APITable的翻译：
 
 1. 您可以修改源代码中的 Markdown 文件并直接创建 PR
-2. 加入 [Crowdin](https://crowdin.com/project/apitablecode) 找到 `strings` 进行修改
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 在多语种翻译的协作下，我们遵循以下程序：
 
@@ -190,4 +196,23 @@ MAIL_USERNAME=your_email
 ## 如何更改默认的80端口?
 `.env` 文件中的配置属性也可以通过指定环境变量 `NGINX_HTTP_PORT` 来覆盖。
 
-例如： NGINX_HTTP_PORT=8080
+For example. 例如： NGINX_HTTP_PORT=8080
+
+## How to add supported Languages?
+
+To add a new language to APITable, follow these steps:
+
+1. Determine the code of the language to be added, for example `uk-UA`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`. For example, create a file named `strings.uk-UA.json`.
+3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
+4. Add the language item in `packages/l10n/base/language.manifest.json`.
+    ```json
+    {
+      "en-US": "English",
+      "uk-UA": "українська",
+      "zh-CN": "简体中文"
+    }
+    ```
+5. Once the translation is complete, execute the command: `make l10n-apitable-ce`.
+
+By following these steps, you can easily add support for new languages to your project.

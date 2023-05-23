@@ -17,16 +17,16 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { FieldType, Selectors, IField } from '@apitable/core';
+import { FieldType, IField, Selectors } from '@apitable/core';
 import debounce from 'lodash/debounce';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import { useResponsive } from 'pc/hooks';
-import { useEffect, useRef } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { NumberEditor } from 'pc/components/editors/number_editor';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useResponsive } from 'pc/hooks';
+import * as React from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
@@ -35,7 +35,7 @@ export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberPr
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);
   const defaultValue = condition.value;
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
   const color = useThemeColors();
 
   useEffect(() => {

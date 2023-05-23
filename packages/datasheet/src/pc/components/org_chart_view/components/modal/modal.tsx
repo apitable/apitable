@@ -75,7 +75,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
   }, [titleFieldRef], 'click');
 
   const keyDownHandler = (e: React.KeyboardEvent) => {
-    if (e.keyCode === KeyCode.Enter) {
+    if (e.keyCode === KeyCode.Enter && !e.shiftKey) {
       setQuickAddRecId(undefined);
     }
   };
@@ -134,7 +134,6 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
         left: modalLeft,
         top,
         width: QUICK_ADD_MODAL_WIDTH,
-        height: QUICK_ADD_MODAL_HEIGHT,
       }}
     >
       <header>

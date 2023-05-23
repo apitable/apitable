@@ -326,7 +326,7 @@ APITable use estas convenções comuns:
 - [👩‍💻Centro de desenvolvimento](https://developers.apitable.com/)
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - [SDK do Widget](https://developers.apitable.com/widget/introduction/)
-  - Scripting (Brevemente...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Roteiro
 

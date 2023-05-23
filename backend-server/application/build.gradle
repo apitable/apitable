@@ -27,7 +27,6 @@ dependencies {
     implementation rootProject.ext.dependencies['spring-aop-starter']
     implementation rootProject.ext.dependencies['spring-validation-starter']
     implementation rootProject.ext.dependencies['spring-security-starter']
-    implementation rootProject.ext.dependencies['spring-cache-starter']
     implementation rootProject.ext.dependencies['spring-integration-starter']
     implementation rootProject.ext.dependencies['spring-integration-redis']
     implementation rootProject.ext.dependencies['spring-thymeleaf-starter']

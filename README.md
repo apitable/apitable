@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -280,7 +280,7 @@ You can contribute as following:
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -328,6 +328,7 @@ APITable use these common conventions:
   - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
   - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Roadmap
 
@@ -353,7 +354,7 @@ Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 - Integrate with ChatGPT, Zapier, Slack, Google Workspace……
 - Watermark
 
-For more information, please contact us at <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Get Involved
 

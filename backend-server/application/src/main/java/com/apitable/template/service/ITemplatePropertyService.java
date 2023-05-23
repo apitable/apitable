@@ -18,16 +18,15 @@
 
 package com.apitable.template.service;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.template.entity.TemplatePropertyEntity;
 import com.apitable.template.enums.TemplatePropertyType;
 import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,6 +34,21 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  */
 public interface ITemplatePropertyService extends IService<TemplatePropertyEntity> {
+
+    /**
+     * Get template category entity by name.
+     */
+    TemplatePropertyEntity getTemplateCategoryByName(String name);
+
+    /**
+     * Get template category entity.
+     */
+    TemplatePropertyEntity getTemplateCategory(String propertyCode);
+
+    /**
+     * Get template category code.
+     */
+    List<String> getTemplateCategoryCodeByLang(String lang);
 
     /**
      * Get the basic information of the online template after sorting

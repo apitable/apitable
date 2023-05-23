@@ -21,9 +21,9 @@ import { Selectors } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { IEditor } from 'pc/components/editors/interface';
 import { RatingEditor } from 'pc/components/editors/rating_editor';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
@@ -33,7 +33,7 @@ export const FilterRating: React.FC<React.PropsWithChildren<Omit<IFilterNumberPr
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   useEffect(() => {
     numberRef.current!.onStartEdit(condition.value ? Number(condition.value[0]) : null);

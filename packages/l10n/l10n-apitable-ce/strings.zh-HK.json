@@ -316,5 +316,6 @@
   "phone_email_login": "郵箱登錄",
   "login_register": "登錄",
   "bronze_grade": "社區版",
-  "new_user_welcome_notify": "歡迎加入 APITable，我們為你準備了一份免費學習 APITable 的見面禮，點擊這條消息即可跳轉了解詳情。"
+  "new_user_welcome_notify": "歡迎加入 APITable，我們為你準備了一份免費學習 APITable 的見面禮，點擊這條消息即可跳轉了解詳情。",
+  "field_map_tips_for_python": "A field name exists that does not match the variable rules, please turn on \"Use FieldId\" or the code example below may not work! \n[Field Mapping](https://github.com/apitable/apitable-sdks/tree/develop/apitable.py#field-mapping) can help you to solve this problem."
 }

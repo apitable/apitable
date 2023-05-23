@@ -35,6 +35,7 @@ public enum I18nTypes {
     ZH_CN("zh_CN", new String[] { "zh-CN" }, true),
 
     EN_US("en_US", new String[] { "en-US" }, true),
+    FR_FR("fr_FR", new String[] { "fr-FR" }, true),
 
     ZH_HK("zh_HK", new String[] { "zh-HK" }, false);
 

@@ -134,7 +134,13 @@ Basta aprire la cartella principale di APITable con l'IDE.
 Abbiamo due modi per migliorare la traduzione di APITable:
 
 1. È possibile modificare i file markdown nel codice sorgente e creare una PR direttamente
-2. Unisciti alla nostra [Crowdin](https://crowdin.com/project/apitablecode) per trovare le `strings` per modificare
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 In collaborazione con la traduzione multilingue, seguiamo il seguente processo:
 
@@ -181,7 +187,7 @@ Nel file `.env.default` di `room-server`ci sono due parametri che possono regola
 
 1. È possibile impostare `LIMIT_POINTS` e `LIMIT_DURATION` per indicare il numero di richieste che possono essere fatte in un periodo di tempo unitario. Dove LIMIT_POINTS è il numero di volte e LIMIT_DURATION è la durata, misurata in secondi.
 
-2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a ` Map <string, IBaseRateLimiter>`.
+2. È possibile impostare il parametro `LIMIT_WHITE_LIST` per impostare una frequenza di richiesta separata per utenti specifici. Il suo valore è una stringa JSON, e la sua struttura può fare riferimento a `Map <string, IBaseRateLimiter>`.
 
 ## Come aumentare il numero di record inseriti per chiamata API? (10 di default)
 
@@ -195,3 +201,22 @@ Questo può essere ottenuto impostando il parametro `API_MAX_MODIFY_RECORD_COUNT
 Le proprietà di configurazione nel file `.env` possono anche essere sovrascritte specificandole vars env `NGINX_HTTP_PORT`
 
 Ad esempio. Sarebbe impostato come NGINX_HTTP_PORT=8080
+
+## How to add supported Languages?
+
+To add a new language to APITable, follow these steps:
+
+1. Determine the code of the language to be added, for example `uk-UA`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
+3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
+4. Add the language item in `packages/l10n/base/language.manifest.json`.
+    ```json
+    {
+      "en-US": "English",
+      "uk-UA": "українська",
+      "zh-CN": "简体中文"
+    }
+    ```
+5. Once the translation is complete, execute the command: `make l10n-apitable-ce`.
+
+By following these steps, you can easily add support for new languages to your project.

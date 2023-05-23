@@ -24,20 +24,11 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.user.entity.UserEntity;
-import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.ro.UserOpRo;
-import com.apitable.user.service.IUserHistoryService;
 import java.util.List;
-import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 
 public class UserServiceImplTest extends AbstractIntegrationTest {
-
-    @Resource
-    private UserMapper userMapper;
-
-    @Resource
-    private IUserHistoryService iUserHistoryService;
 
     @Test
     public void testEditUserAvatar() {
@@ -49,7 +40,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
 
         iUserService.edit(userSpace.getUserId(), param);
         List<UserEntity> users =
-            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+            iUserService.listByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getAvatar()).isEqualTo(
             "public/2023/01/04/11c74fbfc96541b3a2ffd3ee8217dcc0");
     }
@@ -64,7 +55,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
 
         iUserService.edit(userSpace.getUserId(), param);
         List<UserEntity> users =
-            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+            iUserService.listByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getAvatar()).isNull();
     }
 
@@ -78,7 +69,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
 
         iUserService.edit(userSpace.getUserId(), param);
         List<UserEntity> users =
-            userMapper.selectByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
+            iUserService.listByIds(CollectionUtil.newArrayList(userSpace.getUserId()));
         assertThat(users.get(0).getNickName()).isEqualTo("testName");
     }
 
@@ -90,7 +81,7 @@ public class UserServiceImplTest extends AbstractIntegrationTest {
         param.setTimeZone("Asia/Shanghai");
 
         iUserService.edit(userSpace.getUserId(), param);
-        UserEntity user = userMapper.selectById(userSpace.getUserId());
+        UserEntity user = iUserService.getById(userSpace.getUserId());
         assertThat(user.getTimeZone()).isEqualTo("Asia/Shanghai");
     }
 

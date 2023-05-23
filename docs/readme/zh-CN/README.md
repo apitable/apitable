@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -228,7 +228,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-##  💝 嵌入友好
+## ## 💝 嵌入友好
 
 #### 分享和嵌入
 
@@ -252,7 +252,7 @@ APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子
 curl https://apitable.github.io/install.sh | bash
 ```
 
-用您的浏览器打开[http://localhost:80](http://localhost:80)并浏览。
+然后在您的浏览器中打开 [https://localhost:80](https://localhost:80) 访问它。
 
 我们还提供了一个基于 [pm2](https://pm2.keymetrics.io/) 的完整镜像，用于演示或测试目的(不推荐用于企业或生产用途)：
 
@@ -279,7 +279,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 
 例如：
-- 加入 [Crowdin 翻译项目](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
 - 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
 - 完善、增添项目的 [Documentation](./docs)
@@ -326,7 +326,8 @@ APITable 可适用这些通用的约定：
 - [👩‍💻 开发者中心](https://developers.apitable.com/)
   - [REST API 文档](https://developers.apitable.com/api/introduction/)
   - [小程序 SDK](https://developers.apitable.com/widget/introduction/)
-  - 脚本（即将到来...）
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 规划路线
 
@@ -352,7 +353,7 @@ APITable 可适用这些通用的约定：
 - 与ChatGPT、Zapier、Slack、Google Workspace等软件集成
 - 水印
 
-欲了解更多信息，请通过 <support@apitable.com> 联系我们。
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 参与进来
 
@@ -368,7 +369,7 @@ APITable 可适用这些通用的约定：
 
 - **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
 - **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 And you like to write high quality code with clear documentation and unit tests.
 
 无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 <talent@apitable.com>。
 
@@ -402,7 +403,7 @@ APITable 可适用这些通用的约定：
     <img src="docs/static/screenshot-it.png" alt="APITable屏幕截图图像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable屏幕截图图像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 许可协议

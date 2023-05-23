@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="Badge de Licence APITable AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -68,7 +68,7 @@
 
 Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
 
-Si vous souhaitez simplement essayer APITable1, utilisez notre version hébergée sur le cloud à apitable.com.
+If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 Si vous voulez installer APITable dans votre environnement de calcul local ou cloud, voir [💾 Installation](#installation)
 
@@ -129,7 +129,7 @@ Rejoignez [Discord](https://discord.gg/TwNb9nfdBU) ou [Twitter](https://twitter.
       <a href="#">Autorisations puissantes/colonnes</a>
     </th>
     <th>
-      <a href="#">Intégrer</a>
+      <a href="#">Embed</a>
     </th>
   </tr>
 
@@ -191,7 +191,7 @@ APITable offre une gamme de fonctionnalités étonnantes, du personnel à l'entr
   - Audit
   - Sauvegarde automatique de la base de données
   - Exportateur de données
-  - Filigrane
+  - Watermark
 - ....
 
 Avec des widgets extensibles et des plugins, vous pouvez ajouter plus de fonctionnalités.
@@ -252,7 +252,7 @@ Pour installer apitable en utilisant docker compose, ouvrez votre terminal et ex
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Ouvrez ensuite http://localhost:80 dans votre navigateur pour le visiter.
+Puis ouvrez [https://localhost:80](https://localhost:80) dans votre navigateur pour le visiter.
 
 Nous fournissons également une image tout-en-un basée sur [pm2](https://pm2.keymetrics.io/) à des fins de démonstration ou de test (non recommandé pour les entreprises ou les utilisations de production):
 
@@ -278,8 +278,8 @@ Vous pouvez contribuer de la manière suivante :
 - [Contribuer au code](./docs/contribute/developer-guide.md)
 
 
-Voici ce qui suit :
-- Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
 - Créer de la [documentation](./docs)
@@ -326,7 +326,8 @@ Utilisez ces conventions communes APITables :
 - [👩‍💻 Centre de développement](https://developers.apitable.com/)
   - [<unk> Docs REST API](https://developers.apitable.com/api/introduction/)
   - [SDK du widget](https://developers.apitable.com/widget/introduction/)
-  - Scripting (à venir...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
 ## 🛣 Feuille de route
 
@@ -346,13 +347,13 @@ Veuillez vous référer à la [Feuille de route de l'APITable](https://apitable.
 
 - En tant qu'IdP ;
 - SAML
-- Authentification unique
+- Single-Sign-On
 - Audit
 - Sauvegarde de la base de données
 - Intégrer avec ChatGPT, Zapier, Slack, Google Workspace......
-- Filigrane
+- Watermark
 
-Pour plus d'informations, veuillez nous contacter à <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Get Involved
 
@@ -417,4 +418,4 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
 
 <br/>
 
-[^info]: Licencié avec AGPL-3.0. Conçu par [APITable Ltd](https://apitable.com).
+[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).

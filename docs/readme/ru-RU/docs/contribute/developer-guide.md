@@ -14,7 +14,7 @@
 
 ### Язык программирования
 
-Если вы используете macOS или Linux. Мы рекомендуем установить язык программирования с SDK-менеджером `sdkman`` и `nvm</0>.
+Если вы используете macOS или Linux. Мы рекомендуем установить язык программирования с SDK-менеджером `sdkman`` и`nvm</0>.
 
 ```bash
 # quick install nvm
@@ -134,7 +134,13 @@ APITable подготовил отладочные конфигурации дл
 У нас есть два способа улучшить перевод APITable:
 
 1. Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
-2. Присоединяйтесь к нашим [Crowdin](https://crowdin.com/project/apitablecode), чтобы найти `strings` для изменения
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 В сотрудничестве с многоязычным переводом мы следуем следующему процессу:
 
@@ -195,3 +201,22 @@ MAIL_USERNAME=your_email
 Свойства конфигурации в файле `.env` также можно переопределить путем указания их env vars `NGINX_HTTP_PORT`
 
 Например. Она будет установлена как NGINX_HTTP_PORT=8080
+
+## How to add supported Languages?
+
+To add a new language to APITable, follow these steps:
+
+1. Determine the code of the language to be added, for example `uk-UA`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`.
+3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
+4. Add the language item in `packages/l10n/base/language.manifest.json`.
+    ```json
+    {
+      "en-US": "English",
+      "uk-UA": "українська",
+      "zh-CN": "简体中文"
+    }
+    ```
+5. Once the translation is complete, execute the command: `make l10n-apitable-ce`.
+
+By following these steps, you can easily add support for new languages to your project.

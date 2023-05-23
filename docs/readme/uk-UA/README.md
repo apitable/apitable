@@ -326,7 +326,7 @@ APITable використовує ці загальні домовленості
 - [👩‍💻 Центр для розробників](https://developers.apitable.com/)
   - [🪡 Документація по REST API](https://developers.apitable.com/api/introduction/)
   - [SDK віджетів](https://developers.apitable.com/widget/introduction/)
-  - Скриптинг (Незабаром...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 
 ## 🛣 Дорожня карта
 

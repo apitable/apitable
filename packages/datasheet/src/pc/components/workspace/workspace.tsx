@@ -36,7 +36,7 @@ import Trash from 'pc/components/trash/trash';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
-import { isHiddenIntercom } from 'pc/utils/env';
+import { isHiddenLivechat } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -210,7 +210,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   }, [sideBarVisible]);
 
   useEffect(() => {
-    if (isMobile || shareId || isHiddenIntercom()) {
+    if (isMobile || shareId || isHiddenLivechat()) {
       destroyVikaby?.();
       return;
     }

@@ -18,15 +18,13 @@
 
 package com.apitable.template.mapper;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
+import com.apitable.template.entity.TemplatePropertyEntity;
 import com.apitable.template.model.TemplateKeyWordSearchDto;
 import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
-import com.apitable.template.entity.TemplatePropertyEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -34,6 +32,18 @@ import com.apitable.template.entity.TemplatePropertyEntity;
  * </p>
  */
 public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntity> {
+
+    /**
+     * Query entity.
+     */
+    TemplatePropertyEntity selectByPropertyCodeAndPropertyType(
+        @Param("propertyCode") String propertyCode, @Param("propertyType") Integer propertyType);
+
+    /**
+     * Query entity by property type and name.
+     */
+    TemplatePropertyEntity selectByPropertyTypeAndPropertyName(
+        @Param("propertyType") Integer propertyType, @Param("propertyName") String propertyName);
 
     /**
      * query property names by property codes
@@ -44,6 +54,12 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
      * Query template property dto list by i18n
      */
     List<TemplatePropertyDto> selectTemplatePropertiesWithI18n(@Param("lang") String lang);
+
+    /**
+     * Query property code.
+     */
+    List<String> selectPropertyCodeByPropertyTypeAndI18nName(
+        @Param("propertyType") Integer propertyType, @Param("i18nName") String i18nName);
 
     /**
      * Query template property dto list by i18n after order

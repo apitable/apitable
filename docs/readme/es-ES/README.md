@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="Insignia de licencia APITable AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -129,7 +129,7 @@ Si quieres configurar tu entorno de desarrollo local, lee nuestra guía de [🧑
       <a href="#">Permisos de poderosas filas/columnas</a>
     </th>
     <th>
-      <a href="#">Incrustar</a>
+      <a href="#">Embed</a>
     </th>
   </tr>
 
@@ -234,7 +234,7 @@ APITable proporcionará un lenguaje de consulta (DQL) en la hoja de datos para c
 
 Comparte tu tabla o carpeta de la hoja de datos. Los inserte copiando y pegando scripts HTML.
 
-#### Incrustación lista para empresas
+#### Enterprise-ready Embedding
 
 [APITable.com](https://apitable.com) proporciona más características de Incrustación listas para empresas para valores.
 
@@ -252,7 +252,7 @@ Para instalar apitable usando docker-compose, abra su terminal y ejecute lo sigu
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Luego abra [http://localhost:80](http://localhost:80)  en su navegador para visitarlo.
+Luego abre [https://localhost:80](https://localhost:80) en tu navegador para visitarlo.
 
 También proporcionamos una imagen todo en uno basada en [pm2](https://pm2.keymetrics.io/) para propósitos de demostración o prueba (no recomendada para uso empresarial o producción):
 
@@ -279,7 +279,7 @@ Puedes contribuir de la siguiente manera:
 
 
 Tal como lo siguiente:
-- Únete a [Proyecto de traducción de Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - Crear [issues](https://github.com/apitable/apitable/issues/new/choose)
 - Seguir nuestro [Twitter](https://twitter.com/apitable_com)
 - Crear [documentación](./docs)
@@ -310,15 +310,15 @@ Aquí hay un flujo de trabajo general APITable git:
 
 Utilizar estas convenciones comunes:
 
-- ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
-- ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
-- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/)
-- ¿Qué es la guía de código de Java? [Guía de código Java](https://google.github.io/styleguide/javaguide.html) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
-- ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- ¿Qué es la guía de código de TypeScript? -> [Directrices API de Rust](https://rust-lang.github.io/api-guidelines/about.html)
-- ¿Qué es la Visión General de la Arquitectura? -> [Interfaz APITable - Resumen de Archivos](./docs/contribute/architecute-overview.md)
+- What's our Git branching model? ¿Cuál es nuestro modelo de sucursal Git? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects? ¿Cómo colaborar en sus proyectos de bifurcación? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message? ¿Cómo escribir un buen mensaje de confirmación? [Compromisos convencionales](https://www.conventionalcommits.org/)
+- What's our changelog format? ¿Cuál es nuestro formato de registro de cambios? [Mantener el registro de cambios](https://keepachangelog.com/en/1.0.0/)
+- ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Semantic Versioning](https://semver.org/)
+- ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines) ¿Qué es la guía de código de Java? [Guía de código Java](https://google.github.io/styleguide/javaguide.html) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
+- What is the TypeScript Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+- What is the Rust Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Directrices API de Rust](https://rust-lang.github.io/api-guidelines/about.html)
+- What is the Architecture Overview? ¿Qué es la Visión General de la Arquitectura? -> [Interfaz APITable - Resumen de Archivos](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
 
@@ -326,9 +326,10 @@ Utilizar estas convenciones comunes:
 - [👩‍💻 Centro de Desarrolladores](https://developers.apitable.com/)
   - [► Documentos de API REST](https://developers.apitable.com/api/introduction/)
   - [SDK del Widget](https://developers.apitable.com/widget/introduction/)
-  - Scripting (Próximamente...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
-## :autovía: Hoja de ruta
+## 🛣 Roadmap
 
 Por favor, consulte el mapa de ruta [de APITable](https://apitable.com/roadmap)
 
@@ -344,19 +345,19 @@ Por favor, consulte el mapa de ruta [de APITable](https://apitable.com/roadmap)
 
 ### Las versiones Hosted y Enterprise ofrecen características avanzadas
 
-- Como identificador;
+- As an IdP;
 - SAML
-- Inicio de sesión simple
+- Single-Sign-On
 - Auditoría
 - Copia de seguridad de base de datos
 - Integración con ChatGPT, Zapier, Slack, Google Workspace...
 - Marca de agua
 
-Para más información, por favor contáctenos en <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Participar
 
-### ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+### 🌏 Why we create APITable and open-source?
 
 - Creemos que `la base de datos es la piedra angular` de todo el software.
 - Creemos que crear una base de datos visual `con una interfaz de usuario rica y fácil para todos` puede reducir la dificultad de la industria de software e incrementar la adopción de digitalización en el mundo.

@@ -4,18 +4,29 @@ This guide helps you get started developing APITable.
 
 ## Dependencies
 
-Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
+Before you start contributing to APITable, make sure you have the following tools and programming languages installed.
+
+Required tools:
 
 - `git`
 - [docker](https://docs.docker.com/engine/install/)
 - [docker-compose v2](https://docs.docker.com/engine/install/)
 - `make`
 
+Required programming languages:
 
-### Programming Language
+- Nodejs 16.15
+- Java 8
+- Rust (nightly)
+- Python 3.7 or above
+- A proper C/C++ compiler toolchain, e.g. GCC 4.8 or above, Clang 3.5 or above.
 
-If you are using macOS or Linux.
-We recommend install programming language with SDK manager `sdkman` and `nvm`.
+The following subsections show the recommended way to install these dependencies. Note that on MacOS some libraries are also required, see the MacOS subsection for more information.
+
+### Programming Languages
+
+If you are using MacOS or Linux.
+We recommend `sdkman` and `nvm` for managing the versions of Java and NodeJS respectively.
 
 ```bash
 # quick install nvm
@@ -30,7 +41,9 @@ sdk env install
 curl -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly --profile minimal -y && source "$HOME/.cargo/env"
 ```
 
-### macOS
+On MacOS and Linux, Python is usually pre-installed, but its version may not meet the requirement. You can run `python --version` to check out the version of the built-in Python, if it is below 3.7, see below for the commands to install the required Python version on various systems.
+
+### MacOS
 
 We recommend using [Homebrew](https://brew.sh/) for installing any missing dependencies:
 
@@ -40,23 +53,35 @@ brew install git
 brew install --cask docker
 brew install make
 brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+brew install gcc
+brew install python3
 ```
 
 ### Linux
 
-On CentOS / RHEL or other Linux distribution with `yum`
+On CentOS / RHEL or RHEL-based Linux distributions, use `yum`:
 
 ```bash
 sudo yum install git
-sudo yum install make
+# This will install GCC toolchain and Make
+sudo yum groupinstall 'Development Tools'
+sudo yum install python3
 ```
 
-On Ubuntu / Debian or other Linux distribution with `apt`
+On Ubuntu / Debian or Debian-based Linux distributions, use `apt`:
 
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
+```
+
+On ArchLinux or Arch-based Linux distributions, use `pacman`:
+
+```bash
+sudo pacman -Syyu git base-devel python3
 ```
 
 
@@ -70,15 +95,17 @@ Install missing dependencies on Ubuntu using `apt`:
 ```bash
 sudo apt update
 sudo apt install git
-sudo apt install make
+# This will install GCC toolchain and Make
+sudo apt install build-essential
+sudo apt install python3
 ```
 
 
-## What Build Tool we use?
+## What build tools do we use?
 
-We use `make` as our centric build tool entry that drives other build tool like `gradle` / `npm` / `yarn`.
+We use `make` as our centric build tool entry that drives other build tools like `gradle` / `npm` / `yarn`.
 
-So you can just input `make` command and see all build commands:
+So you can just enter `make` command and see all build commands:
 
 ```bash
 make
@@ -88,7 +115,7 @@ make
 
 
 
-## How to start development environment?
+## How to start the development environment?
 
 APITable consists of 3 processes:
 
@@ -131,12 +158,18 @@ Just open APITable's root directory with IDE.
 
 
 
-## How to contribute translations?
+## How to contribute to translations?
 
 We have two ways to improve the translation of APITable:
 
 1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecode) to find the `strings` to modify
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 In the collaboration of multilingual translation, we follow the following process:
 

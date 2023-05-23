@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import * as React from 'react';
-import styles from '../style.module.less';
-import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@apitable/core';
-import { ExecuteFilterFn } from '../../interface';
-import produce from 'immer';
-import { MobileSelect } from 'pc/components/common';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
 import { Select, useThemeColors } from '@apitable/components';
+import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@apitable/core';
+import produce from 'immer';
 // @ts-ignore
 import { snake } from 'naming-style';
+import { MobileSelect } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useResponsive } from 'pc/hooks';
+import * as React from 'react';
+import { useContext } from 'react';
+import { ExecuteFilterFn } from '../../interface';
+import styles from '../style.module.less';
 
 export const DateDuration = [
   FilterDuration.ExactDate,
@@ -49,7 +50,7 @@ export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDur
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   function createOptionData() {
     const operate = condition.operator;

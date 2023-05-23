@@ -17,7 +17,7 @@
  */
 
 import { useThemeColors } from '@apitable/components';
-import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone } from '@apitable/core';
+import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone, getTimeZone } from '@apitable/core';
 import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import classNames from 'classnames';
@@ -121,7 +121,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
   const getDefaultValue = () => {
     let abbr = '';
     if (includeTimeZone) {
-      const tz = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const tz = timeZone || getTimeZone();
       abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
     if (value) {

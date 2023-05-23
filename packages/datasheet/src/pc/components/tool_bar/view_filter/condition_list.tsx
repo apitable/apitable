@@ -16,34 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import { useState, useEffect, FC } from 'react';
+import { colorVars, IconButton, WrapperTooltip } from '@apitable/components';
 import {
-  ConfigConstant,
-  FieldType,
-  FilterConjunction as FilterConjunctionEnum,
-  IFieldMap,
-  IFilterInfo,
-  ILookUpField,
-  IViewColumn,
-  Selectors,
-  Strings,
-  t,
+  ConfigConstant, FieldType, FilterConjunction as FilterConjunctionEnum, IFieldMap, IFilterInfo, ILookUpField, IViewColumn, Selectors, Strings, t,
 } from '@apitable/core';
-import { useSelector } from 'react-redux';
+import { DeleteOutlined } from '@apitable/icons';
 import { Col, Row } from 'antd';
-import { IconButton, colorVars, WrapperTooltip } from '@apitable/components';
-import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
+import { isEqual } from 'lodash';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
+import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { FC, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
 import { FilterValue } from './filter_value';
-import styles from './style.module.less';
 import { ExecuteFilterFn } from './interface';
-import { isEqual } from 'lodash';
-import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
-import { DeleteOutlined } from '@apitable/icons';
+import styles from './style.module.less';
 
 interface IConditionList {
   filterInfo?: IFilterInfo;
@@ -62,7 +53,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
     return view!.columns as IViewColumn[];
   });
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const isViewLock = useShowViewLockModal();
+  const { isViewLock } = useContext(ViewFilterContext);
 
   // Check if the magic lookup filter is circularly referenced
   const [warnTextObj, setWarnTextObj] = useState<{ string?: string }>({});

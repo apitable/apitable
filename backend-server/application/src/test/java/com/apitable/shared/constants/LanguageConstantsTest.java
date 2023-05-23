@@ -19,6 +19,7 @@
 package com.apitable.shared.constants;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
@@ -35,10 +36,10 @@ public class LanguageConstantsTest {
 
     @Test
     public void testStringI18nType() {
-        List<I18nTypes> languages = LanguageConstants.SUPPORTED_LANGUAGE.stream()
+        Set<I18nTypes> languages = LanguageConstants.SUPPORTED_LANGUAGE.stream()
                 .map(locale -> I18nTypes.aliasOf(locale.toLanguageTag()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         Assertions.assertThat(languages).isNotEmpty()
-                .containsExactly(I18nTypes.EN_US, I18nTypes.ZH_CN);
+                .contains(I18nTypes.EN_US, I18nTypes.ZH_CN, I18nTypes.ZH_HK, I18nTypes.FR_FR);
     }
 }

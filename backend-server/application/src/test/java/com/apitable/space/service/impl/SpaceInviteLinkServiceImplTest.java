@@ -18,38 +18,18 @@
 
 package com.apitable.space.service.impl;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.control.entity.ControlRoleEntity;
-import com.apitable.control.service.IControlRoleService;
-import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.mock.bean.MockInvitation;
-import com.apitable.organization.service.IUnitService;
-import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.user.entity.UserEntity;
-import com.apitable.core.constants.RedisConstants;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
-
-    @Autowired
-    private ISpaceInviteLinkService iSpaceInviteLinkService;
-
-    @Autowired
-    private IControlRoleService iControlRoleService;
-
-    @Autowired
-    private IUnitService iUnitService;
 
     @Test
     public void testJoinSpaceByNodeInvitationToken() {
@@ -61,17 +41,5 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
         List<ControlRoleEntity> controls = iControlRoleService.getByControlId(invitation.getNodeId());
         List<Long> unitIds = controls.stream().map(ControlRoleEntity::getUnitId).collect(Collectors.toList());
         assertThat(unitIds).contains(unitId);
-    }
-
-    @Test
-    @Disabled
-    public void testJoinSpaceByNodeInvitationTokenWithRewardCapacity() {
-        MockInvitation invitation = prepareInvitationToken();
-        UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
-        String key = RedisConstants.getUserInvitedJoinSpaceKey(user.getId(), invitation.getSpaceId());
-        redisTemplate.opsForValue().set(key, user.getId(), 5, TimeUnit.MINUTES);
-        iSpaceInviteLinkService.join(user.getId(), invitation.getToken(), invitation.getNodeId());
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(invitation.getSpaceId());
-        assertThat(subscriptionInfo.getAddOnPlans()).contains("capacity_300_MB");
     }
 }

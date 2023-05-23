@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -154,7 +154,7 @@ APITable은 개인부터 기업까지 다양한 기능을 제공합니다.
   - 실시간 협업: 동시에 여러 사용자가 실시간으로 편집 가능, 또는 동시에 작업할 수 있는 OT(Operational Transformation) 알고리즘 사용
   - canvas 렌더링 엔진에서 매우 부드럽고 사용자 친화적인 초고속 데이터베이스 스프레드시트 인터페이스
   - 데이터베이스 네이티브 아키텍처: Changeset/Operation/Action/Snapshot 등
-  - 실시간 협업을 이용하여 10만 개 이상의 데이터 행 처리 가능
+  - **100k+** data rows with real-time collaboration.
   - 데이터부터 메타데이터까지 모두에 대한 Full-stack API 액세스
   - 단방향/양방향 테이블 링크 및 무한 교차 링크
   - TypeScript(NextJS + NestJS) 및 Java(Spring Boot) 와 같은 커뮤니티 친화적인 프로그래밍 언어 및 프레임워크 사용
@@ -188,7 +188,7 @@ APITable은 개인부터 기업까지 다양한 기능을 제공합니다.
 - 기업용 기능
   - SAML
   - Single-Sign-On (SSO)
-  - 감사
+  - Audit
   - 데이터베이스 자동 백업
   - 데이터 내보내기
   - 워터 마크
@@ -228,20 +228,20 @@ APITable을 알아야하는 이유는 무엇인가요?
 
 APITable은 데이터베이스 스프레드시트 내용을 쿼리하기 위한 데이터 시트 쿼리 언어(DQL)를 제공합니다.
 
-## 💝 임베드 가능
+## 💝 Embed-friendly
 
 #### 공유 및 임베드
 
 데이터 시트 테이블이나 폴더를. 공유하고 HTML 스크립트를 복사하여 붙여넣어 임베드할 수 있습니다.
 
-#### 기업용 임베드 기능
+#### Enterprise-ready Embedding
 
 APITable.com은 보안에 더 적합한 기업용 임베드 기능을 제공합니다.
 
 ## 설치
 
 시작하기 전에:
-* 도커와 도커 컴포즈 v2가 설치된 호스트가 필요합니다.
+* A host with [docker](https://docs.docker.com/engine/install/) and [docker-compose v2](https://docs.docker.com/engine/install/) installed.
 * 4개의 CPU/8GB 이상의 RAM을 권장합니다.
 * curl과 같은 기본 유틸리티가 설치된 bash 쉘이 필요합니다.
 * Native arm64 (애플 실리콘) 컨테이너 이미지는 아직 준비되지 않았으며 성능 문제가 발생할 수 있습니다.
@@ -278,8 +278,8 @@ APITable에 기여해주신 것에 감사드립니다!
 - [코드 기여](./docs/contribute/developer-guide.md)
 
 
-다음과 같이 설치하세요.
-- 우리의 [Crowdin 번역 프로젝트](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)에 참여하여 번역 수정
+Such as the following:
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - [Issue](https://github.com/apitable/apitable/issues/new/choose)를 생성
 - 우리의 [Twitter](https://twitter.com/apitable_com)를 팔로우
 - [문서](./docs) 작성
@@ -326,9 +326,10 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - [👩‍💻 개발자 센터](https://developers.apitable.com/)
   - [🪡 REST API 문서](https://developers.apitable.com/api/introduction/)
   - [SDK 받기](https://developers.apitable.com/widget/introduction/)
-  - 스크립팅 (곧 출시 예정)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
-## 🛣 로드맵
+## 🛣 Roadmap
 
 Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 
@@ -347,12 +348,12 @@ Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 - IdP로서;
 - SAML
 - Single-Sign-On
-- 감사
+- Audit
 - 데이터베이스 백업
 - ChatGPT, Zapier, Slack, Google Workspace와 통합...
 - 워터마크
 
-자세한 정보는 support@apitable.com으로 문의 바랍니다.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 참여하세요
 
@@ -366,9 +367,9 @@ Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 
 우리는 언제나 APITable을 위한 좋은 인재를 찾고 있습니다:
 
-- 풀 스택 개발자: React, NestJS, TypeScript, Spring Boot, Java, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
-- 백엔드 개발자: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
-- 프론트엔드 개발자: React, NextJS, TypeScript, WebPack 경험이 있으며, 명확한 문서화와 단위 테스트를 통해 고품질 코드를 작성하는 것을 좋아합니다.
+- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
+- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
+- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 시간과 조건에 상관없이 APITable 팀에 참여하고 싶다면 언제든지 talent@apitable.com으로 이력서를 보내주십시오.
 
@@ -417,4 +418,4 @@ Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 
 <br/>
 
-[^info]: AGPL-3.0으로 라이선스가 부여됩니다. [APITable Ltd](https://apitable.com)에서 디자인되었습니다.  [↩](#fnref:info){.footnote-backref}
+[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).

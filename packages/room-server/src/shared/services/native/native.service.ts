@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { NativeModule, DatasheetPackResponse } from '@apitable/room-native-api';
+import type { NativeModule, DatasheetPackResponse } from '@apitable/room-native-api';
 import { isDevMode } from 'app.environment';
 import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION, IRecordMap } from '@apitable/core';
-import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, IOssConfig } from 'shared/interfaces';
+import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, IOssConfig } from 'shared/interfaces';
 import { HttpService } from '@nestjs/axios';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { Logger } from 'winston';
@@ -18,7 +18,7 @@ export class NativeService {
 
   constructor(httpService: HttpService, envConfigService: EnvConfigService, @InjectLogger() private readonly logger: Logger) {
     if (USE_NATIVE_MODULE) {
-      this.nativeModule = NativeModule.create(
+      this.nativeModule = require('@apitable/room-native-api').NativeModule.create(
         isDevMode,
         httpService.axiosRef.defaults.baseURL!,
         envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig,

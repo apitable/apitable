@@ -238,6 +238,11 @@ export const getCellValueThumbSrc = (
   return imgSrc;
 };
 
+export function getPreviewUrl(fileInfo: IAttachmentValue) {
+  const host = getHostOfAttachment(fileInfo.bucket);
+  return `${host}${fileInfo.token}`;
+}
+
 export function getDownloadSrc(fileInfo: IAttachmentValue) {
   const host = getHostOfAttachment(fileInfo.bucket);
   return `${host}${fileInfo.token}?attname=${encodeURIComponent(fileInfo.name)}`;

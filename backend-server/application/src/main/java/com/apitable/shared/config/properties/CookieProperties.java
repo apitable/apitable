@@ -19,51 +19,52 @@
 package com.apitable.shared.config.properties;
 
 import lombok.Data;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import static com.apitable.shared.config.properties.CookieProperties.PREFIX;
+import org.springframework.boot.web.server.Cookie;
 
 /**
  * <p>
- * Cookie properties
+ * Cookie properties.
  * </p>
  *
  * @author Shawn Deng
  */
 @Data
-@ConfigurationProperties(prefix = PREFIX)
+@ConfigurationProperties(prefix = "cookie")
 public class CookieProperties {
 
-    public static final String PREFIX = "cookie";
-
     /**
-     * cookies name
+     * cookies name.
      */
     private String cookieName;
 
     /**
-     * Session Domain Name Scope
+     * Session Domain Name Scope.
      */
     private String domainName;
 
     /**
-     * locale 118n cookies name
+     * locale 118n cookies name.
      */
     private String i18nCookieName = "lang";
 
     /**
-     * Session Domain Name Scope（use regex pattern，use domainName first if existed）
+     * Session Domain Name Scope（use regex pattern，use domainName first if existed）.
      */
     private String domainNamePattern;
 
     /**
-     * Whether to open the session https, default: false
+     * Whether to open the http only, default: false.
      */
-    private Boolean secure = false;
+    private Boolean httpOnly;
 
     /**
-     * Available values：Strict，Lax，None，default: none
+     * Whether to open the session https, default: false.
      */
-    private String sameSite = "None";
+    private Boolean secure;
+
+    /**
+     * Available values：Strict，Lax，None，default: none.
+     */
+    private Cookie.SameSite sameSite;
 }

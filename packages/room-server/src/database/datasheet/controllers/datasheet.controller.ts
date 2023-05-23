@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IMeta } from '@apitable/core';
+import type { IMeta } from '@apitable/core';
 import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { UserService } from 'user/services/user.service';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
-import { CommentReplyDto } from '../dtos/comment.reply.dto';
+import type { CommentReplyDto } from '../dtos/comment.reply.dto';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
-import { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
+import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
@@ -31,7 +31,7 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Datasheet APIs

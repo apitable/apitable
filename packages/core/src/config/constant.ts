@@ -338,6 +338,11 @@ export enum ScanQrType {
   Binding,
 }
 
+export enum ImproveType {
+  Phone = 'phone',
+  Email = 'email'
+}
+
 export const IDENTIFY_CODE_LOGIN = 'identify_code_login'; // login verify code
 export const PASSWORD_LOGIN = 'password_login'; // password login
 export const SSO_LOGIN = 'sso_login'; // sso login

@@ -20,6 +20,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apitable.template.mapper.TemplatePropertyRelMapper">
+    <select id="selectByPropertyCode"
+            resultType="com.apitable.template.entity.TemplatePropertyRelEntity">
+        SELECT *
+        FROM ${tablePrefix}template_property_rel
+        WHERE property_code = #{propertyCode}
+    </select>
+
+    <update id="updateIncPropertyOrderByPropertyCodeIn">
+        UPDATE ${tablePrefix}template_property_rel
+        SET property_order = property_order + 1
+        WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateIncIdByIdGreaterThanEqual">
+        UPDATE ${tablePrefix}template_property_rel
+        SET id = id + 2
+        WHERE id <![CDATA[>=]]> #{minId}
+        ORDER BY id DESC
+    </update>
+
+    <update id="updateIdByPropertyCodeAndTemplateId">
+        UPDATE ${tablePrefix}template_property_rel
+        SET id = #{updatedId}
+        WHERE property_code = #{propertyCode}
+          AND template_id = #{templateId}
+    </update>
+
+    <delete id="deleteByTemplateId">
+        DELETE
+        FROM ${tablePrefix}template_property_rel
+        WHERE template_id = #{templateId}
+    </delete>
+
+    <delete id="deleteByPropertyCodeAndTemplateId">
+        DELETE
+        FROM ${tablePrefix}template_property_rel
+        WHERE property_code = #{propertyCode}
+          AND template_id = #{templateId}
+    </delete>
+
+    <delete id="deleteByPropertyCode">
+        DELETE
+        FROM ${tablePrefix}template_property_rel
+        WHERE property_code = #{propertyCode}
+    </delete>
+
     <delete id="deleteBatch">
         DELETE
         from ${tablePrefix}template_property_rel;

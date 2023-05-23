@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://apitable.com" target="_blank">
-        <img src="docs/static/cover.png" alt="Cambia immagine di copertina" />
+        <img src="docs/static/cover.png" alt="APITable Cover Image" />
     </a>
 </p>
 
@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="Contrassegno Licenza APITable AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -107,7 +107,7 @@ Unisciti a [Discord](https://discord.gg/TwNb9nfdBU) o [Twitter](https://twitter.
       <a href="#">Pannello API-first</a>
     </th>
     <th>
-      <a href="#">Permessi potenti per righe e colonne</a>
+      <a href="#">Unlimited cross-table links</a>
     </th>
 </tr>
 
@@ -191,7 +191,7 @@ APITable offre una serie di funzioni sorprendenti, da quelle personali a quelle 
   - Audit
   - Backup automatico del database
   - Esportatore di dati
-  - Filigrana
+  - Watermark
 - ....
 
 Grazie ai widget e ai plugin estensibili, è possibile aggiungere altre funzionalità.
@@ -205,12 +205,12 @@ Perché dovete conoscere APITable per il vostro prossimo software?
   - Gestione dei lead di marketing.
   - Il CRM più flessibile e collegabile.
   - Business Intelligence (BI) flessibile.
-  - Moduli e sondaggi a misura d'uomo.
+  - People-Friendly Forms and Surveys
   - ERP flessibile.
   - Piattaforma low-code e no-code.
   - ... e altro ancora, APITable mette 1000 software in tasca.
 - Come infrastruttura di database visuale
-  - Incorporate APITable nelle interfacce utente dei vostri software.
+  - **Embed** APITable into your own software UIs.
   - Database visivo con API REST.
   - Cruscotto amministrativo.
   - Gestione centrale della configurazione.
@@ -252,7 +252,7 @@ Per installare apitable usando docker compose, aprire il terminale ed eseguire q
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Quindi aprire http://localhost:80 nel browser per visitarlo.
+Quindi apri [http://localhost:80](http://localhost:80) nel tuo browser per visitarlo.
 
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
@@ -279,7 +279,7 @@ Potete contribuire come segue:
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -323,12 +323,13 @@ APITable utilizza queste convenzioni comuni:
 ### Documentazione
 
 - [Centro assistenza](https://help.apitable.com/)
-- [👩‍💻Centro sviluppatori ](https://developers.apitable.com/)
+- [👩‍💻Centro sviluppatori](https://developers.apitable.com/)
   - [🪡 Documenti API REST](https://developers.apitable.com/api/introduction/)
   - [SDK Widget](https://developers.apitable.com/widget/introduction/)
-  - Scripting (Prossimamente...)
+  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
-## 🛣 Tabella di marcia
+## 🛣 Roadmap
 
 Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 
@@ -350,9 +351,9 @@ Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 - Audit
 - Backup del database
 - Integrazione con ChatGPT, Zapier, Slack, Google Workspace......
-- Filigrana
+- Watermark
 
-Per ulteriori informazioni, contattateci all'indirizzo <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Partecipa
 

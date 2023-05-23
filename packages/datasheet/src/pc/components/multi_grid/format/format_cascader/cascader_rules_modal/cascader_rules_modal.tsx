@@ -9,7 +9,7 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './styles.module.less';
-import { compact, find, pick, take } from 'lodash';
+import { compact, find, isEqual, pick, take } from 'lodash';
 import { ButtonOperateType } from 'pc/utils';
 import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -38,6 +38,8 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
   const activeFieldState = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
   const columns = useSelector(state => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
+  const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
+  const primaryFullLinkedFields = columns.map(column => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
 
   const colors = useThemeColors();
 
@@ -157,7 +159,12 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
   };
 
   const onRefreshConfig = async() => {
-    const treeSelects = await loadData(compact(linkedFields), true);
+    // the fields of primary linked datasheet hidden or update permissions should be filter
+    const filterLinkedFields = compact(linkedFields).filter(lf => primaryFullLinkedFields.some(plf => plf.id === lf.id));
+    if (!isEqual(filterLinkedFields, linkedFields)) {
+      setLinkedFields(filterLinkedFields);
+    }
+    const treeSelects = await loadData(filterLinkedFields, true);
 
     if (treeSelects && treeSelects.length > 0) {
       setPreviewNodesMatrix([treeSelects]);
@@ -227,8 +234,6 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           linkedDatasheetId: linkedDatasheetId,
           linkedViewId: linkedViewId,
         }).then(() => {
-          const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
-          const primaryFullLinkedFields = columns.map(column => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
           setFullLinkedFields(primaryFullLinkedFields.filter(lf => isCascaderLinkedField(lf.type)));
           onRefreshConfig();
         });

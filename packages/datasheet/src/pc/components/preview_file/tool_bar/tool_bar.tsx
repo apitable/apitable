@@ -21,7 +21,7 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
-import { copy2clipBoard, getDownloadSrc, isSupportImage } from 'pc/utils';
+import { copy2clipBoard, getDownloadSrc, getPreviewUrl, isSupportImage } from 'pc/utils';
 import { ITransFormInfo } from '../preview_file.interface';
 import {
   CloseOutlined,
@@ -202,7 +202,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = props => {
         icon: LinkOutlined,
         tip: t(Strings.preview_copy_attach_url),
         onClick: () => {
-          let addr = getDownloadSrc(fileInfo);
+          let addr = getPreviewUrl(fileInfo);
           if (isPrivateDeployment()) {
             addr = window.location.origin + addr;
           }

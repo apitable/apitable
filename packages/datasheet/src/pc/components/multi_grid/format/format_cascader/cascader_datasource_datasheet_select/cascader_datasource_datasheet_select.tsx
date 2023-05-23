@@ -53,7 +53,13 @@ export const CascaderDatasourceDatasheetSelect = ({
           <div className={settingStyles.iconType}>
             <NodeIcon nodeId="foreignDatasheetIcon" icon={linkedDatasheet?.icon} editable={false} size={16} />
           </div>
-          <div className={settingStyles.text}>{linkedDatasheet?.name || t(Strings.cascader_datasource_placeholder)}</div>
+          <div className={settingStyles.text}>
+            {linkedDatasheet?.name || (
+              <div className={styles.placeholder}>
+                {t(Strings.cascader_datasource_placeholder)}
+              </div>
+            )}
+          </div>
           <div className={settingStyles.arrow}>
             <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
           </div>

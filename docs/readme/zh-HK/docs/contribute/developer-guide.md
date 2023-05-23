@@ -130,7 +130,13 @@ APITable 已準備好這兩個IDE調試配置。
 我們有兩種方法來改進 APITable 的翻譯：
 
 1. 您可以修改源碼中的markdown文件，直接創建PR
-2. 加入我們的[Crowdin](https://crowdin.com/project/apitablecode) 找到要修改的`字符串`
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 在多語言翻譯協作中，我們遵循以下流程：
 
@@ -190,4 +196,23 @@ MAIL_USERNAME=your_email
 ## 如何更改默認的80端口?
 `.env` 文件中的配置屬性也可以通過指定環境變量 `NGINX_HTTP_PORT` 來覆蓋。
 
-例如：NGINX_HTTP_PORT=8080
+For example. 例如： NGINX_HTTP_PORT=8080
+
+## How to add supported Languages?
+
+To add a new language to APITable, follow these steps:
+
+1. Determine the code of the language to be added, for example `uk-UA`.
+2. Add new language files in the `packages/l10n/base/` directory. For example, create a file named `strings.uk-UA.json`. For example, create a file named `strings.uk-UA.json`.
+3. List the value keys for translation in the new language file, following the format of strings.en-US.json.
+4. Add the language item in `packages/l10n/base/language.manifest.json`.
+    ```json
+    {
+      "en-US": "English",
+      "uk-UA": "українська",
+      "zh-CN": "简体中文"
+    }
+    ```
+5. Once the translation is complete, execute the command: `make l10n-apitable-ce`.
+
+By following these steps, you can easily add support for new languages to your project.

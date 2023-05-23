@@ -31,10 +31,10 @@ import { ApiResponse } from 'fusion/vos/api.response';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
 import { PermissionException, ServerException } from 'shared/exception';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
-import { ChangesetView, DatasheetPack } from '../../interfaces';
-import { RecordHistoryQueryRo } from '../../datasheet/ros/record.history.query.ro';
-import { RecordHistoryVo } from '../vos/record.history.vo';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { ChangesetView, DatasheetPack } from '../../interfaces';
+import type { RecordHistoryQueryRo } from '../../datasheet/ros/record.history.query.ro';
+import type { RecordHistoryVo } from '../vos/record.history.vo';
+import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 @Controller('nest/v1')
 export class ResourceController {

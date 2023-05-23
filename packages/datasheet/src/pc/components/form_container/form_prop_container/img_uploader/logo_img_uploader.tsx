@@ -48,7 +48,7 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
   const isMobile = screenIsAtMost(ScreenSize.md);
   const logoSize = isMobile ? 80 : 120;
   const logoAddIconSize = isMobile ? 16 : 32;
-  const logoWrapClassName = classnames(styles.logoImgWrapper, isMobile && styles.logoWrapMobile);
+  const logoWrapClassName = classnames(styles.logoImgWrapper, isMobile && styles.logoWrapMobile, logoUrl && styles.notEmpty);
 
   const onChange = (file: any) => {
     const logoUrl = getCellValueThumbSrc(file, {

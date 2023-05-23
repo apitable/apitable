@@ -37,8 +37,8 @@ export function getEnvVariables() {
   return getInitializationData().envVars;
 }
 
-export function isHiddenIntercom() {
-  return getEnvVariables().INTERCOM_VISIBLE;
+export function isHiddenLivechat() {
+  return getEnvVariables().LIVECHAT_VISIBLE;
 }
 
 export function isMobileApp() {

@@ -25,7 +25,8 @@ import { useContainer } from 'class-validator';
 import * as immer from 'immer';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
-import { initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
+import {
+  initAutomationWorker, initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
 import { GlobalExceptionFilter } from 'shared/filters';
 import { HttpResponseInterceptor } from 'shared/interceptor';
@@ -47,6 +48,7 @@ async function bootstrap() {
   initSwagger(app);
   initHttpHook(app);
   initSentry(app);
+  initAutomationWorker(app);
 
   // express performance traces
   // app.use(Sentry.Handlers.requestHandler());
@@ -65,6 +67,7 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       stopAtFirstError: true,
+      forbidUnknownValues: false,
     }),
   );
 

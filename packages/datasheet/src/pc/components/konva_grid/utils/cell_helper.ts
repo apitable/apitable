@@ -235,7 +235,7 @@ export class CellHelper extends KonvaDrawer {
     const { x, y, cellValue, field, columnWidth, isActive, editable, callback, style, cacheTheme } = renderProps;
     if (cellValue == null) return DEFAULT_RENDER_DATA;
     const isOperating = isActive && editable;
-    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.staticWhite0;
+    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.textStaticPrimary;
     const background = inquiryValueByKey('color', cellValue as string, field, cacheTheme);
     const itemName = inquiryValueByKey('name', cellValue as string, field, cacheTheme);
     const initPadding = GRID_CELL_VALUE_PADDING;
@@ -252,6 +252,8 @@ export class CellHelper extends KonvaDrawer {
       GRID_CELL_MULTI_ITEM_MIN_WIDTH,
     );
     if (ctx) {
+      ctx.save();
+      ctx.globalAlpha = 1;
       const stroke = style?.bgColor === background ? colors.defaultBg : '';
       this.label({
         x: x + initPadding,
@@ -267,6 +269,7 @@ export class CellHelper extends KonvaDrawer {
         stroke,
         textAlign: 'center',
       });
+      ctx.restore();
       callback?.({ width: width + initPadding });
     }
 
@@ -307,7 +310,7 @@ export class CellHelper extends KonvaDrawer {
 
     for (let index = 0; index < listCount; index++) {
       const optId = cellValue[index];
-      const color = cacheTheme === ThemeName.Light ? getOptionNameColor(optId as string, field) : colors.staticWhite0;
+      const color = cacheTheme === ThemeName.Light ? getOptionNameColor(optId as string, field) : colors.textStaticPrimary;
       const background = inquiryValueByKey('color', optId as string, field, cacheTheme);
       const itemName = inquiryValueByKey('name', optId as string, field, cacheTheme);
       let realMaxTextWidth = maxTextWidth;

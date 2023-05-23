@@ -18,14 +18,6 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.component.LanguageManager;
@@ -38,8 +30,13 @@ import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
 import com.apitable.template.service.ITemplatePropertyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -54,8 +51,23 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     @Resource
     private TemplatePropertyRelMapper propertyRelMapper;
 
-    @Resource
-    private TemplatePropertyRelMapper templatePropertyRelMapper;
+    @Override
+    public TemplatePropertyEntity getTemplateCategoryByName(String name) {
+        return baseMapper.selectByPropertyTypeAndPropertyName(
+            TemplatePropertyType.CATEGORY.getType(), name);
+    }
+
+    @Override
+    public TemplatePropertyEntity getTemplateCategory(String propertyCode) {
+        return baseMapper.selectByPropertyCodeAndPropertyType(propertyCode,
+            TemplatePropertyType.CATEGORY.getType());
+    }
+
+    @Override
+    public List<String> getTemplateCategoryCodeByLang(String lang) {
+        return baseMapper.selectPropertyCodeByPropertyTypeAndI18nName(
+            TemplatePropertyType.CATEGORY.getType(), lang);
+    }
 
     @Override
     public List<TemplatePropertyDto> getTemplatePropertiesWithLangAndOrder(TemplatePropertyType type, String rawLang) {
@@ -130,7 +142,8 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
             return CollUtil.newArrayList();
         }
         List<String> propertyCodes = properties.stream().map(TemplatePropertyDto::getPropertyCode).collect(Collectors.toList());
-        List<TemplatePropertyRelDto> templatePropertyRelList = templatePropertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);
+        List<TemplatePropertyRelDto> templatePropertyRelList =
+            propertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);
         Map<String, List<String>> propertyCode2TemplateId = templatePropertyRelList.stream()
                 .collect(Collectors.groupingBy(TemplatePropertyRelDto::getPropertyCode,
                         Collectors.mapping(TemplatePropertyRelDto::getTemplateId, Collectors.toList())));

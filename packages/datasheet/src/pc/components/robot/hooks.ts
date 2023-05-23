@@ -284,7 +284,7 @@ export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
     dispatch({
       type: 'setActionTypes',
       payload: {
-        triggerTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
+        actionTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
       }
     });
   }, [actionTypeData?.data.data, dispatch, themeName]);

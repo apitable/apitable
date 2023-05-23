@@ -594,9 +594,7 @@ export class KonvaDrawer {
       (url || '');
     const avatarName = getFirstWordFromString(title);
     const avatarBg = (
-      avatarSrc ?
-        colors.defaultBg :
-        (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
+      avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0]
     );
     switch (type) {
       case AvatarType.Team: {

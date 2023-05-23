@@ -55,7 +55,13 @@ public enum TemplateException implements BaseException {
 
     NODE_LINK_FOREIGN_NODE(430, "The {FOREIGN FIELD NAMES} column in the current table is related to another table. In this case, it will not be possible to save as a template"),
 
-    TEMPLATE_INFO_ERROR(431, "Template information error");
+    TEMPLATE_INFO_ERROR(431, "Template information error"),
+
+    TEMPLATE_CATEGORY_NOT_EXIST(432, "Template category does not exist"),
+
+    TEMPLATE_CATEGORY_HAVE_BEEN_EXIST(432, "This template category have been existed."),
+
+    ;
 
     private final Integer code;
 

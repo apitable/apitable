@@ -24,6 +24,7 @@ import { AutomationService } from '../services/automation.service';
 import { RobotRobotService } from '../services/robot.robot.service';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
+import { NodeService } from 'node/services/node.service';
 
 @Controller('nest/v1/robots')
 export class RobotController {
@@ -34,10 +35,13 @@ export class RobotController {
     private readonly automationService: AutomationService,
     private readonly robotService: RobotRobotService,
     private readonly userService: UserService,
+    private readonly nodeService: NodeService,
   ) { }
 
   @Get(['/'])
-  getRobotListByResourceId(@Query('resourceId') resourceId: string) {
+  async getRobotListByResourceId(@Query('resourceId') resourceId: string, @Headers('cookie') cookie: string) {
+    const { userId } = await this.userService.getMe({ cookie });
+    await this.nodeService.checkUserForNode(userId, resourceId);
     return this.robotService.getRobotListByResourceId(resourceId);
   }
 

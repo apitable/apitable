@@ -20,6 +20,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apitable.template.mapper.TemplatePropertyMapper">
+    <select id="selectByPropertyCodeAndPropertyType"
+            resultType="com.apitable.template.entity.TemplatePropertyEntity">
+        SELECT *
+        FROM ${tablePrefix}template_property
+        WHERE property_code = #{propertyCode}
+          AND property_type = #{propertyType}
+          AND is_deleted = 0 LIMIT 1
+    </select>
+
+    <select id="selectByPropertyTypeAndPropertyName"
+            resultType="com.apitable.template.entity.TemplatePropertyEntity">
+        SELECT *
+        FROM ${tablePrefix}template_property
+        WHERE property_type = #{propertyType}
+          AND property_name = #{propertyName} LIMIT 1
+    </select>
+
     <select id="selectPropertyNameByPropertyCodeIn" resultType="java.lang.String">
         SELECT property_name
         FROM ${tablePrefix}template_property
@@ -37,6 +54,15 @@
         FROM ${tablePrefix}template_property vtp
         WHERE i18n_name = #{lang}
           and is_deleted = 0
+    </select>
+
+    <select id="selectPropertyCodeByPropertyTypeAndI18nName"
+            resultType="java.lang.String">
+        SELECT property_code
+        FROM ${tablePrefix}template_property
+        WHERE property_type = #{propertyType}
+          AND i18n_name = #{i18nName}
+          AND is_deleted = 0
     </select>
 
     <select id="selectTemplatePropertiesWithLangAndOrder"
