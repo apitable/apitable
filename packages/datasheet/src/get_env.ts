@@ -21,6 +21,8 @@
  */
 export const getEnvVars = () => {
   return {
+    LOGIN_MOTTO: process.env.LOGIN_MOTTO,
+    LOGIN_SOCIAL_ICONS_DISABLE: process.env.LOGIN_SOCIAL_ICONS_DISABLE,
     DINGTALK_LOGIN_APPID: process.env.DINGTALK_LOGIN_APPID,
     QQ_CONNECT_WEB_APPID: process.env.QQ_CONNECT_WEB_APPID,
     integration_feishu_login_appid: process.env.integration_feishu_login_appid,
@@ -201,6 +203,7 @@ export const getEnvVars = () => {
     INVITE_USER_BY_AUTH0: process.env.INVITE_USER_BY_AUTH0 === 'true',
     ALARM_TIME_UTC_VISIBLE: process.env.ALARM_TIME_UTC_VISIBLE === 'true',
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
+    APITABLE_NAME: process.env.APITABLE_NAME,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
@@ -225,5 +228,7 @@ export const getEnvVars = () => {
     IS_CANVAS_IMAGE_CROSS_ORIGIN: process.env.IS_CANVAS_IMAGE_CROSS_ORIGIN === 'true',
     GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
+    FORM_LOGIN_URL: process.env.FORM_LOGIN_URL,
+    TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
   };
 };

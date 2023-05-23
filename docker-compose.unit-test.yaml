@@ -68,14 +68,13 @@ services:
       retries: 5
       start_period: 5s
 
-  test-initdb:
-    container_name: test-initdb
-    image: gradle:jdk8
+  test-init-db:
+    container_name: test-init-db
     networks:
       - unit-test
-    working_dir: /data
-    volumes:
-      - ./init-db:/data
+    build:
+      context: ./init-db
+      dockerfile: ./Dockerfile
     environment:
       - TZ=Asia/Singapore
       - ACTION=update
@@ -85,7 +84,6 @@ services:
       - DB_USERNAME=apitable
       - DB_PASSWORD=password
       - DATABASE_TABLE_PREFIX=apitable_
-    entrypoint: ./gradlew update
 
   unit-test-room:
     container_name: unit-test-room
@@ -148,7 +146,6 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
-    entrypoint: ./gradlew testCodeCoverageReport --stacktrace
 
 networks:
   unit-test:

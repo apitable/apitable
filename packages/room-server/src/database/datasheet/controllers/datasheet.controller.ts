@@ -24,7 +24,7 @@ import { ResourceDataInterceptor } from 'database/resource/middleware/resource.d
 import type { CommentReplyDto } from '../dtos/comment.reply.dto';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
-import type { DatasheetPackRo } from '../ros/datasheet.pack.ro';
+import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { DatasheetMetaService } from '../services/datasheet.meta.service';

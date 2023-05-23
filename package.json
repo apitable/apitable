@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -102,7 +102,8 @@
   },
   "resolutions": {
     "webpack": "4.44.2",
-    "winston@^3.8.2": "patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch"
+    "winston@^3.8.2": "patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch",
+    "node-gyp": "9.3.1"
   },
   "bin": "packages/room-server/dist/main.js",
   "pkg": {

@@ -14,7 +14,7 @@ The entrypoint of DataBus is a `DataBus` instance. Creating a `DataBus` instance
 
 An example use of DataBus in back-end:
 ```typescript
-class ServerDataStorageProvider implements databus.IDataStorageProvider {
+class ServerDataStorageProvider implements databus. IDataStorageProvider {
     loadDatasheetPack(dstId, options) {
         // reading data pack from database ...
     }

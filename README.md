@@ -354,7 +354,7 @@ Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 - Integrate with ChatGPT, Zapier, Slack, Google Workspace……
 - Watermark
 
-For more information, please contact us at <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Get Involved
 

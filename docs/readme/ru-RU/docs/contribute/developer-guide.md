@@ -14,7 +14,7 @@
 
 ### Язык программирования
 
-Если вы используете macOS или Linux. Мы рекомендуем установить язык программирования с SDK-менеджером `sdkman`` и `nvm</0>.
+Если вы используете macOS или Linux. Мы рекомендуем установить язык программирования с SDK-менеджером `sdkman`` и`nvm</0>.
 
 ```bash
 # quick install nvm
@@ -134,7 +134,13 @@ APITable подготовил отладочные конфигурации дл
 У нас есть два способа улучшить перевод APITable:
 
 1. Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
-2. Присоединяйтесь к нашим [Crowdin](https://crowdin.com/project/apitablecode), чтобы найти `strings` для изменения
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 В сотрудничестве с многоязычным переводом мы следуем следующему процессу:
 

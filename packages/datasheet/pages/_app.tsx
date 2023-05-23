@@ -28,6 +28,7 @@ import {
   t,
   IUserInfo,
   getTimeZoneOffsetByUtc,
+  getTimeZone,
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -352,8 +353,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
   useEffect(() => {
     const checkTimeZoneChange = () => {
-      // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
-      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const timeZone = getTimeZone();
       const offset = getTimeZoneOffsetByUtc(timeZone)!;
       if (!timeZone) return;
       // set default timeZone
@@ -382,12 +382,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return <>
     <Head>
       <title>
-        {env.IS_APITABLE ? 'APITable' : t(Strings.system_configuration_product_name)}
+        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
       <meta name='description' content='' />
       <meta
         name='keywords'
-        content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
+        content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
       <meta name='renderer' content='webkit' />

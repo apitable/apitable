@@ -4,13 +4,13 @@ APITable è concettualmente composto da due parti: workbench e datasheet.
 
 Il workbench gestisce i nodi, le organizzazioni e i dati degli utenti, fornendo servizi di SSO, Audit, Scheduler, Permessi, ecc.
 
-Il datasheet fornisce una collaborazione in tempo reale per consentire a più collaboratori di operare contemporaneamente sui datasheet.  L'aspetto degno di nota è che esiste una libreria di componenti chiamata Core, sviluppata con Redux. La libreria Core contiene calcoli OT e può essere utilizzata sia nel front-end che nel back-end.
+Il datasheet fornisce una collaborazione in tempo reale per consentire a più collaboratori di operare contemporaneamente sui datasheet. L'aspetto degno di nota è che esiste una libreria di componenti chiamata Core, sviluppata con Redux. La libreria Core contiene calcoli OT e può essere utilizzata sia nel front-end che nel back-end.
 
 Di seguito è riportato un diagramma più concreto:
 
 ![Architecture Overview](../static/architecture-overview.png)
 
-- UI: fornisce un'interfaccia database-foglio di calcolo estremamente fluida, facile da usare e superveloce. <canvas> Web Server: costruisce siti web statici e applicazioni web estremamente efficaci, SEO-friendly ed estremamente orientate all'utente, utilizzando Nextjs.
+- UI: fornisce un'interfaccia database-foglio di calcolo estremamente fluida, facile da usare e superveloce. <canvas> Rendering Engine
 - Web Server: costruisce siti web statici e applicazioni web estremamente efficaci, SEO-friendly ed estremamente orientate all'utente, utilizzando Nextjs.
 - Backend Server: gestisce le richieste HTTP su nodi, utenti, organizzazioni, ecc.
 - Socket Server: stabilisce una lunga connessione con i client attraverso il protocollo WebSocket, consentendo una comunicazione bidirezionale e una collaborazione in tempo reale, notifiche e altre funzionalità.

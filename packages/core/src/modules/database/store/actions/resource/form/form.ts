@@ -17,6 +17,7 @@
  */
 
 import { fetchFormPack, fetchShareFormPack, fetchTemplateFormPack } from '../../../../api/form_api';
+import { fetchEmbedDatasheetPack } from '../../../../api/datasheet_api';
 import { AxiosResponse } from 'axios';
 import { ConfigConstant, StatusCode } from 'config';
 import { Dispatch } from 'redux';
@@ -48,7 +49,7 @@ export const DEFAULT_FORM_PROPS = {
 export function fetchForm(formId: string, successFn?: (props?: any) => void) {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
-    const { shareId, templateId } = state.pageParams;
+    const { shareId, templateId, embedId } = state.pageParams;
     const formLoading = getFormLoading(state, formId);
 
     if (formLoading) {
@@ -59,9 +60,15 @@ export function fetchForm(formId: string, successFn?: (props?: any) => void) {
     if (shareId) {
       requestMethod = () => fetchShareFormPack(shareId, formId);
     }
+
     if (templateId) {
       requestMethod = () => fetchTemplateFormPack(templateId, formId);
     }
+    
+    if(embedId) {
+      requestMethod = () => fetchEmbedDatasheetPack(embedId, formId);
+    }
+
     dispatch(requestFormPack(formId));
     return requestMethod(formId)
       .then(response => {

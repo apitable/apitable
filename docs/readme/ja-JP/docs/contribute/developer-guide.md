@@ -14,7 +14,7 @@
 
 ### プログラミング言語
 
-macOS または Linux を使用している場合。 macOS または Linux を使用している場合。 SDKマネージャー`sdkman`と`nvm`でプログラミング言語をインストールすることをお勧めします。
+macOS または Linux を使用している場合。 SDKマネージャー`sdkman`と`nvm`でプログラミング言語をインストールすることをお勧めします。
 
 ```bash
 # クイック インストール nvm
@@ -130,7 +130,13 @@ APITable のルート ディレクトリを IDE で開くだけです。
 APITableの翻訳を改善するには2つの方法があります。
 
 1. ソースコード内のマークダウンファイルを変更し、直接PRを作成することができます。
-2. [Crowdin](https://crowdin.com/project/apitablecode) に参加して、 `strings` を見つけて修正してください
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 多言語翻訳のコラボレーションでは、以下の手順に従います。
 
@@ -152,7 +158,7 @@ MAIL_TYPE=smtp
 MAIL_USERNAME=your_email
 ```
 
-さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックス smtp チュートリアルを検索してください。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
+さらに、一部のメールボックスは、smtp を使用するためにバックグラウンドで有効にする必要があります。 詳細については、xxx メールボックスの smtp チュートリアルを検索できます。
 
 
 ## macOS M1 docker run でのパフォーマンスの問題?
@@ -169,11 +175,11 @@ MAIL_USERNAME=your_email
 
 ## ダッシュボードでウィジェット数の制限を設定するには? (デフォルトでは 30)
 
-これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS</0>パラメータを設定することで実現できます。</p>
+これは、`room-server`の`.env.default`ファイルで`API_MAX_MODIFY_RECORD_COUNTS</0>パラメータを設定することで実現できます。
 
-<h2 spaces-before="0">API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)</h2>
+## API のリクエスト レート制限を引き上げることはできますか? (デフォルトでは 5)
 
-<p spaces-before="0"><code>room-server` の `.env.default`ファイルには、リクエスト頻度を調整できる2つのパラメータがあります。
+<code>room-server`の`.env.default`ファイルには、リクエスト頻度を調整できる2つのパラメータがあります。
 
 1. `LIMIT_POINTS` と `LIMIT_DURATION` を設定して、単位時間内に行うことができるリクエストの数を示すことができます。 ここで、LIMIT_POINTS は回数、LIMIT_DURATION は継続時間で、秒単位で測定されます。
 
@@ -190,7 +196,7 @@ MAIL_USERNAME=your_email
 ## デフォルトの 80 ポートを変更するには?
 `.env` ファイルの構成プロパティは、環境変数 `NGINX_HTTP_PORT` を指定することでオーバーライドすることもできます
 
-例えば： NGINX_HTTP_PORT=8080 として設定されます
+For example. 例えば： NGINX_HTTP_PORT=8080 として設定されます
 
 ## How to add supported Languages?
 

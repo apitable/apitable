@@ -20,6 +20,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import {
+  getTimeZone,
   getTimeZoneAbbrByUtc,
   IFromUserInfo,
   INoticeDetail,
@@ -264,7 +265,7 @@ export const getMsgText = (data: INoticeDetail) => {
   }
 };
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const timeZone = getTimeZone();
 const abbr = getTimeZoneAbbrByUtc(timeZone)!;
 
 // spaceName is the space to which the current notification belongs

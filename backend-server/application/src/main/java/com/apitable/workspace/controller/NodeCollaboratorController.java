@@ -31,6 +31,9 @@ import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.holder.SpaceHolder;
+import com.apitable.space.service.ISpaceService;
+import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.vo.NodeCollaboratorVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,6 +53,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ApiResource(path = "/node")
 public class NodeCollaboratorController {
+
+    @Resource
+    private ISpaceService iSpaceService;
 
     @Resource
     private IUserService iUserService;
@@ -77,6 +83,9 @@ public class NodeCollaboratorController {
         @RequestParam(name = "nodeId") String nodeId
     ) {
         String spaceId = LoginContext.me().getSpaceId();
+        // For member information hiding use
+        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        SpaceHolder.setGlobalFeature(feature);
         Long userId = iUserService.getUserIdByUuidWithCheck(uuid);
         // Get target member
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);

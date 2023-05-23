@@ -387,4 +387,4 @@ export const isBasicField = (fieldType: FieldType) => {
     fieldType === FieldType.Percent ||
     fieldType === FieldType.SingleText ||
     fieldType === FieldType.Attachment;
-}
+};

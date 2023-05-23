@@ -134,7 +134,13 @@ Simplemente abra el directorio raíz de APITable con IDE.
 Tenemos dos maneras de mejorar la traducción de APITable:
 
 1. Puede modificar los archivos de markdown en el código fuente y crear un PR directamente
-2. Únete a nuestro [Crowdin](https://crowdin.com/project/apitablecode) para encontrar las `strings` para modificar
+2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+
+Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
 En colaboración con la traducción multilingüe, seguimos el siguiente proceso:
 
@@ -171,11 +177,11 @@ Puede acceder a la documentación de la API iniciando un servidor local:
 
 Si está interesado en las interfaces de la API del servicio en la nube, también puede acceder directamente a la documentación de la API en línea en https://developers.apitable.com/api/introduction.
 
-## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto)
+## ¿Cómo establecer la limitación de la cantidad de widgets en el tablero?  (30 por defecto) (30 by default)
 
 Esto se puede lograr configurando el parámetro `DSB_WIDGET_MAX_COUNT` en el archivo `.env`.
 
-## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto)
+## ¿Puedo aumentar el límite de tasa de solicitudes de la API? (5 por defecto) (5 by default)
 
 En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden ajustar la frecuencia de la solicitud:
 
@@ -183,7 +189,7 @@ En el archivo `.env.default` de `room-server`, hay dos parámetros que pueden aj
 
 2. Puede configurar el parámetro `LIMIT_WHITE_LIST` para establecer una frecuencia de solicitud separada para usuarios específicos. Su valor es una cadena JSON y su estructura puede hacer referencia a `Map<string, IBaseRateLimiter>`.
 
-## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto)
+## ¿Cómo aumentar la cantidad de registros insertados por llamada API? (10 por defecto) (10 by default)
 
 Esto se puede lograr configurando el parámetro `API_MAX_MODIFY_RECORD_COUNTS` en el archivo `.env.default` de `room-server`.
 

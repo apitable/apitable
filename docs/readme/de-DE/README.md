@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
     </a>
     <!-- Discord -->
-    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+    <a target="_blank" href="https://discord.gg/zYWYTHXR4f">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Twitter -->
@@ -279,7 +279,7 @@ Sie können wie folgt beitragen:
 
 
 So wie folgendermaßen:
-- Treten Sie [Crowdin-Übersetzungsprojekt](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - [Tickets](https://github.com/apitable/apitable/issues/new/choose) erstellen
 - Unserem [Twitter](https://twitter.com/apitable_com) folgen
 - [Dokumentation](./docs) erstellen
@@ -327,8 +327,9 @@ APITable use these common convention:
   - [REST API Docs](https://developers.apitable.com/api/introduction/)
   - [Widget SDK](https://developers.apitable.com/widget/introduction/)
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Design System](https://figma.com/@apitable)
 
-## :Autobahn: Fahrplan
+## 🛣 Roadmap
 
 Bitte beachten Sie die [Roadmap von APITable](https://apitable.com/roadmap)
 
@@ -350,9 +351,9 @@ Bitte beachten Sie die [Roadmap von APITable](https://apitable.com/roadmap)
 - Audit
 - Datenbanksicherung
 - Integrieren Sie mit ChatGPT, Zapier, Slack, Google Workspace......
-- Und Sie schreiben gerne qualitativ hochwertigen Code mit klarer Dokumentation und Unit-Tests.
+- Watermark
 
-Für weitere Informationen kontaktieren Sie uns bitte unter <support@apitable.com>.
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
 
 ## 👫 Beteiligt werden
 
