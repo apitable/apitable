@@ -15,20 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { Module } from '@nestjs/common';
-import { CommandModule } from 'database/command/command.module';
-import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { RobotEventService } from './services/robot.event.service';
-import { QueueModule } from 'automation/queues';
-
-@Module({
-  imports: [
-    CommandModule,
-    DatasheetModule,
-    QueueModule,
-  ],
-  providers: [RobotEventService],
-  exports: [RobotEventService]
-})
-export class RobotEventModule {}
+export * from './queue.name';
+export * from './queue.event.name';
+export * from './redis.config';

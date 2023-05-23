@@ -25,7 +25,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { disableHSTS, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { disableHSTS, enableAutomationWorker, enableScheduler, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { FlowWorker } from 'automation/workers';
 import { DatabaseModule } from 'database/database.module';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
@@ -277,3 +278,10 @@ export const initRedisIoAdapter = (app: INestApplication) => {
   app.useWebSocketAdapter(new RedisIoAdapter(app, socketIoService));
   return app;
 };
+
+export const initAutomationWorker =  (app: INestApplication) => {
+  if(enableScheduler || enableAutomationWorker) {
+    const flowWorker = app.get(FlowWorker);
+    flowWorker.start();
+  }
+}

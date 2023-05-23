@@ -15,11 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NodeModule } from 'node/node.module';
+import { UserModule } from 'user/user.module';
 import { RobotActionController } from './controller/action.controller';
 import { RobotActionTypeController } from './controller/action.type.controller';
+import { RobotController } from './controller/robot.controller';
+import { RobotRunHistoryController } from './controller/run.history.controller';
+import { RobotTriggerController } from './controller/trigger.controller';
+import { RobotTriggerTypeController } from './controller/trigger.type.controller';
+import { QueueModule } from './queues';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
 import { AutomationActionTypeRepository } from './repositories/automation.action.type.repository';
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
@@ -27,22 +33,13 @@ import { AutomationRunHistoryRepository } from './repositories/automation.run.hi
 import { AutomationServiceRepository } from './repositories/automation.service.repository';
 import { AutomationTriggerRepository } from './repositories/automation.trigger.repository';
 import { AutomationTriggerTypeRepository } from './repositories/automation.trigger.type.repository';
-import { RobotController } from './controller/robot.controller';
-import { RobotRunHistoryController } from './controller/run.history.controller';
 import { AutomationService } from './services/automation.service';
-import { RobotTriggerController } from './controller/trigger.controller';
-import { RobotTriggerTypeController } from './controller/trigger.type.controller';
-import { RobotServiceDynamicModule } from './services/robot.service.dynamic.module';
+import { RobotActionService } from './services/robot.action.service';
+import { RobotActionTypeService } from './services/robot.action.type.service';
+import { RobotRobotService } from './services/robot.robot.service';
 import { RobotTriggerService } from './services/robot.trigger.service';
 import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
-import { FormSubmittedListener } from './events/listeners/form.submitted.listener';
-import { TriggerEventHelper } from './events/helpers/trigger.event.helper';
-import { RecordCreatedListener } from './events/listeners/record.created.listener';
-import { RecordUpdatedListener } from './events/listeners/record.updated.listener';
-import { NodeModule } from 'node/node.module';
-import { UserModule } from 'user/user.module';
-import { RobotActionService } from './services/robot.action.service';
-import { RobotRobotService } from './services/robot.robot.service';
+import { FlowWorker } from './workers';
 
 @Module({
   imports: [
@@ -57,7 +54,7 @@ import { RobotRobotService } from './services/robot.robot.service';
     ]),
     NodeModule,
     UserModule,
-    RobotServiceDynamicModule.forRoot(),
+    QueueModule,
   ],
   controllers: [
     RobotController,
@@ -71,18 +68,11 @@ import { RobotRobotService } from './services/robot.robot.service';
     AutomationService,
     RobotTriggerService,
     RobotTriggerTypeService,
-    FormSubmittedListener,
-    TriggerEventHelper,
-    RecordCreatedListener,
-    RecordUpdatedListener,
     RobotActionService,
     RobotRobotService,
+    RobotActionTypeService,
+    FlowWorker,
   ],
-  exports: [
-    AutomationService,
-    RobotTriggerService,
-    RobotTriggerTypeService,
-  ],
+  exports: [RobotRobotService],
 })
-export class RobotModule {
-}
+export class AutomationModule {}

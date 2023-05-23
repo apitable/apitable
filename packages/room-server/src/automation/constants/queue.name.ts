@@ -15,25 +15,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { IEventInstance, IOPEvent } from '@apitable/core';
-import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
-
-export type CommonEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
-  context: CommonEventContext,
-  beforeApply: boolean,
-  metaContext: CommonEventMetaContext,
-};
-
-export type CommonEventMetaContext = {
-  dstIdTriggersMap: { [datasheetId: string]: AutomationTriggerEntity[] },
-  triggerSlugTypeIdMap: { [serviceSlug: string]: string},
-  msgIds: string[]
-};
-
-export type CommonEventContext = {
-  datasheetId: string,
-  datasheetName: string,
-  recordId: string,
-  [key: string]: any,
-};
+export const FLOW_QUEUE = 'FLOW_QUEUE';
+export const ACTION_QUEUE = 'ACTION_QUEUE';

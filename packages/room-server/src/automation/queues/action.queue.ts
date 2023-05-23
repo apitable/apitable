@@ -15,20 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { Inject, Injectable } from '@nestjs/common';
+import { ConnectionOptions, Job, Queue } from 'bullmq';
+import IORedis from 'ioredis';
+import { ACTION_QUEUE } from '../constants';
 
-import { Module } from '@nestjs/common';
-import { CommandModule } from 'database/command/command.module';
-import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { RobotEventService } from './services/robot.event.service';
-import { QueueModule } from 'automation/queues';
+@Injectable()
+export class ActionQueue {
 
-@Module({
-  imports: [
-    CommandModule,
-    DatasheetModule,
-    QueueModule,
-  ],
-  providers: [RobotEventService],
-  exports: [RobotEventService]
-})
-export class RobotEventModule {}
+  private actionQueue: Queue;
+
+  constructor(
+    @Inject('AUTOMATION_REDIS_CLIENT') readonly redisClient: IORedis
+  ) {
+    this.actionQueue = new Queue(ACTION_QUEUE, { connection: redisClient as ConnectionOptions });
+ }
+  
+  public async add(jobId: string): Promise<Job> {
+    return await this.actionQueue.add(jobId, {});
+  }
+}
