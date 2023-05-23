@@ -135,7 +135,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
     });
   };
 
-  const handleWrapClick = (e:  React.MouseEvent) => {
+  const handleWrapClick = (e: React.MouseEvent) => {
     processed(data);
     stopPropagation(e);
   };

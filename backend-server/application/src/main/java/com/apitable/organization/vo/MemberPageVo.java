@@ -20,6 +20,7 @@ package com.apitable.organization.vo;
 
 import com.apitable.shared.support.serializer.ChinaLocalDateTimeToUtcSerializer;
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.MobilePhoneHideSerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -53,7 +54,8 @@ public class MemberPageVo {
     @Schema(description = "Member Name", example = "Zhang San")
     private String memberName;
 
-    @JsonSerialize(nullsUsing = NullStringSerializer.class)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = MobilePhoneHideSerializer.class)
     @Schema(description = "Phone number", example = "13344445555")
     private String mobile;
 

@@ -39,7 +39,6 @@ export * from './tooltip';
 export * from './contextmenu_item';
 export * from './user_card';
 export * from './tag';
-export * from './menu';
 export * from './wrapper';
 export * from './button_plus';
 export * from './button_base';

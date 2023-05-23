@@ -73,8 +73,8 @@ services:
     networks:
       - unit-test
     build:
-        context: ./init-db
-        dockerfile: ./Dockerfile
+      context: ./init-db
+      dockerfile: ./Dockerfile
     environment:
       - TZ=Asia/Singapore
       - ACTION=update

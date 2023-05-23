@@ -382,7 +382,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return <>
     <Head>
       <title>
-        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.system_configuration_product_name)}
+        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
       <meta name='description' content='' />
       <meta

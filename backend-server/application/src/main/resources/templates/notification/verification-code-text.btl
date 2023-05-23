@@ -2,7 +2,7 @@ Account Email Verification
 
 --------------------------------------------------------------------------------
 
-You're verifying your email address to log into APITtable. The verification code is as follows:
+You're verifying your email address to log into APITable. The verification code is as follows:
 
 {{VERIFICATION_CODE}}
  
@@ -11,4 +11,4 @@ If you didn't recently attempt to verify your email address, you can ignore this
 
 © {{YEARS}} APITable Ltd.
 
-Contact us (https://apitable.com?home=1)
+Contact us (https://apitable.com/?home=1)
