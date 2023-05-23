@@ -17,7 +17,10 @@
  */
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
+import {
+  ConfigConstant, ICellUpdatedContext, IReduxState, OPEventNameEnums,
+  Selectors, StoreActions, Strings, t, ViewType, FieldType
+} from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, InfoCircleOutlined, EditOutlined, EyeOpenOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -27,6 +30,7 @@ import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
+import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -44,14 +48,16 @@ import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
-export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
+export const View: React.FC<React.PropsWithChildren> = () => {
   const colors = useThemeColors();
-  const { currentView, rows, linearRows } = useSelector((state: IReduxState) => {
+  const { currentView, rows, linearRows, fieldMap } = useSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
+    const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       rows: Selectors.getVisibleRows(state),
       linearRows: Selectors.getLinearRows(state),
       currentView,
+      fieldMap
     };
   }, shallowEqual);
   const { screenIsAtMost } = useResponsive();
@@ -96,6 +102,23 @@ export const View: React.FC<React.PropsWithChildren<unknown>> = () => {
 
     store.dispatch(StoreActions.getSubscriptionsAction(datasheetId, mirrorId));
   }, [datasheetId, mirrorId, shareId, templateId, embedId]);
+
+  const { opEventManager } = resourceService.instance!;
+
+  useEffect(() => {
+    const recordUpdatedCallBack = (context: ICellUpdatedContext) => {
+      const { fieldId } = context;
+      const field = fieldMap[fieldId];
+      // While cell updated, member field with subscription open need update subscriptions
+      if (field.type === FieldType.Member && field.property.subscription) {
+        store.dispatch(StoreActions.getSubscriptionsAction(datasheetId!, mirrorId));
+      }
+    };
+    opEventManager.addEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack);
+    return () => {
+      opEventManager.removeEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack);
+    };
+  }, [datasheetId, fieldMap, mirrorId, opEventManager]);
 
   useExpandWidget();
 

@@ -1,4 +1,11 @@
 {
+  "add_row_created_by_tip":  "已为你自动关注该行数据的更新",
+  "field_created_by_property_subscription_close_tip": "关闭后，该创建人列下的成员将会自动取消已关注的记录",
+  "field_created_by_property_subscription_open_tip": "该选项仅对新创建的记录生效",
+  "field_member_property_notify_tip": "由于已开启「被选择的成员将自动关注行数据的更新」的选项，所以关闭后该成员列下的成员将会自动取消已关注的记录",
+  "field_member_property_subscription_close_tip": "关闭后，该成员列下的成员将会自动取消已关注的记录",
+  "field_member_property_subscription_open_tip": "该选项仅对新选择的成员生效",
+  "field_member_property_subscription":"被选择的成员将自动关注行数据的更新",
   "catalog_add_from_template_btn_title": "从模板创建",
   "catalog_empty_tips": "当前空间站没有文件，从模板创建文件、仪表盘，快速开始吧",
   "new_folder_tooltip": "新建文件夹",

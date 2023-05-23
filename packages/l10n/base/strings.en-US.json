@@ -1,4 +1,11 @@
 {
+  "add_row_created_by_tip":  "We have automatically followed you for updates on this row of data",
+  "field_created_by_property_subscription_close_tip": "After closing, the members under the creator column will automatically cancel the records they have followed",
+  "field_created_by_property_subscription_open_tip": "This option only applies to newly created records",
+  "field_member_property_notify_tip": "Due to the option of 'selected members will automatically follow updates to row data' being enabled, the members under this member column will automatically cancel the following records after closing it",
+  "field_member_property_subscription_close_tip": "After closing, the members under the member column will automatically cancel the records they have followed",
+  "field_member_property_subscription_open_tip": "This option only applies to newly selected members",
+  "field_member_property_subscription":"The selected members will automatically follow updates to row data",
   "catalog_add_from_template_btn_title": "Add from templates",
   "catalog_empty_tips": "This workspace is empty now. Get started by using templates to create files.",
   "new_folder_tooltip": "Create folder",
