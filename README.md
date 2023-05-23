@@ -22,7 +22,7 @@
         <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
     <!-- Deploy to DO -->
-    <a target="_blank" href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/apitable/apitable/tree/main&refcode=3fe758500293">
+    <a target="_blank" href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/apitable/apitable/tree/deploy-to-digitalocean&refcode=3fe758500293">
         <img src="https://www.deploytodo.com/do-btn-blue.svg" alt="Deploy to DO" />
     </a>
     <br />
