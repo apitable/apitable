@@ -17,7 +17,10 @@
  */
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
+import {
+  ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType,
+  ICellUpdatedContext, OPEventNameEnums, FieldType
+} from '@apitable/core';
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -54,7 +57,7 @@ import styles from './style.module.less';
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren> = () => {
   const colors = useThemeColors();
-  const { currentView, rows } = useSelector((state: IReduxState) => {
+  const { currentView, rows, fieldMap } = useSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
