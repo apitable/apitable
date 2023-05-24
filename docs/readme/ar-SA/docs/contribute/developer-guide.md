@@ -131,20 +131,13 @@ make run # enter 3
 
 ## ساهم في الترجمة؟
 
-لدينا طريقتان لتحسين ترجمة APITable:
+يمكنك تعديل ملفات markdown في التعليمات البرمجية المصدر وإنشاء PR مباشرة
 
-1. يمكنك تعديل ملفات markdown في التعليمات البرمجية المصدر وإنشاء PR مباشرة
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
-
+أيضًا ، بالنسبة إلى نص واجهة المستخدم ، يمكنك تغيير "السلاسل" في ملفات التعليمات البرمجية مباشرةً ، فهي موجودة في "لغات مختلفة تتوافق مع ملفات لغة مختلفة":
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-وبالتعاون مع الترجمة المتعددة اللغات، نتابع العملية التالية:
-
-![لقطة شاشة لعملية الترجمة متعددة اللغات](../static/collaboration_of_multilingual_translation.png)
 
 ## كيف يتم تكوين خادم SMTP؟
 

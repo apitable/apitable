@@ -271,7 +271,6 @@ APITable에 기여해주신 것에 감사드립니다!
 코드 작성 외에도 기여할 수 있는 다양한 방법이 있습니다.
 
 아래와 같이 기여할 수 있습니다:
-- 우리의 [Crowdin 번역 프로젝트](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)에 참여하여 번역 수정
 - [Issue](https://github.com/apitable/apitable/issues/new/choose)를 생성
 - 우리의 [Twitter](https://twitter.com/apitable_com)를 팔로우
 - [문서](./docs) 작성
@@ -279,7 +278,6 @@ APITable에 기여해주신 것에 감사드립니다!
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - [Issue](https://github.com/apitable/apitable/issues/new/choose)를 생성
 - 우리의 [Twitter](https://twitter.com/apitable_com)를 팔로우
 - [문서](./docs) 작성

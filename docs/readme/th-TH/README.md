@@ -271,7 +271,6 @@ Depending on your environment, you may need to wait several minutes for all the 
 In addition to writing code, there are many ways for you to contribute.
 
 คุณสามารถมีส่วนร่วมดังต่อไปนี้:
-- เข้าร่วมและแก้ไขการแปลในโครงการแปล [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ของเรา
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -279,7 +278,6 @@ In addition to writing code, there are many ways for you to contribute.
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)

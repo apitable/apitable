@@ -271,7 +271,6 @@ APITableに貢献していただき、ありがとうございます！
 コードを書く以外にも、貢献できる方法はたくさんあります。
 
 以下の方法で貢献することができます：
-- Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
 - [Twitter](https://twitter.com/apitable_com) をフォロー
 - [ドキュメント](./docs) を作成する
@@ -279,7 +278,6 @@ APITableに貢献していただき、ありがとうございます！
 
 
 以下のようになります。
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
 - [Twitter](https://twitter.com/apitable_com) をフォロー
 - [ドキュメント](./docs) を作成する

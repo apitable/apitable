@@ -127,20 +127,15 @@ APITable hat die Debug-Konfigurationen dieser beiden IDEs vorbereitet.
 
 ## Wie kann ich zur Übersetzung beitragen?
 
-Wir haben zwei Möglichkeiten, die Übersetzung von APITable zu verbessern:
+Sie können die Markdown-Dateien im Quellcode ändern und direkt eine PR-Datei erstellen
 
-1. Sie können die Markdown-Dateien im Quellcode ändern und direkt eine PR-Datei erstellen
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+Außerdem können Sie für den Benutzeroberflächentext die „Strings“ in Codedateien direkt ändern. Sie befinden sich unter (Verschiedene Sprachen entsprechen unterschiedlichen Sprachdateien):
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-In Zusammenarbeit mit mehrsprachigen Übersetzungen folgen wir dem folgenden Prozess:
 
-![Screenshot des mehrsprachigen Übersetzungsprozesses](../static/collaboration_of_multilingual_translation.png)
 
 ## Wie konfiguriere ich den SMTP-Server?
 

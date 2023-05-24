@@ -127,20 +127,16 @@ APITable 已準備好這兩個IDE調試配置。
 
 ## 如何貢獻翻譯？
 
-我們有兩種方法來改進 APITable 的翻譯：
+您可以修改源碼中的markdown文件，直接創建PR
 
-1. 您可以修改源碼中的markdown文件，直接創建PR
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+另外，對於 UI 的文本，可以直接更改代碼文件中的`strings`，它們位於（不同的語言對應不同的語言文件）：
 
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-在多語言翻譯協作中，我們遵循以下流程：
 
-![多語言翻譯過程截圖](../static/collaboration_of_multilingual_translation.png)
 
 ## 如何配置SMTP服務器？
 

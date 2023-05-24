@@ -127,20 +127,15 @@ APITable のルート ディレクトリを IDE で開くだけです。
 
 ## 翻訳に貢献するには?
 
-APITableの翻訳を改善するには2つの方法があります。
+ソースコード内のマークダウンファイルを変更し、直接PRを作成することができます。
 
-1. ソースコード内のマークダウンファイルを変更し、直接PRを作成することができます。
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+また、UI のテキストについては、コード ファイル内の「文字列」を直接変更できます。これらは次の場所にあります（異なる言語は異なる言語ファイルに対応します）。
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-多言語翻訳のコラボレーションでは、以下の手順に従います。
 
-![多言語翻訳プロセスのスクリーンショット](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP サーバーの設定方法は?
 

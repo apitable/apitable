@@ -131,20 +131,15 @@ Ouvrez simplement le répertoire racine d'APITable avec IDE.
 
 ## Aidez-nous en contribuant aux traductions?
 
-Nous avons deux façons d'améliorer la traduction de APITable :
+Vous pouvez modifier les fichiers markdown dans le code source et créer une PR directement
 
-1. Vous pouvez modifier les fichiers markdown dans le code source et créer une PR directement
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+De plus, pour le texte de l'interface utilisateur, vous pouvez modifier directement les "chaînes" dans les fichiers de code, elles se trouvent à （Différentes langues correspondent à différents fichiers de langue） :
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-Dans la collaboration de la traduction multilingue, nous suivons le processus suivant :
 
-![Capture d'écran du processus de traduction multilingue](../static/collaboration_of_multilingual_translation.png)
 
 ## Comment configurer le serveur SMTP ?
 

@@ -271,7 +271,6 @@ Hoş geldiniz ve APITable'a katkıda bulunmaya gösterdiğiniz ilgi için teşek
 In addition to writing code, there are many ways for you to contribute.
 
 Aşağıdaki şekilde katkıda bulunabilirsiniz:
-- [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) Çeviri Projemize katılın ve çevirileri değiştirin
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -279,7 +278,6 @@ Aşağıdaki şekilde katkıda bulunabilirsiniz:
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - Create [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - Follow our [Twitter](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)

@@ -271,7 +271,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 除了編寫程式外，還有許多途徑為我們提供幫助
 
 您可以：
-- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
 - 創建 [文檔](./docs)
@@ -279,7 +278,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 
 比如下面的：
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
 - 創建 [文檔](./docs)

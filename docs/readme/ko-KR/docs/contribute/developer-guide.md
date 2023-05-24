@@ -135,20 +135,14 @@ IDE로 APITable의 루트 디렉토리를 열기만 하면 됩니다.
 
 ## 번역에 기여하는 방법?
 
-APITable의 번역을 개선하는 두 가지 방법이 있습니다.
+소스 코드에서 마크다운 파일을 수정하여 직접 PR을 생성할 수 있습니다.
 
-1. 소스 코드에서 마크다운 파일을 수정하여 직접 PR을 생성할 수 있습니다.
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+또한 UI 텍스트의 경우 코드 파일의 `문자열`을 직접 변경할 수 있으며 위치는 (다른 언어는 다른 언어 파일에 해당):
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-다국어 번역 협력에서 우리는 다음 프로세스를 따릅니다.
-
-![다국어 번역 프로세스 스크린샷](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP 서버를 구성하는 방법은 무엇입니까?
 

@@ -131,14 +131,14 @@ Sadece APITable'ın kök dizinini IDE ile açın.
 
 ## Çevirilere nasıl katkıda bulunulur?
 
-APITable'ın çevirisini iyileştirmenin iki yolu var:
+Markdown dosyalarını kaynak kodunda değiştirebilir ve doğrudan bir PR oluşturabilirsiniz
 
-1. Markdown dosyalarını kaynak kodunda değiştirebilir ve doğrudan bir PR oluşturabilirsiniz
-2. Değiştirilecek `strings` bulmak için [Crowdin](https://crowdin.com/project/apitablecode)'e katılın
+Ayrıca, kullanıcı arabiriminin metni için, kod dosyalarındaki 'dizeleri' doğrudan değiştirebilirsiniz, bunlar (Farklı diller, farklı dil dosyalarına karşılık gelir) konumunda bulunur:
 
-Çok dilli çeviri işbirliğinde aşağıdaki süreci takip ediyoruz:
+1. packages/l10n/base/strings.zh-HK.json
+2. packages/l10n/base/strings.ja-JP.json
+3. ...
 
-![Çok dilli çeviri işleminin ekran görüntüsü](../static/collaboration_of_multilingual_translation.png)
 
 ## SMTP sunucusu nasıl yapılandırılır?
 

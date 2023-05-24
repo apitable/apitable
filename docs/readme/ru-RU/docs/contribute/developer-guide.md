@@ -131,20 +131,14 @@ APITable подготовил отладочные конфигурации дл
 
 ## Как сделать перевод?
 
-У нас есть два способа улучшить перевод APITable:
+Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
 
-1. Вы можете изменить markdown файлы в исходном коде и создать PR напрямую
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
-
-Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
+Кроме того, для текста пользовательского интерфейса вы можете напрямую изменить «строки» в файлах кода, они расположены по адресу (разные языки соответствуют разным языковым файлам):
 
 1. packages/l10n/base/strings.zh-HK.json
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-В сотрудничестве с многоязычным переводом мы следуем следующему процессу:
-
-![Скриншот процесса многоязычного перевода](../static/collaboration_of_multilingual_translation.png)
 
 ## Как настроить SMTP-сервер?
 

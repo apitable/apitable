@@ -271,7 +271,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 هناك العديد من الطرق التي يمكن أن تساهم بها، بما يتجاوز كتابة الكود.
 
 يمكنك المساهمة على النحو التالي:
-- انضم إلى الترجمات وعدّلها في [ مشروع Crowdin للترجمة ](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - https://github.com/apitable/apitable/issues/new/choose
 - تابعنا على [ Twitter ](https://twitter.com/apitable_com)
 - Create [Documentation](./docs)
@@ -279,7 +278,6 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 
 من قبيل ما يلي:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - إنشاء [مشكلات](https://github.com/apitable/apitable/issues/new/choose)
 - تابعنا على [ Twitter ](https://twitter.com/apitable_com)
 - إنشاء [مستندات](./docs)

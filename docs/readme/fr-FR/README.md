@@ -271,7 +271,6 @@ Bienvenue, et merci de votre intérêt à contribuer à APITable!
 Il y a de nombreuses façons de contribuer, au-delà de l'écriture de code.
 
 Vous pouvez contribuer de la manière suivante :
-- Rejoindre et modifier les traductions dans notre projet de traduction [Crowdin](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
 - https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
 - Créer de la [documentation](./docs)
@@ -279,7 +278,6 @@ Vous pouvez contribuer de la manière suivante :
 
 
 Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
 - https://github.com/apitable/apitable/issues/new/choose
 - Suivre notre [Twitter](https://twitter.com/apitable_com)
 - Créer de la [documentation](./docs)

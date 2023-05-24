@@ -160,10 +160,7 @@ Just open APITable's root directory with IDE.
 
 ## How to contribute to translations?
 
-We have two ways to improve the translation of APITable:
-
-1. You can modify the markdown files in source code and create a PR directly
-2. Join our [Crowdin](https://crowdin.com/project/apitablecom) to find the `strings` to modify
+You can modify the markdown files in the source code and create a PR directly to help us improve the translation of APITable.
 
 Also, for the text of the UI, you can change the `strings` in code files directly, they are located at（Different languages correspond to different language files）:
 
@@ -171,9 +168,6 @@ Also, for the text of the UI, you can change the `strings` in code files directl
 2. packages/l10n/base/strings.ja-JP.json
 3. ...
 
-In the collaboration of multilingual translation, we follow the following process:
-
-![Screenshot of multilingual translation process](../static/collaboration_of_multilingual_translation.png)
 
 ## How to configure the SMTP server?
 

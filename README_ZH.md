@@ -257,7 +257,6 @@ curl https://apitable.github.io/install.sh | bash
 
 你可以通过如下方式给项目提供帮助:
 
-- 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
 - 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
 - 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
 - 完善、增添项目的 [Documentation](./docs) 
