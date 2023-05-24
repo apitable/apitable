@@ -201,7 +201,7 @@ public class SpaceController {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
-        entitlementServiceFacade.createSubscription(spaceId, userId);
+        entitlementServiceFacade.createSubscription(spaceId, userId, null);
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
@@ -241,8 +241,8 @@ public class SpaceController {
     @PostResource(path = "/delete/{spaceId}", method = {
         RequestMethod.DELETE}, tags = "DELETE_SPACE")
     @Operation(summary = "Delete space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId,
                                      @RequestBody @Valid SpaceDeleteRo param) {
         // This operation cannot be performed when binding to a third party
@@ -313,8 +313,8 @@ public class SpaceController {
     @Notification(templateId = NotificationTemplateId.SPACE_RECOVER)
     @PostResource(path = "/cancel/{spaceId}", tags = "DELETE_SPACE")
     @Operation(summary = "Undo delete space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> cancel(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         // This operation cannot be performed when binding to a third party
@@ -343,8 +343,8 @@ public class SpaceController {
     @Notification(templateId = NotificationTemplateId.QUIT_SPACE)
     @PostResource(path = "/quit/{spaceId}", requiredPermission = false)
     @Operation(summary = "Quit space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> quit(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         // This operation cannot be performed when binding to a third party
@@ -366,8 +366,8 @@ public class SpaceController {
      */
     @GetResource(path = "/info/{spaceId}", requiredPermission = false)
     @Operation(summary = "Get space info")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceInfoVO> info(@PathVariable("spaceId") String spaceId) {
         SpaceInfoVO vo = iSpaceService.getSpaceInfo(spaceId);
         return ResponseData.success(vo);
@@ -380,8 +380,8 @@ public class SpaceController {
     @PostResource(path = "/remove/{spaceId}", requiredPermission = false)
     @Operation(summary = "Remove hot point in space", description = "Scenario: Remove the red dot"
         + " in the inactive space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> remove(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         // don't use LoginContext.me()
@@ -396,8 +396,8 @@ public class SpaceController {
      */
     @PostResource(path = "/{spaceId}/switch", requiredPermission = false)
     @Operation(summary = "switch space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> switchSpace(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         iSpaceService.switchSpace(userId, spaceId);
@@ -470,8 +470,8 @@ public class SpaceController {
      */
     @GetResource(path = "/subscribe/{spaceId}", requiredPermission = false)
     @Operation(summary = "Gets subscription information for the space")
-    @Parameter(name = "spaceId", description = "space id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceSubscribeVo> subscribe(@PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iSpaceService.getSpaceSubscriptionInfo(spaceId));
     }
