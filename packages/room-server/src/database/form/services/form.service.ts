@@ -21,7 +21,6 @@ import {
   IFormProps, ILocalChangeset, IMeta, IRecordCellValue, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions,
   transformOpFields
 } from '@apitable/core';
-import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
@@ -37,9 +36,7 @@ import { InjectLogger } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
 import { getRecordUrl } from 'shared/helpers/env';
-import { RedisLock } from 'shared/helpers/redis.lock';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
-import { promisify } from 'util';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
@@ -57,7 +54,6 @@ export class FormService {
     private readonly transform: FusionApiTransformer,
     private resourceMetaService: MetaService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
-    private readonly redisService: RedisService,
     private readonly eventEmitter: EventEmitter2,
   ) { }
 
@@ -70,7 +66,7 @@ export class FormService {
       auth,
       { internal: !templateId, main: true, notDst: true }
     );
-    const {formProps, nodeRelInfo, dstId, meta} = await this.getRelDatasheetInfo(formId);
+    const { formProps, nodeRelInfo, dstId, meta } = await this.getRelDatasheetInfo(formId);
     // Get source datasheet permission in space
     if (!templateId) {
       const permissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
@@ -138,6 +134,7 @@ export class FormService {
     },
     auth: IAuthHeader
   ): Promise<any> {
+    this.logger.info(`addRecordAction start, formId: ${props.formId}`);
     const { formId, shareId, userId, recordData } = props;
     const dstId = await this.nodeService.getMainNodeId(formId);
     const revision: any = await this.resourceMetaService.getRevisionByDstId(dstId);
@@ -145,14 +142,10 @@ export class FormService {
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
-    const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    // Lock resource, submissions of the same form must be consumed sequentially.
-    const unlock = await lock('form.add.' + dstId, 120 * 1000);
     try {
       return await this.addRecordAction(dstId, { formId, shareId, userId, recordData }, auth);
     } finally {
-      await unlock();
+      this.logger.info(`addRecordAction end, formId: ${formId}, dstId: ${dstId}, revision: ${revision}`);
     }
   }
 
