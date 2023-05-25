@@ -2157,7 +2157,7 @@
   "form_tour_link": "https://help.vika.cn/docs/guide/magic-form",
   "preview_form_title_desc": "基于所选视图生成的预览",
   "form_manager_label": "在「可以编辑」基础上，还可以删除神奇表单",
-  "form_editor_label": "在「只可更新」基础上，还可以设置和分享神奇表单",
+  "form_editor_label": "在「只可更新」基础上，还可以分享神奇表单",
   "form_reader_label": "只可查看该神奇表单，不允许提交",
   "vikaby_todo_tip1": "欢迎来到维格表",
   "vikaby_todo_tip2": "跟着指引开始你的维格之旅吧～",
