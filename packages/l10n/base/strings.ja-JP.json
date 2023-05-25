@@ -5391,6 +5391,6 @@
   "cascader_snapshot_updating": "カスケード構成は更新中ですので、お待ちください",
   "view_lock_setting_desc": "このビューはロックされています。ビュー設定を編集して保存する前にロックを解除してください",
   "cascader_field_configuration_err": "カスケード構成データテーブルを再リンクしてください",
-  "give_feedback_to_translation": "To give feedback on the translation or help with localization, ",
-  "give_feedback_to_translation_learn_more": "learn more"
+  "give_feedback_to_translation": "翻訳へのフィードバックやローカリゼーションを支援するために、 ",
+  "give_feedback_to_translation_learn_more": "詳細はこちら"
 }
