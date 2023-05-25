@@ -25,7 +25,7 @@ import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useRobot, useToggleRobotActive } from '../hooks';
-import { IRobotCardInfo } from '../interface';
+import { IRobotCardInfo, IRobotNodeType } from '../interface';
 import { NodeSpectator } from './node_spectator';
 import styles from './styles.module.less';
 
@@ -103,7 +103,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
                 <span className={styles.nodeLogo}>
                   <Image
                     key={`${nodeType.nodeTypeId}_${index}`}
-                    src={integrateCdnHost(nodeType.service.logo)}
+                    src={integrateCdnHost((nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo)}
                     alt=''
                     width={24}
                     height={24}
