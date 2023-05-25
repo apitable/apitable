@@ -44,7 +44,7 @@ export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
       value: 'triggerTypeId' in nodeType ? nodeType.triggerTypeId : nodeType.actionTypeId,
       label: nodeType.name,
       prefixIcon: createElement('img', {
-        src: integrateCdnHost((nodeType.triggerTypeId && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
+        src: integrateCdnHost(('triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
         style: {
           width: '16px',
           height: '16px',
