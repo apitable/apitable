@@ -38,8 +38,8 @@ describe('RobotActionTypeServiceTest', () => {
     service = module.get<RobotActionTypeService>(RobotActionTypeService);
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

@@ -37,7 +37,7 @@ import { HttpResponseInterceptor } from 'shared/interceptor';
 async function bootstrap() {
   immer.setAutoFreeze(false);
 
-  const fastifyAdapter = initFastify();
+  const fastifyAdapter = await initFastify();
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
 
@@ -90,4 +90,4 @@ async function bootstrap() {
   logger.log(`The service is running, please visit it: [ ${await app.getUrl()} ]`, 'Bootstrap');
 }
 
-bootstrap();
+void bootstrap();

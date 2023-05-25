@@ -185,7 +185,8 @@ export class DatasheetOtService {
       const mainDstPermission = condition ? permission : await getNodeRole(_condition, auth);
       resultSet.mainLinkDstPermissionMap.set(_condition, mainDstPermission);
     }
-    resultSet.metaActions = operation.reduce<IJOTAction[]>((pre, cur) => {
+    const metaActions: IJOTAction[] = []
+    for (const cur of operation) {
       // There are many logs during big data operation, commenting out this log is ok
       if (this.logger.isDebugEnabled()) {
         this.logger.debug(`[${datasheetId}] changeset OperationAction: ${JSON.stringify(cur.actions)}`);
@@ -195,16 +196,15 @@ export class DatasheetOtService {
       for (const action of cur.actions) {
         if (action.p[0] === 'meta') {
           this.dealWithMeta(cmd, action, permission, resultSet);
-          pre.push(action);
+          metaActions.push(action);
         } else {
           // Collect attachment fields
           this.handleAttachOpCite(action, resultSet, fieldMap);
-          this.dealWithRecordMap(cmd, action, permission, resultSet);
+          await this.dealWithRecordMap(cmd, action, permission, resultSet);
         }
       }
-
-      return pre;
-    }, []);
+    }
+    resultSet.metaActions = metaActions;
 
     if (resultSet.addViews.length) {
       const spaceUsages = await this.restService.getSpaceUsage(spaceId);
@@ -227,7 +227,7 @@ export class DatasheetOtService {
       const checkCalendarViewsNum = afterAddCalendarCountInSpace !== spaceUsages.calendarViewNums;
 
       if (subscribeInfo.maxGanttViewsInSpace !== -1 && checkGanttViewsNum && afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_gantt_limit',
@@ -249,7 +249,7 @@ export class DatasheetOtService {
         checkCalendarViewsNum &&
         afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace
       ) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_calendar_limit',
@@ -276,7 +276,7 @@ export class DatasheetOtService {
 
       if (subscribeInfo.maxRowsPerSheet >= 0 && afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
         const datasheetEntity = await this.datasheetService.getDatasheet(datasheetId);
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'datasheet_record_limit',
@@ -293,7 +293,7 @@ export class DatasheetOtService {
       }
 
       if (subscribeInfo.maxRowsInSpace >= 0 && afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_record_limit',
@@ -1188,7 +1188,7 @@ export class DatasheetOtService {
   /**
    * Collect op related to comment
    */
-  collectByOperateForComment(action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
+  private async collectByOperateForComment(action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     if (!permission.readable) {
       throw new ServerException(PermissionException.OPERATION_DENIED);
     }
@@ -1198,7 +1198,7 @@ export class DatasheetOtService {
       // Delete comment
       if ('ld' in action || 'od' in action) {
         const comment = ('ld' in action ? action['ld'] : action['od'][0]) as IComments;
-        const canDeleteComment = this.recordCommentService.checkDeletePermission(resultSet.auth, comment.unitId, permission.uuid);
+        const canDeleteComment = await this.recordCommentService.checkDeletePermission(resultSet.auth, comment.unitId, permission.uuid);
         if (!canDeleteComment) {
           throw new ServerException(PermissionException.OPERATION_DENIED);
         }
@@ -1221,7 +1221,7 @@ export class DatasheetOtService {
   /**
    * Process data related to RecordMap
    */
-  dealWithRecordMap(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
+  private async dealWithRecordMap(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     // ===== Record operation  BEGIN =====
     if (!(action.p.includes('commentCount') || action.p.includes('comments')) && action.p[0] === 'recordMap') {
       // Cell data operation
@@ -1243,7 +1243,7 @@ export class DatasheetOtService {
 
     // ===== Comment collection operation BEGIN ====
     if (action.n !== OTActionName.ObjectInsert && action.p.includes('comments') && action.p[0] === 'recordMap') {
-      this.collectByOperateForComment(action, permission, resultSet);
+      await this.collectByOperateForComment(action, permission, resultSet);
     }
     // ===== Comment collection operation END ====
   }

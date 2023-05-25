@@ -57,7 +57,7 @@ export class NotificationGateway {
   }
 
   @SubscribeMessage(NotificationTypes.WATCH_SPACE)
-  watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
+  watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
     return this.notificationService.watchSpace(message, client);
   }
 

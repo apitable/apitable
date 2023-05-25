@@ -37,7 +37,7 @@ const filterCustomHeader = (headers?: Record<string, string | string[] | undefin
   return _headers;
 };
 
-export const getInitialProps = async(context: { ctx: NextPageContext }) => {
+export const getInitialProps = (context: { ctx: NextPageContext }) => {
   const envVars = getEnvVars();
   const cookie = context.ctx.req?.headers.cookie;
   const filterHeaders = filterCustomHeader(context.ctx.req?.headers);

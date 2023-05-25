@@ -103,10 +103,10 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
 
   override bindClientDisconnect(socket: AuthenticatedSocket, callback: (socket: AuthenticatedSocket) => {}) {
     // Client disconnecting
-    socket.on(SocketEventEnum.DISCONNECTING, args => {
+    socket.on(SocketEventEnum.DISCONNECTING, async args => {
       // Move out of the room, determine whether the number of people inside the room is empty, if the room is empty, delete the room
       this.logger.log({ message: 'RedisIoAdapter:clientDisconnecting', userId: socket.auth?.userId, socketId: socket.id, args });
-      this.socketIoService.leaveRoom(socket);
+      await this.socketIoService.leaveRoom(socket);
     });
     // Client disconnect
     socket.on(SocketEventEnum.DISCONNECTION, args => {

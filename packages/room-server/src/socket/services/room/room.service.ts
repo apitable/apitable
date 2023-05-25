@@ -95,7 +95,7 @@ export class RoomService {
     if ('success' in result && result.success) {
       // Broadcast join and userEnter when the client does not exist in the room
       if (!isExistRoom) {
-        socket.join(room);
+        void socket.join(room);
         this.logger.log({ room, socketId: socket.id, message: 'User are join in room' });
         // Notify the client that all connected new users join the room
         socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
@@ -162,7 +162,7 @@ export class RoomService {
     const room = message.roomId;
     // to prevent when you are the only one, disconnection will report an error
     if (socket.nsp.adapter.rooms.has(room)) {
-      socket.leave(room);
+      void socket.leave(room);
       socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
       this.logger.log({ message: 'User are leave room', room, socketId: socket.id });
     }

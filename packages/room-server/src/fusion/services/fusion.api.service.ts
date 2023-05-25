@@ -617,7 +617,7 @@ export class FusionApiService {
     const recordIds = result.data as string[];
 
     // API submission requires a record source for tracking the source of the record
-    this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
+    await this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
     const rows = recordIds.map(recordId => {
       return { recordId };
     });
@@ -679,7 +679,7 @@ export class FusionApiService {
     const userId = this.request[USER_HTTP_DECORATE].id;
     const totalCount = recordCount + body.records.length; // Coming over limit alerts >= 90 bars < 100 bars
     if (totalCount >= (limit.maxRecordCount * limit.recordRemindRange) / 100 && totalCount <= limit.maxRecordCount) {
-      this.restService.createRecordLimitRemind(
+      void this.restService.createRecordLimitRemind(
         auth,
         NoticeTemplatesConstant.add_record_soon_to_be_limit,
         [userId],
@@ -691,7 +691,7 @@ export class FusionApiService {
     }
     if (totalCount > limit.maxRecordCount) {
       // Over Limit Alert
-      this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId], spaceId, dstId, limit.maxRecordCount);
+      void this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId], spaceId, dstId, limit.maxRecordCount);
       throw new ServerException(DatasheetException.RECORD_ADD_LIMIT, CommonStatusCode.DEFAULT_ERROR_CODE);
     }
   }

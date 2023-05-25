@@ -502,7 +502,7 @@ export class RestService {
    * @param {number} specification
    * @param {number} usage
    */
-  sendSubscribeRemind(
+  async sendSubscribeRemind(
     headers: IAuthHeader,
     spaceId: string,
     nodeId: string,
@@ -516,7 +516,7 @@ export class RestService {
     specification: number,
     usage: number,
   ) {
-    lastValueFrom(
+    await lastValueFrom(
       this.httpService.post<any>(
         this.SUBSCRIBE_REMIND,
         {

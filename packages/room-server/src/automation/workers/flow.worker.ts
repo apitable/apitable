@@ -58,7 +58,7 @@ export class FlowWorker {
       removeOnComplete: { count: 100 },
       removeOnFail: { count: 100 },
     });
-    this.flowWorker.on(ON_ACTIVE, (job, prev) => this.onActive(job, prev));
+    this.flowWorker.on(ON_ACTIVE, (job, prev) => { void this.onActive(job, prev); });
     this.flowWorker.on(ON_COMPLETED, (job, result, prev) => this.onCompleted(job, result, prev));
     this.flowWorker.on(ON_FAILED, (job, error, prev) => this.onFailed(job, error, prev));
     this.flowWorker.on(ON_ERROR, error => this.onError(error));

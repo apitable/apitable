@@ -96,6 +96,8 @@ export const fetchFieldPermission = (dstIds: string[],) => {
         }
         dispatch(batchActions(actions));
       }
+    }, err => {
+      console.error('getFieldPermissionMap error', err);
     });
   };
 };

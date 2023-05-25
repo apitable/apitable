@@ -37,7 +37,6 @@ import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
 import { RedisLock } from 'shared/helpers/redis.lock';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
-import { promisify } from 'util';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
@@ -145,7 +144,7 @@ export class FormService {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
     const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
+    const lock = RedisLock(client as any);
     // Lock resource, submissions of the same form must be consumed sequentially.
     const unlock = await lock('form.add.' + dstId, 120 * 1000);
     try {

@@ -101,14 +101,16 @@ export class Database implements IEventEmitter {
     const commandManager = new CollaCommandManager(
       {
         handleCommandExecuted: (resourceOpCollections: IResourceOpsCollect[]) => {
-          this.fireEvent({
+          // FIXME should await
+          void this.fireEvent({
             type: ResourceEventType.CommandExecuted,
             execResult: CommandExecutionResultType.Success,
             resourceOpCollections,
           });
         },
         handleCommandExecuteError: (error, errorType) => {
-          this.fireEvent({
+          // FIXME should await
+          void this.fireEvent({
             type: ResourceEventType.CommandExecuted,
             execResult: CommandExecutionResultType.Error,
             error,

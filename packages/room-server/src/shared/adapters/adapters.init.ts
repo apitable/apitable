@@ -86,9 +86,9 @@ export const initSwagger = (app: INestApplication) => {
   }
 };
 
-export const initFastify = (): FastifyAdapter => {
+export const initFastify = async (): Promise<FastifyAdapter> => {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
-  fastifyAdapter.register(fastifyMultipart);
+  await fastifyAdapter.register(fastifyMultipart);
   // registe helmet in fastify to avoid conflict with swagger
   let helmetOptions: HelmetOptions = {
     // update script-src to be compatible with swagger
@@ -111,7 +111,7 @@ export const initFastify = (): FastifyAdapter => {
   if (disableHSTS) {
     helmetOptions = { ...helmetOptions, hsts: false };
   }
-  fastifyAdapter.register(helmet, helmetOptions);
+  await fastifyAdapter.register(helmet, helmetOptions);
 
   return fastifyAdapter;
 };
@@ -178,9 +178,9 @@ export const initHttpHook = (app: INestApplication) => {
   fastify.addHook('onSend', (request, reply, _payload, done) => {
     // add request-id to Headers
     // TODO: REQUEST_ID should be returned by api-gateway, so that we could trace all the services
-    reply.header(REQUEST_ID, request[REQUEST_ID]);
+    void reply.header(REQUEST_ID, request[REQUEST_ID]);
     const serverTime = Date.now() - request[REQUEST_AT];
-    reply.header(SERVER_TIME, 'total;dur=' + serverTime);
+    void reply.header(SERVER_TIME, 'total;dur=' + serverTime);
     done();
   });
 };

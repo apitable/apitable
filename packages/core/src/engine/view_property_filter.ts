@@ -144,7 +144,8 @@ export class ViewPropertyFilter {
     if (this._fromServer && path.includes('autoSave') && action['oi']) {
       // Receive op from the server, if it is checked that there is a modification to autoSave,
       // and it is turned on, you need to pull the latest view data from the server to overwrite the local
-      ViewPropertyFilter.resetViewProperty(state, {
+      // FIXME handle errors
+      void ViewPropertyFilter.resetViewProperty(state, {
         datasheetId: this._datasheetId,
         viewId: view.id,
         dispatch: this._dispatch,
@@ -223,7 +224,7 @@ export class ViewPropertyFilter {
   // Reset the current graph configuration, which is consistent with the database data
   static async resetViewProperty(state: IReduxState, { datasheetId, viewId, dispatch, onError, shareId }: IResetViewPropertyProps) {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-    const { success, data } = await ViewPropertyFilter.requestViewDate(datasheetId, viewId);
+    const { success, data } = await ViewPropertyFilter.requestViewData(datasheetId, viewId);
 
     if (success) {
       const revision = Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet);
@@ -231,7 +232,7 @@ export class ViewPropertyFilter {
       if (data['revision'] < revision!) {
         // The version of the database is smaller than the local version, it may be that the op is being processed
         // at the same time as the request, so resend the request
-        return await this.requestViewDate(datasheetId, viewId, shareId);
+        return await this.requestViewData(datasheetId, viewId, shareId);
       }
 
       if (data['revision'] > revision! + 1) {
@@ -265,7 +266,7 @@ export class ViewPropertyFilter {
     });
   }
 
-  static async requestViewDate(datasheetId: string, viewId: string, shareId?: string) {
+  static async requestViewData(datasheetId: string, viewId: string, shareId?: string) {
     const res = shareId ? await getShareDstViewDataPack(datasheetId, viewId, shareId) : await getDstViewDataPack(datasheetId, viewId);
     return res.data;
   }

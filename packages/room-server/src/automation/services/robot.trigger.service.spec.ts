@@ -47,8 +47,8 @@ describe('RobotTriggerServiceTest', () => {
     service = module.get<RobotTriggerService>(RobotTriggerService);
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {
