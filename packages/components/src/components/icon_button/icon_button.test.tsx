@@ -64,7 +64,7 @@ describe('IconButton test', () => {
     const wrapperElement = container.firstElementChild;
     if (wrapperElement) {
       const styles = getComputedStyle(wrapperElement);
-      expect(styles.background).toBe('rgb(232, 234, 237)');
+      expect(styles.background).toBe('rgb(224, 224, 224)');
     }
   });
 });
