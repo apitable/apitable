@@ -169,7 +169,8 @@ export function generateFixInnerConsistencyChangesets(
   errors: IInnerConsistencyErrorInfo[],
   state: IReduxState,
 ): IResourceOpsCollect[] {
-  const actions: IJOTAction[] = [];
+  const deleteViewActions: IJOTAction[] = [];
+  const viewLocalActions: IJOTAction[] = [];
   const datasheet = Selectors.getDatasheet(state, datasheetId);
   if (!datasheet) {
     return [];
@@ -179,7 +180,7 @@ export function generateFixInnerConsistencyChangesets(
     // Delete duplicate view
     if ('duplicateViews' in data) {
       data.duplicateViews.forEach((index, i) => {
-        actions.push({
+        deleteViewActions.push({
           n: OTActionName.ListDelete,
           p: ['meta', 'views', index - i],
           ld: datasheet.snapshot.meta.views[index],
@@ -199,14 +200,14 @@ export function generateFixInnerConsistencyChangesets(
         }
         const oldRecordIds = record.data[fieldId] as ILinkIds;
         if (newRecordIds.length) {
-          actions.push({
+          viewLocalActions.push({
             n: OTActionName.ObjectReplace,
             od: oldRecordIds,
             oi: newRecordIds,
             p: ['recordMap', recordId, 'data', fieldId],
           });
         } else {
-          actions.push({
+          viewLocalActions.push({
             n: OTActionName.ObjectDelete,
             od: oldRecordIds,
             p: ['recordMap', recordId, 'data', fieldId],
@@ -248,7 +249,7 @@ export function generateFixInnerConsistencyChangesets(
 
     // If there are more than 100 rows of data that cannot be matched, the rows of the view are replaced in their entirety
     if (replaceRows) {
-      actions.push({
+      viewLocalActions.push({
         n: OTActionName.ObjectReplace,
         p: ['meta', 'views', viewIndex, 'rows'],
         od: rows,
@@ -266,7 +267,7 @@ export function generateFixInnerConsistencyChangesets(
     // If it does not exist in the view, add it to the view
     notExistInViewRow &&
       notExistInViewRow.forEach((recordId: string) => {
-        actions.push({
+        viewLocalActions.push({
           n: OTActionName.ListInsert,
           p: ['meta', 'views', viewIndex, 'rows', rows.length],
           li: { recordId },
@@ -283,7 +284,7 @@ export function generateFixInnerConsistencyChangesets(
     // If it does not exist in the view, add it to the view
     notExistInViewColumn &&
       notExistInViewColumn.forEach((fieldId: string) => {
-        actions.push({
+        viewLocalActions.push({
           n: OTActionName.ListInsert,
           p: ['meta', 'views', viewIndex, 'columns', columns.length],
           li: { fieldId },
@@ -293,7 +294,7 @@ export function generateFixInnerConsistencyChangesets(
     Array.from(rowsToDelete)
       .sort()
       .forEach((index, i) => {
-        actions.push({
+        viewLocalActions.push({
           n: OTActionName.ListDelete,
           p: ['meta', 'views', viewIndex, 'rows', index - i],
           ld: rows[index],
@@ -302,7 +303,7 @@ export function generateFixInnerConsistencyChangesets(
     Array.from(columnsToDelete)
       .sort()
       .forEach((index, i) => {
-        actions.push({
+        viewLocalActions.push({
           n: OTActionName.ListDelete,
           p: ['meta', 'views', viewIndex, 'columns', index - i],
           ld: columns[index],
@@ -312,7 +313,7 @@ export function generateFixInnerConsistencyChangesets(
 
   const operation = {
     cmd: CollaCommandName.FixConsistency,
-    actions,
+    actions: [...viewLocalActions, ...deleteViewActions],
   };
 
   return [{ resourceId: datasheetId, resourceType: ResourceType.Datasheet, operations: [operation] }];

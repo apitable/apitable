@@ -47,6 +47,7 @@ const fixInnerConsistency = (datasheetId: string, errors: IInnerConsistencyError
   }
 
   fixConsistencyMetadata = null;
+  console.log('Fix inner consistency changesets', ops);
   resourceService.instance!.operationExecuted(ops);
 
   Sentry.captureMessage('fixInnerConsistency: Inner data inconsistency of datasheet found and attempts made to fix', {
@@ -70,6 +71,8 @@ const fixLinkConsistency = (error: ILinkConsistencyError, state: IReduxState) =>
     resourceOps.push(...ops);
     fixConsistencyMetadata = null;
   }
+
+  console.log('Fix consistency changesets', resourceOps);
 
   resourceService.instance!.operationExecuted(resourceOps);
   Sentry.captureMessage('fixLinkConsistency: Link inconsistency found and attempts made to fix', {
