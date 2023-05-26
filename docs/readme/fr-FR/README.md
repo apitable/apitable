@@ -353,7 +353,7 @@ Veuillez vous référer à la [Feuille de route de l'APITable](https://apitable.
 - Intégrer avec ChatGPT, Zapier, Slack, Google Workspace......
 - Watermark
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 Get Involved
 
