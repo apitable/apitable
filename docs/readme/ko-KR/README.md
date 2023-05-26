@@ -353,7 +353,7 @@ Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 - ChatGPT, Zapier, Slack, Google Workspace와 통합...
 - 워터마크
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 참여하세요
 
