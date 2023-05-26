@@ -129,7 +129,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
       const dstPack = (await this.datasheetService.fetchDataPack(dstId, options.auth, false, options)) as DatasheetPack;
 
       let remainRetries = 3;
-      let results: [Error | null, any][];
+      let results: [Error | null, any][] | null = null;
       do {
         results = await client
           .multi()
