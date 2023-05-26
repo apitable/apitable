@@ -19,6 +19,7 @@
 import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { showAnonymous } from 'app.environment';
 import { Value } from 'grpc/generated/google/protobuf/struct';
 import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID } from 'shared/common';
 import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
@@ -40,7 +41,8 @@ export class RoomService {
   constructor(
     private readonly nestService: NestService,
     private readonly nestClient: GrpcClient
-  ) {}
+  ) {
+  }
 
   async clientDisconnect(socket: Socket) {
     const rooms = socket.rooms;
@@ -97,16 +99,20 @@ export class RoomService {
       if (!isExistRoom) {
         void socket.join(room);
         this.logger.log({ room, socketId: socket.id, message: 'User are join in room' });
-        // Notify the client that all connected new users join the room
-        socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
-          collaborators: [
-            {
-              socketId: socket.id,
-              createTime,
-              ...result.data.collaborator,
-            },
-          ],
-        });
+        if (!showAnonymous && !result.data.collaborator) {
+          this.logger.log('Ignored Anonymous');
+        } else {
+          // Notify the client that all connected new users join the room
+          socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
+            collaborators: [
+              {
+                socketId: socket.id,
+                createTime,
+                ...result.data.collaborator,
+              },
+            ],
+          });
+        }
         result.data.collaborator = undefined;
 
         // Call an asynchronous customRequest to get the collaborator given to the other nodes,

@@ -22,6 +22,7 @@ import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
+import { showAnonymous } from 'app.environment';
 import { IRoomChannelMessage } from 'database/ot/interfaces/ot.interface';
 import { OtService } from 'database/ot/services/ot.service';
 import { ResourceService } from 'database/resource/services/resource.service';
@@ -60,7 +61,8 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     private readonly clientStorage: ClientStorage,
     @InjectLogger() private readonly logger: Logger,
     private readonly redisService: RedisService,
-  ) {}
+  ) {
+  }
 
   /**
    * Applies pub/sub mechanism here to ensure the IP registry is real-time.
@@ -182,7 +184,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     // store current user info
     await this.watchRoomLogger('set', this.clientStorage.set(clientId, { userId, socketId: clientId, createTime, shareId: message.shareId }));
     // Obtain collaborator list of the room, ordered by join-time.
-    const collaborators = (await this.watchRoomLogger('mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
+    let collaborators = (await this.watchRoomLogger('mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
     // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
@@ -208,6 +210,10 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
         collaborator = collaborators.find(collaborator => collaborator.userId === userId);
       }
     }
+    // filter anonymous person in embed
+    if (!showAnonymous) {
+      collaborators = collaborators.filter(i => i.userId);
+    }
     // Obtain latest revision numbers of resources in the room
     const resourceRevisions = await this.watchRoomLogger('getResourceRevisions', this.relService.getResourceRevisions(message.roomId));
     const endTime = +new Date();
@@ -229,7 +235,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     }
 
     // Obtain collaborator list of the room, ordered by join-time.
-    const collaborators = (await this.clientStorage.mget<ICollaborator>(socketIds)).filter(Boolean).sort();
+    let collaborators = (await this.clientStorage.mget<ICollaborator>(socketIds)).filter(Boolean).sort();
     // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
@@ -249,6 +255,9 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
           collaborator.avatarColor = user.avatarColor;
           collaborator.nickName = user.nickName;
         });
+    }
+    if (!showAnonymous) {
+      collaborators = collaborators.filter(i => i.userId);
     }
     return { collaborators };
   }
@@ -293,7 +302,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       const number = await redis.publish(RedisConstants.ROOM_POOL_CHANNEL, message);
       if (!number) {
         this.logger.warn({
-          message: "socket service isn't started",
+          message: 'socket service isn\'t started',
           channel: RedisConstants.ROOM_POOL_CHANNEL,
           number
         });
