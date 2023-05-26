@@ -61,6 +61,7 @@ services:
     env_file:
       - "${ENV_FILE:-.env}"
     environment:
+      - TZ=${TIMEZONE}
       - NODE_ENV=${ENV}
       - NODE_OPTIONS=--max-old-space-size=2048 --max-http-header-size=80000
       - API_MAX_MODIFY_RECORD_COUNTS=${API_MAX_MODIFY_RECORD_COUNTS:-30}
@@ -186,24 +187,6 @@ services:
       - apitable
 
   # init data
-  pre-init-db:
-    image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
-    pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
-    environment:
-      - TZ=${TIMEZONE}
-      - DB_HOST=${MYSQL_HOST}
-      - DB_PORT=${MYSQL_PORT}
-      - DB_NAME=${MYSQL_DATABASE}
-      - DB_USERNAME=${MYSQL_USERNAME}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DATABASE_TABLE_PREFIX=${DATABASE_TABLE_PREFIX}
-      - ACTION=releaseLocks
-    networks:
-      - apitable
-    depends_on:
-      mysql:
-        condition: service_healthy
-  
   init-db:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
@@ -219,8 +202,8 @@ services:
     networks:
       - apitable
     depends_on:
-      pre-init-db:
-        condition: service_completed_successfully
+      mysql:
+        condition: service_healthy
 
   # init-appdata
   init-appdata:

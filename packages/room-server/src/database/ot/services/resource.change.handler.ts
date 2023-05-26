@@ -56,8 +56,8 @@ export class ResourceChangeHandler {
       )}`,
     );
     const isDsbRoom = roomId.startsWith(ResourceIdPrefix.Dashboard);
-    for (const {effectMap, commonData, resultSet} of values) {
-      const {dstId, resourceId, resourceType} = commonData;
+    for (const { effectMap, commonData, resultSet } of values) {
+      const { dstId, resourceId, resourceType } = commonData;
       switch (resourceType) {
         case ResourceType.Datasheet:
           await this.parseDatasheetResultSet(dstId, effectMap, resultSet);

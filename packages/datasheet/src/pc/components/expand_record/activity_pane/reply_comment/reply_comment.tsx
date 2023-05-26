@@ -58,7 +58,7 @@ export const ReplyComment = (props: IReplyComment) => {
     }
   }
   if (!text) { // slate data format
-    const _reply = Object.entries(reply).filter(([k, ]) => !isNaN(Number(k))).sort().map(([, v]) => v);
+    const _reply = Object.entries(reply).filter(([k]) => !isNaN(Number(k))).sort().map(([, v]) => v);
     const _text = serialize(_reply as unknown as ITextNode[], spaceInfo);
     const isAllTextString = _text.every(t => typeof t === 'string');
     if (isAllTextString) {

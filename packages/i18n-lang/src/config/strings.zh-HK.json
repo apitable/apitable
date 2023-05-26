@@ -163,6 +163,7 @@
   "anonymous": "匿名者",
   "antigua_and_barbuda": "安提瓜和巴布達",
   "api_add": "Add 新增",
+  "api_attachment_file_size_error": "Uploaded attachment size is 0",
   "api_call": "每月 API 請求次數上限",
   "api_cumulative_usage_info": "公測階段，允許超量使用。",
   "api_dashboard_not_exist": "找不到指定的儀表盤",

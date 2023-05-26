@@ -5325,6 +5325,7 @@
   "api_param_add_widget_btn_type_error": "参数 addWidgetBtn 只接受 boolean 类型的值",
   "api_param_full_screen_btn_type_error": "参数 fullScreenBtn 只接受 boolean 类型的值",
   "api_param_form_setting_btn_type_error": "参数 formSettingBtn 只接受 boolean 类型的值",
+  "api_attachment_file_size_error": "上传的附件大小为0",
   "confirm_link_inconsistency_detected": "关联字段发现异常数据，是否自动修复？",
   "archive_record_in_menu": "归档记录",
   "archive_records_in_menu": "归档 ${chose_num} 条记录",
@@ -5389,5 +5390,7 @@
   "robot_action_send_mails_config_6_pleaseholder": "填写邮件内容",
   "cascader_snapshot_updating": "正在更新级联配置，请耐心等待",
   "view_lock_setting_desc": "此视图已锁定，请在编辑并保存视图设置之前解锁。",
-  "cascader_field_configuration_err": "请重新关联级联配置表"
+  "cascader_field_configuration_err": "请重新关联级联配置表",
+  "give_feedback_to_translation": "反馈翻译问题或提供本地化建议，",
+  "give_feedback_to_translation_learn_more": "了解更多"
 }

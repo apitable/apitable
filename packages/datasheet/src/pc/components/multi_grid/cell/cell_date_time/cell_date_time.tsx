@@ -51,7 +51,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule, abbr] = cellString ? cellString.split(' ') : [];
   const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
-  const timeZone = field.property.timeZone
+  const timeZone = field.property.timeZone;
 
   const alarmRealTime = useMemo(() => {
     let alarmDate = timeZone ? dayjs(cellValue as number).tz(timeZone) : dayjs(cellValue as number);

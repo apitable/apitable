@@ -15,17 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Controller, Get, Param, Query, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiProduces, ApiTags } from "@nestjs/swagger";
+import { Controller, Get, Param, Query, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { SwaggerConstants } from 'shared/common';
 import { ApiUsageInterceptor } from 'shared/interceptor/api.usage.interceptor';
 import { ApiAuthGuard } from './middleware/guard/api.auth.guard';
 import { ApiUsageGuard } from './middleware/guard/api.usage.guard';
-import { NodePermissionGuard } from "./middleware/guard/node.permission.guard";
+import { NodePermissionGuard } from './middleware/guard/node.permission.guard';
 import { ApiSpaceGuard } from './middleware/guard/api.space.guard';
 import { NodeListQueryRo } from './ros/node.param.ro';
 import { ApiResponse } from './vos/api.response';
-import { FusionNodeApiService } from "./services/fusion.node.api.service";
+import { FusionNodeApiService } from './services/fusion.node.api.service';
 
 @ApiTags(SwaggerConstants.TAG)
 @Controller('/fusion/v2')
@@ -46,7 +46,7 @@ export class FusionApiV2Controller {
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
   public async getNodes( @Param('spaceId') spaceId: string, @Query() query: NodeListQueryRo) {
-    const { type,  role } = query;
+    const { type, role } = query;
     const nodes = await this.fusionNodeApiServer.getNodeList(spaceId, type, role || 'reader');
     return ApiResponse.success({
       nodes: nodes,

@@ -42,8 +42,6 @@ export enum SOCKET_CACHE {
 
 /**
  * Nest Server Cache Key
- *
- * Need to be consistent ('vikadata:' has been used as a global prefix)
  */
 export enum NestCacheKeys {
   SOCKET = 'nest:socket:%s',
