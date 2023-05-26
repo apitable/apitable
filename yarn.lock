@@ -657,7 +657,7 @@ __metadata:
     "@nestjs/config": ^1.0.2
     "@nestjs/core": ^8.1.2
     "@nestjs/event-emitter": ^1.3.1
-    "@nestjs/microservices": ^8.1.2
+    "@nestjs/microservices": ~8.1.2
     "@nestjs/platform-fastify": ^8.1.2
     "@nestjs/platform-socket.io": ^8.1.2
     "@nestjs/schedule": ^1.0.2
@@ -5721,12 +5721,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:^8.1.1, @nestjs/microservices@npm:^8.1.2":
-  version: 8.4.7
-  resolution: "@nestjs/microservices@npm:8.4.7"
+"@nestjs/microservices@npm:8.1.2, @nestjs/microservices@npm:~8.1.2":
+  version: 8.1.2
+  resolution: "@nestjs/microservices@npm:8.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40nestjs%2Fmicroservices%2F-%2Fmicroservices-8.1.2.tgz"
   dependencies:
     iterare: 1.2.1
-    tslib: 2.4.0
+    json-socket: 0.3.0
+    tslib: 2.3.1
   peerDependencies:
     "@grpc/grpc-js": "*"
     "@nestjs/common": ^8.0.0
@@ -5760,7 +5761,7 @@ __metadata:
       optional: true
     redis:
       optional: true
-  checksum: 830946c2c9e696a0fc9e17f96702b6ec43651f327df43636fd32efeb3e9252869a8dc12b822e0f5598524b0b88b7cf497c9ccf1902de6fa3a481de06702e09d8
+  checksum: bb12c8e9f57c20b057ca29e0a7086fa0d28696ee9c9224ad1f8700d19ac2889330cb198b0e2d21a7efbafee84e1f2776ceada495a72147dc6767e8bf06dc7060
   languageName: node
   linkType: hard
 
@@ -25995,6 +25996,13 @@ fsevents@^1.2.7:
   version: 0.4.0
   resolution: "json-schema@npm:0.4.0"
   checksum: 66389434c3469e698da0df2e7ac5a3281bcff75e797a5c127db7c5b56270e01ae13d9afa3c03344f76e32e81678337a8c912bdbb75101c62e487dc3778461d72
+  languageName: node
+  linkType: hard
+
+"json-socket@npm:0.3.0":
+  version: 0.3.0
+  resolution: "json-socket@npm:0.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fjson-socket%2F-%2Fjson-socket-0.3.0.tgz"
+  checksum: 43e112523547c26a7f54259ac2cc222276d59a619d4d467554d8903f4d56752fd5ed6e23f27b14767dbe55bf0d8eab98640e0c09825fdf329cb8257e38eb6a45
   languageName: node
   linkType: hard
 
