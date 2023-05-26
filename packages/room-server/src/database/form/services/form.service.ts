@@ -40,6 +40,7 @@ import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 
 @Injectable()
 export class FormService {
@@ -142,6 +143,7 @@ export class FormService {
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
+    this.logger.info(`addRecordAction processing, formId: ${props.formId} dstId: ${dstId} revision: ${revision}`);
     try {
       return await this.addRecordAction(dstId, { formId, shareId, userId, recordData }, auth);
     } finally {
@@ -149,6 +151,7 @@ export class FormService {
     }
   }
 
+  @Span()
   private async dispatchFormSubmittedEvent(props: {
     formId: string,
     recordId: string,
@@ -204,6 +207,7 @@ export class FormService {
     }
   }
 
+  @Span()
   private async addRecordAction(
     dstId: string,
     props: {
@@ -214,7 +218,9 @@ export class FormService {
     },
     auth: IAuthHeader
   ): Promise<any> {
+    const addRecordsProfiler = this.logger.startTimer();
     const { formId, shareId, userId, recordData } = props;
+    const fetchDataOptionsProfiler = this.logger.startTimer();
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
     const fetchDataOptions = this.getLinkedRecordMap(dstId, meta, recordData);
     const options: ICollaCommandOptions = this.transform.getAddRecordCommandOptions(dstId, [{ fields: recordData }], meta);
@@ -234,6 +240,7 @@ export class FormService {
         }
       }
     }
+    fetchDataOptionsProfiler.done({ message: 'fetchDataOptionsProfiler done' });
     const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError(ApiTipConstant.api_insert_error);
@@ -248,10 +255,15 @@ export class FormService {
         interStore.dispatch(StoreActions.applyJOTOperations(systemOperations, cs.resourceType, cs.resourceId));
       }
     });
+    const executeOpProfiler = this.logger.startTimer();
     // Form submission need to store source for tracking record source
     const recordId = result.data && result.data[0];
     await this.datasheetRecordSourceService.createRecordSource(userId, dstId, formId, [recordId!], SourceTypeEnum.FORM);
     await this.dispatchFormSubmittedEvent({ formId, recordId: recordId!, dstId, interStore });
+    executeOpProfiler.done({ message: 'executeOpProfiler done' });
+    addRecordsProfiler.done({
+      message: `getRecords ${dstId} profiler`,
+    });
     return { recordId };
   }
 
