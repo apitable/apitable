@@ -87,7 +87,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -108,7 +108,7 @@ const UpgradeSpace = () => {
             cancelText: t(Strings.cancel),
             zIndex: 1100,
             onOk: async() => {
-              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
+              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
               const { url } = res.data;
               location.href = url;
               // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
@@ -128,7 +128,7 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon());
+            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
             const { url } = res.data;
             location.href = url;
             // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
