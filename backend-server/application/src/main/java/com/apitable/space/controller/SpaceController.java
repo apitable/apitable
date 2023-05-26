@@ -55,6 +55,7 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.apitable.shared.util.DecoderUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
@@ -85,8 +86,12 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -197,11 +202,19 @@ public class SpaceController {
      */
     @PostResource(path = "/create", requiredPermission = false)
     @Operation(summary = "Create Space")
-    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
+    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo,
+                                                    HttpServletRequest request) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
-        entitlementServiceFacade.createSubscription(spaceId, userId, null);
+        Map<String, String> externalProperty = new HashMap<>();
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                externalProperty.put(cookie.getName(), DecoderUtil.decode(cookie.getValue()));
+            }
+        }
+        entitlementServiceFacade.createSubscription(spaceId, userId, externalProperty);
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
