@@ -480,7 +480,7 @@ const ToolbarBase = () => {
   ];
 
   return (
-    <div className={styles.toolbar} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
+    <div className={classNames(styles.toolbar, { [styles.toolbarVisible]: !!size })} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
       {!isMobile && embedSetting.basicTools && !isIframe() && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>
