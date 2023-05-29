@@ -82,7 +82,7 @@
     "path-browserify": "^1.0.1",
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
-    "posthog-js": "^1.50.8",
+    "posthog-js": "^1.57.2",
     "prismjs": "^1.27.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.4.4",
