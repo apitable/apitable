@@ -3,6 +3,25 @@
 
 
 
+## [v0.21.0-rc](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc) (2023-05-29)
+
+
+### Features and enhancements
+
+* feat:add language feed back link to datasheet env ([#842](https://github.com/apitable/apitable/pull/842)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: API panel click more button redirects to a blank page ([#829](https://github.com/apitable/apitable/pull/829)) (#833) @luckyyyyy 
+* fix: field undefined crash ([#884](https://github.com/apitable/apitable/pull/884)) @wangkailang 
+
+### What's more
+
+* chore: update translation feedback help url @wmEvie 
+* chore: update translation feedback help url ([#841](https://github.com/apitable/apitable/pull/841)) @wmEvie 
+* docs: delete duplicated sentences ([#808](https://github.com/apitable/apitable/pull/808)) @noahlam 
+* refactor: de-duplications npm packages ([#847](https://github.com/apitable/apitable/pull/847)) @mr-kelly 
+* sync: hosted cloud ([#881](https://github.com/apitable/apitable/pull/881)) @yort-feng 
 ## [v0.21.0-beta](https://github.com/apitable/apitable/releases/tag/v0.21.0-beta) (2023-05-22)
 
 
