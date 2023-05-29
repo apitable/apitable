@@ -80,21 +80,12 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
       });
     };
     if (checked) {
-      Message.warning({
+      Message.info({
         content: t(Strings.field_created_by_property_subscription_open_tip)
       });
       updateSubscription();
     } else {
-      Modal.warning({
-        title: t(Strings.kindly_reminder),
-        content: t(Strings.field_created_by_property_subscription_close_tip),
-        hiddenCancelBtn: false,
-        cancelText: t(Strings.cancel),
-        zIndex: 1100,
-        onOk: () => {
-          updateSubscription();
-        },
-      });
+      updateSubscription();
     }
   };
 
