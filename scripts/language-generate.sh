@@ -3,10 +3,9 @@
 L10N_SCRIPT_DIR="$1"
 L10N_GEN_DIR="$2"
 L10N_BASE_DIR="$3"
-IS_COPY_TS="$4"
-COPY_PATH="$5"
-APITABLE_BASE_DIR="$6"
-L10N_EDITION_DIR="$7"
+COPY_PATH="$4"
+APITABLE_BASE_DIR="$4"
+L10N_EDITION_DIR="$6"
 
 ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
 cp "${L10N_GEN_DIR}"/strings.*-*.json "${COPY_PATH}/config/"

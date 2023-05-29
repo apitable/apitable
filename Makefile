@@ -502,7 +502,7 @@ settings: ## settings and l10n init
 
 .PHONY: _l10n
 _l10n: ## l10n apitable-ce
-	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base y ./packages/i18n-lang/src ./
+	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
 	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
 	yarn build:i18n
 
