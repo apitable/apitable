@@ -19,7 +19,7 @@
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant, IReduxState, Selectors, StoreActions, Strings, t, ViewType,
-  ICellUpdatedContext, OPEventNameEnums, FieldType
+  ICellUpdatedContext, OPEventNameEnums, FieldType, EventSourceTypeEnums,
 } from '@apitable/core';
 import {
   ArrowDownOutlined,
@@ -121,7 +121,8 @@ export const View: React.FC<React.PropsWithChildren> = () => {
         store.dispatch(StoreActions.getSubscriptionsAction(datasheetId!, mirrorId));
       }
     };
-    opEventManager.addEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack);
+    // Only listen remote changesets of cell updated and update record subscriptions.
+    opEventManager.addEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack, { sourceType: EventSourceTypeEnums.REMOTE });
     return () => {
       opEventManager.removeEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack);
     };
