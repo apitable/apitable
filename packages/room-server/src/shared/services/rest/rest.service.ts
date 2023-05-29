@@ -83,7 +83,7 @@ export class RestService {
   private API_USAGES = 'internal/space/%(spaceId)s/apiUsages';
   private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
-  private NODE_LIST = 'node/list';
+  private NODE_LIST = 'internal/spaces/%(spaceId)s/nodes';
   private NODE_TREE = 'node/tree';
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
@@ -399,14 +399,16 @@ export class RestService {
     return res;
   }
 
-  async getNodesList(headers: IAuthHeader, spaceId: string, type: number, role: string): Promise<INode[]> {
+  async getNodesList(headers: IAuthHeader, spaceId: string, type: number, nodePermissions: number[], keyword?: string): Promise<INode[]> {
     // Obtain node list
+    const url = sprintf(this.NODE_LIST, { spaceId });
     const response = await lastValueFrom(
-      this.httpService.get<INode>(this.NODE_LIST, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+      this.httpService.get<INode>(url, {
+        headers: HttpHelper.createAuthHeaders(headers),
         params: {
           type,
-          role,
+          nodePermissions: nodePermissions.join(','),
+          keyword,
         }
       })
     );
@@ -500,7 +502,7 @@ export class RestService {
    * @param {number} specification
    * @param {number} usage
    */
-  sendSubscribeRemind(
+  async sendSubscribeRemind(
     headers: IAuthHeader,
     spaceId: string,
     nodeId: string,
@@ -514,7 +516,7 @@ export class RestService {
     specification: number,
     usage: number,
   ) {
-    lastValueFrom(
+    await lastValueFrom(
       this.httpService.post<any>(
         this.SUBSCRIBE_REMIND,
         {

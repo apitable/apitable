@@ -30,5 +30,13 @@ import lombok.Data;
 @Data
 public class I18nConfig {
 
-    private Map<String, I18nStrings> strings;
+    /**
+     * Follow the format below
+     * {
+     *   "en-US": {
+     *      "i18-key": "value",
+     *    }
+     * }
+     * */
+    private Map<String, Map<String, String>> strings;
 }

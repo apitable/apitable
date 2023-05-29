@@ -199,8 +199,8 @@ describe('RobotRobotServiceTest', () => {
       });
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async() => {
+    await module.close();
   });
 
   it('should get robot base info by robot ids', async() => {

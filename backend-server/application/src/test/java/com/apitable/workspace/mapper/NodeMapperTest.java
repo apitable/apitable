@@ -407,4 +407,12 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
             nodeMapper.selectSpaceIdAndNodeNameByNodeIds(Collections.singletonList("ni45"));
         assertThat(dto.size()).isEqualTo(1);
     }
+
+    @Test
+    @Sql("/sql/node-data.sql")
+    void test() {
+        List<String> nodeIds =
+            nodeMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword("spczJrh2i3tLW", 1, "A2");
+        assertThat(nodeIds).contains("fodBa5JGDQZbQ");
+    }
 }

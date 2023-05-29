@@ -36,31 +36,31 @@ export class SocketIoService {
   public joinRoom(socket: AuthenticatedSocket) {
     // nest-server room
     if (isNestServer(socket)) {
-      socket.join(SocketConstants.NEST_SERVER_PREFIX);
-      this.nestService.setSocket(socket);
+      void socket.join(SocketConstants.NEST_SERVER_PREFIX);
+      void this.nestService.setSocket(socket);
     } else if (isBackendServer(socket)) {
       // java-server room
-      socket.join(SocketConstants.JAVA_SERVER_PREFIX);
+      void socket.join(SocketConstants.JAVA_SERVER_PREFIX);
     } else {
       // TODO: authentication
       // connection with user id joins room user room
       if (!isNil(socket.auth.userId)) {
-        socket.join(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
+        void socket.join(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
       }
     }
   }
 
   public async leaveRoom(socket: AuthenticatedSocket) {
     if (isNestServer(socket)) {
-      socket.leave(SocketConstants.NEST_SERVER_PREFIX);
+      void socket.leave(SocketConstants.NEST_SERVER_PREFIX);
       await this.nestService.removeSocket(socket);
     } else if (isBackendServer(socket)) {
-      socket.leave(SocketConstants.JAVA_SERVER_PREFIX);
+      void socket.leave(SocketConstants.JAVA_SERVER_PREFIX);
     } else if (isRoomConnect(socket)) {
       await this.roomService.clientDisconnect(socket);
     } else {
       // exit the user room
-      socket.leave(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
+      void socket.leave(SocketConstants.USER_SOCKET_ROOM + socket.auth.userId);
       this.logger.log({ message: 'SocketIoService:UserLeaveRoom', room: SocketConstants.USER_SOCKET_ROOM + socket.auth.userId, socketId: socket.id });
     }
   }

@@ -170,17 +170,17 @@ export class RoomService {
       } catch (e) {
         if ((e as any).name === 'QuotaExceededError') {
           await this.backupDB.clear();
-          this.backupDB.setItem(String(Date.now()), { changesetMap, opBufferMap });
+          await this.backupDB.setItem(String(Date.now()), { changesetMap, opBufferMap });
         }
       }
 
       const timestamps = await this.backupDB.keys();
-      timestamps.map(timestamp => {
+      await Promise.all(timestamps.map(async timestamp => {
         // Clean up data whose backup time is greater than two weeks
         if (dayjs().diff(Date.now(), 'day') > 14) {
-          this.backupDB.removeItem(timestamp);
+          await this.backupDB.removeItem(timestamp);
         }
-      });
+      }));
 
       Player.doTrigger(Events.app_error_logger, {
         error: new Error(`Failed to initialize applyChangeset: ${(e as any).message}`),
@@ -264,13 +264,13 @@ export class RoomService {
       const resourceId = cs.resourceId;
       const collaEngine = this.collaEngineMap.get(resourceId);
       if (collaEngine) {
-        collaEngine.handleNewChanges(cs);
+        void collaEngine.handleNewChanges(cs);
       } else if (
         resourceId.startsWith(NodeTypeReg.DATASHEET) &&
         !Selectors.getDatasheet(this.store.getState(), resourceId)
       ) {
         // The data obtained at this time is the latest version, no need to apply cs anymore
-        this.fetchResource(resourceId, ResourceType.Datasheet);
+        void this.fetchResource(resourceId, ResourceType.Datasheet);
       }
     });
   }
@@ -480,7 +480,7 @@ export class RoomService {
     });
     this.event.setRoomLastSendTime();
 
-    this.sendUserChanges(changesets);
+    void this.sendUserChanges(changesets);
   }
 
   /**
@@ -513,13 +513,11 @@ export class RoomService {
       this.event.setRoomIOClear(true);
       if (data.success && data.data) {
         this.store.dispatch(changeResourceSyncingStatus(this.roomId, resourceType, false));
-        this.handleAcceptCommit(data.data.changesets);
-        data.data;
-        return Promise.resolve();
+        return this.handleAcceptCommit(data.data.changesets);
       }
       // Unsuccessful requests, divert traffic to the following catch
       return Promise.reject(data);
-    }).catch(e => {
+    }).catch(async e => {
       this.event.setRoomIOClear(true);
       let errMsg = e;
       clearTimeout(timer);
@@ -530,7 +528,7 @@ export class RoomService {
           message: t(Strings.exception_network_exception),
         };
       }
-      this.handleRejectCommit(errMsg);
+      await this.handleRejectCommit(errMsg);
       return Promise.reject();
     });
   };
@@ -643,7 +641,7 @@ export class RoomService {
     }
     if (nextChangesets.length) {
       this.event.setRoomLastSendTime();
-      this.sendUserChanges(nextChangesets);
+      void this.sendUserChanges(nextChangesets);
     }
   }, 500);
 
@@ -804,7 +802,7 @@ export class RoomService {
     this.io.offAll();
 
     this.io.on<INewChangesData>(BroadcastTypes.SERVER_ROOM_CHANGE, (data) => {
-      this.handleNewChanges(data);
+      void this.handleNewChanges(data);
     });
 
     this.io.on<IEngagementCursorData & { datasheetId: string }>(BroadcastTypes.ENGAGEMENT_CURSOR, (data) => {

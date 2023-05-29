@@ -28,6 +28,7 @@ const memberField: IMemberField = {
   property: {
     isMulti: false, // Optional single or multiple members.
     shouldSendMsg: false, // Whether to send a message notification after selecting a member
+    subscription: false,
     unitIds: []
   }
 };
@@ -39,13 +40,15 @@ const openMemberField: IOpenField = {
   property: {
     options: [],
     isMulti: false,
-    shouldSendMsg: false
+    shouldSendMsg: false,
+    subscription: false
   }
 };
 
 const propertyOptionalFill: IUpdateOpenMemberFieldProperty = {
   isMulti: false,
-  shouldSendMsg: false
+  shouldSendMsg: false,
+  subscription: false
 };
 
 const propertyOptionalNotFill: IUpdateOpenMemberFieldProperty = {

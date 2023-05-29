@@ -199,6 +199,16 @@
         AND is_template = 0
     </select>
 
+    <select id="selectNodeIdsBySpaceIdAndTypeAndKeyword" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+          AND type = #{nodeType}
+          AND is_rubbish = 0
+          AND is_template = 0
+          AND node_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
     <select id="selectInfoByNodeIds" resultType="com.apitable.workspace.vo.NodeInfo">
         SELECT node_id, node_name, type, icon, parent_id
         FROM ${tablePrefix}node
@@ -207,6 +217,18 @@
             #{item}
         </foreach>
         AND is_rubbish = 0
+    </select>
+
+    <select id="selectNodeInfo" resultType="com.apitable.workspace.vo.NodeInfo">
+        SELECT n.node_id, n.node_name, n.type, n.icon, IF(n2.parent_id = '0', NULL, n.parent_id) as parent_id, IF(nf.id IS NULL, 0 ,1) as node_favorite
+        FROM ${tablePrefix}node n
+        LEFT JOIN ${tablePrefix}node n2 ON n2.node_id = n.parent_id
+        LEFT JOIN ${tablePrefix}node_favorite nf ON nf.node_id = n.node_id AND nf.member_id = #{memberId}
+        WHERE n.node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND n.is_rubbish = 0
     </select>
 
     <resultMap id="nodeInfoMap" type="com.apitable.workspace.vo.NodeInfoVo" extends="nodeInfo">

@@ -36,14 +36,8 @@ export const TestFunction = ({ isUser }: ITestFunctionProps) => {
     if (!labsFeatureListData) {
       return [];
     }
-    const { space: spaceLabs = [], user: userLabs = [] } = labsFeatureListData.data.data.features;
+    const { space: spaceLabs = [] } = labsFeatureListData.data.data.features;
     return compact([
-      isUser && {
-        type: ApplicantType.USER_TYPE,
-        title: t(Strings.test_function_user_level_title),
-        desc: t(Strings.test_function_user_level_desc),
-        features: userLabs,
-      },
       {
         type: ApplicantType.SPACE_TYPE,
         title: !isUser ? '' : t(Strings.test_function_space_level_title),

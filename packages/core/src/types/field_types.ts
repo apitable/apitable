@@ -118,6 +118,7 @@ export interface IEmailField extends IBaseField {
 export interface IMemberProperty {
   isMulti?: boolean; // Optional single or multiple members.
   shouldSendMsg: boolean; // Whether to send a message notification after selecting a member
+  subscription?: boolean; // Whether to subscription record changes
   unitIds: string[];
 }
 
@@ -139,6 +140,7 @@ export type IUuids = string[];
 export type ICreatedByProperty = {
   uuids: (string | {} | null)[];
   datasheetId: string;
+  subscription?: boolean;
 };
 
 export interface ICreatedByField extends IBaseField {
@@ -857,7 +859,7 @@ export const FieldTypeDescriptionMap: {
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,
     help: t(Strings.field_help_created_by),
-    hasOptSetting: false,
+    hasOptSetting: true,
   },
   [FieldType.LastModifiedBy]: {
     title: t(Strings.field_title_last_modified_by),

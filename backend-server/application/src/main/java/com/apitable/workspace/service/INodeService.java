@@ -81,6 +81,16 @@ public interface INodeService extends IService<NodeEntity> {
     List<String> getNodeIdBySpaceIdAndType(String spaceId, Integer type);
 
     /**
+     * Gets the node ID of the specified space and the specified node type, node name keyword.
+     *
+     * @param spaceId space id
+     * @param type    node type
+     * @param keyword node name keyword
+     * @return node ids
+     */
+    List<String> getNodeIdBySpaceIdAndTypeAndKeyword(String spaceId, Integer type, String keyword);
+
+    /**
      * get info by node id.
      *
      * @param nodeId node id
@@ -188,6 +198,14 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfos
      */
     List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds);
+
+    /**
+     * get multi node info.
+     *
+     * @param nodeIds node ids
+     * @return NodeInfos
+     */
+    List<NodeInfo> getNodeInfo(String spaceId, List<String> nodeIds, Long memberId);
 
     /**
      * get multi node info.

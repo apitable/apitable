@@ -75,7 +75,7 @@ export class Engine {
     this.bufferStorage = new BufferStorage(resourceId, resourceType, lsStore);
     this.event = event;
     this.cancelQuit = null;
-    this.prepare();
+    void this.prepare();
     this.getState = getState;
     this.dispatch = dispatch;
     if (resourceType === ResourceType.Datasheet) {
@@ -290,7 +290,7 @@ export class Engine {
     // If messageId is equal, it is regarded as ACK.
     if (this.bufferStorage.localPendingChangeset && cs.messageId === this.bufferStorage.localPendingChangeset.messageId) {
       console.error('messageId in newChanges is equal to localChangeset and has been converted to ACK');
-      this.handleAcceptCommit(cs);
+      void this.handleAcceptCommit(cs);
       return;
     }
 
