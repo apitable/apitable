@@ -117,7 +117,7 @@ export const View: React.FC<React.PropsWithChildren> = () => {
       const { fieldId } = context;
       const field = fieldMap[fieldId];
       // While cell updated, member field with subscription open need update subscriptions
-      if (field.type === FieldType.Member && field.property.subscription) {
+      if (field && field.type === FieldType.Member && field.property.subscription) {
         store.dispatch(StoreActions.getSubscriptionsAction(datasheetId!, mirrorId));
       }
     };
