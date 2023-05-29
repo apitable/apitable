@@ -45,6 +45,8 @@ export const signIn = (data: ISignIn) => {
           msg: message,
         }));
       }
+    }, err => {
+      console.log('API.signIn error', err);
     });
   };
 };
@@ -61,6 +63,8 @@ export const getRegisterCode = (areaCode: string, phone: string) => {
         code,
         msg: message,
       }));
+    }, err => {
+      console.log('API.getSmsCode error', err);
     });
   };
 };
@@ -131,6 +135,8 @@ export const getUserMe = (locateIdMap: ILocateIdMap = {}) => {
       } else {
         dispatch(setIsLogin(false));
       }
+    }, err => {
+      console.log('API.getUserMe error', err);
     });
   };
 };
@@ -234,6 +240,8 @@ export const getEmailCode = (email: string, type = 1) => {
         code,
         msg: message,
       }));
+    }, err => {
+      console.log('API.getEmailCode error', err);
     });
   };
 };
@@ -275,6 +283,8 @@ export const updatePwd = (password: string) => {
           msg,
         }));
       }
+    }, err => {
+      console.log('API.updatePwd error', err);
     });
   };
 };
@@ -294,6 +304,8 @@ export const unBindAccount = (type: BindAccount) => {
           msg,
         }));
       }
+    }, err => {
+      console.log('API.unbindAccount error', err);
     });
   };
 };

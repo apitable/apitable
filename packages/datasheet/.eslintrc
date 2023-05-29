@@ -4,10 +4,15 @@
 //    "next/core-web-vitals",
     "next"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     "react/display-name": 0,
     "react/no-find-dom-node": 0,
     "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-misused-promises": 1,
+    "@typescript-eslint/no-floating-promises": 1,
   }
 }

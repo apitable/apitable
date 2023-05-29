@@ -88,6 +88,7 @@ export interface IAddOpenMemberFieldProperty {
   isMulti?: boolean;
   /** Whether to send notification */
   shouldSendMsg?: boolean;
+  subscription?: boolean;
 }
 
 export type IAddOpenDateTimeFieldProperty = IOpenDateTimeFieldProperty;

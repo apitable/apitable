@@ -183,6 +183,7 @@ export class FusionApiController {
     const i18nService = this.i18n;
     const newFiles: IFileInterface[] = [];
     const handler = this.attachService.getFileUploadHandler(param.datasheetId, newFiles, req, reply);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     await req.multipart(handler, onEnd);
 
     // Uploading finished

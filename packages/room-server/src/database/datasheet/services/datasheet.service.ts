@@ -81,8 +81,8 @@ export class DatasheetService {
    * @return Promise<DatasheetEntity>
    * @date 2020/8/5 12:04 PM
    */
-  public getDatasheet(datasheetId: string, throwError?: boolean): Promise<DatasheetEntity | undefined> {
-    const entity = this.datasheetRepository.selectById(datasheetId);
+  public async getDatasheet(datasheetId: string, throwError?: boolean): Promise<DatasheetEntity | undefined> {
+    const entity = await this.datasheetRepository.selectById(datasheetId);
     if (!entity && throwError) {
       throw new ServerException(DatasheetException.NOT_EXIST);
     }

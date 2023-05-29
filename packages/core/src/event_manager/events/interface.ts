@@ -42,3 +42,14 @@ export abstract class ICombEventType {
 }
 
 export type IEventType = IAtomEventType<any> | ICombEventType;
+
+export interface ICellUpdatedContext {
+  recordId: string;
+  fieldId: string;
+  datasheetId: string;
+  action: any;
+  change: {
+    from: any;
+    to: any;
+  }
+}

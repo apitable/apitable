@@ -18,11 +18,11 @@
 
 import { IFieldRanges, StoreActions, ICell, Selectors, DATASHEET_ID, IRange, IViewRow, IViewColumn } from '@apitable/core';
 import { store } from 'pc/store';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import _ from 'lodash';
 import { useDispatch } from 'pc/hooks';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { getParentNodeByClass } from 'pc/utils';
+import { MouseDownType } from '../../multi_grid';
 
 interface IUseAttachEventProps {
   datasheetId: string;

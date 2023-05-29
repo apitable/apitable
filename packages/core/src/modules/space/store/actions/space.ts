@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api } from '../../../../exports/api';
+import { Api } from 'exports/api';
 import axios from 'axios';
 import { getCustomConfig } from 'config';
-import { ActionConstants } from '../../../../exports/store';
-import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from '../../../../exports/store/interfaces';
+import { ActionConstants } from 'exports/store';
+import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from 'exports/store/interfaces';
 import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from '../../../user/store/actions/user';
 
@@ -34,6 +34,8 @@ export const spaceList = (): any => {
       if (success) {
         dispatch(setSpaceList(data));
       }
+    }, err => {
+      console.error("API.spaceList error", err);
     });
   };
 };
@@ -59,6 +61,8 @@ export const removeRedPoint = (spaceId: string) => {
       if (success) {
         dispatch(spaceList());
       }
+    }, err => {
+      console.log('API.removeSpaceRedPoint error', err);
     });
   };
 };
@@ -87,6 +91,8 @@ export const quitSpace = (spaceId: string) => {
         dispatch(initCatalogTree());
         dispatch(getUserMe());
       }
+    }, err => {
+      console.log('API.quitSpace error', err);
     });
   };
 };
@@ -219,6 +225,8 @@ export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) 
       if (success) {
         dispatch(setSpaceInfo({ ...data, lastUpdateTime: Date.now() }));
       }
+    }, err => {
+      console.log('API.spaceInfo error', err);
     });
   };
 };
@@ -234,6 +242,8 @@ export const getSpaceFeatures = () => {
       if (success) {
         dispatch(setSpaceFeatures(data));
       }
+    }, err => {
+      console.log('API.getSpaceFeatures error', err);
     });
   };
 };
@@ -262,6 +272,8 @@ export const fetchMarketplaceApps = (spaceId: string) => {
       if (success) {
         dispatch(setMarketPlaceApps(data));
       }
+    }, err => {
+      console.log('API.getMarketplaceApps error', err);
     });
   };
 };

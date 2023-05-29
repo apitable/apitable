@@ -67,7 +67,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const isShowViewbar = get(embedInfo, 'viewControl.tabBar', true);
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);
   const isShowNodeInfoBar = get(embedInfo, 'nodeInfoBar', true);
-
+  const showCollaborator = embedId ? embedInfo.viewControl?.collaboratorStatusBar : true;
   const { sideBarVisible } = useSideBarVisible();
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
   const { errMsg, checkViewName } = useViewNameChecker();
@@ -269,7 +269,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
         {...props}
       />}
       {
-        !templateId &&
+        !templateId && showCollaborator &&
         <div className={styles.status}>
           <CollaboratorStatus resourceId={datasheetId!} resourceType={ResourceType.Datasheet} />
           <NetworkStatus currentStatus={status} />

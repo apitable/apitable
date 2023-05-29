@@ -689,12 +689,12 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
-export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, coupon: string) {
+export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, couponId: string) {
   return axios.post(Url.CHECKOUT_ORDER, {
     spaceId,
     priceId,
     clientReferenceId,
-    coupon
+    couponId
   });
 }
 

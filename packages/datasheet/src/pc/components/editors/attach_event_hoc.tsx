@@ -16,20 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DATASHEET_ID, Selectors, StoreActions, Strings, t, ICell } from '@apitable/core';
+import { DATASHEET_ID, ICell, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Message } from 'pc/components/common/message';
 import { useMemorizePreviousValue } from 'pc/hooks';
 import { store } from 'pc/store';
 import { CELL_CLASS, FIELD_HEAD_CLASS, isTouchDevice, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { getClickCellId, getElementDataset, getParentNodeByClass } from 'pc/utils/dom';
-import { useEffect, useRef } from 'react';
 import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { expandRecordIdNavigate } from '../expand_record';
 import { useAttachEvent } from '../konva_grid';
-import { GRID_VIEWS_ID } from '../multi_grid/grid_views';
 import { IContainerEdit } from './interface';
 
 interface IScrollToItem {
@@ -44,6 +43,8 @@ export interface IEditorContainerOwnProps {
   scrollTop?: number;
   scrollLeft?: number;
 }
+
+const GRID_VIEWS_ID = 'gridViews';
 
 export const attachEventHoc = (WrapperComponent: any) => {
   const AttachEvent: React.FC<React.PropsWithChildren<IEditorContainerOwnProps>> = props => {

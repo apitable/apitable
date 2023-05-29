@@ -71,7 +71,7 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
     const { x, y, width, height, text, style } = renderContent as IRenderContentBase;
     const { background, color } = style;
     const iconColor = isLightTheme ?
-      (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg): colors.staticWhite0;
+      (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg): colors.textStaticPrimary;
 
     let iconBg = 'transparent';
     if (isCloseHover) {

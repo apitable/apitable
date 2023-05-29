@@ -48,7 +48,7 @@
     "link:widget": "yarn workspace @apitable/core link && yarn workspace @apitable/widget-sdk link && yarn workspace @apitable/components link && yarn workspace @apitable/icons",
     "postinstall": "cd .. && husky install apitable/.husky",
     "stylelint:datasheet": "yarn workspace @apitable/datasheet stylelint",
-    "lint": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
+    "lint": "NODE_OPTIONS=--max-old-space-size=8192 eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
     "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif",

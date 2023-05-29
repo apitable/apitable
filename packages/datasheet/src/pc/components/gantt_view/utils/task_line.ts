@@ -16,61 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IGroupLinearRow, IAdjacency } from '../interface';
+import { IAdjacency, IGroupLinearRow } from '../interface';
 import { CellType, fastCloneDeep } from '@apitable/core';
 import { slice } from 'lodash';
 
 /*
 * nodes: task recordId List
 */
-export const getAllCycleDAG = (nodes: string[], sourceAdj: { [x: string]: string[]; }) => {
-  const pre: { [key: string]: string } = {};
-  const color: { [key: string]: number | null } = {};
-  
-  const cycles : string[][] = [];
- 
-  const buildCycle = (start: string, end: string) => {
-    const cycle : string[] = [start];
-    for(let cur = end; cur !== start; cur = pre[cur]) {
-      cycle.push(cur);
-    }
-    cycle.push(start);
-    cycles.push(cycle.reverse());
-  };
-
-  const dfs = (source: string) => {
-    if(!sourceAdj[source]) {
-      return;
-    }
-    color[source] = 1;
-    sourceAdj[source].forEach((target: string) => {
-     
-      if (color[target] == null) {
-        pre[target] = source;
-        dfs(target);
-      } else if (color[target] === 1) {
-        buildCycle(target, source);
-      }
-    });
-    color[source] = 2;
-  };
-
-  nodes.forEach(node => {
-    if (color[node] == null) {
-      dfs(node);
-    }
-  });
-
-  const cycleEdges : string[] = [];
-  cycles.forEach(element => {
-    for(let i = 1; i < element.length; i++) {
-      const taskLineName = getTaskLineName(element[i-1], element[i]);
-      cycleEdges.push(taskLineName);
-    }
-  });
- 
-  return cycleEdges;
-};
 
 export const detectCyclesStack = (nodes: string[], sourceAdj: IAdjacency) => {
   const color: { [key: string]: number | null } = {}; // Whether the record was accessed
@@ -90,7 +42,7 @@ export const detectCyclesStack = (nodes: string[], sourceAdj: IAdjacency) => {
         color[source] = 1;
         const target = targets[0];
         if(color[target] === 1) {
-    
+
           const start = cycleStack.indexOf(target);
           const cycle = slice(cycleStack, start);
           cycle.push(target);
@@ -108,7 +60,7 @@ export const detectCyclesStack = (nodes: string[], sourceAdj: IAdjacency) => {
           const index = lastAdj.indexOf(target);
           stackAdj[stackAdj.length - 1].splice(index,1);
         }
-     
+
       } else {
         color[source] = 2;
         cycleStack.pop();
@@ -124,27 +76,27 @@ export const detectCyclesStack = (nodes: string[], sourceAdj: IAdjacency) => {
   };
 
   nodes.forEach((node: string) => {
-    
+
     if(color[node] === undefined) {
       findCycle(node);
     }
   });
   const cycleEdges : string[] = [];
- 
+
   cycles.forEach(element => {
     for(let i = 1; i < element.length; i++) {
       const taskLineName = getTaskLineName(element[i-1], element[i]);
       cycleEdges.push(taskLineName);
     }
   });
- 
+
   return cycleEdges;
 };
 
 export const getAllTaskLine = (taskListJson: { [x: string]: any[]; }) => {
 
   const taskLineList : string[][] = [];
-  
+
   Object.keys(taskListJson).forEach(taskLine => {
     taskListJson[taskLine].forEach(element => {
       taskLineList.push([element, taskLine]);
@@ -152,7 +104,7 @@ export const getAllTaskLine = (taskListJson: { [x: string]: any[]; }) => {
   });
 
   // source adjacency list
-  const sourceAdj : IAdjacency = {}; 
+  const sourceAdj : IAdjacency = {};
   taskLineList.forEach(edge => {
     const [source, target] = edge;
     if(sourceAdj[source] == null) {
@@ -161,7 +113,7 @@ export const getAllTaskLine = (taskListJson: { [x: string]: any[]; }) => {
     sourceAdj[source].push(target);
   });
 
-  return { 
+  return {
     taskLineList,
     sourceAdj
   };
@@ -180,7 +132,7 @@ export const getCollapsedLinearRows = (ganttLinearRows: IGroupLinearRow[], group
     const res = ganttLinearRows.reduce<{collapsedLinearRows: IGroupLinearRow[], skip: boolean, depth: number, recordId: string}>
     ((ctx, ganttLinearRow: IGroupLinearRow) => {
       if(ctx.skip) {
-        if (ganttLinearRow.type === CellType.Blank && 
+        if (ganttLinearRow.type === CellType.Blank &&
         ganttLinearRow.depth === ctx.depth) {
           ctx.depth = Infinity;
           ctx.skip = false;
@@ -188,16 +140,16 @@ export const getCollapsedLinearRows = (ganttLinearRows: IGroupLinearRow[], group
           ctx.collapsedLinearRows.push(ganttLinearRow);
 
           return ctx;
-        } 
+        }
         ganttLinearRow.groupHeadRecordId = ctx.recordId;
         ganttLinearRow.groupDepth = ctx.depth;
         ctx.collapsedLinearRows.push(ganttLinearRow);
 
         return ctx;
-      
+
       }
 
-      if(ganttLinearRow.type === CellType.GroupTab && 
+      if(ganttLinearRow.type === CellType.GroupTab &&
       groupingCollapseSet.has(ganttLinearRow.recordId + '_' + ganttLinearRow.depth)) {
         ctx.skip = true;
         ctx.depth = ganttLinearRow.depth;

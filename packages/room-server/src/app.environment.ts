@@ -37,6 +37,9 @@ export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'tru
 // whether or not enable socket. (data collaboration middleware)
 export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
 
+// whether or not enable automation worker
+export const enableAutomationWorker = Object.is(process.env.enableAutomationWorker, 'true');
+
 // project root directory
 export const PROJECT_DIR = __dirname;
 
@@ -45,6 +48,11 @@ export const defaultLanguage = process.env.DEFAULT_LANGUAGE || 'en-US';
 
 export const supportedLanguages = process.env.SUPPORTED_LANGUAGES ? process.env.SUPPORTED_LANGUAGES.split(',') : ['zh-CN', 'en-US'];
 export const skipUsageVerification = Object.is(process.env.SKIP_USAGE_VERIFICATION, 'true');
+/**
+ * whether show anonymous person in room.
+ */
+export const showAnonymous: boolean = Object.is(process.env.SHOW_ANONYMOUS || 'true', 'true');
+
 export default {
   isDevMode,
   isProdMode,

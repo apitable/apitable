@@ -18,6 +18,7 @@
 
 package com.apitable.workspace.vo;
 
+import com.apitable.shared.support.serializer.NullObjectSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,6 +40,12 @@ public class NodeInfo extends BaseNodeInfo {
     private String icon;
 
     @Schema(description = "parent node id", example = "fldXxx")
-    @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String parentId;
+
+    @Schema(description = "role", example = "manager")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
+    private String role;
+
+    @Schema(description = "favorite", example = "true")
+    private boolean nodeFavorite;
 }
