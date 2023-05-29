@@ -641,7 +641,7 @@ __metadata:
     "@nestjs/common": ^8.1.2
     "@nestjs/config": ^1.0.2
     "@nestjs/core": ^8.1.2
-    "@nestjs/microservices": ^8.1.2
+    "@nestjs/microservices": ~8.1.2
     "@nestjs/platform-fastify": ^8.1.2
     "@nestjs/platform-socket.io": ^8.1.2
     "@nestjs/schedule": ^1.0.2
@@ -5793,12 +5793,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:^8.1.2":
-  version: 8.4.7
-  resolution: "@nestjs/microservices@npm:8.4.7"
+"@nestjs/microservices@npm:~8.1.2":
+  version: 8.1.2
+  resolution: "@nestjs/microservices@npm:8.1.2"
   dependencies:
     iterare: 1.2.1
-    tslib: 2.4.0
+    json-socket: 0.3.0
+    tslib: 2.3.1
   peerDependencies:
     "@grpc/grpc-js": "*"
     "@nestjs/common": ^8.0.0
@@ -5832,7 +5833,7 @@ __metadata:
       optional: true
     redis:
       optional: true
-  checksum: 830946c2c9e696a0fc9e17f96702b6ec43651f327df43636fd32efeb3e9252869a8dc12b822e0f5598524b0b88b7cf497c9ccf1902de6fa3a481de06702e09d8
+  checksum: bb12c8e9f57c20b057ca29e0a7086fa0d28696ee9c9224ad1f8700d19ac2889330cb198b0e2d21a7efbafee84e1f2776ceada495a72147dc6767e8bf06dc7060
   languageName: node
   linkType: hard
 

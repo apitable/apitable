@@ -49,7 +49,7 @@
     "@nestjs/common": "^8.1.2",
     "@nestjs/config": "^1.0.2",
     "@nestjs/core": "^8.1.2",
-    "@nestjs/microservices": "^8.1.2",
+    "@nestjs/microservices": "~8.1.2",
     "@nestjs/platform-fastify": "^8.1.2",
     "@nestjs/platform-socket.io": "^8.1.2",
     "@nestjs/schedule": "^1.0.2",
