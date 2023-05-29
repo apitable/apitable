@@ -5749,51 +5749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:8.1.2":
-  version: 8.1.2
-  resolution: "@nestjs/microservices@npm:8.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40nestjs%2Fmicroservices%2F-%2Fmicroservices-8.1.2.tgz"
-  dependencies:
-    iterare: 1.2.1
-    json-socket: 0.3.0
-    tslib: 2.3.1
-  peerDependencies:
-    "@grpc/grpc-js": "*"
-    "@nestjs/common": ^8.0.0
-    "@nestjs/core": ^8.0.0
-    "@nestjs/websockets": ^8.0.0
-    amqp-connection-manager: "*"
-    amqplib: "*"
-    cache-manager: "*"
-    kafkajs: "*"
-    mqtt: "*"
-    nats: "*"
-    redis: "*"
-    reflect-metadata: ^0.1.12
-    rxjs: ^7.1.0
-  peerDependenciesMeta:
-    "@grpc/grpc-js":
-      optional: true
-    "@nestjs/websockets":
-      optional: true
-    amqp-connection-manager:
-      optional: true
-    amqplib:
-      optional: true
-    cache-manager:
-      optional: true
-    kafkajs:
-      optional: true
-    mqtt:
-      optional: true
-    nats:
-      optional: true
-    redis:
-      optional: true
-  checksum: bb12c8e9f57c20b057ca29e0a7086fa0d28696ee9c9224ad1f8700d19ac2889330cb198b0e2d21a7efbafee84e1f2776ceada495a72147dc6767e8bf06dc7060
-  languageName: node
-  linkType: hard
-
-"@nestjs/microservices@npm:~8.1.2":
+"@nestjs/microservices@npm:8.1.2, @nestjs/microservices@npm:~8.1.2":
   version: 8.1.2
   resolution: "@nestjs/microservices@npm:8.1.2"
   dependencies:
