@@ -138,7 +138,7 @@ export class ComputeFieldReferenceManager {
     if (inter.length === members.length) {
       await client.del(refKey);
     }
-    await client.srem(refKey, ...[inter]);
+    await client.srem(refKey, inter);
     await client.expire(refKey, REF_STORAGE_EXPIRE_TIME);
   };
 
