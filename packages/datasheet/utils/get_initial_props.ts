@@ -63,9 +63,7 @@ export const getInitialProps = (context: { ctx: NextPageContext }) => {
     };
     // server lang
     const langParts = getCookie('lang');
-    // client cache cookie while language toggle
-    const localeParts = getCookie('client-lang');
-    locale = localeParts || langParts || locale;
+    locale = langParts || locale;
   }
 
   if (language) {

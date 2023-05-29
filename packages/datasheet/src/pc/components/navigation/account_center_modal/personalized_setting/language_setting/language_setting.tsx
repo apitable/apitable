@@ -64,7 +64,7 @@ export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
     }
     setValue(newValue);
     // cache client locale
-    window.document.cookie = `client-lang=${newValue}`;
+    localStorage.setItem('client-lang', newValue);
     window.location.reload();
   };
 

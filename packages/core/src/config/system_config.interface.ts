@@ -587,7 +587,6 @@ export interface Events {
     workbench_space_list_shown:                    AddressShown;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Empty {
 }
 
