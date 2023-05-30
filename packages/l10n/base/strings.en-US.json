@@ -5396,13 +5396,14 @@
   "zimbabwe": "Zimbabwe",
   "zoom_in": "zoom in",
   "zoom_out": "zoom out",
-  "add_row_created_by_tip":  "We have automatically followed you for updates on this row of data",
+  "add_row_created_by_tip":  "You have been automatically watched the updates for this record",
   "field_created_by_property_subscription_close_tip": "After closing, the members under the creator column will automatically cancel the records they have followed",
   "field_created_by_property_subscription_open_tip": "This option only applies to newly created records",
   "field_member_property_notify_tip": "Due to the option of 'selected members will automatically follow updates to row data' being enabled, the members under this member column will automatically cancel the following records after closing it",
   "field_member_property_subscription_close_tip": "After closing, the members under the member column will automatically cancel the records they have followed",
   "field_member_property_subscription_open_tip": "This option only applies to newly selected members",
-  "field_member_property_subscription":"The selected members will automatically follow updates to row data",
+  "field_member_property_subscription":"Selected members auto-watch data updates",
+  "field_member_property_subscription_tip":"Selected members in the cell auto-watch data updates in that row",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically follow this record",
   "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record"
 }

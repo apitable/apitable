@@ -5401,6 +5401,7 @@
   "field_member_property_subscription_close_tip": "关闭后，该成员列下的成员将会自动取消已关注的记录",
   "field_member_property_subscription_open_tip": "该选项仅对新选择的成员生效",
   "field_member_property_subscription":"被选择的成员将自动关注行数据的更新",
+  "field_member_property_subscription_tip":"单元格里被选择的成员将自动关注该行数据的更新",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> 将你添加为 \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者 , 你将会自动关注该记录",
   "auto_cancel_record_subscription": "<a class=\"memberName\"></a>  将你移出了  \"<a class=\"nodeName\"></a>\" 的 \"<a class=\"recordTitle\"></a>\" 的关注者，你已自动取消关注该记录"
 }

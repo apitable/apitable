@@ -1602,6 +1602,7 @@ export type StringKeysMapType = {
   'field_member_property_subscription': 'field_member_property_subscription',
   'field_member_property_subscription_close_tip': 'field_member_property_subscription_close_tip',
   'field_member_property_subscription_open_tip': 'field_member_property_subscription_open_tip',
+  'field_member_property_subscription_tip': 'field_member_property_subscription_tip',
   'field_name_formula': 'field_name_formula',
   'field_name_setting': 'field_name_setting',
   'field_permission': 'field_permission',
