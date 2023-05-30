@@ -21,7 +21,6 @@ import {
   IFormProps, ILocalChangeset, IMeta, IRecordCellValue, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions,
   transformOpFields
 } from '@apitable/core';
-import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
@@ -35,12 +34,12 @@ import { omit } from 'lodash';
 import { InjectLogger } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
-import { RedisLock } from 'shared/helpers/redis.lock';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
 import { FlowQueue } from '../../../automation/queues';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 
 @Injectable()
 export class FormService {
@@ -55,7 +54,6 @@ export class FormService {
     private readonly transform: FusionApiTransformer,
     private resourceMetaService: MetaService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
-    private readonly redisService: RedisService,
     private readonly flowQueue: FlowQueue,
   ) { }
 
@@ -136,6 +134,7 @@ export class FormService {
     },
     auth: IAuthHeader
   ): Promise<any> {
+    this.logger.info(`addRecordAction start, formId: ${props.formId}`);
     const { formId, shareId, userId, recordData } = props;
     const dstId = await this.nodeService.getMainNodeId(formId);
     const revision: any = await this.resourceMetaService.getRevisionByDstId(dstId);
@@ -143,17 +142,15 @@ export class FormService {
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
-    const client = this.redisService.getClient();
-    const lock = RedisLock(client as any);
-    // Lock resource, submissions of the same form must be consumed sequentially.
-    const unlock = await lock('form.add.' + dstId, 120 * 1000);
+    this.logger.info(`addRecordAction processing, formId: ${props.formId} dstId: ${dstId} revision: ${revision}`);
     try {
       return await this.addRecordAction(dstId, { formId, shareId, userId, recordData }, auth);
     } finally {
-      await unlock();
+      this.logger.info(`addRecordAction end, formId: ${formId}, dstId: ${dstId}, revision: ${revision}`);
     }
   }
 
+  @Span()
   private async dispatchFormSubmittedEvent(props: {
     formId: string,
     recordId: string,
@@ -199,6 +196,7 @@ export class FormService {
     }
   }
 
+  @Span()
   private async addRecordAction(
     dstId: string,
     props: {
@@ -209,7 +207,9 @@ export class FormService {
     },
     auth: IAuthHeader
   ): Promise<any> {
+    const addRecordsProfiler = this.logger.startTimer();
     const { formId, shareId, userId, recordData } = props;
+    const fetchDataOptionsProfiler = this.logger.startTimer();
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
     const fetchDataOptions = this.getLinkedRecordMap(dstId, meta, recordData);
     const options: ICollaCommandOptions = this.transform.getAddRecordCommandOptions(dstId, [{ fields: recordData }], meta);
@@ -229,6 +229,7 @@ export class FormService {
         }
       }
     }
+    fetchDataOptionsProfiler.done({ message: 'fetchDataOptionsProfiler done' });
     const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError(ApiTipConstant.api_insert_error);
@@ -243,10 +244,15 @@ export class FormService {
         interStore.dispatch(StoreActions.applyJOTOperations(systemOperations, cs.resourceType, cs.resourceId));
       }
     });
+    const executeOpProfiler = this.logger.startTimer();
     // Form submission need to store source for tracking record source
     const recordId = result.data && result.data[0];
     await this.datasheetRecordSourceService.createRecordSource(userId, dstId, formId, [recordId!], SourceTypeEnum.FORM);
     await this.dispatchFormSubmittedEvent({ formId, recordId: recordId!, dstId, interStore });
+    executeOpProfiler.done({ message: 'executeOpProfiler done' });
+    addRecordsProfiler.done({
+      message: `getRecords ${dstId} profiler`,
+    });
     return { recordId };
   }
 
