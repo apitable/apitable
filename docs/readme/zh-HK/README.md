@@ -318,7 +318,6 @@ APITable 使用以下常見約定：
 - 我們的 Java 編碼規範是什麼？ [Java 編碼準則](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 我們的 TypeScript 編碼規範是什麼？ -> [TypeScript 樣式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - 我們的 Java 編碼規範是什麼？ -> [Rust API 指南](https://rust-lang.github.io/api-guidelines/about.html)
-- 我們的技術架構是什麼？ -> [瞭解 APITable - 技術架構](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
@@ -369,7 +368,7 @@ For more information on our product, including enterprise self-hosted license, p
 
 - **後端開發者**: 擁有 NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
 - **前端開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
-- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 熱衷於編寫高質量的程式碼，並喜歡清晰的文檔和單元測試。
+- **全棧開發者**: 擁有 React, NextJS, TypeScript, WebPack 的經驗。 And you like to write high quality code with clear documentation and unit tests.
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
@@ -403,7 +402,7 @@ For more information on our product, including enterprise self-hosted license, p
     <img src="docs/static/screenshot-it.png" alt="APITable 界面截圖" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable 界面截圖" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 許可證
