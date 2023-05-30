@@ -318,7 +318,6 @@ Utilizar estas convenciones comunes:
 - ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines) ¿Qué es la guía de código de Java? [Guía de código Java](https://google.github.io/styleguide/javaguide.html) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - What is the Rust Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Directrices API de Rust](https://rust-lang.github.io/api-guidelines/about.html)
-- What is the Architecture Overview? ¿Qué es la Visión General de la Arquitectura? -> [Interfaz APITable - Resumen de Archivos](./docs/contribute/architecute-overview.md)
 
 ### Documentaciones
 
@@ -353,7 +352,7 @@ Por favor, consulte el mapa de ruta [de APITable](https://apitable.com/roadmap)
 - Integración con ChatGPT, Zapier, Slack, Google Workspace...
 - Marca de agua
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 Participar
 
@@ -369,7 +368,7 @@ Siempre buscamos buenos talentos para APITable:
 
 - **Desarrollador Full-stack**: Tienes experiencia con React, NestJS, TypeScript, Spring Boot, Java, Terraform. Y le gusta escribir código de alta calidad con documentación clara y pruebas unitarias.
 - **Desarrollador back-end**: Tiene experiencia con NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Y le gusta escribir código de alta calidad con documentación clara y pruebas unitarias.
-- **Desarrollador front-end**: Tiene experiencia con React, NextJS, TypeScript, WebPack. Y le gusta escribir código de alta calidad con documentación clara y pruebas unitarias.
+- **Desarrollador front-end**: Tiene experiencia con React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Independientemente del tiempo y condiciones, si desea involucrarse en el equipo de APITable, no dudes en enviar tu CV a [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -403,7 +402,7 @@ Independientemente del tiempo y condiciones, si desea involucrarse en el equipo 
     <img src="docs/static/screenshot-it.png" alt="Imagen de captura de pantalla APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Imagen de captura de pantalla APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licencia
