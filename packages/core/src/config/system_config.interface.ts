@@ -346,8 +346,8 @@ export interface Notifications {
 export interface Templates {
     activity_integral_income_notify:             ActivityIntegralIncomeNotify;
     activity_integral_income_toadmin:            ActivityIntegralIncomeNotify;
-    add_record_out_of_limit:                     ActivityIntegralIncomeNotify;
-    add_record_soon_to_be_limit:                 ActivityIntegralIncomeNotify;
+    add_record_out_of_limit:                     AddRecordOutOfLimit;
+    add_record_soon_to_be_limit:                 AddRecordOutOfLimit;
     add_sub_admin:                               AssignedToGroupClass;
     admin_transfer_space_widget_notify:          AdminTransferSpaceWidgetNotify;
     admin_unpublish_space_widget_notify:         AdminTransferSpaceWidgetNotify;
@@ -355,84 +355,95 @@ export interface Templates {
     apply_space_beta_feature_success_notify_me:  ActivityIntegralIncomeNotify;
     assigned_to_group:                           AssignedToGroupClass;
     assigned_to_role:                            AssignedToGroupClass;
-    capacity_limit:                              ActivityIntegralIncomeNotify;
+    auto_cancel_record_subscription:             AutoCancelRecordSubscription;
+    auto_create_record_subscription:             AutoCancelRecordSubscription;
+    capacity_limit:                              AddRecordOutOfLimit;
     changed_ordinary_user:                       AdminTransferSpaceWidgetNotify;
-    comment_mentioned:                           CommentMentioned;
-    common_system_notify:                        ActivityIntegralIncomeNotify;
+    comment_mentioned:                           AutoCancelRecordSubscription;
+    common_system_notify:                        AdminTransferSpaceWidgetNotify;
     common_system_notify_web:                    ActivityIntegralIncomeNotify;
-    datasheet_limit:                             ActivityIntegralIncomeNotify;
-    datasheet_record_limit:                      ActivityIntegralIncomeNotify;
+    datasheet_limit:                             AddRecordOutOfLimit;
+    datasheet_record_limit:                      AddRecordOutOfLimit;
     integral_income_notify:                      ActivityIntegralIncomeNotify;
-    invite_member_toadmin:                       AssignedToGroupClass;
-    invite_member_tomyself:                      AssignedToGroupClass;
-    invite_member_touser:                        AssignedToGroupClass;
-    member_applied_to_close_account:             AssignedToGroupClass;
-    new_space_widget_notify:                     AssignedToGroupClass;
-    new_user_welcome_notify:                     AssignedToGroupClass;
-    quit_space:                                  AssignedToGroupClass;
-    remove_from_group:                           AssignedToGroupClass;
-    remove_from_role:                            AssignedToGroupClass;
-    removed_from_space_toadmin:                  AssignedToGroupClass;
-    removed_from_space_touser:                   AssignedToGroupClass;
-    removed_member_tomyself:                     AssignedToGroupClass;
-    server_pre_publish:                          AssignedToGroupClass;
-    single_record_comment_mentioned:             CommentMentioned;
-    single_record_member_mention:                CommentMentioned;
-    space_add_primary_admin:                     ActivityIntegralIncomeNotify;
-    space_admin_limit:                           ActivityIntegralIncomeNotify;
-    space_api_limit:                             ActivityIntegralIncomeNotify;
-    space_calendar_limit:                        ActivityIntegralIncomeNotify;
-    space_certification_fail_notify:             ActivityIntegralIncomeNotify;
-    space_certification_notify:                  ActivityIntegralIncomeNotify;
-    space_deleted:                               ActivityIntegralIncomeNotify;
-    space_dingtalk_notify:                       ActivityIntegralIncomeNotify;
-    space_field_permission_limit:                ActivityIntegralIncomeNotify;
-    space_file_permission_limit:                 ActivityIntegralIncomeNotify;
-    space_form_limit:                            ActivityIntegralIncomeNotify;
-    space_gantt_limit:                           ActivityIntegralIncomeNotify;
-    space_join_apply:                            ActivityIntegralIncomeNotify;
-    space_join_apply_approved:                   ActivityIntegralIncomeNotify;
-    space_join_apply_refused:                    ActivityIntegralIncomeNotify;
-    space_lark_notify:                           ActivityIntegralIncomeNotify;
-    space_members_limit:                         ActivityIntegralIncomeNotify;
-    space_mirror_limit:                          ActivityIntegralIncomeNotify;
-    space_name_change:                           ActivityIntegralIncomeNotify;
-    space_paid_notify:                           ActivityIntegralIncomeNotify;
-    space_rainbow_label_limit:                   ActivityIntegralIncomeNotify;
-    space_record_limit:                          ActivityIntegralIncomeNotify;
-    space_recover:                               ActivityIntegralIncomeNotify;
-    space_seats_limit:                           ActivityIntegralIncomeNotify;
-    space_subscription_end_notify:               ActivityIntegralIncomeNotify;
-    space_subscription_notify:                   ActivityIntegralIncomeNotify;
-    space_time_machine_limit:                    ActivityIntegralIncomeNotify;
-    space_trash_limit:                           ActivityIntegralIncomeNotify;
-    space_trial:                                 ActivityIntegralIncomeNotify;
-    space_vika_paid_notify:                      ActivityIntegralIncomeNotify;
-    space_watermark_notify:                      ActivityIntegralIncomeNotify;
-    space_wecom_api_trial_end:                   ActivityIntegralIncomeNotify;
-    space_wecom_notify:                          ActivityIntegralIncomeNotify;
-    space_yozooffice_notify:                     ActivityIntegralIncomeNotify;
-    subscribed_record_cell_updated:              CommentMentioned;
-    subscribed_record_commented:                 CommentMentioned;
-    task_reminder:                               ActivityIntegralIncomeNotify;
-    user_field:                                  CommentMentioned;
-    web_publish:                                 ActivityIntegralIncomeNotify;
+    invite_member_toadmin:                       AdminTransferSpaceWidgetNotify;
+    invite_member_tomyself:                      AdminTransferSpaceWidgetNotify;
+    invite_member_touser:                        AdminTransferSpaceWidgetNotify;
+    member_applied_to_close_account:             AdminTransferSpaceWidgetNotify;
+    new_space_widget_notify:                     AdminTransferSpaceWidgetNotify;
+    new_user_welcome_notify:                     AdminTransferSpaceWidgetNotify;
+    quit_space:                                  AdminTransferSpaceWidgetNotify;
+    remove_from_group:                           AdminTransferSpaceWidgetNotify;
+    remove_from_role:                            AdminTransferSpaceWidgetNotify;
+    removed_from_space_toadmin:                  AdminTransferSpaceWidgetNotify;
+    removed_from_space_touser:                   AdminTransferSpaceWidgetNotify;
+    removed_member_tomyself:                     AdminTransferSpaceWidgetNotify;
+    server_pre_publish:                          AdminTransferSpaceWidgetNotify;
+    single_record_comment_mentioned:             AutoCancelRecordSubscription;
+    single_record_member_mention:                AutoCancelRecordSubscription;
+    space_add_primary_admin:                     AdminTransferSpaceWidgetNotify;
+    space_admin_limit:                           AddRecordOutOfLimit;
+    space_api_limit:                             AddRecordOutOfLimit;
+    space_calendar_limit:                        AddRecordOutOfLimit;
+    space_certification_fail_notify:             AdminTransferSpaceWidgetNotify;
+    space_certification_notify:                  AdminTransferSpaceWidgetNotify;
+    space_deleted:                               AdminTransferSpaceWidgetNotify;
+    space_dingtalk_notify:                       AdminTransferSpaceWidgetNotify;
+    space_field_permission_limit:                AdminTransferSpaceWidgetNotify;
+    space_file_permission_limit:                 AdminTransferSpaceWidgetNotify;
+    space_form_limit:                            AdminTransferSpaceWidgetNotify;
+    space_gantt_limit:                           AdminTransferSpaceWidgetNotify;
+    space_join_apply:                            AdminTransferSpaceWidgetNotify;
+    space_join_apply_approved:                   AdminTransferSpaceWidgetNotify;
+    space_join_apply_refused:                    AdminTransferSpaceWidgetNotify;
+    space_lark_notify:                           AdminTransferSpaceWidgetNotify;
+    space_members_limit:                         AdminTransferSpaceWidgetNotify;
+    space_mirror_limit:                          AdminTransferSpaceWidgetNotify;
+    space_name_change:                           AdminTransferSpaceWidgetNotify;
+    space_paid_notify:                           AdminTransferSpaceWidgetNotify;
+    space_rainbow_label_limit:                   AdminTransferSpaceWidgetNotify;
+    space_record_limit:                          AdminTransferSpaceWidgetNotify;
+    space_recover:                               AdminTransferSpaceWidgetNotify;
+    space_seats_limit:                           AdminTransferSpaceWidgetNotify;
+    space_subscription_end_notify:               AdminTransferSpaceWidgetNotify;
+    space_subscription_notify:                   AdminTransferSpaceWidgetNotify;
+    space_time_machine_limit:                    AdminTransferSpaceWidgetNotify;
+    space_trash_limit:                           AdminTransferSpaceWidgetNotify;
+    space_trial:                                 AdminTransferSpaceWidgetNotify;
+    space_vika_paid_notify:                      AdminTransferSpaceWidgetNotify;
+    space_watermark_notify:                      AdminTransferSpaceWidgetNotify;
+    space_wecom_api_trial_end:                   AdminTransferSpaceWidgetNotify;
+    space_wecom_notify:                          AdminTransferSpaceWidgetNotify;
+    space_yozooffice_notify:                     AdminTransferSpaceWidgetNotify;
+    subscribed_record_cell_updated:              AutoCancelRecordSubscription;
+    subscribed_record_commented:                 AutoCancelRecordSubscription;
+    task_reminder:                               AddRecordOutOfLimit;
+    user_field:                                  AutoCancelRecordSubscription;
+    web_publish:                                 AdminTransferSpaceWidgetNotify;
 }
 
 export interface ActivityIntegralIncomeNotify {
-    format_string?:         string;
-    is_component?:          boolean;
-    is_notification?:       boolean;
-    notifications_type:     NotificationsTypeEnum;
-    to_tag:                 string;
-    can_jump?:              boolean;
-    is_browser?:            boolean;
-    is_mobile?:             boolean;
-    url?:                   URL;
-    billing_notify?:        string;
-    is_mail?:               boolean;
-    frequency?:             number;
-    mail_template_subject?: string;
+    format_string:      string;
+    is_component?:      boolean;
+    is_notification?:   boolean;
+    notifications_type: NotificationsTypeEnum;
+    to_tag:             string;
+    can_jump?:          boolean;
+}
+
+export interface AddRecordOutOfLimit {
+    can_jump:              boolean;
+    format_string:         string;
+    frequency?:            number;
+    is_component:          boolean;
+    is_mail:               boolean;
+    is_notification:       boolean;
+    mail_template_subject: string;
+    notifications_type:    NotificationsTypeEnum;
+    to_tag:                string;
+    url:                   URL;
+    billing_notify?:       string;
+    is_browser?:           boolean;
+    is_mobile?:            boolean;
 }
 
 export enum URL {
@@ -441,41 +452,45 @@ export enum URL {
 }
 
 export interface AssignedToGroupClass {
-    can_jump?:          boolean;
-    format_string:      string;
-    is_browser?:        boolean;
-    is_component:       boolean;
-    is_mobile?:         boolean;
-    is_notification:    boolean;
-    notifications_type: NotificationsTypeEnum;
-    to_tag:             string;
-    url?:               URL;
-    redirect_url?:      string;
-}
-
-export interface AdminTransferSpaceWidgetNotify {
+    can_jump:           boolean;
     format_string:      string;
     is_browser:         boolean;
     is_component:       boolean;
-    is_mail?:           boolean;
+    is_mobile:          boolean;
     is_notification:    boolean;
     notifications_type: NotificationsTypeEnum;
     to_tag:             string;
-    can_jump?:          boolean;
-    is_mobile?:         boolean;
+    url:                URL;
 }
 
-export interface CommentMentioned {
+export interface AdminTransferSpaceWidgetNotify {
+    format_string?:         string;
+    is_browser?:            boolean;
+    is_component?:          boolean;
+    is_mail?:               boolean;
+    is_notification?:       boolean;
+    notifications_type:     NotificationsTypeEnum;
+    to_tag:                 string;
+    can_jump?:              boolean;
+    is_mobile?:             boolean;
+    url?:                   URL;
+    redirect_url?:          string;
+    billing_notify?:        string;
+    frequency?:             number;
+    mail_template_subject?: string;
+}
+
+export interface AutoCancelRecordSubscription {
     can_jump:               boolean;
     format_string:          string;
     is_browser:             boolean;
-    is_component?:          boolean;
     is_mail:                boolean;
     is_mobile:              boolean;
     is_notification:        boolean;
     notifications_type:     any[];
     to_tag:                 string;
     url:                    URL;
+    is_component?:          boolean;
     mail_template_subject?: string;
 }
 

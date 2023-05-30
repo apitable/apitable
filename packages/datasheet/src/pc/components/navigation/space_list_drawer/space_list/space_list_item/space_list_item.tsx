@@ -44,7 +44,12 @@ export interface ISpaceListItemProps {
   refreshList?: () => void;
 }
 
-export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = ({ spaceInfo, actived = false, managable = false, refreshList }) => {
+export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = ({
+  spaceInfo,
+  actived = false,
+  managable = false,
+  refreshList
+}) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const { closeSpaceListDrawer } = useContext(NavigationContext);
@@ -113,7 +118,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
           closeSpaceListDrawer();
           return;
         }
-        window.location.href = `${domain}/space/${spaceId}/workbench`;
+        window.location.href = `${domain}/workbench?spaceId=${spaceId}`;
       }}
     >
       <div className={styles.logo}>

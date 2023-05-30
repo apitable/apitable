@@ -382,7 +382,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return <>
     <Head>
       <title>
-        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.system_configuration_product_name)}
+        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
       <meta name='description' content='' />
       <meta
@@ -411,15 +411,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
       </>
     }
-
-    <Script id={'rewardful'}>
-      {
-        `
-        (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-        `
-      }
-    </Script>
-    <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
 
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`

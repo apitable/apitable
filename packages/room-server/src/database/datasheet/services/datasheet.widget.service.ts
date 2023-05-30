@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { DatasheetWidgetRepository } from '../repositories/datasheet.widget.repository';
 
 @Injectable()

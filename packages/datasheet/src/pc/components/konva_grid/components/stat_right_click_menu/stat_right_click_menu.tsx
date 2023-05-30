@@ -21,10 +21,10 @@ import { KONVA_DATASHEET_ID, t, Strings } from '@apitable/core';
 import { ContextMenu, useContextMenu, useThemeColors } from '@apitable/components';
 import { CopyOutlined } from '@apitable/icons';
 
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { stopPropagation } from 'pc/utils/dom';
 import { IFieldBoundary } from '../stat_menu';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
+import { MouseDownType } from '../../../multi_grid';
 
 interface IStatRightClickMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;

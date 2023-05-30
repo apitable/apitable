@@ -85,7 +85,8 @@ export interface IQuery {
   client_id?: string; // Spatial parameters of the privatized binding of Yufu
   nodeId?: string;
   comment?: number;
-  improveType?: ConfigConstant.ImproveType; 
+  improveType?: ConfigConstant.ImproveType;
+  via?: string;
 }
 
 export interface IOptions {

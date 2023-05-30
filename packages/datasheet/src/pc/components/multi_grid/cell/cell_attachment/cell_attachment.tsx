@@ -23,7 +23,6 @@ import classNames from 'classnames';
 import { uniqBy } from 'lodash';
 import { ButtonPlus } from 'pc/components/common';
 import { expandPreviewModal } from 'pc/components/preview_file';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { IUploadFile, IUploadFileList } from 'pc/components/upload_modal/upload_core';
 import { UploadItem } from 'pc/components/upload_modal/upload_item';
@@ -37,6 +36,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { ICellComponentProps } from '../cell_value/interface';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './styles.module.less';
+import { MouseDownType } from '../../enum';
 
 interface ICellAttachmentProps extends ICellComponentProps {
   field: IAttacheField;
@@ -139,7 +139,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
           alt=''
           key={keyPrefix ? `${keyPrefix}-${index}` : file.id + index}
           className={styles.img}
-         
+
           style={{
             width: calcFileWidth(file, height),
             height,
@@ -153,7 +153,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
     return (
       <>
         {
-          mobile ? 
+          mobile ?
             ImageWrapper
             : (
               <Tooltip

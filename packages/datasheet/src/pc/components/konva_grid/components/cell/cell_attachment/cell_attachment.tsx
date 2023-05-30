@@ -23,11 +23,11 @@ import { Icon, Rect } from 'pc/components/konva_components';
 import { GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_VALUE_PADDING, KonvaGridContext } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { expandPreviewModal } from 'pc/components/preview_file';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { FC, useContext, useState } from 'react';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
+import { MouseDownType } from '../../../../multi_grid';
 
 const AddOutlinedPath = AddOutlined.toString();
 

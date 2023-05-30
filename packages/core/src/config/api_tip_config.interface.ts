@@ -8,6 +8,7 @@ export interface API {
 
 export interface Tips {
     api_add_row_failed_wrong_length_of_value:             APIAddRowFailedWrongLengthOfValueClass;
+    api_attachment_file_size_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_dashboard_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_visible:                            APIAddRowFailedWrongLengthOfValueClass;
@@ -24,7 +25,9 @@ export interface Tips {
     api_forbidden_because_of_usage:                       APIAddRowFailedWrongLengthOfValueClass;
     api_frequently_error:                                 APIAddRowFailedWrongLengthOfValueClass;
     api_insert_error:                                     APIAddRowFailedWrongLengthOfValueClass;
+    api_node_node_type_value_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_node_permission_error:                            APIAddRowFailedWrongLengthOfValueClass;
+    api_node_permission_value_error:                      APIAddRowFailedWrongLengthOfValueClass;
     api_not_exists:                                       APIAddRowFailedWrongLengthOfValueClass;
     api_param_add_widget_btn_type_error:                  APIAddRowFailedWrongLengthOfValueClass;
     api_param_api_btn_type_error:                         APIAddRowFailedWrongLengthOfValueClass;

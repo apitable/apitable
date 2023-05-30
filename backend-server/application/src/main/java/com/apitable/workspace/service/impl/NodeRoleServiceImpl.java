@@ -29,6 +29,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.apitable.control.entity.ControlRoleEntity;
 import com.apitable.control.infrastructure.ControlType;
+import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.DefaultWorkbenchRole;
@@ -66,6 +67,7 @@ import com.apitable.workspace.dto.ControlRoleInfo;
 import com.apitable.workspace.dto.ControlRoleUnitDTO;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.SimpleNodeInfo;
+import com.apitable.workspace.enums.NodePermissionEnum;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -694,6 +696,22 @@ public class NodeRoleServiceImpl implements INodeRoleService {
             .map(i -> new SimpleNodeInfo(i.getNodeId(), i.getParentId(), i.getType(),
                 !existedControlIds.contains(i.getNodeId())))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getMinimumRequiredRole(List<Integer> nodePermissions) {
+        return nodePermissions.stream().map(nodePermission -> {
+            NodePermissionEnum nodePermissionEnum = NodePermissionEnum.toEnum(nodePermission);
+            if (nodePermissionEnum == NodePermissionEnum.MANAGER) {
+                return Node.MANAGER;
+            } else if (nodePermissionEnum == NodePermissionEnum.EDITOR) {
+                return Node.EDITOR;
+            } else if (nodePermissionEnum == NodePermissionEnum.UPDATE_ONLY) {
+                return Node.UPDATER;
+            } else {
+                return Node.READER;
+            }
+        }).collect(Collectors.toList());
     }
 
     private void addExtendNodeRole(Long userId, String spaceId, String nodeId) {

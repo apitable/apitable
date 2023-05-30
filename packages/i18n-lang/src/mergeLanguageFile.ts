@@ -23,13 +23,10 @@ if (process.argv.length < 5) {
   throw new Error('Expected at least 4 arguments, but got ' + process.argv.length);
 }
 
-const sourceFolders = process.argv.slice(6);
+const sourceFolders = process.argv.slice(5);
 const sourceName = process.argv[2];
-const languageManifestFile = process.argv[3];
-const generateType = process.argv[4];
-const outputFolder = process.argv[5];
-
-const languageManifest = new Set(Object.keys(JSON.parse(fs.readFileSync(languageManifestFile, 'utf-8'))));
+const generateType = process.argv[3];
+const outputFolder = process.argv[4];
 
 const readFolder = (folderPath: string): Record<string, any> => {
   const files = fs.readdirSync(folderPath);
@@ -42,9 +39,7 @@ const readFolder = (folderPath: string): Record<string, any> => {
       const locale = file.replace(sourceName, '')
         .replace('.', '')
         .replace('.json', '');
-      if (languageManifest.has(locale)) {
-        result[locale] = fileJson;
-      }
+      result[locale] = fileJson;
     }
   }
   return result;

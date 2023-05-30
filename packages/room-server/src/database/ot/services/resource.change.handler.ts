@@ -56,8 +56,8 @@ export class ResourceChangeHandler {
       )}`,
     );
     const isDsbRoom = roomId.startsWith(ResourceIdPrefix.Dashboard);
-    for (const {effectMap, commonData, resultSet} of values) {
-      const {dstId, resourceId, resourceType} = commonData;
+    for (const { effectMap, commonData, resultSet } of values) {
+      const { dstId, resourceId, resourceType } = commonData;
       switch (resourceType) {
         case ResourceType.Datasheet:
           await this.parseDatasheetResultSet(dstId, effectMap, resultSet);
@@ -138,7 +138,7 @@ export class ResourceChangeHandler {
     if (addResourceIds.length) {
       await this.roomResourceRelService.createOrUpdateRel(dstId, addResourceIds);
       // Update related node resource asynchronously
-      relNodeIds.forEach(nodeId => this.roomResourceRelService.createOrUpdateRel(nodeId, addResourceIds));
+      await Promise.all(relNodeIds.map(nodeId => this.roomResourceRelService.createOrUpdateRel(nodeId, addResourceIds)));
     }
     // Break Room - Resource bijection
     if (delResourceIds.length) {
@@ -148,7 +148,7 @@ export class ResourceChangeHandler {
       }
       await this.roomResourceRelService.removeRel(dstId, delResourceIds);
       // Update related node resource asynchronously
-      relNodeIds.forEach(nodeId => this.roomResourceRelService.removeRel(nodeId, delResourceIds));
+      await Promise.all(relNodeIds.map(nodeId => this.roomResourceRelService.removeRel(nodeId, delResourceIds)));
     }
     await this.handleSpaceStatistics(resultSet);
   }

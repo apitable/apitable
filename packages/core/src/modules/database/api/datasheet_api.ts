@@ -387,7 +387,6 @@ export const batchDeletePermissionRole = (dstId: string, fieldId: string, option
   return axios.delete<IApiWrapper>(urlcat(Url.BATCH_DELETE_PERMISSION_ROLE, { dstId, fieldId }), { data: option });
 };
 
-
 // Get cascader data
 export const getCascaderData = ({
   spaceId,

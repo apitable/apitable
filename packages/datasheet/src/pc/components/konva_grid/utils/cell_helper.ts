@@ -235,7 +235,7 @@ export class CellHelper extends KonvaDrawer {
     const { x, y, cellValue, field, columnWidth, isActive, editable, callback, style, cacheTheme } = renderProps;
     if (cellValue == null) return DEFAULT_RENDER_DATA;
     const isOperating = isActive && editable;
-    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.textStaticPrimary;
+    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.staticWhite0;
     const background = inquiryValueByKey('color', cellValue as string, field, cacheTheme);
     const itemName = inquiryValueByKey('name', cellValue as string, field, cacheTheme);
     const initPadding = GRID_CELL_VALUE_PADDING;

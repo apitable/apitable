@@ -12,6 +12,7 @@
     "test:databus": "TZ=Asia/Shanghai jest databus",
     "test:watch": "TZ=Asia/Shanghai jest --watch",
     "test:cov": "TZ=Asia/Shanghai jest --coverage",
+    "lint": "eslint src",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "author": "APITable Ltd. <support@apitable.com>",
@@ -58,6 +59,7 @@
     "@types/node": "^14.14.34",
     "@types/qs": "^6.9.4",
     "@types/string.prototype.matchall": "^4.0.1",
+    "eslint": "^7.21.0",
     "fast-check": "^3.6.3",
     "jest": "^29.2.2",
     "jest-environment-jsdom": "^29.2.2",

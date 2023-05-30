@@ -139,6 +139,7 @@ export interface IOpenMemberFieldProperty {
   isMulti?: boolean;
   // whether to send notification
   shouldSendMsg?: boolean;
+  subscription?: boolean;
 }
 export interface IOpenDateTimeFieldProperty {
   /** date format */

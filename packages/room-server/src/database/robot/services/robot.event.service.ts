@@ -26,11 +26,7 @@ import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { RobotTriggerService } from 'automation/services/robot.trigger.service';
-import { RobotTriggerTypeService } from 'automation/services/robot.trigger.type.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EventTypeEnums } from 'automation/events/domains/event.type.enums';
-import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
+import { FlowQueue } from 'automation/queues';
 
 /**
  * Event listener service, convert op to domains, and handle related domains listening.
@@ -43,9 +39,7 @@ export class RobotEventService {
     @InjectLogger() private readonly logger: Logger,
     private datasheetService: DatasheetService,
     private commandService: CommandService,
-    private robotTriggerService: RobotTriggerService,
-    private robotTriggerTypeService: RobotTriggerTypeService,
-    private readonly eventEmitter: EventEmitter2,
+    private readonly flowQueue: FlowQueue,
   ) {
     // Server side only listens to record content CRUD domains.
     const clientWatchedEvents = [
@@ -98,24 +92,29 @@ export class RobotEventService {
     resourceIds.forEach(resourceId => {
       clearComputeCache(resourceId);
     });
-    const dstIdTriggersMap = await this.robotTriggerService.getTriggersGroupByResourceId(resourceIds);
-    const triggerSlugTypeIdMap = await this.robotTriggerTypeService.getServiceSlugToTriggerTypeId([
-      EventTypeEnums.RecordMatchesConditions,
-      EventTypeEnums.RecordCreated
-    ], OFFICIAL_SERVICE_SLUG);
-    this.logger.info(`messageIds: [${ msgIds }]: The official service slug ${ OFFICIAL_SERVICE_SLUG }`);
-    this.logger.info(`messageIds: [${ msgIds }]: The triggered trigger: ${ dstIdTriggersMap }`);
-    this.logger.info(`messageIds: [${ msgIds }]: The event and trigger's type map: ${ triggerSlugTypeIdMap }`);
     for (const event of events) {
-      this.eventEmitter.emit(event.eventName, {
-        ...event,
-        beforeApply: false,
-        metaContext: {
-          dstIdTriggersMap,
-          triggerSlugTypeIdMap,
-          msgIds,
+      try {
+        if (event.eventName === OPEventNameEnums.RecordCreated  || OPEventNameEnums.RecordUpdated) {
+          await this.flowQueue.add(event.eventName, {
+            realType: event.realType,
+            atomType: event.atomType,
+            scope: event.scope,
+            sourceType: event.sourceType,
+            context: {
+              datasheetName: event.context.datasheetName,
+              datasheetId: event.context.datasheetId,
+              recordId: event.context.recordId,
+              fields: event.context.fields,
+              diffFields: event.context.diffFields,
+              eventFields: event.context.eventFields,
+              fieldMap: event.context.state.datasheetMap[event.context.datasheetId].datasheet!.snapshot.meta.fieldMap!
+            },
+            beforeApply: false,
+          });
         }
-      });
+      } catch (e: any) {
+       this.logger.error(`messageIds[${ msgIds }]: add job error`, e);
+      }
     }
   }
 }

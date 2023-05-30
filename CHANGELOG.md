@@ -3,6 +3,59 @@
 
 
 
+## [v0.20.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc.1) (2023-05-08)
+
+
+### Features and enhancements
+
+* feat(l10n):support french && chinese traditional ([#741](https://github.com/apitable/apitable/pull/741)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: avoid loading room-native-api if USE_NATIVE_MODULE is disabled ([#743](https://github.com/apitable/apitable/pull/743)) @arucil 
+* fix: disable forbid unknow values ([#750](https://github.com/apitable/apitable/pull/750)) @yort-feng 
+* fix: add multi language images ([#751](https://github.com/apitable/apitable/pull/751)) @luoyunyao 
+
+### What's more
+
+* Crowdin add French strings([#684](https://github.com/apitable/apitable/pull/684)) @mr-kelly 
+* docs: design system ([#748](https://github.com/apitable/apitable/pull/748)) @mr-kelly 
+* docs: discord invite link update ([#726](https://github.com/apitable/apitable/pull/726)) @mr-kelly 
+* docs: update Crowdin translate link ([#760](https://github.com/apitable/apitable/pull/760)) @Exclamation-mark 
+* docs: submit a detail PRD issue ([#762](https://github.com/apitable/apitable/pull/762)) @mr-kelly 
+* chore: sorts of chores ([#763](https://github.com/apitable/apitable/pull/763)) @mr-kelly 
+* sync: hosted cloud ([#766](https://github.com/apitable/apitable/pull/766)) @yort-feng 
+## [v0.20.0-rc](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc) (2023-04-25)
+
+
+### Features and enhancements
+
+* feat(l10n):Crowdin support translate strings.en-US.json ([#731](https://github.com/apitable/apitable/pull/731)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: widget filter ([#714](https://github.com/apitable/apitable/pull/714)) @yort-feng 
+* fix: init the custom widget command error ([#719](https://github.com/apitable/apitable/pull/719)) @Sky-FE 
+* fix: folder favorite click crash ([#735](https://github.com/apitable/apitable/pull/735)) @wangkailang 
+* fix: strings default crash ([#740](https://github.com/apitable/apitable/pull/740)) @wangkailang 
+
+### What's more
+
+* release: v0.20.0-alpha ([#698](https://github.com/apitable/apitable/pull/698)) @yort-feng 
+* docs: add Scripting Widget documentation link ([#711](https://github.com/apitable/apitable/pull/711)) @mr-kelly 
+* sync: hosted cloud ([#739](https://github.com/apitable/apitable/pull/739)) @yort-feng 
+## [v0.20.0-beta](https://github.com/apitable/apitable/releases/tag/v0.20.0-beta) (2023-04-17)
+
+
+### Bug fixes
+
+* fix: widget filter ([#714](https://github.com/apitable/apitable/pull/714)) @yort-feng 
+
+### What's more
+
+* release: v0.20.0-alpha ([#698](https://github.com/apitable/apitable/pull/698)) @yort-feng 
+* docs: add Scripting Widget documentation link ([#711](https://github.com/apitable/apitable/pull/711)) @mr-kelly 
+* sync: hosted cloud ([#713](https://github.com/apitable/apitable/pull/713)) @yort-feng 
 ## [v0.20.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.20.0-alpha) (2023-04-10)
 
 

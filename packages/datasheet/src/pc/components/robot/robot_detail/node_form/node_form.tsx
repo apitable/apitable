@@ -22,8 +22,10 @@ import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/i
 import Image from 'next/image';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { useRef, useState } from 'react';
 import { mutate } from 'swr';
+import { IRobotNodeType } from '../../interface';
 import { useDeleteRobotAction, useRobot } from '../../hooks';
 import { MagicVariableForm } from './ui';
 // FIXME: form type
@@ -33,9 +35,9 @@ export const NodeForm = (props: any) => {
   const [show, setShow] = useState(false);
   const { title, serviceLogo, children, description, type = 'trigger', nodeId, index = 0, ...restProps } = props;
   const theme = useTheme();
-  const text = type === 'trigger' ? t(Strings.robot_trigger_guide) : t(Strings.robot_action_guide);
-  const selectTitle = type === 'trigger' ? t(Strings.robot_trigger_type) : t(Strings.robot_action_type);
-  const configTitle = type === 'trigger' ? t(Strings.robot_trigger_config) : t(Strings.robot_action_config);
+  const text = type === IRobotNodeType.Trigger ? t(Strings.robot_trigger_guide) : t(Strings.robot_action_guide);
+  const selectTitle = type === IRobotNodeType.Trigger ? t(Strings.robot_trigger_type) : t(Strings.robot_action_type);
+  const configTitle = type === IRobotNodeType.Trigger ? t(Strings.robot_trigger_config) : t(Strings.robot_action_config);
 
   const { hasError } = validateMagicForm(restProps.schema, restProps.formData);
   const deleteRobotAction = useDeleteRobotAction();
@@ -117,7 +119,7 @@ export const NodeForm = (props: any) => {
               }}
             >
               <Image
-                src={serviceLogo || '?'}
+                src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
                 width={24}
                 height={24}
               />

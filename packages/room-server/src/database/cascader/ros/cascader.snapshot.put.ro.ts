@@ -25,7 +25,7 @@ export class CascaderSnapshotPutRo {
     example: 'dst***',
     description: 'Datasheet ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
   linkedDatasheetId!: string;
 
   @ApiProperty({
@@ -33,6 +33,6 @@ export class CascaderSnapshotPutRo {
     example: 'viw***',
     description: 'View ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
   linkedViewId!: string;
 }

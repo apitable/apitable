@@ -3992,6 +3992,28 @@
         "to_tag": "members",
         "url": "/management"
       },
+      "auto_cancel_record_subscription": {
+        "can_jump": true,
+        "format_string": "auto_cancel_record_subscription",
+        "is_browser": true,
+        "is_mail": false,
+        "is_mobile": false,
+        "is_notification": true,
+        "notifications_type": [],
+        "to_tag": "members",
+        "url": "/workbench"
+      },
+      "auto_create_record_subscription": {
+        "can_jump": true,
+        "format_string": "auto_create_record_subscription",
+        "is_browser": true,
+        "is_mail": false,
+        "is_mobile": false,
+        "is_notification": true,
+        "notifications_type": [],
+        "to_tag": "members",
+        "url": "/workbench"
+      },
       "capacity_limit": {
         "billing_notify": "max_capacity_size_in_bytes",
         "can_jump": true,
@@ -6003,7 +6025,7 @@
       "value": "https://help.vika.cn/docs/guide/integration-dingtalk"
     },
     "integration_dingtalk_upgrade_url": {
-      "value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
+      "value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521BD4178D2ECD66BA4F839F9305FA49577%26token%3Dc9073ae902dcadcc4e9fc9af6c8fe5b8%26shareUid%3D704244F72EEF24B56571C55DCF2818F9&dtaction=os"
     },
     "integration_feishu_help": {
       "value": "vika维格表 使用指南"

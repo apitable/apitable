@@ -671,7 +671,7 @@ export class DatasheetFieldHandler {
         filterInfo.conditions.forEach((condition: any) => lookUpReferFieldIds.push(condition.fieldId));
       }
       // Update two-way reference of LookUp field
-      updateReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds);
+      await updateReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds);
       // skip self-linking
       if (foreignDatasheetId === dstId) {
         continue;

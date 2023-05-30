@@ -81,6 +81,7 @@ export interface IAPIMetaMemberFieldProperty {
   options?: IAPIMetaMember[];
   isMulti?: boolean;
   shouldSendMsg?: boolean;
+  subscription?: boolean;
 }
 
 export interface IAPIMetaUser {

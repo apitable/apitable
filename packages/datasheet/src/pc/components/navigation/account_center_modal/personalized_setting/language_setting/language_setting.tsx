@@ -22,6 +22,7 @@ import { Message } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { FC, useState } from 'react';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 /**
  * read Settings in config
@@ -63,19 +64,32 @@ export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
     }
     setValue(newValue);
     // cache client locale
-    window.document.cookie = `client-lang=${newValue}`;
+    localStorage.setItem('client-lang', newValue);
     window.location.reload();
   };
 
   return (
     <div className={styles.languageSetting}>
       <Typography variant="h7" className={styles.title}>{t(Strings.language_setting)}</Typography>
+      <div className={styles.tip}>
+        {t(Strings.give_feedback_to_translation)}
+        <a 
+          className={styles.learnMore} 
+          href={getEnvVariables().TRANSLATION_FEEDBACK_HELP_URL}
+          rel="noopener noreferrer"
+          target='_blank'
+        >
+          {t(Strings.give_feedback_to_translation_learn_more)}
+        </a>
+      </div>
       <Select
         options={options}
         value={value}
         onSelected={handleSelected}
         dropdownMatchSelectWidth
         triggerStyle={{ width: 200 }}
+        searchPlaceholder={t(Strings.search)}
+        openSearch
       />
     </div >
   );

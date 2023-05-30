@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        command: [ test-ut-backend-docker, test-ut-room-docker, _test-ut-core ]
+        command: [ test-init-db-docker, test-ut-backend-docker, test-ut-room-docker, _test-ut-core ]
     steps:
       - uses: actions/checkout@v3
       - name: Running Test

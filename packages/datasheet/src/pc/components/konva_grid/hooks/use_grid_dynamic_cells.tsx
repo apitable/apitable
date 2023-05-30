@@ -29,11 +29,11 @@ import {
   cellHelper, getCellEditable, getCellHeight, GRID_FILL_HANDLER_SIZE, GRID_GROUP_OFFSET, GridCoordinate, IRenderStyleProps, KonvaGridContext,
   KonvaGridViewContext
 } from 'pc/components/konva_grid';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 import { CellValue } from '../components';
+import { MouseDownType } from '../../multi_grid';
 
 const RectComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/rect'), { ssr: false });
 

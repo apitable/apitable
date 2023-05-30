@@ -48,7 +48,7 @@ public class I18nStringsUtil {
     public static String t(String stringsKey, @NotNull Locale lang, String defaultStr) {
         if (StrUtil.isNotBlank(stringsKey)) {
             I18nTypes i18nTypes = I18nTypes.aliasOf(lang.toLanguageTag()).isBackoff();
-            String text = I18nConfigLoader.getText(I18nConfigLoader.getConfig().getStrings().get(stringsKey), i18nTypes);
+            String text = I18nConfigLoader.getText(stringsKey, i18nTypes);
             return StrUtil.blankToDefault(text, defaultStr);
         }
         return StrUtil.EMPTY;
