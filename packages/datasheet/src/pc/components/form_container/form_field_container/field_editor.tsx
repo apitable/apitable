@@ -231,7 +231,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     case FieldType.URL:
     case FieldType.Email:
     case FieldType.Phone:
-      return <EnhanceTextEditor ref={ref} {...commonProps} />;
+      return <EnhanceTextEditor ref={ref} {...commonProps} isForm />;
     case FieldType.SingleSelect: 
     case FieldType.MultiSelect:
       return compactMode ? (

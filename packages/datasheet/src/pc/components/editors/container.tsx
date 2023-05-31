@@ -809,7 +809,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
-        return <EnhanceTextEditor style={editorRect} ref={editorRef} {...commonProps} />;
+        return <EnhanceTextEditor style={editorRect} ref={editorRef} recordId={record.id} {...commonProps} />;
       case FieldType.Rating:
         return <RatingEditor style={editorRect} ref={editorRef} cellValue={cellValue} {...commonProps} />;
       case FieldType.Checkbox:
