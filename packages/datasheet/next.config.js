@@ -26,6 +26,7 @@ const withTM = require('next-transpile-modules')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const isProd = process.env.NODE_ENV === 'production'
 const getWebpackConfig = require('./webpack.config')
+const {withSentryConfig} = require("@sentry/nextjs");
 
 
 const plugins = [
@@ -46,7 +47,12 @@ const plugins = [
   ]
 ]
 
-module.exports = withPlugins(plugins, {
+
+const _withSentryConfig = process.env.SENTRY_CONFIG_AUTH_TOKEN ? withSentryConfig : (nextConfig, sentryConfig) => {
+  return nextConfig
+}
+
+module.exports = withPlugins(plugins, _withSentryConfig({
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
@@ -87,4 +93,11 @@ module.exports = withPlugins(plugins, {
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../')
   }
-})
+}, {
+  url: process.env.SENTRY_CONFIG_URL,
+  authToken: process.env.SENTRY_CONFIG_AUTH_TOKEN,
+  project: 'web-server',
+  dsn: process.env.SENTRY_CONFIG_DSN,
+  org: 'sentry',
+  release: process.env.BUILD_VERSION
+}))
