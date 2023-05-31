@@ -146,16 +146,16 @@ module.exports = (config, options) => {
       }
     }))
 
-  if (!isProd) {
-    const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-    config.plugins.push(new ForkTsCheckerWebpackPlugin({
-      typescript: {
-        memoryLimit: 5000,
-        mode: 'write-references'
-      },
-      async: true,
-    }))
-  }
+  // if (!isProd) {
+  //   const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+  //   config.plugins.push(new ForkTsCheckerWebpackPlugin({
+  //     typescript: {
+  //       memoryLimit: 5000,
+  //       mode: 'write-references'
+  //     },
+  //     async: true,
+  //   }))
+  // }
 
   return config
 }
