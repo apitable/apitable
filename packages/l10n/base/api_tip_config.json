@@ -55,6 +55,22 @@
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
+            "api_node_node_type_value_error": {
+                "code": 400,
+                "id": "api_node_node_type_value_error",
+                "isRecordTimes": true,
+                "message": "api_node_node_type_value_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_node_permission_value_error": {
+                "code": 400,
+                "id": "api_node_permission_value_error",
+                "isRecordTimes": true,
+                "message": "api_node_permission_value_error",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
             "api_unauthorized": {
                 "code": 401,
                 "id": "api_unauthorized",
