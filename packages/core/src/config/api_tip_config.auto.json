@@ -134,12 +134,28 @@
         "message": "api_insert_error",
         "statusCode": 200
       },
+      "api_node_node_type_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_node_node_type_value_error",
+        "isRecordTimes": true,
+        "message": "api_node_node_type_value_error",
+        "statusCode": 200
+      },
       "api_node_permission_error": {
         "apiTypes": "fusion_api",
         "code": 602,
         "id": "api_node_permission_error",
         "isRecordTimes": true,
         "message": "api_node_permission_error",
+        "statusCode": 200
+      },
+      "api_node_permission_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_node_permission_value_error",
+        "isRecordTimes": true,
+        "message": "api_node_permission_value_error",
         "statusCode": 200
       },
       "api_not_exists": {

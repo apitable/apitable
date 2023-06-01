@@ -61,22 +61,85 @@ describe('UnitTeamServiceTest', () => {
       });
   });
 
-  it('should be return team base infos by team ids', async() => {
-    const teamIdToTeamInfo = await service.getTeamsByIdsIncludeDeleted([2023]);
-    expect(teamIdToTeamInfo['2023']?.name).toEqual('teamName');
-    expect(teamIdToTeamInfo['2023']?.uuid).toEqual('');
-    expect(teamIdToTeamInfo['2023']?.userId).toEqual('');
-    expect(teamIdToTeamInfo['2023']?.type).toEqual(MemberType.Team);
-    expect(teamIdToTeamInfo['2023']?.isDeleted).toBeFalsy();
+  describe('getTeamsByIdsIncludeDeleted', () => {
+    it('should be return team base infos by team ids', async() => {
+      const teamIdToTeamInfo = await service.getTeamsByIdsIncludeDeleted([2023]);
+      expect(teamIdToTeamInfo['2023']?.name).toEqual('teamName');
+      expect(teamIdToTeamInfo['2023']?.uuid).toEqual('');
+      expect(teamIdToTeamInfo['2023']?.userId).toEqual('');
+      expect(teamIdToTeamInfo['2023']?.type).toEqual(MemberType.Team);
+      expect(teamIdToTeamInfo['2023']?.isDeleted).toBeFalsy();
+    });
   });
 
-  it('return team id by space id and team name', async() => {
-    const teamId = await service.getIdBySpaceIdAndName('spaceId', 'teamName');
-    expect(teamId).toEqual('2023');
+  describe('getIdBySpaceIdAndName', () => {
+    it('return team id by space id and team name', async() => {
+      const teamId = await service.getIdBySpaceIdAndName('spaceId', 'teamName');
+      expect(teamId).toEqual('2023');
+    });
+
+    it('return null by space id and no exist team name', async() => {
+      const teamId = await service.getIdBySpaceIdAndName('spaceId', 'noExistTeamName');
+      expect(teamId).toEqual(null);
+    } );
   });
 
-  it('return null by space id and no exist team name', async() => {
-    const teamId = await service.getIdBySpaceIdAndName('spaceId', 'noExistTeamName');
-    expect(teamId).toEqual(null);
-  } );
+  describe('getTeamIdSubTeamIdsMapBySpaceIdAndParentIds', () => {
+    it('should return an empty map and sub team list when there are no teams', async() => {
+      const spaceId = 'space1';
+      const parentTeamIds: string[] = [];
+      jest.spyOn(unitTeamRepository, 'selectTeamsBySpaceId').mockResolvedValue([]);
+      const result = await service.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, parentTeamIds);
+      expect(result).toEqual({ teamIdSubTeamIdsMap: {}, subTeams: [] });
+    });
+  
+    it('should return team ID - sub team IDs map and sub team list', async() => {
+      const spaceId = 'space1';
+      const parentTeamIds = ['team1', 'team2'];
+      const unitTeams = [
+        { id: 'team1', groupId: 'group1' },
+        { id: 'team2', groupId: 'group1' },
+        { id: 'team3', groupId: 'team1' },
+        { id: 'team4', groupId: 'team1' },
+      ];
+      jest.spyOn(unitTeamRepository, 'selectTeamsBySpaceId').mockResolvedValue(Object.assign(unitTeams));
+      const result = await service.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, parentTeamIds);
+      expect(result).toEqual({
+        teamIdSubTeamIdsMap: {
+          team1: ['team3', 'team4'],
+          team2: [],
+        },
+        subTeams: ['team3', 'team4'],
+      });
+    });
+  });
+
+  describe('getSubTeamIdsByParentSubRefMap', () => {
+    it('should return an empty array when there are no sub teams', () => {
+      const parentSubRefMap: { [parentTeamId: string]: string[] } = {};
+      const unitTeam = { id: 'team1', groupId: 'group1' };
+      const result = service.getSubTeamIdsByParentSubRefMap(parentSubRefMap, unitTeam);
+      expect(result).toEqual([]);
+    });
+  
+    it('should return direct sub team IDs', () => {
+      const parentSubRefMap: { [parentTeamId: string]: string[] } = {
+        team1: ['team2', 'team3'],
+      };
+      const unitTeam = { id: 'team1', groupId: 'group1' };
+      const result = service.getSubTeamIdsByParentSubRefMap(parentSubRefMap, unitTeam);
+      expect(result).toEqual(['team2', 'team3']);
+    });
+  
+    it('should return all sub team IDs recursively', () => {
+      const parentSubRefMap: { [parentTeamId: string]: string[] } = {
+        team1: ['team2'],
+        team2: ['team3', 'team4'],
+        team3: ['team5'],
+      };
+      const unitTeam = { id: 'team1', groupId: 'group1' };
+      const result = service.getSubTeamIdsByParentSubRefMap(parentSubRefMap, unitTeam);
+      expect(result).toEqual(['team2', 'team3', 'team4', 'team5']);
+    });
+  });
 });

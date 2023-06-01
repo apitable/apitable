@@ -173,8 +173,7 @@ public class NotificationHelper {
      * @return locale
      */
     public static String getTemplateString(String stringId, I18nTypes lang) {
-        return I18nConfigLoader.getText(I18nConfigLoader.getConfig().getStrings().get(stringId),
-            lang);
+        return I18nConfigLoader.getText(stringId, lang);
     }
 
     /**

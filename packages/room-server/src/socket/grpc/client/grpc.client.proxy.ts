@@ -55,7 +55,7 @@ export class GrpcClientProxy extends ClientGrpcProxy implements OnApplicationBoo
      * Reference: https://redis.io/commands/subscribe
      */
     const redis = this.redisService.getClient().duplicate();
-    redis.subscribe(RedisConstants.ROOM_POOL_CHANNEL, (err, count) => {
+    await redis.subscribe(RedisConstants.ROOM_POOL_CHANNEL, (err, count) => {
       if (err) {
         this.logger.error(`Subscription to [${RedisConstants.ROOM_POOL_CHANNEL}] error`, err?.stack);
       } else {
@@ -71,7 +71,7 @@ export class GrpcClientProxy extends ClientGrpcProxy implements OnApplicationBoo
       const subscribeMessage: ISubscribeRoomAddressMessage = JSON.parse(message);
       const { roomClientAddress } = this.splitAddress(subscribeMessage.address);
       this.logger.log({ message: `receive room client [${roomClientAddress}] register`, channel });
-      this.handleNestMessage(subscribeMessage);
+      void this.handleNestMessage(subscribeMessage);
     });
     // Used to handle socket restarts
     await this.refreshRoomPools();
@@ -209,28 +209,25 @@ export class GrpcClientProxy extends ClientGrpcProxy implements OnApplicationBoo
     this.clientIps = new Set(validHealthyClient as string[]);
   }
 
-  private checkRoomClient(address: string): Promise<string | undefined> {
+  private async checkRoomClient(address: string): Promise<string | undefined> {
     const config = {
       timeout: HealthConstants.NEST_HEALTH_CHECK_TIMEOUT,
     };
-    return new Promise(async resolve => {
-      const { roomClientAddress, checkRoomClientAddress } = this.splitAddress(address);
-      let result: string | undefined;
-      try {
-        const response: any = await lastValueFrom(this.httpService.get(`http://${checkRoomClientAddress}/actuator/health`, config));
-        if (response.status === 200) {
-          result = await this.handleHealthy(address, response.data);
-        } else {
-          await this.handleUnhealthy(address);
-        }
-      } catch (e) {
-        const error: any = e as any;
-        this.logger.error(`ping room client :[${roomClientAddress}] timeout, ping code:[${error.code}]`, error?.stack);
-        await this.handleUnhealthy(address, this.isServerReachable(error.code));
-      } finally {
-        resolve(result);
+    const { roomClientAddress, checkRoomClientAddress } = this.splitAddress(address);
+    let result: string | undefined;
+    try {
+      const response: any = await lastValueFrom(this.httpService.get(`http://${checkRoomClientAddress}/actuator/health`, config));
+      if (response.status === 200) {
+        result = await this.handleHealthy(address, response.data);
+      } else {
+        await this.handleUnhealthy(address);
       }
-    });
+    } catch (e) {
+      const error: any = e as any;
+      this.logger.error(`ping room client :[${roomClientAddress}] timeout, ping code:[${error.code}]`, error?.stack);
+      await this.handleUnhealthy(address, this.isServerReachable(error.code));
+    }
+    return result;
   }
 
   private async handleHealthy(address: string, checkResult: any): Promise<string> {

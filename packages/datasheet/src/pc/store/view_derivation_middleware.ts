@@ -17,7 +17,10 @@
  */
 
 import {
-  ActionConstants, IJOTActionPayload, Selectors, StoreActions,
+  ActionConstants,
+  IJOTActionPayload,
+  Selectors,
+  StoreActions,
   ILoadedDataPackAction,
   IReduxState,
   dispatchNewViewDerivation,
@@ -39,10 +42,11 @@ import {
   ICacheTemporaryView,
   ISetSearchKeyword,
   ViewDerivateFactory,
-  IChangeViewAction
+  IChangeViewAction,
 } from '@apitable/core';
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 import { BatchAction } from 'redux-batched-actions';
+import isEqual from 'lodash/isEqual';
 
 type IUpdateDerivationAction =
   BatchAction |
@@ -52,6 +56,7 @@ type IUpdateDerivationAction =
 
 export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => next => (action: IUpdateDerivationAction) => {
   next(action);
+
   if (action.type === 'BATCHING_REDUCER.BATCH') {
     action.payload.forEach(action => {
       handleAction(store, action);
@@ -65,21 +70,21 @@ const handleAction = (
   store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>,
   action: IUpdateDerivationAction
 ) => {
-  const preState = store.getState();
+  const latestState = store.getState();
   switch (action.type) {
     case ActionConstants.DATAPACK_LOADED: {
       const datasheetId = action.datasheetId;
       if (action.payload.isPartOfData) {
         return;
       }
-      if (preState.pageParams.datasheetId !== datasheetId && datasheetId !== 'previewDatasheet') {
+      if (latestState.pageParams.datasheetId !== datasheetId && datasheetId !== 'previewDatasheet') {
         return;
       }
       dispatchNewViewDerivation(store, datasheetId);
       return;
     }
     case ActionConstants.CHANGE_VIEW: {
-      const datasheetId = preState.pageParams.datasheetId;
+      const datasheetId = latestState.pageParams.datasheetId;
       if (!datasheetId) {
         return;
       }
@@ -231,11 +236,18 @@ const handleAction = (
     // Mirroring & Switching between corresponding table-views
     case ActionConstants.SET_PAGE_PARAMS: {
       const state = store.getState();
-      const { nodeId: preNodeId } = preState.pageParams;
-      const { datasheetId, nodeId } = state.pageParams;
-      if (nodeId === preNodeId || !datasheetId) {
+      const { datasheetId, viewId } = state.pageParams;
+      const hasViewDerivation = Selectors.getViewDerivation(state, datasheetId, viewId);
+
+      /**
+       * ATTENTION:
+       * if there are not exist view derivation, getViewDerivation() will return non-empty object.
+       * Do not use the existence of a value as a judgment condition.
+       * */
+      if (!isEqual(hasViewDerivation, Selectors.EMPTY_DERATION) || !datasheetId || !viewId) {
         return;
       }
+
       dispatchNewViewDerivation(store, datasheetId);
       return;
     }

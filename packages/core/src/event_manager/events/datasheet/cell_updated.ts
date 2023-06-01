@@ -22,20 +22,9 @@ import { Field } from 'model';
 import { IReduxState, Selectors } from '../../../exports/store';
 import { FieldType } from 'types';
 import { ResourceType } from 'types/resource_types';
-import { IAtomEventType } from '../interface';
+import { IAtomEventType, ICellUpdatedContext } from '../interface';
 import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './../../const';
 import { IEventInstance, IOPBaseContext, IOPEvent, IVirtualAtomEvent } from './../../interface/event.interface';
-
-interface ICellUpdatedContext {
-  recordId: string;
-  fieldId: string;
-  datasheetId: string;
-  action: any;
-  change: {
-    from: any;
-    to: any;
-  }
-}
 
 // @EventMeta(OPEventNameEnums.CellUpdated)
 export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {

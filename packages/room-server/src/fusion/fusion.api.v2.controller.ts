@@ -45,9 +45,10 @@ export class FusionApiV2Controller {
   })
   @ApiProduces('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async getNodes( @Param('spaceId') spaceId: string, @Query() query: NodeListQueryRo) {
-    const { type, role } = query;
-    const nodes = await this.fusionNodeApiServer.getNodeList(spaceId, type, role || 'reader');
+  public async getNodes( @Param('spaceId') spaceId: string, @Query() queryParam: NodeListQueryRo) {
+    const { type, permissions, query } = queryParam;
+    const uniquePermissions = Array.from(new Set(permissions));
+    const nodes = await this.fusionNodeApiServer.getNodeList(spaceId, type, uniquePermissions || [0, 1, 2, 3], query);
     return ApiResponse.success({
       nodes: nodes,
     });

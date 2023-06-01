@@ -35,7 +35,7 @@ import {
   t,
 } from '@apitable/core';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
-import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
+import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
 import { store } from 'pc/store';
 import { useThemeColors } from '@apitable/components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';

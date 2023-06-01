@@ -113,7 +113,7 @@ export const findRealField = (state: IReduxState, propsField: IField) => {
   return (Field.bindContext(propsField, state) as LookUpField).getLookUpEntityField();
 };
 
-const EMPTY_DERATION: IViewDerivation = {
+export const EMPTY_DERATION: IViewDerivation = {
   linearRows: [],
   visibleRows: [],
   visibleRowsIndexMap: new Map(),

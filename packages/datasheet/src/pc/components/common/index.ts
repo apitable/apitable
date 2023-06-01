@@ -47,7 +47,6 @@ export * from './icon';
 export * from './vika_split_panel';
 export * from './input';
 export * from './pop_up_title';
-export * from './status_alert';
 export * from './slider_verification';
 export * from './steps';
 export * from './logo';

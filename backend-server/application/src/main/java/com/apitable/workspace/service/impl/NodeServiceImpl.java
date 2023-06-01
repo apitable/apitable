@@ -273,6 +273,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<String> getNodeIdBySpaceIdAndTypeAndKeyword(String spaceId, Integer type, String keyword) {
+        log.info("The ID of the query space [{}] node types [{}] keyword [{}]", spaceId, type, keyword);
+        return nodeMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+    }
+
+    @Override
     public NodeType getTypeByNodeId(String nodeId) {
         Integer type = nodeMapper.selectNodeTypeByNodeId(nodeId);
         ExceptionUtil.isNotNull(type, PermissionException.NODE_NOT_EXIST);
@@ -375,6 +381,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds) {
         log.info("Node information view of batch query [{}]", nodeIds);
         return nodeMapper.selectInfoByNodeIds(nodeIds);
+    }
+
+    @Override
+    public List<NodeInfo> getNodeInfo(String spaceId, List<String> nodeIds, Long memberId) {
+        log.info("Node information view of batch query [{}]", nodeIds);
+        return nodeMapper.selectNodeInfo(nodeIds, memberId);
     }
 
     @Override

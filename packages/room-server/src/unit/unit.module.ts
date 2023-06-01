@@ -25,6 +25,8 @@ import { UnitTeamRepository } from './repositories/unit.team.repository';
 import { UnitService } from './services/unit.service';
 import { UnitTeamService } from './services/unit.team.service';
 import { UnitMemberService } from './services/unit.member.service';
+import { UnitRoleMemberRepository } from './repositories/unit.role.member.repository';
+import { UnitTeamMemberRefRepository } from './repositories/unit.team.member.ref.repository';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { UnitMemberService } from './services/unit.member.service';
       UnitRepository,
       UnitMemberRepository,
       UnitTeamRepository,
+      UnitTeamMemberRefRepository,
+      UnitRoleMemberRepository,
     ]),
   ],
   providers: [UnitService, UnitTeamService, UnitMemberService],

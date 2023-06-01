@@ -23,6 +23,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { getEnvVariables } from 'pc/utils/env';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
@@ -166,7 +167,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
           </div>
           <div className={styles.arcBoxRight} />
         </div>
-        {extras?.website && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
+        {extras?.website && !getEnvVariables().DISABLE_WIDGET_PUBLISHER && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
             <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant='background' />
           </a>
@@ -177,7 +178,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         <p>
           {description}
         </p>
-        <div className={styles.developerWrap}>
+        {!getEnvVariables().DISABLE_WIDGET_PUBLISHER && <div className={styles.developerWrap}>
           <span>{t(Strings.widget_center_publisher)}</span>
           <div className={styles.avatarWrap}>
             <Avatar
@@ -189,7 +190,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
             />
           </div>
           <span>{authorName}</span>
-        </div>
+        </div>}
         {isReview && <div>{version}</div>}
         <InstallButton />
       </div>

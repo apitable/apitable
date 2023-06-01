@@ -17,13 +17,26 @@
  */
 
 import {
-  ComputeRefManager, Field, FieldType, FieldTypeDescriptionMap, getComputeRefManager, getUniqName, IField, IFormulaField, ILinkField, ILookUpField,
-  IMultiSelectField, ISingleSelectField, Selectors, Strings, t, ICascaderField,
+  ComputeRefManager,
+  Field,
+  FieldType,
+  FieldTypeDescriptionMap,
+  getComputeRefManager,
+  getUniqName,
+  ICascaderField,
+  IField,
+  IFormulaField,
+  ILinkField,
+  ILookUpField,
+  IMultiSelectField,
+  ISingleSelectField,
+  Selectors,
+  Strings,
+  t,
 } from '@apitable/core';
 import produce from 'immer';
 import keyBy from 'lodash/keyBy';
 import { store } from 'pc/store';
-import { getTestFunctionAvailable } from 'pc/utils/storage';
 
 const compose = (...args: any) => (value: any, datasheetId: string) =>
   args.reduceRight((preValue: any, curFn: (arg0: any, arg1: string) => any) => curFn(preValue, datasheetId), value);
@@ -46,11 +59,7 @@ export const checkComputeRef = (curField: string | ILookUpField | IFormulaField)
     );
     // Here is the simulation to determine whether circular references occur, do not add the reference relationship of draft, to the cache.
     draftComputeRefManager.computeRefMap(draftFieldMap, datasheetId, state, false);
-
-    // Allow constructing loop dependencies to be returned directly without checking.
-    if (getTestFunctionAvailable('allowFieldLoopRef')) {
-      return curField;
-    }
+    
     // Determine if there is a circular dependency, and comment out this field if you want to construct a circular dependency.
     if (!draftComputeRefManager.checkRef(`${datasheetId}-${curField.id}`)) {
       throw Error(t(Strings.field_circular_err));

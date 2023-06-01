@@ -17,7 +17,7 @@
  */
 
 import { Test, TestingModule } from '@nestjs/testing';
-import { RobotActionTypeService } from './robot.action.type.base.service';
+import { RobotActionTypeService } from './robot.action.type.service';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
@@ -38,8 +38,8 @@ describe('RobotActionTypeServiceTest', () => {
     service = module.get<RobotActionTypeService>(RobotActionTypeService);
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

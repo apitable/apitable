@@ -17,24 +17,22 @@
  */
 
 /* eslint-disable space-before-function-paren */
-import util from 'util';
 import { Redis } from 'ioredis';
 import fs from 'fs';
 import path from 'path';
 
 const listLock = fs.readFileSync(path.resolve(__dirname, 'list.lock.lua'), 'utf8');
 
-const defaultTimeout = 5000;
-const promisify = util.promisify || function (x: any) { return x; };
+const DEFAULT_LOCK_TIMEOUT = 5000;
 
-function acquireLock(client: Redis, lockNames: string[], timeout: number, retryDelay: number, onLockAcquired: (number: any) => void) {
+function acquireLock(client: Redis, lockNames: string[], timeout: number, retryDelay: number, onLockAcquired: (timedOut: boolean) => void) {
   function retry() {
-    setTimeout(function () {
+    setTimeout(function() {
       acquireLock(client, lockNames, timeout, retryDelay, onLockAcquired);
     }, retryDelay);
   }
 
-  const lockTimeoutValue = (Date.now() + timeout + 1);
+  const lockTimeoutValue = Date.now() + timeout + 1;
   // client.set(lockNames, lockTimeoutValue, 'PX', timeout, 'NX', function (err, result) {
   //   if (err || result === null) return retry();
   //   onLockAcquired(lockTimeoutValue);
@@ -48,26 +46,20 @@ function acquireLock(client: Redis, lockNames: string[], timeout: number, retryD
     if (!result[0]) {
       return retry();
     }
-    onLockAcquired(lockTimeoutValue);
+    onLockAcquired(lockTimeoutValue <= Date.now());
   });
 }
 
-type ITaskToPerform = (done: () => void) => void;
-export function RedisLock(client: Redis, retryDelay?: number): any {
+export function RedisLock(client: Redis, retryDelay?: number) {
   if (!(client && client.setnx! && client.msetnx)) {
     throw new Error('You must specify a client instance of http://github.com/mranney/node_redis');
   }
 
   retryDelay = retryDelay || 50;
 
-  function lock(lockName: string | string[], timeout: ITaskToPerform | number, taskToPerform?: ITaskToPerform) {
+  function lock(lockName: string | string[], timeout: number = DEFAULT_LOCK_TIMEOUT): Promise<() => Promise<void>> {
     if (!lockName) {
       throw new Error('You must specify a lock string. It is on the redis key `lock.[string]` that the lock is acquired.');
-    }
-
-    if (!taskToPerform) {
-      taskToPerform = timeout as ITaskToPerform;
-      timeout = defaultTimeout;
     }
 
     const lockNamePrefix = 'lock.';
@@ -77,25 +69,16 @@ export function RedisLock(client: Redis, retryDelay?: number): any {
       lockName = [lockNamePrefix + lockName];
     }
 
-    acquireLock(client, lockName, timeout as number, retryDelay!, function (lockTimeoutValue) {
-      taskToPerform!(promisify(function (done) {
-        done = done || function () { };
-        if (lockTimeoutValue > Date.now()) {
-          // @ts-ignore
-          client.del(lockName, done);
-        } else {
-          (done as () => void)();
-        }
-      }));
-    });
-  }
-
-  if (util.promisify) {
-    lock[util.promisify.custom] = function (lockName: string, timeout: number) {
-      return new Promise(function (resolve) {
-        lock(lockName, timeout || defaultTimeout, resolve);
+    return new Promise(resolve => {
+      acquireLock(client, lockName as string[], timeout, retryDelay!, function(timedOut) {
+        resolve(async () => {
+          if (!timedOut) {
+            // @ts-ignore
+            await client.del(lockName);
+          }
+        });
       });
-    };
+    });
   }
 
   return lock;

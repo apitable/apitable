@@ -1,12 +1,12 @@
 {
 	"share_iframe_brand_dark": {
-		"value": "space/2022/11/28/94e87bd1fd25472e99556c9b5f72c62e?attname=logo-reverse.svg"
+		"value": "space/2023/05/11/6c03c2744e264b5492bbdb452e7c9c50?attname=logo-reverse.svg"
 	},
 	"integration_wecom_bind_help_center_url": {
 		"value": "/help"
 	},
 	"share_iframe_brand": {
-		"value": "space/2021/12/09/3b09b857cee04a12b6b02cd63bb90a81?attname=%E7%BB%B4%E6%A0%BC%E8%A1%A8logo.svg"
+		"value": "space/2022/10/20/07c7e400c5464312a0d7a035a42d7bf4?attname=%E7%BB%B4%E6%A0%BC%E4%BA%91logo.svg"
 	},
 	"server_error_page_bg": {
 		"value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
@@ -198,7 +198,7 @@
 		"value": "https://vika.cn/developers"
 	},
 	"integration_dingtalk_upgrade_url": {
-		"value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
+		"value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521BD4178D2ECD66BA4F839F9305FA49577%26token%3Dc9073ae902dcadcc4e9fc9af6c8fe5b8%26shareUid%3D704244F72EEF24B56571C55DCF2818F9&dtaction=os"
 	},
 	"emoji_apple_32": {
 		"value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"

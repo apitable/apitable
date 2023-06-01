@@ -67,6 +67,18 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
         @Param("nodeType") Integer nodeType);
 
     /**
+     * get the node by node type and node name keyword in space.
+     *
+     * @param spaceId   space id
+     * @param nodeType  node type
+     * @param keyword   node name keyword
+     * @return node ids
+     */
+    List<String> selectNodeIdsBySpaceIdAndTypeAndKeyword(@Param("spaceId") String spaceId,
+                                              @Param("nodeType") Integer nodeType,
+                                              @Param("keyword") String keyword);
+
+    /**
      * query node id.
      *
      * @param nodeIds node ids
@@ -161,6 +173,15 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return NodeInfos
      */
     List<NodeInfo> selectInfoByNodeIds(@Param("nodeIds") Collection<String> nodeIds);
+
+    /**
+     * query multi node info.
+     *
+     * @param nodeIds   node ids
+     * @param memberId  member id
+     * @return NodeInfos
+     */
+    List<NodeInfo> selectNodeInfo(@Param("nodeIds") Collection<String> nodeIds, @Param("memberId") Long memberId);
 
     /**
      * query node.

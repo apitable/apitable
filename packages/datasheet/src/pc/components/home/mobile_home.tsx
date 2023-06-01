@@ -17,7 +17,7 @@
  */
 
 import { useState } from 'react';
-import { Space } from '@apitable/components';
+import { Space, ThemeName, useTheme } from '@apitable/components';
 import { integrateCdnHost, IReduxState, t, Strings } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
@@ -76,10 +76,15 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
     }
   };
 
+  let logo = getEnvVariables().LOGIN_LOGO!
+  if (useTheme().palette.type === ThemeName.Light && getEnvVariables().LOGIN_LOGO_LIGHT) {
+    logo = getEnvVariables().LOGIN_LOGO_LIGHT!
+  }
+
   return (
     <div className={styles.mobileHome}>
       <div className={styles.header}>
-        <img src={integrateCdnHost(getEnvVariables().LOGIN_LOGO!)} alt="logo" />
+        <img src={integrateCdnHost(logo)} alt="logo" />
       </div>
       { inviteLinkInfo || inviteEmailInfo ? 
         <div className={styles.invite}>

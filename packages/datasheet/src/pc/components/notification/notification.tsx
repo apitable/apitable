@@ -47,7 +47,7 @@ interface ITabKey {
 type ITabKeyType = keyof ITabKey;
 const DOM_WRAP_CLS = styles.notification;
 
-export const Notification: FC<React.PropsWithChildren<unknown>> = () => {
+export const Notification: FC<React.PropsWithChildren> = () => {
   const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useSelector(
     (state: IReduxState) => ({
       unReadCount: state.notification.unReadCount,

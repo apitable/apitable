@@ -28,12 +28,12 @@ import {
   GRID_CELL_DELETE_ITEM_BUTTON_SIZE, GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING, KonvaGridContext
 } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { store } from 'pc/store';
 import { FC, useContext, useState } from 'react';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
+import { MouseDownType } from '../../../../multi_grid';
 
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
@@ -99,7 +99,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     }
     const firstViewId = snapshot.meta.views[0].id;
     let foreignView = Selectors.getCurrentViewBase(snapshot, firstViewId, foreignDatasheetId, fieldPermissionMap);
-    
+
     if (limitToView) {
       foreignView = Selectors.getCurrentViewBase(snapshot, limitToView, foreignDatasheetId, fieldPermissionMap) || foreignView;
     }

@@ -46,6 +46,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
       return next.handle().pipe();
     }
     return next.handle().pipe(
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       tap(async(data: any) => {
         const resourceIds = await this.getResourceIds(info.resourceType, data);
         // no need to create a new resource for mirror

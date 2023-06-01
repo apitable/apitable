@@ -116,54 +116,205 @@ describe('UnitMemberServiceTest', () => {
       });
   });
 
-  it('should be return user info map by user id', async() => {
-    const userIdToUserInfoMap = await service.getMembersBaseInfo([2023]);
-    expect(userIdToUserInfoMap[2023]?.userId).toEqual('2023');
-    expect(userIdToUserInfoMap[2023]?.userId).toEqual('2023');
-    expect(userIdToUserInfoMap[2023]?.name).toEqual('memberName');
-    expect(userIdToUserInfoMap[2023]?.type).toEqual(MemberType.Member);
-    expect(userIdToUserInfoMap[2023]?.avatar).toEqual('avatar');
-    expect(userIdToUserInfoMap[2023]?.nickName).toEqual('nickName');
-    expect(userIdToUserInfoMap[2023]?.avatarColor).toEqual(0);
-    expect(userIdToUserInfoMap[2023]?.isActive).toBeTruthy();
-    expect(userIdToUserInfoMap[2023]?.isDeleted).toBeFalsy();
-    expect(userIdToUserInfoMap[2023]?.isNickNameModified).toBeFalsy();
-    expect(userIdToUserInfoMap[2023]?.isMemberNameModified).toBeFalsy();
+  describe('getMembersBaseInfo', () => {
+    it('should be return user info map by user id', async() => {
+      const userIdToUserInfoMap = await service.getMembersBaseInfo([2023]);
+      expect(userIdToUserInfoMap[2023]?.userId).toEqual('2023');
+      expect(userIdToUserInfoMap[2023]?.userId).toEqual('2023');
+      expect(userIdToUserInfoMap[2023]?.name).toEqual('memberName');
+      expect(userIdToUserInfoMap[2023]?.type).toEqual(MemberType.Member);
+      expect(userIdToUserInfoMap[2023]?.avatar).toEqual('avatar');
+      expect(userIdToUserInfoMap[2023]?.nickName).toEqual('nickName');
+      expect(userIdToUserInfoMap[2023]?.avatarColor).toEqual(0);
+      expect(userIdToUserInfoMap[2023]?.isActive).toBeTruthy();
+      expect(userIdToUserInfoMap[2023]?.isDeleted).toBeFalsy();
+      expect(userIdToUserInfoMap[2023]?.isNickNameModified).toBeFalsy();
+      expect(userIdToUserInfoMap[2023]?.isMemberNameModified).toBeFalsy();
+    });
   });
 
-  it('should get id by space id and member name', async() => {
-    const id = await service.getIdBySpaceIdAndName('spaceId', 'memberName');
-    expect(id).toEqual('2023');
+  describe('getIdBySpaceIdAndName', () => {
+    it('should get id by space id and member name', async() => {
+      const id = await service.getIdBySpaceIdAndName('spaceId', 'memberName');
+      expect(id).toEqual('2023');
+    });
+
+    it('should get null by space id and no exist member name', async() => {
+      const id = await service.getIdBySpaceIdAndName('spaceId', 'noExistMemberName');
+      expect(id).toEqual(null);
+    });
+
+    it('should get id by space id and user id', async() => {
+      const id = await service.getIdBySpaceIdAndName('spaceId', 'memberName');
+      expect(id).toEqual('2023');
+    });
+
+    it('should get null by space id and no exist user id', async() => {
+      const id = await service.getIdBySpaceIdAndName('spaceId', '2024');
+      expect(id).toEqual(null);
+    });
   });
 
-  it('should get null by space id and no exist member name', async() => {
-    const id = await service.getIdBySpaceIdAndName('spaceId', 'noExistMemberName');
-    expect(id).toEqual(null);
+  describe('checkUserIfInSpace', () => {
+    it('should throw when user no exist in space', async() => {
+      await expect(async() => {
+        await service.checkUserIfInSpace('spaceId', '2024');
+      }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
+    });
   });
 
-  it('should get id by space id and user id', async() => {
-    const id = await service.getIdBySpaceIdAndName('spaceId', 'memberName');
-    expect(id).toEqual('2023');
+  describe('getMembersBaseInfoBySpaceIdAndUserIds', () => {
+    it('should return members base info', async() => {
+      const baseInfoVos = await service.getMembersBaseInfoBySpaceIdAndUserIds('spaceId', ['2023']);
+      expect(baseInfoVos['2023']?.memberId).toEqual('2023');
+      expect(baseInfoVos['2023']?.memberName).toEqual('memberName');
+      expect(baseInfoVos['2023']?.isActive).toEqual(true);
+      expect(baseInfoVos['2023']?.isDeleted).toEqual(false);
+      expect(baseInfoVos['2023']?.isMemberNameModified).toEqual(false);
+      expect(baseInfoVos['2023']?.unitId).toEqual('2023');
+    });
+    
+    it('should return an empty object when there are no members', async() => {
+      const spaceId = 'space1';
+      const userIds: string[] = [];
+      const excludeDeleted = true;
+      
+      jest.spyOn(unitMemberRepository, 'selectMembersBySpaceIdAndUserIds').mockResolvedValue([]);
+      
+      const result = await service.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
+      
+      expect(result).toEqual({});
+      expect(unitMemberRepository.selectMembersBySpaceIdAndUserIds).toHaveBeenCalledWith(spaceId, userIds, excludeDeleted);
+      
+    });
+  
+    it('should return members base info', async() => {
+      const spaceId = 'space1';
+      const userIds = ['user1', 'user2'];
+      const excludeDeleted = true;
+      const members = [
+        {
+          id: 'member1',
+          userId: 'user1',
+          memberName: 'John Doe',
+          isDeleted: false,
+          isActive: true,
+          isMemberNameModified: false,
+          unitId: 'unit1',
+        },
+        {
+          id: 'member2',
+          userId: 'user2',
+          memberName: 'Jane Smith',
+          isDeleted: false,
+          isActive: true,
+          isMemberNameModified: true,
+          unitId: 'unit1',
+        },
+      ];
+      
+      jest.spyOn(unitMemberRepository, 'selectMembersBySpaceIdAndUserIds').mockResolvedValue(Object.assign(members));
+      
+      const expectedResults = {
+        user1: {
+          memberId: 'member1',
+          memberName: 'John Doe',
+          isDeleted: false,
+          isActive: true,
+          isMemberNameModified: false,
+          unitId: 'unit1',
+        },
+        user2: {
+          memberId: 'member2',
+          memberName: 'Jane Smith',
+          isDeleted: false,
+          isActive: true,
+          isMemberNameModified: true,
+          unitId: 'unit1',
+        },
+      };
+      
+      const result = await service.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
+      
+      expect(result).toEqual(expectedResults);
+      expect(unitMemberRepository.selectMembersBySpaceIdAndUserIds).toHaveBeenCalledWith(spaceId, userIds, excludeDeleted);
+      
+    });
   });
 
-  it('should get null by space id and no exist user id', async() => {
-    const id = await service.getIdBySpaceIdAndName('spaceId', '2024');
-    expect(id).toEqual(null);
+  describe('getMemberBasicInfo', () => {
+    it('should return an empty object when memberIds array is empty', async() => {
+      const memberIds: number[] = [];
+      
+      jest.spyOn(unitMemberRepository, 'selectMembersByIdsIncludeDeleted').mockResolvedValue([]);
+      
+      const result = await service.getMemberBasicInfo(memberIds);
+      
+      expect(result).toEqual({});
+      
+    });
+  
+    it('should return member basic info', async() => {
+      const memberIds = [1, 2, 3];
+      const members = [
+        {
+          id: 1,
+          userId: 'user1',
+          memberName: 'John Doe',
+          isDeleted: false,
+          isActive: true,
+          isSocialNameModified: 1,
+        },
+        {
+          id: 2,
+          userId: 'user2',
+          memberName: 'Jane Smith',
+          isDeleted: true,
+          isActive: false,
+          isSocialNameModified: 0,
+        },
+        {
+          id: 3,
+          userId: 'user3',
+          memberName: 'Alice Johnson',
+          isDeleted: false,
+          isActive: true,
+          isSocialNameModified: 1,
+        },
+      ];
+      
+      jest.spyOn(unitMemberRepository, 'selectMembersByIdsIncludeDeleted').mockResolvedValue(Object.assign(members));
+      
+      const expectedResults = {
+        1: {
+          userId: 'user1',
+          name: 'John Doe',
+          isActive: true,
+          isDeleted: false,
+          isMemberNameModified: true,
+        },
+        2: {
+          userId: 'user2',
+          name: 'Jane Smith',
+          isActive: false,
+          isDeleted: true,
+          isMemberNameModified: false,
+        },
+        3: {
+          userId: 'user3',
+          name: 'Alice Johnson',
+          isActive: true,
+          isDeleted: false,
+          isMemberNameModified: true,
+        },
+      };
+      
+      const result = await service.getMemberBasicInfo(memberIds);
+      
+      expect(result).toEqual(expectedResults);
+      expect(unitMemberRepository.selectMembersByIdsIncludeDeleted).toHaveBeenCalledWith(memberIds);
+      
+    });
   });
 
-  it('should throw when user no exist in space', async() => {
-    await expect(async() => {
-      await service.checkUserIfInSpace('spaceId', '2024');
-    }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
-  });
-
-  it('should return members base info', async() => {
-    const baseInfoVos = await service.getMembersBaseInfoBySpaceIdAndUserIds('spaceId', ['2023']);
-    expect(baseInfoVos['2023']?.memberId).toEqual('2023');
-    expect(baseInfoVos['2023']?.memberName).toEqual('memberName');
-    expect(baseInfoVos['2023']?.isActive).toEqual(true);
-    expect(baseInfoVos['2023']?.isDeleted).toEqual(false);
-    expect(baseInfoVos['2023']?.isMemberNameModified).toEqual(false);
-    expect(baseInfoVos['2023']?.unitId).toEqual('2023');
-  });
 });
