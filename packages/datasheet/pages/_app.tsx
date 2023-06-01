@@ -331,7 +331,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    document.title = t(Strings.system_configuration_product_name);
+    document.title = t(Strings.og_page_title);
     const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     descMeta.content = t(Strings.client_meta_label_desc);
   }, []);
