@@ -262,7 +262,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     case FieldType.Member:
       return <MemberFieldEditor {...commonProps} cellValue={cellValue} isFocus={isFocus} onClose={onClose} />;
     case FieldType.Cascader:
-      return <CascaderEditor ref={ref} {...commonProps} toggleEditing={onClose} editing={isFocus} />;
+      return <CascaderEditor ref={ref} {...commonProps} toggleEditing={onClose} editing={isFocus} showSearch={false} />;
     case FieldType.Link:
       return editable ? (
         <ExpandLink

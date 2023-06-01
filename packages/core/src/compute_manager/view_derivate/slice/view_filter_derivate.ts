@@ -214,8 +214,7 @@ export class ViewFilterDerivate {
 
   /**
    * Currently only to lookup with, TODO: change the method to lookup, the follow-up to go deprecated
-   * @param linkFieldRecords 
-   * @param filterInfo 
+   * @param data
    */
   getFilteredRecords = (data: {
     linkFieldRecordIds: ILinkIds,
