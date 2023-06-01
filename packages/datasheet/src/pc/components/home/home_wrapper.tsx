@@ -64,9 +64,9 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
     );
   }
 
-  let logo = getEnvVariables().LOGIN_LOGO!
+  let logo = getEnvVariables().LOGIN_LOGO!;
   if (useTheme().palette.type === ThemeName.Light && getEnvVariables().LOGIN_LOGO_LIGHT) {
-    logo = getEnvVariables().LOGIN_LOGO_LIGHT!
+    logo = getEnvVariables().LOGIN_LOGO_LIGHT!;
   }
 
   return (
