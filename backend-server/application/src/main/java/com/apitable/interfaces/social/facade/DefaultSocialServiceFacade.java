@@ -18,15 +18,17 @@
 
 package com.apitable.interfaces.social.facade;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.apitable.interfaces.social.event.SocialEvent;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.interfaces.social.model.SocialUserBind;
 import com.apitable.space.enums.SpaceUpdateOperate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * default social service facade implements.
+ */
 public class DefaultSocialServiceFacade implements SocialServiceFacade {
 
     @Override
@@ -75,7 +77,9 @@ public class DefaultSocialServiceFacade implements SocialServiceFacade {
     }
 
     @Override
-    public void checkWhetherSpaceCanChangeMainAdmin(String spaceId, Long opMemberId, Long acceptMemberId, List<SpaceUpdateOperate> spaceUpdateOperates) {
+    public void checkWhetherSpaceCanChangeMainAdmin(String spaceId, Long opMemberId,
+                                                    Long acceptMemberId,
+                                                    List<SpaceUpdateOperate> spaceUpdateOperates) {
 
     }
 

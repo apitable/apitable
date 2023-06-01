@@ -48,11 +48,12 @@ public interface EntitlementServiceFacade {
     /**
      * create subscription.
      *
-     * @param spaceId   space id
-     * @param createdBy creator
+     * @param spaceId          space id
+     * @param createdBy        creator
      * @param externalProperty external property
      */
-    default void createSubscription(String spaceId, Long createdBy, Map<String, String> externalProperty) {
+    default void createSubscription(String spaceId, Long createdBy,
+                                    Map<String, String> externalProperty) {
         // Nothing to do default
     }
 

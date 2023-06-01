@@ -24,11 +24,13 @@ import com.apitable.interfaces.security.facade.DefaultBlackListServiceFacadeImpl
 import com.apitable.interfaces.security.facade.DefaultCaptchaServiceFacadeImpl;
 import com.apitable.interfaces.security.facade.DefaultHumanVerificationServiceFacadeImpl;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * security context config.
+ */
 @Configuration(proxyBeanMethods = false)
 public class SecurityContextConfig {
 
