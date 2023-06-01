@@ -104,7 +104,7 @@ const AvatarHoc = (Component: any) => {
       size: size * ratio,
     }) : src;
     const firstWord = getFirstWordFromString(title);
-    const avatarBg = avatarSrc ? colors.defaultBg : bgColorList[avatarColor ?? 0];
+    const avatarBg = avatarSrc ? colors.defaultBg : (avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id));
     if (type === AvatarType.Space) {
       return (
         <Component
