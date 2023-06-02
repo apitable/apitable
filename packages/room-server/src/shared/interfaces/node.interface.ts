@@ -24,6 +24,7 @@ export interface IAPINode {
   type: NodeTypeEnum;
   icon: string; // emoji id
   isFav: boolean;
+  permission?: number;
 }
 
 export interface IAPIFolderNode extends IAPINode {
@@ -35,7 +36,9 @@ export interface IAPINodeInfo {
   name: string;
   type: NodeTypeEnum;
   icon: string;
-  parentId: string,
+  parentId?: string;
+  isFav: boolean;
+  permission: number;
 }
 
 export type IAPINodeDetail = IAPINode | IAPIFolderNode;

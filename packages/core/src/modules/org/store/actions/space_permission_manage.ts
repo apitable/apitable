@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ISubAdminListData, IPermissionGroup, ISpaceResource } from '../../../../exports/store/interfaces';
+import { ISubAdminListData, IPermissionGroup, ISpaceResource } from 'exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { Api } from '../../../../exports/api';
-import { ConfigConstant } from '../../../../config';
+import { Api } from 'exports/api';
+import { ConfigConstant } from 'config';
 
 export function updateSubAdminListData(info: ISubAdminListData) {
   return {
@@ -50,6 +50,8 @@ export function getSubAdminList(pageNo: number) {
     Api.getlistRole(JSON.stringify({ ...pageObjectParams, pageNo })).then(res => {
       const { success, data } = res.data;
       success && dispatch(updateSubAdminListData(data));
+    }, err => {
+      console.error('API.getlistRole error', err);
     });
   };
 }
@@ -59,6 +61,8 @@ export function getMainAdminInfo() {
     Api.getMainAdminInfo().then(res => {
       const { success, data } = res.data;
       success && dispatch(updateMainAdminInfo(data));
+    }, err => {
+      console.error('API.getMainAdminInfo', err);
     });
   };
 }
@@ -68,6 +72,8 @@ export function spaceResource() {
     Api.getSpaceResource().then(res => {
       const { success, data } = res.data;
       success && dispatch(updateSpaceResource(data));
+    }, err => {
+      console.error('API.getSpaceResource', err);
     });
   };
 }

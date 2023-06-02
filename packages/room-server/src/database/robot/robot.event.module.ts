@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { forwardRef, Module } from '@nestjs/common';
-import { RobotModule } from 'automation/robot.module';
+import { Module } from '@nestjs/common';
 import { CommandModule } from 'database/command/command.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { RobotEventService } from './services/robot.event.service';
+import { QueueModule } from 'automation/queues';
 
 @Module({
   imports: [
     CommandModule,
     DatasheetModule,
-    forwardRef(()=>RobotModule),
+    QueueModule,
   ],
   providers: [RobotEventService],
   exports: [RobotEventService]

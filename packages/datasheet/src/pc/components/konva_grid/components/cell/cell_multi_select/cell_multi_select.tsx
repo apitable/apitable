@@ -44,7 +44,7 @@ export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IFie
 export function getOptionNameColor(id: string, field: IField) {
   const item = field.property.options.find((item: { id: string; }) => item.id === id);
   if (item == null) return colors.firstLevelText;
-  return item.color >= COLOR_INDEX_THRESHOLD ? colors.textStaticPrimary : colors.textCommonPrimary;
+  return item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
 }
 
 const AddOutlinedPath = AddOutlined.toString();
@@ -126,7 +126,7 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
           const { x, y, width, height, text, style } = item;
           const { background, color } = style;
           const iconColor = isLightTheme ?
-            (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.staticWhite0;
+            (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
           let iconBg = 'transparent';
           if (closeIconHoverId === cellValue![index]) {
             iconBg = getNextShadeColor(background!, 1);

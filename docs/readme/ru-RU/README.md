@@ -318,7 +318,6 @@ APITable использует эти общие соглашения:
 - Что такое руководство по кодированию Java? [Руководство по кодированию Java](https://google.github.io/styleguide/javaguide.html)  | [Плагин Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
 - Что такое руководство по кодированию TypeScript? -> [Руководство по стилю TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- Что такое обзор архитектуры? -> [Понять APITable - обзор архитектуры Документация](./docs/contribute/architecute-overview.md)
 
 ### Документация
 
@@ -353,7 +352,7 @@ APITable использует эти общие соглашения:
 - Интеграция с ChatGPT, Zapier, Slack, Google Workspace......
 - Водяной знак
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 Принять участие
 
@@ -367,9 +366,9 @@ For more information on our product, including enterprise self-hosted license, p
 
 Мы всегда ищем хорошие таланты для APITable:
 
-- **Full-stack разработчик**: У вас есть опыт работы с React, NestJS, TypeScript, Spring Boot, Java, Terraform. И вам нравится писать качественный код с понятной документацией и юнит-тестами.
+- **Full-stack разработчик**: У вас есть опыт работы с React, NestJS, TypeScript, Spring Boot, Java, Terraform. И вам нравится писать высококачественный код с четкой документацией и модульными тестами.
 - **Back-end разработчик**: У вас есть опыт работы с NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. И вам нравится писать высококачественный код с четкой документацией и модульными тестами.
-- **Front-end разработчик**: У вас есть опыт работы с React, NextJS, TypeScript, WebPack. И вам нравится писать высококачественный код с четкой документацией и модульными тестами.
+- **Front-end разработчик**: У вас есть опыт работы с React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Независимо от времени и условий, если вы хотите присоединиться к команде APITable, не стесняйтесь и присылайте свое резюме на <talent@apitable.com>.
 
@@ -403,7 +402,7 @@ For more information on our product, including enterprise self-hosted license, p
     <img src="docs/static/screenshot-it.png" alt="Изображение экрана APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Изображение экрана APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Лицензия

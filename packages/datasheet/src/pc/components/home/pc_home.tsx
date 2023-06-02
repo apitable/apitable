@@ -53,13 +53,10 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
     switch(action) {
       case ActionType.SignIn:
         return <Login switchClick={switchActionType} email={email} setEmail={setEmail} />;
-        break;
       case ActionType.SignUp:
         return <SignUp switchClick={switchActionType} email={email} setEmail={setEmail} />;
-        break;
       case ActionType.ForgetPassword:
         return <ForgetPassword switchClick={switchActionType} email={email} setEmail={setEmail} />;
-        break;
     }
     
   };
@@ -68,20 +65,17 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
     switch(action) {
       case ActionType.SignIn:
         return 'Sign In';
-        break;
       case ActionType.SignUp:
         return 'Sign Up';
-        break;
       case ActionType.ForgetPassword:
         return 'Reset Password';
-        break;
     }
   };
 
   return (
     <HomeWrapper>
       <div className={styles.loginBox}>
-        { inviteLinkInfo || inviteEmailInfo ? 
+        {inviteLinkInfo || inviteEmailInfo ?
           <div className={styles.invite}>
             <h4>{inviteLinkInfo?.data.memberName || inviteEmailInfo?.data.inviter}  {t(Strings.invite_your_join)}</h4>
             <p>{`"${inviteLinkInfo?.data.spaceName || inviteEmailInfo?.data.spaceName}"`}</p>

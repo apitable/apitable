@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ISelectedTeamInfo, IMemberInfoInAddressList, IUserInfo, ITeamTreeNode } from '../../../../exports/store/interfaces';
-import { Api } from '../../../../exports/api';
+import { ISelectedTeamInfo, IMemberInfoInAddressList, IUserInfo, ITeamTreeNode } from 'exports/store/interfaces';
+import { Api } from 'exports/api';
 import * as actions from '../../../shared/store/action_constants';
-import { ConfigConstant } from '../../../../config';
+import { ConfigConstant } from 'config';
 
 export function updateTeamList(teamList: ITeamTreeNode[]) {
   return {
@@ -114,7 +114,11 @@ export function getTeamListData(_user: IUserInfo) {
           teamId: data.teamId,
         }));
         dispatch(updateMemberInfo({ memberId: '', email: '' }));
+      }, err => {
+        console.error('API.readTeam error', err);
       });
+    }, err => {
+        console.error('API.getTeamListLayered error', err);
     });
   };
 }
@@ -141,6 +145,8 @@ export function getMemberListData(teamId?: string) {
         dispatch(updataMemberListLoading(false));
        
       }
+    }, err => {
+      console.error('API.getMemberListInSpace error', err);
     });
   };
 }
@@ -164,6 +170,8 @@ export function getMemberListPageData(pageNo: number, teamId?: string) {
         dispatch(updateMemberListPage(memberListInSpace));
         dispatch(updataMemberListLoading(false));
       } 
+    }, err => {
+      console.error('API.getMemberListInSpace error', err);
     });
   };
 }
@@ -178,6 +186,8 @@ export function getMemberInfoData(memberId: string) {
       if (success) {
         dispatch(updateMemberInfo(data));
       }
+    }, err => {
+      console.error('API.getMemberInfo error', err);
     });
   };
 }

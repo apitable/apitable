@@ -68,6 +68,30 @@ export class UnitMemberService {
     return {};
   }
 
+  /**
+   * 
+   * @param memberIds 
+   * @returns 
+   */
+  public async getMemberBasicInfo(memberIds: number[]): Promise<{ [memberId: number]: IUserValue }> {
+    if (memberIds.length > 0) {
+      const members = await this.memberRepo.selectMembersByIdsIncludeDeleted(memberIds);
+      return members.reduce<{ [memberId: number]: IUserValue }>((pre, cur) => {
+        // const unit = units.filter((unit) => String(unit.unitRefId) === cur.id)[0];
+        pre[cur.id] = {
+          userId: cur.userId,
+          // unitId: unit?.id,
+          name: cur.memberName,
+          isActive: cur.isActive,
+          isDeleted: cur.isDeleted,
+          isMemberNameModified: cur.isSocialNameModified !== 0,
+        };
+        return pre;
+      }, {});
+    }
+    return {};
+  }
+
   public async getIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<string | null> {
     const rawData = await this.memberRepo.selectIdBySpaceIdAndName(spaceId, memberName);
     if (rawData) return rawData.id;

@@ -24,6 +24,7 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
+import { Message, Modal } from 'pc/components/common';
 
 interface IFormatmember {
   currentField: IMemberField;
@@ -42,16 +43,53 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
   };
 
   const handleShouldSendMsgChange = (checked: boolean) => {
-    props.setCurrentField({
-      ...props.currentField,
-      property: {
-        ...props.currentField.property,
-        shouldSendMsg: checked,
-      },
-    });
+    const updateSendMsg = () => {
+      props.setCurrentField({
+        ...props.currentField,
+        property: {
+          ...props.currentField.property,
+          shouldSendMsg: checked,
+        },
+      });
+    };
+
+    if (!checked) {
+      Modal.warning({
+        title: t(Strings.kindly_reminder),
+        content: t(Strings.field_member_property_notify_tip),
+        hiddenCancelBtn: false,
+        cancelText: t(Strings.cancel),
+        zIndex: 1100,
+        onOk: () => {
+          updateSendMsg();
+        },
+      });
+    } else {
+      updateSendMsg();
+    }
   };
 
-  const { isMulti, shouldSendMsg } = props.currentField.property;
+  const handleSubscription = (checked: boolean) => {
+    const updateSubscription = () => {
+      props.setCurrentField({
+        ...props.currentField,
+        property: {
+          ...props.currentField.property,
+          subscription: checked,
+        },
+      });
+    };
+    if (checked) {
+      Message.info({
+        content: t(Strings.field_created_by_property_subscription_open_tip)
+      });
+      updateSubscription();
+    } else {
+      updateSubscription();
+    }
+  };
+
+  const { isMulti, shouldSendMsg, subscription } = props.currentField.property;
 
   const embedId = useSelector(state => state.pageParams.embedId);
 
@@ -74,6 +112,16 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
             size="small"
             checked={shouldSendMsg}
             onChange={handleShouldSendMsgChange}
+          />
+        </div>}
+      </section>
+      <section className={settingStyles.section}>
+        {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+          {t(Strings.field_member_property_subscription)}
+          <Switch
+            size="small"
+            checked={subscription}
+            onChange={handleSubscription}
           />
         </div>}
       </section>

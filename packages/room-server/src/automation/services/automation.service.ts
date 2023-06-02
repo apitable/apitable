@@ -116,10 +116,7 @@ export class AutomationService {
             body: JSON.stringify(actionRuntimeInput)
           }
         );
-        return {
-          success: resp.status === 200,
-          data: await resp.json()
-        };
+        return await this.getOutputResult(resp);
       }
       case 'automation:': {
         // local/official service
@@ -145,6 +142,25 @@ export class AutomationService {
       default:
         throw new UnreachableCaseError(actionType.baseUrl as never);
     }
+  }
+
+  /**
+   * Processes a response object and extracts the relevant output.
+   * @param resp The response object to process.
+   * @returns An object containing the success flag and the extracted data.
+   */
+  private async getOutputResult(resp: any) {
+    const contentType = resp.headers.get('content-type');
+    const success = true;
+  
+    if (contentType && contentType.includes('application/json')) {
+      // Response is JSON
+      const data = await resp.json();
+      return { success, data };
+    } 
+    // Response is not JSON
+    const data = { data: await resp.text() };
+    return { success, data };
   }
 
   private async getSpaceIdByRobotId(robotId: string) {
@@ -231,7 +247,4 @@ export class AutomationService {
     };
   }
 
-  async isResourcesHasRobots(resourceIds: string[]) {
-    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
-  }
 }

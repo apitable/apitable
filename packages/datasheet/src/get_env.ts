@@ -230,5 +230,8 @@ export const getEnvVars = () => {
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
     FORM_LOGIN_URL: process.env.FORM_LOGIN_URL,
     TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
+    DISABLE_WIDGET_PUBLISHER: process.env.DISABLE_WIDGET_PUBLISHER === 'true',
+    ROBOT_TRIGGER_ICON: process.env.ROBOT_TRIGGER_ICON,
+    LOGIN_LOGO_LIGHT:  process.env.LOGIN_LOGO_LIGHT,
   };
 };

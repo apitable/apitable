@@ -32,12 +32,19 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum I18nTypes {
 
+    AR_SA("ar_SA", new String[] { "ar-SA" }, true),
+    DE_DE("de_DE", new String[] { "de-DE" }, true),
+    EN_US("en_US", new String[] { "en-US" }, true),
+    ES_ES("es_ES", new String[] { "es-ES" }, true),
+    FR_FR("fr_FR", new String[] { "fr-FR" }, true),
+    IT_IT("it_IT", new String[] { "it-IT" }, true),
+    ja_JP("ja_JP", new String[] { "ja-JP" }, true),
+    ko_KR("ko_KR", new String[] { "ko-KR" }, true),
+    ru_RU("ru_RU", new String[] { "ru-RU" }, true),
     ZH_CN("zh_CN", new String[] { "zh-CN" }, true),
 
-    EN_US("en_US", new String[] { "en-US" }, true),
-    FR_FR("fr_FR", new String[] { "fr-FR" }, true),
 
-    ZH_HK("zh_HK", new String[] { "zh-HK" }, false);
+    ZH_HK("zh_HK", new String[] { "zh-HK" }, true);
 
     private final String name;
 

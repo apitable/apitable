@@ -22,7 +22,7 @@ import { useThemeColors } from '@apitable/components';
 import { CELL_CLASS } from 'pc/utils';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { GROUP_OFFSET } from '../grid_views';
+import { GROUP_OFFSET } from '../enum';
 import { CollaboratorMark, getCollaboratorColor, renderFillHandle } from './cell_other';
 import { CellValue } from './cell_value';
 import styles from './styles.module.less';

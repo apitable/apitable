@@ -65,7 +65,6 @@ import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { EntityManager, getManager } from 'typeorm';
-import { promisify } from 'util';
 import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
 import { MetaService } from 'database/resource/services/meta.service';
@@ -234,12 +233,9 @@ export class OtService {
 
     const msgIds = message.changesets.map(cs => cs.messageId);
     const client = this.redisService.getClient();
-    const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
+    const lock = RedisLock(client as any);
     // Lock resource, messages of the same resource are consumed sequentially. Timeout is 120s
-    const unlock = await lock(
-      message.changesets.map(cs => cs.resourceId),
-      120 * 1000,
-    );
+    const unlock = await lock(message.changesets.map(cs => cs.resourceId), 120 * 1000);
     const attachCites: any[] = [];
     const results: IRemoteChangeset[] = [];
     const context: IOtEventContext = {
@@ -298,9 +294,7 @@ export class OtService {
     // Add to queue, submit to java to calculate attachment capacity in op,
     // add to queue individually to avoid concurrency
     this.logger.info('applyRoomChangeset-handle-attach', { roomId: message.roomId, msgIds });
-    for (const item of attachCites) {
-      this.restService.calDstAttachCite(auth, item);
-    }
+    await Promise.all(attachCites.map(item => this.restService.calDstAttachCite(auth, item)));
 
     const thisBatchResourceIds = results.reduce((ids, result) => {
       if (result.resourceType === ResourceType.Datasheet) {
@@ -325,12 +319,12 @@ export class OtService {
       allEffectDstIds.forEach(resourceId => {
         clearComputeCache(resourceId);
       });
-      this.eventService.handleChangesets(results);
+      await this.eventService.handleChangesets(results);
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }
 
     // User subscription record change event
-    this.datasheetRecordSubscriptionService.handleChangesets(results, context);
+    void this.datasheetRecordSubscriptionService.handleChangesets(results, context);
 
     // clear cached selectors, will remove after release/1.0.0
     clearCachedSelectors();

@@ -86,7 +86,7 @@ export interface IQuery {
   nodeId?: string;
   comment?: number;
   improveType?: ConfigConstant.ImproveType;
-  via?: string; 
+  via?: string;
 }
 
 export interface IOptions {

@@ -18,7 +18,7 @@
 
 import { RobotDto, RobotNotificationType } from 'socket/dtos/ding-talk/robot-notification.dto';
 
-export interface RobotNotificationRo extends RobotNotificationType {
+export interface IRobotNotificationRo extends RobotNotificationType {
   body: any;
   robot: RobotDto;
   event: string;

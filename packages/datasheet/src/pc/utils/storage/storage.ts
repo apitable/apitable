@@ -149,11 +149,3 @@ export const deleteStorageByKey = (key: StorageName) => {
     console.warn('! ' + `Current ${key} does not exist`);
   }
 };
-
-export const getTestFunctionAvailable = (functionKey: string) => {
-  const testFunctions = getStorage(StorageName.TestFunctions) as { [key: string]: string };
-  if (testFunctions && typeof testFunctions === 'object') {
-    return Boolean(testFunctions[functionKey]);
-  }
-  return false;
-};

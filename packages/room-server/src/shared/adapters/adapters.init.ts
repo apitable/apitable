@@ -25,7 +25,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { disableHSTS, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { disableHSTS, enableAutomationWorker, enableScheduler, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { FlowWorker } from 'automation/workers';
 import { DatabaseModule } from 'database/database.module';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
@@ -85,9 +86,9 @@ export const initSwagger = (app: INestApplication) => {
   }
 };
 
-export const initFastify = (): FastifyAdapter => {
+export const initFastify = async (): Promise<FastifyAdapter> => {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
-  fastifyAdapter.register(fastifyMultipart);
+  await fastifyAdapter.register(fastifyMultipart);
   // registe helmet in fastify to avoid conflict with swagger
   let helmetOptions: HelmetOptions = {
     // update script-src to be compatible with swagger
@@ -110,7 +111,7 @@ export const initFastify = (): FastifyAdapter => {
   if (disableHSTS) {
     helmetOptions = { ...helmetOptions, hsts: false };
   }
-  fastifyAdapter.register(helmet, helmetOptions);
+  await fastifyAdapter.register(helmet, helmetOptions);
 
   return fastifyAdapter;
 };
@@ -177,9 +178,9 @@ export const initHttpHook = (app: INestApplication) => {
   fastify.addHook('onSend', (request, reply, _payload, done) => {
     // add request-id to Headers
     // TODO: REQUEST_ID should be returned by api-gateway, so that we could trace all the services
-    reply.header(REQUEST_ID, request[REQUEST_ID]);
+    void reply.header(REQUEST_ID, request[REQUEST_ID]);
     const serverTime = Date.now() - request[REQUEST_AT];
-    reply.header(SERVER_TIME, 'total;dur=' + serverTime);
+    void reply.header(SERVER_TIME, 'total;dur=' + serverTime);
     done();
   });
 };
@@ -277,3 +278,10 @@ export const initRedisIoAdapter = (app: INestApplication) => {
   app.useWebSocketAdapter(new RedisIoAdapter(app, socketIoService));
   return app;
 };
+
+export const initAutomationWorker =  (app: INestApplication) => {
+  if(enableScheduler || enableAutomationWorker) {
+    const flowWorker = app.get(FlowWorker);
+    flowWorker.start();
+  }
+}

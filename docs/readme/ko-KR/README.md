@@ -318,7 +318,6 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - 자바 코딩 가이드라인은 무엇인가요? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - 타입스크립트 코딩 가이드라인은 무엇인가요? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - Rust 코딩 가이드라인은 무엇인가요? -> [Rust API 가이드](https://rust-lang.github.io/api-guidelines/about.html)
-- 아키텍처 개요는 무엇인가요? -> [APITable 이해 - 아키텍처 개요](./docs/contribute/architecute-overview.md)
 
 ### 문서화
 
@@ -353,7 +352,7 @@ Consulte la [hoja de ruta de APITable](https://apitable.com/roadmap)
 - ChatGPT, Zapier, Slack, Google Workspace와 통합...
 - 워터마크
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 참여하세요
 
@@ -403,7 +402,7 @@ For more information on our product, including enterprise self-hosted license, p
     <img src="docs/static/screenshot-it.png" alt="APITable 스크린샷 이미지" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITable 스크린샷 이미지" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 라이선스

@@ -17,7 +17,7 @@
  */
 
 /* eslint-disable no-script-url */
-import { Tooltip, Typography, useThemeColors } from '@apitable/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
@@ -26,7 +26,7 @@ import {
 import classnames from 'classnames';
 // @ts-ignore
 import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
-import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
+import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
@@ -217,7 +217,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
           onPopupVisibleChange={visible => setVisible(visible)}
           zIndex={1000}
         >
-          <Tooltip content={t(Strings.help)}>
+          <Tooltip title={t(Strings.help)} placement="right">
             <div>
               <HelpBtn />
             </div>

@@ -62,11 +62,11 @@ import { FieldSetting } from '../multi_grid/field_setting';
 import { IElementRectProps, MoveType } from '../multi_grid/hover_line/interface';
 import { QuickAppend } from '../multi_grid/quick_append';
 import { RecordWillMoveTips } from '../multi_grid/record_will_move_tips/record_will_move_tips';
-import { MouseDownType } from '../selection_wrapper';
 import { GroupMenu } from './components';
 import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
 import styles from './style.module.less';
+import { MouseDownType } from '../multi_grid';
 
 interface IDomGridBaseProps {
   datasheetId: string;

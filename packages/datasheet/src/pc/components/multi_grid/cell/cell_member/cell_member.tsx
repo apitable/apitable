@@ -35,7 +35,6 @@ import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import { ButtonPlus } from 'pc/components/common';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
@@ -46,6 +45,7 @@ import { OptionalCellContainer } from '../optional_cell_container/optional_cell_
 import optionalStyle from '../optional_cell_container/style.module.less';
 import { MemberItem } from './member_item';
 import styles from './styles.module.less';
+import { MouseDownType } from '../../enum';
 
 interface ICellMember extends ICellComponentProps {
   field: IMemberField;

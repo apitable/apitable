@@ -1709,7 +1709,7 @@
   "form_cover_img_desc": "推薦使用寬高比為3:1的方形圖片以達到更好的視覺體驗",
   "form_cover_visible": "顯示封面",
   "form_desc_placeholder": "請輸入描述",
-  "form_editor_label": "在「只可更新」基礎上，還可以設置和分享神奇表單",
+  "form_editor_label": "在「只可更新」基礎上，還可以分享神奇表單",
   "form_empty_tip": "你還未填寫內容，請填寫後再提交",
   "form_error_tip": "神奇表單結構發生更改，請刷新頁面",
   "form_field_add_btn": "添加",

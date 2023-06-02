@@ -19,6 +19,7 @@
 package com.apitable.workspace.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.AbstractIntegrationTest;
@@ -155,5 +156,26 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
         nodeIds.add(secondLevelFolderId);
         List<SimpleNodeInfo> nodes2 = iNodeRoleService.getNodeInfoWithPermissionStatus(nodeIds);
         assertThat(nodes2.size()).isEqualTo(3);
+    }
+
+    @Test
+    void testTransformNodePermissionNumberToNodeRole() {
+        List<Integer> nodePermissions = new ArrayList<>();
+        nodePermissions.add(0);
+        nodePermissions.add(1);
+        nodePermissions.add(2);
+        nodePermissions.add(3);
+        List<String> requiredRole = iNodeRoleService.getMinimumRequiredRole(nodePermissions);
+        assertThat(requiredRole).contains(Node.MANAGER, Node.EDITOR, Node.UPDATER, Node.READER);
+    }
+
+    @Test
+    void testTransformUnknownNumberToNodeRole() {
+        List<Integer> nodePermissions = new ArrayList<>();
+        nodePermissions.add(4);
+        assertThatThrownBy(() -> {
+            iNodeRoleService.getMinimumRequiredRole(nodePermissions);
+        }).isInstanceOf(RuntimeException.class)
+            .hasMessage("unknown node permission");
     }
 }
