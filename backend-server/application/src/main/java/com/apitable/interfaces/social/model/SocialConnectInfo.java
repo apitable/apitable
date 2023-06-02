@@ -18,10 +18,12 @@
 
 package com.apitable.interfaces.social.model;
 
+import com.apitable.space.enums.SpaceResourceGroupCode;
 import java.util.List;
 
-import com.apitable.space.enums.SpaceResourceGroupCode;
-
+/**
+ * social connect info.
+ */
 public interface SocialConnectInfo {
 
     String getSpaceId();

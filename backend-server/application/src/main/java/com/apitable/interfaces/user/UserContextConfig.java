@@ -26,11 +26,13 @@ import com.apitable.interfaces.user.facade.UserLinkServiceFacade;
 import com.apitable.interfaces.user.facade.UserServiceFacade;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.user.service.IUserService;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * user context config.
+ */
 @Configuration(proxyBeanMethods = false)
 public class UserContextConfig {
 
@@ -42,8 +44,9 @@ public class UserContextConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public InvitationServiceFacade defaultInvitationServiceFacade(IUserService iUserService, IMemberService iMemberService) {
-        return new DefaultInvitationServiceFacadeImpl(iUserService, iMemberService);
+    public InvitationServiceFacade defaultInvitationServiceFacade(IUserService userService,
+                                                                  IMemberService memberService) {
+        return new DefaultInvitationServiceFacadeImpl(userService, memberService);
     }
 
     @Bean

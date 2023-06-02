@@ -66,6 +66,7 @@ export class NodeDetailParamRo {
 }
 
 export class NodeListQueryRo {
+
   @ApiProperty({
     type: String,
     required: true,
@@ -100,3 +101,4 @@ export class NodeListQueryRo {
   @IsString()
   query?: string;
 }
+
