@@ -34,6 +34,7 @@ endif
 
 _DATAENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.yaml -f docker-compose.dataenv.yaml
 _DEVENV := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.devenv.yaml
+_FRONTEND := docker compose --env-file $$ENV_FILE -p $$DEVENV_PROJECT_NAME -f docker-compose.frontend.yaml
 
 OS_NAME := $(shell uname -s | tr A-Z a-z)
 ifeq ($(OS_NAME), darwin)
@@ -421,6 +422,12 @@ minor: # bump version number patch
 .PHONY: major
 major: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" apitable/bumpversion:latest bumpversion major
+
+.PHONY: frontend-up
+frontend-up:
+	make _check_env
+	make _dataenv-volumes
+	$(_FRONTEND) up -d
 
 ### data environement
 .PHONY: dataenv
