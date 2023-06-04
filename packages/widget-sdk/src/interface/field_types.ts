@@ -377,6 +377,8 @@ export enum FieldType {
    * 
    */
   Phone = CoreFieldType.Phone,
+
+  Geo = CoreFieldType.Geo,
   /**
    * This field is "true" when checked and "null" when unchecked.
    * 

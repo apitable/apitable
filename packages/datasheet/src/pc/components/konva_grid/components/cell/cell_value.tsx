@@ -121,6 +121,7 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     case FieldType.Text:
     case FieldType.URL:
     case FieldType.Email:
+    case FieldType.Geo:
     case FieldType.Phone:
     case FieldType.SingleText:
     case FieldType.DateTime:

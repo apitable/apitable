@@ -27,6 +27,7 @@ import { CellRating } from './cell_rating';
 import { CellMember } from './cell_member';
 import { CellCheckbox } from './cell_checkbox';
 import { CellPhone } from './cell_phone';
+import { CellGeo } from './cell_geo';
 import { CellUrl } from './cell_url';
 import { CellEmail } from './cell_email';
 import { CellLink } from './cell_link';
@@ -124,6 +125,9 @@ export const CellValue = (props: {
     return null;
   }
   let cellValue = cellValueData || activeRecord.getCellValue(fieldId);
+
+  console.log('type', type);
+  console.log('cellV', cellValue);
   if (type === FieldType.MagicLookUp) {
     const realField = (Field.bindModel(activeField.fieldData, state as any as IReduxState) as LookUpField).getLookUpEntityField();
     const realType = realField?.type;
@@ -191,6 +195,8 @@ export const CellValue = (props: {
       return <CellPhone value={cellValue} {...cellProps} />;
     case FieldType.Email:
       return <CellEmail value={cellValue} {...cellProps} />;
+    case FieldType.Geo:
+      return <CellGeo value={cellValue} {...cellProps} />;
     case FieldType.URL:
       return <CellUrl value={cellValue} {...cellProps} />;
     case FieldType.MagicLink:

@@ -37,6 +37,7 @@ export const FieldTypeEnum = new Enum([
   { key: 'URL', name: 'UrlField', value: FieldType.URL },
   { key: 'Email', name: 'EmailField', value: FieldType.Email },
   { key: 'Phone', name: 'PhoneField', value: FieldType.Phone },
+  { key: 'Geo', name: 'GeoField', value: FieldType.Geo },
   { key: 'Checkbox', name: 'CheckboxField', value: FieldType.Checkbox },
   { key: 'Rating', name: 'RatingField', value: FieldType.Rating },
   { key: 'Member', name: 'MemberField', value: FieldType.Member },

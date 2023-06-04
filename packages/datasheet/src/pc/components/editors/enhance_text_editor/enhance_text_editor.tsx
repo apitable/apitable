@@ -30,7 +30,7 @@ import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined, GeoOutlined  } from '@apitable/icons';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
@@ -172,6 +172,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
+      [FieldType.Geo]: <GeoOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span

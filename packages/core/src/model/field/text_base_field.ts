@@ -20,7 +20,15 @@ import Joi from 'joi';
 import { isNumber, isString } from 'lodash';
 import { ICellValue } from 'model/record';
 import { isNullValue } from 'model/utils';
-import { FOperator, FOperatorDescMap, IAddOpenFieldProperty, IAPIMetaTextBaseFieldProperty, IFilterCondition, IFilterText } from 'types';
+import {
+  FOperator,
+  FOperatorDescMap,
+  IAddOpenFieldProperty,
+  IAPIMetaTextBaseFieldProperty,
+  IFilterCondition,
+  IFilterText,
+  IGeoField
+} from 'types';
 import {
   BasicValueType, FieldType, IEmailField, IPhoneField, ISegment, ISingleTextField, IStandardValue, ITextField, IURLField, SegmentType,
 } from 'types/field_types';
@@ -29,7 +37,7 @@ import { fastCloneDeep, string2Segment } from 'utils';
 import { Field } from './field';
 import { StatType } from './stat';
 
-export type ICommonTextField = ITextField | IEmailField | IURLField | IPhoneField | ISingleTextField;
+export type ICommonTextField = ITextField | IEmailField | IURLField | IPhoneField | ISingleTextField | IGeoField;
 
 export abstract class TextBaseField extends Field {
   static _statTypeList = [

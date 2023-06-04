@@ -80,6 +80,7 @@ pub enum FieldKind {
   CreatedBy = 23,
   LastModifiedBy = 24,
   Cascader = 25,
+  Geo = 26,
   /// no permission column
   DeniedField = 999,
 }

@@ -377,4 +377,5 @@ export { LogOutlined } from './log_outlined';
 export { EscFilled } from './esc_filled';
 export { EscOutlined } from './esc_outlined';
 export { PasteFilled } from './paste_filled';
+export { GeoOutlined } from './geo_outlined';
 export * from '../doc_hide_components';

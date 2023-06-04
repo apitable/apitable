@@ -39,6 +39,7 @@ import {
   IAutoNumberField,
   ICurrencyField,
   IPercentField,
+  IGeoField,
   ITextField,
   IDateTimeField,
   ICreatedTimeField,
@@ -75,6 +76,7 @@ import { SingleTextField } from './single_text_field';
 import { CascaderField } from './cascader_field';
 import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
+import { GeoField } from './geo_field';
 
 export * from './field';
 export * from './stat';
@@ -117,6 +119,7 @@ export interface IBindFieldModel {
   (field: IRatingField, state?: IReduxState, newInstance?: boolean): RatingField;
   (field: ICheckboxField, state?: IReduxState, newInstance?: boolean): CheckboxField;
   (field: IPhoneField, state?: IReduxState, newInstance?: boolean): PhoneField;
+  (field: IGeoField, state?: IReduxState, newInstance?: boolean): GeoField;
   (field: IFormulaField, state?: IReduxState, newInstance?: boolean): FormulaField;
   (field: ILookUpField, state?: IReduxState, newInstance?: boolean): LookUpField;
   (field: IMemberField, state?: IReduxState, newInstance?: boolean): MemberField;
@@ -147,6 +150,7 @@ export interface IBindFieldContext {
   (field: IRatingField, state: IReduxState): RatingField;
   (field: ICheckboxField, state: IReduxState): CheckboxField;
   (field: IPhoneField, state: IReduxState): PhoneField;
+  (field: IGeoField, state: IReduxState): GeoField;
   (field: IFormulaField, state: IReduxState): FormulaField;
   (field: ILookUpField, state: IReduxState): LookUpField;
   (field: IMemberField, state: IReduxState): MemberField;
@@ -211,6 +215,9 @@ export const getFieldClass = (type: FieldType) => {
     }
     case FieldType.Phone: {
       return PhoneField;
+    }
+    case FieldType.Geo: {
+      return GeoField;
     }
     case FieldType.Rating: {
       return RatingField;

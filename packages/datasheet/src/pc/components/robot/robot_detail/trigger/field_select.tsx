@@ -34,7 +34,7 @@ import {
   TelephoneOutlined,
   StarOutlined, SelectSingleOutlined, TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined,
+  LockFilled, CascadeOutlined, GeoOutlined,
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -49,6 +49,7 @@ const FieldIconMap = {
   [FieldType.URL]: LinkOutlined,
   [FieldType.Email]: EmailOutlined,
   [FieldType.Phone]: TelephoneOutlined,
+  [FieldType.Geo]: GeoOutlined,
   [FieldType.Checkbox]: CheckboxOutlined,
   [FieldType.Rating]: StarOutlined,
   [FieldType.Member]: UserOutlined,

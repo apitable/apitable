@@ -793,6 +793,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       return <NoneEditor style={editorRect} ref={editorRef} {...commonProps} />;
     }
     switch (field.type) {
+      case FieldType.Geo:
       case FieldType.Text:
       case FieldType.SingleText:
         return <TextEditor style={editorRect} ref={editorRef} {...commonProps} />;

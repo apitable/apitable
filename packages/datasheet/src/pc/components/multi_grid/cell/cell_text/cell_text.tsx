@@ -38,7 +38,7 @@ import { ICellComponentProps } from '../cell_value/interface';
 import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
 import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
-import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined, GeoOutlined } from '@apitable/icons';
 
 // Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = (text: string | null) => text && /.+@.+/.test(text);
@@ -58,6 +58,13 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
   const { isEnhanceText: _isEnhanceText } = getTextFieldType(fieldType);
   const isEnhanceText = _isEnhanceText || fieldType === FieldType.Formula;
   const _handleEnhanceTextClick = useEnhanceTextClick();
+
+  // FIXME: Geo click enabled
+  // @ts-ignore
+  const handleGeoClick=(_e: React.MouseEvent, lng?: string, lat?: string, active?: boolean) => {
+
+  }
+
   // Verify URL legitimacy when clicking on links
   const handleURLClick = (_e: React.MouseEvent, type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
@@ -68,6 +75,7 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
       [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
+      [FieldType.Geo]: <GeoOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span
@@ -86,6 +94,9 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
   const isCurrencyAndAlignLeft = fieldType === FieldType.Currency && field.property.symbolAlign === SymbolAlign.left;
   const isLookUpField = fieldType === FieldType.LookUp;
   switch (fieldType) {
+    case FieldType.Geo:
+      showUnderline = true; // Identified as a URL regardless of compliance
+      break;
     case FieldType.URL:
       showUnderline = true; // Identified as a URL regardless of compliance
       break;
@@ -128,6 +139,18 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
                 >
                   {segment.text}
                 </span>;
+              case SegmentType.Geo:
+                return (
+                    <span
+                        className={classNames(style.url, { [style.activeUrl]: isActive })}
+                        key={`${segment.lng}-${segment.lat}-${index}`}
+                        // The link will only jump if it is active. Here we use onMouseDown instead of onClick.
+                        // onMouseDown when the cell is not yet active. onClick when the cell is active anyway
+                        onMouseDown={e => handleGeoClick(e, segment?.lng, segment?.lat, isActive)}
+                    >
+                    {segment?.title || segment.text}
+                  </span>
+                );
               case SegmentType.Url:
                 return (
                   <span

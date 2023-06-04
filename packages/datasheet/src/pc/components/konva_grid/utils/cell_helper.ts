@@ -193,6 +193,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
+      case FieldType.Geo:
       case FieldType.Text:
       case FieldType.SingleText:
       case FieldType.Cascader: {

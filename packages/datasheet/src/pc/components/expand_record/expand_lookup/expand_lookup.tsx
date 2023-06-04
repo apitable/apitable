@@ -193,6 +193,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
     case FieldType.Currency:
     case FieldType.Email:
     case FieldType.Phone:
+    case FieldType.Geo:
     case FieldType.URL:
     case FieldType.Rating:
     case FieldType.Formula:

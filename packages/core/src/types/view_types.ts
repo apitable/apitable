@@ -171,6 +171,10 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Phone,
     value: any,
   };
+  [FieldType.Geo]: {
+    fieldType: FieldType.Geo,
+    value: any,
+  };
   [FieldType.Checkbox]: {
     fieldType: FieldType.Checkbox,
     value: IFilterCheckbox,

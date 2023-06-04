@@ -28,6 +28,7 @@ export enum APIMetaFieldType {
   URL = 'URL',
   Email = 'Email',
   Phone = 'Phone',
+  Geo = 'Geo',
   Checkbox = 'Checkbox',
   Rating = 'Rating',
   Member = 'Member',

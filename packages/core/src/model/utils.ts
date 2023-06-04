@@ -168,6 +168,7 @@ const FieldTypeStringMap = {
   [FieldType.Number]: APIMetaFieldType.Number,
   [FieldType.Percent]: APIMetaFieldType.Percent,
   [FieldType.Phone]: APIMetaFieldType.Phone,
+  [FieldType.Geo]: APIMetaFieldType.Geo,
   [FieldType.Rating]: APIMetaFieldType.Rating,
   [FieldType.SingleSelect]: APIMetaFieldType.SingleSelect,
   [FieldType.SingleText]: APIMetaFieldType.SingleText,
@@ -380,6 +381,7 @@ export const isBasicField = (fieldType: FieldType) => {
     fieldType === FieldType.URL ||
     fieldType === FieldType.Email ||
     fieldType === FieldType.Phone ||
+    fieldType === FieldType.Geo ||
     fieldType === FieldType.Checkbox ||
     fieldType === FieldType.Rating ||
     fieldType === FieldType.Member ||

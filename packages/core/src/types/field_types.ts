@@ -23,6 +23,7 @@ import type { IFilterInfo } from './view_types';
 export type ITextFieldProperty = null;
 export type IEmailProperty = null;
 export type IPhoneProperty = null;
+export type IGeoProperty = null;
 
 export interface IURLProperty {
   isRecogURLFlag?: boolean;
@@ -174,6 +175,12 @@ export interface IPhoneField extends IBaseField {
   type: FieldType.Phone;
   property: IPhoneProperty;
 }
+
+export interface IGeoField extends IBaseField {
+  type: FieldType.Geo;
+  property: IGeoProperty;
+}
+
 export enum MentionType {
   Unknown = 0,
   User = 1, // user
@@ -188,6 +195,7 @@ export enum SegmentType {
   Url = 2, // link
   Image = 3, // inline image
   Email = 4, // email, subset of URL
+  Geo = 5, // Geo
 }
 export interface IBaseSegment {
   text: string;
@@ -196,6 +204,14 @@ export interface IBaseSegment {
 export interface ITextSegment extends IBaseSegment {
   type: SegmentType.Text;
 }
+
+export interface IGeoSegment extends IBaseSegment {
+  type: SegmentType.Geo;
+  lng?: string;
+  lat?: string;
+  title?: string;
+}
+
 export interface IHyperlinkSegment extends IBaseSegment {
   type: SegmentType.Url;
   link: string; // In the case of pure link, link is the same as text
@@ -217,7 +233,7 @@ export interface IMentionSegment extends IBaseSegment {
   mentionNotify: boolean;
 }
 
-export type ISegment = ITextSegment | IMentionSegment | IHyperlinkSegment | IEmailSegment;
+export type ISegment = ITextSegment | IMentionSegment | IGeoSegment | IHyperlinkSegment | IEmailSegment;
 
 export interface IStandardValue {
   sourceType: FieldType;
@@ -578,6 +594,7 @@ export type IField =
   | IURLField
   | IEmailField
   | IPhoneField
+  | IGeoField
   | ICheckboxField
   | IRatingField
   | IMemberField
@@ -620,6 +637,7 @@ export enum FieldType {
   CreatedBy = 23,
   LastModifiedBy = 24,
   Cascader = 25,
+  Geo = 26,
   DeniedField = 999, // no permission column
 }
 
@@ -787,6 +805,15 @@ export const FieldTypeDescriptionMap: {
     canBePrimaryField: true,
     fieldGroup: FieldGroup.Common,
     help: t(Strings.field_help_url),
+    hasOptSetting: false,
+  },
+  [FieldType.Geo]: {
+    title: t(Strings.field_title_geo),
+    subTitle: t(Strings.field_desc_geo),
+    type: FieldType.Geo,
+    canBePrimaryField: true,
+    fieldGroup: FieldGroup.Common,
+    help: t(Strings.field_help_geo),
     hasOptSetting: false,
   },
   [FieldType.Phone]: {

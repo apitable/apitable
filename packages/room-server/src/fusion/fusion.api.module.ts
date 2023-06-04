@@ -22,7 +22,7 @@ import {
   AttachmentField, AutoNumberField,
   CascaderField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
   LastModifiedByField, LastModifiedTimeField, LinkField, LookUpField, MemberField, MultiSelectField, NumberField, PercentField, PhoneField,
-  RatingField, SingleSelectField, SingleTextField, TextField, UrlField,
+  GeoField, RatingField, SingleSelectField, SingleTextField, TextField, UrlField,
 } from 'fusion/field';
 import { CacheConfigService } from 'shared/cache/cache.config.service';
 import { ApiRequestMiddleware } from './middleware/api.request.middleware';
@@ -88,6 +88,7 @@ import { FusionNodeApiService } from './services/fusion.node.api.service';
     NumberField,
     PercentField,
     PhoneField,
+    GeoField,
     RatingField,
     SingleSelectField,
     SingleTextField,

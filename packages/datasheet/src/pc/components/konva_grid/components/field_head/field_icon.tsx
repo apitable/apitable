@@ -23,7 +23,7 @@ import {
   CurrencyUsdOutlined, FormulaOutlined, UserEditOutlined, HistoryFilled,
   LongtextOutlined, LookupOutlined, UserOutlined, PercentOutlined, TelephoneOutlined, StarOutlined,
   SelectMultipleOutlined, SelectSingleOutlined, LinkOutlined, NumberOutlined, EmailOutlined,
-  LinktableOutlined, CalendarOutlined, TextOutlined, CascadeOutlined
+  LinktableOutlined, CalendarOutlined, TextOutlined, CascadeOutlined, GeoOutlined
 } from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 
@@ -38,6 +38,7 @@ const ColumnLinktableFilledPath = LinktableOutlined.toString();
 const ColumnUrlOutlinedPath = LinkOutlined.toString();
 const ColumnEmailFilledPath = EmailOutlined.toString();
 const ColumnPhoneFilledPath = TelephoneOutlined.toString();
+const ColumnGeoFilledPath = GeoOutlined.toString();
 const ColumnAutonumberFilledPath = AutonumberOutlined.toString();
 const ColumnCheckboxFilledPath = CheckboxOutlined.toString();
 const ColumnCreatedbyFilledPath = UserAddOutlined.toString();
@@ -85,6 +86,8 @@ export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((pro
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnUrlOutlinedPath} fill={fill} />;
     case FieldType.Email:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnEmailFilledPath} fill={fill} />;
+    case FieldType.Geo:
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnGeoFilledPath} fill={fill} />;
     case FieldType.Phone:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnPhoneFilledPath} fill={fill} />;
     case FieldType.Checkbox:

@@ -29,6 +29,7 @@ export * from './multi.select.field';
 export * from './number.field';
 export * from './percent.field';
 export * from './phone.field';
+export * from './geo.field';
 export * from './rating.field';
 export * from './single.select.field';
 export * from './single.text.field';
