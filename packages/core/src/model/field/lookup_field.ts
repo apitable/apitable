@@ -35,7 +35,7 @@ import { IReduxState, Selectors } from '../../exports/store';
 import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
-  INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType
+  INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType, LookUpLimitType
 } from '../../types/field_types';
 import {
   FilterConjunction, FOperator, FOperatorDescMap, IFilterCheckbox, IFilterCondition,
@@ -50,6 +50,7 @@ import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
+import { sortRowsBySortInfo } from 'exports/store/selectors';
 import {
   IOpenFilterValue, IOpenFilterValueBoolean, IOpenFilterValueDataTime, IOpenFilterValueNumber,
   IOpenFilterValueString
@@ -104,7 +105,9 @@ export class LookUpField extends ArrayValueField {
         value: Joi.any(),
       }))
     }),
-    openFilter: Joi.boolean(),
+    openFilterSort: Joi.boolean(),
+    lookupLimit: Joi.string(),
+    sortInfo: Joi.any(),
   }).required();
 
   validateProperty() {
@@ -560,7 +563,7 @@ export class LookUpField extends ArrayValueField {
       // console.log('Cannot find foreign key field', relatedLinkField);
       return [];
     }
-    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter } = this.field.property;
+    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilterSort, sortInfo, lookUpLimit } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
     // IDs of the associated table records
     let recordIDs = Selectors.getCellValue(
@@ -577,7 +580,15 @@ export class LookUpField extends ArrayValueField {
     }
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
-    if (openFilter) {
+    if (openFilterSort) {
+      // magic reference sort
+      const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId);
+     
+      recordIDs = sortRows.filter((row: any) => recordIDs.includes(row.recordId)).map((row: any) => row.recordId);
+      
+      if (lookUpLimit === LookUpLimitType.FIRST && recordIDs.length > 1) { 
+        recordIDs = recordIDs.slice(0, 1);
+      }
       // magic reference filter
       recordIDs = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
         linkFieldRecordIds: recordIDs,
@@ -594,6 +605,18 @@ export class LookUpField extends ArrayValueField {
         datasheetId: foreignDatasheetId,
       };
     }) : [];
+  }
+
+  getSortLookup(sortInfo: any, datasheetId: any) {
+    const snapshot = this.state.datasheetMap[datasheetId]?.datasheet!.snapshot;
+    if (!snapshot) {
+      return [];
+    }
+    const rows = snapshot?.meta?.views[0]?.rows!;
+    if(!rows) {
+      return [];
+    }
+    return sortRowsBySortInfo(this.state, rows, sortInfo.rules, snapshot);
   }
 
   override isEmptyOrNot(operator: FOperator.IsEmpty | FOperator.IsNotEmpty, cellValue: ICellValue) {
@@ -954,7 +977,7 @@ export class LookUpField extends ArrayValueField {
 
   // Get the fields that the lookup field depends on, and only get one level of relationship
   getCurrentDatasheetRelatedFieldKeys(datasheetId: string) {
-    const { relatedLinkFieldId, lookUpTargetFieldId, filterInfo, openFilter } = this.field.property;
+    const { relatedLinkFieldId, lookUpTargetFieldId, filterInfo, openFilterSort } = this.field.property;
     const allKeys: string[] = [];
     // Depends on the link field of the current table
     allKeys.push(`${datasheetId}-${relatedLinkFieldId}`);
@@ -963,7 +986,7 @@ export class LookUpField extends ArrayValueField {
       const { foreignDatasheetId } = relatedLinkField.property;
       allKeys.push(`${foreignDatasheetId}-${lookUpTargetFieldId}`);
       // filter field triggers magic app update
-      if (openFilter && filterInfo) {
+      if (openFilterSort && filterInfo) {
         const { conditions } = filterInfo;
         conditions.forEach(condition => {
           allKeys.push(`${foreignDatasheetId}-${condition.fieldId}`);

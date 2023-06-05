@@ -74,7 +74,7 @@ export const MyTrigger: React.FC<React.PropsWithChildren<ITriggerProps>> = memo(
             useCssTransform: true,
           }}
           popupStyle={{
-            width: 320,
+            width: 288,
             // zIndex: 101,
           }}
           ref={triggerSelfRef}
