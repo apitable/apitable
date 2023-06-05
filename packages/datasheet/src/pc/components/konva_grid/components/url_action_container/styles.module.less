@@ -1,0 +1,35 @@
+.pc {
+  position: absolute;
+  z-index: 1;
+  background: var(--bgCommonDefault);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadowCommonHighest);
+  .link {
+    &:hover {
+      svg {
+        fill: var(--textBrandHover);
+      }
+    }
+  }
+}
+.urlActionContainer {
+  .label {
+    color: var(--textCommonPrimary);
+    margin-bottom: 8px;
+  }
+  .titleLabel {
+    margin-top: 16px;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 24px;
+
+  button {
+    margin-left: 10px;
+  }
+}

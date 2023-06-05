@@ -201,16 +201,16 @@
                 box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
                   0px 3px 6px rgba(20, 20, 20, 0.06);
                 border-radius: 8px;
-                background-image: url('https://legacy-s1.apitable.com/space/2023/03/07/4ee310b46d5f4cf78e77bbfa99c8cb18'),
-                  url('https://legacy-s1.apitable.com/space/2023/03/07/33376adf4b134caf8beac4f20032090f'),
-                  url('https://legacy-s1.apitable.com/space/2023/03/07/9884739a1e424c64a11f25ee033866f4');
+                background-image: url('https://s4.apitable.com/logo/4ee310b46d5f4cf78e77bbfa99c8cb18'),
+                  url('https://s4.apitable.com/logo/33376adf4b134caf8beac4f20032090f'),
+                  url('https://s4.apitable.com/logo/9884739a1e424c64a11f25ee033866f4');
                 background-repeat: no-repeat;
                 background-size: 25%;
                 background-position: left bottom, right top, right bottom;
                 width: 100%;
               "
               width="100%"
-              background="url('https://legacy-s1.apitable.com/space/2023/03/07/4ee310b46d5f4cf78e77bbfa99c8cb18'),url('https://legacy-s1.apitable.com/space/2023/03/07/33376adf4b134caf8beac4f20032090f'),url('https://legacy-s1.apitable.com/space/2023/03/07/9884739a1e424c64a11f25ee033866f4')"
+              background="url('https://s4.apitable.com/logo/4ee310b46d5f4cf78e77bbfa99c8cb18'),url('https://s4.apitable.com/logo/33376adf4b134caf8beac4f20032090f'),url('https://s4.apitable.com/logo/9884739a1e424c64a11f25ee033866f4')"
             >
               <!-- START MAIN CONTENT AREA -->
               <tr>

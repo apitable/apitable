@@ -44,7 +44,6 @@ export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props
   const {
     datasheetId,
     view,
-    isSearching,
     groupCollapseIds,
     dispatch,
   } = useContext(KonvaGridViewContext);
@@ -55,12 +54,11 @@ export const GroupTab: FC<React.PropsWithChildren<IGroupTabProps>> = memo((props
 
   const changeGroupCollapseState = useCallback((newState: string[]) => {
     // Masking collapsing grouping operation when searching within a datasheet.
-    if (isSearching) return;
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
     // QuickAppend component display depends on hoverRecordId, which should be cleared in case of group collapse to avoid visual misleading.
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
     setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
-  }, [isSearching, dispatch, datasheetId, viewId]);
+  }, [dispatch, datasheetId, viewId]);
 
   function clickExpandToggle() {
     if (groupingCollapseIdsSet.has(pathKey)) {

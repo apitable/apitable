@@ -23,13 +23,13 @@ import { UnitRoleMemberEntity } from 'unit/entities/unit.role.member.entity';
 export class UnitRoleMemberRepository extends Repository<UnitRoleMemberEntity> {
 
   /**
-   * select unit role members by unit ref ids
-   * @param unitRefIds unit ref ids
+   * select unit role members by role Ids
+   * @param roleIds unit ref ids
    *  */
-  public async selectByUnitRefIds(unitRefIds: number[]): Promise<UnitRoleMemberEntity[]> {
+  public async selectByRoleIds(roleIds: number[]): Promise<UnitRoleMemberEntity[]> {
     return await this.find({
       where: {
-        unitRefId: In(unitRefIds),
+        roleId: In(roleIds),
       },
     });
   }

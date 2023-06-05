@@ -18,11 +18,13 @@
 
 package com.apitable.interfaces.eventbus.model;
 
+import com.apitable.shared.util.information.ClientOriginInfo;
 import java.util.List;
 import java.util.Set;
 
-import com.apitable.shared.util.information.ClientOriginInfo;
-
+/**
+ * Template search event.
+ */
 public class TemplateSearchEvent implements EventBusEvent {
 
     private final Long userId;
@@ -37,8 +39,19 @@ public class TemplateSearchEvent implements EventBusEvent {
 
     private final ClientOriginInfo clientOriginInfo;
 
-
-    public TemplateSearchEvent(Long userId, String searchWord, List<String> albumNames, List<String> templateName, Set<String> tagName, ClientOriginInfo clientOriginInfo) {
+    /**
+     * constructs.
+     *
+     * @param userId           user id
+     * @param searchWord       search word
+     * @param albumNames       album names
+     * @param templateName     template name
+     * @param tagName          tag name
+     * @param clientOriginInfo client origin info
+     */
+    public TemplateSearchEvent(Long userId, String searchWord, List<String> albumNames,
+                               List<String> templateName, Set<String> tagName,
+                               ClientOriginInfo clientOriginInfo) {
         this.userId = userId;
         this.searchWord = searchWord;
         this.albumNames = albumNames;

@@ -82,8 +82,6 @@ export interface IFieldVoTransformOptions {
   cellFormat: CellFormatEnum;
 
   store?: Store<IReduxState>;
-
-  userTimeZone?: string;
 }
 
 export interface ICellValueMap {

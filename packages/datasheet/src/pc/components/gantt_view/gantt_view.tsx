@@ -280,6 +280,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
 
   // Set the behavioural state of a new line
   const [canAppendRow, setCanAppendRow] = useState(true);
+  const [activeUrlAction, setActiveUrlAction] = useState(false);
 
   // Refs
   const containerRef = useRef<any>();
@@ -970,6 +971,8 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo(prop
     isTouchDevice,
     canAppendRow,
     onSetCanAppendRow: setCanAppendRow,
+    activeUrlAction,
+    setActiveUrlAction,
   };
 
   const { unitTitleMap } = useWxTitleMap();

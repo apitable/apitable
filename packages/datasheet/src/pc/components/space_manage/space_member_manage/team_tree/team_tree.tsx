@@ -36,7 +36,7 @@ import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
 
 // @ts-ignore
-import { freshDingtalkOrg, freshWecomOrg, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+import { freshDingtalkOrg, freshWecomOrg, freshWoaContact, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';
 import type { DataNode } from 'antd/es/tree';
@@ -72,6 +72,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const [createDeptModalVisible, setCreateDeptModalVisible] = useState(false);
   const isBindDingtalk = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.DINGTALK) && !isSocialDingTalk?.(spaceInfo);
   const isBindWecom = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.WECOM) && !isSocialWecom?.(spaceInfo);
+  const isBindWoa = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.WOA);
   const [refreshBtnLoading, setRefreshBtnLoading] = useState(false);
   const [inSearch, setInSearch] = useState<boolean>(false);
   const [teamOperate, setTeamOperate] = useState(false);
@@ -290,10 +291,11 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
         }
       });
     }
-    if (isBindDingtalk || isBindWecom) {
+    if (isBindDingtalk || isBindWecom || isBindWoa) {
       const refreshMethods = {
         [ConfigConstant.SocialType.DINGTALK]: freshDingtalkOrg,
-        [ConfigConstant.SocialType.WECOM]: freshWecomOrg
+        [ConfigConstant.SocialType.WECOM]: freshWecomOrg,
+        [ConfigConstant.SocialType.WOA]: freshWoaContact,
       };
       return getButton({
         onClick: () => {
@@ -318,7 +320,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     }
     return null;
 
-  }, [isBindDingtalk, refreshBtnLoading, changeSelectTeam, spaceResource, isBindWecom, spaceInfo]);
+  }, [isBindDingtalk, refreshBtnLoading, changeSelectTeam, spaceResource, isBindWecom, isBindWoa, spaceInfo]);
 
   const onExpand = (expandedKeys: DataNode['key'][], info: {
     expanded: boolean;

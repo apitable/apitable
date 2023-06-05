@@ -213,6 +213,7 @@ _clean_room_coverage:
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
+	make _test_clean
 	make _test_dockers
 	sleep 20
 	make _test_init_db

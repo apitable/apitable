@@ -27,8 +27,8 @@ import type { IGroupInfo } from 'types';
 import type { ISnapshot } from 'exports/store/interfaces';
 import { ViewType } from 'modules/shared/store/constants';
 
-export function assertNever(x: never) {
-  console.error(`${x} is not a never type`);
+export function assertNever(x: never): never {
+  throw new Error(`${x} is not a never type`);
 }
 
 export function isSelectType(type: FieldType | null): type is FieldType.MultiSelect | FieldType.SingleSelect {

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IField, ISegment, SegmentType, ICellValue, Field } from '@apitable/core';
+import { FieldType, IField, ISegment, SegmentType, ICellValue, Field, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
@@ -30,25 +30,31 @@ import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
+import { TelephoneOutlined, EmailOutlined, EditOutlined, LinkOutlined } from '@apitable/icons';
+import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
+import { useSelector } from 'react-redux';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
   field: IField;
+  recordId: string;
   style: React.CSSProperties;
   editable: boolean;
   editing: boolean;
   cellValue?: ICellValue;
+  isForm?: boolean;
 }
 
 export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnhanceTextEditorProps> = (props, ref) => {
-  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue } = props;
+  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue, recordId, isForm } = props;
   const [value, setValue] = useState('');
   const colors = useThemeColors();
   const cacheValueRef = useRef<ISegment[] | null | undefined>(null);
   const editorRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
+  const [activeUrlAction, setActiveUrlAction] = useState(false);
+  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
   useImperativeHandle(ref, (): IEditor => ({
     focus: (preventScroll) => { focus(preventScroll); },
@@ -167,16 +173,22 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   }
 
   const getEnhanceTypeIcon = (type: string | number) => {
-    if (!value) return null;
+    if (!value && (field.type !== FieldType.URL || isForm)) return null;
     const typeIconMap = {
-      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} /> : <LinkOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
       <span
         className={style.enhanceTextIcon}
-        onClick={() => _handleEnhanceTextClick(field.type, value)}
+        onClick={() => {
+          if (!isForm && field.type === FieldType.URL) {
+            setActiveUrlAction(true);
+          } else {
+            _handleEnhanceTextClick(field.type, value);
+          }
+        }}
       >
         {typeIconMap[type]}
       </span>
@@ -236,6 +248,15 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
         />
         {getEnhanceTypeIcon(field.type)}
       </div>
+      {!isForm && activeUrlAction && (
+        <UrlActionUI
+          activeUrlAction={activeUrlAction}
+          setActiveUrlAction={setActiveUrlAction}
+          fieldId={field.id}
+          recordId={recordId}
+          datasheetId={datasheetId}
+        />
+      )}
     </div>
 
   );

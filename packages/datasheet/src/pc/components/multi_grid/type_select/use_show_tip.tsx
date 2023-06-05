@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import styles from './styles.module.less';
 
@@ -28,7 +28,6 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
       desc: '',
     },
   );
-  const divRef = useRef<HTMLDivElement>();
 
   const { left } = useMemo(() => {
     if (!container) return { left: 0 };
@@ -51,21 +50,21 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
     let root: any;
 
     function unMountDiv() {
-      if (!divRef.current) return;
       root?.unmount();
-      divRef.current.parentElement &&
-      divRef.current.parentElement.removeChild(divRef.current);
+      const dom = document.querySelector('.vika-type-select-tip');
+      dom && document.body.removeChild(dom);
     }
 
     unMountDiv();
 
     if (info.top) {
-      divRef.current = document.createElement('div');
-      divRef.current.setAttribute('style',
+      const div = document.createElement('div');
+      div.setAttribute('class', 'vika-type-select-tip');
+      div.setAttribute('style',
         `top:${info.top}px;left:${left}px;position:fixed;z-index:1100;`,
       );
-      document.body.appendChild(divRef.current);
-      root = createRoot(divRef.current);
+      document.body.appendChild(div);
+      root = createRoot(div);
       root.render(
         (
           <div className={styles.tip}>
