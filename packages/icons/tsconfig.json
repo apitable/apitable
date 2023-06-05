@@ -4,8 +4,6 @@
     "target": "es5",
     "jsx": "react",
     "strict": true,
-//    "declaration": false,
-//    "declarationMap": false,
     "lib": [
       "DOM",
       "esNext"
@@ -15,4 +13,8 @@
   "include": [
     "src/index.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

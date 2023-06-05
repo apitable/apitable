@@ -28,29 +28,29 @@ import java.util.Properties;
  */
 public interface MailFacade {
 
-  /**
-   * * Get Cloud Mail Template Id.
-   *
-   * @param lang language
-   * @param subject mail subject
-   * @return template id about cloud mail
-   */
-  Long getCloudMailTemplateId(String lang, String subject);
+    /**
+     * * Get Cloud Mail Template Id.
+     *
+     * @param lang    language
+     * @param subject mail subject
+     * @return template id about cloud mail
+     */
+    Long getCloudMailTemplateId(String lang, String subject);
 
-  /**
-   * * Get Subject Properties.
-   *
-   * @param locale locale
-   * @return Properties
-   */
-  Properties getSubjectProperties(String locale) throws IOException;
+    /**
+     * * Get Subject Properties.
+     *
+     * @param locale locale
+     * @return Properties
+     */
+    Properties getSubjectProperties(String locale) throws IOException;
 
-  /**
-   * * Load Template Resource Path.
-   *
-   * @param locale          locale
-   * @param templateName    templateName
-   * @return Path
-   */
-  String loadTemplateResourcePath(String locale, String templateName);
+    /**
+     * * Load Template Resource Path.
+     *
+     * @param locale       locale
+     * @param templateName templateName
+     * @return Path
+     */
+    String loadTemplateResourcePath(String locale, String templateName);
 }

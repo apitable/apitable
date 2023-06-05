@@ -68,6 +68,8 @@ export interface IKonvaGridContext {
   isTouchDevice?: boolean;
   canAppendRow: boolean;
   onSetCanAppendRow: React.Dispatch<React.SetStateAction<boolean>>;
+  activeUrlAction: boolean;
+  setActiveUrlAction: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const KonvaGridContext = React.createContext({} as IKonvaGridContext);

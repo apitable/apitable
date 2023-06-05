@@ -318,7 +318,6 @@ APITable utilizza queste convenzioni comuni:
 - Cos'è la Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Cos'è la linea guida per la codifica di TypeScript? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
-- Cos'è la Panoramica dell'architettura? -> [Capire APITabile - Panoramica Architettura](./docs/contribute/architecute-overview.md)
 
 ### Documentazione
 
@@ -353,7 +352,7 @@ Fare riferimento alla [Roadmap of APITable](https://apitable.com/roadmap)
 - Integrazione con ChatGPT, Zapier, Slack, Google Workspace......
 - Watermark
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 Partecipa
 
@@ -367,9 +366,9 @@ For more information on our product, including enterprise self-hosted license, p
 
 Siamo sempre alla ricerca di buoni talenti per APITable:
 
-- Sviluppatore full-stack: Hai esperienza con React, NestJS, TypeScript, Spring Boot, Java, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
+- Sviluppatore full-stack: Hai esperienza con React, NestJS, TypeScript, Spring Boot, Java, Terraform. E vi piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
 - Sviluppatore back-end: Hai esperienza con NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. E ti piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
-- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. E vi piace scrivere codice di alta qualità con una documentazione chiara e test unitari.
+- Sviluppatore front-end: Hai esperienza con React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel team di APITable, non esitare e invia il tuo CV a talent@apitable.com.
 
@@ -403,7 +402,7 @@ Indipendentemente dal tempo e dalle condizioni, se vuoi essere coinvolto nel tea
     <img src="docs/static/screenshot-it.png" alt="Immagine dello screenshot della APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Immagine dello screenshot della APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licenza

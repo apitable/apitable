@@ -24,7 +24,8 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Message, Modal } from 'pc/components/common';
+import { Message, Modal, Tooltip } from 'pc/components/common';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IFormatmember {
   currentField: IMemberField;
@@ -117,7 +118,14 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
       </section>
       <section className={settingStyles.section}>
         {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.field_member_property_subscription)}
+          <div className={styles.subscription}>
+            {t(Strings.field_member_property_subscription)}
+            <Tooltip title={t(Strings.field_member_property_subscription_tip)} trigger={'hover'}>
+              <span className={styles.requiredTip}>
+                <QuestionCircleOutlined color='currentColor' />
+              </span>
+            </Tooltip>
+          </div>
           <Switch
             size="small"
             checked={subscription}

@@ -83,8 +83,8 @@ export class UnitService {
     const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
     const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
     const [members, teams] = await Promise.all([
-      this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]),
-      this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]),
+      this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]!),
+      this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]!),
     ]);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     return units.reduce<UnitInfoDto[]>((pre, cur) => {
@@ -116,10 +116,10 @@ export class UnitService {
   public async getMembersByUnitIds(spaceId: string, unitIds: string[]): Promise<{ unitId: UnitInfoDto[] }[]> {
     const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
     const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
-    const roleMembers = await this.unitRoleMemberRepository.selectByUnitRefIds(unitMemberRefIdMap[MemberType.Role]);
-    const memberIds = unitMemberRefIdMap[MemberType.Member];
+    const roleMembers = await this.unitRoleMemberRepository.selectByRoleIds(unitMemberRefIdMap[MemberType.Role]!);
+    const memberIds = unitMemberRefIdMap[MemberType.Member]!;
     // get teamIds from roles while role.unitType is UnitType.Team
-    const teamIds: string[] = [...unitMemberRefIdMap[MemberType.Team].map(t => String(t))];
+    const teamIds: string[] = [...unitMemberRefIdMap[MemberType.Team]!.map(t => String(t))];
     roleMembers.forEach(roleMember => {
       if (roleMember.unitType === MemberType.Team) {
         teamIds.push(String(roleMember.unitRefId));
@@ -139,13 +139,8 @@ export class UnitService {
     return units.reduce<{ unitId: UnitInfoDto[] }[]>((pre, cur) => {
       if (!pre[cur.id]) pre[cur.id] = [];
       if (cur.unitType === MemberType.Member) {
-        const user = members[cur.unitRefId];
-        const unit = memberUnits.find(t => t.unitRefId === cur.unitRefId);
-        pre[cur.id] = [{
-          name: user?.name,
-          unitId: unit?.id,
-          userId: user?.userId,
-        }];
+         // Process individual members in roles
+        this.processMember(cur.unitRefId, members, memberUnits, pre, cur.id);
       } else if (cur.unitType === MemberType.Team) {
         // Process team members
         this.processTeamMembers(teamMembers, members, memberUnits, teamIdSubTeamIdsMap, cur.unitRefId, cur.id, pre);

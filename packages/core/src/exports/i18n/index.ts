@@ -50,6 +50,40 @@ export function getLanguage() {
   return clientLang || language || defaultLang;
 }
 
+const loadLanguage = (lang: string) => {
+  console.log('start load language', lang);
+  let data = {};
+  if (typeof window !== 'undefined') {
+    // @ts-ignore
+    const xhr = new XMLHttpRequest();
+    if (lang) {
+      xhr.open('GET', `/file/langs/strings.${lang}.json`, false);
+    } else {
+      xhr.open('GET', '/file/langs/strings.json', false);
+    }
+    xhr.send();
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const languageData = JSON.parse(xhr.responseText);
+      if (lang) {
+        data[lang] = languageData;
+      } else {
+        data = languageData;
+      }
+    } else {
+      console.error('load language from remote error', xhr.statusText);
+    }
+  } else {
+    try {
+      const fs = require('fs');
+      const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
+      data = JSON.parse(jsonData);
+    } catch (error) {
+      console.error('load strings.json error', error);
+    }
+  }
+  return data;
+};
+
 const rewriteI18nForEdition = () => {
   for (const k in _global.apitable_i18n) {
     if (_global.apitable_i18n_edition?.[k]) {
@@ -64,12 +98,7 @@ const rewriteI18nForEdition = () => {
 const currentLang = getLanguage();
 
 _global.currentLang = currentLang;
-if (undefined === _global.apitable_i18n) {
-  _global.apitable_i18n = {};
-}
-if (undefined === _global.apitable_i18n[currentLang]) {
-  _global.apitable_i18n[currentLang] = {};
-}
+_global.apitable_i18n = loadLanguage(currentLang);
 require('@apitable/i18n-lang');
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);

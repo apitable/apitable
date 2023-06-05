@@ -22,7 +22,7 @@
   },
   "include": [
     "src/index.ts",
-    "src/**/*.json"
+    "src/**/language.manifest.json"
   ],
   "exclude": [
     "dist",

@@ -24,8 +24,8 @@ import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { UserService } from 'user/services/user.service';
-import type { DatasheetPackRo } from '../../datasheet/ros/datasheet.pack.ro';
 import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import { DatasheetPackRo } from 'database/datasheet/ros/datasheet.pack.ro';
 
 /**
  * mirror interface

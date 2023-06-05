@@ -47,6 +47,7 @@ export interface ITextProps extends IGraphProps {
   verticalAlign?: 'top' | 'middle' | 'bottom';
   fontWeight?: IFontWeight;
   textDecoration?: 'underline' | 'line-through' | 'none';
+  favicon?: string;
 }
 
 export interface ILinkData {

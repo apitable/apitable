@@ -39,7 +39,6 @@ import {
   NoticeTemplatesConstant,
   Selectors,
   IInternalFix,
-  IUserInfo,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -214,15 +213,13 @@ export class FusionApiService {
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
     const getRecordsProfiler = this.logger.startTimer();
 
-    let userInfo: IUserInfo | undefined;
-
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
         recordIds: query.recordIds,
       },
       createStore: async dst => {
-        userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
+        const userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
         return this.commandService.fullFillStore(dst, userInfo);
       },
     });
@@ -307,7 +304,7 @@ export class FusionApiService {
       },
     });
 
-    const recordVos = this.getRecordViewObjects(records, userInfo!.timeZone ?? undefined, query.cellFormat);
+    const recordVos = this.getRecordViewObjects(records, query.cellFormat);
 
     getRecordsProfiler.done({
       message: `getRecords ${dstId} profiler`,
@@ -635,9 +632,9 @@ export class FusionApiService {
     return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
-  private getRecordViewObjects(records: databus.Record[], userTimeZone?: string, cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
+  private getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
     return records.map(record =>
-      record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, userTimeZone, cellFormat)),
+      record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)),
     );
   }
 

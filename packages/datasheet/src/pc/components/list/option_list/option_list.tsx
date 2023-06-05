@@ -53,10 +53,8 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
   const allowAddNewItem = Boolean(onAddHandle) && manageable;
 
   function filterOptions(item: ISelectFieldOption) {
-    if (!item.name.includes(keyword)) {
-      return false;
-    }
-    return true;
+    // Search supports case, refer to the antd rc select library
+    return item.name.toUpperCase().includes(keyword.toUpperCase());
   }
 
   function _onAddHandle() {
