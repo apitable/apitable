@@ -105,7 +105,7 @@ export class LookUpField extends ArrayValueField {
         value: Joi.any(),
       }))
     }),
-    openFilterSort: Joi.boolean(),
+    openFilter: Joi.boolean(),
     lookupLimit: Joi.string(),
     sortInfo: Joi.any(),
   }).required();
@@ -563,7 +563,7 @@ export class LookUpField extends ArrayValueField {
       // console.log('Cannot find foreign key field', relatedLinkField);
       return [];
     }
-    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilterSort, sortInfo, lookUpLimit } = this.field.property;
+    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter, sortInfo, lookUpLimit } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
     // IDs of the associated table records
     let recordIDs = Selectors.getCellValue(
@@ -580,7 +580,7 @@ export class LookUpField extends ArrayValueField {
     }
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
-    if (openFilterSort) {
+    if (openFilter) {
       // magic reference sort
       const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId);
      
@@ -977,7 +977,7 @@ export class LookUpField extends ArrayValueField {
 
   // Get the fields that the lookup field depends on, and only get one level of relationship
   getCurrentDatasheetRelatedFieldKeys(datasheetId: string) {
-    const { relatedLinkFieldId, lookUpTargetFieldId, filterInfo, openFilterSort } = this.field.property;
+    const { relatedLinkFieldId, lookUpTargetFieldId, filterInfo, openFilter } = this.field.property;
     const allKeys: string[] = [];
     // Depends on the link field of the current table
     allKeys.push(`${datasheetId}-${relatedLinkFieldId}`);
@@ -986,7 +986,7 @@ export class LookUpField extends ArrayValueField {
       const { foreignDatasheetId } = relatedLinkField.property;
       allKeys.push(`${foreignDatasheetId}-${lookUpTargetFieldId}`);
       // filter field triggers magic app update
-      if (openFilterSort && filterInfo) {
+      if (openFilter && filterInfo) {
         const { conditions } = filterInfo;
         conditions.forEach(condition => {
           allKeys.push(`${foreignDatasheetId}-${condition.fieldId}`);

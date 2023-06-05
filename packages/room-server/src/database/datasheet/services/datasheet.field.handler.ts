@@ -212,7 +212,7 @@ export class DatasheetFieldHandler {
           break;
         // Lookup field, may recurse
         case FieldType.LookUp:
-          const { relatedLinkFieldId, lookUpTargetFieldId, openFilterSort, filterInfo } = fieldInfo.property;
+          const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } = fieldInfo.property;
           // The field is not in datasheet, skip
           if (!fieldMap[relatedLinkFieldId]) {
             continue;
@@ -225,7 +225,7 @@ export class DatasheetFieldHandler {
           const { foreignDatasheetId } = fieldMap[relatedLinkFieldId]!.property as ILinkFieldProperty;
           const foreignFieldIds = [lookUpTargetFieldId];
           // Parse reference filter condition
-          if (openFilterSort && filterInfo?.conditions.length) {
+          if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
           }
           // Create two-way reference relation
@@ -591,10 +591,10 @@ export class DatasheetFieldHandler {
       // Count all influenced fields of linked datasheet
       const allForeignFieldIds = [fieldId];
       if (fldId in linkFldIdToLookUpFieldMap) {
-        for (const { lookUpFieldId, lookUpTargetFieldId, openFilterSort, filterInfo } of linkFldIdToLookUpFieldMap[fldId]!) {
+        for (const { lookUpFieldId, lookUpTargetFieldId, openFilter, filterInfo } of linkFldIdToLookUpFieldMap[fldId]!) {
           const foreignFieldIds = [lookUpTargetFieldId];
           // Analyze reference filter condition
-          if (openFilterSort && filterInfo?.conditions.length) {
+          if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach((condition: any) => foreignFieldIds.push(condition.fieldId));
           }
           // Update two-way reference of LookUp field
@@ -655,7 +655,7 @@ export class DatasheetFieldHandler {
     const updateReference = creatable ? this.computeFieldReferenceManager.createReference : this.computeFieldReferenceManager.deleteReference;
 
     const fieldMap = meta.fieldMap;
-    for (const { fieldId, relatedLinkFieldId, lookUpTargetFieldId, openFilterSort, filterInfo } of properties) {
+    for (const { fieldId, relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } of properties) {
       // This field does not exist in the datasheet, skip
       if (!(relatedLinkFieldId in fieldMap)) {
         continue;
@@ -667,7 +667,7 @@ export class DatasheetFieldHandler {
       const { foreignDatasheetId } = fieldMap[relatedLinkFieldId]!.property;
       const lookUpReferFieldIds = [lookUpTargetFieldId];
       // Analyze reference filter condition
-      if (openFilterSort && filterInfo?.conditions.length) {
+      if (openFilter && filterInfo?.conditions.length) {
         filterInfo.conditions.forEach((condition: any) => lookUpReferFieldIds.push(condition.fieldId));
       }
       // Update two-way reference of LookUp field
@@ -749,7 +749,7 @@ export class DatasheetFieldHandler {
           await this.parseFieldReference(mainDstId, linkDatasheetId, [fieldId], dstToMetaMap, dstIdToProcessedFldIdsMap);
           break;
         case FieldType.LookUp:
-          const { relatedLinkFieldId, lookUpTargetFieldId, openFilterSort, filterInfo } = fieldInfo.property as ILookUpProperty;
+          const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } = fieldInfo.property as ILookUpProperty;
           // Current datasheet does not contain the field, skip
           if (!fieldMap[relatedLinkFieldId]) {
             break;
@@ -762,7 +762,7 @@ export class DatasheetFieldHandler {
           const { foreignDatasheetId } = fieldMap[relatedLinkFieldId]!.property as ILinkFieldProperty;
           const foreignFieldIds = [lookUpTargetFieldId];
           // Analyze reference filter condition
-          if (openFilterSort && filterInfo?.conditions.length) {
+          if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
           }
           // Create two-way reference

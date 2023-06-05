@@ -103,7 +103,7 @@ export interface ILookUpProperty {
   rollUpType?: RollUpFuncType;
   formatting?: IComputedFieldFormattingProperty;
   filterInfo?: IFilterInfo;
-  openFilterSort?: boolean;
+  openFilter?: boolean;
   sortInfo?: ISortInfo;
   lookUpLimit?: LookUpLimitType;
 }

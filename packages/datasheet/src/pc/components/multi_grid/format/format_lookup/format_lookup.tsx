@@ -20,7 +20,7 @@ import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable
 import {
   BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, 
   IFilterInfo, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
-  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t, LookUpLimitType
+  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t, LookUpLimitType, ISortInfo
 } from '@apitable/core';
 import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
@@ -113,7 +113,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
   const colors = useThemeColors();
   const { currentField, setCurrentField, datasheetId } = props;
   const activeDstId = useSelector(state => datasheetId || Selectors.getActiveDatasheetId(state))!;
-  const { relatedLinkFieldId, lookUpTargetFieldId, rollUpType, filterInfo, openFilterSort = false, sortInfo, lookUpLimit } = currentField.property;
+  const { relatedLinkFieldId, lookUpTargetFieldId, rollUpType, filterInfo, openFilter = false, sortInfo, lookUpLimit } = currentField.property;
   const linkFields = Field.bindModel(currentField).getLinkFields();
   const relatedLinkField = Field.bindModel(currentField).getRelatedLinkField();
   const { error: isFilterError, typeSwitch: isFilterTypeSwitch } = Field.bindModel(currentField).checkFilterInfo();
@@ -215,18 +215,18 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       };
      
       // Switching link field will cause the filter data to be cleared, giving a hint
-      if (propertyKey === 'relatedLinkFieldId' && openFilterSort) {
+      if (propertyKey === 'relatedLinkFieldId' && openFilter) {
         Modal.confirm({
           title: t(Strings.operate_info),
           content: t(Strings.confirm_link_toggle_clear_filter),
           okText: t(Strings.submit),
           cancelText: t(Strings.give_up_edit),
-          onOk: () => updateField({ openFilterSort: false, filterInfo: undefined }),
+          onOk: () => updateField({ openFilter: false, filterInfo: undefined }),
         });
       } else if (
         // Closing the filter button will cause the filter data to be cleared, giving a prompt
-        propertyKey === 'openFilterSort' &&
-        openFilterSort &&
+        propertyKey === 'openFilter' &&
+        openFilter &&
         Boolean(filterInfo && filterInfo.conditions.length > 0)
       ) {
         Modal.confirm({
@@ -236,7 +236,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           cancelText: t(Strings.give_up_edit),
           onOk: () => updateField({ filterInfo: undefined }),
         });
-      } else if(propertyKey === 'sortInfo' && openFilterSort) {
+      } else if(propertyKey === 'sortInfo' && openFilter) {
         updateField();
       } else {
         console.log('updateField', value);
@@ -384,13 +384,13 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               size='small'
               onChange={() => {
                 const isForeignDstReadable = handleForeignDstReadable();
-                isForeignDstReadable && setFieldProperty('openFilterSort')(!openFilterSort);
+                isForeignDstReadable && setFieldProperty('openFilter')(!openFilter);
               }}
-              checked={openFilterSort}
+              checked={openFilter}
             />
             {t(Strings.rollup_filter_sort)}
           </div>
-          {openFilterSort &&
+          {openFilter &&
             (!isFilterError ? (
               <div
                 className={settingStyles.sectionInfo}
@@ -448,7 +448,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                 name="btn-group-with-default" 
                 isBtn value={lookUpLimit || LookUpLimitType.ALL} 
                 block 
-                onChange={(e, value) => {
+                onChange={(_e, value) => {
                   setFieldProperty('lookUpLimit')(value);
                 }}>
                 <Radio value={LookUpLimitType.FIRST}>{t(Strings.rollup_limit_option_2)}</Radio>
