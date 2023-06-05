@@ -1,0 +1,129 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.sortOptions {
+  width: 310px;
+  height: 100%;
+  line-height: 35px;
+  cursor: default;
+
+  .select {
+    width: 100%;
+    line-height: 40px;
+  }
+}
+
+.options {
+  z-index: var(--group);
+}
+
+:global {
+  .ant-empty-small .ant-empty-image {
+    width: 52px;
+
+    svg {
+      width: 52px;
+    }
+  }
+
+  .ant-select-dropdown-menu {
+    .light-scroll-bar();
+  }
+}
+
+.optionItem {
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  & > svg {
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  .iconType {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-right: 24px;
+
+    span {
+      .ellipsis();
+    }
+
+    svg {
+      margin-left: 4px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.addOption {
+  margin-left: 18px;
+
+  &.blankField {
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .addOption {
+    padding: 0;
+  }
+
+  .addSortRules {
+    width: 100%;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--lowestBg);
+    border-radius: 4px;
+    padding: 12px 8px;
+
+    span {
+      width: 100%;
+      .ellipsis();
+    }
+
+    .arrow {
+      margin-left: 4px;
+    }
+  }
+
+  .optionsListMenu {
+    z-index: 1001;
+    .optionItem {
+      height: 48px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--lineColor);
+    }
+
+    .fieldItem {
+      display: flex;
+      align-items: center;
+
+      .fieldName {
+        margin-left: 8px;
+        .ellipsis();
+      }
+    }
+  }
+}
+
+.addSortRules {
+  &.disabled {
+    & > * {
+      opacity: 0.5;
+    }
+  }
+}
