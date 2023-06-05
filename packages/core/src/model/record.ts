@@ -38,7 +38,6 @@ export type ICellToStringOption = {
   datasheetId?: string;
   hideUnit?: boolean;
   orderInCellValueSensitive?: boolean;
-  userTimeZone?: string;
 };
 
 export enum CellFormatEnum {

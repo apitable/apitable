@@ -32,9 +32,9 @@ export abstract class BaseField implements IFieldTransformInterface, IFieldValid
     return fieldValue as ICellValue;
   }
 
-  voTransform(cellValue: ICellValue, field: IField, { cellFormat, store, userTimeZone }: IFieldVoTransformOptions): IFieldValue {
+  voTransform(cellValue: ICellValue, field: IField, { cellFormat, store }: IFieldVoTransformOptions): IFieldValue {
     if (cellFormat === CellFormatEnum.STRING) {
-      return Field.bindContext(field, store!.getState()).cellValueToApiStringValue(cellValue, { userTimeZone });
+      return Field.bindContext(field, store!.getState()).cellValueToApiStringValue(cellValue);
     }
     return Field.bindContext(field, store!.getState()).cellValueToApiStandardValue(cellValue);
   }
