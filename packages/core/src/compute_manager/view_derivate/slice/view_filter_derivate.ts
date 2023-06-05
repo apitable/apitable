@@ -4,25 +4,19 @@ import { ICellValue } from 'model/record';
 import { Field } from 'model/field';
 import { DatasheetActions } from 'model/datasheet';
 
-import {
-  IRecord, IRecordMap, IReduxState, IViewProperty, IViewRow,
-} from 'exports/store/interfaces';
-import {
-  findRealField, getCellValue, getFilterInfoExceptInvalid,
-} from 'modules/database/store/selectors/resource/datasheet';
+import { IRecord, IRecordMap, IReduxState, IViewProperty, IViewRow } from 'exports/store/interfaces';
+import { findRealField, getCellValue, getFilterInfoExceptInvalid } from 'modules/database/store/selectors/resource/datasheet';
 import { FilterConjunction, FOperator, IFilterCondition, IFilterInfo } from 'types/view_types';
 import { BasicValueType, FieldType, IField, ILinkIds, RollUpFuncType } from 'types/field_types';
 
 export class ViewFilterDerivate {
-  constructor(private state: IReduxState, public datasheetId: string) {
-
-  }
+  constructor(private state: IReduxState, public datasheetId: string) {}
 
   /**
-   * Filter out duplicate cellValue, return the de-duplicated rows, 
+   * Filter out duplicate cellValue, return the de-duplicated rows,
    * only allow adding one with duplicate conditions
-   * 
-   * TODO: Repeat is not quite in line with the logic of "filtering", 
+   *
+   * TODO: Repeat is not quite in line with the logic of "filtering",
    * it should be a separate function, and the following calculation is not rigorous, it needs to be rewritten.
    */
   findRepeatRow(rows: IViewRow[], fieldId: string, isAnd?: boolean) {
@@ -35,22 +29,35 @@ export class ViewFilterDerivate {
     const values = DatasheetActions.getCellValuesByFieldId(state, snapshot, field.id, undefined, true);
     if (values?.length) {
       for (const row of rows) {
-        const needTranslate = [FieldType.Currency, FieldType.SingleText, FieldType.Text, FieldType.URL, FieldType.Phone, FieldType.Email,
-          FieldType.DateTime, FieldType.CreatedTime, FieldType.LastModifiedTime, FieldType.Number, FieldType.Percent];
+        const needTranslate = [
+          FieldType.Currency,
+          FieldType.SingleText,
+          FieldType.Text,
+          FieldType.URL,
+          FieldType.Phone,
+          FieldType.Email,
+          FieldType.DateTime,
+          FieldType.CreatedTime,
+          FieldType.LastModifiedTime,
+          FieldType.Number,
+          FieldType.Percent,
+        ];
         let cellValue = getCellValue(state, snapshot, row.recordId, field.id);
         const lookUpField = findRealField(state, field);
         const rollUpType = field.property?.rollUpType || RollUpFuncType.VALUES;
-        const isNeedSort = Array.isArray(cellValue) && (
-          (field.type === FieldType.LookUp && rollUpType === RollUpFuncType.VALUES) ||
-          ([FieldType.MultiSelect, FieldType.Member].includes(field.type))
-          || field.type === FieldType.Link
-        );
+        const isNeedSort =
+          Array.isArray(cellValue) &&
+          ((field.type === FieldType.LookUp && rollUpType === RollUpFuncType.VALUES) ||
+            [FieldType.MultiSelect, FieldType.Member].includes(field.type) ||
+            field.type === FieldType.Link);
         if (isNeedSort) {
-          cellValue = sortBy(cellValue as any[], o => typeof o === 'object' ? o.text : o) as ICellValue;
+          cellValue = sortBy(cellValue as any[], o => (typeof o === 'object' ? o.text : o)) as ICellValue;
         }
         // Do you need to call cellValueToString to convert to string form.
-        if (needTranslate.includes(field.type) ||
-          (FieldType.LookUp === field.type && lookUpField &&
+        if (
+          needTranslate.includes(field.type) ||
+          (FieldType.LookUp === field.type &&
+            lookUpField &&
             ![FieldType.SingleSelect, FieldType.MultiSelect, FieldType.Link].includes(lookUpField.type))
         ) {
           cellValue = fieldMethod.cellValueToString(cellValue, { hideUnit: true }) || '';
@@ -98,7 +105,7 @@ export class ViewFilterDerivate {
     return fieldMethod.isMeetFilter(condition.operator, cellValue, condition.value);
   }
 
-  doFilterOperations(condition: IFilterCondition, record: IRecord, repeatRows?: string[]) {
+  private doFilterOperations(condition: IFilterCondition, record: IRecord, repeatRows?: string[]) {
     /**
      * or condition to have repeatRows
      * or condition on the presence or absence of repeatRows
@@ -131,18 +138,14 @@ export class ViewFilterDerivate {
   /**
    * Check if a record meets the conditions in filterCondition
    */
-  checkConditions(
-    record: IRecord,
-    filterInfo: IFilterInfo,
-    repeatRows?: string[],
-  ) {
+  private checkConditions(record: IRecord, filterInfo: IFilterInfo, repeatRows?: string[]) {
     const conditions = filterInfo.conditions;
     if (!record) {
       return false;
     }
 
     if (filterInfo.conjunction === FilterConjunction.And) {
-      return conditions.every(condition => this.doFilterOperations(condition, record));
+      return conditions.every(condition => this.doFilterOperations(condition, record, undefined));
     }
 
     if (filterInfo.conjunction === FilterConjunction.Or) {
@@ -153,7 +156,7 @@ export class ViewFilterDerivate {
     return false;
   }
 
-  getFilterRowsBase(props: { filterInfo: IFilterInfo | undefined, rows: IViewRow[], recordMap: IRecordMap }) {
+  getFilterRowsBase(props: { filterInfo: IFilterInfo | undefined; rows: IViewRow[]; recordMap: IRecordMap }) {
     let filterInfo = props.filterInfo;
     const recordMap = props.recordMap;
     let rows = props.rows;
@@ -216,10 +219,7 @@ export class ViewFilterDerivate {
    * Currently only to lookup with, TODO: change the method to lookup, the follow-up to go deprecated
    * @param data
    */
-  getFilteredRecords = (data: {
-    linkFieldRecordIds: ILinkIds,
-    filterInfo?: IFilterInfo,
-  }) => {
+  getFilteredRecords = (data: { linkFieldRecordIds: ILinkIds; filterInfo?: IFilterInfo }) => {
     const { linkFieldRecordIds, filterInfo } = data;
     const snapshot = this.state.datasheetMap[this.datasheetId]?.datasheet!.snapshot;
     if (!linkFieldRecordIds || !snapshot) {

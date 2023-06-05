@@ -20,7 +20,7 @@ import { getComputeRefManager } from 'compute_manager';
 import { evaluate, parse } from 'formula_parser/evaluate';
 import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { Functions } from 'formula_parser/functions';
-import { Strings, t } from '../../exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import Joi from 'joi';
 import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
@@ -32,7 +32,7 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { checkTypeSwitch, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getSnapshot } from '../../exports/store/selectors';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
   INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType
@@ -44,7 +44,7 @@ import {
 import { ICellToStringOption, ICellValue, ICellValueBase, ILookUpValue } from '../record';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField, Field, ICellApiStringValueOptions } from './field';
+import { ArrayValueField, Field } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
@@ -768,7 +768,7 @@ export class LookUpField extends ArrayValueField {
     }
   }
 
-  cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
+  cellValueToString(cellValue: ICellValue, _options?: ICellToStringOption): string | null {
     if (cellValue == null) {
       return null;
     }
@@ -781,7 +781,7 @@ export class LookUpField extends ArrayValueField {
             return numberFormat(cellValue, this.field.property?.formatting);
           }
           case BasicValueType.DateTime:
-            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty, options?.userTimeZone);
+            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty, getUserTimeZone(this.state));
           case BasicValueType.String:
           case BasicValueType.Array:
             return String(cellValue);
@@ -844,7 +844,7 @@ export class LookUpField extends ArrayValueField {
     return vArray == null ? null : vArray.join(', ');
   }
 
-  arrayValueToArrayStringValueArray(cellValue: any[] | null, options?: ICellToStringOption): (string | null)[] | null {
+  arrayValueToArrayStringValueArray(cellValue: any[] | null, _options?: ICellToStringOption): (string | null)[] | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -858,7 +858,7 @@ export class LookUpField extends ArrayValueField {
       // Date type should use the format configured by the lookup field
       if (basicValueType === BasicValueType.DateTime) {
         const formatting = this.field.property.formatting as IDateTimeFieldProperty || entityField.property;
-        return dateTimeFormat(value, formatting, options?.userTimeZone);
+        return dateTimeFormat(value, formatting, getUserTimeZone(this.state));
       }
 
       // The number|boolean type should use the format configured by the lookup field
@@ -999,7 +999,7 @@ export class LookUpField extends ArrayValueField {
     return cellValue as any;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
+  cellValueToApiStringValue(cellValue: ICellValue): string | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -1008,7 +1008,7 @@ export class LookUpField extends ArrayValueField {
     if (entityField.type == FieldType.Member || entityField.type == FieldType.CreatedBy || entityField.type == FieldType.LastModifiedBy) {
       return Field.bindContext(entityField, this.state).cellValueToApiStringValue(cellValue as any);
     }
-    return this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone });
+    return this.cellValueToString(cellValue);
   }
 
   cellValueToOpenValue(cellValue: ICellValue): BasicOpenValueType | null {
