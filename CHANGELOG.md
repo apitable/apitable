@@ -3,6 +3,28 @@
 
 
 
+## [v0.21.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc.1) (2023-06-05)
+
+
+### Features and enhancements
+
+* feat: add gzip support in nginx gateway ([#901](https://github.com/apitable/apitable/pull/901)) @networkhermit 
+
+### Bug fixes
+
+* fix: improve toolbar view @xieyhn 
+* fix: option search not case sensitive ([#892](https://github.com/apitable/apitable/pull/892)) @wangkailang 
+* fix: components unit test error ([#867](https://github.com/apitable/apitable/pull/867)) @GreenMashimaro 
+* fix/tooltip-flicker @wangkailang 
+* fix: improve toolbar view ([#869](https://github.com/apitable/apitable/pull/869)) @JaneSu 
+
+### What's more
+
+* docs: remove databus guide ([#873](https://github.com/apitable/apitable/pull/873)) @arucil 
+* docs: publish cookbook and self-hosted doc replace original developer guide ([#886](https://github.com/apitable/apitable/pull/886)) @mr-kelly 
+* New Crowdin updates ([#796](https://github.com/apitable/apitable/pull/796)) @mr-kelly 
+* chore: clarify title of issue templates ([#899](https://github.com/apitable/apitable/pull/899)) @arucil 
+* sync: hosted cloud ([#916](https://github.com/apitable/apitable/pull/916)) @yort-feng 
 ## [v0.21.0-rc](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc) (2023-05-29)
 
 
