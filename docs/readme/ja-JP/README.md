@@ -318,7 +318,6 @@ APITable use these common conventions:
 - Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - Rust Coding Guidelineとは何ですか? -> [Rust API ガイドライン](https://rust-lang.github.io/api-guidelines/about.html)
-- アーキテクチャ概要とは何ですか？ -> [APITable - アーキテクチャ概要を理解する](./docs/contribute/architecute-overview.md)
 
 ### 文書
 
@@ -353,7 +352,7 @@ APITable use these common conventions:
 - ChatGPT、Zapier、Slack、Google Workspaceなどに統合します。
 - ウォーターマーク
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 参加する
 
@@ -369,7 +368,7 @@ For more information on our product, including enterprise self-hosted license, p
 
 - **Full-stack 開発者**: React, NestJS, TypeScript, Spring Boot, Java, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
 - **バックエンド開発者**: NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraformの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
-- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 そして、明確なドキュメントと単体テストで高品質のコードを書くのが好きです。
+- **フロントエンド開発者**: React, NextJS, TypeScript, WebPackの経験があります。 And you like to write high quality code with clear documentation and unit tests.
 
 時間や状況に関係なく、APITableのチームに参加したい場合は、ためらわずに履歴書を talent@apitable.com に送信してください。
 
@@ -403,7 +402,7 @@ For more information on our product, including enterprise self-hosted license, p
     <img src="docs/static/screenshot-it.png" alt="APITableスクリーンショット画像" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="APITableスクリーンショット画像" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 ライセンス

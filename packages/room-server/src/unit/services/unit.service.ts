@@ -139,8 +139,18 @@ export class UnitService {
     return units.reduce<{ unitId: UnitInfoDto[] }[]>((pre, cur) => {
       if (!pre[cur.id]) pre[cur.id] = [];
       if (cur.unitType === MemberType.Member) {
+<<<<<<< HEAD
          // Process individual members in roles
         this.processMember(cur.unitRefId, members, memberUnits, pre, cur.id);
+=======
+        const user = members[cur.unitRefId];
+        const unit = memberUnits.find(t => t.unitRefId === cur.unitRefId);
+        pre[cur.id] = [{
+          name: user?.name,
+          unitId: unit?.id,
+          userId: user?.userId,
+        }];
+>>>>>>> 29caf6135b5557bd4b3183072585c1d08ff250a7
       } else if (cur.unitType === MemberType.Team) {
         // Process team members
         this.processTeamMembers(teamMembers, members, memberUnits, teamIdSubTeamIdsMap, cur.unitRefId, cur.id, pre);

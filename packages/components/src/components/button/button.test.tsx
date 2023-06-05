@@ -20,7 +20,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
 import * as stories from './button.stories';
-import { blackBlue, deepPurple } from '../../colors';
+import { black, deepPurple } from '../../colors';
 import { convertHexToRGB } from '../../helper';
 
 const {
@@ -100,7 +100,7 @@ describe('Button test', () => {
     render(<PrimaryButton/>);
     const buttonElement = screen.getByRole('button');
     const styles = getComputedStyle(buttonElement);
-    const targetColor = convertHexToRGB(blackBlue[100]);
+    const targetColor = convertHexToRGB(black[50]);
     expect(styles.color).toBe(targetColor);
   });
 

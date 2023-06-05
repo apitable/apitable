@@ -10463,10 +10463,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/qs@npm:*, @types/qs@npm:^6.9.4, @types/qs@npm:^6.9.5":
+"@types/qs@npm:*, @types/qs@npm:^6.9.5":
   version: 6.9.7
   resolution: "@types/qs@npm:6.9.7"
   checksum: 7fd6f9c25053e9b5bb6bc9f9f76c1d89e6c04f7707a7ba0e44cc01f17ef5284adb82f230f542c2d5557d69407c9a40f0f3515e8319afd14e1e16b5543ac6cdba
+  languageName: node
+  linkType: hard
+
+"@types/qs@npm:^6.9.4":
+  version: 6.9.6
+  resolution: "@types/qs@npm:6.9.6"
+  checksum: 01871b1cf7062717ec76fcb9b29ddae1e04fcfadc1c76d86ec2571e72f27bf09ff31b094b295be8d4ca664aeec9b8965563680b31fcab7aba1ed93afac5181cd
   languageName: node
   linkType: hard
 
@@ -17462,6 +17469,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"denque@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "denque@npm:2.1.0"
+  checksum: 1d4ae1d05e59ac3a3481e7b478293f4b4c813819342273f3d5b826c7ffa9753c520919ba264f377e09108d24ec6cf0ec0ac729a5686cbb8f32d797126c5dae74
+  languageName: node
+  linkType: hard
+
 "depd@npm:2.0.0, depd@npm:^2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
@@ -19506,10 +19520,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter2@npm:6.4.9, eventemitter2@npm:^6.4.3, eventemitter2@npm:^6.4.4":
+"eventemitter2@npm:6.4.9":
   version: 6.4.9
   resolution: "eventemitter2@npm:6.4.9"
   checksum: be59577c1e1c35509c7ba0e2624335c35bbcfd9485b8a977384c6cc6759341ea1a98d3cb9dbaa5cea4fff9b687e504504e3f9c2cc1674cf3bd8a43a7c74ea3eb
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:^6.4.3":
+  version: 6.4.4
+  resolution: "eventemitter2@npm:6.4.4"
+  checksum: b5e707039973d5a770bc4c64255604df66df3a1f63389dccb7118af163b9f790ca7596463d7868426339301ad9de5ef1c3f4a9c7ac3b93874c5ca792916dede1
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:^6.4.4":
+  version: 6.4.5
+  resolution: "eventemitter2@npm:6.4.5"
+  checksum: 84504f9cf0cc30205cdd46783fe9df3733435e5097f13070b678023110b5ef07847651808ae280cd94c42cd5976880211c7a40321a8ff8fa56f7c5f9c5c11960
   languageName: node
   linkType: hard
 
@@ -21498,6 +21526,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"glob@npm:^8.0.3":
+  version: 8.1.0
+  resolution: "glob@npm:8.1.0"
+  dependencies:
+    fs.realpath: ^1.0.0
+    inflight: ^1.0.4
+    inherits: 2
+    minimatch: ^5.0.1
+    once: ^1.3.0
+  checksum: 92fbea3221a7d12075f26f0227abac435de868dd0736a17170663783296d0dd8d3d532a5672b4488a439bf5d7fb85cdd07c11185d6cd39184f0385cbdfb86a47
+  languageName: node
+  linkType: hard
+
 "global-dirs@npm:^0.1.0, global-dirs@npm:^0.1.1":
   version: 0.1.1
   resolution: "global-dirs@npm:0.1.1"
@@ -23056,6 +23097,23 @@ fsevents@^1.2.7:
   linkType: hard
 
 "ioredis@npm:^5.2.3, ioredis@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "ioredis@npm:5.3.2"
+  dependencies:
+    "@ioredis/commands": ^1.1.1
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.4
+    denque: ^2.1.0
+    lodash.defaults: ^4.2.0
+    lodash.isarguments: ^3.1.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 9a23559133e862a768778301efb68ae8c2af3c33562174b54a4c2d6574b976e85c75a4c34857991af733e35c48faf4c356e7daa8fb0a3543d85ff1768c8754bc
+  languageName: node
+  linkType: hard
+
+"ioredis@npm:^5.3.2":
   version: 5.3.2
   resolution: "ioredis@npm:5.3.2"
   dependencies:
@@ -27584,7 +27642,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"makeerror@npm:1.0.12":
+"makeerror@npm:1.0.12, makeerror@npm:1.0.x":
   version: 1.0.12
   resolution: "makeerror@npm:1.0.12"
   dependencies:
@@ -29373,7 +29431,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7, node-fetch@npm:~2.6.1":
+"node-fetch@npm:^2.6.0":
   version: 2.6.11
   resolution: "node-fetch@npm:2.6.11"
   dependencies:
@@ -29384,6 +29442,41 @@ fsevents@^1.2.7:
     encoding:
       optional: true
   checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "node-fetch@npm:2.6.1"
+  checksum: 91075bedd57879117e310fbcc36983ad5d699e522edb1ebcdc4ee5294c982843982652925c3532729fdc86b2d64a8a827797a745f332040d91823c8752ee4d7c
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:~2.6.1":
+  version: 2.6.9
+  resolution: "node-fetch@npm:2.6.9"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: acb04f9ce7224965b2b59e71b33c639794d8991efd73855b0b250921382b38331ffc9d61bce502571f6cc6e11a8905ca9b1b6d4aeb586ab093e2756a1fd190d0
   languageName: node
   linkType: hard
 

@@ -81,7 +81,7 @@
   
   <tr>
     <th>
-      <a href="#">多用户實時協作</a>
+      <a href="#">Realtime Collaboration</a>
     </th>
     <th>
       <a href="#">自動生成表單</a>
@@ -104,7 +104,7 @@
 
   <tr>
     <th>
-      <a href="#">一鍵生成API</a>
+      <a href="#">API-first Panel</a>
     </th>
     <th>
       <a href="#">無限跨表關聯</a>
@@ -129,7 +129,7 @@
       <a href="#">強大的行/列權限</a>
     </th>
     <th>
-      <a href="#">自由嵌入</a>
+      <a href="#">Embed</a>
     </th>
   </tr>
 
@@ -153,7 +153,7 @@
 - 先進技術與開源
   - `實時合作` 允許多個用戶實時或與 `操作轉換(OT)` 算法同時進行編輯
   - 在 `中極其順暢、方便用戶、超快的數據庫電子表格接口<canvas> 渲染引擎`
-  - 數據庫原生架構：支持變更集/SQL命令操作/SQL函數/快照等。
+  - Database native architecture: Changeset / Operation / Action / Snapshot and so on.
   - **100k+** 資料列數和實時協作
   - 完全 API 訪問，包括 `數據` 甚至 `元數據`
   - 單向/雙向表連結和 `無限交叉連結`
@@ -165,19 +165,19 @@
   - `黑暗模式` 和個性化主題定製
   - `7 種視圖類型`: 網格（數據表）/圖片庫/思維導圖/看板/全功能甘特圖/日曆等
   - 一鍵生成 API 界面
-- 開箱即用
+- Batteries included
   - 內置的 10 + 官方模板
-  - 可用的自定義機器人和自動化
+  - Robot Automation and customization available.
   - BI 商業儀表板
-  - 一鍵生成表單
+  - One-click auto-generated form
   - 可共享和嵌入頁面
   - 支持多語言
   - 與 n8n.io / Zapier / Appsmith... 和更多集成
 - 卓越的擴展性
   - 可擴展的 `小部件系統` ，包含超過 20 個官方開源部件
-  - 可定製的圖形 & 圖表 & 儀錶板
+  - Customizable Graph & Chart & Dashboard
   - 可自定義數據列類型
-  - 可自定義方程式
+  - Customizable Formulas
   - 可定製自動機器人操作
 - 企業級權限
   - `鏡像`，將視圖鏡像化以實現權限至每列
@@ -190,7 +190,7 @@
   - 單點登錄（SSO）
   - 審計
   - 數據庫自動備份
-  - 數據導出
+  - Data Exporter
   - 水印
 - ....
 
@@ -201,15 +201,15 @@
 為什麼您必須知道 APITable 並作為你的下一個軟件？
 
 - 作為超級管理軟件
-  - 靈活的專案、任務和問題管理系統
+  - Flexible Project Management & Tasks / Issues Management.
   - 市場領先的管理軟件
   - 最靈活和可連接CRM
   - 最靈活的商業智能 (BI)
-  - 人性化表單和問卷
-  - 最靈活的企業資源規劃 (ERP)
+  - People-Friendly Forms and Surveys
+  - Flexible ERP.
   - 低代碼甚至無代碼平台
   - ...及更多，APITable 將 1000 個軟件放入您的口袋中
-- 作為可視化數據庫的基礎架構
+- As a visual database infrastructure
   - **嵌入** APITable 圖表到您自己的軟件中
   - 使用 REST API 可視化數據庫
   - 管理員儀表板
@@ -228,13 +228,13 @@
 
 APITable 將提供一個數據表查詢語言(DQL)來查詢您的數據庫電子表格內容。
 
-## 💝 自由嵌入
+## 💝 Embed-friendly
 
 #### 分享和嵌入
 
 分享您的數據表或文件夾。 通過複製和粘貼HTML腳本嵌入它們。
 
-#### 商業化嵌入
+#### Enterprise-ready Embedding
 
 [APITable.com](https://apitable.com) 為商業化用户提供更多嵌入功能。
 
@@ -243,7 +243,7 @@ APITable 將提供一個數據表查詢語言(DQL)來查詢您的數據庫電子
 開始之前，您需要準備：
 * 已安裝 [docker](https://docs.docker.com/engine/install/) 和 [docker-compose v2](https://docs.docker.com/engine/install/) 的環境
 * 推薦硬體配備 4 CPUs/8GB RAM 或更多
-* 已安裝配備一般功能（例如能執行 curl）的命令行界面程式
+* A bash shell with basic utilities like curl installed.
 * 本項目尚未對原生 arm64 (apple silicon) 進行最佳化，可能存在效能問題
 
 如要使用 docker compose 安裝 APITable，打開命令行界面程式，並運行：
@@ -268,14 +268,14 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 歡迎並感謝您有興趣為APITable作出貢獻！
 
-除了編寫程式外，還有許多途徑為我們提供幫助
+In addition to writing code, there are many ways for you to contribute.
 
 您可以：
 - 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) 並協助翻譯
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
 - 創建 [文檔](./docs)
-- [編寫程式](./docs/contribute/developer-guide.md)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 比如下面的：
@@ -283,7 +283,7 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 - 創建 [Issues](https://github.com/apitable/apitable/issues/new/choose)
 - 關注我們的 [Twitter](https://twitter.com/apitable_com)
 - 創建 [文檔](./docs)
-- [編寫程式](./docs/contribute/developer-guide.md)
+- [Contributing Code](./docs/contribute/developer-guide.md)
 
 
 你可以閱讀這個存儲庫的 [貢獻指南](./CONTRIBUTING.md) 來學習如何貢獻。
@@ -318,9 +318,8 @@ APITable 使用以下常見約定：
 - 我們的 Java 編碼規範是什麼？ [Java 編碼準則](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 我們的 TypeScript 編碼規範是什麼？ -> [TypeScript 樣式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - 我們的 Java 編碼規範是什麼？ -> [Rust API 指南](https://rust-lang.github.io/api-guidelines/about.html)
-- 我們的技術架構是什麼？ -> [瞭解 APITable - 技術架構](./docs/contribute/architecute-overview.md)
 
-### 文檔
+### Documentations
 
 - [幫助中心](https://help.apitable.com/)
 - [👩‍💻 開發者中心](https://developers.apitable.com/)
@@ -329,31 +328,31 @@ APITable 使用以下常見約定：
   - [Scripting Widget](https://developers.apitable.com/script/introduction/)
 - [Design System](https://figma.com/@apitable)
 
-## 🛣 路線圖
+## 🛣 Roadmap
 
 可參考[路線圖](https://apitable.com/roadmap)
 
 ### 未來的功能
 
 - 重碼生成器介面
-- 可嵌入第三方文檔
-- 類SQL領域特性編程
-- 身份供應商（IdP）
+- Embeddable 3rd party documentation components
+- SQL-like Domain-Specific Languages
+- As an IdP
 - 進階自動化機器人
 - Web 3 功能
 - ...
 
 ### 託管版本和企業版本提供高級功能
 
-- 作為身份供應商（IdP）
+- As an IdP;
 - SAML
-- 單點登錄
+- Single-Sign-On
 - 審計
 - 數據庫備份
 - 與 ChatGPT, Zapier, Slack, Google Workspace…… 整合
 - 水印
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 獲得參與
 
@@ -373,7 +372,7 @@ For more information on our product, including enterprise self-hosted license, p
 
 不論任何時間或條件，如果您想加入 APITable 的團隊，請傳送您的個人 CV 到 <talent@apitable.com>。
 
-## 📺 軟件截圖
+## 📺 Screenshot
 
 <p align="center">
     <img src="docs/static/screenshot-realtime.png" alt="APITable 界面截圖" />
