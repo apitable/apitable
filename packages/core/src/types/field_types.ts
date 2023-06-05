@@ -17,7 +17,7 @@
  */
 
 import { t, Strings } from 'exports/i18n';
-import type { IFilterInfo, ISortInfo } from './view_types';
+import type { IFilterInfo } from './view_types';
 
 /* eslint-disable */
 export type ITextFieldProperty = null;
@@ -91,11 +91,6 @@ export enum RollUpFuncType {
   ARRAYCOMPACT = 'ARRAYCOMPACT',
 }
 
-export enum LookUpLimitType {
-  'ALL' = 'ALL',
-  'FIRST' = 'FIRST',
-}
-
 export interface ILookUpProperty {
   datasheetId: string;
   relatedLinkFieldId: string;
@@ -103,9 +98,7 @@ export interface ILookUpProperty {
   rollUpType?: RollUpFuncType;
   formatting?: IComputedFieldFormattingProperty;
   filterInfo?: IFilterInfo;
-  openFilterSort?: boolean;
-  sortInfo?: ISortInfo;
-  lookUpLimit?: LookUpLimitType;
+  openFilter?: boolean;
 }
 
 export interface ITextField extends IBaseField {

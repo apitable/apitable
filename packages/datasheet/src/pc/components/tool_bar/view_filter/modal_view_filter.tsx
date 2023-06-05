@@ -89,7 +89,7 @@ const ViewFilterBase: React.FC<React.PropsWithChildren<IViewFilter>> = props => 
   }
 
   return (
-    <div className={styles.viewFilter}>
+    <div className={styles.viewFilter} style={{ width: 670 }}>
       <ConditionList
         filterInfo={filterInfo}
         fieldMap={fieldMap}
