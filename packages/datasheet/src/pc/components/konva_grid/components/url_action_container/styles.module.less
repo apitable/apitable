@@ -1,15 +1,24 @@
 .pc {
+  width: 320px;
   position: absolute;
   z-index: 1;
-  background: var(--bgCommonDefault);
+  background: var(--bgCommonHigh);
   padding: 16px;
   border-radius: 8px;
-  box-shadow: var(--shadowCommonHighest);
+  box-shadow: var(--shadowCommonHigh);
   .link {
+    display: flex;
     &:hover {
       svg {
         fill: var(--textBrandHover);
       }
+    }
+  }
+  .text,
+  .title {
+    height: 32px;
+    input {
+      padding: 0;
     }
   }
 }
