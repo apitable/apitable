@@ -36,7 +36,7 @@ export class DashboardController {
     private readonly nodeShareSettingService: NodeShareSettingService,
   ) { }
 
-  @Get(['dashboards/:dashboardId/dataPack', 'dashboard/:dashboardId/dataPack'])
+  @Get('dashboards/:dashboardId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getDatePack(@Headers('cookie') cookie: string,
                     @Headers('token') token: string,
@@ -47,7 +47,7 @@ export class DashboardController {
     return await this.dashboardService.fetchDashboardPack(dashboardId, { token, cookie });
   }
 
-  @Get(['shares/:shareId/dashboards/:dashboardId/dataPck', 'share/:shareId/dashboard/:dashboardId/dataPck'])
+  @Get('shares/:shareId/dashboards/:dashboardId/dataPck')
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDashboardPack(
     @Headers('cookie') cookie: string,
@@ -60,7 +60,7 @@ export class DashboardController {
     return await this.dashboardService.fetchShareDashboardPack(shareId, dashboardId, { token, cookie });
   }
 
-  @Get(['templates/:templateId/dashboards/:dashboardId/dataPck', 'template/:templateId/dashboard/:dashboardId/dataPck'])
+  @Get('templates/:templateId/dashboards/:dashboardId/dataPck')
   async getTemplateDashboardPack(
     @Headers('cookie') cookie: string,
     @Headers('token') token: string,
