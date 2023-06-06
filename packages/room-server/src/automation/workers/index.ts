@@ -15,24 +15,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-<<<<<<<< HEAD:apitable/packages/room-server/src/shared/services/jaeger/jaeger.dynamic.module.ts
-import { OpenTelemetryModule } from '@metinseylan/nestjs-opentelemetry';
-import { DynamicModule, Module } from '@nestjs/common';
-import openTelemetryConfiguration from '../config/open.telemetry.config.service';
-
-
-@Module({})
-export class JaegerDynamicModule {
-  static async register(enabled: boolean): Promise<DynamicModule> {
-    if (!enabled) {
-      return {
-        module: JaegerDynamicModule
-      };
-    }
-    return await OpenTelemetryModule.forRoot(openTelemetryConfiguration);
-  }
-}
-========
 export * from './action.worker';
 export * from './flow.worker';
->>>>>>>> ec418b506563e0bc9d8d2700b1a5af5f7bd2537b:apitable/packages/room-server/src/automation/workers/index.ts

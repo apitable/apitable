@@ -15,14 +15,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-<<<<<<<< HEAD:apitable/packages/core/src/modules/enterprise/index.ts
-
-export {};
-
-export type StringSaaSKeysMapType = {};
-
-export type StringSaaSKeysType = {};
-========
 export const FLOW_QUEUE = 'FLOW_QUEUE';
 export const ACTION_QUEUE = 'ACTION_QUEUE';
->>>>>>>> ec418b506563e0bc9d8d2700b1a5af5f7bd2537b:apitable/packages/room-server/src/automation/constants/queue.name.ts
