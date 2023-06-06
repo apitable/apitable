@@ -125,7 +125,7 @@ export class DatasheetController {
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
 
-  @Get(['datasheets/:dstId/record/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
+  @Get(['datasheets/:dstId/records/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
   async getCommentByIds(
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,

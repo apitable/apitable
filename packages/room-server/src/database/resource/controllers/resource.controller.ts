@@ -50,7 +50,6 @@ export class ResourceController {
     private readonly otService: OtService,
   ) {}
 
-  // TODO(Chambers): deprecate revisions parameter
   @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
   async getChangesetList(
     @Headers('cookie') cookie: string,
