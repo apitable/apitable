@@ -70,4 +70,11 @@ export class UnitRepository extends Repository<UnitEntity> {
     await queryRunner.release();
     return unitInfo;
   }
+
+  /**
+   * get units by unit ref Ids
+   */
+  public async selectUnitsByUnitRefIds(unitRefIds: number[]): Promise<UnitEntity[]> {
+    return await this.find({ select: ['id', 'unitType', 'unitRefId'], where: { unitRefId: In(unitRefIds) }});
+  }
 }

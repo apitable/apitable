@@ -13,6 +13,7 @@ export interface ICascaderEditorProps extends IBaseEditorProps {
   editing: boolean;
   editable: boolean;
   toggleEditing?: (next?: boolean) => void;
+  showSearch?: boolean;
 }
 
 const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps> = ({
@@ -25,6 +26,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
   toggleEditing,
   onSave,
   editable,
+  showSearch = true,
 }, ref) => {
   const cascaderRef = useRef<any>(null);
 
@@ -95,6 +97,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
     >
       <div className={classNames(styles.cascaderContainer, 'cascaderContainer')}>
         <Cascader
+          showSearch={showSearch}
           loading={loading}
           onChange={onChange}
           options={options}

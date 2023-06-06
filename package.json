@@ -48,15 +48,16 @@
     "link:widget": "yarn workspace @apitable/core link && yarn workspace @apitable/widget-sdk link && yarn workspace @apitable/components link && yarn workspace @apitable/icons",
     "postinstall": "cd .. && husky install apitable/.husky",
     "stylelint:datasheet": "yarn workspace @apitable/datasheet stylelint",
-    "lint": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
+    "lint": "NODE_OPTIONS=--max-old-space-size=8192 eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
     "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif",
     "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
-    "packages/datasheet/src/**/*.{css,less,scss}": "yarn stylelint:datasheet",
-    "packages/*/(src|pages)/**/!(*system_config.interface|strings.interface).{ts,tsx}": "eslint --fix --no-cache"
+    "packages/*/(src|pages)/**/!(*system_config.interface|strings.interface).{ts,tsx}": [
+      "eslint --fix --debug"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -102,7 +103,9 @@
   },
   "resolutions": {
     "webpack": "4.44.2",
-    "winston@^3.8.2": "patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch"
+    "winston@^3.8.2": "patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch",
+    "node-gyp": "9.3.1",
+    "@nestjs/microservices@^8.1.1": "8.1.2"
   },
   "bin": "packages/room-server/dist/main.js",
   "pkg": {

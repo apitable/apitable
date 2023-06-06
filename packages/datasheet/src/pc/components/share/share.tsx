@@ -36,8 +36,6 @@ import { IShareSpaceInfo } from './interface';
 import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
-// @ts-ignore
-import { isEnterprise } from 'enterprise';
 import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
 import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
 import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';

@@ -8,6 +8,7 @@ export interface API {
 
 export interface Tips {
     api_add_row_failed_wrong_length_of_value:             APIAddRowFailedWrongLengthOfValueClass;
+    api_attachment_file_size_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_dashboard_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_exist:                              APIAddRowFailedWrongLengthOfValueClass;
     api_datasheet_not_visible:                            APIAddRowFailedWrongLengthOfValueClass;
@@ -45,6 +46,7 @@ export interface Tips {
     api_param_embed_link_id_not_empty:                    APIAddRowFailedWrongLengthOfValueClass;
     api_param_embed_permission_type_error:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_form_btn_type_error:                        APIAddRowFailedWrongLengthOfValueClass;
+    api_param_form_setting_btn_type_error:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_error:                              APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_function_content_empty:             APIAddRowFailedWrongLengthOfValueClass;
     api_param_formula_function_err_end_of_right_bracket:  APIAddRowFailedWrongLengthOfValueClass;

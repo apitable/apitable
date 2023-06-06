@@ -17,8 +17,8 @@
  */
 
 import { Field, FieldType, getTextFieldType, ISegment, KONVA_DATASHEET_ID, SegmentType } from '@apitable/core';
-import { AddOutlined, EmailOutlined, LinkOutlined, TelephoneOutlined } from '@apitable/icons';
-import { Icon, Text } from 'pc/components/konva_components';
+import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined } from '@apitable/icons';
+import { Icon, Image, Rect, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { FC, useContext, useState } from 'react';
@@ -26,14 +26,15 @@ import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE } from '../../../constan
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { IRenderContentBase } from '../interface';
+import * as React from 'react';
 
 // IconPath
 const ColumnEmailNonzeroFilledPath = EmailOutlined.toString();
-const ColumnUrlOutlinedPath = LinkOutlined.toString();
+const ColumnEditOutlinedPath = EditOutlined.toString();
 const ColumnPhoneFilledPath = TelephoneOutlined.toString();
 
 const enhanceTextIconMap = {
-  [FieldType.URL]: ColumnUrlOutlinedPath,
+  [FieldType.URL]: ColumnEditOutlinedPath,
   [FieldType.Email]: ColumnEmailNonzeroFilledPath,
   [FieldType.Phone]: ColumnPhoneFilledPath,
 };
@@ -53,7 +54,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     toggleEdit,
   } = props;
   const [isAddIconHover, setAddIconHover] = useState(false);
-  const { theme, setTooltipInfo, clearTooltipInfo } = useContext(KonvaGridContext);
+  const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
   const { isEnhanceText } = getTextFieldType(fieldType);
@@ -70,9 +71,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const handleURLClick = (type: SegmentType | FieldType, text: string, active?: boolean) => {
     if (!active) return;
 
-    const isRecogURLFlag = field.type === FieldType.URL && field.property?.isRecogURLFlag;
-
-    _handleEnhanceTextClick(type, isRecogURLFlag ? Field.bindModel(field).cellValueToURL(cellValue as ISegment[]) || '' : text);
+    _handleEnhanceTextClick(type, field.type === FieldType.URL ? Field.bindModel(field).cellValueToURL(cellValue as ISegment[]) || '' : text);
   };
 
   const onMouseEnter = (item: {
@@ -82,13 +81,13 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     width: number;
     linkUrl: string | null;
   }) => {
-    if (field.type === FieldType.URL && field.property?.isRecogURLFlag && !!cellValue) {
+    if (field.type === FieldType.URL && !!cellValue) {
       const { offsetX: innerX, offsetY: innerY, width } = item;
-      let text = '';
-      if (field.type === FieldType.URL && field.property?.isRecogURLFlag) {
+      let text: string;
+      if (field.type === FieldType.URL) {
         text = Field.bindModel(field).cellValueToURL(cellValue)!;
       } else {
-        text = Field.bindModel(field).cellValueToString(cellValue as ISegment[]) || '';
+        text = Field.bindModel(field).cellValueToString(cellValue as any) || '';
       }
 
       setTooltipInfo({
@@ -103,9 +102,33 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   };
 
   const AddOutlinedPath = AddOutlined.toString();
+  const favicon = (renderContent as IRenderContentBase | null)?.favicon;
 
   const renderText = () => {
-    if (renderContent == null) return null;
+    if (renderContent == null) {
+      if (field.type !== FieldType.URL) {
+        return null;
+      }
+      return (
+        <Icon
+          name={name}
+          x={columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING - 4}
+          y={24 - GRID_ICON_COMMON_SIZE}
+          size={GRID_ICON_COMMON_SIZE}
+          backgroundWidth={24}
+          backgroundHeight={20}
+          background={colors.defaultBg}
+          data={enhanceTextIconMap[fieldType]}
+          onClick={() => setActiveUrlAction(true)}
+          onTap={() => setActiveUrlAction(true)}
+          scaleX={0.8}
+          scaleY={0.8}
+          transformsEnabled={'all'}
+          listening
+        />
+      );
+
+    }
     const { width, height, text: entityText, textData, style } = renderContent as IRenderContentBase;
     const linkEnable = style?.textDecoration === 'underline';
     const commonProps = {
@@ -115,6 +138,14 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
       verticalAlign: 'top',
       align: style?.textAlign || 'left',
       fontStyle: style?.fontWeight || 'normal',
+    };
+
+    const handleClick = () => {
+      if (field.type === FieldType.URL) {
+        setActiveUrlAction(true);
+      } else {
+        handleURLClick(fieldType, entityText, isActive);
+      }
     };
 
     return (
@@ -165,8 +196,8 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             backgroundHeight={20}
             background={colors.defaultBg}
             data={enhanceTextIconMap[fieldType]}
-            onClick={() => handleURLClick(fieldType, entityText, isActive)}
-            onTap={() => handleURLClick(fieldType, entityText, isActive)}
+            onClick={() => handleClick()}
+            onTap={() => handleClick()}
             scaleX={0.8}
             scaleY={0.8}
             transformsEnabled={'all'}
@@ -204,6 +235,29 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           onTap={toggleEdit}
         />
       }
+      {Boolean(favicon) && (
+        <>
+          <Rect
+            x={GRID_CELL_VALUE_PADDING}
+            y={5}
+            width={20}
+            height={20}
+            fillEnabled={false}
+            stroke={colors.borderCommonDefault}
+            strokeWidth={1}
+            cornerRadius={4}
+            listening={false}
+          />
+          <Image
+            url={favicon!}
+            x={GRID_CELL_VALUE_PADDING}
+            y={5}
+            width={20}
+            height={20}
+            alt="url favicon"
+          />
+        </>
+      )}
       {
         isActive &&
         renderText()

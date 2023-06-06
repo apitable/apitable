@@ -24,13 +24,13 @@ import optionalStyle from 'pc/components/multi_grid/cell/optional_cell_container
 import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import { ButtonPlus } from 'pc/components/common';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { ICellComponentProps } from 'pc/components/multi_grid/cell/cell_value/interface';
 import { OptionalCellContainer } from 'pc/components/multi_grid/cell/optional_cell_container/optional_cell_container';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { difference, keyBy } from 'lodash';
 import { store } from 'pc/store';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
+import { MouseDownType } from '../../../../multi_grid';
 
 interface ICellMemberProps {
   keyPrefix?: string;
@@ -41,13 +41,13 @@ interface ICellMemberProps {
 
 export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & ICellMemberProps>> = props => {
   const {
-    cellValue: cellValueIncludeOldData, 
-    field, 
+    cellValue: cellValueIncludeOldData,
+    field,
     unitMap,
-    isActive, 
-    onChange, 
-    toggleEdit, 
-    readonly, 
+    isActive,
+    onChange,
+    toggleEdit,
+    readonly,
     className,
     deletable = true,
     style,
@@ -113,7 +113,7 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & 
           return (
             <MemberItem unitInfo={unitMap[item]} key={index}>
               {
-                showDeleteButton() ? 
+                showDeleteButton() ?
                   <div
                     className={styles.iconDelete}
                     onClick={e => deleteItem(e, index)}

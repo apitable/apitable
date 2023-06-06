@@ -29,19 +29,19 @@ import {
   ICell,
   ICellValue,
   IField,
+  IHyperlinkSegment,
   IRange,
   IRecord,
   IRecordAlarmClient,
   ISelection,
+  isUrl,
   Range,
   RangeDirection,
+  SegmentType,
   Selectors,
   StoreActions,
   Strings,
   t,
-  IHyperlinkSegment,
-  isUrl,
-  SegmentType,
   ViewType
 } from '@apitable/core';
 
@@ -51,15 +51,24 @@ import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_r
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { printableKey, recognizeURLAndSetTitle, IURLMeta } from 'pc/utils';
+import { IURLMeta, printableKey, recognizeURLAndSetTitle } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 
-import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-
 import * as React from 'react';
+import {
+  ClipboardEvent,
+  forwardRef,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { stopPropagation } from '../../utils/dom';
-import { attachEventHoc, IEditorContainerOwnProps } from './attach_event_hoc';
+import { IEditorContainerOwnProps } from './attach_event_hoc';
 import { AttachmentEditor } from './attachment_editor';
 import { CheckboxEditor } from './checkbox_editor';
 import { DateTimeEditor } from './date_time_editor';
@@ -158,14 +167,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const editorY = !editing ? 0 : -scrollTop!;
   const editorRef = useRef<IEditor | null>(null);
   /**
-   * activeCellRef exists to address single-multi-select, member fields that are interacted with via pop-up components, 
+   * activeCellRef exists to address single-multi-select, member fields that are interacted with via pop-up components,
    * notable for their ability to switch between editing and !
-   * The flow is such that clicking on a different cell saves the data of the previous cell -> activates the next cell, 
+   * The flow is such that clicking on a different cell saves the data of the previous cell -> activates the next cell,
    * clicking on itself should not change it
-   * Another special feature of single-multi-selection is that the editing component is not hovered over the corresponding cell, 
-   * so that every click on the cell triggers the normal flow described above, 
+   * Another special feature of single-multi-selection is that the editing component is not hovered over the corresponding cell,
+   * so that every click on the cell triggers the normal flow described above,
    * the editing state switch is broken and the component can never be displayed properly.
-   * So you need a value to remember who the 'last' cell was, so that for single and multiple selections, 
+   * So you need a value to remember who the 'last' cell was, so that for single and multiple selections,
    * you can tell if you are clicking on the same cell again and stop the editing state switching from being broken
    *
    */
@@ -289,7 +298,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   useEffect(() => {
-   
+
     if (selection?.ranges || selection?.recordRanges) {
       focus();
     }
@@ -298,7 +307,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useEffect(() => {
     /**
-     * 
+     *
      * sendCursor > room-server > broadcast ENGAGEMENT_CURSOR >
      * client on ENGAGEMENT_CURSOR > handleCursor > dispatch(cursorMove)
      */
@@ -316,10 +325,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       });
     }
   }, [collaborators.length, datasheetId, field, record, viewId, recordEditable]);
- 
+
   const getCellRelativeRect = (cell: ICell) => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
-    
+
     if (!containerDom || !cell) {
       return null;
     }
@@ -336,7 +345,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           if (delta < containerSize - selfSize) {
             return delta;
           }
-        
+
           return containerSize - selfSize - safeBorder;
         }
         return safeBorder;
@@ -530,7 +539,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     const state = store.getState();
     const depthBreakpoints = groupSketch.getDepthGroupBreakPoints() || [];
     const newRange = Range.bindModel(selectionRange).move(state, direction, depthBreakpoints);
-    
+
     if (activeCell && newRange) {
       const scroll2cell = Range.bindModel(newRange).getDiagonalCell(state, activeCell);
       if (scroll2cell) {
@@ -548,7 +557,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   /**
    * Currently, cellMove is only restricted by grouping at the end of editing and does not affect other operations
    *  (e.g. moving up, down, left, right, left)
-   * @param direction 
+   * @param direction
    * @param isCheckGroup
    */
   const cellMove = (direction: CellDirection, isCheckGroup = false) => {
@@ -717,7 +726,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         fieldId: field.id,
         alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
       });
- 
+
     } else {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
@@ -730,7 +739,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         }],
       });
     }
-    
+
     if (activeView && activeView.type === ViewType.Gantt) {
       const { linkFieldId, endFieldId } = activeView?.style;
       if (!(linkFieldId && endFieldId === field.id)) return;
@@ -800,7 +809,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
-        return <EnhanceTextEditor style={editorRect} ref={editorRef} {...commonProps} />;
+        return <EnhanceTextEditor style={editorRect} ref={editorRef} recordId={record.id} {...commonProps} />;
       case FieldType.Rating:
         return <RatingEditor style={editorRect} ref={editorRef} cellValue={cellValue} {...commonProps} />;
       case FieldType.Checkbox:
@@ -878,4 +887,3 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
 export const PureEditorContainer = React.memo(forwardRef(EditorContainerBase));
 
-export const EditorContainer = attachEventHoc(PureEditorContainer);

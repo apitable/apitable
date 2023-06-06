@@ -20,7 +20,7 @@ import { getComputeRefManager } from 'compute_manager';
 import { evaluate, parse } from 'formula_parser/evaluate';
 import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { Functions } from 'formula_parser/functions';
-import { Strings, t } from '../../exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import Joi from 'joi';
 import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
@@ -32,10 +32,10 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { checkTypeSwitch, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getSnapshot } from '../../exports/store/selectors';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
-  INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType
+  INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType, LookUpLimitType
 } from '../../types/field_types';
 import {
   FilterConjunction, FOperator, FOperatorDescMap, IFilterCheckbox, IFilterCondition,
@@ -44,12 +44,13 @@ import {
 import { ICellToStringOption, ICellValue, ICellValueBase, ILookUpValue } from '../record';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField, Field, ICellApiStringValueOptions } from './field';
+import { ArrayValueField, Field } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
+import { sortRowsBySortInfo } from 'exports/store/selectors';
 import {
   IOpenFilterValue, IOpenFilterValueBoolean, IOpenFilterValueDataTime, IOpenFilterValueNumber,
   IOpenFilterValueString
@@ -105,6 +106,8 @@ export class LookUpField extends ArrayValueField {
       }))
     }),
     openFilter: Joi.boolean(),
+    lookupLimit: Joi.string(),
+    sortInfo: Joi.any(),
   }).required();
 
   validateProperty() {
@@ -560,7 +563,7 @@ export class LookUpField extends ArrayValueField {
       // console.log('Cannot find foreign key field', relatedLinkField);
       return [];
     }
-    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter } = this.field.property;
+    const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter, sortInfo, lookUpLimit } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
     // IDs of the associated table records
     let recordIDs = Selectors.getCellValue(
@@ -578,6 +581,14 @@ export class LookUpField extends ArrayValueField {
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
     if (openFilter) {
+      // magic reference sort
+      const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId);
+     
+      recordIDs = sortRows.filter((row: any) => recordIDs.includes(row.recordId)).map((row: any) => row.recordId);
+      
+      if (lookUpLimit === LookUpLimitType.FIRST && recordIDs.length > 1) { 
+        recordIDs = recordIDs.slice(0, 1);
+      }
       // magic reference filter
       recordIDs = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
         linkFieldRecordIds: recordIDs,
@@ -594,6 +605,18 @@ export class LookUpField extends ArrayValueField {
         datasheetId: foreignDatasheetId,
       };
     }) : [];
+  }
+
+  getSortLookup(sortInfo: any, datasheetId: any) {
+    const snapshot = this.state.datasheetMap[datasheetId]?.datasheet!.snapshot;
+    if (!snapshot) {
+      return [];
+    }
+    const rows = snapshot?.meta?.views[0]?.rows!;
+    if(!rows) {
+      return [];
+    }
+    return sortRowsBySortInfo(this.state, rows, sortInfo.rules, snapshot);
   }
 
   override isEmptyOrNot(operator: FOperator.IsEmpty | FOperator.IsNotEmpty, cellValue: ICellValue) {
@@ -768,7 +791,7 @@ export class LookUpField extends ArrayValueField {
     }
   }
 
-  cellValueToString(cellValue: ICellValue, options?: ICellToStringOption): string | null {
+  cellValueToString(cellValue: ICellValue, _options?: ICellToStringOption): string | null {
     if (cellValue == null) {
       return null;
     }
@@ -781,7 +804,7 @@ export class LookUpField extends ArrayValueField {
             return numberFormat(cellValue, this.field.property?.formatting);
           }
           case BasicValueType.DateTime:
-            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty, options?.userTimeZone);
+            return dateTimeFormat(cellValue, this.field.property.formatting as IDateTimeFieldProperty, getUserTimeZone(this.state));
           case BasicValueType.String:
           case BasicValueType.Array:
             return String(cellValue);
@@ -844,7 +867,7 @@ export class LookUpField extends ArrayValueField {
     return vArray == null ? null : vArray.join(', ');
   }
 
-  arrayValueToArrayStringValueArray(cellValue: any[] | null, options?: ICellToStringOption): (string | null)[] | null {
+  arrayValueToArrayStringValueArray(cellValue: any[] | null, _options?: ICellToStringOption): (string | null)[] | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -858,7 +881,7 @@ export class LookUpField extends ArrayValueField {
       // Date type should use the format configured by the lookup field
       if (basicValueType === BasicValueType.DateTime) {
         const formatting = this.field.property.formatting as IDateTimeFieldProperty || entityField.property;
-        return dateTimeFormat(value, formatting, options?.userTimeZone);
+        return dateTimeFormat(value, formatting, getUserTimeZone(this.state));
       }
 
       // The number|boolean type should use the format configured by the lookup field
@@ -999,7 +1022,7 @@ export class LookUpField extends ArrayValueField {
     return cellValue as any;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
+  cellValueToApiStringValue(cellValue: ICellValue): string | null {
     cellValue = handleNullArray(cellValue);
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
@@ -1008,7 +1031,7 @@ export class LookUpField extends ArrayValueField {
     if (entityField.type == FieldType.Member || entityField.type == FieldType.CreatedBy || entityField.type == FieldType.LastModifiedBy) {
       return Field.bindContext(entityField, this.state).cellValueToApiStringValue(cellValue as any);
     }
-    return this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone });
+    return this.cellValueToString(cellValue);
   }
 
   cellValueToOpenValue(cellValue: ICellValue): BasicOpenValueType | null {

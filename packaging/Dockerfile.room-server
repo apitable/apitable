@@ -66,6 +66,8 @@ RUN npm install pm2@latest --global  \
     && rm -fr packages/*/src \
     && rm -fr packages/room-native-api/src
 
+COPY packages/i18n-lang/src/config ./packages/i18n-lang/src/config
+
 # (room|socket):http
 EXPOSE 3001
 EXPOSE 3333

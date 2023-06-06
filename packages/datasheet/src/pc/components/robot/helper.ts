@@ -23,8 +23,9 @@ import {
 import { createElement } from 'react';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
+import { getEnvVariables } from 'pc/utils/env';
 import {
-  IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotBaseInfo, IRobotCardInfo, IRobotTrigger, ITriggerType
+  IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotBaseInfo, IRobotCardInfo, IRobotNodeType, IRobotTrigger, ITriggerType
 } from './interface';
 
 /**
@@ -43,7 +44,7 @@ export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
       value: 'triggerTypeId' in nodeType ? nodeType.triggerTypeId : nodeType.actionTypeId,
       label: nodeType.name,
       prefixIcon: createElement('img', {
-        src: integrateCdnHost(nodeType.service.logo),
+        src: integrateCdnHost(('triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
         style: {
           width: '16px',
           height: '16px',
@@ -98,7 +99,8 @@ export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerT
       if (triggerType) {
         robotCardInfo.nodeTypeList.push({
           nodeTypeId: node.triggerTypeId,
-          service: triggerType.service
+          service: triggerType.service,
+          type: IRobotNodeType.Trigger,
         });
       }
     } else {
@@ -106,7 +108,8 @@ export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerT
       if (actionType) {
         robotCardInfo.nodeTypeList.push({
           nodeTypeId: node.actionTypeId,
-          service: actionType.service
+          service: actionType.service,
+          type: IRobotNodeType.Action,
         });
       }
     }

@@ -8,14 +8,14 @@ import classNames from 'classnames';
 import { Strings, t } from '@apitable/core';
 
 export const PcCascader = (props: ICascader) => {
-  const { loading, options, onChange, editing, cascaderRef, ...rest } = props;
+  const { showSearch = true, loading, options, onChange, editing, cascaderRef, ...rest } = props;
 
   const [search, setSearch] = useState('');
 
   return (
     <AntCascader
       allowClear
-      showSearch
+      showSearch={showSearch}
       bordered={false}
       className={styles.cascader}
       dropdownRender={menus => options.length > 0 ? menus : (

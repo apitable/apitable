@@ -71,9 +71,7 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
     (src || '');
   const firstWord = getFirstWordFromString(title.trim());
   const avatarBg = (
-    avatarSrc ?
-      colors.defaultBg :
-      (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
+    avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0]
   );
 
   const renderer = () => {

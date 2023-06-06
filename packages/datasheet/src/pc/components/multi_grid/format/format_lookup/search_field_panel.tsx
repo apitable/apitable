@@ -193,18 +193,18 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
 
   return (
     <div className={styles.panel}>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         {
           t(showType === ShowType.LinkField ?
             Strings.lookup_link
             : Strings.check_field)
         }
-      </div>
-      {showType === ShowType.LinkField && (
+      </div> */}
+      {/* {showType === ShowType.LinkField && (
         <div className={styles.subtitle}>
           {t(Strings.lookup_modal_subtitle)}
         </div>
-      )}
+      )} */}
       <div className={styles.searchInPut}>
         <LineSearchInput
           placeholder={t(Strings.search_field)}

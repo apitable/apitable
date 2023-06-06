@@ -26,6 +26,7 @@ const memberField: IMemberField = {
   property: {
     isMulti: false, // Optional single or multiple members.
     shouldSendMsg: false, // Whether to send a message notification after selecting a member
+    subscription: false,
     unitIds: []
   }
 };
@@ -131,6 +132,7 @@ describe('Check member field property format', () => {
       property: {
         isMulti: false, // Optional single or multiple members.
         shouldSendMsg: false, // Whether to send a message notification after selecting a member
+        subscription: false,
       }
     } as any)).toEqual(false);
   });

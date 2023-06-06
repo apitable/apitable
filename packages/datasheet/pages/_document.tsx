@@ -33,7 +33,7 @@ interface IClientInfo {
 class MyDocument extends Document<IClientInfo> {
   static override async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
-    const initData = await getInitialProps({ ctx }) as any;
+    const initData = getInitialProps({ ctx }) as any;
     return {
       ...initialProps,
       ...initData,

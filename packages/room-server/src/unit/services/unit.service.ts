@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MemberType } from '@apitable/core';
+import { IUserValue, MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { UnitInfo } from 'database/interfaces';
 import { EnvConfigKey } from 'shared/common';
@@ -29,11 +29,17 @@ import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTeamService } from './unit.team.service';
+import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
+import { UnitTeamMemberRefRepository } from 'unit/repositories/unit.team.member.ref.repository';
+import { UnitEntity } from 'unit/entities/unit.entity';
+import { UnitTeamMemberRefEntity } from 'unit/entities/unit.team.member.ref.entity';
 
 @Injectable()
 export class UnitService {
   constructor(
     private readonly unitRepo: UnitRepository,
+    private readonly unitTeamMemberRefRepository: UnitTeamMemberRefRepository,
+    private readonly unitRoleMemberRepository: UnitRoleMemberRepository,
     private readonly memberService: UnitMemberService,
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
@@ -77,8 +83,8 @@ export class UnitService {
     const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
     const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
     const [members, teams] = await Promise.all([
-      this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]),
-      this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]),
+      this.memberService.getMembersBaseInfo(unitMemberRefIdMap[MemberType.Member]!),
+      this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]!),
     ]);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     return units.reduce<UnitInfoDto[]>((pre, cur) => {
@@ -102,6 +108,106 @@ export class UnitService {
       }
       return pre;
     }, []);
+  }
+
+  /**
+   * get All members by unitIds, include members from member, team and role
+   */
+  public async getMembersByUnitIds(spaceId: string, unitIds: string[]): Promise<{ unitId: UnitInfoDto[] }[]> {
+    const units = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
+    const unitMemberRefIdMap = this.getMemberRefIdMapFromUnities(units);
+    const roleMembers = await this.unitRoleMemberRepository.selectByRoleIds(unitMemberRefIdMap[MemberType.Role]!);
+    const memberIds = unitMemberRefIdMap[MemberType.Member]!;
+    // get teamIds from roles while role.unitType is UnitType.Team
+    const teamIds: string[] = [...unitMemberRefIdMap[MemberType.Team]!.map(t => String(t))];
+    roleMembers.forEach(roleMember => {
+      if (roleMember.unitType === MemberType.Team) {
+        teamIds.push(String(roleMember.unitRefId));
+      } else if (roleMember.unitType === MemberType.Member) {
+        memberIds.push(roleMember.unitRefId);
+      }
+    });
+    // get sub teamIds by teams
+    const { teamIdSubTeamIdsMap, subTeams } = await this.teamService.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, teamIds);
+    teamIds.push(...subTeams);
+    const teamMembers = await this.unitTeamMemberRefRepository.selectByTeamIds(teamIds);
+    teamMembers.forEach(teamMember => {
+      memberIds.push(teamMember.memberId);
+    });
+    const members = await this.memberService.getMemberBasicInfo(memberIds);
+    const memberUnits = await this.getUnitsByUnitRefIds(memberIds);
+    return units.reduce<{ unitId: UnitInfoDto[] }[]>((pre, cur) => {
+      if (!pre[cur.id]) pre[cur.id] = [];
+      if (cur.unitType === MemberType.Member) {
+         // Process individual members in roles
+        this.processMember(cur.unitRefId, members, memberUnits, pre, cur.id);
+      } else if (cur.unitType === MemberType.Team) {
+        // Process team members
+        this.processTeamMembers(teamMembers, members, memberUnits, teamIdSubTeamIdsMap, cur.unitRefId, cur.id, pre);
+      } else if (cur.unitType === MemberType.Role) {
+        const unitRoleMembers = roleMembers.filter(t => t.roleId === cur.unitRefId);
+        for (const roleMember of unitRoleMembers) {
+          if (roleMember.unitType === MemberType.Member) {
+            // Process individual members in roles
+            this.processMember(roleMember.unitRefId, members, memberUnits, pre, cur.id);
+          } else if (roleMember.unitType === MemberType.Team) {
+            // Process team members in roles
+            this.processTeamMembers(teamMembers, members, memberUnits, teamIdSubTeamIdsMap, roleMember.unitRefId, cur.id, pre);
+          }
+        }
+      }
+      return pre;
+    }, []);
+  }
+
+  /**
+   * Process team members and add their information to the result array.
+   */
+  private processTeamMembers(
+    teamMembers: UnitTeamMemberRefEntity[],
+    members: {[memberId: number]: IUserValue},
+    memberUnits: UnitEntity[],
+    teamIdSubTeamIdsMap: { [teamId: string]: string[] },
+    unitRefId: number,
+    curId: string,
+    pre: { unitId: UnitInfoDto[] }[]
+  ): void {
+    const unitTeamMembers = teamMembers.filter(t => t.teamId === unitRefId);
+
+    if (teamIdSubTeamIdsMap[unitRefId]) {
+    // Process sub team members
+      teamIdSubTeamIdsMap[unitRefId]?.forEach(subTeamId => {
+        const subTeamMembers = teamMembers.filter(t => String(t.teamId) === subTeamId);
+        subTeamMembers.forEach(subTeamMember => {
+          this.processMember(subTeamMember.memberId, members, memberUnits, pre, curId);
+        });
+      });
+    }
+
+    unitTeamMembers.forEach(teamMember => {
+      this.processMember(teamMember.memberId, members, memberUnits, pre, curId);
+    });
+  }
+
+  /**
+   * Process a member and add its information to the result array.
+   */
+  private processMember(
+    memberId: number,
+    members: {[memberId: number]: IUserValue},
+    memberUnits: UnitEntity[],
+    pre: { unitId: UnitInfoDto[] }[],
+    cursorUnitId: string
+  ): void {
+    const user = members[memberId];
+    const unit = memberUnits.find(t => t.unitRefId === memberId);
+    if (user && unit) {
+      pre[cursorUnitId].push({
+        name: user.name,
+        unitId: unit.id,
+        userId: user.userId,
+      });
+    } 
   }
 
   /**
@@ -132,6 +238,13 @@ export class UnitService {
 
   public async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
     return await this.unitRepo.selectCountByIdAndSpaceId(unitId, spaceId);
+  }
+
+  /**
+   * get units by unit ref Ids
+   */
+  public async getUnitsByUnitRefIds(unitRefIds: number[]): Promise<UnitEntity[]> {
+    return await this.unitRepo.selectUnitsByUnitRefIds(unitRefIds);
   }
 
   /**

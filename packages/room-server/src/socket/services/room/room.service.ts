@@ -19,6 +19,7 @@
 import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { showAnonymous } from 'app.environment';
 import { Value } from 'grpc/generated/google/protobuf/struct';
 import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID } from 'shared/common';
 import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
@@ -40,7 +41,8 @@ export class RoomService {
   constructor(
     private readonly nestService: NestService,
     private readonly nestClient: GrpcClient
-  ) {}
+  ) {
+  }
 
   async clientDisconnect(socket: Socket) {
     const rooms = socket.rooms;
@@ -95,18 +97,22 @@ export class RoomService {
     if ('success' in result && result.success) {
       // Broadcast join and userEnter when the client does not exist in the room
       if (!isExistRoom) {
-        socket.join(room);
+        void socket.join(room);
         this.logger.log({ room, socketId: socket.id, message: 'User are join in room' });
-        // Notify the client that all connected new users join the room
-        socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
-          collaborators: [
-            {
-              socketId: socket.id,
-              createTime,
-              ...result.data.collaborator,
-            },
-          ],
-        });
+        if (!showAnonymous && !result.data.collaborator) {
+          this.logger.log('Ignored Anonymous');
+        } else {
+          // Notify the client that all connected new users join the room
+          socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
+            collaborators: [
+              {
+                socketId: socket.id,
+                createTime,
+                ...result.data.collaborator,
+              },
+            ],
+          });
+        }
         result.data.collaborator = undefined;
 
         // Call an asynchronous customRequest to get the collaborator given to the other nodes,
@@ -162,7 +168,7 @@ export class RoomService {
     const room = message.roomId;
     // to prevent when you are the only one, disconnection will report an error
     if (socket.nsp.adapter.rooms.has(room)) {
-      socket.leave(room);
+      void socket.leave(room);
       socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
       this.logger.log({ message: 'User are leave room', room, socketId: socket.id });
     }

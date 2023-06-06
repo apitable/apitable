@@ -26,7 +26,7 @@ export class CascaderParam {
     example: 'spc***',
     description: 'Space ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
   spaceId!: string;
 
   @ApiProperty({
@@ -34,6 +34,6 @@ export class CascaderParam {
     example: 'dst***',
     description: 'Datasheet ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error } })
+  @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
   datasheetId!: string;
 }
