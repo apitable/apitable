@@ -107,7 +107,7 @@ export class RobotEventService {
               fields: event.context.fields,
               diffFields: event.context.diffFields,
               eventFields: event.context.eventFields,
-              fieldMap: event.context.state.datasheetMap[event.context.datasheetId].datasheet!.snapshot.meta.fieldMap!
+              state: event.context.state,
             },
             beforeApply: false,
           });
