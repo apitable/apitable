@@ -106,7 +106,7 @@ export class LookUpField extends ArrayValueField {
       }))
     }),
     openFilter: Joi.boolean(),
-    lookupLimit: Joi.string(),
+    lookUpLimit: Joi.string(),
     sortInfo: Joi.any(),
   }).required();
 
