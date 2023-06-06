@@ -83,7 +83,7 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
     const temp = {};
     columns.forEach(({ fieldId }) => {
       const field = fieldMap[fieldId];
-      return temp[fieldId] = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError || field.type === FieldType.LookUp;
+      return temp[fieldId] = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError;
     });
     return temp;
   }, [columns, fieldMap]);
