@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{ MEMBER_NAME }} mentioned you at "{{ FIELD_NAME }}" of the "{{
+      {{MEMBER_NAME}} mentioned you at "{{FIELD_NAME}}" of the "{{
         RECORD_TITLE
-      }}" record in the "{{ NODE_NAME }}" datasheet
+      }}" record in the "{{NODE_NAME}}" datasheet
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -234,9 +234,9 @@
                 width: 0;
               "
             >
-              {{ MEMBER_NAME }} mentioned you at "{{ FIELD_NAME }}" of the "{{
+              {{MEMBER_NAME}} mentioned you at "{{FIELD_NAME}}" of the "{{
                 RECORD_TITLE
-              }}" record in the "{{ NODE_NAME }}" datasheet
+              }}" record in the "{{NODE_NAME}}" datasheet
             </span>
             <table
               role="presentation"
@@ -302,9 +302,9 @@
                             margin-bottom: 30px;
                           "
                         >
-                          {{ MEMBER_NAME }} mentioned you at
-                          <b>"{{ RECORD_TITLE }}"</b> record in the
-                          <b>"{{ NODE_NAME }}"</b> datasheet
+                          {{MEMBER_NAME}} mentioned you at
+                          <b>"{{RECORD_TITLE}}"</b> record in the
+                          <b>"{{NODE_NAME}}"</b> datasheet
                         </h2>
                         <div
                           class="remind_content"
@@ -319,7 +319,7 @@
                             min-width: 414px;
                           "
                         >
-                          Mentioned field: <br /><br />{{ FIELD_NAME }}
+                          Mentioned field: <br /><br />{{FIELD_NAME}}
                         </div>
                         <div style="margin: 16px 0 32px 0">
                           <p
@@ -334,7 +334,7 @@
                               color: #696969;
                             "
                           >
-                            {{ SPACE_NAME }}
+                            {{SPACE_NAME}}
                           </p>
                         </div>
                         <p
@@ -350,7 +350,7 @@
                             float: right;
                           "
                         >
-                          {{ CREATED_AT }}
+                          {{CREATED_AT}}
                         </p>
                         <table
                           role="presentation"
@@ -412,7 +412,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -497,7 +497,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"
