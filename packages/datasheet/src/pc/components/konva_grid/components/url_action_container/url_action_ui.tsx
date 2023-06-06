@@ -61,12 +61,13 @@ export const UrlActionUI = (props: IUrlActionUI) => {
     <>
       <Typography className={styles.label} variant="body3">{t(Strings.link)}</Typography>
       <TextInput
-        suffix={<a target='_blank'rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
+        suffix={<a target='_blank' rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
         value={text}
         onChange={(evt) => {
           setText(evt.target.value);
         }}
-        block={isMobile}
+        className={styles.text}
+        block
       />
       <Typography className={classNames(styles.label, styles.titleLabel)} variant="body3">{t(Strings.default_datasheet_title)}</Typography>
       <TextInput
@@ -74,7 +75,8 @@ export const UrlActionUI = (props: IUrlActionUI) => {
         onChange={(evt) => {
           setTitle(evt.target.value);
         }}
-        block={isMobile}
+        className={styles.title}
+        block
       />
       <section className={styles.buttonWrapper}>
         {!isMobile && (
