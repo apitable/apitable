@@ -43,7 +43,7 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
 
   let socialIconsContent;
   const disableLoginSocialIcons = getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE;
-  if (disableLoginSocialIcons && disableLoginSocialIcons == 'true') {
+  if (disableLoginSocialIcons) {
     socialIconsContent = '';
   } else {
     socialIconsContent = (
