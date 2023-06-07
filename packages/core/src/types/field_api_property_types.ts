@@ -17,14 +17,15 @@
  */
 
 /**
-  * API Meta open interface definition
-  */
+ * API Meta open interface definition
+ */
 import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from './field_api_enums';
 import type { IAPIMetaField } from './field_api_types';
-import type { BasicValueType, RollUpFuncType } from './field_types';
+import type { BasicValueType, ILookUpSortInfo, LookUpLimitType, RollUpFuncType } from './field_types';
+import { FilterConjunction, IFilterCondition } from './view_types';
 /**
-  * Field properties
-  */
+ * Field properties
+ */
 export interface IAPIMetaSingleTextFieldFieldProperty {
   defaultValue?: string;
 }
@@ -40,7 +41,7 @@ export interface IAPIMetaCurrencyFieldProperty {
   defaultValue?: string;
   precision: number;
   symbol: string;
-  symbolAlign?: TSymbolAlign
+  symbolAlign?: TSymbolAlign;
 }
 
 export interface IAPIMetaPercentFieldProperty {
@@ -48,7 +49,8 @@ export interface IAPIMetaPercentFieldProperty {
   precision: number;
 }
 
-export type IAPIMetaNumberBaseFieldProperty = IAPIMetaNumberFieldProperty
+export type IAPIMetaNumberBaseFieldProperty =
+  | IAPIMetaNumberFieldProperty
   | IAPIMetaCurrencyFieldProperty
   | IAPIMetaPercentFieldProperty
   | IAPIMetaRatingFieldProperty
@@ -62,7 +64,7 @@ export interface IAPIMetaSelectOption {
   color: {
     name: string;
     value: string;
-  }
+  };
 }
 
 export interface IAPIMetaSingleSelectFieldProperty {
@@ -98,7 +100,8 @@ export interface IAPIMetaLastModifiedByFieldProperty {
   options?: IAPIMetaUser[];
 }
 
-export type IAPIMetaMemberBaseFieldProperty = IAPIMetaMemberFieldProperty
+export type IAPIMetaMemberBaseFieldProperty =
+  | IAPIMetaMemberFieldProperty
   | IAPIMetaCreateByFieldProperty
   | IAPIMetaLastModifiedByFieldProperty
   | null;
@@ -178,6 +181,15 @@ export interface IAPIMetaLookupFieldProperty {
   rollupFunction?: RollUpFuncType;
   valueType?: IAPIMetaValueType;
   format?: IAPIMetaNoneStringValueFormat;
+  enableFilterSort?: boolean;
+  filterInfo?: IAPIMetaLookUpFilterInfo;
+  sortInfo?: ILookUpSortInfo;
+  lookUpLimit?: LookUpLimitType;
+}
+
+export interface IAPIMetaLookUpFilterInfo {
+  conjunction: FilterConjunction;
+  conditions: Omit<IFilterCondition, 'conditionId' | 'fieldType'>[];
 }
 
 export interface IAPIMetaFormulaFieldProperty {
@@ -187,7 +199,8 @@ export interface IAPIMetaFormulaFieldProperty {
   format?: IAPIMetaNoneStringValueFormat;
 }
 
-export type IAPIMetaFieldProperty = IAPIMetaSingleTextFieldFieldProperty
+export type IAPIMetaFieldProperty =
+  | IAPIMetaSingleTextFieldFieldProperty
   | IAPIMetaNumberFieldProperty
   | IAPIMetaCurrencyFieldProperty
   | IAPIMetaPercentFieldProperty

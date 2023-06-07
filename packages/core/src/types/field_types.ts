@@ -17,7 +17,7 @@
  */
 
 import { t, Strings } from 'exports/i18n';
-import type { IFilterInfo, ISortInfo } from './view_types';
+import type { IFilterInfo } from './view_types';
 
 /* eslint-disable */
 export type ITextFieldProperty = null;
@@ -96,6 +96,15 @@ export enum LookUpLimitType {
   'FIRST' = 'FIRST',
 }
 
+export interface ILookUpSortField {
+  fieldId: string;
+  desc: boolean;
+}
+
+export interface ILookUpSortInfo {
+  rules: ILookUpSortField[]
+}
+
 export interface ILookUpProperty {
   datasheetId: string;
   relatedLinkFieldId: string;
@@ -103,8 +112,9 @@ export interface ILookUpProperty {
   rollUpType?: RollUpFuncType;
   formatting?: IComputedFieldFormattingProperty;
   filterInfo?: IFilterInfo;
+  /** If filterInfo and sortInfo are enabled. */
   openFilter?: boolean;
-  sortInfo?: ISortInfo;
+  sortInfo?: ILookUpSortInfo;
   lookUpLimit?: LookUpLimitType;
 }
 

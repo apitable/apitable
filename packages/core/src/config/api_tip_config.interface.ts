@@ -79,7 +79,9 @@ export interface Tips {
     api_param_select_field_value_type_error:              APIAddRowFailedWrongLengthOfValueClass;
     api_param_share_btn_type_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_param_singletext_field_type_error:                APIAddRowFailedWrongLengthOfValueClass;
+    api_param_sort_missing_field:                         APIAddRowFailedWrongLengthOfValueClass;
     api_param_sort_field_not_exists:                      APIAddRowFailedWrongLengthOfValueClass;
+    api_param_filter_field_not_exists:                    APIAddRowFailedWrongLengthOfValueClass;
     api_param_tabbar_type_error:                          APIAddRowFailedWrongLengthOfValueClass;
     api_param_text_field_type_error:                      APIAddRowFailedWrongLengthOfValueClass;
     api_param_theme_type_error:                           APIAddRowFailedWrongLengthOfValueClass;

@@ -21,7 +21,17 @@ import { FC, useMemo, useCallback } from 'react';
 import * as React from 'react';
 import { BaseModal, Message } from 'pc/components/common';
 import { ModalViewFilter } from 'pc/components/tool_bar/view_filter';
-import { t, Strings, IFilterInfo, IFilterCondition, FilterConjunction, ILookUpField, ISortInfo, Selectors, FieldType } from '@apitable/core';
+import {
+  t,
+  Strings,
+  IFilterInfo,
+  IFilterCondition,
+  FilterConjunction,
+  ILookUpField,
+  Selectors,
+  FieldType,
+  ILookUpSortInfo,
+} from '@apitable/core';
 import styles from './style.module.less';
 import { SortFieldOptions } from '../sort_field_options';
 import { useSelector } from 'react-redux';
@@ -36,29 +46,31 @@ interface IFilterModalProps extends IModalProps {
   title?: React.ReactNode;
   handleCancel: () => void;
   datasheetId: string;
-  handleOk: (value: any, sortInfo: ISortInfo) => void;
+  handleOk: (value: any, sortInfo: ILookUpSortInfo) => void;
   okBtnDisabled?: boolean;
   className?: string;
   filterInfo?: IFilterInfo;
   field?: ILookUpField;
-  sortInfo?: ISortInfo;
+  sortInfo?: ILookUpSortInfo;
   filterModalVisible?: boolean;
 }
 
 export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props => {
   const { title, handleCancel, datasheetId, handleOk, field, filterModalVisible } = props;
-  const [filterInfo, setFilters] = React.useState(props.filterInfo || {
-    conditions: [] as IFilterCondition[],
-    conjunction: FilterConjunction.And,
-  });
- 
-  const [sortInfo, setSortInfo]= React.useState<ISortInfo>(props.sortInfo || { rules: [],keepSort: false });
+  const [filterInfo, setFilters] = React.useState(
+    props.filterInfo || {
+      conditions: [] as IFilterCondition[],
+      conjunction: FilterConjunction.And,
+    },
+  );
+
+  const [sortInfo, setSortInfo] = React.useState<ILookUpSortInfo>(props.sortInfo || { rules: [] });
   const sortFieldIds = sortInfo ? sortInfo.rules.map(item => item.fieldId) : [];
   const fieldMap = useSelector(state => {
     return Selectors.getFieldMap(state, datasheetId);
   })!;
   const [optionsVisible, setOptionsVisible] = React.useState<boolean | undefined>(false);
-  React.useEffect(() => { 
+  React.useEffect(() => {
     setOptionsVisible(filterModalVisible);
     console.log('filterModalVisible', filterModalVisible);
   }, [filterModalVisible]);
@@ -70,10 +82,10 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
     handleCancel();
   };
   function setSortField(index: number, fieldId: string) {
-    const newSortInfo = produce(sortInfo, (draft: ISortInfo) => {
+    const newSortInfo = produce(sortInfo, (draft: ILookUpSortInfo) => {
       if (!draft) {
         return {
-          keepSort: true,
+          // keepSort: true,
           rules: [{ fieldId, desc: false }],
         };
       }
@@ -83,8 +95,8 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
     submitSort(newSortInfo!);
   }
 
-  function submitSort(viewInfo: ISortInfo) { 
-    setSortInfo(viewInfo);
+  function submitSort(sortInfo: ILookUpSortInfo) {
+    setSortInfo(sortInfo);
   }
 
   const invalidFieldsByGroup = useMemo(() => {
@@ -120,8 +132,8 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
   );
 
   function setSortRules(index: number, desc: boolean) {
-    const newSortInfo = produce(sortInfo, (draft: ISortInfo) => {
-      draft!.rules.map((item, idx) => {
+    const newSortInfo = produce(sortInfo, (draft: ILookUpSortInfo) => {
+      draft!.rules.forEach((item, idx) => {
         if (idx === index) {
           item.desc = desc;
         }
@@ -149,15 +161,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <BaseModal
-          visible
-          centered
-          width={720}
-          title={title}
-          onCancel={handleCancel}
-          onOk={handleSubmit}
-          className={styles.filterModal}
-        >
+        <BaseModal visible centered width={720} title={title} onCancel={handleCancel} onOk={handleSubmit} className={styles.filterModal}>
           <div className={styles.modalList}>
             <div className={styles.title}>
               <h3>{t(Strings.rollup_filter_sort_popup_setting)}</h3>
@@ -195,12 +199,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
               <h3>{t(Strings.add_filter)}</h3>
               <div className={styles.modalSubtitle}>{t(Strings.to_filter_link_data)}</div>
             </div>
-            <ModalViewFilter
-              datasheetId={datasheetId}
-              setFilters={setFilters}
-              filterInfo={filterInfo}
-              field={field}
-            />
+            <ModalViewFilter datasheetId={datasheetId} setFilters={setFilters} filterInfo={filterInfo} field={field} />
           </div>
         </BaseModal>
       </ComponentDisplay>
@@ -208,11 +207,11 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
         <Popup
           open={optionsVisible}
           title={title}
-          height='99%'
+          height="99%"
           onClose={onClose}
           className={styles.optionsListMenu}
           footer={
-            <Button color='primary' size='large' block onClick={() => handleSubmit()}>
+            <Button color="primary" size="large" block onClick={() => handleSubmit()}>
               {t(Strings.confirm)}
             </Button>
           }
@@ -255,12 +254,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
                 <h3>{t(Strings.add_filter)}</h3>
                 <div className={styles.modalSubtitle}>{t(Strings.to_filter_link_data)}</div>
               </div>
-              <ModalViewFilter
-                datasheetId={datasheetId}
-                setFilters={setFilters}
-                filterInfo={filterInfo}
-                field={field}
-              />
+              <ModalViewFilter datasheetId={datasheetId} setFilters={setFilters} filterInfo={filterInfo} field={field} />
             </div>
           </div>
         </Popup>

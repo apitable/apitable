@@ -42,7 +42,7 @@ describe('QueryPipe', () => {
 
   describe('validateSort', () => {
     test('sort.field error--zh-CN', () => {
-      const error = ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
+      const error = ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists, { fieldId: 'aa' });
       expect(() => {
         QueryPipe.validateSort([{ order: OrderEnum.DESC, field: 'aa' }], {
           Number: {

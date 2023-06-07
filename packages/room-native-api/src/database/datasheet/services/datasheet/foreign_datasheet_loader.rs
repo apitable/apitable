@@ -6,7 +6,6 @@ use crate::node::services::node::NodeService;
 use crate::repository::Repository;
 use crate::shared::types::{AuthHeader, FetchDataPackOrigin};
 use crate::types::{HashSet, Json};
-use crate::util::ResultExt;
 use anyhow::{anyhow, Context};
 use async_trait::async_trait;
 use mysql_async::params;
@@ -211,7 +210,7 @@ impl Into<DatasheetSnapshot> for InternalDatasheetSnapshot {
 impl Into<DatasheetMeta> for InternalDatasheetMeta {
   fn into(self) -> DatasheetMeta {
     DatasheetMeta {
-      field_map: Arc::try_unwrap(self.field_map).expect_with(|e| format!(">>>>>>>>>> {}", Arc::strong_count(e))),
+      field_map: Arc::try_unwrap(self.field_map).unwrap(),
       views: self.views,
       widget_panels: self.widget_panels,
     }

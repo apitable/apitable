@@ -145,7 +145,6 @@
     "eslint": "^7.21.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "^28.1.1",
-    "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "28.0.3",
     "ts-loader": "^6.2.1",

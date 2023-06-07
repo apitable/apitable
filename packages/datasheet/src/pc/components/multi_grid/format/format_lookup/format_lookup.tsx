@@ -20,7 +20,7 @@ import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable
 import {
   BasicValueType, ConfigConstant, DateTimeField, Field, FieldType, Functions, IField, 
   IFilterInfo, ILookUpField, ILookUpProperty, IViewColumn, LookUpField,
-  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t, LookUpLimitType, ISortInfo
+  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t, LookUpLimitType, ILookUpSortInfo
 } from '@apitable/core';
 import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
@@ -464,7 +464,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               datasheetId={relatedLinkField.property.foreignDatasheetId}
               filterInfo={filterInfo}
               sortInfo={sortInfo}
-              handleOk={(filterInfo: IFilterInfo, sortInfo: ISortInfo) => { 
+              handleOk={(filterInfo: IFilterInfo, sortInfo: ILookUpSortInfo) => { 
                 setFieldProperty('filterInfo')(filterInfo); 
                 setFieldProperty('sortInfo')(sortInfo);
               }}

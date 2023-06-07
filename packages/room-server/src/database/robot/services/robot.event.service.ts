@@ -94,7 +94,7 @@ export class RobotEventService {
     });
     for (const event of events) {
       try {
-        if (event.eventName === OPEventNameEnums.RecordCreated  || event.eventName === OPEventNameEnums.RecordUpdated) {
+        if (event.eventName === OPEventNameEnums.RecordCreated || event.eventName === OPEventNameEnums.RecordUpdated) {
           await this.flowQueue.add(event.eventName, {
             realType: event.realType,
             atomType: event.atomType,
@@ -113,7 +113,7 @@ export class RobotEventService {
           });
         }
       } catch (e: any) {
-       this.logger.error(`messageIds[${ msgIds }]: add job error`, e);
+        this.logger.error(`messageIds[${ msgIds }]: add job error`, e);
       }
     }
   }
