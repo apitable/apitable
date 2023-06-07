@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { IOption, Select, useThemeColors, WrapperTooltip } from '@apitable/components';
 import classNames from 'classnames';
-import { Field, IViewColumn, Selectors, Strings, t, FieldType } from '@apitable/core';
+import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
@@ -19,28 +19,28 @@ interface IViewFieldOptions {
   invalidFieldIds?: string[];
   invalidTip?: string;
   index?: number;
-  isAddNewOption?: boolean; 
+  isAddNewOption?: boolean;
   datasheetId: string;
 }
 
-export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOptions>> = memo(props => { 
+export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOptions>> = memo(props => {
   const colors = useThemeColors();
-  const { 
-    datasheetId, 
-    onChange, 
-    isAddNewOption, 
-    defaultFieldId, 
-    existFieldIds, 
-    invalidFieldIds = [], 
-    invalidTip, isCryptoField, 
-    fieldNotFound 
+  const {
+    datasheetId,
+    onChange,
+    isAddNewOption,
+    defaultFieldId,
+    existFieldIds,
+    invalidFieldIds = [],
+    invalidTip, isCryptoField,
+    fieldNotFound
   } = props;
-  
+
   const columns = useSelector(state => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
-  
+
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const [isOpen, setIsOpen] = useState(false);
   const fieldPermissionMap = useSelector(state => {
@@ -68,7 +68,7 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
 
   const getSuffixIcon = (fieldId: string, isFieldInvalid: boolean) => {
     if (fieldPermissionMap && fieldPermissionMap[fieldId]) {
-      return <FieldPermissionLock fieldId={fieldId} />;
+      return <FieldPermissionLock fieldId={fieldId}/>;
     }
     if (isFieldInvalid) {
       const valid = renderComputeFieldError(fieldMap[fieldId], t(Strings.err_field_group_tip));
@@ -118,7 +118,7 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
       label: t(Strings.crypto_field),
       value: defaultFieldId,
       prefixIcon: undefined,
-      suffixIcon: <FieldPermissionLock fieldId={defaultFieldId} />,
+      suffixIcon: <FieldPermissionLock fieldId={defaultFieldId}/>,
       disabled: true,
       disabledTip: t(Strings.disabled_crypto_field),
     });
