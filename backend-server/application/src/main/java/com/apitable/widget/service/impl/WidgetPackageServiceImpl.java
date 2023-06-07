@@ -40,18 +40,15 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.apitable.asset.service.IAssetService;
 import com.apitable.base.enums.DatabaseException;
-import com.apitable.base.enums.SystemConfigType;
-import com.apitable.base.service.ISystemConfigService;
 import com.apitable.control.infrastructure.permission.space.resource.ResourceCode;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.security.facade.WhiteListServiceFacade;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
-import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.TaskManager;
@@ -153,10 +150,7 @@ public class WidgetPackageServiceImpl
     private IUserService userService;
 
     @Resource
-    private ISystemConfigService iSystemConfigService;
-
-    @Resource
-    private IUnitService iUnitService;
+    private WhiteListServiceFacade whiteListServiceFacade;
 
     @Override
     public boolean checkCustomPackageId(String customPackageId) {
@@ -752,7 +746,7 @@ public class WidgetPackageServiceImpl
         if (WidgetReleaseType.GLOBAL == releaseType) {
             // At present, there is no audit process,
             // and the global small-size organization can only be controlled by the official GM.
-            getGmConfigAfterCheckUserPermission(userId);
+            whiteListServiceFacade.checkWidgetPermission(userId);
         } else {
             boolean isExist = false;
             try {
@@ -762,8 +756,7 @@ public class WidgetPackageServiceImpl
                     // the upper-level entrance to determine whether the owner,
                     // here to add a master administrator
                     isExist = true;
-                }
-                else if (CollUtil.containsAny(userSpace.getResourceCodes(), resourceCodes)
+                } else if (CollUtil.containsAny(userSpace.getResourceCodes(), resourceCodes)
                     || userSpace.isMainAdmin()) {
                     // Check permissions to determine whether the operation user permission group
                     // or the operation user is the master administrator.
@@ -773,29 +766,9 @@ public class WidgetPackageServiceImpl
                 throw new BusinessException("Insufficient authority ");
             } finally {
                 if (!isExist) {
-                    getGmConfigAfterCheckUserPermission(userId);
+                    whiteListServiceFacade.checkWidgetPermission(userId);
                 }
             }
-        }
-    }
-
-    private void getGmConfigAfterCheckUserPermission(Long userId) {
-        String checkActionName = "WIDGET_MANAGE";
-        List<Long> unitIds = new ArrayList<>();
-        // Authorized organization unit configured by the system
-        String config =
-            iSystemConfigService.findConfig(SystemConfigType.GM_PERMISSION_CONFIG, null);
-        if (config != null && JSONUtil.parseObj(config).containsKey(checkActionName)) {
-            unitIds.addAll(
-                JSONUtil.parseObj(config).getJSONArray(checkActionName).toList(Long.class));
-        }
-        if (unitIds.isEmpty()) {
-            throw new BusinessException("PERMISSION CONFIG UNIT IS NULL.");
-        }
-        // Gets all the user ids associated with the organization unit
-        List<Long> userIds = iUnitService.getRelUserIdsByUnitIds(unitIds);
-        if (CollUtil.isEmpty(userIds) || !userIds.contains(userId)) {
-            throw new BusinessException("INSUFFICIENT PERMISSIONS!");
         }
     }
 
