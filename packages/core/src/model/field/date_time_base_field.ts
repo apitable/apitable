@@ -161,7 +161,9 @@ export const dateTimeFormat = (
       return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
     }
     if (!props.includeTimeZone && timeZone) {
-      return dayjs(Number(timestamp)).tz(timeZone).format(format);
+      // dayjs(Number(timestamp)).tz(timeZone).format(format);
+      // Frequent invocations of the "tz" function here will result in severe page lag.
+      return dayjs(Number(timestamp)).format(format);
     }
   } catch (e) {
     if (e instanceof RangeError) {
@@ -339,9 +341,9 @@ export abstract class DateTimeBaseField extends Field {
     const dateTimeStr1 = dateTimeFormat(cv1, property);
     const dateTimeStr2 = dateTimeFormat(cv2, property);
 
-    // The product requirement is to use the displayed value (that is, the value seen by the cell) to be sorted uniformly. 
+    // The product requirement is to use the displayed value (that is, the value seen by the cell) to be sorted uniformly.
     // In theory, all of them can be compared using str.
-    // But there is a variant of the year-month-day format: day-month-year, 
+    // But there is a variant of the year-month-day format: day-month-year,
     // if you use str to compare the order at this time, there will be an error,
     // So the format containing the year, month and day uses timestamp comparison uniformly
     if (hasYear) {
@@ -378,7 +380,7 @@ export abstract class DateTimeBaseField extends Field {
       /*
         * Data pasted or dragged from a date field should be saved twice
         * text is text, such as 11/02 2020-11-1, used to write data when pasting to non-date fields
-        * originValue is a timestamp, which is used to paste or fill data into the date field. 
+        * originValue is a timestamp, which is used to paste or fill data into the date field.
         * The biggest difference from text is that all the time information is saved, which can be used according to
         * The format of the target date field is displayed freely
         */
@@ -410,15 +412,15 @@ export abstract class DateTimeBaseField extends Field {
     if (datetime.isValid()) {
       /**
         * automatically fills the date with the year
-        * If the data is pasted from a cell of a time field, 
+        * If the data is pasted from a cell of a time field,
         * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
-        * 
-        * 1. Perform pattern matching according to the given format, check if there is a possible year, 
+        *
+        * 1. Perform pattern matching according to the given format, check if there is a possible year,
         * if there is, use the given year
-        * 
-        * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001, 
+        *
+        * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001,
         * if it is satisfied, it will be directed to the current year
-        * 
+        *
         * @type {boolean}
         */
       const isIncludesYear = dayjs(_value, ['Y-M-D', 'D/M/Y']).isValid();
