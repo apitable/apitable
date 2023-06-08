@@ -7,7 +7,6 @@
   border-radius: 8px;
   box-shadow: var(--shadowCommonHigh);
   .link {
-    display: flex;
     &:hover {
       svg {
         fill: var(--textBrandHover);
@@ -31,6 +30,12 @@
   .titleLabel {
     margin-top: 16px;
   }
+  .link {
+    display: flex;
+    svg {
+      fill: var(--textCommonTertiary) !important;
+    }
+  }
 }
 
 .buttonWrapper {
@@ -41,5 +46,15 @@
 
   button {
     margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .buttonWrapper {
+    button {
+      margin-left: 0;
+      height: 48px;
+      font-size: 14px;
+    }
   }
 }

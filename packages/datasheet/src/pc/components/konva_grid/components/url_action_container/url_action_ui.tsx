@@ -22,6 +22,7 @@ interface IUrlActionUI {
   recordId?: string;
   datasheetId: string;
   style?: React.CSSProperties;
+  title?: string;
 }
 
 export const UrlActionUI = (props: IUrlActionUI) => {
@@ -113,7 +114,7 @@ export const UrlActionUI = (props: IUrlActionUI) => {
 
   return isMobile ? (
     <Popup
-      title={t(Strings.please_edit_url)}
+      title={props.title}
       height='auto'
       open={activeUrlAction}
       onClose={e => {

@@ -195,7 +195,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     );
   };
 
-  const showURLTitleFlag = !focused && field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.title;
+  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue?.[0]?.title;
 
   const renderURLTitle = () => {
     if (!showURLTitleFlag) return null;
@@ -255,6 +255,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           fieldId={field.id}
           recordId={recordId}
           datasheetId={datasheetId}
+          title={field.name}
         />
       )}
     </div>
