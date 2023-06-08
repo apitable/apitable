@@ -72,9 +72,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
   const [optionsVisible, setOptionsVisible] = React.useState<boolean | undefined>(false);
   React.useEffect(() => {
     setOptionsVisible(filterModalVisible);
-    console.log('filterModalVisible', filterModalVisible);
   }, [filterModalVisible]);
-  console.log('optionsVisible', optionsVisible);
 
   const handleSubmit = () => {
     handleOk(filterInfo, sortInfo);
@@ -92,7 +90,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
       draft.rules[index] = { fieldId, desc: false };
       return draft;
     });
-    submitSort(newSortInfo!);
+    submitSort(newSortInfo);
   }
 
   function submitSort(sortInfo: ILookUpSortInfo) {
@@ -111,7 +109,9 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
     console.log(invalidFields);
     return invalidFields;
   }, [sortInfo, fieldMap]);
-  const mainContentStyle: React.CSSProperties = {};
+  const mainContentStyle: React.CSSProperties = {
+    padding: '0',
+  };
 
   // Modify the order after the end of dragging.
   const onDragEnd = useCallback(
@@ -167,32 +167,30 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
               <h3>{t(Strings.rollup_filter_sort_popup_setting)}</h3>
               <div className={styles.modalSubtitle}>{t(Strings.sorting_conditions_setting_description)}</div>
             </div>
-            <main style={mainContentStyle}>
-              {sortInfo && (
-                <CommonViewSet
-                  onDragEnd={onDragEnd}
-                  dragData={sortInfo.rules}
-                  setField={setSortField}
-                  existFieldIds={sortFieldIds}
-                  setRules={setSortRules}
-                  deleteItem={deleteViewItem}
-                  invalidFieldIds={invalidFieldsByGroup}
-                  invalidTip={t(Strings.invalid_action_sort_tip)}
-                  datasheetId={datasheetId}
-                />
-              )}
-            </main>
-            <div className={styles.selectField}>
+            {sortInfo && (<main style={mainContentStyle}>
+              <CommonViewSet
+                onDragEnd={onDragEnd}
+                dragData={sortInfo.rules}
+                setField={setSortField}
+                existFieldIds={sortFieldIds}
+                setRules={setSortRules}
+                deleteItem={deleteViewItem}
+                invalidFieldIds={invalidFieldsByGroup}
+                invalidTip={t(Strings.invalid_action_sort_tip)}
+                datasheetId={datasheetId}
+              />
+            </main> )}
+            {sortInfo.rules.length === 0 && <div className={styles.selectField}>
               <SortFieldOptions
-                onChange={setSortField.bind(null, sortFieldIds.length)}
+                onChange={setSortField.bind(null, 0)}
                 defaultFieldId={t(Strings.add_sort)}
                 existFieldIds={sortFieldIds}
                 invalidFieldIds={invalidFieldsByGroup}
                 invalidTip={t(Strings.invalid_option_sort_tip)}
-                isAddNewOption={sortInfo.rules.length > 0}
+                isAddNewOption={sortInfo.rules.length === 0}
                 datasheetId={datasheetId}
               />
-            </div>
+            </div>}
           </div>
           <div className={styles.modalList}>
             <div className={styles.title}>
@@ -222,22 +220,21 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
                 <h3>{t(Strings.rollup_filter_sort_popup_setting)}</h3>
                 <div className={styles.modalSubtitle}>{t(Strings.sorting_conditions_setting_description)}</div>
               </div>
-              <main style={mainContentStyle}>
-                {sortInfo && (
-                  <CommonViewSet
-                    onDragEnd={onDragEnd}
-                    dragData={sortInfo.rules}
-                    setField={setSortField}
-                    existFieldIds={sortFieldIds}
-                    setRules={setSortRules}
-                    deleteItem={deleteViewItem}
-                    invalidFieldIds={invalidFieldsByGroup}
-                    invalidTip={t(Strings.invalid_action_sort_tip)}
-                    datasheetId={datasheetId}
-                  />
-                )}
-              </main>
-              <div className={styles.selectField}>
+              {sortInfo && <main style={mainContentStyle}>
+                <CommonViewSet
+                  onDragEnd={onDragEnd}
+                  dragData={sortInfo.rules}
+                  setField={setSortField}
+                  existFieldIds={sortFieldIds}
+                  setRules={setSortRules}
+                  deleteItem={deleteViewItem}
+                  invalidFieldIds={invalidFieldsByGroup}
+                  invalidTip={t(Strings.invalid_action_sort_tip)}
+                  datasheetId={datasheetId}
+                />
+                
+              </main>}
+              {sortInfo.rules.length === 0 && <div className={styles.selectField}>
                 <SortFieldOptions
                   onChange={setSortField.bind(null, sortFieldIds.length)}
                   defaultFieldId={t(Strings.add_sort)}
@@ -247,7 +244,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
                   isAddNewOption={sortInfo.rules.length > 0}
                   datasheetId={datasheetId}
                 />
-              </div>
+              </div>}
             </div>
             <div className={styles.modalList}>
               <div className={styles.title}>

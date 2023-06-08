@@ -40,10 +40,6 @@ main {
   &:last-child {
     margin-bottom: 0;
   }
-
-  .iconDrag {
-    margin-right: 8px;
-  }
 }
 
 .boxTop {
@@ -117,21 +113,14 @@ main {
     }
   }
 
+  .optionsWrapper {
+    padding: 0!important;
+    margin-right: 20px;
+  }
+
   .draggable {
     margin-top: 8px;
-    height: 48px !important;
-
-    .iconDrag {
-      width: 100%;
-      margin-right: 0 !important;
-      display: flex;
-      position: relative;
-
-      &::after {
-        content: "";
-        position: absolute;
-      }
-    }
+    height: 48px!important;
   }
 
   .draggableRow {

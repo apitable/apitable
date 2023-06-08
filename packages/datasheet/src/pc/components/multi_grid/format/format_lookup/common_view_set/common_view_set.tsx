@@ -18,7 +18,7 @@
 
 import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
-import { DeleteOutlined, DragOutlined } from '@apitable/icons';
+import { DeleteOutlined } from '@apitable/icons';
 import { Col, Row } from 'antd';
 import { ButtonPlus } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -79,12 +79,6 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
     return (
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-            <div className={styles.iconDrag} onMouseOver={onMouseOver}>
-              <DragOutlined size={16} color={colors.fourthLevelText} />
-            </div>
-          </WrapperTooltip>
-
           {/* option list */}
           <SortFieldOptions
             index={index}
@@ -122,11 +116,6 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
 
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <Row align='middle' gutter={[0, 8]} style={{ width: '100%' }} onTouchMove={onMouseOver}>
-            <Col span={1}>
-              <div className={styles.iconDrag}>
-                <DragOutlined size={14} color={colors.thirdLevelText} />
-              </div>
-            </Col>
             <Col span={9}>
               <div className={styles.optionsWrapper}>
                 <ViewFieldOptionsMobile
@@ -139,7 +128,7 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
                 />
               </div>
             </Col>
-            <Col span={12}>
+            <Col span={13}>
               {/* Sorting Rules */}
               {isCryptoField || fieldNotFound ? (
                 <InvalidValue style={{ marginLeft: 20, maxWidth: 185 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
@@ -159,8 +148,8 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
                 <ButtonPlus.Icon
                   onClick={() => deleteItem(index)}
                   size='x-small'
-                  style={{ color: colors.fourthLevelText }}
-                  icon={<DeleteOutlined size={16} color={colors.fourthLevelText} />}
+                  style={{ color: colors.thirdLevelText }}
+                  icon={<DeleteOutlined size={16} color={colors.thirdLevelText} />}
                 />
               </div>
             </Col>
