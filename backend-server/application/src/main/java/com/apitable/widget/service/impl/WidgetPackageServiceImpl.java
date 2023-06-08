@@ -106,6 +106,7 @@ import java.util.Optional;
 import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -151,6 +152,9 @@ public class WidgetPackageServiceImpl
 
     @Resource
     private WhiteListServiceFacade whiteListServiceFacade;
+
+    @Value("${SKIP_GLOBAL_WIDGET_AUDIT:false}")
+    private Boolean skipGlobalWidgetAudit;
 
     @Override
     public boolean checkCustomPackageId(String customPackageId) {
@@ -473,6 +477,7 @@ public class WidgetPackageServiceImpl
             .setAuthorLink(widget.getAuthorLink())
             .setStatus(WidgetPackageStatus.ONLINE.getValue())
             .setSandbox(widget.getSandbox())
+            .setIsEnabled(Boolean.TRUE.equals(skipGlobalWidgetAudit))
             .setUpdatedBy(opUserId);
         flag &= SqlHelper.retBool(baseMapper.updateById(wpk));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
