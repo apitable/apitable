@@ -4,10 +4,17 @@
   height: 100%;
 
   .scrollContainer {
-    height: 100%;
+    height: calc(100% - 56px);
     padding: 0 4px 0 16px;
     overflow-x: hidden;
     overflow-y: scroll;
+  }
+
+  .maxCountTips {
+    color: var(--textCommonTertiary);
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   .addSpace {
@@ -43,7 +50,7 @@
   height: 100%;
   :global {
     .ant-tabs-nav {
-      padding: 0 24px;
+      padding: 0 12px;
       margin-bottom: 8px !important;
 
       &::before {
@@ -69,6 +76,22 @@
     .ant-tabs-content,
     .ant-tabs-tabpane {
       height: 100%;
+    }
+  }
+}
+
+.search {
+  padding: 8px 16px;
+  .searchClose {
+    fill: var(--black_500);
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      fill: var(--black_600);
+    }
+
+    &:active {
+      fill: var(--black_700);
     }
   }
 }

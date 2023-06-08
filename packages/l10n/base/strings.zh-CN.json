@@ -5406,5 +5406,6 @@
   "field_member_property_subscription_open_tip": "该选项仅对新选择的成员生效",
   "field_member_property_subscription": "被选择的成员将自动关注行数据的更新",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> 将你添加为  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\" 的关注者, 你将会自动关注该记录",
-  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> 将你移出了  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\", 的关注者，你已自动取消关注该记录"
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> 将你移出了  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\", 的关注者，你已自动取消关注该记录",
+  "space_search_empty": "未找到空间站"
 }

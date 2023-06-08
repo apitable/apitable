@@ -4541,6 +4541,7 @@
   "space_rainbow_label_limit_email_title": "",
   "space_record_limit": "你管理的「<a class=\"spaceName\"></a>」空间站总记录数上限为 <a class=\"specification\"></a> 行，当前已使用 <a class=\"usage\"></a> 行，升级可获得更高用量。",
   "space_record_limit_email_title": "「${SPACE_NAME}」空间站的总记录数的用量提醒",
+  "space_search_empty": "未找到空间站",
   "space_seat_info": "空间站人数：${num} 人",
   "space_seats_limit": "你管理的「<a class=\"spaceName\"></a>」空间站付费成员数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
   "space_seats_limit_email_title": "「${SPACE_NAME}」空间站的付费成员数的用量提醒",

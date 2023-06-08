@@ -4542,6 +4542,7 @@ export type StringKeysMapType = {
   'space_rainbow_label_limit_email_title': 'space_rainbow_label_limit_email_title',
   'space_record_limit': 'space_record_limit',
   'space_record_limit_email_title': 'space_record_limit_email_title',
+  'space_search_empty': 'space_search_empty',
   'space_seat_info': 'space_seat_info',
   'space_seats_limit': 'space_seats_limit',
   'space_seats_limit_email_title': 'space_seats_limit_email_title',

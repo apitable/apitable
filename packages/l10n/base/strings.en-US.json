@@ -5406,5 +5406,6 @@
   "field_member_property_subscription_open_tip": "This option only applies to newly selected members",
   "field_member_property_subscription":"Selected members auto-watch data updates",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically watch this record",
-  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unwatch this record"
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unwatch this record",
+  "space_search_empty": "Search space not found"
 }

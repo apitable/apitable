@@ -4541,6 +4541,7 @@
   "space_rainbow_label_limit_email_title": "",
   "space_record_limit": "The maximum number of total records to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
   "space_record_limit_email_title": "Usage reminders for the number of total records in the \"${SPACE_NAME}\" space",
+  "space_search_empty": "Search space not found",
   "space_seat_info": "Number of members in the space: ${num} ",
   "space_seats_limit": "The maximum number of seats to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
   "space_seats_limit_email_title": "Usage reminders for the number of seats in the \"${SPACE_NAME}\" space",
