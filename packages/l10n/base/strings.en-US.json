@@ -5417,5 +5417,8 @@
   "calendar_const_month_toggle_next": "Next Month",
   "calendar_const_touch_tip": "Hand off page turning",
   "calendar_const_weeks": "[\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"]",
-  "calendar_const_detail_weeks": "[\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]"
+  "calendar_const_detail_weeks": "[\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]",
+  "copy_widget_success": "copy widget successfully",
+  "copy_widget_fail": "copy widget failed",
+  "copy_widget": "Copy Widget"
 }
