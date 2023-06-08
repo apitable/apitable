@@ -58,7 +58,7 @@ import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
 import styles from './style.module.less';
 import { copyWidget, installToPanel } from '../../widget_center/install_utils';
-import { useJudgeReachInstalledCount } from '../hooks/use_calc_reach_installed_count';
+import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
 import { installedWidgetHandle } from '../widget_panel_header';
 
 const ResponsiveGridLayout: any = WidthProvider(Responsive);

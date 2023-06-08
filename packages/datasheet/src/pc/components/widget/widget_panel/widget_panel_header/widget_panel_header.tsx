@@ -31,7 +31,7 @@ import { IconButton, useThemeColors } from '@apitable/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { WrapperTooltip } from './wrapper_tooltip';
-import { useJudgeReachInstalledCount } from '../hooks/use_calc_reach_installed_count';
+import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
