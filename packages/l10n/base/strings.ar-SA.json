@@ -1,5 +1,9 @@
 {
   "ANNUAL": "سنويا",
+  "pagination_component_total": "${start}-${end} of ${total} items",
+  "pagination_component_jump": "Go to",
+  "pagination_component_page": "page",
+  "pagination_component_page_size": "${val}/page",
   "BIANNUAL": "مرتين في السنة",
   "CNY": "سي ان اي",
   "DAYS": "نهاري",
@@ -4388,7 +4392,7 @@
   "singapore": "سنغافورة .",
   "single_color_gradient_theme": "موضوع التدرج أحادي اللون",
   "single_record_comment_mentioned": "< a class = \" membername > < / a > < a class = \" nodename \" > < / a > \" فئة \" = \" recordtitle > < / a > \" سجل البيانات .",
-  "single_record_member_mention": "< a class = \" membername > < / a > < a class = \" nodename \" > < \" a class = \" recordtitle \" > < / a > \" aclass = \" fieldname \" > / a > \" في جدول البيانات .",
+  "single_record_member_mention": "< a class = \" membername > < / a > < a class = \" nodename \" > < \" a class = \" recordtitle \" > < / a > \" <a class = \" fieldname \" / a > \" في جدول البيانات .",
   "single_sign_on": "سجل واحد ( SSO )",
   "siwtch_to_invite_tab": "هل ترغب في دعوة الأعضاء ؟ انقر هنا",
   "six_months": "شهر",
@@ -5406,5 +5410,11 @@
   "field_member_property_subscription_open_tip": "This option only applies to newly selected members",
   "field_member_property_subscription": "The selected members will automatically follow updates to row data",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically follow this record",
-  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record"
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record",
+  "calendar_const_today": "Today",
+  "calendar_const_month_toggle_pre": "Last Month",
+  "calendar_const_month_toggle_next": "Next Month",
+  "calendar_const_touch_tip": "Hand off page turning",
+  "calendar_const_weeks": "[\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"]",
+  "calendar_const_detail_weeks": "[\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]"
 }

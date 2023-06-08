@@ -1,5 +1,9 @@
 {
   "ANNUAL": "ANNUAL",
+  "pagination_component_total": "${start}-${end} of ${total} items",
+  "pagination_component_jump": "Go to",
+  "pagination_component_page": "page",
+  "pagination_component_page_size": "${val}/page",
   "BIANNUAL": "BIANNUAL",
   "CNY": "CNY",
   "DAYS": "Day",
@@ -5407,5 +5411,11 @@
   "field_member_property_subscription":"Selected members auto-watch data updates",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically watch this record",
   "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unwatch this record",
-  "space_search_empty": "Search space not found"
+  "space_search_empty": "Search space not found",
+  "calendar_const_today": "Today",
+  "calendar_const_month_toggle_pre": "Last Month",
+  "calendar_const_month_toggle_next": "Next Month",
+  "calendar_const_touch_tip": "Hand off page turning",
+  "calendar_const_weeks": "[\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"]",
+  "calendar_const_detail_weeks": "[\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]"
 }

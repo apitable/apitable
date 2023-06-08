@@ -55,7 +55,7 @@ describe('FusionApiRateLimiter', () => {
     };
     datasheetRepository = {
       selectById: jest.fn(),
-    }
+    };
     rateLimiter = new NodeRateLimiterMiddleware(redisService, envConfigService, restService, datasheetRepository, i18nService);
     callHandler = jest.fn();
   });

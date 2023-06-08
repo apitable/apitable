@@ -35,7 +35,7 @@ export type IMonth = Omit<ICalendar, 'defaultDate'> & {
 
 const MonthBase:FC<React.PropsWithChildren<IMonth>> = props => {
   const {
-    isMobile, step, tasks = [], update, lang = 'zh', dnd = [], listStyle, startListStyle,
+    isMobile, step, tasks = [], update, dnd = [], listStyle, startListStyle,
     warnText, rowMixCount = 3, disabled, resizable, moreText, moveTaskId
   } = props;
   const { data, year, month } = useMemo(() =>
@@ -105,7 +105,7 @@ const MonthBase:FC<React.PropsWithChildren<IMonth>> = props => {
   return (
     <CalendarContext.Provider value={{
       space, listHeight, defaultListHeight, disabled, disableResize, listStyle, startListStyle,
-      warnText, onResizeStart, Drag, Drop, lang, update, month, rowMixCount, today, year, isMobile, moreText,
+      warnText, onResizeStart, Drag, Drop, update, month, rowMixCount, today, year, isMobile, moreText,
       moveTaskId,
     }}>
       <MonthListDiv ref={calendarRef} className="months" isMobile={isMobile} >

@@ -1,5 +1,9 @@
 {
   "ANNUAL": "年付",
+  "pagination_component_total": "第 ${start}-${end} 条/总共 ${total} 条",
+  "pagination_component_jump": "跳至",
+  "pagination_component_page": "页",
+  "pagination_component_page_size": "${val}条/一页",
   "BIANNUAL": "半年付",
   "CNY": "人民币",
   "DAYS": "天",
@@ -5407,5 +5411,11 @@
   "field_member_property_subscription": "被选择的成员将自动关注行数据的更新",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> 将你添加为  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\" 的关注者, 你将会自动关注该记录",
   "auto_cancel_record_subscription": "<a class=\"memberName\"></a> 将你移出了  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\", 的关注者，你已自动取消关注该记录",
-  "space_search_empty": "未找到空间站"
+  "space_search_empty": "未找到空间站",
+  "calendar_const_today": "今天",
+  "calendar_const_month_toggle_pre": "上一月",
+  "calendar_const_month_toggle_next": "下一月",
+  "calendar_const_touch_tip": "松手即可翻页",
+  "calendar_const_weeks": "[\"周一\",\"周二\",\"周三\",\"周四\",\"周五\",\"周六\",\"周日\"]",
+  "calendar_const_detail_weeks": "[\"星期一\",\"星期二\",\"星期三\",\"星期四\",\"星期五\",\"星期六\",\"星期天\"]"
 }
