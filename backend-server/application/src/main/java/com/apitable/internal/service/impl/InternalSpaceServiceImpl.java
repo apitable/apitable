@@ -27,14 +27,17 @@ import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
-import com.apitable.space.entity.LabsApplicantEntity;
 import com.apitable.space.enums.LabsFeatureEnum;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.IStaticsService;
-import java.util.Objects;
+import com.apitable.space.vo.LabsFeatureVo;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import javax.annotation.Resource;
@@ -78,14 +81,23 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     }
 
     @Override
+    public InternalSpaceApiRateLimitVo getSpaceEntitlementApiRateLimitVo(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionFeature planFeature = subscriptionInfo.getFeature();
+        BillingAssembler assembler = new BillingAssembler();
+        return assembler.toApiRateLimitVo(planFeature);
+    }
+
+    @Override
     public InternalSpaceInfoVo getSpaceInfo(String spaceId) {
         InternalSpaceInfoVo spaceInfo = new InternalSpaceInfoVo();
         InternalSpaceInfoVo.SpaceLabs labs = new InternalSpaceInfoVo.SpaceLabs();
-        // At present, there is only one, which directly queries a single one, and there are multiple requirements behind it. Expand it
-        LabsApplicantEntity applicant =
-            iLabsApplicantService.getApplicantByApplicantAndFeatureKey(spaceId,
-                LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
-        labs.setViewManualSave(Objects.nonNull(applicant));
+        List<String> applicants = new ArrayList<>(Collections.singleton(spaceId));
+        LabsFeatureVo feature =
+            iLabsApplicantService.getUserCurrentFeatureApplicants(applicants);
+        labs.setViewManualSave(
+            feature.getKeys().contains(LabsFeatureEnum.VIEW_MANUAL_SAVE.getFeatureName()));
+        labs.setRobot(feature.getKeys().contains(LabsFeatureEnum.ROBOT.getFeatureName()));
         spaceInfo.setLabs(labs);
         spaceInfo.setSpaceId(spaceId);
         return spaceInfo;

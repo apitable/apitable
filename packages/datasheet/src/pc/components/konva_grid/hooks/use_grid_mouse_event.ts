@@ -18,7 +18,12 @@
 
 import { Message } from '@apitable/components';
 import {
-  CellType, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, ILinkField,
+  CellType,
+  CollaCommandName,
+  ConfigConstant,
+  ExecuteResult,
+  FieldType,
+  ILinkField,
   KONVA_DATASHEET_ID,
   Range,
   RowHeightLevel,
@@ -36,14 +41,25 @@ import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecord, expandRecordIdNavigate } from 'pc/components/expand_record';
 import { AreaType, getDetailByTargetName, PointPosition } from 'pc/components/gantt_view';
 import {
-  cellHelper, GRID_BOTTOM_STAT_HEIGHT, GRID_DEFAULT_HORIZONTAL_SPACING, GRID_DEFAULT_VERTICAL_SPACING, GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH,
-  GRID_SCROLL_BASE_SPEED, GridCoordinate, IRenderStyleProps, KonvaGridContext, KonvaGridViewContext, useAttachEvent,
+  cellHelper,
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_DEFAULT_HORIZONTAL_SPACING,
+  GRID_DEFAULT_VERTICAL_SPACING,
+  GRID_GROUP_OFFSET,
+  GRID_ROW_HEAD_WIDTH,
+  GRID_SCROLL_BASE_SPEED,
+  GridCoordinate,
+  IRenderStyleProps,
+  KonvaGridContext,
+  KonvaGridViewContext,
+  useAttachEvent,
 } from 'pc/components/konva_grid';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { createdBySubscritionMessage } from 'pc/utils/created_by_subscrition_message';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { batchActions } from 'redux-batched-actions';
+import { MouseDownType } from '../../multi_grid';
 
 const openDialog = (groupTab: any, tabCanvasX: number, tabCanvasY: number, data: any, groupField: ILinkField) => {
   const { width, height, canvasX, canvasY } = groupTab;
@@ -160,7 +176,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     activeUICell && setTimeout(() => {
       scrollToItem(activeUICell);
     }, 100);
-    
+
   }, [activeCell]);
 
   // Search
@@ -251,6 +267,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     const rowCount = visibleRows.length;
     const finalRecordId = groupInfo.length ? recordId : (rowCount > 0 ? visibleRows[rowCount - 1].recordId : '');
     await appendRow({ recordId: finalRecordId });
+    createdBySubscritionMessage(fieldMap);
   };
 
   /**

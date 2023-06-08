@@ -91,6 +91,7 @@ export enum SocialType {
   WECOM = 1,
   DINGTALK = 2,
   FEISHU = 3,
+  WOA = 10,
 }
 
 // catalog tree

@@ -1,4 +1,4 @@
-{{USER_NAME}} assigned you as the admin of the "{{SPACE_NAME}}" Space
+{{MEMBER_NAME}} assigned you as the admin of the "{{SPACE_NAME}}"
 
 --------------------------------------------------------------------------------
 
@@ -7,4 +7,4 @@ Click the button below to enter the Space
 {{URL}}
 
 © {{YEARS}} APITable Ltd.
-Contact us (https://apitable.com/?home=1)
+Contact us (https://apitable.com?home=1)

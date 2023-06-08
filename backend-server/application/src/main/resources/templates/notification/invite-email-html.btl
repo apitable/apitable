@@ -1,230 +1,481 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{MEMBER_NAME}} invited you to join "{{SPACE_NAME}}"</title>
+    <style>
+      @media only screen and (max-width: 620px) {
+        body {
+          background-color: white !important;
+        }
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Title</title>
-    <style></style>
-</head>
+        table[class="body"] {
+          background-color: white !important;
+        }
 
-<body
-        style="-moz-box-sizing:border-box;-ms-text-size-adjust:100%;-webkit-box-sizing:border-box;-webkit-text-size-adjust:100%;margin:0;background:#f3f3f3!important;box-sizing:border-box;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;min-width:100%;padding:0;text-align:left;width:100%!important">
+        table[class="body"] h1 {
+          font-size: 28px !important;
+          margin-bottom: 10px !important;
+        }
 
-<table class="body" data-made-with-foundation=""
-       style="Margin:0;background:#f3f3f3!important;border-collapse:collapse;border-spacing:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;height:100%;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;width:100%">
-    <tbody>
-    <tr style="padding:0;text-align:left;vertical-align:top">
-        <td class="float-center" align="center" valign="top"
-            style="margin:0 auto;border-collapse:collapse!important;color:#0a0a0a;float:none;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;text-align:center;vertical-align:top;word-wrap:break-word">
-                <table class="spacer float-center"
-                       style="Margin:0 auto;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
-                    <tbody>
-                    <tr style="padding:0;text-align:left;vertical-align:top">
-                        <td height="16px"
-                            style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:16px;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table align="center" class="container header float-center"
-                       style="Margin:0 auto;background:#f3f3f3;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
-                    <tbody>
-                    <tr style="padding:0;text-align:left;vertical-align:top">
-                        <td
-                                style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                            <table class="row collapse"
-                                   style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <th class="small-12 large-12 columns first last"
-                                        style="Margin:0 auto;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:0;padding-right:0;text-align:left;width:588px">
-                                        <table
-                                                style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                            <tbody>
-                                            <tr style="padding:0;text-align:left;vertical-align:top">
-                                                <th
-                                                        style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                    <img src="https://legacy-s1.apitable.com/space/2022/09/20/a5de38aec6cc78aa3f447cf3a18aeb69" alt=""
-                                                         style="clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:120px">
-                                                </th>
-                                                <th class="expander"
-                                                    style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
-                                                </th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table align="center" class="container body-drip float-center"
-                       style="Margin:0 auto;background:#fefefe;border-collapse:collapse;border-spacing:0;border-top:8px solid #7b67ee;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
-                    <tbody>
-                    <tr style="padding:0;text-align:left;vertical-align:top">
-                        <td
-                                style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                            <table class="spacer"
-                                   style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <td height="16px"
-                                        style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:16px;height:16px;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <center data-parsed="" style="min-width:580px;width:100%">
-                                <a href="https://apitable.com" target="_blank"
-                                   style="clear:both;display:block;float:none;margin:16px auto;max-width:100%;outline:0;text-align:center;text-decoration:none;width:100px"
-                                ><img
-                                        src="https://legacy-s1.apitable.com/space/2021/12/07/aaac193704834e9a9e4af27a1535826a" alt="" align="center" class="float-center"
-                                        style="clear:both;display:block;float:none;margin:16px auto;max-width:100%;outline:0;text-align:center;text-decoration:none;width:100px"></a>
-                            </center>
-                            <table class="spacer"
-                                   style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <td height="16px"
-                                        style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:16px;height:16px;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <table class="row"
-                                   style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <th class="small-12 large-12 columns first last"
-                                        style="margin:0 auto;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
-                                        <table
-                                                style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                            <tbody>
-                                            <tr style="padding:0;text-align:left;vertical-align:top">
-                                                <th
-                                                        style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                    <h4 class="text-center"
-                                                        style="margin:0;margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center;word-wrap:normal">
-                                                        {{USER_NAME}} invited you to join Space</h4>
-                                                    <h4 class="text-center"
-                                                        style="margin:0;margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center;word-wrap:normal">
-                                                        "{{SPACE_NAME}}"</h4>
-                                                </th>
-                                                <th class="expander"
-                                                    style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
-                                                </th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </th>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <table class="row"
-                                   style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <th class="small-12 large-12 columns first last"
-                                        style="margin:0 auto;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
-                                        <table
-                                                style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                            <tbody>
-                                            <tr style="padding:0;text-align:left;vertical-align:top">
-                                                <th
-                                                        style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                    <p class="text-center"
-                                                       style="margin:0;margin-bottom:10px;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center">
-                                                        <br><br>Click on the button below to enter the Space</p><br>
-                                                    <div data-parsed="" style="min-width:532px;width:100%;display:flex;justify-content:center">
-                                                        <table class="button success float-center" style="margin:0 0 16px 0;border-collapse:collapse;border-spacing:0;float:none;margin:0 0 16px 0;padding:0;text-align:center;vertical-align:top;width:100%">
-                                                            <tbody>
-                                                            <tr style="padding:0;text-align:left;vertical-align:top">
-                                                                <td style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:center;vertical-align:top;word-wrap:break-word">
-                                                                    <table
-                                                                            style="border-collapse:collapse;border-spacing:0;padding:0;text-align:center;vertical-align:top;width:132px;display:inline-table;">
-                                                                        <tbody>
-                                                                        <tr style="padding:0;text-align:left;vertical-align:top">
-                                                                            <td
-                                                                                    style="background:#7b67ee;border:0 solid #7b67ee;border-collapse:collapse!important;color:#fefefe;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:center;vertical-align:top;word-wrap:break-word;border-radius: 4px">
-                                                                                <a href="{{INVITE_URL}}"
-                                                                                   style="border:0 solid #7b67ee;border-radius:3px;color:#fefefe;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:30px;margin:0;padding:8px 0;text-align:center;text-decoration:none;width:132px;height: 30px;">Enter Space</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </th>
-                                                <th class="expander"
-                                                    style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
-                                                </th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </th>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <table class="row collapsed footer"
-                                   style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
-                                <tbody>
-                                <tr style="padding:0;text-align:left;vertical-align:top">
-                                    <th class="small-12 large-12 columns first last"
-                                        style="margin:0 auto;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
-                                        <table
-                                                style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                            <tbody>
-                                            <tr style="padding:0;text-align:left;vertical-align:top">
-                                                <th
-                                                        style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
-                                                    <table class="spacer"
-                                                           style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
-                                                        <tbody>
-                                                        <tr style="padding:0;text-align:left;vertical-align:top">
-                                                            <td height="16px"
-                                                                style="border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:16px;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <p class="text-center"
-                                                       style="margin:0;margin-bottom:10px;color:#8a8a8a;font-family:Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center">
-                                                        &copy; {{YEARS}} APITable Ltd.</p>
-                                                    <center data-parsed="" style="min-width:532px;width:100%">
-                                                        <p class="text-center"
-                                                           style="margin:0;margin-bottom:10px;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center">
-                                                            <a href="https://apitable.com/?home=1" target="_blank"
-                                                               style="margin:0;color:#7b67ee;font-family:Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">Contact us</a>
-                                                        </p>
-                                                    </center>
-                                                    <p></p>
-                                                </th>
-                                                <th class="expander"
-                                                    style="margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
-                                                </th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </th>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </center>
+        table[class="body"] p,
+        table[class="body"] ul,
+        table[class="body"] ol,
+        table[class="body"] td,
+        table[class="body"] span,
+        table[class="body"] a {
+          font-size: 16px !important;
+        }
+
+        table[class="body"] .wrapper,
+        table[class="body"] .main_description {
+          padding: 24px !important;
+        }
+
+        table[class="body"] .content {
+          padding: 0 !important;
+        }
+
+        table[class="body"] .container {
+          padding: 0 !important;
+          width: 100% !important;
+        }
+
+        table[class="body"] .main {
+          border-left-width: 0 !important;
+          border-radius: 8 !important;
+          border-right-width: 0 !important;
+          margin-top: 10px;
+        }
+
+        table[class="body"] .button table {
+          width: 100% !important;
+        }
+
+        table[class="body"] .button a {
+          width: 100% !important;
+        }
+
+        table[class="body"] .img-responsive {
+          height: auto !important;
+          max-width: 100% !important;
+          width: auto !important;
+        }
+      }
+      @media all {
+        .ExternalClass {
+          width: 100%;
+        }
+
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+
+        .copyright {
+          line-height: 18px;
+          color: #9c9c9c;
+        }
+
+        .button-primary table td:hover {
+          background-color: #5e4ad4 !important;
+        }
+
+        .button-primary a:hover {
+          background-color: #5e4ad4 !important;
+          border-color: #5e4ad4 !important;
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    </style>
+  </head>
+  <body
+    class
+    style="
+      background-color: #f0f2f5;
+      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    "
+  >
+    <table
+      role="presentation"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      class="body"
+      style="
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        min-width: 100%;
+        background-color: #f0f2f5;
+        width: 100%;
+      "
+      width="100%"
+      bgcolor="#F0F2F5"
+    >
+      <tr>
+        <td
+          style="
+            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: top;
+          "
+          valign="top"
+        >
+          &nbsp;
         </td>
-    </tr>
-    </tbody>
-</table>
-</body>
+        <td
+          class="container"
+          style="
+            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: top;
+            display: block;
+            max-width: 480px;
+            padding: 100px;
+            width: 480px;
+            margin-top: 100px;
+            margin: 0 auto;
+          "
+          width="480"
+          valign="top"
+        >
+          <div
+            class="content"
+            style="
+              box-sizing: border-box;
+              display: block;
+              margin: 0 auto;
+              max-width: 580px;
+              padding: 10px;
+            "
+          >
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span
+              class="preheader"
+              style="
+                color: transparent;
+                display: none;
+                height: 0;
+                max-height: 0;
+                max-width: 0;
+                opacity: 0;
+                overflow: hidden;
+                mso-hide: all;
+                visibility: hidden;
+                width: 0;
+              "
+              >{{MEMBER_NAME}} invited you to join "{{SPACE_NAME}}"</span
+            >
+            <table
+              role="presentation"
+              class="main"
+              style="
+                border-collapse: separate;
+                mso-table-lspace: 0pt;
+                mso-table-rspace: 0pt;
+                min-width: 100%;
+                background: #ffffff;
+                box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
+                  0px 3px 6px rgba(20, 20, 20, 0.06);
+                border-radius: 8px;
+                background-image: url('https://s4.apitable.com/logo/185f4bbdf690456ea586c59c9a77872d'),
+                  url('https://s4.apitable.com/logo/2922da145ff140e0b3fd32a62e524924'),
+                  url('https://s4.apitable.com/logo/ca3cbc2dac23457eaa3a230d20a26dab');
+                background-repeat: no-repeat;
+                background-size: 25%;
+                background-position: left bottom, right top, right bottom;
+                width: 100%;
+              "
+              width="100%"
+              background="url('https://s4.apitable.com/logo/185f4bbdf690456ea586c59c9a77872d'),
+  url('https://s4.apitable.com/logo/2922da145ff140e0b3fd32a62e524924'),
+  url('https://s4.apitable.com/logo/ca3cbc2dac23457eaa3a230d20a26dab')"
+            >
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td
+                  class="wrapper"
+                  style="
+                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                    font-size: 14px;
+                    vertical-align: top;
+                    box-sizing: border-box;
+                    padding: 20px;
+                  "
+                  valign="top"
+                >
+                  <table
+                    role="presentation"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="
+                      border-collapse: separate;
+                      mso-table-lspace: 0pt;
+                      mso-table-rspace: 0pt;
+                      min-width: 100%;
+                      width: 100%;
+                    "
+                    width="100%"
+                  >
+                    <tr>
+                      <td
+                        align="center"
+                        style="
+                          font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                          font-size: 14px;
+                          vertical-align: top;
+                        "
+                        valign="top"
+                      >
+                        <div
+                          class="logo"
+                          style="text-align: left; padding-bottom: 30px"
+                        >
+                          <a
+                            href="https://apitable.com?home=1"
+                            style="color: #7b67ee; text-decoration: underline"
+                            ><img
+                              style="
+                                border: none;
+                                -ms-interpolation-mode: bicubic;
+                                max-width: 100%;
+                                height: 24px;
+                              "
+                              src="https://legacy-s1.apitable.com/space/2022/09/20/a5de38aec6cc78aa3f447cf3a18aeb69"
+                              alt="APITable"
+                              height="24"
+                          /></a>
+                        </div>
+                        <p
+                          class="decscription"
+                          style="
+                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            font-size: 14px;
+                            font-weight: normal;
+                            margin: 0;
+                            margin-bottom: 15px;
+                            padding-left: 5px;
+                            display: inline-block;
+                          "
+                        >
+                          {{MEMBER_NAME}} invited you to join Space
+                        </p>
+                        <p
+                          class="main_description"
+                          style="
+                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            margin: 0;
+                            margin-bottom: 15px;
+                            font-weight: bold;
+                            font-size: 24px;
+                            line-height: 36px;
+                            text-align: center;
+                            padding-bottom: 10px;
+                            text-transform: capitalize;
+                          "
+                        >
+                          "{{SPACE_NAME}}"
+                        </p>
+                        <table
+                          role="presentation"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                          class="button button-primary"
+                          style="
+                            border-collapse: separate;
+                            mso-table-lspace: 0pt;
+                            mso-table-rspace: 0pt;
+                            min-width: 100%;
+                            box-sizing: border-box;
+                            width: 100%;
+                          "
+                          width="100%"
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                align="center"
+                                style="
+                                  font-family: Ubuntu, Helvetica, Arial,
+                                    sans-serif;
+                                  font-size: 14px;
+                                  vertical-align: top;
+                                  padding-bottom: 15px;
+                                "
+                                valign="top"
+                              >
+                                <table
+                                  role="presentation"
+                                  border="0"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  style="
+                                    border-collapse: separate;
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    min-width: auto;
+                                    width: auto;
+                                  "
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        style="
+                                          font-family: Ubuntu, Helvetica, Arial,
+                                            sans-serif;
+                                          font-size: 14px;
+                                          vertical-align: top;
+                                          border-radius: 5px;
+                                          text-align: center;
+                                          background-color: #7b67ee;
+                                        "
+                                        valign="top"
+                                        align="center"
+                                        bgcolor="#7b67ee"
+                                      >
+                                        <a
+                                          href="{{INVITE_URL}}"
+                                          target="_blank"
+                                          style="
+                                            border: solid 1px #7b67ee;
+                                            border-radius: 5px;
+                                            box-sizing: border-box;
+                                            cursor: pointer;
+                                            display: inline-block;
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            margin: 0;
+                                            padding: 12px 25px;
+                                            text-decoration: none;
+                                            text-transform: capitalize;
+                                            background-color: #7b67ee;
+                                            border-color: #7b67ee;
+                                            color: #ffffff;
+                                          "
+                                          >Accept invitation</a
+                                        >
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+
+            <!-- START FOOTER -->
+            <div
+              class="footer"
+              style="
+                clear: both;
+                margin-top: 10px;
+                text-align: center;
+                width: 100%;
+              "
+            >
+              <table
+                role="presentation"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="
+                  border-collapse: separate;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  min-width: 100%;
+                  width: 100%;
+                "
+                width="100%"
+              >
+                <tr>
+                  <td
+                    class="content-block"
+                    style="
+                      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                      vertical-align: top;
+                      padding-bottom: 10px;
+                      padding-top: 10px;
+                      font-size: 12px;
+                      text-align: center;
+                    "
+                    valign="top"
+                    align="center"
+                  >
+                    <p
+                      class="copyright"
+                      style="
+                        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                        font-weight: normal;
+                        margin: 0;
+                        margin-bottom: 15px;
+                        font-size: 12px;
+                        text-align: center;
+                      "
+                    >
+                      &copy; {{YEARS}} APITable Ltd.
+                    </p>
+                    <a
+                      class="contact"
+                      href="https://apitable.com?home=1"
+                      style="
+                        line-height: 18px;
+                        color: #7b67ee;
+                        text-decoration: none;
+                        font-size: 12px;
+                        text-align: center;
+                      "
+                      >Contact us</a
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td
+          style="
+            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            vertical-align: top;
+          "
+          valign="top"
+        >
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

@@ -167,7 +167,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       icon: <AttentionOutlined size={16} color={colors.white} />,
       name: subOrUnsubText,
       onClick: onSubOrUnsub,
-      visible: !shareId && !templateId,
+      visible: !shareId && !templateId && !embedId,
     },
     {
       icon: <InfoCircleOutlined size={16} color={colors.white} />,

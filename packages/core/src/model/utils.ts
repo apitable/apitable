@@ -324,7 +324,7 @@ export const isNullValue = (value: any): value is null => {
 
 /**
  * IOpenComputedFormat => IComputedFieldFormattingProperty
- * Convert the external read calculation field format content into executable cmd format (formula, magic reference)
+ * Convert the external read calculation field format content into executable cmd format (formula, lookup)
  * @param fieldInstance
  * @param format
  */
@@ -387,4 +387,4 @@ export const isBasicField = (fieldType: FieldType) => {
     fieldType === FieldType.Percent ||
     fieldType === FieldType.SingleText ||
     fieldType === FieldType.Attachment;
-}
+};

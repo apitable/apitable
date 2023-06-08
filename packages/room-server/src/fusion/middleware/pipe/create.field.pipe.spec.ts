@@ -16,14 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant } from '@apitable/core';
+import { ApiTipConstant, FieldType, FilterConjunction, FOperator, IMeta } from '@apitable/core';
 import '@apitable/i18n-lang';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { FieldCreateRo } from 'fusion/ros/field.create.ro';
+import { DATASHEET_META_HTTP_DECORATE } from 'shared/common';
 import { ApiException } from 'shared/exception';
 import { CreateFieldPipe } from './create.field.pipe';
+
+const mockMeta: IMeta = {
+  fieldMap: {
+    fld7: {
+      id: 'fld7',
+      name: 'Field 7',
+      type: FieldType.Checkbox,
+      property: {
+        icon: 'smile',
+      },
+    },
+  },
+  views: [],
+};
 
 describe('CreateFieldPipe', () => {
   let app: NestFastifyApplication;
@@ -35,7 +50,9 @@ describe('CreateFieldPipe', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    pipe = new CreateFieldPipe();
+    pipe = new CreateFieldPipe({
+      [DATASHEET_META_HTTP_DECORATE]: mockMeta,
+    } as any);
   });
 
   afterAll(async() => {
@@ -43,7 +60,6 @@ describe('CreateFieldPipe', () => {
   });
 
   describe('validate field', () => {
-
     it('missing field name, should return 400 code', () => {
       const ro: FieldCreateRo = new FieldCreateRo('', 'Text');
       const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'name' });
@@ -77,21 +93,59 @@ describe('CreateFieldPipe', () => {
         pipe.validate(field);
       }).toThrow(error);
     });
-
   });
 
   describe('transformProperty', () => {
-
     it('transform number property, should change precision from string to number', () => {
-      const field: FieldCreateRo = new FieldCreateRo('abc', 'number');
+      const field: FieldCreateRo = new FieldCreateRo('abc', 'Number');
       field.property = {
         defaultValue: '1.0',
-        precision: 2
+        precision: 2,
       };
       pipe.transformProperty(field);
       expect(field).toHaveProperty(['property', 'precision'], 2.0);
       expect(field).not.toHaveProperty(['property', 'precision'], '2.0');
     });
-  });
 
+    test('transform lookup property with filter info', () => {
+      const field: FieldCreateRo = new FieldCreateRo('lookup', 'MagicLookUp');
+      field.property = {
+        relatedLinkFieldId: 'fld1',
+        targetFieldId: 'fld2',
+        filterInfo: {
+          conjunction: FilterConjunction.And,
+          conditions: [
+            {
+              fieldId: 'fld7',
+              operator: FOperator.Is,
+              value: ['abc'],
+            },
+          ] as any,
+        },
+      };
+      pipe.transformProperty(field);
+      expect(field).toHaveProperty(['property', 'filterInfo', 'conditions', 0, 'fieldType'], FieldType.Checkbox);
+    });
+
+    test('transform lookup property with filter info, field not exist', () => {
+      const field: FieldCreateRo = new FieldCreateRo('lookup', 'MagicLookUp');
+      field.property = {
+        relatedLinkFieldId: 'fld1',
+        targetFieldId: 'fld2',
+        filterInfo: {
+          conjunction: FilterConjunction.And,
+          conditions: [
+            {
+              fieldId: 'fld87',
+              operator: FOperator.Is,
+              value: ['abc'],
+            },
+          ] as any,
+        },
+      };
+      expect(() => {
+        pipe.transformProperty(field);
+      }).toThrow(ApiException.tipError(ApiTipConstant.api_param_filter_field_not_exists, { fieldId: 'fld87' }));
+    });
+  });
 });

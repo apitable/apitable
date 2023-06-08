@@ -21,6 +21,14 @@ import classNames from 'classnames';
 import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import zhCN from 'antd/es/date-picker/locale/zh_CN';
+import zhTW from 'antd/es/date-picker/locale/zh_TW';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import deDE from 'antd/es/date-picker/locale/de_DE';
+import itIT from 'antd/es/date-picker/locale/it_IT';
+import jaJP from 'antd/es/date-picker/locale/ja_JP';
+import koKR from 'antd/es/date-picker/locale/ko_KR';
+import ruRU from 'antd/es/date-picker/locale/ru_RU';
+import esES from 'antd/es/date-picker/locale/es_ES';
 import { getLanguage } from '@apitable/core';
 
 export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFormat?: string): any {
@@ -96,9 +104,16 @@ export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFor
     };
 
     getDefaultLocale = () => {
-      const locale = {
-        'zh-CN': zhCN,
-        'en-US': enUS
+      const locale = { 'zh-CN': zhCN,
+        'en-US': enUS,
+        'zh-HK': zhTW,
+        'fr-FR': frFR,
+        'de-DE': deDE,
+        'it-IT': itIT,
+        'ja-JP': jaJP,
+        'ko-KR': koKR,
+        'ru-RU': ruRU,
+        'es-ES': esES,
       }[getLanguage()];
       const result = {
         ...locale,

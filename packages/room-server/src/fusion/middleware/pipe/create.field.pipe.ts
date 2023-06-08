@@ -17,13 +17,20 @@
  */
 
 import { ApiTipConstant, Field, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@apitable/core';
-import { Injectable, PipeTransform } from '@nestjs/common';
+import { Inject, Injectable, PipeTransform } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { FastifyRequest } from 'fastify';
 import { FieldCreateRo } from 'fusion/ros/field.create.ro';
 import { ApiException } from 'shared/exception';
 import { CreateDatasheetPipe } from './create.datasheet.pipe';
 
 @Injectable()
 export class CreateFieldPipe implements PipeTransform {
+
+  constructor(
+    @Inject(REQUEST) private readonly request: FastifyRequest,
+  ) {
+  }
 
   transform(ro: FieldCreateRo): FieldCreateRo {
     this.validate(ro);
@@ -32,7 +39,7 @@ export class CreateFieldPipe implements PipeTransform {
   }
 
   public transformProperty(field: FieldCreateRo) {
-    const pipe = new CreateDatasheetPipe(null);
+    const pipe = new CreateDatasheetPipe(this.request);
     pipe.transformProperty([field]);
   }
 

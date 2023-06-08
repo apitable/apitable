@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for APITable
-title: 'feat: FEATURE...'
+title: 'feat: A brief description of your requested feature'
 labels: 'enhancement'
 assignees: ''
 

@@ -212,7 +212,7 @@ export class DatasheetFieldHandler {
           break;
         // Lookup field, may recurse
         case FieldType.LookUp:
-          const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } = fieldInfo.property;
+          const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo, sortInfo } = fieldInfo.property;
           // The field is not in datasheet, skip
           if (!fieldMap[relatedLinkFieldId]) {
             continue;
@@ -225,8 +225,13 @@ export class DatasheetFieldHandler {
           const { foreignDatasheetId } = fieldMap[relatedLinkFieldId]!.property as ILinkFieldProperty;
           const foreignFieldIds = [lookUpTargetFieldId];
           // Parse reference filter condition
-          if (openFilter && filterInfo?.conditions.length) {
-            filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
+          if (openFilter) {
+            if (filterInfo?.conditions.length) {
+              filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
+            }
+            if (sortInfo?.rules.length) {
+              sortInfo.rules.forEach(rule => foreignFieldIds.push(rule.fieldId));
+            }
           }
           // Create two-way reference relation
           await this.computeFieldReferenceManager.createReference(dstId, fieldId, foreignDatasheetId, foreignFieldIds);
@@ -242,7 +247,7 @@ export class DatasheetFieldHandler {
         // member field, not recursive
         case FieldType.Member:
           const { unitIds } = fieldInfo.property;
-          if (unitIds && unitIds.length) {
+          if (unitIds?.length) {
             unitIds.forEach((unitId: string) => globalParam.memberFieldUnitIds.add(unitId));
           }
           break;
@@ -391,12 +396,7 @@ export class DatasheetFieldHandler {
    * @param fieldLinkDstMap field ID -> linked datasheet ID
    * @returns linked records in linked datasheets
    */
-  static forEachRecordMap(
-    dstId: string,
-    recordMap: IRecordMap,
-    fieldLinkDstMap: Map<string, string>,
-    logger: Logger,
-  ): Record<string, Set<string>> {
+  static forEachRecordMap(dstId: string, recordMap: IRecordMap, fieldLinkDstMap: Map<string, string>, logger: Logger): Record<string, Set<string>> {
     if (fieldLinkDstMap.size == 0) {
       return {};
     }
@@ -671,7 +671,7 @@ export class DatasheetFieldHandler {
         filterInfo.conditions.forEach((condition: any) => lookUpReferFieldIds.push(condition.fieldId));
       }
       // Update two-way reference of LookUp field
-      updateReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds);
+      await updateReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds);
       // skip self-linking
       if (foreignDatasheetId === dstId) {
         continue;

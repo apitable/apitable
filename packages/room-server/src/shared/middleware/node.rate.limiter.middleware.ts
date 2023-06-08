@@ -20,7 +20,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
 import { AUTHORIZATION_PREFIX, EnvConfigKey, NODE_LIMITER_PREFIX } from '../common';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
-import { ApiException } from '../exception/api.exception';
+import { ApiException } from '../exception';
 import { FusionHelper } from '../helpers';
 import { IRateLimiter } from '../interfaces';
 import { ApiResponse } from '../../fusion/vos/api.response';
@@ -28,6 +28,8 @@ import { I18nService } from 'nestjs-i18n';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import sha1 from 'sha1';
 import { ApiTipConstant } from '@apitable/core';
+import { RestService } from '../services/rest/rest.service';
+import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
 
 /**
  * Rate limiter middleware
@@ -39,10 +41,12 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
   constructor(
     private readonly redisService: RedisService,
     private readonly envConfigService: EnvConfigService,
+    private readonly restService: RestService,
+    private readonly datasheetRepository: DatasheetRepository,
     private readonly i18n: I18nService) {
   }
 
-  use(req: any, res: any, next: () => void): any {
+  async use(req: any, res: any, next: () => void) {
     // use redis for distributed system
     const redisClient = this.redisService.getClient();
     // use spaceId as the unique key for verification, no need to verify in other places.
@@ -52,11 +56,27 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     // single user plus single node
     const consume = limitKey + ':' + sha1(token);
     const limiter = this.envConfigService.getRoomConfig(EnvConfigKey.API_LIMIT) as IRateLimiter;
+    let points = limiter.points;
+    let duration = limiter.duration;
+    const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
+    let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
+    if (!spaceId && datasheetId) {
+      const entity = await this.datasheetRepository.selectById(datasheetId);
+      spaceId = entity?.spaceId;
+    }
+    if(spaceId) {
+      const qps = await this.restService.getApiRateLimit({ token }, spaceId);
+      if (qps?.qps && qps.qps !== -1) {
+        points = qps.qps;
+      }
+    }
+    points = limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token)!.points : points;
+    duration = limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token)!.duration : duration;
     // rate limit per [duration] seconds
     const rateLimiter = new RateLimiterRedis({
       storeClient: redisClient,
-      points: limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token)!.points : limiter.points,
-      duration: limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token)!.duration : limiter.duration,
+      points,
+      duration,
       keyPrefix: NODE_LIMITER_PREFIX,
     });
     rateLimiter
@@ -65,10 +85,10 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
         next();
       })
       .catch(async() => {
-        const err = ApiException.tipError(ApiTipConstant.api_frequently_error);
+        const err = ApiException.tipError(ApiTipConstant.api_frequently_error, { value: points});
         res.setHeader('Content-Type', 'application/json');
         res.statusCode = err.getTip().statusCode;
-        const errMsg = await this.i18n.translate(err.getMessage());
+        const errMsg = await this.i18n.translate(err.getMessage(), { args: { value: points} });
         res.write(JSON.stringify(ApiResponse.error(errMsg, err.getTip().code)));
         res.end();
       });

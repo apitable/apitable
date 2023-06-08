@@ -195,7 +195,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
     case FieldType.URL:
     case FieldType.Email:
     case FieldType.Phone:
-      return <EnhanceTextEditor {...commonProps} cellValue={cellValue} />;
+      return <EnhanceTextEditor recordId={record.id} {...commonProps} cellValue={cellValue} />;
     case FieldType.Number:
     case FieldType.Currency:
     case FieldType.Percent:

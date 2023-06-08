@@ -41,7 +41,7 @@ export async function sendSlackMessage(request: ISlackMessageRequest): Promise<I
     });
     const responseBody = response.clone();
     const result = await responseBody.text();
-    if (result  === 'ok') {
+    if (result === 'ok') {
       return {
         success: true,
         code: ResponseStatusCodeEnums.Success,

@@ -240,9 +240,10 @@ export class KonvaDrawer {
       originValue = [],
       isLinkSplit = false,
       fieldType,
-      needDraw = false
+      needDraw = false,
+      favicon
     } = props;
-    let offsetX = 0;
+    let offsetX = 0 + (favicon ? 24 : 0);
     let offsetY = 0;
     const baselineOffset = verticalAlign === 'top' ? fontSize / 2 : 0;
     const fontStyle = `${fontWeight}-${fontSize}px`;
@@ -269,6 +270,21 @@ export class KonvaDrawer {
     const cacheTextData = textDataCache.get(cacheKey);
     if (cacheTextData) {
       if (this.needDraw && needDraw) {
+        favicon && this.rect({
+          x,
+          y: y - 5,
+          width: 20,
+          height: 20,
+          stroke: colors.borderCommonDefault,
+          radius: 4
+        });
+        favicon && this.image({
+          x,
+          y: y - 5,
+          url: favicon,
+          width: 20,
+          height: 20,
+        }, true);
         textRenderer(cacheTextData.data);
       }
       return cacheTextData;
@@ -452,7 +468,7 @@ export class KonvaDrawer {
     this.ctx.fillText(text, x, y + baselineOffset);
   }
 
-  public image(props: IImageProps) {
+  public image(props: IImageProps, crossOrigin?: boolean) {
     const { x, y, url, width, height, opacity = 1, clipFunc } = props;
     if (!url) {
       return;
@@ -464,7 +480,7 @@ export class KonvaDrawer {
     }
     // Unloaded
     if (image == null) {
-      return imageCache.loadImage(url, url);
+      return imageCache.loadImage(url, url, crossOrigin);
     }
     const isOrigin = opacity === 1;
 
@@ -594,9 +610,7 @@ export class KonvaDrawer {
       (url || '');
     const avatarName = getFirstWordFromString(title);
     const avatarBg = (
-      avatarSrc ?
-        colors.defaultBg :
-        (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
+      avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0]
     );
     switch (type) {
       case AvatarType.Team: {

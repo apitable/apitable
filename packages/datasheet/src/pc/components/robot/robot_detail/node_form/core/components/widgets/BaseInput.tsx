@@ -83,7 +83,7 @@ function BaseInput(props: IBaseInputProps & any) {
     inputProps.max = schema.maximum;
   }
 
-  const _onChange = ({ target: { value }}:  ChangeEvent<HTMLInputElement>) => {
+  const _onChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
     return props.onChange(value === '' ? options.emptyValue : value);
   };
 

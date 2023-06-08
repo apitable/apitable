@@ -20,6 +20,7 @@ package com.apitable.internal.assembler;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
+import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 
@@ -42,6 +43,12 @@ public class BillingAssembler {
         InternalSpaceApiUsageVo vo = new InternalSpaceApiUsageVo();
         vo.setMaxApiUsageCount(planFeature.getApiCallNums().getValue());
         vo.setIsAllowOverLimit(true);
+        return vo;
+    }
+
+    public InternalSpaceApiRateLimitVo toApiRateLimitVo(SubscriptionFeature planFeature) {
+        InternalSpaceApiRateLimitVo vo = new InternalSpaceApiRateLimitVo();
+        vo.setQps(planFeature.getApiQps().getValue());
         return vo;
     }
 }

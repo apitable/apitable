@@ -512,7 +512,7 @@ export enum FieldType {
    *  targetFieldId: string; 
    *  // whether the lookup field is correctly configured
    *  hasError?: boolean;
-   *  // The entity field that is eventually referenced to does not contain a field of the magic reference type. 
+   *  // The entity field that is eventually referenced to does not contain a field of the lookup type. 
    *  // In the presence of an error, the entity field may not exist.
    *  entityField?: {
    *    datasheetId: string;

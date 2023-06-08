@@ -142,6 +142,8 @@ const fetchSuccess = (
         .then(props => {
           fetchDatasheetPackSuccess(props as any);
           props.responseBody.success ? successCb && successCb() : failCb && failCb();
+        }, e => {
+          console.error('fetchMirrorDataPackApi error', e);
         });
     } else {
       successCb && successCb();

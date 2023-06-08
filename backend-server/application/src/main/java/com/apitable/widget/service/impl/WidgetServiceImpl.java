@@ -18,6 +18,7 @@
 
 package com.apitable.widget.service.impl;
 
+import com.apitable.workspace.enums.IdRulePrefixEnum;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -230,11 +231,15 @@ public class WidgetServiceImpl implements IWidgetService {
     }
 
     @Override
-    public Collection<String> copyToDashboard(Long userId, String spaceId, String dashboardId, List<String> widgetIds) {
-        log.info("copy widgets to dashboard");
-        // verify the maximum number of components for a dashboard
-        int count = SqlTool.retCount(resourceMetaMapper.countDashboardWidgetNumber(dashboardId));
-        ExceptionUtil.isTrue(count + widgetIds.size() <= limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
+    public Collection<String> copyWidget(Long userId, String spaceId,
+        String nodeId, List<String> widgetIds) {
+        log.info("copy widgets");
+        if (nodeId.startsWith(IdRulePrefixEnum.DASHBOARD.getIdRulePrefixEnum())) {
+            // verify the maximum number of components for a dashboard
+            int count = SqlTool.retCount(resourceMetaMapper.countDashboardWidgetNumber(nodeId));
+            ExceptionUtil.isTrue(count + widgetIds.size()
+                <= limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
+        }
         // check if components exist
         int widgetCount = SqlTool.retCount(widgetMapper.selectCountBySpaceIdAndWidgetIds(spaceId, widgetIds));
         ExceptionUtil.isTrue(widgetCount == widgetIds.size(), WidgetException.WIDGET_NOT_EXIST);
@@ -246,7 +251,7 @@ public class WidgetServiceImpl implements IWidgetService {
         Map<String, String> newWidgetIdMap = new HashMap<>(widgetIds.size());
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = new HashMap<>(widgetIds.size());
         for (WidgetDTO dto : widgetDTOList) {
-            newNodeMap.put(dto.getNodeId(), dashboardId);
+            newNodeMap.put(dto.getNodeId(), nodeId);
             String newWidgetId = IdUtil.createWidgetId();
             newWidgetIdMap.put(dto.getWidgetId(), newWidgetId);
             DatasheetWidgetDTO datasheetWidgetDTO = new DatasheetWidgetDTO();

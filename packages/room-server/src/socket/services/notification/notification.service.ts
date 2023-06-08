@@ -47,9 +47,9 @@ export class NotificationService {
     }
   }
 
-  watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): boolean {
+  async watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean> {
     try {
-      client.join(this.getSpaceRoom(message.spaceId));
+      await client.join(this.getSpaceRoom(message.spaceId));
       return true;
     } catch (e) {
       this.logger.error('Error:watchSpace', (e as Error)?.stack);

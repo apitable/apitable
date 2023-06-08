@@ -66,14 +66,13 @@ export class NodeDetailParamRo {
 }
 
 export class NodeListQueryRo {
-
   @ApiProperty({
     type: String,
     required: true,
     example: 'Datasheet',
     description: 'value in ("Folder", "Datasheet", "Form", "Mirror", "Dashboard")',
   })
-  @IsEnum(NodeTypeEnum, {message: ApiTipConstant.api_node_node_type_value_error})
+  @IsEnum(NodeTypeEnum, { message: ApiTipConstant.api_node_node_type_value_error })
   type!: NodeTypeEnum;
 
   @ApiProperty({
@@ -86,9 +85,9 @@ export class NodeListQueryRo {
   @Transform(value => integerStringToArray(value), { toClassOnly: true })
   @IsOptional()
   @IsArray()
-  @IsInt({each: true, message: ApiTipConstant.api_node_permission_value_error})
-  @Max(3, {each: true, message: ApiTipConstant.api_node_permission_value_error})
-  @Min(0, {each: true, message: ApiTipConstant.api_node_permission_value_error})
+  @IsInt({ each: true, message: ApiTipConstant.api_node_permission_value_error })
+  @Max(3, { each: true, message: ApiTipConstant.api_node_permission_value_error })
+  @Min(0, { each: true, message: ApiTipConstant.api_node_permission_value_error })
   permissions?: number[];
 
   @ApiProperty({
@@ -101,4 +100,3 @@ export class NodeListQueryRo {
   @IsString()
   query?: string;
 }
-

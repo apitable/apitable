@@ -52,13 +52,12 @@ export const GET_SHARE_DST_VIEW_DATA_PACK = 'shares/:shareId/datasheets/:dstId/v
 
 // =============== datasheet related =======================
 // ================ form ================
-//TODO: replace to (xxxx)/form/:formId/meta after release/0.22.0
 // load form data
-export const FORMPACK = '/form/:formId/dataPack';
+export const FORMPACK = '/forms/:formId/meta';
 // Get form share page data
-export const READ_SHARE_FORMPACK = '/share/:shareId/form/:formId/dataPack';
+export const READ_SHARE_FORMPACK = '/shares/:shareId/forms/:formId/meta';
 // Get form template page data
-export const READ_TEMPLATE_FORMPACK = '/template/:templateId/form/:formId/dataPack';
+export const READ_TEMPLATE_FORMPACK = '/templates/:templateId/forms/:formId/meta';
 // Form submission data in the space station
 export const FORM_ADD_RECORD = '/forms/:formId/addRecord';
 // form share page submit data
@@ -80,8 +79,7 @@ export const ROOM_PATH = '/room';
 export const NOTIFICATION_PATH = '/notification';
 // =============== Socket related =======================
 
-//TODO: replace to datasheets/:dstId/records/:recordId/comments after release/0.22.0
-export const GET_COMMENTS_BY_IDS = 'datasheet/:dstId/record/:recordId/comments';
+export const GET_COMMENTS_BY_IDS = 'datasheets/:dstId/records/:recordId/comments';
 
 export const APPLY_RESOURCE_CHANGESETS = 'resources/apply/changesets';
 
@@ -107,7 +105,7 @@ export const READ_SHARE_DATAPACK = '/shares/:shareId/datasheets/:dstId/dataPack'
 // template packet
 export const READ_TEMPLATE_DATAPACK = '/templates/datasheets/:dstId/dataPack';
 // Get the form  Data of the embed page
-export const READ_EMBED_DATAPACK = '/embedlinks/:embedId/datasheets/:dstId/dataPack';
+export const READ_EMBED_DATAPACK = '/embedlinks/:embedId/resources/:dstId/dataPack';
 // get user list
 export const GET_USER_LIST = '/datasheets/:nodeId/users';
 // Get the Meta corresponding to the datasheet

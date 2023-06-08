@@ -81,6 +81,7 @@ export class RestService {
   private CREATE_DATASHEET_API_URL = 'internal/spaces/%(spaceId)s/datasheets';
   private DELETE_NODE_API_URL = 'internal/spaces/%(spaceId)s/nodes/%(nodeId)s/delete';
   private API_USAGES = 'internal/space/%(spaceId)s/apiUsages';
+  private API_RATE_LIMIT = 'internal/space/%(spaceId)s/apiRateLimit';
   private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
   private NODE_LIST = 'internal/spaces/%(spaceId)s/nodes';
@@ -363,6 +364,21 @@ export class RestService {
     );
   }
 
+  /**
+   * Obtain the api qps info of the given space
+   *
+   * @param headers Authorization info
+   * @param spaceId space ID
+   */
+  async getApiRateLimit(headers: IAuthHeader, spaceId: string): Promise<any> {
+    const response = await lastValueFrom(
+      this.httpService.get(sprintf(this.API_RATE_LIMIT, { spaceId }), {
+        headers: HttpHelper.createAuthHeaders(headers)
+      })
+    );
+    return response!.data;
+  }
+
   async getSpaceList(headers: IAuthHeader): Promise<ISpaceInfo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.SPACE_LIST, {
@@ -502,7 +518,7 @@ export class RestService {
    * @param {number} specification
    * @param {number} usage
    */
-  sendSubscribeRemind(
+  async sendSubscribeRemind(
     headers: IAuthHeader,
     spaceId: string,
     nodeId: string,
@@ -516,7 +532,7 @@ export class RestService {
     specification: number,
     usage: number,
   ) {
-    lastValueFrom(
+    await lastValueFrom(
       this.httpService.post<any>(
         this.SUBSCRIBE_REMIND,
         {

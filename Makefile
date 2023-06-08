@@ -151,6 +151,9 @@ _test_init_db:
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*" --format "{{.ID}}") || true
 
+_test_docker_mysql: ## only run mysql container
+	docker compose -f docker-compose.unit-test.yaml up -d test-mysql
+
 _test_dockers: ## run depends container in test step
 	docker compose -f docker-compose.unit-test.yaml up -d test-mysql ;\
 	docker compose -f docker-compose.unit-test.yaml up -d test-redis ;\
@@ -236,6 +239,16 @@ test-ut-backend-run:
 	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
+
+###### 【init-db test】 ######
+test-init-db-docker:
+	@echo "${LIGHTPURPLE}Working dir, $(shell pwd)${RESET}"
+	@echo "${LIGHTPURPLE}$$(docker compose version)${RESET}"
+	make _test_clean
+	make _test_docker_mysql
+	sleep 20
+	make _test_init_db
+	@echo "${GREEN}finished testing, clean up images...${RESET}"
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
 	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin || true;\
@@ -483,40 +496,16 @@ changelog: ## make changelog with github api
 	echo "TO: $$GIT_TO" ;\
 	npx github-changelog-builder --token $$GITHUB_TOKEN -o apitable -r apitable -f $$GIT_FROM -t $$GIT_TO -a CHANGELOG.md
 
-.PHONY: l10n-apitable-ce
-l10n-apitable-ce: move_setting_file
-	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base y ./packages/i18n-lang/src ./ ./packages/l10n/l10n-apitable-ce
-	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/l10n-apitable-ce ./
+.PHONY: settings
+settings: ## settings and l10n init
+	make _l10n
 
-move_setting_file:
-	@if [ -f ./packages/datasheet/.env.development ]; then \
-  		mv -f ./packages/datasheet/.env.development ./packages/datasheet/.env.development.origin; \
-  	fi
-	@if [ -f ./packages/i18n-lang/src/config/strings.json ]; then \
-  		mv -f ./packages/i18n-lang/src/config/strings.json ./packages/i18n-lang/src/config/strings.origin.json; \
-  	fi
-	@if [ -f ./packages/i18n-lang/src/config/language.manifest.json ]; then \
-  		mv -f ./packages/i18n-lang/src/config/language.manifest.json ./packages/i18n-lang/src/config/language.manifest.origin.json; \
-  	fi
-	@if [ -f ./packages/core/src/config/api_tip_config.auto.json ]; then \
-  		mv -f ./packages/core/src/config/api_tip_config.auto.json ./packages/core/src/config/api_tip_config.auto.origin.json; \
-  	fi
-	@if [ -f ./packages/core/src/config/emojis.auto.json ]; then \
-  		mv -f ./packages/core/src/config/emojis.auto.json ./packages/core/src/config/emojis.auto.origin.json; \
-  	fi
-	@if [ -f ./enterprise/core/config/billing.auto.json ]; then \
-  		mv -f ./enterprise/core/config/billing.auto.json ./enterprise/core/config/billing.auto.origin.json; \
-  	fi
-	@if [ -f ./packages/core/src/config/system_config.auto.json ]; then \
-  		mv -f ./packages/core/src/config/system_config.auto.json ./packages/core/src/config/system_config.auto.origin.json; \
-  	fi
-	@if [ -f ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties ]; then \
-  		mv -f ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties ./backend-server/application/src/main/resources/sysconfig/i18n/exception/messages.properties.origin; \
-  	fi
-	@if [ -f ./backend-server/application/src/main/resources/sysconfig/notification.json ]; then \
-  		mv -f ./backend-server/application/src/main/resources/sysconfig/notification.json ./backend-server/application/src/main/resources/sysconfig/notification.origin.json; \
-  	fi
 
+.PHONY: _l10n
+_l10n: ## l10n apitable-ce
+	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
+	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
+	yarn build:i18n
 
 ### help
 .PHONY: search

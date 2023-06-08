@@ -48,12 +48,12 @@ export class ApiUsageInterceptor implements NestInterceptor {
     return (next.handle().pipe(
       tap((data: ApiResponse<any>) => {
         this.clearApiCache();
-        this.apiUsage(request, data);
+        void this.apiUsage(request, data);
       }),
       catchError(err => {
         this.clearApiCache();
         if (err instanceof ApiException && err.getTip().isRecordTimes) {
-          this.apiUsage(request, undefined, err);
+          void this.apiUsage(request, undefined, err);
           return throwError(err);
         }
         // database error

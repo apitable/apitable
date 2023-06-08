@@ -4,6 +4,7 @@ import { DatasheetActions } from '../datasheet';
 import { TextBaseField } from './text_base_field';
 import { ICellValue } from '../record';
 import { Strings, t } from '../../exports/i18n';
+import { FOperator, IFilterText } from '../../types';
 
 export class CascaderField extends TextBaseField {
 
@@ -69,5 +70,22 @@ export class CascaderField extends TextBaseField {
       }
       return seg.text;
     }).join('') || null;
+  }
+
+  cellValueToFullString(cellValue: ICellValue): string | null {
+    if (cellValue == null) {
+      return null;
+    }
+    const cv = [cellValue].flat();
+    return (cv as ISegment[]).map(seg => seg.text).join('') || null;
+  }
+
+  override isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
+    const cellText = this.cellValueToFullString(cellValue);
+    return TextBaseField._isMeetFilter(operator, cellText, conditionValue, {
+      containsFn: (filterValue: string) => cellText != null && this.stringInclude(cellText, filterValue),
+      doesNotContainFn: (filterValue: string) => cellText == null || !this.stringInclude(cellText, filterValue),
+      defaultFn: () => super.isMeetFilter(operator, cellValue, conditionValue)
+    });
   }
 }

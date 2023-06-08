@@ -20,6 +20,7 @@ package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
@@ -129,6 +130,11 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public NodePermissionNums getNodePermissionNums() {
         return new NodePermissionNums(-1L);
+    }
+
+    @Override
+    public ApiQps getApiQps() {
+        return new ApiQps(5L);
     }
 
     @Override

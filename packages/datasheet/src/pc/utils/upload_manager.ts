@@ -151,7 +151,7 @@ export class UploadManager {
         return this.execute(cellId);
       }
       return null;
-    })
+    });
   }
 
   /**

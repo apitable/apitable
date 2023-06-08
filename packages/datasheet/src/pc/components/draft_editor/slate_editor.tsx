@@ -70,15 +70,6 @@ export type IMentionElement = {
   children: IText[];
 };
 
-export type ILinkElement = {
-  type: 'link';
-  data: {
-    href: string;
-    text: string;
-  };
-  children: IText[];
-};
-
 const LINE_HEIGHT = 22;
 
 function calcContainerStyle(maxRow: number): React.CSSProperties {
