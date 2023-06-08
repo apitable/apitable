@@ -186,7 +186,7 @@
   "api_forbidden": "Access forbidden",
   "api_forbidden_because_of_not_in_space": "The API token user does not belong to the space, please adjust spaceId or API token and try again",
   "api_forbidden_because_of_usage": "Access forbidden because your API usage exceeds the monthly rate",
-  "api_frequently_error": "API requests are sent too frequently",
+  "api_frequently_error": "The API query rate for the current space is {value} queries per second (QPS). Upgrading the space allows for a higher call frequency.",
   "api_get": "Get records",
   "api_insert_error": "Failed to create data",
   "api_more_params": "Other parameters or tips",

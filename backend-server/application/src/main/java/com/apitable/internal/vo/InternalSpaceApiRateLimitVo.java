@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -15,29 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.apitable.internal.vo;
 
-import { Module } from '@nestjs/common';
-import { NodeRateLimiterMiddleware } from './node.rate.limiter.middleware';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
+
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
+import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
- * middleware module works with pipe, middleware and guard
- * @author Zoe zheng
- * @date 2020/7/24 4:39 PM
+ * space subscription plan resource view.
  */
-@Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      DatasheetRepository
-    ])
-  ],
-  providers: [
-    NodeRateLimiterMiddleware,
-  ],
-  exports: [
-    NodeRateLimiterMiddleware,
-  ]
+@Data
+@Schema(description = "space subscription plan resource view")
+public class InternalSpaceApiRateLimitVo {
 
-})
-export class MiddlewareModule {}
+  @Schema(description = "api request numbers per seconds", example = "false")
+  private Long qps;
+}

@@ -29,6 +29,13 @@ public class SubscriptionFeatures {
             }
         }
 
+        public static class ApiQps extends AbstractNumberPlanFeature {
+
+            public ApiQps(Long value) {
+                super(value);
+            }
+        }
+
         public static class CapacitySize extends AbstractNumberPlanFeature {
 
             public CapacitySize(Long value) {
