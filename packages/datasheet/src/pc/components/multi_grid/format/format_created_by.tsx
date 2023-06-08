@@ -45,7 +45,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
     };
 
     if (checked) {
-      Message.warning({
+      Message.info({
         content: t(Strings.field_member_property_subscription_open_tip)
       });
       updateSubscription();

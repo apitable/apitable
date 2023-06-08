@@ -63,9 +63,11 @@
         margin-right: 0;
       }
 
-      & .ant-tabs-tab-btn {
-        font-weight: bold;
-        color: var(--secondLevelText);
+      & {
+        .ant-tabs-tab-btn {
+          font-weight: bold;
+          color: var(--secondLevelText);
+        }
       }
 
       &.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -81,7 +83,7 @@
 }
 
 .search {
-  padding: 8px 16px;
+  padding: 8px 24px;
   .searchClose {
     fill: var(--black_500);
     transition: all 0.3s;
@@ -108,7 +110,7 @@
 }
 
 .emptyList {
-  height: 100%;
+  height: calc(100% - 56px);
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -23,11 +23,13 @@ interface IUrlActionUI {
   datasheetId: string;
   style?: React.CSSProperties;
   title?: string;
+  tempValue?: string;
 }
 
 export const UrlActionUI = (props: IUrlActionUI) => {
-  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style } = props;
+  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style, tempValue } = props;
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<any>(null);
   const [mount, setMount]= useState(false);
   const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
   const cellValue = useSelector(state => {
@@ -38,8 +40,8 @@ export const UrlActionUI = (props: IUrlActionUI) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const cellValueText = get(cellValue, '0.text');
-  const cellValueTitle = get(cellValue, '0.title');
+  const cellValueText = get(cellValue, '0.text') || tempValue;
+  const cellValueTitle = get(cellValue, '0.title') || tempValue;
   const cellValueFavicon = get(cellValue, '0.favicon');
 
   const [text, setText] = useState(cellValueText);
@@ -47,6 +49,10 @@ export const UrlActionUI = (props: IUrlActionUI) => {
 
   useEffect(() => {
     setMount(true);
+  }, []);
+
+  useEffect(() => {
+    inputRef.current.focus();
   }, []);
 
   useClickAway(
@@ -64,6 +70,7 @@ export const UrlActionUI = (props: IUrlActionUI) => {
       <TextInput
         suffix={<a target='_blank' rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
         value={text}
+        ref={inputRef}
         onChange={(evt) => {
           setText(evt.target.value);
         }}

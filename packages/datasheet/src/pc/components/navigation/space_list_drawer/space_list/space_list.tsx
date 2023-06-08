@@ -210,6 +210,7 @@ export const SpaceList: FC<React.PropsWithChildren<unknown>> = () => {
   const search = (
     <div className={styles.search}>
       <TextInput
+        size="small"
         placeholder={t(Strings.search)}
         prefix={<SearchOutlined />}
         suffix={_keyword && <CloseCircleFilled className={styles.searchClose} onClick={() => setSearchKeyword('')} />}

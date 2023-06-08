@@ -175,9 +175,9 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getEnhanceTypeIcon = (type: string | number) => {
     if (!value && (field.type !== FieldType.URL || isForm)) return null;
     const typeIconMap = {
-      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} /> : <NewtabOutlined color={colors.thirdLevelText} />,
-      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
-      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
+      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} size={16} /> : <NewtabOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} size={16} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} size={16} />,
     };
     return (
       <span
@@ -242,7 +242,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{
-            minHeight: 40, 
+            minHeight: isForm ? 40 : 32,
             color: showURLTitleFlag ? 'transparent' : 'inherit',
           }}
         />
@@ -256,6 +256,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           recordId={recordId}
           datasheetId={datasheetId}
           title={field.name}
+          tempValue={value}
         />
       )}
     </div>

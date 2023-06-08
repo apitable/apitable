@@ -115,14 +115,12 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           x={columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING - 4}
           y={24 - GRID_ICON_COMMON_SIZE}
           size={GRID_ICON_COMMON_SIZE}
-          backgroundWidth={24}
-          backgroundHeight={20}
+          backgroundWidth={18}
+          backgroundHeight={16}
           background={colors.defaultBg}
           data={enhanceTextIconMap[fieldType]}
           onClick={() => setActiveUrlAction(true)}
           onTap={() => setActiveUrlAction(true)}
-          scaleX={0.8}
-          scaleY={0.8}
           transformsEnabled={'all'}
           listening
         />
@@ -192,14 +190,12 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             x={columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING - 4}
             y={height - GRID_ICON_COMMON_SIZE}
             size={GRID_ICON_COMMON_SIZE}
-            backgroundWidth={24}
-            backgroundHeight={20}
+            backgroundWidth={18}
+            backgroundHeight={16}
             background={colors.defaultBg}
             data={enhanceTextIconMap[fieldType]}
             onClick={() => handleClick()}
             onTap={() => handleClick()}
-            scaleX={0.8}
-            scaleY={0.8}
             transformsEnabled={'all'}
             listening={linkEnable}
           />
