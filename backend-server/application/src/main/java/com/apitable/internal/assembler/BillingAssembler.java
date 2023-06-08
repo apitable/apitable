@@ -36,6 +36,7 @@ public class BillingAssembler {
         subscriptionVo.setMaxRowsInSpace(billingPlanFeature.getRowNums().getValue());
         subscriptionVo.setMaxRowsPerSheet(billingPlanFeature.getRowsPerSheet().getValue());
         subscriptionVo.setAllowEmbed(billingPlanFeature.getAllowEmbed().getValue());
+        subscriptionVo.setAllowOrgApi(billingPlanFeature.getAllowOrgApi().getValue());
         return subscriptionVo;
     }
 

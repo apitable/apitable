@@ -230,6 +230,15 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        /**
+         * Billing OrgApi feature.
+         */
+        public static class AllowOrgApi extends AbstractBooleanPlanFeature {
+            public AllowOrgApi(boolean value) {
+                super(value);
+            }
+        }
     }
 
     public static class SolidFeatures {

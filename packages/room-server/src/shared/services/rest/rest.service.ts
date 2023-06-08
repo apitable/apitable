@@ -461,6 +461,7 @@ export class RestService {
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
         allowEmbed: true,
+        allowOrgApi: true
       };
     }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })));

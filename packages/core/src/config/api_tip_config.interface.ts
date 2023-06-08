@@ -164,6 +164,20 @@ export interface Tips {
     api_view_filter_operator_value_error:                 APIAddRowFailedWrongLengthOfValueClass;
     api_view_rules_empty_error:                           APIAddRowFailedWrongLengthOfValueClass;
     api_view_type_error:                                  APIAddRowFailedWrongLengthOfValueClass;
+    api_org_enterprise_limit:                             APIAddRowFailedWrongLengthOfValueClass;
+    api_org_permission_team_deny:                         APIAddRowFailedWrongLengthOfValueClass;
+    api_org_permission_member_deny:                       APIAddRowFailedWrongLengthOfValueClass;
+    api_org_team_name_unique_error:                       APIAddRowFailedWrongLengthOfValueClass;
+    api_org_team_delete_error:                            APIAddRowFailedWrongLengthOfValueClass;
+    api_org_permission_role_deny:                         APIAddRowFailedWrongLengthOfValueClass;
+    api_org_role_name_unique_error:                       APIAddRowFailedWrongLengthOfValueClass;
+    api_org_role_delete_error:                            APIAddRowFailedWrongLengthOfValueClass;
+    api_org_member_team_error:                            APIAddRowFailedWrongLengthOfValueClass;
+    api_org_update_deny_for_social_space:                 APIAddRowFailedWrongLengthOfValueClass;
+    api_org_member_role_error:                            APIAddRowFailedWrongLengthOfValueClass;
+    api_org_member_delete_primary_admin_error:            APIAddRowFailedWrongLengthOfValueClass;
+    api_param_unit_name_required:                         APIAddRowFailedWrongLengthOfValueClass;
+    api_param_sequence_type_error:                        APIAddRowFailedWrongLengthOfValueClass;
 }
 
 export interface APIAddRowFailedWrongLengthOfValueClass {

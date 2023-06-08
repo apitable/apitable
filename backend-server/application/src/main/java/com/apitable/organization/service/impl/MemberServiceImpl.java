@@ -58,6 +58,7 @@ import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.ro.OrgUnitRo;
+import com.apitable.organization.ro.RoleMemberUnitRo;
 import com.apitable.organization.ro.TeamAddMemberRo;
 import com.apitable.organization.ro.UpdateMemberOpRo;
 import com.apitable.organization.ro.UpdateMemberRo;
@@ -692,6 +693,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId, removeTeamList));
             ExceptionUtil.isTrue(dmrFlag, OrganizationException.UPDATE_MEMBER_ERROR);
         }
+        if (CollUtil.isNotEmpty(data.getRoleIds())) {
+            iRoleMemberService.removeByRoleMemberIds(Collections.singletonList(memberId));
+            RoleMemberUnitRo roleMember = new RoleMemberUnitRo();
+            roleMember.setId(memberId);
+            roleMember.setType(UnitType.TEAM.getType());
+            for (Long roleId : data.getRoleIds()) {
+                iRoleMemberService.addRoleMembers(roleId, Collections.singletonList(roleMember));
+            }
+        }
     }
 
     @Override
@@ -1302,5 +1312,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             memberEntities.add(member);
         }
         updateBatchById(memberEntities);
+    }
+
+    @Override
+    public Long getMemberIdByUnitId(String spaceId, String unitId) {
+        Long memberId =
+            iUnitService.getUnitRefIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId,
+                UnitType.MEMBER);
+        ExceptionUtil.isNotNull(memberId, NOT_EXIST_MEMBER);
+        return memberId;
     }
 }
