@@ -24,7 +24,7 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Message, Modal } from '../../common';
+import { Message } from '../../common';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;
@@ -50,16 +50,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
       });
       updateSubscription();
     } else {
-      Modal.warning({
-        title: t(Strings.kindly_reminder),
-        content: t(Strings.field_member_property_subscription_close_tip),
-        hiddenCancelBtn: false,
-        cancelText: t(Strings.cancel),
-        zIndex: 1100,
-        onOk: () => {
-          updateSubscription();
-        },
-      });
+      updateSubscription();
     }
   };
 

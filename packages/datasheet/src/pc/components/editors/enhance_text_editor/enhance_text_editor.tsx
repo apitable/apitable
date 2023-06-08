@@ -30,7 +30,7 @@ import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { TelephoneOutlined, EmailOutlined, EditOutlined, LinkOutlined } from '@apitable/icons';
+import { TelephoneOutlined, EmailOutlined, EditOutlined, NewtabOutlined } from '@apitable/icons';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
 import { useSelector } from 'react-redux';
 
@@ -175,7 +175,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getEnhanceTypeIcon = (type: string | number) => {
     if (!value && (field.type !== FieldType.URL || isForm)) return null;
     const typeIconMap = {
-      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} /> : <LinkOutlined color={colors.thirdLevelText} />,
+      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} /> : <NewtabOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
