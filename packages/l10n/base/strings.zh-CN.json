@@ -5398,13 +5398,13 @@
   "zimbabwe": "津巴布韦",
   "zoom_in": "放大",
   "zoom_out": "缩小",
-  "add_row_created_by_tip": "我们已自动关注您更新此行数据",
+  "add_row_created_by_tip": "已为你自动关注该行数据的更新",
   "field_created_by_property_subscription_close_tip": "关闭后，creator栏下的成员将自动取消已关注的记录",
-  "field_created_by_property_subscription_open_tip": "此选项仅适用于新创建的记录",
+  "field_created_by_property_subscription_open_tip": "该选项仅对新创建的记录生效",
   "field_member_property_notify_tip": "由于开启了“选中的成员会自动跟随行数据的更新”选项，该成员栏下的成员在关闭后会自动取消后面的记录",
   "field_member_property_subscription_close_tip": "关闭后，成员栏下的成员将自动取消已关注的记录",
-  "field_member_property_subscription_open_tip": "此选项仅适用于新选择的成员",
-  "field_member_property_subscription": "所选成员将自动跟随更新行数据",
-  "auto_create_record_subscription": "<a class=\"memberName\"></a> 已将您添加为以下的关注者  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", 你会自动关注这条记录",
-  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> 已删除您作为以下的关注者  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", 并且您已自动取消关注此记录"
+  "field_member_property_subscription_open_tip": "该选项仅对新选择的成员生效",
+  "field_member_property_subscription": "被选择的成员将自动关注行数据的更新",
+  "auto_create_record_subscription": "<a class=\"memberName\"></a> 将你添加为  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\" 的关注者, 你将会自动关注该记录",
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> 将你移出了  \"<a class=\"recordTitle\"></a>\" 的 \"<a class=\"nodeName\"></a>\", 的关注者，你已自动取消关注该记录"
 }
