@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IField, ISegment, SegmentType, ICellValue, Field, Selectors } from '@apitable/core';
+import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { useThemeColors, LinkButton } from '@apitable/components';
-import {
-  ChangeEvent, default as React,
-  forwardRef, memo, useImperativeHandle, useRef, useState,
-} from 'react';
+import { LinkButton, useThemeColors } from '@apitable/components';
+import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { TelephoneOutlined, EmailOutlined, EditOutlined, NewtabOutlined } from '@apitable/icons';
+import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined } from '@apitable/icons';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
 import { useSelector } from 'react-redux';
 
@@ -41,12 +38,13 @@ interface IEnhanceTextEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
   editable: boolean;
   editing: boolean;
+  setEditing?: React.Dispatch<React.SetStateAction<boolean>>;
   cellValue?: ICellValue;
   isForm?: boolean;
 }
 
 export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnhanceTextEditorProps> = (props, ref) => {
-  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue, recordId, isForm } = props;
+  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue, recordId, isForm, setEditing } = props;
   const [value, setValue] = useState('');
   const colors = useThemeColors();
   const cacheValueRef = useRef<ISegment[] | null | undefined>(null);
@@ -98,12 +96,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     }
     // Plain long text, matching segment phone email address, then stored as [Text]
     const segment: ISegment[] = [{ type: SegmentType.Text, text: value, ...omitProps }];
-    const tempVal = value.length ? segment : null;
-    return tempVal;
+    return value.length ? segment : null;
   };
 
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
-    
     if (props.editing) {
       const value = event.target.value;
       if(field.type === FieldType.Phone) {
@@ -257,6 +253,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           datasheetId={datasheetId}
           title={field.name}
           tempValue={value}
+          callback={(val) => {
+            setValue(val);
+            setEditing?.(false);
+          }}
         />
       )}
     </div>

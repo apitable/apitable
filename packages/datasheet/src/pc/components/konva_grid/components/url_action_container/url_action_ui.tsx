@@ -24,10 +24,11 @@ interface IUrlActionUI {
   style?: React.CSSProperties;
   title?: string;
   tempValue?: string;
+  callback?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const UrlActionUI = (props: IUrlActionUI) => {
-  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style, tempValue } = props;
+  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style, tempValue, callback } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<any>(null);
   const [mount, setMount]= useState(false);
@@ -108,6 +109,7 @@ export const UrlActionUI = (props: IUrlActionUI) => {
                   },
                 ],
               });
+              callback?.(text || title);
             }
             setActiveUrlAction(false);
           }}

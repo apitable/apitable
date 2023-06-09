@@ -25,6 +25,7 @@ import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 import { Message } from '../../common';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;
@@ -58,7 +59,9 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
   const embedId = useSelector(state => state.pageParams.embedId);
 
-  return (
+  const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
+
+  return RECORD_WATCHING_VISIBLE && (
     <div className={styles.section}>
       <section className={settingStyles.section}>
         {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
