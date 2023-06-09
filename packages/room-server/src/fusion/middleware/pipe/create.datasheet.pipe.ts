@@ -25,10 +25,8 @@ import {
   getFieldTypeByString,
   getMaxFieldCountPerSheet,
   getNewId,
-  IAddOpenMagicLookUpFieldProperty,
   IDPrefix,
   IField,
-  IMeta,
   IReduxState,
 } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
@@ -37,7 +35,7 @@ import { genDatasheetDescriptionDto } from 'fusion/dtos/datasheet.description.dt
 import { NodeEntity } from 'node/entities/node.entity';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';
-import { DATASHEET_META_HTTP_DECORATE, REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from 'shared/common';
+import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from 'shared/common';
 import { ApiException } from 'shared/exception';
 import { FastifyRequest } from 'fastify';
 
@@ -83,9 +81,6 @@ export class CreateDatasheetPipe implements PipeTransform {
       switch (field.type) {
         case APIMetaFieldType.Number:
           this.transformNumberProperty(field);
-          break;
-        case APIMetaFieldType.MagicLookUp:
-          this.transformLookupProperty(field);
           break;
       }
     });
@@ -170,22 +165,5 @@ export class CreateDatasheetPipe implements PipeTransform {
       property.precision = Number(property.precision);
     }
     field.property = property;
-  }
-
-  private transformLookupProperty(field: DatasheetFieldCreateRo) {
-    const { filterInfo } = field.property! as IAddOpenMagicLookUpFieldProperty;
-    // NOTE Request DATASHEET_META is only available when adding fields. Since it's impossible to
-    // create new datasheets with lookup fields, this is reasonable.
-    const meta = this.request[DATASHEET_META_HTTP_DECORATE] as IMeta | undefined;
-    if (meta && filterInfo) {
-      filterInfo.conditions.forEach((cond) => {
-        const field = meta.fieldMap[cond.fieldId];
-        if (field) {
-          cond.fieldType = field.type;
-        } else {
-          throw ApiException.tipError(ApiTipConstant.api_param_filter_field_not_exists, { fieldId: cond.fieldId });
-        }
-      });
-    }
   }
 }

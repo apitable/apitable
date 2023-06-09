@@ -22,9 +22,9 @@ import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { Functions } from 'formula_parser/functions';
 import { Strings, t } from 'exports/i18n';
 import Joi from 'joi';
-import { isEmpty, omit, uniqWith, zip } from 'lodash';
+import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
-import { computedFormattingToFormat, getApiMetaPropertyFormat, handleNullArray } from 'model/utils';
+import { computedFormattingToFormat, getApiMetaPropertyFormat, getFieldTypeByString, getFieldTypeString, handleNullArray } from 'model/utils';
 import { IAPIMetaLookupFieldProperty } from 'types/field_api_property_types';
 import { BasicOpenValueType, BasicOpenValueTypeBase } from 'types/field_types_open';
 import { IOpenMagicLookUpFieldProperty } from 'types/open/open_field_read_types';
@@ -78,6 +78,15 @@ import {
   IOpenFilterValueNumber,
   IOpenFilterValueString,
 } from 'types/open/open_filter_types';
+import {
+  APIMetaFieldType,
+  FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ,
+  FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER,
+  OpenLookUpFilterConjunction,
+  OpenLookUpFilterOperator,
+  OPEN_LOOKUP_FILTER_CONJ_TO_FILTER_CONJ,
+  OPEN_LOOKUP_FILTER_OPER_TO_FILTER_OPER,
+} from 'types';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -118,13 +127,14 @@ const filterInfoSchema = () =>
 
 const apiFilterInfoSchema = () =>
   Joi.object({
-    conjunction: Joi.valid(...enumToArray(FilterConjunction)).required(),
+    conjunction: Joi.valid(...enumToArray(OpenLookUpFilterConjunction)).required(),
     conditions: Joi.array().items(
       Joi.object({
         fieldId: Joi.string()
           .pattern(/^fld.+/, 'fieldId')
           .required(),
-        operator: Joi.valid(...enumToArray(FOperator)).required(),
+        operator: Joi.valid(...enumToArray(OpenLookUpFilterOperator)).required(),
+        fieldType: Joi.valid(...enumToArray(APIMetaFieldType)).required(),
         value: Joi.any(),
       }),
     ),
@@ -205,8 +215,13 @@ export class LookUpField extends ArrayValueField {
 
     if (this.field.property.filterInfo) {
       res.filterInfo = {
-        ...this.field.property.filterInfo,
-        conditions: this.field.property.filterInfo.conditions.map(cond => omit(cond, 'conditionId', 'fieldType'))
+        conjunction: FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ[this.field.property.filterInfo.conjunction],
+        conditions: this.field.property.filterInfo.conditions.map((cond) => ({
+          fieldId: cond.fieldId,
+          fieldType: getFieldTypeString(cond.fieldType),
+          operator: FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER[cond.operator],
+          value: cond.value,
+        })),
       };
     }
 
@@ -1147,6 +1162,9 @@ export class LookUpField extends ArrayValueField {
       relatedLinkFieldId: this.field.property.relatedLinkFieldId,
       targetFieldId: this.field.property.lookUpTargetFieldId,
       rollupFunction: this.rollUpType,
+      enableFilterSort: this.field.property.openFilter,
+      sortInfo: this.field.property.sortInfo,
+      lookUpLimit: this.field.property.lookUpLimit,
     };
 
     if (this.hasError) {
@@ -1160,6 +1178,18 @@ export class LookUpField extends ArrayValueField {
       res.entityField = {
         datasheetId: lookUpEntityFieldInfo.datasheetId,
         field: Field.bindContext(lookUpEntityFieldInfo.field, this.state).getOpenField(lookUpEntityFieldInfo.datasheetId),
+      };
+    }
+
+    if (this.field.property.filterInfo) {
+      res.filterInfo = {
+        conjunction: FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ[this.field.property.filterInfo.conjunction],
+        conditions: this.field.property.filterInfo.conditions.map((cond) => ({
+          fieldId: cond.fieldId,
+          fieldType: getFieldTypeString(cond.fieldType),
+          operator: FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER[cond.operator],
+          value: cond.value,
+        })),
       };
     }
 
@@ -1204,8 +1234,13 @@ export class LookUpField extends ArrayValueField {
     if (apiFilterInfo) {
       const conditionIds = getNewIds(IDPrefix.Condition, apiFilterInfo.conditions.length);
       filterInfo = {
-        ...apiFilterInfo,
-        conditions: apiFilterInfo.conditions.map((cond, i) => ({ ...cond, conditionId: conditionIds[i]! })),
+        conjunction: OPEN_LOOKUP_FILTER_CONJ_TO_FILTER_CONJ[apiFilterInfo.conjunction],
+        conditions: apiFilterInfo.conditions.map((cond, i) => ({
+          ...cond,
+          fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField>,
+          operator: OPEN_LOOKUP_FILTER_OPER_TO_FILTER_OPER[cond.operator],
+          conditionId: conditionIds[i]!,
+        })),
       };
     }
     return {

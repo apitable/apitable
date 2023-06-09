@@ -22,7 +22,7 @@
 import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign } from './field_api_enums';
 import type { IAPIMetaField } from './field_api_types';
 import type { BasicValueType, ILookUpSortInfo, LookUpLimitType, RollUpFuncType } from './field_types';
-import { FilterConjunction, IFilterCondition } from './view_types';
+import type { IOpenLookUpFilterInfo } from './open';
 /**
  * Field properties
  */
@@ -182,14 +182,9 @@ export interface IAPIMetaLookupFieldProperty {
   valueType?: IAPIMetaValueType;
   format?: IAPIMetaNoneStringValueFormat;
   enableFilterSort?: boolean;
-  filterInfo?: IAPIMetaLookUpFilterInfo;
+  filterInfo?: IOpenLookUpFilterInfo;
   sortInfo?: ILookUpSortInfo;
   lookUpLimit?: LookUpLimitType;
-}
-
-export interface IAPIMetaLookUpFilterInfo {
-  conjunction: FilterConjunction;
-  conditions: Omit<IFilterCondition, 'conditionId' | 'fieldType'>[];
 }
 
 export interface IAPIMetaFormulaFieldProperty {

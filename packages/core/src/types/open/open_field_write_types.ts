@@ -28,8 +28,8 @@ import type {
   IOpenRatingFieldProperty,
   IOpenSingleTextFieldProperty,
 } from './open_field_read_types';
-import type { CollectType, FieldType, ILookUpSortInfo, IMultiSelectedIds, LookUpLimitType, RollUpFuncType } from '../field_types';
-import { FilterConjunction, IFilterBaseCondition, IFilterConditionMap } from 'types/view_types';
+import type { CollectType, ILookUpSortInfo, IMultiSelectedIds, LookUpLimitType, RollUpFuncType } from '../field_types';
+import type { IWriteOpenLookUpFilterInfo } from './open_lookup_types';
 
 export enum Conversion {
   /** delete the associated field of the associated table */
@@ -120,7 +120,7 @@ export interface IAddOpenMagicLookUpFieldProperty {
   /** Format, because the reference field is different, the format is different (number, percentage, date, currency) */
   format?: IOpenComputedFormat;
   enableFilterSort?: boolean;
-  filterInfo?: IAddOpenLookUpFilterInfo;
+  filterInfo?: IWriteOpenLookUpFilterInfo;
   sortInfo?: ILookUpSortInfo;
   lookUpLimit?: LookUpLimitType;
 }
@@ -255,10 +255,3 @@ export type IUpdateOpenFieldProperty =
   | IUpdateOpenLastModifiedTimeFieldProperty
   | IUpdateOpenCreatedByFieldProperty
   | IUpdateOpenLastModifiedByFieldProperty;
-
-export type IAddOpenLookUpFilterCondition<T extends FieldType = FieldType> = Omit<IFilterBaseCondition, 'conditionId'> & IFilterConditionMap[T];
-
-export interface IAddOpenLookUpFilterInfo {
-  conjunction: FilterConjunction;
-  conditions: IAddOpenLookUpFilterCondition[];
-}
