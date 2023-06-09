@@ -2219,6 +2219,7 @@ export type StringKeysMapType = {
   'help': 'help',
   'help_center': 'help_center',
   'help_help_center_url': 'help_help_center_url',
+  'help_partner_program': 'help_partner_program',
   'help_product_manual_url': 'help_product_manual_url',
   'help_questions_url': 'help_questions_url',
   'help_quick_start_url': 'help_quick_start_url',
