@@ -649,9 +649,9 @@ export class LookUpField extends ArrayValueField {
     const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter, sortInfo, lookUpLimit } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
     // IDs of the associated table records
-    let recordIDs = Selectors.getCellValue(this.state, thisSnapshot, recordId, relatedLinkField.id, true, datasheetId, true) as ILinkIds;
+    let recordIds = Selectors.getCellValue(this.state, thisSnapshot, recordId, relatedLinkField.id, true, datasheetId, true) as ILinkIds;
 
-    if (!recordIDs) {
+    if (!recordIds) {
       return [];
     }
     const { foreignDatasheetId } = relatedLinkField.property;
@@ -662,23 +662,25 @@ export class LookUpField extends ArrayValueField {
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
     if (openFilter) {
-      // lookup sort
-      const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId);
-
-      recordIDs = sortRows.filter((row) => recordIDs.includes(row.recordId)).map((row) => row.recordId);
-
-      if (lookUpLimit === LookUpLimitType.FIRST && recordIDs.length > 1) {
-        recordIDs = recordIDs.slice(0, 1);
-      }
+      
       // lookup filter
-      recordIDs = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
-        linkFieldRecordIds: recordIDs,
+      recordIds = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
+        linkFieldRecordIds: recordIds,
         filterInfo,
       });
+      // lookup sort
+      const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId, recordIds);
+
+      recordIds = sortRows.filter((row) => recordIds.includes(row.recordId)).map((row) => row.recordId);
+
+      if (lookUpLimit === LookUpLimitType.FIRST && recordIds.length > 1) {
+        recordIds = recordIds.slice(0, 1);
+      }
+    
     }
 
-    return recordIDs && recordIDs.length
-      ? recordIDs.map((recordId: string) => {
+    return recordIds && recordIds.length
+      ? recordIds.map((recordId: string) => {
         const cellValue = _getLookUpTreeValue(this.state, foreignSnapshot, recordId, lookUpTargetFieldId, foreignDatasheetId);
         return {
           field: lookUpTargetField,
@@ -690,12 +692,12 @@ export class LookUpField extends ArrayValueField {
       : [];
   }
 
-  getSortLookup(sortInfo: ILookUpSortInfo | undefined, datasheetId: string): IViewRow[] {
+  getSortLookup(sortInfo: ILookUpSortInfo | undefined, datasheetId: string, recordIds: string[]): IViewRow[] {
     const snapshot = this.state.datasheetMap[datasheetId]?.datasheet!.snapshot;
     if (!snapshot) {
       return [];
     }
-    const rows = snapshot?.meta?.views[0]?.rows!;
+    const rows = snapshot?.meta?.views[0]?.rows!.filter((row) => recordIds.includes(row.recordId));
     if (!rows) {
       return [];
     }
