@@ -16,6 +16,10 @@ export interface IUtcOption {
   value: string;
 }
 
+export const covertDayjsFormat2DateFnsFormat = (format: string) => {
+  return format.replace('YYYY', 'yyyy').replace('DD', 'dd');
+};
+
 export const isValidTimezone = (timezone: string) => {
   return momentTimezone.tz.zone(timezone) != null;
 };
@@ -43,7 +47,7 @@ export const getTimeZoneAbbrByUtc = (utc: string) => {
 export const getUtcOptionList = () => {
   let list: IUtcOption[] = [];
 
-  for(let i = 0; i < TIMEZONES.length; i++) {
+  for (let i = 0; i < TIMEZONES.length; i++) {
     const { abbr, offset, utc, isdst } = TIMEZONES[i]!;
     if (isdst) continue;
     list = list.concat(utc.filter((tz: string) => !tz.includes('Etc/GMT')).map((tz: string) => {

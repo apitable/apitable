@@ -46,12 +46,13 @@ import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'ut
 import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
-import { getTimeZoneAbbrByUtc, getTimeZone } from '../../config';
+import { covertDayjsFormat2DateFnsFormat, getTimeZone, getTimeZoneAbbrByUtc } from '../../config';
 import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
 import Joi from 'joi';
 import { DEFAULT_TIME_ZONE } from 'model';
 import { isServer } from 'utils/env';
 import { getUserTimeZone } from 'exports/store/selectors';
+import { format as dfzFormat, utcToZonedTime } from 'date-fns-tz';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -59,7 +60,9 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // which is published under the MIT license. See https://github.com/iamkun/dayjs/blob/dev/LICENSE for more information.
 
   const dtfCache: { [timezone: string]: Intl.DateTimeFormat } = {};
-  const getDateTimeFormat = (timezone: string, options: { timeZoneName?: Intl.DateTimeFormatOptions['timeZoneName'] } = {}) => {
+  const getDateTimeFormat = (timezone: string, options: {
+    timeZoneName?: Intl.DateTimeFormatOptions['timeZoneName']
+  } = {}) => {
     const timeZoneName = options.timeZoneName || 'short';
     const key = `${timezone}|${timeZoneName}`;
     let dtf = dtfCache[key];
@@ -158,12 +161,12 @@ export const dateTimeFormat = (
     if (props.includeTimeZone) {
       timeZone = timeZone || DEFAULT_DATETIME_PROPS.timeZone;
       const abbr = getTimeZoneAbbrByUtc(timeZone)!;
-      return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
+      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone }) + ` (${abbr})`;
     }
     if (!props.includeTimeZone && timeZone) {
       // dayjs(Number(timestamp)).tz(timeZone).format(format);
       // Frequent invocations of the "tz" function here will result in severe page lag.
-      return dayjs(Number(timestamp)).format(format);
+      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone });
     }
   } catch (e) {
     if (e instanceof RangeError) {
@@ -171,7 +174,7 @@ export const dateTimeFormat = (
     }
     throw e;
   }
-  return dayjs(Number(timestamp)).format(format);
+  return dfzFormat(timestamp, covertDayjsFormat2DateFnsFormat(format));
 };
 
 const withTimeZone = (date: dayjs.Dayjs, timeZone?: string) => timeZone ? date.tz(timeZone) : date;
@@ -230,7 +233,7 @@ export abstract class DateTimeBaseField extends Field {
       format: getDateTimeFormat(this.field.property),
       includeTime: this.field.property.includeTime,
       timeZone: this.field.property.timeZone,
-      includeTimeZone : this.field.property.includeTimeZone
+      includeTimeZone: this.field.property.includeTimeZone
     };
     if ((this.field.property as any).autoFill) {
       res.autoFill = true;
@@ -411,18 +414,18 @@ export abstract class DateTimeBaseField extends Field {
     let datetime = dayjs(_value);
     if (datetime.isValid()) {
       /**
-        * automatically fills the date with the year
-        * If the data is pasted from a cell of a time field,
-        * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
-        *
-        * 1. Perform pattern matching according to the given format, check if there is a possible year,
-        * if there is, use the given year
-        *
-        * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001,
-        * if it is satisfied, it will be directed to the current year
-        *
-        * @type {boolean}
-        */
+       * automatically fills the date with the year
+       * If the data is pasted from a cell of a time field,
+       * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
+       *
+       * 1. Perform pattern matching according to the given format, check if there is a possible year,
+       * if there is, use the given year
+       *
+       * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001,
+       * if it is satisfied, it will be directed to the current year
+       *
+       * @type {boolean}
+       */
       const isIncludesYear = dayjs(_value, ['Y-M-D', 'D/M/Y']).isValid();
       if (datetime.year() === 2001 && !isIncludesYear) {
         datetime = datetime.year(dayjs().year());
@@ -438,20 +441,20 @@ export abstract class DateTimeBaseField extends Field {
   }
 
   /**
-    * Assuming it is now Feb 8 01:56:55 UTC+8
-    * Today: [Today 00:00, Tomorrow 23:59] UTC+8
-    * Tomorrow: [Tomorrow 00:00, The day after tomorrow 23:59] UTC+8
-    * Yesterday: [yesterday 00:00, today 23:59] UTC+8
-    * Next 7 days: [Today 00:00, Feb 16 23:59] UTC+8
-    * Last 7 days: [February 1st 00:00, today 23:59] UTC+8
-    * In the next 30 days: [Today 00:00, March 9th 23:59] UTC+8
-    * In the past 30 days: [January 8th 00:00, today 23:59] UTC+8
-    * This week: Monday to Friday of the current week
-    * Last week: Monday to Friday of the previous week
-    * This month: [February 1st 00:00, February 28th 23:59] UTC+8
-    * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
-    * This year: [January 1st 00:00, December 31st 23:59] UTC+8
-    */
+   * Assuming it is now Feb 8 01:56:55 UTC+8
+   * Today: [Today 00:00, Tomorrow 23:59] UTC+8
+   * Tomorrow: [Tomorrow 00:00, The day after tomorrow 23:59] UTC+8
+   * Yesterday: [yesterday 00:00, today 23:59] UTC+8
+   * Next 7 days: [Today 00:00, Feb 16 23:59] UTC+8
+   * Last 7 days: [February 1st 00:00, today 23:59] UTC+8
+   * In the next 30 days: [Today 00:00, March 9th 23:59] UTC+8
+   * In the past 30 days: [January 8th 00:00, today 23:59] UTC+8
+   * This week: Monday to Friday of the current week
+   * Last week: Monday to Friday of the previous week
+   * This month: [February 1st 00:00, February 28th 23:59] UTC+8
+   * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
+   * This year: [January 1st 00:00, December 31st 23:59] UTC+8
+   */
   private static getTimeRange(filterDuration: FilterDuration, time: ITimestamp | string | null | undefined, timeZone?: string): [ITimestamp, ITimestamp] {
     switch (filterDuration) {
       case FilterDuration.ExactDate: {
