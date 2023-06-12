@@ -105,7 +105,7 @@
     class
     style="
       background-color: #f0f2f5;
-      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
       -webkit-font-smoothing: antialiased;
       font-size: 14px;
       line-height: 1.4;
@@ -135,7 +135,7 @@
       <tr>
         <td
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
           "
@@ -146,7 +146,7 @@
         <td
           class="container"
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
             display: block;
@@ -216,11 +216,11 @@
                 <td
                   class="wrapper"
                   style="
-                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                     font-size: 14px;
                     vertical-align: top;
                     box-sizing: border-box;
-                    padding: 20px;
+                    padding: 32px;
                   "
                   valign="top"
                 >
@@ -242,7 +242,7 @@
                       <td
                         align="center"
                         style="
-                          font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                           font-size: 14px;
                           vertical-align: top;
                         "
@@ -262,7 +262,7 @@
                                 max-width: 100%;
                                 height: 24px;
                               "
-                              src="https://legacy-s1.apitable.com/space/2022/09/20/a5de38aec6cc78aa3f447cf3a18aeb69"
+                              src="https://s4.apitable.com/logo/a5de38aec6cc78aa3f447cf3a18aeb69"
                               alt="APITable"
                               height="24"
                           /></a>
@@ -270,7 +270,7 @@
                         <p
                           class="decscription"
                           style="
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                             font-size: 14px;
                             font-weight: normal;
                             margin: 0;
@@ -284,7 +284,7 @@
                         <p
                           class="main_description"
                           style="
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                             margin: 0;
                             margin-bottom: 15px;
                             font-weight: bold;
@@ -318,8 +318,7 @@
                               <td
                                 align="center"
                                 style="
-                                  font-family: Ubuntu, Helvetica, Arial,
-                                    sans-serif;
+                                  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                                   font-size: 14px;
                                   vertical-align: top;
                                   padding-bottom: 15px;
@@ -343,8 +342,7 @@
                                     <tr>
                                       <td
                                         style="
-                                          font-family: Ubuntu, Helvetica, Arial,
-                                            sans-serif;
+                                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                                           font-size: 14px;
                                           vertical-align: top;
                                           border-radius: 5px;
@@ -421,7 +419,7 @@
                   <td
                     class="content-block"
                     style="
-                      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                       vertical-align: top;
                       padding-bottom: 10px;
                       padding-top: 10px;
@@ -434,7 +432,7 @@
                     <p
                       class="copyright"
                       style="
-                        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                         font-weight: normal;
                         margin: 0;
                         margin-bottom: 15px;
@@ -467,7 +465,7 @@
         </td>
         <td
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
           "
