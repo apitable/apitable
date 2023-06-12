@@ -26,9 +26,10 @@ import { DatasheetFieldCascaderService } from './services/datasheet.field.cascad
 import { DatasheetFieldCascaderSnapshotService } from './services/datasheet.field.cascader.snapshot.service';
 import { CommandModule } from 'database/command/command.module';
 import { CascaderDatabusService } from './services/cascader.databus.service';
+import { UnitModule } from 'unit/unit.module';
 
 @Module({
-  imports: [UserModule, DatasheetModule, forwardRef(() => NodeModule), CommandModule, TypeOrmModule.forFeature([DatasheetCascaderFieldRepository])],
+  imports: [UserModule, UnitModule, DatasheetModule, forwardRef(() => NodeModule), CommandModule, TypeOrmModule.forFeature([DatasheetCascaderFieldRepository])],
   controllers: [CascaderController],
   providers: [DatasheetFieldCascaderService, DatasheetFieldCascaderSnapshotService, CascaderDatabusService],
 })
