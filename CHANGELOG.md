@@ -3,6 +3,90 @@
 
 
 
+## [v0.21.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc.1) (2023-06-05)
+
+
+### Features and enhancements
+
+* feat: add gzip support in nginx gateway ([#901](https://github.com/apitable/apitable/pull/901)) @networkhermit 
+
+### Bug fixes
+
+* fix: improve toolbar view @xieyhn 
+* fix: option search not case sensitive ([#892](https://github.com/apitable/apitable/pull/892)) @wangkailang 
+* fix: components unit test error ([#867](https://github.com/apitable/apitable/pull/867)) @GreenMashimaro 
+* fix/tooltip-flicker @wangkailang 
+* fix: improve toolbar view ([#869](https://github.com/apitable/apitable/pull/869)) @JaneSu 
+
+### What's more
+
+* docs: remove databus guide ([#873](https://github.com/apitable/apitable/pull/873)) @arucil 
+* docs: publish cookbook and self-hosted doc replace original developer guide ([#886](https://github.com/apitable/apitable/pull/886)) @mr-kelly 
+* New Crowdin updates ([#796](https://github.com/apitable/apitable/pull/796)) @mr-kelly 
+* chore: clarify title of issue templates ([#899](https://github.com/apitable/apitable/pull/899)) @arucil 
+* sync: hosted cloud ([#916](https://github.com/apitable/apitable/pull/916)) @yort-feng 
+## [v0.21.0-rc](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc) (2023-05-29)
+
+
+### Features and enhancements
+
+* feat:add language feed back link to datasheet env ([#842](https://github.com/apitable/apitable/pull/842)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: API panel click more button redirects to a blank page ([#829](https://github.com/apitable/apitable/pull/829)) (#833) @luckyyyyy 
+* fix: field undefined crash ([#884](https://github.com/apitable/apitable/pull/884)) @wangkailang 
+
+### What's more
+
+* chore: update translation feedback help url @wmEvie 
+* chore: update translation feedback help url ([#841](https://github.com/apitable/apitable/pull/841)) @wmEvie 
+* docs: delete duplicated sentences ([#808](https://github.com/apitable/apitable/pull/808)) @noahlam 
+* refactor: de-duplications npm packages ([#847](https://github.com/apitable/apitable/pull/847)) @mr-kelly 
+* sync: hosted cloud ([#881](https://github.com/apitable/apitable/pull/881)) @yort-feng 
+## [v0.21.0-beta](https://github.com/apitable/apitable/releases/tag/v0.21.0-beta) (2023-05-22)
+
+
+### Features and enhancements
+
+* feat: upgrade liquibase version ([#801](https://github.com/apitable/apitable/pull/801)) @shawndenggh 
+* feat: add new email templates @xukecheng 
+* feat: add new email templates ([#831](https://github.com/apitable/apitable/pull/831)) @xukecheng 
+
+### Bug fixes
+
+* fix: remove pre-init-db since upgrade liquibase ([#824](https://github.com/apitable/apitable/pull/824)) @shawndenggh 
+
+### What's more
+
+* docs: guide on setting up python and gcc ([#802](https://github.com/apitable/apitable/pull/802)) @arucil 
+* docs: add clearer description of language versions ([#827](https://github.com/apitable/apitable/pull/827)) @arucil 
+* sync: hosted cloud ([#840](https://github.com/apitable/apitable/pull/840)) @yort-feng 
+* chore: update translation feedback help url @wmEvie 
+* chore: update translation feedback help url ([#841](https://github.com/apitable/apitable/pull/841)) @wmEvie 
+## [v0.21.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.21.0-alpha) (2023-05-15)
+
+
+### Features and enhancements
+
+* feat:support language de-DE,es-ES,it-IT,es-ES,it-IT,ja-JP,ko-KR,ru-RU @Exclamation-mark 
+* feat: update node-gyp to latest version ([#793](https://github.com/apitable/apitable/pull/793)) @arucil 
+
+### Bug fixes
+
+* fix(room-server): missing dependencies in image ([#4926](https://github.com/apitable/apitable/pull/4926)) (#777) @arucil 
+* fix:add missing architecture-overview.png ([#782](https://github.com/apitable/apitable/pull/782)) @Exclamation-mark 
+* fix: login icon bug @laboonly 
+* fix: login icon bug ([#799](https://github.com/apitable/apitable/pull/799)) @laboonly 
+
+### What's more
+
+* docs: README ([#769](https://github.com/apitable/apitable/pull/769)) @mr-kelly 
+* New Crowdin updates ([#749](https://github.com/apitable/apitable/pull/749)) @mr-kelly 
+* docs: create bug report in zh-CN ([#788](https://github.com/apitable/apitable/pull/788)) @mr-kelly 
+* docs: issue template of bug report cn ([#789](https://github.com/apitable/apitable/pull/789)) @mr-kelly 
+* sync: hosted cloud ([#794](https://github.com/apitable/apitable/pull/794)) @yort-feng 
+* chore: changelog for v0.20.0-rc.1 release ([#795](https://github.com/apitable/apitable/pull/795)) @yort-feng 
 ## [v0.20.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.20.0-rc.1) (2023-05-08)
 
 
