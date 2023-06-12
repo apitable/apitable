@@ -315,7 +315,7 @@ __metadata:
     socket.io-client: 2.2.0
     string.prototype.matchall: ^4.0.2
     ts-jest: 28.0.3
-    ts-node: ^8.6.2
+    ts-node: ^10.9.1
     ts-toolbelt: ^9.6.0
     tsc-alias: ^1.6.11
     typescript: ^4.8.2
@@ -336,7 +336,7 @@ __metadata:
     cypress: ^8.2.0
     cypress-wait-until: ^1.7.1
     request: ^2.88.2
-    ts-node: ^10.2.0
+    ts-node: ^10.9.1
     typescript: ^4.8.2
     urlcat: ^2.0.4
   languageName: unknown
@@ -734,7 +734,7 @@ __metadata:
     ts-jest: 28.0.3
     ts-loader: ^6.2.1
     ts-md5: ^1.3.1
-    ts-node: ^8.6.2
+    ts-node: ^10.9.1
     tsconfig-paths: ^3.9.0
     typeorm: ^0.2.38
     typescript: ^4.8.2
@@ -3947,19 +3947,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cspotcode/source-map-consumer@npm:0.8.0":
-  version: 0.8.0
-  resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
-  checksum: c0c16ca3d2f58898f1bd74c4f41a189dbcc202e642e60e489cbcc2e52419c4e89bdead02c886a12fb13ea37798ede9e562b2321df997ebc210ae9bd881561b4e
-  languageName: node
-  linkType: hard
-
-"@cspotcode/source-map-support@npm:0.6.1":
-  version: 0.6.1
-  resolution: "@cspotcode/source-map-support@npm:0.6.1"
+"@cspotcode/source-map-support@npm:^0.8.0":
+  version: 0.8.1
+  resolution: "@cspotcode/source-map-support@npm:0.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cspotcode%2Fsource-map-support%2F-%2Fsource-map-support-0.8.1.tgz"
   dependencies:
-    "@cspotcode/source-map-consumer": 0.8.0
-  checksum: da9fb4f6404ebd210537bfa8b2821a747407bf422d2d3d46f29bf85c7c3a68a126de1a9ec41398d57ca116c3bef56d58c2fb4def0800630b1ec82533ad2447c2
+    "@jridgewell/trace-mapping": 0.3.9
+  checksum: 5718f267085ed8edb3e7ef210137241775e607ee18b77d95aa5bd7514f47f5019aa2d82d96b3bf342ef7aa890a346fa1044532ff7cc3009e7d24fce3ce6200fa
   languageName: node
   linkType: hard
 
@@ -5306,6 +5299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/resolve-uri@npm:^3.0.3":
+  version: 3.1.1
+  resolution: "@jridgewell/resolve-uri@npm:3.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40jridgewell%2Fresolve-uri%2F-%2Fresolve-uri-3.1.1.tgz"
+  checksum: f5b441fe7900eab4f9155b3b93f9800a916257f4e8563afbcd3b5a5337b55e52bd8ae6735453b1b745457d9f6cdb16d74cd6220bbdd98cf153239e13f6cbb653
+  languageName: node
+  linkType: hard
+
 "@jridgewell/set-array@npm:^1.0.0, @jridgewell/set-array@npm:^1.0.1":
   version: 1.1.2
   resolution: "@jridgewell/set-array@npm:1.1.2"
@@ -5317,6 +5317,16 @@ __metadata:
   version: 1.4.14
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.14"
   checksum: 61100637b6d173d3ba786a5dff019e1a74b1f394f323c1fee337ff390239f053b87266c7a948777f4b1ee68c01a8ad0ab61e5ff4abb5a012a0b091bec391ab97
+  languageName: node
+  linkType: hard
+
+"@jridgewell/trace-mapping@npm:0.3.9":
+  version: 0.3.9
+  resolution: "@jridgewell/trace-mapping@npm:0.3.9::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40jridgewell%2Ftrace-mapping%2F-%2Ftrace-mapping-0.3.9.tgz"
+  dependencies:
+    "@jridgewell/resolve-uri": ^3.0.3
+    "@jridgewell/sourcemap-codec": ^1.4.10
+  checksum: d89597752fd88d3f3480845691a05a44bd21faac18e2185b6f436c3b0fd0c5a859fbbd9aaa92050c4052caf325ad3e10e2e1d1b64327517471b7d51babc0ddef
   languageName: node
   linkType: hard
 
@@ -35445,7 +35455,7 @@ resolve@^2.0.0-next.3:
     pretty-quick: ^3.1.3
     quicktype: ^15.0.212
     svgo: ^2.3.0
-    ts-node: ^8.6.2
+    ts-node: ^10.9.1
     ts-pnp: 1.1.2
     typescript: ^4.8.2
   bin:
@@ -38838,11 +38848,11 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "ts-node@npm:10.2.0"
+"ts-node@npm:^10.9.1":
+  version: 10.9.1
+  resolution: "ts-node@npm:10.9.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fts-node%2F-%2Fts-node-10.9.1.tgz"
   dependencies:
-    "@cspotcode/source-map-support": 0.6.1
+    "@cspotcode/source-map-support": ^0.8.0
     "@tsconfig/node10": ^1.0.7
     "@tsconfig/node12": ^1.0.7
     "@tsconfig/node14": ^1.0.0
@@ -38853,6 +38863,7 @@ resolve@^2.0.0-next.3:
     create-require: ^1.1.0
     diff: ^4.0.1
     make-error: ^1.1.1
+    v8-compile-cache-lib: ^3.0.1
     yn: 3.1.1
   peerDependencies:
     "@swc/core": ">=1.2.50"
@@ -38867,28 +38878,11 @@ resolve@^2.0.0-next.3:
   bin:
     ts-node: dist/bin.js
     ts-node-cwd: dist/bin-cwd.js
+    ts-node-esm: dist/bin-esm.js
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: da767e0fd5c1b4941f0b846c3532147f31cd2ac4d66a4809358e29ed5971a4e699720bd65f9e5a585a10bc7f9c55571a8fce9e485cedce6a224dcba3869bbd3a
-  languageName: node
-  linkType: hard
-
-"ts-node@npm:^8.6.2":
-  version: 8.6.2
-  resolution: "ts-node@npm:8.6.2"
-  dependencies:
-    arg: ^4.1.0
-    diff: ^4.0.1
-    make-error: ^1.1.1
-    source-map-support: ^0.5.6
-    yn: 3.1.1
-  peerDependencies:
-    typescript: ">=2.7"
-  bin:
-    ts-node: dist/bin.js
-    ts-script: dist/script.js
-  checksum: 976943403856ddeb992c0a7484f51ca402c73feda1cda04eca49e456b6ae1a6c23fb247b7ec5cf9c3ab6bcdab08f93a9332429f7af9603d30779e797b679c733
+  checksum: 090adff1302ab20bd3486e6b4799e90f97726ed39e02b39e566f8ab674fd5bd5f727f43615debbfc580d33c6d9d1c6b1b3ce7d8e3cca3e20530a145ffa232c35
   languageName: node
   linkType: hard
 
@@ -40221,6 +40215,13 @@ typescript@~3.2.1:
   bin:
     uuid: dist/bin/uuid
   checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
+  languageName: node
+  linkType: hard
+
+"v8-compile-cache-lib@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "v8-compile-cache-lib@npm:3.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fv8-compile-cache-lib%2F-%2Fv8-compile-cache-lib-3.0.1.tgz"
+  checksum: 78089ad549e21bcdbfca10c08850022b22024cdcc2da9b168bcf5a73a6ed7bf01a9cebb9eac28e03cd23a684d81e0502797e88f3ccd27a32aeab1cfc44c39da0
   languageName: node
   linkType: hard
 

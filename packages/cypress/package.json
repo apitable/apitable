@@ -32,7 +32,7 @@
     "apitable": "latest",
     "cypress": "^8.2.0",
     "request": "^2.88.2",
-    "ts-node": "^10.2.0",
+    "ts-node": "^10.9.1",
     "urlcat": "^2.0.4"
   },
   "devDependencies": {
