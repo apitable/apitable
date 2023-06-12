@@ -23,7 +23,9 @@ import com.apitable.interfaces.security.facade.CaptchaServiceFacade;
 import com.apitable.interfaces.security.facade.DefaultBlackListServiceFacadeImpl;
 import com.apitable.interfaces.security.facade.DefaultCaptchaServiceFacadeImpl;
 import com.apitable.interfaces.security.facade.DefaultHumanVerificationServiceFacadeImpl;
+import com.apitable.interfaces.security.facade.DefaultWhiteListServiceFacadeImpl;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.apitable.interfaces.security.facade.WhiteListServiceFacade;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,12 @@ public class SecurityContextConfig {
     @ConditionalOnMissingBean
     public BlackListServiceFacade defaultBlackListServiceFacade() {
         return new DefaultBlackListServiceFacadeImpl();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public WhiteListServiceFacade defaultWhiteListServiceFacadeImpl() {
+        return new DefaultWhiteListServiceFacadeImpl();
     }
 
     @Bean

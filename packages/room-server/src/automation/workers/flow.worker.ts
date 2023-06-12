@@ -88,7 +88,7 @@ export class FlowWorker {
         });
       } else if (job.name === OPEventNameEnums.RecordCreated) {
         let datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordUpdated);
-        const { datasheetName, recordId, eventFields, fields, diffFields, fieldMap } = data.context;
+        const { datasheetName, recordId, eventFields, fields, diffFields, state } = data.context;
         let triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordMatchesConditions);
         await this.triggerFlows(datasheetTriggers, triggerFactory, {
           datasheetId,
@@ -97,7 +97,7 @@ export class FlowWorker {
           eventFields,
           fields,
           diffFields,
-          fieldMap,
+          state,
         });
         datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordCreated);
         triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordCreated);
@@ -109,7 +109,7 @@ export class FlowWorker {
         });
       } else if (job.name === OPEventNameEnums.RecordUpdated) {
         const datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordUpdated);
-        const { datasheetName, recordId, eventFields, fields, diffFields, fieldMap } = data.context;
+        const { datasheetName, recordId, eventFields, fields, diffFields, state } = data.context;
         const triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordMatchesConditions);
         await this.triggerFlows(datasheetTriggers, triggerFactory, {
           datasheetId,
@@ -118,7 +118,7 @@ export class FlowWorker {
           eventFields,
           fields,
           diffFields,
-          fieldMap,
+          state,
         });
       }
       return datasheetId;

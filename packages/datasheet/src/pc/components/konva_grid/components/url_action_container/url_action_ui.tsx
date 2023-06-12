@@ -22,11 +22,15 @@ interface IUrlActionUI {
   recordId?: string;
   datasheetId: string;
   style?: React.CSSProperties;
+  title?: string;
+  tempValue?: string;
+  callback?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const UrlActionUI = (props: IUrlActionUI) => {
-  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style } = props;
+  const { activeUrlAction, setActiveUrlAction, fieldId, recordId, datasheetId, style, tempValue, callback } = props;
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<any>(null);
   const [mount, setMount]= useState(false);
   const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
   const cellValue = useSelector(state => {
@@ -37,8 +41,8 @@ export const UrlActionUI = (props: IUrlActionUI) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const cellValueText = get(cellValue, '0.text');
-  const cellValueTitle = get(cellValue, '0.title');
+  const cellValueText = get(cellValue, '0.text') || tempValue;
+  const cellValueTitle = get(cellValue, '0.title') || tempValue;
   const cellValueFavicon = get(cellValue, '0.favicon');
 
   const [text, setText] = useState(cellValueText);
@@ -46,6 +50,10 @@ export const UrlActionUI = (props: IUrlActionUI) => {
 
   useEffect(() => {
     setMount(true);
+  }, []);
+
+  useEffect(() => {
+    inputRef.current.focus();
   }, []);
 
   useClickAway(
@@ -61,12 +69,14 @@ export const UrlActionUI = (props: IUrlActionUI) => {
     <>
       <Typography className={styles.label} variant="body3">{t(Strings.link)}</Typography>
       <TextInput
-        suffix={<a target='_blank'rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
+        suffix={<a target='_blank' rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
         value={text}
+        ref={inputRef}
         onChange={(evt) => {
           setText(evt.target.value);
         }}
-        block={isMobile}
+        className={styles.text}
+        block
       />
       <Typography className={classNames(styles.label, styles.titleLabel)} variant="body3">{t(Strings.default_datasheet_title)}</Typography>
       <TextInput
@@ -74,7 +84,8 @@ export const UrlActionUI = (props: IUrlActionUI) => {
         onChange={(evt) => {
           setTitle(evt.target.value);
         }}
-        block={isMobile}
+        className={styles.title}
+        block
       />
       <section className={styles.buttonWrapper}>
         {!isMobile && (
@@ -98,6 +109,7 @@ export const UrlActionUI = (props: IUrlActionUI) => {
                   },
                 ],
               });
+              callback?.(text || title);
             }
             setActiveUrlAction(false);
           }}
@@ -111,7 +123,7 @@ export const UrlActionUI = (props: IUrlActionUI) => {
 
   return isMobile ? (
     <Popup
-      title={t(Strings.please_edit_url)}
+      title={props.title}
       height='auto'
       open={activeUrlAction}
       onClose={e => {

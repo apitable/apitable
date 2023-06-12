@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, FieldKeyEnum, FieldType, ICellValue, IField, ISelectField, SelectField } from '@apitable/core';
+import { ApiTipConstant, FieldKeyEnum, FieldType, ICellValue, IField, IMeta, ISelectField, SelectField } from '@apitable/core';
 import { ArgumentMetadata, Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
@@ -51,7 +51,7 @@ export class FieldPipe implements PipeTransform {
 
   async transform(value: any, _: ArgumentMetadata): Promise<any> {
     const datasheet = this.request[DATASHEET_HTTP_DECORATE];
-    const meta = this.request[DATASHEET_META_HTTP_DECORATE];
+    const meta = this.request[DATASHEET_META_HTTP_DECORATE] as IMeta;
     let fieldMap = meta.fieldMap;
     if (value.fieldKey === FieldKeyEnum.NAME) {
       fieldMap = keyBy(Object.values(meta.fieldMap), 'name');

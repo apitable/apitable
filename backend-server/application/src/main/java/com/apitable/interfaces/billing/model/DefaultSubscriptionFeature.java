@@ -20,6 +20,7 @@ package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
@@ -43,6 +44,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowEmbed;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowExport;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowShare;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ContactIsolation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ForbidCreateOnCatalog;
@@ -132,6 +134,11 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     }
 
     @Override
+    public ApiQps getApiQps() {
+        return new ApiQps(5L);
+    }
+
+    @Override
     public SocialConnect getSocialConnect() {
         return new SocialConnect(false);
     }
@@ -214,5 +221,10 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public AuditQueryDays getAuditQueryDays() {
         return new AuditQueryDays(-1L);
+    }
+
+    @Override
+    public AllowOrgApi getAllowOrgApi() {
+        return new AllowOrgApi(false);
     }
 }

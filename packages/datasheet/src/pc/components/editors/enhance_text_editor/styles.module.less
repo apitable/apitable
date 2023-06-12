@@ -12,6 +12,9 @@
   align-items: center;
   position: relative;
   padding-right: 16px;
+  input {
+    font-size: 13px;
+  }
 }
 
 .enhanceTextIcon {
@@ -28,7 +31,6 @@
   position: relative;
   box-sizing: border-box;
   box-shadow: 0px 0px 0px 2px var(--primaryColor);
-  box-sizing: border-box;
   border-radius: 1px;
   background: transparent;
   .light-scroll-bar();
@@ -63,6 +65,9 @@
   text-overflow: ellipsis;
   top: 2px;
   white-space: nowrap;
+  & > span {
+    font-size: 13px;
+  }
 }
 
 @media screen and (max-width: @w-md) {

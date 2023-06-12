@@ -19,8 +19,8 @@
 package com.apitable.widget.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -33,12 +33,16 @@ import lombok.Data;
 @Schema(description = "Widget Copy Request Parameters")
 public class WidgetCopyRo {
 
+    @Schema(description = "Node ID", requiredMode = RequiredMode.REQUIRED,
+        example = "dst11/dsb11")
+    private String nodeId;
+
+    @Deprecated
     @Schema(description = "Dashboard ID", required = true, example = "dsb11")
-    @NotBlank(message = "Dashboard ID cannot be empty")
     private String dashboardId;
 
-    @Schema(description = "Widget ID List", required = true, example = "[\"wdtiJjVmNFcFmNtQFA\", "
-        + "\"wdtSbp8TkH7gTGAYR1\"]")
+    @Schema(description = "Widget ID List", requiredMode = RequiredMode.REQUIRED,
+        example = "[\"wdtiJjVmNFcFmNtQFA\", \"wdtSbp8TkH7gTGAYR1\"]")
     @NotEmpty(message = "Widget ID list cannot be empty")
     private List<String> widgetIds;
 }

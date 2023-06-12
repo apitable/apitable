@@ -26,6 +26,7 @@ import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 import { Message, Modal, Tooltip } from 'pc/components/common';
 import { QuestionCircleOutlined } from '@apitable/icons';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IFormatmember {
   currentField: IMemberField;
@@ -94,6 +95,8 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
 
   const embedId = useSelector(state => state.pageParams.embedId);
 
+  const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
+
   return (
     <div className={styles.section}>
       <section className={settingStyles.section}>
@@ -116,13 +119,13 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
           />
         </div>}
       </section>
-      <section className={settingStyles.section}>
+      {RECORD_WATCHING_VISIBLE && <section className={settingStyles.section}>
         {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
           <div className={styles.subscription}>
             {t(Strings.field_member_property_subscription)}
             <Tooltip title={t(Strings.field_member_property_subscription_tip)} trigger={'hover'}>
               <span className={styles.requiredTip}>
-                <QuestionCircleOutlined color='currentColor' />
+                <QuestionCircleOutlined color="currentColor"/>
               </span>
             </Tooltip>
           </div>
@@ -132,7 +135,7 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
             onChange={handleSubscription}
           />
         </div>}
-      </section>
+      </section>}
     </div>
   );
 };

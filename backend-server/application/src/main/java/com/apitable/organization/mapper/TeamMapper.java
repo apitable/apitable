@@ -275,12 +275,13 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
 
     /**
      * Recursively query teams and sub teams
+     *
      * @param spaceId space id
      * @param teamIds team ids
      * @return team id
      */
     List<TeamCteInfo> selectChildTreeByTeamIds(@Param("spaceId") String spaceId,
-        @Param("teamIds") List<Long> teamIds);
+                                               @Param("teamIds") List<Long> teamIds);
 
     /**
      * query team's all parent teams by team's id
@@ -290,5 +291,47 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
      * @return team path information
      */
     List<TeamPathInfo> selectParentTreeByTeamIds(@Param("spaceId") String spaceId,
-        @Param("teamIds") List<Long> teamIds);
+                                                 @Param("teamIds") List<Long> teamIds);
+
+    /**
+     * Query page of the directly sub team Id.
+     *
+     * @param spaceId  space id
+     * @param parentId parent team id
+     * @return page of sub team ids
+     */
+    IPage<Long> selectTeamIdsBySpaceIdAndParentIdAndPage(Page<Long> page,
+                                                         @Param("spaceId") String spaceId,
+                                                         @Param("parentId") Long parentId);
+
+    /**
+     * count rows by team's name.
+     *
+     * @param spaceId  the space's id
+     * @param parentId the team parent id
+     * @param teamId   the current team's id
+     * @param teamName the team's name
+     * @return number of rows
+     */
+    Integer selectCountByParentIdAndSpaceIdAndTeamNameWithExceptId(
+        @Param("parentId") Long parentId,
+        @Param("spaceId") String spaceId,
+        @Param("teamId") Long teamId,
+        @Param("teamName") String teamName
+    );
+
+    /**
+     * count rows by team's name.
+     *
+     * @param spaceId  the space's id
+     * @param parentId the team parent id
+     * @param teamName the team's name
+     * @return number of rows
+     */
+    Integer selectCountByParentIdAndSpaceIdAndTeamName(
+        @Param("parentId") Long parentId,
+        @Param("spaceId") String spaceId,
+        @Param("teamName") String teamName
+    );
+
 }

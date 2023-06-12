@@ -21,6 +21,7 @@ package com.apitable.organization.mapper;
 import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.dto.MemberTeamInfoDTO;
+import com.apitable.organization.dto.MemberUserDTO;
 import com.apitable.organization.dto.SearchMemberDTO;
 import com.apitable.organization.dto.SpaceMemberDTO;
 import com.apitable.organization.dto.SpaceMemberIdDTO;
@@ -627,13 +628,13 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     /**
      * Query Incomplete Member View.
      *
-     * @param page      page param
-     * @param spaceId   space id
+     * @param page    page param
+     * @param spaceId space id
      * @return IPage<NodeRoleMemberVo>
      * @author Chambers
      */
     IPage<NodeRoleMemberVo> selectIncompleteMemberVo(Page<NodeRoleMemberVo> page,
-        @Param("spaceId") String spaceId);
+                                                     @Param("spaceId") String spaceId);
 
     /**
      * query the members' FieldRole
@@ -867,11 +868,12 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<SpaceMemberIdDTO> selectMemberIdsByUserIdAndSpaceIds(@Param("userId") Long userId, @Param("spaceIds") List<String> spaceIds);
 
     /**
-     * @param keyword  email keyword
+     * @param keyword email keyword
      * @param spaceId space id
      * @return ids
      */
-    List<Long> selectIdsBySpaceIdAndEmailKeyword(@Param("spaceId") String spaceId, @Param("keyword") String keyword);
+    List<Long> selectIdsBySpaceIdAndEmailKeyword(@Param("spaceId") String spaceId,
+                                                 @Param("keyword") String keyword);
 
     /**
      * batch query team's id by member's id
@@ -880,4 +882,13 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return member'id and member's teamId
      */
     List<MemberTeamInfoDTO> selectTeamIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
+
+    /**
+     * query member info.
+     *
+     * @param memberIds
+     * @return MemberUserDTO
+     */
+    List<MemberUserDTO> selectMemberNameAndUserIdAndIsActiveByIds(
+        @Param("memberIds") List<Long> memberIds);
 }

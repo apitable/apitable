@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{ MEMBER_NAME }} made comments from the "{{ RECORD_TITLE }}" in "{{
-        NODE_NAME
-      }}" datasheet
+      {{MEMBER_NAME}} made comments from the "{{RECORD_TITLE}}" in "{{NODE_NAME}}" datasheet
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -233,8 +231,8 @@
                 visibility: hidden;
                 width: 0;
               "
-              >{{ MEMBER_NAME }} made comments from the "{{ RECORD_TITLE }}" in
-              "{{ NODE_NAME }}" datasheet
+              >{{MEMBER_NAME}} made comments from the "{{RECORD_TITLE}}" in
+              "{{NODE_NAME}}" datasheet
             </span>
             <table
               role="presentation"
@@ -300,9 +298,9 @@
                             margin-bottom: 30px;
                           "
                         >
-                        {{ MEMBER_NAME }} made comments from the
-                        <b>"{{ RECORD_TITLE }}"</b> in
-                        <b>"{{ NODE_NAME }}"</b> datasheet
+                        {{MEMBER_NAME}} made comments from the
+                        <b>"{{RECORD_TITLE}}"</b> in
+                        <b>"{{NODE_NAME}}"</b> datasheet
                         </h2>
                         <div
                           class="remind_content"
@@ -317,7 +315,7 @@
                             min-width: 414px;
                           "
                         >
-                          {{ CONTENT }}
+                          {{CONTENT}}
                         </div>
                         <div style="margin: 16px 0 32px 0">
                           <p
@@ -332,7 +330,7 @@
                               color: #696969;
                             "
                           >
-                            {{ SPACE_NAME }}
+                            {{SPACE_NAME}}
                           </p>
                         </div>
                         <p
@@ -348,7 +346,7 @@
                             float: right;
                           "
                         >
-                          {{ CREATED_AT }}
+                          {{CREATED_AT}}
                         </p>
                         <table
                           role="presentation"
@@ -410,7 +408,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -495,7 +493,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"

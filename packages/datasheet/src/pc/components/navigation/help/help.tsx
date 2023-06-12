@@ -21,7 +21,7 @@ import { Typography, useThemeColors } from '@apitable/components';
 import { isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
-  VikabyOutlined, WebOutlined
+  VikabyOutlined, WebOutlined, UserGroupOutlined
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
@@ -130,6 +130,13 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
       onClick: vikabyHelperClick,
       hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
+    },
+    {
+      icon: <UserGroupOutlined color={colors.thirdLevelText} />,
+      text: t(Strings.help_partner_program),
+      id: NAV_ID.USER_PARTNER_PROGRAM,
+      onClick: () => navigationToUrl(`${window.location.origin}/partners/`),
+      hidden: !(getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE),
     },
   ];
 

@@ -1,5 +1,9 @@
 {
   "ANNUAL": "年付",
+  "pagination_component_total": "第 ${start}-${end} 条/总共 ${total} 条",
+  "pagination_component_jump": "跳至",
+  "pagination_component_page": "页",
+  "pagination_component_page_size": "${val}条/一页",
   "BIANNUAL": "半年付",
   "CNY": "人民幣",
   "DAYS": "天",
@@ -296,7 +300,9 @@
   "api_param_select_field_value_type_error": "field:{field} 單選字段必須是字符串",
   "api_param_share_btn_type_error": "參數 shareBtn 必須是 boolean 類型",
   "api_param_singletext_field_type_error": "field:{field} 單行文本字段必須是字符串",
-  "api_param_sort_field_not_exists": "sort 參數指定的字段不存在",
+  "api_param_sort_missing_field": "sort 參數缺少 field 字段",
+  "api_param_sort_field_not_exists": "sort 参数指定的欄位 \"{fieldId}\" 不存在",
+  "api_param_filter_field_not_exists": "過濾的欄位 \"{fieldId}\" 不存在",
   "api_param_tabbar_type_error": "參數 tabBar 必須是 boolean 類型",
   "api_param_text_field_type_error": "field:{field} 文本字段必須是字符串",
   "api_param_theme_type_error": "參數 theme 必須是以下值之一：dark、light",
@@ -2261,7 +2267,7 @@
   "inherit_permission_tip": "下方成員或小組的訪問權來自上級文件夾",
   "inherit_permission_tip_root": "下面的所有成員或團隊都可以訪問此文件",
   "inhert_permission_desc": "成員和小組繼承上級文件夾「${nodeName}」的權限",
-  "init_roles": "財務、市場營銷、IT、人力資源、法務",
+  "init_roles": "財務,市場營銷,IT,人力資源,法務",
   "initial_size": "原始尺寸",
   "initialization_failed_message": "頁面在加載的過程中有未初始化成功的數據，請刷新重試",
   "inline_code": "行內代碼",
@@ -5404,5 +5410,11 @@
   "field_member_property_subscription_open_tip": "此選項僅適用於新選擇的成員",
   "field_member_property_subscription": "所選成員將自動跟隨更新行數據",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> 已將您添加為“<a class=\"recordTitle\"></a>”中“<a class=\"nodeName\"></a>”的關注者，並且 你會自動關注這條記錄",
-  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record"
+  "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unfollowed this record",
+  "calendar_const_today": "今天",
+  "calendar_const_month_toggle_pre": "上一月",
+  "calendar_const_month_toggle_next": "下一月",
+  "calendar_const_touch_tip": "松手即可翻页",
+  "calendar_const_weeks": "[\"周一\",\"周二\",\"周三\",\"周四\",\"周五\",\"周六\",\"周日\"]",
+  "calendar_const_detail_weeks": "[\"星期一\",\"星期二\",\"星期三\",\"星期四\",\"星期五\",\"星期六\",\"星期天\"]"
 }

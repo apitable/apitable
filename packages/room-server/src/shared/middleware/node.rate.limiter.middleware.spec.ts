@@ -33,6 +33,8 @@ describe('FusionApiRateLimiter', () => {
   let redisService: RedisService;
   let i18nService: I18nService;
   let envConfigService: any;
+  let restService: any;
+  let datasheetRepository: any;
   let callHandler: Mock;
   let res: any;
 
@@ -48,7 +50,13 @@ describe('FusionApiRateLimiter', () => {
     envConfigService = {
       getRoomConfig: jest.fn().mockReturnThis(),
     };
-    rateLimiter = new NodeRateLimiterMiddleware(redisService, envConfigService, i18nService);
+    restService = {
+      getApiRateLimit: jest.fn(),
+    };
+    datasheetRepository = {
+      selectById: jest.fn(),
+    };
+    rateLimiter = new NodeRateLimiterMiddleware(redisService, envConfigService, restService, datasheetRepository, i18nService);
     callHandler = jest.fn();
   });
 

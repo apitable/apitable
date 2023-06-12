@@ -804,6 +804,8 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
           recordId={selectRecord?.id}
           fieldId={selectField?.id}
           datasheetId={datasheetId}
+          scrollLeft={scrollLeft}
+          scrollTop={scrollTop}
         />
       )}
     </>

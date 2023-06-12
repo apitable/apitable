@@ -225,4 +225,13 @@
         WHERE id = #{userId}
           AND is_deleted = 0
     </select>
+
+    <select id="selectEmailAndMobilePhoneByIds" resultType="com.apitable.user.dto.UserSensitiveDTO">
+        SELECT id, code, mobile_phone, email, avatar FROM ${tablePrefix}user
+        WHERE id IN
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
 </mapper>

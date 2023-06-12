@@ -18,14 +18,14 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
-import com.apitable.organization.dto.RoleInfoDTO;
-import com.apitable.shared.util.ibatis.ExpandBaseMapper;
 import com.apitable.organization.dto.RoleBaseInfoDto;
+import com.apitable.organization.dto.RoleInfoDTO;
 import com.apitable.organization.entity.RoleEntity;
+import com.apitable.shared.util.ibatis.ExpandBaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface RoleMapper extends ExpandBaseMapper<RoleEntity> {
 
@@ -107,9 +107,32 @@ public interface RoleMapper extends ExpandBaseMapper<RoleEntity> {
     /**
      * query role info by ids and space id.
      *
-     * @param ids       the rows' id
-     * @param spaceId   the space's id
+     * @param ids     the rows' id
+     * @param spaceId the space's id
      * @return role info
      */
-    List<RoleInfoDTO> selectRoleInfoDtoByIdsAndSpaceId(@Param("ids") List<Long> ids, @Param("spaceId") String spaceId);
+    List<RoleInfoDTO> selectRoleInfoDtoByIdsAndSpaceId(@Param("ids") List<Long> ids,
+                                                       @Param("spaceId") String spaceId);
+
+    /**
+     * Query page of the directly role Id.
+     *
+     * @param spaceId space id
+     * @return page of sub role ids
+     */
+    IPage<RoleBaseInfoDto> selectBySpaceIdAndPage(Page<RoleBaseInfoDto> page,
+                                                  @Param("spaceId") String spaceId);
+
+    /**
+     * count rows by space's id and role's name.
+     *
+     * @param spaceId  the space's id
+     * @param roleId   the current role's id
+     * @param roleName the role's name
+     * @return number of rows
+     */
+    Integer selectCountBySpaceIdAndRoleNameWithExceptId(@Param("spaceId") String spaceId,
+                                                        @Param("roleId") Long roleId,
+                                                        @Param("roleName") String roleName);
+
 }

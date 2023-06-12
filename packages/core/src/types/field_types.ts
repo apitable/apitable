@@ -91,6 +91,20 @@ export enum RollUpFuncType {
   ARRAYCOMPACT = 'ARRAYCOMPACT',
 }
 
+export enum LookUpLimitType {
+  'ALL' = 'ALL',
+  'FIRST' = 'FIRST',
+}
+
+export interface ILookUpSortField {
+  fieldId: string;
+  desc: boolean;
+}
+
+export interface ILookUpSortInfo {
+  rules: ILookUpSortField[]
+}
+
 export interface ILookUpProperty {
   datasheetId: string;
   relatedLinkFieldId: string;
@@ -98,7 +112,10 @@ export interface ILookUpProperty {
   rollUpType?: RollUpFuncType;
   formatting?: IComputedFieldFormattingProperty;
   filterInfo?: IFilterInfo;
+  /** If filterInfo and sortInfo are enabled. */
   openFilter?: boolean;
+  sortInfo?: ILookUpSortInfo;
+  lookUpLimit?: LookUpLimitType;
 }
 
 export interface ITextField extends IBaseField {
