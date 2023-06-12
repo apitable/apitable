@@ -269,6 +269,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                 .unitId(IdWorker.get32UUID())
                 .unitRefId(role.getId())
                 .unitType(UnitType.ROLE.getType())
+                .unitId(IdWorker.get32UUID())
                 .build();
             units.add(unit);
         }
