@@ -532,23 +532,32 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
+        List<String> subNodeIds =
+            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        List<NodeTreeDTO> nodes = new ArrayList<>();
         Optional<NodeTreeDTO> first =
             sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
-        if (!first.isPresent()) {
-            return sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        first.ifPresent(nodes::add);
+        nodes.addAll(sub.stream()
+            .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
+            .collect(Collectors.toList()));
+        if (nodes.isEmpty()) {
+            return subNodeIds;
         }
-        String preNodeId = first.get().getNodeId();
         List<String> nodeIds = new ArrayList<>();
-        if (nodeType == null || first.get().getType() == nodeType.getNodeType()) {
-            nodeIds.add(preNodeId);
-        }
         Map<String, NodeTreeDTO> preNodeIdToNodeMap = sub.stream()
             .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, i -> i, (k1, k2) -> k2));
-        while (preNodeIdToNodeMap.containsKey(preNodeId)) {
-            NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
-            preNodeId = nodeTreeDTO.getNodeId();
-            if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
+        for (NodeTreeDTO node : nodes) {
+            String preNodeId = node.getNodeId();
+            if (nodeType == null || node.getType() == nodeType.getNodeType()) {
                 nodeIds.add(preNodeId);
+            }
+            while (preNodeIdToNodeMap.containsKey(preNodeId)) {
+                NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
+                preNodeId = nodeTreeDTO.getNodeId();
+                if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
+                    nodeIds.add(preNodeId);
+                }
             }
         }
         return nodeIds;
