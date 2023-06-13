@@ -16,14 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Column, Entity } from 'typeorm';
 import { BaseEntity } from 'shared/entities/base.entity';
+import { Column, Entity } from 'typeorm';
 
 /**
  * Organizational structure-Organization unit table
  */
 @Entity('unit')
 export class UnitEntity extends BaseEntity {
+  @Column({
+    name: 'unit_id',
+    nullable: false,
+    comment: 'unit show unique ID',
+    length: 32,
+  })
+  unitId!: string;
+
   @Column({
     name: 'space_id',
     nullable: false,

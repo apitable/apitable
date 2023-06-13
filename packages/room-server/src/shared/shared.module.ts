@@ -18,11 +18,15 @@
 
 import { HttpModule } from '@nestjs/axios';
 import { Global, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DeveloperRepository } from 'developer/repositories/developer.repository';
+import { DeveloperService } from 'developer/services/developer.service';
 import { WinstonModule } from 'nest-winston';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { UserRepository } from 'user/repositories/user.repository';
 import { HttpConfigService } from './services/config/http.config.service';
 import { JavaModule } from './services/java/java.module';
 import { NativeService } from './services/native/native.service';
@@ -33,6 +37,10 @@ import { ClientStorage } from './services/socket/client.storage';
 @Global()
 @Module({
   imports: [
+    TypeOrmModule.forFeature([
+      DeveloperRepository,
+      UserRepository
+    ]),
     JavaModule,
     HttpModule.registerAsync({
       useClass: HttpConfigService,
@@ -45,7 +53,7 @@ import { ClientStorage } from './services/socket/client.storage';
     QueueDynamicModule.forRoot(),
   ],
   controllers: [],
-  providers: [DatabaseConfigService, RestService, ClientStorage, NativeService],
+  providers: [DatabaseConfigService, RestService, ClientStorage, NativeService, DeveloperService],
   exports: [
     JavaModule,
     HttpModule,
@@ -53,9 +61,11 @@ import { ClientStorage } from './services/socket/client.storage';
     EnvConfigModule,
     DatabaseConfigService,
     RestService,
+    DeveloperService,
     NativeService,
     ClientStorage,
     QueueDynamicModule.forRoot(),
   ],
 })
-export class SharedModule {}
+export class SharedModule {
+}
