@@ -197,7 +197,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
 
   const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue;
 
-  const favicon = field.type === FieldType.URL && field.property.isRecogURLFlag && cellValue?.[0]?.favicon;
+  const favicon = field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.favicon;
 
   const renderURL = () => {
     if (!showURLTitleFlag ) return null;
