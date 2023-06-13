@@ -5406,6 +5406,7 @@
   "add_row_created_by_tip":  "You have been automatically watched the updates for this record",
   "field_created_by_property_subscription_close_tip": "After closing, the members under the creator column will automatically cancel the records they have followed",
   "field_created_by_property_subscription_open_tip": "This option only applies to newly created records",
+  "field_created_by_property_subscription": "Creator auto-watch data updates",
   "field_member_property_notify_tip": "Due to the option of 'selected members will automatically follow updates to row data' being enabled, the members under this member column will automatically cancel the following records after closing it",
   "field_member_property_subscription_close_tip": "After closing, the members under the member column will automatically cancel the records they have followed",
   "field_member_property_subscription_open_tip": "This option only applies to newly selected members",

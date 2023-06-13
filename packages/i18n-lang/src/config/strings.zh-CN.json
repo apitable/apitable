@@ -1560,6 +1560,7 @@
   "field_configuration_err": "本列有配置错误，请检查公式、引用的列或筛选条件。",
   "field_configuration_numerical_value_format": "数值格式",
   "field_configuration_optional": "选填",
+  "field_created_by_property_subscription": "创建人将自动关注行数据的更新",
   "field_created_by_property_subscription_close_tip": "关闭后，creator栏下的成员将自动取消已关注的记录",
   "field_created_by_property_subscription_open_tip": "该选项仅对新创建的记录生效",
   "field_desc": "列描述",

@@ -1560,6 +1560,7 @@
   "field_configuration_err": "There is a configuration error in this field. Please check the formula or the configuration used by the field.",
   "field_configuration_numerical_value_format": "Format",
   "field_configuration_optional": "Optional",
+  "field_created_by_property_subscription": "Creator auto-watch data updates",
   "field_created_by_property_subscription_close_tip": "After closing, the members under the creator column will automatically cancel the records they have followed",
   "field_created_by_property_subscription_open_tip": "This option only applies to newly created records",
   "field_desc": "Field description",
