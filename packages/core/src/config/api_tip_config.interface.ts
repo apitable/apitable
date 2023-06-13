@@ -178,6 +178,8 @@ export interface Tips {
     api_org_member_delete_primary_admin_error:            PuneHedgehog;
     api_param_unit_name_required:                         PuneHedgehog;
     api_param_sequence_type_error:                        PuneHedgehog;
+    api_param_parent_unit_not_exists:                     PuneHedgehog;
+    api_param_unit_id_required:                           PuneHedgehog;
 }
 
 export interface PuneHedgehog {

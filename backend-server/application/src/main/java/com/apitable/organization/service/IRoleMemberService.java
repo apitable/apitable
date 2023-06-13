@@ -119,10 +119,10 @@ public interface IRoleMemberService {
     /**
      * get role's member by unit_ref_id.
      *
-     * @param unitRefIds list of unitRefId
+     * @param roleIds list of unitRefId
      * @return list of RoleMemberDTO
      */
-    List<RoleMemberDTO> getByUnitRefIds(List<Long> unitRefIds);
+    List<RoleMemberDTO> getByRoleIds(List<Long> roleIds);
 
     /**
      * get unit's members.

@@ -728,13 +728,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
-    public Long getTeamIdByUnitId(String spaceId, String unitId) {
+    public Long getTeamIdByUnitId(String spaceId, String unitId, Consumer<Boolean> consumer) {
         if ("0".equals(unitId)) {
             return getRootTeamId(spaceId);
         }
         Long teamId = iUnitService.getUnitRefIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId,
             UnitType.TEAM);
-        ExceptionUtil.isNotNull(teamId, GET_TEAM_ERROR);
+        consumer.accept(null != teamId);
         return teamId;
     }
 
@@ -758,7 +758,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public TeamEntity getTeamByUnitId(String spaceId, String unitId) {
-        Long teamId = getTeamIdByUnitId(spaceId, unitId);
+        Long teamId = getTeamIdByUnitId(spaceId, unitId,
+            status -> ExceptionUtil.isTrue(status, GET_TEAM_ERROR));
         TeamEntity department = getById(teamId);
         ExceptionUtil.isNotNull(department, GET_TEAM_ERROR);
         return department;

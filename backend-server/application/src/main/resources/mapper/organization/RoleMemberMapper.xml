@@ -119,12 +119,12 @@
         AND unit_type = #{unitType.type}
     </select>
 
-    <select id="selectByUnitRefIds" resultType="com.apitable.organization.dto.RoleMemberDTO">
+    <select id="selectByRoleIds" resultType="com.apitable.organization.dto.RoleMemberDTO">
         SELECT role_id, unit_ref_id, unit_type
         FROM ${tablePrefix}unit_role_member
-        WHERE unit_ref_id IN
-        <foreach collection="unitRefIds" item="unitRefId" separator="," open="(" close=")">
-            #{unitRefId}
+        WHERE role_id IN
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
         </foreach>
     </select>
 </mapper>

@@ -5440,5 +5440,7 @@
   "help_partner_program": "成为合伙人",
   "copy_widget_success": "复制小程序成功",
   "copy_widget_fail": "复制小程序失败",
-  "copy_widget": "复制小程序"
+  "copy_widget": "复制小程序",
+  "api_param_parent_unit_not_exists": "parentUnitId 指定的组织单元不存在",
+  "api_param_unit_id_required": "参数 unitId 为必填项"
 }

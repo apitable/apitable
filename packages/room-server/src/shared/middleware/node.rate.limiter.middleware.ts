@@ -27,7 +27,7 @@ import sha1 from 'sha1';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { ApiResponse } from '../../fusion/vos/api.response';
 import { AUTHORIZATION_PREFIX, EnvConfigKey, NODE_LIMITER_PREFIX } from '../common';
-import { ApiException, PermissionException } from '../exception';
+import { ApiException, CommonException, PermissionException } from '../exception';
 import { FusionHelper } from '../helpers';
 import { IRateLimiter } from '../interfaces';
 import { RestService } from '../services/rest/rest.service';
@@ -81,13 +81,15 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
         if (e.code === PermissionException.NO_ALLOW_OPERATE.code) {
           error = ApiException.tipError(ApiTipConstant.api_forbidden_because_of_not_in_space);
         }
+        if (e.code === CommonException.UNAUTHORIZED.code) {
+          error = ApiException.tipError(ApiTipConstant.api_unauthorized);
+        }
         if (error) {
           const user = await this.developerService.getUserInfoByApiKey(token);
-          const err = ApiException.tipError(ApiTipConstant.api_param_invalid_space_id_value);
           res.setHeader('Content-Type', 'application/json');
-          res.statusCode = err.getTip().statusCode;
-          const errMsg = await this.i18n.translate(err.getMessage(), { lang: user?.locale });
-          res.write(JSON.stringify(ApiResponse.error(errMsg, err.getTip().code)));
+          res.statusCode = error.getTip().statusCode;
+          const errMsg = await this.i18n.translate(error.getMessage(), { lang: user?.locale });
+          res.write(JSON.stringify(ApiResponse.error(errMsg, error.getTip().code)));
           res.end();
         }
         // unknown error

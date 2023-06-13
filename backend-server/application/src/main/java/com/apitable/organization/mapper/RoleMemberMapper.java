@@ -122,8 +122,8 @@ public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
     /**
      * get role's member by role member id.
      *
-     * @param unitRefIds the role member's id
-     * @return the roles' id of the member's ref.
+     * @param roleIds the role's id
+     * @return the role member info
      */
-    List<RoleMemberDTO> selectByUnitRefIds(@Param("unitRefIds") List<Long> unitRefIds);
+    List<RoleMemberDTO> selectByRoleIds(@Param("roleIds") List<Long> roleIds);
 }

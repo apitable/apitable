@@ -19,4 +19,6 @@ public class UnitTeamDTO {
     private String teamName;
 
     private Integer sequence;
+
+    private String parentUnitId;
 }

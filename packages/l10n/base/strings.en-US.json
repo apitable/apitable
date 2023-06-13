@@ -5405,7 +5405,7 @@
   "zimbabwe": "Zimbabwe",
   "zoom_in": "zoom in",
   "zoom_out": "zoom out",
-  "add_row_created_by_tip":  "You have been automatically watched the updates for this record",
+  "add_row_created_by_tip": "You have been automatically watched the updates for this record",
   "field_created_by_property_subscription_close_tip": "After closing, the members under the creator column will automatically cancel the records they have followed",
   "field_created_by_property_subscription_open_tip": "This option only applies to newly created records",
   "field_created_by_property_subscription": "Creator auto-watch data updates",
@@ -5425,7 +5425,7 @@
   "api_org_member_delete_primary_admin_error": "Removal of primary admin is not allowed",
   "api_param_unit_name_required": "the parameter name is required",
   "api_param_sequence_type_error": "The value of the parameter sequence must be a number",
-  "field_member_property_subscription":"Selected members auto-watch data updates",
+  "field_member_property_subscription": "Selected members auto-watch data updates",
   "auto_create_record_subscription": "<a class=\"memberName\"></a> has added you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you will automatically watch this record",
   "auto_cancel_record_subscription": "<a class=\"memberName\"></a> has removed you as a follower of  \"<a class=\"recordTitle\"></a>\" in \"<a class=\"nodeName\"></a>\", and you have automatically unwatch this record",
   "space_search_empty": "Search space not found",
@@ -5438,5 +5438,7 @@
   "help_partner_program": "Partner Program",
   "copy_widget_success": "copy widget successfully",
   "copy_widget_fail": "copy widget failed",
-  "copy_widget": "Copy Widget"
+  "copy_widget": "Copy Widget",
+  "api_param_parent_unit_not_exists": "The unit specified by the parentUnitId does not exist",
+  "api_param_unit_id_required": "The parameter unitId is required"
 }
