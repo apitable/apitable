@@ -24,7 +24,7 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Message, Modal, Tooltip } from 'pc/components/common';
+import { Message, Tooltip } from 'pc/components/common';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { getEnvVariables } from 'pc/utils/env';
 
@@ -45,30 +45,13 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
   };
 
   const handleShouldSendMsgChange = (checked: boolean) => {
-    const updateSendMsg = () => {
-      props.setCurrentField({
-        ...props.currentField,
-        property: {
-          ...props.currentField.property,
-          shouldSendMsg: checked,
-        },
-      });
-    };
-
-    if (!checked) {
-      Modal.warning({
-        title: t(Strings.kindly_reminder),
-        content: t(Strings.field_member_property_notify_tip),
-        hiddenCancelBtn: false,
-        cancelText: t(Strings.cancel),
-        zIndex: 1100,
-        onOk: () => {
-          updateSendMsg();
-        },
-      });
-    } else {
-      updateSendMsg();
-    }
+    props.setCurrentField({
+      ...props.currentField,
+      property: {
+        ...props.currentField.property,
+        shouldSendMsg: checked,
+      },
+    });
   };
 
   const handleSubscription = (checked: boolean) => {
@@ -83,7 +66,7 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
     };
     if (checked) {
       Message.info({
-        content: t(Strings.field_created_by_property_subscription_open_tip)
+        content: t(Strings.field_member_property_subscription_open_tip)
       });
       updateSubscription();
     } else {
@@ -124,9 +107,16 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
           <div className={styles.subscription}>
             {t(Strings.field_member_property_subscription)}
             <Tooltip title={t(Strings.field_member_property_subscription_tip)} trigger={'hover'}>
-              <span className={styles.requiredTip}>
-                <QuestionCircleOutlined color="currentColor"/>
-              </span>
+              <a
+                href={t(Strings.field_help_member_property_subscription)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-block', cursor: 'pointer', marginLeft: 8 }}
+              >
+                <span className={styles.requiredTip}>
+                  <QuestionCircleOutlined color="currentColor"/>
+                </span>
+              </a>
             </Tooltip>
           </div>
           <Switch
