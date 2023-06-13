@@ -10,10 +10,11 @@ interface ISearchSelectFieldProps {
   defaultFieldId: string;
   fieldType?: FieldType;
   onChange: (targetId: string) => void;
+  disabled?: boolean;
 }
 
 export const SearchSelectField = (props: ISearchSelectFieldProps) => {
-  const { datasheetId, fieldType = null, defaultFieldId, onChange } = props;
+  const { datasheetId, fieldType = null, defaultFieldId, onChange, disabled = false } = props;
 
   const colors = useThemeColors();
   const columns = useSelector(state => {
@@ -58,6 +59,7 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
         openSearch
         searchPlaceholder={t(Strings.search)}
         noDataTip={t(Strings.no_search_result)}
+        disabled={disabled}
       />
     </div>
   );

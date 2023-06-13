@@ -129,7 +129,7 @@ export class UnitService {
       }
     });
     // get sub teamIds by teams
-    const {teamIdSubTeamIdsMap, subTeams} = await this.teamService.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, teamIds);
+    const { teamIdSubTeamIdsMap, subTeams } = await this.teamService.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, teamIds);
     teamIds.push(...subTeams);
     const teamMembers = await this.unitTeamMemberRefRepository.selectByTeamIds(teamIds);
     teamMembers.forEach(teamMember => {
@@ -234,7 +234,7 @@ export class UnitService {
         roleIds.push(unit.unitRefId);
       }
     });
-    return {[MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds};
+    return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds };
   }
 
   public async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {

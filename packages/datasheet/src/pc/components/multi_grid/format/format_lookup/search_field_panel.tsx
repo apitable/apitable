@@ -98,7 +98,8 @@ interface IFieldItem {
   keyword: string;
 }
 
-const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }: IFieldItem) => {
+const FieldItem = (props: IFieldItem) => {
+  const { showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword } = props;
   const colors = useThemeColors();
   const foreignDatasheetReadable = useMemo(() => {
     if (showType !== ShowType.LinkField) {
