@@ -43,7 +43,7 @@ export function getLanguage() {
   let clientLang = null;
   if(_global.document){
     // @ts-ignore
-    clientLang = localStorage.getItem('client-lang')
+    clientLang = localStorage.getItem('client-lang');
   }
   const language = typeof _global == 'object' && _global.__initialization_data__ && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';
@@ -92,6 +92,10 @@ const rewriteI18nForEdition = () => {
         ..._global.apitable_i18n_edition[k]
       };
     }
+  }
+
+  if (_global.apitable_language_list && Object.keys(_global.apitable_language_list).length > 0) {
+    _global.languageManifest = _global.apitable_language_list;
   }
 };
 

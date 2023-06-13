@@ -61,18 +61,20 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
   const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
 
-  return RECORD_WATCHING_VISIBLE && (
-    <div className={styles.section}>
-      <section className={settingStyles.section}>
-        {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.field_member_property_subscription)}
-          <Switch
-            size="small"
-            checked={subscription}
-            onChange={handleSubscription}
-          />
-        </div>}
-      </section>
-    </div>
-  );
+  if (!RECORD_WATCHING_VISIBLE) {
+    return null;
+  }
+
+  return <div className={styles.section}>
+    <section className={settingStyles.section}>
+      {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+        {t(Strings.field_member_property_subscription)}
+        <Switch
+          size="small"
+          checked={subscription}
+          onChange={handleSubscription}
+        />
+      </div>}
+    </section>
+  </div>;
 };

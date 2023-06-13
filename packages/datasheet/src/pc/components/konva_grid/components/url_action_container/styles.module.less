@@ -6,13 +6,6 @@
   padding: 16px;
   border-radius: 8px;
   box-shadow: var(--shadowCommonHigh);
-  .link {
-    &:hover {
-      svg {
-        fill: var(--textBrandHover);
-      }
-    }
-  }
   .text,
   .title {
     height: 32px;
@@ -32,8 +25,14 @@
   }
   .link {
     display: flex;
+    cursor: pointer;
     svg {
       fill: var(--textCommonTertiary) !important;
+    }
+    &:hover {
+      svg {
+        fill: var(--textBrandHover) !important;
+      }
     }
   }
 }

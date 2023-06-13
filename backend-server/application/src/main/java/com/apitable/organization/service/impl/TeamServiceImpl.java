@@ -323,6 +323,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.TEAM.getType());
             unit.setUnitRefId(team.getId());
+            unit.setUnitId(IdWorker.get32UUID());
             unitEntities.add(unit);
         });
         iUnitService.createBatch(unitEntities);
