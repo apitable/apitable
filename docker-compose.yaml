@@ -34,6 +34,7 @@ services:
       - "8081"
     environment:
       - TZ=${TIMEZONE}
+      - DEFAULT_TIME_ZONE=${TIMEZONE}
     networks:
       - apitable
     depends_on:
