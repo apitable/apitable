@@ -17,7 +17,16 @@
  */
 
 // import { Message } from '@apitable/components';
-import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t, ThemeName } from '@apitable/core';
+import {
+  ConfigConstant,
+  getLanguage,
+  isPrivateDeployment,
+  Selectors,
+  Strings,
+  SystemConfig,
+  t,
+  ThemeName
+} from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -314,11 +323,6 @@ export const useNodeTypeByIds = () => {
     });
     return nodeTypeByIds;
   }, [state.triggerTypes, state.actionTypes]);
-};
-
-export const useRobotDispatch = () => {
-  const { dispatch } = useRobotContext();
-  return dispatch;
 };
 
 // For triggers where there is only one option and a default value when the record is created,

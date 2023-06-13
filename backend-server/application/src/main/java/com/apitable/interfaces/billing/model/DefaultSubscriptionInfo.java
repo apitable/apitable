@@ -19,7 +19,8 @@
 package com.apitable.interfaces.billing.model;
 
 /**
- * Default Subscription
+ * Default Subscription.
+ *
  * @author ShawnDeng
  */
 public class DefaultSubscriptionInfo implements SubscriptionInfo {
@@ -30,10 +31,17 @@ public class DefaultSubscriptionInfo implements SubscriptionInfo {
 
     private final SubscriptionFeature feature;
 
-    public  DefaultSubscriptionInfo() {
+    public DefaultSubscriptionInfo() {
         this("CE", "ce_unlimited", new DefaultSubscriptionFeature());
     }
 
+    /**
+     * construct.
+     *
+     * @param product  product name
+     * @param basePlan base plan name
+     * @param feature  subscription feature
+     */
     public DefaultSubscriptionInfo(String product, String basePlan, SubscriptionFeature feature) {
         this.product = product;
         this.basePlan = basePlan;

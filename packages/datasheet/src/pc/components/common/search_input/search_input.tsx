@@ -27,14 +27,14 @@ import { FC, useRef } from 'react';
 import styles from './style.module.less';
 
 interface ISearchInput extends InputProps {
-  keyword: string;
-  change: React.Dispatch<React.SetStateAction<string>>;
-  onClose?: () => void;
+    keyword: string;
+    change: React.Dispatch<React.SetStateAction<string>>;
+    onClose?: () => void;
 }
 
 export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
   const inputRef = useRef<any>(null);
-  const { change, onClose, className, keyword, ...rest } = props;
+  const { change, onClose, className, ...rest } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -65,7 +65,7 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
   return (
     <TextInput
       block
-      prefix={<SearchOutlined />}
+      prefix={<SearchOutlined/>}
       ref={inputRef}
       className={classnames(className, styles.searchInput)}
       value={props.keyword}
@@ -73,7 +73,8 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
       onClick={myStopPropagation}
       onChange={handleChange}
       onKeyDown={onKeyDown}
-      suffix={props.keyword && <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn} /></span>}
+      suffix={props.keyword &&
+              <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn}/></span>}
       {...rest as any}
     />
   );

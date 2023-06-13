@@ -130,7 +130,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       response.write(JSON.stringify(errorResponse));
       response.end();
     } else {
-      response.status(httpStatusCode).send(errorResponse);
+      await response.status(httpStatusCode).send(errorResponse);
     }
   }
 }

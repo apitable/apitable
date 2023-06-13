@@ -380,7 +380,7 @@
     </select>
 
     <select id="selectBaseInfoDTOByIds" resultType="com.apitable.organization.dto.TeamBaseInfoDTO">
-        SELECT id, team_name
+        SELECT id, team_name, sequence
         FROM ${tablePrefix}unit_team
         WHERE id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
@@ -455,5 +455,31 @@
         JOIN ${tablePrefix}unit_team AS c ON c.space_id = #{spaceId} AND cp.parent_id = c.id AND c.is_deleted = 0
         )
         SELECT DISTINCT * FROM tree_view
+    </select>
+
+    <select id="selectTeamIdsBySpaceIdAndParentIdAndPage" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit_team
+        WHERE parent_id = #{parentId}
+        AND space_id = #{spaceId}
+        AND is_deleted = 0
+        ORDER BY sequence ASC
+    </select>
+
+    <select id="selectCountByParentIdAndSpaceIdAndTeamNameWithExceptId" resultType="java.lang.Integer">
+        SELECT count(*) FROM ${tablePrefix}unit_team
+        WHERE parent_id = #{parentId}
+        AND space_id = #{spaceId}
+        AND team_name = #{teamName}
+        AND id != #{teamId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCountByParentIdAndSpaceIdAndTeamName" resultType="java.lang.Integer">
+        SELECT count(*) FROM ${tablePrefix}unit_team
+        WHERE parent_id = #{parentId}
+        AND space_id = #{spaceId}
+        AND team_name = #{teamName}
+        AND is_deleted = 0
     </select>
 </mapper>

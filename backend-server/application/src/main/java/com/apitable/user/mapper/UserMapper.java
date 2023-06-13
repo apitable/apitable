@@ -21,6 +21,7 @@ package com.apitable.user.mapper;
 import com.apitable.space.vo.InviteUserInfo;
 import com.apitable.user.dto.UserInPausedDto;
 import com.apitable.user.dto.UserLangDTO;
+import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.entity.UserEntity;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -274,4 +275,12 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      * @return inviteUserInfo Invite user information
      */
     InviteUserInfo selectInviteUserInfoByUserId(@Param("userId") Long userId);
+
+    /**
+     * query user sensitive information.
+     *
+     * @param userIds user ids.
+     * @return UserSensitiveDTO
+     */
+    List<UserSensitiveDTO> selectEmailAndMobilePhoneByIds(@Param("userIds") List<Long> userIds);
 }

@@ -18,13 +18,12 @@
 
 package com.apitable.organization.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +33,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Organization Structure - Organization Unit Table
+ * Organization Structure - Organization Unit Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -51,34 +50,39 @@ public class UnitEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Unit Show Id.
+     */
+    private String unitId;
+
+    /**
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Type (1: Department, 2: Label, 3: Member)
+     * Type (1: Department, 2: Label, 3: Member).
      */
     private Integer unitType;
 
     /**
-     * Organization Unit Association ID
+     * Organization Unit Association ID.
      */
     private Long unitRefId;
 
     /**
-     * Delete Tag (0: No, 1: Yes)
+     * Delete Tag (0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 

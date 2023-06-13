@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{ MEMBER_NAME }} is applying to join your Space "{{ SPACE_NAME }}"
+      {{MEMBER_NAME}} is applying to join your Space "{{SPACE_NAME}}"
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -186,7 +186,7 @@
                 visibility: hidden;
                 width: 0;
               "
-              >{{ MEMBER_NAME }} is applying to join your Space "{{
+              >{{MEMBER_NAME}} is applying to join your Space "{{
                 SPACE_NAME
               }}"</span
             >
@@ -202,18 +202,18 @@
                 box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
                   0px 3px 6px rgba(20, 20, 20, 0.06);
                 border-radius: 8px;
-                background-image: url('https://legacy-s1.apitable.com/space/2023/03/07/185f4bbdf690456ea586c59c9a77872d'),
-                  url('https://legacy-s1.apitable.com/space/2023/03/07/2922da145ff140e0b3fd32a62e524924'),
-                  url('https://legacy-s1.apitable.com/space/2023/03/07/ca3cbc2dac23457eaa3a230d20a26dab');
+                background-image: url('https://s4.apitable.com/logo/185f4bbdf690456ea586c59c9a77872d'),
+                  url('https://s4.apitable.com/logo/2922da145ff140e0b3fd32a62e524924'),
+                  url('https://s4.apitable.com/logo/ca3cbc2dac23457eaa3a230d20a26dab');
                 background-repeat: no-repeat;
                 background-size: 25%;
                 background-position: left bottom, right top, right bottom;
                 width: 100%;
               "
               width="100%"
-              background="url('https://legacy-s1.apitable.com/space/2023/03/07/185f4bbdf690456ea586c59c9a77872d'),
-  url('https://legacy-s1.apitable.com/space/2023/03/07/2922da145ff140e0b3fd32a62e524924'),
-  url('https://legacy-s1.apitable.com/space/2023/03/07/ca3cbc2dac23457eaa3a230d20a26dab')"
+              background="url('https://s4.apitable.com/logo/185f4bbdf690456ea586c59c9a77872d'),
+  url('https://s4.apitable.com/logo/2922da145ff140e0b3fd32a62e524924'),
+  url('https://s4.apitable.com/logo/ca3cbc2dac23457eaa3a230d20a26dab')"
             >
               <!-- START MAIN CONTENT AREA -->
               <tr>
@@ -283,7 +283,7 @@
                             display: inline-block;
                           "
                         >
-                          {{ MEMBER_NAME }} is applying to join your Space
+                          {{MEMBER_NAME}} is applying to join your Space
                         </p>
                         <p
                           class="main_description"
@@ -299,7 +299,7 @@
                             text-transform: capitalize;
                           "
                         >
-                          "{{ SPACE_NAME }}"
+                          "{{SPACE_NAME}}"
                         </p>
                         <table
                           role="presentation"
@@ -360,7 +360,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -446,7 +446,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"

@@ -22,13 +22,13 @@ export const imageCache = (() => {
   const imageMap: { [name: string]: any } = {};
   const imgPromises: any = [];
 
-  function loadImage(name: string, src: string) {
+  function loadImage(name: string, src: string, crossOrigin?: boolean) {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
       img.referrerPolicy = 'no-referrer';
 
-      if (getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
+      if (!crossOrigin && getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
         img.crossOrigin = 'Anonymous';
       }
       

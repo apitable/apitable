@@ -35,7 +35,7 @@ describe('CreateFieldPipe', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    pipe = new CreateFieldPipe();
+    pipe = new CreateFieldPipe({} as any);
   });
 
   afterAll(async() => {
@@ -43,7 +43,6 @@ describe('CreateFieldPipe', () => {
   });
 
   describe('validate field', () => {
-
     it('missing field name, should return 400 code', () => {
       const ro: FieldCreateRo = new FieldCreateRo('', 'Text');
       const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'name' });
@@ -77,21 +76,18 @@ describe('CreateFieldPipe', () => {
         pipe.validate(field);
       }).toThrow(error);
     });
-
   });
 
   describe('transformProperty', () => {
-
     it('transform number property, should change precision from string to number', () => {
-      const field: FieldCreateRo = new FieldCreateRo('abc', 'number');
+      const field: FieldCreateRo = new FieldCreateRo('abc', 'Number');
       field.property = {
         defaultValue: '1.0',
-        precision: 2
+        precision: 2,
       };
       pipe.transformProperty(field);
       expect(field).toHaveProperty(['property', 'precision'], 2.0);
       expect(field).not.toHaveProperty(['property', 'precision'], '2.0');
     });
   });
-
 });

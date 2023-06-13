@@ -27,6 +27,7 @@ import { WinstonModule } from 'nest-winston';
 import { DatasheetCascaderFieldRepository } from '../repositories/datasheet.cascader.field.repository';
 import { IFieldMap, IMeta, IRecordMap, IViewProperty, Role } from '@apitable/core';
 import { NodeService } from 'node/services/node.service';
+import { UnitService } from 'unit/services/unit.service';
 
 function getDepthOfNode(root: CascaderChildren): number {
   let depth = 0;
@@ -81,7 +82,14 @@ describe('DatasheetFieldTreeSelectService', () => {
           provide: DatasheetService,
           useValue: {
             getBasePacks: jest.fn(),
+            getDatasheet: jest.fn(),
           },
+        },
+        {
+          provide: UnitService,
+          useValue: {
+            getUnitInfo: jest.fn(),
+          }
         },
         CascaderDatabusService,
         DatasheetFieldCascaderSnapshotService,

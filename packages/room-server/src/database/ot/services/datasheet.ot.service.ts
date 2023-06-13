@@ -48,6 +48,7 @@ import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { RecordCommentService } from 'database/datasheet/services/record.comment.service';
+import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 
 @Injectable()
 export class DatasheetOtService {
@@ -61,6 +62,7 @@ export class DatasheetOtService {
     // private readonly envConfigService: EnvConfigService,
     private readonly recordAlarmService: DatasheetRecordAlarmBaseService,
     private readonly datasheetService: DatasheetService,
+    private readonly recordSubscriptionService: DatasheetRecordSubscriptionBaseService,
   ) {}
 
   private static isAttachField(cellValue: any): boolean {
@@ -143,6 +145,9 @@ export class DatasheetOtService {
       updatedAlarmIds: [],
       addViews: [],
       deleteViews: [],
+      toCreateRecordSubscriptions: [], // unitId - recordId
+      toCancelRecordSubscriptions: [], // unitId - recordId
+      creatorAutoSubscribedRecordIds: [], // creator auto subscribed recordIds
       spaceId: ''
     };
   }
@@ -180,7 +185,8 @@ export class DatasheetOtService {
       const mainDstPermission = condition ? permission : await getNodeRole(_condition, auth);
       resultSet.mainLinkDstPermissionMap.set(_condition, mainDstPermission);
     }
-    resultSet.metaActions = operation.reduce<IJOTAction[]>((pre, cur) => {
+    const metaActions: IJOTAction[] = []
+    for (const cur of operation) {
       // There are many logs during big data operation, commenting out this log is ok
       if (this.logger.isDebugEnabled()) {
         this.logger.debug(`[${datasheetId}] changeset OperationAction: ${JSON.stringify(cur.actions)}`);
@@ -190,16 +196,15 @@ export class DatasheetOtService {
       for (const action of cur.actions) {
         if (action.p[0] === 'meta') {
           this.dealWithMeta(cmd, action, permission, resultSet);
-          pre.push(action);
+          metaActions.push(action);
         } else {
           // Collect attachment fields
           this.handleAttachOpCite(action, resultSet, fieldMap);
-          this.dealWithRecordMap(cmd, action, permission, resultSet);
+          await this.dealWithRecordMap(cmd, action, permission, resultSet);
         }
       }
-
-      return pre;
-    }, []);
+    }
+    resultSet.metaActions = metaActions;
 
     if (resultSet.addViews.length) {
       const spaceUsages = await this.restService.getSpaceUsage(spaceId);
@@ -222,7 +227,7 @@ export class DatasheetOtService {
       const checkCalendarViewsNum = afterAddCalendarCountInSpace !== spaceUsages.calendarViewNums;
 
       if (subscribeInfo.maxGanttViewsInSpace !== -1 && checkGanttViewsNum && afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_gantt_limit',
@@ -244,7 +249,7 @@ export class DatasheetOtService {
         checkCalendarViewsNum &&
         afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace
       ) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_calendar_limit',
@@ -271,7 +276,7 @@ export class DatasheetOtService {
 
       if (subscribeInfo.maxRowsPerSheet >= 0 && afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
         const datasheetEntity = await this.datasheetService.getDatasheet(datasheetId);
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'datasheet_record_limit',
@@ -288,7 +293,7 @@ export class DatasheetOtService {
       }
 
       if (subscribeInfo.maxRowsInSpace >= 0 && afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
-        this.restService.createNotification(resultSet.auth, [
+        void this.restService.createNotification(resultSet.auth, [
           {
             spaceId,
             templateId: 'space_record_limit',
@@ -1033,6 +1038,7 @@ export class DatasheetOtService {
    */
   collectByOperateForRow(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     const recordId = action.p[1] as string;
+    const autoSubscriptionFields = this.getAutoSubscriptionFields(resultSet.temporaryFieldMap);
     if ('oi' in action) {
       if (!permission.rowCreatable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -1062,6 +1068,7 @@ export class DatasheetOtService {
         return;
       }
       resultSet.toCreateRecord.set(recordId, recordData);
+      this.collectRecordSubscriptions(autoSubscriptionFields, recordId, recordData, undefined, resultSet);
     }
     if ('od' in action) {
       if (!permission.rowRemovable) {
@@ -1080,6 +1087,7 @@ export class DatasheetOtService {
         return;
       }
       resultSet.toDeleteRecordIds.push(recordId);
+      this.collectRecordSubscriptions(autoSubscriptionFields, recordId, undefined, action.od, resultSet);
     }
   }
 
@@ -1130,6 +1138,7 @@ export class DatasheetOtService {
     const fieldId = action.p[3] as string;
     // Validate permission
     this.checkCellValPermission(cmd, fieldId, permission, resultSet);
+    const autoSubscriptionFields = this.getAutoSubscriptionFields(resultSet.temporaryFieldMap);
     if ('oi' in action) {
       // oi exists means writing data
       const data = action.oi;
@@ -1143,6 +1152,7 @@ export class DatasheetOtService {
           }),
         );
       }
+      this.collectRecordSubscriptions(autoSubscriptionFields, recordId, { [fieldId]: data }, { [fieldId]: action['od'] }, resultSet);
       const addRecordData = resultSet.toCreateRecord.get(recordId);
       if (addRecordData) {
         // Create record and change this record, record change can be merged into record creation
@@ -1162,6 +1172,7 @@ export class DatasheetOtService {
           }),
         );
       }
+      this.collectRecordSubscriptions(autoSubscriptionFields, recordId, { [fieldId]: action['oi'] }, { [fieldId]: action.od }, resultSet);
       const addRecordData = resultSet.toCreateRecord.get(recordId);
       if (addRecordData && addRecordData[fieldId]) {
         // Check new record with default values, if cell is cleared, just clear the default value
@@ -1177,7 +1188,7 @@ export class DatasheetOtService {
   /**
    * Collect op related to comment
    */
-  collectByOperateForComment(action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
+  private async collectByOperateForComment(action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     if (!permission.readable) {
       throw new ServerException(PermissionException.OPERATION_DENIED);
     }
@@ -1187,7 +1198,7 @@ export class DatasheetOtService {
       // Delete comment
       if ('ld' in action || 'od' in action) {
         const comment = ('ld' in action ? action['ld'] : action['od'][0]) as IComments;
-        const canDeleteComment = this.recordCommentService.checkDeletePermission(resultSet.auth, comment.unitId, permission.uuid);
+        const canDeleteComment = await this.recordCommentService.checkDeletePermission(resultSet.auth, comment.unitId, permission.uuid);
         if (!canDeleteComment) {
           throw new ServerException(PermissionException.OPERATION_DENIED);
         }
@@ -1210,7 +1221,7 @@ export class DatasheetOtService {
   /**
    * Process data related to RecordMap
    */
-  dealWithRecordMap(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
+  private async dealWithRecordMap(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     // ===== Record operation  BEGIN =====
     if (!(action.p.includes('commentCount') || action.p.includes('comments')) && action.p[0] === 'recordMap') {
       // Cell data operation
@@ -1232,7 +1243,7 @@ export class DatasheetOtService {
 
     // ===== Comment collection operation BEGIN ====
     if (action.n !== OTActionName.ObjectInsert && action.p.includes('comments') && action.p[0] === 'recordMap') {
-      this.collectByOperateForComment(action, permission, resultSet);
+      await this.collectByOperateForComment(action, permission, resultSet);
     }
     // ===== Comment collection operation END ====
   }
@@ -1283,6 +1294,10 @@ export class DatasheetOtService {
     // ======== Create/delete datetime alarm BEGIN ========
     await this.recordAlarmService.handleRecordAlarms(manager, commonData, resultSet);
     // ======== Create/delete datetime alarm END ========
+
+    // ======== Create/cancel auto subscriptions BEGIN ========
+    await this.recordSubscriptionService.handleRecordAutoSubscriptions(manager, commonData, resultSet);
+    // ======== Create/delete auto subscriptions END   ========
 
     // Update database parallelly
     await Promise.all([
@@ -2391,4 +2406,76 @@ export class DatasheetOtService {
     });
     effectMap.set(constantName, current);
   }
+
+  /**
+   * This function checks if a given field type is either a Member or CreatedBy.
+   * It returns true if the field type matches either, and false otherwise.
+   *
+   * @param fieldType - The type of field to check
+   * @return boolean - True if fieldType is either Member or CreatedBy, false otherwise
+   */
+  private subscriptionSupportedFieldType(fieldType: number): boolean {
+    return fieldType === FieldType.Member
+    || fieldType === FieldType.CreatedBy;
+  }
+
+  /**
+   * This function scans through all the fields in the fieldMap and returns an array of fields which
+   * support subscriptions (as determined by subscriptionSupportedFieldType()) and have the subscription property set.
+   *
+   * @param fieldMap - Map of fields to be scanned
+   * @return IField[] - Array of fields that support subscription and have subscription property set
+   */
+  private getAutoSubscriptionFields(fieldMap: IFieldMap) {
+    const autoSubscriptionFields: IField[] = [];
+    Object.values(fieldMap).forEach(field => {
+      if (this.subscriptionSupportedFieldType(field.type)
+      && (field.property?.subscription)) {
+        autoSubscriptionFields.push(field);
+      }
+    });
+    return autoSubscriptionFields;
+  }
+
+  /**
+   * This function checks if a record has fields that should be subscribed or unsubscribed,
+   * based on the comparison of oiData and odData for each autoSubscriptionField.
+   * If a field is of type Member, it determines which unit IDs need to be subscribed and unsubscribed.
+   * If a field is of type CreatedBy and the record isn't already auto-subscribed by the creator,
+   * it adds the record ID to creatorAutoSubscribedRecordIds.
+   *
+   * @param autoSubscriptionFields - Fields that are eligible for subscription
+   * @param recordId - ID of the record to subscribe or unsubscribe
+   * @param oiData - Initial object data
+   * @param odData - Desired object data
+   * @param resultSet - Set to collect the results of the subscription and unsubscription operations
+   */
+  private collectRecordSubscriptions(autoSubscriptionFields: IField[], recordId: string, oiData: any, odData: any 
+    , resultSet: any) {
+    if (autoSubscriptionFields.length > 0) {
+      autoSubscriptionFields.forEach(field => {
+        if (field.type === FieldType.Member) {
+          // get oiUserIds if oiData and oiData[field.id] exists, otherwise get empty array
+          const oiUnitIds = oiData?oiData[field.id]??[]:[];
+          const odUnitIds = odData?odData[field.id]??[]:[];
+          if (oiUnitIds.length === 0 && odUnitIds.length === 0) {
+            return;
+          }
+          const toSubscribeUnitIds = oiUnitIds.filter((unitId: any) => !odUnitIds.includes(unitId));
+          const toUnsubscribeUnitIds = odUnitIds.filter((unitId: any) => !oiUnitIds.includes(unitId));
+          toSubscribeUnitIds.forEach((unitId: any) => {
+            resultSet.toCreateRecordSubscriptions.push({ unitId, recordId });
+          });
+          toUnsubscribeUnitIds.forEach((unitId: any) => {
+            resultSet.toCancelRecordSubscriptions.push({ unitId, recordId });
+          });
+        } else if (field.type === FieldType.CreatedBy) {
+          if (oiData && resultSet.creatorAutoSubscribedRecordIds.indexOf(recordId) === -1) {
+            resultSet.creatorAutoSubscribedRecordIds.push(recordId);
+          }
+        }
+      });
+    } 
+  }
+
 }

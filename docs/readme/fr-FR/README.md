@@ -318,7 +318,6 @@ Utilisez ces conventions communes APITables :
 - Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 - Qu'est-ce que la directive de codage Rust ? -> [Lignes directrices de l'API Rust](https://rust-lang.github.io/api-guidelines/about.html)
-- Qu'est-ce que la vue d'ensemble de l'architecture? -> [Comprendre APITable - Aperçu de l'architecture](./docs/contribute/architecute-overview.md)
 
 ### Documentations
 
@@ -353,7 +352,7 @@ Veuillez vous référer à la [Feuille de route de l'APITable](https://apitable.
 - Intégrer avec ChatGPT, Zapier, Slack, Google Workspace......
 - Watermark
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 Get Involved
 
@@ -369,7 +368,7 @@ Nous recherchons toujours de bons talents pour APITables :
 
 - **Développeur Full-stack**: Vous avez de l'expérience avec React, NestJS, TypeScript, Spring Boot, Java, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
 - **Développeur Back-end**: Vous avez de l'expérience avec NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
-- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. Et vous aimez écrire du code de haute qualité avec une documentation claire et des tests unitaires.
+- **Développeur Front-end**: Vous avez de l'expérience avec React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l'équipe d'APITable, n'hésitez pas et envoyez votre CV à [talent@apitable. om](mailto:talent@apitable.com).
 
@@ -403,7 +402,7 @@ Indépendamment du temps et des conditions, si vous voulez vous impliquer dans l
     <img src="docs/static/screenshot-it.png" alt="Image de capture d'écran APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="Image de capture d'écran APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 Licence

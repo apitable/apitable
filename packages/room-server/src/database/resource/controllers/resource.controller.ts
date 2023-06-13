@@ -50,8 +50,7 @@ export class ResourceController {
     private readonly otService: OtService,
   ) {}
 
-  // TODO(Chambers): deprecate revisions parameter
-  @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
+  @Get('resources/:resourceId/changesets')
   async getChangesetList(
     @Headers('cookie') cookie: string,
     @Param('resourceId') resourceId: string,
@@ -88,7 +87,7 @@ export class ResourceController {
     return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
   }
 
-  @Get(['resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack', 'resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack'])
+  @Get('resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getForeignDatasheetPack(
     @Headers('cookie') cookie: string,
@@ -103,10 +102,7 @@ export class ResourceController {
     return await this.resourceService.fetchForeignDatasheetPack(resourceId, foreignDatasheetId, { cookie }, true);
   }
 
-  @Get([
-    'shares/:shareId/resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack',
-    'share/:shareId/resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack',
-  ])
+  @Get('shares/:shareId/resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getShareForeignDatasheetPack(
     @Headers('cookie') cookie: string,
@@ -150,7 +146,7 @@ export class ResourceController {
     return ApiResponse.success(recordHistoryDto!);
   }
 
-  @Post(['resource/apply/changesets', 'resources/apply/changesets'])
+  @Post('resources/apply/changesets')
   async applyChangesets(
     @Headers('cookie') cookie: string,
     @Body()

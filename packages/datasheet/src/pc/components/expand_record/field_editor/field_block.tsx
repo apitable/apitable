@@ -101,21 +101,27 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
   const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
-    resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.SetRecords,
-      datasheetId,
-      alarm: convertAlarmStructure?.(curAlarm as IRecordAlarmClient),
-      data: [
-        {
-          recordId: record!.id,
-          fieldId: field.id,
-          value,
-        },
-      ],
-      mirrorId,
-    });
+    const isUrlWithRecogURLFlag = field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value);
 
-    if (field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value)) {
+    const urlTextNoChange = isUrlWithRecogURLFlag && cellValue?.[0].text === (value[0] as any)?.text;
+
+    if (!urlTextNoChange) {
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        alarm: convertAlarmStructure?.(curAlarm as IRecordAlarmClient),
+        data: [
+          {
+            recordId: record!.id,
+            fieldId: field.id,
+            value,
+          },
+        ],
+        mirrorId,
+      });
+    }
+
+    if (isUrlWithRecogURLFlag) {
       const _value = value as IHyperlinkSegment[];
       const url = _value.reduce((acc: string, cur: IHyperlinkSegment) => (cur.text || '') + acc, '');
 
@@ -138,7 +144,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
         });
       };
 
-      if (isUrl(url)) {
+      if (isUrl(url) && cellValue?.[0].text !== (value[0] as any)?.text) {
         recognizeURLAndSetTitle({
           url,
           callback,
@@ -195,7 +201,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
     case FieldType.URL:
     case FieldType.Email:
     case FieldType.Phone:
-      return <EnhanceTextEditor {...commonProps} cellValue={cellValue} />;
+      return <EnhanceTextEditor recordId={record.id} {...commonProps} cellValue={cellValue} />;
     case FieldType.Number:
     case FieldType.Currency:
     case FieldType.Percent:

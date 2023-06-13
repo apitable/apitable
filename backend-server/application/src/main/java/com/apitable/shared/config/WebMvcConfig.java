@@ -41,6 +41,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final I18nInterceptor i18nInterceptor;
 
+    public static final List<String> INTERCEPTOR_IGNORE_PATHS = new ArrayList<>();
+
+    static {
+        INTERCEPTOR_IGNORE_PATHS.add("/");
+        INTERCEPTOR_IGNORE_PATHS.add("/favicon.ico");
+        INTERCEPTOR_IGNORE_PATHS.add("/error/**");
+        INTERCEPTOR_IGNORE_PATHS.add("/doc.html");
+        INTERCEPTOR_IGNORE_PATHS.add("/v2/api-docs-ext");
+        INTERCEPTOR_IGNORE_PATHS.add("/webjars/**");
+        INTERCEPTOR_IGNORE_PATHS.add("/swagger-resources/**");
+        INTERCEPTOR_IGNORE_PATHS.add("/swagger-ui/**");
+        INTERCEPTOR_IGNORE_PATHS.add("/swagger-ui.html");
+        INTERCEPTOR_IGNORE_PATHS.add("/v3/api-docs/**");
+    }
+
     public WebMvcConfig(ResourceInterceptor resourceInterceptor,
         I18nInterceptor i18nInterceptor) {
         this.resourceInterceptor = resourceInterceptor;
@@ -49,21 +64,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        List<String> excludes = new ArrayList<>();
-        excludes.add("/");
-        excludes.add("/favicon.ico");
-        excludes.add("/error/**");
-        excludes.add("/doc.html");
-        excludes.add("/v2/api-docs-ext");
-        excludes.add("/webjars/**");
-        excludes.add("/swagger-resources/**");
-        excludes.add("/swagger-ui/**");
-        excludes.add("/swagger-ui.html");
-        excludes.add("/v3/api-docs/**");
         registry.addInterceptor(resourceInterceptor)
-            .excludePathPatterns(excludes);
+            .excludePathPatterns(INTERCEPTOR_IGNORE_PATHS);
         // add i18n interceptor
-        registry.addInterceptor(i18nInterceptor).excludePathPatterns(excludes);
+        registry.addInterceptor(i18nInterceptor).excludePathPatterns(INTERCEPTOR_IGNORE_PATHS);
     }
 
     @Override

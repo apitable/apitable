@@ -318,7 +318,6 @@ Here's a general APITable git workflow:
 - ما هو دليل برمجة جافا؟ [Java Coding Guidelin](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines)
 - ما هو دليل برمجة TypeScript Ccolining؟ -> [دليل نمط النص النصي](https://google.github.io/styleguide/tsguide.html)
 - ما هو دليل برمجة الروستين؟ -> [تطبيق إرشادات API](https://rust-lang.github.io/api-guidelines/about.html)
-- ما هي نظرة عامة على العمارة؟ [ فهم APITable - نظرة عامة على البنية ](./docs/contribute/architecute-overview.md)
 
 ### الوثائق
 
@@ -353,7 +352,7 @@ Here's a general APITable git workflow:
 - تكامل مع ChatGPT و Zapier و Slack و Google Workspace ……
 - العلامة المائية
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo]((https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
 
 ## 👫 اشترك
 
@@ -367,9 +366,9 @@ For more information on our product, including enterprise self-hosted license, p
 
 نحن دائما نبحث عن مواهب جيدة لتطبيق APITable:
 
-- **المطور الخلفي**: لديك تجربة مع NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة
+- **المطور الخلفي**: لديك تجربة مع NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة.
 - **مطور المكدس الكامل**: لديك تجربة مع React. NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
-- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. وتحب كتابة كود عالي الجودة مع وثائق واضحة واختبارات وحدة.
+- **مطور النهاية الأمامية**: لديك تجربة مع React. NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
 بغض النظر عن الوقت والشروط، إذا كنت ترغب في المشاركة في فريق APITable، لا تتردد في إرسال السيرة الذاتية الخاصة بك إلى talent@apitable .
 
@@ -403,7 +402,7 @@ For more information on our product, including enterprise self-hosted license, p
     <img src="docs/static/screenshot-it.png" alt="صورة لقطة شاشة APITable" />
 </p>
 <p align="center">
-    <img src="docs/static/screenshot-sales.png" alt="صورة لقطة شاشة APITable" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 ## 🥰 ترخيص

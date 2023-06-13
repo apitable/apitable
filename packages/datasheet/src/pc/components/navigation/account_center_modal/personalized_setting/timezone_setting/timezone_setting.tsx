@@ -18,14 +18,14 @@
 
 import { FC } from 'react';
 import { Select, Typography } from '@apitable/components';
-import { t, Strings, getUtcOptionList } from '@apitable/core';
+import { t, Strings, getUtcOptionList, Selectors } from '@apitable/core';
 import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 
 const options = getUtcOptionList();
 
 export const TimezoneSetting: FC = () => {
-  const timeZone = useSelector(state => state.user.info?.timeZone!);
+  const timeZone = useSelector(Selectors.getUserTimeZone)!;
 
   return (
     <div className={styles.timezoneSetting}>

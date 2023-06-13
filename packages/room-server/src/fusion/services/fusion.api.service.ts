@@ -39,7 +39,6 @@ import {
   NoticeTemplatesConstant,
   Selectors,
   IInternalFix,
-  IUserInfo,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -214,15 +213,13 @@ export class FusionApiService {
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
     const getRecordsProfiler = this.logger.startTimer();
 
-    let userInfo: IUserInfo | undefined;
-
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
         recordIds: query.recordIds,
       },
       createStore: async dst => {
-        userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
+        const userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
         return this.commandService.fullFillStore(dst, userInfo);
       },
     });
@@ -307,7 +304,7 @@ export class FusionApiService {
       },
     });
 
-    const recordVos = this.getRecordViewObjects(records, userInfo!.timeZone ?? undefined, query.cellFormat);
+    const recordVos = this.getRecordViewObjects(records, query.cellFormat);
 
     getRecordsProfiler.done({
       message: `getRecords ${dstId} profiler`,
@@ -617,7 +614,7 @@ export class FusionApiService {
     const recordIds = result.data as string[];
 
     // API submission requires a record source for tracking the source of the record
-    this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
+    await this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
     const rows = recordIds.map(recordId => {
       return { recordId };
     });
@@ -635,9 +632,9 @@ export class FusionApiService {
     return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
-  private getRecordViewObjects(records: databus.Record[], userTimeZone?: string, cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
+  private getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
     return records.map(record =>
-      record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, userTimeZone, cellFormat)),
+      record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)),
     );
   }
 
@@ -679,7 +676,7 @@ export class FusionApiService {
     const userId = this.request[USER_HTTP_DECORATE].id;
     const totalCount = recordCount + body.records.length; // Coming over limit alerts >= 90 bars < 100 bars
     if (totalCount >= (limit.maxRecordCount * limit.recordRemindRange) / 100 && totalCount <= limit.maxRecordCount) {
-      this.restService.createRecordLimitRemind(
+      void this.restService.createRecordLimitRemind(
         auth,
         NoticeTemplatesConstant.add_record_soon_to_be_limit,
         [userId],
@@ -691,7 +688,7 @@ export class FusionApiService {
     }
     if (totalCount > limit.maxRecordCount) {
       // Over Limit Alert
-      this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId], spaceId, dstId, limit.maxRecordCount);
+      void this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId], spaceId, dstId, limit.maxRecordCount);
       throw new ServerException(DatasheetException.RECORD_ADD_LIMIT, CommonStatusCode.DEFAULT_ERROR_CODE);
     }
   }

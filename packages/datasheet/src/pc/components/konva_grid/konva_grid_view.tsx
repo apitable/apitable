@@ -233,6 +233,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(p
 
   // Set the behavior state of a new line
   const [canAppendRow, setCanAppendRow] = useState(true);
+  const [activeUrlAction, setActiveUrlAction] = useState(false);
   const textSizer = useRef(autoSizerCanvas);
 
   // Drop Point
@@ -611,6 +612,8 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo(p
     scrollHandler,
     canAppendRow,
     onSetCanAppendRow: setCanAppendRow,
+    activeUrlAction,
+    setActiveUrlAction,
   };
 
   const gridViewContext = {

@@ -1,0 +1,69 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.rules {
+  width: 278px;
+  height: 100%;
+  background: var(--lowestBg);
+  padding: 5px;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &.disabled {
+    & > * {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .asc,
+  .desc {
+    border-radius: 4px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 133px;
+    height: 32px;
+    line-height: 25px;
+    box-sizing: border-box;
+
+    .iconArrow {
+      margin: 0 10px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.active {
+  color: var(--staticWhite0);
+  background: var(--primaryColor);
+}
+
+@media screen and (max-width: @w-md) {
+  .rules {
+    width: 100%;
+    height: 48px;
+    margin-left: 0;
+    flex-grow: 1;
+
+    .asc,
+    .desc {
+      width: 50%;
+      min-width: 40px;
+      display: flex;
+      justify-content: space-between;
+      height: 40px;
+      padding: 0 8px;
+
+      .iconArrow {
+        margin: 0;
+      }
+    }
+  }
+}

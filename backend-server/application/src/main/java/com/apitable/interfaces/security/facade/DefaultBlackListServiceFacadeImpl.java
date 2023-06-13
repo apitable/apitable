@@ -18,7 +18,10 @@
 
 package com.apitable.interfaces.security.facade;
 
-public class DefaultBlackListServiceFacadeImpl implements BlackListServiceFacade{
+/**
+ * default black list service facade implement.
+ */
+public class DefaultBlackListServiceFacadeImpl implements BlackListServiceFacade {
 
 
     @Override

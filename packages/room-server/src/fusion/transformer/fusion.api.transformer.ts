@@ -47,7 +47,7 @@ import { InjectLogger } from 'shared/common';
 import { OrderEnum } from 'shared/enums';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
 import { ApiException } from 'shared/exception';
-import { getAPINodeType } from 'shared/helpers/fusion.helper';
+import { getApiNodePermission, getAPINodeType } from 'shared/helpers/fusion.helper';
 import { IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IViewInfoOptions } from 'shared/interfaces';
 import { IAPIFolderNode, IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
@@ -93,6 +93,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       type: getAPINodeType(nodeItem.type),
       icon: getEmojiIconNativeString(nodeItem.icon),
       isFav: nodeItem.nodeFavorite,
+      permission: getApiNodePermission(nodeItem.role)
     };
     if (nodeItem.children && nodeItem.children.length) {
       (res as IAPIFolderNode).children = nodeItem.children.map(item => this.nodeDetailVoTransform(item));
@@ -108,6 +109,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
         type: getAPINodeType(nodeItem.type),
         icon: getEmojiIconNativeString(nodeItem.icon),
         isFav: nodeItem.nodeFavorite,
+        permission: getApiNodePermission(nodeItem.role)!,
       };
     });
   }
@@ -128,7 +130,6 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   public recordVoTransform(
     record: IRecord,
     options: databus.IRecordVoTransformOptions,
-    userTimeZone: string | undefined,
     cellFormat = CellFormatEnum.JSON,
   ): ApiRecordDto {
     const { store, fieldKeys, columnMap, fieldMap } = options;
@@ -145,7 +146,6 @@ export class FusionApiTransformer implements IFieldTransformInterface {
           record,
           store,
           cellFormat,
-          userTimeZone,
         });
         if (value !== undefined) {
           fields[field] = value;

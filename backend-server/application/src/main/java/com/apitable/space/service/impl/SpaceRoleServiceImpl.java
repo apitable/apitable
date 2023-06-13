@@ -18,23 +18,18 @@
 
 package com.apitable.space.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
+import static com.apitable.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
+import static com.apitable.workspace.enums.PermissionException.DELETE_ROLE_ERROR;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.entity.MemberEntity;
@@ -69,18 +64,21 @@ import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.RoleResourceVo;
 import com.apitable.space.vo.SpaceRoleDetailVo;
 import com.apitable.space.vo.SpaceRoleVo;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
-import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
-import static com.apitable.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
-import static com.apitable.workspace.enums.PermissionException.DELETE_ROLE_ERROR;
-import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
-import static com.apitable.workspace.enums.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
 
 @Service
 @Slf4j
@@ -378,11 +376,29 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes) {
-        log.info("In the third party integration is enabled，check whether the sub-administrator has permissions to change permission");
-        List<SpaceResourceGroupCode> disableRoleGroupCodes = getSpaceDisableResourceCodeIfSocialConnect(spaceId);
+        log.info(
+            "In the third party integration is enabled，check whether the sub-administrator has permissions to change permission");
+        List<SpaceResourceGroupCode> disableRoleGroupCodes =
+            getSpaceDisableResourceCodeIfSocialConnect(spaceId);
         if (CollUtil.isNotEmpty(disableRoleGroupCodes)) {
-            List<String> codes = disableRoleGroupCodes.stream().map(SpaceResourceGroupCode::getCode).collect(Collectors.toList());
-            ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, codes), SpaceException.NO_ALLOW_OPERATE);
+            List<String> codes = disableRoleGroupCodes.stream().map(SpaceResourceGroupCode::getCode)
+                .collect(Collectors.toList());
+            ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, codes),
+                SpaceException.NO_ALLOW_OPERATE);
         }
+    }
+
+    @Override
+    public void checkCanOperate(String spaceId, Long memberId, List<String> resourceCodes,
+                                Consumer<Boolean> consumer) {
+        Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
+        if (memberId.equals(superAdmin)) {
+            return;
+        }
+        String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
+        consumer.accept(null == roleCode);
+        List<String> memberRoles =
+            spaceRoleResourceRelMapper.selectResourceCodesByRoleCode(roleCode);
+        consumer.accept(!new HashSet<>(memberRoles).containsAll(resourceCodes));
     }
 }

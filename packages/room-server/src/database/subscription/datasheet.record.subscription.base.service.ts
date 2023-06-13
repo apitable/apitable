@@ -20,6 +20,8 @@ import { Injectable } from '@nestjs/common';
 import { IRemoteChangeset } from '@apitable/core';
 import { isEmpty } from 'lodash';
 import { DatasheetRecordSubscriptionEntity } from './entities/datasheet.record.subscription.entity';
+import { ICommonData } from 'database/ot/interfaces/ot.interface';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class DatasheetRecordSubscriptionBaseService {
@@ -47,6 +49,14 @@ export class DatasheetRecordSubscriptionBaseService {
   }
 
   public async handleChangesets(_changesets: IRemoteChangeset[], _context: any) {
+    await Promise.resolve();
+  }
+
+  public async handleRecordAutoSubscriptions(
+    _manager: EntityManager,
+    _commonData: ICommonData,
+    _resultSet: { [key: string]: any },
+  ) {
     await Promise.resolve();
   }
 

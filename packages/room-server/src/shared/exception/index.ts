@@ -23,3 +23,4 @@ export * from './ot.exception';
 export * from './permission.exception';
 export * from './server.exception';
 export * from './resource.exception';
+export * from './base.exception';

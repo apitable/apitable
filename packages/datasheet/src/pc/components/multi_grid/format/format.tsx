@@ -34,6 +34,7 @@ import { FormatLastModifiedBy } from './format_last_modified_by';
 import { FormatCascader } from './format_cascader';
 import { FormatURL } from './format_url';
 import { IFieldCascaderErrors } from '../field_setting/check_factory';
+import { FormatCreatedBy } from './format_created_by';
 
 interface IFieldFormatProps {
   from?: string;
@@ -59,8 +60,9 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
   switch (currentField.type) {
     case FieldType.Text:
     case FieldType.AutoNumber:
-    case FieldType.CreatedBy:
       return <></>;
+    case FieldType.CreatedBy:
+      return <FormatCreatedBy currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.Rating:
       return <FormateRating currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.Checkbox:

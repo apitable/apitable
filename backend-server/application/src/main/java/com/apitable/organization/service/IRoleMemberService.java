@@ -18,16 +18,18 @@
 
 package com.apitable.organization.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
+import com.apitable.organization.dto.RoleMemberDTO;
+import com.apitable.organization.dto.RoleMemberInfoDTO;
+import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.ro.RoleMemberUnitRo;
 import com.apitable.organization.vo.RoleMemberVo;
-import com.apitable.organization.dto.RoleMemberInfoDTO;
+import com.apitable.organization.vo.UnitRoleInfoVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public interface IRoleMemberService {
 
@@ -99,8 +101,35 @@ public interface IRoleMemberService {
 
     /**
      * check whether role has members.
-     * @param roleId    the role's id
-     * @param consumer  the result callback
+     *
+     * @param roleId   the role's id
+     * @param consumer the result callback
      */
     void checkRoleMemberExistByRoleId(Long roleId, Consumer<Boolean> consumer);
+
+    /**
+     * get role's member by unit_ref_id.
+     *
+     * @param unitRefIds list of unitRefId
+     * @param unitType   type of unit
+     * @return list of RoleMemberDTO
+     */
+    List<RoleMemberDTO> getByUnitRefIdsAndUnitType(List<Long> unitRefIds, UnitType unitType);
+
+    /**
+     * get role's member by unit_ref_id.
+     *
+     * @param unitRefIds list of unitRefId
+     * @return list of RoleMemberDTO
+     */
+    List<RoleMemberDTO> getByUnitRefIds(List<Long> unitRefIds);
+
+    /**
+     * get unit's members.
+     *
+     * @param unitRefIds list of unitRefId
+     * @param unitType   type of unit
+     * @return map of RoleMemberDTO
+     */
+    Map<Long, List<UnitRoleInfoVo>> getRefUnitRoles(List<Long> unitRefIds, UnitType unitType);
 }

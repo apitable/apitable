@@ -1,7 +1,7 @@
 ---
 name: Documentation Requirement
 about: Create a documentation requirement for us.
-title: 'docs: DOCS...'
+title: 'docs: A brief description of the documentation'
 labels: 'documentation'
 assignees: ''
 

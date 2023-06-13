@@ -18,14 +18,16 @@
 
 package com.apitable.interfaces.social.facade;
 
-import java.util.List;
-import java.util.Map;
-
 import com.apitable.interfaces.social.event.SocialEvent;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.interfaces.social.model.SocialUserBind;
 import com.apitable.space.enums.SpaceUpdateOperate;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * social service facade interface.
+ */
 public interface SocialServiceFacade {
 
     void createSocialUser(SocialUserBind socialUser);
@@ -46,7 +48,8 @@ public interface SocialServiceFacade {
 
     void checkCanOperateSpaceUpdate(String spaceId, SpaceUpdateOperate spaceUpdateOperate);
 
-    void checkWhetherSpaceCanChangeMainAdmin(String spaceId, Long opMemberId, Long acceptMemberId, List<SpaceUpdateOperate> spaceUpdateOperates);
+    void checkWhetherSpaceCanChangeMainAdmin(String spaceId, Long opMemberId, Long acceptMemberId,
+                                             List<SpaceUpdateOperate> spaceUpdateOperates);
 
     void deleteUser(Long userId);
 

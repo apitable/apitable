@@ -273,6 +273,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<String> getNodeIdBySpaceIdAndTypeAndKeyword(String spaceId, Integer type, String keyword) {
+        log.info("The ID of the query space [{}] node types [{}] keyword [{}]", spaceId, type, keyword);
+        return nodeMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+    }
+
+    @Override
     public NodeType getTypeByNodeId(String nodeId) {
         Integer type = nodeMapper.selectNodeTypeByNodeId(nodeId);
         ExceptionUtil.isNotNull(type, PermissionException.NODE_NOT_EXIST);
@@ -378,6 +384,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
+    public List<NodeInfo> getNodeInfo(String spaceId, List<String> nodeIds, Long memberId) {
+        log.info("Node information view of batch query [{}]", nodeIds);
+        return nodeMapper.selectNodeInfo(nodeIds, memberId);
+    }
+
+    @Override
     public List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId,
                                                  List<String> nodeIds) {
         log.info("Query the view information of multiple nodes ");
@@ -472,7 +484,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (subNodeIds.isEmpty()) {
             return new ArrayList<>();
         }
-        return nodeMapper.selectShareTree(subNodeIds);
+        List<NodeShareTree> shareTrees = nodeMapper.selectShareTree(subNodeIds);
+        // node switches to memory custom sort
+        CollectionUtil.customSequenceSort(shareTrees, NodeShareTree::getNodeId, subNodeIds);
+        return shareTrees;
     }
 
     @Override

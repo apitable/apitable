@@ -27,4 +27,6 @@ public class RoleBaseInfoDto {
 
     private String roleName;
 
+    private Integer position;
+
 }

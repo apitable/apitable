@@ -18,15 +18,17 @@
 
 package com.apitable.organization.mapper;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
+import com.apitable.organization.dto.UnitBaseInfoDTO;
+import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.shared.util.ibatis.ExpandBaseMapper;
-import com.apitable.organization.entity.UnitEntity;
+import java.util.Collection;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
+/**
+ * Unit Mapper.
+ */
 public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
 
     /**
@@ -39,30 +41,40 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
     Integer selectCountBySpaceIdAndIds(@Param("spaceId") String spaceId, @Param("unitIds") List<Long> unitIds);
 
     /**
+     * insert batch.
+     *
      * @param entities units
      * @return affected rows
      */
     int insertBatch(@Param("entities") List<UnitEntity> entities);
 
     /**
+     * get id.
+     *
      * @param refId ref id
      * @return unit id
      */
     Long selectUnitIdByRefId(@Param("refId") Long refId);
 
     /**
+     * get unit_ref_id.
+     *
      * @param unitId unit id
      * @return unit's ref id
      */
     Long selectRefIdById(@Param("unitId") Long unitId);
 
     /**
+     * get by unit_ref_id.
+     *
      * @param refId ref id
      * @return UnitEntity
      */
     UnitEntity selectByRefId(@Param("refId") Long refId);
 
     /**
+     * get id by space id.
+     *
      * @param spaceId space id
      * @return unit ids
      */
@@ -77,19 +89,25 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
     List<Long> selectIdsByRefIds(@Param("refIds") Collection<Long> refIds);
 
     /**
+     * get unit ref id list.
+     *
      * @param unitIds unit ids
      * @return unit's ref id
      */
     List<Long> selectRefIdsByUnitIds(@Param("unitIds") Collection<Long> unitIds);
 
     /**
+     * get id.
+     *
      * @param spaceId space id
-     * @param refId ref id
+     * @param refId   ref id
      * @return unit id
      */
     Long selectBySpaceIdAndRefId(@Param("spaceId") String spaceId, @Param("refId") Long refId);
 
     /**
+     * delete by space id and ids.
+     *
      * @param spaceId space id
      * @param ids     unit ids
      * @return affected rows
@@ -97,7 +115,7 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
     int deleteBySpaceIdAndId(@Param("spaceId") String spaceId, @Param("ids") List<Long> ids);
 
     /**
-     * logically delete an organizational unit
+     * logically delete an organizational unit.
      *
      * @param unitRefIds unit ref ids
      * @return affected rows
@@ -105,27 +123,31 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
     int deleteByUnitRefIds(@Param("list") List<Long> unitRefIds);
 
     /**
-     * batch restore deleted units
+     * batch restore deleted units.
      *
      * @param ids unit ids
-     * @return  affected rows
+     * @return affected rows
      */
     int batchRestoreByIds(@Param("ids") Collection<Long> ids);
 
     /**
+     * get by uint ref id list.
+     *
      * @param refIds ref ids
      * @return UnitEntities
      */
     List<UnitEntity> selectByRefIds(@Param("refIds") Collection<Long> refIds);
 
     /**
+     * get by id list.
+     *
      * @param unitIds unit ids
      * @return UnitEntities
      */
     List<UnitEntity> selectByUnitIds(@Param("unitIds") Collection<Long> unitIds);
 
     /**
-     * true to delete
+     * true to delete.
      *
      * @param refId ref id
      * @return affected rows
@@ -133,12 +155,50 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
     int deleteActualByRefId(@Param("refId") Long refId);
 
     /**
-     * @param spaceId space id
-     * @param refIds ref ids
-     * @param unitType unit type
+     * batch update.
+     *
+     * @param spaceId   space id
+     * @param refIds    ref ids
+     * @param unitType  unit type
      * @param isDeleted isDeleted
      * @return affected rows
      */
-    Integer batchUpdateIsDeletedBySpaceIdAndRefId(@Param("spaceId") String spaceId, @Param("refIds") List<Long> refIds,
-            @Param("unitType") UnitType unitType, @Param("isDeleted") Boolean isDeleted);
+    Integer batchUpdateIsDeletedBySpaceIdAndRefId(@Param("spaceId") String spaceId,
+                                                  @Param("refIds") List<Long> refIds,
+                                                  @Param("unitType") UnitType unitType,
+                                                  @Param("isDeleted") Boolean isDeleted);
+
+    /**
+     * get unit_ref_id.
+     *
+     * @param unitId   unit show id
+     * @param spaceId  space id
+     * @param unitType unit type
+     * @return unitRefId
+     */
+    Long selectUnitRefIdByUnitIdAndSpaceIdAndUnitType(@Param("unitId") String unitId,
+                                                      @Param("spaceId") String spaceId,
+                                                      @Param("unitType") UnitType unitType);
+
+    /**
+     * query unit base info.
+     *
+     * @param unitRefIds unit ref id list
+     * @return list of UnitBaseInfoDTO
+     */
+    List<UnitBaseInfoDTO> selectByUnitRefIds(@Param("unitRefIds") List<Long> unitRefIds);
+
+    /**
+     * query unit base info.
+     *
+     * @param unitIds  unit_id list
+     * @param spaceId  space id
+     * @param unitType unit type
+     * @return list of UnitBaseInfoDTO
+     */
+    List<UnitBaseInfoDTO> selectBySpaceIdAndUnitTypeAndUnitIds(@Param("spaceId") String spaceId,
+                                                               @Param("unitType") UnitType unitType,
+                                                               @Param("unitIds")
+                                                               List<String> unitIds);
+
 }

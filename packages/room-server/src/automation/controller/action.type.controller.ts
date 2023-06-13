@@ -17,12 +17,12 @@
  */
 
 import { Controller, Get, Query } from '@nestjs/common';
-import { RobotActionTypeBaseService } from '../services/robot.action.type.base.service';
+import { RobotActionTypeService } from '../services/robot.action.type.service';
 
 @Controller('nest/v1/robots/action-types')
 export class RobotActionTypeController {
   constructor(
-    private readonly robotActionTypeService: RobotActionTypeBaseService,
+    private readonly robotActionTypeService: RobotActionTypeService,
   ) { }
 
   @Get(['/'])

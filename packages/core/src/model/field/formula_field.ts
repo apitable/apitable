@@ -23,7 +23,7 @@ import { ValueTypeMap } from 'model/constants';
 import { ICellToStringOption, ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
 import { IReduxState } from '../../exports/store';
-import { getSnapshot } from '../../exports/store/selectors';
+import { getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import {
   FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat,
   IFilterCheckbox, IFilterCondition, IFilterDateTime, IFilterText
@@ -36,7 +36,7 @@ import { IUpdateOpenFormulaFieldProperty } from 'types/open/open_field_write_typ
 import { isClient } from 'utils/env';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField, ICellApiStringValueOptions } from './field';
+import { ArrayValueField } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
@@ -270,7 +270,7 @@ export class FormulaField extends ArrayValueField {
     return String(cellValue);
   }
 
-  arrayValueToArrayStringValueArray(cellValue: any[], options?: ICellToStringOption) {
+  arrayValueToArrayStringValueArray(cellValue: any[], _options?: ICellToStringOption) {
     return (cellValue as any[]).map(cv => {
       switch (this.innerBasicValueType) {
         case BasicValueType.Number:
@@ -278,7 +278,7 @@ export class FormulaField extends ArrayValueField {
           return numberFormat(cv, this.field.property?.formatting);
         }
         case BasicValueType.DateTime:
-          return dateTimeFormat(cv, this.field.property.formatting as any, options?.userTimeZone);
+          return dateTimeFormat(cv, this.field.property.formatting as any, getUserTimeZone(this.state));
         case BasicValueType.String:
           return String(cv);
         default:
@@ -309,7 +309,7 @@ export class FormulaField extends ArrayValueField {
         return numberFormat(cellValue, this.field.property?.formatting);
       }
       case BasicValueType.DateTime:
-        return dateTimeFormat(cellValue, this.field.property.formatting as any, options?.userTimeZone);
+        return dateTimeFormat(cellValue, this.field.property.formatting as any, getUserTimeZone(this.state));
       case BasicValueType.String:
         return String(cellValue);
       case BasicValueType.Array: {
@@ -376,8 +376,8 @@ export class FormulaField extends ArrayValueField {
     return cellValue;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null {
-    return this.cellValueToString(cellValue, { userTimeZone: options?.userTimeZone });
+  cellValueToApiStringValue(cellValue: ICellValue): string | null {
+    return this.cellValueToString(cellValue);
   }
 
   cellValueToOpenValue(

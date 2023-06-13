@@ -60,6 +60,11 @@ public class UpdateMemberRo {
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> teamIds;
 
+    @Schema(description = "Department ID", type = "List", example = "[\"10101\",\"10102\","
+        + "\"10103\",\"10104\"]")
+    @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
+    private List<Long> roleIds;
+
     @Schema(description = "Attribution tag ID set", type = "List", example = "[\"10101\","
         + "\"10102\",\"10103\",\"10104\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)

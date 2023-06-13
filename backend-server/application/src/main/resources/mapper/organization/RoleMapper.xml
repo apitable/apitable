@@ -99,7 +99,7 @@
 
     <select id="selectRoleBaseInfoDtoByIds"
             resultType="com.apitable.organization.dto.RoleBaseInfoDto">
-        SELECT id, role_name
+        SELECT id, role_name, position
         FROM ${tablePrefix}unit_role
         WHERE id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
@@ -123,5 +123,22 @@
         AND vur.space_id = #{spaceId}
         AND vur.is_deleted = 0
         AND vu.is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdAndPage" resultType="com.apitable.organization.dto.RoleBaseInfoDto">
+        SELECT id, role_name, position
+        FROM ${tablePrefix}unit_role
+        WHERE space_id = #{spaceId}
+        AND is_deleted = 0
+        ORDER BY position ASC
+    </select>
+
+    <select id="selectCountBySpaceIdAndRoleNameWithExceptId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM ${tablePrefix}unit_role
+        WHERE space_id = #{spaceId}
+        AND role_name = #{roleName}
+        AND id != #{roleId}
+        AND is_deleted = 0
     </select>
 </mapper>

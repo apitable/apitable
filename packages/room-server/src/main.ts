@@ -25,7 +25,8 @@ import { useContainer } from 'class-validator';
 import * as immer from 'immer';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
-import { initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
+import {
+  initAutomationWorker, initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
 import { GlobalExceptionFilter } from 'shared/filters';
 import { HttpResponseInterceptor } from 'shared/interceptor';
@@ -36,7 +37,7 @@ import { HttpResponseInterceptor } from 'shared/interceptor';
 async function bootstrap() {
   immer.setAutoFreeze(false);
 
-  const fastifyAdapter = initFastify();
+  const fastifyAdapter = await initFastify();
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
 
@@ -47,6 +48,7 @@ async function bootstrap() {
   initSwagger(app);
   initHttpHook(app);
   initSentry(app);
+  initAutomationWorker(app);
 
   // express performance traces
   // app.use(Sentry.Handlers.requestHandler());
@@ -88,4 +90,4 @@ async function bootstrap() {
   logger.log(`The service is running, please visit it: [ ${await app.getUrl()} ]`, 'Bootstrap');
 }
 
-bootstrap();
+void bootstrap();

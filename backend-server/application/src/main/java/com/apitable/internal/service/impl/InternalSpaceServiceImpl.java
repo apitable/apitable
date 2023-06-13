@@ -27,6 +27,7 @@ import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
@@ -77,6 +78,14 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId));
         vo.setIsAllowOverLimit(true);
         return vo;
+    }
+
+    @Override
+    public InternalSpaceApiRateLimitVo getSpaceEntitlementApiRateLimitVo(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionFeature planFeature = subscriptionInfo.getFeature();
+        BillingAssembler assembler = new BillingAssembler();
+        return assembler.toApiRateLimitVo(planFeature);
     }
 
     @Override

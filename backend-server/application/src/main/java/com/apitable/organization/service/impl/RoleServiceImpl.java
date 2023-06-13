@@ -18,47 +18,53 @@
 
 package com.apitable.organization.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
-import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.base.enums.DatabaseException;
-import com.apitable.organization.enums.UnitType;
-import com.apitable.organization.vo.RoleInfoVo;
-import com.apitable.organization.vo.RoleVo;
-import com.apitable.organization.mapper.RoleMapper;
-import com.apitable.organization.dto.RoleBaseInfoDto;
-import com.apitable.organization.dto.RoleInfoDTO;
-import com.apitable.organization.dto.RoleMemberInfoDTO;
-import com.apitable.organization.service.IRoleMemberService;
-import com.apitable.organization.service.IRoleService;
-import com.apitable.organization.service.ITeamService;
-import com.apitable.organization.service.IUnitService;
-import com.apitable.organization.enums.OrganizationException;
-import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-import com.apitable.organization.entity.RoleEntity;
-import com.apitable.organization.entity.UnitEntity;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_ROLE;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.vika.core.utils.StringUtil;
+import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
+import com.apitable.organization.dto.RoleBaseInfoDto;
+import com.apitable.organization.dto.RoleInfoDTO;
+import com.apitable.organization.dto.RoleMemberInfoDTO;
+import com.apitable.organization.dto.UnitBaseInfoDTO;
+import com.apitable.organization.dto.UnitRoleInfoDTO;
+import com.apitable.organization.entity.RoleEntity;
+import com.apitable.organization.entity.UnitEntity;
+import com.apitable.organization.enums.OrganizationException;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.mapper.RoleMapper;
+import com.apitable.organization.service.IRoleMemberService;
+import com.apitable.organization.service.IRoleService;
+import com.apitable.organization.service.ITeamService;
+import com.apitable.organization.service.IUnitService;
+import com.apitable.organization.vo.RoleInfoVo;
+import com.apitable.organization.vo.RoleVo;
+import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Role service implement.
+ */
 @Slf4j
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> implements IRoleService {
@@ -73,8 +79,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     ITeamService iTeamService;
 
     @Override
-    public void checkDuplicationRoleName(String spaceId, String roleName, Consumer<Boolean> consumer) {
+    public void checkDuplicationRoleName(String spaceId, String roleName,
+                                         Consumer<Boolean> consumer) {
         int count = SqlTool.retCount(baseMapper.selectCountBySpaceIdAndRoleName(spaceId, roleName));
+        consumer.accept(count > 0);
+    }
+
+    @Override
+    public void checkDuplicationRoleName(String spaceId, Long roleId, String roleName,
+                                         Consumer<Boolean> consumer) {
+        int count = SqlTool.retCount(
+            baseMapper.selectCountBySpaceIdAndRoleNameWithExceptId(spaceId, roleId, roleName));
         consumer.accept(count > 0);
     }
 
@@ -82,26 +97,45 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public Long createRole(Long userId, String spaceId, String roleName) {
         log.info("create role: {}", roleName);
-        int sequence = getSequenceBySpaceId(spaceId);
+        UnitRoleInfoDTO role =
+            createRole(userId, spaceId, roleName, getSequenceBySpaceId(spaceId));
+        return role.getRoleId();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UnitRoleInfoDTO createRole(Long userId, String spaceId, String roleName,
+                                      Integer position) {
+        log.info("create role: {}", roleName);
         RoleEntity role = new RoleEntity();
         role.setSpaceId(spaceId);
         role.setRoleName(roleName);
-        role.setPosition(sequence);
+        role.setPosition(null == position ? getSequenceBySpaceId(spaceId) : position);
         role.setCreateBy(userId);
         boolean flag = save(role);
         ExceptionUtil.isTrue(flag, OrganizationException.CREATE_ROLE_ERROR);
-        iUnitService.create(spaceId, UnitType.ROLE, role.getId());
-        return role.getId();
+        UnitEntity unit = iUnitService.create(spaceId, UnitType.ROLE, role.getId());
+        return UnitRoleInfoDTO.builder().roleId(role.getId()).roleName(roleName)
+            .position(role.getPosition()).unitId(unit.getUnitId()).build();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateRole(Long userId, Long roleId, String roleName) {
+        updateRole(userId, roleId, roleName, null);
+    }
+
+    @Override
+    public void updateRole(Long userId, Long roleId, String roleName, Integer position) {
         log.info("modify role's information");
-        RoleEntity role = new RoleEntity();
-        role.setId(roleId);
-        role.setRoleName(roleName);
+        RoleEntity role = baseMapper.selectById(roleId);
         role.setUpdateBy(userId);
+        if (!StringUtil.isEmpty(roleName)) {
+            role.setRoleName(roleName);
+        }
+        if (null != position) {
+            role.setPosition(position);
+        }
         boolean flag = updateById(role);
         ExceptionUtil.isTrue(flag, OrganizationException.UPDATE_ROLE_NAME_ERROR);
     }
@@ -231,10 +265,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         List<UnitEntity> units = new ArrayList<>();
         for (RoleEntity role : roles) {
             UnitEntity unit = UnitEntity.builder()
-                    .spaceId(spaceId)
-                    .unitRefId(role.getId())
-                    .unitType(UnitType.ROLE.getType())
-                    .build();
+                .spaceId(spaceId)
+                .unitId(IdWorker.get32UUID())
+                .unitRefId(role.getId())
+                .unitType(UnitType.ROLE.getType())
+                .build();
             units.add(unit);
         }
         boolean unitsInsertFlag = iUnitService.createBatch(units);
@@ -247,6 +282,32 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         consumer.accept(count > 0);
     }
 
+    @Override
+    public List<Long> getRoleIdsByUnitIds(String spaceId, List<String> unitIds) {
+        // check roles
+        Map<Long, String> units = new HashMap<>();
+        if (null != unitIds && !unitIds.isEmpty()) {
+            units =
+                iUnitService.getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(spaceId, UnitType.ROLE,
+                    unitIds).stream().collect(
+                    Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getUnitId));
+            unitIds.removeAll(units.values());
+            if (!unitIds.isEmpty()) {
+                throw new BusinessException(NOT_EXIST_ROLE.getCode(), NOT_EXIST_ROLE.getMessage(),
+                    unitIds);
+            }
+        }
+        return new ArrayList<>(units.keySet());
+    }
+
+    @Override
+    public Long getRoleIdByUnitId(String spaceId, String unitId) {
+        Long roleId =
+            iUnitService.getUnitRefIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId, UnitType.ROLE);
+        ExceptionUtil.isNotNull(roleId, NOT_EXIST_ROLE);
+        return roleId;
+    }
+
     private List<String> getInitRoleNames() {
         String roles = I18nStringsUtil.t("init_roles");
         return StrUtil.splitTrim(roles, StrUtil.C_COMMA);
@@ -254,13 +315,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     private void roleFillMemberCount(List<RoleInfoVo> roles, List<RoleInfoDTO> roleInfos) {
         List<Long> roleIds = roleInfos.stream().map(RoleInfoDTO::getId).collect(toList());
-        List<RoleMemberInfoDTO> allRoleMembers = iRoleMemberService.getRoleMembersByRoleIds(roleIds);
+        List<RoleMemberInfoDTO> allRoleMembers =
+            iRoleMemberService.getRoleMembersByRoleIds(roleIds);
         if (CollUtil.isEmpty(allRoleMembers)) {
             return;
         }
         // group roles' members by role.
         Map<Long, List<RoleMemberInfoDTO>> roleIdToRoleMembers = allRoleMembers.stream()
-                .collect(groupingBy(RoleMemberInfoDTO::getRoleId, toList()));
+            .collect(groupingBy(RoleMemberInfoDTO::getRoleId, toList()));
         roles.forEach(role -> {
             if (!roleIdToRoleMembers.containsKey(role.getRoleId())) {
                 return;
@@ -277,8 +339,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                 List<Long> teamIds = unitTypeToUnitRefIds.get(UnitType.TEAM.getType());
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
                 memberCount = CollUtil.unionDistinct(memberIds, teamMemberIds).size();
-            }
-            else {
+            } else {
                 memberCount = memberIds.size();
             }
             role.setMemberCount(memberCount);

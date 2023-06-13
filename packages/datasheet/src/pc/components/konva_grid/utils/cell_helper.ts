@@ -54,7 +54,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { keyBy, sortBy } from 'lodash';
+import { get, keyBy, sortBy } from 'lodash';
 import LRU from 'lru-cache';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
@@ -235,7 +235,7 @@ export class CellHelper extends KonvaDrawer {
     const { x, y, cellValue, field, columnWidth, isActive, editable, callback, style, cacheTheme } = renderProps;
     if (cellValue == null) return DEFAULT_RENDER_DATA;
     const isOperating = isActive && editable;
-    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.textStaticPrimary;
+    const color = cacheTheme === ThemeName.Light ? getOptionNameColor(cellValue as string, field) : colors.staticWhite0;
     const background = inquiryValueByKey('color', cellValue as string, field, cacheTheme);
     const itemName = inquiryValueByKey('name', cellValue as string, field, cacheTheme);
     const initPadding = GRID_CELL_VALUE_PADDING;
@@ -446,10 +446,12 @@ export class CellHelper extends KonvaDrawer {
       }
     }
 
+    const favicon = field.property?.isRecogURLFlag ? get(cellValue, '0.favicon', '') : '';
+
     const color = style?.color || colors.firstLevelText;
     const textAlign = style?.textAlign || (isNumberField && columnWidth ? 'right' : 'left');
     const fontWeight = style?.fontWeight;
-    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING;
+    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0);
     const renderX = textAlign === 'right' ? x + columnWidth - GRID_CELL_VALUE_PADDING : x + GRID_CELL_VALUE_PADDING;
     const renderY = y + 10;
     let linkEnable = Boolean(renderText);
@@ -504,6 +506,7 @@ export class CellHelper extends KonvaDrawer {
         x: renderX,
         y: renderY,
         text: renderText,
+        favicon,
         maxWidth: textMaxWidth,
         maxRow: isActive ? Infinity : getMaxLine(rowHeightLevel, viewType),
         lineHeight: 24,
@@ -526,6 +529,7 @@ export class CellHelper extends KonvaDrawer {
       width: textMaxWidth,
       height: textHeight,
       text: renderText,
+      favicon,
       textData,
       style: {
         ...style,

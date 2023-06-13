@@ -80,7 +80,9 @@ public enum PermissionException implements BaseException {
 
     ILLEGAL_CHANGE_FIELD_ROLE(627, "No permission to modify field permission"),
 
-    ROOT_NODE_OP_DENIED(628, "The space admin has restricted adding and deleting files to the root directory, so you can't do this");
+    ROOT_NODE_OP_DENIED(628, "The space admin has restricted adding and deleting files to the root directory, so you can't do this"),
+
+    ONLY_MAIN_ADMIN_OPERATE(629, "only the main administrator can operate");
 
     private final Integer code;
 

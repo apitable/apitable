@@ -35,10 +35,6 @@ export interface ICalendar {
   */
   update?: (id: Id, startDate: Date, endDate: Date) => void;
   /**
-   * i18n
-   */
-  lang?: 'zh' | 'en';
-  /**
    * drag and drop components
   */
   dnd?: any[];

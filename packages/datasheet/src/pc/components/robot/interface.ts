@@ -109,6 +109,12 @@ export interface IRobotNodeTypeInfo {
   service: {
     logo: string;
   };
+  type: IRobotNodeType;
+}
+
+export enum IRobotNodeType {
+  Action = 'action',
+  Trigger = 'trigger',
 }
 
 export interface IRobotCardInfo extends IRobot {

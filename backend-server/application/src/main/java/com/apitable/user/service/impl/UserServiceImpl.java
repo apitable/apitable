@@ -96,6 +96,7 @@ import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.user.dto.UserInPausedDto;
 import com.apitable.user.dto.UserLangDTO;
+import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.entity.UserHistoryEntity;
 import com.apitable.user.enums.UserClosingException;
@@ -1167,5 +1168,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 log.error("CloseUserError:{}", userId, e);
             }
         });
+    }
+
+    @Override
+    public List<UserSensitiveDTO> getUserSensitiveInfoByIds(List<Long> userIds) {
+        return baseMapper.selectEmailAndMobilePhoneByIds(userIds);
     }
 }

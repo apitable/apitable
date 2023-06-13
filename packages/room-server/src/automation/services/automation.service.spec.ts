@@ -77,9 +77,9 @@ describe('RobotActionTypeServiceTest', () => {
     expect(service).toBeDefined();
   });
 
-  it('should be check create robot permission no exception', () => {
+  it('should be check create robot permission no exception', async () => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(0);
-    service.checkCreateRobotPermission('resourceId');
+    await service.checkCreateRobotPermission('resourceId');
   });
 
   it('should be check create robot permission throw exception', async() => {

@@ -56,6 +56,7 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
+import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -102,6 +103,7 @@ const ToolbarBase = () => {
     };
   }, shallowEqual);
 
+  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const spaceId = useSelector(state => state.space.activeId);
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
   const activeView: IViewProperty = useSelector(state => Selectors.getCurrentView(state))!;
@@ -196,6 +198,7 @@ const ToolbarBase = () => {
       index: 0,
     });
     if (result.result === ExecuteResult.Success) {
+      createdBySubscritionMessage(fieldMap);
       const newRecordId = result.data && result.data[0];
       // Requirement change: Toolbar insert line, always expand the card (don't delete the following).
       expandRecordIdNavigate(newRecordId);
@@ -480,7 +483,7 @@ const ToolbarBase = () => {
   ];
 
   return (
-    <div className={styles.toolbar} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
+    <div className={classNames(styles.toolbar, { [styles.toolbarVisible]: !!size })} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
       {!isMobile && embedSetting.basicTools && !isIframe() && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>

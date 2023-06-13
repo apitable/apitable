@@ -16,5 +16,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './multi_grid';
 export * from './constant';
+export { MouseDownType } from './enum';

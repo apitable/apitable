@@ -17,16 +17,16 @@
  */
 
 /* eslint-disable no-script-url */
-import { Tooltip, Typography, useThemeColors } from '@apitable/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
-  VikabyOutlined, WebOutlined
+  VikabyOutlined, WebOutlined, UserGroupOutlined
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
 import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
-import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
+import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
@@ -131,6 +131,13 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       onClick: vikabyHelperClick,
       hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
     },
+    {
+      icon: <UserGroupOutlined color={colors.thirdLevelText} />,
+      text: t(Strings.help_partner_program),
+      id: NAV_ID.USER_PARTNER_PROGRAM,
+      onClick: () => navigationToUrl(`${window.location.origin}/partners/`),
+      hidden: !(getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE),
+    },
   ];
 
   // Return menu data for mobile
@@ -217,7 +224,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
           onPopupVisibleChange={visible => setVisible(visible)}
           zIndex={1000}
         >
-          <Tooltip content={t(Strings.help)}>
+          <Tooltip title={t(Strings.help)} placement="right">
             <div>
               <HelpBtn />
             </div>

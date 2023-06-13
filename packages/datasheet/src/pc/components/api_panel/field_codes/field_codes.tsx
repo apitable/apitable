@@ -302,15 +302,18 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
         >
           Python
         </LinkButton>
-        <LinkButton
-          underline={false}
-          component="button"
-          onClick={() => {
-            window.open(MORE_SDK_URL, '_blank');
-          }}
-        >
-          More
-        </LinkButton>
+        {MORE_SDK_URL && (
+          <LinkButton
+            underline={false}
+            component="button"
+            onClick={() => {
+              window.open(MORE_SDK_URL, '_blank');
+            }}
+          >
+            More
+          </LinkButton>
+        )}
+
       </div>
       <DocInnerHtml showApiToken={showApiToken} exampleConfig={exampleConfig} language={language} />
     </div>

@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import strings from './config/strings.json';
 import languageManifest from './config/language.manifest.json';
 // @ts-ignore
 import { strings as _strings } from './enterprise';
@@ -24,10 +23,19 @@ declare const window: any;
 declare const global: any;
 
 function loadAllLang() {
-  const newStrings = strings;
-  if (_strings) {
-    for (const key in strings) {
+  let strings = {};
+  if (typeof window !== 'undefined') {
+    strings = (window as any).apitable_i18n || {};
+  }else {
+    strings = (global as any).apitable_i18n || {};
+  }
+  console.log('language package keys: ', Object.keys(strings));
+  const newStrings = {};
+  for (const key in strings) {
+    if (_strings) {
       newStrings[key] = { ...strings[key], ..._strings[key] };
+    } else {
+      newStrings[key] = strings[key];
     }
   }
   if (typeof window !== 'undefined') {

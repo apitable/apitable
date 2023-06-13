@@ -20,10 +20,14 @@ package com.apitable.internal.controller;
 
 import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRole;
+import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.shared.cache.service.SpaceCapacityCacheService;
@@ -37,17 +41,26 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.NodePermissionEnum;
 import com.apitable.workspace.ro.CreateDatasheetRo;
+import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.CreateDatasheetVo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
+import com.apitable.workspace.vo.NodeInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -66,6 +79,9 @@ public class InternalNodeController {
 
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
+
+    @Resource
+    private INodeRoleService iNodeRoleService;
 
     /**
      * Create a table node.
@@ -145,4 +161,42 @@ public class InternalNodeController {
         return ResponseData.success(nodeService.nodeFromSpace(nodeId));
     }
 
+    /**
+     * filter nodes by type, permissions and node name.
+     */
+    @GetResource(path = "/spaces/{spaceId}/nodes", requiredPermission = false)
+    @Operation(summary = "Get filter nodes by type, permissions and node name.",
+        description = "scenario: query an existing read-only dashboard")
+    public ResponseData<List<NodeInfo>> filter(@PathVariable("spaceId") String spaceId,
+                                               @RequestParam(value = "type") Integer type,
+                                               @RequestParam(value = "nodePermissions", required = false, defaultValue = "0,1,2,3") List<Integer> nodePermissions,
+                                               @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+        SpaceHolder.set(spaceId);
+        Long memberId = LoginContext.me().getMemberId();
+        List<String> nodeIds = nodeService.getNodeIdBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+        if (nodeIds.isEmpty()) {
+            return ResponseData.success(new ArrayList<>());
+        }
+        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, nodeIds);
+        if (roleDict.isEmpty()) {
+            return ResponseData.success(new ArrayList<>());
+        }
+        List<String> roles = iNodeRoleService.getMinimumRequiredRole(nodePermissions);
+        List<ControlRole> requireRoles = ControlRoleManager.parseAndSortNodeRole(roles);
+        List<String> filterNodeIds = new ArrayList<>();
+        Map<String, String> nodeIdToNodeRole = new HashMap<>();
+        requireRoles.forEach((requireRole) -> {
+            List<String> subFilterNodeIds = roleDict.entrySet().stream()
+                .filter(entry -> entry.getValue().isEqualTo(requireRole))
+                .peek(entry -> nodeIdToNodeRole.put(entry.getKey(), entry.getValue().getRoleTag()))
+                .map(Map.Entry::getKey).collect(Collectors.toList());
+            filterNodeIds.addAll(subFilterNodeIds);
+        });
+        if (CollUtil.isEmpty(filterNodeIds)) {
+            return ResponseData.success(new ArrayList<>());
+        }
+        List<NodeInfo> nodeInfos = nodeService.getNodeInfo(spaceId, filterNodeIds, memberId);
+        nodeInfos.forEach(nodeInfo -> nodeInfo.setRole(nodeIdToNodeRole.get(nodeInfo.getNodeId())));
+        return ResponseData.success(nodeInfos);
+    }
 }

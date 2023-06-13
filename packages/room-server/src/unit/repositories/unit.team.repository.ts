@@ -44,4 +44,11 @@ export class UnitTeamRepository extends Repository<UnitTeamEntity> {
   selectCountBySpaceIdAndId(id: string, spaceId: string): Promise<number> {
     return this.count({ where: { id, spaceId, isDeleted: false }});
   }
+
+  /**
+  * get team(id, parentId) by spaceId
+  */
+  public async selectTeamsBySpaceId(spaceId: string): Promise<UnitTeamEntity[]> {
+    return await this.find({ select: ['id', 'groupId'], where: { spaceId, isDeleted: false }}) as UnitTeamEntity[];
+  }
 }

@@ -23,6 +23,8 @@ import { UnitService } from './unit.service';
 import { UnitTeamService } from './unit.team.service';
 import { UnitMemberService } from './unit.member.service';
 import { MemberType } from '@apitable/core';
+import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
+import { UnitTeamMemberRefRepository } from 'unit/repositories/unit.team.member.ref.repository';
 
 describe('Test', () => {
   let module: TestingModule;
@@ -38,6 +40,8 @@ describe('Test', () => {
       providers: [
         UnitService,
         UnitRepository,
+        UnitTeamMemberRefRepository,
+        UnitRoleMemberRepository,
         {
           provide: UnitTeamService,
           useValue: {

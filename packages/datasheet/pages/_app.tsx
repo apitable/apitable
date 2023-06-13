@@ -331,7 +331,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    document.title = t(Strings.system_configuration_product_name);
+    document.title = t(Strings.og_page_title);
     const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     descMeta.content = t(Strings.client_meta_label_desc);
   }, []);
@@ -411,15 +411,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
       </>
     }
-
-    <Script id={'rewardful'}>
-      {
-        `
-        (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-        `
-      }
-    </Script>
-    <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
 
     {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
       {`

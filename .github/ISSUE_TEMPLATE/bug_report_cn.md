@@ -2,7 +2,7 @@
 
 name: Bug report (zh-CN)
 about: Create a report to help APITable improve (zh-CN)
-title: 'fix: BUG...'
+title: 'fix: 简短的BUG描述'
 labels: 'bug'
 assignees: ''
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors, Box } from '@apitable/components';
+import { Typography, useThemeColors, Box, ThemeName, useTheme } from '@apitable/components';
 import { integrateCdnHost, SystemConfig } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
@@ -43,7 +43,7 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
 
   let socialIconsContent;
   const disableLoginSocialIcons = getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE;
-  if (disableLoginSocialIcons && disableLoginSocialIcons == 'true') {
+  if (disableLoginSocialIcons) {
     socialIconsContent = '';
   } else {
     socialIconsContent = (
@@ -64,11 +64,16 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
     );
   }
 
+  let logo = getEnvVariables().LOGIN_LOGO!;
+  if (useTheme().palette.type === ThemeName.Light && getEnvVariables().LOGIN_LOGO_LIGHT) {
+    logo = getEnvVariables().LOGIN_LOGO_LIGHT!;
+  }
+
   return (
     <div className={styles.pcHome}>
       <div className={styles.header}>
         <div className={styles.brand}>
-          <img src={integrateCdnHost(getEnvVariables().LOGIN_LOGO!)} width={132} alt="logo" />
+          <img src={integrateCdnHost(logo)} width={132} alt="logo" />
           <Typography variant={'h7'} color={colors.textCommonSecondary}>
             {getEnvVariables().LOGIN_MOTTO || "let's make the world more productive!"}
           </Typography>

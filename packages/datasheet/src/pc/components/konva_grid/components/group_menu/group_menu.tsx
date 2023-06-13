@@ -24,12 +24,12 @@ import { ContextMenu, useContextMenu } from '@apitable/components';
 import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
-import { MouseDownType } from 'pc/components/selection_wrapper';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
 import { KonvaGridContext } from '../..';
+import { MouseDownType } from '../../../multi_grid';
 
 interface IStatMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;
@@ -195,9 +195,9 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
       },
     ]
   ], true);
-  
+
   return (
-    <ContextMenu 
+    <ContextMenu
       menuId={KONVA_DATASHEET_ID.GRID_GROUP_MENU}
       overlay={data}
     />

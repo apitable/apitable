@@ -208,9 +208,9 @@ public class TemplateController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "tpcEm7VDcbnnr"),
         @Parameter(name = "templateId", description = "Template Id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "tplHTbkg7qbNJ"),
-        @Parameter(name = "isPrivate", description = "Whether it is a private template in the "
-            + "space station", schema = @Schema(type = "boolean"), in =
-            ParameterIn.QUERY, example = "true")
+        @Parameter(name = "isPrivate",
+            description = "Whether it is a private template in the space station",
+            schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true")
     })
     public ResponseData<TemplateDirectoryVo> directory(
         @RequestParam("templateId") String templateId,
@@ -221,10 +221,10 @@ public class TemplateController {
         String spaceId = iTemplateService.getSpaceId(templateId);
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         // The requirement is the official template or the current space template
-        if (!constProperties.getTemplateSpace().contains(spaceId) || Boolean.TRUE.equals(
-            isPrivate)) {
-            // Unofficial templates or view the current space template to verify whether the user
-            // is in the space
+        if (!constProperties.getTemplateSpace().contains(spaceId)
+            || Boolean.TRUE.equals(isPrivate)) {
+            // Unofficial templates or view the current space template to verify
+            // whether the user is in the space
             LoginContext.me().getUserSpaceDto(spaceId);
         }
         TemplateDirectoryVo vo =

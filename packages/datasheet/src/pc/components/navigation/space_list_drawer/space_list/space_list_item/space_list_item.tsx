@@ -118,7 +118,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
           closeSpaceListDrawer();
           return;
         }
-        window.location.href = `${domain}/space/${spaceId}/workbench${location.search}`;
+        window.location.href = `${domain}/workbench?spaceId=${spaceId}`;
       }}
     >
       <div className={styles.logo}>

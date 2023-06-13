@@ -14,8 +14,8 @@ describe('fast check try', () => {
     return text.length > 3 ? text.substr(1).indexOf(pattern) === -1 : text.indexOf(pattern) >= 0;
   };
 
-  test('should always contain itself', () => {
-    fc.assert(
+  test('should always contain itself', async() => {
+    await fc.assert(
       fc.asyncProperty(fc.string(), (text: string) => {
         return new Promise(resolve => {
           resolve(contains(text, text));

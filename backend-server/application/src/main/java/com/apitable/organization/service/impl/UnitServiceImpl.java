@@ -20,19 +20,28 @@ package com.apitable.organization.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.organization.dto.MemberBaseInfoDTO;
+import com.apitable.organization.dto.MemberUserDTO;
 import com.apitable.organization.dto.RoleBaseInfoDto;
+import com.apitable.organization.dto.RoleMemberDTO;
 import com.apitable.organization.dto.TeamBaseInfoDTO;
+import com.apitable.organization.dto.UnitBaseInfoDTO;
 import com.apitable.organization.dto.UnitInfoDTO;
+import com.apitable.organization.dto.UnitMemberDTO;
+import com.apitable.organization.dto.UnitTeamDTO;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.entity.TeamEntity;
+import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
+import com.apitable.organization.enums.MemberType;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.mapper.RoleMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.mapper.UnitMapper;
@@ -42,13 +51,26 @@ import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.UnitInfoVo;
+import com.apitable.organization.vo.UnitMemberInfoVo;
+import com.apitable.organization.vo.UnitRoleInfoVo;
+import com.apitable.organization.vo.UnitRoleMemberVo;
+import com.apitable.organization.vo.UnitTeamInfoVo;
 import com.apitable.shared.util.ibatis.ExpandServiceImpl;
+import com.apitable.shared.util.page.PageHelper;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.user.dto.UserSensitiveDTO;
+import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -68,6 +90,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     private TeamMapper teamMapper;
 
     @Resource
+    private RoleMapper roleMapper;
+
+    @Resource
     private TeamMemberRelMapper teamMemberRelMapper;
 
     @Resource
@@ -81,6 +106,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
     @Resource
     private ITeamService iTeamService;
+
+    @Resource
+    private IUserService iUserService;
 
     @Override
     public Long getUnitIdByRefId(Long refId) {
@@ -107,15 +135,16 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     }
 
     @Override
-    public Long create(String spaceId, UnitType unitType, Long unitRefId) {
+    public UnitEntity create(String spaceId, UnitType unitType, Long unitRefId) {
         log.info("create unit，unit type:{}, unit id:{}", unitType, unitRefId);
         UnitEntity unit = new UnitEntity();
         unit.setSpaceId(spaceId);
         unit.setUnitType(unitType.getType());
         unit.setUnitRefId(unitRefId);
+        unit.setUnitId(IdWorker.get32UUID());
         boolean flag = save(unit);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
-        return unit.getId();
+        return unit;
     }
 
     @Override
@@ -310,7 +339,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
     @Override
     public void batchUpdateIsDeletedBySpaceIdAndRefId(String spaceId, List<Long> refIds,
-        UnitType unitType, Boolean isDeleted) {
+                                                      UnitType unitType, Boolean isDeleted) {
         baseMapper.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, refIds, unitType, isDeleted);
     }
 
@@ -356,4 +385,263 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     public List<UnitEntity> getUnitEntitiesByUnitRefIds(List<Long> refIds) {
         return baseMapper.selectByRefIds(refIds);
     }
+
+    @Override
+    public Long getUnitRefIdByUnitIdAndSpaceIdAndUnitType(String unitId, String spaceId,
+                                                          UnitType unitType) {
+        return baseMapper.selectUnitRefIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId, unitType);
+    }
+
+    @Override
+    public List<UnitBaseInfoDTO> getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(String spaceId,
+                                                                               UnitType unitType,
+                                                                               List<String> unitIds) {
+        return baseMapper.selectBySpaceIdAndUnitTypeAndUnitIds(spaceId, unitType, unitIds);
+    }
+
+    @Override
+    public List<UnitBaseInfoDTO> getUnitBaseInfoByRefIds(List<Long> refIds) {
+        if (refIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectByUnitRefIds(refIds);
+    }
+
+    @Override
+    public List<UnitTeamDTO> getUnitTeamBaseInfoByTeamIds(List<Long> teamIds) {
+        if (teamIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        Map<Long, String> teamUnits = this.getUnitBaseInfoByRefIds(teamIds).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
+                UnitBaseInfoDTO::getUnitId));
+        List<TeamBaseInfoDTO> teams = teamMapper.selectBaseInfoDTOByIds(teamIds);
+        List<UnitTeamDTO> units = new ArrayList<>();
+        teams.forEach(team -> {
+            UnitTeamDTO unit =
+                UnitTeamDTO.builder().id(team.getId()).unitId(teamUnits.get(team.getId()))
+                    .teamName(team.getTeamName()).sequence(team.getSequence()).build();
+            units.add(unit);
+        });
+        return units;
+    }
+
+    @Override
+    public List<UnitMemberDTO> getUnitMemberBaseInfoByMemberIds(List<Long> memberIds) {
+        Map<Long, String> memberUnits = this.getUnitBaseInfoByRefIds(memberIds).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
+                UnitBaseInfoDTO::getUnitId));
+        // get members info
+        List<MemberUserDTO> members =
+            memberMapper.selectMemberNameAndUserIdAndIsActiveByIds(memberIds);
+        // get member's related user information
+        List<Long> userIds =
+            members.stream().map(MemberUserDTO::getUserId).filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        Map<Long, UserSensitiveDTO> users = new HashMap<>();
+        if (!userIds.isEmpty()) {
+            users = iUserService.getUserSensitiveInfoByIds(userIds).stream()
+                .collect(Collectors.toMap(UserSensitiveDTO::getId, i -> i));
+        }
+        // assemble return data
+        List<UnitMemberDTO> units = new ArrayList<>();
+        for (MemberUserDTO member : members) {
+            UnitMemberDTO unitMember = UnitMemberDTO.builder().id(member.getId())
+                .unitId(memberUnits.get(member.getId()))
+                .status(Boolean.compare(member.getIsActive(), false))
+                .type(member.getIsAdmin() ? MemberType.PRIMARY_ADMIN : MemberType.MEMBER)
+                .memberName(member.getMemberName()).build();
+            if (null != member.getUserId() && users.containsKey(member.getUserId())) {
+                UserSensitiveDTO user = users.get(member.getUserId());
+                unitMember.setAvatar(user.getAvatar());
+                unitMember.setEmail(users.get(member.getUserId()).getEmail());
+                unitMember.setCode(user.getCode());
+                unitMember.setMobilePhone(user.getMobilePhone());
+            }
+            units.add(unitMember);
+        }
+        return units;
+    }
+
+    @Override
+    public List<UnitMemberInfoVo> getUnitMemberByMemberIds(List<Long> memberIds,
+                                                           boolean includeSensitive) {
+        // get members teams
+        List<TeamMemberRelEntity> memberTeamRel =
+            teamMemberRelMapper.selectTeamIdsByMemberIds(memberIds);
+        List<Long> teamIds =
+            memberTeamRel.stream().map(TeamMemberRelEntity::getTeamId).collect(Collectors.toList());
+        Map<Long, UnitTeamDTO> teamUnitMap = getUnitTeamBaseInfoByTeamIds(teamIds).stream()
+            .collect(Collectors.toMap(UnitTeamDTO::getId, i -> i));
+        // get team roles
+        Map<Long, List<UnitRoleInfoVo>> teamRoles =
+            iRoleMemberService.getRefUnitRoles(teamIds, UnitType.TEAM);
+        // actually data
+        Map<Long, List<UnitTeamInfoVo>> memberTeamMap = memberTeamRel.stream().collect(
+            Collectors.groupingBy(TeamMemberRelEntity::getMemberId,
+                Collectors.mapping(i -> {
+                    UnitTeamDTO team = teamUnitMap.get(i.getTeamId());
+                    return UnitTeamInfoVo.builder().unitId(team.getUnitId())
+                        .name(team.getTeamName()).sequence(team.getSequence())
+                        .roles(teamRoles.get(i.getTeamId())).build();
+                }, Collectors.toList())));
+        // get members roles
+        Map<Long, List<UnitRoleInfoVo>> refRoles =
+            iRoleMemberService.getRefUnitRoles(new ArrayList<>(memberIds),
+                UnitType.MEMBER);
+        List<UnitMemberDTO> members = getUnitMemberBaseInfoByMemberIds(memberIds);
+        // return data
+        List<UnitMemberInfoVo> units = new ArrayList<>();
+        for (UnitMemberDTO member : members) {
+            UnitMemberInfoVo vo =
+                UnitMemberInfoVo.builder().name(member.getMemberName()).unitId(member.getUnitId())
+                    .avatar(member.getAvatar()).status(member.getStatus())
+                    .type(member.getType().getType()).roles(refRoles.get(member.getId()))
+                    .teams(memberTeamMap.get(member.getId()))
+                    .build();
+            if (includeSensitive && StrUtil.isNotBlank(member.getMobilePhone())) {
+                UnitMemberInfoVo.MemberMobile mobile = new UnitMemberInfoVo.MemberMobile();
+                mobile.setAreaCode(member.getCode());
+                mobile.setNumber(member.getMobilePhone());
+                vo.setMobile(mobile);
+            }
+            if (includeSensitive && StrUtil.isNotBlank(member.getEmail())) {
+                vo.setEmail(member.getEmail());
+            }
+            units.add(vo);
+        }
+        return units;
+    }
+
+    @Override
+    public List<UnitTeamInfoVo> getUnitTeamByTeamIds(List<Long> teamIds) {
+        List<UnitTeamDTO> teams = getUnitTeamBaseInfoByTeamIds(teamIds);
+        Map<Long, List<UnitRoleInfoVo>> refRoles =
+            iRoleMemberService.getRefUnitRoles(new ArrayList<>(teamIds), UnitType.TEAM);
+        List<UnitTeamInfoVo> units = new ArrayList<>();
+        teams.forEach(team -> {
+            UnitTeamInfoVo unit = UnitTeamInfoVo.builder().unitId(team.getUnitId())
+                .name(team.getTeamName())
+                .sequence(team.getSequence())
+                .roles(refRoles.get(team.getId()))
+                .build();
+            units.add(unit);
+        });
+        return units;
+    }
+
+    @Override
+    public List<UnitRoleInfoVo> getUnitRoleByRoleIds(List<Long> roleIds) {
+        List<RoleBaseInfoDto> roles = iRoleService.getBaseInfoDtoByRoleIds(roleIds);
+        Map<Long, String> roleUnit = getUnitBaseInfoByRefIds(roleIds).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getUnitId));
+
+        List<UnitRoleInfoVo> units = new ArrayList<>();
+        roles.forEach(role -> {
+            UnitRoleInfoVo unit = UnitRoleInfoVo.builder().unitId(roleUnit.get(role.getId()))
+                .name(role.getRoleName())
+                .sequence(role.getPosition())
+                .build();
+            units.add(unit);
+        });
+        return units;
+    }
+
+    @Override
+    public PageInfo<UnitTeamInfoVo> getUnitSubTeamsWithPage(String spaceId, Long parentTeamId,
+                                                            Page<Long> page) {
+        IPage<Long> teamIds =
+            teamMapper.selectTeamIdsBySpaceIdAndParentIdAndPage(page, spaceId, parentTeamId);
+        if (teamIds.getSize() == 0) {
+            return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
+                (int) teamIds.getTotal(), new ArrayList<>());
+        }
+        Map<Long, String> teamUnits = getUnitBaseInfoByRefIds(teamIds.getRecords()).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
+                UnitBaseInfoDTO::getUnitId));
+        if (teamUnits.keySet().isEmpty()) {
+            return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
+                (int) teamIds.getTotal(), new ArrayList<>());
+        }
+        List<TeamBaseInfoDTO> subTeams = teamMapper.selectBaseInfoDTOByIds(teamUnits.keySet());
+        Map<Long, List<UnitRoleInfoVo>> refRoles =
+            iRoleMemberService.getRefUnitRoles(new ArrayList<>(teamUnits.keySet()), UnitType.TEAM);
+        List<UnitTeamInfoVo> units = new ArrayList<>();
+        subTeams.forEach(team -> {
+            UnitTeamInfoVo unit = UnitTeamInfoVo.builder().unitId(teamUnits.get(team.getId()))
+                .name(team.getTeamName())
+                .sequence(team.getSequence())
+                .roles(refRoles.get(team.getId()))
+                .build();
+            units.add(unit);
+        });
+        return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
+            (int) teamIds.getTotal(), units);
+    }
+
+    @Override
+    public PageInfo<UnitRoleInfoVo> getUnitRolesWithPage(String spaceId,
+                                                         Page<RoleBaseInfoDto> page) {
+        IPage<RoleBaseInfoDto> roles = roleMapper.selectBySpaceIdAndPage(page, spaceId);
+        if (roles.getSize() == 0) {
+            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
+                (int) roles.getTotal(), new ArrayList<>());
+        }
+        List<Long> roleIds =
+            roles.getRecords().stream().map(RoleBaseInfoDto::getId).collect(Collectors.toList());
+        Map<Long, String> roleUnits = getUnitBaseInfoByRefIds(roleIds).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
+                UnitBaseInfoDTO::getUnitId));
+        if (roleUnits.keySet().isEmpty()) {
+            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
+                (int) roles.getTotal(), new ArrayList<>());
+        }
+        List<UnitRoleInfoVo> units = new ArrayList<>();
+        roles.getRecords().forEach(r -> {
+            UnitRoleInfoVo unit = UnitRoleInfoVo.builder().unitId(roleUnits.get(r.getId()))
+                .name(r.getRoleName())
+                .sequence(r.getPosition())
+                .build();
+            units.add(unit);
+        });
+        return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
+            (int) roles.getTotal(), units);
+    }
+
+    @Override
+    public PageInfo<UnitMemberInfoVo> getMembersByTeamId(String spaceId, Long parentTeamId,
+                                                         boolean sensitiveData, Page<Long> page) {
+        IPage<Long> memberIds =
+            teamMemberRelMapper.selectMemberIdsByTeamIdAndPage(page, parentTeamId);
+        if (memberIds.getRecords().size() == 0) {
+            return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
+                (int) memberIds.getTotal(), new ArrayList<>());
+        }
+        List<UnitMemberInfoVo> members =
+            getUnitMemberByMemberIds(memberIds.getRecords(), sensitiveData);
+        return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
+            (int) memberIds.getTotal(), members);
+    }
+
+    @Override
+    public UnitRoleMemberVo getRoleMembers(String spaceId, Long roleId,
+                                           Boolean sensitiveData) {
+        List<RoleMemberDTO> roleMembers =
+            iRoleMemberService.getByUnitRefIds(Collections.singletonList(roleId));
+        Map<Integer, List<Long>> roleMemberMap =
+            roleMembers.stream().collect(Collectors.groupingBy(RoleMemberDTO::getUnitType,
+                Collectors.mapping(RoleMemberDTO::getUnitRefId, Collectors.toList())));
+        List<Long> memberIds = roleMemberMap.get(UnitType.MEMBER.getType());
+        UnitRoleMemberVo vo = UnitRoleMemberVo.builder().build();
+        if (null != memberIds && memberIds.isEmpty()) {
+            vo.setMembers(getUnitMemberByMemberIds(memberIds, sensitiveData));
+        }
+        List<Long> teamIds = roleMemberMap.get(UnitType.TEAM.getType());
+        if (null != teamIds && teamIds.isEmpty()) {
+            vo.setTeams(getUnitTeamByTeamIds(teamIds));
+        }
+        return vo;
+    }
 }
+
+

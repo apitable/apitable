@@ -41,7 +41,6 @@ import {
   StoreActions,
   Strings,
   t,
-  getLanguage,
 } from '@apitable/core';
 import { CalendarSettingPanel } from './calendar_setting_panel';
 import { CreateFieldModal } from './create_field_modal';
@@ -370,8 +369,6 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     }
   }
 
-  const lang = getLanguage().split('-')[0];
-
   return (
     <CalendarContext.Provider
       value={{
@@ -443,7 +440,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
                 resizable={startFieldId !== endFieldId && !isMobile}
                 defaultDate={defaultDate || date?.toDate()}
                 disabled={!editable || (isStartDisabled && isEndDisabled)}
-                monthPicker={(showValue: string) => <CalendarMonthPicker lang={lang} showValue={showValue} setDate={setDate} />}
+                monthPicker={(showValue: string) => <CalendarMonthPicker showValue={showValue} setDate={setDate} />}
                 listStyle={{
                   // color: listColor || undefined,
                   height: recordHeight + 'px',
@@ -467,7 +464,6 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
                     </span>
                   </Tooltip>
                 }
-                lang={lang}
                 moveTaskId={activeCell?.recordId}
               />
             </div>

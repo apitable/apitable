@@ -24,8 +24,8 @@ import { MirrorService } from 'database/mirror/services/mirror.service';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { UserService } from 'user/services/user.service';
-import type { DatasheetPackRo } from '../../datasheet/ros/datasheet.pack.ro';
 import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import { DatasheetPackRo } from 'database/datasheet/ros/datasheet.pack.ro';
 
 /**
  * mirror interface
@@ -40,7 +40,7 @@ export class MirrorController {
     private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
   ) {}
 
-  @Get(['mirrors/:mirrorId/info', 'mirror/:mirrorId/info'])
+  @Get('mirrors/:mirrorId/info')
   @UseInterceptors(ResourceDataInterceptor)
   async getMirrorInfo(@Headers('cookie') cookie: string, @Param('mirrorId') mirrorId: string): Promise<MirrorInfo> {
     const isTemplate = await this.nodeService.isTemplate(mirrorId);
@@ -52,7 +52,7 @@ export class MirrorController {
     return await this.mirrorService.getMirrorInfo(mirrorId, { cookie }, { internal: !isTemplate, main: true, notDst: true });
   }
 
-  @Get(['shares/:shareId/mirrors/:mirrorId/info', 'share/:shareId/mirror/:mirrorId/info'])
+  @Get('shares/:shareId/mirrors/:mirrorId/info')
   @UseInterceptors(ResourceDataInterceptor)
   async getShareMirrorInfo(
     @Headers('cookie') cookie: string,
@@ -64,7 +64,7 @@ export class MirrorController {
     return await this.mirrorService.getMirrorInfo(mirrorId, { cookie }, { internal: false, main: true, shareId });
   }
 
-  @Get(['mirrors/:mirrorId/dataPack', 'mirror/:mirrorId/dataPack'])
+  @Get('mirrors/:mirrorId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(
     @Headers('cookie') cookie: string,
@@ -83,7 +83,7 @@ export class MirrorController {
     return await this.mirrorService.fetchDataPack(mirrorId, { cookie }, { internal: !isTemplate }, query.recordIds);
   }
 
-  @Get(['shares/:shareId/mirrors/:mirrorId/dataPack', 'share/:shareId/mirror/:mirrorId/dataPack'])
+  @Get('shares/:shareId/mirrors/:mirrorId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDataPack(
     @Headers('cookie') cookie: string,

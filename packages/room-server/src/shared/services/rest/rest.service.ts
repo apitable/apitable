@@ -81,9 +81,10 @@ export class RestService {
   private CREATE_DATASHEET_API_URL = 'internal/spaces/%(spaceId)s/datasheets';
   private DELETE_NODE_API_URL = 'internal/spaces/%(spaceId)s/nodes/%(nodeId)s/delete';
   private API_USAGES = 'internal/space/%(spaceId)s/apiUsages';
+  private API_RATE_LIMIT = 'internal/space/%(spaceId)s/apiRateLimit';
   private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
-  private NODE_LIST = 'node/list';
+  private NODE_LIST = 'internal/spaces/%(spaceId)s/nodes';
   private NODE_TREE = 'node/tree';
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
@@ -363,6 +364,21 @@ export class RestService {
     );
   }
 
+  /**
+   * Obtain the api qps info of the given space
+   *
+   * @param headers Authorization info
+   * @param spaceId space ID
+   */
+  async getApiRateLimit(headers: IAuthHeader, spaceId: string): Promise<any> {
+    const response = await lastValueFrom(
+      this.httpService.get(sprintf(this.API_RATE_LIMIT, { spaceId }), {
+        headers: HttpHelper.createAuthHeaders(headers)
+      })
+    );
+    return response!.data;
+  }
+
   async getSpaceList(headers: IAuthHeader): Promise<ISpaceInfo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.SPACE_LIST, {
@@ -399,14 +415,16 @@ export class RestService {
     return res;
   }
 
-  async getNodesList(headers: IAuthHeader, spaceId: string, type: number, role: string): Promise<INode[]> {
+  async getNodesList(headers: IAuthHeader, spaceId: string, type: number, nodePermissions: number[], keyword?: string): Promise<INode[]> {
     // Obtain node list
+    const url = sprintf(this.NODE_LIST, { spaceId });
     const response = await lastValueFrom(
-      this.httpService.get<INode>(this.NODE_LIST, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+      this.httpService.get<INode>(url, {
+        headers: HttpHelper.createAuthHeaders(headers),
         params: {
           type,
-          role,
+          nodePermissions: nodePermissions.join(','),
+          keyword,
         }
       })
     );
@@ -443,6 +461,7 @@ export class RestService {
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
         allowEmbed: true,
+        allowOrgApi: true
       };
     }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })));
@@ -500,7 +519,7 @@ export class RestService {
    * @param {number} specification
    * @param {number} usage
    */
-  sendSubscribeRemind(
+  async sendSubscribeRemind(
     headers: IAuthHeader,
     spaceId: string,
     nodeId: string,
@@ -514,7 +533,7 @@ export class RestService {
     specification: number,
     usage: number,
   ) {
-    lastValueFrom(
+    await lastValueFrom(
       this.httpService.post<any>(
         this.SUBSCRIBE_REMIND,
         {

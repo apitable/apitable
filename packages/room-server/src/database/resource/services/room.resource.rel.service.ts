@@ -260,7 +260,7 @@ export class RoomResourceRelService {
       });
     // Save resource references of room of the datasheet asynchronously
     const dstIds = [dstId, ...Array.from(foreignDatasheetIdToFiledIdsMap.keys())];
-    this.createOrUpdateRel(dstId, dstIds);
+    await this.createOrUpdateRel(dstId, dstIds);
     // No linked datasheet, only the datasheet is in the room, finish
     if (foreignDatasheetIdToFiledIdsMap.size === 0) {
       return dstIds;

@@ -13,11 +13,13 @@
   justify-content: space-between;
 
   &:hover {
-    background: var(--lowestBg);
-
+    background: var(--bgBglessHover);
     .moreBtn {
       visibility: visible !important;
     }
+  }
+  &:active {
+    background-color: var(--bgBglessActive);
   }
 
   &.actived {
