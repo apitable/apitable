@@ -29,6 +29,13 @@
   transform: translateY(-50%);
   cursor: pointer;
   line-height: 1;
+  &.hover {
+    padding: 4px;
+    border-radius: 4px;
+    &:hover {
+      background-color: var(--rowSelectedBgSolid);
+    }
+  }
 }
 
 .textEditor {
@@ -65,11 +72,17 @@
   left: 8px;
   line-height: 34px;
   max-width: 80%;
-  overflow: hidden;
   position: absolute;
-  text-overflow: ellipsis;
   top: 2px;
   white-space: nowrap;
+  .title {
+    width: 100%;
+    span {
+      text-overflow: ellipsis;
+      display: block;
+      overflow: hidden;
+    }
+  }
   & > span {
     font-size: 13px;
   }

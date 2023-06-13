@@ -26,6 +26,7 @@ import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE } from '../../../constan
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { IRenderContentBase } from '../interface';
+import { Shape } from 'pc/components/konva_components/components/icon';
 import * as React from 'react';
 
 // IconPath
@@ -54,6 +55,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     toggleEdit,
   } = props;
   const [isAddIconHover, setAddIconHover] = useState(false);
+  const [isHover, setHover] = useState(false);
   const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
@@ -104,6 +106,16 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const AddOutlinedPath = AddOutlined.toString();
   const favicon = (renderContent as IRenderContentBase | null)?.favicon;
 
+  const restIconProps = field.type === FieldType.URL ? {
+    shape: 'square' as Shape,
+    cornerRadius: 4,
+    backgroundWidth: 22,
+    backgroundHeight: 22,
+    onMouseEnter: () => setHover(true),
+    onMouseOut: () => setHover(false),
+    background: isHover ? colors.rowSelectedBgSolid : colors.defaultBg,
+  } : {};
+
   const renderText = () => {
     if (renderContent == null) {
       if (field.type !== FieldType.URL) {
@@ -123,6 +135,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           onTap={() => setActiveUrlAction(true)}
           transformsEnabled={'all'}
           listening
+          {...restIconProps}
         />
       );
 
@@ -192,12 +205,13 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             size={GRID_ICON_COMMON_SIZE}
             backgroundWidth={18}
             backgroundHeight={16}
-            background={colors.defaultBg}
             data={enhanceTextIconMap[fieldType]}
             onClick={() => handleClick()}
             onTap={() => handleClick()}
+            background={colors.defaultBg}
             transformsEnabled={'all'}
             listening={linkEnable}
+            {...restIconProps}
           />
         }
       </>

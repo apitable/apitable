@@ -181,7 +181,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     };
     return (
       <span
-        className={style.enhanceTextIcon}
+        className={classNames(style.enhanceTextIcon, field.type === FieldType.URL && style.hover)}
         onClick={() => {
           if (!isForm && field.type === FieldType.URL) {
             setActiveUrlAction(true);
@@ -195,32 +195,36 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     );
   };
 
-  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue?.[0]?.title;
+  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue;
 
   const favicon = field.type === FieldType.URL && field.property.isRecogURLFlag && cellValue?.[0]?.favicon;
 
-  const renderURLTitle = () => {
-    if (!showURLTitleFlag) return null;
+  const renderURL = () => {
+    if (!showURLTitleFlag ) return null;
 
     const urlTitle = Field.bindModel(field).cellValueToString(cellValue);
     if (!urlTitle) return null;
 
-    return(
-      <Tooltip title={value} placement="top">
-        <LinkButton
-          type=""
-          onMouseDown={() => {
-            if (/^https?:\/\//.test(value)) {
-              window.open(value, '_blank');
-              return;
-            }
-            window.open(`http://${value}`);
-          }}
-        >
-          {urlTitle}
-        </LinkButton>
-      </Tooltip>
-    );
+    return (
+      <div className={style.content}>
+        {!focused && favicon && <img src={favicon} alt="" />}
+        <Tooltip title={value} placement="top">
+          <LinkButton
+            type=""
+            className={style.title}
+            onMouseDown={() => {
+              if (/^https?:\/\//.test(value)) {
+                window.open(value, '_blank');
+                return;
+              }
+              window.open(`http://${value}`);
+            }}
+          >
+            {urlTitle}
+          </LinkButton>
+        </Tooltip>
+      </div>
+    )
   };
 
   return (
@@ -232,10 +236,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       onWheel={stopPropagation}
     >
       <div className={style.enhanceTextEditor}>
-        <div className={style.content}>
-          {!focused && favicon && <img src={favicon} alt="" />}
-          {renderURLTitle()}
-        </div>
+        {renderURL()}
         <input
           ref={editorRef}
           placeholder={placeholder}
