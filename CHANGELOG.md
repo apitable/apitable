@@ -3,6 +3,13 @@
 
 
 
+## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-06-12)
+
+
+### What's more
+
+* sync: hosted cloud ([#944](https://github.com/apitable/apitable/pull/944)) @shawndenggh 
+* chore: merge release/0.21.0 into develop ([#945](https://github.com/apitable/apitable/pull/945)) @shawndenggh 
 ## [v0.21.0-rc.1](https://github.com/apitable/apitable/releases/tag/v0.21.0-rc.1) (2023-06-05)
 
 
