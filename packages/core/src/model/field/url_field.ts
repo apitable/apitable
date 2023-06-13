@@ -24,6 +24,7 @@ import { FieldType, IField, IHyperlinkSegment, ISegment, IURLField } from 'types
 import { DatasheetActions } from '../datasheet';
 import { ICellValue } from '../record';
 import { TextBaseField } from './text_base_field';
+import { Strings, t } from '../../exports/i18n';
 
 export class URLField extends TextBaseField {
   constructor(public override field: IURLField, public override state: IReduxState) {
@@ -74,6 +75,26 @@ export class URLField extends TextBaseField {
     const cv = [cellValue].flat();
 
     return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
+  }
+
+  override get openValueJsonSchema() {
+    return {
+      type: 'array',
+      title: this.field.name,
+      items: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+            title: t(Strings.robot_variables_join_url_title),
+          },
+          link: {
+            type: 'string',
+            title: t(Strings.robot_variables_join_url_link),
+          },
+        },
+      }
+    };
   }
 
   override validateProperty() {

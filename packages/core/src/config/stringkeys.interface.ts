@@ -4022,6 +4022,8 @@ export type StringKeysMapType = {
   'robot_variables_join_option_color_values': 'robot_variables_join_option_color_values',
   'robot_variables_join_option_colors': 'robot_variables_join_option_colors',
   'robot_variables_join_option_names': 'robot_variables_join_option_names',
+  'robot_variables_join_url_link': 'robot_variables_join_url_link',
+  'robot_variables_join_url_title': 'robot_variables_join_url_title',
   'robot_variables_more_operations': 'robot_variables_more_operations',
   'robot_variables_option_ID': 'robot_variables_option_ID',
   'robot_variables_option_color': 'robot_variables_option_color',

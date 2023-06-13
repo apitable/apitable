@@ -17,16 +17,16 @@
  */
 
 import Joi from 'joi';
+import { isEqual, isNil, isString } from 'lodash';
+import { ICellValue } from 'model/record';
+import { getMemberTypeString } from 'model/utils';
+import { IOpenMemberFieldProperty, IOpenMemberOption } from 'types/open/open_field_read_types';
+import { IAddOpenMemberFieldProperty, IUpdateOpenMemberFieldProperty } from 'types/open/open_field_write_types';
+import { Strings, t } from '../../exports/i18n';
 import { IReduxState, IUnitValue, Selectors } from '../../exports/store';
 import { IAPIMetaMember, IAPIMetaMemberFieldProperty, IMemberField, IMemberFieldOpenValue, IMemberProperty } from '../../types';
 import { IStandardValue, IUnitIds } from '../../types/field_types';
 import { MemberBaseField } from './member_base_field';
-import { ICellValue } from 'model/record';
-import { isEqual, isNil, isString } from 'lodash';
-import { getMemberTypeString } from 'model/utils';
-import { t, Strings } from '../../exports/i18n';
-import { IOpenMemberFieldProperty, IOpenMemberOption } from 'types/open/open_field_read_types';
-import { IAddOpenMemberFieldProperty, IUpdateOpenMemberFieldProperty } from 'types/open/open_field_write_types';
 
 export class MemberField extends MemberBaseField {
   constructor(public override field: IMemberField, public override state: IReduxState) {
@@ -237,6 +237,7 @@ export class MemberField extends MemberBaseField {
       if (unitMap.hasOwnProperty(unitId)) {
         units.push({
           id: unitId,
+          unitId: unitMap[unitId]!.originalUnitId,
           type: getMemberTypeString(unitMap[unitId]!.type),
           name: unitMap[unitId]!.name,
           avatar: unitMap[unitId]?.avatar,

@@ -44,7 +44,8 @@ export class UnitService {
     private readonly teamService: UnitTeamService,
     private readonly envConfigService: EnvConfigService,
     private readonly userService: UserService,
-  ) {}
+  ) {
+  }
 
   /**
    * Batch obtain unit infos
@@ -128,7 +129,7 @@ export class UnitService {
       }
     });
     // get sub teamIds by teams
-    const { teamIdSubTeamIdsMap, subTeams } = await this.teamService.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, teamIds);
+    const {teamIdSubTeamIdsMap, subTeams} = await this.teamService.getTeamIdSubTeamIdsMapBySpaceIdAndParentIds(spaceId, teamIds);
     teamIds.push(...subTeams);
     const teamMembers = await this.unitTeamMemberRefRepository.selectByTeamIds(teamIds);
     teamMembers.forEach(teamMember => {
@@ -139,7 +140,7 @@ export class UnitService {
     return units.reduce<{ unitId: UnitInfoDto[] }[]>((pre, cur) => {
       if (!pre[cur.id]) pre[cur.id] = [];
       if (cur.unitType === MemberType.Member) {
-         // Process individual members in roles
+        // Process individual members in roles
         this.processMember(cur.unitRefId, members, memberUnits, pre, cur.id);
       } else if (cur.unitType === MemberType.Team) {
         // Process team members
@@ -165,7 +166,7 @@ export class UnitService {
    */
   private processTeamMembers(
     teamMembers: UnitTeamMemberRefEntity[],
-    members: {[memberId: number]: IUserValue},
+    members: { [memberId: number]: IUserValue },
     memberUnits: UnitEntity[],
     teamIdSubTeamIdsMap: { [teamId: string]: string[] },
     unitRefId: number,
@@ -175,7 +176,7 @@ export class UnitService {
     const unitTeamMembers = teamMembers.filter(t => t.teamId === unitRefId);
 
     if (teamIdSubTeamIdsMap[unitRefId]) {
-    // Process sub team members
+      // Process sub team members
       teamIdSubTeamIdsMap[unitRefId]?.forEach(subTeamId => {
         const subTeamMembers = teamMembers.filter(t => String(t.teamId) === subTeamId);
         subTeamMembers.forEach(subTeamMember => {
@@ -194,7 +195,7 @@ export class UnitService {
    */
   private processMember(
     memberId: number,
-    members: {[memberId: number]: IUserValue},
+    members: { [memberId: number]: IUserValue },
     memberUnits: UnitEntity[],
     pre: { unitId: UnitInfoDto[] }[],
     cursorUnitId: string
@@ -207,7 +208,7 @@ export class UnitService {
         unitId: unit.id,
         userId: user.userId,
       });
-    } 
+    }
   }
 
   /**
@@ -233,7 +234,7 @@ export class UnitService {
         roleIds.push(unit.unitRefId);
       }
     });
-    return { [MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds };
+    return {[MemberType.Member]: memberIds, [MemberType.Team]: teamIds, [MemberType.Role]: roleIds};
   }
 
   public async getCountBySpaceIdAndId(unitId: string, spaceId: string): Promise<number> {
@@ -313,5 +314,11 @@ export class UnitService {
       return undefined;
     }
     return this.unitRepo.selectIdByRefIdAndSpaceId(memberId, spaceId).then(o => o?.id);
+  }
+
+  public async getIdByUnitIdAndSpaceIdAndUnitType(unitId: string, spaceId: string, unitType: UnitTypeEnum): Promise<string | undefined> {
+    const result = await this.unitRepo.selectIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId, unitType);
+    if (result) return result.id;
+    return undefined;
   }
 }

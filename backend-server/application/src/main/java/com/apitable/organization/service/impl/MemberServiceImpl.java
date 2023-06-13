@@ -417,10 +417,10 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         for (MemberEntity member : entities) {
             UnitEntity unit = new UnitEntity();
             unit.setId(IdWorker.getId());
+            unit.setUnitId(IdWorker.get32UUID());
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.MEMBER.getType());
             unit.setUnitRefId(member.getId());
-            unit.setUnitId(IdWorker.get32UUID());
             unitEntities.add(unit);
         }
         boolean addBatchUnit = iUnitService.createBatch(unitEntities);
