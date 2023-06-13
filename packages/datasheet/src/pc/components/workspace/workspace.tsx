@@ -157,6 +157,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
         width={'250px'}
         src={theme.palette.type === 'light' ? UpgradeSucceedLight.src : UpgradeSucceedDark.src}
         style={{ marginTop: 16 }}
+        alt="Upgrade Succeed"
       />,
       btnText: t(Strings.got_it)
     });
