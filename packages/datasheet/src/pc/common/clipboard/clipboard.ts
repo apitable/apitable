@@ -27,7 +27,6 @@ import { store } from 'pc/store';
 import { UploadManager } from 'pc/utils';
 import { browser } from '../../../modules/shared/browser';
 import { ShortcutContext } from '../../../modules/shared/shortcut_key';
-import { recogClipboardURLData } from './clip_data_url_recog';
 import { ISerializer, Serializer } from './serializer';
 
 interface IGetCutRangeDataReturn {
@@ -326,15 +325,6 @@ export class Clipboard {
         notifyExistIncompatibleField: () => {
           isPasteIncompatibleField = true;
         }
-      });
-
-      recogClipboardURLData({
-        state,
-        row,
-        column,
-        stdValueTable,
-        datasheetId,
-        clipboardText,
       });
     }
     return { ...commandResult, isPasteIncompatibleField };
