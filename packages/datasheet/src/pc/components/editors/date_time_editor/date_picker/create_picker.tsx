@@ -23,6 +23,16 @@ import dayjs from 'dayjs';
 import omit from 'lodash/omit';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import 'moment/locale/zh-hk';
+import 'moment/locale/fr';
+import 'moment/locale/de';
+import 'moment/locale/it';
+import 'moment/locale/ja';
+import 'moment/locale/ko';
+import 'moment/locale/ru';
+import 'moment/locale/es';
+import 'moment/locale/en-ca';
+
 import { stopPropagation } from 'pc/utils';
 // @ts-ignore
 import MonthCalendar from 'rc-calendar/es/MonthCalendar';
@@ -36,7 +46,15 @@ import styles from './style.module.less';
 
 const lang = {
   'zh-CN': 'zh-cn',
-  'en-US': 'en'
+  'zh-HK': 'zh-hk',
+  'fr-FR': 'fr',
+  'de-DE': 'de',
+  'it-IT': 'it',
+  'ja-JP': 'ja',
+  'ko-KR': 'ko',
+  'ru-RU': 'ru',
+  'es-ES': 'es',
+  'en-US': 'en-ca'
 }[getLanguage()];
 moment.locale(lang);
 

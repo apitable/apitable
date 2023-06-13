@@ -39,4 +39,7 @@ public class CreateRoleRo {
     @Schema(description = "role name", required = true, example = "Finance")
     private String roleName;
 
+    @Schema(description = "role position", example = "2000")
+    private Integer position;
+
 }

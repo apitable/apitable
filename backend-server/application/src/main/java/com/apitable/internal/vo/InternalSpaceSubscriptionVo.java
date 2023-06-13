@@ -58,4 +58,8 @@ public class InternalSpaceSubscriptionVo {
     @Schema(description = "allow use embed", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEmbed;
+
+    @Schema(description = "allow use org api", example = "true")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean allowOrgApi;
 }

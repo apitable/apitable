@@ -166,7 +166,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
       );
     }
     if (condition.value[0] === FilterDuration.DateRange) {
-      const lang = getLanguage().split('-')[0];
+      const langCode = getLanguage();
 
       return (
         <>
@@ -181,7 +181,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
                     allowClear={false}
                     suffixIcon={null}
                     value={dataValue as any}
-                    locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
+                    locale={LocalFormat.getLocal(langCode)}
                     getPopupContainer={() => divRef.current!}
                     disabled={isViewLock}
                   />

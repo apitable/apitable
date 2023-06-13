@@ -24,7 +24,8 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Message, Modal } from '../../common';
+import { Message } from '../../common';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;
@@ -45,21 +46,12 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
     };
 
     if (checked) {
-      Message.warning({
+      Message.info({
         content: t(Strings.field_member_property_subscription_open_tip)
       });
       updateSubscription();
     } else {
-      Modal.warning({
-        title: t(Strings.kindly_reminder),
-        content: t(Strings.field_member_property_subscription_close_tip),
-        hiddenCancelBtn: false,
-        cancelText: t(Strings.cancel),
-        zIndex: 1100,
-        onOk: () => {
-          updateSubscription();
-        },
-      });
+      updateSubscription();
     }
   };
 
@@ -67,18 +59,22 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
   const embedId = useSelector(state => state.pageParams.embedId);
 
-  return (
-    <div className={styles.section}>
-      <section className={settingStyles.section}>
-        {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.field_member_property_subscription)}
-          <Switch
-            size="small"
-            checked={subscription}
-            onChange={handleSubscription}
-          />
-        </div>}
-      </section>
-    </div>
-  );
+  const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
+
+  if (!RECORD_WATCHING_VISIBLE) {
+    return null;
+  }
+
+  return <div className={styles.section}>
+    <section className={settingStyles.section}>
+      {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+        {t(Strings.field_member_property_subscription)}
+        <Switch
+          size="small"
+          checked={subscription}
+          onChange={handleSubscription}
+        />
+      </div>}
+    </section>
+  </div>;
 };

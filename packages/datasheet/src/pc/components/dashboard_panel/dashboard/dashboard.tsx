@@ -18,11 +18,29 @@
 
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, Events, IWidget, Navigation, PermissionType, Player, Selectors, StoreActions, Strings, t, WidgetApi,
+  CollaCommandName,
+  Events,
+  IWidget,
+  Navigation,
+  PermissionType,
+  Player,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  WidgetApi,
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoOutlined, SettingOutlined } from '@apitable/icons';
+import {
+  AddOutlined,
+  CodeFilled,
+  DeleteOutlined,
+  DuplicateOutlined,
+  EditOutlined,
+  GotoOutlined,
+  SettingOutlined
+} from '@apitable/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
@@ -54,6 +72,8 @@ import { RecommendWidgetPanel } from '../recommend_widget_panel';
 import { TabBar } from '../tab_bar';
 import styles from './style.module.less';
 import { WidgetContextProvider } from 'pc/components/widget/context';
+import { getEnvVariables } from '../../../utils/env';
+import { createWidgetByExistWidgetId } from '../utils';
 
 export const DASHBOARD_PANEL_ID = 'DASHBOARD_PANEL_ID';
 
@@ -73,6 +93,9 @@ export const Dashboard = () => {
   const spaceId = useSelector(state => state.space.activeId);
   const widgetMap = useSelector(state => state.widgetMap);
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const linkId = useSelector(Selectors.getLinkId);
+  const installedWidgetIds = useSelector(Selectors.getInstalledWidgetInDashboard);
+  const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
 
   // Custom hooks start
   const colors = useThemeColors();
@@ -221,6 +244,21 @@ export const Dashboard = () => {
     });
   };
 
+  const _copyWidget = async(widgetId: string) => {
+    try {
+      await createWidgetByExistWidgetId(widgetId, dashboardId!);
+    } catch (e: any) {
+      Message.error({
+        content: typeof e === 'string' ? e : e?.message
+      });
+      return;
+    }
+
+    Message.success({
+      content: t(Strings.copy_widget_success)
+    });
+  };
+
   const isWidgetBan = () => WidgetPackageStatus.Ban === activeMenuWidget?.status;
   const isWidgetDev = () => activeMenuWidget?.id === devWidgetId;
   const hadWidgetExpanding = Boolean(widgetId);
@@ -228,7 +266,7 @@ export const Dashboard = () => {
   const menuData = [
     [
       {
-        icon: <SettingOutlined color={colors.thirdLevelText} />,
+        icon: <SettingOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_setting),
         hidden: readonly || hadWidgetExpanding,
         onClick: ({ props }: { props?: any }) => {
@@ -238,7 +276,7 @@ export const Dashboard = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText} />,
+        icon: <CodeFilled color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_enter_dev),
         hidden: readonly || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
         onClick: ({ props }: { props?: any }) => {
@@ -252,7 +290,7 @@ export const Dashboard = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText} />,
+        icon: <CodeFilled color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_exit_dev),
         hidden: readonly || isWidgetBan() || !isWidgetDev(),
         onClick: ({ props }: { props?: any }) => {
@@ -260,13 +298,13 @@ export const Dashboard = () => {
         },
       },
       {
-        icon: <EditOutlined color={colors.thirdLevelText} />,
+        icon: <EditOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_rename),
         onClick: renameWidget,
         hidden: readonly,
       },
       {
-        icon: <GotoOutlined color={colors.thirdLevelText} />,
+        icon: <GotoOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.jump_link_url),
         onClick: jumpToDatasheet,
         hidden: embedId,
@@ -278,7 +316,16 @@ export const Dashboard = () => {
         },
       },
       {
-        icon: <DeleteOutlined color={colors.thirdLevelText} />,
+        icon: <DuplicateOutlined color={colors.thirdLevelText}/>,
+        text: t(Strings.copy_widget),
+        onClick: ({ props }: { props?: any }) => {
+          const { widgetId } = props;
+          _copyWidget(widgetId);
+        },
+        hidden: Boolean(linkId) || isWidgetDev() || !manageable || reachInstalledLimit,
+      },
+      {
+        icon: <DeleteOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_delete),
         onClick: deleteWidget,
         hidden: isMobile || !manageable,
@@ -366,10 +413,12 @@ export const Dashboard = () => {
             canImportWidget={manageable}
             setIsFullScreen={setIsFullScreen}
             installedWidgetHandle={installedWidgetHandle}
+            reachInstalledLimit={reachInstalledLimit}
           />
         }
         <WidgetContextProvider>
-          <div className={styles.widgetArea} style={{ pointerEvents: 'auto', height: (!embedId || embedInfo.viewControl?.tabBar) ? '' : '100%' }}>
+          <div className={styles.widgetArea}
+            style={{ pointerEvents: 'auto', height: (!embedId || embedInfo.viewControl?.tabBar) ? '' : '100%' }}>
             {installedWidgetInDashboard && (
               <ResponsiveGridLayout
                 isDroppable={!readonly}
@@ -392,7 +441,15 @@ export const Dashboard = () => {
                 }}
                 layouts={{
                   lg: dashboardLayout!.map(item => {
-                    return { w: item.widthInColumns, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, minW: 3, i: item.id };
+                    return {
+                      w: item.widthInColumns,
+                      h: item.heightInRoes,
+                      x: item.column,
+                      y: item.row,
+                      minH: 6,
+                      minW: 3,
+                      i: item.id
+                    };
                   }),
                   xs: dashboardLayout!.map(item => {
                     return { w: 1, h: item.heightInRoes, x: item.column, y: item.row, minH: 6, maxW: 1, i: item.id };
@@ -422,7 +479,8 @@ export const Dashboard = () => {
                   const isDevMode = widgetMap?.[item.id]?.widget?.status !== WidgetPackageStatus.Ban &&
                     devWidgetId === item.id && !hideReadonlyEmbedItem;
                   return (
-                    <div key={item.id} className={classNames(widgetId === item.id && styles.isFullscreen)} data-widget-id={item.id} tabIndex={-1}>
+                    <div key={item.id} className={classNames(widgetId === item.id && styles.isFullscreen)}
+                      data-widget-id={item.id} tabIndex={-1}>
                       <WidgetItem
                         widgetId={item.id}
                         readonly={readonly}
@@ -444,7 +502,7 @@ export const Dashboard = () => {
             )}
             {!installedWidgetInDashboard && !readonly && (
               <div className={styles.addNewWidget} onClick={installWidget}>
-                <AddOutlined size={68} color={colors.fourthLevelText} />
+                <AddOutlined size={68} color={colors.fourthLevelText}/>
                 {manageable ? t(Strings.add_widget) : t(Strings.no_permission_add_widget)}
               </div>
             )}
@@ -475,12 +533,12 @@ export const Dashboard = () => {
             setVisibleRecommend={setVisibleRecommend}
             visibleRecommend={visibleRecommend}
             readonly={!manageable}
-            installedWidgetHandle={installedWidgetHandle}
           />
         </Drawer>
       }
 
-      <ContextMenu overlay={flatContextData(menuData, true)} menuId={WIDGET_MENU} onShown={({ props }) => setActiveMenuWidget(props?.widget)} />
+      <ContextMenu overlay={flatContextData(menuData, true)} menuId={WIDGET_MENU}
+        onShown={({ props }) => setActiveMenuWidget(props?.widget)}/>
     </div>
   );
 };

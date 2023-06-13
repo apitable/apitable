@@ -284,7 +284,7 @@
                             font-weight: bold;
                           "
                         >
-                          {{ VERIFICATION_CODE }}
+                          {{VERIFICATION_CODE}}
                         </div>
                         <ul
                           class="tips"
@@ -377,7 +377,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"

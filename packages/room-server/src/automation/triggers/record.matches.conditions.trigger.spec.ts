@@ -97,32 +97,44 @@ describe('conditions group by field', () => {
           fldUrmAlMd1bD: null,
         },
         diffFields: ['fldQpECSuWEig'],
-        fieldMap: {
-          fld7piWGJ28b6: {
-            id: 'fld7piWGJ28b6',
-            name: 'Title',
-            type: 19,
-            property: {
-              defaultValue: '',
+        state: {
+          datasheetMap: {
+            dstPUzpUdEZjArRNVh: {
+              datasheet: {
+                snapshot: {
+                  meta: {
+                    fieldMap: {
+                      fld7piWGJ28b6: {
+                        id: 'fld7piWGJ28b6',
+                        name: 'Title',
+                        type: 19,
+                        property: {
+                          defaultValue: '',
+                        },
+                      },
+                      fldQpECSuWEig: {
+                        id: 'fldQpECSuWEig',
+                        name: 'Checkbox',
+                        type: 11,
+                        property: {
+                          icon: 'white_check_mark',
+                        },
+                      },
+                      fldUrmAlMd1bD: {
+                        id: 'fldUrmAlMd1bD',
+                        name: 'Checkbox 2',
+                        type: 11,
+                        property: {
+                          icon: 'white_check_mark',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
-          fldQpECSuWEig: {
-            id: 'fldQpECSuWEig',
-            name: 'Checkbox',
-            type: 11,
-            property: {
-              icon: 'white_check_mark',
-            },
-          },
-          fldUrmAlMd1bD: {
-            id: 'fldUrmAlMd1bD',
-            name: 'Checkbox 2',
-            type: 11,
-            property: {
-              icon: 'white_check_mark',
-            },
-          },
-        },
+        } as any,
       },
     });
     expect(trigger?.input).toEqual({
@@ -346,52 +358,64 @@ describe('conditions group by field', () => {
           ],
         },
         diffFields: ['fldWu9STVYdSf'],
-        fieldMap: {
-          fld0WLfOvQvT8: {
-            id: 'fld0WLfOvQvT8',
-            name: 'Single line text 2',
-            type: 19,
-            property: {},
-          },
-          fld4uTaVHtgnG: {
-            id: 'fld4uTaVHtgnG',
-            name: 'Single line text',
-            type: 19,
-            property: {},
-          },
-          fld7piWGJ28b6: {
-            id: 'fld7piWGJ28b6',
-            name: 'Title',
-            type: 19,
-            property: {
-              defaultValue: '',
+        state: {
+          datasheetMap: {
+            dstk5YJtbekTbEH8z1: {
+              datasheet: {
+                snapshot: {
+                  meta: {
+                    fieldMap: {
+                      fld0WLfOvQvT8: {
+                        id: 'fld0WLfOvQvT8',
+                        name: 'Single line text 2',
+                        type: 19,
+                        property: {},
+                      },
+                      fld4uTaVHtgnG: {
+                        id: 'fld4uTaVHtgnG',
+                        name: 'Single line text',
+                        type: 19,
+                        property: {},
+                      },
+                      fld7piWGJ28b6: {
+                        id: 'fld7piWGJ28b6',
+                        name: 'Title',
+                        type: 19,
+                        property: {
+                          defaultValue: '',
+                        },
+                      },
+                      fldFtna3CNdDv: {
+                        id: 'fldFtna3CNdDv',
+                        name: 'Single line text 5',
+                        type: 19,
+                        property: {},
+                      },
+                      fldWu9STVYdSf: {
+                        id: 'fldWu9STVYdSf',
+                        name: 'Single line text 4',
+                        type: 19,
+                        property: {},
+                      },
+                      fldfV6gFy31SE: {
+                        id: 'fldfV6gFy31SE',
+                        name: 'Single line text 3',
+                        type: 19,
+                        property: {},
+                      },
+                      fldsRWW4lD0k2: {
+                        id: 'fldsRWW4lD0k2',
+                        name: 'Single line text 6',
+                        type: 19,
+                        property: {},
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
-          fldFtna3CNdDv: {
-            id: 'fldFtna3CNdDv',
-            name: 'Single line text 5',
-            type: 19,
-            property: {},
-          },
-          fldWu9STVYdSf: {
-            id: 'fldWu9STVYdSf',
-            name: 'Single line text 4',
-            type: 19,
-            property: {},
-          },
-          fldfV6gFy31SE: {
-            id: 'fldfV6gFy31SE',
-            name: 'Single line text 3',
-            type: 19,
-            property: {},
-          },
-          fldsRWW4lD0k2: {
-            id: 'fldsRWW4lD0k2',
-            name: 'Single line text 6',
-            type: 19,
-            property: {},
-          },
-        },
+        } as any,
       },
     } as any);
     expect(trigger?.input).toEqual({
@@ -694,109 +718,121 @@ describe('conditions group by field', () => {
           fldwq27AGyP7U: 'opt74mBzeDEuK',
         },
         diffFields: ['fldD8yu9zSnqC'],
-        fieldMap: {
-          fld5HZcGE9P6a: {
-            id: 'fld5HZcGE9P6a',
-            name: 'Select 5',
-            type: 3,
-            property: {
-              options: [],
+        state: {
+          datasheetMap: {
+            dst5EQ4gcRFePCbw1S: {
+              datasheet: {
+                snapshot: {
+                  meta: {
+                    fieldMap: {
+                      fld5HZcGE9P6a: {
+                        id: 'fld5HZcGE9P6a',
+                        name: 'Select 5',
+                        type: 3,
+                        property: {
+                          options: [],
+                        },
+                      },
+                      fld7piWGJ28b6: {
+                        id: 'fld7piWGJ28b6',
+                        name: 'Title',
+                        type: 19,
+                        property: {
+                          defaultValue: '',
+                        },
+                      },
+                      fld8Ww4x5TGav: {
+                        id: 'fld8Ww4x5TGav',
+                        name: 'Select',
+                        type: 3,
+                        property: {
+                          options: [
+                            {
+                              id: 'optItTLBaXjqI',
+                              name: 'is',
+                              color: 0,
+                            },
+                          ],
+                        },
+                      },
+                      fldD8yu9zSnqC: {
+                        id: 'fldD8yu9zSnqC',
+                        name: 'Select 2',
+                        type: 3,
+                        property: {
+                          options: [
+                            {
+                              id: 'optizYhckVAAY',
+                              name: 'no is',
+                              color: 0,
+                            },
+                            {
+                              id: 'optQMKbhuITjl',
+                              name: 'is',
+                              color: 1,
+                            },
+                            {
+                              id: 'optFNZTXqPFyv',
+                              name: 'test',
+                              color: 2,
+                            },
+                          ],
+                        },
+                      },
+                      fldTxBltNErKH: {
+                        id: 'fldTxBltNErKH',
+                        name: 'Select 4',
+                        type: 3,
+                        property: {
+                          options: [
+                            {
+                              id: 'optV9DmWmFDXZ',
+                              name: 'contain',
+                              color: 0,
+                            },
+                            {
+                              id: 'optnRhiNB8hT6',
+                              name: 'no contain',
+                              color: 1,
+                            },
+                          ],
+                        },
+                      },
+                      fldXAp9uze08G: {
+                        id: 'fldXAp9uze08G',
+                        name: 'Select 6',
+                        type: 3,
+                        property: {
+                          options: [
+                            {
+                              id: 'optnZ7M7gPzGl',
+                              name: 'no empty',
+                              color: 0,
+                            },
+                          ],
+                        },
+                      },
+                      fldwq27AGyP7U: {
+                        id: 'fldwq27AGyP7U',
+                        name: 'Select 3',
+                        type: 3,
+                        property: {
+                          options: [
+                            {
+                              id: 'opt74mBzeDEuK',
+                              name: 'contain',
+                              color: 0,
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
-          fld7piWGJ28b6: {
-            id: 'fld7piWGJ28b6',
-            name: 'Title',
-            type: 19,
-            property: {
-              defaultValue: '',
-            },
-          },
-          fld8Ww4x5TGav: {
-            id: 'fld8Ww4x5TGav',
-            name: 'Select',
-            type: 3,
-            property: {
-              options: [
-                {
-                  id: 'optItTLBaXjqI',
-                  name: 'is',
-                  color: 0,
-                },
-              ],
-            },
-          },
-          fldD8yu9zSnqC: {
-            id: 'fldD8yu9zSnqC',
-            name: 'Select 2',
-            type: 3,
-            property: {
-              options: [
-                {
-                  id: 'optizYhckVAAY',
-                  name: 'no is',
-                  color: 0,
-                },
-                {
-                  id: 'optQMKbhuITjl',
-                  name: 'is',
-                  color: 1,
-                },
-                {
-                  id: 'optFNZTXqPFyv',
-                  name: 'test',
-                  color: 2,
-                },
-              ],
-            },
-          },
-          fldTxBltNErKH: {
-            id: 'fldTxBltNErKH',
-            name: 'Select 4',
-            type: 3,
-            property: {
-              options: [
-                {
-                  id: 'optV9DmWmFDXZ',
-                  name: 'contain',
-                  color: 0,
-                },
-                {
-                  id: 'optnRhiNB8hT6',
-                  name: 'no contain',
-                  color: 1,
-                },
-              ],
-            },
-          },
-          fldXAp9uze08G: {
-            id: 'fldXAp9uze08G',
-            name: 'Select 6',
-            type: 3,
-            property: {
-              options: [
-                {
-                  id: 'optnZ7M7gPzGl',
-                  name: 'no empty',
-                  color: 0,
-                },
-              ],
-            },
-          },
-          fldwq27AGyP7U: {
-            id: 'fldwq27AGyP7U',
-            name: 'Select 3',
-            type: 3,
-            property: {
-              options: [
-                {
-                  id: 'opt74mBzeDEuK',
-                  name: 'contain',
-                  color: 0,
-                },
-              ],
-            },
-          },
-        },
+        } as any,
       },
     } as any);
     expect(trigger?.input).toEqual({
@@ -1031,34 +1067,46 @@ describe('conditions group by field', () => {
           ],
         },
         diffFields: ['fldWikeY5MlYI'],
-        fieldMap: {
-          fld1ICN0W2hAR: {
-            id: 'fld1ICN0W2hAR',
-            name: 'Magic link',
-            type: 7,
-            property: {
-              brotherFieldId: 'fldm8Yzz1Yc9V',
-              foreignDatasheetId: 'dstk5YJtbekTbEH8z1',
+        state: {
+          datasheetMap: {
+            dstnbUL0rqSUX5YSZN: {
+              datasheet: {
+                snapshot: {
+                  meta: {
+                    fieldMap: {
+                      fld1ICN0W2hAR: {
+                        id: 'fld1ICN0W2hAR',
+                        name: 'Magic link',
+                        type: 7,
+                        property: {
+                          brotherFieldId: 'fldm8Yzz1Yc9V',
+                          foreignDatasheetId: 'dstk5YJtbekTbEH8z1',
+                        },
+                      },
+                      fld7piWGJ28b6: {
+                        id: 'fld7piWGJ28b6',
+                        name: 'Title',
+                        type: 19,
+                        property: {
+                          defaultValue: '',
+                        },
+                      },
+                      fldWikeY5MlYI: {
+                        id: 'fldWikeY5MlYI',
+                        name: 'Magic link 2',
+                        type: 7,
+                        property: {
+                          brotherFieldId: 'fldVSnlF3Y0xW',
+                          foreignDatasheetId: 'dstk5YJtbekTbEH8z1',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
-          fld7piWGJ28b6: {
-            id: 'fld7piWGJ28b6',
-            name: 'Title',
-            type: 19,
-            property: {
-              defaultValue: '',
-            },
-          },
-          fldWikeY5MlYI: {
-            id: 'fldWikeY5MlYI',
-            name: 'Magic link 2',
-            type: 7,
-            property: {
-              brotherFieldId: 'fldVSnlF3Y0xW',
-              foreignDatasheetId: 'dstk5YJtbekTbEH8z1',
-            },
-          },
-        },
+        } as any,
       },
     } as any);
     expect(trigger?.input).toEqual({

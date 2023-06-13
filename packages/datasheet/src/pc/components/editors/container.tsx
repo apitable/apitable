@@ -676,7 +676,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           });
         };
 
-        if (isUrl(url)) {
+        if (isUrl(url) && cellValue?.[0].text !== (value[0] as any)?.text) {
           recognizeURLAndSetTitle({
             url,
             callback,
@@ -809,7 +809,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
-        return <EnhanceTextEditor style={editorRect} ref={editorRef} recordId={record.id} {...commonProps} />;
+        return <EnhanceTextEditor style={editorRect} ref={editorRef} recordId={record.id} setEditing={setEditing} {...commonProps} />;
       case FieldType.Rating:
         return <RatingEditor style={editorRect} ref={editorRef} cellValue={cellValue} {...commonProps} />;
       case FieldType.Checkbox:

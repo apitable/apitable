@@ -18,50 +18,56 @@
 
 package com.apitable.organization.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.organization.enums.UnitType;
-import com.apitable.organization.ro.RoleMemberUnitRo;
-import com.apitable.organization.vo.RoleMemberVo;
-import com.apitable.organization.vo.UnitMemberVo;
-import com.apitable.organization.vo.UnitTeamVo;
-import com.apitable.organization.mapper.RoleMemberMapper;
-import com.apitable.organization.dto.RoleMemberInfoDTO;
-import com.apitable.organization.service.IOrganizationService;
-import com.apitable.organization.service.IRoleMemberService;
-import com.apitable.organization.service.ITeamService;
-import com.apitable.space.service.ISpaceService;
-import com.apitable.organization.enums.OrganizationException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SqlTool;
-import com.apitable.organization.entity.RoleMemberEntity;
-import com.apitable.organization.entity.TeamEntity;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.SqlTool;
+import com.apitable.organization.dto.RoleBaseInfoDto;
+import com.apitable.organization.dto.RoleMemberDTO;
+import com.apitable.organization.dto.RoleMemberInfoDTO;
+import com.apitable.organization.dto.UnitBaseInfoDTO;
+import com.apitable.organization.entity.RoleMemberEntity;
+import com.apitable.organization.entity.TeamEntity;
+import com.apitable.organization.enums.OrganizationException;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.mapper.RoleMemberMapper;
+import com.apitable.organization.ro.RoleMemberUnitRo;
+import com.apitable.organization.service.IOrganizationService;
+import com.apitable.organization.service.IRoleMemberService;
+import com.apitable.organization.service.IRoleService;
+import com.apitable.organization.service.ITeamService;
+import com.apitable.organization.service.IUnitService;
+import com.apitable.organization.vo.RoleMemberVo;
+import com.apitable.organization.vo.UnitMemberVo;
+import com.apitable.organization.vo.UnitRoleInfoVo;
+import com.apitable.organization.vo.UnitTeamVo;
+import com.apitable.space.service.ISpaceService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Slf4j
 @Service
-public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMemberEntity> implements IRoleMemberService {
+public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMemberEntity>
+    implements IRoleMemberService {
 
     @Resource
     IOrganizationService iOrganizationService;
@@ -72,12 +78,20 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
     @Resource
     ISpaceService iSpaceService;
 
+    @Resource
+    private IRoleService iRoleService;
+
+    @Resource
+    private IUnitService iUnitService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<Long> addRoleMembers(Long roleId, List<RoleMemberUnitRo> unitList) {
         // filter exist role members.
         Set<Long> existRoleMembers = baseMapper.selectUnitRefIdsByRoleId(roleId);
-        List<RoleMemberUnitRo> distinctUnits = unitList.stream().filter(orgUnit -> !existRoleMembers.contains(orgUnit.getId())).collect(toList());
+        List<RoleMemberUnitRo> distinctUnits =
+            unitList.stream().filter(orgUnit -> !existRoleMembers.contains(orgUnit.getId()))
+                .collect(toList());
         if (CollUtil.isEmpty(distinctUnits)) {
             return CollUtil.newArrayList();
         }
@@ -87,10 +101,10 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         // begin add role members.
         distinctUnits.forEach(unit -> {
             RoleMemberEntity roleMember = RoleMemberEntity.builder()
-                    .roleId(roleId)
-                    .unitRefId(unit.getId())
-                    .unitType(unit.getType())
-                    .build();
+                .roleId(roleId)
+                .unitRefId(unit.getId())
+                .unitType(unit.getType())
+                .build();
             roleMembers.add(roleMember);
             List<Long> ids = UnitType.TEAM.getType().equals(unit.getType()) ? teamIds : memberIds;
             ids.add(unit.getId());
@@ -105,7 +119,8 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         if (CollUtil.isEmpty(roleMemberIds)) {
             return CollUtil.newArrayList();
         }
-        List<RoleMemberInfoDTO> removedRoleMember = baseMapper.selectRoleMembersByRoleIdAndUnitRefIds(roleId, roleMemberIds);
+        List<RoleMemberInfoDTO> removedRoleMember =
+            baseMapper.selectRoleMembersByRoleIdAndUnitRefIds(roleId, roleMemberIds);
         // begin remove role members.
         baseMapper.deleteByRoleIdAndUnitRefIds(roleId, roleMemberIds);
         return getMemberIds(removedRoleMember);
@@ -127,13 +142,14 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
     @Override
     public IPage<RoleMemberVo> getRoleMembersPage(String spaceId, Long roleId, Page<Void> page) {
         // page query role members' information.
-        IPage<RoleMemberInfoDTO> roleMemberUnitPage = baseMapper.selectRoleMembersByRoleId(roleId, page);
+        IPage<RoleMemberInfoDTO> roleMemberUnitPage =
+            baseMapper.selectRoleMembersByRoleId(roleId, page);
         // begin populate role member vo information.
         IPage<RoleMemberVo> roleMembersPage = roleMemberUnitPage
-                .convert(roleMemberUnit -> RoleMemberVo.builder()
-                        .unitRefId(roleMemberUnit.getUnitRefId())
-                        .unitType(roleMemberUnit.getUnitType())
-                        .build());
+            .convert(roleMemberUnit -> RoleMemberVo.builder()
+                .unitRefId(roleMemberUnit.getUnitRefId())
+                .unitType(roleMemberUnit.getUnitType())
+                .build());
         List<RoleMemberVo> records = roleMembersPage.getRecords();
         // populate role member vo information based on the type of the role member.
         populateRoleMember(spaceId, records);
@@ -142,9 +158,10 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
 
     private void populateRoleMember(String spaceId, List<RoleMemberVo> records) {
         Map<Long, RoleMemberVo> unitRefIdToRoleMember = records.stream()
-                .collect(toMap(RoleMemberVo::getUnitRefId, record -> record));
+            .collect(toMap(RoleMemberVo::getUnitRefId, record -> record));
         Map<Integer, List<Long>> unitTypeToUnitRefId = records.stream()
-                .collect(groupingBy(RoleMemberVo::getUnitType, mapping(RoleMemberVo::getUnitRefId, toList())));
+            .collect(groupingBy(RoleMemberVo::getUnitType,
+                mapping(RoleMemberVo::getUnitRefId, toList())));
         unitTypeToUnitRefId.forEach((unitType, unitRefIds) -> {
             if (UnitType.TEAM.getType().equals(unitType)) {
                 // populate team type role members
@@ -156,7 +173,8 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         });
     }
 
-    private void populateMember(String spaceId, Map<Long, RoleMemberVo> unitRefIdToRoleMember, List<Long> unitRefIds) {
+    private void populateMember(String spaceId, Map<Long, RoleMemberVo> unitRefIdToRoleMember,
+                                List<Long> unitRefIds) {
         // get root team's name
         Long rootTeamId = iTeamService.getRootTeamId(spaceId);
         TeamEntity team = iTeamService.getById(rootTeamId);
@@ -174,8 +192,7 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
             roleMember.setIsAdmin(unitMember.getIsAdmin());
             if (StrUtil.isNotBlank(unitMember.getTeams())) {
                 roleMember.setTeams(unitMember.getTeams());
-            }
-            else {
+            } else {
                 roleMember.setTeams(rootTeamName);
             }
         });
@@ -187,7 +204,8 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         }
     }
 
-    private void populateTeam(String spaceId, Map<Long, RoleMemberVo> unitRefIdToRoleMember, List<Long> unitRefIds) {
+    private void populateTeam(String spaceId, Map<Long, RoleMemberVo> unitRefIdToRoleMember,
+                              List<Long> unitRefIds) {
         // get team information by team id.
         List<UnitTeamVo> unitTeams = iTeamService.getUnitTeamVo(spaceId, unitRefIds);
         unitTeams.forEach(unitTeam -> {
@@ -229,11 +247,63 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         consumer.accept(count > 0);
     }
 
+    @Override
+    public List<RoleMemberDTO> getByUnitRefIdsAndUnitType(List<Long> unitRefIds,
+                                                          UnitType unitType) {
+        if (unitRefIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectByUnitRefIdAnUnitType(unitRefIds, unitType);
+    }
+
+    @Override
+    public List<RoleMemberDTO> getByUnitRefIds(List<Long> unitRefIds) {
+        if (unitRefIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectByUnitRefIds(unitRefIds);
+    }
+
+    @Override
+    public Map<Long, List<UnitRoleInfoVo>> getRefUnitRoles(List<Long> unitRefIds,
+                                                           UnitType unitType) {
+        // get the specific unit's roles
+        List<RoleMemberDTO> refRoles = getByUnitRefIdsAndUnitType(unitRefIds, unitType);
+        if (refRoles.isEmpty()) {
+            return new HashMap<>();
+        }
+        // get role information, group by roleId
+        List<Long> roleIds = refRoles.stream().map(RoleMemberDTO::getRoleId).collect(toList());
+        Map<Long, RoleBaseInfoDto> roleMap = iRoleService.getBaseInfoDtoByRoleIds(roleIds).stream()
+            .collect(Collectors.toMap(RoleBaseInfoDto::getId, i -> i));
+        // get role unit information, group by roleId
+        Map<Long, String> units = iUnitService.getUnitBaseInfoByRefIds(roleIds).stream()
+            .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getUnitId));
+        // return information, group by unitRefId (team/member)
+        Map<Long, List<UnitRoleInfoVo>> refUnitRoleMap = new HashMap<>();
+        for (RoleMemberDTO refRole : refRoles) {
+            RoleBaseInfoDto role = roleMap.get(refRole.getRoleId());
+            UnitRoleInfoVo unitRole = UnitRoleInfoVo.builder().unitId(units.get(role.getId()))
+                .sequence(role.getPosition()).name(role.getRoleName()).build();
+            if (refUnitRoleMap.containsKey(refRole.getUnitRefId())) {
+                List<UnitRoleInfoVo> unitRoles =
+                    new ArrayList<>(refUnitRoleMap.get(refRole.getUnitRefId()));
+                unitRoles.add(unitRole);
+                refUnitRoleMap.put(refRole.getUnitRefId(), unitRoles);
+            } else {
+                refUnitRoleMap.put(refRole.getUnitRefId(), Collections.singletonList(unitRole));
+            }
+        }
+        return refUnitRoleMap;
+
+    }
+
     private List<Long> getMemberIds(List<RoleMemberInfoDTO> roleMembers) {
         List<Long> teamIds = new ArrayList<>();
         List<Long> memberIds = new ArrayList<>();
         roleMembers.forEach(roleMember -> {
-            List<Long> ids = UnitType.toEnum(roleMember.getUnitType()) == UnitType.TEAM ? teamIds : memberIds;
+            List<Long> ids =
+                UnitType.toEnum(roleMember.getUnitType()) == UnitType.TEAM ? teamIds : memberIds;
             ids.add(roleMember.getUnitRefId());
         });
         return getMemberIds(teamIds, memberIds);

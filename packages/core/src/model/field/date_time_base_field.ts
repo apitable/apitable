@@ -46,12 +46,13 @@ import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'ut
 import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
-import { getTimeZoneAbbrByUtc, getTimeZone } from '../../config';
+import { covertDayjsFormat2DateFnsFormat, getTimeZone, getTimeZoneAbbrByUtc } from '../../config';
 import { IOpenFilterValueDataTime } from 'types/open/open_filter_types';
 import Joi from 'joi';
 import { DEFAULT_TIME_ZONE } from 'model';
 import { isServer } from 'utils/env';
 import { getUserTimeZone } from 'exports/store/selectors';
+import { format as dfzFormat, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
@@ -59,7 +60,9 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // which is published under the MIT license. See https://github.com/iamkun/dayjs/blob/dev/LICENSE for more information.
 
   const dtfCache: { [timezone: string]: Intl.DateTimeFormat } = {};
-  const getDateTimeFormat = (timezone: string, options: { timeZoneName?: Intl.DateTimeFormatOptions['timeZoneName'] } = {}) => {
+  const getDateTimeFormat = (timezone: string, options: {
+    timeZoneName?: Intl.DateTimeFormatOptions['timeZoneName']
+  } = {}) => {
     const timeZoneName = options.timeZoneName || 'short';
     const key = `${timezone}|${timeZoneName}`;
     let dtf = dtfCache[key];
@@ -158,10 +161,12 @@ export const dateTimeFormat = (
     if (props.includeTimeZone) {
       timeZone = timeZone || DEFAULT_DATETIME_PROPS.timeZone;
       const abbr = getTimeZoneAbbrByUtc(timeZone)!;
-      return `${dayjs(Number(timestamp)).tz(timeZone).format(format)} (${abbr})`;
+      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone }) + ` (${abbr})`;
     }
     if (!props.includeTimeZone && timeZone) {
-      return dayjs(Number(timestamp)).tz(timeZone).format(format);
+      // dayjs(Number(timestamp)).tz(timeZone).format(format);
+      // Frequent invocations of the "tz" function here will result in severe page lag.
+      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone });
     }
   } catch (e) {
     if (e instanceof RangeError) {
@@ -169,10 +174,18 @@ export const dateTimeFormat = (
     }
     throw e;
   }
-  return dayjs(Number(timestamp)).format(format);
+  return dfzFormat(timestamp, covertDayjsFormat2DateFnsFormat(format));
 };
 
-const withTimeZone = (date: dayjs.Dayjs, timeZone?: string) => timeZone ? date.tz(timeZone) : date;
+const withTimeZone = (timestamp: number | undefined | string, timeZone?: string) => {
+  if (timeZone) {
+    // https://stackoverflow.com/questions/66029964/timezone-conversion-using-date-fns
+    const zonedDate = utcToZonedTime(Number(timestamp), timeZone);
+    const utcDate = zonedTimeToUtc(zonedDate, timeZone);
+    return dayjs(utcDate.getTime());
+  }
+  return dayjs(timestamp);
+};
 
 export type ICommonDateTimeField = IDateTimeField | ICreatedTimeField | ILastModifiedTimeField;
 
@@ -228,7 +241,7 @@ export abstract class DateTimeBaseField extends Field {
       format: getDateTimeFormat(this.field.property),
       includeTime: this.field.property.includeTime,
       timeZone: this.field.property.timeZone,
-      includeTimeZone : this.field.property.includeTimeZone
+      includeTimeZone: this.field.property.includeTimeZone
     };
     if ((this.field.property as any).autoFill) {
       res.autoFill = true;
@@ -339,9 +352,9 @@ export abstract class DateTimeBaseField extends Field {
     const dateTimeStr1 = dateTimeFormat(cv1, property);
     const dateTimeStr2 = dateTimeFormat(cv2, property);
 
-    // The product requirement is to use the displayed value (that is, the value seen by the cell) to be sorted uniformly. 
+    // The product requirement is to use the displayed value (that is, the value seen by the cell) to be sorted uniformly.
     // In theory, all of them can be compared using str.
-    // But there is a variant of the year-month-day format: day-month-year, 
+    // But there is a variant of the year-month-day format: day-month-year,
     // if you use str to compare the order at this time, there will be an error,
     // So the format containing the year, month and day uses timestamp comparison uniformly
     if (hasYear) {
@@ -378,7 +391,7 @@ export abstract class DateTimeBaseField extends Field {
       /*
         * Data pasted or dragged from a date field should be saved twice
         * text is text, such as 11/02 2020-11-1, used to write data when pasting to non-date fields
-        * originValue is a timestamp, which is used to paste or fill data into the date field. 
+        * originValue is a timestamp, which is used to paste or fill data into the date field.
         * The biggest difference from text is that all the time information is saved, which can be used according to
         * The format of the target date field is displayed freely
         */
@@ -409,18 +422,18 @@ export abstract class DateTimeBaseField extends Field {
     let datetime = dayjs(_value);
     if (datetime.isValid()) {
       /**
-        * automatically fills the date with the year
-        * If the data is pasted from a cell of a time field, 
-        * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
-        * 
-        * 1. Perform pattern matching according to the given format, check if there is a possible year, 
-        * if there is, use the given year
-        * 
-        * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001, 
-        * if it is satisfied, it will be directed to the current year
-        * 
-        * @type {boolean}
-        */
+       * automatically fills the date with the year
+       * If the data is pasted from a cell of a time field,
+       * it will not be processed, but for strings pasted from text or Excel, two judgments will be made
+       *
+       * 1. Perform pattern matching according to the given format, check if there is a possible year,
+       * if there is, use the given year
+       *
+       * 2. If the above conditions are not satisfied, check whether the final formatted year is 2001,
+       * if it is satisfied, it will be directed to the current year
+       *
+       * @type {boolean}
+       */
       const isIncludesYear = dayjs(_value, ['Y-M-D', 'D/M/Y']).isValid();
       if (datetime.year() === 2001 && !isIncludesYear) {
         datetime = datetime.year(dayjs().year());
@@ -436,27 +449,27 @@ export abstract class DateTimeBaseField extends Field {
   }
 
   /**
-    * Assuming it is now Feb 8 01:56:55 UTC+8
-    * Today: [Today 00:00, Tomorrow 23:59] UTC+8
-    * Tomorrow: [Tomorrow 00:00, The day after tomorrow 23:59] UTC+8
-    * Yesterday: [yesterday 00:00, today 23:59] UTC+8
-    * Next 7 days: [Today 00:00, Feb 16 23:59] UTC+8
-    * Last 7 days: [February 1st 00:00, today 23:59] UTC+8
-    * In the next 30 days: [Today 00:00, March 9th 23:59] UTC+8
-    * In the past 30 days: [January 8th 00:00, today 23:59] UTC+8
-    * This week: Monday to Friday of the current week
-    * Last week: Monday to Friday of the previous week
-    * This month: [February 1st 00:00, February 28th 23:59] UTC+8
-    * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
-    * This year: [January 1st 00:00, December 31st 23:59] UTC+8
-    */
+   * Assuming it is now Feb 8 01:56:55 UTC+8
+   * Today: [Today 00:00, Tomorrow 23:59] UTC+8
+   * Tomorrow: [Tomorrow 00:00, The day after tomorrow 23:59] UTC+8
+   * Yesterday: [yesterday 00:00, today 23:59] UTC+8
+   * Next 7 days: [Today 00:00, Feb 16 23:59] UTC+8
+   * Last 7 days: [February 1st 00:00, today 23:59] UTC+8
+   * In the next 30 days: [Today 00:00, March 9th 23:59] UTC+8
+   * In the past 30 days: [January 8th 00:00, today 23:59] UTC+8
+   * This week: Monday to Friday of the current week
+   * Last week: Monday to Friday of the previous week
+   * This month: [February 1st 00:00, February 28th 23:59] UTC+8
+   * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
+   * This year: [January 1st 00:00, December 31st 23:59] UTC+8
+   */
   private static getTimeRange(filterDuration: FilterDuration, time: ITimestamp | string | null | undefined, timeZone?: string): [ITimestamp, ITimestamp] {
     switch (filterDuration) {
       case FilterDuration.ExactDate: {
         if (time != undefined) {
           return [
-            withTimeZone(dayjs(time), timeZone).startOf('day').valueOf(),
-            withTimeZone(dayjs(time), timeZone).endOf('day').valueOf()
+            withTimeZone(time, timeZone).startOf('day').valueOf(),
+            withTimeZone(time, timeZone).endOf('day').valueOf()
           ];
         }
         throw new Error('ExactDate has to calculate with timestamp');
@@ -470,82 +483,82 @@ export abstract class DateTimeBaseField extends Field {
       }
       case FilterDuration.Today: {
         return [
-          withTimeZone(dayjs(), timeZone).startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).endOf('day').valueOf()
+          withTimeZone(Date.now(), timeZone).startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).endOf('day').valueOf()
         ];
       }
       case FilterDuration.Tomorrow: {
         return [
-          withTimeZone(dayjs(), timeZone).add(1, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(1, 'day').endOf('day').valueOf()
+          withTimeZone(Date.now(), timeZone).add(1, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(1, 'day').endOf('day').valueOf()
         ];
       }
       case FilterDuration.Yesterday: {
         return [
-          withTimeZone(dayjs(), timeZone).add(-1, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(-1, 'day').endOf('day').valueOf()
+          withTimeZone(Date.now(), timeZone).add(-1, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-1, 'day').endOf('day').valueOf()
         ];
       }
       case FilterDuration.TheNextWeek: {
         return [
-          withTimeZone(dayjs(), timeZone).add(1, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(7, 'day').endOf('day').valueOf()
+          withTimeZone(Date.now(), timeZone).add(1, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(7, 'day').endOf('day').valueOf()
         ];
       }
       case FilterDuration.TheLastWeek: {
         return [
-          withTimeZone(dayjs(), timeZone).add(-7, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(-1, 'day').endOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-7, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-1, 'day').endOf('day').valueOf(),
         ];
       }
       // 1/29 plus one month equals March 1st
       case FilterDuration.TheNextMonth: {
         return [
-          withTimeZone(dayjs(), timeZone).add(1, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(30, 'day').endOf('day').valueOf()
+          withTimeZone(Date.now(), timeZone).add(1, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(30, 'day').endOf('day').valueOf()
         ];
       }
       case FilterDuration.TheLastMonth: {
         return [
-          withTimeZone(dayjs(), timeZone).add(-30, 'day').startOf('day').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(-1, 'day').endOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-30, 'day').startOf('day').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-1, 'day').endOf('day').valueOf(),
         ];
       }
       case FilterDuration.ThisWeek: {
         return [
-          withTimeZone(dayjs(), timeZone).startOf('week').valueOf(),
-          withTimeZone(dayjs(), timeZone).endOf('week').valueOf()
+          withTimeZone(Date.now(), timeZone).startOf('week').valueOf(),
+          withTimeZone(Date.now(), timeZone).endOf('week').valueOf()
         ];
       }
       case FilterDuration.PreviousWeek: {
         return [
-          withTimeZone(dayjs(), timeZone).add(-1, 'week').startOf('week').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(-1, 'week').endOf('week').valueOf()
+          withTimeZone(Date.now(), timeZone).add(-1, 'week').startOf('week').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-1, 'week').endOf('week').valueOf()
         ];
       }
       case FilterDuration.ThisMonth: {
         return [
-          withTimeZone(dayjs(), timeZone).startOf('month').valueOf(),
-          withTimeZone(dayjs(), timeZone).endOf('month').valueOf()
+          withTimeZone(Date.now(), timeZone).startOf('month').valueOf(),
+          withTimeZone(Date.now(), timeZone).endOf('month').valueOf()
         ];
       }
       case FilterDuration.PreviousMonth: {
         return [
-          withTimeZone(dayjs(), timeZone).add(-1, 'month').startOf('month').valueOf(),
-          withTimeZone(dayjs(), timeZone).add(-1, 'month').endOf('month').valueOf()
+          withTimeZone(Date.now(), timeZone).add(-1, 'month').startOf('month').valueOf(),
+          withTimeZone(Date.now(), timeZone).add(-1, 'month').endOf('month').valueOf()
         ];
       }
       case FilterDuration.ThisYear: {
         return [
-          withTimeZone(dayjs(), timeZone).startOf('year').valueOf(),
-          withTimeZone(dayjs(), timeZone).endOf('year').valueOf()
+          withTimeZone(Date.now(), timeZone).startOf('year').valueOf(),
+          withTimeZone(Date.now(), timeZone).endOf('year').valueOf()
         ];
       }
       case FilterDuration.SomeDayBefore: {
         if (typeof time === 'number') {
           return [
-            withTimeZone(dayjs(), timeZone).add(-time, 'day').startOf('day').valueOf(),
-            withTimeZone(dayjs(), timeZone).add(-time, 'day').endOf('day').valueOf()
+            withTimeZone(Date.now(), timeZone).add(-time, 'day').startOf('day').valueOf(),
+            withTimeZone(Date.now(), timeZone).add(-time, 'day').endOf('day').valueOf()
           ];
         }
         throw new Error('SomeDayBefore has to calculate with number');
@@ -553,8 +566,8 @@ export abstract class DateTimeBaseField extends Field {
       case FilterDuration.SomeDayAfter: {
         if (typeof time === 'number') {
           return [
-            withTimeZone(dayjs(), timeZone).add(time, 'day').startOf('day').valueOf(),
-            withTimeZone(dayjs(), timeZone).add(time, 'day').endOf('day').valueOf()
+            withTimeZone(Date.now(), timeZone).add(time, 'day').startOf('day').valueOf(),
+            withTimeZone(Date.now(), timeZone).add(time, 'day').endOf('day').valueOf()
           ];
         }
         throw new Error('SomeDayAfter has to calculate with number');

@@ -114,10 +114,11 @@ export const getAPINodeType = (nodeType: ConfigConstant.NodeType) => {
 
 export const getApiNodePermission = (role: string) => {
   const NODE_PERMISSION_MAP = {
-    [ConfigConstant.permission.manager]: 0,
-    [ConfigConstant.permission.editor]: 1,
-    [ConfigConstant.permission.updater]: 2,
-    [ConfigConstant.permission.reader]: 3,
+    manager: 0,
+    owner: 0,
+    editor: 1,
+    updater: 2,
+    reader: 3,
   }
   return NODE_PERMISSION_MAP[role] != undefined ? NODE_PERMISSION_MAP[role] : -1;
 }

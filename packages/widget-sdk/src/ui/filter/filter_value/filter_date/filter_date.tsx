@@ -6,7 +6,6 @@ import { FilterDateWrap, DateEditorWrap } from './styled';
 import { EditorNumber } from '../editor/editor_number';
 import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker, LocalFormat } from './date_picker';
-import { getLanguage } from 'utils';
 
 const { RangePicker } = DatePicker;
 
@@ -19,7 +18,6 @@ export const FilterDate: React.FC<IFilterDateProps> = (props) => {
     if (filterDuration !== FilterDuration.DateRange) return null;
     return date ? date.split('-').map(timeStamp => dayjs(Number(timeStamp))) : null;
   });
-  const lang = getLanguage().split('-')[0];
 
   const filterDurationChange = (val: any) => {
     onChange([val]);
@@ -53,7 +51,7 @@ export const FilterDate: React.FC<IFilterDateProps> = (props) => {
           allowClear={false}
           suffixIcon={null}
           value={range as any}
-          locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
+          locale={LocalFormat.getLocal()}
         />
       );
     }
@@ -66,7 +64,7 @@ export const FilterDate: React.FC<IFilterDateProps> = (props) => {
           suffixIcon={null}
           format='YYYY-MM-DD'
           onChange={filterValueChange}
-          locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
+          locale={LocalFormat.getLocal()}
         />
       );
     }

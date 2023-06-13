@@ -87,6 +87,12 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
   });
 
   const { foreignSnapshot, foreignDatasheetName } = useSelector((state: IReduxState) => {
+    if (!editing) {
+      return {
+        foreignSnapshot: undefined,
+        foreignDatasheetName: undefined,
+      };
+    }
     const forceFetch = manualFetchForeignDatasheet && lastFetch.current !== manualFetch.current;
     if (forceFetch) {
       lastFetch.current = manualFetch.current;

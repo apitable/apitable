@@ -16,7 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { ITrigger, ITriggerFactory, IParam } from './trigger.factory';
-import { BasicOpenValueType, IExpression, IExpressionOperand, IFieldMap, IRecordCellValue, OperandTypeEnums, OperatorEnums } from '@apitable/core';
+import {
+  BasicOpenValueType,
+  IExpression,
+  IExpressionOperand,
+  IRecordCellValue,
+  IReduxState,
+  OperandTypeEnums,
+  OperatorEnums
+} from '@apitable/core';
 import { getTriggerOutput, triggerFilterInputParser, triggerInputParser } from './trigger.helper';
 
 export interface IRecordMatchesConditionsParamExtra {
@@ -25,14 +33,14 @@ export interface IRecordMatchesConditionsParamExtra {
   recordId: string;
   eventFields: { [fieldId: string]: BasicOpenValueType | null };
   fields: IRecordCellValue;
-  fieldMap: IFieldMap;
   diffFields: string[];
+  state: IReduxState;
 }
 
 interface IFilterContext {
   fields: IRecordCellValue;
-  fieldMap: IFieldMap;
   diffFields: string[];
+  state: IReduxState;
 }
 
 export class RecordMatchesConditionsTriggerFactory implements ITriggerFactory<IParam<IRecordMatchesConditionsParamExtra>> {

@@ -17,7 +17,16 @@
  */
 
 import {
-  ApiTipConstant, Field, FieldTypeDescriptionMap, getFieldClass, getFieldTypeByString, getMaxFieldCountPerSheet, getNewId, IDPrefix, IField,
+  APIMetaFieldType,
+  ApiTipConstant,
+  Field,
+  FieldTypeDescriptionMap,
+  getFieldClass,
+  getFieldTypeByString,
+  getMaxFieldCountPerSheet,
+  getNewId,
+  IDPrefix,
+  IField,
   IReduxState,
 } from '@apitable/core';
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
@@ -28,10 +37,11 @@ import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';
 import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from 'shared/common';
 import { ApiException } from 'shared/exception';
+import { FastifyRequest } from 'fastify';
 
 @Injectable()
 export class CreateDatasheetPipe implements PipeTransform {
-  constructor(@Inject(REQUEST) private readonly request: any) {}
+  constructor(@Inject(REQUEST) private readonly request: FastifyRequest) {}
 
   transform(ro: DatasheetCreateRo): DatasheetCreateRo {
     if (!ro.name) {
@@ -67,9 +77,9 @@ export class CreateDatasheetPipe implements PipeTransform {
   }
 
   public transformProperty(fields: DatasheetFieldCreateRo[]): DatasheetFieldCreateRo[] {
-    fields.forEach(field => {
+    fields.forEach((field) => {
       switch (field.type) {
-        case 'Number':
+        case APIMetaFieldType.Number:
           this.transformNumberProperty(field);
           break;
       }
@@ -86,7 +96,7 @@ export class CreateDatasheetPipe implements PipeTransform {
   }
 
   public validateFields(fields: DatasheetFieldCreateRo[]) {
-    fields.forEach(field => {
+    fields.forEach((field) => {
       this.validate(field);
     });
     const seen = new Set();
@@ -124,8 +134,8 @@ export class CreateDatasheetPipe implements PipeTransform {
   }
 
   public validateFolderAndPreNode(spaceId: string, folder: NodeEntity, preNode: NodeEntity) {
-    const isFolderGiven: boolean = this.request.body['folderId'] ? true : false;
-    const isPreNodeGiven: boolean = this.request.body['preNodeId'] ? true : false;
+    const isFolderGiven: boolean = Boolean(this.request.body?.['folderId']);
+    const isPreNodeGiven: boolean = Boolean(this.request.body?.['preNodeId']);
     if (isFolderGiven) {
       if (!folder) {
         throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'folderId' });

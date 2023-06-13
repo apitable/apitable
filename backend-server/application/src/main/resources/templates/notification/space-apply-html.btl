@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{ MEMBER_NAME }} is applying to join your Space "{{ SPACE_NAME }}"
+      {{MEMBER_NAME}} is applying to join your Space "{{SPACE_NAME}}"
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -186,7 +186,7 @@
                 visibility: hidden;
                 width: 0;
               "
-              >{{ MEMBER_NAME }} is applying to join your Space "{{
+              >{{MEMBER_NAME}} is applying to join your Space "{{
                 SPACE_NAME
               }}"</span
             >
@@ -283,7 +283,7 @@
                             display: inline-block;
                           "
                         >
-                          {{ MEMBER_NAME }} is applying to join your Space
+                          {{MEMBER_NAME}} is applying to join your Space
                         </p>
                         <p
                           class="main_description"
@@ -299,7 +299,7 @@
                             text-transform: capitalize;
                           "
                         >
-                          "{{ SPACE_NAME }}"
+                          "{{SPACE_NAME}}"
                         </p>
                         <table
                           role="presentation"
@@ -360,7 +360,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -446,7 +446,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"

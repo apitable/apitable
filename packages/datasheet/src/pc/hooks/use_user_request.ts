@@ -181,7 +181,7 @@ export const useUserRequest = () => {
         return res.data;
       }
 
-      if (secondStepVerify(code)) {
+      if (!secondStepVerify(code)) {
         return;
       }
       dispatch(

@@ -16,8 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, useThemeColors, ThemeName } from '@apitable/components';
-import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
+import { Button, Skeleton, ThemeName, useThemeColors } from '@apitable/components';
+import {
+  Api,
+  CollaCommandName,
+  ConfigConstant,
+  ExecuteResult,
+  Navigation,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  WidgetApi
+} from '@apitable/core';
 import { DashboardOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -30,11 +41,11 @@ import { store } from 'pc/store';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
+
 interface ISentToDashboardProps {
   widgetId: string;
 
@@ -69,7 +80,7 @@ const SentToDashboard: React.FC<React.PropsWithChildren<ISentToDashboardProps>> 
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   async function copyWidget(dashboardId: string) {
-    const copyData = await WidgetApi.copyWidgetsToDashboard(dashboardId, [widgetId]);
+    const copyData = await WidgetApi.copyWidgetsToNode(dashboardId, [widgetId]);
     setButtonLoading(false);
     const { success, message, data } = copyData.data;
     if (success) {

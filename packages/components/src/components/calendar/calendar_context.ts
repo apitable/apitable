@@ -33,7 +33,6 @@ export interface ICalendarContext {
   startListStyle?: React.CSSProperties;
   warnText: any;
   update?: (id: Id, startDate: Date, endDate: Date) => void;
-  lang: 'zh' | 'en';
   month: number;
   rowMixCount: number;
   year: number;

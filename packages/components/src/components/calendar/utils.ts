@@ -27,6 +27,7 @@ import min from 'date-fns/min';
 import subDays from 'date-fns/subDays';
 import { COUNT, Direction, FORMAT, FORMAT_MONTH, MONTHS } from './constants';
 import { ILevel, ILevelResult, IResizeFormat } from './interface';
+import { getLanguage } from '@apitable/core';
 
 const date2Day = (date: Date) => {
   if (!isValid(date)) {
@@ -216,6 +217,9 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
   return levels;
 };
 
-export const formatDayValue = (month: number, day: number, lang: 'en' | 'zh',) => {
+export const formatDayValue = (month: number, day: number, lang?: 'en' | 'zh',) => {
+  if (!lang) {
+    lang = getLanguage().split('-')[0];
+  }
   return lang === 'zh' ? `${month}月${day}日` : `${MONTHS[month - 1]} ${day}`;
 };

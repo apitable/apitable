@@ -18,18 +18,17 @@
 
 package com.apitable.space.service;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.shared.util.page.PageInfo;
+import com.apitable.space.entity.SpaceRoleEntity;
 import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.ro.AddSpaceRoleRo;
 import com.apitable.space.ro.UpdateSpaceRoleRo;
 import com.apitable.space.vo.SpaceRoleDetailVo;
 import com.apitable.space.vo.SpaceRoleVo;
-import com.apitable.space.entity.SpaceRoleEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+import java.util.function.Consumer;
 
 public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
 
@@ -133,9 +132,19 @@ public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
     /**
      * Check whether the resource permission granted to the sub-administrator contains the disabled permission
      *
-     * @param spaceId space id
+     * @param spaceId              space id
      * @param operateResourceCodes changed resource code
      */
     void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes);
 
+    /**
+     * Check whether the resource permission granted to the member.
+     *
+     * @param spaceId       space id
+     * @param memberId      member's id
+     * @param resourceCodes changed resource code
+     * @param consumer      the callback function
+     */
+    void checkCanOperate(String spaceId, Long memberId, List<String> resourceCodes,
+                         Consumer<Boolean> consumer);
 }

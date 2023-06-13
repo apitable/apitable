@@ -484,7 +484,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (subNodeIds.isEmpty()) {
             return new ArrayList<>();
         }
-        return nodeMapper.selectShareTree(subNodeIds);
+        List<NodeShareTree> shareTrees = nodeMapper.selectShareTree(subNodeIds);
+        // node switches to memory custom sort
+        CollectionUtil.customSequenceSort(shareTrees, NodeShareTree::getNodeId, subNodeIds);
+        return shareTrees;
     }
 
     @Override

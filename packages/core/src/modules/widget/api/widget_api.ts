@@ -58,14 +58,12 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
 };
 
 /**
- * in widget panel, send widget to dashboard or import widget in dashboard
- * 
- * @param dashboardId
- * @param widgetId
+ * Generic interface to support generating a new widget using an existing widget as a template
+ *
  */
-export const copyWidgetsToDashboard = (dashboardId: string, widgetIds: string[]) => {
+export const copyWidgetsToNode = (nodeId: string, widgetIds: string[]) => {
   return axios.post(Url.COPY_WIDGET, {
-    dashboardId,
+    nodeId,
     widgetIds: widgetIds,
   });
 };
@@ -79,12 +77,12 @@ export const getWidgetsInfoByNodeId = (nodeId: string) => {
 };
 
 /**
- * create widget 
- * @param name 
- * @param spaceId 
- * @param packageType 
- * @param releaseType 
- * @returns 
+ * create widget
+ * @param name
+ * @param spaceId
+ * @param packageType
+ * @param releaseType
+ * @returns
  */
 export const createWidget = (
   name: string, spaceId: string, packageType: WidgetPackageType = WidgetPackageType.Custom, releaseType: WidgetReleaseType = WidgetReleaseType.Space
@@ -98,8 +96,8 @@ export const getTemplateList = () => {
 
 /**
  * unpublish widget
- * @param widgetPackageId 
- * @returns 
+ * @param widgetPackageId
+ * @returns
  */
 export const unpublishWidget = (widgetPackageId: string) => {
   return axios.post(Url.UNPUBLISH_WIDGET, { packageId: widgetPackageId });
@@ -107,10 +105,10 @@ export const unpublishWidget = (widgetPackageId: string) => {
 
 /**
  * transfer widget to others
- * 
- * @param packageId 
- * @param transferMemberId 
- * @returns 
+ *
+ * @param packageId
+ * @param transferMemberId
+ * @returns
  */
 export const transferWidget = (packageId: string, transferMemberId: string) => {
   return axios.post(Url.TRANSFER_OWNER, { packageId, transferMemberId });

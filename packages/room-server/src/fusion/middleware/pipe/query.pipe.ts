@@ -57,11 +57,11 @@ export class QueryPipe implements PipeTransform {
   }
 
   static validateSort(sorts: SortRo[], fieldMap: IFieldMap): SortRo[] {
-    return sorts.map(sort => {
+    return sorts.map((sort) => {
       if (sort && isString(sort)) {
         sort = JSON.parse(sort);
       }
-      if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
+      if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists, { fieldId: sort.field });
       return { field: fieldMap[sort.field]!.id, order: sort.order.toLowerCase() as OrderEnum };
     });
   }
@@ -69,14 +69,14 @@ export class QueryPipe implements PipeTransform {
   static validateViewId(viewId: string, meta: IMeta) {
     const views = meta.views;
     let exist = false;
-    views.forEach(view => {
+    views.forEach((view) => {
       if (view.id === viewId) exist = true;
     });
     if (!exist) throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
   }
 
   static validateFields(fields: string[], fieldMap: IFieldMap) {
-    const notExists = fields.filter(field => {
+    const notExists = fields.filter((field) => {
       return !fieldMap[field];
     });
     if (notExists.length) throw ApiException.tipError(ApiTipConstant.api_query_params_invalid_fields, { fields: notExists.join(', ') });
