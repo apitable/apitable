@@ -320,6 +320,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         entities.forEach(team -> {
             UnitEntity unit = new UnitEntity();
             unit.setId(IdWorker.getId());
+            unit.setUnitId(IdWorker.get32UUID());
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.TEAM.getType());
             unit.setUnitRefId(team.getId());
