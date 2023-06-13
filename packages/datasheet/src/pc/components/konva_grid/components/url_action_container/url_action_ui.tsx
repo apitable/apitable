@@ -67,6 +67,10 @@ export const UrlActionUI = (props: IUrlActionUI) => {
     'click',
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    stopPropagation(e);
+  };
+
   const handleEnhanceTextClick = useEnhanceTextClick();
 
   const content = (
@@ -140,7 +144,13 @@ export const UrlActionUI = (props: IUrlActionUI) => {
       {content}
     </Popup>
   ) : (
-    <div onMouseDown={stopPropagation} ref={containerRef} className={classNames(styles.urlActionContainer, styles.pc)} style={style}>
+    <div
+      onKeyDown={handleKeyDown}
+      onMouseDown={stopPropagation}
+      ref={containerRef}
+      className={classNames(styles.urlActionContainer, styles.pc)}
+      style={style}
+    >
       {content}
     </div>
   );
