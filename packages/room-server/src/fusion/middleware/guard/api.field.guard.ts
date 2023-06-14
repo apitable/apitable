@@ -36,7 +36,7 @@ export class ApiFieldGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     // check if the datasheet exists
-    if (!request.params || !request.params.datasheetId) {
+    if (!request.params || !request.params.dstId) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
     const spaceId = request.params.spaceId;
