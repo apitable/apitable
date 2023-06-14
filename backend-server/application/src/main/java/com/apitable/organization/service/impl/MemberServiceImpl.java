@@ -698,7 +698,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             iRoleMemberService.removeByRoleMemberIds(Collections.singletonList(memberId));
             RoleMemberUnitRo roleMember = new RoleMemberUnitRo();
             roleMember.setId(memberId);
-            roleMember.setType(UnitType.TEAM.getType());
+            roleMember.setType(UnitType.MEMBER.getType());
             for (Long roleId : data.getRoleIds()) {
                 iRoleMemberService.addRoleMembers(roleId, Collections.singletonList(roleMember));
             }

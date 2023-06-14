@@ -16,23 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUserValue, MemberType } from '@apitable/core';
+import { ApiTipConstant, IUserValue, MemberType } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { UnitInfo } from 'database/interfaces';
+import { pull } from 'lodash';
 import { EnvConfigKey } from 'shared/common';
 import { UnitTypeEnum } from 'shared/enums';
+import { ApiException } from 'shared/exception';
 import { IOssConfig, IUnitMemberRefIdMap } from 'shared/interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { UnitInfoDto } from 'unit/dtos/unit.info.dto';
+import { UnitEntity } from 'unit/entities/unit.entity';
+import { UnitTeamMemberRefEntity } from 'unit/entities/unit.team.member.ref.entity';
+import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
+import { UnitTeamMemberRefRepository } from 'unit/repositories/unit.team.member.ref.repository';
 import { UserService } from 'user/services/user.service';
 import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 import { UnitRepository } from '../repositories/unit.repository';
 import { UnitMemberService } from './unit.member.service';
 import { UnitTeamService } from './unit.team.service';
-import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
-import { UnitTeamMemberRefRepository } from 'unit/repositories/unit.team.member.ref.repository';
-import { UnitEntity } from 'unit/entities/unit.entity';
-import { UnitTeamMemberRefEntity } from 'unit/entities/unit.team.member.ref.entity';
 
 @Injectable()
 export class UnitService {
@@ -320,5 +322,22 @@ export class UnitService {
     const result = await this.unitRepo.selectIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId, unitType);
     if (result) return result.id;
     return undefined;
+  }
+
+  public async checkUnitIdsExists(unitIds: string[], spaceId: string, unitType: UnitTypeEnum): Promise<void> {
+    const result = await this.unitRepo.selectUnitIdsByUnitIdsAndSpaceIdAndUnitType(unitIds, spaceId, unitType);
+    if (result) {
+      pull(unitIds, ...result.map((i) => i.unitId));
+    }
+    if (unitIds.length) {
+      switch (unitType) {
+        case UnitTypeEnum.TEAM:
+          throw ApiException.tipError(ApiTipConstant.api_org_member_team_error, { unitId: unitIds.join(', ') });
+        case UnitTypeEnum.ROLE:
+          throw ApiException.tipError(ApiTipConstant.api_org_member_role_error, { unitId: unitIds.join(', ') });
+        default:
+          throw ApiException.tipError(ApiTipConstant.api_param_unit_not_exists);
+      }
+    }
   }
 }

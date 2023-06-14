@@ -83,4 +83,8 @@ export class UnitRepository extends Repository<UnitEntity> {
   selectIdByUnitIdAndSpaceIdAndUnitType(unitId: string, spaceId: string, unitType: UnitTypeEnum): Promise<{ id: string } | undefined> {
     return this.findOne({ select: ['id'], where: { unitId: unitId, spaceId, unitType: unitType, isDeleted: false }});
   }
+
+  selectUnitIdsByUnitIdsAndSpaceIdAndUnitType(unitIds: string[], spaceId: string, unitType: UnitTypeEnum): Promise<{ unitId: string }[] | undefined> {
+    return this.find({ select: ['unitId'], where: { unitId: In(unitIds), spaceId, unitType: unitType, isDeleted: false }});
+  }
 }
