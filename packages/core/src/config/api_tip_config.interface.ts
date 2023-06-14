@@ -121,6 +121,12 @@ export interface Tips {
     api_params_link_field_recordids_empty_error:          PuneHedgehog;
     api_params_link_field_recordids_not_exists:           PuneHedgehog;
     api_params_link_field_records_max_count_error:        PuneHedgehog;
+    api_params_lookup_related_link_field_not_exists:      PuneHedgehog;
+    api_params_lookup_related_field_not_link:             PuneHedgehog;
+    api_params_lookup_link_datasheet_not_exists:          PuneHedgehog;
+    api_params_lookup_target_field_not_exists:            PuneHedgehog;
+    api_params_lookup_sort_field_not_exists:              PuneHedgehog;
+    api_params_lookup_field_can_not_sort:                 PuneHedgehog;
     api_params_lookup_can_not_operate:                    PuneHedgehog;
     api_params_max_count_error:                           PuneHedgehog;
     api_params_max_error:                                 PuneHedgehog;

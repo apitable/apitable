@@ -42,7 +42,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 import { ApiAuthGuard } from 'fusion/middleware/guard/api.auth.guard';
 import { ApiDatasheetGuard, DATASHEET_OPTIONS, IApiDatasheetOptions } from 'fusion/middleware/guard/api.datasheet.guard';
-import { ApiFieldGuard } from 'fusion/middleware/guard/api.field.guard';
+import { ApiFieldGuard, FIELD_OPTIONS, IApiFieldOptions } from 'fusion/middleware/guard/api.field.guard';
 import { ApiNodeGuard } from 'fusion/middleware/guard/api.node.guard';
 import { ApiSpaceGuard } from 'fusion/middleware/guard/api.space.guard';
 import { ApiUsageGuard } from 'fusion/middleware/guard/api.usage.guard';
@@ -374,6 +374,7 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiFieldGuard)
+  @SetMetadata(FIELD_OPTIONS, { requireFieldMap: true } as IApiFieldOptions)
   public async createField(
     @Param('spaceId') _spaceId: string,
     @Param('dstId') datasheetId: string,

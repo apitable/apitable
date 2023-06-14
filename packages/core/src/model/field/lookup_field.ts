@@ -149,6 +149,7 @@ const sortInfoSchema = () =>
           desc: Joi.boolean().required(),
         }),
       )
+      .length(1)
       .required(),
   });
 

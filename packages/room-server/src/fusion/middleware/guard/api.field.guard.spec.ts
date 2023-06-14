@@ -18,6 +18,7 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import '@apitable/i18n-lang';
+import { Reflector } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
@@ -30,6 +31,8 @@ describe('ApiDatasheetGuard', () => {
   // let request;
   let context: any;
   let memberRepository: any;
+  let reflector: Reflector;
+  let metaService: any;
   beforeAll(async() => {
     jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
@@ -45,7 +48,11 @@ describe('ApiDatasheetGuard', () => {
     memberRepository = {
       selectSpaceIdsByUserId: jest.fn().mockReturnThis(),
     };
-    guard = new ApiFieldGuard(memberRepository);
+    reflector = new Reflector();
+    metaService = {
+      getMetaDataByDstId: jest.fn().mockReturnThis(),
+    };
+    guard = new ApiFieldGuard(memberRepository, reflector, metaService);
   });
 
   afterAll(async() => {

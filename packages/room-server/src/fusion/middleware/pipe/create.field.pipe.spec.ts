@@ -35,7 +35,7 @@ describe('CreateFieldPipe', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    pipe = new CreateFieldPipe({} as any);
+    pipe = new CreateFieldPipe({} as any, {} as any);
   });
 
   afterAll(async() => {
