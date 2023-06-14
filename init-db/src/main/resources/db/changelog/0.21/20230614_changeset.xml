@@ -17,11 +17,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/0.21/20230517_changeset.xml"/>
-    <include file="db/changelog/0.21/20230614_changeset.xml"/>
+    <changeSet id="V0.21-20230614-001" author="Zoe" labels="unit">
+        <comment>add uuid column to unit</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}unit` MODIFY `unit_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'unit show id';
+        </sql>
+    </changeSet>
 </databaseChangeLog>
