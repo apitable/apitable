@@ -183,8 +183,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       .filter(i => Boolean(i)) as IRollUpFunction[];
   };
 
-  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any) => {
-    if (currentField.property[propertyKey] !== value) {
+  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, filterInfo?: any) => {
+    if (currentField.property[propertyKey] !== value || filterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
@@ -195,7 +195,6 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
             datasheetId: activeDstId,
           },
         };
-        console.log('newField', newField);
         const showFormatType = getFieldValueType(newField);
         setCurrentField(assignDefaultFormatting(showFormatType, newField));
       };
@@ -223,9 +222,10 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           onOk: () => updateField({ filterInfo: undefined, sortInfo: undefined }),
         });
       } else if(propertyKey === 'sortInfo' && openFilter) {
-        updateField();
+        updateField({
+          filterInfo: filterInfo,
+        });
       } else {
-        console.log('updateField', value);
         updateField();
       }
     }
@@ -267,7 +267,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
 
         }
       </section>
-      {(
+      {(hasLinkField &&
         <section className={classNames(settingStyles.section)} style={{ marginBottom: 0, marginTop: 16 }}>
           <div className={classNames(settingStyles.sectionTitle, settingStyles.flex)} style={{ marginBottom: 4 }}>
             <TComponent
@@ -298,7 +298,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           {openFilter && lookUpTargetFieldId &&
           (!isFilterError ? (
             <div
-              className={classNames(styles.sectionInfo, styles.borderBottom)}
+              className={classNames(settingStyles.sectionInfo)}
               style={{ marginBottom: 16 }}
               onClick={() => {
                 const isForeignDstReadable = handleForeignDstReadable();
@@ -310,10 +310,14 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                   <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
                 </Tooltip>
               )}
-              <div className={classNames(settingStyles.text, styles.selectText)}>
+              <div className={classNames(settingStyles.text, styles.selectText, {
+                [styles.filterSelected]: (filterInfo?.conditions && filterInfo?.conditions?.length > 0) || 
+                (sortInfo?.rules && sortInfo?.rules.length > 0)
+              }
+              )}>
                 <span>
                   {(!filterInfo?.conditions.length && !sortInfo?.rules.length)
-                    ? t(Strings.add_filter)
+                    ? t(Strings.lookup_filter_sort_description)
                     : t(Strings.rollup_conditions_num, {
                       FILTER_NUM: filterInfo?.conditions.length || 0,
                       ORDER_BY_NUM: sortInfo?.rules.length || 0
@@ -321,7 +325,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                 </span>
               </div>
               <div className={settingStyles.arrow}>
-                <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
+                <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
               </div>
             </div>
           ) : (
@@ -336,7 +340,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
             </div>
           ))}
           {relatedLinkFieldId && relatedLinkField && lookUpTargetFieldId && 
-          <div className={classNames(settingStyles.limitSelect)}>
+          <div className={classNames(settingStyles.limitSelect, styles.borderTop)}>
             <div className={settingStyles.sectionTitle}>{t(Strings.rollup_limit)}</div> 
             <ComponentDisplay minWidthCompatible={ScreenSize.md}>
               <Select
@@ -371,8 +375,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               filterInfo={filterInfo}
               sortInfo={sortInfo}
               handleOk={(filterInfo: IFilterInfo, sortInfo: ILookUpSortInfo) => { 
-                setFieldProperty('filterInfo')(filterInfo); 
-                setFieldProperty('sortInfo')(sortInfo);
+                setFieldProperty('sortInfo')(sortInfo, filterInfo);
               }}
             />
           }

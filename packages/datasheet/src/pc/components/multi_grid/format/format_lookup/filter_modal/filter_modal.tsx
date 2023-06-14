@@ -76,7 +76,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
 
   const handleSubmit = () => {
     handleOk(filterInfo, sortInfo);
-    Message.success({ content: t(Strings.submit_filter_success) });
+    Message.success({ content: t(Strings.lookup_conditions_success) });
     handleCancel();
   };
   function setSortField(index: number, fieldId: string) {
@@ -111,6 +111,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
   }, [sortInfo, fieldMap]);
   const mainContentStyle: React.CSSProperties = {
     padding: '0',
+    marginTop: '0'
   };
 
   // Modify the order after the end of dragging.

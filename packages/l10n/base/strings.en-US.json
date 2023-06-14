@@ -5440,5 +5440,7 @@
   "copy_widget_fail": "copy widget failed",
   "copy_widget": "Copy Widget",
   "api_param_parent_unit_not_exists": "The unit specified by the parentUnitId does not exist",
-  "api_param_unit_id_required": "The parameter unitId is required"
+  "api_param_unit_id_required": "The parameter unitId is required",
+  "lookup_conditions_success": "Lookup sorting or filter set successfully",
+  "Add condition": "Add condition"
 }

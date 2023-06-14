@@ -255,9 +255,9 @@
   padding-top: 16px;
 }
 
-.borderBottom {
-  border-bottom: 1px solid var(--lineColor);
-  padding-bottom: 16px;
+.borderTop {
+  border-Top: 1px solid var(--lineColor);
+  padding-Top: 16px;
 }
 
 .sectionTop {
@@ -384,7 +384,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  color: var(--textCommonQuaternary);
+  color: var(--textCommonTertiary);
   margin-top: 8px;
   font-size: 13px;
   svg {
@@ -403,10 +403,14 @@
     height: 16px;
     &:hover {
       svg {
-        fill: var(--primaryColor);
+        fill: var(--textCommonTertiary);
       }
     }
   }
+}
+
+.filterSelected {
+  color: var(--textCommonPrimary);
 }
 
 @media screen and(max-width: @w-md) {
