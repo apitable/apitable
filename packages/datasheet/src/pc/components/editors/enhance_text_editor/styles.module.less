@@ -13,8 +13,8 @@
   position: relative;
   padding-right: 16px;
   img {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     margin-right: 4px;
   }
   input {
@@ -77,10 +77,18 @@
   white-space: nowrap;
   .title {
     width: 100%;
+    color: var(--textCommonPrimary);
+    &:hover {
+      color: var(--textCommonSecondary);
+    }
+    &:active {
+      color: var(--textCommonTertiary);
+    }
     span {
       text-overflow: ellipsis;
       display: block;
       overflow: hidden;
+      font-size: 13px;
     }
   }
   & > span {

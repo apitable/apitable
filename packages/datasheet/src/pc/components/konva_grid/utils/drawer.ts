@@ -270,20 +270,12 @@ export class KonvaDrawer {
     const cacheTextData = textDataCache.get(cacheKey);
     if (cacheTextData) {
       if (this.needDraw && needDraw) {
-        favicon && this.rect({
-          x,
-          y: y - 5,
-          width: 20,
-          height: 20,
-          stroke: colors.borderCommonDefault,
-          radius: 4
-        });
         favicon && this.image({
           x,
-          y: y - 5,
+          y: y - 3,
           url: favicon,
-          width: 20,
-          height: 20,
+          width: 16,
+          height: 16,
         }, true);
         textRenderer(cacheTextData.data);
       }
