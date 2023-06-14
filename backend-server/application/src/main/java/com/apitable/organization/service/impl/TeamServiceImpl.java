@@ -24,7 +24,6 @@ import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERR
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
@@ -740,20 +739,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<Long> getTeamIdsByUnitIds(String spaceId, List<String> unitIds) {
-        // check teams
-        Map<Long, String> units = new HashMap<>();
-        if (null != unitIds && !unitIds.isEmpty()) {
-            units =
-                iUnitService.getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(spaceId, UnitType.TEAM,
-                    unitIds).stream().collect(
-                    Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getUnitId));
-            unitIds.removeAll(units.values());
-            if (!unitIds.isEmpty()) {
-                throw new BusinessException(GET_TEAM_ERROR.getCode(), GET_TEAM_ERROR.getMessage(),
-                    unitIds);
-            }
+        if (unitIds.isEmpty()) {
+            return new ArrayList<>();
         }
-        return new ArrayList<>(units.keySet());
+        return iUnitService.getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(spaceId, UnitType.TEAM,
+            unitIds).stream().map(UnitBaseInfoDTO::getUnitRefId).collect(
+            Collectors.toList());
     }
 
     @Override
