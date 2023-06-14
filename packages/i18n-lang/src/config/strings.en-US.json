@@ -1,5 +1,6 @@
 {
   "ANNUAL": "ANNUAL",
+  "Add condition": "Add condition",
   "BIANNUAL": "BIANNUAL",
   "CNY": "CNY",
   "DAYS": "Day",
@@ -2669,6 +2670,7 @@
   "lookup_concatenate": "CONCATENATE",
   "lookup_concatenate_example": "CONCATENATE(\"Name\", \"Year\", \"Age\", 1) => NameYearAge1",
   "lookup_concatenate_summary": "Joins all the values into a long string",
+  "lookup_conditions_success": "Lookup sorting or filter set successfully",
   "lookup_configuration_no_link_ds_permission": "Cannot operate on this configuration without view permission for the associated table",
   "lookup_count": "COUNT",
   "lookup_count_example": "COUNT(1, 3, 5, \"\", \"apple\") => 3",

@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 export type StringKeysMapType = {
   'ANNUAL': 'ANNUAL',
+  'Add condition': 'Add condition',
   'BIANNUAL': 'BIANNUAL',
   'CNY': 'CNY',
   'DAYS': 'DAYS',
@@ -2670,6 +2671,7 @@ export type StringKeysMapType = {
   'lookup_concatenate': 'lookup_concatenate',
   'lookup_concatenate_example': 'lookup_concatenate_example',
   'lookup_concatenate_summary': 'lookup_concatenate_summary',
+  'lookup_conditions_success': 'lookup_conditions_success',
   'lookup_configuration_no_link_ds_permission': 'lookup_configuration_no_link_ds_permission',
   'lookup_count': 'lookup_count',
   'lookup_count_example': 'lookup_count_example',
