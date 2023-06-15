@@ -893,7 +893,7 @@
   "column": "field",
   "column_chart": "Column Chart",
   "columns_count_limit_tips": "Hey, your datasheet has exceeded the maximum ${column_limit} columns.",
-  "comfirm_close_filter_switch": "If turning off the filter, the filter conditions will be cleared afterwards",
+  "comfirm_close_filter_switch": "If you turn off the filter and sort, the conditions will be cleared",
   "comma": ",",
   "comma_style": "Separator",
   "command_add_record": " added record",
@@ -5442,5 +5442,5 @@
   "api_param_parent_unit_not_exists": "The unit specified by the parentUnitId does not exist",
   "api_param_unit_id_required": "The parameter unitId is required",
   "lookup_conditions_success": "Lookup sorting or filter set successfully",
-  "Add condition": "Add condition"
+  "lookup_filter_sort_description": "Add condition"
 }

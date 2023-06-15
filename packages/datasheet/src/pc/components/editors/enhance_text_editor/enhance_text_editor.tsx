@@ -225,7 +225,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           </LinkButton>
         </Tooltip>
       </div>
-    )
+    );
   };
 
   return (

@@ -2685,6 +2685,7 @@ export type StringKeysMapType = {
   'lookup_field': 'lookup_field',
   'lookup_field_err': 'lookup_field_err',
   'lookup_filter_condition_tip': 'lookup_filter_condition_tip',
+  'lookup_filter_sort_description': 'lookup_filter_sort_description',
   'lookup_filter_waring': 'lookup_filter_waring',
   'lookup_help': 'lookup_help',
   'lookup_link': 'lookup_link',
