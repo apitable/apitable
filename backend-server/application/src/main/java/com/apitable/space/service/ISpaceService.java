@@ -195,7 +195,7 @@ public interface ISpaceService extends IService<SpaceEntity> {
     Long getSpaceMainAdminUserId(String spaceId);
 
     /**
-     * Check that the member is not the master administrator of the space
+     * Check that the member is not the master administrator of the space.
      *
      * @param spaceId  space id
      * @param memberId memberId
