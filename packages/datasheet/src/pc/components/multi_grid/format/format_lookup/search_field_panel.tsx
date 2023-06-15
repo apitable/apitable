@@ -26,14 +26,14 @@ import { useSelectIndex } from 'pc/hooks';
 import { useThemeColors } from '@apitable/components';
 import { useMemo, useRef, useState } from 'react';
 import * as React from 'react';
-import { getFieldTypeIcon, checkComputeRef } from '../../field_setting';
+import { checkComputeRef } from '../../field_setting';
 import styles from './styles.module.less';
 import { store } from 'pc/store';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';
-import { WarnCircleFilled } from '@apitable/icons';
+import { WarnCircleFilled, DatasheetOutlined } from '@apitable/icons';
 
 export enum ShowType {
   LinkField,
@@ -107,7 +107,6 @@ const FieldItem = (props: IFieldItem) => {
     }
     return Selectors.getPermissions(store.getState(), field.property.foreignDatasheetId).readable;
   }, [showType, field]);
-
   return (
     <WrapperTooltip wrapper={!foreignDatasheetReadable} tip={t(Strings.no_foreign_dst_readable)} style={{ display: 'block' }}>
       <div
@@ -133,19 +132,22 @@ const FieldItem = (props: IFieldItem) => {
             })}
           >
             {
-              getFieldTypeIcon(
-                field.type,
-                activeFieldId === field.id ? colors.primaryColor : colors.thirdLevelText
-              )
+              <DatasheetOutlined color={colors.thirdLevelText} />
             }
           </div>
           <div className={styles.fieldName}>
-            <HighlightWords keyword={keyword} words={field.name} />
-            {
-              showType === ShowType.LinkField && <div className={styles.fieldNote}>
-                {renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}
-              </div>
-            }
+           
+            <HighlightWords keyword={keyword} 
+              words={Selectors.getDatasheet(store.getState(), (field as ILinkField).property.foreignDatasheetId)?.name!} >
+              {
+                showType === ShowType.LinkField && <div className={styles.fieldNote}>
+                  {renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}
+                </div>
+              }
+            </HighlightWords>
+            <div className={styles.fieldNameText}>
+              {field.name}
+            </div>
           </div>
         </div>
         {warnText && <WarnTip text={warnText} />}

@@ -41,6 +41,8 @@ import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import lookupStyles from './styles.module.less';
 import { SearchSelectField } from './search_select_field';
+import { MyTrigger } from '../trigger';
+import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 
 const Option = Select.Option;
 
@@ -117,6 +119,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
   const foreignDatasheetFieldMap = useSelector(
     state => relatedLinkField && Selectors.getFieldMap(state, relatedLinkField.property.foreignDatasheetId),
   );
+  const [showDatasheetPanel, setShowDatasheetPanel] = useState(false);
+  const linkFields = Field.bindModel(currentField).getLinkFields();
 
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, activeDstId));
   const hasLinkField = Object.values(fieldMap!).some(field => field.type === FieldType.Link) || false;
@@ -240,6 +244,19 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
     }
     return true;
   };
+  const popupAlign = {
+    points: ['tc', 'bc'],
+    offset: [0, 0],
+    overflow: {
+      adjustX: true,
+      adjustY: true,
+    },
+  };
+
+  const popupStyle: React.CSSProperties = {
+    zIndex: 9999,
+  };
+
   return (
     <>
       <section className={settingStyles.section} style={{ marginBottom: 0 }}>
@@ -251,13 +268,30 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
             </div>
           </Tooltip>
         </div>
-        <SearchSelectField 
-          datasheetId={datasheetId}
-          defaultFieldId={relatedLinkFieldId}
-          onChange={setFieldProperty('relatedLinkFieldId')}
-          fieldType={FieldType.Link}
-          disabled={!hasLinkField}
+        <MyTrigger
+          showPopup={showDatasheetPanel}
+          setShowPopup={setShowDatasheetPanel}
+          popupAlign={popupAlign}
+          popupStyle={popupStyle}
+          popup={
+            <LinkFieldPanel
+              fields={linkFields}
+              activeFieldId={relatedLinkFieldId}
+              setSearchPanelVisible={setShowDatasheetPanel}
+              onChange={setFieldProperty('relatedLinkFieldId')}
+            />
+          }
+          trigger={
+            <SearchSelectField 
+              datasheetId={datasheetId}
+              defaultFieldId={relatedLinkFieldId}
+              onChange={setFieldProperty('relatedLinkFieldId')}
+              fieldType={FieldType.Link}
+              disabled={!hasLinkField}
+            />
+          }
         />
+        
         {!hasLinkField && (
           <div className={styles.warnInfo}>
             <WarnCircleOutlined color={colors.textCommonQuaternary} size={16} className={settingStyles.warningIcon} />
@@ -298,7 +332,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           {openFilter && lookUpTargetFieldId &&
           (!isFilterError ? (
             <div
-              className={classNames(settingStyles.sectionInfo)}
+              className={classNames(styles.sectionInfo)}
               style={{ marginBottom: 16 }}
               onClick={() => {
                 const isForeignDstReadable = handleForeignDstReadable();

@@ -30,10 +30,11 @@ interface ITriggerProps extends Partial<RcTriggerProps> {
   action?: string[];
   popupVisibleCheck?: (value: boolean) => boolean;
   setShowPopup(value: boolean): void;
+  popupStyle?: React.CSSProperties;
 }
 
 export const MyTrigger: React.FC<React.PropsWithChildren<ITriggerProps>> = memo((props: ITriggerProps) => {
-  const { showPopup, setShowPopup, trigger, popup, popupVisibleCheck, action = ['click'], ...rest } = props;
+  const { showPopup, setShowPopup, trigger, popup, popupVisibleCheck, action = ['click'], popupStyle, ...rest } = props;
   const triggerSelfRef = useRef<any>(null);
   const triggerRef = useRef(null);
   const ref = useRef(null);
@@ -76,6 +77,7 @@ export const MyTrigger: React.FC<React.PropsWithChildren<ITriggerProps>> = memo(
           popupStyle={{
             width: 288,
             // zIndex: 101,
+            ...popupStyle,
           }}
           ref={triggerSelfRef}
           {...rest}
