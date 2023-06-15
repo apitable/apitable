@@ -200,9 +200,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const favicon = field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.favicon;
 
   const renderURL = () => {
-    if (!showURLTitleFlag ) return null;
+    if (!showURLTitleFlag) return null;
 
-    const urlTitle = Field.bindModel(field).cellValueToString(cellValue);
+    const urlTitle = field.type === FieldType.URL ?
+      Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue);
     if (!urlTitle) return null;
 
     return (
@@ -240,6 +241,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
         <input
           ref={editorRef}
           placeholder={placeholder}
+          className={classNames(field.type === FieldType.URL && style.urlInput)}
           disabled={disabled}
           value={value}
           onChange={updateValue}

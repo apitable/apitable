@@ -67,6 +67,16 @@ export class URLField extends TextBaseField {
     return (cv as IHyperlinkSegment[]).map(seg => seg?.text || seg?.title).join('') || null;
   }
 
+  cellValueToTitle(cellValue: ICellValue): string | null {
+    if (cellValue === null) {
+      return '';
+    }
+
+    const cv = [cellValue].flat();
+
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
+  }
+
   override cellValueToString(cellValue: ICellValue): string | null {
     if (cellValue === null) {
       return null;
@@ -74,7 +84,7 @@ export class URLField extends TextBaseField {
 
     const cv = [cellValue].flat();
 
-    return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.text || seg?.title).join('') || null;
   }
 
   override get openValueJsonSchema() {
