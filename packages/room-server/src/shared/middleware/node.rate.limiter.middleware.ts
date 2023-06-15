@@ -61,39 +61,41 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     const limiter = this.envConfigService.getRoomConfig(EnvConfigKey.API_LIMIT) as IRateLimiter;
     let points = limiter.points;
     let duration = limiter.duration;
-    const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
-    let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
-    if (!spaceId && datasheetId) {
-      const entity = await this.datasheetRepository.selectById(datasheetId);
-      spaceId = entity?.spaceId;
-    }
-    if (spaceId) {
-      try {
-        const qps = await this.restService.getApiRateLimit({ token }, spaceId);
-        if (qps?.qps && qps.qps !== -1) {
-          points = qps.qps;
+    if(!parseInt(process.env.LIMIT_POINTS!)) {
+      const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
+      let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
+      if (!spaceId && datasheetId) {
+        const entity = await this.datasheetRepository.selectById(datasheetId);
+        spaceId = entity?.spaceId;
+      }
+      if (spaceId) {
+        try {
+          const qps = await this.restService.getApiRateLimit({ token }, spaceId);
+          if (qps?.qps && qps.qps !== -1) {
+            points = qps.qps;
+          }
+        } catch (e: any) {
+          let error;
+          if (e.code === PermissionException.SPACE_NOT_EXIST.code) {
+            error = ApiException.tipError(ApiTipConstant.api_param_invalid_space_id_value);
+          }
+          if (e.code === PermissionException.NO_ALLOW_OPERATE.code) {
+            error = ApiException.tipError(ApiTipConstant.api_forbidden_because_of_not_in_space);
+          }
+          if (e.code === CommonException.UNAUTHORIZED.code) {
+            error = ApiException.tipError(ApiTipConstant.api_unauthorized);
+          }
+          if (error) {
+            const user = await this.developerService.getUserInfoByApiKey(token);
+            res.setHeader('Content-Type', 'application/json');
+            res.statusCode = error.getTip().statusCode;
+            const errMsg = await this.i18n.translate(error.getMessage(), { lang: user?.locale });
+            res.write(JSON.stringify(ApiResponse.error(errMsg, error.getTip().code)));
+            res.end();
+          }
+          // unknown error
+          throw e;
         }
-      } catch (e: any) {
-        let error;
-        if (e.code === PermissionException.SPACE_NOT_EXIST.code) {
-          error = ApiException.tipError(ApiTipConstant.api_param_invalid_space_id_value);
-        }
-        if (e.code === PermissionException.NO_ALLOW_OPERATE.code) {
-          error = ApiException.tipError(ApiTipConstant.api_forbidden_because_of_not_in_space);
-        }
-        if (e.code === CommonException.UNAUTHORIZED.code) {
-          error = ApiException.tipError(ApiTipConstant.api_unauthorized);
-        }
-        if (error) {
-          const user = await this.developerService.getUserInfoByApiKey(token);
-          res.setHeader('Content-Type', 'application/json');
-          res.statusCode = error.getTip().statusCode;
-          const errMsg = await this.i18n.translate(error.getMessage(), { lang: user?.locale });
-          res.write(JSON.stringify(ApiResponse.error(errMsg, error.getTip().code)));
-          res.end();
-        }
-        // unknown error
-        throw e;
       }
     }
     points = limiter.whiteList && limiter.whiteList.has(token) ? limiter.whiteList.get(token)!.points : points;
@@ -111,10 +113,11 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
         next();
       })
       .catch(async() => {
+        const user = await this.developerService.getUserInfoByApiKey(token);
         const err = ApiException.tipError(ApiTipConstant.api_frequently_error, { value: points });
         res.setHeader('Content-Type', 'application/json');
         res.statusCode = err.getTip().statusCode;
-        const errMsg = await this.i18n.translate(err.getMessage(), { args: { value: points }});
+        const errMsg = await this.i18n.translate(err.getMessage(), { lang: user?.locale, args: { value: points }});
         res.write(JSON.stringify(ApiResponse.error(errMsg, err.getTip().code)));
         res.end();
       });
