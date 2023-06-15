@@ -203,7 +203,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     if (!showURLTitleFlag) return null;
 
     const urlTitle = field.type === FieldType.URL ?
-      Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue);
+      Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue as any);
     if (!urlTitle) return null;
 
     return (
