@@ -15,6 +15,7 @@ import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
+import { Tooltip } from 'antd';
 
 interface IUrlActionUI {
   activeUrlAction: boolean;
@@ -77,7 +78,13 @@ export const UrlActionUI = (props: IUrlActionUI) => {
     <>
       <Typography className={styles.label} variant="body3">{t(Strings.link)}</Typography>
       <TextInput
-        suffix={text && <div className={styles.link} onClick={() => handleEnhanceTextClick(FieldType.URL, text)}><NewtabOutlined/></div>}
+        suffix={text && (
+          <div className={styles.link} onClick={() => handleEnhanceTextClick(FieldType.URL, text)}>
+            <Tooltip title={t(Strings.url_jump_link)} placement="top">
+              <span><NewtabOutlined/></span>
+            </Tooltip>
+          </div>
+        )}
         value={text}
         ref={inputRef}
         onChange={(evt) => {

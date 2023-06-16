@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors } from '@apitable/core';
+import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
@@ -175,7 +175,13 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getEnhanceTypeIcon = (type: string | number) => {
     if (!value && (field.type !== FieldType.URL || isForm)) return null;
     const typeIconMap = {
-      [FieldType.URL]: !isForm ? <EditOutlined color={colors.thirdLevelText} size={16} /> : <NewtabOutlined color={colors.thirdLevelText} />,
+      [FieldType.URL]: !isForm ? (
+        <Tooltip title={t(Strings.url_cell_edit)} placement="top">
+          <span>
+            <EditOutlined color={colors.thirdLevelText} size={16} />
+          </span>
+        </Tooltip>
+      ) : <NewtabOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} size={16} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} size={16} />,
     };

@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, ISegment } from '@apitable/core';
+import {
+  Field, FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, ISegment,
+  t, Strings,
+} from '@apitable/core';
 import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined } from '@apitable/icons';
 import { Icon, Image, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
@@ -107,9 +110,22 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     cornerRadius: 4,
     backgroundWidth: 22,
     backgroundHeight: 22,
-    onMouseEnter: () => setHover(true),
-    onMouseOut: () => setHover(false),
     background: isHover ? colors.rowSelectedBgSolid : colors.defaultBg,
+    onMouseEnter: () => {
+      setHover(true);
+      setTooltipInfo({
+        title: t(Strings.url_cell_edit),
+        visible: true,
+        x: x + columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING + 4,
+        y,
+        width: 1,
+        height: 1,
+      });
+    },
+    onMouseOut: () => {
+      setHover(false);
+      clearTooltipInfo();
+    },
   } : {};
 
   const renderText = () => {

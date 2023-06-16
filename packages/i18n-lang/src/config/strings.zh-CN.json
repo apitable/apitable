@@ -5040,6 +5040,8 @@
   "upload_on_your_phone": " 从手机上传",
   "upload_success": "上传成功",
   "url_batch_recog_failure_message": "部分网址未能识别",
+  "url_cell_edit": "自定义该网址单元格",
+  "url_jump_link": "跳转到该网址",
   "url_preview_limit_message": "最高支持同时识别 300 个网址",
   "url_preview_setting": "新增记录自动识别网址内容",
   "url_recog_failure_message": "未能识别网址",

@@ -3985,6 +3985,8 @@
   "robot_variables_join_member_types": "Join member types",
   "robot_variables_join_url_title": "Url title",
   "robot_variables_join_url_link": "Url link",
+  "url_cell_edit": "Customize the URL cell",
+  "url_jump_link": "Go to the URL",
   "robot_variables_join_option_IDs": "Join option IDs",
   "robot_variables_join_option_color_names": "Join option color names",
   "robot_variables_join_option_color_values": "Join option color values",
