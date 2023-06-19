@@ -111,7 +111,7 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
                 href={t(Strings.field_help_member_property_subscription)}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: 'inline-block', cursor: 'pointer', marginLeft: 8 }}
+                style={{ display: 'inline-block', cursor: 'pointer' }}
               >
                 <span className={styles.requiredTip}>
                   <QuestionCircleOutlined color="currentColor"/>

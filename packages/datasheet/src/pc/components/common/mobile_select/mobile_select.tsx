@@ -88,7 +88,7 @@ const MobileSelectBase: React.FC<React.PropsWithChildren<IMobileSelectProps>> = 
             setVisible(false);
             onClose?.();
           }}
-          className={styles.optionsListMenu}
+          className={classNames(styles.optionsListMenu, styles.mobileSelect)}
         >
           <div className={styles.optionsListWrapper}>
             {

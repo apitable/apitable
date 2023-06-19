@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 export type StringKeysMapType = {
   'ANNUAL': 'ANNUAL',
-  'Add condition': 'Add condition',
   'BIANNUAL': 'BIANNUAL',
   'CNY': 'CNY',
   'DAYS': 'DAYS',
@@ -2685,6 +2684,7 @@ export type StringKeysMapType = {
   'lookup_field': 'lookup_field',
   'lookup_field_err': 'lookup_field_err',
   'lookup_filter_condition_tip': 'lookup_filter_condition_tip',
+  'lookup_filter_sort_description': 'lookup_filter_sort_description',
   'lookup_filter_waring': 'lookup_filter_waring',
   'lookup_help': 'lookup_help',
   'lookup_link': 'lookup_link',
@@ -5039,6 +5039,8 @@ export type StringKeysMapType = {
   'upload_on_your_phone': 'upload_on_your_phone',
   'upload_success': 'upload_success',
   'url_batch_recog_failure_message': 'url_batch_recog_failure_message',
+  'url_cell_edit': 'url_cell_edit',
+  'url_jump_link': 'url_jump_link',
   'url_preview_limit_message': 'url_preview_limit_message',
   'url_preview_setting': 'url_preview_setting',
   'url_recog_failure_message': 'url_recog_failure_message',
