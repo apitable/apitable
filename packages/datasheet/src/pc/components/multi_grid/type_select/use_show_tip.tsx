@@ -78,6 +78,9 @@ export const useShowTip = (container: HTMLElement, tipWidth: number) => {
         ),
       );
     }
+    return () => {
+      unMountDiv();
+    };
     // eslint-disable-next-line
   }, [info, left]);
 
