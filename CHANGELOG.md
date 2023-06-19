@@ -3,7 +3,7 @@
 
 
 
-## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-06-12)
+## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.22.0-alpha) (2023-06-12)
 
 
 ### What's more
