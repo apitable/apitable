@@ -80,6 +80,7 @@ export const FILE_UPLOAD_TMP_PATH = '_upload';
  */
 export const USER_HTTP_DECORATE = 'user';
 export const DATASHEET_META_HTTP_DECORATE = 'datasheet-meta';
+export const DATASHEET_FIELD_MAP_HTTP_DECORATE = 'datasheet-field-map';
 export const DATASHEET_HTTP_DECORATE = 'datasheet';
 export const SPACE_ID_HTTP_DECORATE = 'space-id';
 export const NODE_INFO = 'node-info';

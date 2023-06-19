@@ -31,6 +31,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public interface ITeamService extends IService<TeamEntity> {
 
@@ -362,7 +363,7 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param unitId  unit_id
      * @return team id
      */
-    Long getTeamIdByUnitId(String spaceId, String unitId);
+    Long getTeamIdByUnitId(String spaceId, String unitId, Consumer<Boolean> consumer);
 
     /**
      * get unit team id.

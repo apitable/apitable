@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { CollaCommandName, Selectors, Strings, t, ICellValue } from '@apitable/core';
+import { CollaCommandName, Selectors, Strings, t, ICellValue, FieldType } from '@apitable/core';
 import { Button, colorVars, TextButton, TextInput, Typography } from '@apitable/components';
 import { NewtabOutlined } from '@apitable/icons';
 import styles from './styles.module.less';
@@ -14,6 +14,7 @@ import { formatValue } from './util';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 
 interface IUrlActionUI {
   activeUrlAction: boolean;
@@ -65,11 +66,18 @@ export const UrlActionUI = (props: IUrlActionUI) => {
     containerRef,
     'click',
   );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    stopPropagation(e);
+  };
+
+  const handleEnhanceTextClick = useEnhanceTextClick();
+
   const content = (
     <>
       <Typography className={styles.label} variant="body3">{t(Strings.link)}</Typography>
       <TextInput
-        suffix={<a target='_blank' rel='noreferrer' className={styles.link} href={text}><NewtabOutlined/></a>}
+        suffix={text && <div className={styles.link} onClick={() => handleEnhanceTextClick(FieldType.URL, text)}><NewtabOutlined/></div>}
         value={text}
         ref={inputRef}
         onChange={(evt) => {
@@ -136,7 +144,13 @@ export const UrlActionUI = (props: IUrlActionUI) => {
       {content}
     </Popup>
   ) : (
-    <div onMouseDown={stopPropagation} ref={containerRef} className={classNames(styles.urlActionContainer, styles.pc)} style={style}>
+    <div
+      onKeyDown={handleKeyDown}
+      onMouseDown={stopPropagation}
+      ref={containerRef}
+      className={classNames(styles.urlActionContainer, styles.pc)}
+      style={style}
+    >
       {content}
     </div>
   );

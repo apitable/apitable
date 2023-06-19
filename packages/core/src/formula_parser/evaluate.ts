@@ -89,6 +89,9 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
     }
     if (fieldBasicValueType === BasicValueType.String) {
       // TODO what if field is undefined?
+      if (field?.type === FieldType.URL) {
+        return Field.bindContext(field!, state).cellValueToURL(cellValue as any);
+      }
       return Field.bindContext(field!, state).cellValueToString(cellValue as any);
     }
     if (fieldBasicValueType === BasicValueType.Array) {

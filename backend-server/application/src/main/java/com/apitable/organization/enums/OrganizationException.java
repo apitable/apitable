@@ -104,7 +104,10 @@ public enum OrganizationException implements BaseException {
 
     ILLEGAL_ROLE_PERMISSION(532, "Illegal role permission"),
 
-    DUPLICATION_TEAM_NAME(533, "The team name already exists");
+    DUPLICATION_TEAM_NAME(533, "The team name already exists"),
+
+    GET_PARENT_TEAM_ERROR(534, "Parent department does not exist, please try again");
+
 
     private final Integer code;
 

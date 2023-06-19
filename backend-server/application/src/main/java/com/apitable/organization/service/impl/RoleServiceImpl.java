@@ -29,7 +29,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.vika.core.utils.StringUtil;
 import com.apitable.base.enums.DatabaseException;
-import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.organization.dto.RoleBaseInfoDto;
@@ -56,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -284,20 +282,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     @Override
     public List<Long> getRoleIdsByUnitIds(String spaceId, List<String> unitIds) {
-        // check roles
-        Map<Long, String> units = new HashMap<>();
-        if (null != unitIds && !unitIds.isEmpty()) {
-            units =
-                iUnitService.getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(spaceId, UnitType.ROLE,
-                    unitIds).stream().collect(
-                    Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getUnitId));
-            unitIds.removeAll(units.values());
-            if (!unitIds.isEmpty()) {
-                throw new BusinessException(NOT_EXIST_ROLE.getCode(), NOT_EXIST_ROLE.getMessage(),
-                    unitIds);
-            }
+        if (unitIds.isEmpty()) {
+            return new ArrayList<>();
         }
-        return new ArrayList<>(units.keySet());
+        return iUnitService.getUnitBaseInfoBySpaceIdAndUnitTypeAndUnitIds(spaceId, UnitType.ROLE,
+            unitIds).stream().map(UnitBaseInfoDTO::getUnitRefId).collect(toList());
     }
 
     @Override

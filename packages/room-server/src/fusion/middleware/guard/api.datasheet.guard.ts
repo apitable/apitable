@@ -17,10 +17,18 @@
  */
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { DATASHEET_HTTP_DECORATE, USER_HTTP_DECORATE } from '../../../shared/common';
+import { DATASHEET_HTTP_DECORATE, DATASHEET_META_HTTP_DECORATE, USER_HTTP_DECORATE } from '../../../shared/common';
 import { ApiException } from '../../../shared/exception';
 import { ApiTipConstant } from '@apitable/core';
 import { UnitMemberService } from 'unit/services/unit.member.service';
+import { Reflector } from '@nestjs/core';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+
+export interface IApiDatasheetOptions {
+  requireMetadata?: boolean;
+}
+
+export const DATASHEET_OPTIONS = 'datasheet';
 
 /**
  * Guards are executed after each middleware, but before any interceptor or pipe.
@@ -29,22 +37,28 @@ import { UnitMemberService } from 'unit/services/unit.member.service';
  */
 @Injectable()
 export class ApiDatasheetGuard implements CanActivate {
-
-  constructor( private readonly memberService: UnitMemberService) {
-  }
+  constructor(
+    private readonly memberService: UnitMemberService,
+    private readonly reflector: Reflector,
+    private readonly metaService: DatasheetMetaService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     // check if the datasheet exists
-    if (!request.params || !request.params.datasheetId) {
+    if (!request.params?.dstId) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
-    // works for datasheet related APIs
+    const options = this.reflector.get<IApiDatasheetOptions>(DATASHEET_OPTIONS, context.getHandler());
     const datasheet = request[DATASHEET_HTTP_DECORATE];
     if (!datasheet) {
       throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
-    const spaceId = datasheet.spaceId;
+    if (options?.requireMetadata) {
+      const dstId = (request.params as any).dstId;
+      request[DATASHEET_META_HTTP_DECORATE] = await this.metaService.getMetaDataByDstId(dstId);
+    }
+    const spaceId = datasheet.spaceId!;
     const user = request[USER_HTTP_DECORATE];
     const spaceIds = await this.memberService.selectSpaceIdsByUserId(user.id);
     // no permission of the space

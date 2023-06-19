@@ -149,6 +149,7 @@ const sortInfoSchema = () =>
           desc: Joi.boolean().required(),
         }),
       )
+      .length(1)
       .required(),
   });
 
@@ -671,12 +672,11 @@ export class LookUpField extends ArrayValueField {
       // lookup sort
       const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId, recordIds);
 
-      recordIds = sortRows.filter((row) => recordIds.includes(row.recordId)).map((row) => row.recordId);
-
-      if (lookUpLimit === LookUpLimitType.FIRST && recordIds.length > 1) {
-        recordIds = recordIds.slice(0, 1);
-      }
+      recordIds = sortRows.filter((row) => recordIds.includes(row.recordId)).map((row) => row.recordId);  
+    }
     
+    if (lookUpLimit === LookUpLimitType.FIRST && recordIds.length > 1) {
+      recordIds = recordIds.slice(0, 1);
     }
 
     return recordIds && recordIds.length

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFieldMap } from '@apitable/core';
+import { FieldType, IField, IFieldMap } from '@apitable/core';
 import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
@@ -70,6 +70,22 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
       .getRawOne<{ fieldMap: IFieldMap }>();
   }
 
+  selectFieldByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ field: IField } | undefined> {
+    return this.createQueryBuilder('vdm')
+      .select(`vdm.meta_data->'$.fieldMap.${fieldId}'`, 'field')
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .getRawOne<{ field: IField }>();
+  }
+
+  selectFieldTypeByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ type?: FieldType } | undefined> {
+    return this.createQueryBuilder('vdm')
+      .select(`vdm.meta_data->'$.fieldMap.${fieldId}.type'`, 'type')
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .getRawOne<{ type?: FieldType }>();
+  }
+
   countRowsByDstId(dstId: string): Promise<{ count: number } | undefined> {
     return this.createQueryBuilder('vdm')
       .select("IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> '$.views[0].rows' )), 0)", 'count')
@@ -84,7 +100,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ viewId: string[] }>()
-      .then(result => {
+      .then((result) => {
         return result && result.viewId ? result.viewId : null;
       });
   }

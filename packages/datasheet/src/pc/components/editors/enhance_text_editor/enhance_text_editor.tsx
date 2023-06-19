@@ -94,8 +94,12 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     if (cacheValueRef.current && cacheValueRef.current.some(v => v.text === value)) {
       omitProps = omit(find(cacheValueRef.current, { text: value }), ['text']);
     }
+    let restProps = {};
+    if (field.type === FieldType.URL) {
+      restProps = omit(cellValue?.[0], ['text', 'type']);
+    }
     // Plain long text, matching segment phone email address, then stored as [Text]
-    const segment: ISegment[] = [{ type: SegmentType.Text, text: value, ...omitProps }];
+    const segment: ISegment[] = [{ ...restProps, type: SegmentType.Text, text: value, ...omitProps }];
     return value.length ? segment : null;
   };
 
@@ -177,7 +181,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     };
     return (
       <span
-        className={style.enhanceTextIcon}
+        className={classNames(style.enhanceTextIcon, field.type === FieldType.URL && style.hover)}
         onClick={() => {
           if (!isForm && field.type === FieldType.URL) {
             setActiveUrlAction(true);
@@ -191,31 +195,36 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     );
   };
 
-  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue?.[0]?.title;
+  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue;
 
-  const renderURLTitle = () => {
-    if (!showURLTitleFlag) return null;
+  const favicon = field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.favicon;
 
-    const urlTitle = Field.bindModel(field).cellValueToURL(cellValue);
+  const renderURL = () => {
+    if (!showURLTitleFlag ) return null;
+
+    const urlTitle = Field.bindModel(field).cellValueToString(cellValue);
     if (!urlTitle) return null;
 
-    return(
-      <Tooltip title={value} placement="top">
-        <LinkButton
-          type=""
-          className={style.urlTitle}
-          onMouseDown={() => {
-            if (/^https?:\/\//.test(value)) {
-              window.open(value, '_blank');
-              return;
-            }
-            window.open(`http://${value}`);
-          }}
-        >
-          {urlTitle}
-        </LinkButton>
-      </Tooltip>
-    );
+    return (
+      <div className={style.content}>
+        {!focused && favicon && <img src={favicon} alt="" />}
+        <Tooltip title={value} placement="top">
+          <LinkButton
+            type=""
+            className={style.title}
+            onMouseDown={() => {
+              if (/^https?:\/\//.test(value)) {
+                window.open(value, '_blank');
+                return;
+              }
+              window.open(`http://${value}`);
+            }}
+          >
+            {urlTitle}
+          </LinkButton>
+        </Tooltip>
+      </div>
+    )
   };
 
   return (
@@ -227,7 +236,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       onWheel={stopPropagation}
     >
       <div className={style.enhanceTextEditor}>
-        {renderURLTitle()}
+        {renderURL()}
         <input
           ref={editorRef}
           placeholder={placeholder}

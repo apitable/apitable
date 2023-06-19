@@ -17,7 +17,7 @@
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { stringToArray } from 'shared/helpers/fusion.helper';
 
 export class RecordDeleteRo {
@@ -30,4 +30,15 @@ export class RecordDeleteRo {
   @Transform(value => stringToArray(value), { toClassOnly: true })
   @IsOptional()
   recordIds!: string[];
+}
+
+export class DeleteRecordParamRo {
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: 'dst0Yj5aNeoHldqvf6',
+    description: 'datasheet Id',
+  })
+  @IsString()
+  dstId!: string;
 }

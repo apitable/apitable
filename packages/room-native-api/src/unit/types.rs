@@ -1,10 +1,12 @@
+use mysql_async::prelude::*;
 use serde::{Deserialize, Serialize, Serializer};
 
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq, FromRow)]
 #[serde(rename_all = "camelCase")]
 pub struct UnitInfo {
   #[serde(serialize_with = "serialize_unit_id")]
   pub unit_id: Option<i64>,
+  #[mysql(rename = "type")]
   pub r#type: Option<u8>,
   pub name: Option<String>,
   pub uuid: Option<String>,
@@ -20,6 +22,8 @@ pub struct UnitInfo {
 
   #[serde(skip_serializing_if = "Option::is_none")]
   pub is_nick_name_modified: Option<bool>,
+
+  pub original_unit_id: Option<String>,
 }
 
 fn serialize_unit_id<S>(unit_id: &Option<i64>, serializer: S) -> Result<S::Ok, S::Error>

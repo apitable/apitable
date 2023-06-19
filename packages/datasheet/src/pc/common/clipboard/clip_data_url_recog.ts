@@ -36,6 +36,7 @@ import {
 import { resourceService } from 'pc/resource_service';
 import { Message } from 'pc/components/common';
 import { IURLMeta } from 'pc/utils';
+import { isEmpty } from 'lodash';
 
 interface IRecogClipboardURLDataProps {
   state: IReduxState;
@@ -154,6 +155,14 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
     .filter(record => record.data.length <= 1)
     .map(record => record.data[0]?.text || '')
     .filter(text => isUrl(text));
+
+  const urls2Title = targetMatrix
+    .filter(record => record.data.length <= 1 && record.data[0]?.title)
+    .map(record => record.data[0]?.title);
+
+  if (!isEmpty(urls2Title)) {
+    return;
+  }
 
   Api.getURLMetaBatch(urlsToBeRecog).then(res => {
     if (res?.data?.success) {

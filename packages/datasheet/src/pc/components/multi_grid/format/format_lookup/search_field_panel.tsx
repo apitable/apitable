@@ -98,7 +98,8 @@ interface IFieldItem {
   keyword: string;
 }
 
-const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }: IFieldItem) => {
+const FieldItem = (props: IFieldItem) => {
+  const { showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword } = props;
   const colors = useThemeColors();
   const foreignDatasheetReadable = useMemo(() => {
     if (showType !== ShowType.LinkField) {
@@ -154,6 +155,22 @@ const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, cu
   );
 };
 
+const renderInlineNodeName = (datasheetId: string) => {
+  const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
+  return (
+    <InlineNodeName
+      nodeId={datasheetId}
+      nodeName={datasheet?.name}
+      nodeIcon={datasheet?.icon}
+      prefix={t(Strings.association_table)}
+      size={14}
+      iconSize={16}
+      withIcon
+      withBrackets
+    />
+  );
+};
+
 export function FieldSearchPanel(props: IFieldSearchPanelProps) {
   const { fields, activeFieldId, onChange, setSearchPanelVisible, showType, errTip, field } = props;
   const [value, setValue] = useState('');
@@ -174,22 +191,6 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
       field && handleFieldClick(field.id);
     },
   });
-
-  const renderInlineNodeName = (datasheetId: string) => {
-    const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
-    return (
-      <InlineNodeName
-        nodeId={datasheetId}
-        nodeName={datasheet?.name}
-        nodeIcon={datasheet?.icon}
-        prefix={t(Strings.association_table)}
-        size={14}
-        iconSize={16}
-        withIcon
-        withBrackets
-      />
-    );
-  };
 
   return (
     <div className={styles.panel}>

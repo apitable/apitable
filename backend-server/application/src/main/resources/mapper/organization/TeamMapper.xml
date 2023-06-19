@@ -380,7 +380,7 @@
     </select>
 
     <select id="selectBaseInfoDTOByIds" resultType="com.apitable.organization.dto.TeamBaseInfoDTO">
-        SELECT id, team_name, sequence
+        SELECT id, team_name, sequence, parent_id, space_id
         FROM ${tablePrefix}unit_team
         WHERE id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">

@@ -35,23 +35,28 @@ export class QueryPipe implements PipeTransform {
 
   transform(value: any) {
     value = qs.parse(value);
+    if (!value) {
+      return value;
+    }
     // transform, validate and sort the parameters
-    const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
-    let fieldMap = meta.fieldMap;
-    if (value.fieldKey === FieldKeyEnum.NAME) {
-      fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
-    }
-    if (value && value.sort) {
-      // validate and transform it into field id
-      value.sort = QueryPipe.validateSort(value.sort, fieldMap);
-    }
-    // validate view id
-    if (value && value.viewId) {
-      QueryPipe.validateViewId(value.viewId, meta);
-    }
-    // validate fields
-    if (value && value.fields) {
-      QueryPipe.validateFields(value.fields, fieldMap);
+    if (value.sort || value.viewId || value.fields) {
+      const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
+      let fieldMap = meta.fieldMap;
+      if (value.fieldKey === FieldKeyEnum.NAME) {
+        fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
+      }
+      if (value.sort) {
+        // validate and transform it into field id
+        value.sort = QueryPipe.validateSort(value.sort, fieldMap);
+      }
+      // validate view id
+      if (value.viewId) {
+        QueryPipe.validateViewId(value.viewId, meta);
+      }
+      // validate fields
+      if (value.fields) {
+        QueryPipe.validateFields(value.fields, fieldMap);
+      }
     }
     return value;
   }

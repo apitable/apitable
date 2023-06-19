@@ -257,11 +257,11 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
     }
 
     @Override
-    public List<RoleMemberDTO> getByUnitRefIds(List<Long> unitRefIds) {
+    public List<RoleMemberDTO> getByRoleIds(List<Long> unitRefIds) {
         if (unitRefIds.isEmpty()) {
             return new ArrayList<>();
         }
-        return baseMapper.selectByUnitRefIds(unitRefIds);
+        return baseMapper.selectByRoleIds(unitRefIds);
     }
 
     @Override

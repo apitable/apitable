@@ -433,6 +433,7 @@ mod tests {
         avatar_color: Some(1),
         is_member_name_modified: Some(true),
         is_nick_name_modified: None,
+        original_unit_id: Some("uu1".into()),
       },
       "u2" => UnitInfo {
         unit_id: Some(124),
@@ -447,6 +448,7 @@ mod tests {
         avatar_color: Some(2),
         is_member_name_modified: Some(false),
         is_nick_name_modified: None,
+        original_unit_id: Some("uu2".into()),
       },
       "u3" => UnitInfo {
         unit_id: Some(125),
@@ -461,6 +463,7 @@ mod tests {
         avatar_color: Some(3),
         is_member_name_modified: Some(false),
         is_nick_name_modified: None,
+        original_unit_id: Some("uu3".into()),
       },
     }
   }
@@ -480,6 +483,7 @@ mod tests {
         avatar_color: Some(1),
         is_member_name_modified: Some(true),
         is_nick_name_modified: Some(true),
+        original_unit_id: Some("uuuu11".into()),
       },
       "1120" => UnitInfo {
         unit_id: None,
@@ -494,6 +498,7 @@ mod tests {
         avatar_color: Some(3),
         is_member_name_modified: Some(false),
         is_nick_name_modified: Some(false),
+        original_unit_id: Some("uuuu12".into()),
       },
     }
   }

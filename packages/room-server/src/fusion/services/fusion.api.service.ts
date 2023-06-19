@@ -213,9 +213,12 @@ export class FusionApiService {
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
     const getRecordsProfiler = this.logger.startTimer();
 
+    const meta = this.request[DATASHEET_META_HTTP_DECORATE] as IMeta;
+
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
+        meta,
         recordIds: query.recordIds,
       },
       createStore: async dst => {
@@ -445,6 +448,7 @@ export class FusionApiService {
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
+        meta,
         recordIds,
         linkedRecordMap,
       },
@@ -583,6 +587,7 @@ export class FusionApiService {
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
+        meta,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
       },

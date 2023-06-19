@@ -4,16 +4,18 @@ import { FieldType, Strings, t, Selectors, IViewColumn } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import styles from './style.module.less';
+import { store } from 'pc/store';
 
 interface ISearchSelectFieldProps { 
   datasheetId: string | undefined;
   defaultFieldId: string;
   fieldType?: FieldType;
   onChange: (targetId: string) => void;
+  disabled?: boolean;
 }
 
 export const SearchSelectField = (props: ISearchSelectFieldProps) => {
-  const { datasheetId, fieldType = null, defaultFieldId, onChange } = props;
+  const { datasheetId, fieldType = null, defaultFieldId, onChange, disabled = false } = props;
 
   const colors = useThemeColors();
   const columns = useSelector(state => {
@@ -29,13 +31,15 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
     }
     return true;
   };
-
+  
   const options: IOption[] = columns.filter(filter).map(({ fieldId }) => {
     const field = fieldMap[fieldId];
+   
     return {
-      label: field.name,
+      label: fieldType !== FieldType.Link ? field.name : Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.name!,
       value: field.id,
-      prefixIcon: getFieldTypeIcon(field.type, colors.thirdLevelText),
+      prefixIcon: fieldType !== FieldType.Link ? getFieldTypeIcon(field.type, colors.thirdLevelText) : 
+      Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.icon!,
       disabledTip: t(Strings.view_sort_and_group_disabled),
     };
   });
@@ -58,6 +62,7 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
         openSearch
         searchPlaceholder={t(Strings.search)}
         noDataTip={t(Strings.no_search_result)}
+        disabled={disabled}
       />
     </div>
   );

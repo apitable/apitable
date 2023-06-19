@@ -21,9 +21,9 @@ import '@apitable/i18n-lang';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
+import { MemberField } from 'fusion/field/member.field';
 import { UnitMemberService } from 'unit/services/unit.member.service';
 import { UnitService } from 'unit/services/unit.service';
-import { MemberField } from 'fusion/field/member.field';
 
 describe('MemberField', () => {
   let app: NestFastifyApplication;
@@ -75,14 +75,11 @@ describe('MemberField', () => {
     });
     it('name not exist--should throw an error', () => {
       field.property.isMulti = false;
-      expect(() => fieldClass.validate([{
-        id: '1'
-      }], field)).toThrow(/^api_params_instance_member_name_error$/);
+      expect(() => fieldClass.validate([{}], field)).toThrow(/^api_params_instance_member_name_error$/);
     });
     it('type not exist--should throw an error', () => {
       field.property.isMulti = false;
       expect(() => fieldClass.validate([{
-        id: '1',
         name: 'name'
       }], field)).toThrow(/^api_params_instance_member_type_error$/);
     });
