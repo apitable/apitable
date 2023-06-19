@@ -346,7 +346,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
     return false;
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async() => {
     if (isEmpty) {
       emptyTip();
       return;

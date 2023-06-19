@@ -401,6 +401,10 @@ export class CellHelper extends KonvaDrawer {
     const generateRenderText = (): string | null => {
       if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
 
+      if (field.type === FieldType.URL) {
+        return Field.bindModel(field).cellValueToTitle(cellValue);
+      }
+
       return Field.bindModel(field).cellValueToString(cellValue);
     };
 
@@ -451,7 +455,7 @@ export class CellHelper extends KonvaDrawer {
     const color = style?.color || colors.firstLevelText;
     const textAlign = style?.textAlign || (isNumberField && columnWidth ? 'right' : 'left');
     const fontWeight = style?.fontWeight;
-    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0);
+    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0) - (field.type === FieldType.URL ? 16 : 0);
     const renderX = textAlign === 'right' ? x + columnWidth - GRID_CELL_VALUE_PADDING : x + GRID_CELL_VALUE_PADDING;
     const renderY = y + 10;
     let linkEnable = Boolean(renderText);

@@ -19,6 +19,7 @@
 import { Button, useThemeColors } from '@apitable/components';
 import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronDownOutlined } from '@apitable/icons';
+import { isEmpty } from 'lodash';
 import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { RecordCard } from 'pc/components/common/record_card';
@@ -87,7 +88,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
   });
 
   const { foreignSnapshot, foreignDatasheetName } = useSelector((state: IReduxState) => {
-    if (!editing) {
+    if (!editing && isEmpty(showCellValues)) {
       return {
         foreignSnapshot: undefined,
         foreignDatasheetName: undefined,

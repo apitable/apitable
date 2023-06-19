@@ -75,7 +75,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
             href={t(Strings.field_help_created_by_property_subscription)}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'inline-block', cursor: 'pointer', marginLeft: 8 }}
+            style={{ display: 'inline-block', cursor: 'pointer' }}
           >
             <span className={styles.requiredTip}>
               <QuestionCircleOutlined color="currentColor"/>

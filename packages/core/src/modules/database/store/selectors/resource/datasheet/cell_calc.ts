@@ -105,7 +105,7 @@ export const calcCellValueAndString = ({
   const instance = Field.bindContext(field, state);
   return {
     cellValue,
-    cellStr: instance.cellValueToString(cellValue),
+    cellStr: field.type === FieldType.URL ? Field.bindContext(field, state).cellValueToTitle(cellValue) : instance.cellValueToString(cellValue),
     ignoreCache: workerCompute() ? false : !instance.isComputed,
   };
 };
