@@ -22,7 +22,7 @@ import {
   IFilterInfo, ILookUpField, ILookUpProperty, LookUpField,
   NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysType, Strings, t, LookUpLimitType, ILookUpSortInfo
 } from '@apitable/core';
-import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
@@ -41,6 +41,8 @@ import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import lookupStyles from './styles.module.less';
 import { SearchSelectField } from './search_select_field';
+import { MyTrigger } from '../trigger';
+import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 
 const Option = Select.Option;
 
@@ -117,6 +119,11 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
   const foreignDatasheetFieldMap = useSelector(
     state => relatedLinkField && Selectors.getFieldMap(state, relatedLinkField.property.foreignDatasheetId),
   );
+  const [showDatasheetPanel, setShowDatasheetPanel] = useState(false);
+  const linkFields = Field.bindModel(currentField).getLinkFields();
+
+  const fieldMap = useSelector(state => Selectors.getFieldMap(state, activeDstId));
+  const hasLinkField = Object.values(fieldMap!).some(field => field.type === FieldType.Link) || false;
  
   const foreignDatasheetReadable = useSelector(state => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
 
@@ -180,8 +187,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       .filter(i => Boolean(i)) as IRollUpFunction[];
   };
 
-  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any) => {
-    if (currentField.property[propertyKey] !== value) {
+  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, filterInfo?: any) => {
+    if (currentField.property[propertyKey] !== value || filterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
@@ -192,7 +199,6 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
             datasheetId: activeDstId,
           },
         };
-        console.log('newField', newField);
         const showFormatType = getFieldValueType(newField);
         setCurrentField(assignDefaultFormatting(showFormatType, newField));
       };
@@ -210,19 +216,21 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
         // Closing the filter button will cause the filter data to be cleared, giving a prompt
         propertyKey === 'openFilter' &&
         openFilter &&
-        Boolean(filterInfo && filterInfo.conditions.length > 0)
+        (Boolean(filterInfo && filterInfo.conditions.length > 0) || Boolean(sortInfo && sortInfo.rules.length > 0))
       ) {
         Modal.confirm({
           title: t(Strings.operate_info),
           content: t(Strings.comfirm_close_filter_switch),
           okText: t(Strings.submit),
           cancelText: t(Strings.give_up_edit),
-          onOk: () => updateField({ filterInfo: undefined }),
+          onOk: () => updateField({ filterInfo: undefined, sortInfo: undefined }),
         });
       } else if(propertyKey === 'sortInfo' && openFilter) {
-        updateField();
+        updateField({
+          filterInfo: filterInfo.conditions.length > 0 ? filterInfo : undefined,
+          sortInfo: value.rules.length > 0 ? value : undefined,
+        });
       } else {
-        console.log('updateField', value);
         updateField();
       }
     }
@@ -237,46 +245,81 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
     }
     return true;
   };
+  const popupAlign = {
+    points: ['tc', 'bc'],
+    offset: [0, 0],
+    overflow: {
+      adjustX: true,
+      adjustY: true,
+    },
+  };
+
+  const popupStyle: React.CSSProperties = {
+    zIndex: 9999,
+  };
 
   return (
     <>
-      <section className={settingStyles.section}>
-        <div className={settingStyles.sectionTitle}>
-          {t(Strings.rollup_choose_table)}
+      <section className={settingStyles.section} style={{ marginBottom: 0 }}>
+        <div className={classNames(settingStyles.sectionTitle, styles.infoTip)} style={{ marginBottom: 8 }}>
+          <span>{t(Strings.rollup_choose_table)}</span>
           <Tooltip title={t(Strings.rollup_choose_table_description)} trigger={'hover'}>
-            <a 
-              href=''
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.25em', marginLeft: 8 }}
-            >
+            <div className={styles.infoIcon}>
               <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
-            </a>
+            </div>
           </Tooltip>
         </div>
-        <SearchSelectField 
-          datasheetId={datasheetId}
-          defaultFieldId={relatedLinkFieldId}
-          onChange={setFieldProperty('relatedLinkFieldId')}
-          fieldType={FieldType.Link}
+        <MyTrigger
+          showPopup={showDatasheetPanel}
+          setShowPopup={setShowDatasheetPanel}
+          popupAlign={popupAlign}
+          popupStyle={popupStyle}
+          popup={
+            <LinkFieldPanel
+              fields={linkFields}
+              activeFieldId={relatedLinkFieldId}
+              setSearchPanelVisible={setShowDatasheetPanel}
+              onChange={setFieldProperty('relatedLinkFieldId')}
+            />
+          }
+          trigger={
+            <SearchSelectField 
+              datasheetId={datasheetId}
+              defaultFieldId={relatedLinkFieldId}
+              onChange={setFieldProperty('relatedLinkFieldId')}
+              fieldType={FieldType.Link}
+              disabled={!hasLinkField}
+            />
+          }
         />
+        
+        {!hasLinkField && (
+          <div className={styles.warnInfo}>
+            <WarnCircleOutlined color={colors.textCommonQuaternary} size={16} className={settingStyles.warningIcon} />
+            <span>{t(Strings.lookup_field_err)}</span>
+          </div>
+        )
+
+        }
       </section>
-      {relatedLinkFieldId && relatedLinkField && (
-        <section className={classNames(settingStyles.section, styles.border)} style={{ marginBottom: 8 }}>
+      {(hasLinkField &&
+        <section className={classNames(settingStyles.section)} style={{ marginBottom: 0, marginTop: 16 }}>
           <div className={classNames(settingStyles.sectionTitle, settingStyles.flex)} style={{ marginBottom: 4 }}>
             <TComponent
               tkey={t(Strings.rollup_choose_field)}
               params={{
-                name: renderInlineNodeName('', relatedLinkField.property.foreignDatasheetId, { maxWidth: '90px' }),
+                name: renderInlineNodeName('', relatedLinkField?.property.foreignDatasheetId!, { maxWidth: '90px' }),
               }}
             />
           </div>
           <SearchSelectField 
-            datasheetId={relatedLinkField.property.foreignDatasheetId}
+            datasheetId={relatedLinkField?.property.foreignDatasheetId}
             defaultFieldId={lookUpTargetFieldId}
             onChange={setFieldProperty('lookUpTargetFieldId')}
+            disabled={!Boolean(relatedLinkFieldId)}
           />
-          <div className={classNames(settingStyles.sectionTitle, settingStyles.enhance)}>
+          <div className={classNames(settingStyles.sectionTitle, styles.enhance)}>
+            {t(Strings.rollup_filter_sort)}
             <Switch
               size='small'
               onChange={() => {
@@ -284,50 +327,55 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                 isForeignDstReadable && setFieldProperty('openFilter')(!openFilter);
               }}
               checked={openFilter}
+              disabled={!Boolean(lookUpTargetFieldId)}
             />
-            {t(Strings.rollup_filter_sort)}
           </div>
-          {openFilter &&
-            (!isFilterError ? (
-              <div
-                className={settingStyles.sectionInfo}
-                onClick={() => {
-                  const isForeignDstReadable = handleForeignDstReadable();
-                  console.log('isForeignDstReadable', isForeignDstReadable);
-                  isForeignDstReadable && setFilterModal(true);
-                }}
-              >
-                {isFilterTypeSwitch && (
-                  <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement='top'>
-                    <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
-                  </Tooltip>
-                )}
-                <div className={classNames(settingStyles.text)}>
-                  <span>
-                    {(!filterInfo?.conditions.length && !sortInfo?.rules.length)
-                      ? t(Strings.add_filter)
-                      : t(Strings.rollup_conditions_num, {
-                        FILTER_NUM: filterInfo?.conditions.length || 0,
-                        ORDER_BY_NUM: sortInfo?.rules.length || 0
-                      })}
-                  </span>
-                </div>
-                <div className={settingStyles.arrow}>
-                  <ChevronRightOutlined size={10} color={colors.thirdLevelText} />
-                </div>
-              </div>
-            ) : (
-              <div className={settingStyles.sectionClear}>
-                <div>
+          {openFilter && lookUpTargetFieldId &&
+          (!isFilterError ? (
+            <div
+              className={classNames(styles.sectionInfo)}
+              style={{ marginBottom: 16 }}
+              onClick={() => {
+                const isForeignDstReadable = handleForeignDstReadable();
+                isForeignDstReadable && setFilterModal(true);
+              }}
+            >
+              {isFilterTypeSwitch && (
+                <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement='top'>
                   <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
-                  {t(Strings.filter_delete_tip)}
-                </div>
-                <TextButton color='danger' size='small' onClick={() => setFieldProperty('filterInfo')(undefined)}>
-                  {t(Strings.clear)}
-                </TextButton>
+                </Tooltip>
+              )}
+              <div className={classNames(settingStyles.text, styles.selectText, {
+                [styles.filterSelected]: (filterInfo?.conditions && filterInfo?.conditions?.length > 0) || 
+                (sortInfo?.rules && sortInfo?.rules.length > 0)
+              }
+              )}>
+                <span>
+                  {(!filterInfo?.conditions.length && !sortInfo?.rules.length)
+                    ? t(Strings.lookup_filter_sort_description)
+                    : t(Strings.rollup_conditions_num, {
+                      FILTER_NUM: filterInfo?.conditions.length || 0,
+                      ORDER_BY_NUM: sortInfo?.rules.length || 0
+                    })}
+                </span>
               </div>
-            ))}
-          <div className={settingStyles.limitSelect}>
+              <div className={settingStyles.arrow}>
+                <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
+              </div>
+            </div>
+          ) : (
+            <div className={settingStyles.sectionClear}>
+              <div>
+                <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
+                {t(Strings.filter_delete_tip)}
+              </div>
+              <TextButton color='danger' size='small' onClick={() => setFieldProperty('filterInfo')(undefined)}>
+                {t(Strings.clear)}
+              </TextButton>
+            </div>
+          ))}
+          {relatedLinkFieldId && relatedLinkField && lookUpTargetFieldId && 
+          <div className={classNames(settingStyles.limitSelect, styles.borderTop)}>
             <div className={settingStyles.sectionTitle}>{t(Strings.rollup_limit)}</div> 
             <ComponentDisplay minWidthCompatible={ScreenSize.md}>
               <Select
@@ -352,25 +400,24 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                 <Radio value={LookUpLimitType.ALL}>{t(Strings.rollup_limit_option_1)}</Radio>
               </RadioGroup>
             </ComponentDisplay>
-          </div>
-          { filterModal &&
+          </div> }
+          { filterModal && relatedLinkField &&
             <FilterModal
               filterModalVisible={filterModal}
               field={currentField}
               handleCancel={() => setFilterModal(false)}
-              datasheetId={relatedLinkField.property.foreignDatasheetId}
+              datasheetId={relatedLinkField.property.foreignDatasheetId!}
               filterInfo={filterInfo}
               sortInfo={sortInfo}
               handleOk={(filterInfo: IFilterInfo, sortInfo: ILookUpSortInfo) => { 
-                setFieldProperty('filterInfo')(filterInfo); 
-                setFieldProperty('sortInfo')(sortInfo);
+                setFieldProperty('sortInfo')(sortInfo, filterInfo);
               }}
             />
           }
         </section>
       )}
       {Boolean(relatedLinkFieldId && lookUpTargetFieldId) && (
-        <section className={classNames(settingStyles.section, styles.border)}>
+        <section className={classNames(settingStyles.section, styles.sectionTop)}>
           <div className={settingStyles.sectionTitle}>{t(Strings.statistical_link_data)}</div>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Select

@@ -25,7 +25,7 @@
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
-                #{item.id}, #{item.unitId}, #{item.spaceId},#{item.unitType}, #{item.unitRefId}
+                #{item.id},#{item.unitId},#{item.spaceId},#{item.unitType}, #{item.unitRefId}
             </trim>
         </foreach>
     </insert>

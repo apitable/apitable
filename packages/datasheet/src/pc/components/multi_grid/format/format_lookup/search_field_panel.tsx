@@ -26,14 +26,14 @@ import { useSelectIndex } from 'pc/hooks';
 import { useThemeColors } from '@apitable/components';
 import { useMemo, useRef, useState } from 'react';
 import * as React from 'react';
-import { getFieldTypeIcon, checkComputeRef } from '../../field_setting';
+import { checkComputeRef } from '../../field_setting';
 import styles from './styles.module.less';
 import { store } from 'pc/store';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';
-import { WarnCircleFilled } from '@apitable/icons';
+import { WarnCircleFilled, DatasheetOutlined } from '@apitable/icons';
 
 export enum ShowType {
   LinkField,
@@ -98,7 +98,8 @@ interface IFieldItem {
   keyword: string;
 }
 
-const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword }: IFieldItem) => {
+const FieldItem = (props: IFieldItem) => {
+  const { showType, handleFieldClick, field, activeFieldId, index, currentIndex, renderInlineNodeName, warnText, keyword } = props;
   const colors = useThemeColors();
   const foreignDatasheetReadable = useMemo(() => {
     if (showType !== ShowType.LinkField) {
@@ -106,7 +107,6 @@ const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, cu
     }
     return Selectors.getPermissions(store.getState(), field.property.foreignDatasheetId).readable;
   }, [showType, field]);
-
   return (
     <WrapperTooltip wrapper={!foreignDatasheetReadable} tip={t(Strings.no_foreign_dst_readable)} style={{ display: 'block' }}>
       <div
@@ -132,25 +132,44 @@ const FieldItem = ({ showType, handleFieldClick, field, activeFieldId, index, cu
             })}
           >
             {
-              getFieldTypeIcon(
-                field.type,
-                activeFieldId === field.id ? colors.primaryColor : colors.thirdLevelText
-              )
+              <DatasheetOutlined color={colors.thirdLevelText} />
             }
           </div>
           <div className={styles.fieldName}>
-            <HighlightWords keyword={keyword} words={field.name} />
-            {
-              showType === ShowType.LinkField && <div className={styles.fieldNote}>
-                {renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}
-              </div>
-            }
+           
+            <HighlightWords keyword={keyword} 
+              words={Selectors.getDatasheet(store.getState(), (field as ILinkField).property.foreignDatasheetId)?.name!} >
+              {
+                showType === ShowType.LinkField && <div className={styles.fieldNote}>
+                  {renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}
+                </div>
+              }
+            </HighlightWords>
+            <div className={styles.fieldNameText}>
+              {field.name}
+            </div>
           </div>
         </div>
         {warnText && <WarnTip text={warnText} />}
         <FieldPermissionLock fieldId={field.id} />
       </div>
     </WrapperTooltip>
+  );
+};
+
+const renderInlineNodeName = (datasheetId: string) => {
+  const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
+  return (
+    <InlineNodeName
+      nodeId={datasheetId}
+      nodeName={datasheet?.name}
+      nodeIcon={datasheet?.icon}
+      prefix={t(Strings.association_table)}
+      size={14}
+      iconSize={16}
+      withIcon
+      withBrackets
+    />
   );
 };
 
@@ -174,22 +193,6 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
       field && handleFieldClick(field.id);
     },
   });
-
-  const renderInlineNodeName = (datasheetId: string) => {
-    const datasheet = Selectors.getDatasheet(store.getState(), datasheetId);
-    return (
-      <InlineNodeName
-        nodeId={datasheetId}
-        nodeName={datasheet?.name}
-        nodeIcon={datasheet?.icon}
-        prefix={t(Strings.association_table)}
-        size={14}
-        iconSize={16}
-        withIcon
-        withBrackets
-      />
-    );
-  };
 
   return (
     <div className={styles.panel}>

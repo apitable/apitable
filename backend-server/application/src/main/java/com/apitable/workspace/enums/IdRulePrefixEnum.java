@@ -73,6 +73,8 @@ public enum IdRulePrefixEnum {
 
     EMB("emb"),
 
+    ACB("acb"),
+
     ;
 
     private final String idRulePrefixEnum;

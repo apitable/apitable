@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors, WrapperTooltip } from '@apitable/components';
+import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
 import classNames from 'classnames';
@@ -36,7 +36,7 @@ interface IViewRules {
 
 export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props => {
   const colors = useThemeColors();
-  const { onChange, rulesItem, invalid, invalidTip, datasheetId } = props;
+  const { onChange, rulesItem, datasheetId } = props;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
   const field = fieldMap[rulesItem.fieldId];
   const isViewLock = useShowViewLockModal();
@@ -165,9 +165,7 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
     }
   }
 
-  return <WrapperTooltip wrapper={invalid || isViewLock} tip={invalid ? invalidTip! : t(Strings.view_lock_setting_desc)}>
-    <div className={classNames(styles.rules, { [styles.disabled]: isViewLock })}>
-      {judgeFieldRule(field)}
-    </div>
-  </WrapperTooltip>;
+  return(<div className={classNames(styles.rules, { [styles.disabled]: isViewLock })}>
+    {judgeFieldRule(field)}
+  </div>);
 };

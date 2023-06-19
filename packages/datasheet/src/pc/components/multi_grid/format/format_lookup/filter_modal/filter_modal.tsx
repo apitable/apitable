@@ -76,7 +76,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
 
   const handleSubmit = () => {
     handleOk(filterInfo, sortInfo);
-    Message.success({ content: t(Strings.submit_filter_success) });
+    Message.success({ content: t(Strings.lookup_conditions_success) });
     handleCancel();
   };
   function setSortField(index: number, fieldId: string) {
@@ -111,6 +111,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
   }, [sortInfo, fieldMap]);
   const mainContentStyle: React.CSSProperties = {
     padding: '0',
+    marginTop: '0'
   };
 
   // Modify the order after the end of dragging.
@@ -167,7 +168,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
               <h3>{t(Strings.rollup_filter_sort_popup_setting)}</h3>
               <div className={styles.modalSubtitle}>{t(Strings.sorting_conditions_setting_description)}</div>
             </div>
-            {sortInfo && (<main style={mainContentStyle}>
+            {sortInfo.rules.length > 0 && (<main style={mainContentStyle}>
               <CommonViewSet
                 onDragEnd={onDragEnd}
                 dragData={sortInfo.rules}
@@ -176,7 +177,6 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
                 setRules={setSortRules}
                 deleteItem={deleteViewItem}
                 invalidFieldIds={invalidFieldsByGroup}
-                invalidTip={t(Strings.invalid_action_sort_tip)}
                 datasheetId={datasheetId}
               />
             </main> )}
@@ -229,7 +229,6 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
                   setRules={setSortRules}
                   deleteItem={deleteViewItem}
                   invalidFieldIds={invalidFieldsByGroup}
-                  invalidTip={t(Strings.invalid_action_sort_tip)}
                   datasheetId={datasheetId}
                 />
                 

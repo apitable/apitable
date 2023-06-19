@@ -62,7 +62,7 @@ interface IIconProps extends ShapeConfig {
   backgroundHeight?: number;
 }
 
-type Shape = 'square' | 'circle';
+export type Shape = 'square' | 'circle';
 
 export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string, background?: string; shape?: Shape; }>> = memo((props) => {
   const colors = useThemeColors();

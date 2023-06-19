@@ -26,6 +26,7 @@ import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 import { Message } from '../../common';
 import { getEnvVariables } from 'pc/utils/env';
+import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;
@@ -47,7 +48,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
     if (checked) {
       Message.info({
-        content: t(Strings.field_member_property_subscription_open_tip)
+        content: t(Strings.field_created_by_property_subscription_open_tip)
       });
       updateSubscription();
     } else {
@@ -68,7 +69,19 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
   return <div className={styles.section}>
     <section className={settingStyles.section}>
       {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-        {t(Strings.field_member_property_subscription)}
+        <div className={styles.subscription}>
+          {t(Strings.field_created_by_property_subscription)}
+          <a
+            href={t(Strings.field_help_created_by_property_subscription)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', cursor: 'pointer' }}
+          >
+            <span className={styles.requiredTip}>
+              <QuestionCircleOutlined color="currentColor"/>
+            </span>
+          </a>
+        </div>
         <Switch
           size="small"
           checked={subscription}

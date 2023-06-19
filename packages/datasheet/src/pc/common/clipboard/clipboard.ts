@@ -327,7 +327,6 @@ export class Clipboard {
           isPasteIncompatibleField = true;
         }
       });
-
       recogClipboardURLData({
         state,
         row,

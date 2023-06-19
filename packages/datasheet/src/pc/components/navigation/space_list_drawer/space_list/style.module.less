@@ -2,6 +2,7 @@
 
 .spaceList {
   height: 100%;
+  background-color: var(--bgCommonHigh);
 
   .scrollContainer {
     height: calc(100% - 56px);
@@ -30,7 +31,7 @@
     }
 
     &:hover {
-      background: var(--lowestBg);
+      background: var(--bgBglessHover);
     }
 
     .addIcon {
@@ -84,6 +85,9 @@
 
 .search {
   padding: 8px 24px;
+  & > div {
+    border-radius: 16px;
+  }
   .searchClose {
     fill: var(--black_500);
     transition: all 0.3s;

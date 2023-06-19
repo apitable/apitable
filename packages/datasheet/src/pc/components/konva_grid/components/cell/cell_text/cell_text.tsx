@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, FieldType, getTextFieldType, ISegment, KONVA_DATASHEET_ID, SegmentType } from '@apitable/core';
+import {
+  Field, FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, ISegment,
+  t, Strings,
+} from '@apitable/core';
 import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined } from '@apitable/icons';
-import { Icon, Image, Rect, Text } from 'pc/components/konva_components';
+import { Icon, Image, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { FC, useContext, useState } from 'react';
@@ -26,6 +29,7 @@ import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE } from '../../../constan
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { IRenderContentBase } from '../interface';
+import { Shape } from 'pc/components/konva_components/components/icon';
 import * as React from 'react';
 
 // IconPath
@@ -54,6 +58,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     toggleEdit,
   } = props;
   const [isAddIconHover, setAddIconHover] = useState(false);
+  const [isHover, setHover] = useState(false);
   const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
@@ -83,12 +88,7 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   }) => {
     if (field.type === FieldType.URL && !!cellValue) {
       const { offsetX: innerX, offsetY: innerY, width } = item;
-      let text: string;
-      if (field.type === FieldType.URL) {
-        text = Field.bindModel(field).cellValueToURL(cellValue)!;
-      } else {
-        text = Field.bindModel(field).cellValueToString(cellValue as any) || '';
-      }
+      const text = Field.bindModel(field).cellValueToString(cellValue as any) || '';
 
       setTooltipInfo({
         title: text,
@@ -103,6 +103,30 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
 
   const AddOutlinedPath = AddOutlined.toString();
   const favicon = (renderContent as IRenderContentBase | null)?.favicon;
+
+  const restIconProps = field.type === FieldType.URL ? {
+    y: 24 - GRID_ICON_COMMON_SIZE - 3,
+    shape: 'square' as Shape,
+    cornerRadius: 4,
+    backgroundWidth: 22,
+    backgroundHeight: 22,
+    background: isHover ? colors.rowSelectedBgSolid : colors.defaultBg,
+    onMouseEnter: () => {
+      setHover(true);
+      setTooltipInfo({
+        title: t(Strings.url_cell_edit),
+        visible: true,
+        x: x + columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING + 4,
+        y,
+        width: 1,
+        height: 1,
+      });
+    },
+    onMouseOut: () => {
+      setHover(false);
+      clearTooltipInfo();
+    },
+  } : {};
 
   const renderText = () => {
     if (renderContent == null) {
@@ -123,9 +147,9 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           onTap={() => setActiveUrlAction(true)}
           transformsEnabled={'all'}
           listening
+          {...restIconProps}
         />
       );
-
     }
     const { width, height, text: entityText, textData, style } = renderContent as IRenderContentBase;
     const linkEnable = style?.textDecoration === 'underline';
@@ -192,12 +216,13 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             size={GRID_ICON_COMMON_SIZE}
             backgroundWidth={18}
             backgroundHeight={16}
-            background={colors.defaultBg}
             data={enhanceTextIconMap[fieldType]}
             onClick={() => handleClick()}
             onTap={() => handleClick()}
+            background={colors.defaultBg}
             transformsEnabled={'all'}
             listening={linkEnable}
+            {...restIconProps}
           />
         }
       </>
@@ -232,27 +257,14 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
         />
       }
       {Boolean(favicon) && (
-        <>
-          <Rect
-            x={GRID_CELL_VALUE_PADDING}
-            y={5}
-            width={20}
-            height={20}
-            fillEnabled={false}
-            stroke={colors.borderCommonDefault}
-            strokeWidth={1}
-            cornerRadius={4}
-            listening={false}
-          />
-          <Image
-            url={favicon!}
-            x={GRID_CELL_VALUE_PADDING}
-            y={5}
-            width={20}
-            height={20}
-            alt="url favicon"
-          />
-        </>
+        <Image
+          url={favicon!}
+          x={GRID_CELL_VALUE_PADDING}
+          y={7}
+          width={16}
+          height={16}
+          alt="url favicon"
+        />
       )}
       {
         isActive &&

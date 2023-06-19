@@ -27,6 +27,7 @@ import { INodesMapItem } from '@apitable/core';
 import { AddOutlined, MoreStandOutlined, LockFilled, ShareFilled } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { browserIsDesktop } from 'pc/utils/os';
+import { Typography } from '@apitable/components';
 
 export interface IItemRender {
   id: string;
@@ -100,7 +101,7 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
             title={node.nodeName}
             textEllipsis
           >
-            <div className={styles.nodeName}>{node.nodeName}</div>
+            <Typography ellipsis variant="body3" className={styles.nodeName}>{node.nodeName}</Typography>
           </Tooltip>
         )}
       </div>

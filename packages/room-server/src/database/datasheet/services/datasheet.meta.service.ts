@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IDPrefix, IMeta } from '@apitable/core';
+import { IDPrefix, IField, IFieldMap, IMeta } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { DatasheetMetaRepository } from 'database/datasheet/repositories/datasheet.meta.repository';
@@ -50,6 +50,30 @@ export class DatasheetMetaService {
       }
     }
     return metaMap;
+  }
+
+  @Span()
+  async getFieldMapByDstId(dstId: string): Promise<IFieldMap> {
+    const raw = await this.repository.selectFieldMapByDstId(dstId);
+    if (raw) {
+      return raw.fieldMap;
+    }
+    throw new ServerException(PermissionException.NODE_NOT_EXIST);
+  }
+
+  @Span()
+  async getFieldByFldIdAndDstId(dstId: string, fieldId: string): Promise<IField | null> {
+    const raw = await this.repository.selectFieldByFldIdAndDstId(dstId, fieldId);
+    if (raw) {
+      return raw.field;
+    }
+    return null;
+  }
+
+  @Span()
+  async checkFieldExist(dstId: string, fieldId: string): Promise<boolean> {
+    const raw = await this.repository.selectFieldTypeByFldIdAndDstId(dstId, fieldId);
+    return Boolean(raw && raw.type);
   }
 
   /**

@@ -57,6 +57,19 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testCreateAiChatBotNode() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.AI_CHAT_BOT.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
+        assertThat(nodeId).isNotBlank();
+    }
+
+    @Test
     void givenNotRootNodeWhenCheckNodeOpThenPass() {
         // the given node is not the root directory
         MockUserSpace userSpace = createSingleUserAndSpace();

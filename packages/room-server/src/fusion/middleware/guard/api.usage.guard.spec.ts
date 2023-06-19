@@ -21,6 +21,7 @@ import '@apitable/i18n-lang';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { RestService } from 'shared/services/rest/rest.service';
 import { Logger } from 'winston';
@@ -32,6 +33,7 @@ describe('ApiUsageGuard', () => {
   let guard: ApiUsageGuard;
   let logger: Logger;
   let restService: RestService;
+  let datasheetService: DatasheetService;
   let context: any;
   beforeAll(async() => {
     jest.setTimeout(60000);
@@ -46,7 +48,8 @@ describe('ApiUsageGuard', () => {
       getRequest: jest.fn().mockReturnThis(),
     };
     restService = app.get(RestService);
-    guard = new ApiUsageGuard(logger, restService);
+    datasheetService = app.get(DatasheetService);
+    guard = new ApiUsageGuard(logger, restService, datasheetService);
   });
 
   afterAll(async() => {

@@ -119,7 +119,7 @@ export class DatasheetService {
     // Query datasheet
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
     // Query snapshot
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException);
+    const meta = options?.meta ?? await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException);
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
       ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds)

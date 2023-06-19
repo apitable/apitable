@@ -50,18 +50,19 @@ impl UserService for UserServiceImpl {
         format!(
           "\
           SELECT \
-            vu.uuid userId, \
+            vu.uuid user_id, \
             vu.uuid uuid, \
-            vu.color avatarColor, \
-            vu.nick_name nickName, \
-            vui.id unitId, \
-            vui.is_deleted isDeleted, \
+            vu.color avatar_color, \
+            vu.nick_name nick_name, \
+            vui.id unit_id, \
+            vui.is_deleted is_deleted, \
             vui.unit_type type, \
             IFNULL(vum.member_name,vu.nick_name) name, \
             vu.avatar avatar, \
-            vum.is_active isActive, \
-            IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified, \
-            IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified \
+            vum.is_active is_active, \
+            IFNULL(vu.is_social_name_modified, 2) > 0  AS is_nick_name_modified, \
+            IFNULL(vum.is_social_name_modified, 2) > 0 AS is_member_name_modified, \
+            vui.unit_id original_unit_id \
           FROM {prefix}user vu \
           LEFT JOIN {prefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = ? \
           LEFT JOIN {prefix}unit vui ON vui.unit_ref_id = vum.id \
@@ -76,20 +77,6 @@ impl UserService for UserServiceImpl {
         },
       )
       .await?
-      .map_ok(|row: (_, _, _, _, _, _, _, _, _, _, _, _)| UnitInfo {
-        user_id: row.0,
-        uuid: row.1,
-        avatar_color: row.2,
-        nick_name: row.3,
-        unit_id: row.4,
-        is_deleted: row.5,
-        r#type: row.6,
-        name: row.7,
-        avatar: row.8,
-        is_active: row.9,
-        is_nick_name_modified: row.10,
-        is_member_name_modified: row.11,
-      })
       .try_collect()
       .await
       .with_context(|| "get user info by uuids")?;
@@ -191,40 +178,46 @@ mod tests {
 
   const MOCK_USER_INFO_QUERY_SQL: &str = "\
     SELECT \
-      vu.uuid userId, \
+      vu.uuid user_id, \
       vu.uuid uuid, \
-      vu.color avatarColor, \
-      vu.nick_name nickName, \
-      vui.id unitId, \
-      vui.is_deleted isDeleted, \
+      vu.color avatar_color, \
+      vu.nick_name nick_name, \
+      vui.id unit_id, \
+      vui.is_deleted is_deleted, \
       vui.unit_type type, \
       IFNULL(vum.member_name,vu.nick_name) name, \
       vu.avatar avatar, \
-      vum.is_active isActive, \
-      IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified, \
-      IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified \
+      vum.is_active is_active, \
+      IFNULL(vu.is_social_name_modified, 2) > 0  AS is_nick_name_modified, \
+      IFNULL(vum.is_social_name_modified, 2) > 0 AS is_member_name_modified, \
+      vui.unit_id original_unit_id \
     FROM apitable_user vu \
     LEFT JOIN apitable_unit_member vum ON vum.user_id = vu.id AND vum.space_id = ? \
     LEFT JOIN apitable_unit vui ON vui.unit_ref_id = vum.id \
     WHERE uuid IN (?)";
 
+  fn mock_columns() -> Vec<(&'static str, ColumnType)> {
+    vec![
+      ("user_id", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("uuid", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("avatar_color", ColumnType::MYSQL_TYPE_TINY),
+      ("nick_name", ColumnType::MYSQL_TYPE_INT24),
+      ("unit_id", ColumnType::MYSQL_TYPE_LONG),
+      ("is_deleted", ColumnType::MYSQL_TYPE_BIT),
+      ("type", ColumnType::MYSQL_TYPE_TINY),
+      ("name", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("avatar", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("is_active", ColumnType::MYSQL_TYPE_BIT),
+      ("is_nick_name_modified", ColumnType::MYSQL_TYPE_BIT),
+      ("is_member_name_modified", ColumnType::MYSQL_TYPE_BIT),
+      ("original_unit_id", ColumnType::MYSQL_TYPE_VARCHAR),
+    ]
+  }
+
   #[tokio::test]
   async fn get_one_user_info() {
     let module = init_module([mock_rows(
-      [
-        ("user_id", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("uuid", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar_color", ColumnType::MYSQL_TYPE_TINY),
-        ("nick_name", ColumnType::MYSQL_TYPE_INT24),
-        ("unit_id", ColumnType::MYSQL_TYPE_LONG),
-        ("is_deleted", ColumnType::MYSQL_TYPE_BIT),
-        ("type", ColumnType::MYSQL_TYPE_TINY),
-        ("name", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("is_active", ColumnType::MYSQL_TYPE_BIT),
-        ("is_nick_name_modified", ColumnType::MYSQL_TYPE_BIT),
-        ("is_member_name_modified", ColumnType::MYSQL_TYPE_BIT),
-      ],
+      mock_columns(),
       [[
         "1749124".into(),
         "1749124".into(),
@@ -238,6 +231,7 @@ mod tests {
         true.into(),
         true.into(),
         Value::NULL,
+        "abcdef".into(),
       ]],
     )]);
     let user_service: &dyn UserService = module.resolve_ref();
@@ -263,6 +257,7 @@ mod tests {
         avatar_color: None,
         is_member_name_modified: Some(false),
         is_nick_name_modified: Some(true),
+        original_unit_id: Some("abcdef".into()),
       }]
     );
 
@@ -280,20 +275,7 @@ mod tests {
   #[tokio::test]
   async fn user_info_avatar_no_host() {
     let module = init_module([mock_rows(
-      [
-        ("user_id", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("uuid", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar_color", ColumnType::MYSQL_TYPE_TINY),
-        ("nick_name", ColumnType::MYSQL_TYPE_INT24),
-        ("unit_id", ColumnType::MYSQL_TYPE_LONG),
-        ("is_deleted", ColumnType::MYSQL_TYPE_BIT),
-        ("type", ColumnType::MYSQL_TYPE_TINY),
-        ("name", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("is_active", ColumnType::MYSQL_TYPE_BIT),
-        ("is_nick_name_modified", ColumnType::MYSQL_TYPE_BIT),
-        ("is_member_name_modified", ColumnType::MYSQL_TYPE_BIT),
-      ],
+      mock_columns(),
       [[
         "1749124".into(),
         "1749124".into(),
@@ -307,6 +289,7 @@ mod tests {
         true.into(),
         Value::NULL,
         true.into(),
+        Value::NULL,
       ]],
     )]);
     let user_service: &dyn UserService = module.resolve_ref();
@@ -332,6 +315,7 @@ mod tests {
         avatar_color: Some(3),
         is_member_name_modified: Some(true),
         is_nick_name_modified: Some(false),
+        original_unit_id: None,
       }]
     );
 

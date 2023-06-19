@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { UnitTypeEnum } from 'shared/enums';
 import { EntityRepository, getConnection, In, Repository } from 'typeorm';
-import { UnitEntity } from '../entities/unit.entity';
 import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
+import { UnitEntity } from '../entities/unit.entity';
 
 /**
  * Operations on table `unit`
- * 
+ *
  * @author Zoe zheng
  * @date 2020/7/30 4:09 PM
  */
@@ -48,6 +49,7 @@ export class UnitRepository extends Repository<UnitEntity> {
       `
           SELECT
             vu.id unitId,
+            vu.unit_id originalUnitId,
             vu.unit_type type,
             vu.is_deleted isDeleted,
             COALESCE(vut.team_name, vum.member_name, vur.role_name) name,
@@ -76,5 +78,13 @@ export class UnitRepository extends Repository<UnitEntity> {
    */
   public async selectUnitsByUnitRefIds(unitRefIds: number[]): Promise<UnitEntity[]> {
     return await this.find({ select: ['id', 'unitType', 'unitRefId'], where: { unitRefId: In(unitRefIds) }});
+  }
+
+  selectIdByUnitIdAndSpaceIdAndUnitType(unitId: string, spaceId: string, unitType: UnitTypeEnum): Promise<{ id: string } | undefined> {
+    return this.findOne({ select: ['id'], where: { unitId: unitId, spaceId, unitType: unitType, isDeleted: false }});
+  }
+
+  selectUnitIdsByUnitIdsAndSpaceIdAndUnitType(unitIds: string[], spaceId: string, unitType: UnitTypeEnum): Promise<{ unitId: string }[] | undefined> {
+    return this.find({ select: ['unitId'], where: { unitId: In(unitIds), spaceId, unitType: unitType, isDeleted: false }});
   }
 }

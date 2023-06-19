@@ -45,5 +45,5 @@ export const secondStepVerify = (code: number) => {
     });
     return true;
   }
-  return false;
+  return true;
 };
