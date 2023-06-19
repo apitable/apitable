@@ -324,9 +324,6 @@ mod tests {
     let mut resource_ids = collect_datasheet_pack_resource_ids(&multiple_datasheets_and_widgets_fixture(), false);
 
     resource_ids.sort();
-    assert_eq!(
-      resource_ids,
-      vec!["dst1".to_owned(), "dst2".into(), "dst3".into()],
-    );
+    assert_eq!(resource_ids, vec!["dst1".to_owned(), "dst2".into(), "dst3".into()],);
   }
 }
