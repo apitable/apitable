@@ -172,8 +172,9 @@ export const useWorkbenchSideSync = () => {
       Api.keepTabbar({}).then(() => {
         window.location.reload();
       });
+      return;
     }
-    
+
     const configObj = {
       delete: {
         content: t(Strings.delete_file_message_content) + `(${StatusCode.NODE_DELETED})`,
