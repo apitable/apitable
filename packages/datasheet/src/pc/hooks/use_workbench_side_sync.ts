@@ -168,7 +168,12 @@ export const useWorkbenchSideSync = () => {
   const popErrorModal = (
     nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET
   ) => {
-
+    if(errorType === ErrorType.Delete) {
+      Api.keepTabbar({}).then(() => {
+        window.location.reload();
+      });
+    }
+    
     const configObj = {
       delete: {
         content: t(Strings.delete_file_message_content) + `(${StatusCode.NODE_DELETED})`,
