@@ -17,4 +17,3 @@
  */
 export * from './action.queue';
 export * from './flow.queue';
-export * from './queue.module';

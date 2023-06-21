@@ -25,7 +25,7 @@ import { RobotController } from './controller/robot.controller';
 import { RobotRunHistoryController } from './controller/run.history.controller';
 import { RobotTriggerController } from './controller/trigger.controller';
 import { RobotTriggerTypeController } from './controller/trigger.type.controller';
-import { QueueModule } from './queues';
+import { ActionQueue, FlowQueue } from './queues';
 import { AutomationActionRepository } from './repositories/automation.action.repository';
 import { AutomationActionTypeRepository } from './repositories/automation.action.type.repository';
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
@@ -40,6 +40,14 @@ import { RobotRobotService } from './services/robot.robot.service';
 import { RobotTriggerService } from './services/robot.trigger.service';
 import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
 import { FlowWorker } from './workers';
+import {
+  AUTOMATION_REDIS_CLIENT,
+  AUTOMATION_REDIS_DB,
+  AUTOMATION_REDIS_HOST,
+  AUTOMATION_REDIS_PASSWORD,
+  AUTOMATION_REDIS_PORT, AUTOMATION_REDIS_TLS
+} from './constants';
+import IORedis from 'ioredis';
 
 @Module({
   imports: [
@@ -54,7 +62,6 @@ import { FlowWorker } from './workers';
     ]),
     NodeModule,
     UserModule,
-    QueueModule,
   ],
   controllers: [
     RobotController,
@@ -65,6 +72,21 @@ import { FlowWorker } from './workers';
     RobotTriggerController,
   ],
   providers: [
+    {
+      useFactory: (): IORedis => {
+        return new IORedis({
+          host: AUTOMATION_REDIS_HOST,
+          port: AUTOMATION_REDIS_PORT,
+          password: AUTOMATION_REDIS_PASSWORD,
+          db: AUTOMATION_REDIS_DB,
+          maxRetriesPerRequest: null,
+          tls: AUTOMATION_REDIS_TLS,
+        });
+      },
+      provide: AUTOMATION_REDIS_CLIENT,
+    },
+    ActionQueue,
+    FlowQueue,
     AutomationService,
     RobotTriggerService,
     RobotTriggerTypeService,
@@ -73,6 +95,6 @@ import { FlowWorker } from './workers';
     RobotActionTypeService,
     FlowWorker,
   ],
-  exports: [RobotRobotService],
+  exports: [RobotRobotService, FlowQueue],
 })
 export class AutomationModule {}

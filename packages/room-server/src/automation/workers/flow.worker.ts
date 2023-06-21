@@ -20,43 +20,25 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConnectionOptions, Job, UnrecoverableError, Worker } from 'bullmq';
 import { AUTOMATION_REDIS_CLIENT, FLOW_QUEUE, ON_ACTIVE, ON_COMPLETED, ON_ERROR, ON_FAILED } from '../constants';
 import IORedis from 'ioredis';
-import { defaultEventListenerOptions, IEventInstance, IEventListenerOptions, IOPEvent, OPEventNameEnums } from '@apitable/core';
-import { EventTypeEnums, isHandleEvent } from './worker.helper';
-import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
-import {
-  FormSubmittedTriggerFactory,
-  ITrigger,
-  ITriggerFactory,
-  RecordCreatedTriggerFactory,
-  RecordMatchesConditionsTriggerFactory,
-} from '../triggers';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { RobotTriggerService } from '../services/robot.trigger.service';
 import { AutomationService } from '../services/automation.service';
 
 @Injectable()
 export class FlowWorker {
   private flowWorker: Worker | undefined;
-  private readonly options: IEventListenerOptions = defaultEventListenerOptions;
-  private eventNameToTriggerFactoryMap = new Map<string, ITriggerFactory<any>>();
 
   constructor(
     @InjectLogger() private readonly logger: Logger,
     @Inject(AUTOMATION_REDIS_CLIENT) private readonly redisClient: IORedis,
-    private readonly triggerService: RobotTriggerService,
     private readonly automationService: AutomationService,
-  ) {
-    this.eventNameToTriggerFactoryMap.set(EventTypeEnums.RecordMatchesConditions, new RecordMatchesConditionsTriggerFactory());
-    this.eventNameToTriggerFactoryMap.set(EventTypeEnums.FormSubmitted, new FormSubmittedTriggerFactory());
-    this.eventNameToTriggerFactoryMap.set(EventTypeEnums.RecordCreated, new RecordCreatedTriggerFactory());
-  }
+  ) { }
 
   public start(): void {
     this.flowWorker = new Worker(FLOW_QUEUE, async job => await this.onProcess(job), {
       connection: this.redisClient as ConnectionOptions,
-      removeOnComplete: { count: 100 },
-      removeOnFail: { count: 100 },
+      removeOnComplete: { count: 0 },
+      removeOnFail: { count: 10 },
     });
     this.flowWorker.on(ON_ACTIVE, (job, prev) => { void this.onActive(job, prev); });
     this.flowWorker.on(ON_COMPLETED, (job, result, prev) => this.onCompleted(job, result, prev));
@@ -66,64 +48,14 @@ export class FlowWorker {
 
   public async onActive(_job: Job, _pre: string): Promise<void> {}
 
-  public async onProcess(job: Job<IEventInstance<IOPEvent> & { beforeApply: boolean }>): Promise<string | null> {
-    const data = job.data;
-
-    if (!isHandleEvent(data, data.beforeApply, this.options)) {
-      return null;
-    }
-    const { datasheetId } = data.context;
-    if (!datasheetId) return null;
+  public async onProcess(job: Job<any>){
+    const flows = job.data;
     try {
-      if (job.name === OPEventNameEnums.FormSubmitted) {
-        const datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.FormSubmitted);
-        const triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.FormSubmitted);
-        const { datasheetName, recordId, eventFields, formId } = data.context;
-        await this.triggerFlows(datasheetTriggers, triggerFactory, {
-          datasheetId,
-          datasheetName,
-          recordId,
-          eventFields,
-          formId,
-        });
-      } else if (job.name === OPEventNameEnums.RecordCreated) {
-        let datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordUpdated);
-        const { datasheetName, recordId, eventFields, fields, diffFields, state } = data.context;
-        let triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordMatchesConditions);
-        await this.triggerFlows(datasheetTriggers, triggerFactory, {
-          datasheetId,
-          datasheetName,
-          recordId,
-          eventFields,
-          fields,
-          diffFields,
-          state,
-        });
-        datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordCreated);
-        triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordCreated);
-        await this.triggerFlows(datasheetTriggers, triggerFactory, {
-          datasheetId,
-          datasheetName,
-          recordId,
-          eventFields,
-        });
-      } else if (job.name === OPEventNameEnums.RecordUpdated) {
-        const datasheetTriggers = await this.getDatasheetTriggers(datasheetId, OPEventNameEnums.RecordUpdated);
-        const { datasheetName, recordId, eventFields, fields, diffFields, state } = data.context;
-        const triggerFactory = this.eventNameToTriggerFactoryMap.get(EventTypeEnums.RecordMatchesConditions);
-        await this.triggerFlows(datasheetTriggers, triggerFactory, {
-          datasheetId,
-          datasheetName,
-          recordId,
-          eventFields,
-          fields,
-          diffFields,
-          state,
-        });
+      for (const flow of flows) {
+        await this.automationService.handleTask(flow.robotId, flow.trigger);
       }
-      return datasheetId;
     } catch (error) {
-      this.logger.error(`the [${datasheetId}] datasheet's robot execute failure.`, (error as Error).message);
+      this.logger.error('the datasheet\'s robot execute failure.', (error as Error).message);
       throw new UnrecoverableError();
     }
   }
@@ -140,46 +72,4 @@ export class FlowWorker {
     this.logger.error(`error [${error.name}: ${error.message}], detail [${error.stack}]. job [${job}]: `);
   }
 
-  private async getDatasheetTriggers(datasheetId: string, triggerType: string): Promise<ResourceRobotTriggerDto[]> {
-    switch (triggerType) {
-      case OPEventNameEnums.FormSubmitted:
-        return await this.triggerService.getTriggersByResourceAndEventType(datasheetId, EventTypeEnums.FormSubmitted);
-      case OPEventNameEnums.RecordUpdated:
-        return await this.triggerService.getTriggersByResourceAndEventType(datasheetId, EventTypeEnums.RecordMatchesConditions);
-      case OPEventNameEnums.RecordCreated:
-        return await this.triggerService.getTriggersByResourceAndEventType(datasheetId, EventTypeEnums.RecordCreated);
-      default:
-        return [];
-    }
-  }
-
-  private async triggerFlows(
-    datasheetTriggers: ResourceRobotTriggerDto[],
-    triggerFactory: ITriggerFactory<any> | undefined,
-    extra: any,
-  ): Promise<void> {
-    if (!triggerFactory) {
-      throw new Error('unknown trigger');
-    }
-    const flows = datasheetTriggers
-      .filter(item => Boolean(item.input))
-      .reduce((prev, item) => {
-        const trigger = triggerFactory.createTrigger({ input: item.input!, extra });
-        if (trigger !== null) {
-          prev.push({
-            robotId: item.robotId,
-            trigger,
-          });
-        }
-        return prev;
-      }, [] as IShouldFireRobot[]);
-    for (const flow of flows) {
-      await this.automationService.handleTask(flow.robotId, flow.trigger);
-    }
-  }
 }
-
-type IShouldFireRobot = {
-  robotId: string;
-  trigger: ITrigger;
-};
