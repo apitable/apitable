@@ -15,13 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { redisModuleOptions } from 'shared/services/config/redis.config.service';
 
-export const AUTOMATION_REDIS_CLIENT = 'AUTOMATION_REDIS_CLIENT';
+import { CommonEvent, CommonEventContext, CommonEventMetaContext } from './common.event';
 
-const { host, port, password, db, tls } = redisModuleOptions();
-export const AUTOMATION_REDIS_HOST = host;
-export const AUTOMATION_REDIS_PORT = port;
-export const AUTOMATION_REDIS_PASSWORD = password;
-export const AUTOMATION_REDIS_DB = db;
-export const AUTOMATION_REDIS_TLS = tls;
+export type RecordCreatedEvent = CommonEvent;
+
+export type RecordCreatedEventMetaContext = CommonEventMetaContext;
+
+export type RecordCreatedEventContext = CommonEventContext;

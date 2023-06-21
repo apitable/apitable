@@ -17,16 +17,16 @@
  */
 
 import { forwardRef, Module } from '@nestjs/common';
+import { RobotModule } from 'automation/robot.module';
 import { CommandModule } from 'database/command/command.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { RobotEventService } from './services/robot.event.service';
-import { AutomationModule } from 'automation/automation.module';
 
 @Module({
   imports: [
     CommandModule,
     DatasheetModule,
-    forwardRef(()=>AutomationModule),
+    forwardRef(()=>RobotModule),
   ],
   providers: [RobotEventService],
   exports: [RobotEventService]

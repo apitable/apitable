@@ -15,7 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export * from './record.created.trigger';
-export * from './record.matches.conditions.trigger';
-export * from './form.submitted.trigger';
-export * from './trigger.factory';
+
+import { CommonEvent, CommonEventContext, CommonEventMetaContext } from './common.event';
+
+export type RecordUpdatedEvent = CommonEvent;
+
+export type RecordUpdatedEventMetaContext = CommonEventMetaContext;
+
+export type RecordUpdatedEventContext = CommonEventContext;

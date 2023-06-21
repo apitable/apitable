@@ -26,7 +26,6 @@ import { UserModule } from 'user/user.module';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { FormController } from './controllers/form.controller';
 import { FormService } from './services/form.service';
-import { AutomationModule } from 'automation/automation.module';
 
 @Module({
   imports: [
@@ -36,7 +35,6 @@ import { AutomationModule } from 'automation/automation.module';
     UserModule,
     DatasheetModule,
     forwardRef(()=>OtModule),
-    forwardRef(()=>AutomationModule),
   ],
   controllers: [FormController],
   providers: [FormService, FusionApiTransformer],

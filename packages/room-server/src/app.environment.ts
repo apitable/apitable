@@ -37,9 +37,6 @@ export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'tru
 // whether or not enable socket. (data collaboration middleware)
 export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
 
-// whether or not enable automation worker
-export const enableAutomationWorker = Object.is(process.env.ENABLE_AUTOMATION_WORKER, 'true');
-
 // project root directory
 export const PROJECT_DIR = __dirname;
 

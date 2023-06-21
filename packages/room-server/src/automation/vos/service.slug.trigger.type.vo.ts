@@ -15,5 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-export * from './action.worker';
-export * from './flow.worker';
+
+export interface IServiceSlugTriggerTypeVo {
+  [triggerSlug: string]: string,
+}
