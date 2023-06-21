@@ -19,8 +19,9 @@ import { redisModuleOptions } from 'shared/services/config/redis.config.service'
 
 export const AUTOMATION_REDIS_CLIENT = 'AUTOMATION_REDIS_CLIENT';
 
-const { host, port, password, db } = redisModuleOptions();
+const { host, port, password, db, tls } = redisModuleOptions();
 export const AUTOMATION_REDIS_HOST = host;
 export const AUTOMATION_REDIS_PORT = port;
 export const AUTOMATION_REDIS_PASSWORD = password;
 export const AUTOMATION_REDIS_DB = db;
+export const AUTOMATION_REDIS_TLS = tls;
