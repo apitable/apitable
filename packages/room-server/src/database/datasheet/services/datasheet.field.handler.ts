@@ -430,7 +430,7 @@ export class DatasheetFieldHandler {
     await this.computeFieldReferenceManager.createReference(datasheetId, formulaField.id, datasheetId, formulaRefFieldIds);
     // Get corresponding record data of current datasheet
     if (!recordMap) {
-      recordMap = state.foreignDstMap[datasheetId]!.snapshot.recordMap;
+      recordMap = datasheetId === state.mainDstId ? state.mainDstRecordMap : state.foreignDstMap[datasheetId]!.snapshot.recordMap;
     }
     // process recursively
     await this.parseField(datasheetId, fieldMap, recordMap || {}, formulaRefFieldIds, state);
