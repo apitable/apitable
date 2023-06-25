@@ -23,7 +23,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -50,14 +49,12 @@ import { NodePermissionGuard } from 'fusion/middleware/guard/node.permission.gua
 import { AttachmentParamRo, AttachmentUploadRo } from 'fusion/ros/attachment.upload.ro';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
 import { RecordDeleteVo } from 'fusion/vos/record.delete.vo';
-import { I18nService } from 'nestjs-i18n';
-import { API_MAX_MODIFY_RECORD_COUNTS, DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'shared/common';
+import { API_MAX_MODIFY_RECORD_COUNTS, DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants } from 'shared/common';
 import { NodePermissionEnum } from 'shared/enums/node.permission.enum';
-import { ApiException } from 'shared/exception';
+import { ApiException, CommonException, ServerException } from 'shared/exception';
 import { ApiCacheInterceptor, apiCacheTTLFactory } from 'shared/interceptor/api.cache.interceptor';
 import { ApiNotifyInterceptor } from 'shared/interceptor/api.notify.interceptor';
 import { ApiUsageInterceptor } from 'shared/interceptor/api.usage.interceptor';
-import { IFileInterface } from 'shared/interfaces/file.interface';
 import { RestService } from 'shared/services/rest/rest.service';
 import { CreateDatasheetPipe } from './middleware/pipe/create.datasheet.pipe';
 import { CreateFieldPipe } from './middleware/pipe/create.field.pipe';
@@ -100,8 +97,8 @@ export class FusionApiController {
     private readonly fusionApiService: FusionApiService,
     private readonly attachService: AttachmentService,
     private readonly restService: RestService,
-    private readonly i18n: I18nService,
-  ) {}
+  ) {
+  }
 
   @Get('/datasheets/:dstId/records')
   @ApiOperation({
@@ -197,46 +194,16 @@ export class FusionApiController {
   // TODO: Waiting for nestjs official inheritance multi and fastify
   public async addAttachment(@Param() param: AttachmentParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     await this.checkSpaceCapacity(req);
-    const service = this.attachService;
-    const i18nService = this.i18n;
-    const newFiles: IFileInterface[] = [];
-    const handler = this.attachService.getFileUploadHandler(param.dstId, newFiles, req, reply);
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    await req.multipart(handler, onEnd);
-
-    // Uploading finished
-    async function onEnd(err: any) {
-      let localError;
+    const handler = await this.attachService.getFileUploadHandler(param.dstId, req, reply);
+    await req.multipart(handler, function(err: Error) {
+      if (err instanceof ServerException) {
+        reply.statusCode = err.getStatusCode();
+        reply.send(ApiResponse.error(err.getMessage(), err.getCode()));
+      }
       if (err) {
-        if (err instanceof ApiException) {
-          localError = err;
-        } else {
-          localError = ApiException.tipError(ApiTipConstant.api_upload_attachment_error);
-        }
+        reply.send(ApiResponse.error(CommonException.SERVER_ERROR.message, CommonException.SERVER_ERROR.code));
       }
-      if (newFiles.length > 1) {
-        localError = ApiException.tipError(ApiTipConstant.api_upload_attachment_exceed_limit);
-      }
-      if (localError) {
-        reply.statusCode = localError.getTip().statusCode;
-        const errMsg = await i18nService.translate(localError.message, {
-          lang: req[USER_HTTP_DECORATE]?.locale,
-        });
-        return reply.send(ApiResponse.error(errMsg, localError.getTip().code));
-      }
-      try {
-        const dto = await service.uploadAttachment(param.dstId, newFiles[0]!, { token: req.headers.authorization });
-        return reply.send(ApiResponse.success(dto));
-      } catch (e) {
-        reply.statusCode = HttpStatus.OK;
-        const errMsg = await i18nService.translate((e as Error).message, {
-          lang: req[USER_HTTP_DECORATE]?.locale,
-          args: (e as ApiException).getExtra(),
-        });
-        return reply.send(ApiResponse.error(errMsg, (e as ApiException).getTip().code));
-      }
-    }
-
+    });
     return ApiResponse.success({} as any);
   }
 

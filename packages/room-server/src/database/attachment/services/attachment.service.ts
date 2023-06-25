@@ -21,21 +21,16 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import FormData from 'form-data';
-import * as fs from 'fs';
 import { ApiResponse } from 'fusion/vos/api.response';
 import { I18nService } from 'nestjs-i18n';
-import * as path from 'path';
 import pump from 'pump';
 import { lastValueFrom } from 'rxjs';
-import { FILE_UPLOAD_TMP_PATH, InjectLogger, JavaApiPath, USER_HTTP_DECORATE } from 'shared/common';
+import { InjectLogger, JavaApiPath, USER_HTTP_DECORATE } from 'shared/common';
 import { AttachmentTypeEnum } from 'shared/enums/attachment.enum';
-import { ApiException } from 'shared/exception';
-import { IdWorker } from 'shared/helpers';
+import { ApiException, CommonException, ServerException } from 'shared/exception';
 import { IAuthHeader } from 'shared/interfaces';
-import { IFileInterface } from 'shared/interfaces/file.interface';
 import { JavaService } from 'shared/services/java/java.service';
 import { Logger } from 'winston';
-import { AttachmentDto } from '../dtos/attachment.dto';
 
 @Injectable()
 export class AttachmentService {
@@ -49,40 +44,52 @@ export class AttachmentService {
   }
 
   /**
-   *
-   * @param dstId
-   * @param file
-   * @param auth
-   * @returns
+   * Save files in directory
+   * @return
+   * @author Zoe Zheng
+   * @date 2020/9/1 4:05 pm
    */
-  public async uploadAttachment(dstId: string, file: IFileInterface, auth: IAuthHeader): Promise<AttachmentDto> {
-    if (!file) throw ApiException.tipError(ApiTipConstant.api_upload_invalid_file);
-    if (fs.statSync(file.path).size === 0) {
-      this.unlinkFile(file.path);
-      throw ApiException.tipError(ApiTipConstant.api_attachment_file_size_error);
+  async getFileUploadHandler(dstId: string, req: FastifyRequest, reply: FastifyReply) {
+    if (!req.headers['content-type']?.startsWith('multipart/form-data')) {
+      const error = ApiException.tipError(ApiTipConstant.api_upload_invalid_file_name);
+      const errMsg = await this.i18n.translate(error.getTip().id, {
+        lang: req[USER_HTTP_DECORATE]?.locale,
+      });
+      throw new ServerException(new CommonException(error.getTip().code, errMsg), error.getTip().statusCode);
     }
-    const newPath = path.join(file.destination, file.originalName);
+    return async(_field: string, file: pump.Stream, filename: string, _encoding: string, mimetype: string): Promise<void> => {
+      try {
+        const result = await this.uploadFile({ token: req.headers.authorization }, dstId, file, filename, mimetype);
+        reply.send(ApiResponse.success(result));
+      } catch (e: any) {
+        const errMsg = await this.i18n.translate(e.message, {
+          lang: req[USER_HTTP_DECORATE]?.locale,
+        });
+        throw new ServerException(new CommonException(e.getTip().code, errMsg), e.getTip().statusCode);
+      }
+    };
+  }
+
+  async getContentDisposition(url: string): Promise<string> {
+    const response = await lastValueFrom(this.httpService.head(url));
+    return response!.headers['content-disposition']!;
+  }
+
+  async uploadFile(auth: IAuthHeader, dstId: string, file: pump.Stream, filename: string, mimetype: string) {
     let res;
     try {
-      fs.renameSync(file.path, newPath);
       const form = new FormData();
-      const upstream = fs.createReadStream(newPath);
-      await form.append('file', upstream, {
-        filename: file.originalName,
-        contentType: file.mimetype,
+      await form.append('file', file, {
+        filename,
+        contentType: mimetype
       });
       await form.append('nodeId', dstId);
       await form.append('type', AttachmentTypeEnum.DATASHEET_ATTACH.toString());
       res = await this.javaService.setHeaders(auth, form.getHeaders()).post(JavaApiPath.UPLOAD_ATTACHMENT, form);
-      upstream.close();
     } catch (e) {
       this.logger.error('Uploading attachment failed', { e });
       throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });
-    } finally {
-      this.unlinkFile(file.path);
-      this.unlinkFile(newPath);
     }
-
     if (!res) throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });
     if (res.code && res.code === JavaService.SUCCESS_CODE) {
       return {
@@ -97,49 +104,5 @@ export class AttachmentService {
       };
     }
     throw ApiException.tipError(ApiTipConstant.api_upload_attachment_error, { message: res.message });
-  }
-
-  /**
-   * delete file
-   * @param file relative path + file name
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/8/12 11:50 am
-   */
-  public unlinkFile(file: string) {
-    if (fs.existsSync(file)) {
-      fs.unlinkSync(file);
-    }
-  }
-
-  /**
-   * Save files in directory
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/9/1 4:05 pm
-   */
-  getFileUploadHandler(_dstId: string, newFiles: IFileInterface[], req: FastifyRequest, reply: FastifyReply) {
-    return async(field: string, file: pump.Stream, filename: string, _encoding: string, mimetype: string): Promise<void> => {
-      if (!filename) {
-        const err = ApiException.tipError(ApiTipConstant.api_upload_invalid_file_name);
-        const errMsg = await this.i18n.translate(err.message, {
-          lang: req[USER_HTTP_DECORATE]?.locale,
-        });
-        reply.statusCode = err.getTip().statusCode;
-        return reply.send(ApiResponse.error(errMsg, err.getTip().code));
-      }
-      const newName = IdWorker.nextId().toString();
-      const filePath = path.join(FILE_UPLOAD_TMP_PATH, newName);
-      if (!fs.existsSync(FILE_UPLOAD_TMP_PATH)) {
-        fs.mkdirSync(FILE_UPLOAD_TMP_PATH);
-      }
-      await pump(file, fs.createWriteStream(filePath)); // File path
-      newFiles.push({ filename: newName, fieldName: field, destination: FILE_UPLOAD_TMP_PATH, originalName: filename, mimetype, path: filePath });
-    };
-  }
-
-  async getContentDisposition(url: string): Promise<string> {
-    const response = await lastValueFrom(this.httpService.head(url));
-    return response!.headers['content-disposition']!;
   }
 }
