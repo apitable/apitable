@@ -1360,6 +1360,13 @@
         "isRecordTimes": true,
         "message": "api_param_unit_id_required",
         "statusCode": 200
+      },
+      "api_param_widget_id_not_exists": {
+        "code": 1525,
+        "id": "api_param_widget_id_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_widget_id_not_exists",
+        "statusCode": 200
       }
     }
   }

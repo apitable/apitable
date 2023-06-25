@@ -49,7 +49,6 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
   }
 
   async use(req: any, res: any, next: () => void) {
-    console.log(this.developerService);
     // use redis for distributed system
     const redisClient = this.redisService.getClient();
     // use spaceId as the unique key for verification, no need to verify in other places.

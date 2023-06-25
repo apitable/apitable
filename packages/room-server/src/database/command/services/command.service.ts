@@ -33,6 +33,7 @@ import {
   IUnitValue,
   IUserInfo,
   IUserValue,
+  IWidget,
   Reducers,
   resourceOpsToChangesets,
   StoreActions,
@@ -144,6 +145,11 @@ export class CommandService {
     const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
     store.dispatch(StoreActions.setDashboard(payload.dashboard, payload.dashboard.id));
     store.dispatch(StoreActions.setPageParams({ dashboardId: payload.dashboard.id }));
+    if (payload.widgetMap) {
+      Object.keys(payload.widgetMap).forEach(widgetId => {
+        store.dispatch(StoreActions.receiveInstallationWidget(widgetId, payload.widgetMap[widgetId] as any as IWidget));
+      });
+    }
     return store;
   }
 

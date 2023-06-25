@@ -329,6 +329,7 @@
   "api_param_viewid_type_error": "参数 viewId 只接受 string 类型的值",
   "api_param_viewids_empty_error": "viewIds 不能为空数组",
   "api_param_widget_btn_type_error": "参数 widgetBtn 只接受 boolean 类型的值",
+  "api_param_widget_id_not_exists": "widgetId 指定的小程序不存在",
   "api_params_automumber_can_not_operate": "自增数字列的值由系统自动生成，不允许编辑",
   "api_params_can_not_operate": "[{field}]不允许添加或修改",
   "api_params_cellformat_error": "cellFormat 参数值必须是 string 或者 id 中的一个",

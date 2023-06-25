@@ -38,7 +38,7 @@ describe('RobotActionTypeServiceTest', () => {
     service = module.get<RobotActionTypeService>(RobotActionTypeService);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await module.close();
   });
 

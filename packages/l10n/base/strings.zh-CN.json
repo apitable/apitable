@@ -5451,5 +5451,6 @@
   "api_param_parent_unit_not_exists": "parentUnitId 指定的组织单元不存在",
   "api_param_unit_id_required": "参数 unitId 为必填项",
   "lookup_conditions_success": "神奇引用排序或筛选条件设置成功",
-  "lookup_filter_sort_description": "添加条件"
+  "lookup_filter_sort_description": "添加条件",
+  "api_param_widget_id_not_exists": "widgetId 指定的小程序不存在"
 }

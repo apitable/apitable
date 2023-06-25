@@ -329,6 +329,7 @@
   "api_param_viewid_type_error": "the parameter toolBar must be a string type",
   "api_param_viewids_empty_error": "viewIds should not be empty",
   "api_param_widget_btn_type_error": "the parameter widgetBtn must be a boolean type",
+  "api_param_widget_id_not_exists": "The mini program specified by the widgetId does not exist",
   "api_params_automumber_can_not_operate": "Autonumber field can't be edited",
   "api_params_can_not_operate": "{field} could not create or update",
   "api_params_cellformat_error": "cellFormat value only supports \"string\" or \"id\"",

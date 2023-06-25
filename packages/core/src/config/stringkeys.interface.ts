@@ -330,6 +330,7 @@ export type StringKeysMapType = {
   'api_param_viewid_type_error': 'api_param_viewid_type_error',
   'api_param_viewids_empty_error': 'api_param_viewids_empty_error',
   'api_param_widget_btn_type_error': 'api_param_widget_btn_type_error',
+  'api_param_widget_id_not_exists': 'api_param_widget_id_not_exists',
   'api_params_automumber_can_not_operate': 'api_params_automumber_can_not_operate',
   'api_params_can_not_operate': 'api_params_can_not_operate',
   'api_params_cellformat_error': 'api_params_cellformat_error',
