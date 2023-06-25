@@ -18,7 +18,7 @@
 
 import {
   ApiTipConstant, ConfigConstant, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExecuteResult, FieldType, ICollaCommandOptions,
-  IFormProps, ILocalChangeset, IMeta, IRecordCellValue, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions,
+  IFormProps, ILinkIds, ILocalChangeset, IMeta, IRecordCellValue, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions,
   transformOpFields
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
@@ -270,7 +270,7 @@ export class FormService {
   /**
    * Get linked record data by meta and recordData
    */
-  private getLinkedRecordMap(dstId: string, meta: IMeta, recordData: any): IFetchDataOptions {
+  private getLinkedRecordMap(dstId: string, meta: IMeta, recordData: IRecordCellValue): IFetchDataOptions {
     const recordIds: string[] = [];
     const linkedRecordMap = {};
     // linked datasheet set
@@ -293,12 +293,12 @@ export class FormService {
       if (recordData[fieldId]) {
         // collect self-linking recordId
         if (foreignDatasheetId === dstId) {
-          recordIds.push(...recordData[fieldId]);
+          recordIds.push(...recordData[fieldId] as ILinkIds);
           return;
         }
         linkedRecordMap[foreignDatasheetId] =
           Array.isArray(linkedRecordMap[foreignDatasheetId])
-            ? [...linkedRecordMap[foreignDatasheetId], ...recordData[fieldId]]
+            ? [...linkedRecordMap[foreignDatasheetId], ...recordData[fieldId] as ILinkIds]
             : recordData[fieldId];
       }
     });

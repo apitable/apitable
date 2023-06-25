@@ -1,5 +1,6 @@
 use super::foreign_datasheet_loader::ForeignDatasheetLoader;
 use super::foreign_datasheet_loader::InternalBaseDatasheetPack;
+use super::foreign_datasheet_loader::InternalDatasheetMeta;
 use super::reference_manager::ReferenceManager;
 use crate::database::datasheet::types::{
   CreatedByFieldProperty, Field, FieldKind, FormulaFieldProperty, LinkFieldProperty, LookUpFieldProperty,
@@ -20,7 +21,7 @@ use std::sync::Arc;
 use std::time::Instant;
 use tokio::sync::Mutex;
 
-pub(super) struct DependencyAnalyzer {
+pub(super) struct DependencyAnalyzer<'a> {
   main_dst_id: String,
 
   foreign_datasheet_map: HashMap<String, InternalBaseDatasheetPack>,
@@ -44,6 +45,12 @@ pub(super) struct DependencyAnalyzer {
   reference_manager: Arc<Mutex<dyn ReferenceManager>>,
 
   foreign_datasheet_loader: Arc<dyn ForeignDatasheetLoader>,
+
+  main_dst_meta: &'a InternalDatasheetMeta,
+
+  main_dst_record_map: Arc<Mutex<RecordMap>>,
+
+  need_extend_main_dst_records: bool,
 }
 
 #[derive(Debug)]
@@ -70,11 +77,14 @@ pub struct DependencyAnalysisResult {
   pub operator_field_uuids: HashSet<String>,
 }
 
-impl DependencyAnalyzer {
+impl<'a> DependencyAnalyzer<'a> {
   pub(super) fn new(
     main_dst_id: &str,
     reference_manager: Arc<Mutex<dyn ReferenceManager>>,
     foreign_datasheet_loader: Arc<dyn ForeignDatasheetLoader>,
+    main_dst_meta: &'a InternalDatasheetMeta,
+    main_dst_record_map: Arc<Mutex<RecordMap>>,
+    need_extend_main_dst_records: bool,
   ) -> Self {
     Self {
       main_dst_id: main_dst_id.to_owned(),
@@ -86,21 +96,22 @@ impl DependencyAnalyzer {
       primary_fields: Default::default(),
       reference_manager,
       foreign_datasheet_loader,
+      main_dst_meta,
+      main_dst_record_map,
+      need_extend_main_dst_records,
     }
   }
 
   pub(super) async fn analyze(
     mut self,
     dst_id: &str,
-    field_map: Arc<FieldMap>,
-    record_map: Arc<Mutex<RecordMap>>,
     to_process_field_ids: HashSet<String>,
     linked_record_map: Option<HashMap<String, HashSet<String>>>,
   ) -> anyhow::Result<DependencyAnalysisResult> {
     let mut work_list = vec![DependencyAnalysisWork {
       dst_id: dst_id.to_owned(),
-      field_map,
-      record_map,
+      field_map: self.main_dst_meta.field_map.clone(),
+      record_map: self.main_dst_record_map.clone(),
       to_process_field_ids,
       linked_record_map,
     }];
@@ -212,7 +223,7 @@ impl DependencyAnalyzer {
           let property: LinkFieldProperty = serde_json::from_value(property.clone())
             .with_context(|| format!("convert property of field {field_id} to LinkFieldProperty"))?;
           // main datasheet is self-linking or linked, skip it
-          if property.foreign_datasheet_id == self.main_dst_id {
+          if property.foreign_datasheet_id == self.main_dst_id && !self.need_extend_main_dst_records {
             continue;
           }
           // Store linked datasheet ID corresponding to link field
@@ -277,7 +288,7 @@ impl DependencyAnalyzer {
           }
 
           // main datasheet is self-linking or linked, skip
-          if foreign_datasheet_id == self.main_dst_id {
+          if foreign_datasheet_id == self.main_dst_id && !self.need_extend_main_dst_records {
             continue;
           }
           // Store linked datasheet ID corresponding to linked field
@@ -328,8 +339,9 @@ impl DependencyAnalyzer {
   ) -> anyhow::Result<()> {
     let mut to_delete_link_field_ids: Vec<String> = vec![];
     for (link_field_id, foreign_dst_id) in &*linked_dst_ids {
-      // Avoid redundant loading of a linked datasheet caused by multiple fields linking the same datasheet
-      if self.foreign_datasheet_map.contains_key(foreign_dst_id) {
+      // Avoid redundant loading of a linked datasheet caused by multiple fields linking the same datasheet,
+      // and avoid loading metadata of main datasheet.
+      if foreign_dst_id == &self.main_dst_id || self.foreign_datasheet_map.contains_key(foreign_dst_id) {
         continue;
       }
       let Some(foreign_datsheet) =
@@ -369,6 +381,25 @@ impl DependencyAnalyzer {
 
     // Query linked datasheet data and linked records
     for (foreign_dst_id, foreign_record_ids) in linked_foreign_record_ids {
+      if foreign_dst_id == self.main_dst_id {
+        // Load more records of main datasheet.
+        let mut main_dst_record_map = self.main_dst_record_map.lock().await;
+        let existing_record_ids: HashSet<_> = main_dst_record_map.keys().cloned().collect();
+        tracing::debug!(
+          "Newly loading main datasheet records: {foreign_record_ids:?} - original records: {existing_record_ids:?}"
+        );
+        let to_load_record_ids: HashSet<_> = foreign_record_ids.difference(&existing_record_ids).cloned().collect();
+        if !to_load_record_ids.is_empty() {
+          let new_loaded_record_map = self
+            .foreign_datasheet_loader
+            .fetch_record_map(&foreign_dst_id, to_load_record_ids)
+            .await
+            .with_context(|| format!("load additional main datasheet record map {foreign_dst_id}"))?;
+          main_dst_record_map.extend(new_loaded_record_map);
+          self.foreign_datasheet_dirty.insert(foreign_dst_id);
+        }
+        continue;
+      }
       // linked_record_map of robot event, linked datasheet may be unaccessible, skip
       let Some(foreign_datasheet_pack) = self.foreign_datasheet_map.get(&foreign_dst_id) else {
         continue;
@@ -430,15 +461,17 @@ impl DependencyAnalyzer {
       }
 
       // Get view and field data of linked datasheet
-      let foreign_dst = self.foreign_datasheet_map.get(foreign_dst_id).ok_or_else(|| {
+      let foreign_dst_meta = if foreign_dst_id == &self.main_dst_id {
+        self.main_dst_meta
+      } else {
+        &self.foreign_datasheet_map.get(foreign_dst_id).ok_or_else(|| {
         anyhow!(
           "foreign datasheet {foreign_dst_id} of source datasheet {dst_id} not found during analyzing main datasheet {}",
           self.main_dst_id
         )
-      })?;
-      let foreign_first_view = foreign_dst
-        .snapshot
-        .meta
+      })?.snapshot.meta
+      };
+      let foreign_first_view = foreign_dst_meta
         .views
         .get(0)
         .ok_or_else(|| anyhow!("no view for foreign datasheet {foreign_dst_id}"))?;
@@ -448,7 +481,7 @@ impl DependencyAnalyzer {
         else {
           return Err(anyhow!("datasheet {foreign_dst_id} has no views[0].columns[0].fieldId"));
         };
-      let Some(foreign_primary_field) = foreign_dst.snapshot.meta.field_map.get(foreign_primary_field_id) else {
+      let Some(foreign_primary_field) = foreign_dst_meta.field_map.get(foreign_primary_field_id) else {
         return Err(anyhow!("datasheet {foreign_dst_id} has no field {foreign_primary_field_id}"));
       };
       self
@@ -474,7 +507,7 @@ impl DependencyAnalyzer {
         // Process primary field of linked datasheet, which is a formula field
         self
           .process_formula_field(
-            foreign_dst.snapshot.meta.field_map.clone(),
+            foreign_dst_meta.field_map.clone(),
             foreign_primary_field,
             None,
             new_works,
@@ -496,6 +529,16 @@ impl DependencyAnalyzer {
     #[cfg(test)]
     let lookup_foreign_field_ids = lookup_foreign_field_ids.into_iter().collect::<BTreeMap<_, _>>();
     for (foreign_dst_id, field_ids) in lookup_foreign_field_ids {
+      if foreign_dst_id == self.main_dst_id {
+        new_works.push(DependencyAnalysisWork {
+          dst_id: foreign_dst_id,
+          field_map: self.main_dst_meta.field_map.clone(),
+          record_map: self.main_dst_record_map.clone(),
+          to_process_field_ids: field_ids,
+          linked_record_map: None,
+        });
+        continue;
+      }
       // Linked datasheet must exist, or skip
       let Some(foreign_dst) = self.foreign_datasheet_map.get(&foreign_dst_id) else {
         continue;
@@ -662,52 +705,53 @@ mod tests {
   async fn single_datasheet_collect_users() {
     let ref_man = MockReferenceManagerImpl::new();
     let dst_loader = MockForeignDatasheetLoaderImpl::new(Default::default());
-    let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
-    let field_map = Arc::new(hashmap! {
-      "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
-      "fld1w2".into() => new_field(
-        "fld1w2",
-        FieldKind::Member,
-        json!({
-          "isMulti": true,
-          "shouldSendMsg": false,
-          "unitIds": ["u1", "u2", "u3"]
-        }
-      )),
-      "fld1w3".into() => new_field(
-        "fld1w3",
-        FieldKind::CreatedBy,
-        json!({
-          "uuids": ["11", "12", "13", null, "15"],
-          "datasheetId": "dst1"
-        }
-      )),
-      "fld1w4".into() => new_field(
-        "fld1w4",
-        FieldKind::LastModifiedBy,
-        json!({
-          "uuids": ["15", "18", "12", {}, "16"],
-          "datasheetId": "dst1",
-          "collectType": 1,
-          "fieldIdCollection": []
-        }
-      )),
-    });
+    let meta = InternalDatasheetMeta {
+      field_map: Arc::new(hashmap! {
+        "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+        "fld1w2".into() => new_field(
+          "fld1w2",
+          FieldKind::Member,
+          json!({
+            "isMulti": true,
+            "shouldSendMsg": false,
+            "unitIds": ["u1", "u2", "u3"]
+          }
+        )),
+        "fld1w3".into() => new_field(
+          "fld1w3",
+          FieldKind::CreatedBy,
+          json!({
+            "uuids": ["11", "12", "13", null, "15"],
+            "datasheetId": "dst1"
+          }
+        )),
+        "fld1w4".into() => new_field(
+          "fld1w4",
+          FieldKind::LastModifiedBy,
+          json!({
+            "uuids": ["15", "18", "12", {}, "16"],
+            "datasheetId": "dst1",
+            "collectType": 1,
+            "fieldIdCollection": []
+          }
+        )),
+      }),
+      views: vec![json!({
+        "columns": [{ "fieldId": "fld1w1" }]
+      })],
+      widget_panels: None,
+    };
     let record_map = Arc::new(Mutex::new(hashmap! {}));
+
+    let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
     let DependencyAnalysisResult {
       foreign_datasheet_map,
       member_field_unit_ids,
       operator_field_uuids,
     } = analyzer
-      .analyze(
-        "dst1",
-        field_map.clone(),
-        record_map,
-        field_map.keys().cloned().collect(),
-        None,
-      )
+      .analyze("dst1", meta.field_map.keys().cloned().collect(), None)
       .await
       .unwrap();
 
@@ -850,9 +894,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst2".into() => mock_dst2_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec2w1", "rec2w2"],
@@ -863,19 +913,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -934,9 +979,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst2".into() => mock_dst2_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w4": ["rec1w2"]
@@ -946,19 +997,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1100,9 +1146,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst3".into() => mock_dst3_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_lookup_self_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec3w2"]
@@ -1112,19 +1164,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1190,9 +1237,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst3".into() => mock_dst3_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_lookup_self_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec3w1"]
@@ -1202,19 +1255,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1353,9 +1401,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst4".into() => mock_dst4_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_lookup_foreign_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec4w2"]
@@ -1365,19 +1419,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1431,9 +1480,15 @@ mod tests {
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
         "dst4".into() => mock_dst4_dst_pack(None)
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = mock_lookup_foreign_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: field_map.clone(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec4w2"]
@@ -1443,19 +1498,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1508,7 +1558,6 @@ mod tests {
     async fn lookup_related_field_invalid() {
       let ref_man = MockReferenceManagerImpl::new();
       let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {});
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
       let field_map = Arc::new(hashmap! {
         "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
@@ -1537,6 +1586,13 @@ mod tests {
           }
         })),
       });
+      let meta = InternalDatasheetMeta {
+        field_map,
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w4": ["rec4w2"]
@@ -1546,19 +1602,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", meta.field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1790,9 +1841,14 @@ mod tests {
         "dst2".into() => mock_dst2_dst_pack(None),
         "dst3".into() => mock_dst3_dst_pack(None),
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
-      let field_map = mock_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: mock_dst1_field_map(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w1".into() => new_record("rec1w1", json!({
           "fld1w2": ["rec2w2"]
@@ -1803,19 +1859,14 @@ mod tests {
         })),
         "rec1w3".into() => new_record("rec1w3", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", meta.field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -1905,9 +1956,14 @@ mod tests {
         "dst2".into() => mock_dst2_dst_pack(None),
         "dst3".into() => mock_dst3_dst_pack(None),
       });
-      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone());
 
-      let field_map = mock_dst1_field_map();
+      let meta = InternalDatasheetMeta {
+        field_map: mock_dst1_field_map(),
+        views: vec![json!({
+          "columns": [{ "fieldId": "fld1w1" }]
+        })],
+        widget_panels: None,
+      };
       let record_map = Arc::new(Mutex::new(hashmap! {
         "rec1w10".into() => new_record("rec1w10", json!({
           "fld1w2": ["rec2w10", "rec2w11"]
@@ -1918,19 +1974,14 @@ mod tests {
         })),
         "rec1w12".into() => new_record("rec1w12", json!({})),
       }));
+      let analyzer = DependencyAnalyzer::new("dst1", ref_man.clone(), dst_loader.clone(), &meta, record_map, false);
 
       let DependencyAnalysisResult {
         foreign_datasheet_map,
         member_field_unit_ids,
         operator_field_uuids,
       } = analyzer
-        .analyze(
-          "dst1",
-          field_map.clone(),
-          record_map,
-          field_map.keys().cloned().collect(),
-          None,
-        )
+        .analyze("dst1", meta.field_map.keys().cloned().collect(), None)
         .await
         .unwrap();
 
@@ -2001,6 +2052,209 @@ mod tests {
           },
         }
       );
+    }
+  }
+
+  mod extend_records {
+    use super::*;
+    use crate::database::datasheet::services::datasheet::foreign_datasheet_loader::InternalDatasheetSnapshot;
+    use pretty_assertions::assert_eq;
+
+    fn mock_dst1_dst_pack(record_ids: Option<HashSet<&str>>) -> BaseDatasheetPack {
+      BaseDatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: DatasheetMeta {
+            field_map: hashmap! {
+              "fld1w1".into() => new_field("fld1w1", FieldKind::Text, json!({})),
+              "fld1w2".into() => new_field("fld1w2", FieldKind::Link, json!({
+                "foreignDatasheetId": "dst2",
+                "brotherFieldId": "fld2w2",
+              })),
+              "fld1w3".into() => new_field("fld1w3", FieldKind::LookUp, json!({
+                "datasheetId": "dst1",
+                "relatedLinkFieldId": "fld1w2",
+                "lookUpTargetFieldId": "fld2w3",
+              })),
+              "fld1w4".into() => new_field("fld1w4", FieldKind::Link, json!({
+                "foreignDatasheetId": "dst1",
+              })),
+            },
+            views: vec![json!({
+              "columns": [
+                { "fieldId": "fld1w1" },
+                { "fieldId": "fld1w2" },
+                { "fieldId": "fld1w3" },
+                { "fieldId": "fld1w4" },
+              ]
+            })],
+            widget_panels: None,
+          },
+          record_map: hashmap! {
+            "rec1w1" => new_record("rec1w1", json!({
+              "fld1w1": [{ "type": 1, "text": "a" }],
+              "fld1w2": ["rec2w1"]
+            })),
+            "rec1w2" => new_record("rec1w2", json!({
+              "fld1w1": [{ "type": 1, "text": "b" }],
+              "fld1w2": ["rec2w1"]
+            })),
+            "rec1w3" => new_record("rec1w3", json!({})),
+            "rec1w4" => new_record("rec1w4", json!({
+              "fld1w4": ["rec1w5"],
+            })),
+            "rec1w5" => new_record("rec1w5", json!({
+              "fld1w4": ["rec1w6"],
+            })),
+            "rec1w6" => new_record("rec1w6", json!({})),
+          }
+          .into_iter()
+          .filter(|(id, _)| record_ids.as_ref().map_or(true, |record_ids| record_ids.contains(id)))
+          .map(|(id, record)| (id.to_owned(), record))
+          .collect(),
+          datasheet_id: "dst2".into(),
+        },
+        datasheet: json!({}),
+        field_permission_map: Some(json!({})),
+      }
+    }
+
+    fn mock_dst2_dst_pack(record_ids: Option<HashSet<&str>>) -> BaseDatasheetPack {
+      BaseDatasheetPack {
+        snapshot: DatasheetSnapshot {
+          meta: DatasheetMeta {
+            field_map: hashmap! {
+              "fld2w1".into() => new_field("fld2w1", FieldKind::Text, json!({})),
+              "fld2w2".into() => new_field("fld2w2", FieldKind::Link, json!({
+                "foreignDatasheetId": "dst1",
+                "brotherFieldId": "fld1w2",
+              })),
+              "fld2w3".into() => new_field("fld2w3", FieldKind::LookUp, json!({
+                "datasheetId": "dst2",
+                "relatedLinkFieldId": "fld2w2",
+                "lookUpTargetFieldId": "fld1w1",
+              })),
+            },
+            views: vec![json!({
+              "columns": [
+                { "fieldId": "fld2w1" },
+                { "fieldId": "fld2w2" },
+                { "fieldId": "fld2w3" },
+              ]
+            })],
+            widget_panels: None,
+          },
+          record_map: hashmap! {
+            "rec2w1" => new_record("rec2w1", json!({
+              "fld2w1": [{ "type": 1, "text": "AA" }],
+              "fld2w2": ["rec1w1", "rec1w2"],
+            })),
+          }
+          .into_iter()
+          .filter(|(id, _)| record_ids.as_ref().map_or(true, |record_ids| record_ids.contains(id)))
+          .map(|(id, record)| (id.to_owned(), record))
+          .collect(),
+          datasheet_id: "dst2".into(),
+        },
+        datasheet: json!({}),
+        field_permission_map: Some(json!({})),
+      }
+    }
+
+    #[tokio::test]
+    async fn extend_records_by_foreign_lookup_back_reference() {
+      let ref_man = MockReferenceManagerImpl::new();
+      let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
+        "dst1".into() => mock_dst1_dst_pack(None),
+        "dst2".into() => mock_dst2_dst_pack(None),
+      });
+
+      let dst1_snapshot: InternalDatasheetSnapshot = mock_dst1_dst_pack(None).snapshot.into();
+      dst1_snapshot
+        .record_map
+        .lock()
+        .await
+        .retain(|record_id, _| hashset!["rec1w1"].contains(record_id.as_str()));
+      let analyzer = DependencyAnalyzer::new(
+        "dst1",
+        ref_man.clone(),
+        dst_loader.clone(),
+        &dst1_snapshot.meta,
+        dst1_snapshot.record_map.clone(),
+        true,
+      );
+
+      let DependencyAnalysisResult {
+        foreign_datasheet_map,
+        member_field_unit_ids: _,
+        operator_field_uuids: _,
+      } = analyzer
+        .analyze("dst1", dst1_snapshot.meta.field_map.keys().cloned().collect(), None)
+        .await
+        .unwrap();
+
+      assert_eq!(
+        foreign_datasheet_map
+          .into_iter()
+          .map(|(id, dst)| (id, dst.into()))
+          .collect::<HashMap<_, BaseDatasheetPack>>(),
+        hashmap! {
+          "dst2".into() => mock_dst2_dst_pack(None),
+        }
+      );
+
+      assert_eq!(
+        *dst1_snapshot.record_map.lock().await,
+        mock_dst1_dst_pack(Some(hashset!["rec1w1", "rec1w2"]))
+          .snapshot
+          .record_map
+      )
+    }
+
+    #[tokio::test]
+    async fn extend_records_by_self_linking() {
+      let ref_man = MockReferenceManagerImpl::new();
+      let dst_loader = MockForeignDatasheetLoaderImpl::new(hashmap! {
+        "dst1".into() => mock_dst1_dst_pack(None),
+      });
+
+      let dst1_snapshot: InternalDatasheetSnapshot = mock_dst1_dst_pack(None).snapshot.into();
+      dst1_snapshot
+        .record_map
+        .lock()
+        .await
+        .retain(|record_id, _| hashset!["rec1w4"].contains(record_id.as_str()));
+      let analyzer = DependencyAnalyzer::new(
+        "dst1",
+        ref_man.clone(),
+        dst_loader.clone(),
+        &dst1_snapshot.meta,
+        dst1_snapshot.record_map.clone(),
+        true,
+      );
+
+      let DependencyAnalysisResult {
+        foreign_datasheet_map,
+        member_field_unit_ids: _,
+        operator_field_uuids: _,
+      } = analyzer
+        .analyze("dst1", dst1_snapshot.meta.field_map.keys().cloned().collect(), None)
+        .await
+        .unwrap();
+
+      assert_eq!(
+        foreign_datasheet_map
+          .into_iter()
+          .map(|(id, dst)| (id, dst.into()))
+          .collect::<HashMap<_, BaseDatasheetPack>>(),
+        hashmap! {}
+      );
+
+      assert_eq!(
+        *dst1_snapshot.record_map.lock().await,
+        mock_dst1_dst_pack(Some(hashset!["rec1w4", "rec1w5"]))
+          .snapshot
+          .record_map
+      )
     }
   }
 }

@@ -16,18 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  FieldType,
-  IBaseDatasheetPack,
-  IDatasheetUnits,
-  IEventResourceMap,
-  IFieldMap,
-  IForeignDatasheetMap,
-  IMeta,
-  IRecordMap,
-  IReduxState,
-  IResourceRevision,
-} from '@apitable/core';
+import { FieldType, IBaseDatasheetPack, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import type { DatasheetEntity } from '../entities/datasheet.entity';
@@ -36,14 +25,7 @@ import { isEmpty } from 'lodash';
 import type { Store } from 'redux';
 import { InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
-import type {
-  IAuthHeader,
-  IFetchDataOptions,
-  IFetchDataOriginOptions,
-  IFetchDataPackOptions,
-  ILinkedRecordMap,
-  ILoadBasePackOptions,
-} from 'shared/interfaces';
+import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
 import type { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../repositories/datasheet.repository';
@@ -94,7 +76,7 @@ export class DatasheetService {
     // Query metadata of datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has view with viewId
-    const view = meta.views.find(view => view.id === viewId);
+    const view = meta.views.find((view) => view.id === viewId);
     if (!view) {
       throw new ServerException(DatasheetException.VIEW_NOT_EXIST);
     }
@@ -119,28 +101,28 @@ export class DatasheetService {
     // Query datasheet
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
     // Query snapshot
-    const meta = options?.meta ?? await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException);
+    const meta = options?.meta ?? (await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException));
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
       ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds)
       : await this.datasheetRecordService.getRecordsByDstId(dstId);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
-    const combine = await this.processField(
-      dstId,
-      options?.isTemplate ? {} : auth,
-      meta,
-      recordMap,
+    const { mainDstRecordMap, foreignDatasheetMap, units } = await this.datasheetFieldHandler.analyze(dstId, {
+      auth: options?.isTemplate ? {} : auth,
+      mainDstMeta: meta,
+      mainDstRecordMap: recordMap,
       origin,
-      options?.isTemplate ? undefined : options?.linkedRecordMap,
-    );
+      needExtendMainDstRecords: Boolean(options?.needExtendMainDstRecords),
+      linkedRecordMap: options?.isTemplate ? undefined : options?.linkedRecordMap,
+    });
     const endTime = +new Date();
     this.logger.info(`Finished loading ${source} data, duration [${dstId}]: ${endTime - beginTime}ms`);
     return {
-      snapshot: { meta, recordMap, datasheetId: node.id },
+      snapshot: { meta, recordMap: mainDstRecordMap, datasheetId: node.id },
       datasheet: node,
-      foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as (UserInfo | UnitInfo)[],
+      foreignDatasheetMap,
+      units: units as (UserInfo | UnitInfo)[],
       fieldPermissionMap: options?.isTemplate ? undefined : fieldPermissionMap,
     };
   }
@@ -166,18 +148,11 @@ export class DatasheetService {
    * @param dstId datasheet ID
    * @param auth authorization
    * @param allowNative if false, always return `DatasheetPack`.
-   * @param options query parameters
    */
   @Span()
-  fetchShareDataPack(
-    shareId: string,
-    dstId: string,
-    auth: IAuthHeader,
-    allowNative: boolean,
-    options?: IFetchDataOptions,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, allowNative: boolean): Promise<DatasheetPack | DatasheetPackResponse> {
     const origin = { internal: false, main: true, shareId };
-    return this.fetchCommonDataPack('share', dstId, auth, origin, allowNative, { ...options, isDatasheet: true });
+    return this.fetchCommonDataPack('share', dstId, auth, origin, allowNative, { isDatasheet: true });
   }
 
   /**
@@ -185,13 +160,11 @@ export class DatasheetService {
    *
    * @param dstId datasheet ID
    * @param auth authorization
-   * @param options query parameters
    */
   @Span()
-  fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchTemplatePack(dstId: string, auth: IAuthHeader): Promise<DatasheetPack | DatasheetPackResponse> {
     const origin = { internal: false, main: true };
     return this.fetchCommonDataPack('template', dstId, auth, origin, true, {
-      ...options,
       isTemplate: true,
     });
   }
@@ -233,7 +206,7 @@ export class DatasheetService {
     // Query datasheet meta
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has linked datasheet with foreighDatasheetId
-    const isExist = Object.values(meta.fieldMap).some(field => {
+    const isExist = Object.values(meta.fieldMap).some((field) => {
       if (field.type === FieldType.Link) {
         return field.property.foreignDatasheetId === foreignDatasheetId;
       }
@@ -248,29 +221,6 @@ export class DatasheetService {
       metadataException: DatasheetException.FOREIGN_DATASHEET_NOT_EXIST,
       isDatasheet: true,
     });
-  }
-
-  /**
-   * Process special fields (link, lookup, and formula), ignoring other fields
-   *
-   * @param mainDstId main datasheet ID
-   * @param auth authorization
-   * @param mainMeta datasheet field data
-   * @param mainRecordMap datasheet record data
-   * @param origin query parameters
-   * @param linkedRecordMap Specifies records to be queried in linked datasheet
-   */
-  @Span()
-  private processField(
-    mainDstId: string,
-    auth: IAuthHeader,
-    mainMeta: IMeta,
-    mainRecordMap: IRecordMap,
-    origin: IFetchDataOriginOptions,
-    linkedRecordMap?: ILinkedRecordMap,
-    withoutPermission?: boolean,
-  ): Promise<IForeignDatasheetMap & IDatasheetUnits> {
-    return this.datasheetFieldHandler.parse(mainDstId, auth, mainMeta, mainRecordMap, origin, linkedRecordMap, withoutPermission);
   }
 
   async fetchUsers(nodeId: string, uuids: string[]): Promise<any[]> {
@@ -394,42 +344,27 @@ export class DatasheetService {
       // Influenced recordsIds of the events
       const recordIds = resourceMap.get(dstId)!;
       // recordMap of current datasheet
-      let recordMap = await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
-
-      // Check if self-linking exists, if so, extend recordIds
-      const fieldMap = meta.fieldMap;
-      const exRecordIds: string[] = [];
-      Object.keys(fieldMap).forEach(fieldId => {
-        if (fieldMap[fieldId]!.type == FieldType.Link) {
-          const linkDstId = fieldMap[fieldId]!.property.foreignDatasheetId;
-          if (dstId === linkDstId) {
-            Object.keys(recordMap).forEach(recordId => {
-              const cellRecordIds = (recordMap[recordId]!.data[fieldId] as string[]) || [];
-              exRecordIds.push(...cellRecordIds);
-            });
-          }
-        }
-      });
-      // Compute difference of exRecordIds and recordIds
-      const exRecordIdsSet = new Set(exRecordIds);
-      const recordIdsSet = new Set(recordIds);
-      const diffRecordIds = [...exRecordIdsSet].filter(recordId => !recordIdsSet.has(recordId));
-      const diffRecordMap = await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, diffRecordIds);
-      recordMap = { ...recordMap, ...diffRecordMap };
+      const recordMap = await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
 
       // Query foreignDatasheetMap and unitMap
-      const linkedRecordMap = this.getLinkedRecordMap(dstId, meta, recordMap);
       const origin = { internal: true, main: true };
-      const combine = await this.processField(dstId, {}, meta, recordMap, origin, linkedRecordMap, true);
+      const { mainDstRecordMap, foreignDatasheetMap, units } = await this.datasheetFieldHandler.analyze(dstId, {
+        auth: {},
+        mainDstMeta: meta,
+        mainDstRecordMap: recordMap,
+        origin,
+        needExtendMainDstRecords: true,
+        withoutPermission: true,
+      });
       basePacks.push({
         datasheet: datasheet as any,
         snapshot: {
           meta,
-          recordMap,
+          recordMap: mainDstRecordMap,
           datasheetId: datasheet.id,
         },
-        foreignDatasheetMap: combine.foreignDatasheetMap,
-        units: combine.units as (UserInfo | UnitInfo)[],
+        foreignDatasheetMap: foreignDatasheetMap,
+        units: units as (UserInfo | UnitInfo)[],
       });
     }
 
@@ -438,48 +373,6 @@ export class DatasheetService {
     });
 
     return basePacks;
-  }
-
-  /**
-   * Get linked record data with meta and recordMap
-   */
-  getLinkedRecordMap(dstId: string, meta: IMeta, recordMap: IRecordMap): ILinkedRecordMap {
-    const recordIds: string[] = Object.keys(recordMap);
-    // Collect record IDs that need loading from corresponding datasheets by linked datasheet IDs
-    const linkedRecordMap: ILinkedRecordMap = {};
-    const foreignDatasheetIdMap = Object.values(meta.fieldMap)
-      .filter(field => field.type === FieldType.Link)
-      .map(field => {
-        const foreignDatasheetId = field.property?.foreignDatasheetId;
-        // Filter out self-linking
-        if (!foreignDatasheetId || foreignDatasheetId === dstId) return null;
-        return {
-          fieldId: field.id,
-          foreignDatasheetId,
-        };
-      })
-      .filter(Boolean);
-
-    foreignDatasheetIdMap.forEach(item => {
-      const { foreignDatasheetId, fieldId } = item!;
-      const linkedRecordIds = recordIds.reduce<string[]>((pre, cur) => {
-        const cellLinkedIds = (recordMap[cur]!.data[fieldId] as string[]) || [];
-        pre.push(...cellLinkedIds);
-        return pre;
-      }, []);
-      // The current datasheet may links to the same datasheet many times.
-      if (linkedRecordMap.hasOwnProperty(foreignDatasheetId)) {
-        linkedRecordMap[foreignDatasheetId]!.push(...linkedRecordIds);
-      } else {
-        // Collect all record IDs of this link field
-        linkedRecordMap[foreignDatasheetId] = linkedRecordIds;
-      }
-    });
-    // Remove duplicates
-    for (const key in linkedRecordMap) {
-      linkedRecordMap[key] = [...new Set(linkedRecordMap[key])];
-    }
-    return linkedRecordMap;
   }
 
   async selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {

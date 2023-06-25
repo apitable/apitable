@@ -207,6 +207,16 @@ impl Into<DatasheetSnapshot> for InternalDatasheetSnapshot {
   }
 }
 
+impl From<DatasheetSnapshot> for InternalDatasheetSnapshot {
+  fn from(value: DatasheetSnapshot) -> Self {
+    Self {
+      meta: value.meta.into(),
+      record_map: Arc::new(Mutex::new(value.record_map)),
+      datasheet_id: value.datasheet_id,
+    }
+  }
+}
+
 impl Into<DatasheetMeta> for InternalDatasheetMeta {
   fn into(self) -> DatasheetMeta {
     DatasheetMeta {
