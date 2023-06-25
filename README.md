@@ -21,9 +21,9 @@
     <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
         <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
-    <!-- Render -->
-    <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/render-deploy-5364e9" />
+    <!-- Deploy to DO -->
+    <a target="_blank" href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/apitable/apitable/tree/develop&refcode=3fe758500293">
+        <img src="https://img.shields.io/badge/DigitalOcean-deploy-5364e9" alt="Deploy to DO" />
     </a>
     <br />
     <!-- LICENSE -->

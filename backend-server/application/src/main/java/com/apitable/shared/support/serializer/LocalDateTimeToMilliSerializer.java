@@ -57,9 +57,11 @@ public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime
         }
         // get Available ZoneIds
         Set<String> zoneIds = getAvailableZoneIds();
-        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone : systemProperties.getTimeZone().toString();
+        userTimeZone = zoneIds.contains(userTimeZone) ? userTimeZone :
+            systemProperties.getTimeZone().toString();
         // server config timeZone time
-        ZonedDateTime originalZonedDateTime = ZonedDateTime.of(value, systemProperties.getTimeZoneId());
+        ZonedDateTime originalZonedDateTime =
+            ZonedDateTime.of(value, systemProperties.getTimeZoneId());
         // target timeZone time
         ZonedDateTime targetZonedDateTime =
             originalZonedDateTime.withZoneSameInstant(ZoneId.of(userTimeZone));

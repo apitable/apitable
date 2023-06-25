@@ -16,6 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as emojisJson from './emojis.auto.json';
+import * as emojisJson from './emojis.source.json';
 
 export const EmojisConfig = emojisJson.emojis;

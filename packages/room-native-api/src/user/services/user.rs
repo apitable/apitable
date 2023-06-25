@@ -197,21 +197,21 @@ mod tests {
     WHERE uuid IN (?)";
 
   fn mock_columns() -> Vec<(&'static str, ColumnType)> {
-      vec![
-        ("user_id", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("uuid", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar_color", ColumnType::MYSQL_TYPE_TINY),
-        ("nick_name", ColumnType::MYSQL_TYPE_INT24),
-        ("unit_id", ColumnType::MYSQL_TYPE_LONG),
-        ("is_deleted", ColumnType::MYSQL_TYPE_BIT),
-        ("type", ColumnType::MYSQL_TYPE_TINY),
-        ("name", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("avatar", ColumnType::MYSQL_TYPE_VARCHAR),
-        ("is_active", ColumnType::MYSQL_TYPE_BIT),
-        ("is_nick_name_modified", ColumnType::MYSQL_TYPE_BIT),
-        ("is_member_name_modified", ColumnType::MYSQL_TYPE_BIT),
-        ("original_unit_id", ColumnType::MYSQL_TYPE_VARCHAR),
-      ]
+    vec![
+      ("user_id", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("uuid", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("avatar_color", ColumnType::MYSQL_TYPE_TINY),
+      ("nick_name", ColumnType::MYSQL_TYPE_INT24),
+      ("unit_id", ColumnType::MYSQL_TYPE_LONG),
+      ("is_deleted", ColumnType::MYSQL_TYPE_BIT),
+      ("type", ColumnType::MYSQL_TYPE_TINY),
+      ("name", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("avatar", ColumnType::MYSQL_TYPE_VARCHAR),
+      ("is_active", ColumnType::MYSQL_TYPE_BIT),
+      ("is_nick_name_modified", ColumnType::MYSQL_TYPE_BIT),
+      ("is_member_name_modified", ColumnType::MYSQL_TYPE_BIT),
+      ("original_unit_id", ColumnType::MYSQL_TYPE_VARCHAR),
+    ]
   }
 
   #[tokio::test]

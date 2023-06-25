@@ -53,7 +53,7 @@ public class CreateDatasheetRo {
     private String description;
 
     /**
-     * Tranfer To NodeOpRo.
+     * Transfer To NodeOpRo.
      */
     public NodeOpRo tranferToNodeOpRo() {
         return NodeOpRo.builder()
