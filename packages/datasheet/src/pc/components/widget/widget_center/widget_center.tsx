@@ -33,9 +33,11 @@ import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
+import { ScrollBar } from '../../scroll_bar';
 import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
 import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
 
@@ -189,7 +191,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
     const thumbStyle = {
       right: 4,
       borderRadius: 'inherit',
-      backgroundColor: 'rgba(0,0,0,0.2)',
+      background: 'var(--bgScrollbarDefault)',
     };
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
@@ -233,10 +235,9 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
         className={styles.widgetCenterModalTab}
       >
         <TabPane tab={t(Strings.widget_center_tab_official)} key={WidgetReleaseType.Global}>
-          <Scrollbars renderThumbVertical={renderThumb} style={{ width: '100%', height: '100%' }}>
+          <ScrollBar style={{ width: '100%', height: '100%' }}>
 
             <TabItemIntroduction introduction={t(Strings.widget_center_official_introduction)} />
-
             {
               loading ? <div className={styles.skeletonWrap}>
                 <Skeleton count={1} width='38%' />
@@ -250,7 +251,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
                 showMenu={showMenu}
               />
             }
-          </Scrollbars>
+          </ScrollBar>
         </TabPane>
         {
           getEnvVariables().CUSTOM_WIDGET_VISIBLE &&
