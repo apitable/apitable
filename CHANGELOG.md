@@ -3,7 +3,14 @@
 
 
 
-## [HEAD](https://github.com/apitable/apitable/releases/tag/v0.22.0-beta) (2023-06-19)
+## [v0.22.0-beta.1](https://github.com/apitable/apitable/releases/tag/v0.22.0-beta.1) (2023-06-26)
+
+
+### What's more
+
+* chore: changelog for v0.22.0-beta ([#970](https://github.com/apitable/apitable/pull/970)) @ChambersChan 
+* sync: hosted cloud ([#989](https://github.com/apitable/apitable/pull/989)) @Exclamation-mark 
+## [v0.22.0-beta](https://github.com/apitable/apitable/releases/tag/v0.22.0-beta) (2023-06-19)
 
 
 ### Features and enhancements
