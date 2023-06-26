@@ -114,7 +114,7 @@ export const useCards = (props: ILayoutProps) => {
       CapacityCard: (props: ICardProps) => {
         // If it is a third-party environment, use Card (without complimentary space information),
         // otherwise use CapacityWithRewardCard (with complimentary information)
-        const titleLink = (basicCert || isSocial || isMobileApp() || isMobile || !getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE)
+        const titleLink = (basicCert || isSocial || isMobileApp() || isMobile || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE)
           ? undefined
           : {
             text: t(Strings.attachment_capacity_details_entry),
@@ -123,7 +123,7 @@ export const useCards = (props: ILayoutProps) => {
             },
           };
 
-        return isSocial || !getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE ? (
+        return isSocial || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE ? (
           <Card
             {...props}
             totalText={capacityData.allTotalText}

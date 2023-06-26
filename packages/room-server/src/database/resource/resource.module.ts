@@ -18,7 +18,7 @@
 
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AutomationModule } from 'automation/automation.module';
+import { RobotModule } from 'automation/robot.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
 import { DatasheetChangesetRepository } from 'database/datasheet/repositories/datasheet.changeset.repository';
 import { DatasheetRepository } from 'database/datasheet/repositories/datasheet.repository';
@@ -43,7 +43,7 @@ import { RoomResourceRelService } from './services/room.resource.rel.service';
     forwardRef(()=>DatasheetModule),
     forwardRef(()=>OtModule),
     forwardRef(()=>WidgetModule),
-    forwardRef(()=>AutomationModule),
+    forwardRef(()=>RobotModule),
     TypeOrmModule.forFeature([
       ResourceChangesetRepository,
       ResourceMetaRepository,

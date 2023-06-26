@@ -15,12 +15,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { redisModuleOptions } from 'shared/services/config/redis.config.service';
 
-export const AUTOMATION_REDIS_CLIENT = 'AUTOMATION_REDIS_CLIENT';
+import { EventRealTypeEnums, EventSourceTypeEnums, IEventInstance, IEventListenerOptions, IOPEvent } from '@apitable/core';
 
-const { host, port, password, db } = redisModuleOptions();
-export const AUTOMATION_REDIS_HOST = host;
-export const AUTOMATION_REDIS_PORT = port;
-export const AUTOMATION_REDIS_PASSWORD = password;
-export const AUTOMATION_REDIS_DB = db;
+/**
+ * whether the robot event should to handle
+ * @param event         robot trigger event
+ * @param beforeApply
+ * @param options
+ */
+export function isHandleEvent(event: IEventInstance<IOPEvent>, beforeApply: boolean, options: IEventListenerOptions): boolean {
+  if (options?.realType !== EventRealTypeEnums.ALL && options?.realType !== event.realType) {
+    return false;
+  }
+  if (options?.sourceType !== EventSourceTypeEnums.ALL && options?.sourceType !== event.sourceType) {
+    return false;
+  }
+  return Boolean(options.beforeApply) === beforeApply;
+}

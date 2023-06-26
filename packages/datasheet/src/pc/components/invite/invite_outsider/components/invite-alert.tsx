@@ -23,7 +23,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 
 export const InviteAlert: FC<React.PropsWithChildren<unknown>> = () => {
-  if (!getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE) {
+  if (getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE) {
     return null;
   }
   return (

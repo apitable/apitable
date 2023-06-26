@@ -194,7 +194,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = props
           </div>
           <div className={styles.modalList}>
             <div className={styles.title}>
-              <h3>{t(Strings.add_filter)}</h3>
+              <h3>{t(Strings.filtering_conditions_setting)}</h3>
               <div className={styles.modalSubtitle}>{t(Strings.to_filter_link_data)}</div>
             </div>
             <ModalViewFilter datasheetId={datasheetId} setFilters={setFilters} filterInfo={filterInfo} field={field} />

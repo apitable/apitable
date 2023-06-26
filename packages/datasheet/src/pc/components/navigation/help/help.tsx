@@ -89,7 +89,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       icon: <DownloadOutlined />,
       text: t(Strings.download_client),
       onClick: () => navigationToUrl(`${window.location.origin}/download/`),
-      hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
+      hidden: isMobile || inSocialApp?.() || isPrivateDeployment() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
     },
     {
       icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
@@ -129,7 +129,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       text: t(Strings.assistant),
       id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
       onClick: vikabyHelperClick,
-      hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
+      hidden: isMobile || isPrivateDeployment() || isMobileApp() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
     },
     {
       icon: <UserGroupOutlined color={colors.thirdLevelText} />,

@@ -125,6 +125,10 @@ impl DatasheetService for DatasheetServiceImpl {
         .with_context(|| format!("get record map for fetch_data_pack {dst_id}"))?,
     ));
     let is_template = options.as_ref().and_then(|options| options.is_template).is_truthy();
+    let need_extend_main_dst_records = options
+      .as_ref()
+      .and_then(|options| options.need_extend_main_dst_records)
+      .is_truthy();
     let dependency_result = self
       .analyze_dependencies(
         dst_id,
@@ -141,6 +145,7 @@ impl DatasheetService for DatasheetServiceImpl {
         false,
         if is_template { Default::default() } else { auth },
         origin,
+        need_extend_main_dst_records,
       )
       .await
       .with_context(|| format!("analyze dependencies for fetch_data_pack {dst_id}"))?;
@@ -193,6 +198,7 @@ pub(super) struct DependencyAnalysisOutput {
 }
 
 impl DatasheetServiceImpl {
+  /// `main_record_map` may be modified if `need_extend_main_dst_records` is true.
   async fn analyze_dependencies(
     &self,
     main_dst_id: &str,
@@ -202,6 +208,7 @@ impl DatasheetServiceImpl {
     without_permission: bool,
     auth: AuthHeader,
     mut origin: FetchDataPackOrigin,
+    need_extend_main_dst_records: bool,
   ) -> anyhow::Result<DependencyAnalysisOutput> {
     let start = Instant::now();
     tracing::info!("Start analyzing dependencies of {main_dst_id}");
@@ -219,10 +226,16 @@ impl DatasheetServiceImpl {
       origin,
       without_permission,
     ));
-    let analyzer = dependency_analyzer::DependencyAnalyzer::new(main_dst_id, ref_man, frn_dst_loader);
+    let analyzer = dependency_analyzer::DependencyAnalyzer::new(
+      main_dst_id,
+      ref_man,
+      frn_dst_loader,
+      main_meta,
+      main_record_map.clone(),
+      need_extend_main_dst_records,
+    );
 
     // Process all fields of the datasheet
-    let main_dst_num_records = main_record_map.lock().await.len();
     let DependencyAnalysisResult {
       foreign_datasheet_map,
       member_field_unit_ids,
@@ -230,32 +243,35 @@ impl DatasheetServiceImpl {
     } = analyzer
       .analyze(
         main_dst_id,
-        main_meta.field_map.clone(),
-        main_record_map,
         main_meta.field_map.keys().cloned().collect(),
         linked_record_map,
       )
       .await?;
 
-    // Get the space ID which the datasheet belongs to
-    let space_id = self.get_space_id_by_dst_id(main_dst_id).await?;
-    let Some(space_id) = space_id else {
-      return Err(NodeNotExistError {
-        node_id: main_dst_id.to_owned(),
-      }.into());
-    };
+    let mut units: Vec<UnitInfo>;
+    if !member_field_unit_ids.is_empty() || !operator_field_uuids.is_empty() {
+      // Get the space ID which the datasheet belongs to
+      let space_id = self.get_space_id_by_dst_id(main_dst_id).await?;
+      let Some(space_id) = space_id else {
+        return Err(NodeNotExistError {
+          node_id: main_dst_id.to_owned(),
+        }.into());
+      };
 
-    // Batch query member info
-    let mut units = self
-      .unit_service
-      .get_unit_info_by_unit_ids(&space_id, member_field_unit_ids)
-      .await?;
-    units.extend(
-      self
-        .user_service
-        .get_user_info_by_uuids(&space_id, operator_field_uuids)
-        .await?,
-    );
+      // Batch query member info
+      units = self
+        .unit_service
+        .get_unit_info_by_unit_ids(&space_id, member_field_unit_ids)
+        .await?;
+      units.extend(
+        self
+          .user_service
+          .get_user_info_by_uuids(&space_id, operator_field_uuids)
+          .await?,
+      );
+    } else {
+      units = vec![];
+    }
 
     let foreign_datasheet_map = foreign_datasheet_map
       .into_iter()
@@ -267,7 +283,7 @@ impl DatasheetServiceImpl {
       .iter()
       .map(|(id, dst)| (id.as_str(), dst.snapshot.record_map.len()))
       .collect();
-    num_records.insert(main_dst_id, main_dst_num_records);
+    num_records.insert(main_dst_id, main_record_map.lock().await.len());
     tracing::info!(
       "Finished analyzing dependencies of {main_dst_id}, duration {duration}ms. \
       Loaded datasheets and number of records: {num_records:?}"

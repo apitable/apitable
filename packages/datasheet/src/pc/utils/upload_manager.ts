@@ -60,7 +60,7 @@ export const checkNetworkEnv = (code: number) => {
       title: t(Strings.warning),
       content: t(Strings.status_code_phone_validation),
       onOk: () => {
-        if (!env.DISABLE_AWSC) {
+        if (!env.IS_SELFHOST) {
           window['nvc'].reset();
         }
       },
