@@ -3,7 +3,26 @@
 
 
 
-## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-06-12)
+## [HEAD](https://github.com/apitable/apitable/releases/tag/v0.22.0-beta) (2023-06-19)
+
+
+### Features and enhancements
+
+* feat: add deploy to digitalocean ([#951](https://github.com/apitable/apitable/pull/951)) @networkhermit 
+
+### Bug fixes
+
+* fix: add missing alt attribute to Upgrade Succeed image ([#941](https://github.com/apitable/apitable/pull/941)) @shunyue1320 
+* fix: allow unit_id to be empty string @zoe-icu 
+* fix: allow unit_id to be empty string ([#953](https://github.com/apitable/apitable/pull/953)) @zoe-icu 
+
+### What's more
+
+* chore: add config for specifying rust version ([#947](https://github.com/apitable/apitable/pull/947)) @arucil 
+* chore: changelog for 0.22.0-alpha ([#948](https://github.com/apitable/apitable/pull/948)) @shawndenggh 
+* sync: hosted cloud ([#967](https://github.com/apitable/apitable/pull/967)) @ChambersChan 
+* sync: hosted cloud ([#969](https://github.com/apitable/apitable/pull/969)) @ChambersChan 
+## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.22.0-alpha) (2023-06-12)
 
 
 ### What's more

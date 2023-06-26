@@ -79,11 +79,11 @@ export const UrlActionUI = (props: IUrlActionUI) => {
       <Typography className={styles.label} variant="body3">{t(Strings.link)}</Typography>
       <TextInput
         suffix={text && (
-          <Tooltip title={t(Strings.url_jump_link)} placement="top">
-            <div className={styles.link} onClick={() => handleEnhanceTextClick(FieldType.URL, text)}>
-              <NewtabOutlined/>
-            </div>
-          </Tooltip>
+          <div className={styles.link} onClick={() => handleEnhanceTextClick(FieldType.URL, text)}>
+            <Tooltip title={t(Strings.url_jump_link)} placement="top">
+              <span><NewtabOutlined/></span>
+            </Tooltip>
+          </div>
         )}
         value={text}
         ref={inputRef}

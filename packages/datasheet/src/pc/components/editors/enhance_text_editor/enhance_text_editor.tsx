@@ -181,13 +181,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
             <EditOutlined color={colors.thirdLevelText} size={16} />
           </span>
         </Tooltip>
-      ) : (
-        <Tooltip title={t(Strings.url_jump_link)} placement="top">
-          <span>
-            <NewtabOutlined color={colors.thirdLevelText} />
-          </span>
-        </Tooltip>
-      ),
+      ) : <NewtabOutlined color={colors.thirdLevelText} />,
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} size={16} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} size={16} />,
     };
