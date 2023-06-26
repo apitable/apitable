@@ -51,7 +51,7 @@ export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ d
     Router.redirect(Navigation.HOME);
   };
   const env = getEnvVariables();
-  const qrcodeVisible = env.CUSTOMER_SERVICE_QRCODE_VISIBLE;
+  const qrcodeVisible = !(env.IS_SELFHOST || env.IS_APITABLE);
 
   const themeName = useSelector(state => state.theme);
   const RestrictedAccess = themeName === ThemeName.Light ? restrictedAccessLight : restrictedAccessDark;

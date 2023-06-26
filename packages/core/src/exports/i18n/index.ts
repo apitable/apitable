@@ -77,8 +77,16 @@ const loadLanguage = (lang: string) => {
       const fs = require('fs');
       const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
       data = JSON.parse(jsonData);
-    } catch (error) {
-      console.error('load strings.json error', error);
+    } catch (_e) {
+      try {
+        const path = require('path');
+        const fs = require('fs');
+        const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
+        const jsonData = fs.readFileSync(pagesDirectory);
+        data = JSON.parse(jsonData);
+      } catch(error) {
+        console.error('load strings.json error', error);
+      }
     }
   }
   return data;

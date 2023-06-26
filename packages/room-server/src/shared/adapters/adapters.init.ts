@@ -25,8 +25,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { disableHSTS, enableAutomationWorker, enableScheduler, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
-import { FlowWorker } from 'automation/workers';
+import { disableHSTS, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
 import { DatabaseModule } from 'database/database.module';
 import { DeveloperService } from 'developer/services/developer.service';
 import { FastifyInstance } from 'fastify';
@@ -279,11 +278,4 @@ export const initRedisIoAdapter = (app: INestApplication) => {
   // Reduce the number of connections to redis, there is no need to establish a handshake, just establish a connection
   app.useWebSocketAdapter(new RedisIoAdapter(app, socketIoService));
   return app;
-};
-
-export const initAutomationWorker = (app: INestApplication) => {
-  if (enableScheduler || enableAutomationWorker) {
-    const flowWorker = app.get(FlowWorker);
-    flowWorker.start();
-  }
 };

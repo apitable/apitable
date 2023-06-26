@@ -86,7 +86,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.upgrade_space),
     key: 'upgrade',
     icon: <RocketOutlined />,
-    valid: Boolean(isSelfVika && !isMobileApp() && getEnvVariables().SPACE_UPGRADE_PAGE_VISIBLE),
+    valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST),
     routeAddress: '/upgrade',
   },
   {

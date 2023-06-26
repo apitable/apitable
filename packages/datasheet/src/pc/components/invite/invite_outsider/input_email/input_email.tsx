@@ -168,7 +168,7 @@ export const InputEmail = forwardRef(({
   return (
     <div className={styles.inputEmail}>
       {
-        getEnvVariables().GAIN_ATTACHMENT_CAPACITY_VISIBLE &&
+        !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE) &&
         <div className={styles.inviteAlertWrapper}>
           <InviteAlert />
         </div>

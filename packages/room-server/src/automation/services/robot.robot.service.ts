@@ -67,7 +67,7 @@ export class RobotRobotService {
   }
 
   public async getRobotBaseInfoByIds(robotIds: string[]): Promise<RobotBaseInfoVo[]> {
-    const robotBaseInfoByIds: {[key: string]: RobotBaseInfoVo } = {};
+    const robotBaseInfoByIds: {[key: string]: RobotBaseInfoVo} = {};
 
     // 1. Get the robot's base info.
     const robots = await this.automationRobotRepository.selectRobotBaseInfoDtoByRobotIds(robotIds);
@@ -221,7 +221,7 @@ export class RobotRobotService {
     });
   }
 
-  private getRobotSortActionList(actions: RobotActionBaseInfoDto[]): RobotActionBaseInfoDto[] {
+  private getRobotSortActionList(actions: RobotActionBaseInfoDto[]): RobotActionBaseInfoDto[]{
 
     const actionIdToActionMap = RobotRobotService.getActionIdToActionMap(actions);
 
@@ -244,7 +244,7 @@ export class RobotRobotService {
    * @return  {[actionTypeId: string]: IActionType}
    * @private
    */
-  private async getActionTypeIdToActionTypeMap(actions: RobotActionInfoDto[]): Promise<{ [key: string]: IActionType }> {
+  private async getActionTypeIdToActionTypeMap(actions: RobotActionInfoDto[]): Promise<{[key: string]: IActionType}> {
     const actionTypeIds = new Set<string>();
     // Get the unique action type ids.
     actions.forEach(action => actionTypeIds.add(action.actionTypeId!));
@@ -282,9 +282,5 @@ export class RobotRobotService {
       acc[item.id] = item;
       return acc;
     }, {});
-  }
-
-  public async isResourcesHasRobots(resourceIds: string[]) {
-    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
   }
 }
