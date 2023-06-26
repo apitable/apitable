@@ -27,7 +27,7 @@ export const SliderVerification: FC<React.PropsWithChildren> = () => {
 
   useMount(() => {
     const env = getEnvVariables();
-    if (!env.DISABLE_AWSC) {
+    if (!env.IS_SELFHOST) {
       window['nvc']?.getNC({
         renderTo: ConfigConstant.CaptchaIds.DEFAULT,
         upLang: {

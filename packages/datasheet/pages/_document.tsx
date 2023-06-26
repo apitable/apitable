@@ -73,7 +73,7 @@ class MyDocument extends Document<IClientInfo> {
           <Main />
           <NextScript />
           {
-            !JSON.parse(envVars).DISABLE_AWSC && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
+            !JSON.parse(envVars).IS_SELFHOST && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           }
           {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>

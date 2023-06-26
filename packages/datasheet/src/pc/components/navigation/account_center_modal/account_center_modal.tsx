@@ -96,7 +96,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
       key: AccountCenterModules.AccountManager,
       name: t(Strings.account_ass_manage),
       component: <AccountManager />,
-      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom?.() || !env.USER_SETTING_SOCIAL_LOGIN_VISIBLE,
+      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom?.() || env.IS_SELFHOST || env.IS_APITABLE,
     },
     {
       key: AccountCenterModules.DeveloperConfiguration,
