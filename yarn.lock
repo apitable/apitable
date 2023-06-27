@@ -28766,7 +28766,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mysql2@npm:^2.3.2":
+"mysql2@npm:2.3.2":
   version: 2.3.2
   resolution: "mysql2@npm:2.3.2"
   dependencies:
@@ -28779,6 +28779,22 @@ fsevents@^1.2.7:
     seq-queue: ^0.0.5
     sqlstring: ^2.3.2
   checksum: 0648d5a93e04c79c7aa150f93ddc0e58f272925373a244664932accebbeaa76727c6e53be5e5c1c6e87fc471caa83d0125b6d442adb0ca4eb17422e07d3a58c6
+  languageName: node
+  linkType: hard
+
+"mysql2@patch:mysql2@npm%3A2.3.2#./.yarn/patches/mysql2-npm-2.3.2-47a68d8ad1.patch::locator=root%40workspace%3A.":
+  version: 2.3.2
+  resolution: "mysql2@patch:mysql2@npm%3A2.3.2#./.yarn/patches/mysql2-npm-2.3.2-47a68d8ad1.patch::version=2.3.2&hash=75596c&locator=root%40workspace%3A."
+  dependencies:
+    denque: ^2.0.1
+    generate-function: ^2.3.1
+    iconv-lite: ^0.6.3
+    long: ^4.0.0
+    lru-cache: ^6.0.0
+    named-placeholders: ^1.1.2
+    seq-queue: ^0.0.5
+    sqlstring: ^2.3.2
+  checksum: 47ec10d2160361e41c3bc8871bd97606d59241f05af16040275ba27ef2c0d09135c70288068bf9b481d49c154dce1f4dcea937c6dcbe0b3036b0c82e6c6e4920
   languageName: node
   linkType: hard
 
