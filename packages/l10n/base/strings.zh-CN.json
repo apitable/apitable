@@ -1477,7 +1477,7 @@
   "expired": "已过期",
   "export": "正在导出…",
   "export_brand_desc": "提供技术支持",
-  "export_current_preview_view_data": "",
+  "export_current_preview_view_data": "导出当前视图数据",
   "export_gantt_button_tips": "导出为图片",
   "export_gantt_chart": "导出甘特图",
   "export_to_excel": "导出为 Excel 文件",

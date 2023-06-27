@@ -1478,7 +1478,7 @@
   "expired": "Expired",
   "export": "Exporting...",
   "export_brand_desc": "Powered by",
-  "export_current_preview_view_data": "",
+  "export_current_preview_view_data": "Export current preview view data",
   "export_gantt_button_tips": "Export to a .png file",
   "export_gantt_chart": "Export the gantt chart",
   "export_to_excel": "Export data",
