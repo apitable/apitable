@@ -20,7 +20,7 @@ import {
   Field, FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, ISegment,
   t, Strings,
 } from '@apitable/core';
-import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined } from '@apitable/icons';
+import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 import { Icon, Image, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
@@ -36,6 +36,7 @@ import * as React from 'react';
 const ColumnEmailNonzeroFilledPath = EmailOutlined.toString();
 const ColumnEditOutlinedPath = EditOutlined.toString();
 const ColumnPhoneFilledPath = TelephoneOutlined.toString();
+const WebOutlinedPath = WebOutlined.toString();
 
 const enhanceTextIconMap = {
   [FieldType.URL]: ColumnEditOutlinedPath,
@@ -260,6 +261,15 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
         <Image
           url={favicon!}
           x={GRID_CELL_VALUE_PADDING}
+          failedDisplay={(
+            <Icon
+              data={WebOutlinedPath}
+              x={GRID_CELL_VALUE_PADDING}
+              y={7}
+              width={16}
+              height={16}
+            />
+          )}
           y={7}
           width={16}
           height={16}

@@ -33,6 +33,7 @@ export interface IImageProps extends ShapeConfig {
   sizeMapIndex?: number;
   setSizeMap?: (index: number, width: number) => void;
   clipFunc?: (ctx: any) => void;
+  failedDisplay?: React.ReactElement;
 }
 
 export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props) => {
@@ -47,6 +48,7 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
     stroke,
     strokeWidth,
     listening,
+    failedDisplay,
     ...rest
   } = props;
   const {
@@ -64,6 +66,10 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
 
   const finalWidth = Math.min(imageWidth, aspectRatio * imageWidth);
   const finalHeight = Math.min(imageHeight, aspectRatio * imageHeight);
+
+  if (status === 'failed' && failedDisplay) {
+    return failedDisplay;
+  }
 
   if (status !== 'loaded') return null;
 

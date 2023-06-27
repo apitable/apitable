@@ -27,7 +27,7 @@ import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined } from '@apitable/icons';
+import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
 import { useSelector } from 'react-redux';
 
@@ -48,6 +48,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const [value, setValue] = useState('');
   const colors = useThemeColors();
   const cacheValueRef = useRef<ISegment[] | null | undefined>(null);
+  const imageLoadErrorRef = useRef<boolean>(false);
   const editorRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
@@ -220,7 +221,18 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
 
     return (
       <div className={style.content}>
-        {!focused && favicon && <img src={favicon} alt="" />}
+        {!focused && favicon && <img
+          onError={() => {
+            imageLoadErrorRef.current = true;
+          }}
+          onLoad={() => {
+            imageLoadErrorRef.current = false;
+          }}
+          style={{ width: imageLoadErrorRef.current ? 0 : '16px' }}
+          src={favicon}
+          alt=""
+        />}
+        {!focused && favicon && imageLoadErrorRef.current && <WebOutlined size={18} />}
         <Tooltip title={value} placement="top">
           <LinkButton
             type=""

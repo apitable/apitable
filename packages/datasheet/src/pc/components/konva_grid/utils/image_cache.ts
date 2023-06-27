@@ -18,39 +18,44 @@
 
 import { getEnvVariables } from 'pc/utils/env';
 
+interface IImageOption {
+  crossOrigin?: boolean;
+}
+
 export const imageCache = (() => {
   const imageMap: { [name: string]: any } = {};
   const imgPromises: any = [];
 
-  function loadImage(name: string, src: string, crossOrigin?: boolean) {
+  function loadImage(name: string, src: string, option?: IImageOption) {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
       img.referrerPolicy = 'no-referrer';
 
-      if (!crossOrigin && getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
+      if (!option?.crossOrigin && getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
         img.crossOrigin = 'Anonymous';
       }
-      
-      try {
-        img.onload = () => {
-          imageMap[name] = {
-            img,
-            success: true
-          };
 
-          resolve({
-            name,
-            img
-          });
+      img.onload = () => {
+        imageMap[name] = {
+          img,
+          success: true
         };
-      } catch (err) {
+
+        resolve({
+          name,
+          img
+        });
+      };
+
+      img.onerror = () => {
         imageMap[name] = {
           img,
           success: false
         };
-        reject(err);
-      }
+        reject();
+      };
+
     }));
   }
 
