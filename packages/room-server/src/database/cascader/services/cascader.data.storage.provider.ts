@@ -58,8 +58,10 @@ export class CascaderDataStorageProvider implements databus.IDataStorageProvider
       const field = fieldMap[fieldId]!;
       if (field.type === FieldType.Member && spaceId) {
         const unitIds = field.property.unitIds;
-        const unitMap = await this.unitService.getUnitInfo(spaceId, Array.from(unitIds));
-        combine.push(...unitMap);
+        if (unitIds && unitIds.length > 0) {
+          const unitMap = await this.unitService.getUnitInfo(spaceId, Array.from(unitIds));
+          combine.push(...unitMap);
+        }
       }
     }
     return {
