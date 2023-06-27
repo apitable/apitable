@@ -188,7 +188,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
   };
 
   const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, newFilterInfo?: any) => {
-    if (currentField.property[propertyKey] !== value || filterInfo ) {
+    if (currentField.property[propertyKey] !== value || newFilterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
