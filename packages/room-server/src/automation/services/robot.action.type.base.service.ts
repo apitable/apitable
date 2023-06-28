@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { customActionTypeMetas } from '../actions/decorators/automation.action.decorator';
 import { getTypeByItem } from '../utils';
@@ -23,14 +24,23 @@ import { ActionTypeDetailVo } from '../vos/action.type.detail.vo';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class RobotActionTypeService {
+export abstract class RobotActionTypeBaseService {
+
+  getActionType(_lang = 'zh'): Promise<ActionTypeDetailVo[]> {
+    return Promise.resolve([]);
+  }
+}
+
+@Injectable()
+export class RobotActionTypeService extends RobotActionTypeBaseService {
 
   constructor(
     private automationActionTypeRepository: AutomationActionTypeRepository,
     private automationServiceRepository: AutomationServiceRepository) {
+    super();
   }
 
-  public async getActionType(lang = 'zh'): Promise<ActionTypeDetailVo[]> {
+  override async getActionType(lang = 'zh'): Promise<ActionTypeDetailVo[]> {
     const result = [];
     const actionTypes = await this.automationActionTypeRepository.find({ where: { isDeleted: 0 }});
     for (const actionTypesKey in actionTypes) {

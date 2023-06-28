@@ -32,6 +32,10 @@ pub struct FetchDataPackOptions {
    * `resourceIds` will contain the datasheet ID and foreign datasheet IDs.
    */
   pub is_datasheet: Option<bool>,
+
+  // Not yet handled.
+  // pub meta: ???
+  pub need_extend_main_dst_records: Option<bool>,
 }
 
 #[derive(Serialize, Debug, Clone)]

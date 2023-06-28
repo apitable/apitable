@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType } from 'types';
-import { IResource } from './resource.interface';
-import { IDataSaver, ILoadDashboardPackOptions, IStoreOptions } from 'databus/providers';
-import { IReduxState, IServerDashboardPack, IWidget, IWidgetMap, Selectors, StoreActions } from 'exports/store';
-import { Store } from 'redux';
 import { CollaCommandManager, ExecuteResult } from 'command_manager';
-import { ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { CollaCommandName, ICollaCommandOptions } from 'commands';
+import { IDataSaver, ILoadDashboardPackOptions, IStoreOptions } from 'databus/providers';
+import { IDashboardLayout, IDashboardSnapshot, IReduxState, IServerDashboardPack, IWidget, IWidgetMap, Selectors, StoreActions } from 'exports/store';
+import { Store } from 'redux';
+import { ResourceType } from 'types';
+import { ICommandExecutionResult, ISaveOptions } from './datasheet';
+import { IResource } from './resource.interface';
 
 interface IDashboardCtorOptions {
   store: Store<IReduxState>;
@@ -63,6 +63,10 @@ export class Dashboard implements IResource {
 
   public get revision(): number {
     return Selectors.getResourceRevision(this.store.getState(), this.id, ResourceType.Dashboard)!;
+  }
+
+  public get snapshot(): IDashboardSnapshot {
+    return <IDashboardSnapshot>Selectors.getDashboardSnapshot(this.store.getState(), this.id);
   }
 
   public setWidgetInstalled(widget: IWidget) {
@@ -109,6 +113,7 @@ export class Dashboard implements IResource {
   /**
    * Add widgets to the dashboard.
    *
+   * @param options The widget option
    * @param saveOptions The options that will be passed to the data saver.
    */
   public setWidgetDependencyDatasheet(options: IWidgetDependencyDatasheetOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
@@ -126,6 +131,7 @@ export class Dashboard implements IResource {
   /**
    * Delete a widget from the dashboard.
    *
+   * @param widgetId The widget id
    * @param saveOptions The options that will be passed to the data saver.
    */
   public deleteWidget(widgetId: string, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
@@ -134,6 +140,29 @@ export class Dashboard implements IResource {
         cmd: CollaCommandName.DeleteDashboardWidget,
         dashboardId: this.id,
         widgetId,
+      },
+      saveOptions,
+    );
+  }
+
+  public setWidgetName(widgetId: string, newWidgetName: string, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.doCommand<void>(
+      {
+        cmd: CollaCommandName.SetWidgetName,
+        resourceId: widgetId,
+        resourceType: ResourceType.Widget,
+        newWidgetName
+      },
+      saveOptions,
+    );
+  }
+
+  public changeLayout(options: IDashboardChangeLayoutOptions[], saveOptions: ISaveOptions): Promise<ICommandExecutionResult<void>> {
+    return this.doCommand<void>(
+      {
+        cmd: CollaCommandName.ChangeDashboardLayout,
+        dashboardId: this.id,
+        layout: options
       },
       saveOptions,
     );
@@ -163,3 +192,5 @@ export interface IWidgetDependencyDatasheetOptions {
   widgetId: string;
   dstId: string;
 }
+
+export type IDashboardChangeLayoutOptions = IDashboardLayout;

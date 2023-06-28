@@ -167,7 +167,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
           </div>
           <div className={styles.arcBoxRight} />
         </div>
-        {extras?.website && !getEnvVariables().DISABLE_WIDGET_PUBLISHER && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
+        {extras?.website && !getEnvVariables().IS_SELFHOST && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
           <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
             <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant='background' />
           </a>
@@ -178,7 +178,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         <p>
           {description}
         </p>
-        {!getEnvVariables().DISABLE_WIDGET_PUBLISHER && <div className={styles.developerWrap}>
+        {!getEnvVariables().IS_SELFHOST && <div className={styles.developerWrap}>
           <span>{t(Strings.widget_center_publisher)}</span>
           <div className={styles.avatarWrap}>
             <Avatar

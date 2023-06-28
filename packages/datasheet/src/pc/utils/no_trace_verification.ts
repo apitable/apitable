@@ -30,7 +30,7 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
   renderTo: string = ConfigConstant.CaptchaIds.DEFAULT) => {
   if (process.env.SSR) return;
   const env = getEnvVariables();
-  if (isPrivateDeployment() || env.DISABLE_AWSC) {
+  if (isPrivateDeployment() || env.IS_SELFHOST) {
     return;
   }
   if (!window['AWSC']) {
@@ -62,7 +62,7 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
 export const execNoTraceVerification = (callback: (data?: string) => void) => {
   if (process.env.SSR) return;
   const env = getEnvVariables();
-  if (isPrivateDeployment() || env.DISABLE_AWSC) {
+  if (isPrivateDeployment() || env.IS_SELFHOST) {
     callback(undefined);
     return;
   }

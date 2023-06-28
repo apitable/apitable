@@ -21,6 +21,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationServiceRepository } from './automation.service.repository';
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
 import { DeepPartial } from 'typeorm';
+import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { ConfigModule } from '@nestjs/config';
 
@@ -49,6 +50,7 @@ describe('AutomationServiceRepository', () => {
   beforeEach(async() => {
     const service: DeepPartial<AutomationServiceEntity> = {
       serviceId: theServiceId,
+      slug: OFFICIAL_SERVICE_SLUG,
       baseUrl: theBaseUrl,
     };
     const record = repository.create(service);
@@ -65,6 +67,16 @@ describe('AutomationServiceRepository', () => {
 
   it('should be defined', () => {
     expect(repository).toBeDefined();
+  });
+
+  it("given one official service entity when judge whether the service id is the official service's id", async() => {
+    const number = await repository.countOfficialServiceByServiceId(entity.serviceId);
+    expect(number).toEqual(1);
+  });
+
+  it('given one official service entity when judge whether the service with the special service id and service slug exist', async() => {
+    const number = await repository.countServiceByServiceIdAndSlug(entity.serviceId, OFFICIAL_SERVICE_SLUG);
+    expect(number).toEqual(1);
   });
 
   it('should be get services\' baseUrls', async() => {

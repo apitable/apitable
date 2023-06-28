@@ -11,7 +11,14 @@
     "react/display-name": 0,
     "react/no-find-dom-node": 0,
     "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "no-restricted-imports": ["error", {
+      "paths": [{
+        "name": "react-custom-scrollbars",
+        "importNames": ["Scrollbars"],
+        "message": "Please use ScrollBar from pc/components/scroll_bar instead."
+      }]
+    }]
 //    "@typescript-eslint/no-misused-promises": 1,
 //    "@typescript-eslint/no-floating-promises": 1
   }

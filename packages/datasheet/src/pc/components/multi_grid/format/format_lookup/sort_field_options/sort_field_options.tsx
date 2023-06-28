@@ -124,6 +124,10 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
     });
   }, [isCryptoField, fieldNotFound, options, defaultFieldId]);
 
+  const popupStyle: React.CSSProperties = {
+    zIndex: 9999,
+  };
+
   return (
     <div
       onClick={toggleClick}
@@ -144,6 +148,7 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
         dropdownMatchSelectWidth={false}
         value={defaultFieldId}
         triggerCls={styles.select}
+        popupStyle={popupStyle}
         hideSelectedOption
         openSearch
         searchPlaceholder={t(Strings.search)}

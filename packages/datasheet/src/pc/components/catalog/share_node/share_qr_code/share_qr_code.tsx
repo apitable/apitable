@@ -94,7 +94,7 @@ export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ ur
     <div id="downloadContainer" className={styles.downloadContainer}>
       <div className={styles.contentContainer}>
         {
-          getEnvVariables().SHARE_PUBLIC_LINK_QRCODE_ASSISTANT_VISIBLE && <div className={styles.mascot}>
+          !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE) && <div className={styles.mascot}>
             <img src={DuckPng.src} alt="vika mascot" />
           </div>
         }
