@@ -17,9 +17,9 @@
  */
 
 import { ConfigConstant, Field } from '@apitable/core';
+
 import classNames from 'classnames';
 import { Emoji } from 'pc/components/common';
-import { DEFAULT_CHECK_ICON } from 'pc/utils/constant';
 import { stopPropagation } from 'pc/utils/dom';
 import { KeyCode } from 'pc/utils/keycode';
 import { forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
@@ -44,7 +44,7 @@ const CheckboxEditorBase: React.ForwardRefRenderFunction<IEditor, ICheckboxEdito
   const value = cellValue ? checked : _value;
   const editorRef = useRef<HTMLInputElement>(null);
 
-  const icon = Field.bindModel(field).isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
+  const icon = Field.bindModel(field).isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : field.property.icon;
   useImperativeHandle(ref, (): IEditor => ({
     focus: () => { focus(); },
     onEndEdit: (cancel: boolean) => {

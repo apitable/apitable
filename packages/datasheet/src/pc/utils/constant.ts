@@ -28,8 +28,6 @@ export const OPACITY_LINE_CLASS = 'opacityLineClass';
 
 export const EDITOR_CONTAINER = 'editor-container';
 
-export const DEFAULT_CHECK_ICON = 'white_check_mark';
-
 export const DEFAULT_LINK_RECORD_COUNT = 20;
 
 export const OPERATE_BUTTON_CLASS = 'operateButton';
