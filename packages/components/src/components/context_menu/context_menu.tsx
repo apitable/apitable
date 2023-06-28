@@ -23,7 +23,7 @@ import { StyledMenuContainer, StyledSubMenu, StyledMenuItem, StyledMenuItemConte
 import { ICacheOverlay, IContextMenuClickState, IContextMenuItemProps, IContextMenuProps } from './interface';
 import { manager } from './event_manager';
 import { IMenuConfig } from './interface';
-import { EVENT_TYPE } from './consts';
+import { EVENT_TYPE } from './const';
 import { Tooltip } from 'antd';
 import { omit } from 'lodash';
 
@@ -97,9 +97,9 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
     setContextMenuState({ offset: null });
     const menu = menuRef.current;
     if (menu && !children) {
-      const childs = menu.childNodes;
-      for (let i = 0; i < childs.length; i++) {
-        const child = childs[i] as HTMLElement;
+      const nodes = menu.childNodes;
+      for (let i = 0; i < nodes.length; i++) {
+        const child = nodes[i] as HTMLElement;
         child.style.cssText = '';
       }
     }
@@ -243,7 +243,11 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
     if (children) {
       return children;
     }
-    if (!overlay || !contextMenuState.offset) {
+    if (!overlay || !overlay.length || !contextMenuState.offset) {
+      return null;
+    }
+    const hidden = overlay.every((item) => item.hidden);
+    if (hidden) {
       return null;
     }
     const results: { key: string; label: JSX.Element }[][] = [];
@@ -293,11 +297,11 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
     };
 
     /**
-     * Calculate the location of menu 
-     * High computing strategy: => 
+     * Calculate the location of menu
+     * High computing strategy: =>
      * 1、element.totalHeight = element.top + element.scrollHeight total height
      * 2、element.totalHeight > innerHeight ? result1 : result2; compare total hidden and current window height
-     * 
+     *
      * Width computing strategy: =>
      * 1、element.startX = offset[0] + preMenuWidthSum  Get starting point
      * 2、element.finalX = startX - preMenuWidthSum - element.width * (i+1)

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable */
-export enum EVENT_TYPE {
-  HIDE_ALL = 'hide_all',
-}
+export const EVENT_TYPE = {
+  HIDE_ALL: 'hide_all',
+};
