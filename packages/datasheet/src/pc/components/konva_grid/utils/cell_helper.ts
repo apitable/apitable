@@ -734,13 +734,14 @@ export class CellHelper extends KonvaDrawer {
         imageCache.loadImage(name, imgUrl);
         continue;
       }
-      const { width: imageWidth, height: imageHeight } = img;
+      const imageWidth = img === false ? 1 : img.width;
+      const imageHeight = img === false ? 1 : img.height;
       const width = calcFileWidth(file, height);
       const aspectRatio = Math.min(width / imageWidth, height / imageHeight);
       const finalWidth = Math.ceil(aspectRatio * imageWidth);
       const finalHeight = Math.ceil(aspectRatio * imageHeight);
       if (ctx) {
-        ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
+        img && ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
         this.line({
           x: x + currentX - 1,
           y: y + currentY - 1,

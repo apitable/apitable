@@ -265,9 +265,10 @@ export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             <Icon
               data={WebOutlinedPath}
               x={GRID_CELL_VALUE_PADDING}
-              y={7}
+              y={8}
               width={16}
               height={16}
+              fill={colors.textCommonPrimary}
             />
           )}
           y={7}

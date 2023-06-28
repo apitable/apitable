@@ -23,7 +23,10 @@ interface IImageOption {
 }
 
 export const imageCache = (() => {
-  const imageMap: { [name: string]: any } = {};
+  const imageMap: { [name: string]: {
+    img: HTMLImageElement;
+    success: boolean
+    } } = {};
   const imgPromises: any = [];
 
   function loadImage(name: string, src: string, option?: IImageOption) {
@@ -36,25 +39,31 @@ export const imageCache = (() => {
         img.crossOrigin = 'Anonymous';
       }
 
-      img.onload = () => {
-        imageMap[name] = {
-          img,
-          success: true
-        };
-
-        resolve({
-          name,
-          img
-        });
+      imageMap[name] = {
+        img,
+        success: false
       };
 
-      img.onerror = () => {
+      try {
+        img.onload = () => {
+          imageMap[name] = {
+            img,
+            success: true
+          };
+
+          resolve({
+            name,
+            img
+          });
+        };
+      } catch (err) {
+        // code never reach
         imageMap[name] = {
           img,
           success: false
         };
-        reject();
-      };
+        reject(err);
+      }
 
     }));
   }

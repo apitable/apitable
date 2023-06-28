@@ -232,7 +232,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           src={favicon}
           alt=""
         />}
-        {!focused && favicon && imageLoadErrorRef.current && <WebOutlined size={18} />}
+        {!focused && favicon && imageLoadErrorRef.current && <WebOutlined size={18} color={colors.textCommonPrimary} />}
         <Tooltip title={value} placement="top">
           <LinkButton
             type=""

@@ -471,13 +471,11 @@ export class KonvaDrawer {
     if (image === false) {
       if (allowDefault) {
         this.path({
-          x: x + 2,
+          x,
           y: y + 2,
           data: WebOutlinedPath,
           size: 16,
-          // scaleX: scale,
-          // scaleY: scale,
-          fill: colors.firstLevelText,
+          fill: colors.textCommonPrimary,
         });
       }
       return;
