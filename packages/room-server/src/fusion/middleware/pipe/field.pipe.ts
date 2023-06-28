@@ -57,8 +57,7 @@ export class FieldPipe implements PipeTransform {
       fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
     }
     const records: any[] = [];
-    for (const index of Object.keys(value.records)) {
-      const record = value.records[index];
+    for (const record of value.records) {
       const fields: IFieldValueMap = {};
       for (const fieldKey of Object.keys(record.fields)) {
         const field = fieldMap[fieldKey];
