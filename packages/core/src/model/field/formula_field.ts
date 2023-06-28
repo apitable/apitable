@@ -367,6 +367,9 @@ export class FormulaField extends ArrayValueField {
           case FOperator.DoesNotContain:
           case FOperator.IsNot:
           case FOperator.IsEmpty:
+            if (isEmpty(cellValue)) {
+              return true;
+            }
             return (cellValue as ICellValue[]).every(innerBasicValueTypeFilter);
           default:
             if (isEmpty(cellValue)) {
