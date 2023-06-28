@@ -17,23 +17,44 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
+import { getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import { ExpCache, FormulaBaseError, parse } from 'formula_parser';
 import Joi from 'joi';
+import { isEmpty } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
 import { ICellToStringOption, ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
-import { IReduxState } from '../../exports/store';
-import { getSnapshot, getUserTimeZone } from 'exports/store/selectors';
 import {
-  FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat,
-  IFilterCheckbox, IFilterCondition, IFilterDateTime, IFilterText
+  FOperator,
+  FOperatorDescMap,
+  IAPIMetaFormulaFieldProperty,
+  IAPIMetaNoneStringValueFormat,
+  IFilterCheckbox,
+  IFilterCondition,
+  IFilterDateTime,
+  IFilterText
 } from 'types';
 import {
-  BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IFormulaField, IFormulaProperty, IStandardValue, ITimestamp,
+  BasicValueType,
+  FieldType,
+  IComputedFieldFormattingProperty,
+  IDateTimeFieldProperty,
+  IFormulaField,
+  IFormulaProperty,
+  IStandardValue,
+  ITimestamp,
 } from 'types/field_types';
 import { IOpenFormulaFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenFormulaFieldProperty } from 'types/open/open_field_write_types';
+import {
+  IOpenFilterValue,
+  IOpenFilterValueBoolean,
+  IOpenFilterValueDataTime,
+  IOpenFilterValueNumber,
+  IOpenFilterValueString
+} from 'types/open/open_filter_types';
 import { isClient } from 'utils/env';
+import { IReduxState } from '../../exports/store';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
 import { ArrayValueField } from './field';
@@ -41,10 +62,6 @@ import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, joiErrorResult } from './validate_schema';
-import {
-  IOpenFilterValue, IOpenFilterValueBoolean, IOpenFilterValueDataTime, IOpenFilterValueNumber,
-  IOpenFilterValueString
-} from 'types/open/open_filter_types';
 
 export class FormulaField extends ArrayValueField {
   constructor(public override field: IFormulaField, public override state: IReduxState) {
@@ -62,11 +79,11 @@ export class FormulaField extends ArrayValueField {
   }
 
   validateCellValue() {
-    return joiErrorResult("computed field shouldn't validate cellValue");
+    return joiErrorResult('computed field shouldn\'t validate cellValue');
   }
 
   validateOpenWriteValue() {
-    return joiErrorResult("computed field shouldn't validate cellValue");
+    return joiErrorResult('computed field shouldn\'t validate cellValue');
   }
 
   get apiMetaPropertyFormat(): IAPIMetaNoneStringValueFormat | null {
@@ -352,6 +369,9 @@ export class FormulaField extends ArrayValueField {
           case FOperator.IsEmpty:
             return (cellValue as ICellValue[]).every(innerBasicValueTypeFilter);
           default:
+            if (isEmpty(cellValue)) {
+              return false;
+            }
             return (cellValue as ICellValue[]).some(innerBasicValueTypeFilter);
         }
       default:
