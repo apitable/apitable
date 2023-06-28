@@ -49,7 +49,6 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
   }
 
   async use(req: any, res: any, next: () => void) {
-    console.log(this.developerService);
     // use redis for distributed system
     const redisClient = this.redisService.getClient();
     // use spaceId as the unique key for verification, no need to verify in other places.
@@ -61,7 +60,7 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     const limiter = this.envConfigService.getRoomConfig(EnvConfigKey.API_LIMIT) as IRateLimiter;
     let points = limiter.points;
     let duration = limiter.duration;
-    if(!process.env.LIMIT_POINTS || parseInt(process.env.LIMIT_POINTS!) === 5) {
+    if (!process.env.LIMIT_POINTS || parseInt(process.env.LIMIT_POINTS!) === 5) {
       const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
       let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
       if (!spaceId && datasheetId) {
