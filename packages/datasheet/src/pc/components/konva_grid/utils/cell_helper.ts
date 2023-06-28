@@ -61,7 +61,7 @@ import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { DEFAULT_CHECK_ICON, emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
+import { emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
@@ -604,7 +604,7 @@ export class CellHelper extends KonvaDrawer {
   private renderCellCheckbox(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { x, y, field, cellValue, columnWidth, callback, style, isActive } = renderProps;
     const { isComputed } = Field.bindModel(field);
-    const icon = isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
+    const icon = isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : field.property.icon;
     const iconId = typeof icon === 'string' ? icon : icon.id;
     const iconUrl = emojiUrl(iconId) as string;
     const isChecked = Boolean(cellValue);
@@ -630,7 +630,7 @@ export class CellHelper extends KonvaDrawer {
 
     if (ctx && cellValue != null) {
       const { isComputed } = Field.bindModel(field);
-      const icon = isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
+      const icon = isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : field.property.icon;
       const iconId = typeof icon === 'string' ? icon : icon.id;
       const iconUrl = emojiUrl(iconId) as string;
       let offsetX = GRID_CELL_VALUE_PADDING;

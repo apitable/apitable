@@ -24,6 +24,8 @@ export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a 
 // When you click the file for the first time, to activate the novice guide, you need to add a class
 export const FIRST_FILE_IN_GUIDE_CLASS = 'FIRST_FILE_IN_GUIDE_CLASS';
 
+export const DEFAULT_CHECK_ICON = 'white_check_mark';
+
 // table area related
 export const UPPER_LEFT_REGION = 0;
 export const BOTTOM_LEFT_REGION = 1;
