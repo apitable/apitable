@@ -68,7 +68,7 @@ public class IdUtil {
                 return IdRulePrefixEnum.MIRROR.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             case AI_CHAT_BOT:
-                return IdRulePrefixEnum.ACB.getIdRulePrefixEnum()
+                return IdRulePrefixEnum.AI.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             default:
                 return IdRulePrefixEnum.FOD.getIdRulePrefixEnum()

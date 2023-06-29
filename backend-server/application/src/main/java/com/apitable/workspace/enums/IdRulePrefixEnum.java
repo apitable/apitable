@@ -73,7 +73,7 @@ public enum IdRulePrefixEnum {
 
     EMB("emb"),
 
-    ACB("acb"),
+    AI("ai_"),
 
     ;
 

@@ -63,6 +63,8 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         NodeOpRo nodeOpRo = NodeOpRo.builder()
             .parentId(rootNodeId)
             .type(NodeType.AI_CHAT_BOT.getNodeType())
+            .nodeName("ChatBot Assistant")
+            .checkDuplicateName(false)
             .build();
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
