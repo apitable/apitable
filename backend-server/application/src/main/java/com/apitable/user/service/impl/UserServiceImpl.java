@@ -146,6 +146,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     private LoginUserCacheService loginUserCacheService;
 
     @Resource
+    private LanguageManager languageManager;
+
+    @Resource
     private IAssetService iAssetService;
 
     @Resource
@@ -477,9 +480,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     public UserEntity createUserByEmail(final String email) {
         return this.createUserByEmail(email, null);
     }
-
-    @Resource
-    private LanguageManager languageManager;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

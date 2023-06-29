@@ -37,7 +37,6 @@ import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.cache.service.SpaceCapacityCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
-import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.component.notification.annotation.Notification;
@@ -166,7 +165,6 @@ public class TemplateController {
     @GetResource(path = "/template/categoryList", requiredLogin = false)
     @Operation(summary = "Get Template Category List")
     public ResponseData<List<TemplateCategoryMenuVo>> getCategoryList() {
-        System.out.println("lang " + LanguageManager.me().getDefaultLanguageTagWithUnderLine());
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
         List<TemplateCategoryMenuVo> list = iTemplateService.getTemplateCategoryList(lang);
         return ResponseData.success(list);
