@@ -3658,7 +3658,7 @@
   "recommend_album": "Álbum de fotos recomendado",
   "reconciled_data": "Se están verificando los datos",
   "record": "Registro",
-  "record_activity_experience_tips": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "Solo anotaciones",
   "record_comments": "Comentarios",
   "record_fail_data": "Error de datos",
