@@ -634,7 +634,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         ControlRoleDict roleDict = controlTemplate.fetchNodeTreeNode(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), PermissionException.NODE_ACCESS_DENIED);
         List<NodeInfoTreeVo> treeList =
-            nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
+            CollUtil.split(roleDict.keySet(), 1000).stream()
+                .reduce(new ArrayList<>(),
+                    (nodes, item) -> {
+                        List<NodeInfoTreeVo> childNodes =
+                            nodeMapper.selectNodeInfoTreeByNodeIds(item, memberId);
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    },
+                    (nodes, childNodes) -> {
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    });
         // Node switches to memory custom sort
         CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId,
             new ArrayList<>(roleDict.keySet()));
