@@ -97,7 +97,6 @@ export const RobotDetailHead = () => {
         onClick={() => {
           setCurrentRobotId();
         }}
-        style={{ position: 'absolute', left: 8, paddingLeft: 8, paddingRight: 8 }}
         prefixIcon={<ChevronLeftOutlined />}>
         <span style={{ lineHeight: 1 }}>{t(Strings.robot_return)}</span>
       </TextButton>
@@ -120,8 +119,6 @@ export const RobotDetailHead = () => {
         width="48px"
         justifyContent="space-between"
         marginRight="16px"
-        position="absolute"
-        right="16px"
       >
         <Tooltip content={t(Strings.robot_run_history_tooltip)} placement="top-center">
           <Box display="flex" alignItems="center">

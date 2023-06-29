@@ -108,7 +108,6 @@ export const RobotListHead = () => {
         toolTips={{ placement: 'bottom-center', content: isShowRobot ? t(Strings.robot_panel_create_tab) : t(Strings.robot_disable_create_tooltip) }}
         container={Tooltip}
         useTextBtn
-        style={{ position: 'absolute', left: 8 }}
         btnStyle={{ paddingLeft: 8, paddingRight: 8 }}
       />
       <Box display="flex" alignItems="center">
@@ -130,7 +129,6 @@ export const RobotListHead = () => {
         shape="square"
         onClick={() => ShortcutActionManager.trigger(ShortcutActionName.ToggleRobotPanel)}
         icon={CloseOutlined}
-        style={{ position: 'absolute', right: 16 }}
       />
     </>
   );

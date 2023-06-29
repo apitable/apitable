@@ -43,9 +43,9 @@ const RobotBase = () => {
           <Box
             height="50px"
             display="flex"
-            justifyContent="center"
+            justifyContent="space-between"
             alignItems="center"
-            padding="16px"
+            padding="16px 8px"
             borderBottom={`1px solid ${theme.color.lineColor}`}
             position="relative"
             backgroundColor={theme.color.bgCommonDefault}

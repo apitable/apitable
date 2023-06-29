@@ -27,7 +27,6 @@ export const RobotRunHistoryHead = () => {
     <TextButton
       size="small"
       prefixIcon={<ChevronLeftOutlined />}
-      style={{ position: 'absolute', left: 8, paddingLeft: 8, paddingRight: 8 }}
       onClick={() => {
         setIsHistory(false);
       }}
@@ -41,8 +40,6 @@ export const RobotRunHistoryHead = () => {
       display="flex"
       width="48px"
       justifyContent="space-between"
-      position="absolute"
-      right="16px"
     />
   </>;
 };
