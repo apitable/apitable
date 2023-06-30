@@ -90,7 +90,11 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     } = getPageParams(router.asPath);
 
     setTimeout(() => {
-      Router.push(Navigation.SHARE_SPACE, {
+      /**
+       * This redirect page should not be recorded in the browsing history.
+       * @see https://github.com/vikadata/vikadata/issues/5795
+       */
+      Router.replace(Navigation.SHARE_SPACE, {
         params: {
           shareId: shareInfo.shareId,
           nodeId: nodeId || shareInfo.shareNodeTree.nodeId,
