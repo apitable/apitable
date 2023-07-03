@@ -22,6 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
+import { AiDynamicModule } from 'ai/ai.dynamic.module';
 import { defaultLanguage, enableOtelJaeger, enableScheduler, enableSocket } from 'app.environment';
 import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
@@ -74,6 +75,7 @@ import { UserModule } from 'user/user.module';
     ScheduleModule.forRoot(),
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),
+    AiDynamicModule.forRoot(),
     FusionApiDynamicModule.forRoot(),
     SocketModule.register(enableSocket),
     ActuatorModule,

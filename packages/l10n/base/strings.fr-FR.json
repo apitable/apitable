@@ -3658,7 +3658,7 @@
   "recommend_album": "recommander l'album",
   "reconciled_data": "Les données sont en cours de rapprochement",
   "record": "Enregistrements",
-  "record_activity_experience_tips": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "Commentaires uniquement",
   "record_comments": "commenté",
   "record_fail_data": "erreur de données",

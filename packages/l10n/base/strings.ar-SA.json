@@ -3658,7 +3658,7 @@
   "recommend_album": "البوم صور",
   "reconciled_data": "التحقق من البيانات",
   "record": "سجل",
-  "record_activity_experience_tips": "يمكنك استخدام امتيازات الفضاء المتقدمة لعرض سجل نشاط $ { اليوم }",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "ملاحظات فقط",
   "record_comments": "تعليق .",
   "record_fail_data": "خطأ في البيانات",

@@ -289,7 +289,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected MockUserSpace createSingleUserAndSpace() {
-        UserEntity user = createUserRandom();
+        UserEntity user = createUserWithEmailAndPassword("test_user@apitable.com");
         String spaceId = createSpaceWithoutName(user);
 
         // init context

@@ -3673,7 +3673,7 @@
   "recommend_album": "Album empfehlen",
   "reconciled_data": "Daten werden abgeglichen",
   "record": "Aufzeichnung",
-  "record_activity_experience_tips": "Sie haben erweiterte Speicherberechtigungen, Sie können Aufzeichnungsaktivitäten von ${day} Tagen anzeigen",
+  "record_activity_experience_tips": "Sie können Aufzeichnungsaktivitäten von ${day} Tagen anzeigen",
   "record_comment": "Nur Kommentare",
   "record_comments": "Kommentare",
   "record_fail_data": "Datenfehler",

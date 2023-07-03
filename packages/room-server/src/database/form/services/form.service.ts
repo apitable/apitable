@@ -70,8 +70,10 @@ export class FormService {
     const { formProps, nodeRelInfo, dstId, meta } = await this.getRelDatasheetInfo(formId);
     // Get source datasheet permission in space
     if (!templateId) {
-      const permissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
-      nodeRelInfo.datasheetPermissions = permissions;
+      nodeRelInfo.datasheetPermissions = await this.nodeService.getPermissions(dstId, auth, {
+        internal: true,
+        main: false
+      });
     }
     const endTime = +new Date();
     this.logger.info(`Finished loading form data, duration: ${endTime - beginTime}ms`);

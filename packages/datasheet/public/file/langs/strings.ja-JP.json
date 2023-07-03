@@ -3673,7 +3673,7 @@
   "recommend_album": "おすすめアルバム",
   "reconciled_data": "データの照合",
   "record": "レコード破り",
-  "record_activity_experience_tips": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "コメントのみ",
   "record_comments": "コメント",
   "record_fail_data": "データエラー",

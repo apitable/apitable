@@ -106,7 +106,8 @@
     "webpack": "4.44.2",
     "winston@^3.8.2": "patch:winston@npm%3A3.8.2#./.yarn/patches/winston-npm-3.8.2-2035e9cac4.patch",
     "node-gyp": "9.3.1",
-    "@nestjs/microservices@^8.1.1": "8.1.2"
+    "@nestjs/microservices@^8.1.1": "8.1.2",
+    "mysql2@^2.3.2": "patch:mysql2@npm%3A2.3.2#./.yarn/patches/mysql2-npm-2.3.2-47a68d8ad1.patch"
   },
   "bin": "packages/room-server/dist/main.js",
   "pkg": {

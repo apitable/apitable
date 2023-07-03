@@ -3673,7 +3673,7 @@
   "recommend_album": "추천 앨범",
   "reconciled_data": "데이터 확인 중",
   "record": "기록",
-  "record_activity_experience_tips": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "주석만 해당",
   "record_comments": "코멘트",
   "record_fail_data": "데이터 오류",

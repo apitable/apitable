@@ -632,7 +632,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createNode(Long userId, String spaceId, NodeOpRo nodeOpRo) {
-        log.info("Add node ");
+        log.info("create children node");
         // The parent id and space id must match.
         // The parent node belongs to this space to prevent cross-space and cross-node operations.
         this.checkNodeIfExist(spaceId, nodeOpRo.getParentId());

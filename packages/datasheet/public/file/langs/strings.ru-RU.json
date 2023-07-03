@@ -3673,7 +3673,7 @@
   "recommend_album": "Рекомендуемые альбомы",
   "reconciled_data": "Данные проверяются.",
   "record": "Запись",
-  "record_activity_experience_tips": "You are experiencing advanced space privileges, you can view record activity of  ${day}  days",
+  "record_activity_experience_tips": "You can view record activity of  ${day}  days",
   "record_comment": "Только примечания",
   "record_comments": "Замечания",
   "record_fail_data": "Ошибка данных",
