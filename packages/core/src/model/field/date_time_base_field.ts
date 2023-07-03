@@ -589,6 +589,9 @@ export abstract class DateTimeBaseField extends Field {
       return cellValue != null;
     }
     const [filterDuration] = conditionValue;
+    if (!filterDuration) {
+      return false;
+    }
     let timestamp: string | number | undefined | null;
     if (
       filterDuration === FilterDuration.ExactDate ||
