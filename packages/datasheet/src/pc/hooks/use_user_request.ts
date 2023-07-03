@@ -327,6 +327,7 @@ export const useUserRequest = () => {
     return Api.signUp(token, inviteCode).then((res) => {
       const { success } = res.data;
       if (success) {
+        localStorage.removeItem('client-lang');
         const searchParams = getSearchParams();
         if (searchParams.toString()) {
           const paramsObj = {};
@@ -351,6 +352,7 @@ export const useUserRequest = () => {
     return Api.register(username, credential).then((res) => {
       const { success } = res.data;
       if (success) {
+        localStorage.removeItem('client-lang');
         dispatch(StoreActions.setLoading(true));
 
         const urlParams = getSearchParams();

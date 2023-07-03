@@ -24,13 +24,13 @@ import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 import { getUrlWithHost } from 'pc/utils';
 import { createWidgetByExistWidgetId } from '../utils';
+import { ScrollBar } from '../../scroll_bar';
 
 interface IRecommendWidgetPanelProps {
   setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>;
@@ -139,7 +139,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
               </span>
             }
           </div>
-          <Scrollbars style={{ width: '100%', height: 222 }}>
+          <ScrollBar style={{ width: '100%', height: 222 }}>
             <main>
               {
                 recommendList.length ? recommendList.map(item => {
@@ -182,7 +182,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
                   </span>
               }
             </main>
-          </Scrollbars>
+          </ScrollBar>
         </>
     }
     {

@@ -107,7 +107,7 @@ const rewriteI18nForEdition = () => {
   }
 };
 
-const currentLang = getLanguage();
+const currentLang = getLanguage().replace('_', '-');
 
 _global.currentLang = currentLang;
 _global.apitable_i18n = loadLanguage(currentLang);

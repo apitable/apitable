@@ -22,6 +22,7 @@ import { AddOutlined, DeleteOutlined, EditOutlined } from '@apitable/icons';
 import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useContext, useEffect, useMemo, useState } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import { RoleContext } from '../context';

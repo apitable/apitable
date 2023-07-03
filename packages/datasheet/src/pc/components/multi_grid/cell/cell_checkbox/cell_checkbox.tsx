@@ -22,7 +22,6 @@ import { ICellComponentProps } from '../cell_value/interface';
 import styles from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
 import { ConfigConstant, Field, FieldType, ICheckboxField, IFormulaField, ILookUpField } from '@apitable/core';
-import { DEFAULT_CHECK_ICON } from 'pc/utils/constant';
 import { KeyCode, stopPropagation } from 'pc/utils';
 
 interface ICellCheckbox extends ICellComponentProps {
@@ -33,7 +32,7 @@ export const CellCheckbox: React.FC<React.PropsWithChildren<ICellCheckbox>> = pr
   const { className, field, cellValue, isActive, onChange } = props;
   
   const icon = field.type === FieldType.Checkbox ? field.property.icon :
-    Field.bindModel(field).isComputed ? DEFAULT_CHECK_ICON : '';
+    Field.bindModel(field).isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : '';
 
   const handleClick = () => {
     isActive && onChange && onChange(!cellValue);

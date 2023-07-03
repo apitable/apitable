@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Scrollbars } from 'react-custom-scrollbars';
 import { FC } from 'react';
 import * as React from 'react';
@@ -33,9 +34,9 @@ export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (p
   const renderThumb = ({ style, ...props }: any) => {
     const thumbStyle = {
       borderRadius: 6,
-      backgroundColor: 'rgba(191, 193, 203, 0.5)',
       zIndex: 1,
       opacity: (!autoHide || isHovering) ? '1' : '0',
+      background: 'var(--bgScrollbarDefault)',
     };
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
