@@ -449,7 +449,6 @@ export class FusionApiService {
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
-        meta,
         recordIds,
         linkedRecordMap,
       },
@@ -588,7 +587,6 @@ export class FusionApiService {
     const datasheet = await this.databusService.getDatasheet(dstId, {
       loadOptions: {
         auth,
-        meta,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
       },
