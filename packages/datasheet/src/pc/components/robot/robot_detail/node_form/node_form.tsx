@@ -95,7 +95,7 @@ export const NodeForm = (props: any) => {
         height={show ? 'max-content' : '48px'}
         width="100%"
         margin="8px 0px"
-        padding="12px 24px"
+        padding="12px"
         backgroundColor={theme.color.fc8}
         id={`robot_node_${nodeId}`}
       >
