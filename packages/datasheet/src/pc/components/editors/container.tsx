@@ -27,7 +27,7 @@ import {
   FieldType,
   Group,
   ICell,
-  ICellValue,
+  ICellValue, IDateTimeField,
   IField,
   IHyperlinkSegment,
   IRange,
@@ -42,7 +42,7 @@ import {
   StoreActions,
   Strings,
   t,
-  ViewType
+  ViewType,
 } from '@apitable/core';
 
 import { isEqual, noop, omit } from 'lodash';
@@ -699,8 +699,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       const subtractMatch = curAlarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
       if (!curAlarm?.subtract || (subtractMatch[2] !== 'm' && subtractMatch[2] !== 'h')) {
         const noChange = curAlarm?.alarmAt && !curAlarm?.time;
-        if (!noChange) {
-          const timeZone = field.property.timeZone;
+        if (!noChange && cellValue) {
+          const timeZone = (field as IDateTimeField).property.timeZone;
           let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
           if (subtractMatch) {
             alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
