@@ -884,7 +884,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
         // The next node that records the old and new locations
         List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
-            CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
+            CollUtil.newArrayList(nodeEntity.getNodeId()));
         nodeIds.addAll(suffixNodeIds);
         Lock lock = redisLockRegistry.obtain(parentId);
         try {
@@ -895,7 +895,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     nodeEntity.getNodeId(), nodeEntity.getParentId());
                 // Update the sequence relationship of nodes before
                 // and after the move (D <- E => D <- X <- E)
-                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
+                String sufNodeId =
+                    nodeMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
+                if (sufNodeId != null) {
+                    nodeIds.add(sufNodeId);
+                    nodeMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
+                }
                 // Update the information of this node (the ID of the previous
                 // node may be updated to null, so update By id is not used)
                 nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
