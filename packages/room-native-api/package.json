@@ -4,14 +4,14 @@
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "room-api",
+    "name": "databus",
     "triples": {
       "additional": [
         "aarch64-unknown-linux-gnu"
       ]
     }
   },
-  "license": "MIT",
+  "license": "AGPL",
   "devDependencies": {
     "@napi-rs/cli": "^2.15.1",
     "open-cli": "^7.1.0"
@@ -21,9 +21,9 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "build": "napi build --platform --release",
-    "build:arm64": "napi build --platform --release --target aarch64-unknown-linux-gnu --zig-link-only",
-    "build:debug": "napi build --platform",
+    "build": "napi build --platform --release --cargo-cwd databus-nodejs",
+    "build:arm64": "napi build --platform --release --target aarch64-unknown-linux-gnu --zig-link-only --cargo-cwd databus-nodejs",
+    "build:debug": "napi build --platform --cargo-cwd databus-nodejs",
     "prepublishOnly": "napi prepublish -t npm",
     "test:ut": "cargo test",
     "test:ut:cov": "CARGO_INCREMENTAL=0 RUSTFLAGS='-Cinstrument-coverage' LLVM_PROFILE_FILE='coverage/cargo-test-%p-%m.profraw' cargo test",
