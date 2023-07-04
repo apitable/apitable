@@ -1156,7 +1156,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case ROOT:
                 throw new BusinessException(NodeException.NOT_ALLOW);
             case FOLDER:
-                this.copyFolderProcess(userId, spaceId, shareNode.getSpaceId(),
+                this.copyFolderProcess(userId, spaceId, sourceNodeId,
                     newNodeMap, options);
                 break;
             case DATASHEET:
