@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IField, IFieldMap } from '@apitable/core';
+import { FieldType, IField, IFieldMap, IMeta } from '@apitable/core';
 import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
@@ -36,6 +36,37 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
    */
   selectMetaByDstIdIgnoreDeleted(dstId: string): Promise<DatasheetMetaEntity | undefined> {
     return this.findOne({ select: ['metaData'], where: [{ dstId }] });
+  }
+
+  /**
+   * @returns only contains fieldMap and views.
+   */
+  selectMetaWithViewByDstIdAndViewId(dstId: string, viewId: string): Promise<{ metadata: IMeta } | undefined> {
+    return this.createQueryBuilder('vdm')
+      .select(
+        `JSON_OBJECT(
+          'fieldMap',
+            vdm.meta_data->'$.fieldMap',
+          'views',
+            JSON_ARRAY(JSON_EXTRACT(vdm.meta_data, TRIM(TRAILING '.id' FROM
+              JSON_UNQUOTE(JSON_SEARCH(vdm.meta_data, 'one', :viewId, null, '$.views[*].id'))))))`,
+        'metadata',
+      )
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .setParameter('viewId', viewId)
+      .getRawOne<{ metadata: IMeta }>();
+  }
+
+  /**
+   * @returns only contains fieldMap and views.
+   */
+  selectMetaWithFirstViewByDstId(dstId: string): Promise<{ metadata: IMeta } | undefined> {
+    return this.createQueryBuilder('vdm')
+      .select("JSON_OBJECT('fieldMap', vdm.meta_data->'$.fieldMap', 'views', JSON_ARRAY(vdm.meta_data->'$.views[0]'))", 'metadata')
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .getRawOne<{ metadata: IMeta }>();
   }
 
   /**
@@ -72,17 +103,19 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ field: IField } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select(`vdm.meta_data->'$.fieldMap.${fieldId}'`, 'field')
+      .select("JSON_EXTRACT(vdm.meta_data, CONCAT('$.fieldMap.', :fieldId))", 'field')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
+      .setParameter('fieldId', fieldId)
       .getRawOne<{ field: IField }>();
   }
 
   selectFieldTypeByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ type?: FieldType } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select(`vdm.meta_data->'$.fieldMap.${fieldId}.type'`, 'type')
+      .select("JSON_EXTRACT(vdm.meta_data, CONCAT('$.fieldMap.', :fieldId, '.type'))", 'type')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
+      .setParameter('fieldId', fieldId)
       .getRawOne<{ type?: FieldType }>();
   }
 
