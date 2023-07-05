@@ -23,9 +23,25 @@ import { fieldPermissionMap } from 'modules/database/store/reducers/resource/dat
 import { AnyAction, combineReducers } from 'redux';
 import { Strings, t } from '../../../../../../exports/i18n';
 import {
-  IAddDatasheetAction, IChangeViewAction, IComputedInfo, IComputedStatus, IDatasheetMap, IDatasheetPack, IDatasheetState, IJOTActionPayload,
-  ILoadedDataPackAction, IRecordNodeDesc, IRecordNodeShared, IRefreshSnapshotAction, IResetDatasheetAction, ISetNodeIcon, IUpdateDatasheetAction,
-  IUpdateDatasheetNameAction, IUpdateRevision, IUpdateSnapShotAction
+  IAddDatasheetAction,
+  IChangeViewAction,
+  IComputedInfo,
+  IComputedStatus,
+  IDatasheetMap,
+  IDatasheetPack,
+  IDatasheetState,
+  IJOTActionPayload,
+  ILoadedDataPackAction,
+  IRecordNodeDesc,
+  IRecordNodeShared,
+  IRefreshSnapshotAction,
+  IResetDatasheetAction,
+  ISetNodeIcon,
+  IUpdateDatasheetAction,
+  IUpdateDatasheetNameAction,
+  IUpdateRevision,
+  IUpdateSnapShotAction,
+  IViewProperty
 } from '../../../../../../exports/store/interfaces';
 import { Events, Player } from '../../../../../shared/player';
 import * as actions from '../../../../../shared/store/action_constants';
@@ -50,18 +66,18 @@ export const filterDatasheetOp = (state: IDatasheetState, action: IJOTAction[]) 
 };
 
 type IDatasheetAction = (
-  ILoadedDataPackAction |
-  IUpdateRevision |
-  IJOTActionPayload |
-  IChangeViewAction |
-  IRecordNodeDesc |
-  IRecordNodeShared |
-  IUpdateDatasheetNameAction |
-  ISetNodeIcon |
-  IUpdateDatasheetAction |
-  IRefreshSnapshotAction |
-  IUpdateSnapShotAction
-  ) & { datasheetId: string };
+    ILoadedDataPackAction |
+    IUpdateRevision |
+    IJOTActionPayload |
+    IChangeViewAction |
+    IRecordNodeDesc |
+    IRecordNodeShared |
+    IUpdateDatasheetNameAction |
+    ISetNodeIcon |
+    IUpdateDatasheetAction |
+    IRefreshSnapshotAction |
+    IUpdateSnapShotAction
+    ) & { datasheetId: string };
 
 export const datasheet = produce((
   state: IDatasheetState | null = null,
@@ -145,6 +161,25 @@ export const datasheetMap = (
 ): IDatasheetMap => {
   if (!action.datasheetId) {
     return state;
+  }
+  if (action.type === actions.SET_VIEW_PROPERTY) {
+    if (!state[action.datasheetId]) {
+      return state;
+    }
+
+    // @ts-ignore
+    const payload = action.payload as {
+            viewId: string,
+            viewProperty: IViewProperty
+        };
+
+    return produce(state, draft => {
+      const views = draft[action.datasheetId]!.datasheet?.snapshot.meta?.views ?? [];
+      const findIndex = views.findIndex(item => item.id === payload.viewId);
+      if (findIndex > -1) {
+        views.splice(findIndex, 1, payload.viewProperty);
+      }
+    });
   }
   if (action.type === actions.RESET_DATASHEET) {
     const newState = { ...state };
