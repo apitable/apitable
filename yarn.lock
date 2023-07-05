@@ -634,7 +634,7 @@ __metadata:
     "@aws-sdk/client-s3": ^3.47.0
     "@elastic/ecs-winston-format": ^1.3.1
     "@golevelup/nestjs-rabbitmq": ^2.2.0
-    "@grpc/grpc-js": ~1.7.1
+    "@grpc/grpc-js": ~1.8.8
     "@grpc/proto-loader": ^0.7.3
     "@hapi/joi": ^17.1.1
     "@metinseylan/nestjs-opentelemetry": 2.0.7
@@ -4410,13 +4410,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:~1.7.1":
-  version: 1.7.1
-  resolution: "@grpc/grpc-js@npm:1.7.1"
+"@grpc/grpc-js@npm:~1.8.8":
+  version: 1.8.17
+  resolution: "@grpc/grpc-js@npm:1.8.17"
   dependencies:
     "@grpc/proto-loader": ^0.7.0
     "@types/node": ">=12.12.47"
-  checksum: ffa9f051224dcab87dd2e47e21cb6f001d3e18b0e2a8998bdb960fc557aee73000c743f74cabba14bd72db4ed900ee0dd4f1400852b191312a2e0016d9648618
+  checksum: 0ac8cd7342a33d7e507ec0ebb470721ae84eb964fd164e4b7b829cb35774c09df158124cbce859d9398c9a015f0e29d2308a3a17be35d54e030a7dc091e7e9a4
   languageName: node
   linkType: hard
 
