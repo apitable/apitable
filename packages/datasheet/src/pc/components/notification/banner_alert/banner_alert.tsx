@@ -47,7 +47,7 @@ export const AlertUi = (props: IAlertProps) => {
   const { showVikaby = true, content, btnText, onBtnClick, closable, onClose, upgrade } = props;
   return (
     <div className={classNames(styles.alert, { [styles.hasUpgradeBtn!]: upgrade })}>
-      {showVikaby && <span className={styles.img}><Image src={Vikaby} /></span>}
+      {showVikaby && <span className={styles.img}><Image src={Vikaby} alt="" /></span>}
       <div className={styles.body}>
         <Typography variant='h7' color={colors.primaryColor}>{content}</Typography>
       </div>

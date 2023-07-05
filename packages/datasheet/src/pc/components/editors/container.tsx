@@ -684,6 +684,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [datasheetId, record, field],
   );
 

@@ -31,7 +31,10 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
   if (!mirrorId) {
     const snapshot = Selectors.getSnapshot(state)!;
     const view = Selectors.getCurrentViewBase(snapshot, viewId, datasheetId);
-    if ((!state.labs.includes('view_manual_save') && !state.share.featureViewManualSave && !state.embedInfo.viewManualSave) || Boolean(view?.autoSave)) {
+    if (
+      (!state.labs.includes('view_manual_save') && !state.share.featureViewManualSave && !state.embedInfo.viewManualSave) ||
+      Boolean(view?.autoSave)
+    ) {
       return commandFunc();
     }
 

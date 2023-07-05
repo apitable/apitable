@@ -17,15 +17,34 @@
  */
 
 import {
-  ACTION_INPUT_PARSER_BASE_FUNCTIONS, ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS, ConfigConstant, Field, IField, IFieldPermissionMap, InputParser,
-  integrateCdnHost, MagicVariableParser, Selectors, Strings, t
+  ACTION_INPUT_PARSER_BASE_FUNCTIONS,
+  ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS,
+  ConfigConstant,
+  Field,
+  IField,
+  IFieldPermissionMap,
+  InputParser,
+  integrateCdnHost,
+  MagicVariableParser,
+  Selectors,
+  Strings,
+  t,
 } from '@apitable/core';
 import { createElement } from 'react';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 import { getEnvVariables } from 'pc/utils/env';
 import {
-  IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotBaseInfo, IRobotCardInfo, IRobotNodeType, IRobotTrigger, ITriggerType
+  IActionType,
+  IJsonSchema,
+  INodeOutputSchema,
+  INodeType,
+  IRobotAction,
+  IRobotBaseInfo,
+  IRobotCardInfo,
+  IRobotNodeType,
+  IRobotTrigger,
+  ITriggerType,
 } from './interface';
 
 /**
@@ -34,8 +53,7 @@ import {
 export const operand2PureValue = (operand: any) => {
   const parser = new MagicVariableParser(ACTION_INPUT_PARSER_BASE_FUNCTIONS, ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS);
   const inputParser = new InputParser(parser);
-  const res = inputParser.render(operand, {});
-  return res;
+  return inputParser.render(operand, {});
 };
 
 export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
@@ -44,7 +62,8 @@ export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
       value: 'triggerTypeId' in nodeType ? nodeType.triggerTypeId : nodeType.actionTypeId,
       label: nodeType.name,
       prefixIcon: createElement('img', {
-        src: integrateCdnHost(('triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
+        src: integrateCdnHost(('triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON) ?
+          getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
         style: {
           width: '16px',
           height: '16px',

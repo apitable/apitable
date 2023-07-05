@@ -36,6 +36,7 @@ import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
 
 // @ts-ignore
+// eslint-disable-next-line max-len
 import { freshDingtalkOrg, freshWecomOrg, freshWoaContact, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';

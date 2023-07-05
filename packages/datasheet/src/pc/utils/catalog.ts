@@ -17,10 +17,22 @@
  */
 
 import {
-  ConfigConstant, Field, IDatasheetState, ISpaceBasicInfo, ISpaceInfo, ITreeNodesMap, IViewProperty, ResourceType, Selectors, StoreActions, Strings,
-  t, UnitItem, IViewColumn,
-  ViewDerivateBase,
+  ConfigConstant,
+  Field,
+  IDatasheetState,
   IReduxState,
+  ISpaceBasicInfo,
+  ISpaceInfo,
+  ITreeNodesMap,
+  IViewColumn,
+  IViewProperty,
+  ResourceType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  UnitItem,
+  ViewDerivateBase,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'modules/shared/browser';
@@ -31,6 +43,7 @@ import { Modal } from 'pc/components/common/modal';
 import { getSocialWecomUnitName } from 'enterprise';
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
+import React from 'react';
 
 export const nodeConfigData = [
   {
@@ -79,6 +92,7 @@ export const isLocalSite = (url: string, originUrl: string) => {
  *  info: number | string;
  * }
  * @param item User information
+ * @param spaceInfo
  */
 export const generateUserInfo = (
   item: UnitItem,
@@ -152,7 +166,10 @@ export const generateUserInfo = (
 
 /**
  * Get the specified properties of all children under the current node
+ * @param treeNodesMap
+ * @param nodeId
  * @param exceptArr Nodes to be removed
+ * @param property
  */
 export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, exceptArr: string[], property: string) => {
   const node = treeNodesMap[nodeId];
@@ -178,7 +195,9 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
   );
 };
 
-export const exportDatasheetBase = async(datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string, ignorePermission?: boolean } = {}) => {
+export const exportDatasheetBase = async(datasheetId: string, exportType: string, option: {
+  view?: IViewProperty; mirrorId?: string, ignorePermission?: boolean
+} = {}) => {
   const { view, mirrorId, ignorePermission } = option;
   const state = store.getState();
   const datasheet = Selectors.getDatasheet(state, datasheetId)!;
@@ -215,8 +234,7 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
   const nodeName = datasheet.name;
   const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
   const tempWorksheet = workbook.addWorksheet(`${viewName}`);
-  const columnHeader = getColumnHeader(datasheet, visibleCols);
-  tempWorksheet.columns = columnHeader;
+  tempWorksheet.columns = getColumnHeader(datasheet, visibleCols);
   tempWorksheet.addRows(data);
   const fileName = `${nodeName}-${viewName}`;
   switch (exportType) {
@@ -232,7 +250,9 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
 /**
  * Export Datasheet
  * Export the full datasheet by default without passing in the view
+ * @param datasheetId
  * @param exportType csv or xlsx
+ * @param option
  */
 export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
   store.dispatch(
@@ -318,6 +338,7 @@ export const getSharePermission = (info: IShareSpaceInfo) => {
 
 /**
  * Convert roles to front-end to display permissions (e.g., manageable, editable, viewable)
+ * @param role
  * @param data List of other parameters that affect the permission text
  */
 export const getPermission = (role: string, data?: { shareInfo?: IShareSpaceInfo }): string => {

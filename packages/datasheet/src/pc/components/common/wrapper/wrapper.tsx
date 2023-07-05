@@ -40,7 +40,7 @@ export const Wrapper: FC<React.PropsWithChildren<IWrapper>> = ({ children, class
   const theme = useThemeMode();
   return (
     <div className={classNames(styles.wrapper, className)} style={{ position: 'relative' }}>
-      <Image src={BgPng} objectFit={'cover'} layout={'fill'} />
+      <Image src={BgPng} objectFit={'cover'} layout={'fill'} alt="" />
       <div className={classNames(styles.logoWrapper, { [styles.shadow]: scroll?.top })}>
         {!hiddenLogo && <Logo theme={theme} size={responsive.large ? 'large' : 'small'} />}
       </div>

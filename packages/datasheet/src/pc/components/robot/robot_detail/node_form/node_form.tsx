@@ -119,9 +119,11 @@ export const NodeForm = (props: any) => {
               }}
             >
               <Image
-                src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
+                src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
+                  getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
                 width={24}
                 height={24}
+                alt=""
               />
             </span>
             <Typography variant="h7" ellipsis>
