@@ -54,6 +54,14 @@ import { isServer } from 'utils/env';
 import { getUserTimeZone } from 'exports/store/selectors';
 import { format as dfzFormat, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 
+const dfzFormatWithValid = (date: any, format: string, timeZone?: string) => {
+  try {
+    return dfzFormat(date, covertDayjsFormat2DateFnsFormat(format), timeZone ? { timeZone } : undefined);
+  } catch(_e) {
+    return dayjs(Number(date)).tz(timeZone).format(format);
+  }
+};
+
 const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
   // The original version of the functions `getDateTimeFormat` and `tz` comes from
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js
@@ -161,12 +169,12 @@ export const dateTimeFormat = (
     if (props.includeTimeZone) {
       timeZone = timeZone || DEFAULT_DATETIME_PROPS.timeZone;
       const abbr = getTimeZoneAbbrByUtc(timeZone)!;
-      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone }) + ` (${abbr})`;
+      return dfzFormatWithValid(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), timeZone ) + ` (${abbr})`;
     }
     if (!props.includeTimeZone && timeZone) {
       // dayjs(Number(timestamp)).tz(timeZone).format(format);
       // Frequent invocations of the "tz" function here will result in severe page lag.
-      return dfzFormat(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), { timeZone });
+      return dfzFormatWithValid(utcToZonedTime(Number(timestamp), timeZone), covertDayjsFormat2DateFnsFormat(format), timeZone );
     }
   } catch (e) {
     if (e instanceof RangeError) {
@@ -174,7 +182,7 @@ export const dateTimeFormat = (
     }
     throw e;
   }
-  return dfzFormat(timestamp, covertDayjsFormat2DateFnsFormat(format));
+  return dfzFormatWithValid(timestamp, covertDayjsFormat2DateFnsFormat(format));
 };
 
 const withTimeZone = (timestamp: number | undefined | string, timeZone?: string) => {
@@ -589,6 +597,9 @@ export abstract class DateTimeBaseField extends Field {
       return cellValue != null;
     }
     const [filterDuration] = conditionValue;
+    if (!filterDuration) {
+      return false;
+    }
     let timestamp: string | number | undefined | null;
     if (
       filterDuration === FilterDuration.ExactDate ||

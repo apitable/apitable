@@ -187,8 +187,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       .filter(i => Boolean(i)) as IRollUpFunction[];
   };
 
-  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, filterInfo?: any) => {
-    if (currentField.property[propertyKey] !== value || filterInfo ) {
+  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, newFilterInfo?: any) => {
+    if (currentField.property[propertyKey] !== value || newFilterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
