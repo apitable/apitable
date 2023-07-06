@@ -91,6 +91,10 @@
     width: 188px;
     justify-content: space-between;
     margin: 0 auto 16px;
+    button {
+      max-width: 92px;
+      height: max-content;
+    }
   }
 
   .hover {
@@ -248,7 +252,10 @@
 
 .switchCoverFit {
   display: flex;
-  align-items: center;
+
+  .switchCoverFitCheckbox {
+    padding-top: 3px;
+  }
 
   div[role='checkbox'] {
     border-color: var(--textCommonQuaternary);

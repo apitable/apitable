@@ -147,7 +147,7 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
       icon={() => <CloseOutlined color={colors.thirdLevelText} />}
       onClick={() => {onClose();}}
     />
-    <Typography variant={'h7'} style={{ marginBottom: 8 }}>
+    <Typography ellipsis className={styles.title} variant={'h7'} style={{ marginBottom: 8 }}>
       {t(autoSave ? Strings.auto_save_has_been_opend : Strings.view_property_sync_title)}
     </Typography>
     <Typography variant={'body4'} style={{ marginBottom: 16 }}>
