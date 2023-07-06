@@ -1021,6 +1021,15 @@ export interface IAddDatasheetAction {
   payload: IDatasheetPack;
 }
 
+export interface ISetViewPropertyAction {
+  datasheetId: string,
+  type: typeof actions.SET_VIEW_PROPERTY;
+  payload: {
+    viewId: string,
+    viewProperty: IViewProperty
+  }
+}
+
 export interface ISetPageParamsAction {
   type: typeof actions.SET_PAGE_PARAMS;
   payload: { [path: string]: string | undefined };

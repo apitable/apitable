@@ -37,11 +37,11 @@ import {
   IRefreshSnapshotAction,
   IResetDatasheetAction,
   ISetNodeIcon,
+  ISetViewPropertyAction,
   IUpdateDatasheetAction,
   IUpdateDatasheetNameAction,
   IUpdateRevision,
   IUpdateSnapShotAction,
-  IViewProperty
 } from '../../../../../../exports/store/interfaces';
 import { Events, Player } from '../../../../../shared/player';
 import * as actions from '../../../../../shared/store/action_constants';
@@ -157,7 +157,7 @@ export const datasheet = produce((
 
 export const datasheetMap = (
   state: IDatasheetMap = {},
-  action: IResetDatasheetAction | IAddDatasheetAction | AnyAction,
+  action: IResetDatasheetAction | IAddDatasheetAction | ISetViewPropertyAction | AnyAction,
 ): IDatasheetMap => {
   if (!action.datasheetId) {
     return state;
@@ -167,11 +167,7 @@ export const datasheetMap = (
       return state;
     }
 
-    // @ts-ignore
-    const payload = action.payload as {
-            viewId: string,
-            viewProperty: IViewProperty
-        };
+    const payload = (action as ISetViewPropertyAction).payload;
 
     return produce(state, draft => {
       const views = draft[action.datasheetId]!.datasheet?.snapshot.meta?.views ?? [];
