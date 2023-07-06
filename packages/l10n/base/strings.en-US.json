@@ -5450,5 +5450,7 @@
   "api_param_unit_id_required": "The parameter unitId is required",
   "lookup_conditions_success": "Lookup sorting or filter set successfully",
   "api_param_widget_id_not_exists": "The mini program specified by the widgetId does not exist",
-  "lookup_filter_sort_description": "Add condition"
+  "lookup_filter_sort_description": "Add condition",
+  "api_params_widget_package_id_error": "The parameter widgetPackageId is required",
+  "api_widget_number_limit": "The number of widget has reached the upper limit, and the creation failed."
 }
