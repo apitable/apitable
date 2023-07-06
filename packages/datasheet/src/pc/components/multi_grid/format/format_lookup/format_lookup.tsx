@@ -227,7 +227,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
         });
       } else if(propertyKey === 'sortInfo' && openFilter) {
         updateField({
-          filterInfo: filterInfo && filterInfo.conditions.length > 0 ? newFilterInfo : undefined,
+          filterInfo: newFilterInfo && newFilterInfo.conditions.length > 0 ? newFilterInfo : undefined,
           sortInfo: value.rules.length > 0 ? value : undefined,
         });
       } else {
