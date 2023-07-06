@@ -60,7 +60,7 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     const limiter = this.envConfigService.getRoomConfig(EnvConfigKey.API_LIMIT) as IRateLimiter;
     let points = limiter.points;
     let duration = limiter.duration;
-    if(!process.env.LIMIT_POINTS || parseInt(process.env.LIMIT_POINTS!) === 5) {
+    if (!process.env.LIMIT_POINTS || parseInt(process.env.LIMIT_POINTS!) === 5) {
       const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
       let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
       if (!spaceId && datasheetId) {

@@ -17,7 +17,8 @@
  */
 
 import {
-  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue, ICollaCommandExecuteResult, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
+  CellType, CollaCommandName, DropDirectionType, FieldType, ICellValue,
+  ICollaCommandExecuteResult, IGanttViewProperty, IGridViewProperty, ISetRecordOptions, KONVA_DATASHEET_ID,
   Selectors,
 } from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';

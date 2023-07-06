@@ -25,7 +25,7 @@ const TypeDoc = require('typedoc');
 const CLASSES = 'classes';
 const MODULES = 'modules';
 const UI = 'ui';
-const RELATIVE_PATH = '../../../../dev-book/i18n/en/docusaurus-plugin-content-docs-widget/current';
+const RELATIVE_PATH = '../../../../dev-book/docs/widget';
 const API_PATH = 'api-reference';
 
 const MODAL_FIELD_REPLACE_KEYS = [

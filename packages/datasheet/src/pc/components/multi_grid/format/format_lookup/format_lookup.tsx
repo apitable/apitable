@@ -187,8 +187,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       .filter(i => Boolean(i)) as IRollUpFunction[];
   };
 
-  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, filterInfo?: any) => {
-    if (currentField.property[propertyKey] !== value || filterInfo ) {
+  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, newFilterInfo?: any) => {
+    if (currentField.property[propertyKey] !== value || newFilterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
@@ -227,7 +227,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
         });
       } else if(propertyKey === 'sortInfo' && openFilter) {
         updateField({
-          filterInfo: filterInfo.conditions.length > 0 ? filterInfo : undefined,
+          filterInfo: filterInfo && filterInfo.conditions.length > 0 ? filterInfo : undefined,
           sortInfo: value.rules.length > 0 ? value : undefined,
         });
       } else {

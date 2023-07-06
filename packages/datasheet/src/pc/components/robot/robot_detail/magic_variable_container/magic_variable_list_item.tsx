@@ -48,6 +48,7 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
     <Box
       ref={ref}
       key={item.key}
+      marginBottom="4px"
     >
       <ListDeprecate.Item
         key={item.key}
@@ -88,6 +89,7 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
                   height: '24px',
                   display: 'flex',
                   alignItems: 'center',
+                  flexShrink: 0,
                 }}
                 onClick={(e) => {
                   if (disabled) return;

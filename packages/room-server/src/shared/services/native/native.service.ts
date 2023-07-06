@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { NativeModule, DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DataBusModule as NativeModule, DatasheetPackResponse } from '@apitable/room-native-api';
 import { isDevMode } from 'app.environment';
 import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION, IRecordMap } from '@apitable/core';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, IOssConfig } from 'shared/interfaces';

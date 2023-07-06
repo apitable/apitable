@@ -59,6 +59,7 @@ const IconFactor = (Icon: FC<React.PropsWithChildren<IIconProps>>) => {
   return ({ color = colorVars.secondLevelText, ...others }: IIconProps) => <Icon color={color} {...others} />;
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   [ElementType.PARAGRAPH]: IconFactor(BodyFilled),
   [ElementType.HEADING_ONE]: IconFactor(Headline1Filled),

@@ -65,6 +65,10 @@ export class Dashboard implements IResource {
     return Selectors.getResourceRevision(this.store.getState(), this.id, ResourceType.Dashboard)!;
   }
 
+  public setRevision(revision: number) {
+    this.store.dispatch(StoreActions.updateRevision(revision, this.id, ResourceType.Dashboard));
+  }
+
   public get snapshot(): IDashboardSnapshot {
     return <IDashboardSnapshot>Selectors.getDashboardSnapshot(this.store.getState(), this.id);
   }

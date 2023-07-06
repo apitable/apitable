@@ -33,6 +33,7 @@ export interface IImageProps extends ShapeConfig {
   sizeMapIndex?: number;
   setSizeMap?: (index: number, width: number) => void;
   clipFunc?: (ctx: any) => void;
+  failedDisplay?: React.ReactElement;
 }
 
 export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props) => {
@@ -47,6 +48,7 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
     stroke,
     strokeWidth,
     listening,
+    failedDisplay,
     ...rest
   } = props;
   const {
@@ -65,6 +67,10 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
   const finalWidth = Math.min(imageWidth, aspectRatio * imageWidth);
   const finalHeight = Math.min(imageHeight, aspectRatio * imageHeight);
 
+  if (status === 'failed' && failedDisplay) {
+    return failedDisplay;
+  }
+
   if (status !== 'loaded') return null;
 
   const size = width / 2;
@@ -73,7 +79,9 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
     <Group
       x={x}
       y={y}
-      clipFunc={shape === 'circle' ? (ctx: { arc: (arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: boolean) => any; }) => ctx.arc(size, size, size, 0, Math.PI * 2, false) : undefined}
+      clipFunc={shape === 'circle' ? (ctx: {
+        arc: (arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: boolean) => any;
+      }) => ctx.arc(size, size, size, 0, Math.PI * 2, false) : undefined}
       listening={listening}
     >
       <ImageComponent

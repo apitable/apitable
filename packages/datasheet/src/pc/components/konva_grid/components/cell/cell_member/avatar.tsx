@@ -95,6 +95,7 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
             url={src}
             width={size}
             height={size}
+            alt=""
             fill={getAvatarRandomColor(id)}
           />
         );
@@ -123,12 +124,13 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
             width={size}
             height={size}
             fill={avatarBg}
+            alt=""
           />
         );
       }
       case AvatarType.Member: {
         if (!avatarSrc && isDefaultIcon) {
-          <Icon
+          return <Icon
             type={IconType.MemberAvatar}
             shape="circle"
             size={size}
@@ -162,6 +164,7 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
             width={size}
             height={size}
             fill={avatarBg}
+            alt=""
           />
         );
       }
