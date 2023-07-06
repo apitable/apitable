@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { colorVars, Typography } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
-import { CloseOutlined, InfoCircleFilled } from '@apitable/icons';
 import { createRoot } from 'react-dom/client';
-import styles from './style.module.less';
+import { store } from '../../../store';
+import { Provider } from 'react-redux';
+import { MobilePopupContent } from './mobile_popup_content';
 
 const VIEW_MANUAL_SAVE_TIP = 'VIEW_MANUAL_SAVE_TIP';
 
@@ -38,16 +37,8 @@ export const showViewManualSaveInMobile = () => {
   };
 
   root.render((
-    <div className={styles.mobileTip}>
-      <span className={styles.infoIcon}>
-        <InfoCircleFilled />
-      </span>
-      <Typography variant={'body2'}>
-        {t(Strings.mbile_manual_setting_tip)}
-      </Typography>
-      <span onClick={modalClose}>
-        <CloseOutlined color={colorVars.primaryColor} />
-      </span>
-    </div>
+    <Provider store={store}>
+      <MobilePopupContent onClose={modalClose} />
+    </Provider>
   ));
 };

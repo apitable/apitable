@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IconButton, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
+import { Button, IconButton, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, ExecuteResult, ITemporaryView, ResourceType, Selectors, StoreActions, Strings, t, ViewPropertyFilter
+  CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t, ViewPropertyFilter
 } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
@@ -29,14 +29,10 @@ import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { IViewPropertyUpdateProps, useViewPropertyUpdate } from './hooks';
 
-interface IPopupContentProps {
-  autoSave: boolean;
-  datasheetId: string;
-  viewId: string;
-  onClose: (value?: (boolean | undefined)) => void;
+interface IPopupContentProps extends IViewPropertyUpdateProps {
   contentRef: React.MutableRefObject<HTMLDivElement | null> | null;
-  isViewLock: boolean;
   shareId?: string;
 }
 
@@ -105,38 +101,16 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
   const colors = useThemeColors();
   const { datasheetId, viewId, autoSave, onClose, contentRef, shareId, isViewLock } = props;
   // TODO: Replace the permissions here with more granular ones
-  const { manageable, editable } = useSelector(state => Selectors.getPermissions(state, datasheetId));
-  const manualSaveView = async() => {
-    if (isViewLock) {
-      expandViewLock(viewId);
-      return;
-    }
-    onClose();
-    if (autoSave) {
-      return;
-    }
-    const serverViewDate = await requestServerView(datasheetId!, viewId, shareId);
-    const { result } = resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.ManualSaveView,
-      viewId: viewId!,
-      viewProperty: serverViewDate as ITemporaryView
-    });
-    if (ExecuteResult.Success === result) {
-      store.dispatch(StoreActions.resetOperateViewId(viewId!, datasheetId!));
-      Message.success({
-        content: t(Strings.view_property_sync_success)
-      });
-    }
-  };
+  const { editable } = useSelector(state => Selectors.getPermissions(state, datasheetId));
 
-  const _changeViewAutoSync = () => {
-    if (isViewLock) {
-      expandViewLock(viewId);
-      return;
-    }
-    onClose();
-    confirmViewAutoSave(autoSave, datasheetId, viewId);
-  };
+  const { cancelModification, modifyViewProperty } = useViewPropertyUpdate({
+    autoSave: autoSave,
+    datasheetId: datasheetId!,
+    viewId: viewId!,
+    onClose,
+    shareId,
+    isViewLock,
+  });
 
   return <div className={styles.content} ref={contentRef} onDoubleClick={stopPropagation}>
     <IconButton
@@ -152,19 +126,17 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
       {autoSave ? t(Strings.auto_save_has_been_opend_content) : t(Strings.view_property_sync_content)}
     </Typography>
     <div className={styles.footer}>
+      <LinkButton onClick={cancelModification} className={styles.borderNone}>
+        <Typography variant={'body4'} className={styles.cancelText}>
+          {t(Strings.revoke_changes)}
+        </Typography>
+      </LinkButton>
       {
-        manageable ? <LinkButton onClick={_changeViewAutoSync} className={styles.borderNone}>
-          <Typography variant={'body4'}>
-            {t(autoSave ? Strings.close_auto_save : Strings.auto_save_view_property)}
-          </Typography>
-        </LinkButton> : <span />
-      }
-      {
-        editable && <LinkButton color={'primary'} onClick={manualSaveView} className={styles.borderNone}>
-          <Typography variant={'body2'} color={colors.primaryColor}>
-            {t(autoSave ? Strings.ensure : Strings.manual_save_view)}
-          </Typography>
-        </LinkButton>
+        editable && (
+          <Button color='primary' onClick={modifyViewProperty} className={styles.borderNone}>
+            {t(Strings.save_this_modified)}
+          </Button>
+        )
       }
     </div>
   </div>;

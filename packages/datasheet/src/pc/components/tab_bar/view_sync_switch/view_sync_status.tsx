@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Tooltip } from 'antd';
+import { Badge, Tooltip } from 'antd';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -85,7 +85,10 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
         }}
       >
         {
-          isViewAutoSave ? <AutoSaveLottie /> : <ManualSaveLottie />
+          isViewAutoSave ? <AutoSaveLottie /> :(
+            <Badge dot>
+              <ManualSaveLottie />
+            </Badge>)
         }
         {
           visible && <span className={styles.arrow} />
