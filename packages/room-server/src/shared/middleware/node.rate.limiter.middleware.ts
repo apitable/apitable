@@ -53,7 +53,7 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     const redisClient = this.redisService.getClient();
     // use spaceId as the unique key for verification, no need to verify in other places.
     // only count the successful requests
-    const limitKey = FusionHelper.parseDstIdFromUrl(req.originalUrl) || FusionHelper.parseSpaceIdFromUrl(req.originalUrl) || 'user';
+    const limitKey = FusionHelper.parseDstIdFromUrl(req.url) || FusionHelper.parseSpaceIdFromUrl(req.url) || 'user';
     const token = req.headers.authorization.substr(AUTHORIZATION_PREFIX.length);
     // single user plus single node
     const consume = limitKey + ':' + sha1(token);
@@ -61,8 +61,8 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
     let points = limiter.points;
     let duration = limiter.duration;
     if (!process.env.LIMIT_POINTS || parseInt(process.env.LIMIT_POINTS!) === 5) {
-      const datasheetId = FusionHelper.parseDstIdFromUrl(req.originalUrl);
-      let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.originalUrl);
+      const datasheetId = FusionHelper.parseDstIdFromUrl(req.url);
+      let spaceId: string | undefined = FusionHelper.parseSpaceIdFromUrl(req.url);
       if (!spaceId && datasheetId) {
         const entity = await this.datasheetRepository.selectById(datasheetId);
         spaceId = entity?.spaceId;
