@@ -34,6 +34,7 @@ export function replaceSchemaByLanguage(language: string, source: any): any {
 }
 
 export function getTypeByItem(item: any, lang: string, type = 'action') {
+  lang = item.i18n[lang] ? lang : 'en';
   const language = item.i18n[lang];
   const inputSchema = item.inputJsonSchema;
   const outputSchema = item.outputJsonSchema;
