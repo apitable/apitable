@@ -1,10 +1,10 @@
-import { ResourceType } from 'types';
-import { MockDataBus, resetDataLoader } from './mock.databus';
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
+import { CollaCommandName } from 'commands';
 import { ICommandExecutionSuccessResult } from 'databus/logic';
 import { IOperation, OTActionName } from 'engine';
-import { CollaCommandName } from 'commands';
+import { ResourceType } from 'types';
 import { mockWidgetMap } from './mock.dashboards';
+import { MockDataBus, resetDataLoader } from './mock.databus';
 
 const db = MockDataBus.getDatabase();
 
@@ -283,7 +283,7 @@ describe('set widget dependency datasheet', () => {
     });
     expect(dsb2).toBeTruthy();
 
-    dsb2!.setWidgetInstalled(mockWidgetMap['wdt1']!.widget);
+    dsb2!.setWidgetInstalled(mockWidgetMap['wdt1']!);
 
     const result = await dsb2!.setWidgetDependencyDatasheet({ widgetId: 'wdt1', dstId: 'dst1' }, {});
 

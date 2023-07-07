@@ -5455,5 +5455,7 @@
   "discard_changes": "Discard",
   "view_changed": "The view has changed",
   "save_view_configuration": "Save",
-  "view_configuration_changes_have_been_reversed": "View configuration changes have been reversed"
+  "view_configuration_changes_have_been_reversed": "View configuration changes have been reversed",
+  "api_params_widget_package_id_error": "The parameter widgetPackageId is required",
+  "api_widget_number_limit": "The number of widget has reached the upper limit, and the creation failed."
 }

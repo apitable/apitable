@@ -18,7 +18,9 @@
 
 package com.apitable.organization.vo;
 
+import com.apitable.core.support.serializer.NumberListToStringListSerializer;
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -86,6 +88,7 @@ public class UnitInfoVo {
     private String email;
 
     @Schema(description = "team id and full hierarchy team path name")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<MemberTeamPathInfo> teamData;
 
     @Schema(description = "default avatar color number")

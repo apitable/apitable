@@ -5457,5 +5457,7 @@
   "discard_changes": "取消",
   "view_changed": "视图配置已变更",
   "save_view_configuration": "保存",
-  "view_configuration_changes_have_been_reversed": "视图配置修改已撤销"
+  "view_configuration_changes_have_been_reversed": "视图配置修改已撤销",
+  "api_params_widget_package_id_error": "widgetPackageId 不能为空",
+  "api_widget_number_limit": "小程序数量已到达上限，创建失败"
 }

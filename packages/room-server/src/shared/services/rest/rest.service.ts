@@ -18,6 +18,7 @@
 
 import {
   api,
+  IDashboardWidgetMap,
   IDatasheetFieldPermission,
   IFieldPermissionMap,
   IFieldPermissionRoleListData,
@@ -27,8 +28,6 @@ import {
   ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
-  IWidget,
-  IWidgetMap,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -69,7 +68,6 @@ export class RestService {
   private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
   private GET_WIDGET = 'widget/get';
-  private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
   private GET_USERS_NODE_PERMISSION = 'internal/nodes/%(nodeId)s/users/permissions';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
@@ -284,7 +282,7 @@ export class RestService {
     return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   }
 
-  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IWidgetMap> {
+  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IDashboardWidgetMap> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_WIDGET, {
         headers: HttpHelper.createAuthHeaders(headers),
@@ -297,23 +295,6 @@ export class RestService {
     );
     const data = response!.data;
     return keyBy(data, 'id');
-  }
-
-  async createWidget(headers: IAuthHeader, dashboardId: string, widgetPackageId: string, name?: string): Promise<IWidget> {
-    const response = await lastValueFrom(
-      this.httpService.post(
-        this.CREATE_WIDGET,
-        {
-          nodeId: dashboardId,
-          widgetPackageId,
-          name,
-        },
-        {
-          headers: HttpHelper.createAuthHeaders(headers),
-        },
-      ),
-    );
-    return response!.data;
   }
 
   /**

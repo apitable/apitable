@@ -764,6 +764,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         for (Entry<Long, List<Long>> entry : memberTeamMap.entrySet()) {
             allTeamIds.addAll(entry.getValue());
         }
+        if (allTeamIds.isEmpty()) {
+            return new HashMap<>();
+        }
         // get member's team's all parent team, include itself
         List<TeamPathInfo> teamPathInfos =
             teamMapper.selectParentTreeByTeamIds(spaceId, new ArrayList<>(allTeamIds));
