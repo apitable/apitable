@@ -95,7 +95,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1/nodes/dst1********',
+            originalUrl: '/fusion/v1/nodes/dst1********',
             headers: {
               authorization: 'Bearer aaa1',
             },
@@ -119,7 +119,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1/datasheets/dst********/records',
+            originalUrl: '/fusion/v1/datasheets/dst********/records',
             headers: {
               authorization: 'Bearer aaa',
             },
@@ -143,7 +143,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1/spaces',
+            originalUrl: '/fusion/v1/spaces',
             headers: {
               authorization: 'Bearer aaa2',
             },
@@ -167,7 +167,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1/spaces/spc******/nodes',
+            originalUrl: '/fusion/v1/spaces/spc******/nodes',
             headers: {
               authorization: 'Bearer aaa3',
             },
@@ -190,7 +190,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1//spaces/spc1******/nodes/dst2********',
+            originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst2********',
             headers: {
               authorization: 'Bearer aaa4',
             },
@@ -217,7 +217,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1//spaces/spc1******/nodes/dst3********',
+            originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst3********',
             headers: {
               authorization: 'Bearer aaa5',
             },
@@ -244,7 +244,7 @@ describe('FusionApiRateLimiter', () => {
         });
         rateLimiter.use(
           {
-            url: '/fusion/v1//spaces/spc1******/nodes/dst4********',
+            originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst4********',
             headers: {
               authorization: 'Bearer aaa6',
             },
