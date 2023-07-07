@@ -207,6 +207,7 @@ __metadata:
   dependencies:
     "@apitable/icons": "*"
     "@apitable/react-contexify": ^5.0.7
+    "@floating-ui/react": ^0.24.5
     "@mdx-js/react": ^1.6.22
     "@rjsf/core": ^4.2.3
     "@storybook/addon-a11y": ^6.3.8
@@ -256,7 +257,7 @@ __metadata:
     react-draggable: ^4.0.3
     react-highlight-words: ^0.16.0
     react-is: ^17.0.2
-    react-laag: ^2.0.4
+    react-laag: ^2.0.5
     react-window: ^1.8.8
     resize-observer-polyfill: ^1.5.1
     storybook-addon-designs: ^6.1.0
@@ -4340,12 +4341,54 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@floating-ui/core@npm:1.3.1"
+  checksum: fe3b40fcaec95b0825c01a98330ae75b60c61c395ca012055a32f9c22ab97fde8ce1bd14fce3d242beb9dbe4564c90ce4a7a767851911d4215b9ec7721440e5b
+  languageName: node
+  linkType: hard
+
 "@floating-ui/dom@npm:^1.0.0":
   version: 1.0.3
   resolution: "@floating-ui/dom@npm:1.0.3"
   dependencies:
     "@floating-ui/core": ^1.0.1
   checksum: b5e275a8423b1c704b34db3cb12882d9d6e51ca4a789a0adad06b80c86003e1608cefd4e254836a31a985ea6f9458f9633967c7d54416c3dbdc8c75ce8d5b427
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.3.0":
+  version: 1.4.4
+  resolution: "@floating-ui/dom@npm:1.4.4"
+  dependencies:
+    "@floating-ui/core": ^1.3.1
+  checksum: e8e43c786e24f8f111a72d7d17c3a9563cab8eddf2a2b3dacc2785370a97313a8dda0f3470b2b2ef2d3b9d6f1fd706ccf786d9441e54e283ed47c90aa0c0b1e1
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-dom@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@floating-ui/react-dom@npm:2.0.1"
+  dependencies:
+    "@floating-ui/dom": ^1.3.0
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 00fef2cf69ac2b15952e47505fd9e23f6cc5c20a26adc707862932826d1682f3c30f83c9887abfc93574fdca2d34dd2fc00271527318b1db403549cd6bc9eb00
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react@npm:^0.24.5":
+  version: 0.24.5
+  resolution: "@floating-ui/react@npm:0.24.5"
+  dependencies:
+    "@floating-ui/react-dom": ^2.0.1
+    aria-hidden: ^1.2.3
+    tabbable: ^6.0.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: d80a60c3a76a11f55fda6337a41ed13cb7f4b492b0cd9a40c493be41a62cdc90be14069255ac0fe5785608b0078b792bbcde45e27a4f5f571d1393d2b85b824a
   languageName: node
   linkType: hard
 
@@ -12250,6 +12293,15 @@ __metadata:
   version: 2.0.1
   resolution: "argparse@npm:2.0.1"
   checksum: 83644b56493e89a254bae05702abf3a1101b4fa4d0ca31df1c9985275a5a5bd47b3c27b7fa0b71098d41114d8ca000e6ed90cad764b306f8a503665e4d517ced
+  languageName: node
+  linkType: hard
+
+"aria-hidden@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "aria-hidden@npm:1.2.3"
+  dependencies:
+    tslib: ^2.0.0
+  checksum: 7d7d211629eef315e94ed3b064c6823d13617e609d3f9afab1c2ed86399bb8e90405f9bdd358a85506802766f3ecb468af985c67c846045a34b973bcc0289db9
   languageName: node
   linkType: hard
 
@@ -33826,15 +33878,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-laag@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "react-laag@npm:2.0.4"
+"react-laag@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-laag@npm:2.0.5"
   dependencies:
     tiny-warning: ^1.0.3
   peerDependencies:
-    react: ^16.0.0 || ^17.0.0
-    react-dom: ^16.0.0 || ^17.0.0
-  checksum: 8daffaff813bfc890c2f4528e8044b493cbac4400e27f161ce2d5291cf677bdcec1aee5a06f2e57013e4c2ed6b6c8750712c7be73be4861a84f88ac64af815a3
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 3a7cefe0970493305ca4ba529e7d517e61eeff3c56a14e29d4cf39be84d5530e1fd8b125cc2121a5fa63ba5f08025b89b5ff6ac43bc3c017c62b9f158f7122c3
   languageName: node
   linkType: hard
 
@@ -37862,6 +37914,13 @@ resolve@^2.0.0-next.3:
     systeminformation: lib/cli.js
   checksum: 75804de0bbdcf00e415452bb9795aea4f1dc1b26f332979933cedb66af07e6b6996ba7487ac877b778a20668fd9da4160cee5dd40462d5a5f2e06636c4959f4a
   conditions: (os=darwin | os=linux | os=win32 | os=freebsd | os=openbsd | os=netbsd | os=sunos | os=android)
+  languageName: node
+  linkType: hard
+
+"tabbable@npm:^6.0.1":
+  version: 6.2.0
+  resolution: "tabbable@npm:6.2.0"
+  checksum: f8440277d223949272c74bb627a3371be21735ca9ad34c2570f7e1752bd646ccfc23a9d8b1ee65d6561243f4134f5fbbf1ad6b39ac3c4b586554accaff4a1300
   languageName: node
   linkType: hard
 
