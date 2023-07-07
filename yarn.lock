@@ -256,7 +256,7 @@ __metadata:
     react-draggable: ^4.0.3
     react-highlight-words: ^0.16.0
     react-is: ^17.0.2
-    react-laag: ^2.0.4
+    react-laag: ^2.0.5
     react-window: ^1.8.8
     resize-observer-polyfill: ^1.5.1
     storybook-addon-designs: ^6.1.0
@@ -33826,15 +33826,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-laag@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "react-laag@npm:2.0.4"
+"react-laag@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-laag@npm:2.0.5"
   dependencies:
     tiny-warning: ^1.0.3
   peerDependencies:
-    react: ^16.0.0 || ^17.0.0
-    react-dom: ^16.0.0 || ^17.0.0
-  checksum: 8daffaff813bfc890c2f4528e8044b493cbac4400e27f161ce2d5291cf677bdcec1aee5a06f2e57013e4c2ed6b6c8750712c7be73be4861a84f88ac64af815a3
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 3a7cefe0970493305ca4ba529e7d517e61eeff3c56a14e29d4cf39be84d5530e1fd8b125cc2121a5fa63ba5f08025b89b5ff6ac43bc3c017c62b9f158f7122c3
   languageName: node
   linkType: hard
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useEffect, useState } from 'react';
+import React, {FC, ReactElement, useEffect, useState} from 'react';
 import { Arrow, Placement, useHover, useLayer } from 'react-laag';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { Typography } from '../typography';
@@ -27,7 +27,7 @@ export interface ITooltipProps {
   /**
    * Tooltip content
    */
-  content: string;
+  content: string| ReactElement;
   /**
    * Display position
    */
@@ -119,6 +119,7 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps>> = (
     onVisibleChange && onVisibleChange(isOpen);
   }, [isOpen, onVisibleChange]);
 
+
   let triggerEle;
   if (isReactText(children)) {
     triggerEle = (
@@ -156,4 +157,3 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps>> = (
     </>
   );
 };
-

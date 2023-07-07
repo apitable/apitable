@@ -27,7 +27,7 @@
     "react-draggable": "^4.0.3",
     "react-highlight-words": "^0.16.0",
     "react-is": "^17.0.2",
-    "react-laag": "^2.0.4",
+    "react-laag": "^2.0.5",
     "react-window": "^1.8.8",
     "resize-observer-polyfill": "^1.5.1",
     "styled-system": "^5.1.5"
