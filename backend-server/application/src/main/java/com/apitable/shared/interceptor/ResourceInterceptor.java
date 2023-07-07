@@ -77,7 +77,8 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String requestPath = resolveServletPath(request);
-        ResourceDefinition resourceDef = apiResourceFactory.getResourceByUrl(requestPath);
+        ResourceDefinition resourceDef =
+            apiResourceFactory.getResourceByUrl(requestPath, request.getMethod());
         if (resourceDef == null) {
             log.error("Request path [{}] is not exist", requestPath);
             throw new BusinessException(NONE_RESOURCE);
