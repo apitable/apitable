@@ -23,6 +23,7 @@ import { store } from 'pc/store';
 import { ICellComponentProps } from '../cell_value/interface';
 import style from './style.module.less';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 
 export interface ICellAutoNumberProps extends ICellComponentProps {

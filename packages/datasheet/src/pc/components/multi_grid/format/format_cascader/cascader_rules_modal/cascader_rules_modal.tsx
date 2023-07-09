@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';

@@ -34,6 +34,7 @@ import { ContextMenu } from '../conetxt_menu';
 import styles from './style.module.less';
 import { Display } from '../../../tool_bar/display/display';
 import { Collapse, ICollapseFunc } from 'pc/components/common/collapse';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 // import ReactDOM from 'react-dom';
 

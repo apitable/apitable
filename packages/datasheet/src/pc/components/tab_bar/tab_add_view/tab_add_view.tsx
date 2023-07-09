@@ -23,6 +23,7 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { IUseListenTriggerInfo } from '@apitable/components';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';

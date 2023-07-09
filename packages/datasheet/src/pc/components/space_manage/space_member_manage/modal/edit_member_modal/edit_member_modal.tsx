@@ -29,6 +29,7 @@ import { ChangeMemberTeam } from '../change_member_team';
 import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
 import { isPrimaryOrOwnFunc } from '../../utils';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 // @ts-ignore
 import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';

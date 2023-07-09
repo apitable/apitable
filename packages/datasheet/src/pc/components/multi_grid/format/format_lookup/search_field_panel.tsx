@@ -30,6 +30,7 @@ import { checkComputeRef } from '../../field_setting';
 import styles from './styles.module.less';
 import { store } from 'pc/store';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';

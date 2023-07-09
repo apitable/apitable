@@ -21,6 +21,8 @@ import { IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
+// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { getPageParams, usePageParams, useSideBarVisible } from 'pc/hooks';

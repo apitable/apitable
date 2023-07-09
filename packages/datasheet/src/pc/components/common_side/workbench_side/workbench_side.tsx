@@ -34,6 +34,8 @@ import { expandSearch } from 'pc/components/quick_search';
 import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
+// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
 import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_bar/share_modal';

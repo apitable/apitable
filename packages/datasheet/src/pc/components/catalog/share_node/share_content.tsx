@@ -24,6 +24,7 @@ import cls from 'classnames';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Avatar, AvatarSize, Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';

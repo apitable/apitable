@@ -29,6 +29,7 @@ import { MemberItem } from '../cell_member/member_item';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 
 export interface ICellCreatedByProps extends ICellComponentProps {

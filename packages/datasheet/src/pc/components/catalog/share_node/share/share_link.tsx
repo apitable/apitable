@@ -22,6 +22,7 @@ import { CopyOutlined, NewtabOutlined, QrcodeOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { copy2clipBoard } from 'pc/utils';

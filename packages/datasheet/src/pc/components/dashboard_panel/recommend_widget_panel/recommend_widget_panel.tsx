@@ -20,6 +20,7 @@ import { Button, IconButton, Skeleton, ThemeName, useThemeColors } from '@apitab
 import { integrateCdnHost, IReduxState, Settings, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseOutlined } from '@apitable/icons';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
 import * as React from 'react';

@@ -18,6 +18,7 @@
 
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import React, { FC, PropsWithChildren } from 'react';

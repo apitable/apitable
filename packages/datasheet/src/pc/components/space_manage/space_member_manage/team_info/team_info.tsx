@@ -29,6 +29,7 @@ import {
 } from '@apitable/core';
 import { Button, Alert } from '@apitable/components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip, Modal } from 'pc/components/common';
 import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import styles from './style.module.less';

@@ -33,6 +33,7 @@ import {
 } from '@apitable/core';
 import { useMount, usePrevious } from 'ahooks';
 import throttle from 'lodash/throttle';
+// eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Loading, Tooltip } from 'pc/components/common';
 import { SearchControl } from 'pc/components/common/search_control';
 import { FolderBreadcrumb } from 'pc/components/datasheet_search_panel/folder_breadcrumb';

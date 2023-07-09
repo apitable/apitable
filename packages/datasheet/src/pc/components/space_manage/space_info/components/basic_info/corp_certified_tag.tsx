@@ -18,6 +18,7 @@
 
 import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import styles from './corp_certified_tag.module.less';
