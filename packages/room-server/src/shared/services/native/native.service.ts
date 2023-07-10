@@ -18,7 +18,7 @@ export class NativeService {
 
   constructor(httpService: HttpService, envConfigService: EnvConfigService, @InjectLogger() private readonly logger: Logger) {
     if (USE_NATIVE_MODULE) {
-      this.nativeModule = require('@apitable/room-native-api').NativeModule.create(
+      this.nativeModule = require('@apitable/room-native-api').DataBusModule.create(
         isDevMode,
         httpService.axiosRef.defaults.baseURL!,
         envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig,
