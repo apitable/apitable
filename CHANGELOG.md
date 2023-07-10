@@ -3,6 +3,39 @@
 
 
 
+## [v0.23.0-release](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-07-10)
+
+
+### Features and enhancements
+
+* feat:register user default language ([#1007](https://github.com/apitable/apitable/pull/1007)) @Exclamation-mark 
+
+### Bug fixes
+
+* fix: fix scrollbar's bg style ([#5138](https://github.com/apitable/apitable/pull/5138)) (#988) @JaneSu 
+* fix: fix checkbox emoj for cell value ([#999](https://github.com/apitable/apitable/pull/999)) @ranglang 
+* fix: zh-CN.strings error ([#1006](https://github.com/apitable/apitable/pull/1006)) @Exclamation-mark 
+* fix: fusion api select new option error ([#1014](https://github.com/apitable/apitable/pull/1014)) @arucil 
+* fix: quote template sub node sync failure ([#1018](https://github.com/apitable/apitable/pull/1018)) @ChambersChan 
+* fix: get error language code und ([#1022](https://github.com/apitable/apitable/pull/1022)) @Exclamation-mark 
+
+### What's more
+
+* chore: changelog for v0.22.0-beta.1 @Exclamation-mark 
+* Merge branch 'develop' into feature/fix-checkbox-emoj @JaneSu 
+* sync: hosted ([#1013](https://github.com/apitable/apitable/pull/1013)) @arucil 
+* sync: hosted cloud  ([#1056](https://github.com/apitable/apitable/pull/1056)) @Exclamation-mark 
+## [v0.22.0-alpha](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-07-10)
+
+
+### Bug fixes
+
+* fix: quote template sub node sync failure ([#1018](https://github.com/apitable/apitable/pull/1018)) @ChambersChan 
+* fix: get error language code und ([#1022](https://github.com/apitable/apitable/pull/1022)) @Exclamation-mark 
+
+### What's more
+
+* sync: hosted cloud  ([#1056](https://github.com/apitable/apitable/pull/1056)) @Exclamation-mark 
 ## [v0.22.0-beta.1](https://github.com/apitable/apitable/releases/tag/v0.22.0-beta.1) (2023-06-26)
 
 
