@@ -16,6 +16,7 @@ import {
 } from '@floating-ui/react';
 import { Typography } from '../../typography';
 import { TooltipBase } from '../tooltip';
+import { useThemeColors } from '../../../hooks';
 interface IProps {
     content: ReactElement | string
     children: ReactElement,
@@ -70,6 +71,8 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
     role
   ]);
 
+  const theme = useThemeColors();
+
   return (
     <>
       {
@@ -85,7 +88,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
               hasArrow && (
                 <div ref={refs.setFloating} style={floatingStyles}>
                   <FloatingArrow ref={arrowRef} context={context} stroke={'none'}
-                    fill="var(--bgReverseDefault)"/>
+                    fill={theme.bgReverseDefault} />
                 </div>
               )
             }
@@ -95,7 +98,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
               style={floatingStyles}
               {...getFloatingProps()}
             >
-              <Typography variant='body4' color={'var(--textReverseDefault)'}>{content}</Typography>
+              <Typography variant='body4' color={theme.textReverseDefault}>{content}</Typography>
             </TooltipBase>
           </>
         )}
