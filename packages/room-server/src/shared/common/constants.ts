@@ -110,8 +110,6 @@ export const X_MAX_AGE = 'x-max-age';
  */
 export const DEFAULT_X_MAX_AGE = parseInt(process.env.DEFAULT_X_MAX_AGE!, 10) || 24 * 60 * 60;
 
-export const USE_NATIVE_MODULE = Boolean(process.env.USE_NATIVE_MODULE);
-
 /**
  * API Cache prefix
  */

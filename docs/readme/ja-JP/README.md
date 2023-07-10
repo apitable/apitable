@@ -317,7 +317,6 @@ APITable use these common conventions:
 - バージョン管理とタグ付け方法は? [セマンティックバージョン](https://semver.org/)
 - Javaコーディングガイドラインとは何ですか? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA プラグイン](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - TypeScript コーディングガイドラインとは何ですか? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- Rust Coding Guidelineとは何ですか? -> [Rust API ガイドライン](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### 文書
 

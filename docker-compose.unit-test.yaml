@@ -97,8 +97,6 @@ services:
         KEEP_DEV_DEP: 1
     volumes:
       - ./packages/room-server/coverage:/app/packages/room-server/coverage
-      - ./packages/room-native-api/coverage:/app/packages/room-native-api/coverage
-      - ./packages/room-native-api/target:/app/packages/room-native-api/target
     environment:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql

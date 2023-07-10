@@ -26,7 +26,7 @@ import type { DatasheetPack, MirrorInfo } from '../../interfaces';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { NodeService } from 'node/services/node.service';
 import { ResourceMetaRepository } from 'database/resource/repositories/resource.meta.repository';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/databus';
 
 @Injectable()
 export class MirrorService {
