@@ -83,6 +83,7 @@ export class RestService {
   private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
   private NODE_LIST = 'internal/spaces/%(spaceId)s/nodes';
+  private NODE_CREATE = 'node/create';
   private NODE_TREE = 'node/tree';
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
@@ -379,6 +380,16 @@ export class RestService {
       }),
     );
     return response!.data;
+  }
+
+  async createNode(headers: IAuthHeader, spaceId: string, payload: any): Promise<INode> {
+    // create node
+    const res = await lastValueFrom(
+      this.httpService.post<INode>(this.NODE_CREATE, payload, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+      })
+    );
+    return res.data;
   }
 
   async getNodeDetail(headers: IAuthHeader, nodeId: string, spaceId?: string): Promise<INode> {
