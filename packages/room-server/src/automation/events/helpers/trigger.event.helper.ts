@@ -70,15 +70,15 @@ export class TriggerEventHelper {
     return new InputParser(new MagicVariableParser<any>(functions));
   }
 
-  public recordCreatedTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
-    this._recordTriggerHandler(EventTypeEnums.RecordCreated, eventContext, metaContext);
+  public async recordCreatedTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
+    await this._recordTriggerHandler(EventTypeEnums.RecordCreated, eventContext, metaContext);
   }
 
-  public recordMatchConditionsTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
-    this._recordTriggerHandler(EventTypeEnums.RecordMatchesConditions, eventContext, metaContext);
+  public async recordMatchConditionsTriggerHandler(eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
+    await this._recordTriggerHandler(EventTypeEnums.RecordMatchesConditions, eventContext, metaContext);
   }
 
-  private _recordTriggerHandler(eventType: string, eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
+  private async _recordTriggerHandler(eventType: string, eventContext: CommonEventContext, metaContext: CommonEventMetaContext) {
     const { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds } = metaContext;
 
     const triggerSlug = `${eventType}@${OFFICIAL_SERVICE_SLUG}`;
@@ -96,9 +96,9 @@ export class TriggerEventHelper {
       shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
     });
 
-    shouldFireRobots.forEach(robot => {
-      this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {});
-    });
+    await Promise.all(shouldFireRobots.map(robot => {
+      return this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {});
+    }));
   }
 
   public getRenderTriggers(eventType: string, conditionalTriggers: AutomationTriggerEntity[], eventContext: CommonEventContext) {

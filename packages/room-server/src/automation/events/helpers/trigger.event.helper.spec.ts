@@ -144,8 +144,8 @@ describe('TriggerEventHelper', () => {
     triggerEventHelper = module.get<TriggerEventHelper>(TriggerEventHelper);
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async() => {
+    await module.close();
   });
 
   it('should be defined', () => {
@@ -167,41 +167,37 @@ describe('TriggerEventHelper', () => {
     return getCommonMetaContext({ [key]: 'triggerTypeId' }, getDatasheetInfoInput());
   };
 
-  it('given record created context when handle record created trigger then should no be throw', () => {
-    expect(() => {
-      triggerEventHelper.recordCreatedTriggerHandler(
-        getCommonEventContext(),
-        getDatasheetInfoInputMetaContext(EventTypeEnums.RecordCreated)
-      );
-    }).not.toThrow();
+  it('given record created context when handle record created trigger then should no be throw', async() => {
+    await expect(
+      triggerEventHelper.recordCreatedTriggerHandler(getCommonEventContext(), getDatasheetInfoInputMetaContext(EventTypeEnums.RecordCreated)),
+    ).resolves.not.toThrow();
   });
 
-  it('given un match condition context when handle record match conditions trigger then should no be throw', () => {
-    expect(() => {
+  it('given un match condition context when handle record match conditions trigger then should no be throw', async() => {
+    await expect(
       triggerEventHelper.recordMatchConditionsTriggerHandler(
         getCommonEventContext(),
         getDatasheetInfoInputMetaContext(EventTypeEnums.RecordMatchesConditions),
-      );
-    }).not.toThrow();
+      ),
+    ).resolves.not.toThrow();
   });
 
-  it('given match condition context when handle record match conditions trigger then should no be throw', () => {
-    expect(() => {
-      triggerEventHelper
-        .recordMatchConditionsTriggerHandler(
-          getCommonEventContext(
-            ['fieldId'],
-            {
-              fieldId: [{ text: 'value' }],
-            },
-            getCommonState(),
-          ),
-          getCommonMetaContext(
-            { [`${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`]: 'triggerTypeId' },
-            getRecordMatchConditionalTriggers()[0]!.input,
-          ),
-        );
-    }).not.toThrow();
+  it('given match condition context when handle record match conditions trigger then should no be throw', async() => {
+    await expect(
+      triggerEventHelper.recordMatchConditionsTriggerHandler(
+        getCommonEventContext(
+          ['fieldId'],
+          {
+            fieldId: [{ text: 'value' }],
+          },
+          getCommonState(),
+        ),
+        getCommonMetaContext(
+          { [`${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`]: 'triggerTypeId' },
+          getRecordMatchConditionalTriggers()[0]!.input,
+        ),
+      ),
+    ).resolves.not.toThrow();
   });
 
   it('given trigger without input when render triggers then return empty list', () => {
