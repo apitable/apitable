@@ -57,7 +57,7 @@ WithData.args = {
 };
 
 export const SelectItem = () => {
-  const [value, setValue] = React.useState('opt1');
+  const [value, setValue] = React.useState('opt15');
   return (
     <Select
       options={data}

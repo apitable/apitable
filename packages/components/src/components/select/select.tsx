@@ -175,6 +175,13 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
     );
   };
 
+  const checked2View = () => {
+    setTimeout(() => {
+      const selectedItemElement = document.querySelector('.isChecked');
+      selectedItemElement?.scrollIntoView({ block: 'nearest' });
+    }, 20);
+  };
+
   const triggerClick = () => {
     if (disabled) {
       return;
@@ -185,6 +192,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
       }, 100);
     }
     toggleVisible();
+    checked2View();
   };
 
   return <>
