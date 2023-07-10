@@ -317,7 +317,6 @@ APITable 使用以下常見約定：
 - 如何進行版本控制和標記？ [Semantic Versioning](https://semver.org/)
 - 我們的 Java 編碼規範是什麼？ [Java 編碼準則](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA 插件](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - 我們的 TypeScript 編碼規範是什麼？ -> [TypeScript 樣式指南](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- 我們的 Java 編碼規範是什麼？ -> [Rust API 指南](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### Documentations
 

@@ -38,6 +38,7 @@ import { RadioGroupWidget } from './RadioGroupWidget';
 // import URLWidget from "./URLWidget";
 // import UpDownWidget from "./UpDownWidget";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   BaseInput,
   PasswordWidget,

@@ -372,7 +372,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
       let val = formData[key];
       if (val != null && !noAccessibleFieldIdSet.has(key)) {
         const { property, type } = fieldMap[key];
-        if (type === FieldType.URL && property.isRecogURLFlag) {
+        if (type === FieldType.URL && property?.isRecogURLFlag) {
           const matchMeta = val[0]?.text;
           const res = await Api.getURLMetaBatch([matchMeta]);
           if (res?.data?.success) {

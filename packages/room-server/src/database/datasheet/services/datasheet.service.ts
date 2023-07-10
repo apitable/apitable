@@ -23,7 +23,7 @@ import type { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
 import { isEmpty } from 'lodash';
 import type { Store } from 'redux';
-import { InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
+import { InjectLogger } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
@@ -35,8 +35,9 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/databus';
 import { NativeService } from 'shared/services/native/native.service';
+import { useNativeModule } from 'app.environment';
 
 @Injectable()
 export class DatasheetService {
@@ -92,7 +93,7 @@ export class DatasheetService {
     allowNative: boolean,
     options?: IFetchDataPackOptions,
   ): Promise<DatasheetPack | DatasheetPackResponse> {
-    if (USE_NATIVE_MODULE && allowNative) {
+    if (useNativeModule && allowNative) {
       return this.nativeService.fetchDataPackResponse(source, dstId, auth, origin, options);
     }
 

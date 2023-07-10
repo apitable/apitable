@@ -19,7 +19,7 @@
 import { Module } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
-import process from "process"
+import process from 'process';
 
 export * as webhook from './webhook';
 export * as ruliu from './ruliu';
@@ -35,9 +35,9 @@ if (isEnterpriseLevel) {
       exports[key] = module[key];
     }
   }, (err) => {
-    console.error("load enterprise action module error")
-    console.error(err)
-    process.exit(1)
+    console.error('load enterprise action module error');
+    console.error(err);
+    process.exit(1);
   });
 }
 

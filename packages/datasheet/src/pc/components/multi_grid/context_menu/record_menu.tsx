@@ -17,7 +17,9 @@
  */
 
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
-import { CollaCommandName, DatasheetApi, ExecuteResult, ICollaCommandExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
+import {
+  CollaCommandName, DatasheetApi, ExecuteResult, ICollaCommandExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType
+} from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, LinkOutlined, CopyOutlined, DeleteOutlined,
   DuplicateOutlined, ExpandOutlined,

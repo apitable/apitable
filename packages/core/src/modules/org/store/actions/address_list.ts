@@ -118,7 +118,7 @@ export function getTeamListData(_user: IUserInfo) {
         console.error('API.readTeam error', err);
       });
     }, err => {
-        console.error('API.getTeamListLayered error', err);
+      console.error('API.getTeamListLayered error', err);
     });
   };
 }

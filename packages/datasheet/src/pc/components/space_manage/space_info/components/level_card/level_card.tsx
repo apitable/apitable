@@ -176,7 +176,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({
 
   return (
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
-      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'}/>}
+      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} alt="" />}
       {cardSkin && (
         <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle}/>
       )}

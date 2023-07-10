@@ -44,7 +44,7 @@ public interface ApiResourceFactory {
      * @param resourceUrl url
      * @return ResourceDefinition
      */
-    ResourceDefinition getResourceByUrl(String resourceUrl);
+    ResourceDefinition getResourceByUrl(String resourceUrl, String httpMethod);
 
     /**
      * clear resource

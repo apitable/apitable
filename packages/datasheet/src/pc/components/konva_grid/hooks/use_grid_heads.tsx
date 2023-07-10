@@ -205,6 +205,7 @@ export const useHeads = (props: IUseHeadsProps) => {
         }
       </>
     );
+    // eslint-disable-next-line
   }, [
     recordRanges?.length, visibleRows.length, getColumnHead,
     frozenColumnCount, fieldHeadHeight, colors.defaultBg, isExporting,

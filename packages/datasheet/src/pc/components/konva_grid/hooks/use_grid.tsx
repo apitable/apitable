@@ -375,6 +375,7 @@ export const useGrid = (props: IUseGridProps) => {
         }
       </Group>
     );
+    // eslint-disable-next-line
   }, [
     columnStopIndex, columnLength, visibleColumns, instance,
     groupInfo.length, rowInitSize, mirrorId, fieldCreatable,

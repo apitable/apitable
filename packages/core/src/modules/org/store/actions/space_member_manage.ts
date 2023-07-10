@@ -129,7 +129,7 @@ export function sendInviteEmail(_spaceId: string, invite: IInviteMemberList[]) {
             teamId: data.teamId,
           }));
         }, err => {
-        console.error('API.readTeam', err);
+          console.error('API.readTeam', err);
         });
       }
     }, err => {

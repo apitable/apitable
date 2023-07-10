@@ -527,7 +527,7 @@ export const getNodeInfo = (nodeId: string) => {
         dispatch(addNodeToMap(data));
       }
     }, err => {
-      console.error('API.getNodeInfo error', err)
+      console.error('API.getNodeInfo error', err);
     });
   };
 };

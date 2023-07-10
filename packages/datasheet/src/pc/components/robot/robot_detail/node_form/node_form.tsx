@@ -95,7 +95,7 @@ export const NodeForm = (props: any) => {
         height={show ? 'max-content' : '48px'}
         width="100%"
         margin="8px 0px"
-        padding="12px 24px"
+        padding="12px"
         backgroundColor={theme.color.fc8}
         id={`robot_node_${nodeId}`}
       >
@@ -119,9 +119,11 @@ export const NodeForm = (props: any) => {
               }}
             >
               <Image
-                src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
+                src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
+                  getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
                 width={24}
                 height={24}
+                alt=""
               />
             </span>
             <Typography variant="h7" ellipsis>

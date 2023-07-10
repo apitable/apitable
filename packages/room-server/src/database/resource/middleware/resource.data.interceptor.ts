@@ -25,7 +25,7 @@ import type { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
-import { DatasheetPackResponse } from '@apitable/room-native-api';
+import { DatasheetPackResponse } from '@apitable/databus';
 
 /**
  * Resource data interceptor

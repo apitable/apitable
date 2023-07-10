@@ -120,4 +120,4 @@ export const CLOSE_USER = '/user/applyForClosing';
 
 // cancel delete user
 export const CANCEL_CLOSE_USER = '/user/cancelClosing';
- 
+

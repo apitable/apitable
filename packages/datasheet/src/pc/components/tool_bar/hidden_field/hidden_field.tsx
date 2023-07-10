@@ -610,7 +610,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                 </Select>
                 <div className={styles.switchCoverFit} style={{ marginTop: 8 }}>
                   <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-                    <span>
+                    <span className={styles.switchCoverFitCheckbox}>
                       <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} disabled={isViewLock} />
                     </span>
                   </WrapperTooltip>
@@ -650,7 +650,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
         {
           !mirrorId && !isExclusive && editable && <div className={styles.switchCoverFit}>
             <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-              <span>
+              <span className={styles.switchCoverFitCheckbox}>
                 <Checkbox
                   checked={typeof activeView.displayHiddenColumnWithinMirror === 'boolean' ? activeView.displayHiddenColumnWithinMirror : true}
                   onChange={switchShowHiddenFieldWithinMirror}

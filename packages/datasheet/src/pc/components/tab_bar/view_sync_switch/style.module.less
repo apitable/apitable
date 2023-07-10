@@ -42,6 +42,9 @@
     top: 14px;
     right: 14px;
   }
+  .title {
+    max-width: calc(100% - 20px);
+  }
 }
 
 .mobileTip {
@@ -52,10 +55,11 @@
   right: 0;
   height: 40px;
   padding: 0 16px;
-  background: var(--treeSelectedBg);
+  background: var(--bgBrandLightDefaultSolid);
   display: flex;
   align-items: center;
   justify-content: space-between;
+
 
   .infoIcon {
     transform: rotate(180deg);
@@ -67,10 +71,29 @@
     color: var(--primaryColor);
   }
 
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cancelBtn {
+    background: transparent;
+  }
+
+  .confirmBtn {
+    padding: 4px 8px;
+    height: 24px;
+  }
+
   & > * {
     display: flex;
     align-items: center;
   }
+}
+
+.cancelText {
+  color: var(--textCommonTertiary) !important;
 }
 
 .borderNone span {

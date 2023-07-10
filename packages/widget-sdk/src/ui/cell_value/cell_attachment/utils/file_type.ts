@@ -19,6 +19,7 @@
 import { cellValueToImageSrc, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp, Settings } from '@apitable/core';
 import accept from 'attr-accept';
 import Bowser from 'bowser';
+import { isString } from 'lodash';
 import mime from 'mime-types';
 import IconZip from '../../../../static/compressed_placeholder.png'; // zip
 import IconExcel from '../../../../static/excel_placeholder.png'; // excel
@@ -156,7 +157,23 @@ export function isDocType(file: IFileLikeProps) {
   return '';
 }
 
+/**
+ * copy from next /image
+
+ */
+type StaticImageData = string | {
+  src: string;
+  height: number;
+  width: number;
+  blurDataURL?: string;
+};
+
 export function renderFileIconUrl(curFile: IFileLikeProps) {
+  const file = renderFileIcon(curFile);
+  return isString(file) ? file : file.src;
+}
+
+export function renderFileIcon(curFile: IFileLikeProps): StaticImageData {
   const type = isWhatFileType({ name: curFile.name, type: curFile.type });
   switch (type) {
     case FileType.Image: {
