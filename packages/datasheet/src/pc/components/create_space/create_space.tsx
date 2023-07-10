@@ -56,7 +56,12 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
   const { run: toGetUser } = useRequest((spaceId) => Api.getUserMe({ spaceId }).then(res => {
     const { data, success } = res.data;
     if (success) {
-      navigationToUrl(`${window.location.protocol}//${data.spaceDomain}/space/${data.spaceId}`, { method: Method.Redirect });
+      navigationToUrl(`${window.location.protocol}//${data.spaceDomain}/workbench`, {
+        method: Method.Redirect,
+        query: {
+          spaceId: data.spaceId
+        }
+      });
     }
   }), { manual: true });
   const { run: createSpace } = useRequest((name: string) => Api.createSpace(name).then(res => {
