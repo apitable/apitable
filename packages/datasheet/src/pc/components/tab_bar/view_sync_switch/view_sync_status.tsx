@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Tooltip } from 'antd';
+import { Badge, Tooltip } from 'antd';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ import { useThemeColors } from '@apitable/components';
 import { AutoSaveLottie } from 'pc/components/tab_bar/view_sync_switch/auto_save_lottie';
 import Trigger from 'rc-trigger';
 import { useClickAway, useToggle } from 'ahooks';
-import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';
+import { PopupContent } from './popup_content/pc';
 import { ManualSaveLottie } from 'pc/components/tab_bar/view_sync_switch/manual_save_lottie';
 
 export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
@@ -85,7 +85,10 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
         }}
       >
         {
-          isViewAutoSave ? <AutoSaveLottie /> : <ManualSaveLottie />
+          isViewAutoSave ? <AutoSaveLottie /> :(
+            <Badge dot>
+              <ManualSaveLottie />
+            </Badge>)
         }
         {
           visible && <span className={styles.arrow} />

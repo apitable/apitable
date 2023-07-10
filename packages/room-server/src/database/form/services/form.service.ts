@@ -17,21 +17,39 @@
  */
 
 import {
-  ApiTipConstant, ConfigConstant, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExecuteResult, FieldType, ICollaCommandOptions,
-  IFormProps, ILinkIds, ILocalChangeset, IMeta, IRecordCellValue, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions,
+  ApiTipConstant,
+  ConfigConstant,
+  EventAtomTypeEnums,
+  EventRealTypeEnums,
+  EventSourceTypeEnums,
+  ExecuteResult,
+  FieldType,
+  ICollaCommandOptions,
+  IFormProps,
+  ILinkIds,
+  ILocalChangeset,
+  IMeta,
+  IRecordCellValue,
+  IServerDatasheetPack,
+  OPEventNameEnums,
+  ResourceType,
+  Selectors,
+  StoreActions,
   transformOpFields
 } from '@apitable/core';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { NodeService } from 'node/services/node.service';
 import { OtService } from 'database/ot/services/ot.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { MetaService } from 'database/resource/services/meta.service';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
 import { omit } from 'lodash';
+import { NodeService } from 'node/services/node.service';
 import { InjectLogger } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
@@ -39,8 +57,6 @@ import { getRecordUrl } from 'shared/helpers/env';
 import { IAuthHeader, IFetchDataOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
 import { FormDataPack } from '../../interfaces';
-import { MetaService } from 'database/resource/services/meta.service';
-import { Span } from '@metinseylan/nestjs-opentelemetry';
 
 @Injectable()
 export class FormService {
@@ -56,7 +72,8 @@ export class FormService {
     private resourceMetaService: MetaService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly eventEmitter: EventEmitter2,
-  ) { }
+  ) {
+  }
 
   async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
     const beginTime = +new Date();
@@ -125,7 +142,10 @@ export class FormService {
     const dstId = nodeRelInfo.datasheetId;
     // Query meta of referenced datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
-    return { formProps, nodeRelInfo, dstId, meta };
+    const views = meta.views.filter(i => i.id === nodeRelInfo.viewId).map(i => {
+      return { ...i, rows: [] };
+    });
+    return { formProps, nodeRelInfo, dstId, meta: { views, fieldMap: meta.fieldMap }};
   }
 
   async addRecord(

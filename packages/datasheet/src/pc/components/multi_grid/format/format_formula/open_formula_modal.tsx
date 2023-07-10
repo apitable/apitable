@@ -27,7 +27,9 @@ import { Provider } from 'react-redux';
 import { FormulaModal } from './formula_modal';
 import styles from './styles.module.less';
 
-export function openFormulaModal(props: { field: IField; expression: string; datasheetId: string, onSave?: (exp: string) => void; onClose?: () => void }) {
+export function openFormulaModal(props: {
+  field: IField; expression: string; datasheetId: string, onSave?: (exp: string) => void; onClose?: () => void
+}) {
   const { field, expression, onSave, onClose, datasheetId } = props;
 
   const container = document.createElement('div');

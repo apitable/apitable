@@ -45,7 +45,7 @@ export const fetchWidgetsByWidgetIds = (
       fetchInstallationWidgetSuccess(props);
       successCb?.(props);
     }, e => {
-      console.error('fetchWidgetsByWidgetIds error', e)
+      console.error('fetchWidgetsByWidgetIds error', e);
     });
   };
 };

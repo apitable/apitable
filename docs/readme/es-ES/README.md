@@ -157,7 +157,7 @@ APITable proporciona una amplia gama de características increíbles, desde lo p
   - **100k+** filas de datos con colaboración en tiempo real.
   - Acceso completo a la API, desde `Datos` hasta `Metadatos`.
   - Vínculo de tabla de una dirección / Bi-dirección y `Enlaces cruzados infinitos`
-  - Lenguajes de programación y marco amigables con la comunidad TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot)), y nos estamos moviendo a Rust gradualmente.
+  - Lenguajes de programación y marco amigables con la comunidad TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) y Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Bonito y rico Database-Hoja de cálculo UI
   - `CRUD`: Crear, leer, actualizar, eliminar las tablas, columnas y filas
   - `Operaciones de campos`: ordenar, filtro, agrupar, ocultar/desocultar, ajuste de altura.
@@ -317,7 +317,6 @@ Utilizar estas convenciones comunes:
 - ¿Cómo versionar y etiquetar? [Versionado semántico](https://semver.org/) [Semantic Versioning](https://semver.org/)
 - ¿Qué es la guía de código de Java? [Guía de código Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines) ¿Qué es la guía de código de Java? [Guía de código Java](https://google.github.io/styleguide/javaguide.html) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Guía de estilo de TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? ¿Qué es la guía de código de TypeScript? -> [Directrices API de Rust](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### Documentaciones
 

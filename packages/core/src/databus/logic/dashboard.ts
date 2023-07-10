@@ -19,16 +19,18 @@
 import { CollaCommandManager, ExecuteResult } from 'command_manager';
 import { CollaCommandName, ICollaCommandOptions } from 'commands';
 import { IDataSaver, ILoadDashboardPackOptions, IStoreOptions } from 'databus/providers';
-import { IDashboardLayout, IDashboardSnapshot, IReduxState, IServerDashboardPack, IWidget, IWidgetMap, Selectors, StoreActions } from 'exports/store';
+import { IDashboardLayout, IDashboardSnapshot, IReduxState, IServerDashboardPack, IWidget, Selectors, StoreActions } from 'exports/store';
 import { Store } from 'redux';
 import { ResourceType } from 'types';
 import { ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { IResource } from './resource.interface';
 
+type IDashboardWidgetMap = { [widgetId: string]: IWidget };
+
 interface IDashboardCtorOptions {
   store: Store<IReduxState>;
   saver: IDataSaver;
-  widgetMap: IWidgetMap;
+  widgetMap: IDashboardWidgetMap;
   commandManager: CollaCommandManager;
 }
 
@@ -37,7 +39,7 @@ export class Dashboard implements IResource {
   private readonly store: Store<IReduxState>;
   private readonly saver: IDataSaver;
 
-  public readonly widgetMap: IWidgetMap;
+  public readonly widgetMap: IDashboardWidgetMap;
 
   public readonly type = ResourceType.Dashboard;
 
@@ -63,6 +65,10 @@ export class Dashboard implements IResource {
 
   public get revision(): number {
     return Selectors.getResourceRevision(this.store.getState(), this.id, ResourceType.Dashboard)!;
+  }
+
+  public setRevision(revision: number) {
+    this.store.dispatch(StoreActions.updateRevision(revision, this.id, ResourceType.Dashboard));
   }
 
   public get snapshot(): IDashboardSnapshot {

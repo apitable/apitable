@@ -137,6 +137,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
               src={integrateCdnHost(getEnvVariables()[config.modal?.info_image])}
               width='100%'
               layout={'fill'}
+              alt=""
             />
           </div>}
         </div>

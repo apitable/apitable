@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BindAccount } from '../../../shared/store/constants';
 import * as actions from '../../../shared/store/action_constants';
+import { BindAccount } from '../../../shared/store/constants';
 
 export interface IActiveSheets {
   dtsId: string;
@@ -79,7 +79,7 @@ export interface IUserInfo {
   /**
    * whether get award from invite code
    */
-  usedInviteReward: boolean; 
+  usedInviteReward: boolean;
   apiKey: string;
   wizards: { [key: number]: number };
   unitId: string;
@@ -87,13 +87,14 @@ export interface IUserInfo {
   /**
    * the domain for the space
    */
-  spaceDomain: string; 
+  spaceDomain: string;
   /**
    * a global switch.
-   * whether permits to send subscription notification message 
+   * whether permits to send subscription notification message
    */
   sendSubscriptionNotify: boolean;
   timeZone: string | null;
+  locale: string | null;
 }
 
 export interface IUser {

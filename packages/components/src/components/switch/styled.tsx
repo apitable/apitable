@@ -101,9 +101,9 @@ export const SwitchBeforeBase = styled.span.attrs(applyDefaultTheme) <ISwitchPro
     const { innerSize, height, width } = SIZE_MAP[propsSize];
     const innerSpace = (height - innerSize) / 2;
     const fontSize = `calc(${innerSize}px - 4px);`;
-    const { bgStaticLight } = props.theme.color;
+    const { bgStaticLightDefault } = props.theme.color;
     return css`
-      background-color: ${bgStaticLight};
+      background-color: ${bgStaticLightDefault};
       width: ${innerSize}px;
       height: ${innerSize}px;
       border-radius: ${innerSize / 2}px;

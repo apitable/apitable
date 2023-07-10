@@ -64,8 +64,9 @@ export class AttachmentService {
       } catch (e: any) {
         const errMsg = await this.i18n.translate(e.message, {
           lang: req[USER_HTTP_DECORATE]?.locale,
+          args: e.getExtra(),
         });
-        throw new ServerException(new CommonException(e.getTip().code, errMsg), e.getTip().statusCode);
+        reply.send(ApiResponse.error(errMsg, e.getTip().statusCode));
       }
     };
   }

@@ -96,6 +96,7 @@ export const getNodeIcon = (
           width: emojiSize,
           height: emojiSize,
         }}
+        alt=""
       />
     ) : (
       <Emoji emoji={icon} size={emojiSize} set="apple" />

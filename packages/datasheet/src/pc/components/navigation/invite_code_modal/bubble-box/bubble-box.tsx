@@ -28,7 +28,7 @@ export const BubbleBox: FC<React.PropsWithChildren<unknown>> = () => {
       <div className={styles.arrow} />
       {t(Strings.v_coins_1000)}
       <span className={styles.goldCoin}>
-        <Image src={GoldImg} />
+        <Image src={GoldImg} alt="" />
       </span>
     </div>
   );

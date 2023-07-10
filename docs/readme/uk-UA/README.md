@@ -157,7 +157,7 @@ APITable надає ряд дивовижних функцій, від особ�
   - 100k+ рядків даних з можливістю співпраці в реальному часі.
   - Доступ до повного стеку API, від даних до метаданих.
   - Односпрямовані / двоспрямовані табличні посилання та нескінченні перехресні посилання
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Красивий і багатий інтерфейс для роботи з базами даних і електронними таблицями
   - `CRUD`: Створення, читання, оновлення, видалення таблиць, стовпців і рядків
   - `Операції з полями`: сортування, фільтрація, групування, приховування/відображення, налаштування висоти.
@@ -317,7 +317,6 @@ APITable використовує ці загальні домовленості
 - Як працювати з версіями та тегами? [Семантичне керування версіями](https://semver.org/)
 - Що таке Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Плагін Intellij IDEA](https://plugins.jetbrains.com/plugin/8527)
 - Що таке настанова з кодування TypeScript? -> [Посібник зі стилів TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- Що таке Rust Coding Guideline? -> [Посібник з API Rust](https://rust-lang.github.io/api-guidelines/about.html)
 - Що таке огляд архітектури? -> [Розуміння APITable - огляд архітектури](./docs/contribute/architecute-overview.md)
 
 ### Документація

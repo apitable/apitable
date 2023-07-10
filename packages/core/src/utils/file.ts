@@ -146,6 +146,7 @@ export function cellValueToImageSrc(
 ): string {
   if (!cellValue) return '';
   const { bucket, token, preview: previewToken, mimeType, name } = cellValue;
+  if (!bucket) return '';
   const host = getHostOfAttachment(bucket);
   if (!host) return '';
   const { formatToJPG, isPreview } = options || {};
