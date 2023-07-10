@@ -18,7 +18,7 @@
 
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType, CollaCommandName, DATASHEET_ID, Events, ExecuteResult, Field, FieldOperateType, FieldType, FieldTypeDescriptionMap,
+  BasicValueType, CollaCommandName, DATASHEET_ID, Events, ExecuteResult, Field, FieldOperateType, FieldType, FieldTypeDescriptionMap, PermissionType,
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
 } from '@apitable/core';
 import {
@@ -96,7 +96,8 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const isViewLock = Boolean(view.lockInfo);
   const embedId = useSelector(state => state.pageParams.embedId);
-
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const isEmbedHiddenFieldPermission = embedId && embedInfo?.permissionType !== PermissionType.PRIVATEEDIT;
   const chosenCount = fieldRanges ?
     fieldRanges.filter(id => id !== visibleColumns[0].fieldId).length
     : 1;
@@ -321,7 +322,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         disabled: !Boolean(fieldPermissionManageable),
         disabledTip: t(Strings.set_field_permission_no_access),
         hidden(arg: any) {
-          if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || embedId) {
+          if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || isEmbedHiddenFieldPermission) {
             return true;
           }
           if (!arg['props']) {
