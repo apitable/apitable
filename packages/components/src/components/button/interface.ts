@@ -67,3 +67,9 @@ export interface IButtonProps extends IButtonHTMLAttributes {
    */
   loading?: boolean;
 }
+
+export interface IIconSpanStyled {
+  existIcon: boolean;
+  position: string;
+  size?: 'small' | 'middle' | 'large';
+}
