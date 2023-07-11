@@ -23,7 +23,7 @@ import { find } from 'lodash';
  * Sentry sampling
  */
 export class SentryTraces {
-  private readonly _nameSamplerConfig: TransactionNameSampler[];
+  private readonly _nameSamplerConfig: ITransactionNameSampler[];
   private readonly _defaultSampleRate: number;
 
   constructor(defaultSampleRate: number) {
@@ -35,7 +35,7 @@ export class SentryTraces {
     this._defaultSampleRate = defaultSampleRate;
   }
 
-  get nameSamplerConfig(): TransactionNameSampler[] {
+  get nameSamplerConfig(): ITransactionNameSampler[] {
     return this._nameSamplerConfig;
   }
 
@@ -62,10 +62,10 @@ export class SentryTraces {
   }
 }
 
-interface Sampler {
+interface ISampler {
   rate: number | boolean
 }
 
-interface TransactionNameSampler extends Sampler {
+interface ITransactionNameSampler extends ISampler {
   name: string | RegExp
 }

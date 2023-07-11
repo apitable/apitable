@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface TokenPayload {
+export interface ITokenPayload {
   readonly userId: string;
   readonly cookie: string;
 }
