@@ -27,6 +27,8 @@ import * as WidgetApi from '../../modules/widget/api/widget_api';
 import * as ApiInterface from '../../modules/shared/api/api.interface';
 import * as WidgetApiInterface from '../../modules/widget/api/widget_api.interface';
 
+export * as ApiEnum from 'modules/shared/api/enum';
+
 export * as DashboardApi from '../../modules/database/api/dashboard_api';
 export * from '../../modules/database/api/datasheet_api.interface';
 

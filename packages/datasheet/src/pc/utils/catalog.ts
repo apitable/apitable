@@ -73,6 +73,11 @@ export const nodeConfigData = [
     icon: NodeIcon.Mirror,
     name: t(Strings.mirror),
   },
+  {
+    type: ConfigConstant.NodeType.AI,
+    icon: NodeIcon.Ai,
+    name: 'chatbot',
+  },
 ];
 
 // Check if the url belongs to this site
@@ -395,6 +400,8 @@ export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
       return ConfigConstant.ContextMenuType.DASHBOARD;
     case ConfigConstant.NodeType.MIRROR:
       return ConfigConstant.ContextMenuType.MIRROR;
+    case ConfigConstant.NodeType.AI:
+      return ConfigConstant.ContextMenuType.AI;
     default:
       return ConfigConstant.ContextMenuType.DEFAULT;
   }

@@ -31,9 +31,12 @@ import { ButtonPlus } from '../../../common';
 import { IBasePropEditorProps, IModeEnum } from '../interface';
 import { ImgBaseUploader } from './img_base_uploader';
 import styles from './style.module.less';
+import { UploadContainerShape, UploadContainerSize } from './enum';
 
 interface ILogoImgUploaderProps extends IBasePropEditorProps {
-  logoUrl?: string;
+    logoUrl?: string;
+    size?: UploadContainerSize
+    shape?: UploadContainerShape
 }
 
 const customTips = {
@@ -42,7 +45,14 @@ const customTips = {
 
 export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderProps>> = props => {
   const colors = useThemeColors();
-  const { formId, mode, logoUrl, updateProps } = props;
+  const {
+    nodeId,
+    mode,
+    logoUrl,
+    updateProps,
+    size = UploadContainerSize.normal,
+    shape = UploadContainerShape.Square
+  } = props;
   const [isModalShow, setModalShow] = useState(false);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -61,9 +71,16 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
   return (
     <>
       {mode === IModeEnum.Edit ? (
-        <div className={logoWrapClassName}>
+        <div
+          className={logoWrapClassName}
+          style={{
+            width: size,
+            height: size,
+            borderRadius: shape === UploadContainerShape.Square ? 8 : '50%',
+          }}
+        >
           <ImgBaseUploader
-            formId={formId}
+            nodeId={nodeId}
             visible={isModalShow}
             imgUrl={logoUrl}
             cropShape={ICropShape.Square}
@@ -72,17 +89,23 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
             onChange={onChange}
             fileLimit={2}
           >
-            <div className={styles.logoImg} onClick={() => setModalShow(true)}>
+            <div
+              className={styles.logoImg}
+              onClick={() => setModalShow(true)}
+
+            >
               {!logoUrl && (
-                <div className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
-                  <AddOutlined size={logoAddIconSize} color={colors.fourthLevelText} />
+                <div
+                  className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
+                  <AddOutlined size={logoAddIconSize} color={colors.fourthLevelText}/>
                   <span>{t(Strings.add_form_logo)}</span>
                 </div>
               )}
-              {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'} />}
+              {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'}/>}
               {logoUrl && (
                 <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<EditOutlined />} />
+                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)}
+                    icon={<EditOutlined/>}/>
                 </div>
               )}
             </div>
@@ -92,7 +115,7 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
         logoUrl && (
           <div className={logoWrapClassName}>
             <div className={styles.logoImg}>
-              <Image src={logoUrl} alt="cover" layout={'fill'} />
+              <Image src={logoUrl} alt="cover" layout={'fill'}/>
             </div>
           </div>
         )

@@ -87,8 +87,8 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
 
         switch (triggerType.endpoint) {
           case 'form_submitted':
-            properties!.formId.enum = formList.map(f => f.nodeId);
-            properties!.formId.enumNames = formList.map(f => f.nodeName);
+            properties!.nodeId.enum = formList.map(f => f.nodeId);
+            properties!.nodeId.enumNames = formList.map(f => f.nodeName);
             break;
           case 'record_matches_conditions':
             properties!.datasheetId.default = datasheetId;

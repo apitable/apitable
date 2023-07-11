@@ -17,8 +17,21 @@
  */
 
 import {
-  Api, ConfigConstant, INodesMapItem, IOptNode, IReduxState, IUpdateRoleData, Navigation, ResourceIdPrefix, ResourceType, Selectors, StatusCode,
-  StoreActions, Strings, t,
+  Api,
+  ConfigConstant,
+  IAxiosResponse,
+  INodesMapItem,
+  IOptNode,
+  IReduxState,
+  IUpdateRoleData,
+  Navigation,
+  ResourceIdPrefix,
+  ResourceType,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
 } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
@@ -36,7 +49,7 @@ export const useCatalogTreeRequest = () => {
     datasheetId,
     dashboardId,
     mirrorId,
-    embedId
+    embedId,
   } = useSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
     const { datasheetId, formId, dashboardId, mirrorId, embedId } = state.pageParams;
@@ -46,7 +59,7 @@ export const useCatalogTreeRequest = () => {
       datasheetId,
       dashboardId,
       mirrorId,
-      embedId
+      embedId,
     };
   }, shallowEqual);
   const activedNodeId = useSelector(state => Selectors.getNodeId(state));
@@ -84,17 +97,18 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Add Node
-   * @param parentId 
+   * @param parentId
    * @param type Node Type(datasheet Folders)
    * @param nodeName Optional
    * @param preNodeId Optional
    */
-  const addNodeReq = (parentId: string, type: number, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) => {
+  const addNodeReq = (parentId: string, type: ConfigConstant.NodeType, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) => {
     const result = checkNodeNumberLimit(type);
     if (result) {
       return Promise.resolve();
     }
-    return Api.addNode({ parentId, type, nodeName, preNodeId, extra }).then(res => {
+
+    return Api.addNode({ parentId, type, nodeName, preNodeId, extra }).then((res: IAxiosResponse) => {
       const { data, code, success } = res.data;
       if (success) {
         const node: INodesMapItem = { ...data, children: [] };
@@ -108,11 +122,12 @@ export const useCatalogTreeRequest = () => {
         dispatch(StoreActions.setErr(res.data.message));
       }
     });
+
   };
 
   /**
    * Delete Node
-   * Note: Consider that if the node being deleted is a folder (and in the case of a working directory that is loaded), 
+   * Note: Consider that if the node being deleted is a folder (and in the case of a working directory that is loaded),
    * its child node may be an asterisk.
    * So at this point the child nodes that are starred are deleted.
    * @param nodeId Node ID to be deleted
@@ -159,8 +174,8 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Copy nodes
-   * @param nodeId 
-   * @param copyAll 
+   * @param nodeId
+   * @param copyAll
    */
   const copyNodeReq = (nodeId: string, copyAll = true) => {
     const result = checkNodeNumberLimit(treeNodesMap[nodeId].type);
@@ -181,8 +196,8 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Update Nodes
-   * @param nodeId 
-   * @param data 
+   * @param nodeId
+   * @param data
    */
   const updateNodeReq = (
     nodeId: string,
@@ -210,8 +225,8 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Modify node name
-   * @param nodeId 
-   * @param nodeName 
+   * @param nodeId
+   * @param nodeName
    */
   const renameNodeReq = (nodeId: string, nodeName: string) => {
     return Api.editNode(nodeId, { nodeName }).then(res => {
@@ -283,7 +298,7 @@ export const useCatalogTreeRequest = () => {
    * @param teamId
    */
   const getSubUnitListReq = (teamId?: string, linkId?: string) => {
-    if(embedId) linkId = undefined;
+    if (embedId) linkId = undefined;
     return Api.getSubUnitList(teamId, linkId).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -295,7 +310,7 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Get node roles list
-   * @param nodeId 
+   * @param nodeId
    */
   const getNodeRoleListReq = (
     nodeId: string, includeAdmin?: boolean,
@@ -373,8 +388,8 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Update node description
-   * @param nodeId 
-   * @param desc 
+   * @param nodeId
+   * @param desc
    */
   const updateNodeDescriptionReq = (nodeId: string, desc: string) => {
     return Api.changeNodeDesc(nodeId, desc).then(res => {
@@ -404,7 +419,7 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Get location node data
-   * @param nodeId 
+   * @param nodeId
    */
   const getPositionNodeReq = (nodeId: string) => {
     return Api.positionNode(nodeId).then(res => {
@@ -479,7 +494,7 @@ export const useCatalogTreeRequest = () => {
 
   /**
    * Retrieves whether a node exists in the tree
-   * @param tree 
+   * @param tree
    * @param nodeId
    */
   function isFindNodeInTree(tree: INodesMapItem, nodeId: string): boolean {
@@ -587,12 +602,12 @@ export const useCatalogTreeRequest = () => {
       pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
     };
     return Api.getCollaboratorListPage(JSON.stringify({ ...pageObjectParams, pageNo }), nodeId).then(res => {
-      const { success, data, message } = res.data; 
-      if(success){
+      const { success, data, message } = res.data;
+      if (success) {
         return data;
-      } 
+      }
       Message.error({ content: message });
-      
+
     });
   };
 
@@ -602,6 +617,6 @@ export const useCatalogTreeRequest = () => {
     getNodeShowcaseReq, updateNodeReq, updateNodeDescriptionReq, getNodeTreeReq,
     getPositionNodeReq, getShareSettingsReq, nodeMoveReq, shareSettingsReq,
     getFavoriteNodeListReq, updateNodeFavoriteStatusReq, moveFavoriteNodeReq, updateNextNode, getTreeDataReq,
-    renameNodeReq, updateNodeIconReq, updateNodeRecordHistoryReq, disableShareReq, getCollaboratorListPageReq
+    renameNodeReq, updateNodeIconReq, updateNodeRecordHistoryReq, disableShareReq, getCollaboratorListPageReq,
   };
 };
