@@ -1,7 +1,8 @@
-import React from 'react';
 import { useLayer, Arrow, DEFAULT_OPTIONS } from 'react-laag';
-import { cloneElement, FunctionComponent, isValidElement, ReactElement, useCallback, useState } from 'react';
+import { cloneElement, isValidElement, ReactElement, useCallback, useState } from 'react';
 import { useProviderTheme } from 'hooks';
+
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
 export type IOverLayProps = { toggle: () => void };
@@ -12,7 +13,7 @@ export type IArrowOptions = Parameters<typeof Arrow>[0];
 type IDropdownTriggerFC = (props ?: IDropdownTriggerProps) => ReactElement;
 type ITriggerProps = ReactElement | IDropdownTriggerFC;
 
-export const Dropdown: FunctionComponent<{
+interface IDropdownProps {
     clazz?: {
         overlay?: string
     },
@@ -21,7 +22,16 @@ export const Dropdown: FunctionComponent<{
     arrowOptions?: IArrowOptions,
     children: (props: IOverLayProps) => ReactElement,
     trigger: ITriggerProps
-}> = ({ trigger, children, onVisibleChange, layerOptions, arrowOptions, clazz }) => {
+}
+
+export interface IDropdownControl {
+    close: () => void;
+    open: () => void;
+    toggle: (open: Boolean) => void;
+}
+
+export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
+  const { trigger, children, onVisibleChange, layerOptions, arrowOptions, clazz } = props;
 
   const [isOpen, setOpen] = useState(false);
 
@@ -30,9 +40,15 @@ export const Dropdown: FunctionComponent<{
     onVisibleChange?.(!isOpen);
   }, [isOpen, onVisibleChange]);
 
-  function close() {
+  const open = useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
+
+  const close = useCallback(() => {
     setOpen(false);
-  }
+  }, [setOpen]);
+
+  useImperativeHandle(ref, () => ({ open, toggle, close }));
 
   const { renderLayer, triggerProps, layerProps, arrowProps } = useLayer({
     isOpen,
@@ -81,4 +97,4 @@ export const Dropdown: FunctionComponent<{
     </>
   );
 
-};
+});

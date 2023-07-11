@@ -18,7 +18,7 @@
 
 import { Badge } from 'antd';
 import { Selectors, Strings, t } from '@apitable/core';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 import classNames from 'classnames';
@@ -26,10 +26,26 @@ import { AutoSaveLottie } from 'pc/components/tab_bar/view_sync_switch/auto_save
 import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content/pc';
 import { ManualSaveLottie } from 'pc/components/tab_bar/view_sync_switch/manual_save_lottie';
 import * as React from 'react';
-import { Box, FloatUiTooltip, IOverLayProps, Dropdown } from '@apitable/components';
+import { Box, FloatUiTooltip, IOverLayProps, Dropdown, IDropdownControl } from '@apitable/components';
+import { useLocalStorageState } from 'ahooks';
+
+const CONST_VIEW_PROPERTY_CONFIGURATION_POPUP = 'view_property_manually_save_popup';
+
+interface IPopupConfigurations {
+  [key: string]: Boolean;
+}
 
 export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
   const { datasheetId, shareId } = useSelector(state => state.pageParams)!;
+
+  const [popupConfiguration, setPopupConfiguration] = useLocalStorageState<IPopupConfigurations | undefined>(
+    CONST_VIEW_PROPERTY_CONFIGURATION_POPUP,
+    {
+      defaultValue: {
+      },
+    },
+  );
+
   const snapshot = useSelector(Selectors.getSnapshot)!;
   const contentRef = useRef<HTMLDivElement | null>(null);
   const currentView = useSelector(() => {
@@ -38,11 +54,28 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
   const isViewAutoSave = Boolean(currentView?.autoSave);
   const isViewLock = Boolean(currentView?.lockInfo);
 
+  const dropdownRef = useRef<IDropdownControl>(null);
+
+  useEffect(() => {
+    if(!isViewAutoSave && !popupConfiguration?.[viewId]) {
+      if(!dropdownRef.current) {
+        return;
+      }
+      dropdownRef.current?.open();
+      setPopupConfiguration?.({
+        ...(popupConfiguration ?? {}),
+        [viewId]: true
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentView]);
+
   return (<FloatUiTooltip
     content={isViewAutoSave ? t(Strings.auto_save_has_been_opend) : t(Strings.view_configuration_tooltips)}
   >
     <Box display='flex' alignItems='center'>
       <Dropdown
+        ref={dropdownRef}
         clazz={{
           overlay: styles.overlayStyle
         }}
