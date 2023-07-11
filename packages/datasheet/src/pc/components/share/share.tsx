@@ -216,7 +216,6 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   >
     <ShareContent loading={loading} nodeTree={nodeTree} />
   </ShareContentWrapper>;
-
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
@@ -269,8 +268,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
               </div>
               {shareContent}
             </_SplitPane>
-          ) : shareContent
-          }
+          ) : shareContent}
         </ComponentDisplay>
         {isIframe() && !formId && <div className={styles.brandContainer}>
           <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20}

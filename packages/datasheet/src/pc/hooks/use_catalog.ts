@@ -20,7 +20,7 @@ import { useRequest } from 'pc/hooks';
 
 import {
   IReduxState, StoreActions, Selectors,
-  ConfigConstant, t, Strings, ResourceIdPrefix
+  ConfigConstant, t, Strings, ResourceIdPrefix,
 } from '@apitable/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
@@ -57,8 +57,11 @@ export const useCatalog = () => {
     parentNodeId?: string,
     type: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET,
     extra?: { [key: string]: any },
-    nodeName?: string) => {
-    if (addNodeLoading) { return; }
+    nodeName?: string,
+  ) => {
+    if (addNodeLoading) {
+      return;
+    }
     if (!parentNodeId) {
       parentNodeId = activeNodeId ? treeNodesMap[activeNodeId].parentId : rootId;
     }

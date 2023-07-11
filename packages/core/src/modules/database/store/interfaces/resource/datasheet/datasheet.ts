@@ -819,6 +819,7 @@ export interface IPageParams {
   nodeId?: string;
   mirrorId?: string;
   embedId?: string;
+  aiId?: string
 }
 
 export interface ICollaboratorParams {

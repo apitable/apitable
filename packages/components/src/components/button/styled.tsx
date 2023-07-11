@@ -133,8 +133,7 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
         jelly: btnTypeOrColor,
       };
   }
-}
-
+};
 
 export const IconSpanStyled = styled.span<IIconSpanStyled>`
   display:inline-block;

@@ -89,6 +89,7 @@ export enum ShortcutActionName {
   SearchNode = 'SearchNode',
   NewFolder = 'NewFolder',
   NewDatasheet = 'NewDatasheet',
+  NewAi = 'NewAi',
   RenameNode = 'Rename',
   CopyNode = 'CopyNode',
   Permission = 'Permission',

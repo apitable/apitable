@@ -47,6 +47,7 @@ export * from '../../user/api/api.auth';
 export * from '../../user/api/api.user';
 export * from '../../space/api/api.space';
 export * from '../../org/api/api.org';
+export * from '../../database/api/ai/api';
 
 axios.defaults.baseURL = Url.BASE_URL;
 const nestBaseURL = process.env.NEXT_PUBLIC_NEXT_API;

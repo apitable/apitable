@@ -16,22 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
+import { DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CheckOutlined, ChevronDownOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { CheckOutlined, ChevronDownOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
 import { Message, MobileSelect, Modal, Popconfirm } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
-import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import styles from './style.module.less';
 
 export interface IPublicShareLinkProps {
@@ -46,11 +43,10 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { run: getShareSettings, data: shareSettings } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
+  const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
     userInfo: state.user.info,
     spaceFeatures: state.space.spaceFeatures,
-    spaceInfo: state.space.curSpaceInfo!,
   }), shallowEqual);
 
   const isShareMirror = nodeId.startsWith('mir');
@@ -153,8 +149,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     setDeleting(true);
   };
 
-  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
-
   /**
    * open share's auth-dropdown
    */
@@ -195,16 +189,19 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           visible={deleting}
           overlayClassName={styles.deleteNode}
           title={t(Strings.link_failed_after_close_share_link)}
-          onCancel={() => {setDeleting(false);}}
+          onCancel={() => {
+            setDeleting(false);
+          }}
           onOk={handleCloseShare}
           type='danger'
         >
-          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle}/>
         </Popconfirm>
-        <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
+        <Typography variant='h7'
+          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-            <QuestionCircleOutlined currentColor />
+            <QuestionCircleOutlined currentColor/>
           </a>
         </Tooltip>
       </div>
@@ -212,13 +209,14 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
         shareSettings && shareSettings.shareOpened && (
           <>
             <div className={styles.sharePerson}>
-              <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
+              <Typography className={styles.sharePersonContent}
+                variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
               {isMobile ? (
                 <MobileSelect
                   triggerComponent={
                     <div className={styles.mobileRoleSelect}>
                       {Permission.filter(item => item.value === value)[0].label}
-                      {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
+                      {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText}/>}
                     </div>
                   }
                   renderList={({ setVisible }) => {
@@ -237,7 +235,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
                               <Typography variant={'body2'}>{item.label}</Typography>
                               <Typography variant={'body4'}>{item.subLabel}</Typography>
                             </div>
-                            {item.value === value && <CheckOutlined color={colors.primaryColor} />}
+                            {item.value === value && <CheckOutlined color={colors.primaryColor}/>}
                           </div>
                         ))}
                       </div>
@@ -258,23 +256,11 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
               shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
               shareSettings={shareSettings}
               userInfo={userInfo}
+              showCopyAIWidgetCode={nodeId.startsWith('ai')}
             />
           </>
         )
-      ) : <DisabledShareFile />}
-      {invitable && (
-        <div className={styles.inviteMore}>
-          <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-          <LinkButton
-            className={styles.inviteMoreMethod}
-            underline={false}
-            onClick={() => expandInviteModal()}
-            prefixIcon={<LinkOutlined currentColor />}
-          >
-            {t(Strings.invite_via_link)}
-          </LinkButton>
-        </div>
-      )}
+      ) : <DisabledShareFile/>}
     </>
   );
 };

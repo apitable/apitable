@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+import dynamic from 'next/dynamic';
 import { findNode, Selectors, Strings, t } from '@apitable/core';
 import { Drawer } from 'antd';
 import Image from 'next/image';
@@ -36,12 +36,15 @@ import { IShareMenu } from '../share_menu';
 import { ShareMenu } from '../share_menu/share_menu';
 import styles from './style.module.less';
 
+// @ts-ignore
+const AIPanel = dynamic(() => import('enterprise').then(module => module.ChatPage));
+
 export interface IShareMobileProps extends IShareMenu {
   applicationJoinAlertVisible: boolean;
 }
 
 export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> = props => {
-  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
+  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector(state => state.pageParams);
   const [viewListStatus, setViewListStatus] = useState(false);
   const [shareGuideStatus, setShareGuideStatus] = useState(false);
   const [descModalStatus, setDescModal] = useState(false);
@@ -78,6 +81,8 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
       return <FormPanel loading={props.loading} />;
     } else if (dashboardId) {
       return <DashboardPanel />;
+    } else if (aiId) {
+      return <AIPanel />;
     } else if (folderId) {
       const parentNode = findNode([shareNode], folderId);
       const childNodes = (parentNode && parentNode.children) ?? [];
@@ -125,7 +130,7 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
   return (
     <div className={styles.mobile}>
       {getComponent()}
-      {renderSide()}
+      {!aiId && renderSide()}
       {props.applicationJoinAlertVisible &&
       <ApplicationJoinSpaceAlert
         spaceId={props.shareSpace.spaceId}

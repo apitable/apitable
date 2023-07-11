@@ -9,6 +9,8 @@ const DataSheetPane = dynamic(() => import('../datasheet_pane').then(module => m
 const FormPanel = dynamic(() => import('../form_panel').then(module => module.FormPanel));
 const DashboardPanel = dynamic(() => import('../dashboard_panel').then(module => module.DashboardPanel));
 const FolderShowcase = dynamic(() => import('../folder_showcase').then(module => module.FolderShowcase));
+// @ts-ignore
+const AIPanel = dynamic(() => import('enterprise').then(module => module.ChatPage));
 
 interface IShareContentProps {
   loading: boolean
@@ -17,7 +19,7 @@ interface IShareContentProps {
 
 export const ShareContent: React.FC<IShareContentProps> = (props) => {
   const { nodeTree, loading } = props;
-  const { datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector(state => state.pageParams);
+  const { datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector(state => state.pageParams);
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
 
   if (!nodeTree) {
@@ -25,13 +27,15 @@ export const ShareContent: React.FC<IShareContentProps> = (props) => {
   }
 
   if (mirrorId) {
-    return <MirrorRoute />;
+    return <MirrorRoute/>;
   } else if (datasheetId) {
-    return <DataSheetPane />;
+    return <DataSheetPane/>;
   } else if (formId) {
-    return <FormPanel loading={loading} />;
+    return <FormPanel loading={loading}/>;
   } else if (dashboardId) {
-    return <DashboardPanel />;
+    return <DashboardPanel/>;
+  } else if (aiId) {
+    return <AIPanel />;
   } else if (folderId) {
     const parentNode = findNode([nodeTree], folderId);
     const childNodes = (parentNode && parentNode.children) ?? [];
