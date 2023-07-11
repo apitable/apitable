@@ -17,17 +17,12 @@
  */
 
 import { Button, useThemeColors, ThemeName } from '@apitable/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { IReduxState, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';
 import Image from 'next/image';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-// @ts-ignore
-import { isSocialDomain } from 'enterprise';
-import { Method } from 'pc/components/route_manager/const';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Router } from 'pc/components/route_manager/router';
-import { useRequest } from 'pc/hooks';
+import { useRequest, useSpaceRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,32 +43,9 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
   const err = useSelector((state: IReduxState) => state.space.err);
   const colors = useThemeColors();
   const themeName = useSelector(state => state.theme);
+  const { createSpaceReq } = useSpaceRequest();
   const spaceNameImg = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
-  const { run: toGetUser } = useRequest((spaceId) => Api.getUserMe({ spaceId }).then(res => {
-    const { data, success } = res.data;
-    if (success) {
-      navigationToUrl(`${window.location.protocol}//${data.spaceDomain}/space/${data.spaceId}`, { method: Method.Redirect });
-    }
-  }), { manual: true });
-  const { run: createSpace, loading } = useRequest((spaceName: string) => {
-    return Api.createSpace(spaceName).then(res => {
-      const { data, code, success, message } = res.data;
-      if (success) {
-        // Compatible with corporate domain name creation space station jump
-        if (isSocialDomain?.()) {
-          toGetUser(data.spaceId);
-          return;
-        }
-        dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-        Router.redirect(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
-      } else {
-        dispatch(StoreActions.setSpaceErr({
-          code,
-          msg: message,
-        }));
-      }
-    });
-  }, { manual: true });
+  const { run: createSpace, loading } = useRequest(createSpaceReq, { manual: true });
 
   useEffect(() => {
     return () => {
