@@ -36,10 +36,6 @@ import { IOpenFilterValue } from 'types/open/open_filter_types';
 // China sensitive string comparison `collators` constructor.
 const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
 
-export interface ICellApiStringValueOptions {
-  userTimeZone?: string
-}
-
 /**
  * The business class should not become a complex container, it is better to be just a pipeline of data flow
  * Here we use the form of classes to build business calculation methods, 
@@ -344,7 +340,7 @@ export abstract class Field {
    * Convert to the output the user sees in the table
    * @param cellValue
    */
-  abstract cellValueToApiStringValue(cellValue: ICellValue, options?: ICellApiStringValueOptions): string | null;
+  abstract cellValueToApiStringValue(cellValue: ICellValue): string | null;
 
   abstract stdValueToCellValue(stdValue: IStandardValue): ICellValue | null;
 

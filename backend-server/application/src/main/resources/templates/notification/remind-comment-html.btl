@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{ MEMBER_NAME }} made comments from the "{{ RECORD_TITLE }}" in "{{
-        NODE_NAME
-      }}" datasheet
+      {{MEMBER_NAME}} made comments from the "{{RECORD_TITLE}}" in "{{NODE_NAME}}" datasheet
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -111,7 +109,7 @@
     class
     style="
       background-color: #ffffff;
-      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
       -webkit-font-smoothing: antialiased;
       font-size: 14px;
       line-height: 1.4;
@@ -141,7 +139,7 @@
       <tr>
         <td
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
           "
@@ -152,7 +150,7 @@
         <td
           class="container"
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
             display: block;
@@ -185,7 +183,7 @@
                   class="align"
                   width="100%"
                   style="
-                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                     font-size: 14px;
                     vertical-align: top;
                   "
@@ -195,13 +193,14 @@
                     href="https://apitable.com?home=1"
                     style="color: #7b67ee; text-decoration: underline"
                     ><img
-                      src="https://legacy-s1.apitable.com/space/2022/09/20/a5de38aec6cc78aa3f447cf3a18aeb69"
+                      src="https://s4.apitable.com/logo/a5de38aec6cc78aa3f447cf3a18aeb69"
                       height="24"
                       alt="APITable"
                       style="
                         border: none;
                         -ms-interpolation-mode: bicubic;
                         max-width: 100%;
+                        margin-left: 10px;
                       "
                   /></a>
                 </td>
@@ -233,8 +232,8 @@
                 visibility: hidden;
                 width: 0;
               "
-              >{{ MEMBER_NAME }} made comments from the "{{ RECORD_TITLE }}" in
-              "{{ NODE_NAME }}" datasheet
+              >{{MEMBER_NAME}} made comments from the "{{RECORD_TITLE}}" in
+              "{{NODE_NAME}}" datasheet
             </span>
             <table
               role="presentation"
@@ -258,11 +257,11 @@
                 <td
                   class="wrapper"
                   style="
-                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                     font-size: 14px;
                     vertical-align: top;
                     box-sizing: border-box;
-                    padding: 20px;
+                    padding: 32px;
                   "
                   valign="top"
                 >
@@ -284,72 +283,69 @@
                       <td
                         align="left"
                         style="
-                          font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                           font-size: 14px;
                           vertical-align: top;
                         "
                         valign="top"
                       >
-                        <h2
+                        <p
                           style="
-                            color: #06090f;
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            color: #333333;
+                            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                             font-weight: 400;
+                            font-size: 20px;
                             line-height: 1.4;
                             margin: 0;
                             margin-bottom: 30px;
                           "
                         >
-                        {{ MEMBER_NAME }} made comments from the
-                        <b>"{{ RECORD_TITLE }}"</b> in
-                        <b>"{{ NODE_NAME }}"</b> datasheet
-                        </h2>
+                        {{MEMBER_NAME}} made comments from the
+                        <b>"{{RECORD_TITLE}}"</b> in
+                        <b>"{{NODE_NAME}}"</b> datasheet
+                        </p>
                         <div
                           class="remind_content"
                           style="
+                            color: #333333;
                             display: table-cell;
                             background: #f0f2f5;
                             border-radius: 8px;
                             height: 80px;
-                            padding: 10px 15px;
-                            font-size: 15px;
+                            padding: 10px 16px;
+                            font-size: 16px;
                             vertical-align: middle;
                             min-width: 414px;
                           "
                         >
-                          {{ CONTENT }}
+                          {{CONTENT}}
                         </div>
-                        <div style="margin: 16px 0 32px 0">
-                          <p
-                            class="space_name"
-                            style="
-                              font-family: Ubuntu, Helvetica, Arial, sans-serif;
-                              font-weight: normal;
-                              margin: 0;
-                              margin-bottom: 15px;
-                              font-size: 13px;
-                              line-height: 20px;
-                              color: #696969;
-                            "
-                          >
-                            {{ SPACE_NAME }}
-                          </p>
-                        </div>
-                        <p
-                          class="remind_date"
-                          style="
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
-                            font-weight: normal;
-                            margin-bottom: 15px;
-                            margin: 16px 0 32px 0;
-                            font-size: 13px;
-                            line-height: 20px;
-                            color: #696969;
-                            float: right;
-                          "
-                        >
-                          {{ CREATED_AT }}
-                        </p>
+                          <div style="display: grid; grid-template-columns: 1fr auto; margin: 0 0 32px 0">
+                            <p
+                              class="space_name"
+                              style="
+                                font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                                font-weight: normal;
+                                font-size: 13px;
+                                line-height: 20px;
+                                color: #696969;
+                              "
+                            >
+                              {{SPACE_NAME}}
+                            </p>
+                            <p
+                              class="remind_date"
+                              style="
+                                font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                                font-weight: normal;
+                                font-size: 13px;
+                                line-height: 20px;
+                                color: #696969;
+                              "
+                            >
+                              {{CREATED_AT}}
+                            </p>
+                          </div>
                         <table
                           role="presentation"
                           border="0"
@@ -371,8 +367,7 @@
                               <td
                                 align="center"
                                 style="
-                                  font-family: Ubuntu, Helvetica, Arial,
-                                    sans-serif;
+                                  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                                   font-size: 14px;
                                   vertical-align: top;
                                   padding-bottom: 15px;
@@ -397,8 +392,7 @@
                                     <tr>
                                       <td
                                         style="
-                                          font-family: Ubuntu, Helvetica, Arial,
-                                            sans-serif;
+                                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                                           font-size: 14px;
                                           vertical-align: top;
                                           border-radius: 4px;
@@ -410,7 +404,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -474,7 +468,7 @@
                   <td
                     class="content-block"
                     style="
-                      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                       vertical-align: top;
                       padding-bottom: 10px;
                       padding-top: 10px;
@@ -487,7 +481,7 @@
                     <p
                       class="copyright"
                       style="
-                        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                         font-weight: normal;
                         margin: 0;
                         margin-bottom: 15px;
@@ -495,7 +489,7 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"
@@ -520,7 +514,7 @@
         </td>
         <td
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
           "

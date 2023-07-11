@@ -1,0 +1,59 @@
+.pc {
+  width: 320px;
+  position: absolute;
+  z-index: 1;
+  background: var(--bgCommonHigh);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadowCommonHigh);
+  .text,
+  .title {
+    height: 32px;
+    input {
+      padding: 0;
+      font-size: 13px;
+    }
+  }
+}
+.urlActionContainer {
+  .label {
+    color: var(--textCommonPrimary);
+    margin-bottom: 8px;
+  }
+  .titleLabel {
+    margin-top: 16px;
+  }
+  .link {
+    display: flex;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    svg {
+      fill: var(--textCommonTertiary) !important;
+    }
+    &:hover {
+      background-color: var(--rowSelectedBgSolid);
+    }
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 24px;
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .buttonWrapper {
+    button {
+      margin-left: 0;
+      height: 48px;
+      font-size: 14px;
+    }
+  }
+}

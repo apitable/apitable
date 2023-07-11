@@ -247,4 +247,7 @@ export class AutomationService {
     };
   }
 
+  async isResourcesHasRobots(resourceIds: string[]) {
+    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+  }
 }

@@ -61,7 +61,7 @@ export const useNavigatorName = () => {
 
     function getCurrentGUIInfo() {
       const { pageTitle } = getCustomConfig();
-      let name = pageTitle || t(Strings.system_configuration_product_name);
+      let name = pageTitle || t(Strings.og_page_title);
       let nodeIcon = '';
 
       if (nodeId && treeNodesMap && treeNodesMap[nodeId!]) {

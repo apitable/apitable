@@ -22,10 +22,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
+import { AiDynamicModule } from 'ai/ai.dynamic.module';
 import { defaultLanguage, enableOtelJaeger, enableScheduler, enableSocket } from 'app.environment';
-import { AutomationModule } from 'automation/automation.module';
+import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
-import { DeveloperModule } from 'developer/developer.module';
 import { EmbedDynamicModule } from 'embed/embed.dynamic.module';
 import { FusionApiDynamicModule } from 'fusion/fusion-api.dynamic.module';
 import { FusionApiModule } from 'fusion/fusion.api.module';
@@ -75,6 +75,7 @@ import { UserModule } from 'user/user.module';
     ScheduleModule.forRoot(),
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),
+    AiDynamicModule.forRoot(),
     FusionApiDynamicModule.forRoot(),
     SocketModule.register(enableSocket),
     ActuatorModule,
@@ -83,9 +84,8 @@ import { UserModule } from 'user/user.module';
     NodeModule,
     UserModule,
     UnitModule,
-    DeveloperModule,
     GrpcModule,
-    AutomationModule,
+    RobotModule,
   ],
   providers: [],
 })

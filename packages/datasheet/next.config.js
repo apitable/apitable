@@ -51,7 +51,7 @@ module.exports = withPlugins(plugins, {
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
     unoptimized: true,
-    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 'legacy-s1.apitable.com', 's1.apitable.com'],
+    domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 's1.apitable.com'],
     remotePatterns: [{
       protocol: 'http',
       hostname: '**',

@@ -17,7 +17,7 @@
  */
 
 import { getThemeColors, lightColors, getThemeName } from '@apitable/components';
-import { CutMethod, getImageThumbSrc } from '@apitable/core';
+import { CutMethod, getImageThumbSrc, integrateCdnHost } from '@apitable/core';
 import { UserGroupOutlined } from '@apitable/icons';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import * as React from 'react';
@@ -98,13 +98,13 @@ const AvatarHoc = (Component: any) => {
         </Component>
       );
     }
-    const avatarSrc = isGzip && src ? getImageThumbSrc(src, {
+    const avatarSrc = isGzip && src ? getImageThumbSrc(integrateCdnHost(src), {
       method: CutMethod.CUT,
       quality: 100,
       size: size * ratio,
     }) : src;
     const firstWord = getFirstWordFromString(title);
-    const avatarBg = avatarSrc ? colors.defaultBg : bgColorList[avatarColor ?? 0];
+    const avatarBg = avatarSrc ? colors.defaultBg : (avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id));
     if (type === AvatarType.Space) {
       return (
         <Component

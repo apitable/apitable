@@ -29,8 +29,7 @@ import {
   PaginationInput,
 } from './styled';
 import { IPaginationProps, IPaginationState } from './interface';
-import { t } from './i18n';
-import { Strings } from './strings';
+import { t, Strings } from '@apitable/core';
 
 // Maximum number of display pages with ellipsis
 const MAX_PAGES_NUM = 7;
@@ -61,7 +60,6 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
     showTotal,
     showChangeSize,
     disabled = false,
-    lang = 'zh',
     onChange,
     onPageSizeChange,
   } = props;
@@ -203,7 +201,7 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
     let end = current * pageSize;
     end = end > total ? total : end;
     return (
-      <PaginationTotal>{t(Strings.paginationTotal, lang, [start, end, total])}</PaginationTotal>
+      <PaginationTotal>{t(Strings.pagination_component_total, { start, end, total })}</PaginationTotal>
     );
   };
 
@@ -216,7 +214,7 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
     }
     return (
       <PaginationQuickJump>
-        <span>{t(Strings.paginationJump, lang)}</span>
+        <span>{t(Strings.pagination_component_jump)}</span>
         <PaginationInput
           value={inputPage}
           size="small"
@@ -226,7 +224,7 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
           onBlur={handleBlurPage}
           ref={paginationInputRef}
         />
-        <span>{t(Strings.page, lang)}</span>
+        <span>{t(Strings.pagination_component_page)}</span>
       </PaginationQuickJump>
     );
   };
@@ -245,7 +243,7 @@ const PaginationBase: FC<React.PropsWithChildren<IPaginationProps>> = (props) =>
         disabled={disabled}
         triggerStyle={{ height: 32, marginLeft: 24 }}
         value={pageSize.toString()}
-        options={pageSizeOptions.map((v) => ({ label: t(Strings.pageSize, lang, [v]), value: v.toString() }))}
+        options={pageSizeOptions.map((v) => ({ label: t(Strings.pagination_component_page_size, { val: v }), value: v.toString() }))}
         onSelected={handleChangePageSize}
       />
     );

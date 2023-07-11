@@ -24,15 +24,19 @@ import { CascaderDataStorageProvider } from './cascader.data.storage.provider';
 import { IAuthHeader } from 'shared/interfaces';
 import { RestService } from 'shared/services/rest/rest.service';
 import { IFieldMethods } from '../utils/cell.value.to.string';
+import { UnitService } from 'unit/services/unit.service';
 
 @Injectable()
 export class CascaderDatabusService {
   private readonly databus: databus.DataBus;
   private readonly database: databus.Database;
 
-  constructor(readonly datasheetService: DatasheetService, private readonly restService: RestService, readonly commandService: CommandService) {
+  constructor(readonly datasheetService: DatasheetService,
+              readonly unitService: UnitService,
+              private readonly restService: RestService,
+              readonly commandService: CommandService) {
     this.databus = databus.DataBus.create({
-      dataStorageProvider: new CascaderDataStorageProvider(datasheetService),
+      dataStorageProvider: new CascaderDataStorageProvider(datasheetService, unitService),
       storeProvider: {
         createDatasheetStore: datasheetPack => Promise.resolve(commandService.fullFillStore(datasheetPack)),
         createDashboardStore: dashboardPack => {

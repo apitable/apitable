@@ -18,9 +18,34 @@
 
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
-  Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
-  IFormState, IRecord, ISegment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors, StatusCode, StoreActions,
-  string2Segment, Strings, t,
+  Api,
+  AutoTestID,
+  CacheManager,
+  ConfigConstant,
+  Events,
+  ExpCache,
+  Field,
+  FieldOperateType,
+  FieldType,
+  FormApi,
+  getNewId,
+  IDPrefix,
+  IField,
+  IFieldMap,
+  IFormState,
+  IRecord,
+  ISegment,
+  Navigation,
+  OVER_LIMIT_PER_SHEET_RECORDS,
+  OVER_LIMIT_SPACE_RECORDS,
+  Player,
+  SegmentType,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  string2Segment,
+  Strings,
+  t,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditOutlined, InfoCircleOutlined } from '@apitable/icons';
 import * as Sentry from '@sentry/nextjs';
@@ -42,7 +67,7 @@ import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useQuery, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
-import { flatContextData } from 'pc/utils';
+import { flatContextData, IURLMeta } from 'pc/utils';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -321,7 +346,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
     return false;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async() => {
     if (isEmpty) {
       emptyTip();
       return;
@@ -342,12 +367,31 @@ export const FormContainer: React.FC<React.PropsWithChildren<unknown>> = () => {
         return set;
       }, new Set<string>());
 
-    const postData = Object.keys(formData).reduce((obj, key) => {
-      if (formData[key] != null && !noAccessibleFieldIdSet.has(key)) {
-        obj[key] = formData[key];
+    const postData = {};
+    for(const key in formData) {
+      let val = formData[key];
+      if (val != null && !noAccessibleFieldIdSet.has(key)) {
+        const { property, type } = fieldMap[key];
+        if (type === FieldType.URL && property?.isRecogURLFlag) {
+          const matchMeta = val[0]?.text;
+          const res = await Api.getURLMetaBatch([matchMeta]);
+          if (res?.data?.success) {
+            const metaMap = res.data.data.contents;
+            const meta: IURLMeta = metaMap[matchMeta];
+            if (meta?.isAware) {
+              val = [{
+                text: matchMeta,
+                type: SegmentType.Url,
+                favicon: meta?.favicon,
+                title: meta?.title,
+              }];
+            }
+          }
+        }
+        postData[key] = val;
       }
-      return obj;
-    }, {});
+    }
+
     if (shareId) {
       return FormApi.addShareFormRecord(id, shareId, postData)
         .then(response => {

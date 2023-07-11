@@ -54,14 +54,14 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { keyBy, sortBy } from 'lodash';
+import { get, keyBy, sortBy } from 'lodash';
 import LRU from 'lru-cache';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { DEFAULT_CHECK_ICON, emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
+import { emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
@@ -401,6 +401,10 @@ export class CellHelper extends KonvaDrawer {
     const generateRenderText = (): string | null => {
       if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
 
+      if (field.type === FieldType.URL) {
+        return Field.bindModel(field).cellValueToTitle(cellValue);
+      }
+
       return Field.bindModel(field).cellValueToString(cellValue);
     };
 
@@ -446,10 +450,12 @@ export class CellHelper extends KonvaDrawer {
       }
     }
 
+    const favicon = field.property?.isRecogURLFlag ? get(cellValue, '0.favicon', '') : '';
+
     const color = style?.color || colors.firstLevelText;
     const textAlign = style?.textAlign || (isNumberField && columnWidth ? 'right' : 'left');
     const fontWeight = style?.fontWeight;
-    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING;
+    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0) - (field.type === FieldType.URL ? 16 : 0);
     const renderX = textAlign === 'right' ? x + columnWidth - GRID_CELL_VALUE_PADDING : x + GRID_CELL_VALUE_PADDING;
     const renderY = y + 10;
     let linkEnable = Boolean(renderText);
@@ -504,6 +510,7 @@ export class CellHelper extends KonvaDrawer {
         x: renderX,
         y: renderY,
         text: renderText,
+        favicon,
         maxWidth: textMaxWidth,
         maxRow: isActive ? Infinity : getMaxLine(rowHeightLevel, viewType),
         lineHeight: 24,
@@ -526,6 +533,7 @@ export class CellHelper extends KonvaDrawer {
       width: textMaxWidth,
       height: textHeight,
       text: renderText,
+      favicon,
       textData,
       style: {
         ...style,
@@ -596,7 +604,7 @@ export class CellHelper extends KonvaDrawer {
   private renderCellCheckbox(renderProps: IRenderProps, ctx?: CanvasRenderingContext2D | undefined) {
     const { x, y, field, cellValue, columnWidth, callback, style, isActive } = renderProps;
     const { isComputed } = Field.bindModel(field);
-    const icon = isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
+    const icon = isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : field.property.icon;
     const iconId = typeof icon === 'string' ? icon : icon.id;
     const iconUrl = emojiUrl(iconId) as string;
     const isChecked = Boolean(cellValue);
@@ -622,7 +630,7 @@ export class CellHelper extends KonvaDrawer {
 
     if (ctx && cellValue != null) {
       const { isComputed } = Field.bindModel(field);
-      const icon = isComputed ? DEFAULT_CHECK_ICON : field.property.icon;
+      const icon = isComputed ? ConfigConstant.DEFAULT_CHECK_ICON : field.property.icon;
       const iconId = typeof icon === 'string' ? icon : icon.id;
       const iconUrl = emojiUrl(iconId) as string;
       let offsetX = GRID_CELL_VALUE_PADDING;
@@ -726,13 +734,14 @@ export class CellHelper extends KonvaDrawer {
         imageCache.loadImage(name, imgUrl);
         continue;
       }
-      const { width: imageWidth, height: imageHeight } = img;
+      const imageWidth = img === false ? 1 : img.width;
+      const imageHeight = img === false ? 1 : img.height;
       const width = calcFileWidth(file, height);
       const aspectRatio = Math.min(width / imageWidth, height / imageHeight);
       const finalWidth = Math.ceil(aspectRatio * imageWidth);
       const finalHeight = Math.ceil(aspectRatio * imageHeight);
       if (ctx) {
-        ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
+        img && ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
         this.line({
           x: x + currentX - 1,
           y: y + currentY - 1,

@@ -34,6 +34,7 @@ import com.apitable.control.mapper.ControlMapper;
 import com.apitable.control.model.ControlTypeDTO;
 import com.apitable.core.constants.RedisConstants;
 import com.apitable.core.util.SqlTool;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.util.DateHelper;
 import com.apitable.space.dto.ControlStaticsDTO;
 import com.apitable.space.dto.DatasheetStaticsDTO;
@@ -66,6 +67,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class StaticsServiceImpl implements IStaticsService {
+
+    @Resource
+    private IMemberService iMemberService;
 
     @Resource
     private ControlMapper controlMapper;
@@ -192,8 +196,15 @@ public class StaticsServiceImpl implements IStaticsService {
     }
 
     @Override
-    public long getMemberTotalCountBySpaceId(String spaceId) {
-        return SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
+    public long getActiveMemberTotalCountFromCache(String spaceId) {
+        String key = StrUtil.format(GENERAL_STATICS, "space:active-member-count", spaceId);
+        Number cacheValue = redisTemplate.opsForValue().get(key);
+        if (cacheValue != null) {
+            return cacheValue.longValue();
+        }
+        long count = iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
+        redisTemplate.opsForValue().set(key, count, 2L, TimeUnit.HOURS);
+        return count;
     }
 
     @Override

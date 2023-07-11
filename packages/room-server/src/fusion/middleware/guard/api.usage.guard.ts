@@ -18,10 +18,19 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { Logger } from 'winston';
-import { DATASHEET_HTTP_DECORATE, InjectLogger } from '../../../shared/common';
-import { ApiException, PermissionException } from '../../../shared/exception';
+import {
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_HTTP_DECORATE,
+  DATASHEET_LINKED,
+  DATASHEET_MEMBER_FIELD,
+  InjectLogger,
+  SPACE_ID_HTTP_DECORATE,
+} from 'shared/common';
+import { ApiException, PermissionException } from 'shared/exception';
+import { FastifyRequest } from 'fastify';
 
 /**
  * Guards are executed after each middleware, but before any interceptor or pipe.
@@ -29,14 +38,28 @@ import { ApiException, PermissionException } from '../../../shared/exception';
  */
 @Injectable()
 export class ApiUsageGuard implements CanActivate {
-  constructor(@InjectLogger() private readonly logger: Logger, private readonly restService: RestService) {}
+  constructor(
+    @InjectLogger() private readonly logger: Logger,
+    private readonly restService: RestService,
+    private readonly datasheetService: DatasheetService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request: FastifyRequest = context.switchToHttp().getRequest();
     // works for space related APIs
-    let spaceId = request.params?.spaceId;
+    const dstId = (request.params as any)?.dstId;
+    if (dstId) {
+      const datasheet = await this.datasheetService.getDatasheet(dstId);
+      if (datasheet) {
+        request[DATASHEET_HTTP_DECORATE] = datasheet;
+        request[SPACE_ID_HTTP_DECORATE] = datasheet.spaceId;
+        request[DATASHEET_LINKED] = {};
+        request[DATASHEET_ENRICH_SELECT_FIELD] = {};
+        request[DATASHEET_MEMBER_FIELD] = new Set();
+      }
+    }
+    let spaceId = (request.params as any)?.spaceId;
     if (!spaceId) {
-      // works for datasheet related APIs
       const datasheet = request[DATASHEET_HTTP_DECORATE];
       if (datasheet) {
         spaceId = datasheet.spaceId;

@@ -21,11 +21,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.apitable.organization.mapper.UnitMapper">
     <insert id="insertBatch">
-        INSERT INTO ${tablePrefix}unit(id, space_id, unit_type, unit_ref_id)
+        INSERT INTO ${tablePrefix}unit(id, unit_id, space_id, unit_type, unit_ref_id)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
-                #{item.id},#{item.spaceId},#{item.unitType}, #{item.unitRefId}
+                #{item.id},#{item.unitId},#{item.spaceId},#{item.unitType}, #{item.unitRefId}
             </trim>
         </foreach>
     </insert>
@@ -161,4 +161,35 @@
         </foreach>
         AND unit_type = #{unitType.type}
     </update>
+
+    <select id="selectUnitRefIdByUnitIdAndSpaceIdAndUnitType" resultType="java.lang.Long">
+        SELECT vu.unit_ref_id vu
+        FROM ${tablePrefix}unit vu
+        WHERE vu.unit_id = #{unitId}
+        AND vu.space_id = #{spaceId}
+        AND vu.unit_type = #{unitType.type}
+        AND vu.is_deleted = 0
+    </select>
+
+    <select id="selectByUnitRefIds" resultType="com.apitable.organization.dto.UnitBaseInfoDTO">
+        SELECT u.unit_id, u.unit_ref_id
+        FROM ${tablePrefix}unit u
+        WHERE u.unit_ref_id IN
+        <foreach item="item" index="index" collection="unitRefIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdAndUnitTypeAndUnitIds" resultType="com.apitable.organization.dto.UnitBaseInfoDTO">
+        SELECT unit_id, unit_ref_id
+        FROM ${tablePrefix}unit
+        WHERE unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND space_id = #{spaceId}
+        AND unit_type = #{unitType.type}
+        AND is_deleted = 0
+    </select>
 </mapper>

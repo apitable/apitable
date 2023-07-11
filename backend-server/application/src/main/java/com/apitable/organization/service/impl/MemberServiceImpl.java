@@ -58,6 +58,7 @@ import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.ro.OrgUnitRo;
+import com.apitable.organization.ro.RoleMemberUnitRo;
 import com.apitable.organization.ro.TeamAddMemberRo;
 import com.apitable.organization.ro.UpdateMemberOpRo;
 import com.apitable.organization.ro.UpdateMemberRo;
@@ -106,6 +107,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -416,6 +418,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         for (MemberEntity member : entities) {
             UnitEntity unit = new UnitEntity();
             unit.setId(IdWorker.getId());
+            unit.setUnitId(IdWorker.get32UUID());
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.MEMBER.getType());
             unit.setUnitRefId(member.getId());
@@ -442,23 +445,24 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         // find email in users
         List<UserEntity> userEntities = iUserService.getByEmails(distinctEmails);
         Map<String, Long> emailUserMap = userEntities.stream()
-            .collect(Collectors.toMap(UserEntity::getEmail, UserEntity::getId));
+            .collect(Collectors.toMap(u -> u.getEmail().toLowerCase(), UserEntity::getId));
         // find email in spaces
         List<MemberEntity> memberEntities =
             getBySpaceIdAndEmailsIgnoreDeleted(spaceId, distinctEmails);
         Map<String, List<MemberEntity>> emailMemberMap = memberEntities.stream()
             .filter(m -> StrUtil.isNotBlank(m.getEmail()))
-            .collect(Collectors.groupingBy(MemberEntity::getEmail));
+            .collect(Collectors.groupingBy(m -> m.getEmail().toLowerCase()));
         // collect emails whether it can send invitation
         List<Long> shouldSendInvitationNotify = new ArrayList<>();
         List<MemberEntity> members = new ArrayList<>();
         List<MemberEntity> restoreMembers = new ArrayList<>();
-        distinctEmails.forEach(inviteEmail -> {
-            MemberEntity member = new MemberEntity();
+        distinctEmails.forEach(email -> {
+            String inviteEmail = email.toLowerCase();
             // check member if existed
             if (emailMemberMap.containsKey(inviteEmail)) {
                 // email member exist in space
-                MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream().findFirst()
+                MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream()
+                    .min(Comparator.comparing(MemberEntity::getIsDeleted))
                     .orElseThrow(() -> new BusinessException("invite member error"));
                 // history member can be restored
                 if (existedMember.getIsDeleted()) {
@@ -471,6 +475,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 return;
             }
             // email is not exist in space
+            MemberEntity member = new MemberEntity();
             member.setId(IdWorker.getId());
             createInactiveMember(member, spaceId, inviteEmail);
             members.add(member);
@@ -691,6 +696,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             boolean dmrFlag = SqlHelper.retBool(
                 teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId, removeTeamList));
             ExceptionUtil.isTrue(dmrFlag, OrganizationException.UPDATE_MEMBER_ERROR);
+        }
+        if (CollUtil.isNotEmpty(data.getRoleIds())) {
+            iRoleMemberService.removeByRoleMemberIds(Collections.singletonList(memberId));
+            RoleMemberUnitRo roleMember = new RoleMemberUnitRo();
+            roleMember.setId(memberId);
+            roleMember.setType(UnitType.MEMBER.getType());
+            for (Long roleId : data.getRoleIds()) {
+                iRoleMemberService.addRoleMembers(roleId, Collections.singletonList(roleMember));
+            }
         }
     }
 
@@ -1302,5 +1316,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             memberEntities.add(member);
         }
         updateBatchById(memberEntities);
+    }
+
+    @Override
+    public Long getMemberIdByUnitId(String spaceId, String unitId) {
+        Long memberId =
+            iUnitService.getUnitRefIdByUnitIdAndSpaceIdAndUnitType(unitId, spaceId,
+                UnitType.MEMBER);
+        ExceptionUtil.isNotNull(memberId, NOT_EXIST_MEMBER);
+        return memberId;
     }
 }

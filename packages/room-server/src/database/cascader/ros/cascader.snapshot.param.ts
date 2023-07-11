@@ -39,7 +39,7 @@ export class GetCascaderSnapshotParam{
     description: 'Datasheet ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipConstant.api_params_empty_error }})
-  datasheetId!: string;
+  dstId!: string;
 
   @ApiProperty({
     type: String,

@@ -40,8 +40,7 @@ export const getCollaboratorColor = (collaborator: ICollaboratorCursor): string 
     `${collaborator.userId}${collaborator.socketId}`,
     colorsWheel.length,
   );
-  const color = colorsWheel[hashColorIndex] as string;
-  return color;
+  return colorsWheel[hashColorIndex] as string;
 };
 export function isAlien(collaborator: ICollaboratorCursor | ICollaborator){
   if (store.getState().pageParams.shareId) {
@@ -60,7 +59,9 @@ export function backCorrectAvatarName(collaborator: ICollaboratorCursor | IColla
   return nickName || memberName || userName || t(Strings.alien);
 }
 
-export const CollaboratorMark: React.FC<React.PropsWithChildren<{ displayRowIndex: number, collaboratorCell: ICollaboratorCursor[] }>> = ({ displayRowIndex, collaboratorCell }) => {
+export const CollaboratorMark: React.FC<React.PropsWithChildren<{
+  displayRowIndex: number, collaboratorCell: ICollaboratorCursor[]
+}>> = ({ displayRowIndex, collaboratorCell }) => {
   if (!collaboratorCell) return null;
   // 1, 2 rows of synergistic cell information will be obscured by the table header, displayed below the cell
   const cellCollaboratorClassName = [1, 2].includes(displayRowIndex) ?

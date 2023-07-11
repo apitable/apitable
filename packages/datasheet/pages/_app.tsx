@@ -331,7 +331,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    document.title = t(Strings.system_configuration_product_name);
+    document.title = t(Strings.og_page_title);
     const descMeta = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     descMeta.content = t(Strings.client_meta_label_desc);
   }, []);
@@ -459,7 +459,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           })
         `}
     </Script>
-    {!env.DISABLE_AWSC &&
+    {!env.IS_SELFHOST &&
       <>
         <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
         <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />

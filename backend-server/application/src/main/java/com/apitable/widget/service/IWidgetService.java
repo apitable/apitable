@@ -58,15 +58,15 @@ public interface IWidgetService {
     String create(Long userId, String spaceId, WidgetCreateRo widget);
 
     /**
-     * copy widget to dashboard
+     * copy widget
      *
      * @param userId user id
      * @param spaceId space id
-     * @param dashboardId   dashboardId
+     * @param nodeId   nodeId
      * @param widgetIds     widgetIds
      * @return WidgetPack
      */
-    Collection<String> copyToDashboard(Long userId, String spaceId, String dashboardId, List<String> widgetIds);
+    Collection<String> copyWidget(Long userId, String spaceId, String nodeId, List<String> widgetIds);
 
     /**
      * @param userId user id

@@ -18,10 +18,9 @@
 
 package com.apitable.organization.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import com.apitable.core.exception.BaseException;
 
 /**
  * Organization Exception
@@ -97,7 +96,18 @@ public enum OrganizationException implements BaseException {
 
     ROLE_EXIST_ROLE_MEMBER(528, "There are members in this role"),
 
-    SPACE_EXIST_ROLES(529, "The character already exists on the space station");
+    SPACE_EXIST_ROLES(529, "The character already exists on the space station"),
+
+    ILLEGAL_MEMBER_PERMISSION(530, "Illegal member permission"),
+
+    ILLEGAL_TEAM_PERMISSION(531, "Illegal team permission"),
+
+    ILLEGAL_ROLE_PERMISSION(532, "Illegal role permission"),
+
+    DUPLICATION_TEAM_NAME(533, "The team name already exists"),
+
+    GET_PARENT_TEAM_ERROR(534, "Parent department does not exist, please try again");
+
 
     private final Integer code;
 

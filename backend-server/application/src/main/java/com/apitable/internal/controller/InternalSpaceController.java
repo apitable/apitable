@@ -21,6 +21,7 @@ package com.apitable.internal.controller;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
@@ -110,6 +111,21 @@ public class InternalSpaceController {
         Long userId = SessionContext.getUserId();
         iMemberService.checkUserIfInSpace(userId, spaceId);
         return ResponseData.success(internalSpaceService.getSpaceEntitlementApiUsageVo(spaceId));
+    }
+
+    /**
+     * Get api qps information of a specified space.
+     */
+    @GetResource(path = "/space/{spaceId}/apiRateLimit", requiredPermission = false)
+    @Operation(summary = "get api qps information of a specified space", description =
+        "Provides the authentication function of the middle layer request, and queries the API "
+            + "aps information in the subscription plan corresponding to the space.")
+    public ResponseData<InternalSpaceApiRateLimitVo> apiRateLimit(
+        @PathVariable("spaceId") String spaceId) {
+        iSpaceService.checkExist(spaceId);
+        Long userId = SessionContext.getUserId();
+        iMemberService.checkUserIfInSpace(userId, spaceId);
+        return ResponseData.success(internalSpaceService.getSpaceEntitlementApiRateLimitVo(spaceId));
     }
 
     /**

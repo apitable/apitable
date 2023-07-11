@@ -36,6 +36,7 @@ import { CascaderDatabusService } from './cascader.databus.service';
 import { IAuthHeader } from '../../../shared/interfaces';
 import { CommonException, ServerException } from 'shared/exception';
 import { slice } from 'lodash';
+import { UnitService } from 'unit/services/unit.service';
 
 describe('DatasheetFieldTreeSelectService', () => {
   let module: TestingModule;
@@ -62,7 +63,14 @@ describe('DatasheetFieldTreeSelectService', () => {
           provide: DatasheetService,
           useValue: {
             getBasePacks: jest.fn(),
+            getDatasheet: jest.fn(),
           },
+        },
+        {
+          provide: UnitService,
+          useValue: {
+            getUnitInfo: jest.fn(),
+          }
         },
         CascaderDatabusService,
         DatasheetFieldCascaderService,

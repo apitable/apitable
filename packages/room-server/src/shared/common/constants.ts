@@ -80,6 +80,7 @@ export const FILE_UPLOAD_TMP_PATH = '_upload';
  */
 export const USER_HTTP_DECORATE = 'user';
 export const DATASHEET_META_HTTP_DECORATE = 'datasheet-meta';
+export const DATASHEET_FIELD_MAP_HTTP_DECORATE = 'datasheet-field-map';
 export const DATASHEET_HTTP_DECORATE = 'datasheet';
 export const SPACE_ID_HTTP_DECORATE = 'space-id';
 export const NODE_INFO = 'node-info';
@@ -108,8 +109,6 @@ export const X_MAX_AGE = 'x-max-age';
  * default value of the `max-age` property of the API cache, units are seconds
  */
 export const DEFAULT_X_MAX_AGE = parseInt(process.env.DEFAULT_X_MAX_AGE!, 10) || 24 * 60 * 60;
-
-export const USE_NATIVE_MODULE = Boolean(process.env.USE_NATIVE_MODULE);
 
 /**
  * API Cache prefix

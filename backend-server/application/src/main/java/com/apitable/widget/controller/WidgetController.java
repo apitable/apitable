@@ -18,6 +18,7 @@
 
 package com.apitable.widget.controller;
 
+import static com.apitable.base.enums.ParameterException.NO_ARG;
 import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.util.StrUtil;
@@ -274,22 +275,24 @@ public class WidgetController {
     @PostResource(path = "/widget/copy", requiredPermission = false)
     @Operation(summary = "Copy widget",
         description = "Scenario: 1、dashboard import widget"
-            + " 2、the widget panel sends applets to the dashboard")
+            + "2:the widget panel sends applets to the dashboard; 3:copy widget")
     public ResponseData<List<WidgetPack>> copyWidget(
         @RequestBody @Valid final WidgetCopyRo widgetRo) {
         Long userId = SessionContext.getUserId();
+        String nodeId = StrUtil.isNotBlank(widgetRo.getNodeId())
+            ? widgetRo.getNodeId() : widgetRo.getDashboardId();
+        ExceptionUtil.isNotBlank(nodeId, NO_ARG);
         // The method includes determining whether a node exists.
-        String spaceId = iNodeService.getSpaceIdByNodeId(
-            widgetRo.getDashboardId());
+        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         // The method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
         // check permission
-        controlTemplate.checkNodePermission(memberId, widgetRo.getDashboardId(),
+        controlTemplate.checkNodePermission(memberId, nodeId,
             NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         // copy widget
-        Collection<String> widgetIds = iWidgetService.copyToDashboard(userId,
-            spaceId, widgetRo.getDashboardId(), widgetRo.getWidgetIds());
+        Collection<String> widgetIds = iWidgetService.copyWidget(userId,
+            spaceId, nodeId, widgetRo.getWidgetIds());
         return ResponseData.success(
             iWidgetService.getWidgetPackList(widgetIds));
     }

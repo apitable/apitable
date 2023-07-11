@@ -1,0 +1,1387 @@
+{
+  "api": {
+    "tips": {
+      "api_add_row_failed_wrong_length_of_value": {
+        "apiTypes": "fusion_api",
+        "code": 211,
+        "id": "api_add_row_failed_wrong_length_of_value",
+        "isRecordTimes": true,
+        "message": "error_add_row_failed_wrong_length_of_value",
+        "statusCode": 200
+      },
+      "api_attachment_file_size_error": {
+        "code": 400,
+        "id": "api_attachment_file_size_error",
+        "isRecordTimes": true,
+        "message": "api_attachment_file_size_error",
+        "statusCode": 200
+      },
+      "api_dashboard_not_exist": {
+        "apiTypes": "fusion_api",
+        "code": 301,
+        "id": "api_dashboard_not_exist",
+        "message": "api_dashboard_not_exist",
+        "statusCode": 200
+      },
+      "api_datasheet_not_exist": {
+        "apiTypes": "fusion_api",
+        "code": 301,
+        "id": "api_datasheet_not_exist",
+        "message": "api_datasheet_not_exist",
+        "statusCode": 200
+      },
+      "api_datasheet_not_visible": {
+        "apiTypes": "fusion_api",
+        "code": 301,
+        "id": "api_datasheet_not_visible",
+        "isRecordTimes": true,
+        "message": "api_datasheet_not_visible",
+        "statusCode": 200
+      },
+      "api_delete_error": {
+        "apiTypes": "fusion_api",
+        "code": 214,
+        "id": "api_delete_error",
+        "isRecordTimes": true,
+        "message": "api_delete_error",
+        "statusCode": 200
+      },
+      "api_delete_error_foreign_datasheet_deleted": {
+        "apiTypes": "fusion_api",
+        "code": 214,
+        "id": "api_delete_error_foreign_datasheet_deleted",
+        "isRecordTimes": true,
+        "message": "api_delete_error_foreign_datasheet_deleted",
+        "statusCode": 200
+      },
+      "api_embed_link_id_not_exist": {
+        "code": 1501,
+        "id": "api_embed_link_id_not_exist",
+        "isRecordTimes": true,
+        "message": "api_embed_link_id_not_exist",
+        "statusCode": 200
+      },
+      "api_embed_link_instance_limit": {
+        "code": 400,
+        "id": "api_embed_link_instance_limit",
+        "isRecordTimes": true,
+        "message": "api_embed_link_instance_limit",
+        "statusCode": 200
+      },
+      "api_embed_link_limit": {
+        "code": 400,
+        "id": "api_embed_link_limit",
+        "isRecordTimes": true,
+        "message": "api_embed_link_limit",
+        "statusCode": 200
+      },
+      "api_enterprise_limit": {
+        "code": 1502,
+        "id": "api_enterprise_limit",
+        "isRecordTimes": true,
+        "message": "api_enterprise_limit",
+        "statusCode": 200
+      },
+      "api_favicon_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_favicon_value_error",
+        "isRecordTimes": true,
+        "message": "api_favicon_value_error",
+        "statusCode": 200
+      },
+      "api_fieldid_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_fieldid_empty_error",
+        "isRecordTimes": true,
+        "message": "api_fieldid_empty_error",
+        "statusCode": 200
+      },
+      "api_forbidden": {
+        "apiTypes": "fusion_api",
+        "code": 403,
+        "id": "api_forbidden",
+        "message": "api_forbidden",
+        "statusCode": 403
+      },
+      "api_forbidden_because_of_not_in_space": {
+        "apiTypes": "fusion_api",
+        "code": 403,
+        "id": "api_forbidden_because_of_not_in_space",
+        "message": "api_forbidden_because_of_not_in_space",
+        "statusCode": 403
+      },
+      "api_forbidden_because_of_usage": {
+        "apiTypes": "fusion_api",
+        "code": 403,
+        "id": "api_forbidden_because_of_usage",
+        "message": "api_forbidden_because_of_usage",
+        "statusCode": 403
+      },
+      "api_frequently_error": {
+        "apiTypes": "fusion_api",
+        "code": 429,
+        "id": "api_frequently_error",
+        "message": "api_frequently_error",
+        "statusCode": 429
+      },
+      "api_insert_error": {
+        "apiTypes": "fusion_api",
+        "code": 211,
+        "id": "api_insert_error",
+        "isRecordTimes": true,
+        "message": "api_insert_error",
+        "statusCode": 200
+      },
+      "api_node_node_type_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_node_node_type_value_error",
+        "isRecordTimes": true,
+        "message": "api_node_node_type_value_error",
+        "statusCode": 200
+      },
+      "api_node_permission_error": {
+        "apiTypes": "fusion_api",
+        "code": 602,
+        "id": "api_node_permission_error",
+        "isRecordTimes": true,
+        "message": "api_node_permission_error",
+        "statusCode": 200
+      },
+      "api_node_permission_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_node_permission_value_error",
+        "isRecordTimes": true,
+        "message": "api_node_permission_value_error",
+        "statusCode": 200
+      },
+      "api_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 404,
+        "id": "api_not_exists",
+        "message": "api_not_exists",
+        "statusCode": 404
+      },
+      "api_param_add_widget_btn_type_error": {
+        "code": 400,
+        "id": "api_param_add_widget_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_add_widget_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_api_btn_type_error": {
+        "code": 400,
+        "id": "api_param_api_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_api_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_attachment_array_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_attachment_array_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_attachment_array_type_error",
+        "statusCode": 200
+      },
+      "api_param_attachment_name_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_attachment_name_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_attachment_name_type_error",
+        "statusCode": 200
+      },
+      "api_param_attachment_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_attachment_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_attachment_not_exists",
+        "statusCode": 200
+      },
+      "api_param_attachment_token_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_attachment_token_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_attachment_token_type_error",
+        "statusCode": 200
+      },
+      "api_param_basic_tools_type_error": {
+        "code": 400,
+        "id": "api_param_basic_tools_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_basic_tools_type_error",
+        "statusCode": 200
+      },
+      "api_param_checkbox_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_checkbox_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_checkbox_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_collaborator_status_bar_type_error": {
+        "code": 400,
+        "id": "api_param_collaborator_status_bar_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_collaborator_status_bar_type_error",
+        "statusCode": 200
+      },
+      "api_param_collapsed_type_error": {
+        "code": 400,
+        "id": "api_param_collapsed_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_collapsed_type_error",
+        "statusCode": 200
+      },
+      "api_param_currency_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_currency_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_currency_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_datetime_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_datetime_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_datetime_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_default_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_default_error",
+        "isRecordTimes": true,
+        "message": "api_param_default_error",
+        "statusCode": 200
+      },
+      "api_param_email_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_email_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_email_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_embed_link_id_not_empty": {
+        "code": 400,
+        "id": "api_param_embed_link_id_not_empty",
+        "isRecordTimes": true,
+        "message": "api_param_embed_link_id_not_empty",
+        "statusCode": 200
+      },
+      "api_param_embed_permission_type_error": {
+        "code": 400,
+        "id": "api_param_embed_permission_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_embed_permission_type_error",
+        "statusCode": 200
+      },
+      "api_param_form_btn_type_error": {
+        "code": 400,
+        "id": "api_param_form_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_form_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_form_setting_btn_type_error": {
+        "code": 400,
+        "id": "api_param_form_setting_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_form_setting_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_formula_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_error",
+        "isRecordTimes": true,
+        "message": "api_param_formula_error",
+        "statusCode": 200
+      },
+      "api_param_formula_function_content_empty": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_content_empty",
+        "isRecordTimes": true,
+        "message": "function_content_empty",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_end_of_right_bracket": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_end_of_right_bracket",
+        "isRecordTimes": true,
+        "message": "function_err_end_of_right_bracket",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_no_left_bracket": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_no_left_bracket",
+        "isRecordTimes": true,
+        "message": "function_err_no_left_bracket",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_no_ref_self_column": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_no_ref_self_column",
+        "isRecordTimes": true,
+        "message": "function_err_no_ref_self_column",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_not_definition": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_not_definition",
+        "isRecordTimes": true,
+        "message": "function_err_not_definition",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_unable_parse_char": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_unable_parse_char",
+        "isRecordTimes": true,
+        "message": "function_err_unable_parse_char",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_unknown_operator": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_unknown_operator",
+        "isRecordTimes": true,
+        "message": "function_err_unknown_operator",
+        "statusCode": 200
+      },
+      "api_param_formula_function_err_wrong_function_suffix": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_formula_function_err_wrong_function_suffix",
+        "isRecordTimes": true,
+        "message": "function_err_wrong_function_suffix",
+        "statusCode": 200
+      },
+      "api_param_full_screen_btn_type_error": {
+        "code": 400,
+        "id": "api_param_full_screen_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_full_screen_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_history_btn_type_error": {
+        "code": 400,
+        "id": "api_param_history_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_history_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_invalid_rating_field": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_invalid_rating_field",
+        "isRecordTimes": true,
+        "message": "api_param_invalid_rating_field",
+        "statusCode": 200
+      },
+      "api_param_invalid_record_id_value": {
+        "code": 400,
+        "id": "api_param_invalid_record_id_value",
+        "isRecordTimes": true,
+        "message": "api_param_invalid_record_id_value",
+        "statusCode": 200
+      },
+      "api_param_invalid_space_id_value": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_invalid_space_id_value",
+        "message": "api_param_invalid_space_id_value",
+        "statusCode": 200
+      },
+      "api_param_link_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_link_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_link_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_member_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_member_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_member_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_member_id_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_member_id_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_member_id_type_error",
+        "statusCode": 200
+      },
+      "api_param_multiselect_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_multiselect_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_multiselect_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_multiselect_field_value_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_multiselect_field_value_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_multiselect_field_value_type_error",
+        "statusCode": 200
+      },
+      "api_param_node_id_not_empty_key": {
+        "code": 400,
+        "id": "api_param_node_id_not_empty_key",
+        "isRecordTimes": true,
+        "message": "api_param_node_id_not_empty_key",
+        "statusCode": 200
+      },
+      "api_param_node_info_bar_type_error": {
+        "code": 400,
+        "id": "api_param_node_info_bar_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_node_info_bar_type_error",
+        "statusCode": 200
+      },
+      "api_param_number_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_number_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_number_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_payload_banner_logo_type_error": {
+        "code": 400,
+        "id": "api_param_payload_banner_logo_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_payload_banner_logo_type_error",
+        "statusCode": 200
+      },
+      "api_param_payload_editable_type_error": {
+        "code": 400,
+        "id": "api_param_payload_editable_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_payload_editable_type_error",
+        "statusCode": 200
+      },
+      "api_param_percent_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_percent_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_percent_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_phone_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_phone_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_phone_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_rating_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_rating_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_rating_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_record_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_record_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_record_not_exists",
+        "statusCode": 200
+      },
+      "api_param_robot_btn_type_error": {
+        "code": 400,
+        "id": "api_param_robot_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_robot_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_select_field_value_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_select_field_value_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_select_field_value_type_error",
+        "statusCode": 200
+      },
+      "api_param_share_btn_type_error": {
+        "code": 400,
+        "id": "api_param_share_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_share_btn_type_error",
+        "statusCode": 200
+      },
+      "api_param_singletext_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_singletext_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_singletext_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_sort_missing_field": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_sort_missing_field",
+        "isRecordTimes": true,
+        "message": "api_param_sort_missing_field",
+        "statusCode": 200
+      },
+      "api_param_sort_field_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_sort_field_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_sort_field_not_exists",
+        "statusCode": 200
+      },
+      "api_param_filter_field_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_filter_field_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_filter_field_not_exists",
+        "statusCode": 200
+      },
+      "api_param_tabbar_type_error": {
+        "code": 400,
+        "id": "api_param_tabbar_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_tabbar_type_error",
+        "statusCode": 200
+      },
+      "api_param_text_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_text_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_text_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_theme_type_error": {
+        "code": 400,
+        "id": "api_param_theme_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_theme_type_error",
+        "statusCode": 200
+      },
+      "api_param_toolbar_type_error": {
+        "code": 400,
+        "id": "api_param_toolbar_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_toolbar_type_error",
+        "statusCode": 200
+      },
+      "api_param_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_type_error",
+        "statusCode": 200
+      },
+      "api_param_unit_name_type_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_unit_name_type_not_exists",
+        "message": "api_param_unit_name_type_not_exists",
+        "statusCode": 200
+      },
+      "api_param_unit_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_unit_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_unit_not_exists",
+        "statusCode": 200
+      },
+      "api_param_url_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_url_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_url_field_type_error",
+        "statusCode": 200
+      },
+      "api_param_view_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_view_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_view_not_exists",
+        "statusCode": 200
+      },
+      "api_param_viewid_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_viewid_empty_error",
+        "isRecordTimes": true,
+        "message": "api_param_viewid_empty_error",
+        "statusCode": 200
+      },
+      "api_param_viewid_type_error": {
+        "code": 400,
+        "id": "api_param_viewid_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_viewid_type_error",
+        "statusCode": 200
+      },
+      "api_param_viewids_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_viewids_empty_error",
+        "isRecordTimes": true,
+        "message": "api_param_viewids_empty_error",
+        "statusCode": 200
+      },
+      "api_param_widget_btn_type_error": {
+        "code": 400,
+        "id": "api_param_widget_btn_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_widget_btn_type_error",
+        "statusCode": 200
+      },
+      "api_params_automumber_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_automumber_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_automumber_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_cellformat_error": {
+        "code": 400,
+        "id": "api_params_cellformat_error",
+        "isRecordTimes": true,
+        "message": "api_params_cellformat_error",
+        "statusCode": 200
+      },
+      "api_params_created_time_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_created_time_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_created_time_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_createdby_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_createdby_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_createdby_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_empty_error",
+        "isRecordTimes": true,
+        "message": "api_params_empty_error",
+        "statusCode": 200
+      },
+      "api_params_formula_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_formula_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_formula_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_instance_attachment_name_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_attachment_name_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_attachment_name_error",
+        "statusCode": 200
+      },
+      "api_params_instance_attachment_token_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_attachment_token_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_attachment_token_error",
+        "statusCode": 200
+      },
+      "api_params_instance_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_error",
+        "statusCode": 200
+      },
+      "api_params_instance_fields_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_fields_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_fields_error",
+        "statusCode": 200
+      },
+      "api_params_instance_member_name_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_member_name_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_member_name_error",
+        "statusCode": 200
+      },
+      "api_params_instance_member_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_member_type_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_member_type_error",
+        "statusCode": 200
+      },
+      "api_params_instance_recordid_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_recordid_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_recordid_error",
+        "statusCode": 200
+      },
+      "api_params_instance_sort_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_instance_sort_error",
+        "isRecordTimes": true,
+        "message": "api_params_instance_sort_error",
+        "statusCode": 200
+      },
+      "api_params_instance_space_id_error": {
+        "code": 400,
+        "id": "api_params_instance_space_id_error",
+        "message": "api_params_instance_space_id_error",
+        "statusCode": 200
+      },
+      "api_params_invalid_field_key": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_field_key",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_field_key",
+        "statusCode": 200
+      },
+      "api_params_invalid_field_type": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_field_type",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_field_type",
+        "statusCode": 200
+      },
+      "api_params_invalid_fields_value": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_fields_value",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_fields_value",
+        "statusCode": 200
+      },
+      "api_params_invalid_order_sort": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_order_sort",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_order_sort",
+        "statusCode": 200
+      },
+      "api_params_invalid_primary_field_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_primary_field_type_error",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_primary_field_type_error",
+        "statusCode": 200
+      },
+      "api_params_invalid_value": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_invalid_value",
+        "isRecordTimes": true,
+        "message": "api_params_invalid_value",
+        "statusCode": 200
+      },
+      "api_params_link_field_record_ids_must_unique": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_link_field_record_ids_must_unique",
+        "isRecordTimes": true,
+        "statusCode": 200
+      },
+      "api_params_link_field_recordids_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_link_field_recordids_empty_error",
+        "isRecordTimes": true,
+        "message": "api_params_link_field_recordids_empty_error",
+        "statusCode": 200
+      },
+      "api_params_link_field_recordids_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_link_field_recordids_not_exists",
+        "isRecordTimes": true,
+        "message": "api_params_link_field_recordids_not_exists",
+        "statusCode": 200
+      },
+      "api_params_link_field_records_max_count_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_link_field_records_max_count_error",
+        "isRecordTimes": true,
+        "message": "api_params_link_field_records_max_count_error",
+        "statusCode": 200
+      },
+      "api_params_lookup_related_link_field_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_related_link_field_not_exists",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_related_link_field_not_exists",
+        "statusCode": 200
+      },
+      "api_params_lookup_related_field_not_link": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_related_field_not_link",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_related_field_not_link",
+        "statusCode": 200
+      },
+      "api_params_lookup_target_field_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_target_field_not_exists",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_target_field_not_exists",
+        "statusCode": 200
+      },
+      "api_params_lookup_sort_field_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_sort_field_not_exists",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_sort_field_not_exists",
+        "statusCode": 200
+      },
+      "api_params_lookup_field_can_not_sort": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_field_can_not_sort",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_field_can_not_sort",
+        "statusCode": 200
+      },
+      "api_params_lookup_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_lookup_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_lookup_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_max_count_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_max_count_error",
+        "isRecordTimes": true,
+        "message": "api_params_max_count_error",
+        "statusCode": 200
+      },
+      "api_params_max_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_max_error",
+        "isRecordTimes": true,
+        "message": "api_params_max_error",
+        "statusCode": 200
+      },
+      "api_params_max_length_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_max_length_error",
+        "isRecordTimes": true,
+        "message": "api_params_max_length_error",
+        "statusCode": 200
+      },
+      "api_params_maxrecords_min_error": {
+        "code": 400,
+        "id": "api_params_maxrecords_min_error",
+        "statusCode": 200
+      },
+      "api_params_member_field_records_max_count_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_member_field_records_max_count_error",
+        "isRecordTimes": true,
+        "message": "api_params_member_field_records_max_count_error",
+        "statusCode": 200
+      },
+      "api_params_min_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_min_error",
+        "isRecordTimes": true,
+        "message": "api_params_min_error",
+        "statusCode": 200
+      },
+      "api_params_multiselect_field_record_ids_must_unique": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_multiselect_field_record_ids_must_unique",
+        "isRecordTimes": true,
+        "statusCode": 200
+      },
+      "api_params_must_unique": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_must_unique",
+        "isRecordTimes": true,
+        "message": "api_params_must_unique",
+        "statusCode": 200
+      },
+      "api_params_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_not_exists",
+        "isRecordTimes": true,
+        "message": "api_params_not_exists",
+        "statusCode": 200
+      },
+      "api_params_pagenum_min_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_pagenum_min_error",
+        "isRecordTimes": true,
+        "message": "api_params_pagenum_min_error",
+        "statusCode": 200
+      },
+      "api_params_pagesize_max_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_pagesize_max_error",
+        "isRecordTimes": true,
+        "message": "api_params_pagesize_max_error",
+        "statusCode": 200
+      },
+      "api_params_pagesize_min_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_pagesize_min_error",
+        "isRecordTimes": true,
+        "message": "api_params_pagesize_min_error",
+        "statusCode": 200
+      },
+      "api_params_primary_field_not_allowed_to_delete": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_primary_field_not_allowed_to_delete",
+        "isRecordTimes": true,
+        "message": "api_params_primary_field_not_allowed_to_delete",
+        "statusCode": 200
+      },
+      "api_params_rating_field_max_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_rating_field_max_error",
+        "isRecordTimes": true,
+        "message": "api_params_rating_field_max_error",
+        "statusCode": 200
+      },
+      "api_params_record_ids_must_unique": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_record_ids_must_unique",
+        "isRecordTimes": true,
+        "statusCode": 200
+      },
+      "api_params_recordids_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_recordids_empty_error",
+        "isRecordTimes": true,
+        "message": "api_params_recordids_empty_error",
+        "statusCode": 200
+      },
+      "api_params_records_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_records_empty_error",
+        "isRecordTimes": true,
+        "message": "api_params_records_empty_error",
+        "statusCode": 200
+      },
+      "api_params_records_max_count_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_records_max_count_error",
+        "isRecordTimes": true,
+        "message": "api_params_records_max_count_error",
+        "statusCode": 200
+      },
+      "api_params_tree_select_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_tree_select_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_tree_select_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_updated_time_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_updated_time_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_updated_time_can_not_operate",
+        "statusCode": 200
+      },
+      "api_params_updatedby_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_updatedby_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_updatedby_can_not_operate",
+        "statusCode": 200
+      },
+      "api_query_params_invalid_fields": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_query_params_invalid_fields",
+        "isRecordTimes": true,
+        "message": "api_query_params_invalid_fields",
+        "statusCode": 200
+      },
+      "api_query_params_view_id_not_exists": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_query_params_view_id_not_exists",
+        "isRecordTimes": true,
+        "message": "api_query_params_view_id_not_exists",
+        "statusCode": 200
+      },
+      "api_request_success": {
+        "apiTypes": "fusion_api",
+        "code": 200,
+        "id": "api_request_success",
+        "isRecordTimes": true,
+        "message": "api_request_success",
+        "statusCode": 200
+      },
+      "api_server_error": {
+        "apiTypes": "fusion_api",
+        "code": 500,
+        "id": "api_server_error",
+        "message": "api_server_error",
+        "statusCode": 500
+      },
+      "api_set_view_lock_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_set_view_lock_error",
+        "isRecordTimes": true,
+        "message": "api_set_view_lock_error",
+        "statusCode": 200
+      },
+      "api_space_capacity_over_limit": {
+        "apiTypes": "fusion_api",
+        "code": 426,
+        "id": "api_space_capacity_over_limit",
+        "isRecordTimes": true,
+        "message": "api_space_capacity_over_limit",
+        "statusCode": 200
+      },
+      "api_unauthorized": {
+        "apiTypes": "fusion_api",
+        "code": 401,
+        "id": "api_unauthorized",
+        "message": "api_unauthorized",
+        "statusCode": 401
+      },
+      "api_update_error": {
+        "apiTypes": "fusion_api",
+        "code": 212,
+        "id": "api_update_error",
+        "isRecordTimes": true,
+        "message": "api_update_error",
+        "statusCode": 200
+      },
+      "api_upload_attachment_error": {
+        "apiTypes": "fusion_api",
+        "code": 426,
+        "id": "api_upload_attachment_error",
+        "isRecordTimes": true,
+        "message": "api_upload_attachment_error",
+        "statusCode": 200
+      },
+      "api_upload_attachment_exceed_capacity_limit": {
+        "apiTypes": "fusion_api",
+        "code": 428,
+        "id": "api_upload_attachment_exceed_capacity_limit",
+        "isRecordTimes": true,
+        "message": "api_upload_attachment_exceed_capacity_limit",
+        "statusCode": 200
+      },
+      "api_upload_attachment_exceed_limit": {
+        "apiTypes": "fusion_api",
+        "code": 428,
+        "id": "api_upload_attachment_exceed_limit",
+        "isRecordTimes": true,
+        "message": "api_upload_attachment_exceed_limit",
+        "statusCode": 200
+      },
+      "api_upload_attachment_not_editable": {
+        "apiTypes": "fusion_api",
+        "code": 602,
+        "id": "api_upload_attachment_not_editable",
+        "isRecordTimes": true,
+        "message": "api_upload_attachment_not_editable",
+        "statusCode": 200
+      },
+      "api_upload_attachment_oversize": {
+        "apiTypes": "fusion_api",
+        "code": 428,
+        "id": "api_upload_attachment_oversize",
+        "isRecordTimes": true,
+        "message": "api_upload_attachment_oversize",
+        "statusCode": 200
+      },
+      "api_upload_invalid_file": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_upload_invalid_file",
+        "isRecordTimes": true,
+        "message": "api_upload_invalid_file",
+        "statusCode": 200
+      },
+      "api_upload_invalid_file_name": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_upload_invalid_file_name",
+        "isRecordTimes": true,
+        "message": "api_upload_invalid_file_name",
+        "statusCode": 200
+      },
+      "api_view_fieldid_not_exist": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_fieldid_not_exist",
+        "isRecordTimes": true,
+        "message": "api_view_fieldid_not_exist",
+        "statusCode": 200
+      },
+      "api_view_filter_conditions_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_filter_conditions_empty_error",
+        "isRecordTimes": true,
+        "message": "api_view_filter_conditions_empty_error",
+        "statusCode": 200
+      },
+      "api_view_filter_operator_not_support": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_filter_operator_not_support",
+        "isRecordTimes": true,
+        "message": "api_view_filter_operator_not_support",
+        "statusCode": 200
+      },
+      "api_view_filter_operator_value_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_filter_operator_value_error",
+        "isRecordTimes": true,
+        "message": "api_view_filter_operator_value_error",
+        "statusCode": 200
+      },
+      "api_view_rules_empty_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_rules_empty_error",
+        "isRecordTimes": true,
+        "message": "api_view_rules_empty_error",
+        "statusCode": 200
+      },
+      "api_view_type_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_view_type_error",
+        "isRecordTimes": true,
+        "message": "api_view_type_error",
+        "statusCode": 200
+      },
+      "api_org_enterprise_limit": {
+        "code": 1503,
+        "id": "api_org_enterprise_limit",
+        "isRecordTimes": true,
+        "message": "api_org_enterprise_limit",
+        "statusCode": 200
+      },
+      "api_org_permission_team_deny": {
+        "code": 1504,
+        "id": "api_org_permission_team_deny",
+        "isRecordTimes": true,
+        "message": "api_org_permission_team_deny",
+        "statusCode": 200
+      },
+      "api_org_permission_member_deny": {
+        "code": 1505,
+        "id": "api_org_permission_member_deny",
+        "isRecordTimes": true,
+        "message": "api_org_permission_member_deny",
+        "statusCode": 200
+      },
+      "api_org_team_name_unique_error": {
+        "code": 1506,
+        "id": "api_org_team_name_unique_error",
+        "isRecordTimes": true,
+        "message": "api_org_team_name_unique_error",
+        "statusCode": 200
+      },
+      "api_org_team_delete_error": {
+        "code": 1507,
+        "id": "api_org_team_delete_error",
+        "isRecordTimes": true,
+        "message": "api_org_team_delete_error",
+        "statusCode": 200
+      },
+      "api_org_permission_role_deny": {
+        "code": 1508,
+        "id": "api_org_permission_role_deny",
+        "isRecordTimes": true,
+        "message": "api_org_permission_role_deny",
+        "statusCode": 200
+      },
+      "api_org_role_name_unique_error": {
+        "code": 1509,
+        "id": "api_org_role_name_unique_error",
+        "isRecordTimes": true,
+        "message": "api_org_role_name_unique_error",
+        "statusCode": 200
+      },
+      "api_org_role_delete_error": {
+        "code": 1520,
+        "id": "api_org_role_delete_error",
+        "isRecordTimes": true,
+        "message": "api_org_role_delete_error",
+        "statusCode": 200
+      },
+      "api_org_member_team_error": {
+        "code": 1521,
+        "id": "api_org_member_team_error",
+        "isRecordTimes": true,
+        "message": "api_org_member_team_error",
+        "statusCode": 200
+      },
+      "api_org_update_deny_for_social_space": {
+        "code": 1522,
+        "id": "api_org_update_deny_for_social_space",
+        "isRecordTimes": true,
+        "message": "api_org_update_deny_for_social_space",
+        "statusCode": 200
+      },
+      "api_org_member_role_error": {
+        "code": 1523,
+        "id": "api_org_member_role_error",
+        "isRecordTimes": true,
+        "message": "api_org_member_role_error",
+        "statusCode": 200
+      },
+      "api_org_member_delete_primary_admin_error": {
+        "code": 1524,
+        "id": "api_org_member_delete_primary_admin_error",
+        "isRecordTimes": true,
+        "message": "api_org_member_delete_primary_admin_error",
+        "statusCode": 200
+      },
+      "api_param_unit_name_required": {
+        "code": 400,
+        "id": "api_param_unit_name_required",
+        "isRecordTimes": true,
+        "message": "api_param_unit_name_required",
+        "statusCode": 200
+      },
+      "api_param_sequence_type_error": {
+        "code": 400,
+        "id": "api_param_sequence_type_error",
+        "isRecordTimes": true,
+        "message": "api_param_sequence_type_error",
+        "statusCode": 200
+      },
+      "api_param_parent_unit_not_exists": {
+        "code": 400,
+        "id": "api_param_parent_unit_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_parent_unit_not_exists",
+        "statusCode": 200
+      },
+      "api_param_unit_id_required": {
+        "code": 400,
+        "id": "api_param_unit_id_required",
+        "isRecordTimes": true,
+        "message": "api_param_unit_id_required",
+        "statusCode": 200
+      },
+      "api_param_widget_id_not_exists": {
+        "code": 1525,
+        "id": "api_param_widget_id_not_exists",
+        "isRecordTimes": true,
+        "message": "api_param_widget_id_not_exists",
+        "statusCode": 200
+      },
+      "api_params_widget_package_id_error": {
+        "code": 400,
+        "id": "api_params_widget_package_id_error",
+        "isRecordTimes": false,
+        "message": "api_params_widget_package_id_error",
+        "statusCode": 200
+      },
+      "api_widget_number_limit": {
+        "code": 1526,
+        "id": "api_widget_number_limit",
+        "isRecordTimes": true,
+        "message": "api_widget_number_limit",
+        "statusCode": 200
+      }
+    }
+  }
+}

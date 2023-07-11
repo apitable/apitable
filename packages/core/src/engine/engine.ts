@@ -20,15 +20,16 @@ import { UndoManager } from 'command_manager';
 import { CollaCommandName } from 'commands';
 import { IJOTAction, ILocalChangeset, IOperation, IRemoteChangeset, jot } from 'engine';
 import { ViewPropertyFilter } from 'engine/view_property_filter';
-import { ModalType, ResourceType } from 'types';
+import { FieldType, ModalType, ResourceType } from 'types';
 import { ErrorCode, ErrorType, IError } from 'types/error_types';
 import { DatasheetApi } from '../exports/api';
 import { Strings, t } from '../exports/i18n';
 import { IChangesetPack, INetworking } from '../exports/store';
-import { updateRevision } from '../exports/store/actions';
-import { getResourcePack } from '../exports/store/selectors';
+import { getSubscriptionsAction, updateRevision } from '../exports/store/actions';
+import { getFieldMap, getResourcePack } from '../exports/store/selectors';
 import { Events, Player } from '../modules/shared/player';
 import { BufferStorage, ILsStore } from './buffer_storage';
+import { testPath } from '../event_manager';
 
 export interface IEngineEvent {
   onAcceptSystemOperations: (op: IOperation[]) => void;
@@ -210,6 +211,42 @@ export class Engine {
   }
 
   /**
+   * Member remote changeset update record subscriptions
+   * @param remoteChangeset
+   */
+  handleSubscriptions(remoteChangeset: IRemoteChangeset) {
+    let hasCreatedFieldWithSubscription = false;
+    let otherCmdTriggerSubscription = false;
+
+    const fieldMap = getFieldMap(this.getState(), this.resourceId);
+    remoteChangeset.operations.forEach(op => {
+      // AddRecords
+      if (op.cmd === CollaCommandName.AddRecords) {
+        if (fieldMap && Object.values(fieldMap).some(field => field.type === FieldType.CreatedBy && field.property.subscription)) {
+          hasCreatedFieldWithSubscription = true;
+          return;
+        }
+      } else {
+        // other command
+        op.actions.map(action => {
+          const path = testPath(action.p, ['recordMap', ':recordId', 'data', ':fieldId']);
+          if (path.pass) {
+            const field = fieldMap?.[path.fieldId];
+            if (field?.type === FieldType.Member && Boolean(field.property.subscription)) {
+              otherCmdTriggerSubscription = true;
+              return;
+            }
+          }
+        });
+      }
+    });
+
+    if (hasCreatedFieldWithSubscription || otherCmdTriggerSubscription) {
+      this.dispatch(getSubscriptionsAction(this.resourceId));
+    }
+  }
+
+  /**
     * The submitted changeset is accepted by the service
     */
   async handleAcceptCommit(remoteChangeset: IRemoteChangeset) {
@@ -236,6 +273,7 @@ export class Engine {
       if (filteredOperations.length) {
         this.event.onAcceptSystemOperations(filteredOperations);
       }
+      this.handleSubscriptions(remoteChangeset);
 
       this.dispatch(updateRevision(revision + 1, this.resourceId, this.resourceType));
       return;

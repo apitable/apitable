@@ -1099,4 +1099,14 @@
             #{item}
         </foreach>
     </select>
+
+    <select id="selectMemberNameAndUserIdAndIsActiveByIds" resultType="com.apitable.organization.dto.MemberUserDTO">
+        SELECT id, user_id, member_name, is_active, is_admin
+        FROM ${tablePrefix}unit_member
+        WHERE id IN
+        <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
 </mapper>

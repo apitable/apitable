@@ -182,4 +182,19 @@
             #{item}
         </foreach>
     </delete>
+
+    <select id="selectMemberIdsByTeamIdAndPage" resultType="java.lang.Long">
+        SELECT member_id
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE team_id = #{teamId}
+    </select>
+
+    <select id="selectTeamIdsByMemberIds" resultType="com.apitable.organization.entity.TeamMemberRelEntity">
+        SELECT team_id, member_id
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

@@ -21,9 +21,9 @@
     <a target="_blank" href="https://github.com/apitable/apitable/releases/latest">
         <img src="https://img.shields.io/github/v/release/apitable/apitable" />
     </a>
-    <!-- Render -->
-    <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/render-deploy-5364e9" />
+    <!-- Deploy to DO -->
+    <a target="_blank" href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/apitable/apitable/tree/develop&refcode=3fe758500293">
+        <img src="https://img.shields.io/badge/DigitalOcean-deploy-5364e9" alt="Deploy to DO" />
     </a>
     <br />
     <!-- LICENSE -->
@@ -157,7 +157,7 @@ APITable provides a range of amazing features, from the personal to the enterpri
   - **100k+** data rows with real-time collaboration.
   - Full-stack API access, from `Data` to `Metadata`.
   - One-direction / Bi-direction Table Link and `Infinite Cross Links`
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Beautiful and Rich Database-Spreadsheet UI
   - `CRUD`: Create, Read, Update, Delete the Tables, Columns, and Rows
   - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
@@ -318,7 +318,6 @@ APITable use these common conventions:
 - How to versioning and tagging? [Semantic Versioning](https://semver.org/)
 - What is the Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### Documentations
 

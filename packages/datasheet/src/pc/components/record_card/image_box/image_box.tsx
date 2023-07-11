@@ -107,6 +107,7 @@ export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
                     src={imgSrc}
                     height={thumbHeight}
                     width={imgWidth}
+                    alt=""
                   />
                 </span>)}
               </div> :

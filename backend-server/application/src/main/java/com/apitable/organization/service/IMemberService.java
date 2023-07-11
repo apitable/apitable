@@ -18,10 +18,6 @@
 
 package com.apitable.organization.service;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.dto.UploadDataDTO;
@@ -32,7 +28,8 @@ import com.apitable.organization.ro.UpdateMemberRo;
 import com.apitable.organization.vo.MemberBriefInfoVo;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.UploadParseResultVO;
-
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IMemberService extends IService<MemberEntity> {
@@ -634,8 +631,17 @@ public interface IMemberService extends IService<MemberEntity> {
     /**
      * active space if user has be invited to another space
      *
-     * @param userId user id
+     * @param userId    user id
      * @param memberIds member id list
      */
     void activeIfExistInvitationSpace(Long userId, List<Long> memberIds);
+
+    /**
+     * get member id.
+     *
+     * @param spaceId space id
+     * @param unitId  member unit id
+     * @return member id
+     */
+    Long getMemberIdByUnitId(String spaceId, String unitId);
 }

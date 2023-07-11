@@ -39,7 +39,7 @@ public class ConstProperties {
 
     public static final String PREFIX_CONST = "const";
 
-    private String languageTag = "zh-CN";
+    private String languageTag = "en-US";
 
     private String serverDomain;
 

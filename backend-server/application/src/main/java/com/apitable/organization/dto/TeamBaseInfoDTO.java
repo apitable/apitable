@@ -26,4 +26,10 @@ public class TeamBaseInfoDTO {
     private Long id;
 
     private String teamName;
+
+    private Integer sequence;
+
+    private Long parentId;
+
+    private String spaceId;
 }

@@ -388,7 +388,8 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
       setTaskPosition({ x: curX, y: curY });
       onTooltipShow(curX, taskWidth, pointX, pointY + 20);
     };
-    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
+    const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) =>
+      setTaskPosition({ x: scrollLeft + pointX - gridWidth - distanceToTaskLeft, y: curY });
     const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setTaskPosition({ x: curX, y: scrollTop + pointY - distanceToTaskTop });
     const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number, scrollTop: number }) => setTaskPosition({
       x: scrollLeft + pointX - gridWidth - distanceToTaskLeft,

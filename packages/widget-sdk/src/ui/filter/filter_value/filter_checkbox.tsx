@@ -21,7 +21,7 @@ export const FilterCheckbox: React.FC<IFilterCheckboxProps> = props => {
         }}
       >
         <Emoji
-          emoji={field.property.icon}
+          emoji={field.property.icon ?? ConfigConstant.DEFAULT_CHECK_ICON}
           size={ConfigConstant.CELL_EMOJI_SIZE}
         />
       </div>

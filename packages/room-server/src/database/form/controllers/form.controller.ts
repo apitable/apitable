@@ -38,7 +38,8 @@ export class FormController {
     private readonly nodeShareSettingService: NodeShareSettingService,
   ) { }
 
-  @Get(['forms/:formId/dataPack', 'form/:formId/dataPack'])
+  //TODO: remove `form/:formId/dataPack` path after release/0.22.0
+  @Get(['forms/:formId/meta', 'forms/:formId/dataPack', 'form/:formId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(@Headers('cookie') cookie: string, @Param('formId') formId: string): Promise<FormDataPack> {
     // check if the current user is belonging to this space
@@ -47,7 +48,7 @@ export class FormController {
     return await this.formService.fetchDataPack(formId, { cookie });
   }
 
-  @Get(['shares/:shareId/forms/:formId/dataPack', 'share/:shareId/form/:formId/dataPack'])
+  @Get(['shares/:shareId/forms/:formId/meta', 'shares/:shareId/forms/:formId/dataPack', 'share/:shareId/form/:formId/dataPack'])
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDataPack(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('formId') formId: string
@@ -60,7 +61,7 @@ export class FormController {
     return await this.formService.fetchShareDataPack(formId, shareId, userId, { cookie });
   }
 
-  @Get(['templates/:templateId/forms/:formId/dataPack', 'template/:templateId/form/:formId/dataPack'])
+  @Get(['templates/:templateId/forms/:formId/meta', 'templates/:templateId/forms/:formId/dataPack', 'template/:templateId/form/:formId/dataPack'])
   async getTemplateDataPack(
     @Headers('cookie') cookie: string, @Param('templateId') templateId: string, @Param('formId') formId: string
   ): Promise<FormDataPack> {
@@ -71,13 +72,13 @@ export class FormController {
     return await this.formService.fetchDataPack(formId, { cookie }, templateId);
   }
 
-  @Get(['forms/:formId/submitStatus', 'form/:formId/submitStatus'])
+  @Get('forms/:formId/submitStatus')
   async fetchSubmitStatus(@Headers('cookie') cookie: string, @Param('formId') formId: string): Promise<boolean> {
     const { userId } = await this.userService.getMe({ cookie });
     return await this.formService.fetchSubmitStatus(userId, formId);
   }
 
-  @Post(['forms/:formId/addRecord', 'form/:formId/addRecord'])
+  @Post('forms/:formId/addRecord')
   async addFormRecord(
     @Headers('cookie') cookie: string, @Param('formId') formId: string, @Body() recordData: IRecordCellValue
   ): Promise<any> {
@@ -86,7 +87,7 @@ export class FormController {
     return await this.formService.addRecord({ formId, userId, recordData }, { cookie });
   }
 
-  @Post(['shares/:shareId/forms/:formId/addRecord', 'share/:shareId/form/:formId/addRecord'])
+  @Post('shares/:shareId/forms/:formId/addRecord')
   async addShareFormRecord(
     @Headers('cookie') cookie: string, @Param('shareId') shareId: string, @Param('formId') formId: string, @Body() recordData: IRecordCellValue
   ): Promise<any> {
@@ -103,14 +104,14 @@ export class FormController {
     return await this.formService.addRecord({ formId, shareId, userId, recordData }, { cookie });
   }
 
-  @Get(['forms/:formId/props', 'form/:formId/props'])
+  @Get('forms/:formId/props')
   async getFormProps(@Headers('cookie') cookie: string, @Param('formId') formId: string): Promise<any> {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, formId);
     return await this.formService.fetchFormProps(formId);
   }
 
-  @Post(['forms/:formId/props', 'form/:formId/props'])
+  @Post('forms/:formId/props')
   async updateFormProps(@Headers('cookie') cookie: string, @Param('formId') formId: string, @Body() formProps: IFormProps): Promise<any> {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, formId);

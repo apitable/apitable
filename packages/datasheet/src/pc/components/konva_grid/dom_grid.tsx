@@ -66,6 +66,7 @@ import { GroupMenu } from './components';
 import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
 import styles from './style.module.less';
+import { UrlActionContainer } from './components/url_action_container';
 import { MouseDownType } from '../multi_grid';
 
 interface IDomGridBaseProps {
@@ -103,7 +104,10 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   const { x: pointX, y: pointY, rowIndex: pointRowIndex, columnIndex: pointColumnIndex, targetName, realTargetName } = pointPosition;
 
   const { scrollLeft, scrollTop, isScrolling } = scrollState;
-  const { tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState, setCellScrollState, scrollHandler } = useContext(
+  const {
+    tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState,
+    setCellScrollState, scrollHandler, activeUrlAction
+  } = useContext(
     KonvaGridContext,
   );
   const { totalHeight: cellTotalHeight, isOverflow } = cellScrollState;
@@ -792,6 +796,17 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
       {/* Field Description */}
       {activeFieldId && activeFieldOperateType === FieldOperateType.FieldDesc && !document.querySelector(`.${EXPAND_RECORD}`) && (
         <FieldDesc fieldId={activeFieldId} datasheetId={datasheetId} readOnly={!permissions.descriptionEditable} />
+      )}
+      {activeUrlAction && (
+        <UrlActionContainer
+          rectCalculator={rectCalculator}
+          activeCell={activeCell}
+          recordId={selectRecord?.id}
+          fieldId={selectField?.id}
+          datasheetId={datasheetId}
+          scrollLeft={scrollLeft}
+          scrollTop={scrollTop}
+        />
       )}
     </>
   );

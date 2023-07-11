@@ -41,7 +41,7 @@ export class CascaderController {
     private readonly nodeService: NodeService,
   ) {}
 
-  @Get(['spaces/:spaceId/datasheets/:datasheetId/cascader'])
+  @Get(['spaces/:spaceId/datasheets/:dstId/cascader'])
   @ApiOperation({
     summary: 'Get datasheet cascader data struct',
   })
@@ -49,10 +49,10 @@ export class CascaderController {
   @ApiOkResponse({ type: CascaderVo })
   public async cascader(@Headers('cookie') cookie: string, @Param() param: CascaderParam, @Query() query: CascaderQueryRo): Promise<CascaderVo> {
     const { userId } = await this.userService.getMe({ cookie });
-    return await this.datasheetFieldCascaderService.cascaderPack({ cookie, userId }, param.datasheetId, query.linkedViewId, query.linkedFieldIds);
+    return await this.datasheetFieldCascaderService.cascaderPack({ cookie, userId }, param.dstId, query.linkedViewId, query.linkedFieldIds);
   }
 
-  @Get(['datasheets/:datasheetId/fields/:fieldId/cascader-snapshot'])
+  @Get(['datasheets/:dstId/fields/:fieldId/cascader-snapshot'])
   @ApiOperation({
     summary: 'Get datasheet snapshot cascader data struct',
   })
@@ -63,13 +63,13 @@ export class CascaderController {
     @Query() query: CascaderSnapshotQueryRo
   ): Promise<CascaderSnapshotVo> {
     return await this.datasheetFieldCascaderSnapshotService.getCascaderSnapshot({
-      datasheetId: param.datasheetId,
+      datasheetId: param.dstId,
       fieldId: param.fieldId,
       linkedFieldIds: query.linkedFieldIds,
     });
   }
 
-  @Put(['spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot'])
+  @Put(['spaces/:spaceId/datasheets/:dstId/fields/:fieldId/cascader-snapshot'])
   @ApiOperation({
     summary: 'Update datasheet snapshot cascader data',
   })
@@ -81,17 +81,17 @@ export class CascaderController {
     @Query() put: CascaderSnapshotPutRo,
   ): Promise<boolean> {
     const { userId } = await this.userService.getMe({ cookie });
-    await this.nodeService.checkUserForNode(userId, param.datasheetId);
+    await this.nodeService.checkUserForNode(userId, param.dstId);
     return await this.datasheetFieldCascaderSnapshotService.updateCascaderSnapshot({ userId, cookie }, userId, {
       spaceId: param.spaceId,
-      datasheetId: param.datasheetId,
+      datasheetId: param.dstId,
       fieldId: param.fieldId,
       linkedDatasheetId: put.linkedDatasheetId,
       linkedViewId: put.linkedViewId,
     });
   }
 
-  @Delete(['spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot'])
+  @Delete(['spaces/:spaceId/datasheets/:dstId/fields/:fieldId/cascader-snapshot'])
   @ApiOperation({
     summary: 'Update datasheet snapshot cascader data',
   })
@@ -102,10 +102,10 @@ export class CascaderController {
     @Param() param: CascaderSnapshotParam,
   ): Promise<boolean> {
     const { userId } = await this.userService.getMe({ cookie });
-    await this.nodeService.checkUserForNode(userId, param.datasheetId);
+    await this.nodeService.checkUserForNode(userId, param.dstId);
     return await this.datasheetFieldCascaderSnapshotService.deleteCascaderSnapshot({
       spaceId: param.spaceId,
-      datasheetId: param.datasheetId,
+      datasheetId: param.dstId,
       fieldId: param.fieldId,
     });
   }

@@ -31,7 +31,7 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/databus';
 
 /**
  * Datasheet APIs
@@ -49,7 +49,7 @@ export class DatasheetController {
     private readonly resourceMetaService: MetaService,
   ) {}
 
-  @Get(['datasheets/:dstId/dataPack', 'datasheet/:dstId/dataPack'])
+  @Get('datasheets/:dstId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getDataPack(
     @Headers('cookie') cookie: string,
@@ -62,7 +62,7 @@ export class DatasheetController {
     return this.datasheetService.fetchDataPack(dstId, { cookie }, true, { recordIds: query.recordIds });
   }
 
-  @Get(['shares/:shareId/datasheets/:dstId/dataPack', 'share/:shareId/datasheet/:dstId/dataPack'])
+  @Get('shares/:shareId/datasheets/:dstId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
   async getShareDataPack(
     @Headers('cookie') cookie: string,
@@ -74,7 +74,7 @@ export class DatasheetController {
     return await this.datasheetService.fetchShareDataPack(shareId, dstId, { cookie }, true);
   }
 
-  @Get(['templates/datasheets/:dstId/dataPack', 'template/datasheet/:dstId/dataPack'])
+  @Get('templates/datasheets/:dstId/dataPack')
   async getTemplateDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<DatasheetPack | DatasheetPackResponse> {
     const isTemplate = await this.nodeService.isTemplate(dstId);
     if (!isTemplate) {
@@ -83,12 +83,12 @@ export class DatasheetController {
     return await this.datasheetService.fetchTemplatePack(dstId, { cookie });
   }
 
-  @Get(['datasheets/:nodeId/users', 'datasheet/:nodeId/users'])
+  @Get('datasheets/:nodeId/users')
   async getUserList(@Param('nodeId') nodeId: string, @Query() query: { uuids: string[] }): Promise<UserInfo[]> {
     return await this.datasheetService.fetchUsers(nodeId, query.uuids);
   }
 
-  @Get(['datasheets/:dstId/meta', 'datasheet/:dstId/meta'])
+  @Get('datasheets/:dstId/meta')
   async getDataSheetMeta(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<IMeta> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
@@ -97,7 +97,7 @@ export class DatasheetController {
   }
 
   // TODO: use HTTP Get method instead, the number of recordIds should be limited
-  @Post(['datasheets/:dstId/records', 'datasheet/:dstId/records'])
+  @Post('datasheets/:dstId/records')
   async getRecords(@Param('dstId') dstId: string, @Body() recordIds: string[]): Promise<RecordsMapView> {
     const revision = await this.resourceMetaService.getRevisionByDstId(dstId);
     // revision not found error
@@ -108,7 +108,7 @@ export class DatasheetController {
     return { revision, recordMap };
   }
 
-  @Get(['datasheets/:dstId/views/:viewId/dataPack', 'datasheet/:dstId/view/:viewId/dataPack'])
+  @Get('datasheets/:dstId/views/:viewId/dataPack')
   async getViewPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
@@ -118,14 +118,15 @@ export class DatasheetController {
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
 
-  @Get(['shares/:shareId/datasheets/:dstId/views/:viewId/dataPack', 'share/:shareId/datasheet/:dstId/view/:viewId/dataPack'])
+  @Get('shares/:shareId/datasheets/:dstId/views/:viewId/dataPack')
   async getShareViewPack(@Param('shareId') shareId: string, @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
 
-  @Get(['datasheets/:dstId/record/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
+  //TODO: remove `datasheet/:dstId/record/:recordId/comments` path after release/0.22.0
+  @Get(['datasheets/:dstId/records/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
   async getCommentByIds(
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,

@@ -35,6 +35,7 @@ export interface IRenderContentBase {
     fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter';
   };
   textData?: IWrapTextDataProps;
+  favicon?: string;
 }
 export interface IRenderData {
   width: number;

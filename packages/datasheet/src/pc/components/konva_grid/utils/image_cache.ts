@@ -18,20 +18,32 @@
 
 import { getEnvVariables } from 'pc/utils/env';
 
+interface IImageOption {
+  crossOrigin?: boolean;
+}
+
 export const imageCache = (() => {
-  const imageMap: { [name: string]: any } = {};
+  const imageMap: { [name: string]: {
+    img: HTMLImageElement;
+    success: boolean
+    } } = {};
   const imgPromises: any = [];
 
-  function loadImage(name: string, src: string) {
+  function loadImage(name: string, src: string, option?: IImageOption) {
     imgPromises.push(new Promise((resolve, reject) => {
       const img = new Image();
       img.src = src;
       img.referrerPolicy = 'no-referrer';
 
-      if (getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
+      if (!option?.crossOrigin && getEnvVariables().IS_CANVAS_IMAGE_CROSS_ORIGIN) {
         img.crossOrigin = 'Anonymous';
       }
-      
+
+      imageMap[name] = {
+        img,
+        success: false
+      };
+
       try {
         img.onload = () => {
           imageMap[name] = {
@@ -45,12 +57,14 @@ export const imageCache = (() => {
           });
         };
       } catch (err) {
+        // code never reach
         imageMap[name] = {
           img,
           success: false
         };
         reject(err);
       }
+
     }));
   }
 

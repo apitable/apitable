@@ -12,6 +12,17 @@
   align-items: center;
   position: relative;
   padding-right: 16px;
+  img {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+  }
+  .urlInput {
+    width: calc(100% - 16px);
+  }
+  input {
+    font-size: 13px;
+  }
 }
 
 .enhanceTextIcon {
@@ -21,6 +32,13 @@
   transform: translateY(-50%);
   cursor: pointer;
   line-height: 1;
+  &.hover {
+    padding: 4px;
+    border-radius: 4px;
+    &:hover {
+      background-color: var(--rowSelectedBgSolid);
+    }
+  }
 }
 
 .textEditor {
@@ -28,7 +46,6 @@
   position: relative;
   box-sizing: border-box;
   box-shadow: 0px 0px 0px 2px var(--primaryColor);
-  box-sizing: border-box;
   border-radius: 1px;
   background: transparent;
   .light-scroll-bar();
@@ -51,18 +68,35 @@
   }
 }
 
-.urlTitle {
+.content {
   align-items: center;
   bottom: 4px;
-  display: block;
+  display: flex;
   left: 8px;
   line-height: 34px;
   max-width: 80%;
-  overflow: hidden;
   position: absolute;
-  text-overflow: ellipsis;
   top: 2px;
   white-space: nowrap;
+  .title {
+    width: 100%;
+    color: var(--textCommonPrimary);
+    &:hover {
+      color: var(--textCommonSecondary);
+    }
+    &:active {
+      color: var(--textCommonTertiary);
+    }
+    span {
+      text-overflow: ellipsis;
+      display: block;
+      overflow: hidden;
+      font-size: 13px;
+    }
+  }
+  & > span {
+    font-size: 13px;
+  }
 }
 
 @media screen and (max-width: @w-md) {

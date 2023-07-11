@@ -29,6 +29,7 @@ import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
@@ -56,6 +57,46 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         assertThat(nodeId).isNotBlank();
     }
 
+    @Test
+    void testCreateAiChatBotNode() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.AI_CHAT_BOT.getNodeType())
+            .nodeName("ChatBot Assistant")
+            .checkDuplicateName(false)
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
+        assertThat(nodeId).isNotBlank();
+    }
+
+    @Test
+    void testCopyNodeToSpace() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long userId = userSpace.getUserId();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userId, spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        iNodeService.createNode(userId, spaceId, op);
+
+        String toSaveNodeId = iNodeService.copyNodeToSpace(userId,
+            spaceId, rootNodeId, firstLevelFolderId,
+            NodeCopyOptions.builder().copyData(true).verifyNodeCount(true).build());
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        List<NodeInfoVo> nodes =
+            iNodeService.getChildNodesByNodeId(spaceId, memberId, toSaveNodeId, null);
+        assertThat(nodes).isNotEmpty();
+        assertThat(nodes.size()).isEqualTo(1);
+    }
     @Test
     void givenNotRootNodeWhenCheckNodeOpThenPass() {
         // the given node is not the root directory

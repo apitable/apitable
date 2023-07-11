@@ -130,8 +130,8 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
         return;
       }
       ref.current && ref.current.close(e);
-      // eslint-disable-next-line
     },
+    // eslint-disable-next-line
     [ref],
   );
 
@@ -140,7 +140,7 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = props => {
   });
 
   function PopupContent() {
-    let renderNode = <></>;
+    let renderNode: JSX.Element;
     switch (type) {
       case ToolHandleType.ViewSort:
         renderNode = <ViewSort close={close} triggerInfo={triggerInfo} />;

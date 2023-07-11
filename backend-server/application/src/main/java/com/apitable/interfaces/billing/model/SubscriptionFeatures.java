@@ -29,6 +29,13 @@ public class SubscriptionFeatures {
             }
         }
 
+        public static class ApiQps extends AbstractNumberPlanFeature {
+
+            public ApiQps(Long value) {
+                super(value);
+            }
+        }
+
         public static class CapacitySize extends AbstractNumberPlanFeature {
 
             public CapacitySize(Long value) {
@@ -220,6 +227,15 @@ public class SubscriptionFeatures {
         public static class AllowEmbed extends AbstractBooleanPlanFeature {
 
             public AllowEmbed(boolean value) {
+                super(value);
+            }
+        }
+
+        /**
+         * Billing OrgApi feature.
+         */
+        public static class AllowOrgApi extends AbstractBooleanPlanFeature {
+            public AllowOrgApi(boolean value) {
                 super(value);
             }
         }

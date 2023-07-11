@@ -36,7 +36,9 @@ interface IRobotListItemCardProps {
   index: number;
 }
 
-export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({ index, robotCardInfo, onClick, readonly }) => {
+export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({
+  index, robotCardInfo, onClick, readonly
+}) => {
   const { name, nodeTypeList, robotId, isActive } = robotCardInfo;
   const theme = useTheme();
   const readonlyStyle: React.CSSProperties = readonly ? {
@@ -103,7 +105,10 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
                 <span className={styles.nodeLogo}>
                   <Image
                     key={`${nodeType.nodeTypeId}_${index}`}
-                    src={integrateCdnHost((nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo)}
+                    src={integrateCdnHost(
+                      (nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
+                        getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo
+                    )}
                     alt=''
                     width={24}
                     height={24}

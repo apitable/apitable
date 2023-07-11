@@ -172,7 +172,8 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     const horizontalScrollCb = ({ scrollLeft }: { scrollLeft: number }) => {
       setDrawingLinePoints([x, y + 6, x, curY, scrollLeft + pointX - gridWidth, curY]);
     };
-    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) => setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
+    const verticalScrollCb = ({ scrollTop }: { scrollTop: number }) =>
+      setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, curX, scrollTop + pointY]);
     const allScrollCb = ({ scrollLeft, scrollTop }: { scrollLeft: number; scrollTop: number }) =>
       setDrawingLinePoints([x, y + 6, x, scrollTop + pointY, scrollLeft + pointX - gridWidth, scrollTop + pointY]);
     onDragScrollSpacing(

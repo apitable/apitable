@@ -20,6 +20,7 @@ import { RedisService } from '@apitable/nestjs-redis';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
+import { DeveloperService } from 'developer/services/developer.service';
 import { I18nService } from 'nestjs-i18n';
 import sha1 from 'sha1';
 import { NodeRateLimiterMiddleware } from 'shared/middleware/node.rate.limiter.middleware';
@@ -33,6 +34,9 @@ describe('FusionApiRateLimiter', () => {
   let redisService: RedisService;
   let i18nService: I18nService;
   let envConfigService: any;
+  let restService: any;
+  let developerService: any;
+  let datasheetRepository: any;
   let callHandler: Mock;
   let res: any;
 
@@ -45,10 +49,17 @@ describe('FusionApiRateLimiter', () => {
     await app.init();
     redisService = app.get(RedisService);
     i18nService = app.get(I18nService);
+    developerService = app.get(DeveloperService);
     envConfigService = {
       getRoomConfig: jest.fn().mockReturnThis(),
     };
-    rateLimiter = new NodeRateLimiterMiddleware(redisService, envConfigService, i18nService);
+    restService = {
+      getApiRateLimit: jest.fn(),
+    };
+    datasheetRepository = {
+      selectById: jest.fn(),
+    };
+    rateLimiter = new NodeRateLimiterMiddleware(redisService, envConfigService, restService, datasheetRepository, developerService, i18nService);
     callHandler = jest.fn();
   });
 

@@ -51,7 +51,7 @@ enum PlayerRulesConditionArgsType {
 
 export const getConditionValue = (str: string) => {
   const state = store.getState();
-  const user = Selectors.userStateSelector(state);
+  const user = Selectors.getUserState(state);
   const userInfo = user.info;
   const userWizards = userInfo?.wizards;
   if (str.includes('.')) {

@@ -192,28 +192,21 @@ test-ut-room-docker:
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 
 _generate_room_coverage:
-	cd packages/room-native-api
+	cd packages/databus
 	grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore "/*" -o target/coverage/tests.lcov
 
 _clean_room_coverage:
 	if [ -d "./packages/room-server/coverage" ]; then \
 		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \
 	fi
-	if [ -d "./packages/room-native-api/coverage" ]; then \
-		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-native-api/coverage; \
-	fi
-	if [ -d "./packages/room-native-api/target" ]; then \
-		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-native-api/target; \
-	fi
 	make _test_clean
 	rm -fr ./packages/room-server/coverage || true
-	rm -fr ./packages/room-native-api/coverage || true
-	rm -fr ./packages/room-native-api/target || true
 
 ###### 【backend server unit test】 ######
 
 test-ut-backend-docker:
 	@echo "$$(docker compose version)"
+	make _test_clean
 	make _test_dockers
 	sleep 20
 	make _test_init_db
@@ -484,12 +477,12 @@ INIT_DB_DOCKER_PATH=apitable/init-db
 db-plan: ## init-db dry update
 	cd init-db ;\
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
-	docker run --rm --env-file $$ENV_FILE -e ACTION=updateSQL ${INIT_DB_DOCKER_PATH}
+	docker run --rm --env-file $$ENV_FILE -e ACTION=updateSQL --network apitable_default ${INIT_DB_DOCKER_PATH}
 
 db-apply: ## init-db update database structure (use .env)
 	cd init-db ;\
 	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
-	docker run --rm --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
+	docker run --rm --env-file $$ENV_FILE -e ACTION=update --network apitable_default ${INIT_DB_DOCKER_PATH}
 
 changelog: ## make changelog with github api
 	@read -p "GITHUB_TOKEN: " GITHUB_TOKEN;\

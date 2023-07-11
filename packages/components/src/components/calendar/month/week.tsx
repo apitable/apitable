@@ -40,8 +40,9 @@ interface IWeek {
 
 export const WeekBase = (props: IWeek) => {
   const { week, weekLevel, levelTasks, rowHeight } = props;
-  const { disabled, month, lang, update, Drop, year, today } = useContext(CalendarContext);
+  const { disabled, month, update, Drop, year, today } = useContext(CalendarContext);
   const takeLevels = take(levelTasks, MAX_LEVEL);
+
   const { moreTasks, more } = useMemo(() => {
     const more = new Array(7).fill(0);
     const moreTasks = new Array(7).fill([]);
@@ -67,7 +68,7 @@ export const WeekBase = (props: IWeek) => {
           let dayValue: string | number = day;
           if (day === 1 && !isToday) {
             const showMonth = m > 12 ? m % 12 : m;
-            dayValue = formatDayValue(showMonth, day, lang);
+            dayValue = formatDayValue(showMonth, day);
           }
           const dayContent = (
             <DaySpan className="day-value">

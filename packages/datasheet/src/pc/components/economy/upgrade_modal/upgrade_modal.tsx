@@ -39,7 +39,7 @@ export const UpgradeInFeiShuContent: React.FC<React.PropsWithChildren<{ onClick:
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
-        <Image src={UpgradeImg} width={240} height={180} />
+        <Image src={UpgradeImg} width={240} height={180} alt="" />
       </span>
 
       {/* The upgrade cannot be done on mobile, please move to PC for upgrade */}
@@ -62,7 +62,7 @@ export const UpgradeInWecomContent: React.FC<React.PropsWithChildren<{ onClick: 
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
-        <Image src={UpgradeImg} width={240} height={180} />
+        <Image src={UpgradeImg} width={240} height={180} alt="" />
       </span>
       <span className={styles.des}>{parser(t(Strings.wecom_upgrade_guidance))}</span>
       <Button
@@ -84,7 +84,7 @@ export const UpgradeInDDContent: React.FC<React.PropsWithChildren<{ onClick: () 
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
-        <Image src={UpgradeImg} width={240} height={180} />
+        <Image src={UpgradeImg} width={240} height={180} alt="" />
       </span>
       <span className={styles.des}>{parser(t(Strings.dingtalk_activity_upgrade_guidance))}</span>
       <Button
@@ -106,7 +106,7 @@ export const SubscribeInDDContent: React.FC<React.PropsWithChildren<{ onClick: (
   return (
     <div className={styles.upgradeInDingDingContent}>
       <span className={styles.img}>
-        <Image src={SuccessImg} width={240} height={180} />
+        <Image src={SuccessImg} width={240} height={180} alt="" />
       </span>
       <span className={styles.des}>{parser(t(Strings.subscribe_success_desc))}</span>
       <Button

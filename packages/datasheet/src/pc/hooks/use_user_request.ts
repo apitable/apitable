@@ -181,7 +181,7 @@ export const useUserRequest = () => {
         return res.data;
       }
 
-      if (secondStepVerify(code)) {
+      if (!secondStepVerify(code)) {
         return;
       }
       dispatch(
@@ -292,7 +292,7 @@ export const useUserRequest = () => {
         }
         Router.push(Navigation.HOME);
       }
-      if (!env.DISABLE_AWSC) {
+      if (!env.IS_SELFHOST) {
         if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
           openSliderVerificationModal();
         } else if (code === StatusCode.PHONE_VALIDATION) {
@@ -300,7 +300,7 @@ export const useUserRequest = () => {
             title: t(Strings.warning),
             content: t(Strings.status_code_phone_validation),
             onOk: () => {
-              if (!env.DISABLE_AWSC) {
+              if (!env.IS_SELFHOST) {
                 window['nvc'].reset();
               }
             },
@@ -327,6 +327,7 @@ export const useUserRequest = () => {
     return Api.signUp(token, inviteCode).then((res) => {
       const { success } = res.data;
       if (success) {
+        localStorage.removeItem('client-lang');
         const searchParams = getSearchParams();
         if (searchParams.toString()) {
           const paramsObj = {};
@@ -351,6 +352,7 @@ export const useUserRequest = () => {
     return Api.register(username, credential).then((res) => {
       const { success } = res.data;
       if (success) {
+        localStorage.removeItem('client-lang');
         dispatch(StoreActions.setLoading(true));
 
         const urlParams = getSearchParams();
@@ -537,7 +539,7 @@ export const useUserRequest = () => {
     const env = getEnvVariables();
     return Api.getSmsCode(areaCode, phone, type, data).then((res) => {
       const { success, code } = res.data;
-      if (success || env.DISABLE_AWSC) {
+      if (success || env.IS_SELFHOST) {
         return res.data;
       }
       // Perform secondary verification (slider verification)
@@ -548,7 +550,7 @@ export const useUserRequest = () => {
           title: t(Strings.warning),
           content: t(Strings.status_code_phone_validation),
           onOk: () => {
-            if (!env.DISABLE_AWSC) {
+            if (!env.IS_SELFHOST) {
               window['nvc'].reset();
             }
           },

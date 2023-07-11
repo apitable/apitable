@@ -125,7 +125,7 @@ public class NotificationFactory implements INotificationFactory {
         if (ObjectUtil.isNotNull(space)) {
             return NotificationDetailVo.Space.builder().spaceId(space.getSpaceId())
                 .spaceName(space.getName())
-                .logo(space.getLogo()).build();
+                .logo(StrUtil.nullToEmpty(space.getLogo())).build();
         }
         return null;
     }

@@ -103,16 +103,28 @@ export async function sendRequest(request: IWebhookRequest): Promise<IActionResp
     } catch (error) {
       console.log('error', error);
     }
-    const data: ISuccessResponse<IWebhookResponse> = {
-      data: {
-        status: res.status,
-        json: respJson
-      }
+    if(res.status >= 200 && res.status < 300) {
+      const data: ISuccessResponse<IWebhookResponse> = {
+        data: {
+          status: res.status,
+          json: respJson
+        }
+      };
+      return {
+        success: true,
+        code: ResponseStatusCodeEnums.Success,
+        data: data
+      };
+    }
+    const data: IErrorResponse = {
+      errors: [{
+        message: `${res.status} ${res.statusText}`
+      }]
     };
     return {
-      success: true,
-      code: ResponseStatusCodeEnums.Success,
-      data: data
+      success: false,
+      data,
+      code: res.status
     };
   } catch (error: any) {
     // network error

@@ -13,9 +13,9 @@ logs
 **/build
 **/bin
 
-packages/core/src/config/api_tip_config.auto.origin.json
-packages/core/src/config/emojis.auto.origin.json
-packages/core/src/config/system_config.auto.origin.json
+packages/core/src/config/api_tip_config.*origin.json
+packages/core/src/config/emojis.*origin.json
+packages/core/src/config/system_config.*origin.json
 packages/l10n/gen
 packages/l10n/gen/**
 packages/i18n-lang/src/config/strings.origin.json
@@ -91,3 +91,5 @@ eslint-results.sarif
 /packages/datasheet/.env.development.origin
 /packages/i18n-lang/src/config/strings.en-US.origin.json
 /packages/i18n-lang/src/config/language.manifest.origin.json
+/packages/room-native-api/target/**
+/packages/room-native-api/Cargo.lock

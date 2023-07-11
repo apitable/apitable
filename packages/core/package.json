@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.21.0",
+  "version": "0.23.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,6 +28,8 @@
     "attr-accept": "^2.1.0",
     "axios": "0.21.2",
     "color": "^3.1.3",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "dayjs": "^1.11.7",
     "fuse.js": "^6.4.1",
     "immer": "9.0.16",
@@ -43,7 +45,7 @@
     "redux-batched-actions": "0.5.0",
     "redux-thunk": "2.4.1",
     "reselect": "4.0.0",
-    "semver": "^7.1.3",
+    "semver": "^7.5.2",
     "socket.io-client": "2.2.0",
     "string.prototype.matchall": "^4.0.2",
     "urlcat": "^2.0.4"
@@ -66,7 +68,7 @@
     "mockjs": "1.1.0",
     "ot-fuzzer": "^1.3.0",
     "ts-jest": "28.0.3",
-    "ts-node": "^8.6.2",
+    "ts-node": "^10.9.1",
     "ts-toolbelt": "^9.6.0",
     "tsc-alias": "^1.6.11",
     "typescript": "^4.8.2"

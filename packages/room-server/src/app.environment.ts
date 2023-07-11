@@ -37,9 +37,6 @@ export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'tru
 // whether or not enable socket. (data collaboration middleware)
 export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
 
-// whether or not enable automation worker
-export const enableAutomationWorker = Object.is(process.env.enableAutomationWorker, 'true');
-
 // project root directory
 export const PROJECT_DIR = __dirname;
 
@@ -53,9 +50,12 @@ export const skipUsageVerification = Object.is(process.env.SKIP_USAGE_VERIFICATI
  */
 export const showAnonymous: boolean = Object.is(process.env.SHOW_ANONYMOUS || 'true', 'true');
 
+export const useNativeModule = process.env.USE_NATIVE_MODULE === 'true' || process.env.USE_NATIVE_MODULE === '1';
+
 export default {
   isDevMode,
   isProdMode,
+  useNativeModule,
   serviceDomain,
   environment,
 };

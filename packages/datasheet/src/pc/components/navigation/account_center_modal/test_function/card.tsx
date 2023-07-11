@@ -49,6 +49,7 @@ export const Card: React.FC<React.PropsWithChildren<{ feature: ApiInterface.ILab
             src={integrateCdnHost(config.logo)}
             width={46}
             height={46}
+            alt=""
           />
         </div>
         <Typography

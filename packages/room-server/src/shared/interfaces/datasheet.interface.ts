@@ -82,8 +82,6 @@ export interface IFieldVoTransformOptions {
   cellFormat: CellFormatEnum;
 
   store?: Store<IReduxState>;
-
-  userTimeZone?: string;
 }
 
 export interface ICellValueMap {
@@ -100,7 +98,7 @@ export interface IDatasheetDataMap {
 }
 
 export interface IViewInfoOptions {
-  partialRecordsInDst: boolean;
+  recordIds?: string[];
   viewId?: string;
   sortRules: ISortedField[];
   snapshot: ISnapshot;
@@ -130,7 +128,7 @@ export interface ILinkedRecordMap {
  */
 export interface IFetchDataOptions {
   /**
-   * array of recordIds
+   * array of recordIds. The returned data pack may contain more records if needExtendMainDstRecords is true.
    */
   recordIds?: string[];
   /**
@@ -141,15 +139,22 @@ export interface IFetchDataOptions {
    * datasheet meta
    */
   meta?: IMeta;
+
+  /**
+   * The records specified by recordIds may require extra main datasheet records to render themselves,
+   * if this field is set to true, these extra records will be included in the returned data pack in adition to
+   * records specified by recordIds.
+   */
+  needExtendMainDstRecords?: boolean;
 }
 
 export interface IFetchDataPackOptions extends IFetchDataOptions {
   isTemplate?: boolean;
   metadataException?: IBaseException;
   /**
-  * If true, the returned `resourceIds` will contain foreign datasheet IDs and widget IDs. Otherwise,
-  * `resourceIds` will contain the datasheet ID and foreign datasheet IDs.
-  */
+   * If true, the returned `resourceIds` will contain foreign datasheet IDs and widget IDs. Otherwise,
+   * `resourceIds` will contain the datasheet ID and foreign datasheet IDs.
+   */
   isDatasheet?: boolean;
 }
 

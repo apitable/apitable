@@ -27,7 +27,7 @@ import { FC, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 export const PrivateRoute: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  const user = useSelector(state => Selectors.userStateSelector(state), shallowEqual);
+  const user = useSelector(state => Selectors.getUserState(state), shallowEqual);
   const dispatch = useDispatch();
   const spaceId = useSelector(state => state.space.activeId);
   const { run: getLabsFeature } = useRequest(Api.getLabsFeature, { manual: true });

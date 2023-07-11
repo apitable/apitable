@@ -18,13 +18,13 @@
 
 package com.apitable.organization.mapper;
 
+import com.apitable.organization.entity.TeamMemberRelEntity;
+import com.apitable.shared.util.ibatis.ExpandBaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Collection;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
-
-import com.apitable.shared.util.ibatis.ExpandBaseMapper;
-import com.apitable.organization.entity.TeamMemberRelEntity;
 
 public interface TeamMemberRelMapper extends ExpandBaseMapper<TeamMemberRelEntity> {
 
@@ -137,4 +137,20 @@ public interface TeamMemberRelMapper extends ExpandBaseMapper<TeamMemberRelEntit
      * @return affected rows
      */
     int deleteByTeamIds(@Param("teamIds") Collection<Long> teamIds);
+
+    /**
+     * Query page of the directly member Id.
+     *
+     * @param teamId parent team id
+     * @return page of member ids
+     */
+    IPage<Long> selectMemberIdsByTeamIdAndPage(Page<Long> page, @Param("teamId") Long teamId);
+
+    /**
+     * query teamIds.
+     *
+     * @param memberIds member id list
+     * @return TeamMemberRelEntity
+     */
+    List<TeamMemberRelEntity> selectTeamIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
 }

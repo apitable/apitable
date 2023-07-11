@@ -56,6 +56,22 @@
         SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
     </select>
 
+    <select id="selectNodeIdByParentIdAndPreNodeId"
+            resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node
+        WHERE parent_id = #{parentId}
+        <choose>
+            <when test="preNodeId != null and preNodeId != ''">
+                AND pre_node_id = #{preNodeId}
+            </when>
+            <otherwise>
+                AND pre_node_id IS NULL
+            </otherwise>
+        </choose>
+        LIMIT 1
+    </select>
+
     <select id="countByNodeIds" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}node
@@ -384,6 +400,13 @@
                 AND pre_node_id IS NULL
             </otherwise>
         </choose>
+        AND is_rubbish = 0
+    </update>
+
+    <update id="updatePreNodeIdByNodeId">
+        UPDATE ${tablePrefix}node
+        SET pre_node_id = #{updatedPreNodeId}
+        WHERE node_id = #{nodeId}
         AND is_rubbish = 0
     </update>
 

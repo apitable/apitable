@@ -16,39 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IField, ISegment, SegmentType, ICellValue, Field } from '@apitable/core';
+import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { useThemeColors, LinkButton } from '@apitable/components';
-import {
-  ChangeEvent, default as React,
-  forwardRef, memo, useImperativeHandle, useRef, useState,
-} from 'react';
+import { LinkButton, useThemeColors } from '@apitable/components';
+import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
 import { Tooltip } from 'pc/components/common';
-import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
+import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
+import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
+import { useSelector } from 'react-redux';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
   field: IField;
+  recordId: string;
   style: React.CSSProperties;
   editable: boolean;
   editing: boolean;
+  setEditing?: React.Dispatch<React.SetStateAction<boolean>>;
   cellValue?: ICellValue;
+  isForm?: boolean;
 }
 
 export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnhanceTextEditorProps> = (props, ref) => {
-  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue } = props;
+  const { disabled, placeholder, field, onSave, onChange: propsOnChange, cellValue, recordId, isForm, setEditing } = props;
   const [value, setValue] = useState('');
   const colors = useThemeColors();
   const cacheValueRef = useRef<ISegment[] | null | undefined>(null);
+  const imageLoadErrorRef = useRef<boolean>(false);
   const editorRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
+  const [activeUrlAction, setActiveUrlAction] = useState(false);
+  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
   useImperativeHandle(ref, (): IEditor => ({
     focus: (preventScroll) => { focus(preventScroll); },
@@ -90,14 +95,16 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
     if (cacheValueRef.current && cacheValueRef.current.some(v => v.text === value)) {
       omitProps = omit(find(cacheValueRef.current, { text: value }), ['text']);
     }
+    let restProps = {};
+    if (field.type === FieldType.URL) {
+      restProps = omit(cellValue?.[0], ['text', 'type']);
+    }
     // Plain long text, matching segment phone email address, then stored as [Text]
-    const segment: ISegment[] = [{ type: SegmentType.Text, text: value, ...omitProps }];
-    const tempVal = value.length ? segment : null;
-    return tempVal;
+    const segment: ISegment[] = [{ ...restProps, type: SegmentType.Text, text: value, ...omitProps }];
+    return value.length ? segment : null;
   };
 
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
-    
     if (props.editing) {
       const value = event.target.value;
       if(field.type === FieldType.Phone) {
@@ -167,46 +174,75 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   }
 
   const getEnhanceTypeIcon = (type: string | number) => {
-    if (!value) return null;
+    if (!value && (field.type !== FieldType.URL || isForm)) return null;
     const typeIconMap = {
-      [FieldType.URL]: <LinkOutlined color={colors.thirdLevelText} />,
-      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} />,
-      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
+      [FieldType.URL]: !isForm ? (
+        <Tooltip title={t(Strings.url_cell_edit)} placement="top">
+          <span>
+            <EditOutlined color={colors.thirdLevelText} size={16} />
+          </span>
+        </Tooltip>
+      ) : <NewtabOutlined color={colors.thirdLevelText} />,
+      [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} size={16} />,
+      [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} size={16} />,
     };
     return (
       <span
-        className={style.enhanceTextIcon}
-        onClick={() => _handleEnhanceTextClick(field.type, value)}
+        className={classNames(style.enhanceTextIcon, field.type === FieldType.URL && style.hover)}
+        onClick={() => {
+          if (!isForm && field.type === FieldType.URL) {
+            setActiveUrlAction(true);
+          } else {
+            _handleEnhanceTextClick(field.type, value);
+          }
+        }}
       >
         {typeIconMap[type]}
       </span>
     );
   };
 
-  const showURLTitleFlag = !focused && field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.title;
+  const showURLTitleFlag = !focused && field.type === FieldType.URL && cellValue;
 
-  const renderURLTitle = () => {
+  const favicon = field.type === FieldType.URL && field.property?.isRecogURLFlag && cellValue?.[0]?.favicon;
+
+  const renderURL = () => {
     if (!showURLTitleFlag) return null;
 
-    const urlTitle = Field.bindModel(field).cellValueToURL(cellValue);
+    const urlTitle = field.type === FieldType.URL ?
+      Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue as any);
     if (!urlTitle) return null;
 
-    return(
-      <Tooltip title={value} placement="top">
-        <LinkButton
-          type=""
-          className={style.urlTitle}
-          onMouseDown={() => {
-            if (/^https?:\/\//.test(value)) {
-              window.open(value, '_blank');
-              return;
-            }
-            window.open(`http://${value}`);
+    return (
+      <div className={style.content}>
+        {!focused && favicon && <img
+          onError={() => {
+            imageLoadErrorRef.current = true;
           }}
-        >
-          {urlTitle}
-        </LinkButton>
-      </Tooltip>
+          onLoad={() => {
+            imageLoadErrorRef.current = false;
+          }}
+          style={{ width: imageLoadErrorRef.current ? 0 : '16px' }}
+          src={favicon}
+          alt=""
+        />}
+        {!focused && favicon && imageLoadErrorRef.current && <WebOutlined size={18} color={colors.textCommonPrimary} />}
+        <Tooltip title={value} placement="top">
+          <LinkButton
+            type=""
+            className={style.title}
+            onMouseDown={() => {
+              if (/^https?:\/\//.test(value)) {
+                window.open(value, '_blank');
+                return;
+              }
+              window.open(`http://${value}`);
+            }}
+          >
+            {urlTitle}
+          </LinkButton>
+        </Tooltip>
+      </div>
     );
   };
 
@@ -219,10 +255,11 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       onWheel={stopPropagation}
     >
       <div className={style.enhanceTextEditor}>
-        {renderURLTitle()}
+        {renderURL()}
         <input
           ref={editorRef}
           placeholder={placeholder}
+          className={classNames(field.type === FieldType.URL && style.urlInput)}
           disabled={disabled}
           value={value}
           onChange={updateValue}
@@ -230,12 +267,27 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{
-            minHeight: 40, 
+            minHeight: isForm ? 40 : 32,
             color: showURLTitleFlag ? 'transparent' : 'inherit',
           }}
         />
         {getEnhanceTypeIcon(field.type)}
       </div>
+      {!isForm && activeUrlAction && (
+        <UrlActionUI
+          activeUrlAction={activeUrlAction}
+          setActiveUrlAction={setActiveUrlAction}
+          fieldId={field.id}
+          recordId={recordId}
+          datasheetId={datasheetId}
+          title={field.name}
+          tempValue={value}
+          callback={(val) => {
+            setValue(val);
+            setEditing?.(false);
+          }}
+        />
+      )}
     </div>
 
   );

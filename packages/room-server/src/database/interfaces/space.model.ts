@@ -24,6 +24,7 @@ export class InternalSpaceSubscriptionView {
   maxGanttViewsInSpace!: number; // The maximum quantity of the allowable Gantt view in the space
   maxCalendarViewsInSpace!: number; // The maximum number of calendar views allowed in the space
   allowEmbed!: boolean; // Is it possible to call enterprise-level APIs
+  allowOrgApi!: boolean;
 }
 
 export class InternalSpaceUsageView {
@@ -47,6 +48,6 @@ export class InternalSpaceInfoVo {
 }
 
 export class InternalSpaceStatisticsRo {
-  viewCount?: {[key: number]: number};
+  viewCount?: { [key: number]: number };
   recordCount?: number;
 }

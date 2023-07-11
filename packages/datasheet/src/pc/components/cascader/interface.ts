@@ -11,6 +11,7 @@ export interface ICascader {
   displayRender?: (label: string[]) => React.ReactNode;
   disabled?: boolean;
   style?: React.CSSProperties;
+  showSearch?: boolean;
 }
 
 export type IMobileCascader = Pick<

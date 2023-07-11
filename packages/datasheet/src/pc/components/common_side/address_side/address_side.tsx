@@ -165,6 +165,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
     }
 
     return <div className={styles.empty} />;
+    // eslint-disable-next-line
   }, [loading, isMobile, teamClick, inviteRes, CUSTOM_SYNC_CONTACTS_LINKID, userInfo, isSyncingMembers, btnSize]);
 
   return (

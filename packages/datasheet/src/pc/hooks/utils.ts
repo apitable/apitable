@@ -23,7 +23,7 @@ import { getEnvVariables } from 'pc/utils/env';
 
 export const secondStepVerify = (code: number) => {
   const env = getEnvVariables();
-  if (env.DISABLE_AWSC) {
+  if (env.IS_SELFHOST) {
     return true;
   }
   if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
@@ -33,7 +33,7 @@ export const secondStepVerify = (code: number) => {
       title: t(Strings.warning),
       content: t(Strings.status_code_phone_validation),
       onOk: () => {
-        if (!env.DISABLE_AWSC) {
+        if (!env.IS_SELFHOST) {
           window['nvc'].reset();
         }
       },
@@ -45,5 +45,5 @@ export const secondStepVerify = (code: number) => {
     });
     return true;
   }
-  return false;
+  return true;
 };

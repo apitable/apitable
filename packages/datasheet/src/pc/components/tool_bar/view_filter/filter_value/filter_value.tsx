@@ -37,7 +37,6 @@ import styles from './style.module.less';
 
 export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
-  console.log('condition', condition);
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);

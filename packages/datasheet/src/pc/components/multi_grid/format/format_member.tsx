@@ -24,7 +24,9 @@ import * as React from 'react';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Message, Modal } from 'pc/components/common';
+import { Message } from 'pc/components/common';
+import { QuestionCircleOutlined } from '@apitable/icons';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IFormatmember {
   currentField: IMemberField;
@@ -43,30 +45,13 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
   };
 
   const handleShouldSendMsgChange = (checked: boolean) => {
-    const updateSendMsg = () => {
-      props.setCurrentField({
-        ...props.currentField,
-        property: {
-          ...props.currentField.property,
-          shouldSendMsg: checked,
-        },
-      });
-    };
-
-    if (!checked) {
-      Modal.warning({
-        title: t(Strings.kindly_reminder),
-        content: t(Strings.field_member_property_notify_tip),
-        hiddenCancelBtn: false,
-        cancelText: t(Strings.cancel),
-        zIndex: 1100,
-        onOk: () => {
-          updateSendMsg();
-        },
-      });
-    } else {
-      updateSendMsg();
-    }
+    props.setCurrentField({
+      ...props.currentField,
+      property: {
+        ...props.currentField.property,
+        shouldSendMsg: checked,
+      },
+    });
   };
 
   const handleSubscription = (checked: boolean) => {
@@ -81,7 +66,7 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
     };
     if (checked) {
       Message.info({
-        content: t(Strings.field_created_by_property_subscription_open_tip)
+        content: t(Strings.field_member_property_subscription_open_tip)
       });
       updateSubscription();
     } else {
@@ -92,6 +77,8 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
   const { isMulti, shouldSendMsg, subscription } = props.currentField.property;
 
   const embedId = useSelector(state => state.pageParams.embedId);
+
+  const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
 
   return (
     <div className={styles.section}>
@@ -115,16 +102,28 @@ export const FormatMember: React.FC<React.PropsWithChildren<IFormatmember>> = (p
           />
         </div>}
       </section>
-      <section className={settingStyles.section}>
+      {RECORD_WATCHING_VISIBLE && <section className={settingStyles.section}>
         {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-          {t(Strings.field_member_property_subscription)}
+          <div className={styles.subscription}>
+            {t(Strings.field_member_property_subscription)}
+            <a
+              href={t(Strings.field_help_member_property_subscription)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-block', cursor: 'pointer' }}
+            >
+              <span className={styles.requiredTip}>
+                <QuestionCircleOutlined color="currentColor"/>
+              </span>
+            </a>
+          </div>
           <Switch
             size="small"
             checked={subscription}
             onChange={handleSubscription}
           />
         </div>}
-      </section>
+      </section>}
     </div>
   );
 };

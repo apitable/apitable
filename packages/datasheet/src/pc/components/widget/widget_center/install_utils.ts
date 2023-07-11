@@ -13,6 +13,17 @@ export const installWidget = (widgetPackageId: string, nodeId: string, name?: st
   });
 };
 
+export const copyWidget = (widgetId: string, resourceId: string): Promise<IWidget[]> => {
+  return new Promise<IWidget[]>(async(resolve, reject) => {
+    const res = await WidgetApi.copyWidgetsToNode(resourceId, [widgetId]);
+    const { data, success, message } = res.data;
+    if (success) {
+      resolve(data);
+    }
+    reject(message);
+  });
+};
+
 export const installToPanel = (data: IWidget, resourceId: string, resourceType: ResourceType.Mirror | ResourceType.Datasheet) => {
   return new Promise<void>((resolve, reject) => {
     const result = resourceService.instance!.commandManager.execute({

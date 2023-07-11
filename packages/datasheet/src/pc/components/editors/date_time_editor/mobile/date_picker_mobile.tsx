@@ -101,7 +101,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     setValue(_val);
     commandFn?.(getDay(_val).getTime());
     onSave?.(_val.getTime(), curAlarm);
-  }, [value, commandFn, onSave, curAlarm]);
+  }, [value, timeZone, commandFn, onSave, curAlarm]);
 
   const onBackToNow = useCallback(() => {
     let now = new Date();

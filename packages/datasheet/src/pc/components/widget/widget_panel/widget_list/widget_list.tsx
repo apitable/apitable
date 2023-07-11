@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ContextMenu, useThemeColors } from '@apitable/components';
+import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
   ConfigConstant,
@@ -28,7 +28,15 @@ import {
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, QuestionCircleOutlined, SettingOutlined } from '@apitable/icons';
+import {
+  CodeFilled,
+  DashboardOutlined,
+  DeleteOutlined,
+  DuplicateOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+  SettingOutlined
+} from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
@@ -49,6 +57,9 @@ import { expandPublishHelp } from '../../widget_center/widget_create_modal';
 import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
 import styles from './style.module.less';
+import { copyWidget, installToPanel } from '../../widget_center/install_utils';
+import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
+import { installedWidgetHandle } from '../widget_panel_header';
 
 const ResponsiveGridLayout: any = WidthProvider(Responsive);
 
@@ -74,6 +85,7 @@ export const WidgetList = () => {
   const readonly = !editable;
   // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);
+  const reachLimitInstalledCount = useJudgeReachInstalledCount();
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -154,10 +166,37 @@ export const WidgetList = () => {
   const isWidgetPublished = () => WidgetPackageStatus.Published === activeMenuWidget?.status;
   const isWidgetDev = () => activeMenuWidget?.id === devWidgetId;
   const isWidgetGlobal = () => Boolean(activeMenuWidget?.id && widgetMap[activeMenuWidget.id]?.widget.releaseType === WidgetReleaseType.Global);
+
+  const _copyWidget = async(widgetId: string) => {
+    const nodeId = mirrorId || datasheetId;
+    let widgets;
+
+    try {
+      widgets = await copyWidget(widgetId, nodeId!);
+
+      if (!widgets.length) {
+        return;
+      }
+
+      await installToPanel(widgets[0], nodeId!, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet,);
+    } catch (e: any) {
+      Message.error({
+        content: (typeof e === 'string' ? e : e?.message) || t(Strings.copy_widget_fail)
+      });
+      return;
+    }
+
+    installedWidgetHandle(widgets[0].id);
+
+    Message.success({
+      content: t(Strings.copy_widget_success)
+    });
+  };
+
   const menuData = [
     [
       {
-        icon: <SettingOutlined color={colors.thirdLevelText} />,
+        icon: <SettingOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_setting),
         hidden: readonly || hadWidgetExpanding,
         onClick: ({ props }: { props?: any }) => {
@@ -167,7 +206,7 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText} />,
+        icon: <CodeFilled color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_enter_dev),
         hidden: readonly || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
         onClick: ({ props }: { props?: any }) => {
@@ -175,7 +214,7 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText} />,
+        icon: <CodeFilled color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_exit_dev),
         hidden: readonly || isWidgetBan() || !isWidgetDev(),
         onClick: ({ props }: { props?: any }) => {
@@ -184,13 +223,13 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <EditOutlined color={colors.thirdLevelText} />,
+        icon: <EditOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_rename),
         hidden: readonly || isWidgetBan(),
         onClick: renameWidget,
       },
       {
-        icon: <QuestionCircleOutlined color={colors.thirdLevelText} />,
+        icon: <QuestionCircleOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_publish_help),
         hidden: readonly || !isWidgetDev(),
         onClick: () => {
@@ -198,7 +237,16 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <DashboardOutlined color={colors.thirdLevelText} />,
+        icon: <DuplicateOutlined color={colors.thirdLevelText}/>,
+        text: t(Strings.copy_widget),
+        onClick: ({ props }: { props?: any }) => {
+          const { widgetId } = props;
+          _copyWidget(widgetId);
+        },
+        hidden: Boolean(linkId) || !isWidgetPublished() || isWidgetDev() || !manageable || reachLimitInstalledCount,
+      },
+      {
+        icon: <DashboardOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_send_dashboard),
         onClick: ({ props }: { props?: any }) => {
           const { widgetId } = props;
@@ -209,7 +257,7 @@ export const WidgetList = () => {
     ],
     [
       {
-        icon: <DeleteOutlined color={colors.thirdLevelText} />,
+        icon: <DeleteOutlined color={colors.thirdLevelText}/>,
         text: t(Strings.widget_operate_delete),
         hidden: !manageable,
         onClick: deleteWidget,
@@ -273,7 +321,8 @@ export const WidgetList = () => {
             );
           })}
         </ResponsiveGridLayout>
-        <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
+        <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)}
+          menuId={WIDGET_MENU}/>
       </div>
     </WidgetContextProvider>
   );

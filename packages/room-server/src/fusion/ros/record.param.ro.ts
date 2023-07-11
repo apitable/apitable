@@ -27,5 +27,5 @@ export class RecordParamRo {
     description: 'datasheet Id',
   })
   @IsString()
-  datasheetId!: string;
+  dstId!: string;
 }

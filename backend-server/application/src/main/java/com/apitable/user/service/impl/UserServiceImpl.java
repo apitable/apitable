@@ -96,6 +96,7 @@ import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.user.dto.UserInPausedDto;
 import com.apitable.user.dto.UserLangDTO;
+import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.entity.UserHistoryEntity;
 import com.apitable.user.enums.UserClosingException;
@@ -143,6 +144,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Resource
     private LoginUserCacheService loginUserCacheService;
+
+    @Resource
+    private LanguageManager languageManager;
 
     @Resource
     private IAssetService iAssetService;
@@ -393,15 +397,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             ? mobile : StringUtils.substringBefore(email, "@"));
         // Create user with mobile number
         UserEntity entity = UserEntity.builder()
-            .uuid(IdUtil.fastSimpleUUID())
-            .code(areaCode)
-            .mobilePhone(mobile)
-            .nickName(name)
-            .avatar(nullToDefaultAvatar(avatar))
-            .color(color)
-            .email(email)
-            .lastLoginTime(LocalDateTime.now())
-            .build();
+                .uuid(IdUtil.fastSimpleUUID())
+                .code(areaCode)
+                .mobilePhone(mobile)
+                .nickName(name)
+                .avatar(nullToDefaultAvatar(avatar))
+                .locale(languageManager.getDefaultLanguageTag())
+                .color(color)
+                .email(email)
+                .lastLoginTime(LocalDateTime.now())
+                .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         boolean hasSpace = false;
@@ -452,14 +457,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         Integer color = nullToDefaultAvatar(avatar) != null ? null
             : RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
         UserEntity entity = UserEntity.builder()
-            .uuid(IdUtil.fastSimpleUUID())
-            .code(areaCode)
-            .mobilePhone(mobile)
-            .nickName(nullToDefaultNickName(nickName, mobile))
-            .avatar(nullToDefaultAvatar(avatar))
-            .color(color)
-            .lastLoginTime(LocalDateTime.now())
-            .build();
+                .uuid(IdUtil.fastSimpleUUID())
+                .code(areaCode)
+                .mobilePhone(mobile)
+                .nickName(nullToDefaultNickName(nickName, mobile))
+                .locale(languageManager.getDefaultLanguageTag())
+                .avatar(nullToDefaultAvatar(avatar))
+                .color(color)
+                .lastLoginTime(LocalDateTime.now())
+                .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // Create user activity record
@@ -479,12 +485,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email, final String password) {
         UserEntity entity = UserEntity.builder()
-            .uuid(IdUtil.fastSimpleUUID())
-            .email(email)
-            .nickName(StringUtils.substringBefore(email, "@"))
-            .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
-            .lastLoginTime(LocalDateTime.now())
-            .build();
+                .uuid(IdUtil.fastSimpleUUID())
+                .email(email)
+                .nickName(StringUtils.substringBefore(email, "@"))
+                .locale(languageManager.getDefaultLanguageTag())
+                .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
+                .lastLoginTime(LocalDateTime.now())
+                .build();
         if (password != null) {
             entity.setPassword(passwordService.encode(password));
         }
@@ -1167,5 +1174,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 log.error("CloseUserError:{}", userId, e);
             }
         });
+    }
+
+    @Override
+    public List<UserSensitiveDTO> getUserSensitiveInfoByIds(List<Long> userIds) {
+        return baseMapper.selectEmailAndMobilePhoneByIds(userIds);
     }
 }

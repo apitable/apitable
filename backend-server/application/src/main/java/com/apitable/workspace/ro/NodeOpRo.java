@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Node Request Parameters")
 public class NodeOpRo {
 
-    @Schema(description = "Parent Node Id", example = "nod10", required = true)
+    @Schema(description = "Parent Node Id", example = "nod10", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "The parent node ID cannot be empty")
     private String parentId;
 
@@ -51,10 +51,10 @@ public class NodeOpRo {
     private String nodeName;
 
     @Schema(description = "Type. 1: folder; 2: DataSheet; 3: Form; 4: Dashboard; 5: Mirror",
-        example = "1", required = true)
+        example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Type cannot be empty")
     @Min(value = 1, message = "Error in type")
-    @Max(value = 5, message = "Error in type")
+    @Max(value = 9, message = "Error in type")
     private Integer type;
 
     @Schema(description = "The previous node of the target position moves to the first position "

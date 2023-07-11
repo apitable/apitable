@@ -18,6 +18,7 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import '@apitable/i18n-lang';
+import { Reflector } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
@@ -30,6 +31,8 @@ describe('ApiDatasheetGuard', () => {
   // let request;
   let context: any;
   let memberRepository: any;
+  let reflector: Reflector;
+  let metaService: any;
   beforeAll(async() => {
     jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
@@ -45,7 +48,11 @@ describe('ApiDatasheetGuard', () => {
     memberRepository = {
       selectSpaceIdsByUserId: jest.fn().mockReturnThis(),
     };
-    guard = new ApiFieldGuard(memberRepository);
+    reflector = new Reflector();
+    metaService = {
+      getMetaDataByDstId: jest.fn().mockReturnThis(),
+    };
+    guard = new ApiFieldGuard(memberRepository, reflector, metaService);
   });
 
   afterAll(async() => {
@@ -56,7 +63,7 @@ describe('ApiDatasheetGuard', () => {
     it('missing spaceId, return 400 code', () => {
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         params: {
-          datasheetId: 'abc'
+          dstId: 'abc'
         },
       });
       const error = ApiException.tipError(ApiTipConstant.api_params_instance_space_id_error);
@@ -65,7 +72,7 @@ describe('ApiDatasheetGuard', () => {
       });
     });
 
-    it('missing datasheetId, return 400 code', () => {
+    it('missing dstId, return 400 code', () => {
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         params: {
           spaceId: 'abc',
@@ -77,7 +84,7 @@ describe('ApiDatasheetGuard', () => {
       });
     });
 
-    it('invalid datasheetId, return 400 code', () => {
+    it('invalid dstId, return 400 code', () => {
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         datasheet: null,
         params: {
@@ -90,7 +97,7 @@ describe('ApiDatasheetGuard', () => {
       });
     });
 
-    it('datasheetId is not in space, return 400 code', () => {
+    it('dstId is not in space, return 400 code', () => {
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         datasheet: { spaceId: 'aaa' },
         user: {
@@ -98,7 +105,7 @@ describe('ApiDatasheetGuard', () => {
         },
         params: {
           spaceId: 'bbb',
-          datasheetId: 'aaa',
+          dstId: 'aaa',
         },
       });
       (memberRepository.selectSpaceIdsByUserId as jest.Mock).mockReturnValueOnce(['bbb']);
@@ -116,7 +123,7 @@ describe('ApiDatasheetGuard', () => {
         },
         params: {
           spaceId: 'aaa',
-          datasheetId: 'aaa',
+          dstId: 'aaa',
         },
       });
       (memberRepository.selectSpaceIdsByUserId as jest.Mock).mockReturnValueOnce(['bbb']);

@@ -1,0 +1,52 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.filterModal {
+  :global {
+    .ant-modal-body {
+      padding: 24px !important;
+    }
+  }
+}
+
+.modalList {
+  margin-bottom: 24px;
+  .title {
+    margin-bottom: 16px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--fc1);
+  }
+}
+
+.modalSubtitle {
+  font-size: 13px;
+  color: var(--fc3);
+}
+
+main {
+  margin-top: 0;
+}
+
+.optionsListMenu {
+  z-index: 9001;
+  .optionItem {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .fieldItem {
+    display: flex;
+    align-items: center;
+
+    .fieldName {
+      margin-left: 8px;
+      .ellipsis();
+    }
+  }
+}

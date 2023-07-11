@@ -63,7 +63,17 @@ export class URLField extends TextBaseField {
 
     const cv = [cellValue].flat();
 
-    return (cv as IHyperlinkSegment[]).map(seg => seg?.text).join('') || null;
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.text || seg?.title).join('') || null;
+  }
+
+  cellValueToTitle(cellValue: ICellValue): string | null {
+    if (cellValue === null) {
+      return '';
+    }
+
+    const cv = [cellValue].flat();
+
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
   }
 
   override cellValueToString(cellValue: ICellValue): string | null {
@@ -72,10 +82,37 @@ export class URLField extends TextBaseField {
     }
 
     const cv = [cellValue].flat();
-    const isRecogURLFlag = this.field.property?.isRecogURLFlag;
 
-    return (cv as IHyperlinkSegment[]).map(seg => isRecogURLFlag ? (seg?.title || seg?.text) : seg?.text).join('') || null;
+    return (cv as IHyperlinkSegment[]).map(seg => seg?.text || seg?.title).join('') || null;
   }
+
+  // TODO(kailang) https://github.com/vikadata/vikadata/issues/5253
+  // override cellValueToOpenValue(cellValue: ICellValue): any {
+  //   if (!cellValue) {
+  //     return null;
+  //   }
+  //   return cellValue[0];
+  // }
+  //
+  // override get openValueJsonSchema() {
+  //   return {
+  //     type: 'array',
+  //     title: this.field.name,
+  //     items: {
+  //       type: 'object',
+  //       properties: {
+  //         title: {
+  //           type: 'string',
+  //           title: t(Strings.robot_variables_join_url_title),
+  //         },
+  //         text: {
+  //           type: 'string',
+  //           title: t(Strings.robot_variables_join_url_link),
+  //         },
+  //       },
+  //     }
+  //   };
+  // }
 
   override validateProperty() {
     return URLField.propertySchema.validate(this.field.property);

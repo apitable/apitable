@@ -35,7 +35,7 @@ export const spaceList = (): any => {
         dispatch(setSpaceList(data));
       }
     }, err => {
-      console.error("API.spaceList error", err);
+      console.error('API.spaceList error', err);
     });
   };
 };

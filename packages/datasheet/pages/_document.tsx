@@ -48,12 +48,14 @@ class MyDocument extends Document<IClientInfo> {
           <link rel='apple-touch-icon' href={integrateCdnHost(JSON.parse(envVars).LOGO)} />
           <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
+          {/* Do not send referrer in development mode to solve the problem of CDN Anti-Leech chain images not displaying. */}
+          { process.env.NODE_ENV === 'development' && <meta name="referrer" content="no-referrer" /> }
           <link rel='manifest' href={'/file/manifest.json'} />
           {
             JSON.parse(envVars).EMBED_BAIDU_CATCH_SDK &&
             <script src='https://rte-fe-static.bj.bcebos.com/rte-online/rte-fe-static/MultiSheetMonitor/index.js' />
           }
-          <script src='/file/js/browser_check.3.js' async />
+          <script src='/file/js/browser_check.2.js' async />
           {/* injection of custom configs of editions, e.g. APITable */}
           <script src='/custom/custom_config.js' defer />
           {
@@ -71,7 +73,7 @@ class MyDocument extends Document<IClientInfo> {
           <Main />
           <NextScript />
           {
-            !JSON.parse(envVars).DISABLE_AWSC && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
+            !JSON.parse(envVars).IS_SELFHOST && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           }
           {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>

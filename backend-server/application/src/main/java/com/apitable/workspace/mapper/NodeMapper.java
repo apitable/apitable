@@ -111,6 +111,16 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     String selectRootNodeIdBySpaceId(@Param("spaceId") String spaceId);
 
     /**
+     * Query first node id.
+     *
+     * @param parentId parent id
+     * @return node id
+     * @author Chambers
+     */
+    String selectNodeIdByParentIdAndPreNodeId(@Param("parentId") String parentId,
+        @Param("preNodeId") String preNodeId);
+
+    /**
      * Fuzzy search node, return node ID the root node cannot be searched.
      *
      * @param spaceId  space id
@@ -357,6 +367,18 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      */
     int updatePreNodeIdBySelf(@Param("newPreNodeId") String newPreNodeId,
         @Param("originPreNodeId") String originPreNodeId, @Param("parentId") String parentId);
+
+    /**
+     * Update preNodeId by nodeId.
+     *
+     * @param updatedPreNodeId  new pre node id
+     * @param nodeId            node id
+     * @return affected rows
+     * @author Chambers
+     */
+    int updatePreNodeIdByNodeId(@Param("updatedPreNodeId") String updatedPreNodeId,
+        @Param("nodeId") String nodeId);
+
 
     /**
      * query node parent id.

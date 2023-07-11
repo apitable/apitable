@@ -18,17 +18,17 @@
 
 package com.apitable.organization.mapper;
 
+import com.apitable.organization.dto.RoleMemberDTO;
+import com.apitable.organization.dto.RoleMemberInfoDTO;
+import com.apitable.organization.entity.RoleMemberEntity;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.shared.util.ibatis.ExpandBaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
-
-import com.apitable.organization.dto.RoleMemberInfoDTO;
-import com.apitable.shared.util.ibatis.ExpandBaseMapper;
-import com.apitable.organization.entity.RoleMemberEntity;
 
 public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
 
@@ -93,17 +93,37 @@ public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
     /**
      * get role members' information by role's id and role members' id.
      *
-     * @param roleId        the role's id
-     * @param unitRefIds    the role members' id
+     * @param roleId     the role's id
+     * @param unitRefIds the role members' id
      * @return role members information
      */
-    List<RoleMemberInfoDTO> selectRoleMembersByRoleIdAndUnitRefIds(@Param("roleId") Long roleId, @Param("unitRefIds") List<Long> unitRefIds);
+    List<RoleMemberInfoDTO> selectRoleMembersByRoleIdAndUnitRefIds(@Param("roleId") Long roleId,
+                                                                   @Param("unitRefIds")
+                                                                   List<Long> unitRefIds);
 
     /**
      * count rows by role's id.
      *
-     * @param roleId    the roles' id
+     * @param roleId the roles' id
      * @return number of rows
      */
     Integer selectCountByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * get role's member by role member id.
+     *
+     * @param unitRefIds the role member's id
+     * @param unitType   the type of unit
+     * @return the roles' id of the member's ref.
+     */
+    List<RoleMemberDTO> selectByUnitRefIdAnUnitType(@Param("unitRefIds") List<Long> unitRefIds,
+                                                    @Param("unitType") UnitType unitType);
+
+    /**
+     * get role's member by role member id.
+     *
+     * @param roleIds the role's id
+     * @return the role member info
+     */
+    List<RoleMemberDTO> selectByRoleIds(@Param("roleIds") List<Long> roleIds);
 }

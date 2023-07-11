@@ -23,11 +23,9 @@ import {
 } from '@apitable/core';
 import { AutosaveOutlined, ChevronRightOutlined, LoadingOutlined, LockOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
-// @ts-ignore
-import { triggerUsageAlert } from 'enterprise';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
-import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
+import { confirmViewAutoSave } from '../../view_sync_switch/popup_content/pc';
 import { useViewAction } from 'pc/components/tool_bar/view_switcher/action';
 import { expandViewLock } from 'pc/components/view_lock/expand_view_lock';
 import { changeView } from 'pc/hooks';

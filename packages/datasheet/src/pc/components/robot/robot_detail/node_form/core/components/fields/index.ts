@@ -28,6 +28,7 @@ import { TitleField } from './TitleField';
 import NullField from './NullField';
 import UnsupportedField from './UnsupportedField';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   AnyOfField: MultiSchemaField,
   ArrayField,

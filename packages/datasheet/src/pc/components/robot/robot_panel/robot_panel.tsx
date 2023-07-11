@@ -43,16 +43,16 @@ const RobotBase = () => {
           <Box
             height="50px"
             display="flex"
-            justifyContent="center"
+            justifyContent="space-between"
             alignItems="center"
-            padding="16px"
+            padding="16px 8px"
             borderBottom={`1px solid ${theme.color.lineColor}`}
             position="relative"
             backgroundColor={theme.color.bgCommonDefault}
           >
             <RobotHead />
           </Box>
-          <Box overflow="auto" padding="16px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
+          <Box overflow="auto" padding="16px 8px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
             <RobotList />
           </Box>
         </SWRConfig>

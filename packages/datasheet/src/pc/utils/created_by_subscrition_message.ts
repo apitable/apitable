@@ -8,4 +8,4 @@ export const createdBySubscritionMessage = (fieldMap: IFieldMap) => {
       content: t(Strings.add_row_created_by_tip)
     });
   }
-}
+};

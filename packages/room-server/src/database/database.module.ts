@@ -29,10 +29,12 @@ import { WidgetModule } from './widget/widget.module';
 import { AssetModule } from './asset/asset.module';
 import { OtModule } from './ot/ot.module';
 import { CommandModule } from './command/command.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CascaderModule } from './cascader/cascader.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     AssetModule,
     AttachmentModule,
     AlarmDynamicModule.forRoot(),

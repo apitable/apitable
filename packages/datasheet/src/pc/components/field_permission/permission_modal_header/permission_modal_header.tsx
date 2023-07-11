@@ -43,7 +43,7 @@ export const PermissionModalHeader: React.FC<React.PropsWithChildren<IPermission
   return (
     <div className={styles.modalHeader}>
       <div className={styles.leftWrapper}>
-        <Typography variant={'body1'} component={'span'} className={styles.text}>
+        <Typography ellipsis variant={'body1'} component={'span'} className={styles.text}>
           <TComponent
             tkey={t(Strings.set_permission_modal_title)}
             params={{

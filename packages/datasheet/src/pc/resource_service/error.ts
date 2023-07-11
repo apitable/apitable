@@ -32,7 +32,7 @@ export const onError: IServiceError = (error, type) => {
   const { isShowQrcode, title, code, message: errorMessage } = error;
   const errorCode = code as number;
   const env = getEnvVariables();
-  const qrcodeVisible = getEnvVariables().CUSTOMER_SERVICE_QRCODE_VISIBLE;
+  const qrcodeVisible = !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE);
   if (type === 'modal') {
     Sentry.captureMessage(errorMessage, {
       extra: error as any,

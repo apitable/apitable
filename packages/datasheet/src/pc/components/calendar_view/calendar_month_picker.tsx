@@ -25,15 +25,15 @@ import { PickerContent } from '../editors/date_time_editor/mobile/picker_content
 import MonthPicker from '../editors/date_time_editor/date_picker/month_picker';
 import { useClickAway } from 'ahooks';
 import { get } from 'lodash';
+import { getLanguage } from '@apitable/core';
 interface ICalendarMonthPicker {
   showValue: string;
-  lang: string;
   setDate: (date: dayjs.Dayjs | null) => void;
 }
 
 export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
-  const { showValue, lang, setDate } = props;
-
+  const { showValue, setDate } = props;
+  const lang = getLanguage().split('-')[0];
   const isZh = lang === 'zh';
   const format = isZh ? 'YYYY年MM月' : 'YYYY MM';
 

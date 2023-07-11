@@ -18,6 +18,7 @@
 
 import { t, Strings } from '@apitable/core';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // Block-level elements
   paragraph: t(Strings.paragraph),

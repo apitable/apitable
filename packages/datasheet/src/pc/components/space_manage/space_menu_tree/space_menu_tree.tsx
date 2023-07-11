@@ -20,7 +20,7 @@ import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { 
   LogOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
-  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined 
+  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined, BankOutlined
 } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
@@ -86,8 +86,15 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.upgrade_space),
     key: 'upgrade',
     icon: <RocketOutlined />,
-    valid: Boolean(isSelfVika && !isMobileApp() && getEnvVariables().SPACE_UPGRADE_PAGE_VISIBLE),
+    valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST),
     routeAddress: '/upgrade',
+  },
+  {
+    title: t(Strings.billing_info_billing),
+    key: 'billing',
+    icon: <BankOutlined />,
+    valid: getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE,
+    routeAddress: '/billing',
   },
   {
     title: t(Strings.organization_and_role),

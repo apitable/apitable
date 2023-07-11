@@ -3,11 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>
-      {{ MEMBER_NAME }} mentioned you at "{{ FIELD_NAME }}" of the "{{
-        RECORD_TITLE
-      }}" record in the "{{ NODE_NAME }}" datasheet
-    </title>
+    <title>{{MEMBER_NAME}} mentioned you at "{{FIELD_NAME}}" of the "{{RECORD_TITLE}}" record in the "{{NODE_NAME}}" datasheet</title>
     <style>
       @media only screen and (max-width: 620px) {
         body {
@@ -51,8 +47,7 @@
           border-radius: 8px !important;
           border-right-width: 0 !important;
           margin-top: 10px;
-          box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
-            0px 3px 6px rgba(20, 20, 20, 0.06);
+          box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1), 0px 3px 6px rgba(20, 20, 20, 0.06);
         }
 
         table[class="body"] .button table {
@@ -69,6 +64,7 @@
           width: auto !important;
         }
       }
+
       @media all {
         .ExternalClass {
           width: 100%;
@@ -98,20 +94,17 @@
         }
       }
     </style>
-    <link
-      href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css" />
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
     </style>
   </head>
+
   <body
     class
     style="
       background-color: #ffffff;
-      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
       -webkit-font-smoothing: antialiased;
       font-size: 14px;
       line-height: 1.4;
@@ -127,32 +120,16 @@
       cellpadding="0"
       cellspacing="0"
       class="body"
-      style="
-        border-collapse: separate;
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-        min-width: 100%;
-        background-color: #ffffff;
-        width: 100%;
-      "
+      style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; background-color: #ffffff; width: 100%"
       width="100%"
       bgcolor="#ffffff"
     >
       <tr>
-        <td
-          style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            vertical-align: top;
-          "
-          valign="top"
-        >
-          &nbsp;
-        </td>
+        <td style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top" valign="top">&nbsp;</td>
         <td
           class="container"
           style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
             font-size: 14px;
             vertical-align: top;
             display: block;
@@ -172,52 +149,27 @@
               cellpadding="0"
               cellspacing="0"
               width="100%"
-              style="
-                border-collapse: separate;
-                mso-table-lspace: 0pt;
-                mso-table-rspace: 0pt;
-                min-width: 100%;
-                width: 100%;
-              "
+              style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; width: 100%"
             >
               <tr>
                 <td
                   class="align"
                   width="100%"
-                  style="
-                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
-                    font-size: 14px;
-                    vertical-align: top;
-                  "
+                  style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top"
                   valign="top"
                 >
-                  <a
-                    href="https://apitable.com?home=1"
-                    style="color: #7b67ee; text-decoration: underline"
+                  <a href="https://apitable.com?home=1" style="color: #7b67ee; text-decoration: underline"
                     ><img
-                      src="https://legacy-s1.apitable.com/space/2022/09/20/a5de38aec6cc78aa3f447cf3a18aeb69"
+                      src="https://s4.apitable.com/logo/a5de38aec6cc78aa3f447cf3a18aeb69"
                       height="24"
                       alt="APITable"
-                      style="
-                        border: none;
-                        -ms-interpolation-mode: bicubic;
-                        max-width: 100%;
-                      "
+                      style="border: none; -ms-interpolation-mode: bicubic; max-width: 100%; margin-left: 10px;"
                   /></a>
                 </td>
               </tr>
             </table>
           </div>
-          <div
-            class="content"
-            style="
-              box-sizing: border-box;
-              display: block;
-              margin: 0 auto;
-              max-width: 580px;
-              padding: 10px;
-            "
-          >
+          <div class="content" style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px">
             <!-- START CENTERED WHITE CONTAINER -->
             <span
               class="preheader"
@@ -234,9 +186,7 @@
                 width: 0;
               "
             >
-              {{ MEMBER_NAME }} mentioned you at "{{ FIELD_NAME }}" of the "{{
-                RECORD_TITLE
-              }}" record in the "{{ NODE_NAME }}" datasheet
+              {{MEMBER_NAME}} mentioned you at "{{FIELD_NAME}}" of the "{{RECORD_TITLE}}" record in the "{{NODE_NAME}}" datasheet
             </span>
             <table
               role="presentation"
@@ -248,8 +198,7 @@
                 min-width: 100%;
                 width: 100%;
                 background: #ffffff;
-                box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
-                  0px 3px 6px rgba(20, 20, 20, 0.06);
+                box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1), 0px 3px 6px rgba(20, 20, 20, 0.06);
                 border-radius: 8px;
                 border: 1px solid #e1e4ea;
               "
@@ -260,11 +209,11 @@
                 <td
                   class="wrapper"
                   style="
-                    font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                     font-size: 14px;
                     vertical-align: top;
                     box-sizing: border-box;
-                    padding: 20px;
+                    padding: 32px;
                   "
                   valign="top"
                 >
@@ -273,85 +222,66 @@
                     border="0"
                     cellpadding="0"
                     cellspacing="0"
-                    style="
-                      border-collapse: separate;
-                      mso-table-lspace: 0pt;
-                      mso-table-rspace: 0pt;
-                      min-width: 100%;
-                      width: 100%;
-                    "
+                    style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; width: 100%"
                     width="100%"
                   >
                     <tr>
-                      <td
-                        align="left"
-                        style="
-                          font-family: Ubuntu, Helvetica, Arial, sans-serif;
-                          font-size: 14px;
-                          vertical-align: top;
-                        "
-                        valign="top"
-                      >
-                        <h2
+                      <td align="left" style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top" valign="top">
+                        <p
                           style="
-                            color: #06090f;
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                            color: #333333;
+                            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                             font-weight: 400;
+                            font-size: 20px;
                             line-height: 1.4;
                             margin: 0;
                             margin-bottom: 30px;
                           "
                         >
-                          {{ MEMBER_NAME }} mentioned you at
-                          <b>"{{ RECORD_TITLE }}"</b> record in the
-                          <b>"{{ NODE_NAME }}"</b> datasheet
-                        </h2>
+                          {{MEMBER_NAME}} mentioned you at <b>"{{RECORD_TITLE}}"</b> record in the <b>"{{NODE_NAME}}"</b> datasheet
+                        </p>
                         <div
                           class="remind_content"
                           style="
+                            color: #333333;
                             display: table-cell;
                             background: #f0f2f5;
                             border-radius: 8px;
                             height: 80px;
-                            padding: 10px 15px;
-                            font-size: 15px;
+                            padding: 10px 16px;
+                            font-size: 16px;
                             vertical-align: middle;
                             min-width: 414px;
                           "
                         >
-                          Mentioned field: <br /><br />{{ FIELD_NAME }}
+                          Mentioned field: <br /><br />{{FIELD_NAME}}
                         </div>
-                        <div style="margin: 16px 0 32px 0">
+                        <div style="display: grid; grid-template-columns: 1fr auto; margin: 0 0 32px 0">
                           <p
                             class="space_name"
                             style="
-                              font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                              font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                               font-weight: normal;
-                              margin: 0;
-                              margin-bottom: 15px;
                               font-size: 13px;
                               line-height: 20px;
                               color: #696969;
                             "
                           >
-                            {{ SPACE_NAME }}
+                            {{SPACE_NAME}}
+                          </p>
+                          <p
+                            class="remind_date"
+                            style="
+                              font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                              font-weight: normal;
+                              font-size: 13px;
+                              line-height: 20px;
+                              color: #696969;
+                            "
+                          >
+                            {{CREATED_AT}}
                           </p>
                         </div>
-                        <p
-                          class="remind_date"
-                          style="
-                            font-family: Ubuntu, Helvetica, Arial, sans-serif;
-                            font-weight: normal;
-                            margin-bottom: 15px;
-                            margin: 16px 0 32px 0;
-                            font-size: 13px;
-                            line-height: 20px;
-                            color: #696969;
-                            float: right;
-                          "
-                        >
-                          {{ CREATED_AT }}
-                        </p>
                         <table
                           role="presentation"
                           border="0"
@@ -372,13 +302,7 @@
                             <tr>
                               <td
                                 align="center"
-                                style="
-                                  font-family: Ubuntu, Helvetica, Arial,
-                                    sans-serif;
-                                  font-size: 14px;
-                                  vertical-align: top;
-                                  padding-bottom: 15px;
-                                "
+                                style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top; padding-bottom: 15px"
                                 valign="top"
                               >
                                 <table
@@ -386,21 +310,14 @@
                                   border="0"
                                   cellpadding="0"
                                   cellspacing="0"
-                                  style="
-                                    border-collapse: separate;
-                                    mso-table-lspace: 0pt;
-                                    mso-table-rspace: 0pt;
-                                    min-width: auto;
-                                    width: 200px;
-                                  "
+                                  style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: auto; width: 200px"
                                   width="200"
                                 >
                                   <tbody>
                                     <tr>
                                       <td
                                         style="
-                                          font-family: Ubuntu, Helvetica, Arial,
-                                            sans-serif;
+                                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                                           font-size: 14px;
                                           vertical-align: top;
                                           border-radius: 4px;
@@ -412,7 +329,7 @@
                                         bgcolor="#7b67ee"
                                       >
                                         <a
-                                          href="{{ URL }}"
+                                          href="{{URL}}"
                                           target="_blank"
                                           style="
                                             border: solid 1px #7b67ee;
@@ -449,34 +366,20 @@
             </table>
 
             <!-- START FOOTER -->
-            <div
-              class="footer"
-              style="
-                clear: both;
-                margin-top: 10px;
-                text-align: center;
-                width: 100%;
-              "
-            >
+            <div class="footer" style="clear: both; margin-top: 10px; text-align: center; width: 100%">
               <table
                 role="presentation"
                 border="0"
                 cellpadding="0"
                 cellspacing="0"
-                style="
-                  border-collapse: separate;
-                  mso-table-lspace: 0pt;
-                  mso-table-rspace: 0pt;
-                  min-width: 100%;
-                  width: 100%;
-                "
+                style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; width: 100%"
                 width="100%"
               >
                 <tr>
                   <td
                     class="content-block"
                     style="
-                      font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                       vertical-align: top;
                       padding-bottom: 10px;
                       padding-top: 10px;
@@ -489,7 +392,7 @@
                     <p
                       class="copyright"
                       style="
-                        font-family: Ubuntu, Helvetica, Arial, sans-serif;
+                        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
                         font-weight: normal;
                         margin: 0;
                         margin-bottom: 15px;
@@ -497,18 +400,12 @@
                         text-align: center;
                       "
                     >
-                      &copy; {{ YEARS }} APITable Ltd.
+                      &copy; {{YEARS}} APITable Ltd.
                     </p>
                     <a
                       class="contact"
                       href="https://apitable.com?home=1"
-                      style="
-                        line-height: 18px;
-                        color: #7b67ee;
-                        text-decoration: none;
-                        font-size: 12px;
-                        text-align: center;
-                      "
+                      style="line-height: 18px; color: #7b67ee; text-decoration: none; font-size: 12px; text-align: center"
                       >Contact us</a
                     >
                   </td>
@@ -520,16 +417,7 @@
             <!-- END CENTERED WHITE CONTAINER -->
           </div>
         </td>
-        <td
-          style="
-            font-family: Ubuntu, Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            vertical-align: top;
-          "
-          valign="top"
-        >
-          &nbsp;
-        </td>
+        <td style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top" valign="top">&nbsp;</td>
       </tr>
     </table>
   </body>

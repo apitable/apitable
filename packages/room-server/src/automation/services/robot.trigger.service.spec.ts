@@ -20,40 +20,52 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RobotTriggerService } from './robot.trigger.service';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { EventTypeEnums } from '../events/domains/event.type.enums';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { WinstonModule } from 'nest-winston';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
-import { EventTypeEnums } from '../workers/worker.helper';
 
 describe('RobotTriggerServiceTest', () => {
   let module: TestingModule;
   let service: RobotTriggerService;
   let automationTriggerTypeRepository: AutomationTriggerTypeRepository;
   let automationTriggerRepository: AutomationTriggerRepository;
+  let automationServiceRepository: AutomationServiceRepository;
   let automationRobotRepository: AutomationRobotRepository;
 
   beforeAll(async() => {
     module = await Test.createTestingModule({
+      imports: [
+        WinstonModule.forRootAsync({
+          useClass: LoggerConfigService,
+        }),
+      ],
       providers: [
         AutomationTriggerTypeRepository,
         AutomationTriggerRepository,
+        AutomationServiceRepository,
         AutomationRobotRepository,
         RobotTriggerService,
       ],
     }).compile();
     automationTriggerTypeRepository = module.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
     automationTriggerRepository = module.get<AutomationTriggerRepository>(AutomationTriggerRepository);
+    automationServiceRepository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
     automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
     service = module.get<RobotTriggerService>(RobotTriggerService);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await module.close();
   });
 
   it('should be defined', () => {
     expect(automationTriggerTypeRepository).toBeDefined();
     expect(automationTriggerRepository).toBeDefined();
+    expect(automationServiceRepository).toBeDefined();
     expect(automationRobotRepository).toBeDefined();
     expect(service).toBeDefined();
   });
@@ -80,6 +92,7 @@ describe('RobotTriggerServiceTest', () => {
     jest
       .spyOn(automationTriggerTypeRepository, 'getTriggerTypeServiceRelByEndPoint')
       .mockResolvedValue([{ serviceId: 'serviceId', triggerTypeId: 'triggerTypeId' }]);
+    jest.spyOn(automationServiceRepository, 'countOfficialServiceByServiceId').mockResolvedValue(1);
     jest.spyOn(automationRobotRepository, 'selectRobotIdByResourceId').mockResolvedValue([{ robotId: 'robotId' }]);
     jest
       .spyOn(automationTriggerRepository, 'getTriggerByRobotIdAndTriggerTypeId')
@@ -96,4 +109,13 @@ describe('RobotTriggerServiceTest', () => {
     expect(resourceRobotTriggerDtos.length).toEqual(0);
   });
 
+  it("given not official trigger when get resource's robot triggers then should be got empty list", async() => {
+    jest
+      .spyOn(automationTriggerTypeRepository, 'getTriggerTypeServiceRelByEndPoint')
+      .mockResolvedValue([{ serviceId: 'serviceId', triggerTypeId: 'triggerTypeId' }]);
+    jest.spyOn(automationServiceRepository, 'countOfficialServiceByServiceId').mockResolvedValue(0);
+    const resourceRobotTriggerDtos = await service.getTriggersByResourceAndEventType('datasheetId', EventTypeEnums.FormSubmitted);
+    expect(resourceRobotTriggerDtos).toBeDefined();
+    expect(resourceRobotTriggerDtos.length).toEqual(0);
+  });
 });

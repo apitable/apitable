@@ -36,7 +36,9 @@ export interface IApplicationJoinSpaceAlertProps {
   defaultVisible?: boolean;
 }
 
-export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJoinSpaceAlertProps>> = ({ spaceId, spaceName, defaultVisible = true }) => {
+export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJoinSpaceAlertProps>> = ({
+  spaceId, spaceName, defaultVisible = true
+}) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

@@ -24,13 +24,11 @@ import { AppModule } from 'app.module';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';
 import { ApiException } from 'shared/exception';
-import supertest from 'supertest';
 import { CreateDatasheetPipe } from './create.datasheet.pipe';
 
 describe('CreateDatasheetPipe', () => {
   let app: NestFastifyApplication;
   let pipe: CreateDatasheetPipe;
-  let request;
   beforeAll(async() => {
     jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
@@ -38,8 +36,7 @@ describe('CreateDatasheetPipe', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    request = supertest(app.getHttpServer());
-    pipe = new CreateDatasheetPipe(request);
+    pipe = new CreateDatasheetPipe({} as any);
   });
 
   afterAll(async() => {

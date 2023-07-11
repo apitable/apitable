@@ -41,7 +41,6 @@ export const RobotCreateGuideStep4 = (props: IStepProps) => {
         display='flex'
         flexDirection='column'
         alignItems='center'
-        height='110px'
         justifyContent='space-between'
         margin='0px 0px 24px 0px'
       >

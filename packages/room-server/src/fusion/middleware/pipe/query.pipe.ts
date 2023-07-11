@@ -35,33 +35,38 @@ export class QueryPipe implements PipeTransform {
 
   transform(value: any) {
     value = qs.parse(value);
+    if (!value) {
+      return value;
+    }
     // transform, validate and sort the parameters
-    const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
-    let fieldMap = meta.fieldMap;
-    if (value.fieldKey === FieldKeyEnum.NAME) {
-      fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
-    }
-    if (value && value.sort) {
-      // validate and transform it into field id
-      value.sort = QueryPipe.validateSort(value.sort, fieldMap);
-    }
-    // validate view id
-    if (value && value.viewId) {
-      QueryPipe.validateViewId(value.viewId, meta);
-    }
-    // validate fields
-    if (value && value.fields) {
-      QueryPipe.validateFields(value.fields, fieldMap);
+    if (value.sort || value.viewId || value.fields) {
+      const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
+      let fieldMap = meta.fieldMap;
+      if (value.fieldKey === FieldKeyEnum.NAME) {
+        fieldMap = keyBy(Object.values(meta.fieldMap), 'name');
+      }
+      if (value.sort) {
+        // validate and transform it into field id
+        value.sort = QueryPipe.validateSort(value.sort, fieldMap);
+      }
+      // validate view id
+      if (value.viewId) {
+        QueryPipe.validateViewId(value.viewId, meta);
+      }
+      // validate fields
+      if (value.fields) {
+        QueryPipe.validateFields(value.fields, fieldMap);
+      }
     }
     return value;
   }
 
   static validateSort(sorts: SortRo[], fieldMap: IFieldMap): SortRo[] {
-    return sorts.map(sort => {
+    return sorts.map((sort) => {
       if (sort && isString(sort)) {
         sort = JSON.parse(sort);
       }
-      if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
+      if (!fieldMap[sort.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists, { fieldId: sort.field });
       return { field: fieldMap[sort.field]!.id, order: sort.order.toLowerCase() as OrderEnum };
     });
   }
@@ -69,14 +74,14 @@ export class QueryPipe implements PipeTransform {
   static validateViewId(viewId: string, meta: IMeta) {
     const views = meta.views;
     let exist = false;
-    views.forEach(view => {
+    views.forEach((view) => {
       if (view.id === viewId) exist = true;
     });
     if (!exist) throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
   }
 
   static validateFields(fields: string[], fieldMap: IFieldMap) {
-    const notExists = fields.filter(field => {
+    const notExists = fields.filter((field) => {
       return !fieldMap[field];
     });
     if (notExists.length) throw ApiException.tipError(ApiTipConstant.api_query_params_invalid_fields, { fields: notExists.join(', ') });
