@@ -56,7 +56,7 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
           >
             {
               isViewAutoSave ? <AutoSaveLottie /> :(
-                <Badge dot>
+                <Badge dot className={styles.badgeIcon}>
                   <ManualSaveLottie />
                 </Badge>)
             }
