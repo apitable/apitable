@@ -122,6 +122,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
           }}
           variant="fill"
           color={bgColor}
+          size="small"
         >
           <CloseOutlined size={12} color={color} />
         </Button>

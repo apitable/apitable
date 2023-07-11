@@ -16,10 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, ApiInterface, StoreActions, Strings, t } from '@apitable/core';
+import { Api, ApiInterface, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { message } from 'antd';
 import { Message } from 'pc/components/common';
 import { useDispatch } from 'react-redux';
+import { navigationToUrl } from '../components/route_manager/navigation_to_url';
+import { Method } from '../components/route_manager/const';
+import { Router } from '../components/route_manager/router';
+// @ts-ignore
+import { isSocialDomain } from 'enterprise';
 
 export const useSpaceRequest = () => {
   const dispatch = useDispatch();
@@ -125,8 +130,7 @@ export const useSpaceRequest = () => {
 
   /**
    * Get embed info
-   * @param nodeId 
-   * @param data 
+   * @param embedId
    */
   const getEmbedInfoReq = (
     embedId: string,
@@ -140,9 +144,42 @@ export const useSpaceRequest = () => {
     });
   };
 
+  const getUserAndRedirect = (spaceId: string) => {
+    return Api.getUserMe({ spaceId }).then(res => {
+      const { data, success } = res.data;
+      if (success) {
+        navigationToUrl(`${window.location.protocol}//${data.spaceDomain || window.location.host}/workbench`, {
+          method: Method.Redirect,
+          query: {
+            spaceId: data.spaceId
+          }
+        });
+      }
+    });
+  };
+
+  const createSpaceReq = (name: string) => Api.createSpace(name).then(res => {
+    const { success, code, message, data } = res.data;
+    if (success) {
+      // Compatible with corporate domain name creation space station jump
+      if (isSocialDomain?.()) {
+        getUserAndRedirect(data.spaceId);
+        return;
+      }
+      dispatch(StoreActions.updateUserInfo({ needCreate: false }));
+      Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
+    } else {
+      dispatch(StoreActions.setSpaceErr({
+        code,
+        msg: message,
+      }));
+    }
+  });
+
   return {
     changeSpaceNameReq, getSpaceListReq, applyJoinSpaceReq, spaceFeaturesReq, getEmbedInfoReq,
-    checkEmailReq, updateMemberSettingReq, updateWorkbenchSettingReq, updateSecuritySettingReq
+    checkEmailReq, updateMemberSettingReq, updateWorkbenchSettingReq, updateSecuritySettingReq,
+    getUserAndRedirect, createSpaceReq,
   };
 };
 

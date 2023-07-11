@@ -17,22 +17,17 @@
  */
 
 import { Button, ThemeName } from '@apitable/components';
-import { Api, IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
+import { IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';
-import { Method } from 'pc/components/route_manager/const';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
-import { useRequest } from 'pc/hooks';
+import { useRequest, useSpaceRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
-
-// @ts-ignore
-import { isSocialDomain } from 'enterprise';
 import styles from './style.module.less';
 
 interface ICreateSpace {
@@ -53,33 +48,8 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
     err: state.space.err,
     user: state.user.info,
   }), shallowEqual);
-  const { run: toGetUser } = useRequest((spaceId) => Api.getUserMe({ spaceId }).then(res => {
-    const { data, success } = res.data;
-    if (success) {
-      navigationToUrl(`${window.location.protocol}//${data.spaceDomain}/workbench`, {
-        method: Method.Redirect,
-        query: {
-          spaceId: data.spaceId
-        }
-      });
-    }
-  }), { manual: true });
-  const { run: createSpace } = useRequest((name: string) => Api.createSpace(name).then(res => {
-    const { success, code, message, data } = res.data;
-    if (success) {
-      if (isSocialDomain?.()) {
-        toGetUser(data.spaceId);
-        return;
-      }
-      dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-      Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
-    } else {
-      dispatch(StoreActions.setSpaceErr({
-        code,
-        msg: message,
-      }));
-    }
-  }), { manual: true });
+  const { createSpaceReq } = useSpaceRequest();
+  const { run: createSpace } = useRequest(createSpaceReq, { manual: true });
 
   useEffect(() => {
     if (spaceName) {
