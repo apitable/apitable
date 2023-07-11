@@ -198,7 +198,7 @@
     "raw-loader": "^4.0.2",
     "react-app-rewire-postcss": "^3.0.2",
     "react-dev-utils": "^11.0.3",
-    "stylelint": "13.9.0",
+    "stylelint": "15.10.1",
     "svgo-loader": "3.0.0",
     "typescript": "^4.8.2",
     "web-vitals": "^1.0.1",
