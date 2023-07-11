@@ -475,7 +475,7 @@ __metadata:
     path-browserify: ^1.0.1
     pingpp-js: ^2.2.24
     polyfill-object.fromentries: ^1.0.1
-    posthog-js: ^1.50.8
+    posthog-js: ^1.57.2
     prismjs: ^1.27.0
     qr-image: ^3.2.0
     qrcode: ^1.4.4
@@ -31599,13 +31599,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"posthog-js@npm:^1.50.8":
-  version: 1.51.1
-  resolution: "posthog-js@npm:1.51.1"
+"posthog-js@npm:^1.57.2":
+  version: 1.58.0
+  resolution: "posthog-js@npm:1.58.0"
   dependencies:
     fflate: ^0.4.1
     rrweb-snapshot: ^1.1.14
-  checksum: 32025b9ee8e75d43a4c25cc5766d6d553a5a1111524cd71a20f53773c50617fc431d3f9daf74c9d9c5502b1cba50580ffb3d0116039040c12dc02ed992e9079e
+  checksum: 8b91ba38b79a9c3586d86a66ee9ed941835eaeb6907be7cafe5044fb85d6595babef6d14b140f0d79d219e2b433c5e979b5d519e1dcfb3e06f094f0b5ae483df
   languageName: node
   linkType: hard
 
