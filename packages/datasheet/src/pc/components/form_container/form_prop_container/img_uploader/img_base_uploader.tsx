@@ -33,7 +33,7 @@ export enum IFileType {
 }
 
 interface IImgBaseUploader {
-  formId: string;
+  nodeId: string;
   visible: boolean;
   imgUrl: string | undefined;
   fileLimit?: number;
@@ -47,7 +47,7 @@ interface IImgBaseUploader {
 
 export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>> = props => {
   const {
-    formId,
+    nodeId,
     visible,
     imgUrl,
     cropShape,
@@ -61,9 +61,9 @@ export const ImgBaseUploader: React.FC<React.PropsWithChildren<IImgBaseUploader>
   const [coverLoading, setCoverLoading] = useState(false);
 
   const uploadCoverImg = (file: File) => {
-    if (!formId) return false;
+    if (!nodeId) return false;
     setCoverLoading(true);
-    uploadFile(file, formId);
+    uploadFile(file, nodeId);
     return false;
   };
 

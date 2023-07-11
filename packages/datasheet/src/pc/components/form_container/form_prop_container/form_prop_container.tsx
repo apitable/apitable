@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { IFormProps, CollaCommandName } from '@apitable/core';
+import { IFormProps, CollaCommandName, Selectors } from '@apitable/core';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import { TitleEditor } from './title_editor';
@@ -30,10 +30,10 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { resourceService } from 'pc/resource_service';
 
 interface IFormPropContainerProps {
-  formId: string;
-  title: string;
-  editable: boolean;
-  formProps: IFormProps;
+    formId: string;
+    title: string;
+    editable: boolean;
+    formProps: IFormProps;
 }
 
 export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = props => {
@@ -43,17 +43,17 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareId } = useSelector(state => state.pageParams);
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
-
+  const title = useSelector(state => Selectors.getForm(state)!.name);
   const updateProps = (partProps: Partial<IFormProps>) => {
-    resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.UpdateFormProps,
-      formId,
-      partialProps: partProps,
-    });
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.UpdateFormProps,
+          formId,
+          partialProps: partProps,
+        });
   };
 
   const commonProps = {
-    formId,
+    nodeId: formId,
     mode,
     updateProps,
   };
@@ -70,7 +70,7 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
             [styles.coverImgUploaderMobile]: isMobile,
           })}
         >
-          <CoverImgUploader {...commonProps} coverUrl={coverUrl} />
+          <CoverImgUploader {...commonProps} coverUrl={coverUrl}/>
         </div>
       )}
       <div
@@ -84,11 +84,11 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
       >
         {logoVisible && (
           <div className={classNames(styles.logoImgUploader, isMobile && styles.logoImgUploaderMobile)}>
-            <LogoImgUploader {...commonProps} logoUrl={logoUrl} />
+            <LogoImgUploader {...commonProps} logoUrl={logoUrl}/>
           </div>
         )}
-        <TitleEditor {...commonProps} />
-        <DescEditor {...commonProps} descData={description} />
+        <TitleEditor {...commonProps} title={title}/>
+        <DescEditor {...commonProps} descData={description}/>
       </div>
     </div>
   );

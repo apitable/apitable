@@ -21,26 +21,20 @@ import { useMount } from 'ahooks';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import * as React from 'react';
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
 import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
 import { Welcome } from '../workspace/welcome';
+// @ts-ignore
+import { ChatPage } from 'enterprise';
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useSelector(state => Selectors.getNodeId(state));
   const activeNodeError = useSelector(state => state.catalogTree.activeNodeError);
-  const { datasheetId, folderId, formId, dashboardId, mirrorId } = useSelector((state: IReduxState) => {
-    return {
-      datasheetId: state.pageParams.datasheetId,
-      folderId: state.pageParams.folderId,
-      formId: state.pageParams.formId,
-      dashboardId: state.pageParams.dashboardId,
-      mirrorId: state.pageParams.mirrorId,
-    };
-  }, shallowEqual);
+  const { datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state: IReduxState) => state.pageParams);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
   useMount(() => {
@@ -87,6 +81,9 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
     }
     if (dashboardId) {
       return <DashboardPanel />;
+    }
+    if (aiId && ChatPage) {
+      return <ChatPage />;
     }
     return <Welcome />;
   };

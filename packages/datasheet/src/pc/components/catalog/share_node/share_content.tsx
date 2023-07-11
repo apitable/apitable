@@ -16,58 +16,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IOption, Skeleton, Typography } from '@apitable/components';
-import { Api, ConfigConstant, INodeRoleMap, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { LinkButton, Skeleton, Typography } from '@apitable/components';
+import { INodeRoleMap, IReduxState, Strings, t } from '@apitable/core';
 import cls from 'classnames';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { Avatar, AvatarSize, Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common/tooltip';
-import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
-import { permissionMenuData } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
 import { PublicShareInviteLink } from './public_link';
 import styles from './style.module.less';
 import { IMemberList } from 'pc/components/catalog/permission_settings_plus/permission';
-export interface IShareContentProps {
-  /** Information about the node being operated on */
-  data: {
-    nodeId: string,
-    type: ConfigConstant.NodeType,
-    icon: string,
-    name: string,
-  };
-}
+import { IShareContentProps } from './interface';
+import { PermissionAndCollaborator } from './permission_and_collaborator';
+import { expandInviteModal } from '../../invite';
+import { LinkOutlined } from '@apitable/icons';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise';
 
 export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-
-  const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const socketData = useSelector(state => state.catalogTree.socketData);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
-  const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
+  const {
+    run: getNodeRoleList,
+    data: roleList,
+    loading
+  } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const [pageNo, setPageNo] = useState<number>(1);
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
-  const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
+  const {
+    run: getCollaboratorReq,
+    data: collaboratorInfo
+  } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
     manual: true
   });
+  const { spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
+    spaceFeatures: state.space.spaceFeatures,
+    spaceInfo: state.space.curSpaceInfo!,
+  }), shallowEqual);
 
   useEffect(() => {
     getCollaboratorReq(pageNo);
   }, [pageNo, getCollaboratorReq]);
 
   useEffect(() => {
-    if(collaboratorInfo) {
+    if (collaboratorInfo) {
       setMemberList([...memberList, ...collaboratorInfo.records]);
     }
     // eslint-disable-next-line
@@ -79,142 +75,68 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
     }
   }, [socketData, getNodeRoleList]);
 
+  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
+
   if (loading) {
     return (
       <div className={cls(styles.shareContent, styles.loading, { [styles.shareContentMobile]: isMobile })}>
-        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px' />
-        <Skeleton count={2} style={{ marginTop: '16px' }} height='24px' />
-        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px' />
-        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px' />
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
+        <Skeleton count={2} style={{ marginTop: '16px' }} height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
       </div>
     );
   }
 
-  const optionData = permissionMenuData(data.type);
-
-  const disableRoleExtend = async() => {
-    if (!roleList?.extend) {
-      return true;
-    }
-    const res = await Api.disableRoleExtend(data.nodeId, true);
-    const { success, message } = res.data;
-    if (!success) {
-      Message.error({ content: message });
-      return false;
-    }
-    dispatch(StoreActions.updateTreeNodesMap(data.nodeId, { nodePermitSet: true }));
-    return success;
-  };
-
-  // Select member submission events
-  const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
-    if (!unitInfos.length) {
-      return;
-    }
-
-    const result = triggerUsageAlert(
-      'nodePermissionNums',
-      { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
-    );
-    if (result) {
-      return;
-    }
-
-    const unitIds = unitInfos.map(item => item.unitId);
-
-    const res = await disableRoleExtend();
-    if (!res) {
-      return;
-    }
-
-    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
-      const { success, message } = res.data;
-      if (success) {
-        Message.success({ content: t(Strings.permission_add_success) });
-        await getNodeRoleList();
-      } else {
-        Message.error({ content: message });
-      }
-    });
-  };
-
-  const adminAndOwnerUnitIds = roleList ? [
-    ...roleList.admins.map(v => v.unitId),
-    ...roleList.roleUnits.filter(v => v.role === 'manager').map(v => v.unitId),
-    roleList.owner?.unitId || '',
-  ] : [];
-
   return (
     <>
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
-        <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
-          <span>{t(Strings.collaborate_and_share)}</span>
-          <Tooltip title={t(Strings.support)} trigger={'hover'}>
-            <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-              <QuestionCircleOutlined currentColor />
-            </a>
-          </Tooltip>
-        </Typography>
         {
-          getEnvVariables().FILE_PERMISSION_VISIBLE && <div className={styles.shareInvite}>
-            <UnitPermissionSelect
-              classNames={styles.permissionSelect}
-              permissionList={optionData}
-              onSubmit={onSubmit}
-              adminAndOwnerUnitIds={adminAndOwnerUnitIds}
-              showTeams
-              searchEmail
+          data.nodeId.startsWith('ai') ? <>
+            <PublicShareInviteLink
+              nodeId={data.nodeId}
+              isMobile={isMobile}
             />
-          </div>
+            <PermissionAndCollaborator
+              roleList={roleList}
+              data={data}
+              pageNo={pageNo}
+              getNodeRoleList={getNodeRoleList}
+              setDetailModalVisible={setDetailModalVisible}
+            />
+          </> : <>
+            <PermissionAndCollaborator
+              roleList={roleList}
+              data={data}
+              pageNo={pageNo}
+              getNodeRoleList={getNodeRoleList}
+              setDetailModalVisible={setDetailModalVisible}
+            />
+            <PublicShareInviteLink
+              nodeId={data.nodeId}
+              isMobile={isMobile}
+            />
+          </>
         }
-        <div className={cls(styles.shareFloor, styles.collaborator)}>
-          <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
-            {roleList && (
-              <div className={styles.collaboratorIcon}>
-                {
-                  memberList.slice(0, 5).map((v, i) => (
-                    <div key={v.memberId} className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
-                      <Tooltip title={v.memberName}>
-                        <div>
-                          <Avatar 
-                            src={v.avatar} 
-                            title={v.nickName || v.memberName} 
-                            avatarColor={v.avatarColor}
-                            id={v.memberId} 
-                            size={AvatarSize.Size24}
-                          />
-                        </div>
-                      </Tooltip>
-                    </div>
-                  ))
-                }
-              </div>
-            )}
-            <Typography variant='body3' className={styles.collaboratorNumber}>
-              {t(Strings.collaborator_number, { number: collaboratorInfo?.total })}
-            </Typography>
-          </div>
-          {
-            getEnvVariables().FILE_PERMISSION_VISIBLE && <Typography
-              variant='body3'
-              className={styles.collaboratorAuth}
-              onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
+        {invitable && (
+          <div className={styles.inviteMore}>
+            <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
+            <LinkButton
+              className={styles.inviteMoreMethod}
+              underline={false}
+              onClick={() => expandInviteModal()}
+              prefixIcon={<LinkOutlined currentColor/>}
             >
-              <span>{t(Strings.setting_permission)}</span>
-              <ChevronRightOutlined />
-            </Typography>
-          }
-        </div>
-        <PublicShareInviteLink
-          nodeId={data.nodeId}
-          isMobile={isMobile}
-        />
+              {t(Strings.invite_via_link)}
+            </LinkButton>
+          </div>
+        )}
       </div>
-      { detailModalVisible && <MembersDetail 
+      {detailModalVisible && <MembersDetail
         data={collaboratorInfo}
         memberList={memberList}
         setPageNo={setPageNo}
-        pageNo={pageNo} onCancel={() => setDetailModalVisible(false)} />}
+        pageNo={pageNo} onCancel={() => setDetailModalVisible(false)}/>}
     </>
   );
 };
