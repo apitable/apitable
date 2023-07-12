@@ -85,7 +85,7 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
               [styles.syncSpan]: currentView?.autoSave,
             })}
             id={'view_item_sync_icon'}
-            style={{ margin: '0px 4px', width: 16, height: 16, display: 'flex' }}
+            style={{ margin: '4px', width: 16, height: 16, display: 'flex' }}
           >
             {
               isViewAutoSave ? <AutoSaveLottie /> :(
