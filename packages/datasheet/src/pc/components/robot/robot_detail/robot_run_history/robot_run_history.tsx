@@ -51,12 +51,13 @@ export const RobotRunHistory = () => {
   const theme = useTheme();
   return <>
     <Box padding="16px">
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="start">
         <Box
           height="12px"
           width="2px"
           backgroundColor={theme.color.fc0}
           marginRight="4px"
+          marginTop="4px"
         />
         <Typography variant="body3" color={theme.color.fc3}>
           <div dangerouslySetInnerHTML={{ __html: t(Strings.robot_run_history_desc) }} />

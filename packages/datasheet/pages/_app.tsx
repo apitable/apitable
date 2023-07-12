@@ -17,6 +17,7 @@
  */
 
 // import App from 'next/app'
+import React, { useEffect, useState } from 'react';
 import {
   Api,
   integrateCdnHost,
@@ -36,7 +37,6 @@ import 'antd/es/date-picker/style/index';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
-import 'enterprise/style.less';
 import ErrorPage from 'error_page';
 import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
@@ -48,30 +48,29 @@ import Script from 'next/script';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { initEventListen } from 'pc/events';
+import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
+import { initResourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
+import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
+import { initWorkerStore } from 'pc/worker';
+import { Provider } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import reportWebVitals from 'reportWebVitals';
+import 'prismjs/themes/prism.css';
+import 'rc-swipeout/assets/index.css';
+import 'rc-trigger/assets/index.css';
+import 'react-grid-layout/css/styles.css';
+import 'react-image-crop/dist/ReactCrop.css';
+import 'enterprise/style.less';
 import 'pc/components/common/button_base/button.less';
 import 'pc/components/common/button_plus/button_plus.less';
 import 'pc/components/common/emoji/emoji.less';
 import 'pc/components/editors/date_time_editor/date_picker/date_picker.less';
 import 'pc/components/editors/date_time_editor/time_picker_only/time_picker.less';
 import 'pc/components/invite/invite.common.less';
-import { Router } from 'pc/components/route_manager/router';
-import { initEventListen } from 'pc/events';
-import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
-import { initResourceService } from 'pc/resource_service';
-import { store } from 'pc/store';
 import 'pc/styles/global.less';
-import 'pc/styles/global_components/index.less';
-import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
-import { initWorkerStore } from 'pc/worker';
-import 'prismjs/themes/prism.css';
-import 'rc-swipeout/assets/index.css';
-import 'rc-trigger/assets/index.css';
-import React, { useEffect, useState } from 'react';
-import 'react-grid-layout/css/styles.css';
-import 'react-image-crop/dist/ReactCrop.css';
-import { Provider } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
-import reportWebVitals from 'reportWebVitals';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
