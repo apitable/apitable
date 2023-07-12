@@ -89,6 +89,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
               <Arrow {...arrowProps}
                 backgroundColor={theme.color.highestBg}
                 borderColor={theme.color.borderCommonDefault}
+                borderWidth={1}
                 {...arrowOptions}
               />
             </div>
