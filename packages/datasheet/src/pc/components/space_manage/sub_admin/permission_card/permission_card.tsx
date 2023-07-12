@@ -120,16 +120,16 @@ export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> =
             </Tooltip>
           </div>
           <div className={styles.checkboxWrap}>
-            {item.checkList.map(item => (
-              <div className={styles.checkboxItem} key={item.value}>
+            {item.checkList.map(_item => (
+              <div className={styles.checkboxItem} key={_item.value} style={{ width: `${100 / item.checkList.length}%` }}>
                 <Checkbox
                   onChange={e => onCheckChange(e.target.value, e.target.checked)}
-                  value={item.value}
-                  defaultChecked={defaultChecked ? defaultChecked.includes(item.value) : undefined}
-                  checked={checked ? checked.includes(item.value) : undefined}
-                  disabled={Boolean(inRead || item.disabled)}
+                  value={_item.value}
+                  defaultChecked={defaultChecked ? defaultChecked.includes(_item.value) : undefined}
+                  checked={checked ? checked.includes(_item.value) : undefined}
+                  disabled={Boolean(inRead || _item.disabled)}
                 >
-                  {item.name.toString()}
+                  {_item.name.toString()}
                 </Checkbox>
               </div>
             ))}

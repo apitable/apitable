@@ -1,0 +1,17 @@
+{
+  "name": "@apitable/databus",
+  "version": "0.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "AGPL",
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "build:arm64": "echo do nothing"
+  },
+  "devDependencies": {
+    "dotenv": "6.2.0"
+  }
+}

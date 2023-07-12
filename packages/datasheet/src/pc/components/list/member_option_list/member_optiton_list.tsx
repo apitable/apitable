@@ -61,7 +61,9 @@ const triggerBase = {
   }
 };
 
-export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionListProps & { inputRef?: React.RefObject<HTMLInputElement> }>> = props => {
+export const MemberOptionList: React.FC<React.PropsWithChildren<IMemberOptionListProps & {
+  inputRef?: React.RefObject<HTMLInputElement>
+}>> = props => {
   const {
     linkId, unitMap, listData, onClickItem, showSearchInput,
     showMoreTipButton, multiMode, existValues, uniqId, activeIndex, showInviteTip = true,

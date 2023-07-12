@@ -870,8 +870,6 @@ export enum FieldType {
    *
    * `string`
    *
-   * ```
-   *
    * ** Cell write format **
    *
    * `string`

@@ -152,6 +152,7 @@ export const CellRating: React.FC<React.PropsWithChildren<ICellProps>> = memo((p
               onMouseEnter={() => handleMouseEnter(item)}
               onMouseOut={handleMouseOut}
               listening={isActive}
+              alt=""
             />
           );
         })

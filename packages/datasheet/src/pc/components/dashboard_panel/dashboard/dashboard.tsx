@@ -337,7 +337,7 @@ export const Dashboard = () => {
     expandWidgetCenter(InstallPosition.Dashboard);
   };
 
-  const onLayout = (__currentLayout: any, allLayouts: { [x: string]: any; }) => {
+  const onLayout = (_currLayout: any, allLayouts: { [x: string]: any; }) => {
     if (!dashboardLayout || readonly) {
       return;
     }

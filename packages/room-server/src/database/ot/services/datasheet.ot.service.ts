@@ -185,7 +185,7 @@ export class DatasheetOtService {
       const mainDstPermission = condition ? permission : await getNodeRole(_condition, auth);
       resultSet.mainLinkDstPermissionMap.set(_condition, mainDstPermission);
     }
-    const metaActions: IJOTAction[] = []
+    const metaActions: IJOTAction[] = [];
     for (const cur of operation) {
       // There are many logs during big data operation, commenting out this log is ok
       if (this.logger.isDebugEnabled()) {

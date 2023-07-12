@@ -18,9 +18,9 @@
 
 import { IRecordMap } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { useNativeModule } from 'app.environment';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { difference } from 'lodash';
-import { USE_NATIVE_MODULE } from 'shared/common';
 import { ApiException, ApiTipId } from 'shared/exception';
 import { NativeService } from 'shared/services/native/native.service';
 
@@ -49,7 +49,7 @@ export class FusionApiRecordService {
   }
 
   public async getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<IRecordMap> {
-    if (USE_NATIVE_MODULE) {
+    if (useNativeModule) {
       return await this.nativeService.getRecords(dstId, recordIds, false, false);
     }
     return this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);

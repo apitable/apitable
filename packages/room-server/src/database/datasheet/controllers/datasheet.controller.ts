@@ -31,7 +31,7 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/databus';
 
 /**
  * Datasheet APIs

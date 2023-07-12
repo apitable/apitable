@@ -620,7 +620,9 @@ function resolveDependencies(schema: JSONSchema7, rootSchema: any, formData: any
   return processDependencies(dependencies, resolvedSchema, rootSchema, formData);
 }
 
-function processDependencies(dependencies: { [x: string]: any; }, resolvedSchema: any, rootSchema: object | undefined, formData: object | undefined): any {
+function processDependencies(
+  dependencies: { [x: string]: any; }, resolvedSchema: any, rootSchema: object | undefined, formData: object | undefined
+): any {
   // Process dependencies updating the local schema properties as appropriate.
   for (const dependencyKey in dependencies) {
     // Skip this dependency if its trigger property is not present.
@@ -650,7 +652,9 @@ function withDependentProperties(schema: any, additionallyRequired: any[]) {
   return { ...schema, required: required };
 }
 
-function withDependentSchema(schema: any, rootSchema: object | undefined, formData: object | undefined, dependencyKey: string, dependencyValue: JSONSchema7) {
+function withDependentSchema(
+  schema: any, rootSchema: object | undefined, formData: object | undefined, dependencyKey: string, dependencyValue: JSONSchema7
+) {
   const { oneOf, ...dependentSchema } = retrieveSchema(dependencyValue, rootSchema, formData);
   schema = mergeSchemas(schema, dependentSchema);
   // Since it does not contain oneOf, we return the original schema.

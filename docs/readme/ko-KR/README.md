@@ -317,7 +317,6 @@ APITable은 다음과 같은 공통 규칙을 사용합니다:
 - 버전 관리와 태그는 어떻게 하나요? [Semantic Versioning](https://semver.org/)
 - 자바 코딩 가이드라인은 무엇인가요? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - 타입스크립트 코딩 가이드라인은 무엇인가요? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- Rust 코딩 가이드라인은 무엇인가요? -> [Rust API 가이드](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### 문서화
 

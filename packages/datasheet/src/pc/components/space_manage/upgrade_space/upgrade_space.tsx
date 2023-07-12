@@ -152,6 +152,7 @@ const UpgradeSpace = () => {
     return () => {
       window.removeEventListener('message', receiveMes);
     };
+    // eslint-disable-next-line
   }, [spaceId, product]);
 
   if (showTrialModal) {

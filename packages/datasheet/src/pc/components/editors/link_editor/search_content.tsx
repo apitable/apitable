@@ -244,6 +244,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       });
       return result;
     });
+    // eslint-disable-next-line
   }, [entityForeignRows, foreignColumns, filteredRecordIdMap, fieldMap, foreignDatasheetId, onlyShowRows, searchedFlag, store]);
 
   const fuse = useMemo(() => {

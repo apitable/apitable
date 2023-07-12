@@ -19,7 +19,7 @@
 // FIXME:THEME
 import { colors, ThemeName } from '@apitable/components';
 import { ISegment, SegmentType } from '@apitable/core';
-import { UserGroupOutlined } from '@apitable/icons';
+import { UserGroupOutlined, WebOutlined } from '@apitable/icons';
 import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { autoSizerCanvas } from 'pc/components/konva_components';
@@ -33,6 +33,7 @@ import {
 
 export const graphemeSplitter = new GraphemeSplitter();
 const DepartmentOutlinedPath = UserGroupOutlined.toString();
+const WebOutlinedPath = WebOutlined.toString();
 
 const DEFAULT_FONT_FAMILY = `"Segoe UI", Roboto, "Helvetica Neue", Arial, 
 "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
@@ -276,7 +277,7 @@ export class KonvaDrawer {
           url: favicon,
           width: 16,
           height: 16,
-        }, true);
+        }, true, true);
         textRenderer(cacheTextData.data);
       }
       return cacheTextData;
@@ -460,7 +461,7 @@ export class KonvaDrawer {
     this.ctx.fillText(text, x, y + baselineOffset);
   }
 
-  public image(props: IImageProps, crossOrigin?: boolean) {
+  public image(props: IImageProps, crossOrigin?: boolean, allowDefault?: boolean) {
     const { x, y, url, width, height, opacity = 1, clipFunc } = props;
     if (!url) {
       return;
@@ -468,11 +469,20 @@ export class KonvaDrawer {
     const image = imageCache.getImage(url);
     // Not loaded successfully
     if (image === false) {
+      if (allowDefault) {
+        this.path({
+          x,
+          y: y + 2,
+          data: WebOutlinedPath,
+          size: 16,
+          fill: colors.textCommonPrimary,
+        });
+      }
       return;
     }
     // Unloaded
     if (image == null) {
-      return imageCache.loadImage(url, url, crossOrigin);
+      return imageCache.loadImage(url, url, { crossOrigin });
     }
     const isOrigin = opacity === 1;
 

@@ -56,7 +56,7 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
   return (
     <div className={styles.fileSelected}>
       <div className={styles.fileImg}>
-        <Image src={ExcelPng} />
+        <Image src={ExcelPng} alt="" />
         <ButtonPlus.Font
           icon={<DeleteOutlined color={colors.thirdLevelText} />}
           onClick={init}

@@ -61,7 +61,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
       alarmDate = alarmDate.subtract(Number(subtractMatch[1]), subtractMatch[2] as any);
     }
     return alarm?.time || alarmDate.format('HH:mm');
-  }, [alarm?.subtract, alarm?.time, cellValue]);
+  }, [alarm?.subtract, alarm?.time, cellValue, timeZone]);
 
   return (
     <div

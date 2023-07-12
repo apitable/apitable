@@ -157,7 +157,7 @@ APITable offre una serie di funzioni sorprendenti, da quelle personali a quelle 
   - Oltre 100k righe di dati con collaborazione in tempo reale.
   - Accesso API full-stack, dai dati ai metadati.
   - Collegamento tra tabelle a una o due direzioni e collegamenti incrociati infiniti.
-  - Linguaggi di programmazione e framework compatibili con la community, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) e Java ([Spring Boot](https://spring.io/projects/spring-boot)) e stiamo passando gradualmente a Rust.
+  - Linguaggi di programmazione e framework compatibili con la community, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) e Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Bella e ricca interfaccia database-foglio di calcolo
   - CRUD: Creazione, lettura, aggiornamento, cancellazione di tabelle, colonne e righe
   - Operazioni sui campi: ordinamento, filtro, raggruppamento, nascondimento, impostazione dell'altezza.
@@ -317,7 +317,6 @@ APITable utilizza queste convenzioni comuni:
 - Come si fa il versioning e il tagging? [Versione semantica](https://semver.org/)
 - Cos'è la Java Coding Guideline? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Cos'è la linea guida per la codifica di TypeScript? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### Documentazione
 

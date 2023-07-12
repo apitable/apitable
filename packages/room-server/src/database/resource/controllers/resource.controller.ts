@@ -34,7 +34,7 @@ import { ResourceDataInterceptor } from 'database/resource/middleware/resource.d
 import type { ChangesetView, DatasheetPack } from '../../interfaces';
 import type { RecordHistoryQueryRo } from '../../datasheet/ros/record.history.query.ro';
 import type { RecordHistoryVo } from '../vos/record.history.vo';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
+import type { DatasheetPackResponse } from '@apitable/databus';
 
 @Controller('nest/v1')
 export class ResourceController {

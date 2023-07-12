@@ -185,8 +185,8 @@ public class NotifyMailFactory {
         final Dict subjectDict,
         final Dict dict,
         final List<String> to) {
-        String lang =
-            StrUtil.isNotBlank(language) ? language : Locale.US.toLanguageTag();
+        String lang = StrUtil.isNotBlank(language)
+            ? language.replace("_", "-") : Locale.US.toLanguageTag();
         // load subject.properties
         Properties properties = loadSubjectProperties(lang);
         String subject =

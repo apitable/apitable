@@ -203,22 +203,21 @@ export class SingleSelectField extends SelectField {
     if (operator === FOperator.IsNotEmpty) {
       return cellValue != null;
     }
-    const [filterValue] = conditionValue;
     switch (operator) {
       case FOperator.Is: {
-        return cellValue === filterValue;
+        return Array.isArray(conditionValue) && cellValue === conditionValue[0];
       }
 
       case FOperator.IsNot: {
-        return cellValue !== filterValue;
+        return Array.isArray(conditionValue) && cellValue !== conditionValue[0];
       }
 
       case FOperator.Contains: {
-        return conditionValue.some(value => value === cellValue);
+        return Array.isArray(conditionValue) && conditionValue.some(value => value === cellValue);
       }
 
       case FOperator.DoesNotContain: {
-        return !conditionValue.some(value => value === cellValue);
+        return !Array.isArray(conditionValue) || !conditionValue.some(value => value === cellValue);
       }
 
       default: {

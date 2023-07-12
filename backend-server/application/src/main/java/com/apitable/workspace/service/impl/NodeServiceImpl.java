@@ -609,7 +609,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         ControlRoleDict roleDict = controlTemplate.fetchNodeTreeNode(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), PermissionException.NODE_ACCESS_DENIED);
         List<NodeInfoTreeVo> treeList =
-            nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
+            CollUtil.split(roleDict.keySet(), 1000).stream()
+                .reduce(new ArrayList<>(),
+                    (nodes, item) -> {
+                        List<NodeInfoTreeVo> childNodes =
+                            nodeMapper.selectNodeInfoTreeByNodeIds(item, memberId);
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    },
+                    (nodes, childNodes) -> {
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    });
         // Node switches to memory custom sort
         CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId,
             new ArrayList<>(roleDict.keySet()));
@@ -884,7 +895,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
         // The next node that records the old and new locations
         List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
-            CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
+            CollUtil.newArrayList(nodeEntity.getNodeId()));
         nodeIds.addAll(suffixNodeIds);
         Lock lock = redisLockRegistry.obtain(parentId);
         try {
@@ -895,7 +906,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     nodeEntity.getNodeId(), nodeEntity.getParentId());
                 // Update the sequence relationship of nodes before
                 // and after the move (D <- E => D <- X <- E)
-                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
+                String sufNodeId =
+                    nodeMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
+                if (sufNodeId != null) {
+                    nodeIds.add(sufNodeId);
+                    nodeMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
+                }
                 // Update the information of this node (the ID of the previous
                 // node may be updated to null, so update By id is not used)
                 nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);

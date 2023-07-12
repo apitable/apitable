@@ -97,8 +97,7 @@ export class FusionApiController {
     private readonly fusionApiService: FusionApiService,
     private readonly attachService: AttachmentService,
     private readonly restService: RestService,
-  ) {
-  }
+  ) {}
 
   @Get('/datasheets/:dstId/records')
   @ApiOperation({
@@ -110,7 +109,7 @@ export class FusionApiController {
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiCacheInterceptor)
   @CacheTTL(apiCacheTTLFactory)
-  @SetMetadata(DATASHEET_OPTIONS, { requireMetadata: true } as IApiDatasheetOptions)
+  @SetMetadata(DATASHEET_OPTIONS, { requireMetadata: true, loadSingleView: true } as IApiDatasheetOptions)
   public async getRecords(
     @Param() param: RecordParamRo,
     @Query(QueryPipe) query: RecordQueryRo,

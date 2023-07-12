@@ -50,6 +50,18 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
     return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
   });
 
+  const dashboardConnected = useSelector(state => {
+    try {
+      const dashboardId = state.pageParams.dashboardId;
+      if(!dashboardId ) {
+        return false;
+      }
+      return Selectors.getDashboardPack(state, nodeId)?.connected;
+    } catch (error) {
+      return false;
+    }
+  });
+  
   const nodeConnected = useSelector(state => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
     const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
@@ -97,7 +109,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
     const foreignDatasheetIds = getDependenceByDstIds(state, datasheetId);
     const widgetStore = initWidgetStore(initRootWidgetState(state, widgetId, { foreignDatasheetIds }), widgetId);
     setWidgetStore(widgetStore);
-  }, [widgetId, nodeConnected]);
+  }, [widgetId, nodeConnected, dashboardConnected]);
 
   useEffect(() => {
     eventMessage.onSyncCmdOptions(widgetId, async res => {

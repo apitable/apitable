@@ -186,6 +186,8 @@ export interface Tips {
     api_param_parent_unit_not_exists:                     PuneHedgehog;
     api_param_unit_id_required:                           PuneHedgehog;
     api_param_widget_id_not_exists:                       PuneHedgehog;
+    api_params_widget_package_id_error:                   PuneHedgehog;
+    api_widget_number_limit:                              PuneHedgehog;
 }
 
 export interface PuneHedgehog {

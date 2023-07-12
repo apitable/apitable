@@ -30,6 +30,8 @@ export class MagicVariableParser<T> extends MagicVariableParserABC<T> {
     this.passFunctions = passFunctions;
     this.sysFunctionMap = sysFunctions.reduce((map, func) => {
       map[func.name] = func;
+      // compatible with user dirty data
+      map[func.name.toLowerCase()] = func;
       return map;
     }, {});
   }

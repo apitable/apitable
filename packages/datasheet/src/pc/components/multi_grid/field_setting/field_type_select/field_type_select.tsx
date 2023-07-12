@@ -114,8 +114,8 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         } as IField;
       });
       setVisible(false);
-      // eslint-disable-next-line
     },
+    // eslint-disable-next-line
     [currentField.type],
   );
 
