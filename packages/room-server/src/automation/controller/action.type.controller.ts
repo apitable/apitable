@@ -26,8 +26,7 @@ export class RobotActionTypeController {
   ) { }
 
   @Get(['/'])
-  getActionTypes(@Query('lang') lang: string | string[]) {
-    const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.robotActionTypeService.getActionType(language);
+  getActionTypes(@Query('lang') lang: string) {
+    return this.robotActionTypeService.getActionType(lang);
   }
 }
