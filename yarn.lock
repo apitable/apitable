@@ -366,6 +366,7 @@ __metadata:
     "@futpib/dagre": ^0.8.5-pre1
     "@huse/click-outside": ^1.0.1
     "@next/bundle-analyzer": ^12.2.2
+    "@popperjs/core": ^2.11.8
     "@redux-devtools/extension": ^3.2.3
     "@rjsf/core": ^4.2.0
     "@sentry/integrations": ^7.18.0
@@ -508,6 +509,7 @@ __metadata:
     react-konva: ^18.2.2
     react-multiline-clamp: ^2.0.0
     react-pdf: 5.4.0
+    react-popper: ^2.3.0
     react-redux: 8.0.4
     react-responsive-carousel: ^3.2.23
     react-sortable-hoc: ^2.0.0
@@ -529,8 +531,9 @@ __metadata:
     store2: ^2.12.0
     stylelint: 13.9.0
     svgo-loader: 3.0.0
-    swr: ^1.3.0
+    swr: ^2.2.0
     typescript: ^4.8.2
+    urlcat: ^3.1.0
     use-long-press: ^1.2.0
     web-vitals: ^1.0.1
     webkit-line-clamp: ^1.2.2
@@ -682,6 +685,7 @@ __metadata:
     "@types/sprintf-js": ^1.1.2
     "@types/supertest": ^2.0.10
     "@types/triple-beam": ^1.3.2
+    axios: ^1.4.0
     cache-manager: ^3.6.0
     chai: ^4.2.0
     class-transformer: ^0.3.1
@@ -718,6 +722,7 @@ __metadata:
     node-fetch: ^2.6.0
     node-os-utils: ^1.3.5
     nodemailer: ^6.9.1
+    openai: ^3.3.0
     piscina: ^3.2.0
     pump: ^3.0.0
     qs: ^6.9.7
@@ -6777,6 +6782,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.11.8":
+  version: 2.11.8
+  resolution: "@popperjs/core@npm:2.11.8"
+  checksum: e5c69fdebf52a4012f6a1f14817ca8e9599cb1be73dd1387e1785e2ed5e5f0862ff817f420a87c7fc532add1f88a12e25aeb010ffcbdc98eace3d55ce2139cf0
+  languageName: node
+  linkType: hard
+
 "@popperjs/core@npm:^2.5.4, @popperjs/core@npm:^2.6.0":
   version: 2.9.3
   resolution: "@popperjs/core@npm:2.9.3"
@@ -12806,6 +12818,26 @@ __metadata:
   dependencies:
     follow-redirects: 1.5.10
   checksum: dcace11a0a25fdf9b3b97fc9d011d23dd9c67cc13d91778080482ddddbbfe731f7410a090b11aa0bbbdf83686c5911ccb4289fd3683b7488c1b0c4d3c882380c
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.26.0":
+  version: 0.26.1
+  resolution: "axios@npm:0.26.1"
+  dependencies:
+    follow-redirects: ^1.14.8
+  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "axios@npm:1.4.0"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 7fb6a4313bae7f45e89d62c70a800913c303df653f19eafec88e56cea2e3821066b8409bc68be1930ecca80e861c52aa787659df0ffec6ad4d451c7816b9386b
   languageName: node
   linkType: hard
 
@@ -20577,6 +20609,16 @@ __metadata:
     debug:
       optional: true
   checksum: d4ce74cf5c6f363168b97e706b914eb9ffb6bf4d4c6d8f8330b93088d9b90e566611ddbcf0e42c8ed5fd17598dfeda1d19230d3e9d6d6c6b4d1c10ec3a0b99be
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -30296,6 +30338,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"openai@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "openai@npm:3.3.0"
+  dependencies:
+    axios: ^0.26.0
+    form-data: ^4.0.0
+  checksum: 28ccff8c09b6f47828c9583bb3bafc38a8459c76ea10eb9e08ca880f65523c5a9cc6c5f3c7669dded6f4c93e7cf49dd5c4dbfd12732a0f958c923117740d677b
+  languageName: node
+  linkType: hard
+
 "openapi-types@npm:^7.2.3":
   version: 7.2.3
   resolution: "openapi-types@npm:7.2.3"
@@ -33854,6 +33906,20 @@ fsevents@^1.2.7:
     "@popperjs/core": ^2.0.0
     react: ^16.8.0 || ^17
   checksum: 915fcf08e1da4fd48a200074fcdd936f601ee2173f1e730cfed8a54fd47716aa8bf9cce2392463e3bcbe64a096d0baf463809ed2874b94d3a9d430ae6d817b5d
+  languageName: node
+  linkType: hard
+
+"react-popper@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-popper@npm:2.3.0"
+  dependencies:
+    react-fast-compare: ^3.0.1
+    warning: ^4.0.2
+  peerDependencies:
+    "@popperjs/core": ^2.0.0
+    react: ^16.8.0 || ^17 || ^18
+    react-dom: ^16.8.0 || ^17 || ^18
+  checksum: 837111c98738011c69b3069a464ea5bdcbf487105b6148e8faf90cb7337e134edb1b98b8824322941c378756cca30a15c18c25f558e53b85ed5762fa0dc8e6b2
   languageName: node
   linkType: hard
 
@@ -37658,12 +37724,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"swr@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "swr@npm:1.3.0"
+"swr@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "swr@npm:2.2.0"
+  dependencies:
+    use-sync-external-store: ^1.2.0
   peerDependencies:
     react: ^16.11.0 || ^17.0.0 || ^18.0.0
-  checksum: e7a184f0d560e9c8be85c023cc8e65e56a88a6ed46f9394b301b07f838edca23d2e303685319a4fcd620b81d447a7bcb489c7fa0a752c259f91764903c690cdb
+  checksum: 1f04795ff9dff54987cbf8a544afc9e42d1350a99e899be8a7cdc4885f561e3ee464f78245ee2ebc8ced262b04023d134f731e276227319dc2d6e1843389ddd8
   languageName: node
   linkType: hard
 
@@ -39697,6 +39765,15 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
+"urlcat@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "urlcat@npm:3.1.0"
+  dependencies:
+    qs: ^6.9.4
+  checksum: 0951e03531c4c8f19e6c3c780879ce750e1fc47aa122bfb72332efb147a2226464d454f3e0b1f5d6353f0de147e1cbd9487b7c6d252c3751b284a8e21421063b
+  languageName: node
+  linkType: hard
+
 "use-callback-ref@npm:^1.2.5":
   version: 1.2.5
   resolution: "use-callback-ref@npm:1.2.5"
@@ -39777,7 +39854,7 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.1.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.1.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
