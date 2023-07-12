@@ -79,6 +79,7 @@ import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
+import * as immer from 'immer';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -110,6 +111,8 @@ const initWorker = async() => {
   const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
+
+immer.setAutoFreeze(false);
 
 (() => {
   if (!process.env.SSR) {
