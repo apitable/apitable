@@ -112,7 +112,6 @@ export class RestService {
     // Intercept request
     this.httpService.axiosRef.interceptors.request.use(
       (config) => {
-        this.logger.log(`Remote call address:${config.url}`);
         config.headers!['X-Internal-Request'] = 'yes';
         return config;
       },
