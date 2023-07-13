@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { get, cloneDeep } from 'lodash';
+import { get, cloneDeep, isEmpty } from 'lodash';
 
 export const EMPTY_CONTENT = [
   {
@@ -61,5 +61,5 @@ export const draft2slate = (content: any) => {
     }
     return result;
   }
-  return content || EMPTY_CONTENT;
+  return isEmpty(content) ? EMPTY_CONTENT : content;
 };
