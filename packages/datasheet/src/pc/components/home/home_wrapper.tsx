@@ -17,7 +17,8 @@
  */
 
 import { Typography, useThemeColors, Box, ThemeName, useTheme } from '@apitable/components';
-import { integrateCdnHost, SystemConfig } from '@apitable/core';
+import { TwitterOutlined, LinkedinOutlined, EmailfeedbackOutlined } from '@apitable/icons';
+import { integrateCdnHost } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
 import { NavBar } from './components/nav_bar';
@@ -28,15 +29,15 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
 
   const linkIcons = [
     {
-      icon: SystemConfig.settings.twitter_icon.value,
+      icon: <TwitterOutlined color={colors.textCommonPrimary} size={32} />,
       link: 'https://twitter.com/apitable_com',
     },
     {
-      icon: SystemConfig.settings.linkedin_icon.value,
+      icon: <LinkedinOutlined color={colors.textCommonPrimary} size={32} />,
       link: 'https://www.linkedin.com/company/APITable',
     },
     {
-      icon: SystemConfig.settings.email_icon.value,
+      icon: <EmailfeedbackOutlined color={colors.textCommonPrimary} size={32} />,
       link: 'mailto:support@apitable.com',
     },
   ];
@@ -52,7 +53,7 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
           {linkIcons.map(({ icon, link }) => {
             return (
               <a key={link} href={link} target="_blank" rel="noreferrer">
-                <img src={integrateCdnHost(icon)} alt="apitable" />
+                {icon}
               </a>
             );
           })}

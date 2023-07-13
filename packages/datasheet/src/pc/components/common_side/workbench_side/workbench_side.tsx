@@ -480,7 +480,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           )
         }
         {
-          <ChatGuide
+          Boolean(ChatGuide) && <ChatGuide
             visible={previousModalVisible}
             hide={() => setPreviousModalVisible(false)}
             nextStep={() => {
