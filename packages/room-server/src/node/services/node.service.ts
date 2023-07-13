@@ -43,8 +43,7 @@ export class NodeService {
     private readonly nodeRepository: NodeRepository,
     private readonly nodeRelRepository: NodeRelRepository,
     private readonly resourceMetaService: MetaService,
-  ) {
-  }
+  ) {}
 
   async checkNodeIfExist(nodeId: string, exception?: IBaseException) {
     const count = await this.nodeRepository.selectCountByNodeId(nodeId);
@@ -157,6 +156,10 @@ export class NodeService {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     return rawResult.spaceId;
+  }
+
+  async getNameByNodeId(nodeId: string): Promise<string> {
+    return await this.nodeRepository.selectNameByNodeId(nodeId);
   }
 
   async isTemplate(nodeId: string): Promise<boolean> {
