@@ -128,7 +128,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
   function deleteViewItem(index: number) {
     if (sortInfo) {
       const newSortInfo = produce(sortInfo, draft => {
-        draft.rules.splice(index, 1);
+        draft.rules.splice(index, 1).filter(item => invalidFieldsByGroup.includes(item.fieldId));
         return draft;
       });
       submitSort(newSortInfo);
