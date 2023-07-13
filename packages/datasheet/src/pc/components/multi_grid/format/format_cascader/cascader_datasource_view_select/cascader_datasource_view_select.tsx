@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { GridOutlined } from '@apitable/icons';

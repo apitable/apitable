@@ -76,6 +76,9 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
     <Box display='flex' alignItems='center'>
       <Dropdown
         ref={dropdownRef}
+        options={{
+          placement: 'bottom',
+        }}
         clazz={{
           overlay: styles.overlayStyle
         }}

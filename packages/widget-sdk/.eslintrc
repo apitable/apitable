@@ -1,17 +1,8 @@
 {
   "extends": [
-    "../../.eslintrc",
-//    "next/core-web-vitals",
-    "next"
+    "../../.eslintrc"
   ],
-//  "parserOptions": {
-//    "project": "./tsconfig.json"
-//  },
   "rules": {
-    "react/display-name": 0,
-    "react/no-find-dom-node": 0,
-    "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
-    "@next/next/no-img-element": "off",
     "no-restricted-imports": ["error", {
       "paths": [
         {
@@ -30,13 +21,11 @@
           "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
         },
         {
-        "name": "react-custom-scrollbars",
-        "importNames": ["Scrollbars"],
-        "message": "Please use ScrollBar from pc/components/scroll_bar instead."
-      }
+          "name": "react-custom-scrollbars",
+          "importNames": ["Scrollbars"],
+          "message": "Please use ScrollBar from pc/components/scroll_bar instead."
+        }
       ]
     }]
-//    "@typescript-eslint/no-misused-promises": 1,
-//    "@typescript-eslint/no-floating-promises": 1
   }
 }

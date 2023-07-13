@@ -1,25 +1,50 @@
-import { useLayer, Arrow, DEFAULT_OPTIONS } from 'react-laag';
-import { cloneElement, isValidElement, ReactElement, useCallback, useState } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
 import { useProviderTheme } from 'hooks';
-
+import classNames from 'classnames';
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  useDismiss,
+  arrow,
+  useRole,
+  useClick,
+  useInteractions,
+  FloatingFocusManager,
+  useId, FloatingArrow, Placement, FloatingPortal, ReferenceType
+} from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
+import { Middleware } from '@floating-ui/dom/src/types';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
 export type IOverLayProps = { toggle: () => void };
 
-export type IDropdownOptions = typeof DEFAULT_OPTIONS;
-export type IArrowOptions = Parameters<typeof Arrow>[0];
-
-type IDropdownTriggerFC = (props ?: IDropdownTriggerProps) => ReactElement;
+type IDropdownTriggerFC = (props: IDropdownTriggerProps) => ReactElement;
 type ITriggerProps = ReactElement | IDropdownTriggerFC;
 
 interface IDropdownProps {
     clazz?: {
         overlay?: string
     },
+    className?: string,
+    options ?: {
+      disabled?: boolean,
+      placement?: Placement;
+      arrow?: boolean;
+      offset?: number;
+    },
+    setTriggerRef?: (ref: HTMLElement|null) => void;
+    middleware?: Array<Middleware>,
     onVisibleChange?: (visible: boolean) => void;
-    layerOptions?: IDropdownOptions,
-    arrowOptions?: IArrowOptions,
     children: (props: IOverLayProps) => ReactElement,
     trigger: ITriggerProps
 }
@@ -30,15 +55,25 @@ export interface IDropdownControl {
     toggle: (open: Boolean) => void;
 }
 
+const DROP_DOWN_OFFSET = 16;
 export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
-  const { trigger, children, onVisibleChange, layerOptions, arrowOptions, clazz } = props;
+  const { trigger, children, onVisibleChange, options= {}, className, middleware =[], clazz } = props;
 
-  const [isOpen, setOpen] = useState(false);
+  const arrowEnabled = options.arrow?? true;
+  const disabled = options.disabled?? false;
+  const [isOpen, setOpenValue] = useState(false);
+  
+  const setOpen = useCallback((isOpenState: boolean) => {
+    if(disabled) {
+      return;
+    }
+    setOpenValue(isOpenState);
+  }, [setOpenValue, disabled]);
 
   const toggle = useCallback(() => {
     setOpen(!isOpen);
     onVisibleChange?.(!isOpen);
-  }, [isOpen, onVisibleChange]);
+  }, [isOpen, onVisibleChange, setOpen]);
 
   const open = useCallback(() => {
     setOpen(true);
@@ -50,52 +85,80 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
 
   useImperativeHandle(ref, () => ({ open, toggle, close }));
 
-  const { renderLayer, triggerProps, layerProps, arrowProps } = useLayer({
-    isOpen,
-    onOutsideClick: close,
-    onDisappear: close,
-    overflowContainer: layerOptions?.overflowContainer ?? false,
-    auto: layerOptions?.auto ?? true,
-    placement: layerOptions?.placement ?? 'bottom-center',
-    triggerOffset: layerOptions?.triggerOffset ?? 12,
-    containerOffset: layerOptions?.containerOffset ?? 16,
-    arrowOffset: layerOptions?.arrowOffset ?? 16
-  });
+  const theme = useProviderTheme();
 
+  const arrowRef = useRef (null);
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setOpen,
+    placement: options?.placement ?? 'bottom',
+    middleware: [
+      offset(options?.offset ?? DROP_DOWN_OFFSET),
+      flip({ fallbackAxisSideDirection: 'end' }),
+      ...(
+        arrowEnabled ? [
+          arrow({
+            element: arrowRef,
+          })
+        ]: []
+      ),
+      shift()
+    ].concat(middleware ),
+    whileElementsMounted: autoUpdate
+  });
+  
   const triggerEl = isValidElement(trigger) ? trigger :
     trigger({
       visible: isOpen,
       toggle,
     });
 
-  const theme = useProviderTheme();
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context);
+  
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+    role
+  ]);
 
+  const headingId = useId();
+
+  const setRef = (v: ReferenceType|null) => {
+    refs.setReference(v);
+    props.setTriggerRef?.(v as HTMLElement);
+  };
   return (
     <>
-      {
-        cloneElement(triggerEl, {
-          ...triggerProps,
-          onClick: () => setOpen(!isOpen),
-        })
-      }
-
-      {renderLayer(
-        <>
-          {isOpen && (
-            <div {...layerProps} className={clazz?.overlay}>
-              {
-                children({ toggle })
-              }
-              <Arrow {...arrowProps}
-                backgroundColor={theme.color.highestBg}
-                borderColor={theme.color.borderCommonDefault}
-                borderWidth={1}
-                {...arrowOptions}
-              />
-            </div>
-          )}
-        </>
-      )}
+      <>
+        {
+          // @ts-ignore
+          cloneElement(triggerEl, { ref: setRef, ...getReferenceProps() })
+        }
+        {isOpen && (
+          <FloatingPortal>
+            <FloatingFocusManager context={context} modal={false}>
+              <div
+                className={classNames(className,clazz?.overlay)}
+                ref={refs.setFloating}
+                style={floatingStyles}
+                aria-labelledby={headingId}
+                {...getFloatingProps()}
+              >
+                {
+                  children({ toggle })
+                }
+                {
+                  arrowEnabled && (
+                    <FloatingArrow ref={arrowRef} context={context} fill={theme.color.highestBg} strokeWidth={1} stroke={theme.color.borderCommonDefault}/>
+                  )
+                }
+              </div>
+            </FloatingFocusManager>
+          </FloatingPortal>
+        )}
+      </>
     </>
   );
 

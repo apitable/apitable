@@ -18,6 +18,7 @@
 
 import React from 'react';
 import { Dropdown } from './index';
+import { Dropdown as FloatDropdown } from './laag_dropdown';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { IDropdownProps } from './interface';
@@ -115,6 +116,41 @@ DisabledMenu.args = {
       text: 'option 2-1',
     }],
   ]
+};
+
+export const FloatDropdownUi = () => {
+  return (
+    <>
+      <br />
+      <br />
+      <br />
+      <br />
+      <FloatDropdown trigger={
+        () => (
+          <div>trigger</div>
+        )
+      }>
+        {() => {
+          return (
+            <div> overlay</div>
+          );
+        }}
+      </FloatDropdown>
+      <br />
+      <br />
+      <br />
+      <br />
+      <FloatDropdown trigger={
+        <div>ddd</div>
+      }>
+        {() => {
+          return (
+            <div> overlay</div>
+          );
+        }}
+      </FloatDropdown>
+    </>
+  );
 };
 
 export const SelectMenuValue = () => {

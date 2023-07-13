@@ -2,6 +2,7 @@ import * as React from 'react';
 import { memo, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors, WrapperTooltip } from '@apitable/components';
 import classNames from 'classnames';
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
