@@ -5099,7 +5099,7 @@
   "vietnam": "越南",
   "view": "视图",
   "view_by_person": "按人查看",
-  "view_changed": "视图已变更",
+  "view_changed": "视图配置已变更",
   "view_collaborative_members": "查看${number}位协作成员",
   "view_configuration_changes_have_been_reversed": "视图配置修改已撤销",
   "view_configuration_tooltips": "视图配置未保存仅对你自己生效",

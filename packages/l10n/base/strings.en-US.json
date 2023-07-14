@@ -5054,7 +5054,7 @@
   "view": "View",
   "view_by_person": "View all",
   "view_collaborative_members": "View the ${number} collaborating member",
-  "view_configuration_tooltips": "View configuration not saved only for yourself",
+  "view_configuration_tooltips": "View configuration wasn’t saved, it only works for you now",
   "view_count": "${count} view(s)",
   "view_count_over_limit": "This datasheet has the maximum number of views",
   "view_detail": "View details",
