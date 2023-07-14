@@ -15,26 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { LinkButton, Skeleton, Typography } from '@apitable/components';
-import { INodeRoleMap, IReduxState, Strings, t } from '@apitable/core';
+import { Skeleton } from '@apitable/components';
+import { INodeRoleMap, Strings, t } from '@apitable/core';
 import cls from 'classnames';
+import { Tabs, TabsProps } from 'antd';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
 import { PublicShareInviteLink } from './public_link';
 import styles from './style.module.less';
 import { IMemberList } from 'pc/components/catalog/permission_settings_plus/permission';
 import { IShareContentProps } from './interface';
 import { PermissionAndCollaborator } from './permission_and_collaborator';
-import { expandInviteModal } from '../../invite';
-import { LinkOutlined } from '@apitable/icons';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
 
-export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data }) => {
+export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data, defaultActiveKey = 'Invite', isAI }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -53,10 +49,6 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
   } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
     manual: true
   });
-  const { spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
-    spaceFeatures: state.space.spaceFeatures,
-    spaceInfo: state.space.curSpaceInfo!,
-  }), shallowEqual);
 
   useEffect(() => {
     getCollaboratorReq(pageNo);
@@ -75,8 +67,6 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
     }
   }, [socketData, getNodeRoleList]);
 
-  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
-
   if (loading) {
     return (
       <div className={cls(styles.shareContent, styles.loading, { [styles.shareContentMobile]: isMobile })}>
@@ -88,49 +78,46 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
     );
   }
 
+  const renderTabs = () => {
+    const items: TabsProps['items'] = [
+      {
+        key: 'Invite',
+        label: t(Strings.invite),
+        children: (
+          <PermissionAndCollaborator
+            roleList={roleList}
+            data={data}
+            pageNo={pageNo}
+            getNodeRoleList={getNodeRoleList}
+            setDetailModalVisible={setDetailModalVisible}
+          />
+        ),
+      },
+      {
+        key: 'Publish',
+        label: t(Strings.publish),
+        children: (
+          <PublicShareInviteLink
+            isAI={isAI}
+            nodeId={data.nodeId}
+            isMobile={isMobile}
+          />
+        ),
+      },
+    ];
+    return (
+      <Tabs
+        style={{ flex: 1 }}
+        defaultActiveKey={defaultActiveKey}
+        items={items}
+      />
+    );
+  };
+
   return (
     <>
       <div className={cls(styles.shareContent, { [styles.shareContentMobile]: isMobile })}>
-        {
-          data.nodeId.startsWith('ai') ? <>
-            <PublicShareInviteLink
-              nodeId={data.nodeId}
-              isMobile={isMobile}
-            />
-            <PermissionAndCollaborator
-              roleList={roleList}
-              data={data}
-              pageNo={pageNo}
-              getNodeRoleList={getNodeRoleList}
-              setDetailModalVisible={setDetailModalVisible}
-            />
-          </> : <>
-            <PermissionAndCollaborator
-              roleList={roleList}
-              data={data}
-              pageNo={pageNo}
-              getNodeRoleList={getNodeRoleList}
-              setDetailModalVisible={setDetailModalVisible}
-            />
-            <PublicShareInviteLink
-              nodeId={data.nodeId}
-              isMobile={isMobile}
-            />
-          </>
-        }
-        {invitable && (
-          <div className={styles.inviteMore}>
-            <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-            <LinkButton
-              className={styles.inviteMoreMethod}
-              underline={false}
-              onClick={() => expandInviteModal()}
-              prefixIcon={<LinkOutlined currentColor/>}
-            >
-              {t(Strings.invite_via_link)}
-            </LinkButton>
-          </div>
-        )}
+        { renderTabs() }
       </div>
       {detailModalVisible && <MembersDetail
         data={collaboratorInfo}

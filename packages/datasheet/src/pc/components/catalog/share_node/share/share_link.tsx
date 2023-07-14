@@ -88,13 +88,11 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
               <CopyOutlined color={colors.secondLevelText} className={styles.iconOffset}/>
             </Button>
           </Tooltip>
-          {
-            showCopyAIWidgetCode && <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
-              <Button onClick={() => setWidgetEmbedVisible(true)}>
-                <QrcodeOutlined color={colors.secondLevelText} className={styles.iconOffset}/>
-              </Button>
-            </Tooltip>
-          }
+          {showCopyAIWidgetCode && <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
+            <Button onClick={() => setWidgetEmbedVisible(true)}>
+              <QrcodeOutlined color={colors.secondLevelText} className={styles.iconOffset}/>
+            </Button>
+          </Tooltip>}
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Tooltip title={t(Strings.preview)} placement='top'>
               <Button onClick={previewHandler}>

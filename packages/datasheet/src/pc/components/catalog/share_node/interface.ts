@@ -8,4 +8,6 @@ export interface IShareContentProps {
     icon: string,
     name: string,
   };
+  defaultActiveKey?: 'Invite' | 'Publish';
+  isAI?: boolean;
 }

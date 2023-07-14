@@ -1,5 +1,5 @@
 const path = require('path')
-const loaderUtils= require('loader-utils')
+const loaderUtils = require('loader-utils')
 
 
 /**
@@ -105,9 +105,9 @@ const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = (config, options) => {
   // TODO: set symlinks false cause nextjs Fast Refresh not working
-  if (process.env.IS_ENTERPRISE === 'true') {
-    config.resolve.symlinks = false
-  }
+  // if (process.env.IS_ENTERPRISE === 'true') {
+  //   config.resolve.symlinks = false
+  // }
 
   config.entry = compatibleIE11(config)
 

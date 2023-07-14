@@ -2,6 +2,11 @@
 @import "~pc/styles/lib_mixins.less";
 @import "~pc/styles/lib_screen.less";
 
+.publish {
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+}
 // pc
 .publicLink {
   position: relative;
@@ -24,6 +29,21 @@
       color: var(--secondLevelText);
       padding-top: 24px;
     }
+  }
+}
+
+.shareTips {
+  height: 100%;
+  padding: 24px;
+  padding-top: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .title {
+  }
+  .shareOpenButton {
+    align-self: center;
   }
 }
 
@@ -354,6 +374,46 @@
   }
 }
 
+// More ways to invite
+.inviteMore {
+  padding: 14px 0;
+  border-top: 1px solid var(--borderCommonDefault);
+  margin-top: auto;
+  .displayAlignCenter();
+
+  .inviteMoreTitle {
+    margin-right: 16px;
+    color: var(--textCommonSecondary);
+  }
+
+  .inviteMoreMethod {
+    margin-right: 24px;
+    color: var(--textCommonSecondary);
+    cursor: pointer;
+    .displayAlignCenter();
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+}
+
+.shareCodeModal {
+  width: auto !important;
+
+  :global {
+    .ant-modal-content {
+      box-shadow: none;
+      background: transparent;
+      border: 0;
+    }
+
+    .ant-modal-body {
+      padding: 0 0 16px !important;
+    }
+  }
+}
+
 @media screen and (max-width: @w-md) {
   .sharePersonAuthMobile {
     :global {
@@ -364,5 +424,60 @@
   }
   .inviteMore {
     padding-bottom: 0;
+  }
+}
+
+.shareLink {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 24px;
+
+  .inputContainer {
+    flex: 1;
+    height: 40px;
+    position: relative;
+    display: flex;
+    .inputButton {
+      border-radius: 0 6px 6px 0;
+      height: 100%;
+      width: 40px;
+    }
+    .link {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bgControlsDefault);
+      line-height: 40px;
+      padding: 0 8px;
+      cursor: default;
+      font-size: 14px;
+      color: var(--firstLevelText);
+      border-radius: 4px 0 0 4px;;
+      border: 1px solid transparent;
+      outline: none;
+      &:hover {
+        cursor: text;
+      }
+    }
+
+    .highBorder {
+      border-color: var(--primaryColor);
+      transition: border 0.3s linear;
+    }
+
+    .inner_tip {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      line-height: 40px;
+      text-align: right;
+      padding: 0 8px 0 16px;
+      color: var(--firstLevelText);
+      background-color: var(--rowSelectedBg);
+    }
+  }
+
+  .iconOffset {
+    margin-top: 2px;
   }
 }
