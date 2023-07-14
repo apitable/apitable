@@ -45,6 +45,7 @@ export interface IPublicShareLinkProps {
 
 export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isMobile, isAI }) => {
   const [deleting, setDeleting] = useState(false);
+  const [shareStatus, setShareStatus] = useState(false);
   const [shareCodeVisible, setShareCodeVisible] = useState(false);
   const dispatch = useDispatch();
   const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
@@ -127,7 +128,8 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       });
       return;
     }
-    onOk();
+    setShareStatus(true);
+    onOk().finally(() => setShareStatus(false));
   };
 
   /**
@@ -258,6 +260,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           </Typography>
         </div>
         <Button
+          loading={shareStatus}
           style={{ width: 160 }}
           className={styles.shareOpenButton}
           color='primary'
