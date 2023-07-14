@@ -71,7 +71,7 @@ export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({
         <Modal
           className={styles.shareNodeModal}
           visible={visible}
-          width={500}
+          width={528}
           bodyStyle={{ padding: 0 }}
           onCancel={onClose}
           destroyOnClose

@@ -164,7 +164,6 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
   cursor: pointer;
   transition: background-color 100ms linear;
   border: none;
-  line-height: normal;
   span,
   svg {
     pointer-events: none;
