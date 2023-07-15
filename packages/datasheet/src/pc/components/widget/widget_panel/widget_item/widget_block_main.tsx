@@ -7,7 +7,7 @@ import { useMount, useUnmount } from 'ahooks';
 import { dashboardReg } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
+import { getDependenceByDstIdsByGlobalResource } from 'pc/utils/dependence_dst';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { WidgetLoader } from 'widget-stage/main/widget/widget_loader';
@@ -94,7 +94,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<IWidgetBlockRef
     if (!datasheetId) {
       throw new Error("Unexpected errors: Can't get the datasheetId bound by the widget");
     }
-    const foreignDatasheetIds = getDependenceByDstIds(state, datasheetId);
+    const foreignDatasheetIds = getDependenceByDstIdsByGlobalResource(state, datasheetId);
     const widgetStore = initWidgetStore(initRootWidgetState(state, widgetId, { foreignDatasheetIds }), widgetId);
     setWidgetStore(widgetStore);
   }, [widgetId, nodeConnected]);
