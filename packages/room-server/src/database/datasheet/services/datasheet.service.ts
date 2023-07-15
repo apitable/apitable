@@ -35,9 +35,6 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/databus';
-import { NativeService } from 'shared/services/native/native.service';
-import { useNativeModule } from 'app.environment';
 
 @Injectable()
 export class DatasheetService {
@@ -53,7 +50,6 @@ export class DatasheetService {
     private readonly commandService: CommandService,
     @Inject(forwardRef(() => MetaService))
     private readonly resourceMetaService: MetaService,
-    private readonly nativeService: NativeService,
   ) {}
 
   /**
@@ -90,13 +86,9 @@ export class DatasheetService {
     dstId: string,
     auth: IAuthHeader,
     origin: IFetchDataOriginOptions,
-    allowNative: boolean,
+    _allowNative: boolean,
     options?: IFetchDataPackOptions,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
-    if (useNativeModule && allowNative) {
-      return this.nativeService.fetchDataPackResponse(source, dstId, auth, origin, options);
-    }
-
+  ): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading ${source} data [${dstId}], origin: ${JSON.stringify(origin)}`);
     // Query datasheet
@@ -137,7 +129,7 @@ export class DatasheetService {
    * @param options query parameters
    */
   @Span()
-  fetchDataPack(dstId: string, auth: IAuthHeader, allowNative: boolean, options?: IFetchDataOptions): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchDataPack(dstId: string, auth: IAuthHeader, allowNative: boolean, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const origin: IFetchDataOriginOptions = { internal: true, main: true };
     return this.fetchCommonDataPack('datasheet', dstId, auth, origin, allowNative, { ...options, isDatasheet: true });
   }
@@ -151,7 +143,7 @@ export class DatasheetService {
    * @param allowNative if false, always return `DatasheetPack`.
    */
   @Span()
-  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, allowNative: boolean): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, allowNative: boolean): Promise<DatasheetPack> {
     const origin = { internal: false, main: true, shareId };
     return this.fetchCommonDataPack('share', dstId, auth, origin, allowNative, { isDatasheet: true });
   }
@@ -163,7 +155,7 @@ export class DatasheetService {
    * @param auth authorization
    */
   @Span()
-  fetchTemplatePack(dstId: string, auth: IAuthHeader): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchTemplatePack(dstId: string, auth: IAuthHeader): Promise<DatasheetPack> {
     const origin = { internal: false, main: true };
     return this.fetchCommonDataPack('template', dstId, auth, origin, true, {
       isTemplate: true,
@@ -203,7 +195,7 @@ export class DatasheetService {
     auth: IAuthHeader,
     allowNative: boolean,
     shareId?: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // Query datasheet meta
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has linked datasheet with foreighDatasheetId
