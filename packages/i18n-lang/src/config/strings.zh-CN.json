@@ -10,6 +10,7 @@
   "Public_Beta_Period": "公测期",
   "QR_code_invalid": "二维码已失效",
   "Standalone_Capacity": "独立附加容量",
+  "api_params_tablebundle_max_count_error": "创建失败，当前空间站为 {product}，只能保存 {count} 个历史版本。",
   "WEEKS": "周",
   "access_to_space_station_editors": "进入空间站编辑",
   "account_ass_manage": "帐号关联管理",

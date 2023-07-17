@@ -13,6 +13,7 @@ export type StringKeysMapType = {
   'Standalone_Capacity': 'Standalone_Capacity',
   'WEEKS': 'WEEKS',
   'access_to_space_station_editors': 'access_to_space_station_editors',
+  'api_params_tablebundle_max_count_error': 'api_params_tablebundle_max_count_error',
   'account_ass_manage': 'account_ass_manage',
   'account_format_err': 'account_format_err',
   'account_manager_binding_feishu': 'account_manager_binding_feishu',

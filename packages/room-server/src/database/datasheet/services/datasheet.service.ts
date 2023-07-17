@@ -120,6 +120,14 @@ export class DatasheetService {
     };
   }
 
+  async batchSave(records: any[]){
+    return await this.datasheetRepository
+      .createQueryBuilder()
+      .insert()
+      .values(records)
+      .execute();
+  }
+
   /**
    * Obtain datasheet data pack, with all linked datasheet data
    *
@@ -234,7 +242,7 @@ export class DatasheetService {
    * @return  Promise<IBaseDatasheetPack[]>
    */
   async getBasePacks(dstId: string, options: ILoadBasePackOptions = {}): Promise<IBaseDatasheetPack[]> {
-    const { includeLink = true, includeCommentCount = false, ignoreDeleted = false } = options;
+    const { includeLink = true, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false } = options;
     // TODO optimize recordMap query with cursors
     // Query snapshot
     const basePacks: IBaseDatasheetPack[] = [];
@@ -254,7 +262,7 @@ export class DatasheetService {
           snapshot: {
             meta: metaMap[id] ?? meta,
             // TODO avoid loading record for field APIs in fusion API
-            recordMap: await this.datasheetRecordService.getBaseRecordMap(id, includeCommentCount, ignoreDeleted),
+            recordMap: await this.datasheetRecordService.getBaseRecordMap(id, includeCommentCount, ignoreDeleted, loadRecordMeta),
             datasheetId: datasheetMap[id]!.id,
           },
         });

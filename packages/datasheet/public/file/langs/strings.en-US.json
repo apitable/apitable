@@ -11,6 +11,7 @@
   "QR_code_invalid": "QR code is invalid",
   "Standalone_Capacity": "Independent add-on capacity",
   "WEEKS": "Week",
+  "api_params_tablebundle_max_count_error": "Creation failed, the current workbench is ${product}, only ${count} snapshots can be saved.",
   "access_to_space_station_editors": "Enter the space to edit",
   "account_ass_manage": "Account binding",
   "account_format_err": "Account format error",

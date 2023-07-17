@@ -49,6 +49,7 @@
   "adaptive": "Adaptive",
   "add": "Add",
   "add_an_option": "Add an option",
+  "api_params_tablebundle_max_count_error": "Creation failed, the current workbench is ${product}, only ${count} snapshots can be saved.",
   "add_attachment": "Add attachment",
   "add_cover": "Add cover",
   "add_dashboard": "New dashboard",

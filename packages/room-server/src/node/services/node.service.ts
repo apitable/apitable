@@ -52,6 +52,41 @@ export class NodeService {
     }
   }
 
+  async getFolderLastChildren(fldId: string): Promise<string> {
+    const nodes = await this.nodeRepository.find({
+      where: {
+        parentId: fldId
+      },
+    });
+    if (!nodes){
+      return '';
+    }
+    const nodeIdSet = new Map<string, boolean>();
+    nodes.forEach(node => {
+      nodeIdSet.set(node.nodeId, false);
+    });
+    nodes.forEach(node => {
+      if (node.preNodeId && nodeIdSet.has(node.preNodeId)) {
+        nodeIdSet.set(node.preNodeId, true);
+      }
+    });
+    console.log('zzq see jk', JSON.stringify(nodeIdSet), nodeIdSet);
+    for (const [key, value] of nodeIdSet) {
+      if (!value) {
+        return key;
+      }
+    }
+    return 'not found';
+  }
+
+  async batchSave(nodes: any[]){
+    return await this.nodeRepository
+      .createQueryBuilder()
+        .insert()
+        .values(nodes)
+        .execute();
+  }
+
   @Span()
   async checkUserForNode(userId: string, nodeId: string): Promise<string> {
     // Get the space ID which the node belongs to

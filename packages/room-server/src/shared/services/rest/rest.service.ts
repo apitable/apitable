@@ -58,6 +58,14 @@ import {
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
+import { Method } from 'axios';
+import { AttachmentTypeEnum } from '../../enums/attachment.enum';
+import fs from 'fs';
+import * as os from 'os';
+import { SUBSCRIBE_INFO } from '@apitable/core/dist/modules/space/api/url.space';
+const util = require('util');
+const stream = require('stream');
+const pipeline = util.promisify(stream.pipeline);
 
 /**
  * RestApi service
@@ -90,6 +98,7 @@ export class RestService {
 
   // Get attachment asset
   private GET_UPLOAD_PRESIGNED_URL = 'internal/asset/upload/preSignedUrl';
+  private GET_UPLOAD_CALLBACK = 'asset/upload/callback';
   private GET_ASSET = 'internal/asset/get';
   // Calculate the references to datasheet OP attachments
   private DST_ATTACH_CITE = 'base/attach/cite';
@@ -123,6 +132,15 @@ export class RestService {
     this.httpService.axiosRef.interceptors.response.use(
       (res) => {
         const restResponse = res.data as IHttpSuccessResponse<any>;
+        if(containSkipHeader(res.config.headers)) {
+          return res;
+        }
+        function containSkipHeader( headers: any) {
+          if (!headers) {
+            return false;
+          }
+          return headers['Skip-Interceptor'];
+        }
         if (!restResponse.success) {
           this.logger.error(`Server request ${res.config.url} failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
           responseCodeHandler(restResponse.code);
@@ -249,12 +267,57 @@ export class RestService {
     return response!.data.currentBundleCapacity - response!.data.usedCapacity < 0;
   }
 
-  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number | undefined): Promise<AssetVo[]> {
+  async uploadFile(buffer: any, uploadUrl: string, uploadRequestMethod: string, fileSize: number) {
+    const r = await this.httpService.axiosRef.request({
+      method: uploadRequestMethod as Method,
+      url: uploadUrl,
+      baseURL: '',
+      data: buffer,
+      validateStatus: null,
+      headers: {
+        'Skip-Interceptor': 'true',
+        'Content-Length': fileSize.toString(),
+      },
+    });
+    return r.status;
+  }
+
+  async downloadFile(host: string, url: string, fileName: string) {
+    const response = await this.httpService.axiosRef.request(
+      {
+        url: host + '/' + url,
+        method: 'GET',
+        responseType: 'stream',
+        baseURL: host,
+        validateStatus: null,
+        headers: {
+          'Skip-Interceptor': 'true'
+        },
+      });
+    const filePath = `${os.tmpdir()}/${fileName}`; // Replace with the desired file path and name
+    const writer = fs.createWriteStream(filePath);
+    await pipeline(response.data, writer);
+    return filePath;
+  }
+
+  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number | undefined,
+    type: number = AttachmentTypeEnum.DATASHEET_ATTACH): Promise<AssetVo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
         headers: HttpHelper.createAuthHeaders(headers),
-        params: { nodeId, count },
+        params: { nodeId, count, type },
       }),
+    );
+    return response.data;
+  }
+
+  async getUploadCallBack(headers: IAuthHeader, resourceKeys: string[], type: number): Promise<AssetVo[]> {
+    const response = await lastValueFrom(
+      this.httpService.post(this.GET_UPLOAD_CALLBACK, { resourceKeys, type },
+        {
+          headers: HttpHelper.createAuthHeaders(headers),
+        }
+      )
     );
     return response.data;
   }
@@ -445,6 +508,22 @@ export class RestService {
       }),
     );
     return response!.data.children;
+  }
+
+  /**
+   * Gets subscription information for the space.
+   *
+   * @param {string} cookie
+   * @param {string} spaceId
+   * @returns {Promise<any>}
+   */
+  async getSpaceSubscriptionInfo(cookie: string, spaceId: string): Promise<any> {
+    const response = await lastValueFrom(
+      this.httpService.get<any>(SUBSCRIBE_INFO + spaceId, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders({ cookie }), spaceId)
+      })
+    );
+    return response!.data;
   }
 
   /**
