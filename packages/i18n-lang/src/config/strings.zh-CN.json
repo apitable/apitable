@@ -4918,6 +4918,7 @@
   "time_format_year_month_and_day_for_dayjs": "YYYY年MM月DD日",
   "time_format_yesterday": "[昨天] HH:mm",
   "time_machine": "时光机",
+  "time_machine_action_title": "操作记录",
   "time_machine_unlimited": "历史记录无限期保存",
   "time_zone_inconsistent_tips": "当时区不一致时，默认取开始时间的时区",
   "timemachine_help_url": "https://help.apitable.com/docs/guide/manual-timemachine",

@@ -4916,6 +4916,7 @@
   "time_format_year_month_and_day_for_dayjs": "MMM D, YYYY",
   "time_format_yesterday": "[Yesterday] HH:mm",
   "time_machine": "Time Machine",
+  "time_machine_action_title": "Operation records",
   "time_machine_unlimited": "Unlimited Time Machine Histories",
   "time_zone_inconsistent_tips": "When time zones are inconsistent, the time zone of the start time will be used by default",
   "timemachine_help_url": "https://help.apitable.com/docs/guide/manual-timemachine",

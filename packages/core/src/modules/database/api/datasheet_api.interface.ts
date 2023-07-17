@@ -118,3 +118,35 @@ export interface IUpdateTreeSelectSnapshotReq {
   linkedViewId: string;
 }
 
+export interface ICreatorInfo {
+  id: string;
+  uuid: string;
+  avatar: string | null;
+  nikeName: string;
+  isSocialNameModified: number;
+  color: number | null;
+}
+
+export interface IDatasheetTablebundles {
+  id: string;
+  tbdId: string;
+  name: string;
+  spaceId: string
+  dstId: string;
+  statusCode: number;
+  createdAt: string;
+  createdBy: string;
+  expiredAt: string;
+  creatorInfo: ICreatorInfo;
+  isDeleted: boolean;
+  deletedBy?: string;
+  type: number;
+}
+
+export interface IRecoverDatasheetTablebundles {
+  dstId: string;
+  nodeName: string;
+  spaceId: string;
+  parentId: string;
+}
+

@@ -5449,6 +5449,7 @@
   "api_param_parent_unit_not_exists": "The unit specified by the parentUnitId does not exist",
   "api_param_unit_id_required": "The parameter unitId is required",
   "lookup_conditions_success": "Lookup sorting or filter set successfully",
+  "time_machine_action_title": "Operation records",
   "api_param_widget_id_not_exists": "The mini program specified by the widgetId does not exist",
   "lookup_filter_sort_description": "Add condition",
   "revoke_changes": "Revoke changes",

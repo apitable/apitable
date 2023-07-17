@@ -127,6 +127,16 @@ export const CASCADER_SNAPSHOT = '/datasheets/:datasheetId/fields/:fieldId/casca
 // Update cascader snapshot data
 export const UPDATE_CASCADER_SNAPSHOT = '/spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId/cascader-snapshot';
 
+// =============== time machine backup ===============
+
+export const DATASHEET_TABLEBUNDLE = 'nodes/:nodeId/tablebundles';
+
+export const UPDATE_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:tablebundleId';
+
+export const RECOVER_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:tablebundleId/recover';
+
+export const PREVIEW_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:tablebundleId/preview';
+
 /* ----- ai -----*/
 export const GET_AI_INFO = 'ai/:aiId';
 

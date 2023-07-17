@@ -93,6 +93,7 @@ export enum ShortcutActionName {
   RenameNode = 'Rename',
   CopyNode = 'CopyNode',
   Permission = 'Permission',
+  CreateBackup = 'CreateBackup',
   Share = 'Share',
   SaveAsTemplate = 'SaveAsTemplate',
   ToggleCatalogPanel = 'ToggleCatalogPanel',

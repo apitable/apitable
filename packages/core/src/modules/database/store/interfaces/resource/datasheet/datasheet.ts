@@ -349,6 +349,7 @@ export interface IDatasheetState extends INodeMeta {
    */
 
   preview?: string;
+  type?: string;
 }
 
 export interface ILoadingRecord {

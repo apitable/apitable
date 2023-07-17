@@ -4917,6 +4917,7 @@ export type StringKeysMapType = {
   'time_format_year_month_and_day_for_dayjs': 'time_format_year_month_and_day_for_dayjs',
   'time_format_yesterday': 'time_format_yesterday',
   'time_machine': 'time_machine',
+  'time_machine_action_title': 'time_machine_action_title',
   'time_machine_unlimited': 'time_machine_unlimited',
   'time_zone_inconsistent_tips': 'time_zone_inconsistent_tips',
   'timemachine_help_url': 'timemachine_help_url',

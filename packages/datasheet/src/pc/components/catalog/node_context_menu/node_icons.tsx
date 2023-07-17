@@ -47,7 +47,8 @@ import {
   DatasheetOutlined,
   IIconProps, MirrorOutlined, InfoCircleOutlined,
   ChevronRightOutlined,
-  FolderRightOutlined, RobotOutlined
+  FolderRightOutlined, RobotOutlined,
+  RefreshOutlined
 } from '@apitable/icons';
 import { colorVars } from '@apitable/components';
 
@@ -93,7 +94,8 @@ export enum NodeIcon {
     Dashboard = 'dashboard',
     Mirror = 'Mirror',
     MoveTo = 'MoveTo',
-    Ai = 'Ai'
+    Ai = 'Ai',
+    CreateBackup = 'CreateBackup',
 }
 
 // Enumeration and Resource Location Matching Table
@@ -135,6 +137,7 @@ export const nodeIconImportMap: {
   [NodeIcon.Arrow]: ChevronRightOutlined,
   [NodeIcon.MoveTo]: FolderRightOutlined,
   [NodeIcon.Ai]: RobotOutlined,
+  [NodeIcon.CreateBackup]: RefreshOutlined,
 };
 
 /**

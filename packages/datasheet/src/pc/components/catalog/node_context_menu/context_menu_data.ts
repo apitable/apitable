@@ -43,7 +43,8 @@ export enum ContextItemKey {
   AddDashboard,
   NodeInfo,
   MoveTo,
-  addAi
+  addAi,
+  CreateBackup
 }
 
 const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
@@ -91,6 +92,14 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_SET_PERMISSIONS,
     onClick,
     hidden: !getEnvVariables().FILE_PERMISSION_VISIBLE
+  })],
+  [ContextItemKey.CreateBackup, (onClick: () => void, hidden: boolean) => ({
+    icon: makeNodeIconComponent(NodeIcon.CreateBackup),
+    text:t(Strings.backup_create),
+    shortcutKey: getShortcutKeyString(ShortcutActionName.CreateBackup),
+    id: WORKBENCH_SIDE_ID.OPERATE_ITEM_CREATE_BACKUP,
+    onClick,
+    hidden,
   })],
   [ContextItemKey.Share, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Share),

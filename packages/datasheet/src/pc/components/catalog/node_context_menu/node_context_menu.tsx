@@ -18,7 +18,7 @@
 
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { MobileContextMenu } from 'pc/components/common';
+import { Message, MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
 import { Router } from 'pc/components/route_manager/router';
@@ -39,8 +39,9 @@ import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert, createBackupSnapshot } from 'enterprise';
 import { SecondConfirmType } from '../../datasheet_search_panel';
+import { SideBarContext } from 'pc/context';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;
@@ -58,6 +59,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
   const { rightClickInfo } = useContext(WorkbenchSideContext);
+  const { setNewTdbId } = useContext(SideBarContext);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const spaceId = useSelector(state => state.space.activeId);
@@ -110,6 +112,20 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
   const openPermissionSetting = (nodeId: string) => {
     isMobile && setSideBarVisible(false);
     dispatch(StoreActions.updatePermissionModalNodeId(nodeId));
+  };
+
+  const _createBackupSnapshot = async(nodeId: string) => {
+    const res = await createBackupSnapshot(nodeId);
+    if (res.data.success) {
+      setNewTdbId?.(res?.data?.data?.tbdId || '');
+      Message.success({
+        content: t(Strings.backup_create_success)
+      });
+    } else {
+      Message.error({
+        content: res.data.message
+      });
+    }
   };
 
   const openShareModal = (nodeId: string) => {
@@ -167,6 +183,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           contextItemMap.get(ContextItemKey.Export)(() => exportAsCsv(nodeId), () => exportExcel(nodeId), !exportable || isMobileApp()),
         ], [
           contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+          contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !createBackupSnapshot),
           contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
           contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
           contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),

@@ -5452,6 +5452,7 @@
   "api_param_unit_id_required": "参数 unitId 为必填项",
   "lookup_conditions_success": "神奇引用排序或筛选条件设置成功",
   "lookup_filter_sort_description": "添加条件",
+  "time_machine_action_title": "操作记录",
   "api_param_widget_id_not_exists": "widgetId 指定的小程序不存在",
   "revoke_changes": "撤销修改",
   "discard_changes": "取消",

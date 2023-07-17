@@ -18,7 +18,18 @@
 
 import { Skeleton } from '@apitable/components';
 import {
-  ConfigConstant, Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t
+  ConfigConstant,
+  Events,
+  Player,
+  PREVIEW_DATASHEET_BACKUP,
+  PREVIEW_DATASHEET_ID,
+  ResourceType,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  Strings,
+  SystemConfig,
+  t,
 } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
@@ -84,6 +95,10 @@ const DatasheetMain = (props: IDatasheetMain) => {
     preview, testFunctions, handleExitTest, mirrorId, embedId
   } = props;
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const previewDstType = useSelector(state => {
+    const datasheet = Selectors.getDatasheet(state);
+    return datasheet && datasheet?.type;
+  });
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
 
@@ -127,7 +142,7 @@ const DatasheetMain = (props: IDatasheetMain) => {
           <div className={styles.previewTip}>
             {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
             {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
-            {preview &&
+            {preview && (previewDstType !== PREVIEW_DATASHEET_BACKUP) &&
               <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }}
                 onClick={exportPreviewCsv}>{t(Strings.export_current_preview_view_data)}</span>}
           </div>
