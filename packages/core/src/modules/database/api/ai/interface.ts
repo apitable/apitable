@@ -35,7 +35,7 @@ export interface IAIInfoResponse extends IAiInfoSetting {
   name: string;
   picture: string;
   description: string;
-
+  currentConversationId: string;
   livemode: boolean;
   latestTrainingStatus: TrainStatus;
   completed: string;
@@ -58,15 +58,12 @@ export interface ISendChatMessageParams {
 }
 
 export interface IChatMessageResponse {
-  'id': string;
-  'aiId': string;
-  'conversationId': string;
-  'content': string;
-  'contextType': string;
-  'status': string;
-  'author': string;
-  'created': number;
-  'suggestedReplies': string[]
+  type: string;
+  data: {
+    additional_kwargs: {};
+    content: string;
+    example: boolean
+  }
 }
 
 export interface IAIApiResponse<T extends {} = {}> {

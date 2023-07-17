@@ -18,7 +18,11 @@ export const getAiInfo = (aiId: string) => {
   });
 };
 
-export const getChatHistoryList = (aiId: string, search?: { cursor?: string,limit?:number }) => {
+export const getChatHistoryList = (aiId: string, search?: {
+  cursor?: string,
+  limit?: number,
+  conversationId?: string
+}) => {
   return axios.get<IAIApiResponse<IChatMessageListResponse>>(urlcat(Url.GET_MESSAGE_LIST, { aiId }), {
     baseURL,
     params: search,
