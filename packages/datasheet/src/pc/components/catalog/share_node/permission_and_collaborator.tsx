@@ -200,7 +200,7 @@ export const PermissionAndCollaborator: React.FC<IPermissionAndCollaboratorProps
         onClick={() => copy2clipBoard(window.location.href)}
         prefixIcon={<LinkOutlined currentColor/>}
       >
-        {t(Strings.copy_url)}
+        {t(Strings.share_copy_url_link)}
       </LinkButton>
       {invitable && (
 

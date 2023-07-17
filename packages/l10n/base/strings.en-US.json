@@ -878,7 +878,7 @@
   "close_view_sync_tip": "Turn off view configuration synchronization",
   "code_block": "Code block",
   "code_sweep": "Scan code to join",
-  "collaborate_and_share": "Collaborate and share",
+  "collaborate_and_share": "Collaborate",
   "collaborator_number": "${number} Collaborator(s)",
   "collapse": "Collapse",
   "collapse_all_group": "Collapse all groups",
@@ -3612,7 +3612,7 @@
   "public_link": "Share public link",
   "public_link_desc": "A link that everyone can access",
   "publish_link_tip": "Post a link that everyone can access",
-  "publish_share_link_with_anyone": "Publish and share the link with anyone",
+  "publish_share_link_with_anyone": "Publish and share the ${nodeName} with anyone",
   "publish_to_dingtalk_workbench": "Publish to DingTalk Workbench",
   "publishing": "Publishing Industry",
   "puerto_rico": "Puerto Rico",
@@ -5462,6 +5462,7 @@
   "api_widget_number_limit": "The number of widget has reached the upper limit, and the creation failed.",
   "invite": "Invite",
   "publish": "Publish",
-  "share_tips_title": "Publish to Web",
-  "share_tips": "By publishing your files to the web, you can effortlessly share them with anyone, anywhere in the world. This enables others to view, edit, or copy your content with ease."
+  "share_tips_title": "Publish share link",
+  "share_copy_url_link": "Copy link",
+  "share_tips": "By publishing your file as share link. You can allow others to view, edit, or save a copy of the file via the share link."
 }

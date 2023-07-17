@@ -3611,7 +3611,7 @@
   "public_link": "公开链接",
   "public_link_desc": "任何人可见的链接",
   "publish_link_tip": "发布一个所有人都可见的链接",
-  "publish_share_link_with_anyone": "通过公开链接分享内容给他人",
+  "publish_share_link_with_anyone": "通过公开链接分享${nodeName}给他人",
   "publish_to_dingtalk_workbench": "发布到钉钉工作台",
   "publishing": "出版业",
   "puerto_rico": "波多黎各",
@@ -5464,6 +5464,7 @@
   "api_widget_number_limit": "小程序数量已到达上限，创建失败",
   "invite": "邀请",
   "publish": "发布",
-  "share_tips_title": "发布到互联网",
-  "share_tips": "通过将您的文件发布到互联网上，您可以轻松地与世界各地的任何人分享。这使得其他人可以轻松地查看、编辑或复制您的内容。"
+  "share_tips_title": "发布公开链接",
+  "share_copy_url_link": "复制链接",
+  "share_tips": "通过将你的文件以公开链接的形式进行发布。你可以允许他人通过公开链接对你的文件进行查看、编辑或转存。"
 }
