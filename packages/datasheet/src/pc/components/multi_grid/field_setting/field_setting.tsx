@@ -32,6 +32,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD_CLS } from 'pc/components/expand_record/expand_record_modal';
 import { useResponsive } from 'pc/hooks';

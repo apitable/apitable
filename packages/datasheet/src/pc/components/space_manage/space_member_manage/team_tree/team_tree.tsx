@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Loading } from '@apitable/components';
+import { Button, Loading, Typography } from '@apitable/components';
 import {
   Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamTreeNode, StoreActions, Strings, t
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
@@ -337,13 +338,13 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
 
   return (
     <div className={styles.addressTreeMenuWrapper}>
-      <div className={styles.searchTitle}>
+      <Typography ellipsis variant="body1" className={styles.searchTitle}>
         {t(Strings.members_setting)}
         <div onClick={(e) => {
           stopPropagation(e);
           setInSearch(true);
         }}><SearchOutlined /></div>
-      </div>
+      </Typography>
       <div className={styles.originContent} style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }}>
         {operateButtonCom}
         <div className={styles.treeWrapper}>

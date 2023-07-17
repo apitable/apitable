@@ -18,19 +18,24 @@
 
 package com.apitable.workspace.dto;
 
+import cn.hutool.json.JSONObject;
 import java.util.List;
 import java.util.Map;
-
-import cn.hutool.json.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Snapshot for datasheet.
+ */
 @Setter
 @Getter
 public class DatasheetSnapshot {
 
     private Meta meta;
 
+    /**
+     * datasheet meta.
+     */
     @Setter
     @Getter
     public static class Meta {
@@ -40,6 +45,9 @@ public class DatasheetSnapshot {
         private List<View> views;
     }
 
+    /**
+     * field object.
+     */
     @Setter
     @Getter
     public static class Field {
@@ -53,6 +61,9 @@ public class DatasheetSnapshot {
         private JSONObject property;
     }
 
+    /**
+     * view object.
+     */
     @Setter
     @Getter
     public static class View {
@@ -60,12 +71,29 @@ public class DatasheetSnapshot {
         private String id;
 
         private List<Column> columns;
+
+        private List<Row> rows;
     }
 
+    /**
+     * column in view.
+     */
     @Setter
     @Getter
     public static class Column {
 
         private String fieldId;
+
+        private boolean hidden;
+    }
+
+    /**
+     * row in view.
+     */
+    @Setter
+    @Getter
+    public static class Row {
+
+        private String recordId;
     }
 }

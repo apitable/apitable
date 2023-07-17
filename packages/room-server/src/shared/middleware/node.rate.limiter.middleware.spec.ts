@@ -93,7 +93,7 @@ describe('FusionApiRateLimiter', () => {
           points: 1,
           duration: 120,
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1/nodes/dst1********',
             headers: {
@@ -117,7 +117,7 @@ describe('FusionApiRateLimiter', () => {
           points: 1,
           duration: 120,
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1/datasheets/dst********/records',
             headers: {
@@ -141,7 +141,7 @@ describe('FusionApiRateLimiter', () => {
           points: 1,
           duration: 120,
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1/spaces',
             headers: {
@@ -165,7 +165,7 @@ describe('FusionApiRateLimiter', () => {
           points: 1,
           duration: 120,
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1/spaces/spc******/nodes',
             headers: {
@@ -188,7 +188,7 @@ describe('FusionApiRateLimiter', () => {
           points: 1,
           duration: 120,
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst2********',
             headers: {
@@ -215,7 +215,7 @@ describe('FusionApiRateLimiter', () => {
           duration: 120,
           whiteList
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst3********',
             headers: {
@@ -242,7 +242,7 @@ describe('FusionApiRateLimiter', () => {
           duration: 120,
           whiteList
         });
-        rateLimiter.use(
+        await rateLimiter.use(
           {
             originalUrl: '/fusion/v1//spaces/spc1******/nodes/dst4********',
             headers: {

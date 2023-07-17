@@ -33,6 +33,7 @@ import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { getEnvVariables } from 'pc/utils/env';
 import { ActionType } from 'pc/components/home/pc_home';
+import { deleteStorageByKey, StorageName } from '../utils/storage';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
@@ -328,6 +329,7 @@ export const useUserRequest = () => {
       const { success } = res.data;
       if (success) {
         localStorage.removeItem('client-lang');
+        deleteStorageByKey(StorageName.IsPanelClosed);
         const searchParams = getSearchParams();
         if (searchParams.toString()) {
           const paramsObj = {};
@@ -353,6 +355,7 @@ export const useUserRequest = () => {
       const { success } = res.data;
       if (success) {
         localStorage.removeItem('client-lang');
+        deleteStorageByKey(StorageName.IsPanelClosed);
         dispatch(StoreActions.setLoading(true));
 
         const urlParams = getSearchParams();
@@ -384,6 +387,7 @@ export const useUserRequest = () => {
     return Api.signOut().then((res) => {
       const { success, data } = res.data;
       if (success) {
+        deleteStorageByKey(StorageName.IsPanelClosed);
         if (data.needRedirect) {
           window.location.href = data.redirectUri;
         } else {

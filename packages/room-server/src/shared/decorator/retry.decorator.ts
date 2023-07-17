@@ -27,7 +27,7 @@ import { sleep } from 'shared/common';
 /**
  * retryable decorator
  */
-export function Retryable(options: RetryOptions): Function {
+export function Retryable(options: IRetryOptions): Function {
   const logger = new Logger('RetryableDecorator');
 
   function canRetry(e: Error): boolean {
@@ -112,7 +112,7 @@ export function Retryable(options: RetryOptions): Function {
   };
 }
 
-export interface RetryOptions {
+interface IRetryOptions {
   /**
    * Maximum number of attempts
    */

@@ -49,7 +49,7 @@ const customTips = {
 };
 
 export const CoverImgUploader: React.FC<React.PropsWithChildren<ICoverImgUploaderProps>> = props => {
-  const { formId, mode, coverUrl, updateProps } = props;
+  const { nodeId, mode, coverUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
   const officialImgs = Settings.workbench_folder_default_cover_list.value.split(',');
   const coverImgUrl = coverUrl || getImageThumbSrc(integrateCdnHost(officialImgs[0]), officialImgParams);
@@ -72,7 +72,7 @@ export const CoverImgUploader: React.FC<React.PropsWithChildren<ICoverImgUploade
 
   return (
     <ImgBaseUploader
-      formId={formId}
+      nodeId={nodeId}
       visible={isModalShow}
       imgUrl={coverImgUrl}
       cropShape={ICropShape.Rectangle}

@@ -24,6 +24,7 @@ import { t, Strings } from '@apitable/core';
 import { hexToRGB } from 'pc/utils';
 import classNames from 'classnames';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { colorVars } from '@apitable/components';

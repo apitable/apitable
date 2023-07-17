@@ -12,7 +12,7 @@ COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 
 COPY packages/core/package.json ./packages/core/
 
-COPY packages/room-native-api/package.json ./packages/room-native-api/
+COPY packages/databus/package.json ./packages/databus/
 
 COPY packages/room-server/package.json ./packages/room-server/
 
@@ -34,15 +34,15 @@ COPY packages/i18n-lang ./packages/i18n-lang
 
 COPY packages/core ./packages/core
 
-COPY packages/room-native-api ./packages/room-native-api
+COPY packages/databus ./packages/databus
 
 COPY packages/room-server ./packages/room-server
 
 RUN yarn build:sr
 
-# RUN yarn build:room-native-api:arm64
+# RUN yarn build:databus:arm64
 
-RUN rm -rf packages/room-native-api/target
+RUN rm -rf packages/databus/target
 
 ARG KEEP_DEV_DEP
 
@@ -64,7 +64,7 @@ COPY --from=builder /app /app
 
 RUN npm install pm2@latest --global  \
     && rm -fr packages/*/src \
-    && rm -fr packages/room-native-api/src
+    && rm -fr packages/databus/src
 
 COPY packages/i18n-lang/src/config ./packages/i18n-lang/src/config
 

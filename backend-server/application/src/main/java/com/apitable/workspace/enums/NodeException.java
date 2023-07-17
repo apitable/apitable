@@ -65,7 +65,8 @@ public enum NodeException implements BaseException {
 
     DELETE_NODE_LINK__FIELD_ERROR(425,
         "Deleting a node, transforming the associated column failed"),
-    DUPLICATE_NODE_NAME(426, "duplicate node name");
+    DUPLICATE_NODE_NAME(426, "duplicate node name"),
+    NODE_CREATE_LOST_PARAMS(427, "lost necessary parameter for create node");
 
     private final Integer code;
 

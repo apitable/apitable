@@ -42,7 +42,8 @@ export enum ContextItemKey {
   CreateFromTemplate,
   AddDashboard,
   NodeInfo,
-  MoveTo
+  MoveTo,
+  addAi
 }
 
 const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
@@ -181,6 +182,14 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     onClick,
     hidden,
     id: WORKBENCH_SIDE_ID.NEW_FOLDER,
+  })],
+  [ContextItemKey.addAi, (onClick: () => void, hidden: boolean) => ({
+    icon: makeNodeIconComponent(NodeIcon.Ai),
+    text: 'New ChatBot',
+    shortcutKey: getShortcutKeyString(ShortcutActionName.NewAi),
+    onClick,
+    hidden,
+    id: WORKBENCH_SIDE_ID.NEW_CHAT_BOT,
   })],
   [ContextItemKey.CreateFromTemplate, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Template),

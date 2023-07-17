@@ -24,7 +24,7 @@ import { GatewayConstants, SocketConstants } from 'shared/common/constants/socke
 import { NestCacheKeys } from 'shared/enums/redis-key.enum';
 import { getSocketServerAddr } from 'shared/helpers/socket.helper';
 import { getIPAddress } from 'shared/helpers/system.helper';
-import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { SocketRo } from 'socket/ros/socket.ro';
 import { RedisService } from 'socket/services/redis/redis.service';
 import * as util from 'util';
@@ -36,14 +36,14 @@ export class NestService {
   constructor(private readonly redisService: RedisService, private readonly httpService: HttpService) {}
 
   // each node holds the connection of the current nest
-  private socketMap = new Map<string, AuthenticatedSocket>();
+  private socketMap = new Map<string, IAuthenticatedSocket>();
 
-  async setSocket(socket: AuthenticatedSocket) {
+  async setSocket(socket: IAuthenticatedSocket) {
     this.socketMap.set(socket.id, socket);
     await this.redisService.saveSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId, getSocketServerAddr(getIPAddress()));
   }
 
-  async removeSocket(socket: AuthenticatedSocket) {
+  async removeSocket(socket: IAuthenticatedSocket) {
     this.socketMap.delete(socket.id);
     await this.redisService.removeSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId);
     this.logger.log(`NestService:removeSocket ${socket.auth}`);

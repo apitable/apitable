@@ -23,6 +23,7 @@ import { store } from 'pc/store';
 import styles from './styles.module.less';
 import classNames from 'classnames';
 import { ICellComponentProps } from '../cell_value/interface';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 
 export interface ICellCreatedTimeProps extends ICellComponentProps {

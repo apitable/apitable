@@ -9,7 +9,7 @@
                     "defaultValue": ""
                 }
             },
-        "${fieldId1}": {
+            "${fieldId1}": {
                 "name": "${defaultDatasheetOptions}",
                 "property": {
                     "options": []
@@ -17,7 +17,7 @@
                 "id": "${fieldId1}",
                 "type": 4
             },
-        "${fieldId2}": {
+            "${fieldId2}": {
                 "name": "${defaultDatasheetAttachments}",
                 "id": "${fieldId2}",
                 "type": 6

@@ -51,6 +51,7 @@ export const NODE_IMPORT = PREFIX + 'NODE_IMPORT';
 export const NEW_DATASHEET = PREFIX + 'NEW_DATASHEET';
 export const NEW_FORM = PREFIX + 'NEW_FORM';
 export const NEW_FOLDER = PREFIX + 'NEW_FOLDER';
+export const NEW_CHAT_BOT = PREFIX + 'NEW_CHAT_BOT';
 export const NEW_FORM_TEMPLATE = PREFIX + 'NEW_FORM_TEMPLATE';
 export const NEW_DASHBOARD = PREFIX + 'NEW_DASHBOARD';
 export const NODE_INFO = PREFIX + 'NODE_INFO';

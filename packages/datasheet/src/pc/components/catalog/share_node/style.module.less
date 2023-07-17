@@ -6,7 +6,11 @@
   width: 100%;
   height: auto;
 }
-
+.invite {
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+}
 .container {
   display: flex;
 
@@ -111,7 +115,12 @@
     }
   }
 }
-
+.shareTabContent {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  height: 208px;
+}
 /** Mobile */
 .shareNodeDrawer {
   .nodeTitle {
@@ -162,12 +171,16 @@
 
 .shareContent {
   border-radius: 8px;
-  padding: 24px 24px 0px;
+  padding: 0 24px 0 24px;
   box-shadow: var(--shadowCommonHighest);
-  background-color: var(--bgCommonHighest);
-
+  background-color: var(--bgCommonHigh);
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
   &.loading {
-    padding-bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .shareFloor {
@@ -235,7 +248,7 @@
 
   .collaborator {
     justify-content: space-between;
-    padding-bottom: 40px;
+    padding-bottom: 16px;
 
     .collaboratorStatus {
       padding: 4px;
@@ -340,6 +353,26 @@
       .ant-drawer-wrapper-body, .ant-drawer-header, .ant-drawer-body {
         background-color: var(--bgCommonLower);
       }
+    }
+  }
+}
+
+
+// More ways to invite
+.inviteMore {
+  padding: 14px 0;
+  border-top: 1px solid var(--borderCommonDefault);
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  .displayAlignCenter();
+
+  .inviteMoreMethod {
+    color: var(--textCommonSecondary);
+    cursor: pointer;
+    .displayAlignCenter();
+    svg {
+      margin-right: 4px;
     }
   }
 }

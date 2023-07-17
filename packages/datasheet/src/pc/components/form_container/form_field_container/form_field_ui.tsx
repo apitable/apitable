@@ -21,6 +21,7 @@ import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, MoreOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import isNumber from 'lodash/isNumber';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppendField } from 'pc/components/expand_record/hooks/use_append_field';
 import { useEditDesc } from 'pc/components/expand_record/hooks/use_edit_desc';

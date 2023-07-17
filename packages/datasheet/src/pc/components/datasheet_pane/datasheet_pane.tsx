@@ -142,7 +142,7 @@ const DefaultPanelWidth = {
   DevTool: 320,
   TimeMachine: 320,
   Api: '50%',
-  Robot: 320,
+  Robot: 360,
   SideRecord: 450,
 } as const;
 

@@ -31,7 +31,6 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
 
 /**
  * Datasheet APIs
@@ -55,7 +54,7 @@ export class DatasheetController {
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,
     @Query() query: DatasheetPackRo,
-  ): Promise<DatasheetPackResponse | DatasheetPack> {
+  ): Promise<DatasheetPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
@@ -68,14 +67,14 @@ export class DatasheetController {
     @Headers('cookie') cookie: string,
     @Param('shareId') shareId: string,
     @Param('dstId') dstId: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // check if the node has been shared
     await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, dstId);
     return await this.datasheetService.fetchShareDataPack(shareId, dstId, { cookie }, true);
   }
 
   @Get('templates/datasheets/:dstId/dataPack')
-  async getTemplateDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<DatasheetPack | DatasheetPackResponse> {
+  async getTemplateDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string): Promise<DatasheetPack> {
     const isTemplate = await this.nodeService.isTemplate(dstId);
     if (!isTemplate) {
       throw new ServerException(PermissionException.ACCESS_DENIED);

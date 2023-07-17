@@ -22,6 +22,7 @@ import { CheckOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import * as React from 'react';
 import { useState } from 'react';

@@ -28,6 +28,7 @@ import {
   t,
   DatasheetActions,
 } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@apitable/components';
 import { useCallback, useEffect, useState, useRef } from 'react';

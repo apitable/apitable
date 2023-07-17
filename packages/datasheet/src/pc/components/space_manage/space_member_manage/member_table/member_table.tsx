@@ -20,6 +20,7 @@ import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployme
 import { lightColors, List, Pagination } from '@apitable/components';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
+// eslint-disable-next-line no-restricted-imports
 import { Modal, Tooltip } from 'pc/components/common';
 // @ts-ignore
 import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';

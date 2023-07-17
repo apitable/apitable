@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select } from '@apitable/components';
+import { DropdownSelect as Select } from '@apitable/components';
 import { FilterDuration, FOperator, Strings, t } from '@apitable/core';
 
 const DurationStringsMap = {

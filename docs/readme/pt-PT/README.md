@@ -157,7 +157,7 @@ APITable fornece uma gama de características surpreendentes, desde o pessoal at
   - 100k+ linhas de dados com colaboração em tempo real.
   - Acesso API em pilha completa, de Dados a Metadados.
   - Ligação de uma direcção / Ligação de tabela bidireccional e ligações cruzadas infinitas
-  - Linguagens e um quadro de programação amigáveis TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) e Java ([Spring Boot](https://spring.io/projects/spring-boot)), e estamos a avançar gradualmente para Rust.
+  - Linguagens e um quadro de programação amigáveis TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) e Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Bela e rica base de dados - Folha de cálculo UI
   - `CRUD`: Criar, Ler, Actualizar, Apagar as Tabelas, Colunas, e Linhas
   - `Operações de campo`: classificar, filtrar, agrupar, esconder/desconder, definir altura.
@@ -317,7 +317,6 @@ APITable use estas convenções comuns:
 - Como criar versões e etiquetar? [Versionamento semântico](https://semver.org/)
 - O que é a Directriz de Codificação Java? [Guia de Codificação Java](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - O que é a TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - O que é a Visão Geral da Arquitectura? -> [Compreender APITable - Visão Geral da Arquitectura](./docs/contribute/architecute-overview.md)
 
 ### Documentações

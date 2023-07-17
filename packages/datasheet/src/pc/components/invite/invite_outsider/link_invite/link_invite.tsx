@@ -19,6 +19,7 @@
 import { Api, IReduxState, ITeamTreeNode, StoreActions, Strings, t } from '@apitable/core';
 import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Input, TreeSelect } from 'antd';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';

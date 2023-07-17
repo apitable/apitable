@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors, WrapperTooltip } from '@apitable/components';
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';

@@ -26,9 +26,8 @@ export class RobotTriggerTypeController {
   ) { }
 
   @Get(['/'])
-  getTriggerTypes(@Query('lang') lang: string | string[]) {
-    const language = (!lang || lang.includes('zh')) ? 'zh' : 'en';
-    return this.robotTriggerTypeService.getTriggerType(language);
+  getTriggerTypes(@Query('lang') lang: string) {
+    return this.robotTriggerTypeService.getTriggerType(lang);
   }
 
 }

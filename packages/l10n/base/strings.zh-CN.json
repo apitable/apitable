@@ -5453,6 +5453,15 @@
   "lookup_conditions_success": "神奇引用排序或筛选条件设置成功",
   "lookup_filter_sort_description": "添加条件",
   "api_param_widget_id_not_exists": "widgetId 指定的小程序不存在",
+  "revoke_changes": "撤销修改",
+  "discard_changes": "取消",
+  "view_changed": "视图配置已变更",
+  "save_view_configuration": "保存",
+  "view_configuration_changes_have_been_reversed": "视图配置修改已撤销",
   "api_params_widget_package_id_error": "widgetPackageId 不能为空",
-  "api_widget_number_limit": "小程序数量已到达上限，创建失败"
+  "api_widget_number_limit": "小程序数量已到达上限，创建失败",
+  "invite": "邀请",
+  "publish": "发布",
+  "share_tips_title": "发布到互联网",
+  "share_tips": "通过将您的文件发布到互联网上，您可以轻松地与世界各地的任何人分享。这使得其他人可以轻松地查看、编辑或复制您的内容。"
 }
