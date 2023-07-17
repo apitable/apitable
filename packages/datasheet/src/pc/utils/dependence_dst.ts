@@ -17,7 +17,6 @@
  */
 
 import { getComputeRefManager, IReduxState, Selectors } from '@apitable/core';
-import { resourceService } from '../resource_service';
 
 /**
  * Get an array of dependent datasheetId's
@@ -40,21 +39,6 @@ export const getDependenceDstIds = (state: IReduxState, datasheetId: string) => 
  */
 export const getDependenceByDstIds = (state: IReduxState, datasheetId: string) => {
   const computeRefManager = getComputeRefManager(state);
-  const fieldMap = Selectors.getFieldMap(state, datasheetId);
-  if (!fieldMap) {
-    return [];
-  }
-  return computeRefManager.getDependenceByDstIds(datasheetId!, fieldMap);
-};
-
-/**
- * danger only use in browser
- * @param state
- * @param datasheetId
- */
-export const getDependenceByDstIdsByGlobalResource = (state: IReduxState, datasheetId: string) => {
-  const computeRefManager = resourceService.instance.computeRefManager;
-
   const fieldMap = Selectors.getFieldMap(state, datasheetId);
   if (!fieldMap) {
     return [];
