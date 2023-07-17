@@ -27,26 +27,21 @@ import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { copy2clipBoard } from 'pc/utils';
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { ShareQrCode } from '../share_qr_code';
 import styles from './style.module.less';
-// @ts-ignore
-import { WidgetEmbed } from 'enterprise';
-
 interface IShareLinkProps {
   shareSettings: { [key: string]: any };
   userInfo: IUserInfo | null;
   shareName: string;
-  showCopyAIWidgetCode?: boolean;
 }
 
 export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = props => {
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
   const colors = useThemeColors();
-  const { shareSettings, userInfo, shareName, showCopyAIWidgetCode } = props;
+  const { shareSettings, userInfo, shareName } = props;
   // Control the display of modal boxes for sharing QR codes
   const [shareCodeVisible, setShareCodeVisible] = useState(false);
-  const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const previewHandler = () => {
@@ -66,10 +61,6 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
     copy2clipBoard(`${shareHost}${shareSettings.shareId} ${shareText}`);
   };
 
-  const hideShareCodeModal = useCallback(() => {
-    setWidgetEmbedVisible(false);
-  }, []);
-
   return (
     <>
       <div className={styles.shareLink}>
@@ -88,11 +79,6 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
               <CopyOutlined color={colors.secondLevelText} className={styles.iconOffset}/>
             </Button>
           </Tooltip>
-          {showCopyAIWidgetCode && <Tooltip title={t(Strings.share_qr_code_tips)} placement='top'>
-            <Button onClick={() => setWidgetEmbedVisible(true)}>
-              <QrcodeOutlined color={colors.secondLevelText} className={styles.iconOffset}/>
-            </Button>
-          </Tooltip>}
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <Tooltip title={t(Strings.preview)} placement='top'>
               <Button onClick={previewHandler}>
@@ -107,11 +93,6 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
           </ComponentDisplay>
         </ButtonGroup>
       </div>
-      <WidgetEmbed
-        visible={WidgetEmbedVisible}
-        hide={hideShareCodeModal}
-        shareId={shareSettings.shareId}
-      />
       {shareCodeVisible && (
         <Modal className={styles.shareCodeModal} closable={false} footer={null} visible centered
           onCancel={() => setShareCodeVisible(false)}>
