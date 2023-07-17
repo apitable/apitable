@@ -19,7 +19,7 @@
 import { Strings, t, Api } from '@apitable/core';
 // @ts-ignore
 import { showUpgradeContactUs, Trial } from 'enterprise';
-import { Modal } from 'pc/components/common';
+import { Modal, Message } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -75,22 +75,25 @@ const UpgradeSpace = () => {
         );
         setLoading(false);
       }
-
       if (msg === 'toDowngrade' && grade) {
         Modal.warning({
-          title: t(Strings.downgrade),
-          content: t(Strings.downgrade_content),
+          title: onTrial ? t(Strings.billing_cancel_trial_title) : t(Strings.billing_cancel_title),
+          content: onTrial ? t(Strings.billing_cancel_trial_content) : t(Strings.billing_cancel_content),
           hiddenCancelBtn: false,
-          okText: t(Strings.modal_downgrade_btn_txt, {
-            grade: upperCaseFirstWord(grade),
-          }),
+          okText: t(Strings.confirm),
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
-            const { url } = res.data;
-            location.href = url;
-            // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
+            if(!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
+            //@ts-ignore
+            const planInfoRes = await Api.getSubscript(spaceId);
+            const { subscriptionId } = planInfoRes.data.data;
+            //@ts-ignore
+            const res = await Api?.cancelSubscription(spaceId!, subscriptionId);
+            const { success } = res.data;
+            if(success) {
+              Message.success({ content: t(Strings.billing_cancel_success), duration: 3 });
+            }
           },
         });
         return;
