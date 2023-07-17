@@ -1,5 +1,6 @@
 import { AIModal, AIType, TrainStatus } from './enum';
 import { IField } from '../../../../types';
+import { NodeType } from '../../../../config/constant';
 
 type ITimestamp = string;
 
@@ -19,11 +20,12 @@ export interface IAiInfoSetting {
 }
 
 export interface IAiSourceDatasheet {
-  id: string;
-  name: string;
-  meta: {
+  nodeId: string;
+  nodeName: string;
+  nodeType: NodeType
+  setting: {
     viewId: string;
-    rows:number;
+    rows: number;
     fields: IField[]
   }
 }
@@ -40,7 +42,7 @@ export interface IAIInfoResponse extends IAiInfoSetting {
   createdAt: ITimestamp;
   model: AIModal;
   node: {},
-  datasheet: IAiSourceDatasheet[]
+  dataSources: IAiSourceDatasheet[]
 }
 
 export interface IUpdateAIInfoParams extends IAiInfoSetting {
@@ -79,6 +81,12 @@ export interface IGetAIInfoResponse extends IAIApiResponse {
     ai: string;
     conversation: string;
     suggestions: string[]
+  }
+}
+
+export interface IGetAITrainingStatusResponse extends IAIApiResponse {
+  data: {
+    status: TrainStatus
   }
 }
 

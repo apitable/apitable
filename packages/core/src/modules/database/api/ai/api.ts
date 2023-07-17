@@ -5,9 +5,9 @@ import {
   IAIApiResponse,
   IAIInfoResponse,
   IChatMessageListResponse,
-  IChatMessageResponse, IGetAIInfoResponse,
-  ISendChatMessageParams,
-  IUpdateAIInfoParams
+  IGetAIInfoResponse,
+  IGetAITrainingStatusResponse,
+  IUpdateAIInfoParams,
 } from './interface';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
@@ -18,9 +18,10 @@ export const getAiInfo = (aiId: string) => {
   });
 };
 
-export const getChatHistoryList = (aiId: string) => {
+export const getChatHistoryList = (aiId: string, search?: { cursor?: string,limit?:number }) => {
   return axios.get<IAIApiResponse<IChatMessageListResponse>>(urlcat(Url.GET_MESSAGE_LIST, { aiId }), {
     baseURL,
+    params: search,
   });
 };
 
@@ -30,11 +31,11 @@ export const updateAIInfo = (info: Partial<IUpdateAIInfoParams>, aiId: string) =
   });
 };
 
-export const sendChatMessage = (message: ISendChatMessageParams, aiId: string) => {
-  return axios.post<IAIApiResponse<IChatMessageResponse>>(urlcat(Url.SEND_CHAT_MESSAGE, { aiId }), message, {
-    baseURL,
-  });
-};
+// export const sendChatMessage = (message: ISendChatMessageParams, aiId: string) => {
+//   return axios.post<IAIApiResponse<IChatMessageResponse>>(urlcat(Url.SEND_CHAT_MESSAGE, { aiId }), message, {
+//     baseURL,
+//   });
+// };
 
 export const breakChatMessage = (aiId: string) => {
   return axios.post<IAIApiResponse>(urlcat(Url.BREAK_CHAT_MESSAGE, { aiId }), null, {
@@ -42,8 +43,14 @@ export const breakChatMessage = (aiId: string) => {
   });
 };
 
-export const getConversationSuggestion = (aiId: string)=>{
+export const getConversationSuggestion = (aiId: string) => {
   return axios.get<IGetAIInfoResponse>(urlcat(Url.GET_CONVERSATION_SUGGESTION, { aiId }), {
+    baseURL,
+  });
+};
+
+export const getAITrainingStatus = (aiId: string) => {
+  return axios.get<IGetAITrainingStatusResponse>(urlcat(Url.GET_AI_TRAINING_STATUS, { aiId }), {
     baseURL,
   });
 };

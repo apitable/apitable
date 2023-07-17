@@ -71,7 +71,10 @@ export const useCatalogTreeRequest = () => {
     // First check that the total number of nodes is as required
     // Folders are not the type of node that needs to be counted
     if (nodeType !== ConfigConstant.NodeType.FOLDER) {
-      const result1 = triggerUsageAlert?.('maxSheetNums', { usage: spaceInfo!.sheetNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result1 = triggerUsageAlert?.('maxSheetNums', {
+        usage: spaceInfo!.sheetNums + 1,
+        alwaysAlert: true
+      }, SubscribeUsageTipType.Alert);
       if (result1) {
         return true;
       }
@@ -102,13 +105,22 @@ export const useCatalogTreeRequest = () => {
    * @param nodeName Optional
    * @param preNodeId Optional
    */
-  const addNodeReq = (parentId: string, type: ConfigConstant.NodeType, nodeName?: string, preNodeId?: string, extra?: { [key: string]: any }) => {
+  const addNodeReq = (parentId: string, type: ConfigConstant.NodeType, nodeName?: string, preNodeId?: string, extra?: {
+    [key: string]: any
+  }) => {
     const result = checkNodeNumberLimit(type);
     if (result) {
       return Promise.resolve();
     }
 
-    return Api.addNode({ parentId, type, nodeName, preNodeId, extra }).then((res: IAxiosResponse) => {
+    return Api.addNode({
+      parentId,
+      type,
+      nodeName,
+      preNodeId,
+      extra,
+      aiCreateParams: { datasheet: [{ id: extra?.datasheetId, viewId: extra?.viewId }] }
+    }).then((res: IAxiosResponse) => {
       const { data, code, success } = res.data;
       if (success) {
         const node: INodesMapItem = { ...data, children: [] };

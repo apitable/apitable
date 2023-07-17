@@ -3,5 +3,11 @@ export interface IAddNodeParams {
   type: number;
   nodeName?: string;
   preNodeId?: string;
-  extra?: { [key: string]: any }
+  extra?: { [key: string]: any };
+  aiCreateParams?: {
+    datasheet: {
+      id: string;
+      viewId: string
+    }[]
+  }
 }
