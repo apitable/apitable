@@ -42,6 +42,7 @@ import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 import { SubscribeUsageTipType, triggerUsageAlert, createBackupSnapshot } from 'enterprise';
 import { SecondConfirmType } from '../../datasheet_search_panel';
 import { SideBarContext } from 'pc/context';
+import { judgeShowAIEntrance } from 'pc/components/catalog/node_context_menu/utils';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;
@@ -119,11 +120,11 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     if (res.data.success) {
       setNewTdbId?.(res?.data?.data?.tbdId || '');
       Message.success({
-        content: t(Strings.backup_create_success)
+        content: t(Strings.backup_create_success),
       });
     } else {
       Message.error({
-        content: res.data.message
+        content: res.data.message,
       });
     }
   };
@@ -300,7 +301,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               openCatalog();
               addTreeNode(targetId, ConfigConstant.NodeType.DASHBOARD);
             }),
-            contextItemMap.get(ContextItemKey.addAi)(() => {
+            judgeShowAIEntrance() ? contextItemMap.get(ContextItemKey.addAi)(() => {
               const result = triggerUsageAlert?.('maxFormViewsInSpace',
                 { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
               if (result) {
@@ -308,7 +309,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               }
               openCatalog();
               addAi(targetId);
-            }),
+            }) : undefined,
           ],
           [
             contextItemMap.get(ContextItemKey.AddFolder)(() => {
@@ -345,7 +346,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
       case ConfigConstant.ContextMenuType.DEFAULT:
         return t(Strings.new_something);
       default:
-        return <MobileNodeContextMenuTitle node={treeNodesMap[rightClickInfo.id]}/>;
+        return <MobileNodeContextMenuTitle node={treeNodesMap[rightClickInfo.id]} />;
     }
   };
 
@@ -355,7 +356,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     }
 
     return <MobileContextMenu title={getTitle()} visible={Boolean(rightClickInfo)} data={contextData} height="auto"
-      onClose={onHidden}/>;
+      onClose={onHidden} />;
   };
 
   const contextMenuData = flatContextData(contextData);
@@ -364,7 +365,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     (
       isMobile ? renderMobileContextMenu() :
         <ContextMenu id={ConfigConstant.NODE_CONTEXT_MENU_ID} contextMenu={contextMenu}
-          overlay={contextMenuData}/>
+          overlay={contextMenuData} />
     )
   );
 });

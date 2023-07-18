@@ -26,14 +26,17 @@ const generateKey = (contextItem: IContextMenuItemProps, text2Id: boolean, index
 };
 
 export const flatContextData = (
-  contextData: Partial<IContextMenuItemProps>[], 
-  text2Id = false
+  contextData: Partial<IContextMenuItemProps>[],
+  text2Id = false,
 ): IContextMenuItemProps[] => {
   const dfs = (childList: IContextMenuItemProps[], groupId: string, index = 0) => {
     const res: IContextMenuItemProps[] = [];
     const childGroupId = `${groupId}_${index}`;
     for (let i = 0; i < childList.length; i++) {
       const item = childList[i];
+
+      if (!item) continue;
+
       const resultItem = {
         ...item,
         extraElement: item.shortcutKey,
@@ -43,7 +46,7 @@ export const flatContextData = (
       };
       res.push(item.children ? {
         ...resultItem,
-        children: dfs(item.children, childGroupId, index + 1)
+        children: dfs(item.children, childGroupId, index + 1),
       } : resultItem);
     }
     return res;
@@ -53,6 +56,7 @@ export const flatContextData = (
   return contextData.map((v) => {
     groupId += 1;
     return v.map((item: IContextMenuItemProps, index: number) => {
+      if (!item) return;
       const res = {
         ...item,
         extraElement: item.shortcutKey,
@@ -62,5 +66,5 @@ export const flatContextData = (
       };
       return item.children ? { ...res, children: dfs(item.children, groupId.toString()) } : res;
     });
-  }).flat();
+  }).flat().filter((v) => v);
 };
