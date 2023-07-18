@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
+import { Skeleton, IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { CodeOutlined, LinkOutlined, QrcodeOutlined, NewtabOutlined, CheckOutlined, ChevronDownOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
@@ -25,7 +25,7 @@ import { Tooltip } from 'antd';
 import { Message, MobileSelect, Popconfirm } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-import { useCatalogTreeRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState, useCallback } from 'react';
 import { copy2clipBoard } from 'pc/utils';
@@ -39,11 +39,12 @@ import { WidgetEmbed } from 'enterprise';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
-  isMobile: boolean;
   isAI?: boolean;
 }
 
-export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isMobile, isAI }) => {
+export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isAI }) => {
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
   const [deleting, setDeleting] = useState(false);
   const [shareStatus, setShareStatus] = useState(false);
   const [shareCodeVisible, setShareCodeVisible] = useState(false);
@@ -243,6 +244,16 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     );
   };
 
+  if (!shareSettings) {
+    return (
+      <div className={styles.publish}>
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
+      </div>
+    );
+  }
+
   if (!spaceFeatures?.fileSharable) {
     return (
       <>
@@ -252,7 +263,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     );
   }
 
-  if (!shareSettings || !shareSettings.shareOpened) {
+  if (!shareSettings.shareOpened) {
     return (
       <div className={styles.shareTips}>
         <div className={styles.title}>

@@ -16,55 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IOption, Typography, LinkButton } from '@apitable/components';
+import { Skeleton, IOption, Typography, LinkButton } from '@apitable/components';
 import cls from 'classnames';
 import { shallowEqual } from 'react-redux';
 import styles from './style.module.less';
 import { Api, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
-import { getEnvVariables } from '../../../utils/env';
+import { getEnvVariables } from 'pc/utils/env';
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { UnitPermissionSelect } from '../../field_permission/unit_permission_select';
-import { useCatalogTreeRequest, useRequest } from '../../../hooks';
-import { copy2clipBoard, permissionMenuData } from '../../../utils';
+import { useCatalogTreeRequest, useRequest, useResponsive, NodeChangeInfoType } from 'pc/hooks';
+import { copy2clipBoard, permissionMenuData } from 'pc/utils';
 import { expandInviteModal } from '../../invite';
 // @ts-ignore
 import { isSocialPlatformEnabled, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IMemberList } from '../permission_settings_plus/permission';
 import { IShareContentProps } from './interface';
 import { LinkOutlined } from '@apitable/icons';
+import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
+import { ScreenSize } from 'pc/components/common/component_display';
 
-interface IPermissionAndCollaboratorProps extends IShareContentProps {
-  setDetailModalVisible: Dispatch<SetStateAction<boolean>>
-  roleList: INodeRoleMap | undefined;
-  pageNo: number;
-  getNodeRoleList: (...params: any[]) => Promise<INodeRoleMap>
-}
-
-export const PermissionAndCollaborator: React.FC<IPermissionAndCollaboratorProps> = ({
-  data,
-  setDetailModalVisible,
-  pageNo,
-  roleList,
-  getNodeRoleList
-}) => {
-  const dispatch = useDispatch();
+export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }) => {
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+  const socketData = useSelector(state => state.catalogTree.socketData);
+  const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
+  const {
+    run: getNodeRoleList,
+    data: roleList,
+    loading
+  } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
+  const [pageNo, setPageNo] = useState<number>(1);
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
-  const { spaceFeatures } = useSelector((state: IReduxState) => ({
-    spaceFeatures: state.space.spaceFeatures,
-    spaceInfo: state.space.curSpaceInfo!,
-  }), shallowEqual);
 
-  const { getCollaboratorListPageReq } = useCatalogTreeRequest();
   const {
     run: getCollaboratorReq,
     data: collaboratorInfo
   } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
     manual: true
   });
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   useEffect(() => {
     getCollaboratorReq(pageNo);
@@ -76,6 +69,20 @@ export const PermissionAndCollaborator: React.FC<IPermissionAndCollaboratorProps
     }
     // eslint-disable-next-line
   }, [collaboratorInfo, setMemberList]);
+
+  useEffect(() => {
+    if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
+      getNodeRoleList();
+    }
+  }, [socketData, getNodeRoleList]);
+
+  const dispatch = useDispatch();
+  const { spaceFeatures } = useSelector((state: IReduxState) => ({
+    spaceFeatures: state.space.spaceFeatures,
+    spaceInfo: state.space.curSpaceInfo!,
+  }), shallowEqual);
+
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   const adminAndOwnerUnitIds = roleList ? [
     ...roleList.admins.map(v => v.unitId),
@@ -132,6 +139,16 @@ export const PermissionAndCollaborator: React.FC<IPermissionAndCollaboratorProps
   const optionData = permissionMenuData(data.type);
 
   const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
+
+  if (loading) {
+    return (
+      <div className={styles.invite}>
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
+      </div>
+    );
+  }
 
   return <div className={styles.invite}>
     <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
@@ -213,6 +230,10 @@ export const PermissionAndCollaborator: React.FC<IPermissionAndCollaboratorProps
         </LinkButton>
       )}
     </div>
-
+    {detailModalVisible && <MembersDetail
+      data={collaboratorInfo}
+      memberList={memberList}
+      setPageNo={setPageNo}
+      pageNo={pageNo} onCancel={() => setDetailModalVisible(false)}/>}
   </div>;
 };
