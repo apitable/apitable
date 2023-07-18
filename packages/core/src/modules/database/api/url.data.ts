@@ -137,14 +137,3 @@ export const RECOVER_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:table
 
 export const PREVIEW_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:tablebundleId/preview';
 
-/* ----- ai -----*/
-export const GET_AI_INFO = 'ai/:aiId';
-
-export const GET_MESSAGE_LIST = 'ai/:aiId/messages';
-
-export const BREAK_CHAT_MESSAGE = 'ai/:aiId/messages/break';
-
-export const GET_CONVERSATION_SUGGESTION = 'ai/:aiId/suggestions';
-
-export const GET_AI_TRAINING_STATUS = 'ai/:aiId/training/status';
-/* ----- ai -----*/

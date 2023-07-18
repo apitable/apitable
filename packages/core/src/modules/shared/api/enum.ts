@@ -1,1 +1,1 @@
-export * from '../../database/api/ai/enum';
+export * from '../../enterprise/api/ai/enum';

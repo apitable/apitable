@@ -21,8 +21,6 @@ import { TestFunction } from 'config/system_config.interface';
 import { IPageDataBase } from '../../database/store/interfaces/common';
 import { MemberType } from 'types';
 
-export * from '../../database/api/ai/interface';
-
 // the interface of Create Notification
 export interface ICreateNotification {
   templateId: string; // Template ID
