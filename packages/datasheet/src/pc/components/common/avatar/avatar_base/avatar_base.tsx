@@ -50,6 +50,7 @@ export const AvatarBase: React.FC<React.PropsWithChildren<IAvatarBaseProps>> = (
       className={classNames(styles.avatar, className)}
     >
       {children}
+      <div>test_text</div>
     </span>
   );
 };
