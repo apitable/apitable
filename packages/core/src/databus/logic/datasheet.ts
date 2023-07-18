@@ -154,6 +154,18 @@ export class Datasheet implements IResource {
   }
 
   /**
+   * render the cell value
+   *
+   * @param fieldId datasheet field id
+   * @param recordId datasheet record id
+   *
+   * @return cell stringify value
+   */
+  public cellValue(fieldId: string, recordId: string): string {
+    return Selectors.getStringifyCellValue(this.store.getState(), this.snapshot, recordId, fieldId);
+  }
+
+  /**
    * Update existing records in the datasheet.
    *
    * @param recordOptions Options for updating records.

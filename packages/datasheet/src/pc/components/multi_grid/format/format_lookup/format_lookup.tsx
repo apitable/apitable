@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
 import {
   BasicValueType, DateTimeField, Field, FieldType, Functions, IField, 
@@ -25,6 +26,7 @@ import {
 import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
@@ -187,8 +189,8 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
       .filter(i => Boolean(i)) as IRollUpFunction[];
   };
 
-  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, filterInfo?: any) => {
-    if (currentField.property[propertyKey] !== value || filterInfo ) {
+  const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, newFilterInfo?: any) => {
+    if (currentField.property[propertyKey] !== value || newFilterInfo ) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
@@ -227,7 +229,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
         });
       } else if(propertyKey === 'sortInfo' && openFilter) {
         updateField({
-          filterInfo: filterInfo.conditions.length > 0 ? filterInfo : undefined,
+          filterInfo: newFilterInfo && newFilterInfo.conditions.length > 0 ? newFilterInfo : undefined,
           sortInfo: value.rules.length > 0 ? value : undefined,
         });
       } else {

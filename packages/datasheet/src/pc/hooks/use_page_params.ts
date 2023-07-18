@@ -33,6 +33,7 @@ const templateIdReg = /\/(tpl\w+)/;
 const categoryIdReg = /\/(tpc\w+)/;
 const addressReg = /org\/(\w+)/;
 const widgetIdReg = /\/(wdt\w+)/;
+const aiIdReg = /\/(ai\w+)/;
 export const dashboardReg = /\/(dsb\w+)/;
 export const resourceReg = /\/((dsb|dst)\w+)/;
 export const mirrorIdReg = /\/((mir)\w+)/;
@@ -59,13 +60,14 @@ export const getPageParams = (path: string) => {
   const resourceId = getRegResult(path, resourceReg);
   const mirrorId = getRegResult(path, mirrorIdReg);
   const embedId = getRegResult(path, embedIdReg);
+  const aiId = getRegResult(path, aiIdReg);
   const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId;
 
   return {
     datasheetId, viewId, shareId, recordId,
     fieldId, folderId, formId, templateId, categoryId, memberId,
     widgetId, dashboardId,
-    resourceId, nodeId, mirrorId, embedId
+    resourceId, nodeId, mirrorId, embedId, aiId,
   };
 };
 
@@ -74,7 +76,7 @@ export const usePageParams = () => {
   useEffect(() => {
     const path = router.asPath;
     const action = StoreActions.setPageParams({
-      ...getPageParams(path)
+      ...getPageParams(path),
     });
     dispatch(action);
   }, [router]);

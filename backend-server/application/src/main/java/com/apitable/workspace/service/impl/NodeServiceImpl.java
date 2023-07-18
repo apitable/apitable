@@ -48,6 +48,9 @@ import com.apitable.core.util.SpringContextHolder;
 import com.apitable.integration.grpc.BasicResult;
 import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
+import com.apitable.interfaces.ai.facade.AiServiceFacade;
+import com.apitable.interfaces.ai.model.AiChatBotFromDatasheetCreateParam;
+import com.apitable.interfaces.ai.model.DatasheetSourceSettingParam;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -79,6 +82,7 @@ import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.CreateNodeDto;
+import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
@@ -100,6 +104,7 @@ import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
+import com.apitable.workspace.ro.AiDatasheetNodeSettingParam;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
 import com.apitable.workspace.ro.NodeMoveOpRo;
@@ -231,6 +236,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private RedisLockRegistry redisLockRegistry;
+
+    @Resource
+    private AiServiceFacade aiServiceFacade;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -609,7 +617,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         ControlRoleDict roleDict = controlTemplate.fetchNodeTreeNode(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), PermissionException.NODE_ACCESS_DENIED);
         List<NodeInfoTreeVo> treeList =
-            nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
+            CollUtil.split(roleDict.keySet(), 1000).stream()
+                .reduce(new ArrayList<>(),
+                    (nodes, item) -> {
+                        List<NodeInfoTreeVo> childNodes =
+                            nodeMapper.selectNodeInfoTreeByNodeIds(item, memberId);
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    },
+                    (nodes, childNodes) -> {
+                        nodes.addAll(childNodes);
+                        return nodes;
+                    });
         // Node switches to memory custom sort
         CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId,
             new ArrayList<>(roleDict.keySet()));
@@ -641,7 +660,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 null);
         String nodeId = IdUtil.createNodeId(nodeOpRo.getType());
         // If the new node is a file, it corresponds to the creation of a datasheet form.
-        this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());
+        this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra(),
+            nodeOpRo.getAiCreateParams());
         // When an empty string is not passed in,
         // if the pre-node is deleted or not under the parent id, the move fails.
         String preNodeId = this.verifyPreNodeId(nodeOpRo.getPreNodeId(), nodeOpRo.getParentId());
@@ -884,7 +904,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
         // The next node that records the old and new locations
         List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
-            CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
+            CollUtil.newArrayList(nodeEntity.getNodeId()));
         nodeIds.addAll(suffixNodeIds);
         Lock lock = redisLockRegistry.obtain(parentId);
         try {
@@ -895,7 +915,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     nodeEntity.getNodeId(), nodeEntity.getParentId());
                 // Update the sequence relationship of nodes before
                 // and after the move (D <- E => D <- X <- E)
-                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
+                String sufNodeId =
+                    nodeMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
+                if (sufNodeId != null) {
+                    nodeIds.add(sufNodeId);
+                    nodeMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
+                }
                 // Update the information of this node (the ID of the previous
                 // node may be updated to null, so update By id is not used)
                 nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
@@ -1505,7 +1530,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private void createFileMeta(Long userId, String spaceId, String nodeId, Integer type,
-                                String name, NodeRelRo nodeRel) {
+                                String name, NodeRelRo nodeRel,
+                                NodeOpRo.AiChatBotCreateParam aiChatBotCreateParam) {
         switch (NodeType.toEnum(type)) {
             case DATASHEET:
                 String viewName = nodeRel != null
@@ -1529,6 +1555,46 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 this.createNodeRel(userId, nodeId, nodeRel);
                 iResourceMetaService.create(userId, nodeId, ResourceType.MIRROR.getValue(),
                     JSONUtil.createObj().toString());
+                break;
+            case AI_CHAT_BOT:
+                if (aiChatBotCreateParam == null) {
+                    throw new BusinessException(NodeException.NODE_CREATE_LOST_PARAMS);
+                }
+                if (aiChatBotCreateParam.getDatasheet() != null) {
+                    // datasheet datasource
+                    AiDatasheetNodeSettingParam param =
+                        aiChatBotCreateParam.getDatasheet().iterator().next();
+                    DatasheetSnapshot snapshot =
+                        iDatasheetMetaService.getMetaByDstId(param.getId());
+                    DatasheetSnapshot.View viewTarget =
+                        snapshot.getMeta().getViews().stream()
+                            .filter(view -> view.getId().equals(param.getViewId()))
+                            .findFirst().orElseThrow(() ->
+                                new BusinessException("fail to find view in datasheet"));
+                    // build a sorted field list in view
+                    Map<String, DatasheetSnapshot.Field> fieldMap =
+                        snapshot.getMeta().getFieldMap();
+                    List<DatasheetSnapshot.Field> fields = new ArrayList<>();
+                    viewTarget.getColumns().forEach(column -> {
+                        if (!column.isHidden()) {
+                            fields.add(fieldMap.get(column.getFieldId()));
+                        }
+                    });
+                    DatasheetSourceSettingParam sourceSettingParam =
+                        DatasheetSourceSettingParam.builder()
+                            .datasheetId(param.getId())
+                            .viewId(param.getViewId())
+                            .fields(fields)
+                            .rows(viewTarget.getRows().size())
+                            .build();
+                    // build request object
+                    aiServiceFacade.createAiChatBot(AiChatBotFromDatasheetCreateParam.builder()
+                        .spaceId(spaceId)
+                        .aiId(nodeId)
+                        .dataSources(Collections.singletonList(sourceSettingParam))
+                        .build()
+                    );
+                }
                 break;
             default:
                 break;

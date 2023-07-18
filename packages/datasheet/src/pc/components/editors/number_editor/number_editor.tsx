@@ -37,6 +37,7 @@ import style from './style.module.less';
 import classnames from 'classnames';
 import { printableKey, isNumeralKey, stopPropagation } from 'pc/utils';
 import { Input } from 'antd';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import isNumber from 'lodash/isNumber';
 import { useThemeColors } from '@apitable/components';

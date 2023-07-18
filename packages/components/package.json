@@ -1,6 +1,6 @@
 {
   "name": "@apitable/components",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "APITable Ltd. <support@apitable.com>",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@apitable/icons": "*",
     "@apitable/react-contexify": "^5.0.7",
+    "@floating-ui/react": "^0.24.5",
     "@rjsf/core": "^4.2.3",
     "ahooks": "^3.5.0",
     "antd": "4.23.5",
@@ -27,7 +28,7 @@
     "react-draggable": "^4.0.3",
     "react-highlight-words": "^0.16.0",
     "react-is": "^17.0.2",
-    "react-laag": "^2.0.4",
+    "react-laag": "^2.0.5",
     "react-window": "^1.8.8",
     "resize-observer-polyfill": "^1.5.1",
     "styled-system": "^5.1.5"

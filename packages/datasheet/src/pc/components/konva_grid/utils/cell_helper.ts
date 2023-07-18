@@ -455,7 +455,7 @@ export class CellHelper extends KonvaDrawer {
     const color = style?.color || colors.firstLevelText;
     const textAlign = style?.textAlign || (isNumberField && columnWidth ? 'right' : 'left');
     const fontWeight = style?.fontWeight;
-    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0) - (field.type === FieldType.URL ? 16 : 0);
+    const textMaxWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - (favicon ? 20 : 0) - (isActive && field.type === FieldType.URL ? 16 : 0);
     const renderX = textAlign === 'right' ? x + columnWidth - GRID_CELL_VALUE_PADDING : x + GRID_CELL_VALUE_PADDING;
     const renderY = y + 10;
     let linkEnable = Boolean(renderText);
@@ -734,13 +734,14 @@ export class CellHelper extends KonvaDrawer {
         imageCache.loadImage(name, imgUrl);
         continue;
       }
-      const { width: imageWidth, height: imageHeight } = img;
+      const imageWidth = img === false ? 1 : img.width;
+      const imageHeight = img === false ? 1 : img.height;
       const width = calcFileWidth(file, height);
       const aspectRatio = Math.min(width / imageWidth, height / imageHeight);
       const finalWidth = Math.ceil(aspectRatio * imageWidth);
       const finalHeight = Math.ceil(aspectRatio * imageHeight);
       if (ctx) {
-        ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
+        img && ctx.drawImage(img, x + currentX, y + currentY, finalWidth, finalHeight);
         this.line({
           x: x + currentX - 1,
           y: y + currentY - 1,

@@ -28,7 +28,7 @@ export interface IOrganizationHeadProps {
 }
 
 export const OrganizationHead: React.FC<React.PropsWithChildren<IOrganizationHeadProps>> = ({ className, hideTooltip = false }) => {
-  const spaceName = useSelector(state => state.user.info?.spaceName);
+  const spaceName = useSelector(state => state.space.curSpaceInfo?.spaceName);
   return (
     <div className={classnames(styles.organization, className)}>
       {

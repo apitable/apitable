@@ -20,7 +20,7 @@ import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { useMount, useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
-import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content';
+import { PopupContent } from './popup_content/pc';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { useState } from 'react';

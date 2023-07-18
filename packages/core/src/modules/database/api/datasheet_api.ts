@@ -17,13 +17,14 @@
  */
 
 import {
+  IDatasheetTablebundles, IRecoverDatasheetTablebundles,
   IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, IGetTreeSelectDataReq,
   IGetTreeSelectDataRes, IGetTreeSelectSnapshotReq, IGetTreeSelectSnapshotRes, ISubOrUnsubByRecordIdsReq, IUpdateTreeSelectSnapshotReq,
 } from 'modules/database/api/datasheet_api.interface';
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
-import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack } from '../../../exports/store';
+import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack, ISnapshot } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
 
@@ -437,3 +438,36 @@ export const updateCascaderSnapshot = ({
     linkedViewId,
   },
 });
+
+// create datasheet snapshot
+export const createDatasheetTablebundle = (nodeId: string) => {
+  return axios.post<IApiWrapper & { data: IDatasheetTablebundles }>(urlcat(Url.DATASHEET_TABLEBUNDLE, { nodeId }), undefined, { baseURL });
+};
+
+// get datasheet snapshot
+export const getDatasheetTablebundles = (nodeId: string, tablebundleId?: string) => {
+  return axios.get<IApiWrapper & { data: IDatasheetTablebundles[] }>(urlcat(Url.DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};
+
+// rename datasheet snapshot
+export const updateDatasheetTablebundle = (nodeId: string, tablebundleId: string, name: string) => {
+  return axios.put<IApiWrapper>(urlcat(Url.UPDATE_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { name }, { baseURL });
+};
+
+// delete datasheet snapshot
+export const deleteDatasheetTablebundle = (nodeId: string, tablebundleId: string) => {
+  return axios.delete<IApiWrapper>(urlcat(Url.UPDATE_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};
+
+// recover datasheet snapshot
+export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string) => {
+  return axios.post<IApiWrapper & { data: IRecoverDatasheetTablebundles }>(
+    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId }), undefined, { baseURL }
+  );
+};
+
+// preview datasheet snapshot
+export const previewDatasheetTablebundle = (nodeId: string, tablebundleId: string) => {
+  return axios.get<IApiWrapper & { data: { snapshot: ISnapshot } }>(
+    urlcat(Url.PREVIEW_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};

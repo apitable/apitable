@@ -107,6 +107,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -444,23 +445,24 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         // find email in users
         List<UserEntity> userEntities = iUserService.getByEmails(distinctEmails);
         Map<String, Long> emailUserMap = userEntities.stream()
-            .collect(Collectors.toMap(UserEntity::getEmail, UserEntity::getId));
+            .collect(Collectors.toMap(u -> u.getEmail().toLowerCase(), UserEntity::getId));
         // find email in spaces
         List<MemberEntity> memberEntities =
             getBySpaceIdAndEmailsIgnoreDeleted(spaceId, distinctEmails);
         Map<String, List<MemberEntity>> emailMemberMap = memberEntities.stream()
             .filter(m -> StrUtil.isNotBlank(m.getEmail()))
-            .collect(Collectors.groupingBy(MemberEntity::getEmail));
+            .collect(Collectors.groupingBy(m -> m.getEmail().toLowerCase()));
         // collect emails whether it can send invitation
         List<Long> shouldSendInvitationNotify = new ArrayList<>();
         List<MemberEntity> members = new ArrayList<>();
         List<MemberEntity> restoreMembers = new ArrayList<>();
-        distinctEmails.forEach(inviteEmail -> {
-            MemberEntity member = new MemberEntity();
+        distinctEmails.forEach(email -> {
+            String inviteEmail = email.toLowerCase();
             // check member if existed
             if (emailMemberMap.containsKey(inviteEmail)) {
                 // email member exist in space
-                MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream().findFirst()
+                MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream()
+                    .min(Comparator.comparing(MemberEntity::getIsDeleted))
                     .orElseThrow(() -> new BusinessException("invite member error"));
                 // history member can be restored
                 if (existedMember.getIsDeleted()) {
@@ -473,6 +475,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 return;
             }
             // email is not exist in space
+            MemberEntity member = new MemberEntity();
             member.setId(IdWorker.getId());
             createInactiveMember(member, spaceId, inviteEmail);
             members.add(member);

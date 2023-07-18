@@ -21,6 +21,8 @@ import { IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
+// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { getPageParams, usePageParams, useSideBarVisible } from 'pc/hooks';
@@ -108,6 +110,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
 
   useEffect(() => {
     configRouter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeId]);
 
   useEffect(() => {
@@ -213,7 +216,6 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   >
     <ShareContent loading={loading} nodeTree={nodeTree} />
   </ShareContentWrapper>;
-
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
@@ -266,8 +268,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
               </div>
               {shareContent}
             </_SplitPane>
-          ) : shareContent
-          }
+          ) : shareContent}
         </ComponentDisplay>
         {isIframe() && !formId && <div className={styles.brandContainer}>
           <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20}

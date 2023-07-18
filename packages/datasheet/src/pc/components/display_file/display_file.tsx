@@ -120,7 +120,7 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = pr
               ...imageStyle,
             }}
           >
-            <Image src={imgSrc} layout={'fill'} objectFit={'cover'} />
+            <Image src={imgSrc} layout={'fill'} objectFit={'cover'} alt="" />
           </div>
         ) : (
           <span

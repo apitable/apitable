@@ -22,6 +22,7 @@ import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
 import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
 import * as Url from '../../shared/api/url';
+import { IAddNodeParams } from './api.space.interface';
 
 const CancelToken = axios.CancelToken;
 
@@ -62,7 +63,7 @@ export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
     params: {
       nodeId,
-      nodeType
+      nodeType,
     },
   });
 }
@@ -152,13 +153,7 @@ export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
 /**
  * Add Node
  */
-export function addNode(nodeInfo: {
-    parentId: string;
-    type: number;
-    nodeName?: string;
-    preNodeId?: string;
-    extra?: { [key: string]: any }
-}) {
+export function addNode(nodeInfo: IAddNodeParams) {
   return axios.post(Url.ADD_NODE, nodeInfo);
 }
 
@@ -185,10 +180,10 @@ export function getSpecifyNodeList(nodeType: NodeType) {
  * @param data
  */
 export function editNode(nodeId: string, data: {
-    nodeName?: string;
-    icon?: string;
-    cover?: string;
-    showRecordHistory?: ShowRecordHistory
+  nodeName?: string;
+  icon?: string;
+  cover?: string;
+  showRecordHistory?: ShowRecordHistory
 }) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
@@ -665,10 +660,10 @@ export function getShareSettings(nodeId: string) {
 export function updateShare(
   nodeId: string,
   permission: {
-        onlyRead?: boolean;
-        canBeEdited?: boolean;
-        canBeStored?: boolean;
-    },
+    onlyRead?: boolean;
+    canBeEdited?: boolean;
+    canBeStored?: boolean;
+  },
 ) {
   return axios.post(Url.UPDATE_SHARE + nodeId, {
     props: JSON.stringify(permission),
@@ -694,7 +689,6 @@ export function checkoutOrder(spaceId: string, priceId: string, clientReferenceI
     spaceId,
     priceId,
     clientReferenceId,
-    couponId
+    couponId,
   });
 }
-

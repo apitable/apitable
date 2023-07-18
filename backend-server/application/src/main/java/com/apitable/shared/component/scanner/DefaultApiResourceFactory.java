@@ -18,17 +18,15 @@
 
 package com.apitable.shared.component.scanner;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.apitable.shared.component.ResourceDefinition;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.shared.component.ResourceDefinition;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
@@ -48,7 +46,8 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
 
     private final Map<String, Map<String, ResourceDefinition>> modularResourceDefinitions = new ConcurrentHashMap<>();
 
-    private final Map<String, ResourceDefinition> urlDefineResources = new ConcurrentHashMap<>();
+    private final Map<String, List<ResourceDefinition>> urlDefineResources =
+        new ConcurrentHashMap<>();
 
     @Override
     public synchronized void registerDefinition(List<ResourceDefinition> apiResource) {
@@ -60,7 +59,15 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
                 }
                 resourceDefinitions.put(resourceDefinition.getResourceCode(), resourceDefinition);
                 for (String resourceUrl : resourceDefinition.getResourceUrls()) {
-                    urlDefineResources.put(resourceUrl, resourceDefinition);
+                    if (urlDefineResources.containsKey(resourceUrl)) {
+                        List<ResourceDefinition> definitions =
+                            urlDefineResources.get(resourceUrl);
+                        definitions.add(resourceDefinition);
+                    } else {
+                        List<ResourceDefinition> definitions = new ArrayList<>();
+                        definitions.add(resourceDefinition);
+                        urlDefineResources.put(resourceUrl, definitions);
+                    }
                 }
 
                 Map<String, ResourceDefinition> modularResources = modularResourceDefinitions.get(StrUtil.toUnderlineCase(resourceDefinition.getModularCode()));
@@ -76,11 +83,20 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
     }
 
     @Override
-    public ResourceDefinition getResourceByUrl(String resourceUrl) {
+    public ResourceDefinition getResourceByUrl(String resourceUrl, String httpMethod) {
         PathMatcher matcher = new AntPathMatcher();
         Set<String> keys = this.urlDefineResources.keySet();
         String url = CollUtil.findOne(keys, key -> matcher.match(key, resourceUrl));
-        return StrUtil.isNotEmpty(url) ? this.urlDefineResources.get(url) : null;
+        if (StrUtil.isEmpty(url)) {
+            return null;
+        }
+        List<ResourceDefinition> definitions = this.urlDefineResources.get(url);
+        if (definitions.size() == 1 || StrUtil.isEmpty(httpMethod)) {
+            return definitions.get(0);
+        }
+        return definitions.stream()
+            .filter(r -> StrUtil.containsIgnoreCase(r.getHttpMethod(), httpMethod))
+            .findFirst().orElse(definitions.get(0));
     }
 
     @Override

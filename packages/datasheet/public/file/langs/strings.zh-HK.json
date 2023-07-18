@@ -361,6 +361,7 @@
   "api_params_recordids_empty_error": "recordId 參數值不能為空數組或者空值",
   "api_params_records_empty_error": "records 參數值不能為空數組或者空值",
   "api_params_records_max_count_error": "單次請求修改/刪除/新增的記錄不能超過 {count} 條",
+  "api_params_tablebundle_max_count_error": "创建失败，当前空间站为 {product}，只能保存 {count} 个历史版本。",
   "api_params_tree_select_can_not_operate": "多級聯動列暫不允許編輯",
   "api_params_updated_time_can_not_operate": "修改時間列的值由系統自動生成，不允許編輯",
   "api_params_updatedby_can_not_operate": "修改人列的值由系統自動生成，不允許編輯",

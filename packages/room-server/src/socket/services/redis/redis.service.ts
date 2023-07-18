@@ -18,7 +18,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisConstants } from 'shared/common/constants/socket.module.constants';
-import { SOCKET_CACHE, USER_ROOM } from 'shared/enums/redis-key.enum';
+import { SocketCache, UserRoom } from 'shared/enums/redis-key.enum';
 import { RedisClient } from './redis.provider';
 
 @Injectable()
@@ -42,12 +42,12 @@ export class RedisService {
    * @param socketId
    */
   async saveUserSocketId(userId: string, socketId: string): Promise<[error: Error | null, result: unknown][] | null> {
-    const key: string = USER_ROOM.PREFIX + userId;
+    const key: string = UserRoom.PREFIX + userId;
     // `sadd` adds set collection elements, returns true, repeatedly returns false
     return await this.redis
       .multi()
       .sadd(key, socketId)
-      .expire(key, USER_ROOM.EXPIRE)
+      .expire(key, UserRoom.EXPIRE)
       .exec();
   }
 
@@ -58,7 +58,7 @@ export class RedisService {
    * @param socketId
    */
   removeUserSocketId(userId: string, socketId: string) {
-    const key: string = USER_ROOM.PREFIX + userId;
+    const key: string = UserRoom.PREFIX + userId;
     return this.redis.srem(key, socketId);
   }
 
@@ -108,7 +108,7 @@ export class RedisService {
    * @param value socket connection user id
    */
   async saveSocket(prefix: string, key: string, value: string) {
-    return await this.redis.hset(SOCKET_CACHE.PREFIX + prefix, key, value);
+    return await this.redis.hset(SocketCache.PREFIX + prefix, key, value);
   }
 
   /**
@@ -117,7 +117,7 @@ export class RedisService {
    * @param prefix
    */
   async getSockets(prefix: string): Promise<Record<string, string>> {
-    return await this.redis.hgetall(SOCKET_CACHE.PREFIX + prefix);
+    return await this.redis.hgetall(SocketCache.PREFIX + prefix);
   }
 
   /**
@@ -127,7 +127,7 @@ export class RedisService {
    * @param key
    */
   async removeSocket(prefix: string, key: string) {
-    return await this.redis.hdel(SOCKET_CACHE.PREFIX + prefix, key);
+    return await this.redis.hdel(SocketCache.PREFIX + prefix, key);
   }
 
 }

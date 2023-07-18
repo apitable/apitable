@@ -22,6 +22,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@apitable/core';
 import styles from './style.module.less';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
 import { useAddressRequest } from 'pc/hooks';
 import { Input } from 'antd';

@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 // @ts-ignore
 import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
@@ -176,7 +177,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({
 
   return (
     <div className={classnames(styles.levelCard, className)} style={{ ...style }}>
-      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'}/>}
+      {cardBg && <Image className={styles.cardBg} src={cardBg} layout={'fill'} alt="" />}
       {cardSkin && (
         <img src={cardSkin.src} alt='skin' className={styles.skin} style={skinStyle}/>
       )}

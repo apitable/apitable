@@ -430,6 +430,8 @@ export const DEFAULT_FIELD_PERMISSION = {
 
 export const PREVIEW_DATASHEET_ID = 'previewDatasheet';
 
+export const PREVIEW_DATASHEET_BACKUP = 'previewDatasheetBackup';
+
 export enum DispatchToStore {
   Local = 'local',
   Remote = 'remote',

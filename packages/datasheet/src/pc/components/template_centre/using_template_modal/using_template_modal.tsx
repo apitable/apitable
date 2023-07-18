@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, ConfigConstant, INode, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
+import { Api, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -29,19 +29,11 @@ import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { usePostHog } from 'posthog-js/react';
+import { transformNodeTreeData, ISelectTreeNode } from 'pc/utils';
 
 export interface IUsingTemplateModalProps {
   onCancel: React.Dispatch<React.SetStateAction<string>>;
   templateId: string;
-}
-
-// HEAR!HEAR!HEAR!
-interface ISelectTreeNode {
-  pId: string;
-  id: string;
-  value: string;
-  title: string;
-  isLeaf: boolean;
 }
 
 export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalProps>> = props => {
@@ -59,36 +51,11 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
 
   useEffect(() => {
     if (NodeTreeData) {
-      setTreeData(transformData([NodeTreeData]));
+      setTreeData(transformNodeTreeData([NodeTreeData]));
       setNodeId(NodeTreeData.nodeId);
     }
     // eslint-disable-next-line
   }, [NodeTreeData]);
-
-  const transformData = (data: INode[]) => {
-    if (!data) {
-      return [];
-    }
-    const arr = data.reduce((prev, node) => {
-      if (node.type === ConfigConstant.NodeType.DATASHEET || !node.permissions.childCreatable) {
-        return prev;
-      }
-      const newNode = {
-        id: node.nodeId,
-        pId: node.parentId,
-        value: node.nodeId,
-        title: node.nodeName,
-        isLeaf: !node.hasChildren,
-      };
-      let result: ISelectTreeNode[] = [];
-      if (node.hasChildren && node.children) {
-        result = transformData(node.children);
-      }
-      prev.push(newNode, ...result);
-      return prev;
-    }, [] as ISelectTreeNode[]);
-    return arr;
-  };
 
   const handleCancel = () => {
     onCancel('');
@@ -116,7 +83,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
     return new Promise<void>(async resolve => {
       const { data: result } = await Api.getChildNodeList(id);
       const { data } = result;
-      setTreeData([...treeData, ...transformData(data)]);
+      setTreeData([...treeData, ...transformNodeTreeData(data)]);
       resolve();
     });
   };

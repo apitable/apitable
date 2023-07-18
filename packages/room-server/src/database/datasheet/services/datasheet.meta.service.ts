@@ -41,6 +41,24 @@ export class DatasheetMetaService {
     throw new ServerException(exception ? exception : PermissionException.NODE_NOT_EXIST);
   }
 
+  /**
+   * @param viewId If omitted, load the first view.
+   * @returns only contains fieldMap and views.
+   */
+  @Span()
+  async getMetadataWithViewByDstId(dstId: string, viewId?: string): Promise<IMeta> {
+    let meta: { metadata: IMeta } | undefined;
+    if (viewId) {
+      meta = await this.repository.selectMetaWithViewByDstIdAndViewId(dstId, viewId);
+    } else {
+      meta = await this.repository.selectMetaWithFirstViewByDstId(dstId);
+    }
+    if (!meta) {
+      throw new ServerException(PermissionException.NODE_NOT_EXIST);
+    }
+    return meta.metadata;
+  }
+
   async getMetaMapByDstIds(dstIds: string[], ignoreDeleted = false): Promise<{ [dstId: string]: IMeta }> {
     const metas = ignoreDeleted ? await this.repository.selectMetaByDstIdsIgnoreDeleted(dstIds) : await this.repository.selectMetaByDstIds(dstIds);
     const metaMap: { [dstId: string]: IMeta } = {};
@@ -50,6 +68,14 @@ export class DatasheetMetaService {
       }
     }
     return metaMap;
+  }
+
+  async batchSave(metas: any[]){
+    return await this.repository
+      .createQueryBuilder()
+      .insert()
+      .values(metas)
+      .execute();
   }
 
   @Span()

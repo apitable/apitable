@@ -340,6 +340,14 @@ public class UserInfoVo implements Serializable {
         + "(America/Toronto)")
     private String timeZone;
 
+
+    /**
+     * api key.
+     */
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
+    @Schema(description = "User locale", example = "zh-CN")
+    private String locale;
+
     /**
      * Transfer data from loginUserDto.
      *
@@ -360,6 +368,7 @@ public class UserInfoVo implements Serializable {
         this.setLastLoginTime(loginUserDto.getLastLoginTime());
         this.setIsPaused(loginUserDto.getIsPaused());
         this.setIsNickNameModified(loginUserDto.getIsNickNameModified());
+        this.setLocale(loginUserDto.getLocale());
     }
 
     /**

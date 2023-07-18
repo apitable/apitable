@@ -36,6 +36,9 @@ export const MOVE_NODE = '/node/move';
 // add node
 export const ADD_NODE = '/node/create';
 // delete node
+
+export const ADD_CHAT_BOT = '/ai/chatbot';
+
 export const DELETE_NODE = '/node/delete/';
 // edit node
 export const EDIT_NODE = '/node/update/';
@@ -116,4 +119,4 @@ export const NODE_RECENTLY_BROWSED = '/node/recentList';
 // Get node information - file information window
 export const GET_NODE_INFO_WINDOW = 'node/window';
 
-export const CHECKOUT_ORDER='/checkout';
+export const CHECKOUT_ORDER = '/checkout';

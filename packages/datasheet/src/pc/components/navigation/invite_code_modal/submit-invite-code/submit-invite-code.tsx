@@ -74,7 +74,7 @@ export const SubmitInviteCode: FC<React.PropsWithChildren<ISubmitInviteCode>> = 
   return (
     <div className={styles.submitInviteCode}>
       <div className={styles.topImgBox}>
-        <Image src={imgUrl} width={120} height={90} />
+        <Image src={imgUrl} width={120} height={90} alt="" />
       </div>
       <Typography variant='h7' className={styles.desc}>{t(Strings.invite_code_tab_sumbit_get_v_coin_both)}</Typography>
       <div className={styles.form}>

@@ -17,8 +17,8 @@
  */
 
 import * as SocketIO from 'socket.io';
-import { TokenPayload } from './token-payload.interface';
+import { ITokenPayload } from './token-payload.interface';
 
-export interface AuthenticatedSocket extends SocketIO.Socket {
-  auth: TokenPayload;
+export interface IAuthenticatedSocket extends SocketIO.Socket {
+  auth: ITokenPayload;
 }

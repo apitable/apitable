@@ -31,7 +31,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
   const isInline = Boolean(uiSchema['ui:options']?.inline);
   const layout = uiSchema['ui:options']?.layout;
   const inlineWidths = uiSchema['ui:options']?.inlineWidths as unknown as (undefined | string[]);
-  const marginRight = isInline ? 8 : 4;
+  const marginRight = 4;
   if (layout) {
     return (
       <>

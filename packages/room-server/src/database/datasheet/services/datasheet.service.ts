@@ -23,7 +23,7 @@ import type { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
 import { isEmpty } from 'lodash';
 import type { Store } from 'redux';
-import { InjectLogger, USE_NATIVE_MODULE } from 'shared/common';
+import { InjectLogger } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
@@ -35,8 +35,6 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { MetaService } from 'database/resource/services/meta.service';
-import type { DatasheetPackResponse } from '@apitable/room-native-api';
-import { NativeService } from 'shared/services/native/native.service';
 
 @Injectable()
 export class DatasheetService {
@@ -52,7 +50,6 @@ export class DatasheetService {
     private readonly commandService: CommandService,
     @Inject(forwardRef(() => MetaService))
     private readonly resourceMetaService: MetaService,
-    private readonly nativeService: NativeService,
   ) {}
 
   /**
@@ -89,13 +86,9 @@ export class DatasheetService {
     dstId: string,
     auth: IAuthHeader,
     origin: IFetchDataOriginOptions,
-    allowNative: boolean,
+    _allowNative: boolean,
     options?: IFetchDataPackOptions,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
-    if (USE_NATIVE_MODULE && allowNative) {
-      return this.nativeService.fetchDataPackResponse(source, dstId, auth, origin, options);
-    }
-
+  ): Promise<DatasheetPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading ${source} data [${dstId}], origin: ${JSON.stringify(origin)}`);
     // Query datasheet
@@ -127,6 +120,14 @@ export class DatasheetService {
     };
   }
 
+  async batchSave(records: any[]){
+    return await this.datasheetRepository
+      .createQueryBuilder()
+      .insert()
+      .values(records)
+      .execute();
+  }
+
   /**
    * Obtain datasheet data pack, with all linked datasheet data
    *
@@ -136,7 +137,7 @@ export class DatasheetService {
    * @param options query parameters
    */
   @Span()
-  fetchDataPack(dstId: string, auth: IAuthHeader, allowNative: boolean, options?: IFetchDataOptions): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchDataPack(dstId: string, auth: IAuthHeader, allowNative: boolean, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const origin: IFetchDataOriginOptions = { internal: true, main: true };
     return this.fetchCommonDataPack('datasheet', dstId, auth, origin, allowNative, { ...options, isDatasheet: true });
   }
@@ -150,7 +151,7 @@ export class DatasheetService {
    * @param allowNative if false, always return `DatasheetPack`.
    */
   @Span()
-  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, allowNative: boolean): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, allowNative: boolean): Promise<DatasheetPack> {
     const origin = { internal: false, main: true, shareId };
     return this.fetchCommonDataPack('share', dstId, auth, origin, allowNative, { isDatasheet: true });
   }
@@ -162,7 +163,7 @@ export class DatasheetService {
    * @param auth authorization
    */
   @Span()
-  fetchTemplatePack(dstId: string, auth: IAuthHeader): Promise<DatasheetPack | DatasheetPackResponse> {
+  fetchTemplatePack(dstId: string, auth: IAuthHeader): Promise<DatasheetPack> {
     const origin = { internal: false, main: true };
     return this.fetchCommonDataPack('template', dstId, auth, origin, true, {
       isTemplate: true,
@@ -202,7 +203,7 @@ export class DatasheetService {
     auth: IAuthHeader,
     allowNative: boolean,
     shareId?: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // Query datasheet meta
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has linked datasheet with foreighDatasheetId
@@ -241,7 +242,7 @@ export class DatasheetService {
    * @return  Promise<IBaseDatasheetPack[]>
    */
   async getBasePacks(dstId: string, options: ILoadBasePackOptions = {}): Promise<IBaseDatasheetPack[]> {
-    const { includeLink = true, includeCommentCount = false, ignoreDeleted = false } = options;
+    const { includeLink = true, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false } = options;
     // TODO optimize recordMap query with cursors
     // Query snapshot
     const basePacks: IBaseDatasheetPack[] = [];
@@ -261,7 +262,7 @@ export class DatasheetService {
           snapshot: {
             meta: metaMap[id] ?? meta,
             // TODO avoid loading record for field APIs in fusion API
-            recordMap: await this.datasheetRecordService.getBaseRecordMap(id, includeCommentCount, ignoreDeleted),
+            recordMap: await this.datasheetRecordService.getBaseRecordMap(id, includeCommentCount, ignoreDeleted, loadRecordMeta),
             datasheetId: datasheetMap[id]!.id,
           },
         });

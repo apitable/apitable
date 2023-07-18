@@ -317,7 +317,6 @@ Utilisez ces conventions communes APITables :
 - Comment versionner et étiqueter ? [Versioning sémantique](https://semver.org/)
 - Qu'est-ce que la directive de codage Java ? [Règles de codage Java](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Plugin Intellij IDEA](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - Qu'est-ce que les règles de codage TypeScript ? -> [Guide de style TypeScript](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- Qu'est-ce que la directive de codage Rust ? -> [Lignes directrices de l'API Rust](https://rust-lang.github.io/api-guidelines/about.html)
 
 ### Documentations
 

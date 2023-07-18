@@ -20,6 +20,7 @@ import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } fr
 import { Popover } from 'antd';
 import { find, isEqual, values } from 'lodash';
 import uniqBy from 'lodash/uniqBy';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
@@ -42,7 +43,9 @@ export function getCollaboratorAvatar(colla: ICollaborator) {
     colla.avatar;
 }
 
-export const CollaboratorStatus: React.FC<React.PropsWithChildren<{ resourceType: ResourceType, resourceId: string, style?: React.CSSProperties }>> = (props) => {
+export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
+  resourceType: ResourceType, resourceId: string, style?: React.CSSProperties
+}>> = (props) => {
   const collaborators = useSelector(state => {
     let collaborators = Selectors.getResourceCollaborator(state, props.resourceId, props.resourceType);
 
@@ -76,7 +79,7 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{ resourceType
 
   const showShareBtn = embedId ? embedInfo.viewControl?.toolBar?.shareBtn : true;
 
-  const showStatusBarLine = (showShareBtn || showSetting) ? true : false;
+  const showStatusBarLine = !!(showShareBtn || showSetting);
 
   useEffect(() => {
     window.parent.postMessage({

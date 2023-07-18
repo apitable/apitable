@@ -12,7 +12,7 @@
         "./src/pc"
       ],
       "enterprise": [
-        "../../../enterprise/datasheet"
+        "./src/modules/enterprise/"
       ]
     },
     "module": "esnext",

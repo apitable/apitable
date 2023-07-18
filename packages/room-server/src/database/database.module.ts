@@ -31,6 +31,7 @@ import { OtModule } from './ot/ot.module';
 import { CommandModule } from './command/command.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CascaderModule } from './cascader/cascader.module';
+import { TimeMachineDynamicModule } from './time_machine/time.machine.dynamic.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CascaderModule } from './cascader/cascader.module';
     DatasheetModule,
     FormModule,
     MirrorModule,
+    TimeMachineDynamicModule.forRoot(),
     ResourceModule,
     WidgetModule,
     OtModule,
@@ -58,6 +60,7 @@ import { CascaderModule } from './cascader/cascader.module';
     DashboardModule,
     DatasheetModule,
     FormModule,
+    TimeMachineDynamicModule.forRoot(),
     MirrorModule,
     ResourceModule,
     WidgetModule,

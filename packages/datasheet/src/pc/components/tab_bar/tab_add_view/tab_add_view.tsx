@@ -23,9 +23,10 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { IUseListenTriggerInfo } from '@apitable/components';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
-import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';
+import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useSearchPanel } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
@@ -207,7 +208,7 @@ export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props 
         panelVisible && (
           <SearchPanel
             folderId={panelInfo!.folderId}
-            subColumnType={SubColumnType.View}
+            secondConfirmType={SecondConfirmType.Form}
             activeDatasheetId={panelInfo?.datasheetId || ''}
             setSearchPanelVisible={setPanelVisible}
             onChange={onChange}

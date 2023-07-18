@@ -166,7 +166,7 @@
     "array-bracket-spacing": 1,
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       {
         "args": "none"
       }

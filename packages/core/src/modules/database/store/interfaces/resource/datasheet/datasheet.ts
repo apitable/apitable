@@ -349,6 +349,7 @@ export interface IDatasheetState extends INodeMeta {
    */
 
   preview?: string;
+  type?: string;
 }
 
 export interface ILoadingRecord {
@@ -819,6 +820,7 @@ export interface IPageParams {
   nodeId?: string;
   mirrorId?: string;
   embedId?: string;
+  aiId?: string
 }
 
 export interface ICollaboratorParams {
@@ -1019,6 +1021,15 @@ export interface IAddDatasheetAction {
   type: typeof actions.ADD_DATASHEET;
   datasheetId: string;
   payload: IDatasheetPack;
+}
+
+export interface ISetViewPropertyAction {
+  datasheetId: string,
+  type: typeof actions.SET_VIEW_PROPERTY;
+  payload: {
+    viewId: string,
+    viewProperty: IViewProperty
+  }
 }
 
 export interface ISetPageParamsAction {

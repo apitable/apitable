@@ -542,7 +542,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SpaceEntity entity = getBySpaceId(spaceId);
         // numbers statistics
         long memberNumber =
-            iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
+            iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
         // admin statistics

@@ -30,6 +30,7 @@ import { AnimationItem } from 'lottie-web/index';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import {
   IDingTalkModalType, showModalInDingTalk, showModalInFeiShu, showModalInWecom, UpgradeInDDContent, UpgradeInFeiShuContent, UpgradeInWecomContent,

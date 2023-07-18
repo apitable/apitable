@@ -26,6 +26,7 @@ import { useDebounce, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import { isEqual } from 'lodash';
+// eslint-disable-next-line no-restricted-imports
 import { Loading, Tooltip } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { expandRecordInCenter } from 'pc/components/expand_record';
@@ -244,6 +245,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       });
       return result;
     });
+    // eslint-disable-next-line
   }, [entityForeignRows, foreignColumns, filteredRecordIdMap, fieldMap, foreignDatasheetId, onlyShowRows, searchedFlag, store]);
 
   const fuse = useMemo(() => {

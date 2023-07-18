@@ -62,7 +62,7 @@ public interface IStaticsService {
      * @param spaceId space id
      * @return amount
      */
-    long getMemberTotalCountBySpaceId(String spaceId);
+    long getActiveMemberTotalCountFromCache(String spaceId);
 
     /**
      * Total number of space acquisition groups.

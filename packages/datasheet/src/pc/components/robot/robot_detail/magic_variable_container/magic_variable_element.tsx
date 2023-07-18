@@ -96,6 +96,7 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
       display="inline-flex"
       margin="0 2px"
       verticalAlign='middle'
+      flexWrap="wrap"
     // border='1px solid transparent'
     >
       {

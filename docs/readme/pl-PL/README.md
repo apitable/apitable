@@ -159,7 +159,7 @@ APITable zapewnia szereg unikatowych funkcjonalności przydatnych do użytkownik
   - 100k+ wierszy danych ze współpracą w czasie rzeczywistym.
   - Pełny dostęp do API, od danych do metadanych.
   - Jednokierunkowe / dwukierunkowe łączenie tabel i nieskończone łączenie krzyżowe.
-  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)), and we are moving to Rust gradually.
+  - Community-friendly programming languages and framework, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot)).
 - Piękny i bogaty interfejs bazy danych i arkusza kalkulacyjnego
   - `CRUD`: Tworzenie, odczyt, aktualizacja, usuwanie tabel, kolumn i wierszy
   - `Operacje na polach`: sortowanie, filtrowanie, grupowanie, ukrywanie/odkrywanie, ustawianie wysokości.
@@ -319,7 +319,6 @@ APITable używa tych wspólnych konwencji:
 - Jak wersjonować i tagować?  [Semantyczne wersjonowanie](https://semver.org/)
 - Czym są wytyczne dotyczące kodowania w Javie? [Java Coding Guideline](https://google.github.io/styleguide/javaguide.html) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/8527)
 - Czym są wytyczne dotyczące kodowania TypeScript? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-- What is the Rust Coding Guideline? -> [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/about.html)
 - Co to jest przegląd architektury? -> [Zrozumieć APITable - Przegląd Architektury](./docs/contribute/architecute-overview.md)
 
 ### Dokumentacje

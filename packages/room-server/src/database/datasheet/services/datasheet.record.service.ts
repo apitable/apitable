@@ -51,6 +51,14 @@ export class DatasheetRecordService {
     return this.formatRecordMap(records, commentCountMap);
   }
 
+  async batchSave(records: any[]){
+    return await this.recordRepo
+        .createQueryBuilder()
+        .insert()
+        .values(records)
+        .execute();
+  }
+
   @Span()
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<IRecordMap> {
     const records = await this.recordRepo.find({
@@ -112,7 +120,7 @@ export class DatasheetRecordService {
     return this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 
-  async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false): Promise<IRecordMap> {
+  async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false): Promise<IRecordMap> {
     const records = ignoreDeleted
       ? await this.recordRepo.selectRecordsDataByDstIdIgnoreDeleted(dstId)
       : await this.recordRepo.selectRecordsDataByDstId(dstId);
@@ -126,6 +134,10 @@ export class DatasheetRecordService {
         data: cur.data!,
         commentCount: commentCountMap && commentCountMap[cur.recordId] ? commentCountMap[cur.recordId]! : 0,
       };
+      const record = pre[cur.recordId];
+      if (loadRecordMeta && record) {
+        record.recordMeta = cur.recordMeta;
+      }
       return pre;
     }, {});
   }

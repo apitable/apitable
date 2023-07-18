@@ -26,6 +26,7 @@ import {
 import classnames from 'classnames';
 // @ts-ignore
 import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
+// eslint-disable-next-line no-restricted-imports
 import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';

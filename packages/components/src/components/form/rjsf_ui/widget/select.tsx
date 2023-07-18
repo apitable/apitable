@@ -19,7 +19,7 @@
 import { WidgetProps } from '@rjsf/core';
 import React from 'react';
 import styled from 'styled-components';
-import { Select } from '../../../select';
+import { DropdownSelect as Select } from '../../../select/dropdown';
 import { applyDefaultTheme } from 'theme';
 
 const ErrorText = styled.div.attrs(applyDefaultTheme)`

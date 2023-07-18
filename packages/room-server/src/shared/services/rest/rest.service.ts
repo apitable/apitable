@@ -18,6 +18,7 @@
 
 import {
   api,
+  IDashboardWidgetMap,
   IDatasheetFieldPermission,
   IFieldPermissionMap,
   IFieldPermissionRoleListData,
@@ -27,8 +28,6 @@ import {
   ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
-  IWidget,
-  IWidgetMap,
 } from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -54,11 +53,19 @@ import {
   IOpAttachCiteRo,
   IUserBaseInfo,
   NodePermission,
-  UserNodePermissionMap
+  UserNodePermissionMap,
 } from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { responseCodeHandler } from './response.code.handler';
+import { Method } from 'axios';
+import { AttachmentTypeEnum } from '../../enums/attachment.enum';
+import fs from 'fs';
+import * as os from 'os';
+import { SUBSCRIBE_INFO } from '@apitable/core/dist/modules/space/api/url.space';
+const util = require('util');
+const stream = require('stream');
+const pipeline = util.promisify(stream.pipeline);
 
 /**
  * RestApi service
@@ -69,7 +76,6 @@ export class RestService {
   private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
   private GET_WIDGET = 'widget/get';
-  private CREATE_WIDGET = 'widget/create';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
   private GET_USERS_NODE_PERMISSION = 'internal/nodes/%(nodeId)s/users/permissions';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
@@ -92,6 +98,7 @@ export class RestService {
 
   // Get attachment asset
   private GET_UPLOAD_PRESIGNED_URL = 'internal/asset/upload/preSignedUrl';
+  private GET_UPLOAD_CALLBACK = 'asset/upload/callback';
   private GET_ASSET = 'internal/asset/get';
   // Calculate the references to datasheet OP attachments
   private DST_ATTACH_CITE = 'base/attach/cite';
@@ -113,26 +120,34 @@ export class RestService {
   constructor(private readonly httpService: HttpService) {
     // Intercept request
     this.httpService.axiosRef.interceptors.request.use(
-      config => {
-        this.logger.log(`Remote call address:${config.url}`);
+      (config) => {
         config.headers!['X-Internal-Request'] = 'yes';
         return config;
       },
-      error => {
+      (error) => {
         this.logger.error('Remote call failed', error);
         throw new ServerException(CommonException.SERVER_ERROR);
       },
     );
     this.httpService.axiosRef.interceptors.response.use(
-      res => {
+      (res) => {
         const restResponse = res.data as IHttpSuccessResponse<any>;
+        if(containSkipHeader(res.config.headers)) {
+          return res;
+        }
+        function containSkipHeader( headers: any) {
+          if (!headers) {
+            return false;
+          }
+          return headers['Skip-Interceptor'];
+        }
         if (!restResponse.success) {
           this.logger.error(`Server request ${res.config.url} failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
           responseCodeHandler(restResponse.code);
         }
         return restResponse;
       },
-      error => {
+      (error) => {
         // Request failed, may be network issue or HttpException
         this.logger.error('Request failed, may be network issue or server issue', error);
         throw new ServerException(CommonException.SERVER_ERROR);
@@ -148,9 +163,9 @@ export class RestService {
       this.httpService.get(this.GET_USER_INFO, {
         headers: HttpHelper.createAuthHeaders(headers),
         params: {
-          spaceId
-        }
-      })
+          spaceId,
+        },
+      }),
     );
     return response!.data;
   }
@@ -158,8 +173,8 @@ export class RestService {
   async fetchMe(headers: IAuthHeader): Promise<IUserBaseInfo> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_ME, {
-        headers: HttpHelper.createAuthHeaders(headers)
-      })
+        headers: HttpHelper.createAuthHeaders(headers),
+      }),
     );
     return response!.data;
   }
@@ -167,8 +182,8 @@ export class RestService {
   async hasLogin(cookie: string): Promise<boolean> {
     const response = await lastValueFrom(
       this.httpService.get(this.SESSION, {
-        headers: HttpHelper.createAuthHeaders({ cookie })
-      })
+        headers: HttpHelper.createAuthHeaders({ cookie }),
+      }),
     );
     return response!.data;
   }
@@ -178,18 +193,22 @@ export class RestService {
       this.httpService.get(sprintf(this.GET_NODE_PERMISSION, { nodeId }), {
         headers: HttpHelper.createAuthHeaders(headers),
         params: { shareId },
-      })
+      }),
     );
     return response!.data;
   }
 
   async getUsersNodePermission(headers: IAuthHeader, nodeId: string, userIds: string[]): Promise<UserNodePermissionMap> {
     const response = await lastValueFrom(
-      this.httpService.post(sprintf(this.GET_USERS_NODE_PERMISSION, { nodeId }), {
-        userIds,
-      }, {
-        headers: HttpHelper.createAuthHeaders(headers),
-      })
+      this.httpService.post(
+        sprintf(this.GET_USERS_NODE_PERMISSION, { nodeId }),
+        {
+          userIds,
+        },
+        {
+          headers: HttpHelper.createAuthHeaders(headers),
+        },
+      ),
     );
     return response!.data;
   }
@@ -198,17 +217,21 @@ export class RestService {
     const response = await lastValueFrom(
       this.httpService.get(sprintf(this.GET_FIELD_PERMISSION, { nodeId }), {
         headers: HttpHelper.createAuthHeaders(headers),
-        params: { shareId, userId: headers.userId }
-      })
+        params: { shareId, userId: headers.userId },
+      }),
     );
     return response!.data?.fieldPermissionMap;
   }
 
   async getNodesFieldPermission(headers: IAuthHeader, nodeIds: string[]): Promise<IDatasheetFieldPermission[]> {
     const response = await lastValueFrom(
-      this.httpService.post(this.GET_MULTI_NODE_PERMISSION, { nodeIds, userId: headers.userId }, {
-        headers: HttpHelper.createAuthHeaders(headers),
-      })
+      this.httpService.post(
+        this.GET_MULTI_NODE_PERMISSION,
+        { nodeIds, userId: headers.userId },
+        {
+          headers: HttpHelper.createAuthHeaders(headers),
+        },
+      ),
     );
     return response.data;
   }
@@ -218,7 +241,7 @@ export class RestService {
       this.httpService.post(sprintf(this.DEL_FIELD_PERMISSION, { dstId }), null, {
         headers: HttpHelper.createAuthHeaders(headers),
         params: { fieldIds: fieldIds.join(',') },
-      })
+      }),
     );
   }
 
@@ -236,7 +259,7 @@ export class RestService {
     const response = await lastValueFrom(
       this.httpService.get(sprintf(this.SPACE_CAPACITY, { spaceId }), {
         headers: authHeaders,
-      })
+      }),
     );
     if (response!.data?.isAllowOverLimit) {
       return false;
@@ -244,12 +267,57 @@ export class RestService {
     return response!.data.currentBundleCapacity - response!.data.usedCapacity < 0;
   }
 
-  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number | undefined): Promise<AssetVo[]> {
+  async uploadFile(buffer: any, uploadUrl: string, uploadRequestMethod: string, fileSize: number) {
+    const r = await this.httpService.axiosRef.request({
+      method: uploadRequestMethod as Method,
+      url: uploadUrl,
+      baseURL: '',
+      data: buffer,
+      validateStatus: null,
+      headers: {
+        'Skip-Interceptor': 'true',
+        'Content-Length': fileSize.toString(),
+      },
+    });
+    return r.status;
+  }
+
+  async downloadFile(host: string, url: string, fileName: string) {
+    const response = await this.httpService.axiosRef.request(
+      {
+        url: host + '/' + url,
+        method: 'GET',
+        responseType: 'stream',
+        baseURL: host,
+        validateStatus: null,
+        headers: {
+          'Skip-Interceptor': 'true'
+        },
+      });
+    const filePath = `${os.tmpdir()}/${fileName}`; // Replace with the desired file path and name
+    const writer = fs.createWriteStream(filePath);
+    await pipeline(response.data, writer);
+    return filePath;
+  }
+
+  async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number | undefined,
+    type: number = AttachmentTypeEnum.DATASHEET_ATTACH): Promise<AssetVo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
         headers: HttpHelper.createAuthHeaders(headers),
-        params: { nodeId, count },
-      })
+        params: { nodeId, count, type },
+      }),
+    );
+    return response.data;
+  }
+
+  async getUploadCallBack(headers: IAuthHeader, resourceKeys: string[], type: number): Promise<AssetVo[]> {
+    const response = await lastValueFrom(
+      this.httpService.post(this.GET_UPLOAD_CALLBACK, { resourceKeys, type },
+        {
+          headers: HttpHelper.createAuthHeaders(headers),
+        }
+      )
     );
     return response.data;
   }
@@ -266,8 +334,8 @@ export class RestService {
   async checkSpacePermission(headers: IAuthHeader): Promise<boolean> {
     const response = await lastValueFrom(
       this.httpService.get(this.SPACE_RESOURCE, {
-        headers: HttpHelper.createAuthHeaders(headers)
-      })
+        headers: HttpHelper.createAuthHeaders(headers),
+      }),
     );
     const data: ISpacePermissionManage = response!.data;
     if (!data.spaceResource) {
@@ -277,7 +345,7 @@ export class RestService {
     return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   }
 
-  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IWidgetMap> {
+  async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IDashboardWidgetMap> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_WIDGET, {
         headers: HttpHelper.createAuthHeaders(headers),
@@ -286,23 +354,10 @@ export class RestService {
           linkId,
           userId: headers.userId,
         },
-      })
+      }),
     );
     const data = response!.data;
     return keyBy(data, 'id');
-  }
-
-  async createWidget(headers: IAuthHeader, dashboardId: string, widgetPackageId: string, name?: string): Promise<IWidget> {
-    const response = await lastValueFrom(
-      this.httpService.post(this.CREATE_WIDGET, {
-        nodeId: dashboardId,
-        widgetPackageId,
-        name
-      }, {
-        headers: HttpHelper.createAuthHeaders(headers),
-      })
-    );
-    return response!.data;
   }
 
   /**
@@ -355,13 +410,13 @@ export class RestService {
       return Promise.resolve({
         data: {
           isAllowOverLimit: true,
-        }
+        },
       });
     }
     return lastValueFrom(
       this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
-        headers: HttpHelper.createAuthHeaders(headers)
-      })
+        headers: HttpHelper.createAuthHeaders(headers),
+      }),
     );
   }
 
@@ -374,8 +429,8 @@ export class RestService {
   async getApiRateLimit(headers: IAuthHeader, spaceId: string): Promise<any> {
     const response = await lastValueFrom(
       this.httpService.get(sprintf(this.API_RATE_LIMIT, { spaceId }), {
-        headers: HttpHelper.createAuthHeaders(headers)
-      })
+        headers: HttpHelper.createAuthHeaders(headers),
+      }),
     );
     return response!.data;
   }
@@ -383,8 +438,8 @@ export class RestService {
   async getSpaceList(headers: IAuthHeader): Promise<ISpaceInfo[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.SPACE_LIST, {
-        headers: HttpHelper.createAuthHeaders(headers)
-      })
+        headers: HttpHelper.createAuthHeaders(headers),
+      }),
     );
     return response!.data;
   }
@@ -405,9 +460,9 @@ export class RestService {
       this.httpService.get<INode>(this.NODE_DETAIL, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
         params: {
-          nodeIds: nodeId
-        }
-      })
+          nodeIds: nodeId,
+        },
+      }),
     );
 
     const res = nodeInfo!.data[0];
@@ -417,9 +472,9 @@ export class RestService {
         this.httpService.get<INode[]>(this.NODE_CHILDREN, {
           headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
           params: {
-            nodeId
-          }
-        })
+            nodeId,
+          },
+        }),
       );
       res.children = nodeChildren!.data;
     }
@@ -436,8 +491,8 @@ export class RestService {
           type,
           nodePermissions: nodePermissions.join(','),
           keyword,
-        }
-      })
+        },
+      }),
     );
     return response!.data as any;
   }
@@ -448,11 +503,27 @@ export class RestService {
       this.httpService.get<INode>(this.NODE_TREE, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
         params: {
-          depth: 1
-        }
-      })
+          depth: 1,
+        },
+      }),
     );
     return response!.data.children;
+  }
+
+  /**
+   * Gets subscription information for the space.
+   *
+   * @param {string} cookie
+   * @param {string} spaceId
+   * @returns {Promise<any>}
+   */
+  async getSpaceSubscriptionInfo(cookie: string, spaceId: string): Promise<any> {
+    const response = await lastValueFrom(
+      this.httpService.get<any>(SUBSCRIBE_INFO + spaceId, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders({ cookie }), spaceId)
+      })
+    );
+    return response!.data;
   }
 
   /**
@@ -472,7 +543,7 @@ export class RestService {
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
         allowEmbed: true,
-        allowOrgApi: true
+        allowOrgApi: true,
       };
     }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })));
@@ -505,7 +576,7 @@ export class RestService {
     const response = await lastValueFrom(
       this.httpService.post<InternalCreateDatasheetVo>(url, creareDatasheetRo, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
-      })
+      }),
     );
     return response!.data;
   }
@@ -513,9 +584,13 @@ export class RestService {
   public async deleteNode(spaceId: string, datasheetId: string, headers: IAuthHeader): Promise<InternalCreateDatasheetVo> {
     const url = sprintf(this.DELETE_NODE_API_URL, { spaceId, nodeId: datasheetId });
     const response = await lastValueFrom(
-      this.httpService.post<InternalCreateDatasheetVo>(url, {}, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers))
-      })
+      this.httpService.post<InternalCreateDatasheetVo>(
+        url,
+        {},
+        {
+          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
+        },
+      ),
     );
     return response!.data;
   }
@@ -552,12 +627,12 @@ export class RestService {
           spaceId,
           specification: specification + '',
           templateId,
-          usage: usage + ''
+          usage: usage + '',
         },
         {
-          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers))
-        }
-      )
+          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
+        },
+      ),
     );
   }
 
@@ -620,8 +695,8 @@ export class RestService {
     const url = sprintf(this.LIST_NODE_ROLES, { nodeId });
     const response = await lastValueFrom(
       this.httpService.get(url, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId)
-      })
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),
+      }),
     );
     return response!.data;
   }
@@ -656,8 +731,6 @@ export class RestService {
   }
 
   async updateSpaceStatistics(spaceId: string, ro: InternalSpaceStatisticsRo): Promise<void> {
-    await lastValueFrom(
-      this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro),
-    );
+    await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
 }

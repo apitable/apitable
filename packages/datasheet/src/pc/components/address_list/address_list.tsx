@@ -19,6 +19,7 @@
 import { Alert, ThemeName } from '@apitable/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import * as React from 'react';

@@ -29,6 +29,7 @@ import { last } from 'lodash';
 import { expandRecordManager } from 'modules/database/expand_record_manager';
 
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';

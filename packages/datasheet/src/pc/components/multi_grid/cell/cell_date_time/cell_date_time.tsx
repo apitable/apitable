@@ -20,6 +20,7 @@ import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, sha
 import { NotificationOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { useThemeColors } from '@apitable/components';
@@ -61,7 +62,7 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
       alarmDate = alarmDate.subtract(Number(subtractMatch[1]), subtractMatch[2] as any);
     }
     return alarm?.time || alarmDate.format('HH:mm');
-  }, [alarm?.subtract, alarm?.time, cellValue]);
+  }, [alarm?.subtract, alarm?.time, cellValue, timeZone]);
 
   return (
     <div
