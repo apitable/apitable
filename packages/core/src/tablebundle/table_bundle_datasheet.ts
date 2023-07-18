@@ -1,4 +1,4 @@
-import {TableBundleSnapshot} from "./table_bundle_snapshot";
+import { TableBundleSnapshot } from './table_bundle_snapshot';
 
 export class TableBundleDataSheet{
     public snapshot: TableBundleSnapshot;
