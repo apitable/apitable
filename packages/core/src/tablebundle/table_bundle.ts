@@ -49,6 +49,9 @@ export class TableBundle {
     const sheetData = {};
     this.nodeMap().forEach((value: TableBundleDataSheet, key: string) => {
       sheetData[key + '.json'] = fflate.strToU8(JSON.stringify(value.snapshot));
+      if (value.extras !== undefined) {
+        sheetData[key + '.extras.json'] = fflate.strToU8(value.extras);
+      }
     });
     const zipped = fflate.zipSync({
       data: sheetData,
@@ -83,8 +86,15 @@ export class TableBundle {
         throw new Error(fileName + ' not found');
       }
       // @ts-ignore
-      const sn= JSON.parse(fflate.strFromU8(unzipped[fileName])) as TableBundleSnapshot;
-      const dataSheet = new TableBundleDataSheet(sn);
+      const sn = JSON.parse(fflate.strFromU8(unzipped[fileName])) as TableBundleSnapshot;
+
+      const extrasFileName = 'data/' + nodeId + '.extras.json';
+      let extras;
+      if (unzipped[extrasFileName] !== undefined) {
+        // @ts-ignore
+        extras = fflate.strFromU8(unzipped[extrasFileName]);
+      }
+      const dataSheet = new TableBundleDataSheet(sn, extras);
       this._nodeMap.set(nodeId, dataSheet);
     }
   }

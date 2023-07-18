@@ -7,6 +7,10 @@ export abstract class TimeMachineBaseService{
     return await Promise.resolve();
   }
 
+  public async getDataPack(_cookie: string, _dstId: string, _spaceId: string, _userId: string): Promise<any> {
+    return await Promise.resolve();
+  }
+
   public async getTableBundleById(_nodeId: string, _id?: string): Promise<any[]> {
     return await Promise.resolve([]);
   }
