@@ -4789,7 +4789,7 @@
   "task_reminder_notify_who_error_not_exist": "The Member field was deleted",
   "task_reminder_tips": "The task reminder time is base on the UTC time zone, and the time display here is base on the account time zone.",
   "team": "Team",
-  "team_is_exist_err": "team_is_exist_err",
+  "team_is_exist_err": "Duplicated team name on the same level. Please use other team name.",
   "team_length_err": "team_length_err",
   "teamwork": "Start team work",
   "teamwork_click_here": "Want to create a public link? Click here",
