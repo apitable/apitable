@@ -23,19 +23,10 @@ import { makeIcon, IIconProps } from '../utils/icon';
 export const BronzeLightFilled: React.FC<IIconProps> = makeIcon({
   Path: ({ colors }) => <>
     <path d="M20 42H44V52.2166C44 52.9986 43.5442 53.7089 42.8333 54.0347L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L21.1667 54.0347C20.4558 53.7089 20 52.9986 20 52.2166V42Z" fill={ colors[2] }/>
-    <mask id="mask0_4422_1319" maskUnits="userSpaceOnUse" x="20" y="42" width="24" height="17">
-
-      <path d="M20 42H44V52.2166C44 52.9986 43.5442 53.7089 42.8333 54.0347L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L21.1667 54.0347C20.4558 53.7089 20 52.9986 20 52.2166V42Z" fill="url(#paint1_linear_4422_1319)"/>
-
-    </mask>
-    <g mask="url(#mask0_4422_1319)">
-
-      <rect x="29" y="43" width="6" height="18" fill="url(#paint2_linear_4422_1319)"/>
-
-    </g>
+    <path d="M35 57.625L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L29 57.625V43H35V57.625Z" fill={ colors[3] } fillRule="evenodd" clipRule="evenodd"/>
     <g filter="url(#filter0_d_4422_1319)">
 
-      <circle cx="32" cy="25" r="22" fill="url(#paint3_linear_4422_1319)"/>
+      <circle cx="32" cy="25" r="22" fill="url(#paint2_linear_4422_1319)"/>
 
     </g>
     <circle cx="32" cy="25" r="18.75" stroke={ colors[0] } strokeWidth="1.5"/>
@@ -94,15 +85,7 @@ export const BronzeLightFilled: React.FC<IIconProps> = makeIcon({
 
       </linearGradient>
 
-      <linearGradient id="paint1_linear_4422_1319" x1="32" y1="42" x2="32" y2="60" gradientUnits="userSpaceOnUse">
-
-        <stop stop-color="#C5813A"/>
-
-        <stop offset="1" stop-color="#FFCB93"/>
-
-      </linearGradient>
-
-      <linearGradient id="paint2_linear_4422_1319" x1="32" y1="43" x2="32" y2="61" gradientUnits="userSpaceOnUse">
+      <linearGradient id="paint1_linear_4422_1319" x1="32" y1="43" x2="32" y2="61" gradientUnits="userSpaceOnUse">
 
         <stop offset="0.130899" stop-color="#EEA659"/>
 
@@ -110,7 +93,7 @@ export const BronzeLightFilled: React.FC<IIconProps> = makeIcon({
 
       </linearGradient>
 
-      <linearGradient id="paint3_linear_4422_1319" x1="23.0952" y1="8.7619" x2="38.8095" y2="42.2857" gradientUnits="userSpaceOnUse">
+      <linearGradient id="paint2_linear_4422_1319" x1="23.0952" y1="8.7619" x2="38.8095" y2="42.2857" gradientUnits="userSpaceOnUse">
 
         <stop stop-color="#FBCE9D"/>
 
@@ -122,9 +105,9 @@ export const BronzeLightFilled: React.FC<IIconProps> = makeIcon({
 
   </>,
   name: 'bronze_light_filled',
-  defaultColors: ['#DF9B50', '#E09847', 'url(#paint0_linear_4422_1319)', 'url(#paint1_linear_4422_1319)', 'url(#paint2_linear_4422_1319)', 'url(#paint3_linear_4422_1319)'],
+  defaultColors: ['#DF9B50', '#E09847', 'url(#paint0_linear_4422_1319)', 'url(#paint1_linear_4422_1319)', 'url(#paint2_linear_4422_1319)'],
   colorful: true,
-  allPathData: ['M20 42H44V52.2166C44 52.9986 43.5442 53.7089 42.8333 54.0347L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L21.1667 54.0347C20.4558 53.7089 20 52.9986 20 52.2166V42Z'],
+  allPathData: ['M20 42H44V52.2166C44 52.9986 43.5442 53.7089 42.8333 54.0347L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L21.1667 54.0347C20.4558 53.7089 20 52.9986 20 52.2166V42Z', 'M35 57.625L32.8333 58.6181C32.3042 58.8606 31.6958 58.8606 31.1667 58.6181L29 57.625V43H35V57.625Z'],
   width: '64',
   height: '64',
   viewBox: '0 0 64 64',

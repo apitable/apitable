@@ -295,7 +295,7 @@ export const getViewsList = (state: IReduxState, dsId?: string) => {
 };
 
 export const getNodeId = (state: IReduxState) => {
-  const { datasheetId, folderId, formId, dashboardId, mirrorId } = state.pageParams;
+  const { datasheetId, folderId, formId, dashboardId, mirrorId,aiId } = state.pageParams;
   // mirror is special,  url will contain mirrorId and datasheetId at the same time, so mirrorId need to be judged first
   if (mirrorId) {
     return mirrorId;
@@ -311,6 +311,9 @@ export const getNodeId = (state: IReduxState) => {
   }
   if (dashboardId) {
     return dashboardId;
+  }
+  if (aiId) {
+    return aiId;
   }
   return '';
 };

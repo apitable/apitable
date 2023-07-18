@@ -20,6 +20,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip, Avatar, IAvatarProps } from 'pc/components/common';
 import classNames from 'classnames';
 import { OmittedMiddleText } from './omitted_middle_text';

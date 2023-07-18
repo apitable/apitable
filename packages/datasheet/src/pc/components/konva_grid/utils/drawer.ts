@@ -311,6 +311,8 @@ export class KonvaDrawer {
       });
     }
 
+    const isEllipsis = this.textEllipsis({ text, maxWidth: maxWidth }).isEllipsis;
+
     for (let n = 0; n < textLength; n++) {
       const curText = arrText[n];
       const isLineBreak = ['\n', '\r'].includes(curText);
@@ -319,7 +321,7 @@ export class KonvaDrawer {
       const isLimitRow = maxRow ? rowCount >= (maxRow - 1) : false;
       const singleTextWidth = isLineBreak ? 0 : this.ctx.measureText(singleText).width;
       showLineWidth += singleTextWidth;
-      const diffWidth = isLimitRow ? (showLineWidth + ellipsisWidth) : showLineWidth;
+      const diffWidth = isLimitRow ? (showLineWidth + (isEllipsis ? ellipsisWidth : 0)) : showLineWidth;
       const isLineEnd = diffWidth > maxWidth;
       const linkData = linkMap[n];
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import type { DataBusModule as NativeModule, DatasheetPackResponse } from '@apitable/databus';
+import type { NativeModule } from '@apitable/databus';
 import { isDevMode, useNativeModule } from 'app.environment';
-import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION, IRecordMap } from '@apitable/core';
-import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, IOssConfig } from 'shared/interfaces';
+import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION } from '@apitable/core';
+import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IOssConfig } from 'shared/interfaces';
 import { HttpService } from '@nestjs/axios';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { Logger } from 'winston';
@@ -34,25 +34,6 @@ export class NativeService {
         this.nativeModule = undefined;
       });
     }
-  }
-
-  getRecords(dstId: string, recordIds: string[] | null, isDeleted: boolean, withComment: boolean): Promise<IRecordMap> | IRecordMap {
-    return this.nativeModule!.getRecords(dstId, recordIds, isDeleted, withComment);
-  }
-
-  /// Load datasheet pack. The response buffer will be directly returned to the front-end without further serialization.
-  async fetchDataPackResponse(
-    source: string,
-    dstId: string,
-    auth: IAuthHeader,
-    origin: IFetchDataOriginOptions,
-    options?: IFetchDataPackOptions,
-  ): Promise<DatasheetPackResponse> {
-    const result = await this.nativeModule!.fetchDatasheetPackResponse(source, dstId, auth, origin, options);
-    if ('response' in result) {
-      return result;
-    }
-    this.handleDataPackError(dstId, auth, result, options?.metadataException);
   }
 
   async fetchDataPack(

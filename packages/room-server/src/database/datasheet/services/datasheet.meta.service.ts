@@ -70,6 +70,14 @@ export class DatasheetMetaService {
     return metaMap;
   }
 
+  async batchSave(metas: any[]){
+    return await this.repository
+      .createQueryBuilder()
+      .insert()
+      .values(metas)
+      .execute();
+  }
+
   @Span()
   async getFieldMapByDstId(dstId: string): Promise<IFieldMap> {
     const raw = await this.repository.selectFieldMapByDstId(dstId);

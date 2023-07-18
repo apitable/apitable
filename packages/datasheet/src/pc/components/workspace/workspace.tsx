@@ -113,6 +113,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
   const [panelVisible, setPanelVisible] = useState(false);
+  const [newTdbId, setNewTdbId] = useState('');
   const sideBarVisible = useSelector(state => state.space.sideBarVisible);
 
   useMount(() => {
@@ -297,6 +298,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     onSetPanelVisible: setPanelVisible,
     onSetSideBarVisibleByUser: handleSetSideBarByUser,
     onSetSideBarVisibleByOhter: handleSetSideBarByOther,
+    newTdbId, setNewTdbId
   };
 
   return (

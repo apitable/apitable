@@ -33,27 +33,29 @@ import {
   ResourceIdPrefix,
   ResourceType,
 } from '@apitable/core';
-import { Span } from '@metinseylan/nestjs-opentelemetry';
-import * as Sentry from '@sentry/node';
-import { Injectable } from '@nestjs/common';
 import { RedisService } from '@apitable/nestjs-redis';
+import { Span } from '@metinseylan/nestjs-opentelemetry';
+import { Injectable } from '@nestjs/common';
+import * as Sentry from '@sentry/node';
 import { DatasheetChangesetService } from 'database/datasheet/services/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
-import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { MirrorService } from 'database/mirror/services/mirror.service';
-import { NodePermissionService } from 'node/services/node.permission.service';
-import { NodeService } from 'node/services/node.service';
-import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { DashboardOtService } from 'database/ot/services/dashboard.ot.service';
 import { DatasheetOtService } from 'database/ot/services/datasheet.ot.service';
 import { MirrorOtService } from 'database/ot/services/mirror.ot.service';
 import { WidgetOtService } from 'database/ot/services/widget.ot.service';
 import { ChangesetService } from 'database/resource/services/changeset.service';
+import { MetaService } from 'database/resource/services/meta.service';
 import { ResourceService } from 'database/resource/services/resource.service';
-import { UserService } from 'user/services/user.service';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
+import { RobotEventService } from 'database/robot/services/robot.event.service';
+import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
 import { difference, intersection, isEqual, isNil, sortBy, union } from 'lodash';
+import { NodePermissionService } from 'node/services/node.permission.service';
+import { NodeService } from 'node/services/node.service';
+import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { EnvConfigKey } from 'shared/common';
 import { InjectLogger } from 'shared/common/decorators';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
@@ -63,12 +65,10 @@ import { IServerConfig } from 'shared/interfaces';
 import { IAuthHeader, NodePermission } from 'shared/interfaces/axios.interfaces';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
-import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { EntityManager, getManager } from 'typeorm';
+import { UserService } from 'user/services/user.service';
 import { Logger } from 'winston';
 import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
-import { MetaService } from 'database/resource/services/meta.service';
-import { FormOtService } from './form.ot.service';
 import {
   EffectConstantName,
   IChangesetParseResult,
@@ -77,8 +77,8 @@ import {
   IRoomChannelMessage,
   MAX_REVISION_DIFF,
 } from '../interfaces/ot.interface';
+import { FormOtService } from './form.ot.service';
 import { ResourceChangeHandler } from './resource.change.handler';
-import { RobotEventService } from 'database/robot/services/robot.event.service';
 
 class CellActionMap {
   readonly map: Map<string, Map<string, IJOTAction>> = new Map();
@@ -154,7 +154,9 @@ export class OtService {
     private readonly envConfigService: EnvConfigService,
     private readonly eventService: RobotEventService,
     private readonly nodeService: NodeService,
-  ) {}
+    private readonly recordSubscriptionService: DatasheetRecordSubscriptionBaseService,
+  ) {
+  }
 
   /**
    * Obtain the node rule of the operator.
@@ -277,12 +279,15 @@ export class OtService {
             };
           }
           results.push(remoteChangeset);
+          // member field auto subscription
+          this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
         }
       });
       const endTime = +new Date();
       this.logger.info(`room:[${message.roomId}] ====> General transaction finished, duration: ${endTime - parseEndTime}ms`);
       // Process resource change event
       await this.resourceChangeHandler.handleResourceChange(message.roomId, transactions);
+
       // ======== multiple-resource operation transaction END ========
     } finally {
       // Release lock of each resource

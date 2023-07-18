@@ -33,6 +33,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, InfoCircleOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useAppendField } from 'pc/components/expand_record/hooks/use_append_field';

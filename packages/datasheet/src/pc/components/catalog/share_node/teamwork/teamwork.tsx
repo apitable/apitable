@@ -21,6 +21,7 @@ import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } f
 import { useMount } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 // @ts-ignore

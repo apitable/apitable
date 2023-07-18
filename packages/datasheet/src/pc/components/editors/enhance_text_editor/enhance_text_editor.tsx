@@ -26,6 +26,7 @@ import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
 import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';

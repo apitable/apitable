@@ -1,4 +1,4 @@
-import { ITheme, Select, useTheme } from '@apitable/components';
+import { ITheme, DropdownSelect as Select, useTheme } from '@apitable/components';
 import { Field, FieldType, IField, Strings, t } from '@apitable/core';
 import {
   UserOutlined, AttachmentOutlined,

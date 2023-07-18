@@ -22,9 +22,9 @@ import { SocketConstants } from 'shared/common/constants/socket.module.constants
 import { NotificationTypes } from 'shared/enums/request-types.enum';
 import { Socket } from 'socket.io';
 import { GrpcClient } from 'socket/grpc/client/grpc.client';
-import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { NodeChangeRo } from 'socket/ros/notification/node-change.ro';
-import { NotificationRo } from 'socket/ros/notification/notification.ro';
+import { INotificationRo } from 'socket/ros/notification/notification.ro';
 import { WatchSpaceRo } from 'socket/ros/notification/watch-space.ro';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class NotificationService {
 
   constructor(private readonly grpcClient: GrpcClient) {}
 
-  broadcastNotify(message: NotificationRo, client: Socket): boolean {
+  broadcastNotify(message: INotificationRo, client: Socket): boolean {
     if (isNil(message.toUserId)) {
       throw new ForbiddenException('Forbidden:403', 'User mismatch');
     }
@@ -47,7 +47,7 @@ export class NotificationService {
     }
   }
 
-  async watchSpace(message: WatchSpaceRo, client: AuthenticatedSocket): Promise<boolean> {
+  async watchSpace(message: WatchSpaceRo, client: IAuthenticatedSocket): Promise<boolean> {
     try {
       await client.join(this.getSpaceRoom(message.spaceId));
       return true;
@@ -57,7 +57,7 @@ export class NotificationService {
     }
   }
 
-  nodeChange(message: NodeChangeRo, client: AuthenticatedSocket): boolean {
+  nodeChange(message: NodeChangeRo, client: IAuthenticatedSocket): boolean {
     try {
       let room = this.getSpaceRoom(message.spaceId);
       if (message.uuid) {

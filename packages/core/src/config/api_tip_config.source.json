@@ -1059,6 +1059,14 @@
         "message": "api_params_records_max_count_error",
         "statusCode": 200
       },
+      "api_params_tablebundle_max_count_error": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_tablebundle_max_count_error",
+        "isRecordTimes": true,
+        "message": "api_params_tablebundle_max_count_error",
+        "statusCode": 200
+      },
       "api_params_tree_select_can_not_operate": {
         "apiTypes": "fusion_api",
         "code": 400,

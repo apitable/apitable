@@ -25,7 +25,6 @@ import type { IResourceDataInfo as IResourceInfo } from './interface';
 import { NodeService } from 'node/services/node.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { DatasheetPack, FormDataPack, MirrorInfo } from 'database/interfaces';
-import { DatasheetPackResponse } from '@apitable/databus';
 
 /**
  * Resource data interceptor
@@ -64,11 +63,8 @@ export class ResourceDataInterceptor implements NestInterceptor {
 
   private async getResourceIds(
     resourceType: ResourceType,
-    data: DatasheetPack | DatasheetPackResponse | IServerDashboardPack | MirrorInfo | FormDataPack,
+    data: DatasheetPack | IServerDashboardPack | MirrorInfo | FormDataPack,
   ): Promise<string[]> {
-    if ('resourceIds' in data && Array.isArray(data.resourceIds)) {
-      return data.resourceIds;
-    }
     const resourceIds: string[] = [];
     switch (resourceType) {
       case ResourceType.Datasheet:
@@ -103,7 +99,7 @@ export class ResourceDataInterceptor implements NestInterceptor {
       case ResourceType.Dashboard:
         data = data as IServerDashboardPack;
         const sourceDatasheetIds: Set<string> = new Set();
-        for (const widget of Object.values((data.widgetMap as any) as Record<string, IWidget>)) {
+        for (const widget of Object.values(data.widgetMap as any as Record<string, IWidget>)) {
           resourceIds.push(widget.id);
           // reference count of the widget
           if (widget.snapshot.datasheetId && !sourceDatasheetIds.has(widget.snapshot.datasheetId)) {

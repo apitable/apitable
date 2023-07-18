@@ -20,6 +20,7 @@ import * as React from 'react';
 import styles from './style.module.less';
 import { useThemeColors } from '@apitable/components';
 import classnames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ISelectFieldOption, Selectors, ThemeName } from '@apitable/core';
 import { setColor } from 'pc/components/multi_grid/format';

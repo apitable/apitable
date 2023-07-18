@@ -197,4 +197,7 @@ export interface ILoadBasePackOptions {
 
   /** If deleted flag is ignoerd. Default to false */
   ignoreDeleted?: boolean;
+
+  /** If load record metadata. Default to false */
+  loadRecordMeta?: boolean;
 }

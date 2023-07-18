@@ -37,6 +37,7 @@ import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import styles from './style.module.less';
 import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
+// eslint-disable-next-line no-restricted-imports
 import * as components from '@apitable/components';
 import * as core from '@apitable/core';
 import * as icons from '@apitable/icons';

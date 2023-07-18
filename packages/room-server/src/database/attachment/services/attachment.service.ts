@@ -60,13 +60,13 @@ export class AttachmentService {
     return async(_field: string, file: pump.Stream, filename: string, _encoding: string, mimetype: string): Promise<void> => {
       try {
         const result = await this.uploadFile({ token: req.headers.authorization }, dstId, file, filename, mimetype);
-        reply.send(ApiResponse.success(result));
+        void reply.send(ApiResponse.success(result));
       } catch (e: any) {
         const errMsg = await this.i18n.translate(e.message, {
           lang: req[USER_HTTP_DECORATE]?.locale,
           args: e.getExtra(),
         });
-        reply.send(ApiResponse.error(errMsg, e.getTip().statusCode));
+        void reply.send(ApiResponse.error(errMsg, e.getTip().statusCode));
       }
     };
   }

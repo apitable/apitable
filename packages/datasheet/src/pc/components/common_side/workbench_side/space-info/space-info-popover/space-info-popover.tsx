@@ -20,6 +20,7 @@ import CorpCertifiedTag from 'pc/components/space_manage/space_info/components/b
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { FC } from 'react';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, Tooltip } from 'pc/components/common';
 import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
 import { shallowEqual, useSelector } from 'react-redux';

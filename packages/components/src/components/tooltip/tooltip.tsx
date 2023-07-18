@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Arrow, Placement, useHover, useLayer } from 'react-laag';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import { Typography } from '../typography';
@@ -27,7 +27,7 @@ export interface ITooltipProps {
   /**
    * Tooltip content
    */
-  content: string;
+  content: string| ReactElement;
   /**
    * Display position
    */
@@ -63,16 +63,19 @@ export interface ITooltipProps {
   style?: React.CSSProperties;
 }
 
+const CONST_TOOLTIP_INDEX = 1001;
+
 const GlobalStyle: any = createGlobalStyle`
   .tooltip {
-    z-index: 1001;
+    z-index: ${CONST_TOOLTIP_INDEX};
   }
 `;
 
-const TooltipBase = styled.div.attrs(applyDefaultTheme)`
+export const TooltipBase = styled.div.attrs(applyDefaultTheme)`
   ${props => {
     const color = props.theme.color;
     return css`
+      z-index: ${CONST_TOOLTIP_INDEX};
       background: ${color.bgReverseDefault};
       border-radius: 4px;
       padding: 8px;
@@ -156,4 +159,3 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps>> = (
     </>
   );
 };
-

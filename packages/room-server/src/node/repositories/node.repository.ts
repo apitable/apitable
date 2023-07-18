@@ -30,6 +30,14 @@ export class NodeRepository extends Repository<NodeEntity> {
     return await this.count({ where: { nodeId, isRubbish: false }});
   }
 
+  public async selectNameByNodeId(nodeId: string): Promise<string> {
+    const nodeEntity = await this.findOne({
+      select: ['nodeName'],
+      where: { nodeId, isRubbish: false, isDeleted: false },
+    });
+    return nodeEntity?.nodeName || '';
+  }
+
   /**
    * Obtain the number of templates with the given node ID
    */
@@ -133,17 +141,17 @@ export class NodeRepository extends Repository<NodeEntity> {
       .getRawOne();
   }
 
-  selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
-    return this.findOne({
+  public async selectNodeBaseInfoByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+    return await this.findOne({
       select: ['nodeName', 'icon', 'parentId'],
       where: [{ nodeId, isRubbish: false }],
-    }).then(result => {
+    }).then((result) => {
       if (result) {
         return {
           id: nodeId,
           nodeName: result.nodeName,
           icon: result.icon || '',
-          parentId: result.parentId
+          parentId: result.parentId,
         };
       }
       return undefined;

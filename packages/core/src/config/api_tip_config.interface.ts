@@ -145,6 +145,7 @@ export interface Tips {
     api_params_recordids_empty_error:                     PuneHedgehog;
     api_params_records_empty_error:                       PuneHedgehog;
     api_params_records_max_count_error:                   PuneHedgehog;
+    api_params_tablebundle_max_count_error:               PuneHedgehog;
     api_params_tree_select_can_not_operate:               PuneHedgehog;
     api_params_updated_time_can_not_operate:              PuneHedgehog;
     api_params_updatedby_can_not_operate:                 PuneHedgehog;

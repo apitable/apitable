@@ -103,15 +103,18 @@ services:
     image: ${IMAGE_MINIO}
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
     restart: always
-    command: server /data
+    command: server --console-address ":9001" /data
     expose:
       - "9000"
+      - "9001"
     volumes:
       - ${DATA_PATH}/.data/minio/data:/data
       - ${DATA_PATH}/.data/minio/config:/root/.minio
     environment:
       - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
       - TZ=${TIMEZONE}
     networks:
       - apitable

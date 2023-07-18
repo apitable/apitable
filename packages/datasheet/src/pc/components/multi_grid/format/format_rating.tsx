@@ -19,6 +19,7 @@
 import { IField, IRatingField, Strings, t } from '@apitable/core';
 import { SelectValue } from 'antd/lib/select';
 import { Emoji } from 'pc/components/common';
+// eslint-disable-next-line no-restricted-imports
 import { Select, Button, useThemeColors } from '@apitable/components';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';

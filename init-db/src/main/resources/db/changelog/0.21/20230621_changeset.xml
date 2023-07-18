@@ -1,0 +1,55 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.21-20230621-001" author="ZZQ" labels="TableBundle">
+        <comment>datasheet snapshot tablebundle file</comment>
+        <sql>
+            create table ${table.prefix}datasheet_tablebundle
+            (
+                id              bigint unsigned                            not null comment 'Primary key'
+                    primary key,
+                space_id        varchar(50)                                not null comment 'Space Id',
+                dst_id          varchar(50)                                not null comment 'Datasheet ID',
+                tbd_id          varchar(50)                                not null comment 'tablebundle ID',
+                tablebundle_url varchar(128)                               not null comment 'tablebundle file s3 url',
+                name            varchar(128)                               not null comment 'tablebundle name',
+                type            int                                        null comment 'tablebundle type，0: template 1: snapshot',
+                status_code     int                                        null comment 'tablebundle status，0: generation tablebundle initiation 1:generation tablebundle complete 2: tablebundle deleted',
+                created_at      timestamp        default CURRENT_TIMESTAMP not null comment 'Created Time',
+                deleted_at      timestamp                                  null comment 'Deleted Time',
+                expired_at      bigint                                  null comment 'Expired Time',
+                created_by      bigint                                     null comment 'Create User',
+                deleted_by      bigint                                     null comment 'Delete User',
+                updated_at      timestamp        default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment 'Update Time',
+                is_deleted      tinyint unsigned default '0'               not null comment 'Delete tag (0: No, 1: Yes)',
+                updated_by      bigint                                     null comment 'Updated User',
+                constraint idx_tbd_id
+                    unique (tbd_id)
+            )
+                comment 'Datasheet-Tablebundle' collate = utf8mb4_unicode_ci
+                                    row_format = DYNAMIC;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

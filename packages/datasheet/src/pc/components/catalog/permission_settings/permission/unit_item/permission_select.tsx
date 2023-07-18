@@ -17,6 +17,7 @@
  */
 
 import * as React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Select, Tooltip, useThemeColors } from '@apitable/components';
 import { IRoleOption, IUnitInfo } from 'pc/components/catalog/permission_settings/permission/unit_item/interface';
 import styles from './style.module.less';

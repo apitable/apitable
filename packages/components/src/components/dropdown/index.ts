@@ -17,4 +17,5 @@
  */
 
 export * from './dropdown';
+export * from './laag_dropdown';
 export * from './interface';

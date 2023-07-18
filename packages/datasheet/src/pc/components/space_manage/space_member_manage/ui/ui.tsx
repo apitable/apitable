@@ -18,6 +18,7 @@
 
 import { FC } from 'react';
 import * as React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { IMemberInfoInSpace, Strings, t, Api, ISpaceBasicInfo } from '@apitable/core';
 import { TextButton } from '@apitable/components';

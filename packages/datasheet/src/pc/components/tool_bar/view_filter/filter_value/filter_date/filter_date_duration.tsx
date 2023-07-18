@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Select, useThemeColors } from '@apitable/components';
 import { FieldType, FilterDuration, FOperator, IFilterCondition, Strings, t } from '@apitable/core';
 import produce from 'immer';

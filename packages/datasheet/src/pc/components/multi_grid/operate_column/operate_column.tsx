@@ -24,6 +24,7 @@ import { store } from 'pc/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { useThemeColors } from '@apitable/components';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import classNames from 'classnames';
 import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, UncheckedOutlined } from '@apitable/icons';

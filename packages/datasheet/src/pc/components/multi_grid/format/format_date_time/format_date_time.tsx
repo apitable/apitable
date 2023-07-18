@@ -36,7 +36,9 @@ import settingStyles from '../../field_setting/styles.module.less';
 import { CollectTypeSelect } from './collect_type_select';
 import { FieldSelectModal } from './field_select_modal';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+// eslint-disable-next-line no-restricted-imports
 import { MobileSelect, Tooltip } from 'pc/components/common';
+// eslint-disable-next-line no-restricted-imports
 import { Checkbox, Select, colorVars } from '@apitable/components';
 import { omit } from 'lodash';
 import { QuestionCircleOutlined } from '@apitable/icons';

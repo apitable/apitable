@@ -23,10 +23,10 @@ import {
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
-import { message } from 'antd';
+import { message, Tabs } from 'antd';
 import dayjs from 'dayjs';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName, Backup } from 'enterprise';
 import { difference } from 'lodash';
 import { Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
@@ -45,13 +45,16 @@ import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
 import styles from './style.module.less';
 import { getForeignDatasheetIdsByOp } from './utils';
+import { TabPaneKeys } from './interface';
+
+const { TabPane } = Tabs;
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 
 export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const curDatasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
-  const [curPreview, setCurPreview] = useState<number>();
+  const [curPreview, setCurPreview] = useState<number | string>();
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
   const [uuidMap, setUuidMap] = useState<Record<string, IMemberInfoInAddressList>>();
@@ -249,53 +252,66 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
           style={{ position: 'absolute', right: 16 }}
         />
       </div>
-      <div className={styles.content} ref={contentRef}>
-
-        {isEmpty ?
-          <div className={styles.noList}>
-            <Image src={DataEmpty} width={240} height={180} alt='' />
-            <p>{t(Strings.rollback_history_empty)}</p>
-          </div> :
-          changesetList.map((item, index) => {
-            const memberInfo = uuidMap && uuidMap[item.userId!];
-            const title = memberInfo ? (getSocialWecomUnitName?.({
-              name: memberInfo?.memberName,
-              isModified: memberInfo?.isMemberNameModified,
-              spaceInfo
-            }) || memberInfo?.memberName) : '';
-            const ops = item.operations.filter(op => !op.cmd.startsWith('System'));
-            const expanded = expandMap[index];
-            return (
-              <section className={styles.listItem} key={item.messageId} data-active={index === curPreview}>
-                <h5>Message Id: {item.messageId}</h5>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>{t(Strings.rollback_version_field)}{item.revision}</span>
-                  <span>{t(Strings.rollback_time_field)}{dayjs(item.createdAt).format('MM/DD HH:mm:ss')}</span>
-                  <span>{t(Strings.rollback_operator_field)}{title}</span>
-                </div>
-                <div className={styles.operationWrap}>
-                  <div className={styles.cmdText}>
-                    cmd: {ops.map(op => op.cmd).join()}
-                  </div>
-                  <div className={styles.operation}>
-                    <TextButton disabled={isEmpty} onClick={() => onExpandClick(index)}>
-                      {expanded ? t(Strings.collapse) : t(Strings.expand)}
-                    </TextButton>
-                    <TextButton color='primary' disabled={isEmpty} onClick={() => onPreviewClick(index)}>{t(Strings.preview_revision)}</TextButton>
-                  </div>
-                </div>
-                {expanded && <pre><code>{JSON.stringify(ops, null, 2)}</code></pre>}
-              </section>
-            );
-          })}
-        {
-          !isEmpty && <div className={styles.bottomTip}>
+      <Tabs className={styles.tabs} onChange={() => {
+        dispatch(StoreActions.resetDatasheet(PREVIEW_DATASHEET_ID));
+        setCurPreview(undefined);
+      }}>
+        <TabPane tab={t(Strings.time_machine_action_title)} key={TabPaneKeys.ACTION}>
+          <div className={styles.content} ref={contentRef}>
+            {isEmpty ?
+              <div className={styles.noList}>
+                <Image src={DataEmpty} width={240} height={180} alt='' />
+                <p>{t(Strings.rollback_history_empty)}</p>
+              </div> :
+              changesetList.map((item, index) => {
+                const memberInfo = uuidMap && uuidMap[item.userId!];
+                const title = memberInfo ? (getSocialWecomUnitName?.({
+                  name: memberInfo?.memberName,
+                  isModified: memberInfo?.isMemberNameModified,
+                  spaceInfo
+                }) || memberInfo?.memberName) : '';
+                const ops = item.operations.filter(op => !op.cmd.startsWith('System'));
+                const expanded = expandMap[index];
+                return (
+                  <section className={styles.listItem} key={item.messageId} data-active={index === curPreview}>
+                    <h5>Message Id: {item.messageId}</h5>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>{t(Strings.rollback_version_field)}{item.revision}</span>
+                      <span>{t(Strings.rollback_time_field)}{dayjs(item.createdAt).format('MM/DD HH:mm:ss')}</span>
+                      <span>{t(Strings.rollback_operator_field)}{title}</span>
+                    </div>
+                    <div className={styles.operationWrap}>
+                      <div className={styles.cmdText}>
+                        cmd: {ops.map(op => op.cmd).join()}
+                      </div>
+                      <div className={styles.operation}>
+                        <TextButton disabled={isEmpty} onClick={() => onExpandClick(index)}>
+                          {expanded ? t(Strings.collapse) : t(Strings.expand)}
+                        </TextButton>
+                        <TextButton color='primary' disabled={isEmpty} onClick={() => onPreviewClick(index)}>
+                          {t(Strings.preview_revision)}
+                        </TextButton>
+                      </div>
+                    </div>
+                    {expanded && <pre><code>{JSON.stringify(ops, null, 2)}</code></pre>}
+                  </section>
+                );
+              })}
             {
-              noMore ? t(Strings.no_more) : t(Strings.data_loading)
+              !isEmpty && <div className={styles.bottomTip}>
+                {
+                  noMore ? t(Strings.no_more) : t(Strings.data_loading)
+                }
+              </div>
             }
           </div>
-        }
-      </div>
+        </TabPane>
+        {Boolean(Backup) && (
+          <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
+            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
+          </TabPane>
+        )}
+      </Tabs>
 
       <Portal visible={rollbackIng} zIndex={2000}>
         <div className={styles.mask}>

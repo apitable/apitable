@@ -16,5 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export * from './float_ui';
 export * from './tooltip';
 export * from './wrapper_tooltip.ignore';

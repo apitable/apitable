@@ -25,23 +25,18 @@ import { TriggerEventHelper } from '../helpers/trigger.event.helper';
 
 @Injectable()
 export class RecordUpdatedListener {
-
   private readonly options: IEventListenerOptions;
 
-  constructor(
-    private readonly triggerEventHelper: TriggerEventHelper,
-  ) {
+  constructor(private readonly triggerEventHelper: TriggerEventHelper) {
     this.options = defaultEventListenerOptions;
   }
 
   @OnEvent(OPEventNameEnums.RecordUpdated)
-  public handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
-
-    if(!isHandleEvent(event, event.beforeApply, this.options)) {
+  public async handleRecordUpdatedEvent(event: RecordUpdatedEvent) {
+    if (!isHandleEvent(event, event.beforeApply, this.options)) {
       return;
     }
 
-    this.triggerEventHelper.recordMatchConditionsTriggerHandler(event.context, event.metaContext);
+    await this.triggerEventHelper.recordMatchConditionsTriggerHandler(event.context, event.metaContext);
   }
-
 }

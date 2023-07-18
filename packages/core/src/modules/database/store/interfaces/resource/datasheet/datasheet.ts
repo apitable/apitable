@@ -349,6 +349,7 @@ export interface IDatasheetState extends INodeMeta {
    */
 
   preview?: string;
+  type?: string;
 }
 
 export interface ILoadingRecord {
@@ -819,6 +820,7 @@ export interface IPageParams {
   nodeId?: string;
   mirrorId?: string;
   embedId?: string;
+  aiId?: string
 }
 
 export interface ICollaboratorParams {

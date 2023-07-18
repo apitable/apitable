@@ -101,7 +101,7 @@ export const RobotDetailHead = () => {
         <span style={{ lineHeight: 1 }}>{t(Strings.robot_return)}</span>
       </TextButton>
       <Box display="flex" alignItems="center">
-        <Typography variant="h6">
+        <Typography variant="h6" ellipsis>
           {t(Strings.robot_config_panel_title)}
         </Typography>
         <Tooltip content={t(Strings.robot_config_panel_help_tooltip)} placement="top-center">

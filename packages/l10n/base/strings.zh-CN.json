@@ -364,6 +364,7 @@
   "api_params_recordids_empty_error": "recordId 参数值不能为空数组或者空值",
   "api_params_records_empty_error": "records 参数值不能为空数组或者空值",
   "api_params_records_max_count_error": "单次请求修改/删除/新增的记录不能超过 {count} 条",
+  "api_params_tablebundle_max_count_error": "创建失败，当前空间站为 {product}，只能保存 {count} 个历史版本。",
   "api_params_tree_select_can_not_operate": "多级联动列暂不允许编辑",
   "api_params_updated_time_can_not_operate": "修改时间列的值由系统自动生成，不允许编辑",
   "api_params_updatedby_can_not_operate": "修改人列的值由系统自动生成，不允许编辑",
@@ -3610,7 +3611,7 @@
   "public_link": "公开链接",
   "public_link_desc": "任何人可见的链接",
   "publish_link_tip": "发布一个所有人都可见的链接",
-  "publish_share_link_with_anyone": "通过公开链接分享内容给他人",
+  "publish_share_link_with_anyone": "通过公开链接分享${nodeName}给他人",
   "publish_to_dingtalk_workbench": "发布到钉钉工作台",
   "publishing": "出版业",
   "puerto_rico": "波多黎各",
@@ -5452,6 +5453,7 @@
   "api_param_unit_id_required": "参数 unitId 为必填项",
   "lookup_conditions_success": "神奇引用排序或筛选条件设置成功",
   "lookup_filter_sort_description": "添加条件",
+  "time_machine_action_title": "操作记录",
   "api_param_widget_id_not_exists": "widgetId 指定的小程序不存在",
   "revoke_changes": "撤销修改",
   "discard_changes": "取消",
@@ -5459,5 +5461,10 @@
   "save_view_configuration": "保存",
   "view_configuration_changes_have_been_reversed": "视图配置修改已撤销",
   "api_params_widget_package_id_error": "widgetPackageId 不能为空",
-  "api_widget_number_limit": "小程序数量已到达上限，创建失败"
+  "api_widget_number_limit": "小程序数量已到达上限，创建失败",
+  "invite": "邀请",
+  "publish": "发布",
+  "share_tips_title": "发布公开链接",
+  "share_copy_url_link": "复制链接",
+  "share_tips": "通过将你的文件以公开链接的形式进行发布。你可以允许他人通过公开链接对你的文件进行查看、编辑或转存。"
 }

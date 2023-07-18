@@ -35,6 +35,7 @@ import settingStyles from '../../field_setting/styles.module.less';
 import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
+// eslint-disable-next-line no-restricted-imports
 import { Checkbox, colorVars, Select } from '@apitable/components';
 import { omit } from 'lodash';
 

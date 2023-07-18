@@ -31,6 +31,7 @@ import {
   t,
 } from '@apitable/core';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getDetailByTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import {

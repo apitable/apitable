@@ -21,7 +21,7 @@ import { UserService } from 'user/services/user.service';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
 
-@Controller('nest/v1/robots/triggers')
+@Controller(['nest/v1/robots/triggers', 'nest/v1/automation/triggers'])
 export class RobotTriggerController {
   constructor(
     private readonly automationTriggerRepository: AutomationTriggerRepository,

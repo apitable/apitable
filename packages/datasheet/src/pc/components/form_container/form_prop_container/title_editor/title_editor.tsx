@@ -16,22 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useState } from 'react';
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { t, Strings, Selectors, FormApi, IFormProps, StoreActions } from '@apitable/core';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { FormApi, IFormProps, StoreActions, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import classnames from 'classnames';
 import { Message } from 'pc/components/common';
-import { IModeEnum, IBasePropEditorProps } from '../interface';
-import { useEffect } from 'react';
-import { useResponsive, useCatalogTreeRequest } from 'pc/hooks';
-import { useRequest } from 'pc/hooks';
+import { IBasePropEditorProps, IModeEnum } from '../interface';
+import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 
-export const TitleEditor: React.FC<React.PropsWithChildren<IBasePropEditorProps>> = props => {
-  const { mode, formId } = props;
-  const title = useSelector(state => Selectors.getForm(state)!.name);
+interface ITitleEditorProps extends IBasePropEditorProps {
+    title: string
+}
+
+export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> = props => {
+  const { mode, nodeId, title } = props;
   const [value, setValue] = useState<string>(title || '');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -41,10 +42,10 @@ export const TitleEditor: React.FC<React.PropsWithChildren<IBasePropEditorProps>
   const dispatch = useDispatch();
 
   const updateTitle = (partProps: Partial<IFormProps>) => {
-    FormApi.updateFormProps(formId, partProps).then(res => {
+    FormApi.updateFormProps(nodeId, partProps).then(res => {
       const { success } = res.data;
       if (success) {
-        dispatch(StoreActions.updateFormProps(formId, partProps));
+        dispatch(StoreActions.updateFormProps(nodeId, partProps));
       } else {
         Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
       }
@@ -55,7 +56,7 @@ export const TitleEditor: React.FC<React.PropsWithChildren<IBasePropEditorProps>
     if (value === title) {
       return;
     }
-    renameNode(formId, value);
+    renameNode(nodeId, value);
     updateTitle({ title: value });
   };
 
@@ -64,7 +65,7 @@ export const TitleEditor: React.FC<React.PropsWithChildren<IBasePropEditorProps>
       setValue(title);
     }
     // eslint-disable-next-line
-  }, [title, setValue]);
+    }, [title, setValue]);
 
   return (
     <div

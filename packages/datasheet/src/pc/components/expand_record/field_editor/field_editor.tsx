@@ -19,6 +19,7 @@
 import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useFocusEffect } from 'pc/components/editors/hooks/use_focus_effect';

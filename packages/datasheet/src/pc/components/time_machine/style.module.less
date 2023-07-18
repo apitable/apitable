@@ -17,15 +17,36 @@
   }
 }
 
+.tabs {
+  padding-left: 0 !important;
+  height: calc(100% - 50px);
+  :global {
+    .ant-tabs-nav-list {
+      margin-left: 16px;
+    }
+    .ant-tabs-tab {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .ant-tabs-content, .ant-tabs-tabpane {
+      height: 100%;
+    }
+  }
+}
+
 .wrap {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: hidden;
   background-color: var(--fc8);
   z-index: var(--zIndex-1);
+  :global {
+    .ant-tabs {
+      color: inherit !important;
+    }
+  }
 }
 
 .header {
@@ -39,12 +60,8 @@
 }
 
 .content {
-  position: absolute;
-  top: 49px;
-  bottom: 0;
-  left: 16px;
-  right: 16px;
-  padding: 16px 0;
+  padding-bottom: 16px;
+  height: 100%;
   overflow: auto;
 }
 .bottomTip {

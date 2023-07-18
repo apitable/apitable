@@ -11,6 +11,7 @@
   "MONTHLY": "月付",
   "NO_BILLING_PERIOD": "無",
   "No_open_functionality": "暫未開放",
+  "api_params_tablebundle_max_count_error": "创建失败，当前空间站为 {product}，只能保存 {count} 个历史版本。",
   "Public_Beta_Period": "公測期",
   "QR_code_invalid": "二維碼已失效",
   "Standalone_Capacity": "獨立附加容量",
