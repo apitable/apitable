@@ -95,6 +95,8 @@ socket:
 
 email:
   personal: ${EMAIL_PERSONAL:APITable}
+  emailFrom: ${MAIL_FROM:$MAIL_USERNAME}
+  noticeRecipient: ${NOTICE_EMAIL:devops@apitable.com}
 
 starter:
   socketio:

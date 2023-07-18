@@ -55,8 +55,6 @@ public class MailSendService implements MailTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSendService.class);
 
-    private final MailProperties properties;
-
     private final JavaMailSender sender;
 
     public MailSendService(MailProperties properties, JavaMailSender sender) {
@@ -91,7 +89,7 @@ public class MailSendService implements MailTemplate {
     private MimeMessage createMimeMessage(EmailMessage emailMessage) throws MessagingException, IOException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom(new InternetAddress(properties.getUsername(), emailMessage.getPersonal()));
+        helper.setFrom(new InternetAddress(emailMessage.getFrom(), emailMessage.getPersonal()));
         // set recipient
         helper.setTo(ArrayUtil.toArray(emailMessage.getTo(), String.class));
         // set CC

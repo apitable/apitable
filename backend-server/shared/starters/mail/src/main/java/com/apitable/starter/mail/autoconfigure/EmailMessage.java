@@ -42,6 +42,11 @@ public class EmailMessage {
     private List<String> to;
 
     /**
+     * Sending email address
+     */
+    private String from;
+
+    /**
      * Cc list (multiple supported
      */
     private List<String> cc;
@@ -86,6 +91,10 @@ public class EmailMessage {
     public void setTo(List<String> to) {
         this.to = to;
     }
+
+    public String getFrom() { return this.from; }
+
+    public void setFrom(String from) { this.from = from; }
 
     public List<String> getCc() {
         return cc;

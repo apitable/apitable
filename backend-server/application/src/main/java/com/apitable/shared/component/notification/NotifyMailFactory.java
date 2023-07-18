@@ -248,7 +248,7 @@ public class NotifyMailFactory {
             null,
             null,
             textBtl,
-            Collections.singletonList("devops@apitable.com"));
+            Collections.singletonList(emailSendProperties.getNoticeRecipient()));
     }
 
     /**
@@ -296,6 +296,7 @@ public class NotifyMailFactory {
         emailMessage.setPersonal(personal);
         emailMessage.setSubject(subject);
         emailMessage.setTo(to);
+        emailMessage.setFrom(emailSendProperties.getEmailFrom());
         if (subjectType != null) {
             return;
         }
@@ -320,6 +321,7 @@ public class NotifyMailFactory {
         message.setSubject(subject);
         message.setPersonal(emailSendProperties.getPersonal());
         message.setTo(to);
+        message.setFrom(emailSendProperties.getEmailFrom());
         message.setTemplateId(mailFacade.getCloudMailTemplateId(lang, subjectType));
         JSONObject obj = JSONUtil.createObj();
         obj.putAll(dict);
@@ -339,6 +341,7 @@ public class NotifyMailFactory {
             emailMessage.setPersonal(emailSendProperties.getPersonal());
             emailMessage.setSubject(subject);
             emailMessage.setTo(Collections.singletonList(to.get(i)));
+            emailMessage.setFrom(emailSendProperties.getEmailFrom());
             emailMessage.setPlainText(plainText);
             emailMessage.setHtmlText(htmlBody);
             messages[i] = emailMessage;

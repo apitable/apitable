@@ -41,4 +41,14 @@ public class EmailSendProperties {
      * Signature of all messages
      */
     private String personal;
+
+    /**
+     * From email of all messages
+     */
+    private String emailFrom;
+
+    /**
+     * Email address to receive notifications via notify()
+     */
+    private String noticeRecipient;
 }
