@@ -321,7 +321,6 @@ public class NotifyMailFactory {
         message.setSubject(subject);
         message.setPersonal(emailSendProperties.getPersonal());
         message.setTo(to);
-        message.setFrom(emailSendProperties.getEmailFrom());
         message.setTemplateId(mailFacade.getCloudMailTemplateId(lang, subjectType));
         JSONObject obj = JSONUtil.createObj();
         obj.putAll(dict);
