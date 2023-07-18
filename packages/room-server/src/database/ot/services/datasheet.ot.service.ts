@@ -49,6 +49,14 @@ import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
+import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
+import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
+import { DatasheetRecordEntity } from 'database/datasheet/entities/datasheet.record.entity';
+import { RecordCommentEntity } from 'database/datasheet/entities/record.comment.entity';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { RecordCommentService } from 'database/datasheet/services/record.comment.service';
 import { EffectConstantName, ICommonData, IFieldData, IRestoreRecordInfo } from 'database/ot/interfaces/ot.interface';
 import produce from 'immer';
 import { chunk, intersection, isEmpty, pick, update } from 'lodash';
@@ -64,15 +72,6 @@ import { Logger } from 'winston';
 import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { WidgetService } from '../../widget/services/widget.service';
-import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
-import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
-import { DatasheetRecordEntity } from 'database/datasheet/entities/datasheet.record.entity';
-import { RecordCommentEntity } from 'database/datasheet/entities/record.comment.entity';
-import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
-import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
-import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { RecordCommentService } from 'database/datasheet/services/record.comment.service';
-import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
 
 @Injectable()
 export class DatasheetOtService {
@@ -86,8 +85,8 @@ export class DatasheetOtService {
     // private readonly envConfigService: EnvConfigService,
     private readonly recordAlarmService: DatasheetRecordAlarmBaseService,
     private readonly datasheetService: DatasheetService,
-    private readonly recordSubscriptionService: DatasheetRecordSubscriptionBaseService,
-  ) {}
+  ) {
+  }
 
   private static isAttachField(cellValue: any): boolean {
     return !!(cellValue && Array.isArray(cellValue) && cellValue[0]?.mimeType && cellValue[0]?.token);
@@ -1318,10 +1317,6 @@ export class DatasheetOtService {
     // ======== Create/delete datetime alarm BEGIN ========
     await this.recordAlarmService.handleRecordAlarms(manager, commonData, resultSet);
     // ======== Create/delete datetime alarm END ========
-
-    // ======== Create/cancel auto subscriptions BEGIN ========
-    await this.recordSubscriptionService.handleRecordAutoSubscriptions(manager, commonData, resultSet);
-    // ======== Create/delete auto subscriptions END   ========
 
     // Update database parallelly
     await Promise.all([
