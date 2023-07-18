@@ -138,7 +138,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
         }
         {isOpen && (
           <FloatingPortal>
-            <FloatingFocusManager context={context} modal={false}>
+            <FloatingFocusManager context={context}>
               <div
                 className={classNames(className,clazz?.overlay)}
                 ref={refs.setFloating}
