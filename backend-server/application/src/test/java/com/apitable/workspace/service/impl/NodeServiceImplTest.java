@@ -33,6 +33,7 @@ import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
+import com.apitable.workspace.ro.NodeOpRo.AiChatBotCreateParam;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodePathVo;
@@ -66,6 +67,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .type(NodeType.AI_CHAT_BOT.getNodeType())
             .nodeName("ChatBot Assistant")
             .checkDuplicateName(false)
+            .aiCreateParams(AiChatBotCreateParam.builder().build())
             .build();
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
