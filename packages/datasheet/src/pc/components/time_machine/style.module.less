@@ -18,9 +18,16 @@
 }
 
 .tabs {
-  padding-left: 8px !important;
+  padding-left: 0 !important;
   height: calc(100% - 50px);
   :global {
+    .ant-tabs-nav-list {
+      margin-left: 16px;
+    }
+    .ant-tabs-tab {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
     .ant-tabs-content, .ant-tabs-tabpane {
       height: 100%;
     }
@@ -33,7 +40,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: hidden;
   background-color: var(--fc8);
   z-index: var(--zIndex-1);
   :global {

@@ -137,12 +137,12 @@ const DatasheetMain = (props: IDatasheetMain) => {
         )}
       </div>
       <SuspensionPanel shareId={shareId} datasheetId={datasheetId} />
-      {(preview || testFunctions) && (
+      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && (
         <div className={styles.previewing}>
           <div className={styles.previewTip}>
             {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
             {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
-            {preview && (previewDstType !== PREVIEW_DATASHEET_BACKUP) &&
+            {preview &&
               <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }}
                 onClick={exportPreviewCsv}>{t(Strings.export_current_preview_view_data)}</span>}
           </div>
