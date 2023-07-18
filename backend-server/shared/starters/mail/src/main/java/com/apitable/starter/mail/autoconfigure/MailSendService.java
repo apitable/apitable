@@ -55,6 +55,8 @@ public class MailSendService implements MailTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSendService.class);
 
+    private final MailProperties properties;
+
     private final JavaMailSender sender;
 
     public MailSendService(MailProperties properties, JavaMailSender sender) {
