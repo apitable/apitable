@@ -16,25 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum USER_ROOM {
+export enum UserRoom {
   PREFIX = 'cache:online:room:',
   // 3 days
   EXPIRE = 259200,
 }
 
-export enum USER_LANGUAGE {
-  PREFIX = 'cache:language:user:',
-  // 3 days
-  EXPIRE = 259200,
-}
-
-export enum CONFIG_CACHE {
-  PREFIX = 'cache:config:',
-  // 30 days
-  EXPIRE = 2592000,
-}
-
-export enum SOCKET_CACHE {
+export enum SocketCache {
   PREFIX = 'cache:socket:',
   // 30 days
   EXPIRE = 2592000,

@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import { Select } from './index';
+import { Select, DropdownSelect } from './index';
 import { Tooltip } from '../tooltip';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
@@ -56,8 +56,35 @@ WithData.args = {
   options: data
 };
 
+export const DropdownSelectDisabled = () => {
+  const [value, setValue] = React.useState('opt15');
+  return (
+    <DropdownSelect
+      disabled
+      options={data}
+      value={value}
+      onSelected={(option) => {
+        setValue(option.value as string);
+      }}
+    />
+  );
+};
+
+export const DropdownSelectItem = () => {
+  const [value, setValue] = React.useState('opt15');
+  return (
+    <DropdownSelect
+      options={data}
+      value={value}
+      onSelected={(option) => {
+        setValue(option.value as string);
+      }}
+    />
+  );
+};
+
 export const SelectItem = () => {
-  const [value, setValue] = React.useState('opt1');
+  const [value, setValue] = React.useState('opt15');
   return (
     <Select
       options={data}

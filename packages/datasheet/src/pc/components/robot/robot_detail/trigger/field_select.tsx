@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { ITheme, Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
 import {

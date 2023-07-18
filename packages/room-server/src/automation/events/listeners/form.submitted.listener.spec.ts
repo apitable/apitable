@@ -68,8 +68,8 @@ describe('FormSubmittedListener', () => {
     formSubmittedListener = module.get<FormSubmittedListener>(FormSubmittedListener);
   });
 
-  afterAll(() => {
-    module.close();
+  afterAll(async() => {
+    await module.close();
   });
 
   it('should be defined', () => {

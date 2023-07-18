@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 

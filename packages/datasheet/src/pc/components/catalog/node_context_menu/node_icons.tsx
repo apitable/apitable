@@ -47,7 +47,8 @@ import {
   DatasheetOutlined,
   IIconProps, MirrorOutlined, InfoCircleOutlined,
   ChevronRightOutlined,
-  FolderRightOutlined
+  FolderRightOutlined, RobotOutlined,
+  RefreshOutlined
 } from '@apitable/icons';
 import { colorVars } from '@apitable/components';
 
@@ -58,46 +59,48 @@ import { colorVars } from '@apitable/components';
  * @enum {string}
  */
 export enum NodeIcon {
-  Arrow = 'arrow',
-  Search = 'search',
-  Add = 'add',
-  More = 'more',
-  AddFolder = 'add_folder',
-  AddFile = 'add_file',
-  Rename = 'rename',
-  Delete = 'delete',
-  Import = 'import',
-  Export = 'export',
-  ExportCsv = 'export_csv',
-  ExportXlsx = 'export_xlsx',
-  AddDatasheet = 'add_datasheet',
-  AddDashboard = 'AddDashboard',
-  AddForm = 'add_form',
-  Copy = 'copy',
-  Permission = 'permission',
-  Share = 'share',
-  Emoji = 'emoji',
-  Csv = 'csv',
-  Excel = 'excel',
-  Image = 'image',
-  Template = 'template',
-  Favorite = 'favorite',
-  UnFavorite = 'un_favorite',
-  Url = 'url',
-  NodeInfo = 'node_info',
-  Folder = 'folder',
-  OpenFolder = 'open_folder',
-  EmptyFolder = 'empty_folder',
-  Datasheet = 'datasheet',
-  Form = 'form',
-  Dashboard = 'dashboard',
-  Mirror = 'Mirror',
-  MoveTo = 'MoveTo',
+    Arrow = 'arrow',
+    Search = 'search',
+    Add = 'add',
+    More = 'more',
+    AddFolder = 'add_folder',
+    AddFile = 'add_file',
+    Rename = 'rename',
+    Delete = 'delete',
+    Import = 'import',
+    Export = 'export',
+    ExportCsv = 'export_csv',
+    ExportXlsx = 'export_xlsx',
+    AddDatasheet = 'add_datasheet',
+    AddDashboard = 'AddDashboard',
+    AddForm = 'add_form',
+    Copy = 'copy',
+    Permission = 'permission',
+    Share = 'share',
+    Emoji = 'emoji',
+    Csv = 'csv',
+    Excel = 'excel',
+    Image = 'image',
+    Template = 'template',
+    Favorite = 'favorite',
+    UnFavorite = 'un_favorite',
+    Url = 'url',
+    NodeInfo = 'node_info',
+    Folder = 'folder',
+    OpenFolder = 'open_folder',
+    EmptyFolder = 'empty_folder',
+    Datasheet = 'datasheet',
+    Form = 'form',
+    Dashboard = 'dashboard',
+    Mirror = 'Mirror',
+    MoveTo = 'MoveTo',
+    Ai = 'Ai',
+    CreateBackup = 'CreateBackup',
 }
 
 // Enumeration and Resource Location Matching Table
 export const nodeIconImportMap: {
-  [iconName: string]: React.FC<React.PropsWithChildren<IIconProps>>
+    [iconName: string]: React.FC<React.PropsWithChildren<IIconProps>>
 } = {
   [NodeIcon.Search]: SearchOutlined,
   [NodeIcon.Add]: AddOutlined,
@@ -132,7 +135,9 @@ export const nodeIconImportMap: {
   [NodeIcon.Mirror]: MirrorOutlined,
   [NodeIcon.NodeInfo]: InfoCircleOutlined,
   [NodeIcon.Arrow]: ChevronRightOutlined,
-  [NodeIcon.MoveTo]: FolderRightOutlined
+  [NodeIcon.MoveTo]: FolderRightOutlined,
+  [NodeIcon.Ai]: RobotOutlined,
+  [NodeIcon.CreateBackup]: RefreshOutlined,
 };
 
 /**

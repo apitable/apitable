@@ -24,6 +24,7 @@ import {
   ForwardRefRenderFunction,
 } from 'react';
 import { useSize } from 'ahooks';
+// eslint-disable-next-line no-restricted-imports
 import { Select, TextInput, ITextInputProps, IOption } from '@apitable/components';
 import { SystemConfig, t, Strings, getLanguage } from '@apitable/core';
 import { TelephoneFilled } from '@apitable/icons';

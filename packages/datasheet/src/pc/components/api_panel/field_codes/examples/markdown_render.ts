@@ -29,8 +29,16 @@ import { copyOutlinedStr, debugOutlinedStr } from '../icons';
 import { DEBUG_BUTTON_CLASS_NAME } from '../doc_inner_html';
 import { getEnvVariables } from 'pc/utils/env';
 
-new Clipboard('.markdown-it-code-button-copy');
-const { APIFOX_DEBUG_PATCH_URL, APIFOX_DEBUG_POST_URL, APIFOX_DEBUG_DELETE_URL, APIFOX_DEBUG_GET_URL, APIFOX_DEBUG_UPLOAD_URL } = getEnvVariables();
+if (!process.env.SSR) {
+  new Clipboard('.markdown-it-code-button-copy');
+}
+const {
+  APIFOX_DEBUG_PATCH_URL,
+  APIFOX_DEBUG_POST_URL,
+  APIFOX_DEBUG_DELETE_URL,
+  APIFOX_DEBUG_GET_URL,
+  APIFOX_DEBUG_UPLOAD_URL
+} = getEnvVariables();
 
 const displayDebuggerButton = (str: string, lang: string) => {
   if (lang !== 'shell') {
@@ -59,15 +67,15 @@ const md = new MarkdownIt({
     if (lang) {
       const langObject = Prism.languages[lang];
       // Online commissioning
-      const onlineDebugButton = `<button ${displayDebuggerButton(str,lang) ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
+      const onlineDebugButton = `<button ${displayDebuggerButton(str, lang) ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
       >${debugOutlinedStr}${t(Strings.request_in_api_panel_curl)}</button>`;
       try {
         return (
-          `<pre 
+          `<pre
             class="language-${lang}"
-            style="position: relative"
+            style="position: relative; white-space: normal;"
           ><code style="white-space: pre-wrap;">${Prism.highlight(str, langObject, lang)}</code>
-            <div class="markdown-it-code-button-wrap"><button 
+            <div class="markdown-it-code-button-wrap"><button
               data-clipboard-text="${md.utils.escapeHtml(str)}"
               class="markdown-it-code-button-copy">${copyOutlinedStr}${t(Strings.copy_link)}</button>
               ${onlineDebugButton}

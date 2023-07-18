@@ -20,6 +20,7 @@ import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } fr
 import { Popover } from 'antd';
 import { find, isEqual, values } from 'lodash';
 import uniqBy from 'lodash/uniqBy';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';

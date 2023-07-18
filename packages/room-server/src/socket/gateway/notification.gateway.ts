@@ -22,10 +22,10 @@ import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSo
 import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
 import { NotificationTypes } from 'shared/enums/request-types.enum';
 import { HttpExceptionFilter } from 'socket/filter/http-exception.filter';
-import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { NodeChangeRo } from 'socket/ros/notification/node-change.ro';
 import { NodeBrowsedRo } from 'socket/ros/notification/node.browsed.ro';
-import { NotificationRo } from 'socket/ros/notification/notification.ro';
+import { INotificationRo } from 'socket/ros/notification/notification.ro';
 import { WatchSpaceRo } from 'socket/ros/notification/watch-space.ro';
 import { NotificationService } from 'socket/services/notification/notification.service';
 
@@ -47,7 +47,7 @@ export class NotificationGateway {
 
   @UseFilters(HttpExceptionFilter)
   @SubscribeMessage(NotificationTypes.NOTIFY)
-  playerNotify(@MessageBody() message: NotificationRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
+  playerNotify(@MessageBody() message: INotificationRo, @ConnectedSocket() client: IAuthenticatedSocket): boolean {
     if (isNil(client.auth.userId)) {
       return false;
     }
@@ -57,17 +57,17 @@ export class NotificationGateway {
   }
 
   @SubscribeMessage(NotificationTypes.WATCH_SPACE)
-  watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+  watchSpace(@MessageBody() message: WatchSpaceRo, @ConnectedSocket() client: IAuthenticatedSocket): Promise<boolean> {
     return this.notificationService.watchSpace(message, client);
   }
 
   @SubscribeMessage(NotificationTypes.NODE_CHANGE)
-  nodeChange(@MessageBody() message: NodeChangeRo, @ConnectedSocket() client: AuthenticatedSocket): boolean {
+  nodeChange(@MessageBody() message: NodeChangeRo, @ConnectedSocket() client: IAuthenticatedSocket): boolean {
     return this.notificationService.nodeChange(message, client);
   }
 
   @SubscribeMessage(NotificationTypes.NODE_BROWSED)
-  async nodeBrowsed(@MessageBody() message: NodeBrowsedRo, @ConnectedSocket() client: AuthenticatedSocket): Promise<boolean> {
+  async nodeBrowsed(@MessageBody() message: NodeBrowsedRo, @ConnectedSocket() client: IAuthenticatedSocket): Promise<boolean> {
     return await this.notificationService.nodeBrowsed(message.nodeId, client.auth.userId);
   }
 }

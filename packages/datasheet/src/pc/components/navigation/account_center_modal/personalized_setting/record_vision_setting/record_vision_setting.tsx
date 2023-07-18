@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';

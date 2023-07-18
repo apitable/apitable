@@ -23,6 +23,7 @@ import { useLocalStorageState } from 'ahooks';
 import { Dropdown, Menu } from 'antd';
 import classNames from 'classnames';
 import { pick } from 'lodash';
+// eslint-disable-next-line no-restricted-imports
 import { MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';

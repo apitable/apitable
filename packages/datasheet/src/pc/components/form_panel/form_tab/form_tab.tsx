@@ -21,6 +21,7 @@ import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strin
 import { ListOutlined } from '@apitable/icons';
 import { useSize } from 'ahooks';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';

@@ -54,6 +54,10 @@ export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({
   isTriggerRender
 }) => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  console.log({
+    treeNodesMap,
+    data
+  });
   const { nodeName } = treeNodesMap[data.nodeId];
 
   if (isTriggerRender) {
@@ -67,7 +71,7 @@ export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({
         <Modal
           className={styles.shareNodeModal}
           visible={visible}
-          width={500}
+          width={528}
           bodyStyle={{ padding: 0 }}
           onCancel={onClose}
           destroyOnClose

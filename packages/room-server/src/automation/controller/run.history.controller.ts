@@ -19,7 +19,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
 
-@Controller('nest/v1/robots/run-history')
+@Controller(['nest/v1/robots/run-history', 'nest/v1/automation/run-history'])
 export class RobotRunHistoryController {
   constructor(
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,

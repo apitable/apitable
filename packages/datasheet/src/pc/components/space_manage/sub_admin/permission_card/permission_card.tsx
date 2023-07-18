@@ -20,6 +20,7 @@ import { FC } from 'react';
 import { Checkbox } from 'antd';
 import { Strings, t, IReduxState } from '@apitable/core';
 import styles from './style.module.less';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useSelector } from 'react-redux';
 // @ts-ignore

@@ -78,6 +78,11 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
         return false;
       }
 
+      if(data.password !== data.confirmPassword) {
+        errorMsg.confirmPassword = t(Strings.password_not_identical_err);
+        return false;
+      }
+
       return true;
     };
 

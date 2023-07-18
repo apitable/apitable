@@ -1,5 +1,24 @@
 @import "~pc/styles/lib_mixins.less";
 
+.overlayStyle {
+  z-index: 1002;
+  width: 320px;
+  background:  var(--highestBg);
+  box-shadow:  var(--shadowCommonHigh);
+  border-radius: 4px;
+  border: 1px solid var(--borderCommonDefault);
+}
+
+
+.badgeIcon {
+  :global {
+      .ant-badge-dot {
+        background:var(--bgDangerDefault);
+        box-shadow:0 0 0 1px var(--bgCommonLower);
+      }
+  }
+}
+
 .syncSpan {
   transition: fill 0.3s;
   position: relative;
@@ -41,6 +60,10 @@
     position: absolute;
     top: 14px;
     right: 14px;
+    border-radius: 4px;
+  }
+  .title {
+    max-width: calc(100% - 20px);
   }
   .title {
     max-width: calc(100% - 20px);

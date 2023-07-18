@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ThemeProvider, WrapperTooltip } from '@apitable/components';
+import { Button, ThemeProvider, WrapperTooltip, Typography } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
@@ -68,9 +68,9 @@ const SettingHead: React.FC<React.PropsWithChildren<ISettingHeadProps>> = ({ rou
           {t(Strings.back)}
         </div>
       }
-      <div className={styles.title} style={{ marginRight: route !== KanbanRoute.Init ? 44 : 0 }}>
+      <Typography ellipsis variant="h6" className={styles.title} style={{ marginRight: route !== KanbanRoute.Init ? 44 : 0 }}>
         {t(Strings.kanban_setting_title)}
-      </div>
+      </Typography>
       <span />
     </div>
   );

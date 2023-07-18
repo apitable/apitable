@@ -23,6 +23,7 @@ import useSWRInfinite from 'swr/infinite';
 import { getRobotRunHistoryList } from '../../api';
 import { useRobot } from '../../hooks';
 import { RobotRunHistoryItem } from './robot_run_history_item';
+import styles from './style.module.less';
 
 const PAGE_SIZE = 20;
 
@@ -51,14 +52,15 @@ export const RobotRunHistory = () => {
   const theme = useTheme();
   return <>
     <Box padding="16px">
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="start">
         <Box
           height="12px"
           width="2px"
           backgroundColor={theme.color.fc0}
           marginRight="4px"
+          marginTop="4px"
         />
-        <Typography variant="body3" color={theme.color.fc3}>
+        <Typography variant="body3" color={theme.color.fc3} className={styles.historyTitle}>
           <div dangerouslySetInnerHTML={{ __html: t(Strings.robot_run_history_desc) }} />
         </Typography>
       </Box>

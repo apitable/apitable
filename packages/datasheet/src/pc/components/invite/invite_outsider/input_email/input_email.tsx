@@ -18,6 +18,7 @@
 
 import { Button, TextButton, TextInput } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useEmailInviteInModal } from 'pc/hooks';
 import { forwardRef, useEffect, useState } from 'react';

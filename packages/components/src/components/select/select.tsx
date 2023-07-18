@@ -42,6 +42,12 @@ const _renderValue = (option: IOption) => {
 const _Highlighter: any = Highlighter;
 const _GlobalStyle: any = GlobalStyle;
 
+/**
+ * @deprecated
+ * please use DropdownSelect instead ,  rc-trigger is deprecated
+ * @param props
+ * @constructor
+ */
 export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
 } = (props) => {
@@ -55,6 +61,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
   const theme = useProviderTheme();
   const inputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<any>();
+  const listContainer = useRef<HTMLDivElement>(null);
   const [visible, { toggle: toggleVisible, set: setVisible }] = useToggle(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [keyword, setKeyword] = React.useState('');
@@ -146,6 +153,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
           ...listStyle,
           maxWidth: dropdownMatchSelectWidth ? '' : maxListWidth
         }}
+        ref={listContainer}
       >
         {
           dropdownRender || <ListDeprecate
@@ -175,6 +183,13 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
     );
   };
 
+  const checked2View = () => {
+    setTimeout(() => {
+      const selectedItemElement = listContainer.current?.querySelector('.isChecked');
+      selectedItemElement?.scrollIntoView({ block: 'nearest' });
+    }, 20);
+  };
+
   const triggerClick = () => {
     if (disabled) {
       return;
@@ -185,6 +200,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
       }, 100);
     }
     toggleVisible();
+    checked2View();
   };
 
   return <>

@@ -7271,6 +7271,21 @@
     },
     {
       "show": true,
+      "key": "cmd+shift+s",
+      "winKey": "ctrl+shift+s",
+      "name": [
+        "create_backup"
+      ],
+      "when": "!isRecordExpanding",
+      "id": "cmd+shift+S",
+      "command": "CreateBackup",
+      "description": "创建历史备份",
+      "type": [
+        "workbenck_shortcuts"
+      ]
+    },
+    {
+      "show": true,
       "key": "ctrl+t",
       "winKey": "alt+t",
       "name": [

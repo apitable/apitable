@@ -18,7 +18,7 @@
 
 import { useCloudStorage, useMeta, useViewsMeta } from '../../hooks';
 import React from 'react';
-import { Select } from '@apitable/components';
+import { DropdownSelect as Select } from '@apitable/components';
 import { useMount } from 'ahooks';
 import { InstallPosition, IOption, IViewPicker } from 'interface';
 import { noop } from 'lodash';

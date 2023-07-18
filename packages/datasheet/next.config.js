@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @type {import('next').NextConfig} */
 /* eslint no-undef: 0 */
 const withLess = require('next-with-less')
 const path = require('path')
@@ -45,7 +44,7 @@ const plugins = [
     withBundleAnalyzer({enabled: process.env.ANALYZE === 'true'})
   ]
 ]
-
+/** @type {import('next').NextConfig} */
 module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
@@ -70,6 +69,7 @@ module.exports = withPlugins(plugins, {
       pathname: '/assets/**'
     }]
   },
+  swcMinify: true,
   poweredByHeader: false,
   publicRuntimeConfig: {
     // use local public folder for editions, e.g. apitable

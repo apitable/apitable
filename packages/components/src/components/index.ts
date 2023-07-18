@@ -34,6 +34,7 @@ export * from './text_button';
 export * from './link_button';
 export * from './space';
 export * from './tooltip';
+export * from './dropdown/laag_dropdown';
 export * from './list_deprecate';
 export * from './double_select';
 export * from './loading';
