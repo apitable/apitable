@@ -73,7 +73,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.apiPanelContainer}>
-      <h1 className={styles.panelTitle}>
+      <h5 className={styles.panelTitle}>
         <ApiOutlined size={24} color={colors.primaryColor} />
         {t(Strings.api_panel_title)}
         {
@@ -103,7 +103,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             {t(Strings.request_in_api_panel)}
           </Button>
         }
-      </h1>
+      </h5>
       <h2 className={styles.panelName}>
         <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
