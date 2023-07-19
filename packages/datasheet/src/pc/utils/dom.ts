@@ -194,22 +194,39 @@ function copySuccess() {
   Message.success({ content: t(Strings.message_copy_link_successfully) });
 }
 
+function copyFailed() {
+  Message.error({ content: t(Strings.message_copy_link_failed) });
+}
+
 const CLIPBOARD_INPUT = 'CLIPBOARD_INPUT';
 
-export function copy2clipBoard(content: string, successFn: () => void = copySuccess) {
+function copyLinkWithInput(content: string, successFn: () => void = copySuccess) {
   let input = document.getElementById(CLIPBOARD_INPUT) as HTMLInputElement;
   if (!input) {
     input = document.createElement('input');
     input.id = CLIPBOARD_INPUT;
     document.body.appendChild(input);
   }
-
   input.setAttribute('value', content);
   input.setAttribute('readonly', 'readonly');
   input.select();
   // Asynchronous operations in safari browser return false
   if (document.execCommand('copy')) {
     successFn();
+  } else {
+    copyFailed();
+  }
+}
+
+export function copy2clipBoard(content: string, successFn: () => void = copySuccess) {
+  if (navigator?.clipboard?.writeText) {
+    navigator.clipboard.writeText(content).then(() => {
+      successFn();
+    }, () => {
+      copyLinkWithInput(content, successFn);
+    });
+  } else {
+    copyLinkWithInput(content, successFn);
   }
 }
 

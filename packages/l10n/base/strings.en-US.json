@@ -2819,6 +2819,7 @@
   "message_copy_failed": "Paste failed",
   "message_copy_failed_reasoned_by_wrong_type": "Can't fill the pasted content into this type of field",
   "message_copy_link_successfully": "Copied",
+  "message_copy_link_failed": "Copy failed",
   "message_copy_succeed": "Pasted",
   "message_delete_template_successfully": "Template deleted",
   "message_display_count": "${count} new message(s)",

@@ -2858,6 +2858,7 @@
   "message_copy_failed": "粘贴失败",
   "message_copy_failed_reasoned_by_wrong_type": "粘贴的内容无法填入该类型单元格",
   "message_copy_link_successfully": "复制成功",
+  "message_copy_link_failed": "复制失败",
   "message_copy_succeed": "粘贴成功",
   "message_delete_template_successfully": "删除模板成功",
   "message_display_count": "${count}条新消息",

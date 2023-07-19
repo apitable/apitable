@@ -2857,6 +2857,7 @@ export type StringKeysMapType = {
   'message_coping': 'message_coping',
   'message_copy_failed': 'message_copy_failed',
   'message_copy_failed_reasoned_by_wrong_type': 'message_copy_failed_reasoned_by_wrong_type',
+  'message_copy_link_failed': 'message_copy_link_failed',
   'message_copy_link_successfully': 'message_copy_link_successfully',
   'message_copy_succeed': 'message_copy_succeed',
   'message_delete_template_successfully': 'message_delete_template_successfully',
