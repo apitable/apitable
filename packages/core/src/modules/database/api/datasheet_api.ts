@@ -460,9 +460,9 @@ export const deleteDatasheetTablebundle = (nodeId: string, tablebundleId: string
 };
 
 // recover datasheet snapshot
-export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string) => {
+export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string, recoverNameSuffix: string) => {
   return axios.post<IApiWrapper & { data: IRecoverDatasheetTablebundles }>(
-    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId }), undefined, { baseURL }
+    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId, name: recoverNameSuffix }), undefined, { baseURL }
   );
 };
 

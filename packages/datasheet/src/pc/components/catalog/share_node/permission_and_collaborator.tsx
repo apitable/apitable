@@ -25,7 +25,7 @@ import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
 import { getEnvVariables } from 'pc/utils/env';
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { UnitPermissionSelect } from '../../field_permission/unit_permission_select';
-import { useCatalogTreeRequest, useRequest, useResponsive, NodeChangeInfoType } from 'pc/hooks';
+import { useCatalogTreeRequest, useRequest, NodeChangeInfoType } from 'pc/hooks';
 import { copy2clipBoard, permissionMenuData } from 'pc/utils';
 import { expandInviteModal } from '../../invite';
 // @ts-ignore
@@ -36,12 +36,9 @@ import { IMemberList } from '../permission_settings_plus/permission';
 import { IShareContentProps } from './interface';
 import { LinkOutlined } from '@apitable/icons';
 import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
-import { ScreenSize } from 'pc/components/common/component_display';
 
 export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const { screenIsAtMost } = useResponsive();
-  const isMobile = screenIsAtMost(ScreenSize.md);
   const socketData = useSelector(state => state.catalogTree.socketData);
   const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
   const {

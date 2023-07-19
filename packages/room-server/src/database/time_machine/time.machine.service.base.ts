@@ -23,7 +23,8 @@ export abstract class TimeMachineBaseService{
     return await Promise.resolve();
   }
 
-  public async recoverTableBundle(_userId: string, _tablebundleId: string, _spaceId :string, _dstId: string, _folderId: string): Promise<any> {
+  public async recoverTableBundle(_userId: string, _tablebundleId: string, _spaceId :string,
+    _dstId: string, _folderId: string, _name: string): Promise<any> {
     return await Promise.resolve();
   }
 

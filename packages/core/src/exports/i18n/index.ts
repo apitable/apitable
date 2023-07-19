@@ -75,13 +75,21 @@ const loadLanguage = (lang: string) => {
     }
   } else {
     try {
-      const path = require('path');
+      // load language for room-server. suitable for docker environment
       const fs = require('fs');
-      const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
-      const jsonData = fs.readFileSync(pagesDirectory);
-      data = JSON.parse(jsonData.toString());
-    } catch(error) {
-      console.error('load strings.json error', error);
+      const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
+      data = JSON.parse(jsonData);
+    } catch (_e) {
+      // load language for frontend
+      try {
+        const path = require('path');
+        const fs = require('fs');
+        const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
+        const jsonData = fs.readFileSync(pagesDirectory);
+        data = JSON.parse(jsonData);
+      } catch (error) {
+        console.error('load strings.json error', error);
+      }
     }
   }
   return data;
