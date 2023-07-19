@@ -5463,7 +5463,7 @@
   "api_widget_number_limit": "The number of widget has reached the upper limit, and the creation failed.",
   "invite": "Invite",
   "publish": "Publish",
-  "share_tips_title": "Publish",
+  "share_tips_title": "Publish share link",
   "share_copy_url_link": "Copy link",
   "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions."
 }
