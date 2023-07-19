@@ -135,8 +135,8 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
   });
 
   const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
+  const showSortBorderRef = useRef(false);
 
-  const [showSortBorder, setShowSortBorder] = useState(false);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -265,11 +265,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
               const maxVirtualHeight = !rowCreatable ? _maxVirtualHeight + ADD_BUTTON_HEIGHT : _maxVirtualHeight;
               const isMaxVirtualHeight = virtualHeightInner > maxVirtualHeight;
               const virtualHeight = isMaxVirtualHeight ? maxVirtualHeight : virtualHeightInner;
-              if (snapshot.isDraggingOver && keepSort) {
-                setShowSortBorder(true);
-              } else {
-                setShowSortBorder(false);
-              }
+              showSortBorderRef.current = Boolean(snapshot.isDraggingOver && keepSort);
               return itemCount === 0 ? (
                 <div ref={provided.innerRef} className={styles.placeHolder}>
                   {t(Strings.kanban_no_data)}
@@ -297,7 +293,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
             }}
           </Droppable>
         </div>
-        {showSortBorder && (
+        {showSortBorderRef.current && (
           <div className={styles.autoSort}>
             <div className={styles.autoSortTitle}>{t(Strings.kanban_keep_sort_tip)}</div>
             <div className={styles.autoSortSubTitle}>{t(Strings.kanban_keep_sort_sub_tip)}</div>
