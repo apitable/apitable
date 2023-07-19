@@ -86,6 +86,9 @@ public class StaticsServiceImpl implements IStaticsService {
     @Value("${SKIP_USAGE_VERIFICATION:false}")
     private Boolean skipUsageVerification;
 
+    @Value("${SPACE_STATISTICS_CACHE_HOURS:1}")
+    private Integer cacheHours;
+
     @Override
     public long getCurrentMonthApiUsage(String spaceId) {
         if (Boolean.TRUE.equals(skipUsageVerification)) {
@@ -203,13 +206,20 @@ public class StaticsServiceImpl implements IStaticsService {
             return cacheValue.longValue();
         }
         long count = iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
-        redisTemplate.opsForValue().set(key, count, 2L, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(key, count, Long.valueOf(cacheHours), TimeUnit.HOURS);
         return count;
     }
 
     @Override
     public long getTeamTotalCountBySpaceId(String spaceId) {
-        return SqlTool.retCount(staticsMapper.countTeamBySpaceId(spaceId));
+        String key = StrUtil.format(GENERAL_STATICS, "space:team-count", spaceId);
+        Number cacheValue = redisTemplate.opsForValue().get(key);
+        if (cacheValue != null) {
+            return cacheValue.longValue();
+        }
+        long count = SqlTool.retCount(staticsMapper.countTeamBySpaceId(spaceId));
+        redisTemplate.opsForValue().set(key, count, Long.valueOf(cacheHours), TimeUnit.HOURS);
+        return count;
     }
 
     @Override
