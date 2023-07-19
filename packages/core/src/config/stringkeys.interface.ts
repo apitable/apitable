@@ -673,6 +673,7 @@ export type StringKeysMapType = {
   'bound': 'bound',
   'brand_desc': 'brand_desc',
   'brazil': 'brazil',
+  'bronze': 'bronze',
   'bronze_btn_text': 'bronze_btn_text',
   'bronze_grade': 'bronze_grade',
   'bronze_grade_desc': 'bronze_grade_desc',

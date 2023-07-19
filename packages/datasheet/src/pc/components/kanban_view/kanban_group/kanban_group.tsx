@@ -21,7 +21,7 @@ import { VariableSizeList } from 'react-window';
 import classNames from 'classnames';
 import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
