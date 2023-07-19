@@ -51,6 +51,16 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testCheckMemberIsAdminWithMainAdminNotException() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        SpaceHolder.init();
+        SpaceHolder.set(mockUserSpace.getSpaceId());
+        // check no exceptions
+        assertThatNoException().isThrownBy(
+            () -> iSpaceService.checkMemberIsAdmin(mockUserSpace.getSpaceId(), mockUserSpace.getMemberId()));
+    }
+
+    @Test
     void testCheckMemberIsAdminNotException() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
         SpaceHolder.init();

@@ -841,7 +841,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Override
     public void checkMemberIsAdmin(String spaceId, Long memberId) {
-        Long mainAdminMemberId = getSpaceMainAdminUserId(spaceId);
+        Long mainAdminMemberId = getSpaceMainAdminMemberId(spaceId);
         List<Long> subAdminMemberIds = iSpaceRoleService.getSubAdminIdList(spaceId);
         boolean exist = mainAdminMemberId.equals(memberId) || subAdminMemberIds.contains(memberId);
         if (!exist) {
