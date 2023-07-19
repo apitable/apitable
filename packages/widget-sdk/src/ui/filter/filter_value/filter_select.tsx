@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Dropdown, IOverLayProps, useTheme } from '@apitable/components';
+import { Box, Dropdown, useTheme } from '@apitable/components';
 import { ISelectField, ISelectFieldBaseOpenValue, getFieldOptionColor, ISelectFieldOption, FieldType, FOperator } from '@apitable/core';
 import { ChevronDownOutlined, CheckOutlined } from '@apitable/icons';
 
@@ -49,9 +49,8 @@ export const FilterSelect: React.FC<IFilterSelectProps> = (props) => {
         </FilterInputWrap>
       }
     >{
-        ({ toggle }: IOverLayProps) => (
+        () => (
           <OptionList isMulti={isMulti} field={field as ISelectField} value={value} onChange={(v) => {
-            toggle();
             onChange.length === 0 ? onChange(null) : onChange(v);
           }}/>)}
     </Dropdown>

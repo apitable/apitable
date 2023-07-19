@@ -105,6 +105,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
 
   const theme = useProviderTheme();
 
+  const offsetParameter = options.arrow ? DROP_DOWN_OFFSET: 4;
   const arrowRef = useRef (null);
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
@@ -121,7 +122,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
               });
             },
           })]: []),
-      offset(options?.offset ?? DROP_DOWN_OFFSET),
+      offset(options?.offset ?? offsetParameter),
       flip({ fallbackAxisSideDirection: 'end' }),
       ...(
         arrowEnabled ? [
