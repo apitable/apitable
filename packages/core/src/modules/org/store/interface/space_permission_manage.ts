@@ -68,17 +68,11 @@ export interface ISubAdminList {
   jobNumber: string;
   mobile: string;
   email: string;
-  resourceScope: IResourceScope[];
   resourceGroupCodes: string[];
   createdAt: string;
   team: string;
   isActive: boolean;
   isMemberNameModified?: boolean;
-}
-
-export interface IResourceScope {
-  groupName: string;
-  resourceNames: string[];
 }
 
 export interface ISearchMemberData {

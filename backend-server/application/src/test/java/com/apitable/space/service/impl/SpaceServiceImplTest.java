@@ -19,16 +19,63 @@
 package com.apitable.space.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
+import com.apitable.space.entity.SpaceEntity;
+import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class SpaceServiceImplTest extends AbstractIntegrationTest {
+
+    @Test
+    void testGetBySpaceId() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        SpaceEntity spaceEntity = iSpaceService.getBySpaceId(mockUserSpace.getSpaceId());
+        assertThat(spaceEntity).isNotNull();
+    }
+
+    @Test
+    void testGetBySpaceIdNotExist() {
+        assertThatThrownBy(() -> iSpaceService.getBySpaceId("xxxxx"))
+            .isInstanceOf(BusinessException.class);
+    }
+
+    @Test
+    void testCheckMemberIsAdminNotException() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        SpaceHolder.init();
+        SpaceHolder.set(mockUserSpace.getSpaceId());
+        UserEntity user = createUserWithEmail("shawndgh@163.com");
+        Long newMemberId = createMember(user.getId(), mockUserSpace.getSpaceId());
+        iSpaceRoleService.createRole(mockUserSpace.getSpaceId(),
+            Collections.singletonList(newMemberId),
+            Collections.singletonList(SpaceResourceGroupCode.MANAGE_MEMBER.getCode()));
+        // check no exceptions
+        assertThatNoException().isThrownBy(
+            () -> iSpaceService.checkMemberIsAdmin(mockUserSpace.getSpaceId(), newMemberId));
+    }
+
+    @Test
+    void testCheckMemberIsAdminThrowException() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        SpaceHolder.init();
+        SpaceHolder.set(mockUserSpace.getSpaceId());
+        UserEntity user = createUserWithEmail("shawndgh@163.com");
+        Long newMemberId = createMember(user.getId(), mockUserSpace.getSpaceId());
+        assertThatThrownBy(
+            () -> iSpaceService.checkMemberIsAdmin(mockUserSpace.getSpaceId(), newMemberId))
+            .isInstanceOf(BusinessException.class);
+    }
 
     @Test
     void getSpaceListWithAll() {
