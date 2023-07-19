@@ -5296,7 +5296,7 @@
   "widget_center_space_introduction": "사용자 정의 위젯은 공유 공간 구성원이 개발하고 게시하며 이 공유 공간에서만 설치할 수 있습니다.",
   "widget_center_tab_official": "추천",
   "widget_center_tab_space": "풍속",
-  "widget_cli_upgrade_tip": "위젯 cli 도구의 버전이 낮습니다.터미널에서 \"npm i-g@apitable/widget cli\"를 실행하여 업그레이드하십시오.",
+  "widget_cli_upgrade_tip": "위젯 cli 도구의 버전이 낮습니다.터미널에서 \"npm i -g @apitable/widget-cli\"를 실행하여 업그레이드하십시오.",
   "widget_collapse_tooltip": "위젯 축소",
   "widget_connect_error": "로컬 위젯에 연결할 수 없습니다.주소가 정확한지 확인하세요",
   "widget_continue_develop": "개발 모드 전환",

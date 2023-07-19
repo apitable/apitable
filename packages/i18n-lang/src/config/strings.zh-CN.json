@@ -4416,7 +4416,7 @@
   "share_settings_tip": "分享设置${status}",
   "share_succeed": "分享成功",
   "share_tips": "为该文件发布一个公开链接。互联网上获得该链接的用户根据权限可以进行查看、编辑或转存",
-  "share_tips_title": "发布",
+  "share_tips_title": "发布公开链接",
   "share_title": "分享「${node}」",
   "share_with_offsite_users": "分享给站外用户",
   "shared_link_copied": "该模板的分享链接已复制",
