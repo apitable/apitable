@@ -71,6 +71,9 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
   }, [currentView]);
 
   return (<FloatUiTooltip
+    options={{
+      offset: 12
+    }}
     content={isViewAutoSave ? t(Strings.auto_save_has_been_opend) : t(Strings.view_configuration_tooltips)}
   >
     <Box display='flex' alignItems='center'>
