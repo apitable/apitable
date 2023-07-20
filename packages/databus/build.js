@@ -7,7 +7,7 @@ const child_process = require('child_process');
 dotenv.config();
 
 function copyDataBusArtifacts(databusDir) {
-  child_process.execSync('sh -c "make build-node"', { cwd: databusDir, encoding: 'utf-8', stdio: 'inherit' });
+  child_process.execSync('sh -c "yarn build"', { cwd: databusDir, encoding: 'utf-8', stdio: 'inherit' });
   fs.copyFileSync(path.join(databusDir, 'index.js'), path.join(__dirname, 'index.js'));
   fs.copyFileSync(path.join(databusDir, 'index.d.ts'), path.join(__dirname, 'index.d.ts'));
   for (const artifactFile of fs.readdirSync(databusDir, { withFileTypes: true })) {
@@ -32,7 +32,7 @@ export function unInit(): any
 }
 
 if (process.env.IS_ENTERPRISE === 'true') {
-  const databusDir = path.resolve(__dirname, '../../../databus');
+  const databusDir = path.resolve(__dirname, '../../../databus/databus-nodejs');
   if (fs.existsSync(databusDir)) {
     copyDataBusArtifacts(databusDir);
   } else {
