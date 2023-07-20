@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import type { NativeModule } from '@apitable/databus';
-import { isDevMode, useNativeModule } from 'app.environment';
-import { DEFAULT_EDITOR_PERMISSION, DEFAULT_MANAGER_PERMISSION, DEFAULT_PERMISSION, DEFAULT_READ_ONLY_PERMISSION } from '@apitable/core';
-import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IOssConfig } from 'shared/interfaces';
+// import type { NativeModule } from '@apitable/databus';
+import { useNativeModule } from 'app.environment';
+import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions } from 'shared/interfaces';
 import { HttpService } from '@nestjs/axios';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { Logger } from 'winston';
-import { EnvConfigKey, InjectLogger } from 'shared/common';
+import { InjectLogger } from 'shared/common';
 import { responseCodeHandler } from '../rest/response.code.handler';
 import { EnvConfigService } from '../config/env.config.service';
 import { DatasheetPack } from 'database/interfaces';
@@ -14,25 +13,25 @@ import { IBaseException } from 'shared/exception/base.exception';
 
 @Injectable()
 export class NativeService {
-  private nativeModule: NativeModule | undefined;
+  private nativeModule: any | undefined;
 
-  constructor(httpService: HttpService, envConfigService: EnvConfigService, @InjectLogger() private readonly logger: Logger) {
+  constructor(_httpService: HttpService, _envConfigService: EnvConfigService, @InjectLogger() private readonly logger: Logger) {
     if (useNativeModule) {
-      this.nativeModule = require('@apitable/databus').DataBusModule.create(
-        isDevMode,
-        httpService.axiosRef.defaults.baseURL!,
-        envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig,
-        {
-          DEFAULT_PERMISSION,
-          DEFAULT_MANAGER_PERMISSION,
-          DEFAULT_EDITOR_PERMISSION,
-          DEFAULT_READ_ONLY_PERMISSION,
-        },
-      );
-      process.on('exit', () => {
-        this.nativeModule!.destroy();
-        this.nativeModule = undefined;
-      });
+      // this.nativeModule = require('@apitable/databus').DataBusModule.create(
+      //   isDevMode,
+      //   httpService.axiosRef.defaults.baseURL!,
+      //   envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig,
+      //   {
+      //     DEFAULT_PERMISSION,
+      //     DEFAULT_MANAGER_PERMISSION,
+      //     DEFAULT_EDITOR_PERMISSION,
+      //     DEFAULT_READ_ONLY_PERMISSION,
+      //   },
+      // );
+      // process.on('exit', () => {
+      //   this.nativeModule!.destroy();
+      //   this.nativeModule = undefined;
+      // });
     }
   }
 

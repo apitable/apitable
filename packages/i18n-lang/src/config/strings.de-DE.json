@@ -358,6 +358,8 @@
   "api_params_link_field_records_max_count_error": "field:{field} Das Magic Link-Feld wurde so eingestellt, dass nur eine recordId empfangen wird",
   "api_params_lookup_can_not_operate": "Verdichtungsfeld kann nicht bearbeitet werden",
   "api_params_lookup_field_can_not_sort": "Die vom Suchfeld angegebene Sortierfeld-ID \"{fieldId}\" kann nicht als Sortierfeld verwendet werden.",
+  "api_params_lookup_filter_field_invalid_operation": "Das angegebene Filterfeld mit der ID \"{fieldId}\" unterstützt den Operator \"{operator}\" nicht.",
+  "api_params_lookup_filter_field_not_exists": "Das angegebene Filterfeld mit der ID \"{fieldId}\" existiert nicht.",
   "api_params_lookup_related_field_not_link": "Die mit dem Suchfeld verbundene Feld-ID \"{fieldId}\" ist kein Linkfeld.",
   "api_params_lookup_related_link_field_not_exists": "Die mit dem Suchfeld verbundene Linkfeld-ID \"{fieldId}\" existiert nicht.",
   "api_params_lookup_sort_field_not_exists": "Die vom Suchfeld angegebene Sortierfeld-ID \"{fieldId}\" existiert nicht.",
