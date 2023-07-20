@@ -29,7 +29,7 @@ import { PcWrapper } from './pc_wrapper';
 import { getModalTitle } from './utils';
 import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
-import { Button, useThemeColors } from '@apitable/components';
+import { Button } from '@apitable/components';
 import classNames from 'classnames';
 
 interface ISearchPanelProps {
@@ -83,7 +83,6 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const colors = useThemeColors();
 
   useEffect(() => {
     return () => {
