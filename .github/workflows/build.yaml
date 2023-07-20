@@ -62,7 +62,8 @@ jobs:
   build-push: ## build and push to docker registry
     needs: unit-test
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
+    #if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     strategy:
       matrix:
         target: [ backend-server, room-server, web-server, init-db, openresty ]
@@ -83,7 +84,8 @@ jobs:
   build-push-all-in-one: ## build and push to docker registry
     needs: build-push
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
+    #if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
