@@ -32,7 +32,7 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
 //    "noUncheckedIndexedAccess": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "strictBindCallApply": true,
     "strictFunctionTypes": true
   },
