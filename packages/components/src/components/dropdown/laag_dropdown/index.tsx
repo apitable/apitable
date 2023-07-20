@@ -57,7 +57,8 @@ export interface IDropdownControl {
     toggle: (open: Boolean) => void;
 }
 
-const DROP_DOWN_OFFSET = 16;
+const DROP_DOWN_OFFSET = 11;
+
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
 
 const setIndex = (zIndex: number) => {

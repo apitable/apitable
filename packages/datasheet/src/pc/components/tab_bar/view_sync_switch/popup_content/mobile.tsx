@@ -28,7 +28,7 @@ export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
   return (
     <div className={styles.mobileTip}>
       <span className={styles.infoIcon}>
-        <InfoCircleOutlined />
+        <InfoCircleOutlined color={'var(--textBrandDefault)'}/>
       </span>
       <Typography variant={'body2'}>
         {t(Strings.view_changed)}
