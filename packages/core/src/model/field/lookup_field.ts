@@ -28,8 +28,8 @@ import { computedFormattingToFormat, getApiMetaPropertyFormat, getFieldTypeByStr
 import { IAPIMetaLookupFieldProperty } from 'types/field_api_property_types';
 import { BasicOpenValueType, BasicOpenValueTypeBase } from 'types/field_types_open';
 import { IOpenMagicLookUpFieldProperty } from 'types/open/open_field_read_types';
-import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write_types';
-import { checkTypeSwitch, getNewIds, IDPrefix, isTextBaseType } from 'utils';
+import { IEffectOption, IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write_types';
+import { checkTypeSwitch, filterOperatorAcceptsValue, getNewIds, IDPrefix, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, IViewRow, Selectors } from '../../exports/store';
 import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone } from 'exports/store/selectors';
@@ -78,15 +78,7 @@ import {
   IOpenFilterValueNumber,
   IOpenFilterValueString,
 } from 'types/open/open_filter_types';
-import {
-  APIMetaFieldType,
-  FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ,
-  FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER,
-  OpenLookUpFilterConjunction,
-  OpenLookUpFilterOperator,
-  OPEN_LOOKUP_FILTER_CONJ_TO_FILTER_CONJ,
-  OPEN_LOOKUP_FILTER_OPER_TO_FILTER_OPER,
-} from 'types';
+import { APIMetaFieldType } from 'types';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -125,17 +117,21 @@ const filterInfoSchema = () =>
     ),
   });
 
-const apiFilterInfoSchema = () =>
+const apiFilterInfoSchema = (isBackend: boolean) =>
   Joi.object({
-    conjunction: Joi.valid(...enumToArray(OpenLookUpFilterConjunction)).required(),
+    conjunction: Joi.valid(...enumToArray(FilterConjunction)).required(),
     conditions: Joi.array().items(
       Joi.object({
         fieldId: Joi.string()
           .pattern(/^fld.+/, 'fieldId')
           .required(),
-        operator: Joi.valid(...enumToArray(OpenLookUpFilterOperator)).required(),
-        fieldType: Joi.valid(...enumToArray(APIMetaFieldType)).required(),
+        operator: Joi.valid(...enumToArray(FOperator)).required(),
         value: Joi.any(),
+        ...(isBackend
+          ? {}
+          : {
+            fieldType: Joi.valid(...enumToArray(APIMetaFieldType)).required(),
+          }),
       }),
     ),
   });
@@ -216,11 +212,11 @@ export class LookUpField extends ArrayValueField {
 
     if (this.field.property.filterInfo) {
       res.filterInfo = {
-        conjunction: FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ[this.field.property.filterInfo.conjunction],
+        conjunction: this.field.property.filterInfo.conjunction,
         conditions: this.field.property.filterInfo.conditions.map((cond) => ({
           fieldId: cond.fieldId,
           fieldType: getFieldTypeString(cond.fieldType),
-          operator: FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER[cond.operator],
+          operator: cond.operator,
           value: cond.value,
         })),
       };
@@ -663,7 +659,6 @@ export class LookUpField extends ArrayValueField {
     const lookUpTargetField = this.getLookUpTargetField() as IField;
 
     if (openFilter) {
-      
       // lookup filter
       recordIds = new ViewFilterDerivate(this.state, foreignDatasheetId).getFilteredRecords({
         linkFieldRecordIds: recordIds,
@@ -672,9 +667,9 @@ export class LookUpField extends ArrayValueField {
       // lookup sort
       const sortRows = this.getSortLookup(sortInfo, foreignDatasheetId, recordIds);
 
-      recordIds = sortRows.filter((row) => recordIds.includes(row.recordId)).map((row) => row.recordId);  
+      recordIds = sortRows.filter((row) => recordIds.includes(row.recordId)).map((row) => row.recordId);
     }
-    
+
     if (lookUpLimit === LookUpLimitType.FIRST && recordIds.length > 1) {
       recordIds = recordIds.slice(0, 1);
     }
@@ -1185,11 +1180,11 @@ export class LookUpField extends ArrayValueField {
 
     if (this.field.property.filterInfo) {
       res.filterInfo = {
-        conjunction: FILTER_CONJ_TO_OPEN_LOOKUP_FILTER_CONJ[this.field.property.filterInfo.conjunction],
+        conjunction: this.field.property.filterInfo.conjunction,
         conditions: this.field.property.filterInfo.conditions.map((cond) => ({
           fieldId: cond.fieldId,
           fieldType: getFieldTypeString(cond.fieldType),
-          operator: FILTER_OPER_TO_OPEN_LOOKUP_FILTER_OPER[cond.operator],
+          operator: cond.operator,
           value: cond.value,
         })),
       };
@@ -1201,7 +1196,7 @@ export class LookUpField extends ArrayValueField {
     return res;
   }
 
-  static openUpdatePropertySchema = Joi.object({
+  static frontendOpenUpdatePropertySchema = Joi.object({
     relatedLinkFieldId: Joi.string()
       .pattern(/^fld.+/, 'fieldId')
       .required(),
@@ -1211,13 +1206,30 @@ export class LookUpField extends ArrayValueField {
     rollupFunction: Joi.valid(...enumToArray(RollUpFuncType)),
     format: computedFormattingStr(),
     enableFilterSort: Joi.boolean(),
-    filterInfo: apiFilterInfoSchema(),
+    filterInfo: apiFilterInfoSchema(false),
     sortInfo: sortInfoSchema(),
     lookUpLimit: Joi.valid(...enumToArray(LookUpLimitType)),
   });
 
-  override validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLookUpFieldProperty) {
-    return LookUpField.openUpdatePropertySchema.validate(updateProperty);
+  static backendOpenUpdatePropertySchema = Joi.object({
+    relatedLinkFieldId: Joi.string()
+      .pattern(/^fld.+/, 'fieldId')
+      .required(),
+    targetFieldId: Joi.string()
+      .pattern(/^fld.+/, 'fieldId')
+      .required(),
+    rollupFunction: Joi.valid(...enumToArray(RollUpFuncType)),
+    format: computedFormattingStr(),
+    enableFilterSort: Joi.boolean(),
+    filterInfo: apiFilterInfoSchema(true),
+    sortInfo: sortInfoSchema(),
+    lookUpLimit: Joi.valid(...enumToArray(LookUpLimitType)),
+  });
+
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLookUpFieldProperty, effectOption?: IEffectOption) {
+    return effectOption?.isBackend
+      ? LookUpField.backendOpenUpdatePropertySchema.validate(updateProperty)
+      : LookUpField.frontendOpenUpdatePropertySchema.validate(updateProperty);
   }
 
   override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMagicLookUpFieldProperty): ILookUpProperty {
@@ -1236,12 +1248,17 @@ export class LookUpField extends ArrayValueField {
     if (apiFilterInfo) {
       const conditionIds = getNewIds(IDPrefix.Condition, apiFilterInfo.conditions.length);
       filterInfo = {
-        conjunction: OPEN_LOOKUP_FILTER_CONJ_TO_FILTER_CONJ[apiFilterInfo.conjunction],
+        conjunction: apiFilterInfo.conjunction,
         conditions: apiFilterInfo.conditions.map((cond, i) => ({
           ...cond,
           fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField>,
-          operator: OPEN_LOOKUP_FILTER_OPER_TO_FILTER_OPER[cond.operator],
+          operator: cond.operator,
           conditionId: conditionIds[i]!,
+          value: (filterOperatorAcceptsValue(cond.operator)
+            ? cond.fieldType === APIMetaFieldType.Checkbox || Array.isArray(cond.value)
+              ? cond.value
+              : [cond.value]
+            : undefined) as any,
         })),
       };
     }

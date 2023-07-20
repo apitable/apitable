@@ -445,7 +445,8 @@ export abstract class DateTimeBaseField extends Field {
        *
        * @type {boolean}
        */
-      const isIncludesYear = dayjs(_value, ['Y-M-D', 'D/M/Y']).isValid();
+      // const isIncludesYear = dayjs(_value, ['Y-M-D', 'Y/M/D']).isValid();
+      const isIncludesYear = dayjs(_value).isValid();
       if (datetime.year() === 2001 && !isIncludesYear) {
         datetime = datetime.year(dayjs().year());
       }

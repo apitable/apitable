@@ -29,7 +29,7 @@ export const AlertWrapper = styled.div.attrs(applyDefaultTheme) <IAlertWrapper>`
   padding: ${props => props.title ? '16px' : '8px 16px'};
   width: 100%;
   box-sizing: border-box;
-  border-radius: 6px;
+  border-radius: 4px;
   ${props => {
     const colorMap = {
       default: props.theme.palette.primary,
