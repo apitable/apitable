@@ -280,7 +280,7 @@ export class OtService {
           }
           results.push(remoteChangeset);
           // member field auto subscription
-          this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
+          void this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
         }
       });
       const endTime = +new Date();
@@ -324,7 +324,7 @@ export class OtService {
       allEffectDstIds.forEach(resourceId => {
         clearComputeCache(resourceId);
       });
-      await this.eventService.handleChangesets(results);
+      void this.eventService.handleChangesets(results);
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }
 
