@@ -22,6 +22,7 @@ import { Provider } from 'react-redux';
 import { MobilePopupContent } from './popup_content/mobile';
 
 const VIEW_MANUAL_SAVE_TIP = 'VIEW_MANUAL_SAVE_TIP';
+const DOM_IDDATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID'
 
 export const showViewManualSaveInMobile = () => {
   if (document.querySelector(`.${VIEW_MANUAL_SAVE_TIP}`)) {
@@ -31,8 +32,17 @@ export const showViewManualSaveInMobile = () => {
   container.classList.add(VIEW_MANUAL_SAVE_TIP);
   document.body.appendChild(container);
   const root= createRoot(container);
+  
+  const datasheetContainer = document.body.querySelector(`#${DOM_IDDATASHEET_VIEW_CONTAINER_ID}`) as HTMLElement;
+  
+  if (datasheetContainer) {
+    datasheetContainer.style.marginTop = '40px';
+  }
   const modalClose = () => {
     root.unmount();
+    if (datasheetContainer) {
+      datasheetContainer.style.marginTop = '0px';
+    }
     container.parentElement?.removeChild(container);
   };
 

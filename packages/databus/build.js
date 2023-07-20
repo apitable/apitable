@@ -22,8 +22,10 @@ function buildCommunityArtifacts() {
   fs.writeFileSync(
     path.join(__dirname, 'index.d.ts'),
     `
-  export type DatasheetPackResponse = any;
-  export type NativeModule = any;
+export function init(...args: any[]): any
+export function getDatasheetPack(...args: any[]): any
+export function getRecords(...args: any[]): any
+export function unInit(): any
   `,
     'utf-8',
   );
