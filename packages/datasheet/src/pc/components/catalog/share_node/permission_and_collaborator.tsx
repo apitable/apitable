@@ -141,7 +141,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
     return (
       <div className={styles.invite}>
         <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} height='24px'/>
         <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
       </div>
     );
