@@ -28,7 +28,7 @@ export const transformNodeTreeData = (data: INode[]) => {
       pId: node.parentId,
       value: node.nodeId,
       title: node.nodeName,
-      isLeaf: !node.hasChildren,
+      isLeaf: !(node.hasChildren && node.children?.some(child => child.type === ConfigConstant.NodeType.FOLDER)),
     };
     let result: ISelectTreeNode[] = [];
     if (node.hasChildren && Array.isArray(node.children)) {

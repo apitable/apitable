@@ -143,12 +143,12 @@ circle.ant-progress-circle-trail {
 .ant-tabs-bottom > .ant-tabs-nav::before,
 .ant-tabs-top > div > .ant-tabs-nav::before,
 .ant-tabs-bottom > div > .ant-tabs-nav::before {
-  border-bottom: 1px solid var(--lineColor);
+  border-bottom: 1px solid var(--lineColor) !important;
 }
 
 .adm-picker-view-mask-middle {
-  border-bottom: 1px solid var(--lineColor);
-  border-top: 1px solid var(--lineColor);
+  border-bottom: 1px solid var(--lineColor) !important;
+  border-top: 1px solid var(--lineColor) !important;
 }
 
 .ant-dropdown-menu-item-divider {
@@ -243,6 +243,11 @@ button:focus-visible {
   box-shadow: var(--shadowCommonDefault);
 }
 
+.ant-select-tree-indent-unit,
+.ant-select-tree-switcher {
+  width: 12px !important;
+}
+
 .ant-table-cell-scrollbar:not([rowspan]){
   box-shadow: none;
 }
@@ -264,6 +269,7 @@ button:focus-visible {
   color: #7e8791;
   opacity: 1;
 }
+
 
 
 @media screen and (max-width: 768px) {
