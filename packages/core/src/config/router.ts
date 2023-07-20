@@ -43,7 +43,7 @@ export enum Navigation {
   WECOM,
   WECOM_SHOP_CALLBACK,
   EMBED_SPACE,
-  PUBLISH_SPACE
+  EMBED_AI_SPACE
 }
 
 export enum SpacePathType {

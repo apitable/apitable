@@ -1,6 +1,6 @@
 /**
  * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ * Copyright (C) 2023 APITable Ltd. <https://apitable.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import axios from 'axios';
 import { NextPageContext } from 'next';
 import { getRegResult, shareIdReg } from 'pc/hooks';
 import React from 'react';
-import { getBaseUrl } from '../../utils/get_base_url';
+import { getBaseUrl } from '../../../utils/get_base_url';
 // @ts-ignore
 import { PublishPage } from 'enterprise';
 

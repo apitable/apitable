@@ -85,8 +85,8 @@ export class RouterStrategy implements IRouterStrategy {
     return [`/org/${params?.memberId}`];
   };
 
-  static [Navigation.PUBLISH_SPACE] = ({ params }: IFunctionParams) => {
-    return [`/publish/${params?.shareId}/${params?.nodeId}`];
+  static [Navigation.EMBED_AI_SPACE] = ({ params }: IFunctionParams) => {
+    return [`/embed/ai/${params?.shareId}/${params?.nodeId}`];
   };
 
   static [Navigation.SHARE_SPACE] = ({ params, query, clearQuery }: IFunctionParams) => {
