@@ -5466,5 +5466,19 @@
   "publish": "Publish",
   "share_tips_title": "Publish share link",
   "share_copy_url_link": "Copy link",
-  "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions."
+  "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions.",
+  "ai_create_guide_content": "As an AI chatbot, I can answer your questions based on the knowledge I have learned. Before starting the conversation, please select a datasheet as a knowledge base, and I will read all the data under the specified view for learning.",
+  "ai_create_guide_btn_text": "Start selection",
+  "ai_datasheet_panel_create_btn_text": "Create chatbot",
+  "ai_toolbar_setting_text": "Setting",
+  "ai_toolbar_train_text": "Train",
+  "ai_toolbar_publish_text": "Publish",
+  "ai_chat_textarea_placeholder": "Talk to Project Assistant…",
+  "ai_explore_card_title": "Feel free to give this a try by asking me in the following manner.<br> Just click on the message below:",
+  "ai_explore_refresh_btn_text": "Refresh",
+  "ai_new_conversation_btn_text": "New conversation",
+  "ai_query_of_number": "Query of number",
+  "ai_training_message": "The AI chatbot is currently learning from all the data in datasheet. Please wait...",
+  "ai_stop_conversation": "Stop generating",
+  "ai_train_complete_message": "The AI chatbot has been trained successfully. You can now start a conversation with it."
 }

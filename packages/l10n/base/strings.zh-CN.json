@@ -5468,5 +5468,13 @@
   "zambia": "赞比亚",
   "zimbabwe": "津巴布韦",
   "zoom_in": "放大",
-  "zoom_out": "缩小"
+  "zoom_out": "缩小",
+  "ai_create_guide_content": "As an AI chatbot, I can answer your questions based on the knowledge I have learned. Before starting the conversation, please select a datasheet as a knowledge base, and I will read all the data under the specified view for learning.",
+  "ai_create_guide_btn_text": "Start selection",
+  "ai_datasheet_panel_create_btn_text": "Create chatbot",
+  "ai_toolbar_setting_text": "Setting",
+  "ai_toolbar_train_text": "Train",
+  "ai_toolbar_publish_text": "Publish",
+  "ai_chat_textarea_placeholder": "Talk to Project Assistant…",
+  "ai_stop_conversation": "Stop generating"
 }

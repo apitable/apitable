@@ -48,7 +48,6 @@ export interface INodeInfoBarProps {
     favoriteEnabled?: boolean;
     role?: string;
     iconSize?: number;
-    showDescription?: boolean;
   };
   style?: React.CSSProperties;
   hiddenModule?: { icon?: boolean, permission?: boolean, favorite?: boolean };
@@ -65,7 +64,6 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
     nameEditable = false,
     iconEditable = false,
     iconSize,
-    showDescription
   } = data;
   const [newName, setNewName] = useState(name);
   const [editing, setEditing] = useState(false);
@@ -77,7 +75,7 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
   const embedId = useSelector(state => state.pageParams.embedId);
-  const _showDescription= isDatasheet || showDescription;
+  const _showDescription= isDatasheet;
 
   useEffect(() => {
     setNewName(name);
