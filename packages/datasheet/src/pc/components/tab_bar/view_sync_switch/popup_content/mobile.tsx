@@ -1,11 +1,11 @@
 import styles from '../style.module.less';
-import { InfoCircleFilled } from '@apitable/icons';
 import { Button, Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { cancelModification, modifyViewProperty } from '../request_view_property_change';
 import { FC } from 'react';
 import cls from 'classnames';
 import { useSelector } from 'react-redux';
+import { InfoCircleOutlined } from '@apitable/icons';
 
 interface IProps {
     onClose: () => void
@@ -28,7 +28,7 @@ export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
   return (
     <div className={styles.mobileTip}>
       <span className={styles.infoIcon}>
-        <InfoCircleFilled/>
+        <InfoCircleOutlined color={'var(--textBrandDefault)'}/>
       </span>
       <Typography variant={'body2'}>
         {t(Strings.view_changed)}
