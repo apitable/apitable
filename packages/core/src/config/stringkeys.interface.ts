@@ -143,6 +143,7 @@ export type StringKeysMapType = {
   'ai_explore_card_title': 'ai_explore_card_title',
   'ai_explore_refresh_btn_text': 'ai_explore_refresh_btn_text',
   'ai_new_conversation_btn_text': 'ai_new_conversation_btn_text',
+  'ai_page_loading_text': 'ai_page_loading_text',
   'ai_query_of_number': 'ai_query_of_number',
   'ai_stop_conversation': 'ai_stop_conversation',
   'ai_toolbar_publish_text': 'ai_toolbar_publish_text',

@@ -5482,5 +5482,6 @@
   "ai_query_of_number": "Query of number",
   "ai_training_message": "The AI chatbot is currently learning from all the data in datasheet. Please wait...",
   "ai_stop_conversation": "Stop generating",
-  "ai_train_complete_message": "The AI chatbot has been trained successfully. You can now start a conversation with it."
+  "ai_train_complete_message": "The AI chatbot has been trained successfully. You can now start a conversation with it.",
+  "ai_page_loading_text": "Loading more ..."
 }
