@@ -74,6 +74,8 @@ If you want to install APITable in your local or cloud computing environment, se
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
 
+If you want a convenient option for cloud deployment, simply visit the [🌩️1-Click DigitalOcean Deployment](https://cloud.digitalocean.com/apps/new?repo=https://github.com/apitable/apitable/tree/develop&refcode=3fe758500293)
+
 Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
 ## 🔥 Features
 
