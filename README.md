@@ -9,6 +9,10 @@
     <a target="_blank" href="https://gitpod.io/#https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/gitpod-devenv-orange" alt="APITable Gitpod Development Environment" />
     </a>
+    <!-- Replit -->
+    <a target="_blank" href="https://replit.com/new/github/apitable/apitable">
+        <img src="https://img.shields.io/badge/repl.it-devenv-tomato" alt="Run on Repl.it APITable Development Environment" />
+    </a>
     <!-- NodeJS -->
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
     <!-- Java -->
