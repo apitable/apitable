@@ -297,7 +297,7 @@ run-local: ## run services with local programming language envinroment
  	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi
 
 .PHONY: run-perf
-run-perf: ## run services with local programming language envinroment for performance profiling
+run-perf: ## run room-server with local programming language envinroment for performance profiling
 	@echo "$$RUN_PERF_TXT"
 	@read -p "ENTER THE NUMBER: " SERVICE ;\
  	if [ "$$SERVICE" = "1" ]; then export PERF_TYPE=flame; make _run-perf-local-room-server; fi; \
