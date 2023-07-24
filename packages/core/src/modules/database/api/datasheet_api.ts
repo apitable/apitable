@@ -35,6 +35,8 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  * @param dstId 
  * @param recordIds 
  * @returns 
+ * 
+ * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
   console.log({ baseURL });
