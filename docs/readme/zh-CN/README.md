@@ -70,7 +70,7 @@
 
 如果你想演示这个 APITable 开源项目，请单击此处获取[⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable)。
 
-如果您想要在本地或云端计算环境中安装 APITable ，请参阅 [💾 安装](#installation)
+如果您想要在本地或云端计算环境中安装 APITable ，请参阅 [💾 安装](#安装)
 
 如果你想要设置你的本地开发环境，请阅读我们的 [🧑‍💻 开发者指南 ](./docs/contribute/developer-guide.md)
 
