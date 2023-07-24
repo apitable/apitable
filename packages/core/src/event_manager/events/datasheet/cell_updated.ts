@@ -32,7 +32,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
   realType = EventRealTypeEnums.REAL;
   scope = ResourceType.Datasheet;
   test(opContext: IOPBaseContext) {
-    const { action, resourceId, resourceType } = opContext;
+    const { op, action, resourceId, resourceType } = opContext;
     if (resourceType !== ResourceType.Datasheet) {
       return {
         pass: false,
@@ -47,6 +47,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
         fieldId,
         datasheetId: resourceId,
         action,
+        linkDatasheetId: op.mainLinkDstId,
         change: {
           from: action['od'],
           to: action['oi'],

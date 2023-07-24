@@ -48,6 +48,15 @@
   overflow: hidden;
   box-shadow: var(--shadowCommonHighest);
 
+  &.secondConfirmTypeForChat {
+    display: block;
+    background: var(--bgCommonHighest);
+
+    .searchPanel {
+      box-shadow: unset;
+    }
+  }
+
   .searchPanel {
     display: flex;
     flex-direction: column;
@@ -168,6 +177,7 @@
       left: 0;
       bottom: 0;
       width: 100%;
+      background: unset !important;
     }
 
     .emptyFolder {
