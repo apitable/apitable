@@ -279,7 +279,7 @@ export class OtService {
             };
           }
           results.push(remoteChangeset);
-          // member field auto subscription
+          // member field auto subscription，async method
           void this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
         }
       });
@@ -307,23 +307,16 @@ export class OtService {
       }
       return ids;
     }, [] as string[]);
-
     const allEffectDstIds: string[] = await this.relService.getEffectDatasheetIds(thisBatchResourceIds);
-    const hasRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
-    this.logger.info('applyRoomChangeset-hasRobot', {
-      roomId: message.roomId,
-      msgIds,
-      thisBatchResourceIds,
-      allEffectDstIds,
-      hasRobot,
-    });
-    if (hasRobot) {
+    const hasActiveRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
+    if (hasActiveRobot) {
       // Handle event here
-      this.logger.info('applyRoomChangeset-robot-event-start', { roomId: message.roomId, msgIds });
+      this.logger.info('applyRoomChangeset-robot-event-start', { roomId: message.roomId, msgIds, allEffectDstIds, thisBatchResourceIds });
       // Clear cache
       allEffectDstIds.forEach(resourceId => {
         clearComputeCache(resourceId);
       });
+      // automation async function
       void this.eventService.handleChangesets(results);
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
+import { IRobotTask } from '@apitable/core';
 import { EntityRepository, Repository } from 'typeorm';
+import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
 
 @EntityRepository(AutomationRunHistoryEntity)
 export class AutomationRunHistoryRepository extends Repository<AutomationRunHistoryEntity> {
@@ -44,4 +45,14 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
     });
   }
 
+  selectContextByTaskIdAndTriggerId(taskId: string, triggerId: string): Promise<IRobotTask | undefined> {
+    return this.createQueryBuilder('rhs')
+      .select('robot_id', 'robotId')
+      .addSelect('task_id', 'taskId')
+      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.input\'))', 'triggerInput')
+      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.output\'))', 'triggerOutput')
+      .where('rhs.task_id = :taskId', { taskId })
+      .setParameter('triggerId', triggerId)
+      .getRawOne<IRobotTask>();
+  }
 }

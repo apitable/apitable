@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ConfigConstant } from '@apitable/core';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AutomationService } from './automation.service';
-import { LoggerConfigService } from '../../shared/services/config/logger.config.service';
 import { WinstonModule } from 'nest-winston';
 import { NodeService } from 'node/services/node.service';
-import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
-import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
-import { ConfigConstant } from '@apitable/core';
 import { CommonException } from '../../shared/exception';
+import { LoggerConfigService } from '../../shared/services/config/logger.config.service';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
-import { RobotRobotService } from './robot.robot.service';
-import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationService } from './automation.service';
+import { RobotRobotService } from './robot.robot.service';
 
 describe('RobotActionTypeServiceTest', () => {
   let module: TestingModule;
@@ -67,6 +68,7 @@ describe('RobotActionTypeServiceTest', () => {
         AutomationRunHistoryRepository,
         AutomationActionRepository,
         AutomationTriggerRepository,
+        AmqpConnection
       ],
     }).compile();
     nodeService = module.get<NodeService>(NodeService);
@@ -103,6 +105,7 @@ describe('RobotActionTypeServiceTest', () => {
     jest.spyOn(automationRobotRepository, 'getResourceIdByRobotId').mockResolvedValue('datasheetId');
     jest.spyOn(nodeService, 'selectSpaceIdByNodeId').mockResolvedValue({ spaceId: 'spaceId' });
     jest.spyOn(automationRunHistoryRepository, 'create').mockImplementation();
+    jest.spyOn(automationRunHistoryRepository, 'insert').mockImplementation();
     jest.spyOn(automationRunHistoryRepository, 'save').mockImplementation();
     jest.spyOn(robotService, 'getRobotById').mockResolvedValue({
       id: 'robotId',
@@ -148,7 +151,7 @@ describe('RobotActionTypeServiceTest', () => {
       status: 0,
       createdAt: new Date(),
     } as AutomationRunHistoryEntity);
-    jest.spyOn(automationRunHistoryRepository, 'save').mockImplementation();
+    jest.spyOn(automationRunHistoryRepository, 'insert').mockImplementation();
 
     services['test'] = {
       endpoint: (input: any) => {

@@ -16,15 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
-import { AutomationService } from '../../services/automation.service';
-import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
-import { LoggerConfigService } from '../../../shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston/dist/winston.module';
-import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { FieldType } from '@apitable/core';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston/dist/winston.module';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { QueueDynamicModule } from 'shared/services/queue/queue.dynamic.module';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
+import { AutomationService } from '../../services/automation.service';
 import { CommonEventContext } from '../domains/common.event';
 import { EventTypeEnums } from '../domains/event.type.enums';
+import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
 
 describe('TriggerEventHelper', () => {
   let module: TestingModule;
@@ -129,6 +130,7 @@ describe('TriggerEventHelper', () => {
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
         }),
+        QueueDynamicModule.forRoot()
       ],
       providers: [
         {
