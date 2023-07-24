@@ -35,6 +35,7 @@ interface IRowHeadOperationProps {
   commentCount: number;
   isAllowDrag: boolean;
   isWillMove?: boolean;
+  isPreview?: boolean;
   recordId: string;
 }
 
@@ -46,7 +47,7 @@ const CommentBjFilledPath = CommentBgFilled.toString();
 const ICON_SIZE = 16;
 
 export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps>> = memo((props) => {
-  const { instance, isChecked, isHovered, isActive, rowIndex, commentCount, isAllowDrag, recordId } = props;
+  const { instance, isChecked, isHovered, isActive, rowIndex, commentCount, isAllowDrag, recordId, isPreview } = props;
   const { rowHeight } = instance;
   const { setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const { allowShowCommentPane, linearRows } = useContext(KonvaGridViewContext);
@@ -135,7 +136,7 @@ export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps
           <Group
             x={48}
             y={iconOffsetY}
-            onMouseEnter={onExpandMouseEnter}
+            onMouseEnter={!isPreview && onExpandMouseEnter}
             onMouseOut={clearTooltipInfo}
           >
             {
