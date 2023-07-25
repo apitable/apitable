@@ -41,12 +41,13 @@ const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
     cancelButtonProps, confirmLoading, onOk, onCancel, className, children, hiddenCancelBtn, ...rest
   } = props;
 
-  useEffect(() => {
-    ShortcutContext.bind(ContextName.modalVisible, () => true);
-    return () => {
-      ShortcutContext.unbind(ContextName.modalVisible);
-    };
-  });
+  // TODO: effect pc/components/editors/container.tsx short key bind
+  // useEffect(() => {
+  //   ShortcutContext.bind(ContextName.modalVisible, () => true);
+  //   return () => {
+  //     ShortcutContext.bind(ContextName.modalVisible, () => false);
+  //   };
+  // });
 
   const FooterBtnConfig = {
     onOk, onCancel,
