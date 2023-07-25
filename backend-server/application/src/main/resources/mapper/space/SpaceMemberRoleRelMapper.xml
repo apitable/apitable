@@ -20,6 +20,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.apitable.space.mapper.SpaceMemberRoleRelMapper">
 
+    <select id="selectMemberIdBySpaceId" resultType="java.lang.Long">
+        SELECT member_id
+        FROM ${tablePrefix}space_member_role_rel
+        WHERE space_id = #{spaceId}
+    </select>
+
     <select id="selectSubAdminBySpaceId" resultType="java.lang.Long">
         SELECT vsmrr.member_id
         FROM ${tablePrefix}space_member_role_rel vsmrr

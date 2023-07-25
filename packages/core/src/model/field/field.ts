@@ -432,8 +432,8 @@ export abstract class Field {
   /**
    * Check the property when creating the field
    */
-  validateAddOpenFieldProperty(addProperty: IAddOpenFieldProperty): Joi.ValidationResult {
-    return this.validateUpdateOpenProperty(addProperty);
+  validateAddOpenFieldProperty(addProperty: IAddOpenFieldProperty, isBackend: boolean = false): Joi.ValidationResult {
+    return this.validateUpdateOpenProperty(addProperty, isBackend ? { isBackend } : undefined);
   }
 
   /**

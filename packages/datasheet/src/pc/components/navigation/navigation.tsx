@@ -38,7 +38,7 @@ import {
 import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
-import { isHiddenLivechat, isMobileApp } from 'pc/utils/env';
+import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -271,7 +271,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
 
   useEffect(() => {
-    if (!isHiddenLivechat() || isMobile) {
+    if (isMobile) {
       return;
     }
     !!router.pathname.includes('workbench') && window.LiveChatWidget?.call('hide');

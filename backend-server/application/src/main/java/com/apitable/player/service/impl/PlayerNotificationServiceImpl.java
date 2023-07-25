@@ -584,8 +584,9 @@ public class PlayerNotificationServiceImpl
                 spaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId), spaceId);
         }
         if (toTag.equals(NotificationToTag.SPACE_MEMBER_ADMINS)) {
-            List<Long> memberAdminIds = spaceMemberRoleRelService.getMemberId(spaceId,
-                ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
+            List<Long> memberAdminIds =
+                spaceMemberRoleRelService.getMemberIdListByResourceGroupCodes(spaceId,
+                    ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
             memberAdminIds.add(notificationFactory.getSpaceSuperAdmin(spaceId));
             if (CollUtil.isNotEmpty(memberAdminIds)) {
                 return notificationFactory.getMemberUserIdExcludeDeleted(memberAdminIds);

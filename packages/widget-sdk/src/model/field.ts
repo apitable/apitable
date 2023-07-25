@@ -135,7 +135,7 @@ export class Field {
    * ```
    */
   get type(): FieldType {
-    return getFieldTypeString(this.fieldData.type);
+    return getFieldTypeString(this.fieldData.type) as any as FieldType;
   }
 
   /**
@@ -455,7 +455,7 @@ export class Field {
     if (this.type === FieldType.MagicLookUp) {
       const lookUpEntityField = (this.fieldEntity as LookUpField).getLookUpEntityField();
       if (!lookUpEntityField) return FieldType.NotSupport;
-      return getFieldTypeString(lookUpEntityField.type);
+      return getFieldTypeString(lookUpEntityField.type) as any as FieldType;
     }
     return this.type;
   }

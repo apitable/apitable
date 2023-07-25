@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { RedisService } from '@apitable/nestjs-redis';
-import { FieldType, IRemoteChangeset, IResourceRevision, ResourceIdPrefix } from '@apitable/core';
-import * as util from 'util';
-import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from '../../../shared/common';
-import { Logger } from 'winston';
+import { ComputeFieldReferenceManager } from 'database/datasheet/services/compute.field.reference.manager';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { WidgetService } from 'database/widget/services/widget.service';
 import { difference, intersection, isEmpty } from 'lodash';
+import * as util from 'util';
+import { Logger } from 'winston';
+import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from '../../../shared/common';
 import { IClientRoomChangeResult } from '../../../shared/services/socket/socket.interface';
 import { ResourceMetaRepository } from '../repositories/resource.meta.repository';
-import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
-import { ComputeFieldReferenceManager } from 'database/datasheet/services/compute.field.reference.manager';
-import { WidgetService } from 'database/widget/services/widget.service';
-import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 
 /**
  * Room - Resource two-way association maintenance
@@ -46,7 +46,8 @@ export class RoomResourceRelService {
     private readonly datasheetService: DatasheetService,
     private readonly resourceMetaRepository: ResourceMetaRepository,
     private readonly widgetService: WidgetService,
-  ) { }
+  ) {
+  }
 
   async hasResource(roomId: string): Promise<boolean> {
     // Create or update Room - Resource two-way association
@@ -242,10 +243,10 @@ export class RoomResourceRelService {
    */
   async reverseComputeDatasheetRoom(dstId: string) {
     // Obtain meta of the datasheet
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
+    const fieldMap = await this.datasheetMetaService.getFieldMapByDstId(dstId);
     // Filter loading linked datasheet
     const foreignDatasheetIdToFiledIdsMap = new Map<string, string[]>();
-    Object.values(meta.fieldMap).filter(field => field.type === FieldType.Link)
+    Object.values(fieldMap).filter(field => field.type === FieldType.Link)
       .forEach(field => {
         const { foreignDatasheetId, brotherFieldId } = field.property;
         // Filter out self linking
@@ -269,17 +270,17 @@ export class RoomResourceRelService {
     // Linked datasheet exists, needs check if the linked datasheet of the linked datasheet references the datasheet
     for (const [foreignDatasheetId, linkFieldIds] of foreignDatasheetIdToFiledIdsMap) {
       // Query meta of linked datasheet
-      const foreignDatasheetMeta = await this.datasheetMetaService.getMetaDataByDstId(foreignDatasheetId);
+      const foreignDatasheetFieldMap = await this.datasheetMetaService.getFieldMapByDstId(foreignDatasheetId);
 
       // Check if there are other linked datasheets
-      const field = Object.values(foreignDatasheetMeta.fieldMap).find(field => field.type === FieldType.Link
+      const field = Object.values(foreignDatasheetFieldMap).find(field => field.type === FieldType.Link
         && !dstIds.includes(field.property.foreignDatasheetId));
       if (!field) {
         continue;
       }
 
       // Check if LookUp reference exists
-      const lookUpFieldIds = Object.values(foreignDatasheetMeta.fieldMap)
+      const lookUpFieldIds = Object.values(foreignDatasheetFieldMap)
         .filter(field => field.type === FieldType.LookUp && linkFieldIds.includes(field.property.relatedLinkFieldId))
         .map(field => {
           return field.id;
@@ -287,7 +288,7 @@ export class RoomResourceRelService {
       // Influenced fields of linked datasheet. Link + LookUp + Formula
       const effectFieldIds = lookUpFieldIds.length > 0 ? [...linkFieldIds, ...lookUpFieldIds] : linkFieldIds;
       // Check if Formula reference exists
-      const formulaFieldIds = Object.values(foreignDatasheetMeta.fieldMap)
+      const formulaFieldIds = Object.values(foreignDatasheetFieldMap)
         .filter(field => field.type === FieldType.Formula)
         .map(field => {
           // Extract formula expression, if it references fields

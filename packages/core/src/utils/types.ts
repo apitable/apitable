@@ -16,14 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  IField,
-  ISelectField,
-  FieldType,
-  ISingleSelectField,
-  IMultiSelectField,
-} from 'types/field_types';
-import type { IGroupInfo } from 'types';
+import { IField, ISelectField, FieldType, ISingleSelectField, IMultiSelectField } from 'types/field_types';
+import { FOperator, IGroupInfo } from 'types';
 import type { ISnapshot } from 'exports/store/interfaces';
 import { ViewType } from 'modules/shared/store/constants';
 
@@ -38,7 +32,7 @@ export function isSelectType(type: FieldType | null): type is FieldType.MultiSel
 export function isGroupFieldType(type: FieldType, viewType: ViewType = ViewType.Kanban): boolean {
   switch (viewType) {
     case ViewType.Grid: {
-    // All grid fields can be grouped
+      // All grid fields can be grouped
       return true;
     }
     case ViewType.Kanban: {
@@ -49,8 +43,7 @@ export function isGroupFieldType(type: FieldType, viewType: ViewType = ViewType.
 }
 export function isSelectField(field: Omit<IField, 'id'>): field is Omit<ISelectField, 'id'>;
 export function isSelectField(field: IField): field is ISingleSelectField | IMultiSelectField;
-export function isSelectField(field: IField | Omit<IField, 'id'>)
-  : field is ISingleSelectField | IMultiSelectField | Omit<ISelectField, 'id'> {
+export function isSelectField(field: IField | Omit<IField, 'id'>): field is ISingleSelectField | IMultiSelectField | Omit<ISelectField, 'id'> {
   return isSelectType(field.type);
 }
 
@@ -60,7 +53,7 @@ export function isGroupFieldValid(snapshot: ISnapshot, group: IGroupInfo, viewTy
   } else if (viewType === ViewType.Grid && group.length > 3) {
     return false;
   }
-  return group.every(gp => {
+  return group.every((gp) => {
     const field = snapshot.meta.fieldMap[gp.fieldId];
     return field && isGroupFieldType(field.type, viewType);
   });
@@ -87,4 +80,8 @@ export function getTextFieldType(type: FieldType) {
 
 export function isNumberBaseType(type: FieldType): boolean {
   return [FieldType.Number, FieldType.Rating, FieldType.Currency, FieldType.Percent, FieldType.AutoNumber].includes(type);
+}
+
+export function filterOperatorAcceptsValue(operator: FOperator): boolean {
+  return operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty && operator !== FOperator.IsRepeat;
 }

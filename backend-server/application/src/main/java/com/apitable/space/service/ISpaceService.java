@@ -204,6 +204,14 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void checkMemberIsMainAdmin(String spaceId, Long memberId, Consumer<Boolean> consumer);
 
     /**
+     * throw exception if member is not admin in space.
+     *
+     * @param spaceId  space id
+     * @param memberId member id
+     */
+    void checkMemberIsAdmin(String spaceId, Long memberId);
+
+    /**
      * Check that the members is not the master administrator of the space
      * If yes, throwing exception.
      *

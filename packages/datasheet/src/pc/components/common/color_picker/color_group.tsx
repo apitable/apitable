@@ -59,6 +59,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = props =
               setColorIdx(colorIndex);
             }}
             onMouseDown={stopPropagation}
+            key={colorIndex}
           >
             <div className={styles.borderWhite}>
               <div
