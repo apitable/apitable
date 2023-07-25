@@ -1,5 +1,23 @@
 # APITable CHANGELOG
 
+## [v0.24.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.24.0-alpha) (2023-07-25)
+
+
+### Features and enhancements
+
+* feat: enable experimental multi-arch build for linux/amd64 and linux/arm64 ([#1103](https://github.com/apitable/apitable/pull/1103)) @networkhermit
+
+### Bug fixes
+
+* fix: update error message ([#1097](https://github.com/apitable/apitable/pull/1097)) @llkevin13579
+
+### What's more
+
+* chore: changelog for v0.23.0-beta.2 ([#1099](https://github.com/apitable/apitable/pull/1099)) @ChambersChan
+* chore: trigger multi-arch build only on tag as it is extreme slow ([#1106](https://github.com/apitable/apitable/pull/1106)) @networkhermit
+* chore(deps): bump word-wrap from 1.2.3 to 1.2.4 ([#1104](https://github.com/apitable/apitable/pull/1104)) @dependabot[bot]
+* sync/hosted into develop ([#1123](https://github.com/apitable/apitable/pull/1123)) @functionChenGuoFeng
+
 
 ## [v0.23.0-beta.2](https://github.com/apitable/apitable/releases/tag/v0.23.0-beta.2) (2023-07-18)
 
