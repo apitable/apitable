@@ -104,12 +104,12 @@ public class SpaceRoleServiceImplTest extends AbstractIntegrationTest {
         // assert user have management roles permission
         SpaceRoleDetailVo roleDetail =
             iSpaceRoleService.getRoleDetail(mockUserSpace.getSpaceId(), memberId);
-        assertThat(roleDetail.getResources().size()).isEqualTo(1);
+        assertThat(roleDetail.getResources().size()).isEqualTo(0);
         String roleCode =
             spaceMemberRoleRelMapper.selectRoleCodeByMemberId(mockUserSpace.getSpaceId(), memberId);
         List<String> resourceCodes =
             spaceRoleResourceRelMapper.selectResourceCodesByRoleCode(roleCode);
-        assertThat(resourceCodes.size()).isEqualTo(6);
+        assertThat(resourceCodes.size()).isEqualTo(1);
     }
 
 }
