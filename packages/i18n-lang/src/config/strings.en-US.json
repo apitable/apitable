@@ -147,7 +147,7 @@
   "ai_data_source_rows": "${rows} rows of data",
   "ai_data_source_update": "Update available",
   "ai_datasheet_panel_create_btn_text": "Create chatbot",
-  "ai_explore_card_title": "Feel free to give this a try by asking me in the following manner.<br> Just click on the message below:",
+  "ai_explore_card_title": "Feel free to give this a try by asking me in the following manner. Just click on the message below:",
   "ai_explore_refresh_btn_text": "Refresh",
   "ai_fallback_message_desc": "When the chatbot is unable to find the appropriate answer within its knowledge bases,it will respond the content below.",
   "ai_fallback_message_title": "Fallback message",

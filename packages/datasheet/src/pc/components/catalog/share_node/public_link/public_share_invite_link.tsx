@@ -278,7 +278,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           className={styles.shareOpenButton}
           color='primary'
           onClick={() => handleToggle(true)}>
-          {t(Strings.share_tips_title)}
+          {t(Strings.publish)}
         </Button>
       </div>
     );
