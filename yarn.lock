@@ -429,7 +429,7 @@ __metadata:
     case-sensitive-paths-webpack-plugin: 2.2.0
     classnames: 2.2.6
     comlink: ^4.3.1
-    constate: latest
+    constate: ^3.3.2
     cookies-next: ^2.1.1
     current-device: ^0.10.2
     customize-cra: ^1.0.0
@@ -16324,7 +16324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"constate@npm:latest":
+"constate@npm:^3.3.2":
   version: 3.3.2
   resolution: "constate@npm:3.3.2"
   peerDependencies:
