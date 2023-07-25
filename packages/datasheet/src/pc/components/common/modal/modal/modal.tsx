@@ -19,8 +19,6 @@
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { ContextName } from 'modules/shared/shortcut_key/enum';
-import { ShortcutContext } from 'modules/shared/shortcut_key/shortcut_key';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
 import { confirm, danger, info, success, warning } from './modal.function';
 import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
@@ -28,7 +26,7 @@ import { destroyFns } from './utils';
 import { ModalWithTheme } from './modal_with_theme';
 import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { store } from 'pc/store';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import styles from './style.module.less';
 // @ts-ignore
