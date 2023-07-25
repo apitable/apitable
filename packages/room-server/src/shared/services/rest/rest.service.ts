@@ -23,9 +23,7 @@ import {
   IFieldPermissionMap,
   IFieldPermissionRoleListData,
   INode,
-  INodeRoleMap,
   ISpaceInfo,
-  ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
 } from '@apitable/core';
@@ -47,6 +45,7 @@ import { CommonStatusCode } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { HttpHelper } from 'shared/helpers';
 import {
+  IApiUsage,
   IAuthHeader,
   IHttpSuccessResponse,
   INotificationCreateRo,
@@ -88,7 +87,6 @@ export class RestService {
   private DELETE_NODE_API_URL = 'internal/spaces/%(spaceId)s/nodes/%(nodeId)s/delete';
   private API_USAGES = 'internal/space/%(spaceId)s/apiUsages';
   private API_RATE_LIMIT = 'internal/space/%(spaceId)s/apiRateLimit';
-  private SPACE_RESOURCE = 'space/resource';
   private SPACE_LIST = 'space/list';
   private NODE_LIST = 'internal/spaces/%(spaceId)s/nodes';
   private NODE_CREATE = 'node/create';
@@ -102,11 +100,9 @@ export class RestService {
   private GET_ASSET = 'internal/asset/get';
   // Calculate the references to datasheet OP attachments
   private DST_ATTACH_CITE = 'base/attach/cite';
-  private SUBSCRIBE_REMIND = 'internal/subscribe/remind';
   // Create notification
   private CREATE_NOTIFICATION = 'internal/notification/create';
   // List user infos with node permission
-  private LIST_NODE_ROLES = 'node/listRole?nodeId=%(nodeId)s';
   // List user infos with the given column permission
   private LIST_FIELD_ROLES = 'datasheet/%(dstId)s/field/%(fieldId)s/listRole';
   private UNIT_LOAD_OR_SEARCH = 'internal/org/loadOrSearch';
@@ -331,20 +327,6 @@ export class RestService {
     return response.data;
   }
 
-  async checkSpacePermission(headers: IAuthHeader): Promise<boolean> {
-    const response = await lastValueFrom(
-      this.httpService.get(this.SPACE_RESOURCE, {
-        headers: HttpHelper.createAuthHeaders(headers),
-      }),
-    );
-    const data: ISpacePermissionManage = response!.data;
-    if (!data.spaceResource) {
-      return false;
-    }
-    const spacePermissions = data.spaceResource.permissions;
-    return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
-  }
-
   async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<IDashboardWidgetMap> {
     const response = await lastValueFrom(
       this.httpService.get(this.GET_WIDGET, {
@@ -404,20 +386,20 @@ export class RestService {
    * @param headers Authorization info
    * @param spaceId space ID
    */
-  getApiUsage(headers: IAuthHeader, spaceId: string): Promise<any> {
+  async getApiUsage(headers: IAuthHeader, spaceId: string): Promise<IApiUsage> {
     if (skipUsageVerification) {
       this.logger.log(`skipApiUsage:${spaceId}`);
       return Promise.resolve({
-        data: {
-          isAllowOverLimit: true,
-        },
+        isAllowOverLimit: true
       });
     }
-    return lastValueFrom(
+    const res = await lastValueFrom(
       this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
         headers: HttpHelper.createAuthHeaders(headers),
       }),
     );
+
+    return res.data;
   }
 
   /**
@@ -596,47 +578,6 @@ export class RestService {
   }
 
   /**
-   *
-   * @param {IAuthHeader} headers
-   * @param {string} spaceId
-   * @param {string} nodeId
-   * @param {"space_record_limit" | "datasheet_record_limit" | "max_gallery_views_in_space" |
-   *  "max_kanban_views_in_space" | "space_gantt_limit" | "space_calendar_limit"} templateId
-   * @param {number} specification
-   * @param {number} usage
-   */
-  async sendSubscribeRemind(
-    headers: IAuthHeader,
-    spaceId: string,
-    nodeId: string,
-    templateId:
-      | 'space_record_limit'
-      | 'datasheet_record_limit'
-      | 'max_gallery_views_in_space'
-      | 'max_kanban_views_in_space'
-      | 'space_gantt_limit'
-      | 'space_calendar_limit',
-    specification: number,
-    usage: number,
-  ) {
-    await lastValueFrom(
-      this.httpService.post<any>(
-        this.SUBSCRIBE_REMIND,
-        {
-          nodeId,
-          spaceId,
-          specification: specification + '',
-          templateId,
-          usage: usage + '',
-        },
-        {
-          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
-        },
-      ),
-    );
-  }
-
-  /**
    * Create notification
    *
    * @param _auth token
@@ -681,24 +622,6 @@ export class RestService {
       templateId,
     };
     return this.createNotification(auth, [ro]);
-  }
-
-  /**
-   * Obtain the node rules of the given node
-   *
-   * @param {IAuthHeader} auth header
-   * @param {string} spaceId space ID
-   * @param {string} nodeId node ID
-   * @returns {Promise<INodeRoleMap>}
-   */
-  async getNodePermissionRoleList(auth: IAuthHeader, spaceId: string, nodeId: string): Promise<INodeRoleMap> {
-    const url = sprintf(this.LIST_NODE_ROLES, { nodeId });
-    const response = await lastValueFrom(
-      this.httpService.get(url, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),
-      }),
-    );
-    return response!.data;
   }
 
   /**

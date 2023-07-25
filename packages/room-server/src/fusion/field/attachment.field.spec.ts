@@ -40,14 +40,13 @@ describe('AttachmentField', () => {
   let restService: RestService;
   let store: Store<IReduxState>;
 
-  beforeAll(async () => {
-    jest.setTimeout(60000);
+  beforeAll(async() => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    restService = app.get(RestService);
+    restService = app.get<RestService>(RestService);
     const envConfigService = app.get(EnvConfigService);
     oss = envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     fieldClass = new AttachmentField(restService);
@@ -60,7 +59,7 @@ describe('AttachmentField', () => {
     store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await app.close();
   });
 

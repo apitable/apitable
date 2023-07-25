@@ -16,7 +16,6 @@
   "setupFiles": [
     "dotenv/config"
   ],
-  "testTimeout": 60000,
   "setupFilesAfterEnv": [
     "@apitable/i18n-lang"
   ]

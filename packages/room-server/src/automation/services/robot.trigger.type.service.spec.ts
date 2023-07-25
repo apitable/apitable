@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { RobotTriggerTypeService } from './robot.trigger.type.service';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { EventTypeEnums } from '../events/domains/event.type.enums';
 import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('RobotTriggerTypeServiceTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let service: RobotTriggerTypeService;
   let automationTriggerTypeRepository: AutomationTriggerTypeRepository;
   let automationServiceRepository: AutomationServiceRepository;
@@ -41,17 +41,18 @@ describe('RobotTriggerTypeServiceTest', () => {
     },
   ];
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [AutomationTriggerTypeRepository, AutomationServiceRepository, RobotTriggerTypeService],
     }).compile();
-    automationTriggerTypeRepository = module.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
-    automationServiceRepository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
-    service = module.get<RobotTriggerTypeService>(RobotTriggerTypeService);
+    
+    automationTriggerTypeRepository = moduleFixture.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
+    automationServiceRepository = moduleFixture.get<AutomationServiceRepository>(AutomationServiceRepository);
+    service = moduleFixture.get<RobotTriggerTypeService>(RobotTriggerTypeService);
   });
 
-  afterAll(async() => {
-    await module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {

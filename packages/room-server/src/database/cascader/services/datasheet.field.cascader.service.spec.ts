@@ -25,27 +25,28 @@ import {
   IViewProperty,
   Role
 } from '@apitable/core';
-import { Test, TestingModule } from '@nestjs/testing';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DatasheetFieldCascaderService } from './datasheet.field.cascader.service';
-import { LoggerConfigService } from 'shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston';
-import { CommandService } from 'database/command/services/command.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { CascaderDatabusService } from './cascader.databus.service';
 import { IAuthHeader } from '../../../shared/interfaces';
 import { CommonException, ServerException } from 'shared/exception';
 import { slice } from 'lodash';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { CommandService } from 'database/command/services/command.service';
 import { UnitService } from 'unit/services/unit.service';
 
 describe('DatasheetFieldTreeSelectService', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let datasheetFieldCascaderService: DatasheetFieldCascaderService;
   let restService: RestService;
   let datasheetService: DatasheetService;
   let cascaderDataBusService: CascaderDatabusService;
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
@@ -76,13 +77,10 @@ describe('DatasheetFieldTreeSelectService', () => {
         DatasheetFieldCascaderService,
       ],
     }).compile();
-    cascaderDataBusService = module.get<CascaderDatabusService>(CascaderDatabusService);
-    restService = module.get<RestService>(RestService);
-    datasheetService = module.get<DatasheetService>(DatasheetService);
-    datasheetFieldCascaderService = module.get<DatasheetFieldCascaderService>(DatasheetFieldCascaderService);
-  });
-
-  beforeEach(() => {
+    cascaderDataBusService = moduleFixture.get<CascaderDatabusService>(CascaderDatabusService);
+    restService = moduleFixture.get<RestService>(RestService);
+    datasheetService = moduleFixture.get<DatasheetService>(DatasheetService);
+    datasheetFieldCascaderService = moduleFixture.get<DatasheetFieldCascaderService>(DatasheetFieldCascaderService);
     jest.spyOn(datasheetService, 'getBasePacks').mockImplementation(
       (dstId: string): Promise<IBaseDatasheetPack[]> => {
         if (dstId === 'datasheetId') {
@@ -314,6 +312,10 @@ describe('DatasheetFieldTreeSelectService', () => {
         throw new ServerException(CommonException.SERVER_ERROR);
       },
     );
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   describe('provider init', () => {

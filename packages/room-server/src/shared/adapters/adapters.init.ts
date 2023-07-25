@@ -108,7 +108,7 @@ export const initSwagger = (app: INestApplication) => {
 export const initFastify = async(): Promise<FastifyAdapter> => {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   await fastifyAdapter.register(fastifyMultipart);
-  // registe helmet in fastify to avoid conflict with swagger
+  // register helmet in fastify to avoid conflict with swagger
   let helmetOptions: HelmetOptions = {
     // update script-src to be compatible with swagger
     contentSecurityPolicy: {
@@ -150,9 +150,10 @@ export const initHttpHook = (app: INestApplication) => {
   fastify.addHook('preHandler', async(request) => {
     request[REQUEST_AT] = Date.now();
     request[REQUEST_ID] = generateRandomString();
-    if (request.headers.authorization) {
+    if (request.headers.authorization && request.headers.authorization.startsWith(AUTHORIZATION_PREFIX)) {
       const developerService = app.select(DatabaseModule).get(DeveloperService);
-      request[USER_HTTP_DECORATE] = await developerService.getUserInfoByApiKey(request.headers.authorization.substr(AUTHORIZATION_PREFIX.length));
+      const apiKey =request.headers.authorization.slice(AUTHORIZATION_PREFIX.length);
+      request[USER_HTTP_DECORATE] = await developerService.getUserInfoByApiKey(apiKey);
     }
     if ((request.params as any)['spaceId']) {
       request[SPACE_ID_HTTP_DECORATE] = (request.params as any)['spaceId'];
@@ -168,14 +169,12 @@ export const initHttpHook = (app: INestApplication) => {
     if (request.body && request.body['folderId']) {
       const nodeRepository = app.select(DatabaseModule).get(NodeRepository);
       const folderId = request.body['folderId'];
-      const folder = await nodeRepository.getNodeInfo(folderId);
-      request[REQUEST_HOOK_FOLDER] = folder;
+      request[REQUEST_HOOK_FOLDER] = await nodeRepository.getNodeInfo(folderId);
     }
     if (request.body && request.body['preNodeId']) {
       const nodeRepository = app.select(DatabaseModule).get(NodeRepository);
       const preNodeId = request.body['preNodeId'];
-      const preNode = await nodeRepository.getNodeInfo(preNodeId);
-      request[REQUEST_HOOK_PRE_NODE] = preNode;
+      request[REQUEST_HOOK_PRE_NODE] = await nodeRepository.getNodeInfo(preNodeId);
     }
     return;
   });

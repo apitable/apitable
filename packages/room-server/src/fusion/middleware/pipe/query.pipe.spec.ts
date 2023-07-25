@@ -17,28 +17,11 @@
  */
 
 import { ApiTipConstant, FieldType, IMeta, ViewType } from '@apitable/core';
-import { HttpModule } from '@nestjs/axios';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { ApiException } from 'shared/exception';
 import { QueryPipe } from 'fusion/middleware/pipe/query.pipe';
 import { OrderEnum } from 'shared/enums';
 
 describe('QueryPipe', () => {
-  let app: NestFastifyApplication;
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, HttpModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-  });
-
-  afterAll(async() => {
-    await app.close();
-  });
 
   describe('validateSort', () => {
     test('sort.field error--zh-CN', () => {

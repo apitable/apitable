@@ -17,12 +17,8 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { Test, TestingModule } from '@nestjs/testing';
-import { WinstonModule } from 'nest-winston';
 import { NodeService } from 'node/services/node.service';
 import { CommonException } from '../../shared/exception';
-import { LoggerConfigService } from '../../shared/services/config/logger.config.service';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
@@ -32,19 +28,23 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 describe('RobotActionTypeServiceTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let nodeService: NodeService;
   let automationRobotRepository: AutomationRobotRepository;
   let automationRunHistoryRepository: AutomationRunHistoryRepository;
   let automationActionRepository: AutomationActionRepository;
   let automationTriggerRepository: AutomationTriggerRepository;
-  let service: AutomationService;
+  let automationService: AutomationService;
   let robotService: RobotRobotService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
@@ -71,13 +71,17 @@ describe('RobotActionTypeServiceTest', () => {
         AmqpConnection
       ],
     }).compile();
-    nodeService = module.get<NodeService>(NodeService);
-    automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
-    automationRunHistoryRepository = module.get<AutomationRunHistoryRepository>(AutomationRunHistoryRepository);
-    automationActionRepository = module.get<AutomationActionRepository>(AutomationActionRepository);
-    automationTriggerRepository = module.get<AutomationTriggerRepository>(AutomationTriggerRepository);
-    service = module.get<AutomationService>(AutomationService);
-    robotService = module.get<RobotRobotService>(RobotRobotService);
+    nodeService = moduleFixture.get<NodeService>(NodeService);
+    automationRobotRepository = moduleFixture.get<AutomationRobotRepository>(AutomationRobotRepository);
+    automationRunHistoryRepository = moduleFixture.get<AutomationRunHistoryRepository>(AutomationRunHistoryRepository);
+    automationActionRepository = moduleFixture.get<AutomationActionRepository>(AutomationActionRepository);
+    automationTriggerRepository = moduleFixture.get<AutomationTriggerRepository>(AutomationTriggerRepository);
+    automationService = moduleFixture.get<AutomationService>(AutomationService);
+    robotService = moduleFixture.get<RobotRobotService>(RobotRobotService);
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {
@@ -86,17 +90,17 @@ describe('RobotActionTypeServiceTest', () => {
     expect(automationRunHistoryRepository).toBeDefined();
     expect(automationActionRepository).toBeDefined();
     expect(automationTriggerRepository).toBeDefined();
-    expect(service).toBeDefined();
+    expect(automationService).toBeDefined();
   });
 
   it('should be check create robot permission no exception', async() => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(0);
-    await service.checkCreateRobotPermission('resourceId');
+    await automationService.checkCreateRobotPermission('resourceId');
   });
 
   it('should be check create robot permission throw exception', async() => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(ConfigConstant.MAX_ROBOT_COUNT_PER_DST + 1);
-    await expect(async() => await service.checkCreateRobotPermission('resourceId')).rejects.toThrow(
+    await expect(async() => await automationService.checkCreateRobotPermission('resourceId')).rejects.toThrow(
       CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT.message,
     );
   });
@@ -163,7 +167,7 @@ describe('RobotActionTypeServiceTest', () => {
       },
     };
 
-    await service.handleTask('robotId', { input: {}, output: {}});
+    await automationService.handleTask('robotId', { input: {}, output: {}});
     delete services['test'];
   });
 });
