@@ -24,27 +24,27 @@ import {
   IForeignDatasheetMap,
   IFormulaField,
   ILinkFieldProperty,
+  ILinkIds,
   ILookUpProperty,
   IMeta,
   INodeMeta,
   IRecordMap,
   IUnitValue,
   IUserValue,
-  ILinkIds,
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { difference } from 'lodash';
+import { NodeService } from 'node/services/node.service';
 import { InjectLogger } from 'shared/common';
 import { PermissionException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOriginOptions, ILinkedRecordMap } from 'shared/interfaces';
-import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
-import { Logger } from 'winston';
-import { DatasheetRepository } from '../repositories/datasheet.repository';
-import { NodeService } from 'node/services/node.service';
 import { UnitService } from 'unit/services/unit.service';
 import { UserService } from 'user/services/user.service';
+import { Logger } from 'winston';
+import { DatasheetRepository } from '../repositories/datasheet.repository';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
@@ -67,8 +67,8 @@ interface IAnalysisState {
 
 export type IFieldAnalysisResult = IForeignDatasheetMap &
   IDatasheetUnits & {
-    mainDstRecordMap: IRecordMap;
-  };
+  mainDstRecordMap: IRecordMap;
+};
 
 export interface IFieldAnalysisOptions {
   auth: IAuthHeader;
@@ -100,7 +100,8 @@ export class DatasheetFieldHandler {
     private readonly datasheetRepository: DatasheetRepository,
     private readonly computeFieldReferenceManager: ComputeFieldReferenceManager,
     private readonly roomResourceRelService: RoomResourceRelService,
-  ) {}
+  ) {
+  }
 
   initAnalysisState(mainDstId: string, options: IFieldAnalysisOptions): IAnalysisState {
     const { auth, origin, withoutPermission, needExtendMainDstRecords, mainDstMeta, mainDstRecordMap } = options;
@@ -171,7 +172,7 @@ export class DatasheetFieldHandler {
     }
     this.logger.info(
       `Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms. ` +
-        `Loaded datasheets and number of records: ${JSON.stringify(numRecords)}`,
+      `Loaded datasheets and number of records: ${JSON.stringify(numRecords)}`,
     );
     return result;
   }
@@ -486,7 +487,7 @@ export class DatasheetFieldHandler {
   }
 
   private async fetchRecordMap(dstId: string, recordIds: string[]): Promise<IRecordMap> {
-    return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+    return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds, false, false);
   }
 
   /**

@@ -299,7 +299,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         // init context
         initCallContext(user.getId());
 
-        return new MockUserSpace(user.getId(), spaceId);
+        // get member id in space
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), spaceId);
+
+        return new MockUserSpace(user.getId(), spaceId, memberId);
     }
 
     protected void initCallContext(Long userId) {

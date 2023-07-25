@@ -49,11 +49,18 @@ export class OP2Event implements IOP2Event {
     events.forEach(event => {
       // datasheet resources
       if (event.scope === ResourceType.Datasheet) {
-        const { datasheetId, recordId } = event.context;
+        const { datasheetId, recordId, linkDatasheetId, change } = event.context;
         if (res.has(datasheetId)) {
           recordId && res.get(datasheetId)!.push(recordId);
         } else {
           recordId && res.set(datasheetId, [recordId]);
+        }
+        if (linkDatasheetId && linkDatasheetId != datasheetId && change?.to) {
+          if (res.has(linkDatasheetId)) {
+            res.get(linkDatasheetId)!.push(...change?.to);
+          } else {
+            res.set(linkDatasheetId, [...change?.to]);
+          }
         }
       }
     });

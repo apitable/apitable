@@ -24,9 +24,12 @@ public class MockUserSpace {
 
     String spaceId;
 
-    public MockUserSpace(Long userId, String spaceId) {
+    Long memberId;
+
+    public MockUserSpace(Long userId, String spaceId, Long memberId) {
         this.userId = userId;
         this.spaceId = spaceId;
+        this.memberId = memberId;
     }
 
     public Long getUserId() {
@@ -43,5 +46,13 @@ public class MockUserSpace {
 
     public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 }

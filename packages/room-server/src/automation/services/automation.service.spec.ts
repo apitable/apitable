@@ -29,12 +29,16 @@ import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
 import { RobotRobotService } from './robot.robot.service';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 
 describe('RobotActionTypeServiceTest', () => {
   let module: TestingModule;
   let nodeService: NodeService;
   let automationRobotRepository: AutomationRobotRepository;
   let automationRunHistoryRepository: AutomationRunHistoryRepository;
+  let automationActionRepository: AutomationActionRepository;
+  let automationTriggerRepository: AutomationTriggerRepository;
   let service: AutomationService;
   let robotService: RobotRobotService;
 
@@ -61,11 +65,15 @@ describe('RobotActionTypeServiceTest', () => {
         },
         AutomationRobotRepository,
         AutomationRunHistoryRepository,
+        AutomationActionRepository,
+        AutomationTriggerRepository,
       ],
     }).compile();
     nodeService = module.get<NodeService>(NodeService);
     automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
     automationRunHistoryRepository = module.get<AutomationRunHistoryRepository>(AutomationRunHistoryRepository);
+    automationActionRepository = module.get<AutomationActionRepository>(AutomationActionRepository);
+    automationTriggerRepository = module.get<AutomationTriggerRepository>(AutomationTriggerRepository);
     service = module.get<AutomationService>(AutomationService);
     robotService = module.get<RobotRobotService>(RobotRobotService);
   });
@@ -74,6 +82,8 @@ describe('RobotActionTypeServiceTest', () => {
     expect(nodeService).toBeDefined();
     expect(automationRobotRepository).toBeDefined();
     expect(automationRunHistoryRepository).toBeDefined();
+    expect(automationActionRepository).toBeDefined();
+    expect(automationTriggerRepository).toBeDefined();
     expect(service).toBeDefined();
   });
 

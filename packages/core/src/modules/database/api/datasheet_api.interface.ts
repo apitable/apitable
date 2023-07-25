@@ -118,7 +118,7 @@ export interface IUpdateTreeSelectSnapshotReq {
   linkedViewId: string;
 }
 
-export interface ICreatorInfo {
+export interface ITablebundleUserInfo {
   id: string;
   uuid: string;
   avatar: string | null;
@@ -135,9 +135,11 @@ export interface IDatasheetTablebundles {
   dstId: string;
   statusCode: number;
   createdAt: string;
+  deletedAt: string;
   createdBy: string;
   expiredAt: string;
-  creatorInfo: ICreatorInfo;
+  creatorInfo: ITablebundleUserInfo;
+  deleteInfo?: ITablebundleUserInfo;
   isDeleted: boolean;
   deletedBy?: string;
   type: number;

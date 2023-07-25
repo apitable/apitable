@@ -126,6 +126,8 @@ export interface Tips {
     api_params_lookup_target_field_not_exists:            PuneHedgehog;
     api_params_lookup_sort_field_not_exists:              PuneHedgehog;
     api_params_lookup_field_can_not_sort:                 PuneHedgehog;
+    api_params_lookup_filter_field_not_exists:            PuneHedgehog;
+    api_params_lookup_filter_field_invalid_operation:     PuneHedgehog;
     api_params_lookup_can_not_operate:                    PuneHedgehog;
     api_params_max_count_error:                           PuneHedgehog;
     api_params_max_error:                                 PuneHedgehog;
