@@ -429,6 +429,7 @@ __metadata:
     case-sensitive-paths-webpack-plugin: 2.2.0
     classnames: 2.2.6
     comlink: ^4.3.1
+    constate: latest
     cookies-next: ^2.1.1
     current-device: ^0.10.2
     customize-cra: ^1.0.0
@@ -16320,6 +16321,15 @@ __metadata:
   version: 1.0.0
   resolution: "constants-browserify@npm:1.0.0"
   checksum: f7ac8c6d0b6e4e0c77340a1d47a3574e25abd580bfd99ad707b26ff7618596cf1a5e5ce9caf44715e9e01d4a5d12cb3b4edaf1176f34c19adb2874815a56e64f
+  languageName: node
+  linkType: hard
+
+"constate@npm:latest":
+  version: 3.3.2
+  resolution: "constate@npm:3.3.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 1bc1c49aacf37221bc8ed65ec18ea3501dd7f9ec43df347643e50a365123ed6cbc40e4f53dbfb3ba4e1d50619da712d330e2bee732f702919fd13d4b2edac63a
   languageName: node
   linkType: hard
 
