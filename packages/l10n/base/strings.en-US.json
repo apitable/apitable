@@ -4556,7 +4556,7 @@
   "space_seats_limit": "The maximum number of seats to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
   "space_seats_limit_email_title": "Usage reminders for the number of seats in the \"${SPACE_NAME}\" space",
   "space_setting": "Space settings",
-  "space_setting_social_ad_btn": "Learn mode",
+  "space_setting_social_ad_btn": "Learn more",
   "space_setting_social_ad_decs": "Click here to learn more",
   "space_subscription_notify": "Congratulations! You have successfully subscribed \"<a class=\"planName\"></a>\". The expiration time is <a class=\"expireAt\"></a>.",
   "space_template": "Custom",
