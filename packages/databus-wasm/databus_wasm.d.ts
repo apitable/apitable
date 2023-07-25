@@ -6,10 +6,10 @@
 */
 export function init(base_url: string): Promise<void>;
 /**
-* @param {string} _dst_id
+* @param {string} dst_id
 * @returns {Promise<any>}
 */
-export function get_datasheet_pack(_dst_id: string): Promise<any>;
+export function get_datasheet_pack(dst_id: string): Promise<any>;
 /**
 * @param {string} _dst_id
 * @returns {any}
