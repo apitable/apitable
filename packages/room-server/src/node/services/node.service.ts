@@ -70,13 +70,24 @@ export class NodeService {
         nodeIdSet.set(node.preNodeId, true);
       }
     });
-    console.log('zzq see jk', JSON.stringify(nodeIdSet), nodeIdSet);
     for (const [key, value] of nodeIdSet) {
       if (!value) {
         return key;
       }
     }
-    return 'not found';
+    return '';
+  }
+
+  async getNodeIcon(nodeId: string): Promise<string | undefined> {
+    const node = await this.nodeRepository.findOne({
+      where: {
+        nodeId
+      },
+    });
+    if (!node) {
+      return undefined;
+    }
+    return node.icon;
   }
 
   async batchSave(nodes: any[]){
