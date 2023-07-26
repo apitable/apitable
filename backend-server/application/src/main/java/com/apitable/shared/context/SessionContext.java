@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 
+import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.constants.SessionAttrConstants;
 import com.apitable.auth.enums.AuthException;
 import com.apitable.shared.holder.UserHolder;
@@ -71,6 +72,12 @@ public class SessionContext {
     public static Long getUserId() {
         Long userId = UserHolder.get();
         if (userId == null) {
+            HttpServletRequest request = HttpContextUtil.getRequest();
+            String userIdStr = request.getParameter(ParamsConstants.USER_ID_PARAMETER);
+            try {
+                return Long.parseLong(userIdStr);
+            }catch (Exception ignored){
+            }
             HttpSession session = getSession(false);
             Object value = session.getAttribute(SessionAttrConstants.LOGIN_USER_ID);
             if (value == null) {
