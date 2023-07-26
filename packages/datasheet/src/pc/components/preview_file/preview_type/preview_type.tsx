@@ -27,7 +27,11 @@ import { PreviewDoc } from './preview_doc';
 import { Loading } from './preview_doc/loading';
 import { PreviewImage } from './preview_image/preview_image';
 import { IPreviewTypeBase } from './preview_type.interface';
-import PreviewPdf from './preview_pdf/preview_pdf';
+
+const PreviewPdf = dynamic(() => import('./preview_pdf/preview_pdf'), {
+  ssr: false,
+  loading: () => <Loading />,
+});
 
 const PreviewMedia = dynamic(() => import('./preview_media/preview_media'), {
   ssr: false,
