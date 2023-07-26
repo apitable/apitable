@@ -49,8 +49,9 @@ import com.apitable.integration.grpc.BasicResult;
 import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
-import com.apitable.interfaces.ai.model.AiChatBotFromDatasheetCreateParam;
-import com.apitable.interfaces.ai.model.DatasheetSourceSettingParam;
+import com.apitable.interfaces.ai.model.AiCreateParam;
+import com.apitable.interfaces.ai.model.AiUpdateParam;
+import com.apitable.interfaces.ai.model.DatasheetSource;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -780,6 +781,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // The datasheet node, corresponding to the modification.
         if (entity.getType() == NodeType.DATASHEET.getNodeType()) {
             iDatasheetService.updateDstName(userId, nodeId, nodeName);
+        } else if (entity.getType() == NodeType.AI_CHAT_BOT.getNodeType()) {
+            aiServiceFacade.updateAi(nodeId, AiUpdateParam.builder().name(nodeName).build());
         }
         // publish space audit events
         JSONObject info = JSONUtil.createObj();
@@ -1265,23 +1268,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         this.processNodeHasSourceDatasheet(NodeType.MIRROR.getNodeType(), filterNodeIds,
             nodeTypeToNodeIdsMap);
 
-        // Verify that the number of nodes reaches the upper limit
-        // if (options.isVerifyNodeCount()) {
-        //     int subCount;
-        //     if (nodeTypeToNodeIdsMap.containsKey(NodeType.FOLDER.getNodeType())) {
-        //         List<String> fodIds = nodeTypeToNodeIdsMap.get(NodeType.FOLDER.getNodeType())
-        //         .stream().map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        //         // Take out the double union to avoid some folders already in the filtered list.
-        //         subCount = CollUtil.unionDistinct(fodIds, filterNodeIds).size();
-        //     }
-        //     else {
-        //         subCount = filterNodeIds.size();
-        //     }
-        //     if (subTrees.size() > subCount) {
-        //         iSubscriptionService.checkSheetNums(spaceId, subTrees.size() - subCount);
-        //     }
-        // }
-        // Original node-> front node MAP
         Map<String, String> originNodeToPreNodeMap = new HashMap<>(subTrees.size());
         subTrees.forEach(sub -> {
             originNodeToPreNodeMap.put(sub.getNodeId(), sub.getPreNodeId());
@@ -1580,18 +1566,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                             fields.add(fieldMap.get(column.getFieldId()));
                         }
                     });
-                    DatasheetSourceSettingParam sourceSettingParam =
-                        DatasheetSourceSettingParam.builder()
+                    DatasheetSource datasheetSource =
+                        DatasheetSource.builder()
                             .datasheetId(param.getId())
                             .viewId(param.getViewId())
                             .fields(fields)
                             .rows(viewTarget.getRows().size())
                             .build();
                     // build request object
-                    aiServiceFacade.createAiChatBot(AiChatBotFromDatasheetCreateParam.builder()
+                    aiServiceFacade.createAi(AiCreateParam.builder()
                         .spaceId(spaceId)
                         .aiId(nodeId)
-                        .dataSources(Collections.singletonList(sourceSettingParam))
+                        .aiName(name)
+                        .dataSources(Collections.singletonList(datasheetSource))
                         .build()
                     );
                 }
