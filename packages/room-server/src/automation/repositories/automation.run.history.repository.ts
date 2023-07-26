@@ -17,7 +17,8 @@
  */
 
 import { IRobotTask } from '@apitable/core';
-import { EntityRepository, Repository } from 'typeorm';
+import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
 
 @EntityRepository(AutomationRunHistoryEntity)
@@ -28,6 +29,7 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
       select: ['taskId', 'robotId', 'createdAt', 'status'],
       where: {
         robotId,
+        status: In([RunHistoryStatusEnum.RUNNING, RunHistoryStatusEnum.SUCCESS, RunHistoryStatusEnum.FAILED])
       },
       order: {
         createdAt: 'DESC',
