@@ -137,6 +137,7 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
 
 export const IconSpanStyled = styled.span<IIconSpanStyled>`
   display:inline-block;
+  vertical-align:-0.225em;
   line-height: 1;
   ${props => {
     if (!props.existIcon) {
@@ -160,9 +161,6 @@ export const TextSpanStyled = styled.span`
 `;
 
 export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBaseProps>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   transition: background-color 100ms linear;
   border: none;
@@ -180,6 +178,8 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
     outline: none;
   };
   .loading {
+    display: inline-block;
+    vertical-align: middle;
     ${(props) => {
     const marginWithSize = SIZE_MARGIN_MAP[props.size || 'middle'];
     return css`

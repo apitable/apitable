@@ -22,6 +22,7 @@ import {
 } from '@apitable/core';
 
 export interface IFilterValueProps {
+  primaryField?: IField;
   field: IField;
   conditionIndex: number;
   condition: IFilterCondition<FieldType>;
