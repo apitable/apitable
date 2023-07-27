@@ -403,7 +403,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               </RadioGroup>
             </ComponentDisplay>
           </div> }
-          { filterModal && relatedLinkField &&
+          {filterModal && relatedLinkField &&
             <FilterModal
               filterModalVisible={filterModal}
               field={currentField}
