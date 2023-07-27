@@ -218,9 +218,7 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width:
 `;
 
 export const OptionOutside = styled(ListDeprecate.Item).attrs(applyDefaultTheme)`
-
   ${CssItem};
-
   padding-left: ${props => {
     if (props.prefixIcon) {
       return '28px';

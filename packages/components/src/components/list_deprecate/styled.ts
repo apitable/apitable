@@ -177,27 +177,20 @@ export const FootWrapper = styled.div`
   }
 `;
 
-export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disabled?: boolean }>`
+export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disabled?: boolean, selected?:boolean, active?: boolean }>`
   cursor: pointer;
   display: flex;
   align-items: center;
   height: 40px;
   padding: 0 8px;
 
-  @media (any-hover: hover) {
-    ${(props) => {
-    return !props.disabled && css`
-        &:hover {
-          ${props => css`background: ${props.theme.color.bgBglessHover};`}
-          border-radius: 8px;
-        }
-        &:active {
-          ${props => css`background: ${props.theme.color.bgBglessActive};`}
-        }
-      `;
-  }}
-
-  }
+  ${props => !props.disabled && props.active && css`
+    border-radius: 8px;
+    background: ${props.theme.color.bgBglessHover};
+    &:hover {
+      background: ${props.theme.color.bgBglessActive};
+    }
+  `}
 
   @media screen and(max-width: 768px) {
     height: 48px;

@@ -18,30 +18,31 @@
 import { ChevronDownOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import Color from 'color';
+import Highlighter from 'react-highlight-words';
 import { SelectItem } from 'components/select/select_item';
 import { convertChildrenToData } from 'components/select/utils';
 import { WrapperTooltip } from 'components/tooltip';
 import { IUseListenTriggerInfo, stopPropagation } from 'helper';
 import { useProviderTheme } from 'hooks';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
 import { ListDeprecate } from '../../list_deprecate';
 import { IListItemProps } from '../../list_deprecate/interface';
 import { IOption, ISelectProps } from '../interface';
 import {
-  GlobalStyle,
-  hightLightCls,
-  OptionOutside,
+  GlobalStyle, hightLightCls, OptionOutside,
   StyledArrowIcon,
   StyledListContainer,
   StyledSelectedContainer,
   StyledSelectTrigger,
 } from '../styled';
 import debounce from 'lodash/debounce';
-import { Dropdown, IOverLayProps } from '../../dropdown/laag_dropdown';
+import { IOverLayProps } from '../../dropdown/float_ui';
 import styled from 'styled-components';
+import { ListDropdown, SelectContext } from './list_dropdown';
+import { useListItem } from '@floating-ui/react';
+import { highlightStyle } from '@storybook/addon-a11y';
 
-const StyledDropdown = styled(Dropdown)`
+const StyledDropdown = styled(ListDropdown)`
   z-index: 1200;
   `;
 
@@ -51,7 +52,6 @@ const _renderValue = (option: IOption) => {
   return option.label;
 };
 
-const _Highlighter: any = Highlighter;
 const _GlobalStyle: any = GlobalStyle;
 
 export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
@@ -59,7 +59,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
 } = (props) => {
   const {
     placeholder, value, triggerStyle, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
-    openSearch = false, searchPlaceholder, highlightStyle, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
+    openSearch = false, searchPlaceholder, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
     onSelected, hideSelectedOption, dropdownRender, disabled, disabledTip, listStyle, listCls, renderValue = _renderValue,
     children, maxListWidth = 240
   } = props;
@@ -94,28 +94,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
   useEffect(() => {
     setKeyword('');
   }, [visible, value]);
-
-  const renderOptionItem = (item: IOption, index: number) => {
-    return <OptionOutside
-      currentIndex={index}
-      id={item.value as string}
-      key={`${item.value as string}-${index}`}
-      {...item}
-    >
-      <SelectItem item={item} renderValue={_renderValue} isChecked={value === item.value}>
-        {
-          !keyword ? null : <_Highlighter
-            highlightClassName={hightLightCls.toString()}
-            highlightStyle={highlightStyle as any}
-            searchWords={[keyword]}
-            autoEscape
-            textToHighlight={item.label}
-          />
-        }
-      </SelectItem>
-    </OptionOutside>;
-  };
-
+ 
   const optionsFilter = (item: IOption | null) => {
     if (!item) {
       return false;
@@ -132,6 +111,8 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
   };
 
   const afterFilterOptions = options!.filter(optionsFilter);
+
+  const findIndex= afterFilterOptions.findIndex(item => item?.value === value);
 
   const triggerRef: React.MutableRefObject<HTMLElement|null> = useRef<HTMLElement>(null);
 
@@ -159,6 +140,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
         ref={listContainer}
       >
         {
+          // @ts-ignore
           dropdownRender || <ListDeprecate
             onClick={(_e, index) => {
               setVisible(false);
@@ -177,8 +159,12 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
             autoHeight
           >
             {
-              afterFilterOptions.map((item, index) => {
-                return renderOptionItem(item!, index);
+              afterFilterOptions.filter(Boolean).map((item, index) => {
+                return (<OptionItem onClick={()=> {
+                  setVisible(false);
+                  toggle();
+                  onSelected && onSelected(afterFilterOptions[index]!, index);
+                }} item={item as IOption} currentIndex={index} keyword={keyword} value={value}/>);
               })
             }
           </ListDeprecate>
@@ -218,9 +204,9 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
       options={{
         arrow: false,
         offset: 4,
+        selectedIndex: findIndex,
         disabled,
-      }
-      }
+      }}
       trigger={
         <div style={triggerStyle}>
           <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
@@ -279,3 +265,57 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
 const Option = ListDeprecate.Item;
 
 DropdownSelect.Option = Option;
+
+function OptionItem({ item,currentIndex, value , keyword,
+  onClick
+}: {item: IOption, currentIndex: number, value: any, keyword: string,onClick: () => void}) {
+
+  const {
+    activeIndex,
+    selectedIndex,
+    getItemProps,
+    handleSelect
+  } = React.useContext(SelectContext);
+
+  const { ref, index:aIndex } = useListItem();
+
+  const isActive = activeIndex === aIndex;
+  const isSelected = selectedIndex === aIndex;
+
+  const itemProps = getItemProps({
+    onClick: () => {
+      onClick?.();
+      handleSelect(aIndex);
+    },
+    onKeyDown(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        onClick?.();
+        handleSelect(aIndex);
+      }
+    }
+  });
+
+  return <OptionOutside
+    currentIndex={currentIndex}
+    setRef={ref}
+    tabIndex={isActive ? 0 : -1}
+    active={isActive}
+    selected={isSelected}
+    id={item.value as string}
+    {...item}
+    {...itemProps}
+  >
+    <SelectItem item={item} renderValue={_renderValue} isChecked={value === item?.value}>
+      {
+        !keyword ? null : <Highlighter
+          highlightClassName={hightLightCls.toString()}
+          highlightStyle={highlightStyle as any}
+          searchWords={[keyword]}
+          autoEscape
+          textToHighlight={item.label}
+        />
+      }
+    </SelectItem>
+  </OptionOutside>;
+}
