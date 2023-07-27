@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { Message, MobileContextMenu } from 'pc/components/common';
@@ -302,7 +301,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               openCatalog();
               addTreeNode(targetId, ConfigConstant.NodeType.DASHBOARD);
             }),
-            judgeShowAIEntrance() ? contextItemMap.get(ContextItemKey.addAi)(() => {
+            judgeShowAIEntrance(spaceInfo?.isEnableChatbot) ? contextItemMap.get(ContextItemKey.addAi)(() => {
               const result = triggerUsageAlert?.('maxFormViewsInSpace',
                 { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
               if (result) {
