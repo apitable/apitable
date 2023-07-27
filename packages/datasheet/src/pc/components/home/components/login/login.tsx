@@ -155,6 +155,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
     if (event.key === ' ') {
       event.preventDefault();
     }
+    event.key === 'Enter' && handleSubmit();
   }
   return (
     <div className={styles.loginWrap}>
@@ -168,7 +169,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
               className={styles.input}
               value={username}
               onChange={handleEmailChange}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               prefix={<EmailFilled color={colors.textCommonPrimary}/>}
               placeholder={t(Strings.email_placeholder)}
               error={Boolean(errorMsg.username)}
@@ -195,6 +196,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
               >
                 {isVisible ? <EyeOpenOutlined color={colors.textCommonTertiary}/> : <EyeCloseOutlined color={colors.textCommonTertiary}/>}
               </div>}
+              onKeyDown={handleKeyPress}
               placeholder={t(Strings.placeholder_input_password)}
               error={Boolean(errorMsg.password)}
               block
