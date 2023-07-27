@@ -54,7 +54,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         INTERCEPTOR_IGNORE_PATHS.add("/swagger-ui/**");
         INTERCEPTOR_IGNORE_PATHS.add("/swagger-ui.html");
         INTERCEPTOR_IGNORE_PATHS.add("/v3/api-docs/**");
-        INTERCEPTOR_IGNORE_PATHS.add("/internal/**");
     }
 
     public WebMvcConfig(ResourceInterceptor resourceInterceptor,

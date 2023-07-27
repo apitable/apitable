@@ -38,6 +38,8 @@ import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
+import java.util.*;
+
 /**
  * <p>
  * Session context util
@@ -51,9 +53,14 @@ public class SessionContext {
 
     private static final DefaultCookieSerializer cookieSerializer;
 
+    private static final List<String> SUPPORTED_URLS;
+
     static {
         sessionRepository = SpringContextHolder.getBean(RedisIndexedSessionRepository.class);
         cookieSerializer = SpringContextHolder.getBean(DefaultCookieSerializer.class);
+
+        SUPPORTED_URLS = Collections.singletonList("/internal/node");
+
     }
 
     public static void setExternalId(Long userId, String externalId) {
@@ -65,6 +72,36 @@ public class SessionContext {
     }
 
     /**
+     * get http user id from http request parameter
+     * Only the agreed api can be called
+     */
+    public static Long getUserIdFromRequest() {
+        HttpServletRequest request = HttpContextUtil.getRequest();
+        if (!isSupportIdInParameter(request.getContextPath(), request.getRequestURI())) {
+            return null;
+        }
+        String userIdStr = request.getParameter(ParamsConstants.USER_ID_PARAMETER);
+        if (userIdStr != null) {
+            try {
+                return Long.parseLong(userIdStr);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Whether url supports getting user id from query parameter
+     *
+     * @param url api url
+     */
+    private static boolean isSupportIdInParameter(String prefix, String url) {
+        return url != null && SUPPORTED_URLS.stream()
+                .anyMatch(s -> url.startsWith(prefix + s));
+    }
+
+    /**
      * get the user id in the session
      *
      * @return UserId
@@ -72,11 +109,9 @@ public class SessionContext {
     public static Long getUserId() {
         Long userId = UserHolder.get();
         if (userId == null) {
-            HttpServletRequest request = HttpContextUtil.getRequest();
-            String userIdStr = request.getParameter(ParamsConstants.USER_ID_PARAMETER);
-            try {
-                return Long.parseLong(userIdStr);
-            }catch (Exception ignored){
+            userId = getUserIdFromRequest();
+            if (userId != null) {
+                return userId;
             }
             HttpSession session = getSession(false);
             Object value = session.getAttribute(SessionAttrConstants.LOGIN_USER_ID);
