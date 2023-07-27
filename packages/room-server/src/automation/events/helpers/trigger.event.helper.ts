@@ -27,13 +27,17 @@ import {
   TRIGGER_INPUT_PARSER_FUNCTIONS
 } from '@apitable/core';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { getRecordUrl } from 'shared/helpers/env';
-import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
-import { EventTypeEnums } from '../domains/event.type.enums';
-import { AutomationService } from '../../services/automation.service';
-import { Logger } from 'winston';
+import { enableAutomationWorker } from 'app.environment';
 import { InjectLogger } from 'shared/common';
+import { IdWorker } from 'shared/helpers';
+import { getRecordUrl } from 'shared/helpers/env';
+import { automationExchangeName, automationRunning } from 'shared/services/queue/queue.module';
+import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
+import { Logger } from 'winston';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
+import { AutomationService } from '../../services/automation.service';
 import { CommonEventContext, CommonEventMetaContext } from '../domains/common.event';
+import { EventTypeEnums } from '../domains/event.type.enums';
 
 export const OFFICIAL_SERVICE_SLUG = process.env.ROBOT_OFFICIAL_SERVICE_SLUG ? process.env.ROBOT_OFFICIAL_SERVICE_SLUG : 'apitable';
 
@@ -56,6 +60,7 @@ export class TriggerEventHelper {
     @InjectLogger() private readonly logger: Logger,
     @Inject(forwardRef(() => AutomationService))
     private readonly automationService: AutomationService,
+    private readonly queueService: QueueSenderBaseService,
   ) {
     // Convert trigger input to plain object
     this._triggerInputParser = TriggerEventHelper.MAKE_INPUT_PARSER(TRIGGER_INPUT_PARSER_FUNCTIONS);
@@ -86,24 +91,40 @@ export class TriggerEventHelper {
     if (conditionalTriggers.length === 0) return;
 
     let shouldFireRobots;
-    if(eventType === EventTypeEnums.RecordCreated) {
+    if (eventType === EventTypeEnums.RecordCreated) {
       shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordCreated, conditionalTriggers, eventContext);
     } else {
       shouldFireRobots = this.getRenderTriggers(EventTypeEnums.RecordMatchesConditions, conditionalTriggers, eventContext);
     }
 
-    this.logger.info(`messageIds: [${ msgIds }]: Execute ${ eventType } handler. `, {
+    this.logger.info(`messageIds: [${msgIds}]: Execute ${eventType} handler. `, {
       shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
     });
 
     await Promise.all(shouldFireRobots.map(robot => {
-      return this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {});
+      if (enableAutomationWorker) {
+        return this.fireRoot(robot);
+      }
+      return this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {
+      });
     }));
   }
 
-  public getRenderTriggers(eventType: string, conditionalTriggers: AutomationTriggerEntity[], eventContext: CommonEventContext) {
+  async fireRoot(fireRobot: IShouldFireRobot) {
+    const taskId = IdWorker.nextId().toString();
+    const robot = await this.automationService.getRobotById(fireRobot.robotId);
+    await this.automationService.saveTaskContext({
+      taskId,
+      robotId: fireRobot.robotId,
+      triggerInput: fireRobot.trigger.input,
+      triggerOutput: fireRobot.trigger.output,
+    }, robot);
+    await this.queueService.sendMessageWithId(taskId, automationExchangeName, automationRunning, { taskId: taskId, triggerId: robot.triggerId });
+  }
+
+  public getRenderTriggers(eventType: string, conditionalTriggers: AutomationTriggerEntity[], eventContext: CommonEventContext): IShouldFireRobot[] {
     const { datasheetId, datasheetName, recordId } = eventContext;
-    if(eventType == EventTypeEnums.RecordMatchesConditions) {
+    if (eventType == EventTypeEnums.RecordMatchesConditions) {
       return conditionalTriggers
         .filter(item => Boolean(item.input))
         .reduce((prev, item) => {
@@ -123,7 +144,7 @@ export class TriggerEventHelper {
           }
           return prev;
         }, [] as IShouldFireRobot[]);
-    } 
+    }
     return conditionalTriggers
       .filter(item => Boolean(item.input))
       .reduce((prev, item) => {
@@ -140,7 +161,7 @@ export class TriggerEventHelper {
         }
         return prev;
       }, [] as IShouldFireRobot[]);
-    
+
   }
 
   public getTriggerOutput(datasheetId: string, datasheetName: string, recordId: string, eventContext: CommonEventContext) {
@@ -164,7 +185,7 @@ export class TriggerEventHelper {
     };
   }
 
-  private _getConditionalTriggers(triggers: AutomationTriggerEntity[] | undefined, triggerTypeId: string | undefined): AutomationTriggerEntity[]{
+  private _getConditionalTriggers(triggers: AutomationTriggerEntity[] | undefined, triggerTypeId: string | undefined): AutomationTriggerEntity[] {
     if (!triggers) {
       return [];
     }

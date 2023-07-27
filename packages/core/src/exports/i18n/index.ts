@@ -41,9 +41,11 @@ const _global = global || window;
 
 export function getLanguage() {
   let clientLang = null;
-  if(_global.document){
-    // @ts-ignore
-    clientLang = localStorage.getItem('client-lang');
+  if (typeof window !== 'undefined') {
+    try {
+      // @ts-ignore
+      clientLang = localStorage.getItem('client-lang');
+    } catch (e) {}
   }
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;

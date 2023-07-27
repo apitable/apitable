@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatabaseConfigService } from 'shared/services/config/database.config.service';
 import { DatasheetRepository } from './datasheet.repository';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
 import { DatasheetEntity } from '../entities/datasheet.entity';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, getConnection } from 'typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseConfigService } from 'shared/services/config/database.config.service';
+import { clearDatabase } from 'shared/testing/test-util';
 
 describe('DatasheetRepositoryTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let repository: DatasheetRepository;
   let entity: DatasheetEntity;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRootAsync({
@@ -40,10 +41,9 @@ describe('DatasheetRepositoryTest', () => {
       ],
       providers: [DatasheetRepository],
     }).compile();
-    repository = module.get<DatasheetRepository>(DatasheetRepository);
-  });
-
-  beforeEach(async() => {
+    // clear database
+    await clearDatabase(getConnection());
+    repository = moduleFixture.get<DatasheetRepository>(DatasheetRepository);
     const datasheet: DeepPartial<DatasheetEntity> = {
       dstId: 'datasheetId',
       revision: 1,
@@ -53,11 +53,7 @@ describe('DatasheetRepositoryTest', () => {
   });
 
   afterEach(async() => {
-    await repository.delete(entity.id);
-  });
-
-  afterAll(async() => {
-    await repository.manager.connection.close();
+    await moduleFixture.close();
   });
 
   it('should get revisions by datasheet ids', async() => {

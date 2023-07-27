@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { RobotRobotService } from './robot.robot.service';
@@ -23,8 +22,6 @@ import { AutomationRobotRepository } from '../repositories/automation.robot.repo
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
-import { LoggerConfigService } from '../../shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston';
 import {
   RobotTriggerBaseInfoDto,
   RobotTriggerInfoDto, TriggerTriggerTypeRelDto
@@ -36,44 +33,45 @@ import { ServiceBaseUrlDto } from '../dtos/service.dto';
 import { CommonException } from '../../shared/exception';
 import { TriggerInputJsonSchemaDto } from '../dtos/trigger.type.dto';
 import { RobotBaseInfoDto } from '../dtos/robot.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 
 describe('RobotRobotServiceTest', () => {
-  let module: TestingModule;
-  let service: RobotRobotService;
+  let moduleFixture: TestingModule;
+  let robotRobotService: RobotRobotService;
   let automationRobotRepository: AutomationRobotRepository;
   let automationTriggerRepository: AutomationTriggerRepository;
   let automationTriggerTypeRepository: AutomationTriggerTypeRepository;
   let automationActionRepository: AutomationActionRepository;
   let automationActionTypeRepository: AutomationActionTypeRepository;
   let automationServiceRepository: AutomationServiceRepository;
-
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
-      providers: [
-        AutomationTriggerRepository,
-        AutomationTriggerTypeRepository,
-        AutomationActionRepository,
-        AutomationActionTypeRepository,
-        AutomationServiceRepository,
-        AutomationRobotRepository,
-        RobotRobotService,
-      ],
+  
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
         }),
       ],
+      providers: [
+        AutomationServiceRepository,
+        AutomationRobotRepository,
+        AutomationTriggerRepository,
+        AutomationTriggerTypeRepository,
+        AutomationActionRepository,
+        AutomationActionTypeRepository,
+        RobotRobotService,
+      ],
     }).compile();
-    automationRobotRepository = module.get<AutomationRobotRepository>(AutomationRobotRepository);
-    automationTriggerRepository = module.get<AutomationTriggerRepository>(AutomationTriggerRepository);
-    automationTriggerTypeRepository = module.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
-    automationActionRepository = module.get<AutomationActionRepository>(AutomationActionRepository);
-    automationActionTypeRepository = module.get<AutomationActionTypeRepository>(AutomationActionTypeRepository);
-    automationServiceRepository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
-    service = module.get<RobotRobotService>(RobotRobotService);
-  });
-
-  beforeEach(() => {
+    
+    automationRobotRepository = moduleFixture.get<AutomationRobotRepository>(AutomationRobotRepository);
+    automationTriggerRepository = moduleFixture.get<AutomationTriggerRepository>(AutomationTriggerRepository);
+    automationTriggerTypeRepository = moduleFixture.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
+    automationActionRepository = moduleFixture.get<AutomationActionRepository>(AutomationActionRepository);
+    automationActionTypeRepository = moduleFixture.get<AutomationActionTypeRepository>(AutomationActionTypeRepository);
+    automationServiceRepository = moduleFixture.get<AutomationServiceRepository>(AutomationServiceRepository);
+    robotRobotService = moduleFixture.get<RobotRobotService>(RobotRobotService);
     // The resource(id: resourceId) has three robots(ids: robot-1, robot-2, robot-3).
     // robot-1 and robot-2 all have one trigger(id: trigger-1 and trigger-2), robot-3 not.
     // Only robot-1 has two actions(id: action-1 and action-2).
@@ -199,12 +197,12 @@ describe('RobotRobotServiceTest', () => {
       });
   });
 
-  afterAll(async() => {
-    await module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should get robot base info by robot ids', async() => {
-    const robotBaseInfoVos = await service.getRobotBaseInfoByIds(['robot-1', 'robot-2', 'robot-3']);
+    const robotBaseInfoVos = await robotRobotService.getRobotBaseInfoByIds(['robot-1', 'robot-2', 'robot-3']);
     expect(robotBaseInfoVos.length).toEqual(3);
     expect(robotBaseInfoVos[2]!.nodes.length).toEqual(0);
     expect(robotBaseInfoVos[1]!.nodes.length).toEqual(1);
@@ -219,12 +217,12 @@ describe('RobotRobotServiceTest', () => {
   });
 
   it('should get robot base info by resource id', async() => {
-    const robotBaseInfoVos = await service.getRobotListByResourceId('resourceId');
+    const robotBaseInfoVos = await robotRobotService.getRobotListByResourceId('resourceId');
     expect(robotBaseInfoVos.length).toEqual(3);
   });
 
   it('should get robot details info by robot id', async() => {
-    const iRobot = await service.getRobotById('robot-1');
+    const iRobot = await robotRobotService.getRobotById('robot-1');
     expect(iRobot.id).toEqual('robot-1');
     expect(iRobot.triggerId).toEqual('trigger-1');
     expect(iRobot.triggerTypeId).toEqual('trigger-type');
@@ -242,18 +240,18 @@ describe('RobotRobotServiceTest', () => {
 
   it('should be throw exception when the action is empty', async()=> {
     await expect(async() => {
-      await service.getRobotById('robot-2');
+      await robotRobotService.getRobotById('robot-2');
     }).rejects.toThrow(CommonException.ROBOT_FORM_CHECK_ERROR.message);
   });
 
   it('should be throw exception when the trigger is empty', async()=> {
     await expect(async() => {
-      await service.getRobotById('robot-3');
+      await robotRobotService.getRobotById('robot-3');
     }).rejects.toThrow(CommonException.ROBOT_FORM_CHECK_ERROR.message);
   });
 
   it('should get robot detail info vo by robot id', async() => {
-    const robotDetailVo = await service.getRobotDetailById('robot-1');
+    const robotDetailVo = await robotRobotService.getRobotDetailById('robot-1');
     expect(robotDetailVo.id).toEqual('robot-1');
     expect(robotDetailVo.triggerId).toEqual('trigger-1');
     expect(robotDetailVo.triggerTypeId).toEqual('trigger-type');

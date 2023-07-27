@@ -15,20 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { NodeShareSettingService } from './node.share.setting.service';
 import { NodeShareSettingRepository } from '../repositories/node.share.setting.repository';
 import { NodeRepository } from '../repositories/node.repository';
 import { CommonException, PermissionException } from 'shared/exception';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Test NodeShareSettingService', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let nodeShareSettingRepository: NodeShareSettingRepository;
   let nodeRepository: NodeRepository;
-  let service: NodeShareSettingService;
+  let nodeShareSettingService: NodeShareSettingService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [
         {
           provide: NodeShareSettingRepository,
@@ -48,12 +48,9 @@ describe('Test NodeShareSettingService', () => {
         NodeShareSettingService,
       ],
     }).compile();
-    nodeShareSettingRepository = module.get<NodeShareSettingRepository>(NodeShareSettingRepository);
-    nodeRepository = module.get<NodeRepository>(NodeRepository);
-    service = module.get<NodeShareSettingService>(NodeShareSettingService);
-  });
-
-  beforeEach(() => {
+    nodeShareSettingRepository = moduleFixture.get<NodeShareSettingRepository>(NodeShareSettingRepository);
+    nodeRepository = moduleFixture.get<NodeRepository>(NodeRepository);
+    nodeShareSettingService = moduleFixture.get<NodeShareSettingService>(NodeShareSettingService);
     jest.spyOn(nodeShareSettingRepository, 'selectByShareId').mockImplementation((shareId: string): any => {
       if (shareId === '1') {
         return {
@@ -97,58 +94,62 @@ describe('Test NodeShareSettingService', () => {
     jest.spyOn(nodeRepository, 'selectAllSubNodeIds').mockResolvedValue(['1']);
   });
 
+  afterEach(async() => {
+    await moduleFixture.close();
+  });
+
   it('should be return share setting', async() => {
-    const shareSetting = await service.getByShareId('1');
+    const shareSetting = await nodeShareSettingService.getByShareId('1');
     expect(shareSetting).toBeDefined();
   });
 
   it('should be return share status', async() => {
-    const shareStatus = await service.getShareStatusByNodeId('1');
+    const shareStatus = await nodeShareSettingService.getShareStatusByNodeId('1');
     expect(shareStatus).toBeTruthy();
   });
 
   it('should be pass check', async() => {
-    await service.checkNodeHasOpenShare('1', '1');
+    await nodeShareSettingService.checkNodeHasOpenShare('1', '1');
   });
 
   it('should be pass check', async() => {
-    await service.checkNodeHasOpenShare('1', '0');
+    await nodeShareSettingService.checkNodeHasOpenShare('1', '0');
   });
 
   it('should be throw ACCESS_DENIED exception because empty share setting', async() => {
     await expect(async() => {
-      await service.checkNodeHasOpenShare('0', '1');
+      await nodeShareSettingService.checkNodeHasOpenShare('0', '1');
     }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
   });
 
   it('should be throw ACCESS_DENIED exception because no share', async() => {
     await expect(async() => {
-      await service.checkNodeHasOpenShare('2', '2');
+      await nodeShareSettingService.checkNodeHasOpenShare('2', '2');
     }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
   });
 
   it('should be check pass', async() => {
-    await service.checkNodeShareCanBeEdited('1', '1');
+    await nodeShareSettingService.checkNodeShareCanBeEdited('1', '1');
   });
 
   it('should be throw NODE_SHARE_NO_ALLOW_EDIT error', async() => {
     await expect(async() => {
-      await service.checkNodeShareCanBeEdited('2', '3');
+      await nodeShareSettingService.checkNodeShareCanBeEdited('2', '3');
     }).rejects.toThrow(CommonException.NODE_SHARE_NO_ALLOW_EDIT.message);
   });
 
   it('should be return null because empty share setting', async() => {
-    const props = await service.getNodeShareProps('3', '-1');
+    const props = await nodeShareSettingService.getNodeShareProps('3', '-1');
     expect(props).toEqual(null);
   });
 
   it('should be return null because no share', async() => {
-    const props = await service.getNodeShareProps('4', '-1');
+    const props = await nodeShareSettingService.getNodeShareProps('4', '-1');
     expect(props).toEqual(null);
   });
 
   it('should be return children propre', async() => {
-    const props = await service.getNodeShareProps('4', '1');
+    const props = await nodeShareSettingService.getNodeShareProps('4', '1');
     expect(props).toEqual({});
   });
 });

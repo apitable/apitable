@@ -210,6 +210,7 @@
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-node-externals": "^3.0.0",
     "webpack-sources": "^3.2.3",
+    "webpackbar": "^5.0.2",
     "worker-plugin": "^5.0.1"
   },
   "browserslist": {

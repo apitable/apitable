@@ -19,7 +19,7 @@
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
 import {
-  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, Setting2Outlined, UserGroupOutlined, WorkbenchOutlined
+  ChevronDownOutlined, NotificationOutlined, PlanetOutlined, SearchOutlined, Setting2Outlined, UserGroupOutlined, WorkbenchOutlined, LivechatFilled
 } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
@@ -38,7 +38,7 @@ import {
 import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
-import { isHiddenLivechat, isMobileApp } from 'pc/utils/env';
+import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -54,6 +54,7 @@ import { SpaceListDrawer } from './space_list_drawer';
 import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
+import { useContactUs } from 'pc/hooks/use_contact_us';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -91,6 +92,8 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
+  const contactUs = useContactUs(); 
+
   useRequest(notificationStatistics);
   // Check if there is a system banner notification to be displayed
   useRequest(getNotificationList);
@@ -271,7 +274,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   }, [notice, noticeIcon, unReadMsgCount, noticeIconClick, search, router.pathname]);
 
   useEffect(() => {
-    if (!isHiddenLivechat() || isMobile) {
+    if (isMobile) {
       return;
     }
     !!router.pathname.includes('workbench') && window.LiveChatWidget?.call('hide');
@@ -392,6 +395,9 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
               {isWecomSpace && <UpgradeInWecomContent onClick={() => setUpgradePopup(false)} />}
             </Popup>
           </ComponentDisplay>
+        </div>
+        <div className={styles.iconWrap} onClick={() => contactUs()}>
+          <LivechatFilled className={styles.icon} size={32} />
         </div>
         <Tooltip title={t(Strings.quick_search_title)} placement='right'>
           <div className={styles.iconWrap} onClick={() => expandSearch()}>

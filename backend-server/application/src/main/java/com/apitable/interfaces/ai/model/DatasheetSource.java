@@ -1,5 +1,6 @@
 package com.apitable.interfaces.ai.model;
 
+import com.apitable.workspace.dto.DatasheetSnapshot;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * create AI chatBot from datasheet params.
+ * Datasheet source setting param.
  *
  * @author Shawn Deng
  */
@@ -15,11 +16,13 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AiChatBotFromDatasheetCreateParam {
+public class DatasheetSource implements AiDataSource {
 
-    private String spaceId;
+    private String datasheetId;
 
-    private String aiId;
+    private String viewId;
 
-    private List<DatasheetSourceSettingParam> dataSources;
+    private int rows;
+
+    private List<DatasheetSnapshot.Field> fields;
 }

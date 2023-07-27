@@ -1,5 +1,6 @@
 const path = require('path')
 const loaderUtils = require('loader-utils')
+const WebpackBar = require('webpackbar');
 
 
 /**
@@ -103,6 +104,11 @@ const setRules = (config) => {
 
 const isProd = process.env.NODE_ENV === 'production'
 
+/**
+ * @param {import('webpack').Configuration} config - The base Webpack configuration provided by Next.js.
+ * @param {import('next').NextConfig} options - Options object containing Next.js options.
+ * @returns {import('webpack').Configuration} Modified Webpack configuration.
+ */
 module.exports = (config, options) => {
   // TODO: set symlinks false cause nextjs Fast Refresh not working
   // if (process.env.IS_ENTERPRISE === 'true') {
@@ -130,6 +136,9 @@ module.exports = (config, options) => {
   const {webpack} = options
 
   config.plugins.push(
+    new WebpackBar({
+      name: config.name,
+    }),
     new webpack.IgnorePlugin({
       resourceRegExp: /canvas|jsdom/,
       contextRegExp: /konva/

@@ -26,6 +26,7 @@ import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { ScrollBar } from 'pc/components/scroll_bar';
 import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
+import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 
 export interface IViewNode {
   nodeId: string;
@@ -46,17 +47,26 @@ interface IFolderContentProps {
   onlyShowEditableNode: boolean,
   isSelectView: boolean
   showMirrorNode?: boolean
+  noCheckPermission?: boolean,
+
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void,
-  checkNodeDisable(node: INode): undefined | { budget: string, message: string },
+
+  hideViewNode?: boolean
 }
 
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
   const {
     nodes, onNodeClick, currentViewId, currentMirrorId, loading, onlyShowEditableNode,
-    checkNodeDisable, currentDatasheetId, isSelectView, showMirrorNode
+    noCheckPermission, currentDatasheetId, isSelectView, showMirrorNode, hideViewNode,
   } = props;
   const themeName = useSelector(state => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
+
+  const _checkNodeDisable = (node: INode) => {
+    if (noCheckPermission) return;
+    return checkNodeDisable(node);
+  };
+
   return (
     <div className={styles.folderContent}>
       <ScrollBar>
@@ -75,7 +85,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
 
           if (
             node.type === ConfigConstant.NodeType.DATASHEET &&
-            (!onlyShowEditableNode || !checkNodeDisable(node as INode))
+            (!onlyShowEditableNode || !_checkNodeDisable(node as INode))
           ) {
             return (
               <File
@@ -85,7 +95,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                   !isSelectView && currentDatasheetId === node.nodeId
                 }
                 onClick={id => onNodeClick('Datasheet', id)}
-                disable={checkNodeDisable(node as INode)}
+                disable={_checkNodeDisable(node as INode)}
               >
                 {node.nodeName}
               </File>
@@ -94,7 +104,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
 
           if (
             node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode &&
-            (!onlyShowEditableNode || !checkNodeDisable(node as INode))
+            (!onlyShowEditableNode || !_checkNodeDisable(node as INode))
           ) {
             // TODO
             return (
@@ -105,7 +115,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                   !isSelectView && currentMirrorId === node.nodeId
                 }
                 onClick={id => onNodeClick('Mirror', id)}
-                disable={checkNodeDisable(node as INode)}
+                disable={_checkNodeDisable(node as INode)}
                 isMirror
               >
                 {node.nodeName}
@@ -113,7 +123,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
             );
           }
 
-          if (node.type === ConfigConstant.NodeType.VIEW) {
+          if (node.type === ConfigConstant.NodeType.VIEW && !hideViewNode) {
             return (
               <View
                 key={node.nodeId}

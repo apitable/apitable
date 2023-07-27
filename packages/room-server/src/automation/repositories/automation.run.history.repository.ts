@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IRobotTask } from '@apitable/core';
+import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
+import { EntityRepository, In, Repository } from 'typeorm';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
-import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(AutomationRunHistoryEntity)
 export class AutomationRunHistoryRepository extends Repository<AutomationRunHistoryEntity> {
@@ -27,6 +29,7 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
       select: ['taskId', 'robotId', 'createdAt', 'status'],
       where: {
         robotId,
+        status: In([RunHistoryStatusEnum.RUNNING, RunHistoryStatusEnum.SUCCESS, RunHistoryStatusEnum.FAILED])
       },
       order: {
         createdAt: 'DESC',
@@ -44,4 +47,14 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
     });
   }
 
+  selectContextByTaskIdAndTriggerId(taskId: string, triggerId: string): Promise<IRobotTask | undefined> {
+    return this.createQueryBuilder('rhs')
+      .select('robot_id', 'robotId')
+      .addSelect('task_id', 'taskId')
+      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.input\'))', 'triggerInput')
+      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.output\'))', 'triggerOutput')
+      .where('rhs.task_id = :taskId', { taskId })
+      .setParameter('triggerId', triggerId)
+      .getRawOne<IRobotTask>();
+  }
 }

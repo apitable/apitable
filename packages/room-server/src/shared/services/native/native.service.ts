@@ -1,37 +1,22 @@
-import { Injectable } from '@nestjs/common';
-// import type { NativeModule } from '@apitable/databus';
-import { useNativeModule } from 'app.environment';
-import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions } from 'shared/interfaces';
 import { HttpService } from '@nestjs/axios';
-import { CommonException, PermissionException, ServerException } from 'shared/exception';
-import { Logger } from 'winston';
-import { InjectLogger } from 'shared/common';
-import { responseCodeHandler } from '../rest/response.code.handler';
-import { EnvConfigService } from '../config/env.config.service';
+import { Injectable } from '@nestjs/common';
+import { isDevMode, useNativeModule } from 'app.environment';
 import { DatasheetPack } from 'database/interfaces';
+import { InjectLogger } from 'shared/common';
+import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
+import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions } from 'shared/interfaces';
+import { Logger } from 'winston';
+import { responseCodeHandler } from '../rest/response.code.handler';
 
 @Injectable()
 export class NativeService {
-  private nativeModule: any | undefined;
-
-  constructor(_httpService: HttpService, _envConfigService: EnvConfigService, @InjectLogger() private readonly logger: Logger) {
+  constructor(httpService: HttpService, @InjectLogger() private readonly logger: Logger) {
     if (useNativeModule) {
-      // this.nativeModule = require('@apitable/databus').DataBusModule.create(
-      //   isDevMode,
-      //   httpService.axiosRef.defaults.baseURL!,
-      //   envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig,
-      //   {
-      //     DEFAULT_PERMISSION,
-      //     DEFAULT_MANAGER_PERMISSION,
-      //     DEFAULT_EDITOR_PERMISSION,
-      //     DEFAULT_READ_ONLY_PERMISSION,
-      //   },
-      // );
-      // process.on('exit', () => {
-      //   this.nativeModule!.destroy();
-      //   this.nativeModule = undefined;
-      // });
+      require('@apitable/databus').init(isDevMode, httpService.axiosRef.defaults.baseURL!);
+      process.on('exit', () => {
+        require('@apitable/databus').unInit();
+      });
     }
   }
 
@@ -42,7 +27,7 @@ export class NativeService {
     origin: IFetchDataOriginOptions,
     options?: IFetchDataOptions,
   ): Promise<DatasheetPack> {
-    const result = await this.nativeModule!.fetchDatasheetPack(source, dstId, auth, origin, options);
+    const result = await require('@apitable/databus').fetchDatasheetPack(source, dstId, auth, origin, options);
     if ('dataPack' in result) {
       return JSON.parse(result.dataPack as any) as DatasheetPack;
     }

@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotRunner, generateRandomString, ConfigConstant, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
+import {
+  AutomationRobotRunner,
+  ConfigConstant,
+  generateRandomString,
+  IActionOutput,
+  IActionType,
+  IRobot,
+  IRobotTask,
+  validateMagicForm
+} from '@apitable/core';
+import { AmqpConnection, Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -26,18 +36,19 @@ import { UnreachableCaseError } from 'shared/errors';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { IUserBaseInfo } from 'shared/interfaces';
+import { automationExchangeName, automationRunning, automationRunningQueueName } from 'shared/services/queue/queue.module';
+import { In } from 'typeorm';
 import * as services from '../actions';
 import { customActionMap } from '../actions/decorators/automation.action.decorator';
 import { IActionResponse } from '../actions/interface/action.response';
+import { AutomationActionEntity } from '../entities/automation.action.entity';
+import { AutomationRobotEntity } from '../entities/automation.robot.entity';
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
-import { RobotRobotService } from './robot.robot.service';
-import { AutomationActionRepository } from '../repositories/automation.action.repository';
-import { In } from 'typeorm';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
-import { AutomationActionEntity } from '../entities/automation.action.entity';
-import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
-import { AutomationRobotEntity } from '../entities/automation.robot.entity';
+import { RobotRobotService } from './robot.robot.service';
 
 /**
  * handle robot execution scheduling
@@ -49,6 +60,8 @@ import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 export class AutomationService {
   robotRunner: AutomationRobotRunner;
 
+  // @ts-ignore
+  // @ts-ignore
   constructor(
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
@@ -57,6 +70,8 @@ export class AutomationService {
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
+    // @ts-ignore
+    private readonly amqpConnection: AmqpConnection
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
@@ -112,6 +127,7 @@ export class AutomationService {
         .execute();
     }
   }
+
   async getRobotsByDstId(dstId: string) {
     return await this.automationRobotRepository.find({
       where: {
@@ -153,15 +169,30 @@ export class AutomationService {
    * @param robotId
    * @param taskId
    * @param spaceId
+   * @param data context
    */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string) {
+  private async createRunHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
     const newRunHistory = this.automationRunHistoryRepository.create({
       taskId,
       robotId,
       spaceId,
       status: RunHistoryStatusEnum.RUNNING,
+      data
     });
-    await this.automationRunHistoryRepository.save(newRunHistory);
+    await this.automationRunHistoryRepository.insert(newRunHistory);
+  }
+
+  async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
+    const spaceId = await this.getSpaceIdByRobotId(robotTask.robotId);
+    const context = this.robotRunner.initRuntimeContext(robotTask, robot);
+    const newRunHistory = this.automationRunHistoryRepository.create({
+      taskId: robotTask.taskId,
+      robotId: robotTask.robotId,
+      spaceId,
+      status: RunHistoryStatusEnum.PENDING,
+      data: context.context
+    });
+    await this.automationRunHistoryRepository.insert(newRunHistory);
   }
 
   /**
@@ -231,12 +262,12 @@ export class AutomationService {
   private async getOutputResult(resp: any) {
     const contentType = resp.headers.get('content-type');
     const success = true;
-  
+
     if (contentType && contentType.includes('application/json')) {
       // Response is JSON
       const data = await resp.json();
       return { success, data };
-    } 
+    }
     // Response is not JSON
     const data = { data: await resp.text() };
     return { success, data };
@@ -276,6 +307,28 @@ export class AutomationService {
       await this.updateTaskRunHistory(taskId, false, null);
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
+  }
+
+  @RabbitSubscribe({
+    exchange: automationExchangeName,
+    routingKey: automationRunning,
+    queue: automationRunningQueueName,
+  })
+  async handleTaskByTaskIdAndTriggerId(message: { taskId: string, triggerId: string }) {
+    const { taskId, triggerId } = message;
+    this.logger.log('RobotRunning', { ...message });
+    try {
+      const task: IRobotTask | undefined = await this.automationRunHistoryRepository.selectContextByTaskIdAndTriggerId(taskId, triggerId);
+      // 2. execute the robot
+      await this.robotRunner.run(task!);
+    } catch (error) {
+      // 3. update run history when failed
+      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
+      await this.updateTaskRunHistory(taskId, false);
+      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+    }
+    // todo justify
+    return new Nack();
   }
 
   async activeRobot(robotId: string, user: IUserBaseInfo) {
