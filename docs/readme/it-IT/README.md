@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#Installazione">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -70,7 +70,7 @@ Se vuoi solo provare API Table[^info], usa la versione ospitata sul cloud sul si
 
 Se vuoi provare questo progetto open-source APITable, clicca qui per [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-Se vuoi installare APITable in locale o in un ambiente di cloud computing, guarda [💾 Installation](#installation)
+Se vuoi installare APITable in locale o in un ambiente di cloud computing, guarda [💾 Installazione](#Installazione)
 
 Se si vuole configurare l'ambiente di sviluppo locale, leggi la nostra ì [🧑‍💻 Guida per sviluppatori](./docs/contribute/developer-guide.md)
 

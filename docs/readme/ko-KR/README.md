@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#설치">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -70,7 +70,7 @@
 
 만약 APITable 오픈소스 프로젝트를 데모해보고 싶다면, ⚡️Gitpod Online Demo에서 확인하세요.
 
-만약 로컬 또는 클라우드 컴퓨팅 환경에 APITable을 설치하고 싶다면, 💾 설치를 참고하세요.
+만약 로컬 또는 클라우드 컴퓨팅 환경에 APITable을 설치하고 싶다면, 💾 [설치를](#설치) 참고하세요.
 
 만약 로컬 개발 환경을 설정하고 싶다면, 🧑💻 개발자 가이드를 읽으세요.
 
