@@ -176,7 +176,7 @@ const FieldTypeStringMap = {
   [FieldType.Cascader]: APIMetaFieldType.Cascader,
 };
 
-export const getFieldTypeString = (fieldType: FieldType) => {
+export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
   return FieldTypeStringMap[fieldType];
 };
 

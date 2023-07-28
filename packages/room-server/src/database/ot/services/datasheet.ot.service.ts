@@ -1459,16 +1459,15 @@ export class DatasheetOtService {
     const { userId, dstId, revision } = commonData;
     const remoteChangeset = effectMap.get(EffectConstantName.RemoteChangeset);
     const recordIds = [...resultSet.toCorrectComment.keys()];
-    const deletedRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds, true);
+    const isRecordDeleted = await this.recordService.isRecordsDeleted(dstId, recordIds);
+    if (isRecordDeleted) {
+      throw new ServerException(OtException.REVISION_ERROR);
+    }
     const operationChangeset: any[] = [];
     const recordCommentEntities: any[] = [];
     const beginTime = +new Date();
     this.logger.info(`[${dstId}] ====> Start batch creating record comment......`);
     for (const [recordId, comments] of resultSet.toCorrectComment.entries()) {
-      const deleteRecord = deletedRecordMap[recordId];
-      if (deleteRecord) {
-        throw new ServerException(OtException.REVISION_ERROR);
-      }
       for (const { index, comment } of comments) {
         const serverDate = new Date();
         if (comment?.commentMsg?.reply) {
@@ -1657,7 +1656,7 @@ export class DatasheetOtService {
     }
 
     const { userId, uuid, dstId, revision } = commonData;
-    const prevRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, [...recordFieldMap.keys()]);
+    const prevRecordMap = await this.recordService.getBasicRecordsByRecordIds(dstId, [...recordFieldMap.keys()]);
     const recordMetaMap = effectMap.get(EffectConstantName.RecordMetaMap);
     const recordMapActions: IJOTAction[] = [];
     const updatedAt = Date.now();
@@ -1816,7 +1815,7 @@ export class DatasheetOtService {
     }
 
     // Query if is deleted formerly, avoid redundant insertion
-    const deletedRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds, true);
+    const deletedRecordMap = await this.recordService.getBasicRecordsByRecordIds(dstId, recordIds, true);
     const deletedRecordIds = Object.keys(deletedRecordMap);
     const meta = await this.getMetaDataByCache(dstId, effectMap);
     const fieldList: IField[] = Object.values(meta.fieldMap);
@@ -2170,7 +2169,7 @@ export class DatasheetOtService {
       }
 
       // The view contains records
-      const prevRecordMap: IRecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+      const prevRecordMap: IRecordMap = await this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);
       const recordMetaMap: Map<string, IRecordMeta> = effectMap.get(EffectConstantName.RecordMetaMap);
       const recordIdMap = new Map<string, number>();
       let nextId = 1;

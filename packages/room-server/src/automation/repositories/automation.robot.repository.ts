@@ -18,9 +18,9 @@
 
 import { generateRandomString } from '@apitable/core';
 import { EntityRepository, In, Repository } from 'typeorm';
+import { ResourceRobotDto, RobotBaseInfoDto } from '../dtos/robot.dto';
 import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { RobotCreateRo } from '../ros/robot.create.ro';
-import { ResourceRobotDto, RobotBaseInfoDto } from '../dtos/robot.dto';
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
@@ -41,7 +41,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       {
         where: {
           resourceId: In(resourceIds),
-          isDeleted: 0
+          isDeleted: 0,
+          isActive: 1
         },
       },
     );

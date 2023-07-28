@@ -35,6 +35,8 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  * @param dstId 
  * @param recordIds 
  * @returns 
+ * 
+ * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
   console.log({ baseURL });
@@ -460,9 +462,9 @@ export const deleteDatasheetTablebundle = (nodeId: string, tablebundleId: string
 };
 
 // recover datasheet snapshot
-export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string) => {
+export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string, recoverNameSuffix: string) => {
   return axios.post<IApiWrapper & { data: IRecoverDatasheetTablebundles }>(
-    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId }), undefined, { baseURL }
+    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId, name: recoverNameSuffix }), undefined, { baseURL }
   );
 };
 

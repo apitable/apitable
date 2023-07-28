@@ -82,9 +82,9 @@ export class NodeService {
   async batchSave(nodes: any[]){
     return await this.nodeRepository
       .createQueryBuilder()
-        .insert()
-        .values(nodes)
-        .execute();
+      .insert()
+      .values(nodes)
+      .execute();
   }
 
   @Span()

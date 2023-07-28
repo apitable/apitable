@@ -20,10 +20,10 @@ import {
   useClick,
   useInteractions,
   FloatingFocusManager,
-  useId, FloatingArrow, Placement, FloatingPortal, ReferenceType
+  useId, FloatingArrow, Placement, FloatingPortal, ReferenceType, size
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Middleware } from '@floating-ui/dom/src/types';
+import { Middleware, MiddlewareState } from '@floating-ui/dom';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
 export type IOverLayProps = { toggle: () => void };
@@ -37,10 +37,12 @@ interface IDropdownProps {
     },
     className?: string,
     options ?: {
+      zIndex?: number
       disabled?: boolean,
       placement?: Placement;
       arrow?: boolean;
       offset?: number;
+      autoWidth?: boolean;
     },
     setTriggerRef?: (ref: HTMLElement|null) => void;
     middleware?: Array<Middleware>,
@@ -55,9 +57,26 @@ export interface IDropdownControl {
     toggle: (open: Boolean) => void;
 }
 
-const DROP_DOWN_OFFSET = 16;
+const DROP_DOWN_OFFSET = 11;
+
+const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+
+const setIndex = (zIndex: number) => {
+  return {
+    name: 'setIndexPlugin',
+    fn(state: MiddlewareState) {
+      Object.assign(state.elements.floating.style, {
+        zIndex: zIndex,
+      });
+      return {};
+    },
+  };
+};
+
 export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
-  const { trigger, children, onVisibleChange, options= {}, className, middleware =[], clazz } = props;
+  const { trigger, children, onVisibleChange, options= {
+    zIndex: CONST_INITIAL_DROPDOWN_INDEX
+  }, className, middleware =[], clazz } = props;
 
   const arrowEnabled = options.arrow?? true;
   const disabled = options.disabled?? false;
@@ -87,13 +106,25 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
 
   const theme = useProviderTheme();
 
+  const hasArrow = options.arrow ?? true;
+  const offsetParameter = hasArrow ? DROP_DOWN_OFFSET:4;
   const arrowRef = useRef (null);
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setOpen,
     placement: options?.placement ?? 'bottom',
     middleware: [
-      offset(options?.offset ?? DROP_DOWN_OFFSET),
+      setIndex(options?.zIndex ?? CONST_INITIAL_DROPDOWN_INDEX),
+      ...(
+        options?.autoWidth === true ? [
+          size({
+            apply({ rects,elements }) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`,
+              });
+            },
+          })]: []),
+      offset(options?.offset ?? offsetParameter),
       flip({ fallbackAxisSideDirection: 'end' }),
       ...(
         arrowEnabled ? [
@@ -103,7 +134,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
         ]: []
       ),
       shift()
-    ].concat(middleware ),
+    ].concat(middleware),
     whileElementsMounted: autoUpdate
   });
   
@@ -129,6 +160,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
     refs.setReference(v);
     props.setTriggerRef?.(v as HTMLElement);
   };
+  
   return (
     <>
       <>
@@ -140,7 +172,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
           <FloatingPortal>
             <FloatingFocusManager context={context}>
               <div
-                className={classNames(className,clazz?.overlay)}
+                className={classNames(className, clazz?.overlay)}
                 ref={refs.setFloating}
                 style={floatingStyles}
                 aria-labelledby={headingId}

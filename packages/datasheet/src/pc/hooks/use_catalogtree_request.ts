@@ -624,6 +624,7 @@ export const useCatalogTreeRequest = () => {
   };
 
   return {
+    checkNodeNumberLimit,
     addNodeReq, deleteNodeReq, copyNodeReq, getChildNodeListReq, getSubUnitListReq,
     getNodeRoleListReq, searchUnitReq, updateRoleReq, getUnitsByMemberReq,
     getNodeShowcaseReq, updateNodeReq, updateNodeDescriptionReq, getNodeTreeReq,

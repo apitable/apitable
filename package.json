@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -16,7 +16,6 @@
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
-    "start:room-server:perf:flame": "yarn workspace @apitable/room-server start:room:perf:flame",
     "start:socket-server": "yarn workspace @apitable/room-server start:socket:dev",
     "start:components": "yarn workspace @apitable/components start",
     "build:core": "yarn workspace @apitable/core build",

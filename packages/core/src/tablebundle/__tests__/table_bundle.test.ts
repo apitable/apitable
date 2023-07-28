@@ -1,4 +1,4 @@
-import {ITableBundleInitOptions, ITableBundleLoader, ITableBundleSaver, TableBundle} from '../table_bundle';
+import { ITableBundleInitOptions, ITableBundleLoader, ITableBundleSaver, TableBundle } from '../table_bundle';
 import { TableBundleSnapshot } from '../table_bundle_snapshot';
 import { TableBundleDataSheet } from '../table_bundle_datasheet';
 import * as fs from 'fs';

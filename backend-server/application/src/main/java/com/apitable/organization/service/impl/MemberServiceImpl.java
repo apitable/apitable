@@ -295,7 +295,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public List<MemberEntity> getBySpaceIdAndEmailsIgnoreDeleted(String spaceId,
-        List<String> emails) {
+                                                                 List<String> emails) {
         return baseMapper.selectBySpaceIdAndEmailsIgnoreDeleted(spaceId, emails);
     }
 
@@ -525,7 +525,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email) {
         log.info("send Invite email");
         // Other invitation links of the mailbox corresponding to the current space are invalid
@@ -550,7 +549,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             // record success
             spaceInviteRecordMapper.insert(record.setSendStatus(true).setStatusDesc("Success"));
         } catch (Exception e) {
-            log.error("Send invitation email {} fail, Cause: {}", email, e);
+            log.error("Send invitation email {} fail", email, e);
             // record fail
             spaceInviteRecordMapper.insert(record.setSendStatus(false).setStatusDesc("Fail"));
             throw new BusinessException(e.getMessage());
@@ -559,7 +558,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendUserInvitationNotifyEmail(String lang, String spaceId,
-        Long fromMemberId, String email) {
+                                              Long fromMemberId, String email) {
         try {
             log.info("Begin send user invitation notify email :{}", DateUtil.now());
             //  email HTML main body
@@ -574,7 +573,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl,
-        String emailAddress) {
+                                        String emailAddress) {
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();
@@ -796,7 +795,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchDeleteMemberFromSpace(String spaceId, List<Long> memberIds,
-        boolean mailNotify) {
+                                           boolean mailNotify) {
         if (CollUtil.isEmpty(memberIds)) {
             return;
         }
@@ -947,7 +946,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
      * @param inviteEmails email
      */
     private void batchSendInviteEmailOnUpload(String spaceId, Long fromMemberId,
-        List<String> inviteEmails) {
+                                              List<String> inviteEmails) {
         // send invitation emails
         if (CollUtil.isEmpty(inviteEmails)) {
             return;
@@ -963,14 +962,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     /**
-     * send invitation notification emails in batches
+     * send invitation notification emails in batches.
      *
      * @param spaceId      space id
      * @param fromMemberId sender（member id）
      * @param notifyEmails email
      */
     private void batchSendInviteNotifyEmailOnUpload(String spaceId,
-        Long fromMemberId, List<String> notifyEmails) {
+                                                    Long fromMemberId, List<String> notifyEmails) {
         // send an invitation notification email
         if (CollUtil.isEmpty(notifyEmails)) {
             return;
@@ -988,7 +987,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveUploadData(String spaceId, UploadDataDTO uploadData, List<String> inviteEmails,
-        List<String> notifyEmails, boolean teamCreatable) {
+                               List<String> notifyEmails, boolean teamCreatable) {
         log.info("saving template data:{}", JSONUtil.toJsonStr(uploadData));
         Long memberId = IdWorker.getId();
         MemberEntity member = new MemberEntity();
@@ -1113,7 +1112,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendInviteNotification(Long fromUserId,
-        List<Long> invitedMemberIds, String spaceId, Boolean isToFromUser) {
+                                       List<Long> invitedMemberIds, String spaceId,
+                                       Boolean isToFromUser) {
         if (ObjectUtil.isEmpty(invitedMemberIds)) {
             return;
         }
@@ -1306,6 +1306,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void activeIfExistInvitationSpace(Long userId, List<Long> memberIds) {
         List<MemberEntity> memberEntities = new ArrayList<>();
         for (Long memberId : memberIds) {

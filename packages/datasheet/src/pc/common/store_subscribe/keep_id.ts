@@ -23,12 +23,14 @@ let folderId: string | undefined;
 let viewId: string | undefined;
 let dashboardId: string | undefined;
 let mirrorId: string | undefined;
+let aiId: string | undefined;
 
 store.subscribe(function folderIdChange() {
   const previousFolderId = folderId;
   const previousViewId = viewId;
   const previousDashboard = dashboardId;
   const previousMirrorId = mirrorId;
+  const previousAIId = aiId;
 
   const state = store.getState();
   // The userInfo is not updated until it is loaded.
@@ -44,12 +46,21 @@ store.subscribe(function folderIdChange() {
   viewId = state.pageParams.viewId;
   mirrorId = state.pageParams.mirrorId;
   dashboardId = state.pageParams.dashboardId;
+  aiId = state.pageParams.aiId;
 
   if (folderId && previousFolderId !== folderId && !templateId && !shareId) {
     Api.keepTabbar({
       nodeId: folderId,
     });
     store.dispatch(StoreActions.updateUserInfo({ activeNodeId: folderId }));
+    return;
+  }
+
+  if (aiId && previousAIId !== aiId && !templateId && !shareId) {
+    Api.keepTabbar({
+      nodeId: aiId,
+    });
+    store.dispatch(StoreActions.updateUserInfo({ activeNodeId: aiId }));
     return;
   }
 

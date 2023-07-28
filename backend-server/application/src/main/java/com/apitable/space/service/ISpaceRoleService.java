@@ -21,7 +21,6 @@ package com.apitable.space.service;
 import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.entity.SpaceRoleEntity;
 import com.apitable.space.enums.SpaceResourceGroupCode;
-import com.apitable.space.ro.AddSpaceRoleRo;
 import com.apitable.space.ro.UpdateSpaceRoleRo;
 import com.apitable.space.vo.SpaceRoleDetailVo;
 import com.apitable.space.vo.SpaceRoleVo;
@@ -34,6 +33,14 @@ import java.util.function.Consumer;
  * space role service interface.
  */
 public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
+
+    /**
+     * get space all sub admin member id list.
+     *
+     * @param spaceId space id.
+     * @return member id list
+     */
+    List<Long> getSubAdminIdList(String spaceId);
 
     /**
      * Queries all space station administrators who have workbench administration
@@ -64,10 +71,11 @@ public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
     /**
      * create space role.
      *
-     * @param spaceId space id
-     * @param data    request parameters
+     * @param spaceId       space id
+     * @param memberIds     member id list
+     * @param resourceCodes resource code list
      */
-    void createRole(String spaceId, AddSpaceRoleRo data);
+    void createRole(String spaceId, List<Long> memberIds, List<String> resourceCodes);
 
     /**
      * Check whether the member is not a sub-administrator in the space.

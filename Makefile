@@ -268,8 +268,13 @@ endef
 export RUN_LOCAL_TXT
 
 define RUN_PERF_TXT
+*NOTE* You must build a package before profiling it.
+
 Which service do you want to start run?
   1) room-server / production mode / Clinic.js flamegraph
+  2) room-server / production mode / Clinic.js doctor
+  3) room-server / production mode / Clinic.js heapprofiler
+  4) room-server / production mode / Clinic.js bubbleprof
 endef
 export RUN_PERF_TXT
 
@@ -292,10 +297,13 @@ run-local: ## run services with local programming language envinroment
  	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi
 
 .PHONY: run-perf
-run-perf: ## run services with local programming language envinroment for performance profiling
+run-perf: ## run room-server with local programming language envinroment for performance profiling
 	@echo "$$RUN_PERF_TXT"
 	@read -p "ENTER THE NUMBER: " SERVICE ;\
- 	if [ "$$SERVICE" = "1" ]; then make _run-perf-flame-local-room-server; fi
+ 	if [ "$$SERVICE" = "1" ]; then export PERF_TYPE=flame; make _run-perf-local-room-server; fi; \
+ 	if [ "$$SERVICE" = "2" ]; then export PERF_TYPE=doctor; make _run-perf-local-room-server; fi; \
+ 	if [ "$$SERVICE" = "3" ]; then export PERF_TYPE=heapprofiler; make _run-perf-local-room-server; fi; \
+ 	if [ "$$SERVICE" = "4" ]; then export PERF_TYPE=bubbleprof; make _run-perf-local-room-server; fi
 
 _run-local-backend-server:
 	source scripts/export-env.sh $$ENV_FILE;\
@@ -312,10 +320,10 @@ _run-local-room-server:
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	yarn start:room-server
 
-_run-perf-flame-local-room-server:
+_run-perf-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
-	yarn start:room-server:perf:flame
+	yarn start:room-server:perf:$$PERF_TYPE
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\

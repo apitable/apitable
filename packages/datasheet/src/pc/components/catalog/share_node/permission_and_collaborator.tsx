@@ -23,7 +23,7 @@ import styles from './style.module.less';
 import { Api, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
 import { getEnvVariables } from 'pc/utils/env';
-import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, QuestionCircleOutlined, UserAddOutlined } from '@apitable/icons';
 import { UnitPermissionSelect } from '../../field_permission/unit_permission_select';
 import { useCatalogTreeRequest, useRequest, NodeChangeInfoType } from 'pc/hooks';
 import { copy2clipBoard, permissionMenuData } from 'pc/utils';
@@ -141,7 +141,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
     return (
       <div className={styles.invite}>
         <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '58px' }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} height='24px'/>
         <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
       </div>
     );
@@ -222,6 +222,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
           className={styles.inviteMoreMethod}
           underline={false}
           onClick={() => expandInviteModal()}
+          prefixIcon={<UserAddOutlined currentColor/>}
         >
           {t(Strings.more_invite_ways)}
         </LinkButton>

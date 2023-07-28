@@ -32,7 +32,7 @@ import {
 } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { expandNodeInfo } from '../node_info';
@@ -184,7 +184,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           contextItemMap.get(ContextItemKey.Export)(() => exportAsCsv(nodeId), () => exportExcel(nodeId), !exportable || isMobileApp()),
         ], [
           contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-          contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !createBackupSnapshot),
+          contextItemMap.get(ContextItemKey.CreateBackup)(
+            () => _createBackupSnapshot(nodeId), !createBackupSnapshot || getEnvVariables().IS_APITABLE),
           contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
           contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
           contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),

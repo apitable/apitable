@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotRunner, ConfigConstant, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
+import { AutomationRobotRunner, generateRandomString, ConfigConstant, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
 import { Injectable, Logger } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -32,6 +32,12 @@ import { IActionResponse } from '../actions/interface/action.response';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
 import { RobotRobotService } from './robot.robot.service';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
+import { In } from 'typeorm';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationActionEntity } from '../entities/automation.action.entity';
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 
 /**
  * handle robot execution scheduling
@@ -47,6 +53,8 @@ export class AutomationService {
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,
+    private readonly automationActionRepository: AutomationActionRepository,
+    private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
   ) {
@@ -54,6 +62,77 @@ export class AutomationService {
       requestActionOutput: this.getActionOutput.bind(this),
       getRobotById: this.getRobotById.bind(this),
       reportResult: this.updateTaskRunHistory.bind(this),
+    });
+  }
+
+  async recoverRobots(robots: AutomationRobotEntity[], actions: AutomationActionEntity[], triggers: AutomationTriggerEntity[]) {
+    const robotIdMap = new Map<string, string>();
+    if (robots) {
+      robots.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.isActive = false;
+        const oldId = r.robotId;
+        const newId = 'arb' + generateRandomString(15);
+        r.robotId = newId;
+        robotIdMap.set(oldId, newId);
+      }
+      );
+      await this.automationRobotRepository
+        .createQueryBuilder()
+        .insert()
+        .values(robots)
+        .execute();
+    }
+    if (actions) {
+      actions.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.actionId = 'aac' + generateRandomString(15);
+        const oldId = r.robotId;
+        r.robotId = robotIdMap.get(oldId) || oldId;
+      }
+      );
+      await this.automationActionRepository
+        .createQueryBuilder()
+        .insert()
+        .values(actions)
+        .execute();
+    }
+    if (triggers) {
+      triggers.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.triggerId = 'att' + generateRandomString(15);
+        const oldId = r.robotId;
+        r.robotId = robotIdMap.get(oldId) || oldId;
+      }
+      );
+      await this.automationTriggerRepository
+        .createQueryBuilder()
+        .insert()
+        .values(triggers)
+        .execute();
+    }
+  }
+  async getRobotsByDstId(dstId: string) {
+    return await this.automationRobotRepository.find({
+      where: {
+        resourceId: dstId
+      }
+    });
+  }
+
+  async getActionByRobotIds(robotIds: string[]) {
+    return await this.automationActionRepository.find({
+      where: {
+        robotId: In(robotIds)
+      }
+    });
+  }
+
+  async getTriggersByRobotIds(robotIds: string[]) {
+    return await this.automationTriggerRepository.find({
+      where: {
+        robotId: In(robotIds)
+      }
     });
   }
 
