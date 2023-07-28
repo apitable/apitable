@@ -26,7 +26,7 @@ export const FormItemTitle = styled.div.attrs(applyDefaultTheme) <{ error?: bool
   ${(props) => {
     const theme = props.theme;
     return css`
-      color: ${props.error ? theme.palette.danger : theme.palette.text.third};
+      color: ${props.error ? theme.color.errorColor : theme.color.fc3};
     `;
   }}
 `;

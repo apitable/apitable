@@ -36,9 +36,9 @@ export const CheckboxIconWrapper = styled.div.attrs(applyDefaultTheme) <ICheckbo
   border-radius: 2px;
   border: ${(props) => !props.checked ? `2px solid ${props.theme.color.black[400]}` : 'none'};
   &:hover{
-    border: ${(props) => !props.checked ? `2px solid ${props.color || props.theme.palette.primary}` : 'none'};
+    border: ${(props) => !props.checked ? `2px solid ${props.color || props.theme.color.primaryColor}` : 'none'};
   }
-  background: ${(props) => props.checked ? props.color || props.theme.palette.primary : 'none'};
+  background: ${(props) => props.checked ? props.color || props.theme.color.primaryColor : 'none'};
 `;
 
 export const CheckboxWrapper = styled.div.attrs(applyDefaultTheme) <ICheckboxIconProps>`
@@ -47,7 +47,7 @@ export const CheckboxWrapper = styled.div.attrs(applyDefaultTheme) <ICheckboxIco
   cursor: pointer;
   &:hover {
     ${CheckboxIconWrapper} {
-      border: ${(props) => !props.checked ? `2px solid ${props.color || props.theme.palette.primary}` : 'none'};
+      border: ${(props) => !props.checked ? `2px solid ${props.color || props.theme.color.primaryColor}` : 'none'};
     }
   }
   ${props => {
