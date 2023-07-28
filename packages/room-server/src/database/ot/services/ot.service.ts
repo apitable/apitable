@@ -747,7 +747,7 @@ export class OtService {
    * @date 2021/3/25 11:27 AM
    */
   async copyNodeEffectOt(data: INodeCopyRo): Promise<boolean> {
-    const store = await this.datasheetService.fillBaseSnapshotStoreByDstIds([data.copyNodeId, data.nodeId]);
+    const store = await this.datasheetService.fillBaseSnapshotStoreByDstIds([data.copyNodeId, data.nodeId], { filterViewFilterInfo: true });
     const copyNodeChangesets = this.datasheetChangesetService.getCopyNodeChangesets(data, store);
     if (copyNodeChangesets) {
       const { error } = await this.applyDstChangeset({
