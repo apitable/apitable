@@ -143,7 +143,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                   {!isCryptoField && !fieldNotFound && (
                     <Row align='middle' style={{ width: '100%' }}>
                       <Col span={24} style={{ paddingLeft: 1 }}>
-                        <FilterValue  primaryField={field} field={conditionField} {...publicProps} />
+                        <FilterValue primaryField={field} field={conditionField} {...publicProps} />
                       </Col>
                     </Row>
                   )}
