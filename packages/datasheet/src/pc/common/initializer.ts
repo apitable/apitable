@@ -34,7 +34,7 @@ import {
   StoreActions,
   Strings,
   t,
-  Url
+  Url, WasmApi
 } from '@apitable/core';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -302,6 +302,8 @@ export function redirectIfUserApplyLogout() {
 
 export function initializer(comlink: any) {
   initAxios(comlink.store);
+
+  WasmApi.initializeDatabusWasm();
 
   window.__global_handle_response = handleResponse;
 
