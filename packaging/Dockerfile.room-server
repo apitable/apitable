@@ -12,6 +12,8 @@ COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 
 COPY packages/core/package.json ./packages/core/
 
+COPY packages/databus-wasm/package.json ./packages/databus-wasm/
+
 COPY packages/databus/package.json ./packages/databus/
 
 COPY packages/room-server/package.json ./packages/room-server/
@@ -31,6 +33,8 @@ COPY .yarn ./.yarn
 COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
 
 COPY packages/i18n-lang ./packages/i18n-lang
+
+COPY packages/databus-wasm ./packages/databus-wasm
 
 COPY packages/core ./packages/core
 

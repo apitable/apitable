@@ -22,7 +22,20 @@
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/nextjs';
 import { Integrations } from '@sentry/tracing';
-import { Api, getLanguage, injectStore, IReduxState, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@apitable/core';
+import {
+  Api,
+  getLanguage,
+  IAxiosResponse,
+  injectStore,
+  IReduxState,
+  Navigation,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
+  Url
+} from '@apitable/core';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';
@@ -70,6 +83,128 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
   return false;
 }
 
+export function handleResponse<T>(response: {
+  data: IAxiosResponse<T>['data']
+}, headers: any|undefined, url: string|undefined) {
+  const {
+    success,
+    code,
+    data,
+    message = 'Error',
+  } = response.data;
+  
+  const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
+  if (
+    success && data && url?.startsWith('/nest/v1/') &&
+      !IGNORE_PATH_REG.test(location.pathname)
+  ) {
+    const state = store.getState();
+    const activeSpaceId = Selectors.activeSpaceId(state);
+    // @ts-ignore
+    const spaceId = data.datasheet?.spaceId || data.mirror?.spaceId || data.dashboard?.spaceId || data.form?.spaceId;
+    if (spaceId && (spaceId !== activeSpaceId)) {
+      axios.defaults.headers.common['X-Space-Id'] = spaceId;
+      // @ts-ignore
+      store.dispatch(StoreActions.getUserMe({ spaceId }));
+    }
+  }
+
+  if (
+    !success
+      && String(code).startsWith('5')
+  ) {
+    Sentry.captureMessage(message, {
+      extra: {
+        headers: headers,
+      },
+    });
+  }
+  if (success || hasUrlIgnore(url)) {
+    return response;
+  }
+  switch (code) {
+    case StatusCode.UN_AUTHORIZED: {
+      if (window.location.pathname !== '/login') {
+        Modal.error({
+          title: t(Strings.login_status_expired_title),
+          content: t(Strings.login_status_expired_content),
+          okText: t(Strings.login_status_expired_button),
+          onOk: () => {
+            const IS_EMBED_LINK_REG = /^\/embed/;
+            const reference = !IS_EMBED_LINK_REG.test(location.pathname) ?
+              (new URLSearchParams(window.location.search)).get('reference')?.toString() : window.location.href;
+            store.dispatch(StoreActions.setUserMe(null));
+            store.dispatch(StoreActions.setIsLogin(false));
+            Router.redirect(Navigation.LOGIN, { query: { reference }});
+          },
+        });
+      }
+      return Promise.reject();
+    }
+    case StatusCode.OPERATION_FREQUENT: {
+      Modal.error({
+        title: t(Strings.get_verification_code_err_title),
+        content: t(Strings.get_verification_code_err_content),
+        okText: t(Strings.get_verification_code_err_button),
+      });
+      return Promise.reject();
+    }
+    case StatusCode.LOGIN_OUT_NUMBER: {
+      Modal.error({
+        title: t(Strings.login_frequent_operation_reminder_title),
+        content: t(Strings.login_frequent_operation_reminder_content),
+        okText: t(Strings.login_frequent_operation_reminder_button),
+        onOk: () => {
+          Router.redirect(Navigation.LOGIN);
+        },
+      });
+      return Promise.reject();
+    }
+    case StatusCode.NODE_NUMBER_ERR: {
+      Modal.error({
+        title: t(Strings.node_not_exist_title),
+        content: t(Strings.node_number_err_content),
+        onOk: () => {
+          Router.redirect(Navigation.HOME);
+        },
+      });
+      return Promise.reject();
+    }
+
+    case StatusCode.NODE_NOT_EXIST: {
+      Api.keepTabbar({});
+      return Promise.resolve(response);
+    }
+    case StatusCode.NOT_PERMISSION: {
+      Api.keepTabbar({});
+      return Promise.resolve(response);
+    }
+    case StatusCode.PAYMENT_PLAN: {
+      BillingModal();
+      return Promise.reject();
+    }
+    case StatusCode.SPACE_NOT_EXIST: {
+      if (window.location.pathname.search('/invite') === -1) {
+        Modal.error({
+          title: t(Strings.no_access_space_title),
+          content: t(Strings.no_access_space_descirption),
+          okText: t(Strings.refresh),
+          onOk: () => {
+            Router.push(Navigation.HOME);
+          },
+        });
+      }
+      return Promise.reject();
+    }
+    case StatusCode.FRONT_VERSION_ERROR: {
+      window.dispatchEvent(new CustomEvent('newVersionRequired'));
+      return Promise.reject();
+    }
+    default:
+      return Promise.resolve(response);
+  }
+}
+
 function initAxios(store: Store<IReduxState>) {
   axios.defaults.paramsSerializer = (params) => {
     return Object.keys(params).filter(it => {
@@ -94,121 +229,7 @@ function initAxios(store: Store<IReduxState>) {
   });
 
   axios.interceptors.response.use(response => {
-    const {
-      success,
-      code,
-      data,
-      message = 'Error',
-    } = response.data;
-    const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
-    if (
-      success && data && response.config.url?.startsWith('/nest/v1/') &&
-      !IGNORE_PATH_REG.test(location.pathname)
-    ) {
-      const state = store.getState();
-      const activeSpaceId = Selectors.activeSpaceId(state);
-      const spaceId = data.datasheet?.spaceId || data.mirror?.spaceId || data.dashboard?.spaceId || data.form?.spaceId;
-      if (spaceId && (spaceId !== activeSpaceId)) {
-        axios.defaults.headers.common['X-Space-Id'] = spaceId;
-        // @ts-ignore
-        store.dispatch(StoreActions.getUserMe({ spaceId }));
-      }
-    }
-
-    if (
-      !success
-      && String(code).startsWith('5')
-    ) {
-      Sentry.captureMessage(message, {
-        extra: {
-          headers: response.headers,
-        },
-      });
-    }
-    if (success || hasUrlIgnore(response.config.url)) {
-      return response;
-    }
-    switch (code) {
-      case StatusCode.UN_AUTHORIZED: {
-        if (window.location.pathname !== '/login') {
-          Modal.error({
-            title: t(Strings.login_status_expired_title),
-            content: t(Strings.login_status_expired_content),
-            okText: t(Strings.login_status_expired_button),
-            onOk: () => {
-              const IS_EMBED_LINK_REG = /^\/embed/;
-              const reference = !IS_EMBED_LINK_REG.test(location.pathname) ? 
-                (new URLSearchParams(window.location.search)).get('reference')?.toString() : window.location.href;
-              store.dispatch(StoreActions.setUserMe(null));
-              store.dispatch(StoreActions.setIsLogin(false));
-              Router.redirect(Navigation.LOGIN, { query: { reference }});
-            },
-          });
-        }
-        return Promise.reject();
-      }
-      case StatusCode.OPERATION_FREQUENT: {
-        Modal.error({
-          title: t(Strings.get_verification_code_err_title),
-          content: t(Strings.get_verification_code_err_content),
-          okText: t(Strings.get_verification_code_err_button),
-        });
-        return Promise.reject();
-      }
-      case StatusCode.LOGIN_OUT_NUMBER: {
-        Modal.error({
-          title: t(Strings.login_frequent_operation_reminder_title),
-          content: t(Strings.login_frequent_operation_reminder_content),
-          okText: t(Strings.login_frequent_operation_reminder_button),
-          onOk: () => {
-            Router.redirect(Navigation.LOGIN);
-          },
-        });
-        return Promise.reject();
-      }
-      case StatusCode.NODE_NUMBER_ERR: {
-        Modal.error({
-          title: t(Strings.node_not_exist_title),
-          content: t(Strings.node_number_err_content),
-          onOk: () => {
-            Router.redirect(Navigation.HOME);
-          },
-        });
-        return Promise.reject();
-      }
-
-      case StatusCode.NODE_NOT_EXIST: {
-        Api.keepTabbar({});
-        return Promise.resolve(response);
-      }
-      case StatusCode.NOT_PERMISSION: {
-        Api.keepTabbar({});
-        return Promise.resolve(response);
-      }
-      case StatusCode.PAYMENT_PLAN: {
-        BillingModal();
-        return Promise.reject();
-      }
-      case StatusCode.SPACE_NOT_EXIST: {
-        if (window.location.pathname.search('/invite') === -1) {
-          Modal.error({
-            title: t(Strings.no_access_space_title),
-            content: t(Strings.no_access_space_descirption),
-            okText: t(Strings.refresh),
-            onOk: () => {
-              Router.push(Navigation.HOME);
-            },
-          });
-        }
-        return Promise.reject();
-      }
-      case StatusCode.FRONT_VERSION_ERROR: {
-        window.dispatchEvent(new CustomEvent('newVersionRequired'));
-        return Promise.reject();
-      }
-      default:
-        return Promise.resolve(response);
-    }
+    return handleResponse(response.data, response, response.config.url);
   });
 
   if (process.env.NODE_ENV === 'production') {
@@ -281,6 +302,8 @@ export function redirectIfUserApplyLogout() {
 
 export function initializer(comlink: any) {
   initAxios(comlink.store);
+
+  window.__global_handle_response = handleResponse;
 
   // Initialisation Field.bindModel
   injectStore(comlink.store);

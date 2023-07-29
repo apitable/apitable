@@ -27,6 +27,7 @@ import Qs from 'qs';
 import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack, ISnapshot } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
+import { WasmApi } from 'modules/database/api';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
@@ -40,6 +41,10 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
   console.log({ baseURL });
+  if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
+    return WasmApi.getDatasheetPack(dstId);
+  }
+
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
     baseURL,
     params: {

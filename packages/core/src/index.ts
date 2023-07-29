@@ -42,8 +42,9 @@ export * from './modules/database/store/reducers/resource';
 
 export * as api from './modules/shared/api';
 
+import { WasmApi } from 'modules/database/api';
 import * as databus from './databus';
 
-export { databus };
+export { databus, WasmApi };
 
 export { JOTApply } from './modules/database/store/reducers/resource';

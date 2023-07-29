@@ -169,6 +169,9 @@
     "transformIgnorePatterns": [
       "^.+\\.js$"
     ],
+    "moduleNameMapper": {
+      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+    },
     "moduleDirectories": [
       "dist",
       "node_modules",

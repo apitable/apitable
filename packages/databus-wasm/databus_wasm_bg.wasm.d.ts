@@ -1,9 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export const memory: WebAssembly.Memory;
-export function init(a: number, b: number): number;
-export function get_datasheet_pack(a: number, b: number): number;
+export function __wbg_databusbridge_free(a: number): void;
+export function databusbridge_new(a: number, b: number): number;
+export function databusbridge_print(a: number): void;
+export function databusbridge_get_datasheet_pack(a: number, b: number, c: number): number;
+export function ping_2(a: number, b: number): number;
 export function get_records(a: number, b: number): number;
+export function add_tn(a: number, b: number): number;
 export function __wbindgen_malloc(a: number, b: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number, d: number): number;
 export const __wbindgen_export_2: WebAssembly.Table;

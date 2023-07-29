@@ -117,6 +117,9 @@ module.exports = (config, options) => {
 
   config.entry = compatibleIE11(config)
 
+  config.experiments = {...config.experiments,
+    asyncWebAssembly: true,
+  }
   setResolveAlias(config)
 
   setRules(config)
@@ -134,6 +137,9 @@ module.exports = (config, options) => {
   config.resolve.fallback = fallback
 
   const {webpack} = options
+
+  config.output.webassemblyModuleFilename =
+      (isProd && typeof window ==='undefined') ? '../web_build/static/wasm/[modulehash].wasm': 'static/wasm/[modulehash].wasm' ;
 
   config.plugins.push(
     new WebpackBar({
