@@ -30,6 +30,7 @@ import urlcat from 'urlcat';
 import { WasmApi } from 'modules/database/api';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
+const enabledDatabusApi = process.env.ENABLE_DATABUS_API === 'true';
 
 /**
  * get space datasheet pack
@@ -41,8 +42,10 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
   console.log({ baseURL });
-  if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
-    return WasmApi.getDatasheetPack(dstId);
+  if (enabledDatabusApi) {
+    if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
+      return WasmApi.getDatasheetPack(dstId);
+    }
   }
 
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
