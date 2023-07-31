@@ -68,9 +68,9 @@
 
 APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable.com) でクラウドホストのバージョンを使用してください。
 
-このAPITableオープンソースプロジェクトをデモしたい場合は、こちらをクリックしてください [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+この APITable オープンソースプロジェクトをデモしたい場合は、こちらをクリックしてください [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-ローカルまたはクラウドコンピューティング環境にAPITableをインストールしたい場合は、 [💾 インストール](#インストール) を参照してください。
+ローカルまたはクラウドコンピューティング環境に APITable をインストールしたい場合は、 [💾 インストール](#インストール) を参照してください。
 
 ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
@@ -104,7 +104,7 @@ APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable
 
   <tr>
     <th>
-      <a href="#">APIファーストパネル</a>
+      <a href="#">API ファーストパネル</a>
     </th>
     <th>
       <a href="#">無制限のテーブル間リンク</a>
@@ -148,25 +148,25 @@ APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable
 
 </table>
 
-APITableは、個人から企業まで幅広い機能を提供します。
+APITable は、個人から企業まで幅広い機能を提供します。
 
 - 高度な技術スタックとオープンソース
   - リアルタイムコラボレーションにより、複数のユーザーが同時に編集したり、Operational Transformation (OT) アルゴリズムで同時に編集したりできます。
   - `<canvas> レンダリングエンジン` で、非常にスムーズで使いやすく、超高速なデータベース表計算インターフェイス。
-  - データベースネイティブアーキテクチャ:Changeset / Operation / Action / Snapshotなど。
-  - **リアルタイムのコラボレーションによる100k+** データ行。
+  - データベースネイティブアーキテクチャ: Changeset / Operation / Action / Snapshotなど。
+  - **リアルタイムのコラボレーションによる 100k+** データ行。
   - `データ` から `メタデータ` まで、フルスタック API アクセス。
   - 一方向/双方向テーブルリンクと `無限クロスリンク`
-  - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
-- 美しくリッチなデータベース表計算用UI
+  - コミュニティに優しいプログラミング言語とフレームワーク, TypeScript ([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) そして Java ([Spring Boot](https://spring.io/projects/spring-boot))
+- 美しくリッチなデータベース表計算用 UI
   - `CRUD`: 作成、読み込み、更新、テーブル、列、行の削除
   - `フィールド操作`: ソート、フィルター、グループ化、非表示/非表示、高さ設定。
   - `Space based`: アプリ/ベース構造の代わりに、分離されたワークスペースを使用し、テーブルを無制限にリンクできるようにします。
   - `ダークモード` とテーマのカスタマイズが可能です。
   - `7 種類のビュータイプ`: グリッドビュー (データシート) / ギャラリービュー / マインドマップビュー / カンバンビュー / フル機能 ガントビュー / カレンダー ビュー
-  - ワンクリックAPIパネル
+  - ワンクリック API パネル
 - バッテリーが付属しています
-  - 10以上の公式テンプレートを内蔵しています。
+  - 10 以上の公式テンプレートを内蔵しています。
   - ロボットの自動化と利用可能なカスタマイズ。
   - BI ダッシュボード
   - ワンクリック自動生成フォーム
@@ -198,41 +198,41 @@ APITableは、個人から企業まで幅広い機能を提供します。
 
 ## 💥 ユース・ケース
 
-次のソフトウェアでAPITableを知る必要があるのはなぜですか?
+次のソフトウェアで APITable を知る必要があるのはなぜですか?
 
 - スーパーマネージメントソフトウェアとして
   - 柔軟なプロジェクト管理 & タスク/課題管理
   - マーケティングリード管理
-  - 最も柔軟で接続可能なCRM。
+  - 最も柔軟で接続可能な CRM。
   - 柔軟なビジネスインテリジェンス(BI)。
   - 人気のフォームと調査
-  - 柔軟なERP。
+  - 柔軟な ERP。
   - ローコードとノーコードプラットフォーム。
   - ...その他、APITable はあなたのポケットに 1000 ソフトウェアを入れています。
 - 視覚データベースのインフラストラクチャとして
-  - **ご自身のソフトウェアUIに** APITableを埋め込む。
+  - **ご自身のソフトウェア UI に** APITable を埋め込む。
   - REST API を使用したビジュアルデータベース。
   - 管理ダッシュボード
   - 中央の構成管理
-  - すべてのソフトウェアを **** 接続するオールインワンエンタープライズデータベース
-  - ...その他、APITableはすべてを接続します。
+  - **すべての** ソフトウェアを接続するオールインワンエンタープライズデータベース
+  - ...その他、APITable はすべてを接続します。
 - また、オープンソースで拡張可能
 
-## 💞 API指向
+## 💞 API 指向
 
-#### API UIパネル
+#### API UI パネル
 
 右隅にある `API` ボタンをクリックすると、API パネル が表示されます。
 
-#### SQLに似たクエリ
+#### SQL に似たクエリ
 
-APITableは、データベースのスプレッドシートの内容を照会するためのDatasheet Query Language(DQL)を提供します。
+APITable は、データベースのスプレッドシートの内容を照会するための Datasheet Query Language(DQL) を提供します。
 
 ## 💝 フレンドリーな
 
 #### 共有して埋め込み
 
-データシートのテーブルまたはフォルダを共有します。 HTMLスクリプトをコピーして貼り付けることで埋め込みます。
+データシートのテーブルまたはフォルダを共有します。 HTML スクリプトをコピーして貼り付けることで埋め込みます。
 
 #### エンタープライズ対応の埋め込み
 
@@ -271,7 +271,7 @@ APITableに貢献していただき、ありがとうございます！
 コードを書く以外にも、貢献できる方法はたくさんあります。
 
 以下の方法で貢献することができます：
-- Join and modify translations in our [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)
+- [Crowdin 翻訳プロジェクト](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185)に参加し、翻訳を修正する
 - [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
 - [Twitter](https://twitter.com/apitable_com) をフォロー
 - [ドキュメント](./docs) を作成する
@@ -279,7 +279,7 @@ APITableに貢献していただき、ありがとうございます！
 
 
 以下のようになります。
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
+- [Crowdin 翻訳プロジェクト](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)に参加する
 - [Issues](https://github.com/apitable/apitable/issues/new/choose) を作成する
 - [Twitter](https://twitter.com/apitable_com) をフォロー
 - [ドキュメント](./docs) を作成する
@@ -288,7 +288,7 @@ APITableに貢献していただき、ありがとうございます！
 
 このリポジトリの [コントリビューションガイドライン](./CONTRIBUTING.md) を読んで、コントリビューションの方法を学ぶことができます。
 
-APITableに貢献するためのクイックガイドはこちらです。
+APITable に貢献するためのクイックガイドはこちらです。
 
 
 ### 開発環境
@@ -300,7 +300,7 @@ APITableに貢献するためのクイックガイドはこちらです。
 一般的な APITable git ワークフローは次のとおりです。
 
 1. 課題を作成し、必要な機能を記述してください -> [APITableの問題](https://github.com/apitable/apitable/issues)
-2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
+2. このプロジェクトをフォーク -> [Fork APITable project](https://github.com/apitable/apitable/fork)
 3. フィーチャーブランチを作成する (`git checkout -b my-new-feature`)
 4. 変更をコミットする (`git commit -am '機能を追加'`)
 5. ブランチを公開する (`git push origin my-new-feature`)
@@ -308,9 +308,9 @@ APITableに貢献するためのクイックガイドはこちらです。
 
 ### 作業条件
 
-APITable use these common conventions:
+APITable では、以下の共通規約を使用しています:
 
-- Gitのブランチモデルは何ですか？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- Git のブランチモデルは何ですか？ [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - フォークプロジェクトでコラボレーションする方法は? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - 良いコミットメッセージを書く方法は? [従来のコミット](https://www.conventionalcommits.org/)
 - 更新履歴のフォーマットは何ですか? [変更履歴を保持](https://keepachangelog.com/en/1.0.0/)
@@ -351,7 +351,7 @@ APITable use these common conventions:
 - ChatGPT、Zapier、Slack、Google Workspaceなどに統合します。
 - ウォーターマーク
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
+エンタープライズセルフホストライセンスを含む弊社製品の詳細については、<support@apitable.com> または[デモの予約](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com)までお問い合わせください。
 
 ## 👫 参加する
 
