@@ -31,7 +31,6 @@ import {
   StoreActions,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
-import { useNativeModule } from 'app.environment';
 import { DashboardService } from 'database/dashboard/services/dashboard.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
@@ -42,24 +41,21 @@ import { CacheKeys, DATASHEET_PACK_CACHE_EXPIRE_TIME } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, CommonException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOptions, ILoadBasePackOptions } from 'shared/interfaces';
-import { NativeService } from 'shared/services/native/native.service';
 import util from 'util';
 import { Logger } from 'winston';
 
 export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   private readonly datasheetService: DatasheetService;
   private readonly dashboardService: DashboardService;
-  private readonly nativeService: NativeService;
   private readonly redisService: RedisService;
   private readonly otService: OtService;
   private readonly changesetSourceService: DatasheetChangesetSourceService;
   private readonly loadOptions: IServerDataLoadOptions;
 
   constructor(options: IServerDataStorageProviderOptions, private readonly logger: Logger) {
-    const { datasheetService, dashboardService, redisService, otService, changesetSourceService, loadOptions, nativeService } = options;
+    const { datasheetService, dashboardService, redisService, otService, changesetSourceService, loadOptions } = options;
     this.datasheetService = datasheetService;
     this.dashboardService = dashboardService;
-    this.nativeService = nativeService;
     this.redisService = redisService;
     this.otService = otService;
     this.changesetSourceService = changesetSourceService;
@@ -93,11 +89,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     if (this.loadOptions.useCache) {
       datasheetPack = await this.loadDstPackWithCache(dstId, options);
     } else {
-      if (useNativeModule) {
-        datasheetPack = await this.nativeService.fetchDataPack('main datasheet', dstId, auth, { internal: true, main: true }, options);
-      } else {
-        datasheetPack = (await this.datasheetService.fetchDataPack(dstId, auth, false, options)) as DatasheetPack;
-      }
+      datasheetPack = (await this.datasheetService.fetchDataPack(dstId, auth, false, options)) as DatasheetPack;
     }
 
     return datasheetPack;
@@ -289,7 +281,6 @@ export interface IServerDataStorageProviderOptions {
   redisService: RedisService;
   otService: OtService;
   changesetSourceService: DatasheetChangesetSourceService;
-  nativeService: NativeService;
 }
 
 export interface IServerSaveOptions extends databus.ISaveOptions {

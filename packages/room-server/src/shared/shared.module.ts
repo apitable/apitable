@@ -25,7 +25,6 @@ import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { HttpConfigService } from './services/config/http.config.service';
 import { JavaModule } from './services/java/java.module';
-import { NativeService } from './services/native/native.service';
 import { QueueDynamicModule } from './services/queue/queue.dynamic.module';
 import { RestService } from './services/rest/rest.service';
 import { ClientStorage } from './services/socket/client.storage';
@@ -45,7 +44,7 @@ import { ClientStorage } from './services/socket/client.storage';
     QueueDynamicModule.forRoot(),
   ],
   controllers: [],
-  providers: [DatabaseConfigService, RestService, ClientStorage, NativeService],
+  providers: [DatabaseConfigService, RestService, ClientStorage],
   exports: [
     JavaModule,
     HttpModule,
@@ -53,7 +52,6 @@ import { ClientStorage } from './services/socket/client.storage';
     EnvConfigModule,
     DatabaseConfigService,
     RestService,
-    NativeService,
     ClientStorage,
     QueueDynamicModule.forRoot(),
   ],
