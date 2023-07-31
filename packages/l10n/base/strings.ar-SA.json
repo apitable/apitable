@@ -5220,7 +5220,7 @@
   "when_meet_the_following_filters": "عند تصفية التالية",
   "where": "أين",
   "whether_bind_with_invited_email": "تأكد من ربط إلى دعوة الحساب $ { inviteemail }",
-  "who_shares": "$ { username } حصة معك",
+  "who_shares": " حصة معك",
   "widget": "جهاز صغير",
   "widget_center": "مركز الأداة",
   "widget_center_create_modal_desc": "أولا اسم القطعة الخاصة بك ، ثم اختر قالب العنصر الذي تريد البدء في تطوير",

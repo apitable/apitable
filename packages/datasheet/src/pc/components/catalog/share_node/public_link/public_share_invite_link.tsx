@@ -47,7 +47,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [deleting, setDeleting] = useState(false);
   const [shareStatus, setShareStatus] = useState(false);
-  const [shareCodeVisible, setShareCodeVisible] = useState(false);
   const dispatch = useDispatch();
   const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
 
@@ -376,26 +375,29 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
         )}
 
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <LinkButton
-            className={styles.inviteMoreMethod}
-            underline={false}
-            onClick={() => setShareCodeVisible(true)}
-            prefixIcon={<QrcodeOutlined currentColor/>}
+          <Tooltip
+            trigger="click"
+            placement="left"
+            showArrow={false}
+            overlayInnerStyle={{ padding: 0, backgroundColor: 'transparent' }}
+            overlay={(
+              <ShareQrCode
+                url={`${shareHost}${shareSettings.shareId}`}
+                user={userInfo}
+                nodeName={treeNodesMap[shareSettings.nodeId]?.nodeName}
+              />
+            )}
           >
-            {t(Strings.share_qr_code_tips)}
-          </LinkButton>
+            <LinkButton
+              className={styles.inviteMoreMethod}
+              underline={false}
+              prefixIcon={<QrcodeOutlined currentColor/>}
+            >
+              {t(Strings.share_qr_code_tips)}
+            </LinkButton>
+          </Tooltip>
+
         </ComponentDisplay>
-        {shareCodeVisible && (
-          <Modal className={styles.shareCodeModal} closable={false} footer={null} visible centered
-            onCancel={() => setShareCodeVisible(false)}>
-            <ShareQrCode
-              url={`${shareHost}${shareSettings.shareId}`}
-              user={userInfo?.memberName ?? ''}
-              nodeName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-              onClose={() => setShareCodeVisible(false)}
-            />
-          </Modal>
-        )}
         <WidgetEmbed
           visible={WidgetEmbedVisible}
           hide={hideShareCodeModal}

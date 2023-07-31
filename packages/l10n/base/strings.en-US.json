@@ -5226,7 +5226,7 @@
   "when_meet_the_following_filters": "When meet the following filters",
   "where": "Where",
   "whether_bind_with_invited_email": "Confirm whether to bind with the invited account ${inviteEmail}",
-  "who_shares": "${userName} shared with you",
+  "who_shares": " shared with you",
   "widget": "Widget",
   "widget_center": "Widget Center",
   "widget_center_create_modal_desc": "First give your widget a name, and then choose which component template to start developing < a href = \"\" /> learn more",
