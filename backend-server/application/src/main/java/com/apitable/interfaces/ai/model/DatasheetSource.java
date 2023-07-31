@@ -20,6 +20,8 @@ public class DatasheetSource implements AiDataSource {
 
     private String datasheetId;
 
+    private Long revision;
+
     private String viewId;
 
     private int rows;

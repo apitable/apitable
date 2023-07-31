@@ -50,6 +50,7 @@ import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.AiCreateParam;
+import com.apitable.interfaces.ai.model.AiType;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.ai.model.DatasheetSource;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -985,6 +986,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
             // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
+            // if node is ai chat bot, auto delete
+            aiServiceFacade.deleteAi(nodeIds);
         }
         for (NodeEntity node : nodes) {
             Lock lock = redisLockRegistry.obtain(node.getParentId());
@@ -1552,6 +1555,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         aiChatBotCreateParam.getDatasheet().iterator().next();
                     DatasheetSnapshot snapshot =
                         iDatasheetMetaService.getMetaByDstId(param.getId());
+                    DatasheetEntity datasheet = iDatasheetService.getByDstId(param.getId());
                     DatasheetSnapshot.View viewTarget =
                         snapshot.getMeta().getViews().stream()
                             .filter(view -> view.getId().equals(param.getViewId()))
@@ -1572,11 +1576,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                             .viewId(param.getViewId())
                             .fields(fields)
                             .rows(viewTarget.getRows().size())
+                            .revision(datasheet.getRevision())
                             .build();
                     // build request object
                     aiServiceFacade.createAi(AiCreateParam.builder()
                         .spaceId(spaceId)
                         .aiId(nodeId)
+                        .type(AiType.QA)
                         .aiName(name)
                         .dataSources(Collections.singletonList(datasheetSource))
                         .build()

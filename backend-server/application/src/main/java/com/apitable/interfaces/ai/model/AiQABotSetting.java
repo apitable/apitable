@@ -1,13 +1,12 @@
 package com.apitable.interfaces.ai.model;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * create AI chatBot from datasheet params.
+ * ai setting.
  *
  * @author Shawn Deng
  */
@@ -15,15 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AiCreateParam {
+public class AiQABotSetting {
 
-    private String spaceId;
-
-    private String aiId;
-
-    private AiType type;
-
-    private String aiName;
-
-    private List<AiDataSource> dataSources;
+    private String mode;
+    private String model;
+    private Boolean isEnabledPromptTips;
+    private Boolean isEnabledPromptBox;
 }
