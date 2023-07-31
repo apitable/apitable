@@ -17,7 +17,11 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
 import { NodeService } from 'node/services/node.service';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { CommonException } from '../../shared/exception';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
@@ -28,10 +32,6 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { WinstonModule } from 'nest-winston';
-import { LoggerConfigService } from 'shared/services/config/logger.config.service';
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 describe('RobotActionTypeServiceTest', () => {
   let moduleFixture: TestingModule;
@@ -111,6 +111,7 @@ describe('RobotActionTypeServiceTest', () => {
     jest.spyOn(automationRunHistoryRepository, 'create').mockImplementation();
     jest.spyOn(automationRunHistoryRepository, 'insert').mockImplementation();
     jest.spyOn(automationRunHistoryRepository, 'save').mockImplementation();
+    jest.spyOn(automationRunHistoryRepository, 'update').mockImplementation();
     jest.spyOn(robotService, 'getRobotById').mockResolvedValue({
       id: 'robotId',
       triggerId: 'triggerId',

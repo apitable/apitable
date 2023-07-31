@@ -29,6 +29,7 @@ import {
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { enableAutomationWorker } from 'app.environment';
 import { InjectLogger } from 'shared/common';
+import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
 import { IdWorker } from 'shared/helpers';
 import { getRecordUrl } from 'shared/helpers/env';
 import { automationExchangeName, automationRunning } from 'shared/services/queue/queue.module';
@@ -118,6 +119,7 @@ export class TriggerEventHelper {
       robotId: fireRobot.robotId,
       triggerInput: fireRobot.trigger.input,
       triggerOutput: fireRobot.trigger.output,
+      status: RunHistoryStatusEnum.PENDING
     }, robot);
     await this.queueService.sendMessageWithId(taskId, automationExchangeName, automationRunning, { taskId: taskId, triggerId: robot.triggerId });
   }

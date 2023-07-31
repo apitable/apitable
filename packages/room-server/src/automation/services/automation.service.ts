@@ -189,7 +189,7 @@ export class AutomationService {
       taskId: robotTask.taskId,
       robotId: robotTask.robotId,
       spaceId,
-      status: RunHistoryStatusEnum.PENDING,
+      status: robotTask.status,
       data: context.context
     });
     await this.automationRunHistoryRepository.insert(newRunHistory);
@@ -202,10 +202,12 @@ export class AutomationService {
    * @param data
    */
   async updateTaskRunHistory(taskId: string, success: boolean, data?: any) {
-    const runHistory = await this.automationRunHistoryRepository.getRunHistoryByTaskId(taskId);
-    runHistory.status = success ? RunHistoryStatusEnum.SUCCESS : RunHistoryStatusEnum.FAILED;
-    runHistory.data = data;
-    await this.automationRunHistoryRepository.save(runHistory);
+    const status = success ? RunHistoryStatusEnum.SUCCESS : RunHistoryStatusEnum.FAILED;
+    if (data) {
+      await this.automationRunHistoryRepository.update({ taskId }, { status, data });
+    } else {
+      await this.automationRunHistoryRepository.update({ taskId }, { status });
+    }
   }
 
   async getActionOutput(actionRuntimeInput: any, actionType: IActionType): Promise<IActionOutput> {
@@ -299,7 +301,8 @@ export class AutomationService {
         robotId,
         triggerInput: trigger.input,
         triggerOutput: trigger.output,
-        taskId
+        taskId,
+        status: RunHistoryStatusEnum.RUNNING
       });
     } catch (error) {
       // 3. update run history when failed
@@ -319,6 +322,11 @@ export class AutomationService {
     this.logger.log('RobotRunning', { ...message });
     try {
       const task: IRobotTask | undefined = await this.automationRunHistoryRepository.selectContextByTaskIdAndTriggerId(taskId, triggerId);
+      if (RunHistoryStatusEnum.PENDING != task!.status) {
+        return new Nack();
+      }
+      // update status first to avoid run it again
+      await this.automationRunHistoryRepository.updateStatusByTaskId(taskId, RunHistoryStatusEnum.RUNNING);
       // 2. execute the robot
       await this.robotRunner.run(task!);
     } catch (error) {

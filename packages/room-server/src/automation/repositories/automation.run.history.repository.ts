@@ -51,10 +51,17 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
     return this.createQueryBuilder('rhs')
       .select('robot_id', 'robotId')
       .addSelect('task_id', 'taskId')
+      .addSelect('status', 'status')
       .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.input\'))', 'triggerInput')
       .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.output\'))', 'triggerOutput')
       .where('rhs.task_id = :taskId', { taskId })
       .setParameter('triggerId', triggerId)
       .getRawOne<IRobotTask>();
+  }
+
+  updateStatusByTaskId(taskId: string, status: RunHistoryStatusEnum): Promise<number | undefined> {
+    return this.update({ taskId }, { status }).then(r => {
+      return r.affected;
+    });
   }
 }
