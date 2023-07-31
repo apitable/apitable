@@ -28,9 +28,9 @@ import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetP
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
 import { WasmApi } from 'modules/database/api';
+import { getBrowserDatabusApiEnabled } from './wasm';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
-const enabledDatabusApi = process.env.ENABLE_DATABUS_API === 'true';
 
 /**
  * get space datasheet pack
@@ -43,7 +43,7 @@ const enabledDatabusApi = process.env.ENABLE_DATABUS_API === 'true';
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
   console.log({ baseURL });
 
-  if (enabledDatabusApi) {
+  if (getBrowserDatabusApiEnabled()) {
     if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
       return WasmApi.getInstance().get_datasheet_pack(dstId);
     }
