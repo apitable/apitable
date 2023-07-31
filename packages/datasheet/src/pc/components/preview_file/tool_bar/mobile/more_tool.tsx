@@ -59,7 +59,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
           <LinkButton
             underline={false}
             className={style.moreToolBtn}
-            prefixIcon={<DownloadOutlined size={16} color={colors.defaultBg} />}
+            prefixIcon={<DownloadOutlined size={16} color={colors.textCommonTertiary} />}
           >
             <span className={style.toolName}>{t(Strings.download)}</span>
           </LinkButton>
@@ -72,7 +72,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
         <LinkButton
           underline={false}
           className={style.moreToolBtn}
-          prefixIcon={<LinkOutlined size={16} color={colors.defaultBg} />}
+          prefixIcon={<LinkOutlined size={16} color={colors.textCommonTertiary} />}
           onClick={() => {
             copy2clipBoard(downloadSrc, () => {
               Message.success({ content: t(Strings.preview_copy_attach_url_succeed) });
@@ -96,7 +96,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
         <LinkButton
           underline={false}
           className={style.moreToolBtn}
-          prefixIcon={<DeleteOutlined size={16} color={colors.defaultBg} />}
+          prefixIcon={<DeleteOutlined size={16} color={colors.textCommonTertiary} />}
           disabled={readonly}
         >
           <span className={style.toolName}>{t(Strings.delete)}</span>
@@ -117,7 +117,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       <div
         className={style.trigger}
       >
-        <MoreStandOutlined size={16} color={colors.defaultBg} />
+        <MoreStandOutlined size={16} color={colors.staticWhite0} />
       </div>
     </Popover>
   );

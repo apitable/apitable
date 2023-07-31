@@ -24,6 +24,7 @@ import SplitPane from 'react-split-pane';
 import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
+import { Strings, t } from '@apitable/core';
 
 const _SplitPane: any = SplitPane;
 
@@ -46,7 +47,7 @@ const SpaceManage: React.FC<React.PropsWithChildren> = ({ children }) => {
           {children}
         </_SplitPane>
           : <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-            <MobileBar title="空间站管理" />
+            <MobileBar title={t(Strings.space_setting)} />
             {children}
           </div>
       }
