@@ -5329,7 +5329,7 @@
   "when_meet_the_following_filters": "Lorsque vous répondez aux filtres suivants",
   "where": "Où",
   "whether_bind_with_invited_email": "Confirmez si vous souhaitez vous lier au compte invité ${inviteEmail}",
-  "who_shares": "${userName} partagé avec vous",
+  "who_shares": " partagé avec vous",
   "widget": "Gadget",
   "widget_center": "Centre du Widget",
   "widget_center_create_modal_desc": "Donner d'abord un nom à votre widget, puis choisir quel modèle de composant commencer à développer < un href = \"\" /> en savoir plus",

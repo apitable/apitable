@@ -183,6 +183,8 @@
   "ai_train": "Train",
   "ai_train_complete_message": "AI聊天机器人已成功训练。您现在可以与它开始对话。",
   "ai_training_message": "人工智能聊天机器人目前正在从数据表中的所有数据中学习。请稍等...",
+  "ai_training_failed_message": "人工智能聊天机器人训练失败。请稍后再试。",
+  "ai_training_failed_message_and_allow_send_message": "上一次人工智能聊天机器人训练失败。使用最近一次数据进行聊天",
   "ai_update_setting_success": "Update successful.",
   "alarm_no_member_field_tips": "请在表中先新建一列成员字段",
   "alarm_save_fail": "日期提醒配置不全，保存失败",

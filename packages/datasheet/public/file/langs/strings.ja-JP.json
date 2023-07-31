@@ -5294,7 +5294,7 @@
   "when_meet_the_following_filters": "以下のフィルタを満たす場合",
   "where": "どこ",
   "whether_bind_with_invited_email": "招待されたアカウント ${inviteEmail} とバインドするかどうかを確認します",
-  "who_shares": "${userName} があなたと共有しました",
+  "who_shares": " があなたと共有しました",
   "widget": "ウィジェット",
   "widget_center": "ガジェットセンター",
   "widget_center_create_modal_desc": "まずウィジェットに名前を付け、開発を開始するコンポーネントテンプレート<a href=\"\"/>を選択して詳細を表示します",

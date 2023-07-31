@@ -183,6 +183,8 @@ export type StringKeysMapType = {
   'ai_toolbar_train_text': 'ai_toolbar_train_text',
   'ai_train': 'ai_train',
   'ai_train_complete_message': 'ai_train_complete_message',
+  'ai_training_failed_message': 'ai_training_failed_message',
+  'ai_training_failed_message_and_allow_send_message': 'ai_training_failed_message_and_allow_send_message',
   'ai_training_message': 'ai_training_message',
   'ai_update_setting_success': 'ai_update_setting_success',
   'alarm_no_member_field_tips': 'alarm_no_member_field_tips',

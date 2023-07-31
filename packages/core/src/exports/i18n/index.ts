@@ -25,11 +25,11 @@ import type { StringKeysMapType, StringKeysType } from 'config/stringkeys.interf
 export * from 'config/stringkeys.interface';
 
 // String.key will return key, for compatibility
-export const Strings = new Proxy({}, {
+export const Strings = new Proxy<StringKeysMapType>({} as StringKeysMapType, {
   get: function(_target, key) {
     return key;
   },
-}) as (StringKeysMapType) as any;
+});
 
 /**
  * read Settings in config
