@@ -5523,4 +5523,6 @@ export type StringKeysMapType = {
   'zoom_out': 'zoom_out'
 };
 
-export type StringKeysType = keyof StringKeysMapType;
+export type StringKeysType = {
+  [K in keyof StringKeysMapType]: K;
+} & { [key: string]: unknown };
