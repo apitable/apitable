@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
 import {
   BasicValueType, DateTimeField, Field, FieldType, Functions, IField, 
@@ -25,6 +26,7 @@ import {
 import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';

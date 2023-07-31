@@ -20,13 +20,13 @@ import { AutomationActionTypeRepository } from '../repositories/automation.actio
 import { customActionTypeMetas } from '../actions/decorators/automation.action.decorator';
 import { getTypeByItem } from '../utils';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
-import { ActionTypeDetailVo } from '../vos/action.type.detail.vo';
+import { IActionTypeDetailVo } from '../vos/action.type.detail.vo';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export abstract class RobotActionTypeBaseService {
 
-  getActionType(_lang = 'zh'): Promise<ActionTypeDetailVo[]> {
+  getActionType(_lang = 'zh'): Promise<IActionTypeDetailVo[]> {
     return Promise.resolve([]);
   }
 }
@@ -40,7 +40,7 @@ export class RobotActionTypeService extends RobotActionTypeBaseService {
     super();
   }
 
-  override async getActionType(lang = 'zh'): Promise<ActionTypeDetailVo[]> {
+  override async getActionType(lang = 'zh'): Promise<IActionTypeDetailVo[]> {
     const result = [];
     const actionTypes = await this.automationActionTypeRepository.find({ where: { isDeleted: 0 }});
     for (const actionTypesKey in actionTypes) {
@@ -61,7 +61,7 @@ export class RobotActionTypeService extends RobotActionTypeBaseService {
         serviceLogo: service?.logo,
         serviceSlug: service?.slug,
         serviceI18n: service?.i18n,
-      }, lang) as ActionTypeDetailVo;
+      }, lang) as IActionTypeDetailVo;
       result.push(actionTypeDetailVo);
     }
     result.push(...customActionTypeMetas.values());

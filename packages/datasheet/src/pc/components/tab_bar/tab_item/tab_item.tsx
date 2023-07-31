@@ -24,6 +24,7 @@ import * as React from 'react';
 import { ICustomViewProps } from '../tab/tab';
 import styles from './style.module.less';
 import { stopPropagation } from '../../../utils/dom';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useThemeColors } from '@apitable/components';
 import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';

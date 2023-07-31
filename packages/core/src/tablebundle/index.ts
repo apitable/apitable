@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface ExceptionResponse {
-  code: number;
-  message: string;
-}
+export * from './table_bundle';
+export * from './table_bundle_datasheet';
+export * from './table_bundle_manifest';
+export * from './table_bundle_node';
+export * from './table_bundle_snapshot';

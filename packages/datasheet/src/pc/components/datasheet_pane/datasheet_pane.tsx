@@ -18,7 +18,18 @@
 
 import { Skeleton } from '@apitable/components';
 import {
-  ConfigConstant, Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t
+  ConfigConstant,
+  Events,
+  Player,
+  PREVIEW_DATASHEET_BACKUP,
+  PREVIEW_DATASHEET_ID,
+  ResourceType,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  Strings,
+  SystemConfig,
+  t,
 } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
@@ -84,6 +95,10 @@ const DatasheetMain = (props: IDatasheetMain) => {
     preview, testFunctions, handleExitTest, mirrorId, embedId
   } = props;
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const previewDstType = useSelector(state => {
+    const datasheet = Selectors.getDatasheet(state);
+    return datasheet && datasheet?.type;
+  });
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
 
@@ -122,7 +137,7 @@ const DatasheetMain = (props: IDatasheetMain) => {
         )}
       </div>
       <SuspensionPanel shareId={shareId} datasheetId={datasheetId} />
-      {(preview || testFunctions) && (
+      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && (
         <div className={styles.previewing}>
           <div className={styles.previewTip}>
             {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
@@ -142,7 +157,7 @@ const DefaultPanelWidth = {
   DevTool: 320,
   TimeMachine: 320,
   Api: '50%',
-  Robot: 320,
+  Robot: 360,
   SideRecord: 450,
 } as const;
 

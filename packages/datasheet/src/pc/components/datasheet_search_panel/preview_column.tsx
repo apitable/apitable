@@ -19,20 +19,22 @@
 import { IMeta, WidgetApi } from '@apitable/core';
 import { FormPreviewer, WidgetPreview } from 'pc/components/datasheet_search_panel/components';
 import { INodeInstalledWidget } from './interface';
-import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { SecondConfirmType } from './datasheet_search_panel';
 
-interface ISubColumnProps {
+interface IPriviewColumnProps {
   currentMeta: IMeta | null;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  showSubColumnWithWidget: boolean;
+  setLoading: React.Dispatch<boolean>;
   currentViewId: string;
   currentDatasheetId: string;
+  secondConfirmType?: SecondConfirmType;
+
   onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] }): void;
 }
 
-export const SubColumn: React.FC<React.PropsWithChildren<ISubColumnProps>> = props => {
-  const { currentMeta, setLoading, showSubColumnWithWidget, currentViewId, currentDatasheetId, onChange } = props;
+export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps>> = props => {
+  const { currentMeta, setLoading, currentViewId, currentDatasheetId, onChange, secondConfirmType } = props;
   const [installedWidgets, setInstalledWidgets] = useState<INodeInstalledWidget[] | null>(null);
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export const SubColumn: React.FC<React.PropsWithChildren<ISubColumnProps>> = pro
     // eslint-disable-next-line
   }, [currentDatasheetId]);
 
+  const showSubColumnWithWidget = secondConfirmType === SecondConfirmType.Widget;
   const searchDatasheetInstalledWidget = (datasheetId: string) => {
     if (!showSubColumnWithWidget) {
       return;
@@ -58,11 +61,11 @@ export const SubColumn: React.FC<React.PropsWithChildren<ISubColumnProps>> = pro
     });
   };
 
-  const viewDataLoaded = Boolean(currentMeta && currentViewId);
+  const showViewPreview = Boolean(currentMeta && currentViewId && secondConfirmType === SecondConfirmType.Form);
 
   return (
     <>
-      {viewDataLoaded && <FormPreviewer datasheetId={currentDatasheetId} viewId={currentViewId} meta={currentMeta!} onChange={onChange} />}
+      {showViewPreview && <FormPreviewer datasheetId={currentDatasheetId} viewId={currentViewId} meta={currentMeta!} onChange={onChange} />}
       {installedWidgets && <WidgetPreview onChange={onChange} installedWidgets={installedWidgets} />}
     </>
   );

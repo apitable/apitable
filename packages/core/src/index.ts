@@ -21,6 +21,7 @@ export * from './commands';
 export * from './engine';
 export * from './io';
 export * from './model';
+export * from './tablebundle';
 export * from './sync';
 export * from './types';
 export * from './utils';

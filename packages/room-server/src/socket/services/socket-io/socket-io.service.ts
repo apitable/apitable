@@ -20,7 +20,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { isBackendServer, isNestServer, isRoomConnect } from 'shared/helpers/socket.helper';
-import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { NestService } from 'socket/services/nest/nest.service';
 import { RoomService } from 'socket/services/room/room.service';
 
@@ -33,7 +33,7 @@ export class SocketIoService {
     private readonly roomService: RoomService,
   ) { }
 
-  public joinRoom(socket: AuthenticatedSocket) {
+  public joinRoom(socket: IAuthenticatedSocket) {
     // nest-server room
     if (isNestServer(socket)) {
       void socket.join(SocketConstants.NEST_SERVER_PREFIX);
@@ -50,7 +50,7 @@ export class SocketIoService {
     }
   }
 
-  public async leaveRoom(socket: AuthenticatedSocket) {
+  public async leaveRoom(socket: IAuthenticatedSocket) {
     if (isNestServer(socket)) {
       void socket.leave(SocketConstants.NEST_SERVER_PREFIX);
       await this.nestService.removeSocket(socket);

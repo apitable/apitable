@@ -23,13 +23,12 @@ import * as Sentry from '@sentry/nextjs';
 import { triggerUsageAlertForDatasheet } from 'enterprise';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Router } from 'pc/components/route_manager/router';
 import { getEnvVariables } from 'pc/utils/env';
 import parser from 'html-react-parser';
 
 export const onError: IServiceError = (error, type) => {
-  const { isShowQrcode, title, code, message: errorMessage } = error;
+  const { title, code, message: errorMessage } = error;
   const errorCode = code as number;
   const env = getEnvVariables();
   const qrcodeVisible = !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE);
@@ -71,15 +70,14 @@ export const onError: IServiceError = (error, type) => {
       }
     };
 
-    const modalConfig = getModalConfig({
+    const modalConfig = {
       title: title || t(Strings.kindly_reminder),
       content: parser(contentMessage),
       okText: error.okText || t(Strings.refresh),
       onOk: modalOnOk,
       maskClosable: false,
-      modalButtonType: modalType,
-      isShowQrcode
-    });
+      modalButtonType: modalType
+    };
     const modal = Modal[modalType](modalConfig);
     return;
   }

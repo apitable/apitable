@@ -43,14 +43,48 @@ export class NodeService {
     private readonly nodeRepository: NodeRepository,
     private readonly nodeRelRepository: NodeRelRepository,
     private readonly resourceMetaService: MetaService,
-  ) {
-  }
+  ) {}
 
   async checkNodeIfExist(nodeId: string, exception?: IBaseException) {
     const count = await this.nodeRepository.selectCountByNodeId(nodeId);
     if (!count) {
       throw new ServerException(exception ? exception : PermissionException.NODE_NOT_EXIST);
     }
+  }
+
+  async getFolderLastChildren(fldId: string): Promise<string> {
+    const nodes = await this.nodeRepository.find({
+      where: {
+        parentId: fldId
+      },
+    });
+    if (!nodes){
+      return '';
+    }
+    const nodeIdSet = new Map<string, boolean>();
+    nodes.forEach(node => {
+      nodeIdSet.set(node.nodeId, false);
+    });
+    nodes.forEach(node => {
+      if (node.preNodeId && nodeIdSet.has(node.preNodeId)) {
+        nodeIdSet.set(node.preNodeId, true);
+      }
+    });
+    console.log('zzq see jk', JSON.stringify(nodeIdSet), nodeIdSet);
+    for (const [key, value] of nodeIdSet) {
+      if (!value) {
+        return key;
+      }
+    }
+    return 'not found';
+  }
+
+  async batchSave(nodes: any[]){
+    return await this.nodeRepository
+      .createQueryBuilder()
+      .insert()
+      .values(nodes)
+      .execute();
   }
 
   @Span()
@@ -157,6 +191,10 @@ export class NodeService {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     return rawResult.spaceId;
+  }
+
+  async getNameByNodeId(nodeId: string): Promise<string> {
+    return await this.nodeRepository.selectNameByNodeId(nodeId);
   }
 
   async isTemplate(nodeId: string): Promise<boolean> {

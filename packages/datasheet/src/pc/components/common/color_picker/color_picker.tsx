@@ -135,7 +135,7 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
         <RcTrigger
           popup={PopupComponent}
           destroyPopupOnHide
-          action={['click']}
+          action="click"
           popupAlign={{
             points: ['tl', 'bl'],
             offset: [-PICKER_PANE_WIDTH - 10, -computedPaneHeight / 2 - 10],
@@ -148,7 +148,7 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
             position: 'absolute',
           }}
           popupVisible={disabled ? false : visible}
-          onPopupVisibleChange={visible => setVisible(visible)}
+          onPopupVisibleChange={_visible => setVisible(_visible)}
           zIndex={1100}
         >
           {TriggerComponent}

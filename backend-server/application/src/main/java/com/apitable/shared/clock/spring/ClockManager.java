@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,6 @@ import org.springframework.stereotype.Component;
  * clock manager.
  */
 @Component
-@Slf4j
 public class ClockManager implements InitializingBean {
 
     private Clock clock;
@@ -84,8 +82,6 @@ public class ClockManager implements InitializingBean {
      */
     public LocalDate getLocalDateNow() {
         OffsetDateTime utcNow = getUtcNow();
-        log.info("utc now: {}", utcNow);
-        log.info("time zone: {}", systemProperties.getTimeZone());
         return utcNow.withOffsetSameInstant(systemProperties.getTimeZone()).toLocalDate();
     }
 
@@ -96,9 +92,6 @@ public class ClockManager implements InitializingBean {
      */
     public LocalDateTime getLocalDateTimeNow() {
         OffsetDateTime utcNow = getUtcNow();
-        log.info("utc now: {}", utcNow);
-        log.info("serverConfig hashCode in clock: " + systemProperties.hashCode());
-        log.info("time zone: {}", systemProperties.getTimeZone());
         return utcNow.withOffsetSameInstant(systemProperties.getTimeZone()).toLocalDateTime();
     }
 

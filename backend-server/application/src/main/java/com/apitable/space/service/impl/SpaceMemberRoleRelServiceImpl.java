@@ -18,32 +18,33 @@
 
 package com.apitable.space.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
-import com.apitable.space.mapper.SpaceResourceMapper;
-import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
-import com.apitable.space.service.ISpaceMemberRoleRelService;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.space.entity.SpaceMemberRoleRelEntity;
-
-import org.springframework.stereotype.Service;
-
 import static com.apitable.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
 import static com.apitable.workspace.enums.PermissionException.ROLE_NOT_EXIST;
 import static com.apitable.workspace.enums.PermissionException.UPDATE_ROLE_ERROR;
 
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.space.entity.SpaceMemberRoleRelEntity;
+import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
+import com.apitable.space.mapper.SpaceResourceMapper;
+import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
+import com.apitable.space.service.ISpaceMemberRoleRelService;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+ * Space member role relation service implements.
+ */
 @Service
 @Slf4j
-public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRelMapper, SpaceMemberRoleRelEntity> implements ISpaceMemberRoleRelService {
+public class SpaceMemberRoleRelServiceImpl
+    extends ServiceImpl<SpaceMemberRoleRelMapper, SpaceMemberRoleRelEntity>
+    implements ISpaceMemberRoleRelService {
 
     @Resource
     private SpaceResourceMapper spaceResourceMapper;
@@ -69,9 +70,9 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
     }
 
     @Override
-    public SpaceMemberRoleRelEntity findById(Long memberRoleId) {
+    public SpaceMemberRoleRelEntity getEntityById(Long id) {
         log.info("query role by id");
-        SpaceMemberRoleRelEntity entity = getById(memberRoleId);
+        SpaceMemberRoleRelEntity entity = getById(id);
         ExceptionUtil.isNotNull(entity, ROLE_NOT_EXIST);
         return entity;
     }
@@ -85,14 +86,16 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
         boolean flag = updateById(update);
         ExceptionUtil.isTrue(flag, UPDATE_ROLE_ERROR);
     }
-    
+
     @Override
-    public List<Long> getMemberId(String spaceId, List<String> resourceGroupCodes) {
-        List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByGroupCode(resourceGroupCodes);
+    public List<Long> getMemberIdListByResourceGroupCodes(String spaceId, List<String> resourceGroupCodes) {
+        List<String> resourceCodes =
+            spaceResourceMapper.selectResourceCodesByGroupCode(resourceGroupCodes);
         if (resourceCodes.isEmpty()) {
             return new ArrayList<>();
         }
-        List<String> roleCodes = spaceRoleResourceRelMapper.selectRoleCodeByResourceCodes(resourceCodes);
+        List<String> roleCodes =
+            spaceRoleResourceRelMapper.selectRoleCodeByResourceCodes(resourceCodes);
         if (roleCodes.isEmpty()) {
             return new ArrayList<>();
         }

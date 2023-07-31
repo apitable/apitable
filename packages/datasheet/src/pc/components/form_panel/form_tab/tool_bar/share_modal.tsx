@@ -29,6 +29,7 @@ import { Message } from 'pc/components/common/message';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Popconfirm } from 'pc/components/common/popconfirm';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useResponsive } from 'pc/hooks';
 import React, { useEffect, useState } from 'react';

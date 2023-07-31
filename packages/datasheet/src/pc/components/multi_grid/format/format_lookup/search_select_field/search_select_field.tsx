@@ -1,4 +1,5 @@
 import * as React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Select, IOption, useThemeColors } from '@apitable/components';
 import { FieldType, Strings, t, Selectors, IViewColumn } from '@apitable/core';
 import { useSelector } from 'react-redux';

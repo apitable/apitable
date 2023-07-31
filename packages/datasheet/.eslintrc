@@ -13,11 +13,28 @@
     "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
     "@next/next/no-img-element": "off",
     "no-restricted-imports": ["error", {
-      "paths": [{
+      "paths": [
+        {
+          "name": "@apitable/components",
+          "importNames": ["Select"],
+          "message": "Please use tooltip DropdownSelect from '@apitable/components instead ."
+        },
+        {
+          "name": "pc/components/common/tooltip",
+          "importNames": ["Tooltip"],
+          "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
+        },
+        {
+          "name": "pc/components/common",
+          "importNames": ["Tooltip"],
+          "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
+        },
+        {
         "name": "react-custom-scrollbars",
         "importNames": ["Scrollbars"],
         "message": "Please use ScrollBar from pc/components/scroll_bar instead."
-      }]
+      }
+      ]
     }]
 //    "@typescript-eslint/no-misused-promises": 1,
 //    "@typescript-eslint/no-floating-promises": 1

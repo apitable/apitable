@@ -19,7 +19,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { RobotTriggerTypeService } from '../services/robot.trigger.type.service';
 
-@Controller('nest/v1/robots/trigger-types')
+@Controller(['nest/v1/robots/trigger-types', 'nest/v1/automation/trigger-types'])
 export class RobotTriggerTypeController {
   constructor(
     private readonly robotTriggerTypeService: RobotTriggerTypeService,
@@ -27,20 +27,7 @@ export class RobotTriggerTypeController {
 
   @Get(['/'])
   getTriggerTypes(@Query('lang') lang: string) {
-    const langMap = {
-      'de-DE': 'de',
-      'en-US': 'en',
-      'es-ES': 'es',
-      'fr-FR': 'fr',
-      'it-IT': 'it',
-      'ja-JP': 'ja',
-      'ko-KR': 'ko',
-      'ru-RU': 'ru',
-      'zh-CN': 'zh',
-      'zh-HK': 'zh-hk'
-    };
-    const language = langMap.hasOwnProperty(lang) ? langMap[lang] : 'en';
-    return this.robotTriggerTypeService.getTriggerType(language);
+    return this.robotTriggerTypeService.getTriggerType(lang);
   }
 
 }

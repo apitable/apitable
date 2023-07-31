@@ -75,8 +75,31 @@ const UpgradeSpace = () => {
         );
         setLoading(false);
       }
-
+      console.log('msg', msg, grade);
       if (msg === 'toDowngrade' && grade) {
+        if(grade === 'free') {
+          Modal.warning({
+            title: onTrial ? t(Strings.billing_cancel_trial_title) : t(Strings.billing_cancel_title),
+            content: onTrial ? t(Strings.billing_cancel_trial_content) : t(Strings.billing_cancel_content),
+            hiddenCancelBtn: false,
+            okText: t(Strings.confirm),
+            cancelText: t(Strings.cancel),
+            zIndex: 1100,
+            onOk: async() => {
+              if(!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
+              //@ts-ignore
+              const planInfoRes = await Api.getSubscript(spaceId);
+              const { subscriptionId } = planInfoRes.data.data;
+              //@ts-ignore
+              const res = await Api?.cancelSubscription(spaceId!, subscriptionId);
+              const { success, data } = res.data;
+              if(success) {
+                location.href = data.url;
+              }
+            },
+          });
+          return;
+        }
         Modal.warning({
           title: t(Strings.downgrade),
           content: t(Strings.downgrade_content),
@@ -90,7 +113,6 @@ const UpgradeSpace = () => {
             const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
             const { url } = res.data;
             location.href = url;
-            // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
           },
         });
         return;

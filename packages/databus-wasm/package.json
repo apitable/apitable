@@ -1,0 +1,19 @@
+{
+  "name": "databus_wasm",
+  "collaborators": [
+    "Kelly Peilin Chan <kelly@vikadata.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "databus_wasm_bg.wasm",
+    "databus_wasm.js",
+    "databus_wasm_bg.js",
+    "databus_wasm.d.ts"
+  ],
+  "module": "databus_wasm.js",
+  "types": "databus_wasm.d.ts",
+  "sideEffects": [
+    "./databus_wasm.js",
+    "./snippets/*"
+  ]
+}

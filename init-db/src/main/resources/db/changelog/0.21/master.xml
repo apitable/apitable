@@ -24,4 +24,5 @@
 
     <include file="db/changelog/0.21/20230517_changeset.xml"/>
     <include file="db/changelog/0.21/20230614_changeset.xml"/>
+    <include file="db/changelog/0.21/20230621_changeset.xml"/>
 </databaseChangeLog>

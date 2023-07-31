@@ -115,6 +115,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
           style={{
             width: 16,
             height: 16,
+            lineHeight: 0,
             padding: 0,
             borderRadius: 2,
             marginLeft: 4,
@@ -122,6 +123,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
           }}
           variant="fill"
           color={bgColor}
+          size="small"
         >
           <CloseOutlined size={12} color={color} />
         </Button>

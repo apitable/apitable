@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField, IMeta } from '@apitable/core';
+import type { CellFormatEnum, ICellValue, IFieldMap, IMeta, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField } from '@apitable/core';
 import type { Store } from 'redux';
 import type { IBaseException } from 'shared/exception/base.exception';
 
@@ -146,6 +146,9 @@ export interface IFetchDataOptions {
    * records specified by recordIds.
    */
   needExtendMainDstRecords?: boolean;
+
+  /** If comment count is queried. Default to false */
+  includeCommentCount?: boolean;
 }
 
 export interface IFetchDataPackOptions extends IFetchDataOptions {
@@ -197,4 +200,7 @@ export interface ILoadBasePackOptions {
 
   /** If deleted flag is ignoerd. Default to false */
   ignoreDeleted?: boolean;
+
+  /** If load record metadata. Default to false */
+  loadRecordMeta?: boolean;
 }

@@ -16,44 +16,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
-import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CheckOutlined, ChevronDownOutlined, LinkOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { Skeleton, IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
+import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { CodeOutlined, LinkOutlined, QrcodeOutlined, NewtabOutlined, CheckOutlined, ChevronDownOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Tooltip } from 'antd';
-import { Message, MobileSelect, Modal, Popconfirm } from 'pc/components/common';
+import { Message, MobileSelect, Popconfirm } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
-import { useCatalogTreeRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useState } from 'react';
+import { FC, useState, useCallback } from 'react';
+import { copy2clipBoard } from 'pc/utils';
+import { Router } from 'pc/components/route_manager/router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { ShareQrCode } from '../share_qr_code';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
-import { ShareLink } from '../share/share_link';
-import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import styles from './style.module.less';
+// @ts-ignore
+import { WidgetEmbed } from 'enterprise';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
-  isMobile: boolean;
+  isAI?: boolean;
 }
 
-export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isMobile }) => {
+export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isAI }) => {
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
   const [deleting, setDeleting] = useState(false);
+  const [shareStatus, setShareStatus] = useState(false);
+  const [shareCodeVisible, setShareCodeVisible] = useState(false);
   const dispatch = useDispatch();
+  const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
+
+  const hideShareCodeModal = useCallback(() => {
+    setWidgetEmbedVisible(false);
+  }, []);
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { run: getShareSettings, data: shareSettings } =
     useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures, spaceInfo } = useSelector((state: IReduxState) => ({
+  const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
     treeNodesMap: state.catalogTree.treeNodesMap,
     userInfo: state.user.info,
     spaceFeatures: state.space.spaceFeatures,
-    spaceInfo: state.space.curSpaceInfo!,
   }), shallowEqual);
 
   const isShareMirror = nodeId.startsWith('mir');
+  const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
 
   const handleUpdateShareStatus = (status: boolean) => {
     dispatch(StoreActions.updateTreeNodesMap(nodeId, { nodeShared: status }));
@@ -117,7 +129,8 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       });
       return;
     }
-    onOk();
+    setShareStatus(true);
+    onOk().finally(() => setShareStatus(false));
   };
 
   /**
@@ -153,8 +166,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     setDeleting(true);
   };
 
-  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
-
   /**
    * open share's auth-dropdown
    */
@@ -188,93 +199,210 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
         'canBeStored';
   }
 
-  return (
-    <>
+  const copyLinkHandler = () => {
+    if (!shareSettings) {
+      return;
+    }
+    const shareText = t(Strings.workbench_share_link_template, {
+      nickName: userInfo!.memberName || t(Strings.friend),
+      nodeName: shareSettings.nodeName,
+    });
+    copy2clipBoard(`${shareHost}${shareSettings.shareId} ${shareText}`);
+  };
+
+  const previewHandler = () => {
+    if (shareSettings) {
+      Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId }});
+    }
+  };
+
+  const renderShareSwitchButton = () => {
+    return (
       <div className={styles.shareToggle}>
         <Popconfirm
           visible={deleting}
           overlayClassName={styles.deleteNode}
           title={t(Strings.link_failed_after_close_share_link)}
-          onCancel={() => {setDeleting(false);}}
+          onCancel={() => {
+            setDeleting(false);
+          }}
           onOk={handleCloseShare}
           type='danger'
         >
-          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
+          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle}/>
         </Popconfirm>
-        <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
+        <Typography variant='h7'
+          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone, {
+            nodeName: shareSettings?.nodeName
+          })}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-            <QuestionCircleOutlined currentColor />
+            <QuestionCircleOutlined currentColor/>
           </a>
         </Tooltip>
       </div>
-      {spaceFeatures?.fileSharable ? (
-        shareSettings && shareSettings.shareOpened && (
-          <>
-            <div className={styles.sharePerson}>
-              <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
-              {isMobile ? (
-                <MobileSelect
-                  triggerComponent={
-                    <div className={styles.mobileRoleSelect}>
-                      {Permission.filter(item => item.value === value)[0].label}
-                      {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
-                    </div>
-                  }
-                  renderList={({ setVisible }) => {
-                    return (
-                      <div className={styles.mobileWrapper}>
-                        {Permission.map((item) => (
-                          <div
-                            className={styles.mobileOption}
-                            key={item.value}
-                            onClick={() => {
-                              handleShareAuthClick(item);
-                              setVisible(false);
-                            }}
-                          >
-                            <div>
-                              <Typography variant={'body2'}>{item.label}</Typography>
-                              <Typography variant={'body4'}>{item.subLabel}</Typography>
-                            </div>
-                            {item.value === value && <CheckOutlined color={colors.primaryColor} />}
-                          </div>
-                        ))}
+    );
+  };
+
+  if (!shareSettings) {
+    return (
+      <div className={styles.publish}>
+        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '58px' }} height='24px'/>
+        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
+      </div>
+    );
+  }
+
+  if (!spaceFeatures?.fileSharable) {
+    return (
+      <>
+        {renderShareSwitchButton()}
+        <DisabledShareFile style={{ marginBottom: 16 }} />
+      </>
+    );
+  }
+
+  if (!shareSettings.shareOpened) {
+    return (
+      <div className={styles.shareTips}>
+        <div className={styles.title}>
+          <Typography align='center' style={{ marginBottom: 8 }} variant='h6'>{t(Strings.share_tips_title)}</Typography>
+          <Typography align='left' variant='body3'>
+            { t(isAI ? Strings.share_tips_ai : Strings.share_tips) }
+          </Typography>
+        </div>
+        <Button
+          loading={shareStatus}
+          style={{ width: 160 }}
+          className={styles.shareOpenButton}
+          color='primary'
+          onClick={() => handleToggle(true)}>
+          {t(Strings.share_tips_title)}
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.publish}>
+      { renderShareSwitchButton() }
+      <div className={styles.sharePerson}>
+        <Typography className={styles.sharePersonContent} variant='body2'>
+          {t(isAI ? Strings.get_ai_link_person_on_internet : Strings.get_link_person_on_internet)}
+        </Typography>
+        {!isAI && (<>
+          {isMobile ? (
+            <MobileSelect
+              triggerComponent={
+                <div className={styles.mobileRoleSelect}>
+                  {Permission.filter(item => item.value === value)[0].label}
+                  {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText}/>}
+                </div>
+              }
+              renderList={({ setVisible }) => {
+                return (
+                  <div className={styles.mobileWrapper}>
+                    {Permission.map((item) => (
+                      <div
+                        className={styles.mobileOption}
+                        key={item.value}
+                        onClick={() => {
+                          handleShareAuthClick(item);
+                          setVisible(false);
+                        }}
+                      >
+                        <div>
+                          <Typography variant={'body2'}>{item.label}</Typography>
+                          <Typography variant={'body4'}>{item.subLabel}</Typography>
+                        </div>
+                        {item.value === value && <CheckOutlined color={colors.primaryColor}/>}
                       </div>
-                    );
-                  }}
-                />
-              ) : (
-                <DoubleSelect
-                  value={value}
-                  disabled={false}
-                  onSelected={(op) => handleShareAuthClick(op)}
-                  triggerCls={styles.doubleSelect}
-                  options={Permission}
-                />
-              )}
-            </div>
-            <ShareLink
-              shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-              shareSettings={shareSettings}
-              userInfo={userInfo}
+                    ))}
+                  </div>
+                );
+              }}
             />
-          </>
-        )
-      ) : <DisabledShareFile />}
-      {invitable && (
-        <div className={styles.inviteMore}>
-          <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
+          ) : (
+            <DoubleSelect
+              value={value}
+              disabled={false}
+              onSelected={(op) => handleShareAuthClick(op)}
+              triggerCls={styles.doubleSelect}
+              options={Permission}
+            />
+          )}
+        </>)}
+      </div>
+      <div className={styles.shareLink}>
+        <div className={styles.inputContainer}>
+          <input
+            type='text'
+            className={styles.link}
+            value={shareHost + shareSettings.shareId}
+            id={shareSettings.shareId}
+            readOnly
+          />
+          <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+            <Tooltip title={t(Strings.preview)} placement='top'>
+              <IconButton
+                icon={NewtabOutlined}
+                onClick={previewHandler}
+                variant="background"
+                className={styles.inputButton}
+              />
+            </Tooltip>
+          </ComponentDisplay>
+        </div>
+      </div>
+      <div className={styles.inviteMore}>
+        <LinkButton
+          className={styles.inviteMoreMethod}
+          underline={false}
+          onClick={() => copyLinkHandler()}
+          prefixIcon={<LinkOutlined currentColor/>}
+        >
+          {t(Strings.share_copy_url_link)}
+        </LinkButton>
+        {isAI && (
           <LinkButton
             className={styles.inviteMoreMethod}
             underline={false}
-            onClick={() => expandInviteModal()}
-            prefixIcon={<LinkOutlined currentColor />}
+            onClick={() => setWidgetEmbedVisible(true)}
+            prefixIcon={<CodeOutlined currentColor/>}
           >
-            {t(Strings.invite_via_link)}
+            Embed
           </LinkButton>
-        </div>
-      )}
-    </>
+        )}
+
+        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+          <LinkButton
+            className={styles.inviteMoreMethod}
+            underline={false}
+            onClick={() => setShareCodeVisible(true)}
+            prefixIcon={<QrcodeOutlined currentColor/>}
+          >
+            {t(Strings.share_qr_code_tips)}
+          </LinkButton>
+        </ComponentDisplay>
+        {shareCodeVisible && (
+          <Modal className={styles.shareCodeModal} closable={false} footer={null} visible centered
+            onCancel={() => setShareCodeVisible(false)}>
+            <ShareQrCode
+              url={`${shareHost}${shareSettings.shareId}`}
+              user={userInfo?.memberName ?? ''}
+              nodeName={treeNodesMap[shareSettings.nodeId]?.nodeName}
+              onClose={() => setShareCodeVisible(false)}
+            />
+          </Modal>
+        )}
+        <WidgetEmbed
+          visible={WidgetEmbedVisible}
+          hide={hideShareCodeModal}
+          shareId={shareSettings.shareId}
+        />
+      </div>
+    </div>
   );
+
 };

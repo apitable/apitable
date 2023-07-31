@@ -44,10 +44,10 @@ export class ViewPropertyFilter {
   static ignoreViewProperty = ['id', 'type', 'rows', 'name', 'lockInfo'];
 
   constructor(
-    private _getState: () => IReduxState,
-    private _dispatch: (action: any) => void,
-    private _datasheetId: string,
-    private _listener: IViewPropertyFilterListener
+      private _getState: () => IReduxState,
+      private _dispatch: (action: any) => void,
+      private _datasheetId: string,
+      private _listener: IViewPropertyFilterListener
   ) {
   }
 
@@ -117,12 +117,19 @@ export class ViewPropertyFilter {
     if (!snapshot) {
       return false;
     }
-
+    
     const views = snapshot.meta.views!;
     const view = views[viewIndex];
     const opViewId = view?.id;
 
     if (!view || !opViewId) {
+      return true;
+    }
+
+    const viewModified = Selectors.getDatasheetClient(state, this._datasheetId)?.operateViewIds?.includes(opViewId) ?? false;
+    const shouldApplyManuallySave = !viewModified;
+
+    if (shouldApplyManuallySave) {
       return true;
     }
 
@@ -176,8 +183,8 @@ export class ViewPropertyFilter {
 
     if (
       commandName &&
-      [CollaCommandName.AddViews, CollaCommandName.DeleteViews, CollaCommandName.MoveViews, CollaCommandName.DeleteField,
-        CollaCommandName.SetFieldAttr].includes(commandName)
+        [CollaCommandName.AddViews, CollaCommandName.DeleteViews, CollaCommandName.MoveViews, CollaCommandName.DeleteField,
+          CollaCommandName.SetFieldAttr].includes(commandName)
     ) {
       // If it is detected that the collaborative state of the view is being modified, there is no need to filter this action.
       return actions;
@@ -273,8 +280,8 @@ export class ViewPropertyFilter {
 
   static getReaderRolePermission(state: IReduxState, datasheetId: string, permission?: IPermissions) {
     const spaceManualSaveViewIsOpen = state.labs?.includes('view_manual_save') ||
-      Boolean(state.share?.featureViewManualSave) ||
-      Boolean(state.embedInfo?.viewManualSave);
+        Boolean(state.share?.featureViewManualSave) ||
+        Boolean(state.embedInfo?.viewManualSave);
     const viewId = state.pageParams.viewId;
     if (!viewId || !spaceManualSaveViewIsOpen || !permission) {
       return permission;

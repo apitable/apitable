@@ -40,6 +40,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
+  const linkedFieldId = field.type === FieldType.LookUp ? field.property.relatedLinkFieldId : '';
   const { isViewLock } = useContext(ViewFilterContext);
 
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {
@@ -121,6 +122,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           return (
             <FilterCascader
               field={field}
+              linkedFieldId={linkedFieldId}
               onChange={(value) => {
                 setValue(value ? value.join('/') : '' );
                 submitFilterValue(value ? [value.join('/')] : null);

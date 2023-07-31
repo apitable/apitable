@@ -22,6 +22,7 @@ import { UserAdminFilled, UserAdminOutlined } from '@apitable/icons';
 import { Space } from 'antd';
 import classnames from 'classnames';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';
+// eslint-disable-next-line no-restricted-imports
 import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';

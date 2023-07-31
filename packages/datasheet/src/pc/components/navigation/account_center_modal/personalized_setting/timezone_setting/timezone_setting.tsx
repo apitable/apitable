@@ -17,6 +17,7 @@
  */
 
 import { FC } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
 import { t, Strings, getUtcOptionList, Selectors } from '@apitable/core';
 import styles from './style.module.less';

@@ -41,9 +41,11 @@ const _global = global || window;
 
 export function getLanguage() {
   let clientLang = null;
-  if(_global.document){
-    // @ts-ignore
-    clientLang = localStorage.getItem('client-lang');
+  if (typeof window !== 'undefined') {
+    try {
+      // @ts-ignore
+      clientLang = localStorage.getItem('client-lang');
+    } catch (e) {}
   }
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
@@ -75,17 +77,19 @@ const loadLanguage = (lang: string) => {
     }
   } else {
     try {
+      // load language for room-server. suitable for docker environment
       const fs = require('fs');
       const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
       data = JSON.parse(jsonData);
     } catch (_e) {
+      // load language for frontend
       try {
         const path = require('path');
         const fs = require('fs');
         const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
         const jsonData = fs.readFileSync(pagesDirectory);
         data = JSON.parse(jsonData);
-      } catch(error) {
+      } catch (error) {
         console.error('load strings.json error', error);
       }
     }
@@ -109,7 +113,6 @@ const rewriteI18nForEdition = () => {
 };
 
 const currentLang = getLanguage().replace('_', '-');
-
 _global.currentLang = currentLang;
 _global.apitable_i18n = loadLanguage(currentLang);
 require('@apitable/i18n-lang');

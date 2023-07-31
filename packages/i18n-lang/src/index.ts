@@ -29,7 +29,7 @@ function loadAllLang() {
   }else {
     strings = (global as any).apitable_i18n || {};
   }
-  console.log('language package keys: ', Object.keys(strings));
+  // console.log('language package keys: ', Object.keys(strings));
   const newStrings = {};
   for (const key in strings) {
     if (_strings) {

@@ -50,6 +50,9 @@ export class FieldCreateRo {
   @IsString()
   type: string;
 
+  /**
+   * In Lookup field, `filterInfo.conditions[*].fieldType` is not required.
+   */
   @ApiPropertyOptional({
     type: Object,
     required: false,

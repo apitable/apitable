@@ -20,6 +20,7 @@ import { Button, Skeleton, Typography, useThemeColors, ThemeName } from '@apitab
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';

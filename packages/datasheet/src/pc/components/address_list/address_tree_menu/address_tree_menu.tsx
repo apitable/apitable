@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { ITeamTreeNode, IReduxState, StoreActions } from '@apitable/core';
 import styles from './style.module.less';
 import { AntTreeNodeSelectedEvent } from 'antd/lib/tree';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { TriangleRightFilled } from '@apitable/icons';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';

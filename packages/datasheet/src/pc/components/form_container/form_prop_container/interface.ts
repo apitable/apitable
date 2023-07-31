@@ -24,7 +24,7 @@ export enum IModeEnum {
 }
 
 export interface IBasePropEditorProps {
-  formId: string;
+  nodeId: string;
   mode: IModeEnum;
   updateProps: (props: Partial<IFormProps>) => void;
 }

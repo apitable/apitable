@@ -18,6 +18,7 @@
 
 import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useDebounce } from 'ahooks';
+// eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Tooltip } from 'pc/components/common';
 import { Loading, useThemeColors } from '@apitable/components';
 import { KeyCode } from 'pc/utils';

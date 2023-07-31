@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 // @ts-ignore
 import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
