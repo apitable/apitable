@@ -17486,6 +17486,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"databus_wasm@workspace:packages/databus-wasm":
+  version: 0.0.0-use.local
+  resolution: "databus_wasm@workspace:packages/databus-wasm"
+  languageName: unknown
+  linkType: soft
+
 "date-fns-tz@npm:^2.0.0":
   version: 2.0.0
   resolution: "date-fns-tz@npm:2.0.0"
