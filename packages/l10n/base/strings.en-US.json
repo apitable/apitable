@@ -5521,5 +5521,7 @@
   "ai_setting_preview_suggestion_tip_3": "suggestion 3",
   "ai_close_setting_tip_title": "tip",
   "ai_close_setting_tip_content": "The changes you made have not been saved, do you want to leave?",
-  "ai_update_setting_success": "Update successful."
+  "ai_update_setting_success": "Update successful.",
+  "ai_default_prologue": "Hello there, I am your AI chatbot and it\\'s a pleasure to meet you!\\n\\r Based on the data in datasheets, I can answer your questions.",
+  "ai_default_prompt":"Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:"
 }

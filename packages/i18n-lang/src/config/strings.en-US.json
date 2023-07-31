@@ -147,6 +147,8 @@
   "ai_data_source_rows": "${rows} rows of data",
   "ai_data_source_update": "Update available",
   "ai_datasheet_panel_create_btn_text": "Create chatbot",
+  "ai_default_prologue": "Hello there, I am your AI chatbot and it\\'s a pleasure to meet you!\\n\\r Based on the data in datasheets, I can answer your questions.",
+  "ai_default_prompt": "Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:",
   "ai_explore_card_title": "Feel free to give this a try by asking me in the following manner. Just click on the message below:",
   "ai_explore_refresh_btn_text": "Refresh",
   "ai_fallback_message_desc": "When the chatbot is unable to find the appropriate answer within its knowledge bases,it will respond the content below.",
