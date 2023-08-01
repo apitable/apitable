@@ -5491,8 +5491,6 @@
   "ai_advanced_mode_desc": "高级模式允许用户自定义和编辑Prompt，提供更多对聊天机器人行为和回答的控制。",
   "ai_advanced_mode_title": "Advanced Mode",
   "ai_robot_type_title": "Robot type",
-  "api_params_lookup_filter_field_not_exists": "The filter field ID \"{fieldId}\" specified by the magic reference field does not exist",
-  "api_params_lookup_filter_field_invalid_operation": "The filter field ID \"{fieldId}\" specified by the magic reference field does not support the \"{operator}\" operator",
   "ai_robot_data_source_title": "Data source",
   "ai_latest_train_date": "Last training time : ${date}",
   "ai_data_source_rows": "${rows} rows of data",
