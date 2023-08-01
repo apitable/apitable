@@ -8,9 +8,14 @@ tasks:
       make install
     command: |
       echo "Happy Coding"
-  - name: build APITable
+#  - name: build APITable
+#    command: |
+#      make build
+
+  - name: dataenv APITable
     command: |
-      make build
+      make dataenv
+
   - name: run APITable
     command: |
       make run-dev-all
