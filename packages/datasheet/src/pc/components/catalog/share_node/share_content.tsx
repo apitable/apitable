@@ -26,7 +26,7 @@ import styles from './style.module.less';
 import { IShareContentProps } from './interface';
 import { PermissionAndCollaborator } from './permission_and_collaborator';
 
-export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data, defaultActiveKey = 'Invite', isAI }) => {
+export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data, defaultActiveKey = 'Invite' }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const renderTabs = () => {
@@ -45,7 +45,6 @@ export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ 
         label: t(Strings.publish),
         children: (
           <PublicShareInviteLink
-            isAI={isAI}
             nodeId={data.nodeId}
           />
         ),
