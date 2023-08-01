@@ -31,7 +31,7 @@ import {
 } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { isMobileApp } from 'pc/utils/env';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { expandNodeInfo } from '../node_info';
