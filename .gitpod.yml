@@ -16,9 +16,9 @@ tasks:
     command: |
       make dataenv
 
-#  - name: run APITable
-#    command: |
-#      make run-dev-all
+  - name: run APITable
+    command: |
+      ./run-all.sh
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
