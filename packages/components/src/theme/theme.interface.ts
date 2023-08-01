@@ -24,6 +24,9 @@ export interface IPalette {
    */
   type: ThemeName;
   contrastThreshold: number;
+  text: {
+    third: string;
+  }
 }
 
 export interface ITheme {

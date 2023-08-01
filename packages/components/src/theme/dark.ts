@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { darkColors } from '../colors';
+import { darkColors, blackBlue } from '../colors';
 import { ITheme, ThemeName } from './theme.interface';
 
 // TODO
@@ -25,5 +25,8 @@ export const dark: ITheme = {
   palette: {
     type: ThemeName.Dark,
     contrastThreshold: 3,
+    text: {
+      third: blackBlue[300],
+    }
   }
 };
