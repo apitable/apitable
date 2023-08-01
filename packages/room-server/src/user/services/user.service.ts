@@ -40,7 +40,7 @@ export class UserService {
    */
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
     if (uuids.length === 0) {
-      return await Promise.resolve([]);
+      return Promise.resolve([]);
     }
     const users: any[] = await this.userRepo.selectUserInfoBySpaceIdAndUuids(spaceId, uuids);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;

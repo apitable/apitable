@@ -19,46 +19,43 @@
 import {
   ApiTipConstant,
   databus,
+  IBaseDatasheetPack,
+  IInternalFix,
   ILocalChangeset,
   IOperation,
+  IRemoteChangeset,
   IResourceOpsCollect,
+  IServerDashboardPack,
+  IServerDatasheetPack,
   resourceOpsToChangesets,
   StoreActions,
-  IInternalFix,
-  IBaseDatasheetPack,
-  IServerDatasheetPack,
-  IServerDashboardPack,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
+import { DashboardService } from 'database/dashboard/services/dashboard.service';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { DatasheetPack } from 'database/interfaces';
 import { OtService } from 'database/ot/services/ot.service';
 import { pick } from 'lodash';
 import { CacheKeys, DATASHEET_PACK_CACHE_EXPIRE_TIME } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, CommonException, ServerException } from 'shared/exception';
 import { IAuthHeader, IFetchDataOptions, ILoadBasePackOptions } from 'shared/interfaces';
-import { Logger } from 'winston';
 import util from 'util';
-import { NativeService } from 'shared/services/native/native.service';
-import { DatasheetPack } from 'database/interfaces';
-import { DashboardService } from 'database/dashboard/services/dashboard.service';
-import { useNativeModule } from 'app.environment';
+import { Logger } from 'winston';
 
 export class ServerDataStorageProvider implements databus.IDataStorageProvider {
   private readonly datasheetService: DatasheetService;
   private readonly dashboardService: DashboardService;
-  private readonly nativeService: NativeService;
   private readonly redisService: RedisService;
   private readonly otService: OtService;
   private readonly changesetSourceService: DatasheetChangesetSourceService;
   private readonly loadOptions: IServerDataLoadOptions;
 
   constructor(options: IServerDataStorageProviderOptions, private readonly logger: Logger) {
-    const { datasheetService, dashboardService, redisService, otService, changesetSourceService, loadOptions, nativeService } = options;
+    const { datasheetService, dashboardService, redisService, otService, changesetSourceService, loadOptions } = options;
     this.datasheetService = datasheetService;
     this.dashboardService = dashboardService;
-    this.nativeService = nativeService;
     this.redisService = redisService;
     this.otService = otService;
     this.changesetSourceService = changesetSourceService;
@@ -92,11 +89,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     if (this.loadOptions.useCache) {
       datasheetPack = await this.loadDstPackWithCache(dstId, options);
     } else {
-      if (useNativeModule) {
-        datasheetPack = await this.nativeService.fetchDataPack('main datasheet', dstId, auth, { internal: true, main: true }, options);
-      } else {
-        datasheetPack = (await this.datasheetService.fetchDataPack(dstId, auth, false, options)) as DatasheetPack;
-      }
+      datasheetPack = (await this.datasheetService.fetchDataPack(dstId, auth, false, options)) as DatasheetPack;
     }
 
     return datasheetPack;
@@ -160,25 +153,25 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     }
   }
 
-  saveOps(ops: IResourceOpsCollect[], options: IServerSaveOpsOptions): Promise<any> {
+  async saveOps(ops: IResourceOpsCollect[], options: IServerSaveOpsOptions): Promise<any> {
     const { prependOps, store, resource, auth, internalFix, applyChangesets = true } = options;
     const changesets = resourceOpsToChangesets(ops, store.getState());
-    changesets.forEach(cs => {
-      store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
-    });
-
     if (prependOps) {
       this.combChangeSetsOp(changesets, resource.id, prependOps);
     }
-
+    let results;
     if (applyChangesets) {
       if (resource instanceof databus.Datasheet) {
-        return this.applyDatasheetChangesets(resource.id, changesets, auth, internalFix);
+        results = await this.applyDatasheetChangesets(resource.id, changesets, auth, internalFix);
       } else if (resource instanceof databus.Dashboard) {
-        return this.applyDashboardChangesets(resource.id, changesets, auth);
+        results = await this.applyDashboardChangesets(resource.id, changesets, auth);
       }
     }
-
+    if (results) {
+      results.forEach(cs => {
+        store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
+      });
+    }
     return Promise.resolve(changesets);
   }
 
@@ -215,7 +208,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     changesets: ILocalChangeset[],
     auth: IAuthHeader,
     internalFix?: IInternalFix,
-  ): Promise<string> {
+  ): Promise<IRemoteChangeset[]> {
     // this.logger.info('API:ApplyChangeSet');
     // const applyChangeSetProfiler = this.logger.startTimer();
     let applyAuth = auth;
@@ -244,7 +237,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     //   message: `applyChangeSet ${dstId} profiler`,
     // });
 
-    return changeResult && changeResult[0]!.userId!;
+    return changeResult;
   }
 
   private async applyDashboardChangesets(dsbId: string, changesets: ILocalChangeset[], auth: IAuthHeader) {
@@ -252,6 +245,7 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     await this.changesetSourceService.batchCreateChangesetSource(changeResult, SourceTypeEnum.OPEN_API);
     // Notify Socket Service Broadcast
     await this.otService.nestRoomChange(dsbId, changeResult);
+    return changeResult;
   }
 }
 
@@ -287,7 +281,6 @@ export interface IServerDataStorageProviderOptions {
   redisService: RedisService;
   otService: OtService;
   changesetSourceService: DatasheetChangesetSourceService;
-  nativeService: NativeService;
 }
 
 export interface IServerSaveOptions extends databus.ISaveOptions {
@@ -307,4 +300,5 @@ export interface IServerSaveOptions extends databus.ISaveOptions {
   auth: IAuthHeader;
 }
 
-export interface IServerSaveOpsOptions extends IServerSaveOptions, databus.ISaveOpsOptions {}
+export interface IServerSaveOpsOptions extends IServerSaveOptions, databus.ISaveOpsOptions {
+}

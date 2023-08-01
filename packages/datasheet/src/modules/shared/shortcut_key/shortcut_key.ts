@@ -234,8 +234,7 @@ export class ShortcutActionManager {
 
   static async trigger(key: ShortcutActionName): Promise<boolean | void> {
     const fn = this.actionMap.get(key);
-    const result = fn ? await fn() : false;
-    return result;
+    return fn ? await fn() : false;
   }
 }
 

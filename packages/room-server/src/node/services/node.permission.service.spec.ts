@@ -15,25 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { NodePermissionService } from './node.permission.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { UserService } from 'user/services/user.service';
 import { NodeShareSettingService } from './node.share.setting.service';
-import { NodeRepository } from '../repositories/node.repository';
-import { LoggerConfigService } from 'shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston';
 import { PermissionException } from 'shared/exception';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { NodeRepository } from '../repositories/node.repository';
 
 describe('Test NodePermissionService', () => {
-  let module: TestingModule;
-  let service: NodePermissionService;
+  let moduleFixture: TestingModule;
+  let nodePermissionService: NodePermissionService;
   let restService: RestService;
   let userService: UserService;
   let nodeShareSettingService: NodeShareSettingService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
@@ -66,13 +66,10 @@ describe('Test NodePermissionService', () => {
         NodePermissionService,
       ],
     }).compile();
-    restService = module.get<RestService>(RestService);
-    userService = module.get<UserService>(UserService);
-    nodeShareSettingService = module.get<NodeShareSettingService>(NodeShareSettingService);
-    service = module.get<NodePermissionService>(NodePermissionService);
-  });
-
-  beforeEach(() => {
+    restService = moduleFixture.get<RestService>(RestService);
+    userService = moduleFixture.get<UserService>(UserService);
+    nodeShareSettingService = moduleFixture.get<NodeShareSettingService>(NodeShareSettingService);
+    nodePermissionService = moduleFixture.get<NodePermissionService>(NodePermissionService);
     jest.spyOn(restService, 'getNodePermission').mockImplementation((_auth: any, nodeId: string, shareId?: string): any => {
       if (nodeId === '1') {
         return {
@@ -122,64 +119,68 @@ describe('Test NodePermissionService', () => {
     });
   });
 
+  afterEach(async() => {
+    await moduleFixture.close();
+  });
+
   it('should be return node permission on-space form', async() => {
-    const nodePermission = await service.getNodePermission('', {}, { internal: true, form: true });
+    const nodePermission = await nodePermissionService.getNodePermission('', {}, { internal: true, form: true });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return node permission on-space table', async() => {
-    const nodePermission = await service.getNodePermission('1', {}, { internal: true });
+    const nodePermission = await nodePermissionService.getNodePermission('1', {}, { internal: true });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return node permission on-space main table', async() => {
-    const nodePermission = await service.getNodePermission('1', {}, { internal: true, main: true });
+    const nodePermission = await nodePermissionService.getNodePermission('1', {}, { internal: true, main: true });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be throw ACCESS_DENIED on-space main table  no node permission ', async() => {
     await expect(async() => {
-      await service.getNodePermission('0', {}, { internal: true, main: true });
+      await nodePermissionService.getNodePermission('0', {}, { internal: true, main: true });
     }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
   });
 
   it('should be return node permission off-space template', async() => {
-    const nodePermission = await service.getNodePermission('1', {}, { internal: false });
+    const nodePermission = await nodePermissionService.getNodePermission('1', {}, { internal: false });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return node permission off-space main share datasheet not login in', async() => {
-    const nodePermission = await service.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1', main: true });
+    const nodePermission = await nodePermissionService.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1', main: true });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return node permission off-space share datasheet not login in', async() => {
-    const nodePermission = await service.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1' });
+    const nodePermission = await nodePermissionService.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1' });
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return node permission off-space share datasheet login in', async() => {
-    const nodePermission = await service.getNodeRole('1', { cookie: 'true' }, '0');
+    const nodePermission = await nodePermissionService.getNodeRole('1', { cookie: 'true' }, '0');
     expect(nodePermission.hasRole).toEqual(false);
   });
 
   it('should be return share node permission off-space share datasheet login in', async() => {
-    const nodePermission = await service.getNodeRole('2', { cookie: 'true' }, '2');
+    const nodePermission = await nodePermissionService.getNodeRole('2', { cookie: 'true' }, '2');
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return false node permission off-space datasheet login in', async() => {
-    const nodePermission = await service.getNodeRole('3', { cookie: 'true' }, '3');
+    const nodePermission = await nodePermissionService.getNodeRole('3', { cookie: 'true' }, '3');
     expect(nodePermission.hasRole).toEqual(false);
   });
 
   it('should be return true node permission off-space embed datasheet login in', async() => {
-    const nodePermission = await service.getNodeRole('-1', { cookie: 'true' }, 'emb1');
+    const nodePermission = await nodePermissionService.getNodeRole('-1', { cookie: 'true' }, 'emb1');
     expect(nodePermission.hasRole).toEqual(true);
   });
 
   it('should be return false node permission off-space embed datasheet login in', async() => {
-    const nodePermission = await service.getNodeRole('-1', { cookie: 'true' }, 'emb2');
+    const nodePermission = await nodePermissionService.getNodeRole('-1', { cookie: 'true' }, 'emb2');
     expect(nodePermission.hasRole).toEqual(false);
   });
 });

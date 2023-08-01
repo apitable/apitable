@@ -87,7 +87,7 @@ const IconWrapper = styled.span`
 const TextWrapper = styled.span.attrs(applyDefaultTheme)`
   ${props => {
     return css`
-      color: ${props.theme.palette.common.white}
+      color: ${props.theme.color.staticWhite0}
     `;
   }}
 `;

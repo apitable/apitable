@@ -16,30 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { RobotActionTypeService } from './robot.action.type.base.service';
 import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
 import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
 import { AutomationServiceEntity } from '../entities/automation.service.entity';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('RobotActionTypeServiceTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let automationActionTypeRepository: AutomationActionTypeRepository;
   let automationServiceRepository: AutomationServiceRepository;
   let service: RobotActionTypeService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [AutomationActionTypeRepository, AutomationServiceRepository, RobotActionTypeService],
     }).compile();
-    automationActionTypeRepository = module.get<AutomationActionTypeRepository>(AutomationActionTypeRepository);
-    automationServiceRepository = module.get<AutomationServiceRepository>(AutomationServiceRepository);
-    service = module.get<RobotActionTypeService>(RobotActionTypeService);
+    automationActionTypeRepository = moduleFixture.get<AutomationActionTypeRepository>(AutomationActionTypeRepository);
+    automationServiceRepository = moduleFixture.get<AutomationServiceRepository>(AutomationServiceRepository);
+    service = moduleFixture.get<RobotActionTypeService>(RobotActionTypeService);
   });
 
-  afterAll(async() => {
-    await module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {

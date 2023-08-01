@@ -16,9 +16,11 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class DatasheetSourceSettingParam {
+public class DatasheetSource implements AiDataSource {
 
     private String datasheetId;
+
+    private Long revision;
 
     private String viewId;
 

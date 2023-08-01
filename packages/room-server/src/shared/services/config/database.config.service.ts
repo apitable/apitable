@@ -33,7 +33,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       host: process.env.MYSQL_HOST || 'localhost',
       port: parseInt(process.env.MYSQL_PORT!) || 3306,
       username: process.env.MYSQL_USERNAME || 'root',
-      password: process.env.MYSQL_PASSWORD || 'qwe123456',
+      password: process.env.MYSQL_PASSWORD || 'apitable@com',
       database: process.env.MYSQL_DATABASE || 'apitable',
       entityPrefix: process.env.DATABASE_TABLE_PREFIX || 'apitable_',
       connectionLimit: parseInt(process.env.MYSQL_CONNECTION_LIMIT!) || 20,

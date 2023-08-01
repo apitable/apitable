@@ -28,7 +28,7 @@ const HelperText = styled.div.attrs(applyDefaultTheme) <{ error: boolean }>`
   font-size: 10px;
   padding: 4px 0 0 8px;
   ${props => props.error && css`
-    color: ${props.theme.palette.danger};
+    color: ${props.theme.color.errorColor};
   `}
 `;
 

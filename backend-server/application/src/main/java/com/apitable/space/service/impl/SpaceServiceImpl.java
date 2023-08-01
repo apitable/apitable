@@ -63,6 +63,7 @@ import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.shared.cache.service.CommonCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.ValidateCodeProcessorManage;
@@ -619,6 +620,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         vo.setSocial(bindInfo);
 
+        CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
+        boolean isEnableChatbot = cacheService.checkIfSpaceEnabledChatbot(spaceId);
+        vo.setIsEnableChatbot(isEnableChatbot);
         return vo;
     }
 

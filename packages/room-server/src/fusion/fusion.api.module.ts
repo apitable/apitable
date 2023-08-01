@@ -44,6 +44,7 @@ import { NodeModule } from 'node/node.module';
 import { UnitModule } from 'unit/unit.module';
 import { FusionApiV2Controller } from './fusion.api.v2.controller';
 import { FusionNodeApiService } from './services/fusion.node.api.service';
+import { DeveloperModule } from '../developer/developer.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { FusionNodeApiService } from './services/fusion.node.api.service';
     NodeModule,
     UserModule,
     UnitModule,
+    DeveloperModule,
     CacheModule.registerAsync({
       useClass: CacheConfigService,
     }),

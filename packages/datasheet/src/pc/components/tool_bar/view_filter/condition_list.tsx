@@ -86,10 +86,10 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
   return (
     <div className={styles.condition}>
       {conditions.map((item, index) => {
-        const field = fieldMap[item.fieldId];
+        const conditionField = fieldMap[item.fieldId];
         const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
         const isCryptoField = Boolean(fieldRole && fieldRole === ConfigConstant.Role.None);
-        const fieldNotFound = !isCryptoField && !field;
+        const fieldNotFound = !isCryptoField && !conditionField;
 
         const publicProps = {
           condition: item,
@@ -106,8 +106,8 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
               <FilterFieldList columns={columns} fieldMap={fieldMap} warnTextObj={warnTextObj} {...publicProps} />
               {!isCryptoField && !fieldNotFound ? (
                 <>
-                  <FilterOperate conditions={conditions} fieldMap={fieldMap} field={field} {...publicProps} />
-                  <FilterValue field={field} {...publicProps} />
+                  <FilterOperate conditions={conditions} fieldMap={fieldMap} field={conditionField} {...publicProps} />
+                  <FilterValue primaryField={field} field={conditionField} {...publicProps} />
                 </>
               ) : (
                 <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
@@ -134,7 +134,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                     </Col>
                     <Col span={8}>
                       {!isCryptoField && !fieldNotFound ? (
-                        <FilterOperate conditions={conditions} fieldMap={fieldMap} field={field} {...publicProps} />
+                        <FilterOperate conditions={conditions} fieldMap={fieldMap} field={conditionField} {...publicProps} />
                       ) : (
                         <InvalidValue style={{ maxWidth: 298 }} content={fieldNotFound ? t(Strings.current_field_fail) : undefined} />
                       )}
@@ -143,7 +143,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                   {!isCryptoField && !fieldNotFound && (
                     <Row align='middle' style={{ width: '100%' }}>
                       <Col span={24} style={{ paddingLeft: 1 }}>
-                        <FilterValue field={field} {...publicProps} />
+                        <FilterValue primaryField={field} field={conditionField} {...publicProps} />
                       </Col>
                     </Row>
                   )}

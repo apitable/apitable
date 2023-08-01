@@ -31,9 +31,11 @@ import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeTreeDTO;
+import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeOpRo.AiChatBotCreateParam;
+import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodePathVo;
@@ -71,7 +73,31 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .build();
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
-        assertThat(nodeId).isNotBlank();
+        assertThat(nodeId).isNotBlank().startsWith("ai");
+    }
+
+    @Test
+    void testUpdateAiNodeName() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.AI_CHAT_BOT.getNodeType())
+            .nodeName("ChatBot Assistant")
+            .checkDuplicateName(false)
+            .aiCreateParams(AiChatBotCreateParam.builder().build())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
+        assertThat(nodeId).isNotBlank().startsWith("ai");
+        String changedAiNodeName = "Changed AI Node";
+        NodeUpdateOpRo updateOpRo = new NodeUpdateOpRo();
+        updateOpRo.setNodeName(changedAiNodeName);
+        iNodeService.edit(userSpace.getUserId(), nodeId, updateOpRo);
+
+        NodeEntity nodeEntity = iNodeService.getByNodeId(nodeId);
+        assertThat(nodeEntity).isNotNull();
+        assertThat(nodeEntity.getNodeName()).isEqualTo(changedAiNodeName);
     }
 
     @Test

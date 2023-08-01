@@ -15,19 +15,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { FusionNodeApiService } from './fusion.node.api.service';
-import { REQUEST } from '@nestjs/core';
 import { RestService } from 'shared/services/rest/rest.service';
 import { NodeTypeEnum } from '../../shared/enums/node.enum';
+import { Test, TestingModule } from '@nestjs/testing';
+import { REQUEST } from '@nestjs/core';
 
 describe('Test FusionNodeApiService', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let service: FusionNodeApiService;
   let restService: RestService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [
         {
           provide: RestService,
@@ -46,8 +46,12 @@ describe('Test FusionNodeApiService', () => {
         FusionNodeApiService,
       ],
     }).compile();
-    restService = module.get<RestService>(RestService);
-    service = module.get<FusionNodeApiService>(FusionNodeApiService);
+    restService = moduleFixture.get<RestService>(RestService);
+    service = moduleFixture.get<FusionNodeApiService>(FusionNodeApiService);
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be return edit space\'s datasheets', async() => {

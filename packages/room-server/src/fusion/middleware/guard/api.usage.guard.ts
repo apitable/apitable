@@ -88,8 +88,10 @@ export class ApiUsageGuard implements CanActivate {
       throw ApiException.tipError(ApiTipConstant.api_forbidden);
     }
     // only works for those who are allowed to exceed the limit of usage
-    if (res.data && !res.data.isAllowOverLimit && res.data.maxApiUsageCount - res.data.apiUsageUsedCount < 0) {
-      throw ApiException.tipError(ApiTipConstant.api_forbidden_because_of_usage);
+    if (res && !res.isAllowOverLimit) {
+      if (res.maxApiUsageCount && res.apiUsageUsedCount && res.maxApiUsageCount - res.apiUsageUsedCount < 0) {
+        throw ApiException.tipError(ApiTipConstant.api_forbidden_because_of_usage);
+      }
     }
     return true;
   }

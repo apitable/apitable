@@ -65,8 +65,7 @@ export const StyledMenuItem = styled.div.attrs(applyDefaultTheme)<IContextMenuSt
   ${(props) => {
     if (props.disabled) {
       const { palette, color } = props.theme;
-      const { action, type } = palette;
-      const disableColor = type === 'light' ? color.fc12 : convertHexToRGB(action.disabled, action.disabledOpacity);
+      const disableColor = palette.type === 'light' ? color.fc12 : convertHexToRGB('#fff', 0.5);
       return css`
         div, svg, p {
           color: ${disableColor} !important;
@@ -152,15 +151,11 @@ export const StyledMenuShadow = styled.div.attrs(applyDefaultTheme)`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   pointer-events: none;
-  ${(props) => {
-    return css`
-      background: linear-gradient(
-        rgba(${props.theme.palette.background.scrollTip}, 0.5),
-        rgba(${props.theme.palette.background.scrollTip}, 0.92) 81.48%,
-        rgba(${props.theme.palette.background.scrollTip}, 1) 100%
-      );
-    `;
-  }}
+  background: linear-gradient(
+    rgba(253, 253, 253, 0.5),
+    rgba(253, 253, 253, 0.92) 81.48%,
+    rgba(253, 253, 253, 1) 100%
+  );
 `;
 
 export const StyledMenuItemExtra = styled.div.attrs(applyDefaultTheme)`

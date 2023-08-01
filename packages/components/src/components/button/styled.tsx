@@ -53,10 +53,18 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
   const {
     deepPurple,
     bgDangerDefault,
+    bgDangerHover,
+    bgDangerActive,
     bgWarnDefault,
+    bgWarnHover,
+    bgWarnActive,
     bgSuccessDefault,
+    bgSuccessHover,
+    bgSuccessActive,
     textCommonPrimary,
     bgControlsDefault,
+    bgControlsHover,
+    bgControlsActive,
     bgBrandLightHover,
     bgBrandLightActive,
     textStaticPrimary,
@@ -74,12 +82,16 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
     bgSuccessLightHover,
     bgSuccessLightActive,
     textSuccessDefault,
-    bgBrandDefault
+    bgBrandDefault,
+    bgBrandHover,
+    bgBrandActive
   } = color;
   switch (btnTypeOrColor) {
     case 'default':
       return {
         fill: bgControlsDefault,
+        fillHover: bgControlsHover,
+        fillActive:bgControlsActive,
         jelly: bgBrandLightDefault,
         jellyHover: bgBrandLightHover,
         jellyActive: bgBrandLightActive,
@@ -88,7 +100,9 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
       };
     case 'primary':
       return {
-        fill: textBrandDefault,
+        fill: bgBrandDefault,
+        fillHover: bgBrandHover,
+        fillActive:bgBrandActive,
         jelly: bgBrandLightDefault,
         jellyHover: bgBrandLightHover,
         jellyActive: bgBrandLightActive,
@@ -98,6 +112,8 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
     case 'danger':
       return {
         fill: bgDangerDefault,
+        fillHover: bgDangerHover,
+        fillActive:bgDangerActive,
         jelly: bgDangerLightDefault,
         jellyHover: bgDangerLightHover,
         jellyActive: bgWarnLightActive,
@@ -106,6 +122,8 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
     case 'warning':
       return {
         fill: bgWarnDefault,
+        fillHover: bgWarnHover,
+        fillActive:bgWarnActive,
         jelly: bgWarnLightDefault,
         jellyHover: bgWarnLightHover,
         jellyActive: bgDangerLightActive,
@@ -114,6 +132,8 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
     case 'success':
       return {
         fill: bgSuccessDefault,
+        fillHover: bgSuccessHover,
+        fillActive:bgSuccessActive,
         jelly: bgSuccessLightDefault,
         jellyHover: bgSuccessLightHover,
         jellyActive: bgSuccessLightActive,
@@ -122,6 +142,8 @@ const getColors = (color: ILightOrDarkThemeColors) => (btnTypeOrColor: IButtonTy
     case 'confirm':
       return {
         fill: deepPurple[500],
+        fillHover: deepPurple[500],
+        fillActive:deepPurple[500],
         jelly: bgBrandDefault,
         jellyHover: bgBrandLightHover,
         jellyActive: bgBrandLightActive,
@@ -167,7 +189,6 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
   span,
   svg {
     pointer-events: none;
-    vertical-align: middle;
   }
 
   &:focus {
@@ -213,12 +234,12 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
     `;
   }}
   ${(props) => {
-    const getColor = getColors(props.theme.color);
-    const btnType = props.variant || 'fill';
     const btnColor = props.btnColor || 'default';
+    const colors = getColors(props.theme.color)(btnColor);
+    const btnType = props.variant || 'fill';
     let textColor = 'unset';
-    const bgColor = getColor(btnColor)[btnType];
-    const defaultTextColor = getColor(btnColor).text;
+    const bgColor = colors[btnType];
+    const defaultTextColor = colors.text;
     let hoverBgColor = 'none';
     let activeBgColor = 'none';
     let hoverTextColor = 'unset';
@@ -234,17 +255,17 @@ export const ButtonBase = styled.button.attrs(applyDefaultTheme) <IButtonBasePro
     switch (props.variant) {
       case 'fill':
         textColor = defaultTextColor ? defaultTextColor : getContrastText(bgColor, props.theme.palette.contrastThreshold);
-        hoverBgColor = getHoverColor(bgColor);
+        hoverBgColor = colors.fillHover || getHoverColor(bgColor);
         hoverTextColor = defaultTextColor ? defaultTextColor : getContrastText(hoverBgColor, props.theme.palette.contrastThreshold);
-        activeBgColor = getActiveColor(bgColor);
+        activeBgColor = colors.fillActive || getActiveColor(bgColor);
         activeTextColor = defaultTextColor ? defaultTextColor : getContrastText(activeBgColor, props.theme.palette.contrastThreshold);
         break;
       case 'jelly':
-        textColor = getColor(btnColor).jellyText || defaultTextColor || getNextShadeColor(bgColor, 5);
+        textColor = colors.jellyText || defaultTextColor || getNextShadeColor(bgColor, 5);
         hoverTextColor = textColor;
         activeTextColor = textColor;
-        hoverBgColor = getColor(btnColor).jellyHover || getHoverColor(bgColor);
-        activeBgColor = getColor(btnColor).jellyActive || getActiveColor(bgColor);
+        hoverBgColor = colors.jellyHover || getHoverColor(bgColor);
+        activeBgColor = colors.jellyActive || getActiveColor(bgColor);
         break;
     }
     // Disabled status cancel hover and active status ui changes
