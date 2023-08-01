@@ -127,7 +127,6 @@ export class AutomationService {
         .execute();
     }
   }
-
   async getRobotsByDstId(dstId: string) {
     return await this.automationRobotRepository.find({
       where: {

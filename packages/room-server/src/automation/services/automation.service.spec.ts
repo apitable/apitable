@@ -32,6 +32,8 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 
 describe('RobotActionTypeServiceTest', () => {
   let moduleFixture: TestingModule;
