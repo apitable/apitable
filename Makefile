@@ -300,7 +300,9 @@ run-local: ## run services with local programming language envinroment
 run-dev-all: ## run services with local programming language envinroment
 	@echo "$$RUN_LOCAL_TXT"
  	nohup make _run-local-backend-server &
+ 	sleep 30
  	nohup make _run-local-room-server &
+ 	sleep 30
  	nohup make _run-local-web-server &
 
 .PHONY: run-perf
