@@ -43,7 +43,7 @@ export function getLanguage() {
   if (typeof window !== 'undefined') {
     try {
       // @ts-ignore
-      clientLang = localStorage.getItem('client-lang');
+      clientLang = localStorage.getItem('client-lang') || navigator.language;
     } catch (e) {}
   }
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
