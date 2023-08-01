@@ -8,19 +8,24 @@ tasks:
       make install
     command: |
       echo "Happy Coding"
-#  - name: build APITable
-#    command: |
-#      make build
 
   - name: dataenv APITable
     command: |
       make dataenv
 
-  - name: run APITable
+  - name: run APITable1
     command: |
-      ./run-all.sh
+      make _run-local-backend-server
+
+  - name: run APITable2
+    command: |
+      make _run-local-room-server
+
+  - name: run APITable3
+    command: |
+      make _run-local-web-server
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-  - port: 80
+  - port: 3000
     onOpen: open-preview
