@@ -1,7 +1,6 @@
 import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
 
-export const judgeShowAIEntrance = () => {
+export const judgeShowAIEntrance = (enable?: boolean) => {
   const version = getReleaseVersion();
-  console.log(getEnvVariables().AI_ENTRANCE_VISIBLE, version);
-  return getEnvVariables().AI_ENTRANCE_VISIBLE && (version === 'undefined' || version.includes('alpha'));
+  return getEnvVariables().AI_ENTRANCE_VISIBLE && (enable || version === 'undefined');
 };

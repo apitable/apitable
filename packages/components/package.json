@@ -1,6 +1,6 @@
 {
   "name": "@apitable/components",
-  "version": "0.24.0",
+  "version": "0.99.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "APITable Ltd. <support@apitable.com>",

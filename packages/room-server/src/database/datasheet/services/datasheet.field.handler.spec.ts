@@ -2,20 +2,20 @@ import { FieldType, IForeignDatasheetMap, INodeMeta, IRecordMap, SegmentType, Vi
 import '@apitable/i18n-lang';
 import { DatasheetFieldHandler, IFieldAnalysisResult } from './datasheet.field.handler';
 import { Logger } from 'winston';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 import { NodeService } from 'node/services/node.service';
+import { Test, TestingModule } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { UserService } from 'user/services/user.service';
 import { UnitService } from 'unit/services/unit.service';
 import { DatasheetRepository } from '../repositories/datasheet.repository';
-import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { ComputeFieldReferenceManager } from './compute.field.reference.manager';
+import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 
 describe('forEachRecordMap', () => {
+
   const mockRecordMap: IRecordMap = {
     rec1w1: {
       id: 'rec1w1',
@@ -105,15 +105,14 @@ describe('forEachRecordMap', () => {
 });
 
 describe('extend main datasheet records', () => {
-  let app: NestFastifyApplication;
+  let moduleFixture: TestingModule;
   let fieldHandler: DatasheetFieldHandler;
   let nodeService: NodeService;
   let metaService: DatasheetMetaService;
   let recordService: DatasheetRecordService;
-
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
+  
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
@@ -175,16 +174,15 @@ describe('extend main datasheet records', () => {
         },
       ],
     }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-    fieldHandler = app.get(DatasheetFieldHandler);
-    nodeService = app.get(NodeService);
-    metaService = app.get(DatasheetMetaService);
-    recordService = app.get(DatasheetRecordService);
+    
+    fieldHandler = moduleFixture.get(DatasheetFieldHandler);
+    nodeService = moduleFixture.get(NodeService);
+    metaService = moduleFixture.get(DatasheetMetaService);
+    recordService = moduleFixture.get(DatasheetRecordService);
   });
 
-  afterAll(async() => {
-    await app.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   const filterRecordMap = (recordMap: IRecordMap, recordIds: string[]): IRecordMap =>

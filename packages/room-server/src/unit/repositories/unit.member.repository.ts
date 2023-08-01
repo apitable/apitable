@@ -31,31 +31,26 @@ import { UnitMemberBaseInfoDto } from '../dtos/unit.member.base.info.dto';
 @EntityRepository(UnitMemberEntity)
 export class UnitMemberRepository extends Repository<UnitMemberEntity> {
   public async selectMembersByIdsIncludeDeleted(memberIds: number[]): Promise<UnitMemberInfoDto[]> {
-    return await this.find({
+    return (await this.find({
       select: ['memberName', 'id', 'userId', 'mobile', 'spaceId', 'isActive', 'isDeleted', 'isSocialNameModified'],
       where: { id: In(memberIds) },
-    }) as UnitMemberInfoDto[];
+    })) as UnitMemberInfoDto[];
   }
 
-  public async selectIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<{ id: string } | undefined> {
-    return await this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false }});
+  selectIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<{ id: string } | undefined> {
+    return this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false }});
   }
 
-  selectSpaceIdsByUserId(userId: string): Promise<string[]> {
-    return this.find({ select: ['spaceId'], where: [{ userId, isDeleted: false }] }).then(entities => {
-      return entities.map(entity => entity.spaceId);
-    });
+  async selectSpaceIdsByUserId(userId: string): Promise<string[]> {
+    const entities = await this.find({ select: ['spaceId'], where: [{ userId, isDeleted: false }] });
+    return entities.map((entity) => entity.spaceId);
   }
 
-  async selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<{ id: string } | undefined> {
-    return await this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
+  selectIdBySpaceIdAndUserId(spaceId: string, userId: string): Promise<{ id: string } | undefined> {
+    return this.findOne({ select: ['id'], where: [{ spaceId, userId, isDeleted: false }] });
   }
 
-  public async selectMembersBySpaceIdAndUserIds(
-    spaceId: string,
-    userIds: string[],
-    excludeDeleted: boolean,
-  ): Promise<UnitMemberBaseInfoDto[]> {
+  public async selectMembersBySpaceIdAndUserIds(spaceId: string, userIds: string[], excludeDeleted: boolean): Promise<UnitMemberBaseInfoDto[]> {
     const query = this.createQueryBuilder('vum')
       .leftJoin(`${this.manager.connection.options.entityPrefix}unit`, 'vu', 'vu.unit_ref_id = vum.id')
       .select('vum.member_name', 'memberName')
@@ -63,7 +58,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
       .addSelect('vum.user_id', 'userId')
       .addSelect('vum.is_active', 'isActive')
       .addSelect('vum.is_deleted', 'isDeleted')
-      //  WeCom requires this field
+    //  WeCom requires this field
       .addSelect('IFNULL(vum.is_social_name_modified, 2) > 0', 'isMemberNameModified')
       .addSelect('vu.id', 'unitId')
       .where('vum.space_id = :spaceId', { spaceId })
@@ -73,12 +68,24 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
       query.andWhere('vum.is_deleted = 0').andWhere('vu.is_deleted = 0');
     }
     const members = await query.getRawMany<{
-      memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified: '0' | '1'; unitId: string
-    }>();
+            memberName: string;
+            id: string;
+            userId: string;
+            isActive: number;
+            isDeleted: boolean;
+            isMemberNameModified: '0' | '1';
+            unitId: string;
+        }>();
     return members.reduce((pre, cur) => {
       const item: {
-        memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified?: boolean; unitId: string
-      } = omit(cur, 'isMemberNameModified');
+                memberName: string;
+                id: string;
+                userId: string;
+                isActive: number;
+                isDeleted: boolean;
+                isMemberNameModified?: boolean;
+                unitId: string;
+            } = omit(cur, 'isMemberNameModified');
       item.isMemberNameModified = Number(cur.isMemberNameModified) === 1;
       pre.push(item);
       return pre;

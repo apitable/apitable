@@ -22,7 +22,7 @@ import PreviousFilled from 'static/icon/common/previous_filled.svg';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { DOC_MIME_TYPE, getDownloadSrc, isSupportImage, KeyCode } from 'pc/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { Header } from '../mobile/header';
 import { PreviewDisplayList } from '../preview_display_list';
@@ -83,8 +83,16 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = prop
 
   const [transformInfo, setTransformInfo] = useFrameSetState<ITransFormInfo>(initTransformInfo);
 
-  const isDocType = DOC_MIME_TYPE.includes(mime.lookup(activeFile.name) as string);
-  const isPdf = mime.lookup(activeFile.name) === 'application/pdf';
+  const mimeType = useMemo(() => {
+    const name2Type = mime.lookup(activeFile.name);
+    if (typeof name2Type == 'string') {
+      return name2Type;
+    }
+    return activeFile.mimeType;
+  }, [activeFile.mimeType, activeFile.name]);
+
+  const isDocType = DOC_MIME_TYPE.includes(mimeType);
+  const isPdf = mimeType === 'application/pdf';
 
   const fetchPreviewUrl = async() => {
     if (activeFile && (isDocType || isPdf) && officePreviewEnable) {

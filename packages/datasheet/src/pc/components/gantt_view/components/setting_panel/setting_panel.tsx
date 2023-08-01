@@ -473,7 +473,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
-        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property?.timeZone !== fieldMap[endFieldId]?.property?.timeZone && (
           <div className={styles.timeZoneTip}>
             <WarnCircleOutlined color={colors.textCommonTertiary} />
             <span>{t(Strings.time_zone_inconsistent_tips)}</span>

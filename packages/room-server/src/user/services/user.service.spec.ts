@@ -16,10 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigModule } from '@nestjs/config';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { resolve } from 'path';
 import { EnvConfigKey } from 'shared/common';
 import { CommonException, ServerException } from 'shared/exception';
 import { IAuthHeader, IOssConfig, IUserBaseInfo } from 'shared/interfaces';
@@ -28,10 +24,13 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { UserEntity } from 'user/entities/user.entity';
 import { UserRepository } from 'user/repositories/user.repository';
 import { UserService } from './user.service';
+import { Test } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
+import { resolve } from 'path';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 describe('user service', () => {
   let app: NestFastifyApplication;
-  let module: TestingModule;
   let userService: UserService;
   let restService: RestService;
   let envConfigService: EnvConfigService;
@@ -43,7 +42,7 @@ describe('user service', () => {
   const loggedInCookie = `SESSION=${loggedSession}; lang=zh-CN;`;
 
   beforeAll(async() => {
-    module = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
           envFilePath: [resolve(__dirname, '../../../env/.env.defaults')],
@@ -56,30 +55,26 @@ describe('user service', () => {
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-  });
 
-  afterAll(async() => {
-    await app.close();
+    userService = app.get<UserService>(UserService);
+    restService = app.get<RestService>(RestService);
+    envConfigService = app.get<EnvConfigService>(EnvConfigService);
+    userRepo = app.get<UserRepository>(UserRepository);
   });
 
   beforeEach(() => {
-    userService = module.get<UserService>(UserService);
-    restService = module.get<RestService>(RestService);
-    envConfigService = module.get<EnvConfigService>(EnvConfigService);
-    userRepo = module.get<UserRepository>(UserRepository);
-
-    jest.spyOn(userRepo, 'selectUserInfoBySpaceIdAndUuids').mockImplementation(async(spaceId: string, uuids: string[]) => {
+    jest.spyOn(userRepo, 'selectUserInfoBySpaceIdAndUuids').mockImplementation((spaceId: string, uuids: string[]) => {
       if (spaceId === knownSpaceId) {
         if (uuids.includes(knownUuid)) {
-          return await Promise.resolve([{ userId: knownUuid, uuid: knownUuid, avatarColor: null, nickName: 'test000', 
+          return Promise.resolve([{ userId: knownUuid, uuid: knownUuid, avatarColor: null, nickName: 'test000',
             unitId: 1567455154058297346n, isDeleted: false, type: 1, name: 'test000', avatar: 'space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf', 
             isMemberNameModified: true, isNickNameModified: true }]);
         }
       }
-      return await Promise.resolve([]);
+      return Promise.resolve([]);
     });
 
-    jest.spyOn(userRepo, 'selectUserBaseInfoByIds').mockImplementation(async(userIds: number[]) => {
+    jest.spyOn(userRepo, 'selectUserBaseInfoByIds').mockImplementation((userIds: number[]) => {
       if (userIds.includes(knownUserId)) {
         const userEntity = new UserEntity();
         userEntity.avatar = 'space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf';
@@ -87,27 +82,30 @@ describe('user service', () => {
         userEntity.nikeName = 'test000';
         userEntity.uuid = knownUuid;
         userEntity.isSocialNameModified = 1;
-        return await Promise.resolve([userEntity]);
+        return Promise.resolve([userEntity]);
       }
-      return await Promise.resolve([]);
+      return Promise.resolve([]);
     });
 
-    jest.spyOn(restService, 'hasLogin').mockImplementation(async(cookie: string) => {
+    jest.spyOn(restService, 'hasLogin').mockImplementation((cookie: string) => {
       if (cookie && cookie.includes(loggedSession)) {
-        return await Promise.resolve(true);
+        return Promise.resolve(true);
       }
-      return await Promise.resolve(false);
+      return Promise.resolve(false);
     });
 
-    jest.spyOn(restService, 'fetchMe').mockImplementation(async(headers: IAuthHeader) => {
+    jest.spyOn(restService, 'fetchMe').mockImplementation((headers: IAuthHeader) => {
       if (headers && headers.cookie?.includes(loggedSession)) {
         const userBaseInfo: IUserBaseInfo = { userId: knownUserId.toString(),
           uuid: knownUuid };
-        return await Promise.resolve(userBaseInfo);
+        return Promise.resolve(userBaseInfo);
       }
       throw new ServerException(CommonException.UNAUTHORIZED);
     });
+  });
 
+  afterAll(async() => {
+    await app.close();
   });
 
   describe('test getUserInfo', () => {

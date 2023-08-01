@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IBaseDatasheetPack, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
+import { FieldType, IBaseDatasheetPack, IViewProperty, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CommandService } from 'database/command/services/command.service';
@@ -282,8 +282,11 @@ export class DatasheetService {
   async fillBaseSnapshotStoreByDstIds(dstIds: string[], options?: ILoadBasePackOptions): Promise<Store<IReduxState>> {
     const packs: IBaseDatasheetPack[] = [];
     for (const dstId of dstIds) {
-      const basePack = await this.getBasePacks(dstId, options);
-      packs.push(...basePack);
+      const basePacks: IBaseDatasheetPack[] = await this.getBasePacks(dstId, options);
+      if (options?.filterViewFilterInfo) {
+        basePacks.forEach((pack) => pack.snapshot.meta.views.forEach((view: IViewProperty) => (view.filterInfo = undefined)));
+      }
+      packs.push(...basePacks);
     }
     const store = this.commandService.fillStore(packs);
     return this.commandService.setPageParam({ datasheetId: dstIds[0]! }, store);

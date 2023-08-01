@@ -25,7 +25,7 @@ import { applyDefaultTheme } from 'theme';
 const ErrorText = styled.div.attrs(applyDefaultTheme)`
   font-size: 10px;
   padding: 4px 0 0 8px;
-  color: ${(props) => props.theme.palette.danger};
+  color: ${(props) => props.theme.color.errorColor};
 `;
 
 export const SelectWidget = ({

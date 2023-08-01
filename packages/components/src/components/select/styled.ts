@@ -202,7 +202,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const hightLightCls = styled.div.attrs(applyDefaultTheme)`
   background: none;
-  color: ${(props) => props.theme.palette.primary};
+  color: ${(props) => props.theme.color.primaryColor};
   padding: 0;
 `;
 

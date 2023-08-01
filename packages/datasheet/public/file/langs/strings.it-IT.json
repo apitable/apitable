@@ -5294,7 +5294,7 @@
   "when_meet_the_following_filters": "Quando soddisfano i seguenti filtri",
   "where": "Dove",
   "whether_bind_with_invited_email": "Conferma se eseguire il binding con l'account invitato ${inviteEmail}",
-  "who_shares": "${userName} condiviso con te",
+  "who_shares": " condiviso con te",
   "widget": "Aggeggio",
   "widget_center": "Centro widget",
   "widget_center_create_modal_desc": "Prima di tutto dai un nome al widget, e poi scegli quale modello componente iniziare a sviluppare < un href = \"\" /> per saperne di più",

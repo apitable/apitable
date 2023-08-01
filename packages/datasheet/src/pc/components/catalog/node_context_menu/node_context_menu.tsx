@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { Message, MobileContextMenu } from 'pc/components/common';
@@ -32,7 +31,7 @@ import {
 } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { isMobileApp } from 'pc/utils/env';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { expandNodeInfo } from '../node_info';
@@ -185,7 +184,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         ], [
           contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
           contextItemMap.get(ContextItemKey.CreateBackup)(
-            () => _createBackupSnapshot(nodeId), !createBackupSnapshot || getEnvVariables().IS_APITABLE),
+            () => _createBackupSnapshot(nodeId), !createBackupSnapshot),
           contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
           contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
           contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -302,7 +301,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               openCatalog();
               addTreeNode(targetId, ConfigConstant.NodeType.DASHBOARD);
             }),
-            judgeShowAIEntrance() ? contextItemMap.get(ContextItemKey.addAi)(() => {
+            judgeShowAIEntrance(spaceInfo?.isEnableChatbot) ? contextItemMap.get(ContextItemKey.addAi)(() => {
               const result = triggerUsageAlert?.('maxFormViewsInSpace',
                 { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
               if (result) {

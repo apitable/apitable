@@ -203,4 +203,6 @@ export interface ILoadBasePackOptions {
 
   /** If load record metadata. Default to false */
   loadRecordMeta?: boolean;
+
+  filterViewFilterInfo?: boolean;
 }

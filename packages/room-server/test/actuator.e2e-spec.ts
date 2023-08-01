@@ -16,38 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import request from 'supertest';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
+import { AppModule } from '../src/app.module';
 
 describe('HealthController (e2e)', () => {
+
   let app: NestFastifyApplication;
 
-  beforeEach(async() => {
-    const moduleRef: TestingModule = await Test.createTestingModule({
+  beforeAll(async() => {
+    const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
-
-    app = moduleRef.createNestApplication<NestFastifyApplication>(
-      new FastifyAdapter(),
-    );
-
+    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
   });
 
-  it('/GET actuator/health', () => {
-    return app
-      .inject({
-        method: 'GET',
-        url: '/actuator/health',
-      })
-      .then(response => {
-        expect(response.statusCode).toEqual(200);
-      });
+  afterAll(async() => {
+    await app.close();
   });
 
-  afterEach(async() => {
-    await app.close();
+  it('/GET actuator/health', () => {
+    return request(app.getHttpServer())
+      .get('/actuator/health')
+      .expect(200);
   });
 });
