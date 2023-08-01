@@ -7,9 +7,8 @@ tasks:
     init: |
       make install
       make dataenv
-      make _run-local-backend-server
 
-  - name: run APITable2
+  - name: run APITable1
     command: |
       sleep 999
       make _run-local-backend-server
