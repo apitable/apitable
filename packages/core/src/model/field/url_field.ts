@@ -24,6 +24,7 @@ import { FieldType, IField, IHyperlinkSegment, ISegment, IURLField } from 'types
 import { DatasheetActions } from '../datasheet';
 import { ICellValue } from '../record';
 import { TextBaseField } from './text_base_field';
+import { t, Strings } from 'exports/i18n';
 
 export class URLField extends TextBaseField {
   constructor(public override field: IURLField, public override state: IReduxState) {
@@ -86,33 +87,29 @@ export class URLField extends TextBaseField {
     return (cv as IHyperlinkSegment[]).map(seg => seg?.text || seg?.title).join('') || null;
   }
 
-  // TODO(kailang) https://github.com/vikadata/vikadata/issues/5253
-  // override cellValueToOpenValue(cellValue: ICellValue): any {
-  //   if (!cellValue) {
-  //     return null;
-  //   }
-  //   return cellValue[0];
-  // }
-  //
-  // override get openValueJsonSchema() {
-  //   return {
-  //     type: 'array',
-  //     title: this.field.name,
-  //     items: {
-  //       type: 'object',
-  //       properties: {
-  //         title: {
-  //           type: 'string',
-  //           title: t(Strings.robot_variables_join_url_title),
-  //         },
-  //         text: {
-  //           type: 'string',
-  //           title: t(Strings.robot_variables_join_url_link),
-  //         },
-  //       },
-  //     }
-  //   };
-  // }
+  override cellValueToOpenValue(cellValue: ICellValue): any {
+    if (!cellValue) {
+      return null;
+    }
+    return cellValue[0];
+  }
+
+  override get openValueJsonSchema() {
+    return {
+      type: 'object',
+      title: this.field.name,
+      properties: {
+        title: {
+          type: 'string',
+          title: t(Strings.robot_variables_join_url_title),
+        },
+        text: {
+          type: 'string',
+          title: t(Strings.robot_variables_join_url_link),
+        },
+      },
+    };
+  }
 
   override validateProperty() {
     return URLField.propertySchema.validate(this.field.property);

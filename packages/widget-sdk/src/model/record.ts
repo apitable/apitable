@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CacheManager, getFieldTypeString, IReduxState } from '@apitable/core';
-import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
+import { CacheManager, FieldType, getFieldTypeString, IReduxState } from '@apitable/core';
+import { ConfigConstant, Field, Selectors, Strings, t } from 'core';
 import { FieldType, IWidgetContext } from 'interface';
 import { getActiveViewId, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
 import { isSandbox } from 'utils/private';
@@ -68,6 +68,9 @@ export class Record {
     const state = this.wCtx.widgetStore.getState() as any as IReduxState;
     const field = Selectors.getField(state, fieldId, this.datasheetId)!;
     const cellValue = this._getCellValue(fieldId);
+    if (field.type === FieldType.URL) {
+      return Field.bindContext(field, state).cellValueToString(cellValue);
+    }
     return Field.bindContext(field, state).cellValueToOpenValue(cellValue);
   }
 
