@@ -296,6 +296,13 @@ run-local: ## run services with local programming language envinroment
  	if [ "$$SERVICE" = "2" ]; then make _run-local-room-server; fi ;\
  	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi
 
+.PHONY: run-local
+run-dev-all: ## run services with local programming language envinroment
+	@echo "$$RUN_LOCAL_TXT"
+ 	nohup make _run-local-backend-server &
+ 	nohup make _run-local-room-server &
+ 	nohup make _run-local-web-server &
+
 .PHONY: run-perf
 run-perf: ## run room-server with local programming language envinroment for performance profiling
 	@echo "$$RUN_PERF_TXT"

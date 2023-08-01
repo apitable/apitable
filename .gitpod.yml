@@ -8,10 +8,12 @@ tasks:
       make install
     command: |
       echo "Happy Coding"
-  - name: start APITable
+  - name: build APITable
     command: |
-      make up
-      echo "Welcome to APITable"
+      make build
+  - name: run APITable
+    command: |
+      make run-dev-all
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
