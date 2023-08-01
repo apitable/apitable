@@ -135,6 +135,8 @@
   "aggregate_values_describle": "将散点值聚合统计",
   "agree": "同意",
   "agreed": "已同意",
+  "ai_default_prologue": "你好，我是你的AI聊天机器人，很高兴见到你！根据数据表中的数据，我可以回答你的问题。",
+  "ai_default_prompt": "Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:",
   "ai_advanced_mode_desc": "高级模式允许用户自定义和编辑Prompt，提供更多对聊天机器人行为和回答的控制。",
   "ai_advanced_mode_title": "Advanced Mode",
   "ai_bot_modal_title": "Bot modal",
