@@ -150,6 +150,8 @@ export type StringKeysMapType = {
   'ai_datasheet_panel_create_btn_text': 'ai_datasheet_panel_create_btn_text',
   'ai_default_prologue': 'ai_default_prologue',
   'ai_default_prompt': 'ai_default_prompt',
+  'ai_discard_setting_edit_cancel_text': 'ai_discard_setting_edit_cancel_text',
+  'ai_discard_setting_edit_ok_text': 'ai_discard_setting_edit_ok_text',
   'ai_explore_card_title': 'ai_explore_card_title',
   'ai_explore_refresh_btn_text': 'ai_explore_refresh_btn_text',
   'ai_fallback_message_desc': 'ai_fallback_message_desc',
@@ -5526,5 +5528,5 @@ export type StringKeysMapType = {
 };
 
 export type StringKeysType = {
-  [K in keyof StringKeysMapType]: K;
-} & { [key: string]: unknown };
+          [K in keyof StringKeysMapType]: K;
+        } & { [key: string]: unknown };
