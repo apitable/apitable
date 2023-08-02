@@ -25,10 +25,12 @@ import { Strings, t } from '@apitable/core';
 
 export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutputSchema[]; element?: any; children?: any; }) => {
   const { element, children } = props;
+  const stringfyElement = btoa(JSON.stringify(element));
+
   const theme = useTheme();
   const nodeOutputSchemaList = props.nodeOutputSchemaList as INodeOutputSchema[];
+
   const chainList = getExpressionChainList(element.data).reverse();
-  // console.log('MagicVariableElement');
 
   const nodeSchemaIndex = nodeOutputSchemaList.findIndex(item => item.id === chainList[0].value);
   const nodeSchema = nodeOutputSchemaList[nodeSchemaIndex];
@@ -96,6 +98,7 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
       display="inline-flex"
       margin="0 2px"
       verticalAlign='middle'
+      data-magic-variable-entity={stringfyElement }
       flexWrap="wrap"
     // border='1px solid transparent'
     >
