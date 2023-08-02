@@ -5294,7 +5294,7 @@
   "when_meet_the_following_filters": "Cuando se cumplen los siguientes filtros",
   "where": "¿¿ dónde?",
   "whether_bind_with_invited_email": "Confirme si vincular con la cuenta invitada ${inviteEmail}",
-  "who_shares": "${userName} compartido contigo",
+  "who_shares": " compartido contigo",
   "widget": "Pequeños dispositivos",
   "widget_center": "Centro de gadgets",
   "widget_center_create_modal_desc": "Primero nombre su applet y luego elija la plantilla de componente a desarrollar < a href = \"\" \"/ > para obtener más información",

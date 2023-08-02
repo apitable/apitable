@@ -36,11 +36,12 @@ import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
 
 export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
-  const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption } = props;
+  const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption, primaryField } = props;
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
-  const linkedFieldId = field.type === FieldType.LookUp ? field.property.relatedLinkFieldId : '';
+  const linkedFieldId = field.type === FieldType.LookUp ? field.property.relatedLinkFieldId :
+    primaryField?.type === FieldType.LookUp ? primaryField.property.relatedLinkFieldId : '';
   const { isViewLock } = useContext(ViewFilterContext);
 
   const { run: debounceInput } = useDebounceFn((inputValue: any) => {

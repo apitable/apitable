@@ -5294,7 +5294,7 @@
   "when_meet_the_following_filters": "다음 필터가 충족되면",
   "where": "어디",
   "whether_bind_with_invited_email": "초대된 ${inviteEmail} 계정과의 결합 여부 확인",
-  "who_shares": "${userName}님이 나와 공유함",
+  "who_shares": "님이 나와 공유함",
   "widget": "소형 장치",
   "widget_center": "가젯 센터",
   "widget_center_create_modal_desc": "먼저 위젯의 이름을 지정한 다음 개발을 시작할 어셈블리 템플릿 <a href=\"\"/> 자세히 보기",

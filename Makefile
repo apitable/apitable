@@ -190,10 +190,6 @@ test-ut-room-docker:
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 
-_generate_room_coverage:
-	cd packages/databus
-	grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore "/*" -o target/coverage/tests.lcov
-
 _clean_room_coverage:
 	if [ -d "./packages/room-server/coverage" ]; then \
 		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \

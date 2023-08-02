@@ -1,5 +1,5 @@
 {
-  "name": "databus_wasm",
+  "name": "@apitable/databus-wasm",
   "collaborators": [
     "Kelly Peilin Chan <kelly@vikadata.com>"
   ],
@@ -7,13 +7,17 @@
   "files": [
     "databus_wasm_bg.wasm",
     "databus_wasm.js",
+    "run_in_server.js",
     "databus_wasm_bg.js",
     "databus_wasm.d.ts"
   ],
+  "main": "run_in_server.js",
+  "browser": "databus_wasm.js",
   "module": "databus_wasm.js",
   "types": "databus_wasm.d.ts",
   "sideEffects": [
     "./databus_wasm.js",
+    "run_in_server.js",
     "./snippets/*"
   ]
 }

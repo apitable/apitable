@@ -5294,7 +5294,7 @@
   "when_meet_the_following_filters": "當滿足以下條件",
   "where": "當",
   "whether_bind_with_invited_email": "是否與被邀請帳號${inviteEmail}綁定",
-  "who_shares": "${userName}給你分享了",
+  "who_shares": "給你分享了",
   "widget": "數據挂件",
   "widget_center": "小程序中心",
   "widget_center_create_modal_desc": "首先為你的小程序取個名字，然後選擇從哪個小程序模板開始開發 <a href=\"\">了解更多</a>",

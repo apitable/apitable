@@ -51,17 +51,14 @@ public class PdfToImageUtil {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, "JPEG", os);
             return new ByteArrayInputStream(os.toByteArray());
-        }
-        catch (IOException e) {
+        } catch (Exception e) {
             LOG.error("unable to load pdf", e);
             return null;
-        }
-        finally {
+        } finally {
             if (document != null) {
                 try {
                     document.close();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                     LOG.error("close pd document stream exception", e);
                 }

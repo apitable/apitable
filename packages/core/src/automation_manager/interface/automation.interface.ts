@@ -51,6 +51,7 @@ export interface IRobotTask {
   robotId: string;
   triggerInput: any;
   triggerOutput: any;
+  status: number;
 }
 
 /**

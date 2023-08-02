@@ -15,29 +15,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { UnitTeamService } from './unit.team.service';
 import { UnitTeamRepository } from '../repositories/unit.team.repository';
 import { UnitTeamBaseInfoDto } from '../dtos/unit.team.base.info.dto';
 import { MemberType } from '@apitable/core';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UnitTeamServiceTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let service: UnitTeamService;
   let unitTeamRepository: UnitTeamRepository;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [
         UnitTeamService,
         UnitTeamRepository,
       ],
     }).compile();
-    unitTeamRepository = module.get<UnitTeamRepository>(UnitTeamRepository);
-    service = module.get<UnitTeamService>(UnitTeamService);
-  });
-
-  beforeEach(() => {
+    unitTeamRepository = moduleFixture.get<UnitTeamRepository>(UnitTeamRepository);
+    service = moduleFixture.get<UnitTeamService>(UnitTeamService);
     const unitTeam = {
       id: '2023',
       teamName: 'teamName',
@@ -59,6 +56,10 @@ describe('UnitTeamServiceTest', () => {
         }
         return Promise.resolve(undefined);
       });
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   describe('getTeamsByIdsIncludeDeleted', () => {

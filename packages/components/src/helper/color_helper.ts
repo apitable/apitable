@@ -25,7 +25,7 @@
  * AAA (7:1 contrast is adopted, which is the lowest acceptable contrast for people with severe visual loss)
  * REF: https://github.com/mui-org/material-ui/blob/ec37e2bb3c904d9552fa819425ee1eef72914996/packages/material-ui/src/styles/createPalette.js#L104
  */
-import { dark, light } from '../theme';
+import { darkColors, lightColors } from '../colors';
 import Color from 'color';
 import * as Colors from '../colors';
 
@@ -128,9 +128,9 @@ export function getContrastText(
   background: string, 
   contrastThreshold: number,
 ) {
-  return getContrastRatio(background, dark.palette.text.primary) >= contrastThreshold
-    ? dark.palette.text.primary
-    : light.palette.text.primary;
+  return getContrastRatio(background, darkColors.fc1) >= contrastThreshold
+    ? darkColors.fc1
+    : lightColors.fc1;
 }
 
 export function decomposeColor(color: string): { type: string, values: number[] } {
@@ -220,8 +220,8 @@ export const editRgbaOpacity = (rgbaColor: string, opacity: number) => {
 
 // Color mapping with four different states
 export const FourStatusColorMap = {
-  default: light.palette.primary,
-  error: light.palette.danger,
-  warning: light.palette.warning,
-  success: light.palette.success,
+  default: lightColors.primaryColor,
+  error: lightColors.errorColor,
+  warning: lightColors.warningColor,
+  success: lightColors.successColor,
 };

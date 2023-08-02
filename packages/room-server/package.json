@@ -1,6 +1,6 @@
 {
   "name": "@apitable/room-server",
-  "version": "0.24.0",
+  "version": "0.99.0",
   "description": "nodejs room server",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
@@ -27,7 +27,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json --colors --logHeapUsage --verbose --silent",
     "test:ut": "DOTENV_CONFIG_PATH=src/env/.env.dev-test jest --config ./jest-ut.config.json --colors --logHeapUsage --verbose --silent --ci --detectOpenHandles --forceExit",
-    "test:ut:cov": "jest --config ./jest-ut.config.json --logHeapUsage --verbose --silent --ci --updateSnapshot --runInBand --detectOpenHandles --forceExit --coverage --coverageDirectory=coverage",
+    "test:ut:cov": "jest --config ./jest-ut.config.json --logHeapUsage --verbose --silent --ci --updateSnapshot --runInBand --detectOpenHandles --forceExit --testTimeout=60000 --coverage --coverageDirectory=coverage",
     "grpc:build": "tsproto --path src/proto --output src/proto/generated",
     "grpc:clean": "rimraf src/proto/generated",
     "copy:assets": "cp -r 'src/grpc/' 'dist/grpc/' && cp 'src/shared/helpers/list.lock.lua' 'dist/shared/helpers/list.lock.lua'"
@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "@apitable/core": "*",
-    "@apitable/databus": "*",
     "@apitable/i18n-lang": "*",
     "@apitable/nestjs-redis": "1.3.4",
     "@aws-sdk/client-s3": "^3.47.0",
@@ -98,7 +97,6 @@
     "nestjs-proto-gen-ts": "^1.0.19",
     "node-os-utils": "^1.3.5",
     "nodemailer": "^6.9.1",
-    "openai": "^3.3.0",
     "piscina": "^3.2.0",
     "pump": "^3.0.0",
     "qs": "^6.9.7",
@@ -170,6 +168,9 @@
     "transformIgnorePatterns": [
       "^.+\\.js$"
     ],
+    "moduleNameMapper": {
+      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+    },
     "moduleDirectories": [
       "dist",
       "node_modules",

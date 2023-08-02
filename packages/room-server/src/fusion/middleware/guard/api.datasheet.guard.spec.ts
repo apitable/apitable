@@ -18,28 +18,18 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import { Reflector } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { ApiDatasheetGuard, IApiDatasheetOptions } from 'fusion/middleware/guard/api.datasheet.guard';
 import { DATASHEET_HTTP_DECORATE, USER_HTTP_DECORATE } from 'shared/common';
 import { ApiException } from '../../../shared/exception';
 
 describe('ApiDatasheetGuard', () => {
-  let app: NestFastifyApplication;
   let guard: ApiDatasheetGuard;
   // let request;
   let context: any;
   let memberRepository: any;
   let reflector: Reflector;
   let metaService: any;
-  beforeAll(async() => {
-    jest.setTimeout(300000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
+  beforeEach(() => {
     // request = app.resolve(REQUEST);
     context = {
       switchToHttp: jest.fn().mockReturnThis(),
@@ -54,10 +44,6 @@ describe('ApiDatasheetGuard', () => {
     };
     reflector = new Reflector();
     guard = new ApiDatasheetGuard(memberRepository, reflector, metaService);
-  });
-
-  afterAll(async() => {
-    await app.close();
   });
 
   describe('canActivate', () => {

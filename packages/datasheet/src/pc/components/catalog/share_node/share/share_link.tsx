@@ -98,7 +98,7 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = pro
           onCancel={() => setShareCodeVisible(false)}>
           <ShareQrCode
             url={`${shareHost}${shareSettings.shareId}`}
-            user={userInfo?.memberName ?? ''}
+            user={userInfo}
             nodeName={shareName}
             onClose={() => setShareCodeVisible(false)}
           />

@@ -45,6 +45,7 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import static com.apitable.auth.enums.AuthException.NONE_RESOURCE;
@@ -92,8 +93,11 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
         if (!HttpContextUtil.hasSession()) {
             // Get API KEY
             String apiKey = ApiHelper.getApiKey(request);
-            ExceptionUtil.isNotNull(apiKey, AuthException.UNAUTHORIZED);
-            userId = developerMapper.selectUserIdByApiKey(apiKey);
+            if (StringUtils.isEmpty(apiKey)) {
+                userId = SessionContext.getUserIdFromRequest();
+            }else {
+                userId = developerMapper.selectUserIdByApiKey(apiKey);
+            }
             if (userId == null) {
                 throw new BusinessException(AuthException.UNAUTHORIZED);
             }
