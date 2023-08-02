@@ -211,14 +211,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   }, [activeNodeId, rootId]);
 
   useEffect(() => {
-    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
-    // Compatible with older versions, which is array
-    if (Array.isArray(defaultActiveKey)) {
-      defaultActiveKey = defaultActiveKey[0];
-    }
-    setActiveKey(defaultActiveKey);
-  }, []);
+    setActiveKey(getWorkbenchActiveKey());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spaceId]);
 
   useEffect(() => {
     if (activedNodeId && !treeNodesMap[activedNodeId] && !loading) {
@@ -229,7 +224,37 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   const changeHandler = (key: string) => {
     setActiveKey(key);
-    localStorage.setItem('vika_workbench_active_key', JSON.stringify(key));
+    setWorkbenchActiveKey(key);
+  };
+
+  const getWorkbenchActiveKey=()=>{
+    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
+    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
+    if (Array.isArray(defaultActiveKey)) {
+      // Compatible with older versions, which is array
+      if(typeof defaultActiveKey[0]==='string')defaultActiveKey=ConfigConstant.Modules.CATALOG;
+      defaultActiveKey=defaultActiveKey.find((i: { spaceId: string }) =>i.spaceId===spaceId );
+      defaultActiveKey=defaultActiveKey?defaultActiveKey.activeKey:ConfigConstant.Modules.CATALOG;
+    }
+    return defaultActiveKey;
+  };
+
+  const setWorkbenchActiveKey=(key: string)=>{
+    let defaultActiveKey = JSON.parse(localStorage.getItem('vika_workbench_active_key'));
+    if(!defaultActiveKey || typeof defaultActiveKey[0]==='string')defaultActiveKey=[{ spaceId,activeKey:key }];
+    if(Array.isArray(defaultActiveKey)){
+      if(!defaultActiveKey.some(i=>i.spaceId===spaceId)){
+        defaultActiveKey.push({ spaceId,activeKey:key });
+      }else{
+        for (const i of defaultActiveKey) {
+          if(i.spaceId===spaceId){
+            i.activeKey=key;
+            break;
+          }
+        }
+      }
+    }
+    localStorage.setItem('vika_workbench_active_key', JSON.stringify(defaultActiveKey));
   };
 
   const jumpTrash = () => {
