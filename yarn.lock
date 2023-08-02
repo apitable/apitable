@@ -638,6 +638,7 @@ __metadata:
     "@apitable/nestjs-redis": 1.3.4
     "@aws-sdk/client-s3": ^3.47.0
     "@elastic/ecs-winston-format": ^1.3.1
+    "@faker-js/faker": ^8.0.2
     "@golevelup/nestjs-rabbitmq": ^2.2.0
     "@grpc/grpc-js": ~1.8.8
     "@grpc/proto-loader": ^0.7.3
@@ -4312,6 +4313,13 @@ __metadata:
     minimatch: ^3.1.2
     strip-json-comments: ^3.1.1
   checksum: cd3e5a8683db604739938b1c1c8b77927dc04fce3e28e0c88e7f2cd4900b89466baf83dfbad76b2b9e4d2746abdd00dd3f9da544d3e311633d8693f327d04cd7
+  languageName: node
+  linkType: hard
+
+"@faker-js/faker@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "@faker-js/faker@npm:8.0.2"
+  checksum: cf73daf9a50397eb0b3f04a7ef3fbb6f54acc026b167707136a7e58a517fd805a46c9e8c5f017f3022f104a4ff984765daaeee2cb98b3c34646db05c2acad441
   languageName: node
   linkType: hard
 
@@ -17485,12 +17493,6 @@ __metadata:
   checksum: 006e869b5bf079647949a3e9b1dd69d84b2d5d26e6b01c265485699bc96e83817d4b5aae758b2910a4c58c0601913f3a0034121c1ca2da268e9a244c57515b15
   languageName: node
   linkType: hard
-
-"databus_wasm@workspace:packages/databus-wasm":
-  version: 0.0.0-use.local
-  resolution: "databus_wasm@workspace:packages/databus-wasm"
-  languageName: unknown
-  linkType: soft
 
 "date-fns-tz@npm:^2.0.0":
   version: 2.0.0
