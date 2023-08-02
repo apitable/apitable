@@ -143,6 +143,7 @@ const UpgradeSpace = () => {
       }
 
       if (msg === 'changePeriod') {
+       
         Modal.warning({
           title: t(Strings.billing_interval),
           content: t(Strings.change_period_content),
@@ -150,10 +151,16 @@ const UpgradeSpace = () => {
           cancelText: t(Strings.cancel),
           zIndex: 1100,
           onOk: async() => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
-            const { url } = res.data;
-            location.href = url;
-            // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
+            if(!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
+            //@ts-ignore
+            const planInfoRes = await Api.getSubscript(spaceId);
+            const { subscriptionId } = planInfoRes.data.data;
+            //@ts-ignore
+            const res = await Api?.updateBillingSubscription(spaceId, subscriptionId);
+            const { success, data } = res.data;
+            if(success) {
+              location.href = data.url;
+            }
           },
         });
         return;
@@ -181,8 +188,8 @@ const UpgradeSpace = () => {
     return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
-  const iframeSrc = location.origin + '/pricing/';
-  // const iframeSrc = 'http://localhost:3002' + '/pricing/';
+  // const iframeSrc = location.origin + '/pricing/';
+  const iframeSrc = 'http://localhost:3002' + '/pricing/';
 
   return <div className={styles.container}>
     {
