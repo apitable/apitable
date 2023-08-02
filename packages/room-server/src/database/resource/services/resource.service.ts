@@ -27,7 +27,6 @@ import { DatasheetService } from '../../datasheet/services/datasheet.service';
 import { NodeService } from '../../../node/services/node.service';
 import { WidgetService } from '../../widget/services/widget.service';
 import { DatasheetPack } from 'database/interfaces';
-import type { DatasheetPackResponse } from '@apitable/databus';
 
 @Injectable()
 export class ResourceService {
@@ -64,7 +63,7 @@ export class ResourceService {
     auth: IAuthHeader,
     allowNative: boolean,
     shareId?: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // Obtain referenced datasheet
     const datasheetId = resourceId.startsWith(ResourceIdPrefix.Datasheet) ? resourceId : await this.nodeService.getMainNodeId(resourceId);
     return this.datasheetService.fetchForeignDatasheetPack(datasheetId, foreignDatasheetId, auth, allowNative, shareId);

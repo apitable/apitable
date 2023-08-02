@@ -27,6 +27,7 @@ import { useState } from 'react';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ChevronDownOutlined } from '@apitable/icons';
 

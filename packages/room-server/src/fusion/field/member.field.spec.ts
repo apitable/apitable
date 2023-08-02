@@ -18,28 +18,27 @@
 
 import { FieldType, IMemberField } from '@apitable/core';
 import '@apitable/i18n-lang';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { MemberField } from 'fusion/field/member.field';
 import { UnitMemberService } from 'unit/services/unit.member.service';
 import { UnitService } from 'unit/services/unit.service';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../../app.module';
 
 describe('MemberField', () => {
   let app: NestFastifyApplication;
   let fieldClass: MemberField;
   let field: IMemberField;
-  let unitservice: UnitService;
+  let unitService: UnitService;
 
   beforeAll(async() => {
-    jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    unitservice = app.get(UnitMemberService);
-    fieldClass = new MemberField(unitservice);
+    unitService = app.get(UnitMemberService);
+    fieldClass = new MemberField(unitService);
     field = {
       id: 'fldpRxaCC8Mhe',
       name: 'Member',

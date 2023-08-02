@@ -15,25 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { ApiCacheInterceptor } from 'shared/interceptor/api.cache.interceptor';
 
 describe('ApiCacheInterceptor', () => {
-  let app: NestFastifyApplication;
   let interceptor: ApiCacheInterceptor;
   let cacheManager: any;
   let reflector: any;
   let context: any;
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
+  beforeAll(() => {
     cacheManager = jest.fn().mockReturnThis();
     reflector = jest.fn().mockReturnThis();
     interceptor = new ApiCacheInterceptor(cacheManager, reflector);
@@ -41,9 +30,6 @@ describe('ApiCacheInterceptor', () => {
       switchToHttp: jest.fn().mockReturnThis(),
       getRequest: jest.fn().mockReturnThis(),
     };
-  });
-  afterAll(async() => {
-    await app.close();
   });
 
   describe('isRequestCacheable', () => {

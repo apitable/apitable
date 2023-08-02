@@ -65,6 +65,7 @@ const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
     ConfigConstant.NodeType.FORM,
     ConfigConstant.NodeType.DASHBOARD,
     ConfigConstant.NodeType.MIRROR,
+    ConfigConstant.NodeType.AI,
   ]);
 
   const onContextMenu = (e: React.MouseEvent) => {

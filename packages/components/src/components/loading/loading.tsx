@@ -29,7 +29,7 @@ const LoadingSvg = styled.svg`
 
 export const Loading = ({ currentColor = false, strokeWidth = 3 }: { currentColor?: boolean; strokeWidth?: number }) => {
   const theme = useProviderTheme();
-  const fontColor = currentColor ? 'currentColor' : theme.palette.primary;
+  const fontColor = currentColor ? 'currentColor' : theme.color.primaryColor;
   return (
     <LoadingSvg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid" width="1em" height="1em">
       <circle cx="12" cy="12" fill="none" stroke={fontColor} strokeWidth={strokeWidth} r="10" strokeDasharray="45 35">

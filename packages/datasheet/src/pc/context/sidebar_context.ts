@@ -41,6 +41,8 @@ export interface ISideBarContextProps {
   onSetPanelVisible?: (visible: boolean) => void;
   onSetSideBarVisibleByUser?: (visible: boolean, panelVisible?: boolean) => void;
   onSetSideBarVisibleByOhter?: (visible: boolean) => void;
+  newTdbId?: string;
+  setNewTdbId?: (newTdbId: string) => void;
 }
 
 export const SideBarContext = createContext<ISideBarContextProps>({

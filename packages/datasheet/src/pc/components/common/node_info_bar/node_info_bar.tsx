@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { Tag, TagColors } from '../tag';
 import { getPermission, KeyCode } from 'pc/utils';
 import { NodeFavoriteStatus } from '../node_favorite_status';
-import { useRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
-import { useCatalogTreeRequest } from 'pc/hooks';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ShareContext } from 'pc/components/share';
 import { Tooltip } from '../tooltip';
@@ -76,6 +75,7 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
   const embedId = useSelector(state => state.pageParams.embedId);
+  const _showDescription= isDatasheet;
 
   useEffect(() => {
     setNewName(name);
@@ -152,7 +152,7 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   };
   // TODO: // Restructuring
   return (
-    <div className={classNames(styles.nodeInfoBar, { [styles.multiLine]: isDatasheet })} ref={nodeInfoBarRef}>
+    <div className={classNames(styles.nodeInfoBar, { [styles.multiLine]: _showDescription })} ref={nodeInfoBarRef}>
       <div className={classNames(styles.nameWrapper, { [styles.editing]: editing })}>
         {!hiddenModule?.icon &&
           <div className={classNames(styles.icon, { [styles.iconHover]: iconEditable })}>
@@ -188,10 +188,10 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
             </div>
           )
         }
-        {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) && !embedId &&
+        {!hiddenModule?.favorite && (!editing || (editing && _showDescription)) && !embedId &&
           <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         }
-        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) && !isIframe() && !embedId &&
+        {!hiddenModule?.permission && (!editing || (editing && _showDescription)) && !isIframe() && !embedId &&
           <Tooltip title={getPermissionTip()}>
             <Tag
               className={styles.tag}
@@ -203,7 +203,7 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
         }
       </div>
       <div className={styles.permissionWrapper}>
-        {/* {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) &&
+        {/* {!hiddenModule?.permission && (!editing || (editing && _showDescription)) &&
         <Tooltip title={getPermissionTip()}>
           <div style={{ flexShrink: 0, display: 'flex' }}>
             <Tag
@@ -215,10 +215,10 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
           </div>
         </Tooltip>
         } */}
-        {/* {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) &&
+        {/* {!hiddenModule?.favorite && (!editing || (editing && _showDescription)) &&
         <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         } */}
-        {isDatasheet &&
+        {_showDescription &&
           <DescriptionModal
             activeNodeId={nodeId}
             datasheetName={newName || ''}

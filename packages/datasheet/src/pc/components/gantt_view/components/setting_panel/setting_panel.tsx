@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { black, IOption, Select, Switch, Tooltip, Typography, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
@@ -472,7 +473,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.gantt_pick_two_dates_tips)}</span>}
-        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property?.timeZone !== fieldMap[endFieldId]?.property?.timeZone && (
           <div className={styles.timeZoneTip}>
             <WarnCircleOutlined color={colors.textCommonTertiary} />
             <span>{t(Strings.time_zone_inconsistent_tips)}</span>
@@ -541,14 +542,27 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               }}
               mask
               triggerComponent={
-                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                isViewLock ? (
+                  <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        cursor: isViewLock ? 'not-allowed' : '', 
+                        color: isViewLock ? colors.textCommonDisabled : ''
+                      }}>
+                      <Typography variant='body3' className={styles.more} component={'span'}>
+                        {t(Strings.gantt_color_more)}
+                      </Typography>
+                    </div>
+                  </WrapperTooltip>
+                ) : (
                   <div
                     style={{ display: 'inline-block', cursor: isViewLock ? 'not-allowed' : '', color: isViewLock ? colors.textCommonDisabled : '' }}>
                     <Typography variant='body3' className={styles.more} component={'span'}>
                       {t(Strings.gantt_color_more)}
                     </Typography>
                   </div>
-                </WrapperTooltip>
+                )
               }
             />
           </>

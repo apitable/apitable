@@ -22,6 +22,7 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.workspace.enums.NodeType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -63,8 +64,12 @@ public class NodeOpRo {
 
     @Schema(description = "Other information")
     private NodeRelRo extra;
+
     @Schema(description = "Whether to detect duplicate node names", example = "true")
     private Boolean checkDuplicateName;
+
+    @Schema(description = "extra params for ai node")
+    private AiChatBotCreateParam aiCreateParams;
 
     /**
      * Get Node Name.
@@ -82,8 +87,22 @@ public class NodeOpRo {
             case MIRROR: // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
                 return I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
+            case AI_CHAT_BOT:
+                return nodeType.name().toLowerCase().replace('_', ' ');
             default:
                 return I18nStringsUtil.t("default_create_file");
         }
+    }
+
+    /**
+     * create an AI ChatBot object param.
+     */
+    @Data
+    @Builder(toBuilder = true)
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AiChatBotCreateParam {
+
+        private List<AiDatasheetNodeSettingParam> datasheet;
     }
 }

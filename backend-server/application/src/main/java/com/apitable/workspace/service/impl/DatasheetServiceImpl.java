@@ -175,6 +175,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private IWidgetService iWidgetService;
 
     @Override
+    public DatasheetEntity getByDstId(String dstId) {
+        return baseMapper.selectByDstId(dstId);
+    }
+
+    @Override
     public void batchSave(List<DatasheetEntity> entities) {
         if (CollUtil.isEmpty(entities)) {
             return;

@@ -12,7 +12,7 @@ COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 
 COPY packages/core/package.json ./packages/core/
 
-COPY packages/databus/package.json ./packages/databus/
+COPY packages/databus-wasm/package.json ./packages/databus-wasm/
 
 COPY packages/room-server/package.json ./packages/room-server/
 
@@ -32,17 +32,13 @@ COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
 
 COPY packages/i18n-lang ./packages/i18n-lang
 
-COPY packages/core ./packages/core
+COPY packages/databus-wasm ./packages/databus-wasm
 
-COPY packages/databus ./packages/databus
+COPY packages/core ./packages/core
 
 COPY packages/room-server ./packages/room-server
 
 RUN yarn build:sr
-
-# RUN yarn build:databus:arm64
-
-RUN rm -rf packages/databus/target
 
 ARG KEEP_DEV_DEP
 
@@ -63,8 +59,7 @@ COPY --from=builder /app/packages/room-server/app-config.json /root/
 COPY --from=builder /app /app
 
 RUN npm install pm2@latest --global  \
-    && rm -fr packages/*/src \
-    && rm -fr packages/databus/src
+    && rm -fr packages/*/src
 
 COPY packages/i18n-lang/src/config ./packages/i18n-lang/src/config
 

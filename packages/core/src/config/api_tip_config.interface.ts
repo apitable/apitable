@@ -126,6 +126,8 @@ export interface Tips {
     api_params_lookup_target_field_not_exists:            PuneHedgehog;
     api_params_lookup_sort_field_not_exists:              PuneHedgehog;
     api_params_lookup_field_can_not_sort:                 PuneHedgehog;
+    api_params_lookup_filter_field_not_exists:            PuneHedgehog;
+    api_params_lookup_filter_field_invalid_operation:     PuneHedgehog;
     api_params_lookup_can_not_operate:                    PuneHedgehog;
     api_params_max_count_error:                           PuneHedgehog;
     api_params_max_error:                                 PuneHedgehog;
@@ -145,6 +147,7 @@ export interface Tips {
     api_params_recordids_empty_error:                     PuneHedgehog;
     api_params_records_empty_error:                       PuneHedgehog;
     api_params_records_max_count_error:                   PuneHedgehog;
+    api_params_tablebundle_max_count_error:               PuneHedgehog;
     api_params_tree_select_can_not_operate:               PuneHedgehog;
     api_params_updated_time_can_not_operate:              PuneHedgehog;
     api_params_updatedby_can_not_operate:                 PuneHedgehog;

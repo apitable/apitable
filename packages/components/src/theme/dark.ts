@@ -22,6 +22,7 @@ import { ITheme, ThemeName } from './theme.interface';
 // TODO
 export const dark: ITheme = {
   color: darkColors,
+  // only  for widget
   palette: {
     type: ThemeName.Dark,
     common: {

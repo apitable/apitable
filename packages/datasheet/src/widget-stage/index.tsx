@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import * as components from '@apitable/components';
 import * as core from '@apitable/core';
 import * as icons from '@apitable/icons';

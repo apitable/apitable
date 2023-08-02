@@ -32,7 +32,7 @@
 .hideField {
   .light-scroll-bar();
   background: var(--highBg);
-  width: 220px;
+  width: 248px;
   overflow: auto;
   border-radius: 4px;
   box-shadow: var(--shadowCommonHighest);
@@ -68,7 +68,7 @@
 
   .fields {
     .light-scroll-bar();
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     max-height: calc(100% - 160px);
     padding: 0 12px 16px;
@@ -88,11 +88,12 @@
   .opAll {
     display: flex;
     height: 30px;
-    width: 188px;
+    width: 224px;
     justify-content: space-between;
     margin: 0 auto 16px;
     button {
-      max-width: 92px;
+      max-width: 112px;
+      min-width: 104px;
       height: max-content;
     }
   }
@@ -183,7 +184,6 @@
     .header {
       display: block;
       padding: 0;
-      min-height: 48px;
       align-items: center;
       flex-wrap: wrap;
 

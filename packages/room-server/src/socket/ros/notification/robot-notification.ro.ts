@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { RobotDto, RobotNotificationType } from 'socket/dtos/ding-talk/robot-notification.dto';
+import { IRobotDto, IRobotNotificationType } from 'socket/dtos/ding-talk/robot-notification.dto';
 
-export interface IRobotNotificationRo extends RobotNotificationType {
+export interface IRobotNotificationRo extends IRobotNotificationType {
   body: any;
-  robot: RobotDto;
+  robot: IRobotDto;
   event: string;
 }

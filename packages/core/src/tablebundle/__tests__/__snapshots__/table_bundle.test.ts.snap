@@ -1,0 +1,405 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableBundle add data sheet 1`] = `
+Map {
+  "dst001" => TableBundleDataSheet {
+    "extras": undefined,
+    "snapshot": {
+      "meta": {
+        "fieldMap": {
+          "fldMNKMZ7X4P6": {
+            "id": "fldMNKMZ7X4P6",
+            "name": "标题",
+            "property": {
+              "defaultValue": "",
+            },
+            "type": 19,
+          },
+          "flds5VCUKUZMH": {
+            "id": "flds5VCUKUZMH",
+            "name": "选项",
+            "property": {
+              "options": [
+                {
+                  "color": 0,
+                  "id": "optQAZBO9LO3t",
+                  "name": "想啊啥",
+                },
+              ],
+            },
+            "type": 4,
+          },
+          "fldt3qT5kfsBk": {
+            "id": "fldt3qT5kfsBk",
+            "name": "附件",
+            "type": 6,
+          },
+        },
+        "views": [
+          {
+            "autoSave": false,
+            "columns": [
+              {
+                "fieldId": "fldMNKMZ7X4P6",
+                "statType": 1,
+              },
+              {
+                "fieldId": "flds5VCUKUZMH",
+              },
+              {
+                "fieldId": "fldt3qT5kfsBk",
+              },
+            ],
+            "frozenColumnCount": 1,
+            "id": "viwruy3vMmo70",
+            "name": "维格视图",
+            "rows": [
+              {
+                "recordId": "recfte8MK9TWd",
+              },
+              {
+                "recordId": "recc2klate85d",
+              },
+              {
+                "recordId": "recMWYWw95sVi",
+              },
+            ],
+            "type": 1,
+          },
+        ],
+      },
+      "recordMap": {
+        "fldMNKMZ7X4P6": {
+          "data": {
+            "fldMNKMZ7X4P6": [
+              {
+                "text": "x z c x z c ",
+                "type": 1,
+              },
+            ],
+            "flds5VCUKUZMH": [
+              "optQAZBO9LO3t",
+            ],
+            "fldt3qT5kfsBk": [
+              {
+                "bucket": "QNY1",
+                "height": 646,
+                "id": "atcW6tzBymOzF",
+                "mimeType": "image/png",
+                "name": "image.png",
+                "size": 60983,
+                "token": "space/2023/05/17/0026b58ee1654c439bffc3974f9cb4dc",
+                "width": 856,
+              },
+            ],
+          },
+          "id": "recXXXX",
+          "recordMeta": null,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`TableBundle add data sheet 2`] = `
+TableBundleDataSheet {
+  "extras": undefined,
+  "snapshot": {
+    "meta": {
+      "fieldMap": {
+        "fldMNKMZ7X4P6": {
+          "id": "fldMNKMZ7X4P6",
+          "name": "标题",
+          "property": {
+            "defaultValue": "",
+          },
+          "type": 19,
+        },
+        "flds5VCUKUZMH": {
+          "id": "flds5VCUKUZMH",
+          "name": "选项",
+          "property": {
+            "options": [
+              {
+                "color": 0,
+                "id": "optQAZBO9LO3t",
+                "name": "想啊啥",
+              },
+            ],
+          },
+          "type": 4,
+        },
+        "fldt3qT5kfsBk": {
+          "id": "fldt3qT5kfsBk",
+          "name": "附件",
+          "type": 6,
+        },
+      },
+      "views": [
+        {
+          "autoSave": false,
+          "columns": [
+            {
+              "fieldId": "fldMNKMZ7X4P6",
+              "statType": 1,
+            },
+            {
+              "fieldId": "flds5VCUKUZMH",
+            },
+            {
+              "fieldId": "fldt3qT5kfsBk",
+            },
+          ],
+          "frozenColumnCount": 1,
+          "id": "viwruy3vMmo70",
+          "name": "维格视图",
+          "rows": [
+            {
+              "recordId": "recfte8MK9TWd",
+            },
+            {
+              "recordId": "recc2klate85d",
+            },
+            {
+              "recordId": "recMWYWw95sVi",
+            },
+          ],
+          "type": 1,
+        },
+      ],
+    },
+    "recordMap": {
+      "fldMNKMZ7X4P6": {
+        "data": {
+          "fldMNKMZ7X4P6": [
+            {
+              "text": "x z c x z c ",
+              "type": 1,
+            },
+          ],
+          "flds5VCUKUZMH": [
+            "optQAZBO9LO3t",
+          ],
+          "fldt3qT5kfsBk": [
+            {
+              "bucket": "QNY1",
+              "height": 646,
+              "id": "atcW6tzBymOzF",
+              "mimeType": "image/png",
+              "name": "image.png",
+              "size": 60983,
+              "token": "space/2023/05/17/0026b58ee1654c439bffc3974f9cb4dc",
+              "width": 856,
+            },
+          ],
+        },
+        "id": "recXXXX",
+        "recordMeta": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`TableBundle parser zip file 1`] = `
+Map {
+  "dst001" => TableBundleDataSheet {
+    "extras": undefined,
+    "snapshot": {
+      "meta": {
+        "fieldMap": {
+          "fldMNKMZ7X4P6": {
+            "id": "fldMNKMZ7X4P6",
+            "name": "标题",
+            "property": {
+              "defaultValue": "",
+            },
+            "type": 19,
+          },
+          "flds5VCUKUZMH": {
+            "id": "flds5VCUKUZMH",
+            "name": "选项",
+            "property": {
+              "options": [
+                {
+                  "color": 0,
+                  "id": "optQAZBO9LO3t",
+                  "name": "想啊啥",
+                },
+              ],
+            },
+            "type": 4,
+          },
+          "fldt3qT5kfsBk": {
+            "id": "fldt3qT5kfsBk",
+            "name": "附件",
+            "type": 6,
+          },
+        },
+        "views": [
+          {
+            "autoSave": false,
+            "columns": [
+              {
+                "fieldId": "fldMNKMZ7X4P6",
+                "statType": 1,
+              },
+              {
+                "fieldId": "flds5VCUKUZMH",
+              },
+              {
+                "fieldId": "fldt3qT5kfsBk",
+              },
+            ],
+            "frozenColumnCount": 1,
+            "id": "viwruy3vMmo70",
+            "name": "维格视图",
+            "rows": [
+              {
+                "recordId": "recfte8MK9TWd",
+              },
+              {
+                "recordId": "recc2klate85d",
+              },
+              {
+                "recordId": "recMWYWw95sVi",
+              },
+            ],
+            "type": 1,
+          },
+        ],
+      },
+      "recordMap": {
+        "fldMNKMZ7X4P6": {
+          "data": {
+            "fldMNKMZ7X4P6": [
+              {
+                "text": "x z c x z c ",
+                "type": 1,
+              },
+            ],
+            "flds5VCUKUZMH": [
+              "optQAZBO9LO3t",
+            ],
+            "fldt3qT5kfsBk": [
+              {
+                "bucket": "QNY1",
+                "height": 646,
+                "id": "atcW6tzBymOzF",
+                "mimeType": "image/png",
+                "name": "image.png",
+                "size": 60983,
+                "token": "space/2023/05/17/0026b58ee1654c439bffc3974f9cb4dc",
+                "width": 856,
+              },
+            ],
+          },
+          "id": "recXXXX",
+          "recordMeta": null,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`TableBundle parser zip file 2`] = `
+TableBundleDataSheet {
+  "extras": undefined,
+  "snapshot": {
+    "meta": {
+      "fieldMap": {
+        "fldMNKMZ7X4P6": {
+          "id": "fldMNKMZ7X4P6",
+          "name": "标题",
+          "property": {
+            "defaultValue": "",
+          },
+          "type": 19,
+        },
+        "flds5VCUKUZMH": {
+          "id": "flds5VCUKUZMH",
+          "name": "选项",
+          "property": {
+            "options": [
+              {
+                "color": 0,
+                "id": "optQAZBO9LO3t",
+                "name": "想啊啥",
+              },
+            ],
+          },
+          "type": 4,
+        },
+        "fldt3qT5kfsBk": {
+          "id": "fldt3qT5kfsBk",
+          "name": "附件",
+          "type": 6,
+        },
+      },
+      "views": [
+        {
+          "autoSave": false,
+          "columns": [
+            {
+              "fieldId": "fldMNKMZ7X4P6",
+              "statType": 1,
+            },
+            {
+              "fieldId": "flds5VCUKUZMH",
+            },
+            {
+              "fieldId": "fldt3qT5kfsBk",
+            },
+          ],
+          "frozenColumnCount": 1,
+          "id": "viwruy3vMmo70",
+          "name": "维格视图",
+          "rows": [
+            {
+              "recordId": "recfte8MK9TWd",
+            },
+            {
+              "recordId": "recc2klate85d",
+            },
+            {
+              "recordId": "recMWYWw95sVi",
+            },
+          ],
+          "type": 1,
+        },
+      ],
+    },
+    "recordMap": {
+      "fldMNKMZ7X4P6": {
+        "data": {
+          "fldMNKMZ7X4P6": [
+            {
+              "text": "x z c x z c ",
+              "type": 1,
+            },
+          ],
+          "flds5VCUKUZMH": [
+            "optQAZBO9LO3t",
+          ],
+          "fldt3qT5kfsBk": [
+            {
+              "bucket": "QNY1",
+              "height": 646,
+              "id": "atcW6tzBymOzF",
+              "mimeType": "image/png",
+              "name": "image.png",
+              "size": 60983,
+              "token": "space/2023/05/17/0026b58ee1654c439bffc3974f9cb4dc",
+              "width": 856,
+            },
+          ],
+        },
+        "id": "recXXXX",
+        "recordMeta": null,
+      },
+    },
+  },
+}
+`;

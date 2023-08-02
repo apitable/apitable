@@ -23,13 +23,13 @@ import DOMPurify from 'dompurify';
 import { ResponseStatusCodeEnums } from '../enum/response.status.code.enums';
 import { IActionResponse, IErrorResponse } from '../interface/action.response';
 
-interface MailServer {
+interface IMailServer {
   domain: string,
   port: string,
 }
 
 interface IMailMessageRequest {
-  mailServer?: MailServer;
+  mailServer?: IMailServer;
   server?: string;
   port?: string;
   account: string;

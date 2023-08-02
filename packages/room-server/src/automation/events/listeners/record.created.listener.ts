@@ -25,25 +25,23 @@ import { TriggerEventHelper } from '../helpers/trigger.event.helper';
 
 @Injectable()
 export class RecordCreatedListener {
-
   private readonly options: IEventListenerOptions;
 
-  constructor(
-    private readonly triggerEventHelper: TriggerEventHelper,
-  ) {
+  constructor(private readonly triggerEventHelper: TriggerEventHelper) {
     this.options = defaultEventListenerOptions;
   }
 
   @OnEvent(OPEventNameEnums.RecordCreated)
-  public handleRecordCreatedEvent(event: RecordCreatedEvent) {
-    if(!isHandleEvent(event, event.beforeApply, this.options)) {
+  public async handleRecordCreatedEvent(event: RecordCreatedEvent) {
+    if (!isHandleEvent(event, event.beforeApply, this.options)) {
       return;
     }
 
     // record matching condition
-    this.triggerEventHelper.recordMatchConditionsTriggerHandler(event.context, event.metaContext);
-    // record created
-    this.triggerEventHelper.recordCreatedTriggerHandler(event.context, event.metaContext);
+    await Promise.all([
+      await this.triggerEventHelper.recordMatchConditionsTriggerHandler(event.context, event.metaContext),
+      // record created
+      await this.triggerEventHelper.recordCreatedTriggerHandler(event.context, event.metaContext),
+    ]);
   }
-
 }

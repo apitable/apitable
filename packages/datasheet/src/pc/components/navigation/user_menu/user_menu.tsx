@@ -30,6 +30,7 @@ import {
 } from 'enterprise';
 import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, ImageCropUpload, Message, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo, IUploadType } from 'pc/components/common/image_crop_upload';

@@ -18,38 +18,31 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import '@apitable/i18n-lang';
+import { RestService } from 'shared/services/rest/rest.service';
+import { ApiException, CommonException, ServerException } from '../../../shared/exception';
+import { ApiUsageGuard } from './api.usage.guard';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
-import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { RestService } from 'shared/services/rest/rest.service';
-import { Logger } from 'winston';
-import { ApiException, CommonException, ServerException } from '../../../shared/exception';
-import { ApiUsageGuard } from './api.usage.guard';
 
 describe('ApiUsageGuard', () => {
   let app: NestFastifyApplication;
   let guard: ApiUsageGuard;
-  let logger: Logger;
   let restService: RestService;
-  let datasheetService: DatasheetService;
   let context: any;
+
   beforeAll(async() => {
-    jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     await app.init();
-    logger = await app.resolve(WINSTON_MODULE_PROVIDER);
     context = {
       switchToHttp: jest.fn().mockReturnThis(),
       getRequest: jest.fn().mockReturnThis(),
     };
     restService = app.get(RestService);
-    datasheetService = app.get(DatasheetService);
-    guard = new ApiUsageGuard(logger, restService, datasheetService);
+    guard = app.get(ApiUsageGuard);
   });
 
   afterAll(async() => {
@@ -59,7 +52,7 @@ describe('ApiUsageGuard', () => {
   describe('canActivate', () => {
     it('usage--call backend error--should return error', () => {
       jest.spyOn(restService, 'getApiUsage').mockImplementationOnce(
-        (): Promise<string[]> => {
+        () => {
           throw new ServerException(CommonException.SERVER_ERROR);
         },
       );
@@ -69,15 +62,11 @@ describe('ApiUsageGuard', () => {
     });
     it('usage not isAllowOverLimit throws an error', () => {
       jest.spyOn(restService, 'getApiUsage').mockImplementationOnce(
-        (): any => {
-          return {
-            data: {
-              isAllowOverLimit: false,
-              maxApiUsageCount: 2,
-              apiUsageUsedCount: 4
-            }
-          };
-        },
+        () => Promise.resolve({
+          isAllowOverLimit: false,
+          maxApiUsageCount: 2,
+          apiUsageUsedCount: 4
+        }),
       );
       return guard.canActivate(context).catch(e => {
         return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_forbidden_because_of_usage));

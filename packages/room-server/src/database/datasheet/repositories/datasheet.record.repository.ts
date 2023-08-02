@@ -32,14 +32,14 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
 
   selectRecordsDataByDstId(dstId: string): Promise<DatasheetRecordEntity[] | undefined> {
     return this.find({
-      select: ['recordId', 'data'],
+      select: ['recordId', 'data', 'recordMeta'],
       where: [{ dstId, isDeleted: false }],
     });
   }
 
   selectRecordsDataByDstIdIgnoreDeleted(dstId: string): Promise<DatasheetRecordEntity[] | undefined> {
     return this.find({
-      select: ['recordId', 'data'],
+      select: ['recordId', 'data', 'recordMeta'],
       where: [{ dstId }],
     });
   }
@@ -64,5 +64,9 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
       `,
       [path, dstId, recordId],
     );
+  }
+
+  selectDeletedCountByDstIdAndRecordIs(dstId: string, recordIds: string[]): Promise<number> {
+    return this.count({ where: [{ dstId, recordId: In(recordIds), isDeleted: true }] });
   }
 }

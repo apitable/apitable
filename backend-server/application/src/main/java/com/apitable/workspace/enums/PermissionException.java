@@ -18,14 +18,13 @@
 
 package com.apitable.workspace.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
  * <p>
- * Permission Exception
+ * Permission Exception.
  * </p>
  *
  * @author Shawn Deng
@@ -58,7 +57,8 @@ public enum PermissionException implements BaseException {
 
     ROLE_NOT_EXIST(609, "admin does not exist"),
 
-    ORG_UNIT_NOT_EXIST(611, "The member or group you selected has been removed, please select again"),
+    ORG_UNIT_NOT_EXIST(611,
+        "The member or group you selected has been removed, please select again"),
 
     ADD_NODE_ROLE_ERROR(613, "Failed to add node role"),
 
@@ -80,9 +80,12 @@ public enum PermissionException implements BaseException {
 
     ILLEGAL_CHANGE_FIELD_ROLE(627, "No permission to modify field permission"),
 
-    ROOT_NODE_OP_DENIED(628, "The space admin has restricted adding and deleting files to the root directory, so you can't do this"),
+    ROOT_NODE_OP_DENIED(628,
+        "The space admin has restricted adding and deleting files to the root directory, so you can't do this"),
 
-    ONLY_MAIN_ADMIN_OPERATE(629, "only the main administrator can operate");
+    ONLY_MAIN_ADMIN_OPERATE(629, "only the main administrator can operate"),
+
+    NOT_PERMISSION_ACCESS(630, "not permission access resource");
 
     private final Integer code;
 

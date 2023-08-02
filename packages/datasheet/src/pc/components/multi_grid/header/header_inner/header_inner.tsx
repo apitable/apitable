@@ -19,6 +19,7 @@
 import { colorVars } from '@apitable/components';
 import { Field, IField } from '@apitable/core';
 import { WarnCircleFilled } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import * as React from 'react';
 import styles from '../styles.module.less';

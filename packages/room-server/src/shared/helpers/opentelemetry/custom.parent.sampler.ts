@@ -20,7 +20,7 @@ import { Context, Link, Sampler, SamplingDecision, SpanAttributes, SpanKind } fr
 
 export class CustomParentBasedSampler implements Sampler {
 
-  private FIXED_RULES: Map<string, CustomizeSampler> = new Map();
+  private FIXED_RULES: Map<string, ICustomizeSampler> = new Map();
 
   constructor() {
     this.init_fixed_rules();
@@ -48,6 +48,6 @@ export class CustomParentBasedSampler implements Sampler {
 
 }
 
-interface CustomizeSampler {
+interface ICustomizeSampler {
   sampleRate: number;
 }

@@ -126,3 +126,9 @@ export interface INotificationCreateRo {
    */
   fromUserId?: string;
 }
+
+export interface IApiUsage {
+  isAllowOverLimit?: boolean;
+  apiUsageUsedCount?: number;
+  maxApiUsageCount?: number;
+}

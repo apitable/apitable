@@ -25,16 +25,19 @@ import * as React from 'react';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { useSelector } from 'react-redux';
+import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 
 interface ISearchResultProps {
   searchResult: { folders: INode[], files: INode[] } | string
   onlyShowAvailable: boolean,
+
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void,
-  checkNodeDisable(node: INode): undefined | { budget: string, message: string },
+
+  noCheckPermission?: boolean,
 }
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
-  const { searchResult, checkNodeDisable, onlyShowAvailable, onNodeClick } = props;
+  const { searchResult, noCheckPermission, onlyShowAvailable, onNodeClick } = props;
   const themeName = useSelector(state => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (typeof searchResult === 'string') {
@@ -80,6 +83,11 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
     );
   };
 
+  const _checkNodeDisable = (node: INode) => {
+    if (noCheckPermission) return;
+    return checkNodeDisable(node);
+  };
+
   const FileList = (files: INode[]) => {
     if (!files.length) {
       return null;
@@ -95,7 +103,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
                 id={node.nodeId}
                 onClick={id => onNodeClick('Datasheet', id)}
                 richContent
-                disable={checkNodeDisable(node)}
+                disable={_checkNodeDisable(node)}
               >
                 {node.nodeName}
               </File>
@@ -108,7 +116,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
 
   const folders = searchResult.folders;
   const files = onlyShowAvailable ?
-    searchResult.files.filter(node => !checkNodeDisable(node)) : searchResult.files;
+    searchResult.files.filter(node => !_checkNodeDisable(node)) : searchResult.files;
   return (
     <div className={styles.searchResult}>
       {FolderList(folders)}

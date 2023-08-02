@@ -26,6 +26,7 @@ import classnames from 'classnames';
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'enterprise';
 import { truncate } from 'lodash';
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, AvatarType, ButtonPlus, ContextmenuItem, Modal, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';

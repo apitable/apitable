@@ -39,3 +39,4 @@ yarn-error.log*
 # ENV configuration
 /env/*
 !/env/.env.defaults
+.clinic/

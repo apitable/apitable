@@ -17,15 +17,18 @@
  */
 
 import {
+  IDatasheetTablebundles, IRecoverDatasheetTablebundles,
   IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, IGetTreeSelectDataReq,
   IGetTreeSelectDataRes, IGetTreeSelectSnapshotReq, IGetTreeSelectSnapshotRes, ISubOrUnsubByRecordIdsReq, IUpdateTreeSelectSnapshotReq,
 } from 'modules/database/api/datasheet_api.interface';
-import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
-import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack } from '../../../exports/store';
+import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack, ISnapshot } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
+import { WasmApi } from 'modules/database/api';
+import { getBrowserDatabusApiEnabled } from './wasm';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
@@ -34,9 +37,18 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  * @param dstId 
  * @param recordIds 
  * @returns 
+ * 
+ * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
-export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
+export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
   console.log({ baseURL });
+
+  if (getBrowserDatabusApiEnabled()) {
+    if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
+      return WasmApi.getInstance().get_datasheet_pack(dstId);
+    }
+  }
+
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
     baseURL,
     params: {
@@ -437,3 +449,36 @@ export const updateCascaderSnapshot = ({
     linkedViewId,
   },
 });
+
+// create datasheet snapshot
+export const createDatasheetTablebundle = (nodeId: string) => {
+  return axios.post<IApiWrapper & { data: IDatasheetTablebundles }>(urlcat(Url.DATASHEET_TABLEBUNDLE, { nodeId }), undefined, { baseURL });
+};
+
+// get datasheet snapshot
+export const getDatasheetTablebundles = (nodeId: string, tablebundleId?: string) => {
+  return axios.get<IApiWrapper & { data: IDatasheetTablebundles[] }>(urlcat(Url.DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};
+
+// rename datasheet snapshot
+export const updateDatasheetTablebundle = (nodeId: string, tablebundleId: string, name: string) => {
+  return axios.put<IApiWrapper>(urlcat(Url.UPDATE_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { name }, { baseURL });
+};
+
+// delete datasheet snapshot
+export const deleteDatasheetTablebundle = (nodeId: string, tablebundleId: string) => {
+  return axios.delete<IApiWrapper>(urlcat(Url.UPDATE_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};
+
+// recover datasheet snapshot
+export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string, recoverNameSuffix: string) => {
+  return axios.post<IApiWrapper & { data: IRecoverDatasheetTablebundles }>(
+    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId, name: recoverNameSuffix }), undefined, { baseURL }
+  );
+};
+
+// preview datasheet snapshot
+export const previewDatasheetTablebundle = (nodeId: string, tablebundleId: string) => {
+  return axios.get<IApiWrapper & { data: { snapshot: ISnapshot } }>(
+    urlcat(Url.PREVIEW_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+};

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { ITheme, Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
 import {
@@ -76,7 +77,7 @@ const transformOptions = (fields: IField[], theme: ITheme) => {
     return {
       ...res,
       disabled: field.type === FieldType.DeniedField,
-      prefixIcon: <FieldIcon color={theme.palette.text.third} />,
+      prefixIcon: <FieldIcon color={theme.color.fc3} />,
     };
   });
 };

@@ -103,14 +103,14 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
       {autoSave ? t(Strings.auto_save_has_been_opend_content) : t(Strings.view_property_sync_content)}
     </Typography>
     <div className={styles.footer}>
-      <LinkButton onClick={() => cancelModification(viewPropertyProps)} className={styles.borderNone}>
+      <LinkButton onClick={() => cancelModification(viewPropertyProps)} className={styles.borderNone} >
         <Typography variant={'body4'} className={styles.cancelText}>
           {t(Strings.revoke_changes)}
         </Typography>
       </LinkButton>
       {
         editable && (
-          <Button color='primary' onClick={() => modifyViewProperty(viewPropertyProps)} className={styles.borderNone}>
+          <Button color='primary' size={'small'} onClick={() => modifyViewProperty(viewPropertyProps)} className={styles.borderNone}>
             {t(Strings.save_this_modified)}
           </Button>
         )

@@ -1,14 +1,14 @@
-import { FilterConjunction, FOperator, IFilterCondition, IFilterInfo } from 'types/view_types';
+import { FilterConjunction, FOperator, IFilterCondition, IFilterInfo, IFilterSingleSelect } from 'types/view_types';
 import { IOpenFilterCondition, IOpenFilterConditionGroup, IOpenFilterInfo } from 'types/open';
 import { getFieldTypeString } from 'model/utils';
 import { Field } from 'model/field';
 import { getNewId, IDPrefix } from 'utils';
 import Joi from 'joi';
 import { enumToArray } from 'model/field/validate_schema';
-import { APIMetaFieldType } from 'types';
-import { IExpression, OperandTypeEnums, IExpressionOperand, IOperand } from 'automation_manager/interface';
+import { APIMetaFieldType, FieldType } from 'types';
+import { IExpression, IExpressionOperand, IOperand, OperandTypeEnums, OperatorEnums } from 'automation_manager/interface';
 import { isEmpty } from 'lodash';
-import { IReduxState, IFieldMap, IMeta } from 'exports/store';
+import { IFieldMap, IMeta, IReduxState } from 'exports/store';
 
 const getConjunctionsByGroup = (conditionGroup: IOpenFilterConditionGroup) => {
   const conjunctions = Object.keys(conditionGroup);
@@ -178,12 +178,21 @@ export function parseInnerFilter(filterInfo: IOpenFilterInfo, context: {
     }
     const operator = Object.keys(filterValueMap)[0];
     exitIds.push(conditionId);
+    const fieldValue = filterValueMap[operator];
+    const isSingleContains = field.type === FieldType.SingleSelect && operator === FOperator.Contains;
+    let value;
+    if (isSingleContains) {
+      value = Array.isArray(fieldValue) ?
+        fieldValue.map(item => fieldBind.openFilterValueToFilterValue(item)).flat() : fieldBind.openFilterValueToFilterValue(fieldValue);
+    } else {
+      value = fieldBind.openFilterValueToFilterValue(fieldValue);
+    }
     return {
       conditionId,
       fieldId: fieldKey,
       fieldType: field.type,
       operator,
-      value: fieldBind.openFilterValueToFilterValue(filterValueMap[operator])
+      value: value
     } as IFilterCondition;
   };
   const parseConditionGroup = (conditionGroup: IOpenFilterConditionGroup) => {
@@ -197,6 +206,26 @@ export function parseInnerFilter(filterInfo: IOpenFilterInfo, context: {
   return parseConditionGroup(filterInfo);
 }
 
+function openFilterValueToFilterValueInterceptor(fieldModel: Field, fieldValue: IFilterSingleSelect, operator: OperatorEnums, fieldType: FieldType){
+  const ensuredArrayValue = Array.isArray(fieldValue)? fieldValue: [fieldValue];
+  if (fieldType === FieldType.SingleSelect && operator === OperatorEnums.Contains) {
+    return ensuredArrayValue.map(item => fieldModel.openFilterValueToFilterValue(item)).flat();
+  }
+  return fieldModel.openFilterValueToFilterValue(fieldValue);
+}
+
+function filterValueToOpenFilterValueInterceptor(fieldModel: Field, value: IFilterSingleSelect, operator: OperatorEnums, fieldType: FieldType){
+  if(value == null) {
+    return fieldModel.filterValueToOpenFilterValue(value);
+  }
+  const arrayValue: IFilterSingleSelect = Array.isArray(value) ? value : [value]; 
+  if (operator === OperatorEnums.Contains && fieldType == FieldType.SingleSelect) {
+    return arrayValue.map((option: string) => fieldModel.filterValueToOpenFilterValue([option]))
+      .filter(Boolean);
+  }
+      
+  return fieldModel.filterValueToOpenFilterValue(value);
+}
 /**
  * Converting expressions to external structures.
  * Expressions for filter components.
@@ -204,6 +233,7 @@ export function parseInnerFilter(filterInfo: IOpenFilterInfo, context: {
  * @param context 
  */
 export function parseOpenFilterByExpress(filterExpress: IExpressionOperand, context: {
+
   meta: IMeta, state: IReduxState
 }) {
   const { meta, state } = context;
@@ -224,10 +254,11 @@ export function parseOpenFilterByExpress(filterExpress: IExpressionOperand, cont
     if (!fieldModel.acceptFilterOperators.includes(operator as any)) {
       return {};
     }
+
     return {
       fieldKey: fieldId,
       [getFieldTypeString(field.type)]: {
-        [operator]: fieldModel.filterValueToOpenFilterValue(value)
+        [operator]: filterValueToOpenFilterValueInterceptor(fieldModel, value, operator, field.type)
       }
     } as IOpenFilterCondition;
   };
@@ -269,6 +300,11 @@ export function parseFilterExpressByOpenFilter(filterInfo: IOpenFilterInfo, cont
       return;
     }
     const value = valueMap[fieldType];
+    const fieldValue = value[Object.keys(value)];
+
+    const operator = Object.keys(value)[0];
+    const checkedFieldValue = openFilterValueToFilterValueInterceptor(fieldBind, fieldValue, operator as OperatorEnums, field.type);
+
     return {
       type: OperandTypeEnums.Expression,
       value: {
@@ -280,7 +316,7 @@ export function parseFilterExpressByOpenFilter(filterInfo: IOpenFilterInfo, cont
           },
           {
             type: OperandTypeEnums.Literal,
-            value: fieldBind.openFilterValueToFilterValue(value[Object.keys(value)])
+            value: checkedFieldValue
           }
         ]
       }

@@ -20,23 +20,23 @@ import { getNewId, IDPrefix } from '@apitable/core';
 
 export class DatasheetDescriptionDto {
   type!: string;
-  data!: Daum[];
+  data!: IDaum[];
   render!: string;
 }
 
-interface Daum {
+interface IDaum {
   type: string;
-  data: Data;
+  data: IData;
   object: string;
-  children: Children[];
+  children: IChildren[];
   _id: string;
 }
 
-interface Data {
+interface IData {
   align: string;
 }
 
-interface Children {
+interface IChildren {
   text: string;
 }
 

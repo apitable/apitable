@@ -43,6 +43,7 @@ import { SharedModule } from 'shared/shared.module';
 import { SocketModule } from 'socket/socket.module';
 import { UnitModule } from 'unit/unit.module';
 import { UserModule } from 'user/user.module';
+import { DeveloperModule } from './developer/developer.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { UserModule } from 'user/user.module';
     UnitModule,
     GrpcModule,
     RobotModule,
+    DeveloperModule,
   ],
   providers: [],
 })

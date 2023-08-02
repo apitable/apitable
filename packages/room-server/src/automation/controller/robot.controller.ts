@@ -26,7 +26,7 @@ import { AutomationTriggerRepository } from '../repositories/automation.trigger.
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { NodeService } from 'node/services/node.service';
 
-@Controller('nest/v1/robots')
+@Controller(['nest/v1/robots', 'nest/v1/automation/robots'])
 export class RobotController {
   constructor(
     private readonly automationRobotRepository: AutomationRobotRepository,

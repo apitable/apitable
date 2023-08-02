@@ -119,7 +119,7 @@ export function getImageThumbSrc(src: string, options?: IImageThumbOption) {
 
 declare const window: any;
 
-export const getHostOfAttachment = (bucket: string) => {
+export const getHostOfAttachment = (bucket: string, fileUrl?: string) => {
   if (typeof window != 'object') {
     return process.env[bucket.toUpperCase()] || process.env.OSS_HOST;
   }
@@ -128,7 +128,13 @@ export const getHostOfAttachment = (bucket: string) => {
 
   if (bucket.toUpperCase() === 'QNY1') {
     const QNY1 = window.__initialization_data__?.envVars.QNY1;
-    return QNY1.includes('http') ? QNY1 : urlcat(origin, QNY1 + '');
+    if (QNY1.includes('http')) {
+      return QNY1;
+    }
+    if (fileUrl && startsWithIgnoreSlashPre(fileUrl, QNY1)) {
+      return origin;
+    }
+    return urlcat(origin, QNY1 + '');
   }
 
   if (bucket.toUpperCase() === 'QNY2') {
@@ -186,10 +192,17 @@ export const integrateCdnHost = (
   if (!pathName) {
     return pathName;
   }
-  const host: string = getHostOfAttachment('QNY1');
   // TODO: delete this. Compatible with old version data
   if (pathName.startsWith('http')) {
     return pathName;
   }
+  const host: string = getHostOfAttachment('QNY1', pathName);
   return urlcat(host, pathName);
 };
+
+function startsWithIgnoreSlashPre(str: string, prefix: string): boolean {
+  if (prefix.startsWith('/')) {
+    prefix = prefix.substring(1, prefix.length);
+  }
+  return str.startsWith(prefix);
+}

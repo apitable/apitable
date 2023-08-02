@@ -22,6 +22,7 @@ import { DragOutlined, ExpandOutlined, MoreOutlined, NarrowOutlined } from '@api
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';

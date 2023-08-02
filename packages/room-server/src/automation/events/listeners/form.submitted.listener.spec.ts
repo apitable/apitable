@@ -17,24 +17,24 @@
  */
 
 import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ResourceType } from '@apitable/core';
-import { Test, TestingModule } from '@nestjs/testing';
 import { AutomationService } from '../../services/automation.service';
 import { RobotTriggerService } from '../../services/robot.trigger.service';
 import { TriggerEventHelper } from '../helpers/trigger.event.helper';
 import { FormSubmittedListener } from './form.submitted.listener';
 import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.submitted.event';
-import { LoggerConfigService } from '../../../shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston/dist/winston.module';
+import { WinstonModule } from 'nest-winston';
+import { Test, TestingModule } from '@nestjs/testing';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 
 describe('FormSubmittedListener', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let automationService: AutomationService;
   let robotTriggerService: RobotTriggerService;
   let triggerEventHelper: TriggerEventHelper;
   let formSubmittedListener: FormSubmittedListener;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
@@ -62,14 +62,15 @@ describe('FormSubmittedListener', () => {
         FormSubmittedListener,
       ],
     }).compile();
-    automationService = module.get<AutomationService>(AutomationService);
-    robotTriggerService = module.get<RobotTriggerService>(RobotTriggerService);
-    triggerEventHelper = module.get<TriggerEventHelper>(TriggerEventHelper);
-    formSubmittedListener = module.get<FormSubmittedListener>(FormSubmittedListener);
+
+    automationService = moduleFixture.get<AutomationService>(AutomationService);
+    robotTriggerService = moduleFixture.get<RobotTriggerService>(RobotTriggerService);
+    triggerEventHelper = moduleFixture.get<TriggerEventHelper>(TriggerEventHelper);
+    formSubmittedListener = moduleFixture.get<FormSubmittedListener>(FormSubmittedListener);
   });
 
-  afterAll(() => {
-    module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {

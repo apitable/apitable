@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.23.0",
+  "version": "0.99.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,6 +21,7 @@
     "node": ">=8.x"
   },
   "dependencies": {
+    "@apitable/databus-wasm": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "4.14.161",
     "@types/socket.io-client": "^1.4.36",
@@ -31,9 +32,10 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "dayjs": "^1.11.7",
+    "fflate": "^0.8.0",
     "fuse.js": "^6.4.1",
     "immer": "9.0.16",
-    "joi": "^17.4.2",
+    "joi": "^17.9.2",
     "json-schema": "^0.4.0",
     "lodash": "4.17.21",
     "lru-cache": "^5.1.1",
@@ -88,6 +90,9 @@
       "node_modules",
       "src"
     ],
+    "moduleNameMapper": {
+      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [

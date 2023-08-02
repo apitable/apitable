@@ -21,6 +21,7 @@ export * from './commands';
 export * from './engine';
 export * from './io';
 export * from './model';
+export * from './tablebundle';
 export * from './sync';
 export * from './types';
 export * from './utils';
@@ -41,8 +42,9 @@ export * from './modules/database/store/reducers/resource';
 
 export * as api from './modules/shared/api';
 
+import { WasmApi } from 'modules/database/api';
 import * as databus from './databus';
 
-export { databus };
+export { databus, WasmApi };
 
 export { JOTApply } from './modules/database/store/reducers/resource';

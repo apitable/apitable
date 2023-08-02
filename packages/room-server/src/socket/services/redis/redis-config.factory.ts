@@ -17,7 +17,7 @@
  */
 
 import { Logger } from '@nestjs/common';
-import IORedis = require('ioredis');
+import { RedisOptions } from 'ioredis';
 import { RedisConstants } from 'shared/common/constants/socket.module.constants';
 
 export const redisConfig = {
@@ -29,14 +29,14 @@ export const redisConfig = {
    * @param clientType connection client type[sub/pub/client]
    * @param keyPrefix
    */
-  useFactory: (clientType: string, keyPrefix: string): IORedis.RedisOptions => {
+  useFactory: (clientType: string, keyPrefix: string): RedisOptions => {
     const logger = new Logger('RedisAdapterFactory');
-
     return {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379', 10),
       password: process.env.REDIS_PASSWORD,
       db: parseInt(process.env.REDIS_DB || '0', 10),
+      tls: Object.is(process.env.REDIS_SSL_ENABLED, 'true') as any,
       retryStrategy(times: number): number | void {
         if (times <= RedisConstants.RE_CONNECT_MAX_TIMES) {
           // reconnect after

@@ -21,6 +21,7 @@ import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, St
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+// eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
 import { expandRecord } from 'pc/components/expand_record';
 import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';

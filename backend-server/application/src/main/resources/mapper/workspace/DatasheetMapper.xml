@@ -49,6 +49,6 @@
     <select id="selectByDstId" resultType="com.apitable.workspace.entity.DatasheetEntity">
         SELECT *
         FROM ${tablePrefix}datasheet
-        WHERE dst_id = #{nodeId}
+        WHERE dst_id = #{nodeId} and is_deleted = 0
     </select>
 </mapper>

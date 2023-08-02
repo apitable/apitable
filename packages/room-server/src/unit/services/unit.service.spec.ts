@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { UserService } from 'user/services/user.service';
 import { UnitRepository } from '../repositories/unit.repository';
@@ -23,20 +22,21 @@ import { UnitService } from './unit.service';
 import { UnitTeamService } from './unit.team.service';
 import { UnitMemberService } from './unit.member.service';
 import { MemberType } from '@apitable/core';
-import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
+import { Test, TestingModule } from '@nestjs/testing';
 import { UnitTeamMemberRefRepository } from 'unit/repositories/unit.team.member.ref.repository';
+import { UnitRoleMemberRepository } from 'unit/repositories/unit.role.member.repository';
 
 describe('Test', () => {
-  let module: TestingModule;
-  let service: UnitService;
+  let moduleFixture: TestingModule;
+  let unitService: UnitService;
   let unitRepository: UnitRepository;
   let unitMemberService: UnitMemberService;
   let unitTeamService: UnitTeamService;
   let userService: UserService;
   let configService: EnvConfigService;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [
         UnitService,
         UnitRepository,
@@ -69,15 +69,12 @@ describe('Test', () => {
         }
       ],
     }).compile();
-    unitRepository = module.get<UnitRepository>(UnitRepository);
-    unitMemberService = module.get<UnitMemberService>(UnitMemberService);
-    unitTeamService = module.get<UnitTeamService>(UnitTeamService);
-    configService = module.get<EnvConfigService>(EnvConfigService);
-    userService = module.get<UserService>(UserService);
-    service = module.get<UnitService>(UnitService);
-  });
-
-  beforeEach(() => {
+    unitRepository = moduleFixture.get<UnitRepository>(UnitRepository);
+    unitMemberService = moduleFixture.get<UnitMemberService>(UnitMemberService);
+    unitTeamService = moduleFixture.get<UnitTeamService>(UnitTeamService);
+    configService = moduleFixture.get<EnvConfigService>(EnvConfigService);
+    userService = moduleFixture.get<UserService>(UserService);
+    unitService = moduleFixture.get<UnitService>(UnitService);
     jest.spyOn(unitRepository, 'selectUnitMembersByIdsIncludeDeleted')
       .mockResolvedValue([{ id: '2023',unitRefId: 2023, unitType: 3 }]);
     jest.spyOn(unitMemberService, 'getMembersBaseInfo')
@@ -139,8 +136,12 @@ describe('Test', () => {
       }]);
   });
 
+  afterEach(async() => {
+    await moduleFixture.close();
+  });
+
   it('should be return unit info', async() => {
-    const unitBaseInfoDtos = await service.getUnitMemberInfoByIds(['2023']);
+    const unitBaseInfoDtos = await unitService.getUnitMemberInfoByIds(['2023']);
     expect(unitBaseInfoDtos.length).toEqual(1);
     expect(unitBaseInfoDtos[0]?.avatar).toEqual('host/avatar');
     expect(unitBaseInfoDtos[0]?.isActive).toEqual(true);
@@ -157,7 +158,7 @@ describe('Test', () => {
   });
 
   it('should be return unit member info by user ids', async() => {
-    const userIdToUnitMember = await service.getUnitMemberInfoByUserIds('spaceId', ['2023']);
+    const userIdToUnitMember = await unitService.getUnitMemberInfoByUserIds('spaceId', ['2023']);
     expect(userIdToUnitMember.get('2023')).toBeDefined();
     expect(userIdToUnitMember.get('2023')?.userId).toEqual('2023');
     expect(userIdToUnitMember.get('2023')?.unitId).toEqual('2023');
@@ -172,7 +173,7 @@ describe('Test', () => {
   });
 
   it('should be return unit info by space id and unit id', async() => {
-    const unitInfos = await service.getUnitInfo('spaceId', ['2023']);
+    const unitInfos = await unitService.getUnitInfo('spaceId', ['2023']);
     expect(unitInfos.length).toEqual(1);
     expect(unitInfos[0]?.uuid).toEqual('2023');
     expect(unitInfos[0]?.userId).toEqual('2023');

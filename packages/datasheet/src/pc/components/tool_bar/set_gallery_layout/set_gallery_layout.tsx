@@ -29,6 +29,7 @@ import { Slider, Switch } from 'antd';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';

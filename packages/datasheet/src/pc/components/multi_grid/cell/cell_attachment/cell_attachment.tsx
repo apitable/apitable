@@ -113,6 +113,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
 
     const ImageWrapper = (
       <span
+        key={index}
         className={classNames(styles.imgItem, { image: isImageType }, 'img')}
         onMouseDown={(e) => {
           if (e.button !== MouseDownType.Left) {

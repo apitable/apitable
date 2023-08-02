@@ -139,6 +139,7 @@ export interface ISpaceBasicInfo {
     authMode: number;
 
   },
+  isEnableChatbot: boolean;
   lastUpdateTime?: number;
   isCreatorNameModified?: boolean;
   isOwnerNameModified?: boolean;

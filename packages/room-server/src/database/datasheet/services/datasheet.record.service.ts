@@ -19,19 +19,19 @@
 import { Field, FieldType, IMeta, IRecord, IRecordMap, IReduxState } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
-import { RecordCommentService } from './record.comment.service';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
+import { In } from 'typeorm';
+import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
+import { DatasheetRecordRepository } from '../repositories/datasheet.record.repository';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';
-import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
+import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
 import { RecordHistoryQueryRo } from '../ros/record.history.query.ro';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
-import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
-import { DatasheetRecordEntity } from '../entities/datasheet.record.entity';
-import { In } from 'typeorm';
+import { RecordCommentService } from './record.comment.service';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -39,25 +39,43 @@ export class DatasheetRecordService {
     private readonly recordRepo: DatasheetRecordRepository,
     private readonly recordCommentService: RecordCommentService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
-  ) {}
+  ) {
+  }
 
   @Span()
-  async getRecordsByDstId(dstId: string): Promise<IRecordMap> {
+  async getRecordsByDstId(dstId: string, includeCommentCount = true): Promise<IRecordMap> {
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
     });
-    const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
+    let commentCountMap = {};
+    if (includeCommentCount) {
+      commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
+    }
     return this.formatRecordMap(records, commentCountMap);
   }
 
+  async batchSave(records: any[]) {
+    return await this.recordRepo
+      .createQueryBuilder()
+      .insert()
+      .values(records)
+      .execute();
+  }
+
   @Span()
-  async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<IRecordMap> {
+  async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false, includeCommentCount = true): Promise<IRecordMap> {
+    if (recordIds && recordIds.length === 0) {
+      return {};
+    }
     const records = await this.recordRepo.find({
       select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
     });
-    const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
+    let commentCountMap = {};
+    if (includeCommentCount) {
+      commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
+    }
     return this.formatRecordMap(records, commentCountMap, recordIds);
   }
 
@@ -112,7 +130,7 @@ export class DatasheetRecordService {
     return this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 
-  async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false): Promise<IRecordMap> {
+  async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false): Promise<IRecordMap> {
     const records = ignoreDeleted
       ? await this.recordRepo.selectRecordsDataByDstIdIgnoreDeleted(dstId)
       : await this.recordRepo.selectRecordsDataByDstId(dstId);
@@ -126,6 +144,10 @@ export class DatasheetRecordService {
         data: cur.data!,
         commentCount: commentCountMap && commentCountMap[cur.recordId] ? commentCountMap[cur.recordId]! : 0,
       };
+      const record = pre[cur.recordId];
+      if (loadRecordMeta && record) {
+        record.recordMeta = cur.recordMeta;
+      }
       return pre;
     }, {});
   }
@@ -293,5 +315,10 @@ export class DatasheetRecordService {
     }
 
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]!) || '';
+  }
+
+  async isRecordsDeleted(dstId: string, recordIds: string[]) {
+    const count = await this.recordRepo.selectDeletedCountByDstIdAndRecordIs(dstId, recordIds);
+    return count > 0;
   }
 }

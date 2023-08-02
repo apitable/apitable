@@ -18,7 +18,7 @@
 
 import { useFields } from '../../hooks';
 import React from 'react';
-import { Select } from '@apitable/components';
+import { DropdownSelect as Select } from '@apitable/components';
 import { IFieldPicker, IOption } from 'interface';
 import { noop } from 'lodash';
 import { Strings, t } from 'core';

@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Test, TestingModule } from '@nestjs/testing';
 import { UnitMemberService } from './unit.member.service';
 import { UnitMemberRepository } from '../repositories/unit.member.repository';
 import { UserService } from 'user/services/user.service';
@@ -24,15 +23,16 @@ import { INamedUser } from '../../shared/interfaces';
 import { MemberType } from '@apitable/core';
 import { PermissionException } from '../../shared/exception';
 import { UnitMemberBaseInfoDto } from '../dtos/unit.member.base.info.dto';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('UnitMemberServiceTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let service: UnitMemberService;
   let userService: UserService;
   let unitMemberRepository: UnitMemberRepository;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       providers: [
         UnitMemberRepository,
         {
@@ -44,12 +44,10 @@ describe('UnitMemberServiceTest', () => {
         UnitMemberService,
       ],
     }).compile();
-    userService = module.get<UserService>(UserService);
-    unitMemberRepository = module.get<UnitMemberRepository>(UnitMemberRepository);
-    service = module.get<UnitMemberService>(UnitMemberService);
-  });
 
-  beforeAll(() => {
+    userService = moduleFixture.get<UserService>(UserService);
+    unitMemberRepository = moduleFixture.get<UnitMemberRepository>(UnitMemberRepository);
+    service = moduleFixture.get<UnitMemberService>(UnitMemberService);
     const unitMember = {
       id: '2023',
       memberName: 'memberName',
@@ -114,6 +112,10 @@ describe('UnitMemberServiceTest', () => {
         }
         return Promise.resolve(new Map());
       });
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   describe('getMembersBaseInfo', () => {

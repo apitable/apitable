@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { AutomationService } from '../../services/automation.service';
-import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
-import { LoggerConfigService } from '../../../shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston/dist/winston.module';
-import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { FieldType } from '@apitable/core';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { CommonEventContext } from '../domains/common.event';
 import { EventTypeEnums } from '../domains/event.type.enums';
+import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { QueueDynamicModule } from 'shared/services/queue/queue.dynamic.module';
 
 describe('TriggerEventHelper', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let automationService: AutomationService;
   let triggerEventHelper: TriggerEventHelper;
   const getTrigger = (input: object | undefined) => {
@@ -123,29 +124,30 @@ describe('TriggerEventHelper', () => {
     };
   };
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
         }),
+        QueueDynamicModule.forRoot()
       ],
       providers: [
         {
           provide: AutomationService,
           useValue: {
             handleTask: jest.fn().mockReturnValue(Promise.resolve()),
-          },
-        },
-        TriggerEventHelper,
+          }
+        }
+        , TriggerEventHelper,
       ],
     }).compile();
-    automationService = module.get<AutomationService>(AutomationService);
-    triggerEventHelper = module.get<TriggerEventHelper>(TriggerEventHelper);
+    automationService = moduleFixture.get<AutomationService>(AutomationService);
+    triggerEventHelper = moduleFixture.get<TriggerEventHelper>(TriggerEventHelper);
   });
 
-  afterAll(() => {
-    module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {
@@ -167,41 +169,37 @@ describe('TriggerEventHelper', () => {
     return getCommonMetaContext({ [key]: 'triggerTypeId' }, getDatasheetInfoInput());
   };
 
-  it('given record created context when handle record created trigger then should no be throw', () => {
-    expect(() => {
-      triggerEventHelper.recordCreatedTriggerHandler(
-        getCommonEventContext(),
-        getDatasheetInfoInputMetaContext(EventTypeEnums.RecordCreated)
-      );
-    }).not.toThrow();
+  it('given record created context when handle record created trigger then should no be throw', async() => {
+    await expect(
+      triggerEventHelper.recordCreatedTriggerHandler(getCommonEventContext(), getDatasheetInfoInputMetaContext(EventTypeEnums.RecordCreated)),
+    ).resolves.not.toThrow();
   });
 
-  it('given un match condition context when handle record match conditions trigger then should no be throw', () => {
-    expect(() => {
+  it('given un match condition context when handle record match conditions trigger then should no be throw', async() => {
+    await expect(
       triggerEventHelper.recordMatchConditionsTriggerHandler(
         getCommonEventContext(),
         getDatasheetInfoInputMetaContext(EventTypeEnums.RecordMatchesConditions),
-      );
-    }).not.toThrow();
+      ),
+    ).resolves.not.toThrow();
   });
 
-  it('given match condition context when handle record match conditions trigger then should no be throw', () => {
-    expect(() => {
-      triggerEventHelper
-        .recordMatchConditionsTriggerHandler(
-          getCommonEventContext(
-            ['fieldId'],
-            {
-              fieldId: [{ text: 'value' }],
-            },
-            getCommonState(),
-          ),
-          getCommonMetaContext(
-            { [`${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`]: 'triggerTypeId' },
-            getRecordMatchConditionalTriggers()[0]!.input,
-          ),
-        );
-    }).not.toThrow();
+  it('given match condition context when handle record match conditions trigger then should no be throw', async() => {
+    await expect(
+      triggerEventHelper.recordMatchConditionsTriggerHandler(
+        getCommonEventContext(
+          ['fieldId'],
+          {
+            fieldId: [{ text: 'value' }],
+          },
+          getCommonState(),
+        ),
+        getCommonMetaContext(
+          { [`${EventTypeEnums.RecordMatchesConditions}@${OFFICIAL_SERVICE_SLUG}`]: 'triggerTypeId' },
+          getRecordMatchConditionalTriggers()[0]!.input,
+        ),
+      ),
+    ).resolves.not.toThrow();
   });
 
   it('given trigger without input when render triggers then return empty list', () => {

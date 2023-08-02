@@ -49,13 +49,13 @@ export const skipUsageVerification = Object.is(process.env.SKIP_USAGE_VERIFICATI
  * whether show anonymous person in room.
  */
 export const showAnonymous: boolean = Object.is(process.env.SHOW_ANONYMOUS || 'true', 'true');
+export const enableAmqp: boolean = Object.is(process.env.ENABLE_AMQP || 'true', 'true');
 
-export const useNativeModule = process.env.USE_NATIVE_MODULE === 'true' || process.env.USE_NATIVE_MODULE === '1';
+export const enableAutomationWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'true');
 
 export default {
   isDevMode,
   isProdMode,
-  useNativeModule,
   serviceDomain,
   environment,
 };
