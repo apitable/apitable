@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatabaseConfigService } from 'shared/services/config/database.config.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, getConnection } from 'typeorm';
 import { WidgetRepository } from './widget.repository';
 import { WidgetEntity } from '../entities/widget.entity';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseConfigService } from 'shared/services/config/database.config.service';
+import { clearDatabase } from 'shared/testing/test-util';
 
 describe('DatasheetRepositoryTest', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let repository: WidgetRepository;
   let entity: WidgetEntity;
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRootAsync({
@@ -39,10 +40,10 @@ describe('DatasheetRepositoryTest', () => {
         TypeOrmModule.forFeature([WidgetRepository]),
       ],
     }).compile();
-    repository = module.get<WidgetRepository>(WidgetRepository);
-  });
 
-  beforeEach(async() => {
+    // clear database
+    await clearDatabase(getConnection());
+    repository = moduleFixture.get<WidgetRepository>(WidgetRepository);
     const widgetEntity: DeepPartial<WidgetEntity> = {
       widgetId: 'widgetId',
       revision: 1,
@@ -52,13 +53,9 @@ describe('DatasheetRepositoryTest', () => {
   });
 
   afterEach(async() => {
-    await repository.delete(entity.id);
+    await moduleFixture.close();
   });
-
-  afterAll(async() => {
-    await repository.manager.connection.close();
-  });
-
+  
   it('should get revisions by widget ids', async() => {
     const resourceRevisions = await repository.getRevisionByWdtIds([entity.widgetId]);
     expect(resourceRevisions.length).toEqual(1);

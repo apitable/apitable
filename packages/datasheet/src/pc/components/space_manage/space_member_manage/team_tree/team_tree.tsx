@@ -23,6 +23,7 @@ import {
 import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';

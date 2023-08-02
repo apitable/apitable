@@ -1,4 +1,4 @@
-import { ITheme, Select, useTheme } from '@apitable/components';
+import { ITheme, DropdownSelect as Select, useTheme } from '@apitable/components';
 import { Field, FieldType, IField, Strings, t } from '@apitable/core';
 import {
   UserOutlined, AttachmentOutlined,
@@ -67,7 +67,7 @@ const transformOptions = (fields: IField[], theme: ITheme) => {
     return {
       ...res,
       disabled: field.type === FieldType.DeniedField,
-      prefixIcon: <FieldIcon color={theme.palette.text.third} />,
+      prefixIcon: <FieldIcon color={theme.color.fc3} />,
     };
   });
 };

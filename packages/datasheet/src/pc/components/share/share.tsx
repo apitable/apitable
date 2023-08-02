@@ -21,6 +21,8 @@ import { IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
+// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { getPageParams, usePageParams, useSideBarVisible } from 'pc/hooks';
@@ -187,7 +189,10 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   const { IS_APITABLE } = getEnvVariables();
   const LightLogo = IS_APITABLE ? apitableLogoLight : vikaLogoLight;
   const DarkLogo = IS_APITABLE ? apitableLogoDark : vikaLogoDark;
-  const localSize = localStorage.getItem('splitPos');
+  let localSize = null;
+  try {
+    localSize = localStorage.getItem('splitPos');
+  } catch (e) {}
   const defaultSize = localSize ? parseInt(localSize, 10) : 320;
   const closeBtnClass = classNames({
     [styles.closeBtn]: true,
@@ -214,7 +219,6 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   >
     <ShareContent loading={loading} nodeTree={nodeTree} />
   </ShareContentWrapper>;
-
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
@@ -267,8 +271,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
               </div>
               {shareContent}
             </_SplitPane>
-          ) : shareContent
-          }
+          ) : shareContent}
         </ComponentDisplay>
         {isIframe() && !formId && <div className={styles.brandContainer}>
           <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20}

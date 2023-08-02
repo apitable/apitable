@@ -46,8 +46,8 @@ spring:
     properties:
       mail.debug: true
       mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-      mail.smtp.starttls.required: true
+      mail.smtp.starttls.enable: ${MAIL_STARTTLS_ENABLE:true}
+      mail.smtp.starttls.required: ${MAIL_STARTTLS_REQUIRED:true}
       mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
   sleuth:

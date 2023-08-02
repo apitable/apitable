@@ -144,7 +144,6 @@ export { SelectMultipleOutlined, SelectMultipleOutlined as ColumnMultipleFilled 
 export { AttachmentOutlined, AttachmentOutlined as ColumnAttachmentFilled } from './attachment_outlined';
 export { NumberOutlined, NumberOutlined as ColumnFigureFilled } from './number_outlined';
 export { FormulaOutlined, FormulaOutlined as ColumnFormulaFilled } from './formula_outlined';
-export { EmailOutlined, EmailOutlined as ColumnEmailFilled, EmailOutlined as ColumnEmailNonzeroFilled } from './email_outlined';
 export { CurrencyCnyOutlined, CurrencyCnyOutlined as ColumnCurrencyFilled } from './currency_CNY_outlined';
 export { PercentOutlined, PercentOutlined as ColumnPercentFilled } from './percent_outlined';
 export { LinktableOutlined, LinktableOutlined as ColumnLinktableFilled } from './linktable_outlined';

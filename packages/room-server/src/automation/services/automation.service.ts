@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AutomationRobotRunner, ConfigConstant, IActionOutput, IActionType, validateMagicForm } from '@apitable/core';
+import {
+  AutomationRobotRunner,
+  ConfigConstant,
+  generateRandomString,
+  IActionOutput,
+  IActionType,
+  IRobot,
+  IRobotTask,
+  validateMagicForm
+} from '@apitable/core';
+import { AmqpConnection, Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -26,11 +36,18 @@ import { UnreachableCaseError } from 'shared/errors';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { IUserBaseInfo } from 'shared/interfaces';
+import { automationExchangeName, automationRunning, automationRunningQueueName } from 'shared/services/queue/queue.module';
+import { In } from 'typeorm';
 import * as services from '../actions';
 import { customActionMap } from '../actions/decorators/automation.action.decorator';
 import { IActionResponse } from '../actions/interface/action.response';
+import { AutomationActionEntity } from '../entities/automation.action.entity';
+import { AutomationRobotEntity } from '../entities/automation.robot.entity';
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { RobotRobotService } from './robot.robot.service';
 
 /**
@@ -43,17 +60,95 @@ import { RobotRobotService } from './robot.robot.service';
 export class AutomationService {
   robotRunner: AutomationRobotRunner;
 
+  // @ts-ignore
+  // @ts-ignore
   constructor(
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,
+    private readonly automationActionRepository: AutomationActionRepository,
+    private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
+    // @ts-ignore
+    private readonly amqpConnection: AmqpConnection
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
       getRobotById: this.getRobotById.bind(this),
       reportResult: this.updateTaskRunHistory.bind(this),
+    });
+  }
+
+  async recoverRobots(robots: AutomationRobotEntity[], actions: AutomationActionEntity[], triggers: AutomationTriggerEntity[]) {
+    const robotIdMap = new Map<string, string>();
+    if (robots) {
+      robots.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.isActive = false;
+        const oldId = r.robotId;
+        const newId = 'arb' + generateRandomString(15);
+        r.robotId = newId;
+        robotIdMap.set(oldId, newId);
+      }
+      );
+      await this.automationRobotRepository
+        .createQueryBuilder()
+        .insert()
+        .values(robots)
+        .execute();
+    }
+    if (actions) {
+      actions.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.actionId = 'aac' + generateRandomString(15);
+        const oldId = r.robotId;
+        r.robotId = robotIdMap.get(oldId) || oldId;
+      }
+      );
+      await this.automationActionRepository
+        .createQueryBuilder()
+        .insert()
+        .values(actions)
+        .execute();
+    }
+    if (triggers) {
+      triggers.forEach(r => {
+        r.id = IdWorker.nextId() + '';
+        r.triggerId = 'att' + generateRandomString(15);
+        const oldId = r.robotId;
+        r.robotId = robotIdMap.get(oldId) || oldId;
+      }
+      );
+      await this.automationTriggerRepository
+        .createQueryBuilder()
+        .insert()
+        .values(triggers)
+        .execute();
+    }
+  }
+
+  async getRobotsByDstId(dstId: string) {
+    return await this.automationRobotRepository.find({
+      where: {
+        resourceId: dstId
+      }
+    });
+  }
+
+  async getActionByRobotIds(robotIds: string[]) {
+    return await this.automationActionRepository.find({
+      where: {
+        robotId: In(robotIds)
+      }
+    });
+  }
+
+  async getTriggersByRobotIds(robotIds: string[]) {
+    return await this.automationTriggerRepository.find({
+      where: {
+        robotId: In(robotIds)
+      }
     });
   }
 
@@ -74,15 +169,30 @@ export class AutomationService {
    * @param robotId
    * @param taskId
    * @param spaceId
+   * @param data context
    */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string) {
+  private async createRunHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
     const newRunHistory = this.automationRunHistoryRepository.create({
       taskId,
       robotId,
       spaceId,
       status: RunHistoryStatusEnum.RUNNING,
+      data
     });
-    await this.automationRunHistoryRepository.save(newRunHistory);
+    await this.automationRunHistoryRepository.insert(newRunHistory);
+  }
+
+  async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
+    const spaceId = await this.getSpaceIdByRobotId(robotTask.robotId);
+    const context = this.robotRunner.initRuntimeContext(robotTask, robot);
+    const newRunHistory = this.automationRunHistoryRepository.create({
+      taskId: robotTask.taskId,
+      robotId: robotTask.robotId,
+      spaceId,
+      status: robotTask.status,
+      data: context.context
+    });
+    await this.automationRunHistoryRepository.insert(newRunHistory);
   }
 
   /**
@@ -92,10 +202,12 @@ export class AutomationService {
    * @param data
    */
   async updateTaskRunHistory(taskId: string, success: boolean, data?: any) {
-    const runHistory = await this.automationRunHistoryRepository.getRunHistoryByTaskId(taskId);
-    runHistory.status = success ? RunHistoryStatusEnum.SUCCESS : RunHistoryStatusEnum.FAILED;
-    runHistory.data = data;
-    await this.automationRunHistoryRepository.save(runHistory);
+    const status = success ? RunHistoryStatusEnum.SUCCESS : RunHistoryStatusEnum.FAILED;
+    if (data) {
+      await this.automationRunHistoryRepository.update({ taskId }, { status, data });
+    } else {
+      await this.automationRunHistoryRepository.update({ taskId }, { status });
+    }
   }
 
   async getActionOutput(actionRuntimeInput: any, actionType: IActionType): Promise<IActionOutput> {
@@ -152,12 +264,12 @@ export class AutomationService {
   private async getOutputResult(resp: any) {
     const contentType = resp.headers.get('content-type');
     const success = true;
-  
+
     if (contentType && contentType.includes('application/json')) {
       // Response is JSON
       const data = await resp.json();
       return { success, data };
-    } 
+    }
     // Response is not JSON
     const data = { data: await resp.text() };
     return { success, data };
@@ -189,7 +301,8 @@ export class AutomationService {
         robotId,
         triggerInput: trigger.input,
         triggerOutput: trigger.output,
-        taskId
+        taskId,
+        status: RunHistoryStatusEnum.RUNNING
       });
     } catch (error) {
       // 3. update run history when failed
@@ -197,6 +310,33 @@ export class AutomationService {
       await this.updateTaskRunHistory(taskId, false, null);
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
+  }
+
+  @RabbitSubscribe({
+    exchange: automationExchangeName,
+    routingKey: automationRunning,
+    queue: automationRunningQueueName,
+  })
+  async handleTaskByTaskIdAndTriggerId(message: { taskId: string, triggerId: string }) {
+    const { taskId, triggerId } = message;
+    this.logger.log('RobotRunning', { ...message });
+    try {
+      const task: IRobotTask | undefined = await this.automationRunHistoryRepository.selectContextByTaskIdAndTriggerId(taskId, triggerId);
+      if (RunHistoryStatusEnum.PENDING != task!.status) {
+        return new Nack();
+      }
+      // update status first to avoid run it again
+      await this.automationRunHistoryRepository.updateStatusByTaskId(taskId, RunHistoryStatusEnum.RUNNING);
+      // 2. execute the robot
+      await this.robotRunner.run(task!);
+    } catch (error) {
+      // 3. update run history when failed
+      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
+      await this.updateTaskRunHistory(taskId, false);
+      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+    }
+    // todo justify
+    return new Nack();
   }
 
   async activeRobot(robotId: string, user: IUserBaseInfo) {

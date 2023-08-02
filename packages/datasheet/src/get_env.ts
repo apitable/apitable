@@ -213,6 +213,8 @@ export const getEnvVars = () => {
     TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
     IS_SELFHOST: process.env.IS_SELFHOST === 'true',
     ROBOT_TRIGGER_ICON: process.env.ROBOT_TRIGGER_ICON,
-    LOGIN_LOGO_LIGHT:  process.env.LOGIN_LOGO_LIGHT,
+    LOGIN_LOGO_LIGHT: process.env.LOGIN_LOGO_LIGHT,
+    AI_ENTRANCE_VISIBLE: process.env.AI_ENTRANCE_VISIBLE === 'true',
+    AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
   };
 };

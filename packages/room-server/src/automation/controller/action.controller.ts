@@ -22,7 +22,7 @@ import { UserService } from 'user/services/user.service';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { ActionCreateRo } from '../ros/action.create.ro';
 
-@Controller('nest/v1/robots/actions')
+@Controller(['nest/v1/robots/actions', 'nest/v1/automation/actions'])
 export class RobotActionController {
   constructor(
     private readonly automationActionRepository: AutomationActionRepository,

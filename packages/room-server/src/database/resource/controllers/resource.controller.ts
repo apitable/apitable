@@ -34,7 +34,6 @@ import { ResourceDataInterceptor } from 'database/resource/middleware/resource.d
 import type { ChangesetView, DatasheetPack } from '../../interfaces';
 import type { RecordHistoryQueryRo } from '../../datasheet/ros/record.history.query.ro';
 import type { RecordHistoryVo } from '../vos/record.history.vo';
-import type { DatasheetPackResponse } from '@apitable/databus';
 
 @Controller('nest/v1')
 export class ResourceController {
@@ -93,7 +92,7 @@ export class ResourceController {
     @Headers('cookie') cookie: string,
     @Param('resourceId') resourceId: string,
     @Param('foreignDatasheetId') foreignDatasheetId: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, resourceId);
@@ -109,7 +108,7 @@ export class ResourceController {
     @Param('resourceId') resourceId: string,
     @Param('foreignDatasheetId') foreignDatasheetId: string,
     @Param('shareId') shareId: string,
-  ): Promise<DatasheetPack | DatasheetPackResponse> {
+  ): Promise<DatasheetPack> {
     // check if the share link of the node is editable
     await this.nodeShareSettingService.checkNodeShareCanBeEdited(shareId, resourceId);
     return await this.resourceService.fetchForeignDatasheetPack(resourceId, foreignDatasheetId, { cookie }, true, shareId);

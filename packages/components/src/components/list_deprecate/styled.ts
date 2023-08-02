@@ -30,7 +30,7 @@ export const StyledItemContainer = styled.div.attrs(applyDefaultTheme) <IOption 
     if (props.disabled) {
       return css`
         cursor: not-allowed;
-        color: ${props => props.theme.palette.text.third};
+        color: ${props => props.theme.color.fc3};
 
         .svg {
           fill: currentColor;
@@ -144,7 +144,7 @@ export const ResultSpan = styled.span.attrs(applyDefaultTheme)`
   padding-bottom: 8px;
   height: 30px;
   line-height: 30px;
-  color: ${(props) => props.theme.palette.text.third};
+  color: ${(props) => props.theme.color.fc3};
   width: 100%;
   text-align: center;
   display: inline-block;

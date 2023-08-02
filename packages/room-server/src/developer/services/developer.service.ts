@@ -18,14 +18,14 @@
 
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from 'user/entities/user.entity';
-import { UserRepository } from 'user/repositories/user.repository';
 import { DeveloperRepository } from '../repositories/developer.repository';
+import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class DeveloperService {
   constructor(
     private readonly developerRepo: DeveloperRepository,
-    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
   ) {
   }
 
@@ -40,7 +40,7 @@ export class DeveloperService {
   public async getUserInfoByApiKey(apiKey: string): Promise<UserEntity | null> {
     const entity = await this.developerRepo.selectUserIdByApiKey(apiKey);
     if (entity && entity.userId) {
-      return (await this.userRepository.selectUserBaseInfoById(entity.userId.toString()))!;
+      return (await this.userService.selectUserBaseInfoById(entity.userId.toString()))!;
     }
     return null;
   }

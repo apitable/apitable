@@ -90,7 +90,9 @@ const writeMergedContent = (outputFolder: string, mergedContent: Record<string, 
       '/* eslint-disable max-len */\nexport type StringKeysMapType = {\n  ' +
         Object.keys(sortedMergedContent['en-US']).map(k => `'${k}': '${k}'`).join(',\n  ') +
         '\n};\n\n' +
-        'export type StringKeysType = keyof StringKeysMapType;'
+        `export type StringKeysType = {
+          [K in keyof StringKeysMapType]: K;
+        } & { [key: string]: unknown };`
     );
     Object.keys(sortedMergedContent).forEach(key => {
       fs.writeFileSync(path.join(outputFolder, `strings.${key}.json`), JSON.stringify(sortedMergedContent[key], null, 2), 'utf-8');

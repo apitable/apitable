@@ -20,6 +20,7 @@ target "backend-server" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["${IMAGE_REGISTRY}/apitable/backend-server:latest", "${IMAGE_REGISTRY}/apitable/backend-server:${IMAGE_TAG}"]
 }
 
@@ -29,6 +30,7 @@ target "room-server" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["${IMAGE_REGISTRY}/apitable/room-server:latest", "${IMAGE_REGISTRY}/apitable/room-server:${IMAGE_TAG}"]
 }
 
@@ -38,6 +40,7 @@ target "web-server" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["${IMAGE_REGISTRY}/apitable/web-server:latest", "${IMAGE_REGISTRY}/apitable/web-server:${IMAGE_TAG}"]
 }
 
@@ -47,6 +50,7 @@ target "init-db" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["${IMAGE_REGISTRY}/apitable/init-db:latest", "${IMAGE_REGISTRY}/apitable/init-db:${IMAGE_TAG}"]
 }
 
@@ -56,6 +60,7 @@ target "openresty" {
   args = {
     SEMVER_FULL = SEMVER_FULL
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["${IMAGE_REGISTRY}/apitable/openresty:latest", "${IMAGE_REGISTRY}/apitable/openresty:${IMAGE_TAG}"]
 }
 
@@ -66,5 +71,6 @@ target "all-in-one" {
     SEMVER_FULL = SEMVER_FULL
     IMAGE_TAG = IMAGE_TAG
   }
+  platforms = ["linux/amd64"]
   tags = ["${IMAGE_REGISTRY}/apitable/all-in-one:latest", "${IMAGE_REGISTRY}/apitable/all-in-one:${IMAGE_TAG}"]
 }

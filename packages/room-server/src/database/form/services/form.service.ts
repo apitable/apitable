@@ -215,7 +215,7 @@ export class FormService {
         eventContext,
         eventFields
       );
-      this.eventEmitter.emit(OPEventNameEnums.FormSubmitted, {
+      await this.eventEmitter.emitAsync(OPEventNameEnums.FormSubmitted, {
         eventName: OPEventNameEnums.FormSubmitted,
         scope: ResourceType.Form,
         realType: EventRealTypeEnums.REAL,

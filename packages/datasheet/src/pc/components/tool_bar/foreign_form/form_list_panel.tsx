@@ -22,6 +22,7 @@ import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/ico
 import classnames from 'classnames';
 
 import Image from 'next/image';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';

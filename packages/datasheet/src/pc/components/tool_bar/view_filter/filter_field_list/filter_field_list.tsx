@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, checkTypeSwitch, Field, FieldType, FilterDuration, IFieldMap, IFilterCondition, IViewColumn, Selectors, Strings, t,
@@ -23,6 +24,7 @@ import {
 import { ChevronDownOutlined, WarnCircleFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import produce from 'immer';
+// eslint-disable-next-line no-restricted-imports
 import { MobileSelect, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';

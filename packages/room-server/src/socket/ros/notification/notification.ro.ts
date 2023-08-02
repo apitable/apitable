@@ -17,14 +17,14 @@
  */
 
 import { NotificationTypes } from 'shared/enums/request-types.enum';
-import { BaseUserDto } from 'socket/dtos/user/base-user.dto';
+import { IBaseUserDto } from 'socket/dtos/user/base-user.dto';
 
-export interface NotificationRo {
+export interface INotificationRo {
   readonly rowNo: number;
   readonly createdAt: string;
   readonly notifyBody: object;
   readonly notifyType: string;
-  readonly fromUser: BaseUserDto;
+  readonly fromUser: IBaseUserDto;
   readonly isRead: number;
   readonly id: string;
   readonly toUserId: string;

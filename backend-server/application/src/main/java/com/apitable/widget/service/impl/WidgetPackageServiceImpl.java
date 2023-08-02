@@ -21,6 +21,7 @@ package com.apitable.widget.service.impl;
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
 import static com.apitable.shared.constants.NotificationConstants.WIDGET_NAME;
+import static com.apitable.space.enums.SpaceResourceGroupCode.MANAGE_WIDGET;
 import static com.apitable.widget.enums.WidgetException.CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT;
 import static com.apitable.widget.enums.WidgetException.EN_US_REQUIRED;
 import static com.apitable.widget.enums.WidgetException.RELEASES_FAIL_INCOMPLETE_PARAME;
@@ -111,6 +112,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * widget packages service implements.
+ */
 @Slf4j
 @Service
 public class WidgetPackageServiceImpl
@@ -165,9 +169,6 @@ public class WidgetPackageServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public WidgetReleaseCreateVo createWidget(Long opUserId, WidgetPackageCreateRo widget) {
-        log.info("create widget");
-        // check widget package type
-        WidgetPackageType packageType = WidgetPackageType.toEnum(widget.getPackageType());
         // check widget publishing type
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(widget.getReleaseType());
         // check developer permissions
@@ -188,11 +189,15 @@ public class WidgetPackageServiceImpl
             ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
             i18nNameStr = i18nName.toJson();
         } catch (JsonProcessingException e) {
-            throw new BusinessException("The JSON format of widget name or description is incorrect");
+            throw new BusinessException(
+                "The JSON format of widget name or description is incorrect");
         }
 
         // query the latest component package order
         int maxSort = baseMapper.selectMaxWidgetSort(releaseType.getValue(), widget.getSpaceId());
+
+        // check widget package type
+        WidgetPackageType packageType = WidgetPackageType.toEnum(widget.getPackageType());
 
         // create a widget package and bind the space
         WidgetPackageEntity saveObj = new WidgetPackageEntity()
@@ -225,7 +230,7 @@ public class WidgetPackageServiceImpl
 
     @Override
     public List<WidgetReleaseListVo> releaseListWidget(Long opUserId, String packageId,
-        Page<WidgetReleaseListVo> page) {
+                                                       Page<WidgetReleaseListVo> page) {
         log.info("get a list of widget publishing history");
         // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(packageId);
@@ -291,7 +296,6 @@ public class WidgetPackageServiceImpl
 
     @Override
     public void unpublishWidget(Long opUserId, WidgetPackageUnpublishRo widget) {
-        log.info("unpublish widget");
         // Check whether the widget exists.
         // Blocked widgets are not allowed to be removed from the shelves.
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId(), true);
@@ -309,13 +313,12 @@ public class WidgetPackageServiceImpl
         if (WidgetPackageStatus.UNPUBLISH.getValue().equals(wpk.getStatus())) {
             return;
         }
-        // unpush
         boolean flag = SqlHelper.retBool(
             baseMapper.updateStatusAndReleaseIdByPackageId(WidgetPackageStatus.UNPUBLISH.getValue(),
                 null, wpk.getPackageId(), opUserId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
 
-        this.sendUnpublishWidgetNotify(wpk, spaceId, opUserId);
+        this.sendUnpublishedWidgetNotify(wpk, spaceId, opUserId);
     }
 
     @Override
@@ -381,7 +384,7 @@ public class WidgetPackageServiceImpl
     }
 
     /**
-     * Query the basic information of the applet without checking whether it is blocked
+     * Query the basic information of the applet without checking whether it is blocked.
      *
      * @param packageId packageId
      */
@@ -392,10 +395,10 @@ public class WidgetPackageServiceImpl
 
     /**
      * Check if developers have space stations,
-     * basic requirements for development widget personnel
+     * basic requirements for development widget personnel.
      */
     private void checkDeveloperUserIfSpaceOrGm(Long userId, String spaceId,
-        WidgetReleaseType releaseType) {
+                                               WidgetReleaseType releaseType) {
         this.checkWidgetPermission(userId, spaceId, releaseType, false, null);
     }
 
@@ -418,24 +421,26 @@ public class WidgetPackageServiceImpl
 
         // get the widget's name and description.
         I18nField i18nName;
-        String i18nNameStr = null, i18nDescStr;
+        String i18nNameStr = null;
+        String i18nDescStr;
         try {
             i18nName = objectMapper.readValue(StrUtil.blankToDefault(widget.getName(),
                 wpk.getI18nName()), I18nField.class);
             // check whether name exist. the name can be empty.
             // empty name mean not modify the original name
             if (null != i18nName) {
-                // the en' name is necessary
+                // the en name is necessary
                 ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
                 i18nNameStr = i18nName.toJson();
             }
             i18nDescStr = getI18nDescStr(widget.getDescription());
         } catch (JsonProcessingException e) {
-            throw new BusinessException("The JSON format of widget name or description is incorrect");
+            throw new BusinessException(
+                "The JSON format of widget name or description is incorrect");
         }
 
         // the old files' storage token.
-        String[] oldAssetList = { wpk.getCover(), wpk.getIcon(), wpk.getAuthorIcon() };
+        String[] oldAssetList = {wpk.getCover(), wpk.getIcon(), wpk.getAuthorIcon()};
 
         addReleaseHistoryAndModifyWidgetInfo(opUserId, widget, wpk, versionSHA,
             installEnvsCodes, runtimeEnvsCodes, i18nNameStr, i18nDescStr);
@@ -449,8 +454,11 @@ public class WidgetPackageServiceImpl
     }
 
     private void addReleaseHistoryAndModifyWidgetInfo(Long opUserId,
-        WidgetPackageReleaseV2Ro widget, WidgetPackageEntity wpk, String versionSHA,
-        String installEnvsCodes, String runtimeEnvsCodes, String i18nNameStr, String i18nDescStr) {
+                                                      WidgetPackageReleaseV2Ro widget,
+                                                      WidgetPackageEntity wpk, String versionSHA,
+                                                      String installEnvsCodes,
+                                                      String runtimeEnvsCodes, String i18nNameStr,
+                                                      String i18nDescStr) {
         // create widget package release record
         WidgetPackageReleaseEntity saveWpr = new WidgetPackageReleaseEntity()
             .setPackageId(wpk.getPackageId())
@@ -487,8 +495,8 @@ public class WidgetPackageServiceImpl
         List<Long> toPlayerIds = new ArrayList<>();
         // admin with "MANAGE_WIDGET" privileges
         List<Long> memberAdminIds =
-            iSpaceMemberRoleRelService.getMemberId(spaceId,
-                ListUtil.toList("MANAGE_WIDGET"));
+            iSpaceMemberRoleRelService.getMemberIdListByResourceGroupCodes(spaceId,
+                ListUtil.toList(MANAGE_WIDGET.getCode()));
         // main admin
         memberAdminIds.add(spaceMapper.selectSpaceMainAdmin(spaceId));
         if (CollUtil.isNotEmpty(memberAdminIds)) {
@@ -520,7 +528,7 @@ public class WidgetPackageServiceImpl
     }
 
     private WidgetPackageEntity checkReleaseProcessInfo(Long opUserId,
-        WidgetPackageReleaseV2Ro widget) {
+                                                        WidgetPackageReleaseV2Ro widget) {
         // release process required info
         boolean validField = StrUtil.hasBlank(widget.getDescription());
         validField |= StrUtil.hasBlank(widget.getIconToken(), widget.getCoverToken(),
@@ -578,12 +586,14 @@ public class WidgetPackageServiceImpl
         String runtimeEnvsCodes = RuntimeEnvType.getRuntimeEnvCode(widget.getRuntimeEnv());
 
         // get the widget's name and description.
-        String i18nNameStr, i18nDescStr;
+        String i18nNameStr;
+        String i18nDescStr;
         try {
             i18nNameStr = getI18nNameStr(widget.getName(), wpk.getI18nName());
             i18nDescStr = getI18nDescStr(widget.getDescription());
         } catch (JsonProcessingException e) {
-            throw new BusinessException("The JSON format of widget name or description is incorrect");
+            throw new BusinessException(
+                "The JSON format of widget name or description is incorrect");
         }
 
         // check the number of submit. If there are more than one submit, delete the last review.
@@ -599,9 +609,14 @@ public class WidgetPackageServiceImpl
     }
 
     private WidgetPackageReleaseEntity getWidgetPackageReleaseEntity(Long opUserId,
-        WidgetPackageSubmitV2Ro widget, WidgetPackageEntity wpk, String versionSHA,
-        String installEnvsCodes, String runtimeEnvsCodes, String i18nNameStr,
-        String i18nDescStr) throws JsonProcessingException {
+                                                                     WidgetPackageSubmitV2Ro widget,
+                                                                     WidgetPackageEntity wpk,
+                                                                     String versionSHA,
+                                                                     String installEnvsCodes,
+                                                                     String runtimeEnvsCodes,
+                                                                     String i18nNameStr,
+                                                                     String i18nDescStr)
+        throws JsonProcessingException {
         String auditMirrorWidgetId = IdUtil.createWidgetPackageId();
         WidgetPackageReleaseEntity auditMirrorWidgetRelease = new WidgetPackageReleaseEntity()
             .setPackageId(auditMirrorWidgetId)
@@ -671,7 +686,7 @@ public class WidgetPackageServiceImpl
         String i18nDescStr;
         I18nField i18nDesc;
         i18nDesc = I18nField.toBean(description);
-        // the en' description cannot be empty
+        // the en description cannot be empty
         ExceptionUtil.isNotBlank(i18nDesc.getEnUS(), EN_US_REQUIRED);
         i18nDescStr = i18nDesc.toJson();
         return i18nDescStr;
@@ -684,7 +699,7 @@ public class WidgetPackageServiceImpl
         // Check the widget release name. It can be empty.
         // If it is empty, the release does not modify the widget name.
         if (null != i18nName) {
-            // the en' name is necessary
+            // the en name is necessary
             ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
             return i18nName.toJson();
         }
@@ -704,7 +719,7 @@ public class WidgetPackageServiceImpl
     }
 
     private void postSubmit(Long widgetPackageId, String widgetExtendBody,
-        Long releaseHistoryId) throws JsonProcessingException {
+                            Long releaseHistoryId) throws JsonProcessingException {
         // rel the release history id to the widget package
         WidgetBodyDTO widgetBody = WidgetBodyDTO.toBean(widgetExtendBody);
         List<Long> oldHistoryVersion =
@@ -721,32 +736,31 @@ public class WidgetPackageServiceImpl
 
 
     /**
-     * <p>Check developer permissions, all operations Gm can intervene <p>
+     * Check developer permissions, all operations Gm can intervene.
      *
-     * @param userId user id
-     * @param spaceId space id
-     * @param releaseType publishingType
+     * @param userId        user id
+     * @param spaceId       space id
+     * @param releaseType   publishingType
      * @param resourceCodes permission resource code
-     *
-     *
      */
     private void checkWidgetPermission(Long userId, String spaceId,
-        WidgetReleaseType releaseType, List<ResourceCode> resourceCodes) {
+                                       WidgetReleaseType releaseType,
+                                       List<ResourceCode> resourceCodes) {
         this.checkWidgetPermission(userId, spaceId, releaseType, true, resourceCodes);
     }
 
     /**
-     * <p>Check developer permissions, all operations Gm can intervene <p>
+     * Check developer permissions, all operations Gm can intervene.
      *
-     * @param userId user id
-     * @param spaceId space id
-     * @param releaseType publishing type
+     * @param userId          user id
+     * @param spaceId         space id
+     * @param releaseType     publishing type
      * @param checkPermission whether to verify permissions
-     * @param resourceCodes permission resource code
+     * @param resourceCodes   permission resource code
      */
     private void checkWidgetPermission(Long userId, String spaceId,
-        WidgetReleaseType releaseType, boolean checkPermission,
-        List<ResourceCode> resourceCodes) {
+                                       WidgetReleaseType releaseType, boolean checkPermission,
+                                       List<ResourceCode> resourceCodes) {
         log.info("Check widget developer permissions ");
         if (WidgetReleaseType.GLOBAL == releaseType) {
             // At present, there is no audit process,
@@ -778,7 +792,7 @@ public class WidgetPackageServiceImpl
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private void sendUnpublishWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId) {
+    private void sendUnpublishedWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId) {
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         // notify holder
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);
@@ -817,7 +831,7 @@ public class WidgetPackageServiceImpl
 
     @SneakyThrows(JsonProcessingException.class)
     private void sendTransferWidgetNotify(WidgetPackageEntity wpk, String spaceId,
-        Long opUserId, MemberEntity transferMember) {
+                                          Long opUserId, MemberEntity transferMember) {
         // notify holder
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);
@@ -834,13 +848,13 @@ public class WidgetPackageServiceImpl
 
         // send notification email
         String spaceName = spaceMapper.selectSpaceNameBySpaceId(spaceId);
-        List<String> emails = userMapper.selectEmailByUserIds(toPlayerIds);
         Dict dict = Dict.create();
         dict.set("SPACE_NAME", spaceName);
         dict.set("WIDGET_NAME", widgetName);
         dict.set("MEMBER_NAME", transferMember.getMemberName());
         Dict mapDict = Dict.create();
         mapDict.set("WIDGET_NAME", widgetName);
+        List<String> emails = userMapper.selectEmailByUserIds(toPlayerIds);
         List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, emails);
         List<MailWithLang> tos = MailWithLang.convert(emailsWithLang,
             emailWithLang -> new MailWithLang(emailWithLang.getLocale(), emailWithLang.getEmail()));

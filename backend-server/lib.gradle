@@ -143,6 +143,8 @@ ext {
             'assertj'                      : 'org.assertj:assertj-core',
             'hamcrest'                     : 'org.hamcrest:hamcrest',
             'jsonassert'                   : 'org.skyscreamer:jsonassert',
+            'visible-assertions'           : 'org.rnorth.visible-assertions:visible-assertions:2.1.2',
+            'mockito-inline'               : 'org.mockito:mockito-inline',
             // Spring retry
             'spring-retry'                 : "org.springframework.retry:spring-retry",
             'awaitility'                   : "org.awaitility:awaitility",

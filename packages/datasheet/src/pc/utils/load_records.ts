@@ -29,7 +29,7 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
   // Filter out those that are already loading
   // Loaded ones should also be filtered out
   recordIds = recordIds.filter(recordId => {
-    return !client.loadingRecord[recordId] && !snapshot?.recordMap[recordId];
+    return !client?.loadingRecord?.[recordId] && !snapshot?.recordMap[recordId];
   });
 
   if (!recordIds.length) {

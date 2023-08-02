@@ -97,7 +97,8 @@ export class FusionApiController {
     private readonly fusionApiService: FusionApiService,
     private readonly attachService: AttachmentService,
     private readonly restService: RestService,
-  ) {}
+  ) {
+  }
 
   @Get('/datasheets/:dstId/records')
   @ApiOperation({
@@ -194,13 +195,13 @@ export class FusionApiController {
   public async addAttachment(@Param() param: AttachmentParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     await this.checkSpaceCapacity(req);
     const handler = await this.attachService.getFileUploadHandler(param.dstId, req, reply);
-    await req.multipart(handler, function(err: Error) {
+    await req.multipart(handler as (...args: Parameters<typeof handler>) => void, function(err: Error) {
       if (err instanceof ServerException) {
         reply.statusCode = err.getStatusCode();
-        reply.send(ApiResponse.error(err.getMessage(), err.getCode()));
+        void reply.send(ApiResponse.error(err.getMessage(), err.getCode()));
       }
       if (err) {
-        reply.send(ApiResponse.error(CommonException.SERVER_ERROR.message, CommonException.SERVER_ERROR.code));
+        void reply.send(ApiResponse.error(CommonException.SERVER_ERROR.message, CommonException.SERVER_ERROR.code));
       }
     });
     return ApiResponse.success({} as any);
@@ -250,6 +251,7 @@ export class FusionApiController {
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
   @UseInterceptors(ApiNotifyInterceptor)
+  @SetMetadata(DATASHEET_OPTIONS, { requireMetadata: true } as IApiDatasheetOptions)
   public updateRecordsByPut(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,

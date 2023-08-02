@@ -18,15 +18,13 @@
 
 import { IRecordMap } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { useNativeModule } from 'app.environment';
 import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
 import { difference } from 'lodash';
 import { ApiException, ApiTipId } from 'shared/exception';
-import { NativeService } from 'shared/services/native/native.service';
 
 @Injectable()
 export class FusionApiRecordService {
-  constructor(private readonly recordService: DatasheetRecordService, private readonly nativeService: NativeService) {}
+  constructor(private readonly recordService: DatasheetRecordService) {}
 
   /**
    * Check if recordId and table ID match
@@ -48,10 +46,7 @@ export class FusionApiRecordService {
     }
   }
 
-  public async getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<IRecordMap> {
-    if (useNativeModule) {
-      return await this.nativeService.getRecords(dstId, recordIds, false, false);
-    }
+  public getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<IRecordMap> {
     return this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);
   }
 }

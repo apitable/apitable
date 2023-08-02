@@ -3,7 +3,7 @@
 @import "~pc/styles/lib_screen.less";
 
 .hiddenGroupWrapper {
-  width: 240px;
+  width: 248px;
   border-radius: 4px;
   background-color: var(--bgCommonHighest);
   user-select: none;
@@ -101,18 +101,20 @@
 .opAll {
   display: flex;
   height: 30px;
-  width: 208px;
+  width: 228px;
   justify-content: space-between;
   margin: 0 auto;
 
   button {
-    width: 100px;
+    max-width: 112px;
+    &:first-child {
+      margin-right: 4px;
+    }
   }
 }
 
 .noResult {
   font-size: 11px;
-  padding-bottom: 8px;
   padding: 0 10px;
   height: 30px;
   line-height: 30px;

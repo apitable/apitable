@@ -31,6 +31,7 @@ import { CommandOptionsService } from 'database/command/services/command.options
 import { CommandService } from 'database/command/services/command.service';
 import { UnitService } from 'unit/services/unit.service';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
+import { IdWorker } from '../../../shared/helpers';
 
 @Injectable()
 export class DatasheetChangesetService {
@@ -40,6 +41,31 @@ export class DatasheetChangesetService {
     private readonly commandService: CommandService,
     private readonly unitService: UnitService,
   ) {}
+
+  async getAllCommentChangeSetByDstId(dstId: string) {
+    return await this.datasheetChangesetRepository.find({
+      where:  (qb: any) => {
+        qb.where(`dst_id = '${dstId}' `);
+        qb.andWhere('operations->\'$[0].cmd\' = \'InsertComment\'');
+      }
+    });
+  }
+
+  async recoverChangeSets(dstId: string, changeSets: DatasheetChangesetEntity[]) {
+    if (!changeSets || !changeSets.length) {
+      return;
+    }
+    changeSets.forEach(item => {
+      item.dstId = dstId;
+      item.id = IdWorker.nextId() + '';
+      item.revision = 0;
+    });
+    await this.datasheetChangesetRepository
+      .createQueryBuilder()
+      .insert()
+      .values(changeSets)
+      .execute();
+  }
 
   /**
    *

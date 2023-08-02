@@ -18,6 +18,7 @@
 
 import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import { Modal, Tooltip } from 'pc/components/common';
 import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';
 import { resourceService } from 'pc/resource_service';

@@ -36,6 +36,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
 import { TComponent } from 'pc/components/common/t_component';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip as CommonTooltip } from 'pc/components/common/tooltip';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// eslint-disable-next-line no-restricted-imports
 import { IconButton, IOption, Select, Switch, Typography, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName, ConfigConstant, FieldType, ILinkField, IOrgChartViewProperty, OrgChartStyleKeyType, Selectors, Strings, t,

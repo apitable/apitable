@@ -17,30 +17,16 @@
  */
 
 import { ApiTipConstant } from '@apitable/core';
-import { HttpModule } from '@nestjs/axios';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
 import { DatasheetFieldCreateRo } from 'fusion/ros/datasheet.field.create.ro';
 import { ApiException } from 'shared/exception';
 import { CreateDatasheetPipe } from './create.datasheet.pipe';
 
 describe('CreateDatasheetPipe', () => {
-  let app: NestFastifyApplication;
   let pipe: CreateDatasheetPipe;
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, HttpModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-    pipe = new CreateDatasheetPipe({} as any);
-  });
 
-  afterAll(async() => {
-    await app.close();
+  beforeAll(() => {
+    pipe = new CreateDatasheetPipe({} as any);
   });
 
   describe('transform', () => {

@@ -18,7 +18,7 @@
 
 import { CacheManager, getFieldTypeString, IReduxState } from '@apitable/core';
 import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
-import { IWidgetContext } from 'interface';
+import { FieldType, IWidgetContext } from 'interface';
 import { getActiveViewId, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
 import { isSandbox } from 'utils/private';
 import { showField } from './field';
@@ -81,7 +81,7 @@ export class Record {
 
     const field = Selectors.getField(globalState, fieldId, this.datasheetId)!;
     // wecom blocked fields
-    if (!showField(getFieldTypeString(field.type))) {
+    if (!showField(getFieldTypeString(field.type) as any as FieldType)) {
       return null;
     }
     

@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme, Select } from '@apitable/components';
+import { Box, Button, IconButton, Typography, useTheme, DropdownSelect as Select } from '@apitable/components';
 import {
   ConfigConstant, EmptyNullOperand, Field, FieldType, IExpression, IExpressionOperand,
   OperandTypeEnums, OperatorEnums, Strings, t

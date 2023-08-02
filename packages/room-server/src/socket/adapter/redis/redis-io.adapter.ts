@@ -25,7 +25,7 @@ import { GatewayConstants, RedisConstants, SocketConstants } from 'shared/common
 import { SocketEventEnum } from 'shared/enums/socket.enum';
 import { getIPAddress } from 'shared/helpers/system.helper';
 import * as SocketIo from 'socket.io';
-import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { redisConfig } from 'socket/services/redis/redis-config.factory';
 import { SocketIoService } from 'socket/services/socket-io/socket-io.service';
 
@@ -51,12 +51,12 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     server.adapter(this.createRedisAdapter());
 
     // namespaces '/'
-    server.of(GatewayConstants.SOCKET_NAMESPACE).use((socket: AuthenticatedSocket, next: any) => {
+    server.of(GatewayConstants.SOCKET_NAMESPACE).use((socket: IAuthenticatedSocket, next: any) => {
       socket.auth = { userId: socket.handshake.query?.userId as string, cookie: socket.handshake.headers?.cookie! };
       return next();
     });
     // namespaces 'room'
-    server.of(GatewayConstants.ROOM_NAMESPACE).use((socket: AuthenticatedSocket, next: any) => {
+    server.of(GatewayConstants.ROOM_NAMESPACE).use((socket: IAuthenticatedSocket, next: any) => {
       socket.auth = { userId: socket.handshake.query?.userId as string, cookie: socket.handshake.headers?.cookie! };
       return next();
     });
@@ -87,8 +87,8 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     return server;
   }
 
-  override bindClientConnect(server: SocketIo.Server, callback: (socket: AuthenticatedSocket) => {}): void {
-    server.on(SocketEventEnum.CONNECTION, (socket: AuthenticatedSocket) => {
+  override bindClientConnect(server: SocketIo.Server, callback: (socket: IAuthenticatedSocket) => {}): void {
+    server.on(SocketEventEnum.CONNECTION, (socket: IAuthenticatedSocket) => {
       if (!isNil(socket.auth)) {
         this.logger.debug({ message: 'RedisIoAdapter:clientConnect', userId: socket.auth.userId, socketId: socket.id, nsp: socket.nsp.name });
         this.socketIoService.joinRoom(socket);
@@ -101,7 +101,7 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     });
   }
 
-  override bindClientDisconnect(socket: AuthenticatedSocket, callback: (socket: AuthenticatedSocket) => {}) {
+  override bindClientDisconnect(socket: IAuthenticatedSocket, callback: (socket: IAuthenticatedSocket) => {}) {
     // Client disconnecting
     socket.on(SocketEventEnum.DISCONNECTING, async args => {
       // Move out of the room, determine whether the number of people inside the room is empty, if the room is empty, delete the room

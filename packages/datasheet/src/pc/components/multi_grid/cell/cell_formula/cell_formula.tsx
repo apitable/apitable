@@ -21,6 +21,7 @@ import {
   FormulaBaseError, IFormulaField,
   RowHeightLevel, Strings, t,
 } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

@@ -23,6 +23,7 @@ import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
 import { BaseModal } from 'pc/components/common/modal/base_modal';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';

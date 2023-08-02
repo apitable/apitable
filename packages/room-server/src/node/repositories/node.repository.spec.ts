@@ -15,21 +15,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { DatabaseConfigService } from 'shared/services/config/database.config.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, getConnection } from 'typeorm';
 import { NodeRepository } from './node.repository';
 import { NodeEntity } from '../entities/node.entity';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseConfigService } from '../../shared/services/config/database.config.service';
+import { clearDatabase } from 'shared/testing/test-util';
 
 describe('Test NodeRepository', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let repository: NodeRepository;
-  let entities: NodeEntity[];
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRootAsync({
@@ -38,10 +38,9 @@ describe('Test NodeRepository', () => {
         TypeOrmModule.forFeature([NodeRepository]),
       ],
     }).compile();
-    repository = module.get<NodeRepository>(NodeRepository);
-  });
-
-  beforeEach(async() => {
+    // clear database
+    await clearDatabase(getConnection());
+    repository = moduleFixture.get<NodeRepository>(NodeRepository);
     const nodes: DeepPartial<NodeEntity>[] = [{
       type: 1,
       spaceId: 'spaceId',
@@ -64,17 +63,11 @@ describe('Test NodeRepository', () => {
       isTemplate: true,
     }];
     const record = repository.create(nodes);
-    entities = await repository.save(record);
+    await repository.save(record);
   });
 
   afterEach(async() => {
-    for (let i = 0; i < entities.length; i++) {
-      await repository.delete(entities[i]!.id);
-    }
-  });
-
-  afterAll(async() => {
-    await repository.manager.connection.close();
+    await moduleFixture.close();
   });
 
   it('should be return node one count', async() => {

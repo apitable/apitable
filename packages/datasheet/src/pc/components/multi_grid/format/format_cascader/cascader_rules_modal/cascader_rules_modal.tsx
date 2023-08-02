@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { IconButton, IOption, LinkButton, Loading, Select, Typography, useThemeColors } from '@apitable/components';
 import { DatasheetApi, FieldType, ICascaderField, ICascaderNode, IField, ILinkedField, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronRightOutlined, DeleteOutlined, QuestionCircleOutlined, ReloadOutlined } from '@apitable/icons';
@@ -5,6 +6,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';

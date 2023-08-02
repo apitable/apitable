@@ -17,20 +17,28 @@
  */
 
 import {
-  clearComputeCache, IEventInstance, IEventResourceMap,
-  IOPEvent, IReduxState, IRemoteChangeset, IServerDatasheetPack,
-  OP2Event, OPEventManager, OPEventNameEnums, ResourceType,
+  clearComputeCache,
+  IEventInstance,
+  IEventResourceMap,
+  IOPEvent,
+  IReduxState,
+  IRemoteChangeset,
+  IServerDatasheetPack,
+  OP2Event,
+  OPEventManager,
+  OPEventNameEnums,
+  ResourceType,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { InjectLogger } from 'shared/common';
-import { Logger } from 'winston';
-import { CommandService } from 'database/command/services/command.service';
-import { DatasheetService } from 'database/datasheet/services/datasheet.service';
-import { RobotTriggerService } from 'automation/services/robot.trigger.service';
-import { RobotTriggerTypeService } from 'automation/services/robot.trigger.type.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EventTypeEnums } from 'automation/events/domains/event.type.enums';
 import { OFFICIAL_SERVICE_SLUG } from 'automation/events/helpers/trigger.event.helper';
+import { RobotTriggerService } from 'automation/services/robot.trigger.service';
+import { RobotTriggerTypeService } from 'automation/services/robot.trigger.type.service';
+import { CommandService } from 'database/command/services/command.service';
+import { DatasheetService } from 'database/datasheet/services/datasheet.service';
+import { InjectLogger } from 'shared/common';
+import { Logger } from 'winston';
 
 /**
  * Event listener service, convert op to domains, and handle related domains listening.
@@ -52,16 +60,16 @@ export class RobotEventService {
       OPEventNameEnums.CellUpdated,
       OPEventNameEnums.RecordCreated,
       OPEventNameEnums.RecordDeleted,
-      OPEventNameEnums.RecordUpdated
+      OPEventNameEnums.RecordUpdated,
     ];
     this.opEventManager = new OPEventManager({
       options: {
         enableVirtualEvent: true,
         enableCombEvent: true,
-        enableEventComplete: true
+        enableEventComplete: true,
       },
       getState: (resourceMap) => this.makeState(resourceMap),
-      op2Event: new OP2Event(clientWatchedEvents)
+      op2Event: new OP2Event(clientWatchedEvents),
     });
   }
 
@@ -85,7 +93,8 @@ export class RobotEventService {
   }
 
   async handleChangesets(changesets: IRemoteChangeset[]) {
-    const msgIds = changesets.map(cs => cs.messageId);
+    const msgIds = changesets.map((cs) => cs.messageId);
+    // core event manager
     const events = await this.opEventManager.asyncHandleChangesets(changesets);
     if (events.length === 0) {
       return;
@@ -95,27 +104,27 @@ export class RobotEventService {
       return;
     }
     // Clear cache after domains computation, make sure compute field cache is cleared
-    resourceIds.forEach(resourceId => {
+    resourceIds.forEach((resourceId) => {
       clearComputeCache(resourceId);
     });
     const dstIdTriggersMap = await this.robotTriggerService.getTriggersGroupByResourceId(resourceIds);
-    const triggerSlugTypeIdMap = await this.robotTriggerTypeService.getServiceSlugToTriggerTypeId([
-      EventTypeEnums.RecordMatchesConditions,
-      EventTypeEnums.RecordCreated
-    ], OFFICIAL_SERVICE_SLUG);
-    this.logger.info(`messageIds: [${ msgIds }]: The official service slug ${ OFFICIAL_SERVICE_SLUG }`);
-    this.logger.info(`messageIds: [${ msgIds }]: The triggered trigger: ${ dstIdTriggersMap }`);
-    this.logger.info(`messageIds: [${ msgIds }]: The event and trigger's type map: ${ triggerSlugTypeIdMap }`);
-    for (const event of events) {
-      this.eventEmitter.emit(event.eventName, {
-        ...event,
-        beforeApply: false,
-        metaContext: {
-          dstIdTriggersMap,
-          triggerSlugTypeIdMap,
-          msgIds,
-        }
-      });
-    }
+    const triggerSlugTypeIdMap = await this.robotTriggerTypeService.getServiceSlugToTriggerTypeId(
+      [EventTypeEnums.RecordMatchesConditions, EventTypeEnums.RecordCreated],
+      OFFICIAL_SERVICE_SLUG,
+    );
+    this.logger.info(`messageIds:automation:[${msgIds}]:`, { slug: OFFICIAL_SERVICE_SLUG, triggerMap: dstIdTriggersMap });
+    await Promise.all(
+      events.map((event) => {
+        return this.eventEmitter.emitAsync(event.eventName, {
+          ...event,
+          beforeApply: false,
+          metaContext: {
+            dstIdTriggersMap,
+            triggerSlugTypeIdMap,
+            msgIds,
+          },
+        });
+      }),
+    );
   }
 }

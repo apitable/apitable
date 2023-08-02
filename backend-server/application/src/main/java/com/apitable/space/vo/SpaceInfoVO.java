@@ -20,6 +20,7 @@ package com.apitable.space.vo;
 
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -151,4 +152,8 @@ public class SpaceInfoVO {
     @Schema(description = "Number of tables (mirrors)", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long mirrorNums;
+
+    @Schema(description = "Whether enable chatbot feature")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isEnableChatbot;
 }

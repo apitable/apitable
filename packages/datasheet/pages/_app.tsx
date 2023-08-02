@@ -17,6 +17,7 @@
  */
 
 // import App from 'next/app'
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Api,
   integrateCdnHost,
@@ -36,7 +37,6 @@ import 'antd/es/date-picker/style/index';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
-import 'enterprise/style.less';
 import ErrorPage from 'error_page';
 import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
@@ -48,30 +48,29 @@ import Script from 'next/script';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { initEventListen } from 'pc/events';
+import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
+import { initResourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
+import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
+import { initWorkerStore } from 'pc/worker';
+import { Provider } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import reportWebVitals from 'reportWebVitals';
+import 'prismjs/themes/prism.css';
+import 'rc-swipeout/assets/index.css';
+import 'rc-trigger/assets/index.css';
+import 'react-grid-layout/css/styles.css';
+import 'react-image-crop/dist/ReactCrop.css';
+import 'enterprise/style.less';
 import 'pc/components/common/button_base/button.less';
 import 'pc/components/common/button_plus/button_plus.less';
 import 'pc/components/common/emoji/emoji.less';
 import 'pc/components/editors/date_time_editor/date_picker/date_picker.less';
 import 'pc/components/editors/date_time_editor/time_picker_only/time_picker.less';
 import 'pc/components/invite/invite.common.less';
-import { Router } from 'pc/components/route_manager/router';
-import { initEventListen } from 'pc/events';
-import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
-import { initResourceService } from 'pc/resource_service';
-import { store } from 'pc/store';
 import 'pc/styles/global.less';
-import 'pc/styles/global_components/index.less';
-import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
-import { initWorkerStore } from 'pc/worker';
-import 'prismjs/themes/prism.css';
-import 'rc-swipeout/assets/index.css';
-import 'rc-trigger/assets/index.css';
-import React, { useEffect, useState } from 'react';
-import 'react-grid-layout/css/styles.css';
-import 'react-image-crop/dist/ReactCrop.css';
-import { Provider } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
-import reportWebVitals from 'reportWebVitals';
 import '../src/global.less';
 import '../src/index.less';
 import '../src/main.less';
@@ -80,6 +79,7 @@ import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
+import * as immer from 'immer';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -111,6 +111,8 @@ const initWorker = async() => {
   const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
 };
+
+immer.setAutoFreeze(false);
 
 (() => {
   if (!process.env.SSR) {
@@ -146,6 +148,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   });
   const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    window.parent.postMessage({
+      message: 'pageLoaded',
+    }, '*');
+  }, []);
 
   useEffect(() => {
     const handleStart = () => {
@@ -384,20 +392,20 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <title>
         {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
-      <meta name='description' content='' />
+      <meta name='description' content=''/>
       <meta
         name='keywords'
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
-      <meta name='renderer' content='webkit' />
+      <meta name='renderer' content='webkit'/>
       <meta
         name='viewport'
         content='width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
       />
-      <meta name='theme-color' content='#000000' />
+      <meta name='theme-color' content='#000000'/>
       {/* In the pinning browser, join the monitoring center */}
-      <meta name='wpk-bid' content='dta_2_83919' />
+      <meta name='wpk-bid' content='dta_2_83919'/>
     </Head>
     {
       env.ENABLED_REWARDFUL && <>
@@ -408,7 +416,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         `
           }
         </Script>
-        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
+        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927'/>
       </>
     }
 
@@ -461,11 +469,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     </Script>
     {!env.IS_SELFHOST &&
       <>
-        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin'/>
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin'/>
       </>
     }
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js'/>}
     {
       env.GOOGLE_TAG_MANAGER_ID && <>
         <Script id={'googleTag'}>
@@ -479,7 +487,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         </Script>
         <noscript>
           <iframe src={`https://www.googletagmanager.com/ns.html?id=${env.GOOGLE_TAG_MANAGER_ID}`}
-            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }} />
+            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }}/>
         </noscript>
       </>
     }
@@ -490,7 +498,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             <Provider store={store}>
               <RouterProvider>
                 <ThemeWrapper>
-                  <Component {...pageProps} userInfo={userData} />
+                  <Component {...pageProps} userInfo={userData}/>
                 </ThemeWrapper>
               </RouterProvider>
             </Provider>
@@ -503,9 +511,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
               { 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }
             )}>
             {
-              ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
+              ((loading !== LoadingStatus.Complete) || userLoading) &&
+              <div className='main-img-wrap' style={{ height: 'auto' }}>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img'
+                  alt='logo_text_dark'/>
               </div>
             }
           </div>

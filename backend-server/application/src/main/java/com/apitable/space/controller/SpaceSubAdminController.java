@@ -38,9 +38,11 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.util.page.PageInfo;
 import com.apitable.shared.util.page.PageObjectParam;
+import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.ro.AddSpaceRoleRo;
 import com.apitable.space.ro.UpdateSpaceRoleRo;
 import com.apitable.space.service.ISpaceInviteLinkService;
+import com.apitable.space.service.ISpaceResourceService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.vo.SpaceRoleDetailVo;
 import com.apitable.space.vo.SpaceRoleVo;
@@ -51,6 +53,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,6 +78,12 @@ public class SpaceSubAdminController {
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;
+
+    @Resource
+    private SpaceResourceMapper spaceResourceMapper;
+
+    @Resource
+    private ISpaceResourceService iSpaceResourceService;
 
     /**
      * Query admins.
@@ -120,9 +129,14 @@ public class SpaceSubAdminController {
         String spaceId = LoginContext.me().getSpaceId();
         // check whether the resource is disabled
         iSpaceRoleService.checkAdminResourceChangeAllow(spaceId, data.getResourceCodes());
-        // to find the limit
-        // iSubscriptionService.checkSubAdmins(spaceId);
-        iSpaceRoleService.createRole(spaceId, data);
+        // assign permissions
+        List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByGroupCode(
+            CollUtil.distinct(data.getResourceCodes()));
+        // Check whether assignable permissions are included to exclude unreasonable permission assignments
+        iSpaceResourceService.checkResourceAssignable(resourceCodes);
+        // Check whether the currently assigned permission list is owned
+        LoginContext.me().checkSpaceResource(resourceCodes);
+        iSpaceRoleService.createRole(spaceId, data.getMemberIds(), resourceCodes);
         // delete the relevant cache
         TaskManager.me().execute(() -> userSpaceCacheService.delete(spaceId, data.getMemberIds()));
         return ResponseData.success();

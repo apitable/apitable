@@ -54,10 +54,11 @@ type IUpdateDerivationAction =
   IClearActiveRowInfo | ISetPageParamsAction | ITriggerViewDerivationComputed | StoreActions.ISetMirrorDataAction |
   ICacheTemporaryView | ISetSearchKeyword | IChangeViewAction;
 
+export const CONST_BATCH_ACTIONS ='BATCHING_REDUCER.BATCH';
 export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => next => (action: IUpdateDerivationAction) => {
   next(action);
 
-  if (action.type === 'BATCHING_REDUCER.BATCH') {
+  if (action.type === CONST_BATCH_ACTIONS) {
     action.payload.forEach(action => {
       handleAction(store, action);
     });

@@ -18,24 +18,24 @@
 
 /* eslint-disable no-script-url */
 import { Typography, useThemeColors } from '@apitable/components';
-import { isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { isPrivateDeployment, NAV_ID, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
-  VikabyOutlined, WebOutlined, UserGroupOutlined
+  GiftOutlined, WebOutlined, UserGroupOutlined
 } from '@apitable/icons';
 import classnames from 'classnames';
 // @ts-ignore
-import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
+import { inSocialApp, showTodoList, destroyTodoList } from 'enterprise';
+// eslint-disable-next-line no-restricted-imports
 import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { getEnvVariables } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styles from './style.module.less';
 
 export interface IHelpProps {
@@ -47,24 +47,12 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
-  const spaceId = useSelector(state => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const contactUs = useContactUs();
   const openShortcutKeyPanel = () => {
     dispatch(StoreActions.setShortcutKeyPanelVisible(true));
-  };
-
-  const vikabyHelperClick = () => {
-    const pathname = window.location.pathname;
-    sessionStorage.removeItem(VIKABY_POSITION_SESSION_KEY);
-    if (pathname.includes('workbench')) {
-      openVikaby({ visible: true, defaultExpandMenu: true });
-    } else {
-      localStorage.removeItem('vikaby_closed');
-      Router.push(Navigation.WORKBENCH, { params: { spaceId }});
-    }
   };
 
   const menuData = [
@@ -125,11 +113,16 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile,
     },
     {
-      icon: <VikabyOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.assistant),
-      id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
-      onClick: vikabyHelperClick,
-      hidden: isMobile || isPrivateDeployment() || isMobileApp() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
+      icon: <GiftOutlined color={colors.thirdLevelText} />,
+      text: t(Strings.assistant_beginner_task),
+      onClick: () => {
+        const taskStyle: React.CSSProperties = {
+          position: 'absolute',
+          top: '242px',
+          right: '20px'
+        };
+        showTodoList({ style: taskStyle, onClose: destroyTodoList });
+      },
     },
     {
       icon: <UserGroupOutlined color={colors.thirdLevelText} />,
