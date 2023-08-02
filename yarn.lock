@@ -480,7 +480,7 @@ __metadata:
     pingpp-js: ^2.2.24
     polyfill-object.fromentries: ^1.0.1
     posthog-js: ^1.57.2
-    prismjs: ^1.27.0
+    prismjs: ^1.29.0
     qr-image: ^3.2.0
     qrcode: ^1.4.4
     raf: ^3.4.1
@@ -32626,7 +32626,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.21.0, prismjs@npm:^1.27.0, prismjs@npm:^1.8.4":
+"prismjs@npm:^1.21.0, prismjs@npm:^1.29.0, prismjs@npm:^1.8.4":
   version: 1.29.0
   resolution: "prismjs@npm:1.29.0"
   checksum: 007a8869d4456ff8049dc59404e32d5666a07d99c3b0e30a18bd3b7676dfa07d1daae9d0f407f20983865fd8da56de91d09cb08e6aa61f5bc420a27c0beeaf93
