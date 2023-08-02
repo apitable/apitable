@@ -97,6 +97,7 @@ export class Interpreter {
   /**
    * Evaluate by accessing the abstract syntax tree
    * @param {AstNode} node
+   * @param isErrorScope
    * @returns {any}
    * @memberof Interpreter
    */

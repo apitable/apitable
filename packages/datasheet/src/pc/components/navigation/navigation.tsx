@@ -55,6 +55,7 @@ import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 import { useContactUs } from 'pc/hooks/use_contact_us';
+import { getEnvVariables } from 'pc/utils/env';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -93,7 +94,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
   const contactUs = useContactUs(); 
-
+  const env = getEnvVariables();
   useRequest(notificationStatistics);
   // Check if there is a system banner notification to be displayed
   useRequest(getNotificationList);
@@ -396,9 +397,11 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </Popup>
           </ComponentDisplay>
         </div>
-        <div className={styles.iconWrap} onClick={() => contactUs()}>
-          <LivechatFilled className={styles.icon} size={32} />
-        </div>
+        {env.IS_ENTERPRISE && <Tooltip title={t(Strings.contact_us)} placement='right'>
+          <div className={styles.iconWrap} onClick={() => contactUs()}>
+            <LivechatFilled className={styles.icon} size={32} />
+          </div>
+        </Tooltip>}
         <Tooltip title={t(Strings.quick_search_title)} placement='right'>
           <div className={styles.iconWrap} onClick={() => expandSearch()}>
             <SearchOutlined className={styles.icon} size={24} />

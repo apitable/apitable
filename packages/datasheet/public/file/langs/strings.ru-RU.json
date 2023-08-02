@@ -5329,7 +5329,7 @@
   "when_meet_the_following_filters": "При выполнении следующих фильтров",
   "where": "Где?",
   "whether_bind_with_invited_email": "Подтвердите привязку к приглашенной учетной записи ${inviteEmail}",
-  "who_shares": "${userName} поделился с вами",
+  "who_shares": " поделился с вами",
   "widget": "Мелкие устройства",
   "widget_center": "Центр малых инструментов",
   "widget_center_create_modal_desc": "Сначала назовите свой виджет, а затем выберите шаблон компонента < a href = \"/ > для начала разработки.",

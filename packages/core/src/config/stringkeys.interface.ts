@@ -148,6 +148,10 @@ export type StringKeysMapType = {
   'ai_data_source_rows': 'ai_data_source_rows',
   'ai_data_source_update': 'ai_data_source_update',
   'ai_datasheet_panel_create_btn_text': 'ai_datasheet_panel_create_btn_text',
+  'ai_default_prologue': 'ai_default_prologue',
+  'ai_default_prompt': 'ai_default_prompt',
+  'ai_discard_setting_edit_cancel_text': 'ai_discard_setting_edit_cancel_text',
+  'ai_discard_setting_edit_ok_text': 'ai_discard_setting_edit_ok_text',
   'ai_explore_card_title': 'ai_explore_card_title',
   'ai_explore_refresh_btn_text': 'ai_explore_refresh_btn_text',
   'ai_fallback_message_desc': 'ai_fallback_message_desc',
@@ -183,6 +187,8 @@ export type StringKeysMapType = {
   'ai_toolbar_train_text': 'ai_toolbar_train_text',
   'ai_train': 'ai_train',
   'ai_train_complete_message': 'ai_train_complete_message',
+  'ai_training_failed_message': 'ai_training_failed_message',
+  'ai_training_failed_message_and_allow_send_message': 'ai_training_failed_message_and_allow_send_message',
   'ai_training_message': 'ai_training_message',
   'ai_update_setting_success': 'ai_update_setting_success',
   'alarm_no_member_field_tips': 'alarm_no_member_field_tips',
@@ -5521,4 +5527,6 @@ export type StringKeysMapType = {
   'zoom_out': 'zoom_out'
 };
 
-export type StringKeysType = keyof StringKeysMapType;
+export type StringKeysType = {
+          [K in keyof StringKeysMapType]: K;
+        } & { [key: string]: unknown };

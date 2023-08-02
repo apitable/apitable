@@ -24,14 +24,11 @@ import { triggerUsageAlertForDatasheet } from 'enterprise';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
-import { getEnvVariables } from 'pc/utils/env';
 import parser from 'html-react-parser';
 
 export const onError: IServiceError = (error, type) => {
   const { title, code, message: errorMessage } = error;
   const errorCode = code as number;
-  const env = getEnvVariables();
-  const qrcodeVisible = !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE);
   if (type === 'modal') {
     Sentry.captureMessage(errorMessage, {
       extra: error as any,
@@ -45,16 +42,14 @@ export const onError: IServiceError = (error, type) => {
     }, '*');
 
     let modalType = error.modalType || 'error';
-    let contentMessage = `<span>${errorMessage}(${errorCode})${qrcodeVisible ? '' :
-      `<a href="${env.CRASH_PAGE_REPORT_ISSUES_URL}" target="_blank">，${t(Strings.report_issues)}</a>`}</span>`;
+    let contentMessage = `<span>${errorMessage}(${errorCode})</span>`;
     // TODO: Temporary solutions, forms and tables without permission to insert or edit need to report different errors and
     // different error codes to report errors need different copy
     if (errorCode == StatusCode.NOT_PERMISSION || errorCode == StatusCode.NODE_NOT_EXIST) {
       modalType = 'warning';
       contentMessage = /fom\w+/.test(window.location.href) && errorCode == StatusCode.NOT_PERMISSION ?
         t(Strings.no_datasheet_editing_right) :
-        `<span>${t(Strings.no_file_permission_message)}(${errorCode})${qrcodeVisible ? '' :
-          `<a href="${env.HELP_MENU_USER_COMMUNITY_URL}" target="_blank">，${t(Strings.join_discord_community)}</a>`}</span>`;
+        `<span>${t(Strings.no_file_permission_message)}(${errorCode})</span>`;
     }
     if (errorCode == OtErrorCode.REVISION_OVER_LIMIT) {
       modalType = 'info';
@@ -93,3 +88,4 @@ export const onError: IServiceError = (error, type) => {
     return;
   }
 };
+
