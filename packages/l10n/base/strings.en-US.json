@@ -3383,7 +3383,7 @@
   "platform_synchronization": "Synchronize in all platforms",
   "play_guide_video_of_gantt_view": "How to use a Gantt chart",
   "player_contact_us": "Contact us",
-  "player_contact_us_confirm_btn": "Contact customer service",
+  "player_contact_us_confirm_btn": "Done",
   "player_step_ui_config_1": "{}",
   "player_step_ui_config_10": "{\n \"element\": \".style_linkWrapper__12Kgi  .style_urlWrapper__2IVlG button\", \n\"placement\": \"bottomRight\",\n \"title\": \"Copy and share\",\n\"description\": \"Click to copy the link and share it with members\", \"children\":\"\" \n} ",
   "player_step_ui_config_100": "{\n  \"element\": \"#VIKABY_UPDATE_LOGS_HISTORY\",\n  \"shadowDirection\":\"inset\"\n}",

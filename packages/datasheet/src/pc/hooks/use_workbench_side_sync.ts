@@ -24,6 +24,7 @@ import { WarnCircleFilled, WarnFilled } from '@apitable/icons';
 import { has } from 'lodash';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { NotificationStore } from 'pc/notification_store';
@@ -187,7 +188,7 @@ export const useWorkbenchSideSync = () => {
       }
     };
 
-    const { content, icon } = configObj[errorType];
+    const { content, modalButtonType, icon } = configObj[errorType];
     const popErrorModalClose = () => {
       modal.destroy();
       syncErrorCode(nodeId, nodeType, StatusCode.NODE_NOT_EXIST);
@@ -196,13 +197,14 @@ export const useWorkbenchSideSync = () => {
       });
     };
 
-    const modalConfig = {
+    const modalConfig = getModalConfig({
       title: t(Strings.file_notification),
       content: content,
       onOk: popErrorModalClose,
       maskClosable: false,
       icon,
-    };
+      modalButtonType,
+    });
     const modal = Modal.warning(modalConfig);
 
   };

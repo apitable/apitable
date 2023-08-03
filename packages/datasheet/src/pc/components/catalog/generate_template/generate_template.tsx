@@ -20,6 +20,7 @@ import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '
 import { useUpdateEffect } from 'ahooks';
 import { Form, Input } from 'antd';
 import { BaseModal, Message, Modal } from 'pc/components/common';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useTemplateRequest } from 'pc/hooks';
 import * as React from 'react';
@@ -72,14 +73,15 @@ export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps
       onCancel();
     } else {
       if (createTemplateData.code === 430) {
-        const modalConfig = {
+        const modalConfig = getModalConfig({
           title: t(Strings.save_template_disabled),
           content:  createTemplateData.message,
           onOk: () => {
             customModal.destroy();
           },
+          modalButtonType: 'warning',
           okText: t(Strings.submit),
-        };
+        });
         const customModal = Modal.warning(modalConfig);
       } else {
         setErrorMsg(createTemplateData.message);
