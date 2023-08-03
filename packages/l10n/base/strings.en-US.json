@@ -5528,5 +5528,6 @@
   "ai_discar_setting_edit_cancel_text": "Cancel",
   "ai_embed_website": "Embed website",
   "ai_embed_website_iframe_tips": "To add a chatbot to any location on the website, please add this iframe to your HTML code.",
-  "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html."
+  "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html.",
+  "ai_setting_title": "Setting"
 }

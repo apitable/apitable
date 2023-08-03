@@ -191,6 +191,7 @@
   "ai_embed_website": "嵌入网站",
   "ai_embed_website_iframe_tips": "在网站上的任何位置添加聊天机器人，请将此 iframe 添加到您的 html 代码中",
   "ai_embed_website_javascript_tips": "在网站右下角添加聊天气泡，请将此脚本标记添加到您的 html 中",
+  "ai_setting_title": "设置",
   "alarm_no_member_field_tips": "请在表中先新建一列成员字段",
   "alarm_save_fail": "日期提醒配置不全，保存失败",
   "alarm_specifical_field_member": "提醒指定成员列的人",
