@@ -165,7 +165,6 @@ export enum Backdrop {
 export enum Next {
     下一步 = "下一步",
     好的 = "好的",
-    已完成添加 = "已完成添加",
     我知道了 = "我知道了",
     查看更多 = "查看更多",
     查看详情 = "查看详情",
@@ -182,7 +181,6 @@ export enum NextID {
     Known = "known",
     NextStep = "next_step",
     Okay = "okay",
-    PlayerContactUsConfirmBtn = "player_contact_us_confirm_btn",
     SeeMore = "see_more",
 }
 
@@ -191,7 +189,6 @@ export enum On {
     ClearGuideUisPopover = "clear_guide_uis([\"popover\"])",
     OpenGuideNextStep = "open_guide_next_step()",
     OpenGuideNextStepClearAllPrevUITrue = "open_guide_next_step({\"clearAllPrevUi\":true})",
-    OpenVikabyDefaultExpandMenuTrueVisibleTrue = "open_vikaby({\"defaultExpandMenu\": true, \"visible\": true})",
     SetWizardCompletedCurWizardTrue = "set_wizard_completed({\"curWizard\": true})",
     SkipAllWizards = "skip_all_wizards()",
     SkipCurrentWizard = "skip_current_wizard()",
