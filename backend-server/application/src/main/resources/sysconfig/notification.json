@@ -365,7 +365,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "assignedToGroup",
       "notifications_type": "member",
       "to_tag": "members",
       "url": "/management"
@@ -402,7 +404,9 @@
       "can_jump": true,
       "format_string": "apply_space_beta_feature_success_notify_me",
       "id": "apply_space_beta_feature_success_notify_me",
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "applySpaceBetaFeatureSuccess",
       "notifications_type": "space",
       "to_tag": "myself"
     },
@@ -413,7 +417,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "assignedToGroup",
       "notifications_type": "member",
       "to_tag": "members",
       "url": "/management"
@@ -425,7 +431,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "assignedToRole",
       "notifications_type": "member",
       "to_tag": "members",
       "url": "/management"
@@ -472,7 +480,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "changedOrdinaryUser",
       "notifications_type": "member",
       "to_tag": "members"
     },
@@ -562,7 +572,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "acceptInvite",
       "notifications_type": "member",
       "to_tag": "myself"
     },
@@ -583,7 +595,9 @@
       "id": "member_applied_to_close_account",
       "is_browser": true,
       "is_component": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "memberAppliedToCloseAccount",
       "notifications_type": "member",
       "to_tag": "space_member_admins"
     },
@@ -637,7 +651,9 @@
       "is_browser": true,
       "is_component": true,
       "is_mobile": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "removeFromRole",
       "notifications_type": "member",
       "to_tag": "members",
       "url": "/management"
@@ -774,7 +790,9 @@
       "id": "space_certification_fail_notify",
       "is_browser": true,
       "is_component": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "spaceCertificationFailNotify",
       "notifications_type": "space",
       "to_tag": "users",
       "url": "/management"
@@ -785,7 +803,9 @@
       "id": "space_certification_notify",
       "is_browser": true,
       "is_component": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "spaceCertificationNotify",
       "notifications_type": "space",
       "to_tag": "users",
       "url": "/management"
@@ -886,7 +906,9 @@
       "format_string": "space_join_apply_approved",
       "id": "space_join_apply_approved",
       "is_component": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "spaceApplyApproved",
       "notifications_type": "member",
       "to_tag": "users",
       "url": "/workbench"
@@ -895,7 +917,9 @@
       "format_string": "space_join_apply_refused",
       "id": "space_join_apply_refused",
       "is_component": true,
+      "is_mail": true,
       "is_notification": true,
+      "mail_template_subject": "spaceApplyRefused",
       "notifications_type": "member",
       "to_tag": "users"
     },

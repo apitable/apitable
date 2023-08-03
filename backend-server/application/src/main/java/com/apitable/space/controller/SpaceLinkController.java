@@ -85,8 +85,8 @@ public class SpaceLinkController {
      * Generate or refresh link.
      */
     @PostResource(path = "/generate", tags = "INVITE_MEMBER")
-    @Operation(summary = "Generate or refresh link", description = "return token，the front stitch"
-        + " ../invite/link?token=:token")
+    @Operation(summary = "Generate or refresh link",
+        description = "return token，the front end stitching $DOMAIN/invite/link?token=:token")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<String> generate(@RequestBody @Valid SpaceLinkOpRo opRo) {
@@ -126,7 +126,7 @@ public class SpaceLinkController {
     /**
      * Valid invite link token.
      */
-    @PostResource(name = "Valid invite link token", path = "/valid", requiredLogin = false)
+    @PostResource(path = "/valid", requiredLogin = false)
     @Operation(summary = "Valid invite link token", description = "After the verification is "
         + "successful, it can obtain related invitation information")
     public ResponseData<SpaceLinkInfoVo> valid(@RequestBody @Valid InviteValidRo data) {
@@ -144,10 +144,10 @@ public class SpaceLinkController {
     /**
      * Join the space using the public link.
      */
-    @PostResource(name = "Join the space using the public link", path = "/join",
-        requiredPermission = false)
-    @Operation(summary = "Join the space using the public link", description = "If return code "
-        + "status 201, the user redirects to the login page due to unauthorized。")
+    @PostResource(path = "/join", requiredPermission = false)
+    @Operation(summary = "Join the space using the public link",
+        description = "If return code status 201,"
+            + "the user redirects to the login page due to unauthorized.")
     public ResponseData<Void> join(@RequestBody @Valid InviteValidRo data) {
         Long userId = SessionContext.getUserId();
         iSpaceInviteLinkService.join(userId, data.getToken(), data.getNodeId());

@@ -31,10 +31,36 @@ pre[class*='language-ai-'] {
 /* Code blocks */
 pre[class*='language-ai-'] {
   overflow: auto;
+  position: relative;
+  .markdown-it-code-button-copy {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: none;
+    color: var(--black_800);
+    padding: 5px;
+    right: 0;
+    top: 0;
+    &:hover {
+      color: var(--black_1000);
+    }
+    &:active {
+      color: var(--black_600);
+    }
+  }
+  &:hover {
+    .markdown-it-code-button-copy {
+      display: flex;
+    }
+  }
 }
 
+
+
 :not(pre) > code[class*='language-ai-'],
-pre[class*='language-'] {
+pre[class*='language-ai'] {
   border-radius: 4px;
 }
 
