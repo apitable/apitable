@@ -211,11 +211,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   }, [activeNodeId, rootId]);
 
   useEffect(() => {
-    setActiveKey(getWorkbenchActiveKey());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spaceId]);
-
-  useEffect(() => {
     if (activedNodeId && !treeNodesMap[activedNodeId] && !loading) {
       dispatch(StoreActions.getNodeInfo(activedNodeId));
     }
@@ -227,7 +222,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     setWorkbenchActiveKey(key);
   };
 
-  const getWorkbenchActiveKey=()=>{
+  const getWorkbenchActiveKey=React.useCallback(()=>{
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
     let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
     if (Array.isArray(defaultActiveKey)) {
@@ -237,7 +232,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       defaultActiveKey=defaultActiveKey?defaultActiveKey.activeKey:ConfigConstant.Modules.CATALOG;
     }
     return defaultActiveKey;
-  };
+  },[spaceId]);
+
+  useEffect(()=>{
+    setActiveKey(getWorkbenchActiveKey());
+  },[getWorkbenchActiveKey]);
 
   const setWorkbenchActiveKey=(key: string)=>{
     let defaultActiveKey = JSON.parse(localStorage.getItem('vika_workbench_active_key'));
