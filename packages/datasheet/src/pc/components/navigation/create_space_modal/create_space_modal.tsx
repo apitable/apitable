@@ -67,8 +67,11 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
     setSpaceName(value);
   };
 
-  const handleSubmit = () => {
-    createSpace(spaceName);
+  const handleSubmit = async() => {
+    const rlt = await createSpace(spaceName);
+    if (rlt?.success) {
+      props.setShowCreateModal(false);
+    }
   };
 
   const renderContent = () => {
