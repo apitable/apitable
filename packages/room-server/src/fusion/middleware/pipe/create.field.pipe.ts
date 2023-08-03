@@ -126,7 +126,7 @@ export class CreateFieldPipe implements PipeTransform {
           throw ApiException.tipError(ApiTipConstant.api_params_lookup_filter_field_not_exists, { fieldId: condition.fieldId });
         }
         condition.fieldType = getFieldTypeString(filterField.type);
-        if (filterField.type != FieldType.Formula) {
+        if (![FieldType.Formula, FieldType.LookUp].includes(filterField.type)) {
           const context = Field.bindContext(filterField, {} as IReduxState);
           if (!context.acceptFilterOperators.includes(condition.operator)) {
             throw ApiException.tipError(ApiTipConstant.api_params_lookup_filter_field_invalid_operation, {
