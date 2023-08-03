@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{MEMBER_NAME}} changes your role in the space "{{SPACE_NAME}}" to "Member"</title>
+    <style>
+      @media only screen and (max-width: 620px) {
+        body {
+          background-color: white !important;
+        }
+
+        table[class="body"] {
+          background-color: white !important;
+        }
+
+        table[class="body"] h1 {
+          font-size: 28px !important;
+          margin-bottom: 10px !important;
+        }
+
+        table[class="body"] p,
+        table[class="body"] ul,
+        table[class="body"] ol,
+        table[class="body"] td,
+        table[class="body"] span,
+        table[class="body"] a {
+          font-size: 16px !important;
+        }
+
+        table[class="body"] .wrapper,
+        table[class="body"] .main_description {
+          padding: 24px !important;
+        }
+
+        table[class="body"] .content {
+          padding: 0 !important;
+        }
+
+        table[class="body"] .container {
+          padding: 0 !important;
+          width: 100% !important;
+        }
+
+        table[class="body"] .main {
+          border-left-width: 0 !important;
+          border-radius: 8 !important;
+          border-right-width: 0 !important;
+          margin-top: 10px;
+        }
+
+        table[class="body"] .button table {
+          width: 100% !important;
+        }
+
+        table[class="body"] .button a {
+          width: 100% !important;
+        }
+
+        table[class="body"] .img-responsive {
+          height: auto !important;
+          max-width: 100% !important;
+          width: auto !important;
+        }
+      }
+      @media all {
+        .ExternalClass {
+          width: 100%;
+        }
+
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+
+        .copyright {
+          line-height: 18px;
+          color: #9c9c9c;
+        }
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    </style>
+  </head>
+  <body
+    class
+    style="
+      background-color: #f0f2f5;
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    "
+  >
+    <table
+      role="presentation"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      class="body"
+      style="
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        min-width: 100%;
+        background-color: #f0f2f5;
+        width: 100%;
+      "
+      width="100%"
+      bgcolor="#F0F2F5"
+    >
+      <tr>
+        <td
+          style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top"
+          valign="top"
+        >
+          &nbsp;
+        </td>
+        <td
+          class="container"
+          style="
+            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+            font-size: 14px;
+            vertical-align: top;
+            display: block;
+            max-width: 480px;
+            padding: 100px;
+            width: 480px;
+            margin-top: 100px;
+            margin: 0 auto;
+          "
+          width="480"
+          valign="top"
+        >
+          <div
+            class="content"
+            style="
+              box-sizing: border-box;
+              display: block;
+              margin: 0 auto;
+              max-width: 580px;
+              padding: 10px;
+            "
+          >
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span
+              class="preheader"
+              style="
+                color: transparent;
+                display: none;
+                height: 0;
+                max-height: 0;
+                max-width: 0;
+                opacity: 0;
+                overflow: hidden;
+                mso-hide: all;
+                visibility: hidden;
+                width: 0;
+              "
+              >{{MEMBER_NAME}} changes your role in the space "{{SPACE_NAME}}" to "Member"</span
+            >
+            <table
+            role="presentation"
+            class="main"
+            style="
+              border-collapse: separate;
+              mso-table-lspace: 0pt;
+              mso-table-rspace: 0pt;
+              min-width: 100%;
+              width: 100%;
+              background: #ffffff;
+              box-shadow: 0px 1px 2px rgba(20, 20, 20, 0.1),
+                0px 3px 6px rgba(20, 20, 20, 0.06);
+              border-radius: 8px;
+              border: 1px solid #e1e4ea;
+              background-image: url('https://s4.apitable.com/logo/4ee310b46d5f4cf78e77bbfa99c8cb18'),
+                url('https://s4.apitable.com/logo/33376adf4b134caf8beac4f20032090f'),
+                url('https://s4.apitable.com/logo/9884739a1e424c64a11f25ee033866f4');
+              background-repeat: no-repeat;
+              background-size: 25%;
+              background-position: left bottom, right top, right bottom;
+            "
+            width="100%"
+            >
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td
+                  class="wrapper"
+                  style="
+                    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                    font-size: 14px;
+                    vertical-align: top;
+                    box-sizing: border-box;
+                    padding: 32px;
+                  "
+                  valign="top"
+                >
+                  <table
+                    role="presentation"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    style="
+                      border-collapse: separate;
+                      mso-table-lspace: 0pt;
+                      mso-table-rspace: 0pt;
+                      min-width: 100%;
+                      width: 100%;
+                    "
+                    width="100%"
+                  >
+                    <tr>
+                      <td
+                        align="center"
+                        style="
+                          font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                          font-size: 14px;
+                          vertical-align: top;
+                        "
+                        valign="top"
+                      >
+                        <div
+                          class="logo"
+                          style="text-align: left;"
+                        >
+                          <a
+                            href="https://apitable.com?home=1"
+                            style="color: #7b67ee; text-decoration: underline"
+                            ><img
+                              style="
+                                border: none;
+                                -ms-interpolation-mode: bicubic;
+                                max-width: 100%;
+                                height: 24px;
+                              "
+                              src="https://s4.apitable.com/logo/a5de38aec6cc78aa3f447cf3a18aeb69"
+                              alt="APITable"
+                              height="24"
+                          /></a>
+                        </div>
+                        <p
+                          class="decscription"
+                          style="
+                            color: #06090f;
+                            font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                            font-size: 18px;
+                            line-height: 1.4;
+                            margin: 30px 0;
+                          "
+                        >
+                        {{MEMBER_NAME}} changes your role in the space "{{SPACE_NAME}}" to "Member"
+                        </p>
+                        <table
+                        role="presentation"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        class="button button-primary"
+                        style="
+                          border-collapse: separate;
+                          mso-table-lspace: 0pt;
+                          mso-table-rspace: 0pt;
+                          min-width: 100%;
+                          box-sizing: border-box;
+                          width: 100%;
+                        "
+                        width="100%"
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              align="center"
+                              style="
+                                font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                                font-size: 14px;
+                                vertical-align: top;
+                                padding-bottom: 15px;
+                              "
+                              valign="top"
+                            >
+                              <table
+                                role="presentation"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                                style="
+                                  border-collapse: separate;
+                                  mso-table-lspace: 0pt;
+                                  mso-table-rspace: 0pt;
+                                  min-width: auto;
+                                  width: auto;
+                                "
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      style="
+                                        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                                        font-size: 14px;
+                                        vertical-align: top;
+                                        border-radius: 5px;
+                                        text-align: center;
+                                        background-color: #7b67ee;
+                                      "
+                                      valign="top"
+                                      align="center"
+                                      bgcolor="#7b67ee"
+                                    >
+                                      <a
+                                        href="{{URL}}"
+                                        target="_blank"
+                                        style="
+                                          border: solid 1px #7b67ee;
+                                          border-radius: 5px;
+                                          box-sizing: border-box;
+                                          cursor: pointer;
+                                          display: inline-block;
+                                          font-size: 14px;
+                                          font-weight: bold;
+                                          margin: 0;
+                                          padding: 12px 25px;
+                                          text-decoration: none;
+                                          text-transform: capitalize;
+                                          background-color: #7b67ee;
+                                          border-color: #7b67ee;
+                                          color: #ffffff;
+                                        "
+                                        >Enter Space</a
+                                      >
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+
+            <!-- START FOOTER -->
+            <div
+              class="footer"
+              style="
+                clear: both;
+                margin-top: 10px;
+                text-align: center;
+                width: 100%;
+              "
+            >
+              <table
+                role="presentation"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                style="
+                  border-collapse: separate;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  min-width: 100%;
+                  width: 100%;
+                "
+                width="100%"
+              >
+                <tr>
+                  <td
+                    class="content-block"
+                    style="
+                      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                      vertical-align: top;
+                      padding-bottom: 10px;
+                      padding-top: 10px;
+                      font-size: 12px;
+                      text-align: center;
+                    "
+                    valign="top"
+                    align="center"
+                  >
+                    <p
+                      class="copyright"
+                      style="
+                        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+                        font-weight: normal;
+                        margin: 0;
+                        margin-bottom: 15px;
+                        font-size: 12px;
+                        text-align: center;
+                      "
+                    >
+                      &copy; {{YEARS}} APITable Ltd.
+                    </p>
+                    <a
+                      class="contact"
+                      href="https://apitable.com?home=1"
+                      style="
+                        line-height: 18px;
+                        color: #7b67ee;
+                        text-decoration: none;
+                        font-size: 12px;
+                        text-align: center;
+                      "
+                      >Contact us</a
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td
+          style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji; font-size: 14px; vertical-align: top"
+          valign="top"
+        >
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

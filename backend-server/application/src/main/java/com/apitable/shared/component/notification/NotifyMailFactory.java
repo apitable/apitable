@@ -18,17 +18,29 @@
 
 package com.apitable.shared.component.notification;
 
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ACCEPT_INVITE;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD_LIMITED;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD_SOON_LIMITED;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_SUB_ADMIN;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ASSIGN_GROUP;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ASSIGN_ROLE;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_CAPACITY_FULL;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_CHANGE_ADMIN;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_DATASHEET_REMIND;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_INVITE_NOTIFY;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_MEMBER_APPLY_CLOSE_ACCOUNT;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_PAI_SUCCESS;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_RECORD_COMMENT;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_REGISTER;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_REMOVE_MEMBER;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_REMOVE_ROLE;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_REMOVE_SUB_ADMIN;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY_APPROVE;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY_REFUSE;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_BETA_FEATURE_APPLY_SUCCESS;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_CERTIFICATION_FAIL_NOTIFY;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_CERTIFICATION_NOTIFY;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_ADMIN_LIMIT;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_API_LIMIT;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_CALENDAR_LIMIT;
@@ -413,6 +425,34 @@ public class NotifyMailFactory {
         public MailText getTemplate() {
             // switch email template
             switch (this.subjectType) {
+                case SUBJECT_MEMBER_APPLY_CLOSE_ACCOUNT:
+                    this.htmlTemplateName = "member-applied-to-close-account-html.btl";
+                    this.textTemplateName = "member-applied-to-close-account-text.btl";
+                    break;
+                case SUBJECT_ADD_SUB_ADMIN:
+                    this.htmlTemplateName = "add-sub-admin-html.btl";
+                    this.textTemplateName = "add-sub-admin-text.btl";
+                    break;
+                case SUBJECT_REMOVE_SUB_ADMIN:
+                    this.htmlTemplateName = "changed-ordinary-user-html.btl";
+                    this.textTemplateName = "changed-ordinary-user-text.btl";
+                    break;
+                case SUBJECT_ASSIGN_GROUP:
+                    this.htmlTemplateName = "assigned-to-group-html.btl";
+                    this.textTemplateName = "assigned-to-group-text.btl";
+                    break;
+                case SUBJECT_ASSIGN_ROLE:
+                    this.htmlTemplateName = "assigned-to-role-html.btl";
+                    this.textTemplateName = "assigned-to-role-text.btl";
+                    break;
+                case SUBJECT_REMOVE_ROLE:
+                    this.htmlTemplateName = "remove-from-role-html.btl";
+                    this.textTemplateName = "remove-from-role-text.btl";
+                    break;
+                case SUBJECT_ACCEPT_INVITE:
+                    this.htmlTemplateName = "accept-invite-html.btl";
+                    this.textTemplateName = "accept-invite-text.btl";
+                    break;
                 case SUBJECT_INVITE_NOTIFY:
                     this.htmlTemplateName = "invite-email-html.btl";
                     this.textTemplateName = "invite-email-text.btl";
@@ -428,6 +468,26 @@ public class NotifyMailFactory {
                 case SUBJECT_SPACE_APPLY:
                     this.htmlTemplateName = "space-apply-html.btl";
                     this.textTemplateName = "space-apply-text.btl";
+                    break;
+                case SUBJECT_SPACE_APPLY_APPROVE:
+                    this.htmlTemplateName = "space-apply-approved-html.btl";
+                    this.textTemplateName = "space-apply-approved-text.btl";
+                    break;
+                case SUBJECT_SPACE_APPLY_REFUSE:
+                    this.htmlTemplateName = "space-apply-refused-html.btl";
+                    this.textTemplateName = "space-apply-refused-text.btl";
+                    break;
+                case SUBJECT_SPACE_BETA_FEATURE_APPLY_SUCCESS:
+                    this.htmlTemplateName = "apply-space-beta-feature-success-html.btl";
+                    this.textTemplateName = "apply-space-beta-feature-success-text.btl";
+                    break;
+                case SUBJECT_SPACE_CERTIFICATION_NOTIFY:
+                    this.htmlTemplateName = "space-certification-notify-html.btl";
+                    this.textTemplateName = "space-certification-notify-text.btl";
+                    break;
+                case SUBJECT_SPACE_CERTIFICATION_FAIL_NOTIFY:
+                    this.htmlTemplateName = "space-certification-fail-notify-html.btl";
+                    this.textTemplateName = "space-certification-fail-notify-text.btl";
                     break;
                 case SUBJECT_RECORD_COMMENT:
                     this.htmlTemplateName = "remind-comment-html.btl";
