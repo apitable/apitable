@@ -130,7 +130,7 @@ public class FieldRoleController {
     public ResponseData<Void> enableRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
         @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
-        // column operation permission pre check
+        // column operation permission pre-check
         iFieldRoleService.checkFieldPermissionBeforeEnable(dstId, fieldId);
         // The permissions at the node must be above manageable.
         controlTemplate.checkNodePermission(MemberHolder.get(), dstId, NodePermission.MANAGE_NODE,
