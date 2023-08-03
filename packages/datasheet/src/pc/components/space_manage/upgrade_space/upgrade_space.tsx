@@ -188,8 +188,8 @@ const UpgradeSpace = () => {
     return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
-  // const iframeSrc = location.origin + '/pricing/';
-  const iframeSrc = 'http://localhost:3002' + '/pricing/';
+  const iframeSrc = location.origin + '/pricing/';
+  // const iframeSrc = 'http://localhost:3002' + '/pricing/';
 
   return <div className={styles.container}>
     {
