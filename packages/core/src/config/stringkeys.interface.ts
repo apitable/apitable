@@ -160,6 +160,7 @@ export type StringKeysMapType = {
   'ai_fallback_message_desc': 'ai_fallback_message_desc',
   'ai_fallback_message_title': 'ai_fallback_message_title',
   'ai_latest_train_date': 'ai_latest_train_date',
+  'ai_new_chatbot': 'ai_new_chatbot',
   'ai_new_conversation_btn_text': 'ai_new_conversation_btn_text',
   'ai_open_remark_can_not_empty': 'ai_open_remark_can_not_empty',
   'ai_open_remark_desc': 'ai_open_remark_desc',

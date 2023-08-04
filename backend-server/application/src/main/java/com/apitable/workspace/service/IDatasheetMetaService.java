@@ -46,15 +46,15 @@ public interface IDatasheetMetaService {
     List<DatasheetMetaDTO> findMetaDtoByDstIds(@Param("list") List<String> dstIds);
 
     /**
-     * @param userId user id
-     * @param dstId datasheet id
+     * @param userId   user id
+     * @param dstId    datasheet id
      * @param metaData meta data
      */
     void create(Long userId, String dstId, String metaData);
 
     /**
      * @param userId user id
-     * @param dstId datasheet id
+     * @param dstId  datasheet id
      * @param meta   request parameters
      */
     void edit(Long userId, String dstId, MetaOpRo meta);
@@ -62,13 +62,14 @@ public interface IDatasheetMetaService {
     /**
      * Check whether the specified view of the number table exists.
      *
-     * @param dstId datasheet id
+     * @param dstId  datasheet id
      * @param viewId view id
      */
     void checkViewIfExist(String dstId, String viewId);
 
     /**
      * get data datasheet source information
+     *
      * @param dstId datasheet id
      * @return DatasheetSnapshot
      */
@@ -81,4 +82,13 @@ public interface IDatasheetMetaService {
      * @return boolean
      */
     boolean judgeContainMemberField(List<String> dstIds);
+
+    /**
+     * bulk remove.
+     *
+     * @param dstIds datasheet id list
+     * @param isDel  delete status
+     * @param userId update user
+     */
+    void batchRemove(List<String> dstIds, boolean isDel, Long userId);
 }

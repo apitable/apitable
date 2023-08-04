@@ -159,6 +159,7 @@
   "ai_fallback_message_desc": "在数据集中找不到合适的答案或者AI认为不相关时，它会用以下内容作为回复。",
   "ai_fallback_message_title": "聊天机器人找不到答案的时候，回复以下内容：",
   "ai_latest_train_date": "上一次训练：${date}",
+  "ai_new_chatbot": "新建聊天机器人",
   "ai_new_conversation_btn_text": "新会话",
   "ai_open_remark_can_not_empty": "请填写一段文本，让用户知道AI聊天机器人可以如何帮助他们。",
   "ai_open_remark_desc": "每段新会话开始的时候，机器人会主动发送给用户的内容。",

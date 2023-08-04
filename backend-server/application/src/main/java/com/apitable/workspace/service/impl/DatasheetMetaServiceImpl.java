@@ -127,4 +127,9 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
         String keyword = "\"type\": 13";
         return SqlTool.retCount(datasheetMetaMapper.countByMetaData(dstIds, keyword)) > 0;
     }
+
+    @Override
+    public void batchRemove(List<String> nodeIds, boolean isDel, Long userId) {
+        datasheetMetaMapper.updateIsDeletedByNodeId(userId, nodeIds, isDel);
+    }
 }

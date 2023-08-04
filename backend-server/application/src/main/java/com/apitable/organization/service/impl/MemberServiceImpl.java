@@ -205,6 +205,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public List<Long> getUserIdsByMemberIds(List<Long> memberIds) {
+        return baseMapper.selectUserIdsByMemberIds(memberIds);
+    }
+
+    @Override
     public MemberEntity getByUserIdAndSpaceId(Long userId, String spaceId) {
         return baseMapper.selectByUserIdAndSpaceId(userId, spaceId);
     }

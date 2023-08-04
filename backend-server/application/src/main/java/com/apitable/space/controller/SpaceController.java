@@ -63,6 +63,7 @@ import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceUpdateOperate;
 import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceDeleteRo;
 import com.apitable.space.ro.SpaceMemberSettingRo;
 import com.apitable.space.ro.SpaceOpRo;
@@ -202,23 +203,23 @@ public class SpaceController {
                                                     HttpServletRequest request) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
-        String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
-        Map<String, String> externalProperty = HttpServletUtil.getCookiesAsMap(request);
-        entitlementServiceFacade.createSubscription(spaceId, userId, externalProperty);
+        Space space = iSpaceService.createSpace(user, spaceOpRo.getName());
+        Map<String, String> externalProperty = HttpServletUtil.getParameterAsMap(request, true);
+        entitlementServiceFacade.createSubscription(space.getId(), userId, externalProperty);
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg =
             AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId)
-                .spaceId(spaceId)
+                .spaceId(space.getId())
                 .requestIp(clientOriginInfo.getIp())
                 .requestUserAgent(clientOriginInfo.getUserAgent())
                 .info(JSONUtil.createObj().set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
                 .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         // Cache the space where the user's last action was active
-        TaskManager.me().execute(() -> userActiveSpaceCacheService.save(userId, spaceId));
-        return ResponseData.success(CreateSpaceResultVo.builder().spaceId(spaceId).build());
+        TaskManager.me().execute(() -> userActiveSpaceCacheService.save(userId, space.getId()));
+        return ResponseData.success(CreateSpaceResultVo.builder().spaceId(space.getId()).build());
     }
 
     /**
