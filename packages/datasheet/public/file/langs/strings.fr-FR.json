@@ -179,6 +179,7 @@
   "ai_setting_preview_suggestion_tip_2": "Proposition 2",
   "ai_setting_preview_suggestion_tip_3": "Proposition 3",
   "ai_setting_preview_user_chat_message": "Does Apple have black color?",
+  "ai_setting_title": "Paramètre",
   "ai_show_explore_card_desc": "Dans l'interface de chat apparaît la carte d'exploration avec des questions sélectionnées au hasard dans l'ensemble de données. La carte de navigation n'apparaîtra qu'avant que l'utilisateur ne commence à discuter avec le chatbot.",
   "ai_show_explore_card_title": "Show explore card",
   "ai_show_suggestion_for_follow_tip_desc": "System will suggest followup messages to the user that they might want to send to the chatbot.",

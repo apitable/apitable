@@ -179,6 +179,7 @@
   "ai_setting_preview_suggestion_tip_2": "建議的問題 2",
   "ai_setting_preview_suggestion_tip_3": "建議的問題 3",
   "ai_setting_preview_user_chat_message": "金魚的記憶只有7秒嗎？",
+  "ai_setting_title": "設置",
   "ai_show_explore_card_desc": "“試一試”消息框會隨機展示一些建議的問題，幫助用戶得到啟發。這個消息框僅在用戶開始新會話時出現。",
   "ai_show_explore_card_title": "顯示“試一試”消息框",
   "ai_show_suggestion_for_follow_tip_desc": "系統會向用戶建議他們可能想發送到聊天機器人的後續消息。",

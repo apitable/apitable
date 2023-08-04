@@ -175,6 +175,7 @@
   "ai_robot_type_normal_desc": "基于自然语言处理（NLP）和机器学习的聊天机器人，切换不同语言模型，与各种AI进行有趣的闲聊和对话。",
   "ai_robot_type_title": "聊天机器人类型",
   "ai_setting_max_count": "不能超过255个文字",
+  "ai_setting_title": "设置",
   "ai_setting_preview_suggestion_tip_1": "建议的问题 1",
   "ai_setting_preview_suggestion_tip_2": "建议的问题 2",
   "ai_setting_preview_suggestion_tip_3": "建议的问题 3",

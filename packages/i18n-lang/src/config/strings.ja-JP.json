@@ -179,6 +179,7 @@
   "ai_setting_preview_suggestion_tip_2": "アドバイス2",
   "ai_setting_preview_suggestion_tip_3": "アドバイス3",
   "ai_setting_preview_user_chat_message": "りんごは黒がありますか。",
+  "ai_setting_title": "設ける",
   "ai_show_explore_card_desc": "チャットインタフェースには、データセットからランダムに選択された問題を含む探索カードが表示されます。閲覧カードは、ユーザーがチャットロボットを使ってチャットを開始する前にのみ表示されます。",
   "ai_show_explore_card_title": "閲覧カードを表示する",
   "ai_show_suggestion_for_follow_tip_desc": "システムは、チャットロボットに送信したい可能性のある後続メッセージをユーザに提案する。",

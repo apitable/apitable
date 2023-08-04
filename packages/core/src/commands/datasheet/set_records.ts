@@ -141,6 +141,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
 
       if (field.type === FieldType.URL && Array.isArray(value)) {
         value = value?.map((v: any) => ({
+          ...v,
           type: SegmentType.Url,
           text: v.link || v.text,
           title: v.title || v.text,

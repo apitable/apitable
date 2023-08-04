@@ -179,6 +179,7 @@
   "ai_setting_preview_suggestion_tip_2": "Sugerencia 2",
   "ai_setting_preview_suggestion_tip_3": "Sugerencia 3",
   "ai_setting_preview_user_chat_message": "¿Apple tiene color negro?",
+  "ai_setting_title": "Ajustes",
   "ai_show_explore_card_desc": "La tarjeta de exploración se muestra en la interfaz de chat, que contiene preguntas de selección aleatoria del conjunto de datos. La tarjeta de navegación solo aparecerá antes de que el usuario comience a chatear con el chatbot.",
   "ai_show_explore_card_title": "Mostrar la tarjeta de exploración",
   "ai_show_suggestion_for_follow_tip_desc": "El sistema aconsejará a los usuarios que pueden querer enviar mensajes de seguimiento al robot de chat.",

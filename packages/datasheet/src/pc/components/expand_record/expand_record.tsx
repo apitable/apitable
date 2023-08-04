@@ -31,6 +31,7 @@ import { expandRecordManager } from 'modules/database/expand_record_manager';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
+import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
   IExpandRecordComponentProp, IExpandRecordInnerProp, IExpandRecordWrapperProp, IPaneIconProps,
@@ -256,39 +257,42 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
       switch (errorCode) {
         case StatusCode.NODE_NOT_EXIST:
         case StatusCode.NODE_DELETED:
-          customModal = CustomModal.warning({
+          customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.node_not_exist_content),
             onOk: async() => {
               await modalClose();
               customModal.destroy();
             },
+            modalButtonType: 'warning',
             okText: t(Strings.submit),
-          });
+          }));
           break;
         case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
-          customModal = CustomModal.warning({
+          customModal = CustomModal.warning(getModalConfig({
             title: t(Strings.open_failed),
             content: t(Strings.mirror_resource_dst_been_deleted),
             onOk: async() => {
               await modalClose();
               customModal.destroy();
             },
+            modalButtonType: 'warning',
             okText: t(Strings.submit),
-          });
+          }));
           break;
         default:
       }
       if (!errorCode && activeRecordId && !snapshot?.recordMap[activeRecordId]) {
-        const customModal = CustomModal.error({
+        const customModal = CustomModal.error(getModalConfig({
           title: t(Strings.open_failed),
           content: t(Strings.error_record_not_exist_now),
           onOk: async() => {
             await modalClose();
             customModal.destroy();
           },
+          modalButtonType: 'error',
           okText: t(Strings.submit),
-        });
+        }));
       }
     },
     [modalClose, snapshot],

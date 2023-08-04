@@ -22,7 +22,7 @@ import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 // @ts-ignore
-import { showOrderModal } from 'enterprise';
+import { destroyVikaby, showOrderModal, showVikaby } from 'enterprise';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
@@ -36,6 +36,7 @@ import Trash from 'pc/components/trash/trash';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { isHiddenLivechat } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -95,6 +96,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const defaultSidePanelSize = localSize && localSize !== 280 ? localSize : 335;
   const editNodeId = useSelector((state: IReduxState) => state.catalogTree.editNodeId);
   const favoriteEditNodeId = useSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
+  const shareId = useSelector((state: IReduxState) => state.pageParams.shareId);
   const userSpaceId = useSelector((state: IReduxState) => state.user.info!.spaceId);
   const { getFavoriteNodeListReq, getTreeDataReq } = useCatalogTreeRequest();
   const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
@@ -208,6 +210,19 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   useEffect(() => {
     window.dispatchEvent(new Event('resize'));
   }, [sideBarVisible]);
+
+  useEffect(() => {
+    if (isMobile || shareId || isHiddenLivechat()) {
+      destroyVikaby?.();
+      return;
+    }
+
+    const isVikabyClosed = Boolean(localStorage.getItem('vikaby_closed'));
+    !isVikabyClosed && showVikaby?.();
+    return () => {
+      destroyVikaby?.();
+    };
+  }, [isMobile, shareId]);
 
   // Binding/unbinding shortcut keys.
   useEffect(() => {

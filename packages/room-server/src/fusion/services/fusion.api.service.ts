@@ -150,6 +150,7 @@ export class FusionApiService {
       loadOptions: {
         auth: { token: this.request.headers.authorization },
         recordIds: [],
+        includeCommentCount: false,
       },
     });
     if (datasheet === null) {
