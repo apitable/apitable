@@ -219,10 +219,10 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   const changeHandler = (key: string) => {
     setActiveKey(key);
-    WorkbenchActiveKey(key);
+    updateActiveKey(key);
   };
 
-  const WorkbenchActiveKey=React.useCallback((key:string='get')=>{
+  const updateActiveKey=React.useCallback((key:string='get')=>{
     const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
     let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
     if('get'===key){
@@ -237,10 +237,10 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     if(typeof defaultActiveKey[0]==='string')defaultActiveKey=[{ spaceId,activeKey:key }];
     if(Array.isArray(defaultActiveKey)){
       let noSpaceId=true;
-      for (const i of defaultActiveKey) {
-        if(i.spaceId===spaceId){
+      for (const item of defaultActiveKey) {
+        if(item.spaceId===spaceId){
           noSpaceId=false;
-          i.activeKey=key;
+          item.activeKey=key;
           break;
         }
       }
@@ -250,8 +250,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   },[spaceId]);
 
   useEffect(()=>{
-    setActiveKey(WorkbenchActiveKey());
-  },[WorkbenchActiveKey]);
+    setActiveKey(updateActiveKey());
+  },[updateActiveKey]);
 
   const jumpTrash = () => {
     Router.push(Navigation.TRASH, { params: { spaceId }});
