@@ -18,6 +18,7 @@
 
 package com.apitable.starter.oss.autoconfigure;
 
+import com.apitable.starter.oss.autoconfigure.OssProperties.Signature;
 import java.util.Optional;
 
 import com.qiniu.storage.UploadManager;
@@ -55,6 +56,7 @@ public class QiniuCloudAutoConfiguration extends OssConnectionConfiguration {
         Auth auth = Auth.create(qiniu.getAccessKey(), qiniu.getSecretKey());
         Callback callback = Optional.ofNullable(qiniu.getCallback()).orElseGet(Callback::new);
 
-        return new QiniuOssClientRequestFactory(auth, qiniu.getRegion(), qiniu.getDownloadDomain(), callback.getUrl(), callback.getBodyType(), qiniu.getUploadUrl());
+        return new QiniuOssClientRequestFactory(auth, qiniu.getRegion(),
+            qiniu.getDownloadDomain(), callback, qiniu.getUploadUrl());
     }
 }
