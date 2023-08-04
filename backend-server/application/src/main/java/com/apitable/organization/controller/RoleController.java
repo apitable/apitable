@@ -79,23 +79,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController {
 
     @Resource
-    IRoleService iRoleService;
+    private ISpaceService iSpaceService;
 
     @Resource
-    IRoleMemberService iRoleMemberService;
+    private IRoleService iRoleService;
 
     @Resource
-    ISpaceService iSpaceService;
+    private IRoleMemberService iRoleMemberService;
 
     /**
      * Create new role.
      */
-    @PostResource(path = "/roles", name = "create role", tags = "CREATE_ROLE")
+    @PostResource(path = "/roles", tags = "CREATE_ROLE")
     @Operation(summary = "create new role", description = "create new role")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
-    })
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> createRole(@RequestBody @Valid CreateRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check if exist the same role name.
@@ -110,12 +108,13 @@ public class RoleController {
     /**
      * Update role information.
      */
-    @PostResource(path = "/roles/{roleId}", method = RequestMethod.PATCH, name = "update role "
-        + "information", tags = "UPDATE_ROLE")
+    @PostResource(path = "/roles/{roleId}", method = RequestMethod.PATCH, tags = "UPDATE_ROLE")
     @Operation(summary = "update role information", description = "update role information")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "role id", in = ParameterIn.PATH, required = true,
+            schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> updateRole(@PathVariable("roleId") Long roleId,
         @RequestBody @Valid UpdateRoleRo data) {
@@ -132,12 +131,10 @@ public class RoleController {
     /**
      * Query roles.
      */
-    @GetResource(path = "/roles", name = "query space's roles")
+    @GetResource(path = "/roles")
     @Operation(summary = "query roles", description = "query the space's roles")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
-    })
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<RoleInfoVo>> getRoles() {
         String spaceId = LoginContext.me().getSpaceId();
         // check if user in the space.
@@ -151,11 +148,13 @@ public class RoleController {
     /**
      * Query role members.
      */
-    @GetResource(path = "/roles/{roleId}/members", name = "query role's members")
+    @GetResource(path = "/roles/{roleId}/members")
     @Operation(summary = "query role members", description = "query the role's members")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "role id", in = ParameterIn.PATH, required = true,
+            schema = @Schema(type = "string"), example = "15622"),
         @Parameter(name = PAGE_PARAM, description = "page parameters", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
     })
@@ -177,13 +176,14 @@ public class RoleController {
     /**
      * Add role members.
      */
-    @PostResource(path = "/roles/{roleId}/members", name = "add role members", tags =
-        "ADD_ROLE_MEMBER")
+    @PostResource(path = "/roles/{roleId}/members", tags = "ADD_ROLE_MEMBER")
     @Notification(templateId = NotificationTemplateId.ASSIGNED_TO_ROLE)
     @Operation(summary = "add role members", description = "add role members")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "role id", in = ParameterIn.PATH, required = true,
+            schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> addRoleMembers(@PathVariable("roleId") Long roleId,
         @RequestBody @Valid AddRoleMemberRo data) {
@@ -204,13 +204,15 @@ public class RoleController {
     /**
      * Remove role members.
      */
-    @PostResource(path = "/roles/{roleId}/members", method = RequestMethod.DELETE, name = "remove"
-        + " role members", tags = "REMOVE_ROLE_MEMBER")
+    @PostResource(path = "/roles/{roleId}/members",
+        method = RequestMethod.DELETE, tags = "REMOVE_ROLE_MEMBER")
     @Operation(summary = "remove role members", description = "remove role members")
     @Notification(templateId = NotificationTemplateId.REMOVED_FROM_ROLE)
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "role id", in = ParameterIn.PATH, required = true,
+            schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> removeRoleMembers(@PathVariable("roleId") Long roleId,
         @RequestBody @Valid DeleteRoleMemberRo data) {
@@ -232,12 +234,14 @@ public class RoleController {
     /**
      * Delete role.
      */
-    @PostResource(path = "/roles/{roleId}", method = RequestMethod.DELETE, name = "delete role",
-        tags = "DELETE_ROLE")
+    @PostResource(path = "/roles/{roleId}",
+        method = RequestMethod.DELETE, tags = "DELETE_ROLE")
     @Operation(summary = "delete role", description = "delete role")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "role id", in = ParameterIn.PATH, required = true,
+            schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> deleteRole(@PathVariable("roleId") Long roleId) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -255,12 +259,10 @@ public class RoleController {
     /**
      * Create init role.
      */
-    @PostResource(path = "/roles/init", name = "create init role", tags = "CREATE_ROLE")
+    @PostResource(path = "/roles/init", tags = "CREATE_ROLE")
     @Operation(summary = "create init role", description = "create init role")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
-    })
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> initRoles() {
         String spaceId = LoginContext.me().getSpaceId();
         // check if no exist roles in space.

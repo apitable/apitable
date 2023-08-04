@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { Injectable } from '@nestjs/common';
+import { maxRobotActionCount } from 'app.environment';
+import { CommonException, ServerException } from 'shared/exception';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 
 @Injectable()
@@ -23,7 +25,8 @@ export class RobotActionService {
 
   constructor(
     private readonly automationActionRepository: AutomationActionRepository
-  ) { }
+  ) {
+  }
 
   /**
    * Finds the previous and the next node of the current node.
@@ -49,4 +52,10 @@ export class RobotActionService {
     return true;
   }
 
+  async checkCreateActionCount(robotId: string) {
+    const count = await this.automationActionRepository.selectCountByRobotId(robotId);
+    if (count > maxRobotActionCount) {
+      throw new ServerException(CommonException.ROBOT_ACTION_CREATE_OVER_MAX_COUNT_LIMIT);
+    }
+  }
 }
