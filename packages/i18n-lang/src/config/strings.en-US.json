@@ -159,6 +159,7 @@
   "ai_fallback_message_desc": "When the chatbot is unable to find the appropriate answer within its datasets,it will respond the content below.",
   "ai_fallback_message_title": "Chatbot's response for unanswerable queries:",
   "ai_latest_train_date": "Last Trained: ${date}",
+  "ai_new_chatbot": "New ChatBot",
   "ai_new_conversation_btn_text": "New conversation",
   "ai_open_remark_can_not_empty": "Please provide a text to let users know how the chatbot can assist them.",
   "ai_open_remark_desc": "The content that the chatbot will say when a member chats with it for the first time.",
