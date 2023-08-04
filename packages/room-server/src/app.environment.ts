@@ -53,6 +53,8 @@ export const enableAmqp: boolean = Object.is(process.env.ENABLE_AMQP || 'true', 
 
 export const enableAutomationWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'true');
 
+export const maxRobotActionCount = parseInt(process.env.MAX_ROBOT_ACTION_COUNT || '9', 10);
+
 export default {
   isDevMode,
   isProdMode,
