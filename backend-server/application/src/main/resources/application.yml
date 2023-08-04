@@ -119,6 +119,7 @@ starter:
       download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
       upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
       callback:
+        enabled: ${QINIU_CALLBACK_ENABLED:false}
         url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
         body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}
     huawei-cloud:
@@ -130,6 +131,11 @@ starter:
       access-key: ${MINIO_ACCESS_KEY:apitable}
       secret-key: ${MINIO_SECRET_KEY:apitable@com}
       bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
+    signature:
+      enabled: ${OSS_SIGNATURE_ENABLED:false}
+      mode: ${OSS_SIGNATURE_MODE:CDN_TIMESTAMP_ANTI_LEECH}
+      expire-second: ${OSS_SIGNATURE_EXPIRE_SECOND:7200}
+      encrypt-key: ${OSS_SIGNATURE_CDN_ENCRYPT_KEY:}
   sms:
     enabled: ${SMS_ENABLED:false}
     local-area-code: ${SMS_LOCAL_AREA_CODE:+86}
