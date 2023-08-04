@@ -49,8 +49,8 @@ public class UserSpaceMenuTree implements Tree, Serializable {
     @Schema(description = "Parent menu code", example = "ManageOrg")
     private String parentCode;
 
-    @Schema(description = "Operation permission resources corresponding to the menu", type =
-        "List", example = "[\"ADD_MEMBER\",\"UPDATE_MEMBER\"]")
+    @Schema(description = "Operation permission resources corresponding to the menu",
+        type = "List", example = "[\"ADD_MEMBER\",\"UPDATE_MEMBER\"]")
     private Set<String> operators;
 
     @Schema(description = "Submenu")

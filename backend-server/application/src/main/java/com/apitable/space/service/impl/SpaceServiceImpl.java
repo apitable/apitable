@@ -795,8 +795,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (ObjectUtil.isNotNull(newMember)
             && StrUtil.isNotBlank(newMember.getEmail())) {
             Dict dict = Dict.create();
-            //TODO remove user_name at next version
-            dict.set("USER_NAME", dto.getMemberName());
             dict.set("SPACE_NAME", dto.getSpaceName());
             dict.set("MEMBER_NAME", dto.getMemberName());
             dict.set("AVATAR", constProperties.spliceAssetUrl(dto.getAvatar()));

@@ -122,10 +122,10 @@ public class FieldRoleController {
         requiredPermission = false)
     @Operation(summary = "Enable field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyee"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> enableRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -162,10 +162,10 @@ public class FieldRoleController {
         requiredPermission = false)
     @Operation(summary = "Disable field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNP"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> disableRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId) {
@@ -190,10 +190,10 @@ public class FieldRoleController {
     @GetResource(path = "/datasheet/{dstId}/field/{fieldId}/listRole", requiredPermission = false)
     @Operation(summary = "Gets the field role infos in datasheet.")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNs"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<FieldCollaboratorVO> listRole(
         @PathVariable("dstId") @NodeMatch String dstId,
@@ -208,10 +208,10 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/addRole", requiredPermission = false)
     @Operation(summary = "Add field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeN"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> addRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -241,10 +241,10 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/editRole", requiredPermission = false)
     @Operation(summary = "Edit field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNs"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     @Deprecated
     public ResponseData<Void> editRole(@PathVariable("dstId") @NodeMatch String dstId,
@@ -259,14 +259,14 @@ public class FieldRoleController {
     /**
      * Batch edit field role.
      */
-    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchEditRole", requiredPermission =
-        false)
+    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchEditRole",
+        requiredPermission = false)
     @Operation(summary = "Batch edit field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNs"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> batchEditRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -293,14 +293,14 @@ public class FieldRoleController {
     /**
      * Delete field role.
      */
-    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/deleteRole", method =
-        RequestMethod.DELETE, requiredPermission = false)
+    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/deleteRole",
+        method = RequestMethod.DELETE, requiredPermission = false)
     @Operation(summary = "Delete field role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG"),
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeN"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> deleteRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -328,14 +328,14 @@ public class FieldRoleController {
     /**
      * Batch delete role.
      */
-    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchDeleteRole", method =
-        RequestMethod.DELETE, requiredPermission = false)
+    @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchDeleteRole",
+        method = RequestMethod.DELETE, requiredPermission = false)
     @Operation(summary = "Batch delete role")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG"),
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeP"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> batchDeleteRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -370,10 +370,10 @@ public class FieldRoleController {
         requiredPermission = false)
     @Operation(summary = "Update field role setting")
     @Parameters({
-        @Parameter(name = "dstId", description = "datasheet id", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
-        @Parameter(name = "fieldId", description = "field id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNP"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> updateRoleSetting(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") String fieldId,
@@ -404,8 +404,8 @@ public class FieldRoleController {
     @Operation(summary = "Get multi datasheet field permission")
     @Parameters({
         @Parameter(name = "dstIds", description = "datasheet id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstCgcfixAKyeeNsaP,"
-            + "dstGxznHFXf9pvF1LZ"),
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY,
+            example = "dstCgcfixAKyeeNsaP,dstGxznHFXf9pvF1LZ"),
         @Parameter(name = "shareId", description = "share id", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "shrFPXT8qnyFJglX6elJi")
     })

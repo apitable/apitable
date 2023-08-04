@@ -72,13 +72,13 @@ public class SpaceInfoVO {
     private String ownerAvatar;
 
     @Schema(description = "Creation timestamp (ms)", example = "1573561644000")
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing =
-        NullNumberSerializer.class)
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class,
+        nullsUsing = NullNumberSerializer.class)
     private LocalDateTime createTime;
 
     @Schema(description = "Formal deletion timestamp (ms)", example = "1573561644000")
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing =
-        NullNumberSerializer.class)
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class,
+        nullsUsing = NullNumberSerializer.class)
     private LocalDateTime delTime;
 
     @Schema(description = "Third party integration binding information")
@@ -140,8 +140,8 @@ public class SpaceInfoVO {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long formViewNums;
 
-    @Schema(description = "Used current package attachment capacity (unit: bytes)", example =
-        "1024")
+    @Schema(description = "Used current package attachment capacity (unit: bytes)",
+        example = "1024")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long currentBundleCapacityUsedSizes;
 

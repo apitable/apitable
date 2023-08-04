@@ -30,12 +30,12 @@ import com.apitable.asset.ro.AttachUrlOpRo;
 import com.apitable.asset.vo.AssetUploadResult;
 
 /**
- * Basics - Attachment Table Service Class
+ * Basics - Attachment Table Service Class.
  */
 public interface IAssetService extends IService<AssetEntity> {
 
     /**
-     * upload pre check
+     * upload pre check.
      *
      * @param nodeId    Node ID
      * @param secret    Human verification secret
@@ -43,7 +43,7 @@ public interface IAssetService extends IService<AssetEntity> {
     void checkBeforeUpload(String nodeId, String secret);
 
     /**
-     * Upload resource files to the space and calculate the capacity
+     * Upload resource files to the space and calculate the capacity.
      *
      * @param nodeId           node id
      * @param in               resource file stream
@@ -53,7 +53,8 @@ public interface IAssetService extends IService<AssetEntity> {
      * @param assetType        resource type
      * @return AssetUploadResult
      */
-    AssetUploadResult uploadFileInSpace(String nodeId, InputStream in, String fileOriginalName, long fileSize, String mimeType, AssetType assetType);
+    AssetUploadResult uploadFileInSpace(String nodeId, InputStream in,
+        String fileOriginalName, long fileSize, String mimeType, AssetType assetType);
 
     /**
      * upload remote url
@@ -63,7 +64,7 @@ public interface IAssetService extends IService<AssetEntity> {
     AssetUploadResult uploadRemoteUrl(String url);
 
     /**
-     * Simple upload of resource files, not included in the space capacity
+     * Simple upload of resource files, not included in the space capacity.
      *
      * @param in          resource file stream
      * @param fileSize    file resource size
@@ -73,7 +74,7 @@ public interface IAssetService extends IService<AssetEntity> {
     AssetUploadResult uploadFile(InputStream in, long fileSize, String contentType);
 
     /**
-     * Upload resource files to developer space and calculate capacity
+     * Upload resource files to developer space and calculate capacity.
      *
      * @param in                    resource file stream
      * @param uploadPath            upload file full path
@@ -84,17 +85,19 @@ public interface IAssetService extends IService<AssetEntity> {
      * @param developerAssetType    resource type
      * @return AssetUploadResult
      */
-    AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath, String fileOriginalName, long fileSize, String contentType, Long createdBy, DeveloperAssetType developerAssetType);
+    AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath,
+        String fileOriginalName, long fileSize, String contentType,
+        Long createdBy, DeveloperAssetType developerAssetType);
 
     /**
-     * delete cloud s3 files
+     * delete cloud s3 files.
      *
      * @param token cloud key
      */
     void delete(String token);
 
     /**
-     * attachment url upload
+     * attachment url upload.
      *
      * @param attachOpRo attachment parameters
      * @return AttachVo attachment vo
@@ -102,7 +105,7 @@ public interface IAssetService extends IService<AssetEntity> {
     AssetUploadResult urlUpload(AttachUrlOpRo attachOpRo);
 
     /**
-     * upload third party avatars
+     * upload third party avatars.
      *
      * @param avatarUrl third party avatar address
      * @return upload completed url
@@ -110,7 +113,7 @@ public interface IAssetService extends IService<AssetEntity> {
     String downloadAndUploadUrl(String avatarUrl);
 
     /**
-     * modify the template state of resource
+     * modify the template state of resource.
      *
      * @param assetIds      asset table ids
      * @param isTemplate    whether it is a template attachment status

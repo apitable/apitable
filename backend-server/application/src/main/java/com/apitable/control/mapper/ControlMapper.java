@@ -30,7 +30,7 @@ import com.apitable.control.model.ControlTypeDTO;
 import com.apitable.control.model.ControlUnitDTO;
 
 /**
- * Permission control table mapper
+ * Permission control table mapper.
  */
 public interface ControlMapper extends BaseMapper<ControlEntity> {
 
@@ -65,7 +65,8 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
      * @param type      Control unit type
      * @return Control unit ID
      */
-    List<String> selectControlIdByControlIdPrefixAndType(@Param("prefix") String prefix, @Param("type") Integer type);
+    List<String> selectControlIdByControlIdPrefixAndType(@Param("prefix") String prefix,
+        @Param("type") Integer type);
 
     /**
      * Query control unit ID
@@ -106,7 +107,8 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
      * @param controlIds Control unit ID set
      * @return Number of execution results
      */
-    int deleteByControlIds(@Param("userId") Long userId, @Param("controlIds") List<String> controlIds);
+    int deleteByControlIds(@Param("userId") Long userId,
+        @Param("controlIds") List<String> controlIds);
 
     /**
      * Query space control
@@ -116,8 +118,8 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
      * @param controlType Permission Type
      * @return ControlEntity
      */
-    ControlEntity selectDeletedByControlIdAndSpaceId(@Param("controlId") String controlId, @Param("spaceId") String spaceId,
-            @Param("controlType") ControlType controlType);
+    ControlEntity selectDeletedByControlIdAndSpaceId(@Param("controlId") String controlId,
+        @Param("spaceId") String spaceId, @Param("controlType") ControlType controlType);
 
     /**
      * Update deletion status
@@ -127,5 +129,6 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
      * @param isDeleted Deleted state
      * @return Integer
      */
-    Integer updateIsDeletedByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId, @Param("isDeleted") Boolean isDeleted);
+    Integer updateIsDeletedByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId,
+        @Param("isDeleted") Boolean isDeleted);
 }

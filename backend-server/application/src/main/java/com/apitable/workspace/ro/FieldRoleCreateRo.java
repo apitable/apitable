@@ -22,6 +22,7 @@ import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer
 import com.apitable.shared.validator.FieldRoleMatch;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -37,13 +38,13 @@ import lombok.Data;
 public class FieldRoleCreateRo {
 
     @NotEmpty(message = "Organization unit cannot be empty")
-    @Schema(description = "Organization Unit ID Collection", type = "List", example = "10101,"
-        + "10102,10103,10104", required = true)
+    @Schema(description = "Organization Unit ID Collection", type = "List",
+        requiredMode = RequiredMode.REQUIRED, example = "10101,10102,10103,10104")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 
     @NotBlank(message = "Role cannot be empty")
     @FieldRoleMatch
-    @Schema(description = "Role", example = "editor", required = true)
+    @Schema(description = "Role", requiredMode = RequiredMode.REQUIRED, example = "editor")
     private String role;
 }

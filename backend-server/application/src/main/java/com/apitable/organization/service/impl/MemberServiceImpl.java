@@ -580,18 +580,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();
-        //TODO remove user_name at next version
-        dict.set("USER_NAME", inviterName);
         dict.set("SPACE_NAME", spaceName);
         dict.set("MEMBER_NAME", inviterName);
         dict.set("INVITE_URL", inviteUrl);
-        Dict mapDict = Dict.create();
-        // remove user_name at next version
-        mapDict.set("USER_NAME", inviterName);
-        mapDict.set("SPACE_NAME", spaceName);
-        mapDict.set("MEMBER_NAME", inviterName);
         NotifyMailFactory.me()
-            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, mapDict, dict,
+            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, dict, dict,
                 Collections.singletonList(emailAddress));
     }
 

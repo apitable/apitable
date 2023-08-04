@@ -31,7 +31,7 @@ import com.apitable.workspace.dto.ControlRoleUnitDTO;
 
 /**
  * <p>
- * Permission Control Unit Role Mapper
+ * Permission Control Unit Role Mapper.
  * </p>
  */
 public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
@@ -59,7 +59,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param unitId        Org Unit ID
      * @return entities
      */
-    List<ControlRoleEntity> selectByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
+    List<ControlRoleEntity> selectByControlIdAndUnitId(@Param("controlId") String controlId,
+        @Param("unitId") Long unitId);
 
     /**
      * Query Org Unit ID
@@ -68,7 +69,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param roleCode  Role Code
      * @return unitId
      */
-    Long selectUnitIdAndControlIdAndRoleCode(@Param("controlId") String controlId, @Param("roleCode") String roleCode);
+    Long selectUnitIdAndControlIdAndRoleCode(@Param("controlId") String controlId,
+        @Param("roleCode") String roleCode);
 
     /**
      * Query Role Code
@@ -77,7 +79,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param unitId    Org Unit ID
      * @return RoleCode
      */
-    String selectRoleCodeByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
+    String selectRoleCodeByControlIdAndUnitId(@Param("controlId") String controlId,
+        @Param("unitId") Long unitId);
 
     /**
      * Batch query of Role Code
@@ -86,7 +89,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param unitIds    Org Unit ID
      * @return RoleCode
      */
-    List<ControlRoleInfo> selectControlRoleInfoByControlIdAndUnitIds(@Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds);
+    List<ControlRoleInfo> selectControlRoleInfoByControlIdAndUnitIds(
+        @Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds);
 
 
     /**
@@ -95,7 +99,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param controlIds Control unit ID Collection
      * @return NodeUnitRole
      */
-    List<ControlRoleInfo> selectControlRoleInfoByControlIds(@Param("controlIds") Collection<String> controlIds);
+    List<ControlRoleInfo> selectControlRoleInfoByControlIds(
+        @Param("controlIds") Collection<String> controlIds);
 
     /**
      * Query the role and organization unit information of the control unit
@@ -104,7 +109,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @return ControlRoleUnitDTO
      */
     @InterceptorIgnore(illegalSql = "true")
-    List<ControlRoleUnitDTO> selectControlRoleUnitDtoByControlId(@Param("controlId") String controlId);
+    List<ControlRoleUnitDTO> selectControlRoleUnitDtoByControlId(
+        @Param("controlId") String controlId);
 
     /**
      * Bulk Insert
@@ -115,18 +121,6 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
     int insertBatch(@Param("entities") List<ControlRoleEntity> entities);
 
     /**
-     * Change multiple organizational unit roles of the specified control unit
-     *
-     * @param userId    User ID
-     * @param controlId Control unit ID
-     * @param unitIds   Org Unit ID List
-     * @param role      Modified role
-     * @return Number of execution results
-     */
-    @Deprecated
-    int updateRoleCodeByControlIdAndUnitIds(@Param("userId") Long userId, @Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds, @Param("role") String role);
-
-    /**
      * Change the role of the specified table ID
      *
      * @param userId    User ID
@@ -134,44 +128,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param role      Modified role
      * @return Number of execution results
      */
-    int updateRoleCodeByIds(@Param("userId") Long userId, @Param("ids") List<Long> ids, @Param("role") String role);
-
-    /**
-     * Delete the role of the specified table ID
-     *
-     * @param ids Table ID List
-     * @return Number of execution results
-     */
-    @Deprecated
-    int deleteByIds(@Param("ids") List<Long> ids);
-
-    /**
-     * Delete all roles of the specified control unit
-     *
-     * @param controlIds Control unit ID Collection
-     * @return Number of execution results
-     */
-    @Deprecated
-    int deleteByControlIds(@Param("userId") Long userId, @Param("controlIds") List<String> controlIds);
-
-    /**
-     * Delete all roles of the specified organizational unit
-     *
-     * @param unitIds Org Unit ID Collection
-     * @return Number of execution results
-     */
-    @Deprecated
-    int deleteByUnitIds(@Param("unitIds") List<Long> unitIds);
-
-    /**
-     * Delete the role of the specified control unit and organization unit
-     *
-     * @param controlId Control unit ID
-     * @param unitId    Org Unit ID
-     * @return Number of execution results
-     */
-    @Deprecated
-    int deleteByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
+    int updateRoleCodeByIds(@Param("userId") Long userId,
+        @Param("ids") List<Long> ids, @Param("role") String role);
 
     /**
      * Find permissions by permission ID and organization ID
@@ -181,7 +139,7 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @return List<ControlRoleEntity>
      */
     List<ControlRoleEntity> selectDeletedRole(@Param("controlId") String controlId,
-            @Param("unitIds") List<Long> unitIds, @Param("roleCode") String roleCode);
+        @Param("unitIds") List<Long> unitIds, @Param("roleCode") String roleCode);
 
     /**
      * Modify Delete Field
@@ -192,7 +150,7 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @return Number of affected record lines
      */
     Integer updateIsDeletedByIds(@Param("userId") Long userId, @Param("ids") List<Long> ids,
-            @Param("isDeleted") Boolean isDeleted);
+        @Param("isDeleted") Boolean isDeleted);
 
     /**
      * Find Deleted Collections
@@ -203,7 +161,7 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @return List<ControlRoleEntity>
      */
     List<ControlRoleEntity> selectDeletedRoleByRoleCodes(@Param("controlId") String controlId,
-            @Param("unitIds") List<Long> unitIds, @Param("roleCodes") List<String> roleCodes);
+        @Param("unitIds") List<Long> unitIds, @Param("roleCodes") List<String> roleCodes);
 
     /**
      * Query Org Unit ID
@@ -213,8 +171,9 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param ignoreDeleted Ignore Delete
      * @return unitId
      */
-    ControlRoleEntity selectByControlIdAndUnitIdAndRoleCode(@Param("controlId") String controlId, @Param("unitId") Long unitId,
-            @Param("roleCode") String roleCode, @Param("ignoreDeleted") boolean ignoreDeleted);
+    ControlRoleEntity selectByControlIdAndUnitIdAndRoleCode(@Param("controlId") String controlId,
+        @Param("unitId") Long unitId, @Param("roleCode") String roleCode,
+        @Param("ignoreDeleted") boolean ignoreDeleted);
 
     /**
      * Query all roles of the specified control unit
@@ -225,7 +184,7 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @return entities
      */
     List<ControlRoleEntity> selectByControlIdAndUnitIds(@Param("controlId") String controlId,
-            @Param("unitIds") List<Long> unitIds, @Param("ignoreDeleted") boolean ignoreDeleted);
+        @Param("unitIds") List<Long> unitIds, @Param("ignoreDeleted") boolean ignoreDeleted);
 
     /**
      * Query all roles of the specified control unit
@@ -250,7 +209,8 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param unitIds        Org Unit ID List
      * @return id List
      */
-    List<Long> selectIdByControlIdAndUnitIds(@Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds);
+    List<Long> selectIdByControlIdAndUnitIds(@Param("controlId") String controlId,
+        @Param("unitIds") List<Long> unitIds);
 
     /**
      * Query all roles of the specified control unit and organization unit
@@ -259,5 +219,6 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
      * @param unitId        Org Unit ID
      * @return id List
      */
-    List<Long> selectIdByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
+    List<Long> selectIdByControlIdAndUnitId(@Param("controlId") String controlId,
+        @Param("unitId") Long unitId);
 }
