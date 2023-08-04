@@ -124,8 +124,7 @@ export class DatasheetController {
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
 
-  //TODO: remove `datasheet/:dstId/record/:recordId/comments` path after release/0.22.0
-  @Get(['datasheets/:dstId/records/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
+  @Get(['datasheets/:dstId/records/:recordId/comments'])
   async getCommentByIds(
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,

@@ -500,7 +500,7 @@ public class PlayerNotificationServiceImpl
         notificationModelDTOList.forEach(dto -> {
             NotificationDetailVo detailVo =
                 NotificationDetailVo.builder().id(dto.getId().toString())
-                    .rowNo(dto.getRowNo()).toUserId(uuid).toUuid(uuid).createdAt(dto.getCreatedAt())
+                    .rowNo(dto.getRowNo()).toUuid(uuid).createdAt(dto.getCreatedAt())
                     .updatedAt(dto.getUpdatedAt()).isRead(dto.getIsRead())
                     .notifyType(dto.getNotifyType())
                     .templateId(dto.getTemplateId())

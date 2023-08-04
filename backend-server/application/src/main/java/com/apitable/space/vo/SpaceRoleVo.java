@@ -70,10 +70,6 @@ public class SpaceRoleVo {
         example = "[\"MANAGE_SECURITY\",\"MANAGE_TEAM\"]")
     private List<String> resourceGroupCodes;
 
-    @Deprecated
-    @Schema(description = "Permission range (old)")
-    private List<RoleResourceVo> resourceScope;
-
     @Schema(description = "Creation time", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createTime;

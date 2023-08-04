@@ -40,10 +40,6 @@ public class RetrievePwdOpRo {
         requiredMode = RequiredMode.REQUIRED, example = "13829291111 ｜ xxx@xx.com")
     private String username;
 
-    @Deprecated
-    @Schema(description = "Phone number", example = "135...")
-    private String phone;
-
     @Schema(description = "Phone number/Email Verification Code",
         requiredMode = RequiredMode.REQUIRED, example = "123456")
     private String code;
@@ -52,15 +48,4 @@ public class RetrievePwdOpRo {
         example = "qwer1234")
     private String password;
 
-    /**
-     * Get User name.
-     */
-    @Deprecated
-    public String getUsername() {
-        // Compatible processing
-        if (username == null) {
-            return phone;
-        }
-        return username;
-    }
 }
