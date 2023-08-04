@@ -203,6 +203,7 @@
     "raw-loader": "^4.0.2",
     "react-app-rewire-postcss": "^3.0.2",
     "react-dev-utils": "^11.0.3",
+    "slate-serializers": "^0.4.1",
     "stylelint": "15.10.1",
     "svgo-loader": "3.0.0",
     "typescript": "^4.8.2",
