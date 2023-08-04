@@ -184,10 +184,12 @@ export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disa
   height: 40px;
   padding: 0 8px;
 
-  ${props => !props.disabled && props.active && css`
+  ${props => !props.disabled&& css`
     border-radius: 8px;
-    background: ${props.theme.color.bgBglessHover};
     &:hover {
+      background: ${props.theme.color.bgBglessHover};
+    }
+    &:active {
       background: ${props.theme.color.bgBglessActive};
     }
   `}
