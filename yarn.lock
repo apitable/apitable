@@ -10604,6 +10604,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^12.11.5":
+  version: 12.20.55
+  resolution: "@types/node@npm:12.20.55"
+  checksum: e4f86785f4092706e0d3b0edff8dca5a13b45627e4b36700acd8dfe6ad53db71928c8dee914d4276c7fd3b6ccd829aa919811c9eb708a2c8e4c6eb3701178c37
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^14.0.1, @types/node@npm:^14.0.10, @types/node@npm:^14.0.27, @types/node@npm:^14.14.31, @types/node@npm:^14.14.34":
   version: 14.17.9
   resolution: "@types/node@npm:14.17.9"
@@ -13102,6 +13109,16 @@ __metadata:
   dependencies:
     follow-redirects: 1.5.10
   checksum: dcace11a0a25fdf9b3b97fc9d011d23dd9c67cc13d91778080482ddddbbfe731f7410a090b11aa0bbbdf83686c5911ccb4289fd3683b7488c1b0c4d3c882380c
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.27.2":
+  version: 0.27.2
+  resolution: "axios@npm:0.27.2"
+  dependencies:
+    follow-redirects: ^1.14.9
+    form-data: ^4.0.0
+  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
   languageName: node
   linkType: hard
 
@@ -17494,6 +17511,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"databus-client@workspace:packages/databus-client":
+  version: 0.0.0-use.local
+  resolution: "databus-client@workspace:packages/databus-client"
+  dependencies:
+    "@types/node": ^12.11.5
+    axios: ^0.27.2
+    typescript: ^4.0
+  languageName: unknown
+  linkType: soft
+
 "date-fns-tz@npm:^2.0.0":
   version: 2.0.0
   resolution: "date-fns-tz@npm:2.0.0"
@@ -21012,7 +21039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -39923,6 +39950,16 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.0":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.8.2":
   version: 4.8.2
   resolution: "typescript@npm:4.8.2"
@@ -39940,6 +39977,16 @@ resolve@^2.0.0-next.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 365df18cf979c971ef9543b2acaa8694377a803f98e1804c41d0ede0b09d7046cb0cd98f2eaf3884b0fe923c01a60af1f653841bd8805c9715d5479c09a4ebe4
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.0#~builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
