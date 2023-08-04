@@ -41,8 +41,8 @@ public class LabsFeatureVo {
 
     private static final String FEATURES = "[\"RENDER_PROMPT\", \"ASYNC_COMPUTE\", \"ROBOT\"]";
 
-    @Schema(description = "List of experimental functions", type = "java.util.List", example =
-        FEATURES)
+    @Schema(description = "List of experimental functions",
+        type = "java.util.List", example = FEATURES)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> keys;
 }

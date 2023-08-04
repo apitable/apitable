@@ -116,8 +116,7 @@ public class AuthController {
      * @return {@link ResponseData}
      */
     @PostResource(name = "Login", path = "/signIn", requiredLogin = false)
-    @Operation(summary = "login",
-        description = AUTH_DESC)
+    @Operation(summary = "login", description = AUTH_DESC)
     public ResponseData<LoginResultVO> login(@RequestBody @Valid final LoginRo data,
                                     final HttpServletRequest request) {
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(request,

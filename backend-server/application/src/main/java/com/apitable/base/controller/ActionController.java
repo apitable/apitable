@@ -75,9 +75,9 @@ public class ActionController {
     /**
      * Send SMS verification code.
      */
-    @PostResource(name = "Send SMS verification code", path = "/sms/code", requiredLogin = false)
-    @Operation(summary = "Send SMS verification code", description =
-        "SMS type; 1: Registration, 2:Login, "
+    @PostResource(path = "/sms/code", requiredLogin = false)
+    @Operation(summary = "Send SMS verification code",
+        description = "SMS type; 1: Registration, 2:Login, "
             + "3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, "
             + "6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete "
             + "space, "
@@ -97,7 +97,7 @@ public class ActionController {
         ValidateTarget target = ValidateTarget.create(smsOpRo.getPhone(), smsOpRo.getAreaCode());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS)
             .createAndSend(target, scope);
-        // Shence Buried Point - Register and log in to get verification code
+        // Whence Buried Point - Register and log in to get verification code
         if (smsOpRo.getType().equals(SmsCodeType.REGISTER.getValue()) || smsOpRo.getType()
             .equals(SmsCodeType.LOGIN.getValue())) {
             ClientOriginInfo origin =
@@ -110,9 +110,9 @@ public class ActionController {
     /**
      * Send email verification code.
      */
-    @PostResource(name = "Send email verification code", path = "/mail/code", requiredLogin = false)
-    @Operation(summary = "Send email verification code", description =
-        "Email verification code; 1:Email binding, "
+    @PostResource(path = "/mail/code", requiredLogin = false)
+    @Operation(summary = "Send email verification code",
+        description = "Email verification code; 1:Email binding, "
             + "2: Email registration, 3: General verification")
     public ResponseData<Void> mail(@RequestBody @Valid EmailOpRo opRo) {
         CodeValidateScope scope =
@@ -129,10 +129,9 @@ public class ActionController {
     /**
      * Mobile verification code verification.
      */
-    @PostResource(name = "Mobile verification code verification", path = "/sms/code/validate",
-        requiredLogin = false)
-    @Operation(summary = "Mobile verification code verification", description =
-        "Usage scenarios: DingTalk binding, "
+    @PostResource(path = "/sms/code/validate", requiredLogin = false)
+    @Operation(summary = "Mobile verification code verification",
+        description = "Usage scenarios: DingTalk binding, "
             + "identity verification before changing the mobile phone mailbox, changing the main "
             + "administrator")
     public ResponseData<Void> verifyPhone(@RequestBody @Valid SmsCodeValidateRo param) {
@@ -151,11 +150,10 @@ public class ActionController {
     /**
      * Email verification code verification.
      */
-    @PostResource(name = "Email verification code verification", path = "/email/code/validate",
-        requiredLogin = false)
-    @Operation(summary = "Email verification code verification", description = "Usage scenario: "
-        + "Verify identity before changing email address when no mobile phone, change the main "
-        + "administrator")
+    @PostResource(path = "/email/code/validate", requiredLogin = false)
+    @Operation(summary = "Email verification code verification",
+        description = "Usage scenario: Verify identity before changing email address"
+            + " when no mobile phone, change the main administrator")
     public ResponseData<Void> validateEmail(@RequestBody @Valid EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessor processor =
@@ -168,12 +166,10 @@ public class ActionController {
     /**
      * Invitation temporary code verification.
      */
-    @PostResource(name = "Invitation temporary code verification", path = "/invite/valid",
-        requiredLogin = false)
-    @Operation(summary = "Invitation temporary code verification", description =
-        "Invitation link token verification, the"
-            + " relevant invitation information can be obtained after the verification is "
-            + "successful")
+    @PostResource(path = "/invite/valid", requiredLogin = false)
+    @Operation(summary = "Invitation temporary code verification",
+        description = "Invitation link token verification, the relevant invitation"
+            + " information can be obtained after the verification is successful")
     public ResponseData<InviteInfoVo> inviteTokenValid(@RequestBody @Valid InviteValidRo data) {
         // Invitation code verification
         InviteInfoVo inviteInfoVo = iActionService.inviteValidate(data.getToken());

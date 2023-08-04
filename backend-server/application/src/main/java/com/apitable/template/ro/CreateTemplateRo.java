@@ -19,6 +19,7 @@
 package com.apitable.template.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -32,12 +33,14 @@ import lombok.Data;
 @Schema(description = "Create Template Request Parameters")
 public class CreateTemplateRo {
 
-    @Schema(description = "Template Name", example = "This is a template", required = true)
+    @Schema(description = "Template Name", requiredMode = RequiredMode.REQUIRED,
+        example = "This is a template")
     @NotBlank(message = "Template name cannot be empty")
     @Size(max = 100, message = "The name length cannot exceed 100 bits")
     private String name;
 
-    @Schema(description = "Node Id of template creation", example = "nod10", required = true)
+    @Schema(description = "Node Id of template creation",
+        requiredMode = RequiredMode.REQUIRED, example = "nod10")
     @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 

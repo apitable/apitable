@@ -32,12 +32,11 @@ import lombok.Data;
 public class NotificationListRo {
 
     @Max(1)
-    @Schema(description = "Read 1 Read, 0 Unread, Default Unread", allowableValues = "range[0,1]",
-        type = "Integer",
-        example = "1")
+    @Schema(description = "Read 1 Read, 0 Unread, Default Unread",
+        allowableValues = "range[0,1]", type = "Integer", example = "1")
     private Integer isRead = 0;
 
-    @Schema(description = "Notification type, default to system notification system", example =
-        "system")
+    @Schema(description = "Notification type, default to system notification system",
+        example = "system")
     private String notifyType = "system";
 }

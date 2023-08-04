@@ -56,8 +56,8 @@ public class FieldRole {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @Schema(description = "Head portrait, returned when the type is member", example = "https"
-        + "://www.apitable.com/image.png")
+    @Schema(description = "Head portrait, returned when the type is member",
+        example = "https://www.apitable.com/image.png")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 

@@ -44,8 +44,8 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
      * @return NotificationModelDto List
      */
     List<NotificationModelDTO> selectPlayerNotificationPage(
-            @Param("notificationPageRo") NotificationPageRo notificationPageRo, @Param("toUser") Long toUser,
-            @Param("totalCount") Integer totalCount);
+        @Param("notificationPageRo") NotificationPageRo notificationPageRo,
+        @Param("toUser") Long toUser, @Param("totalCount") Integer totalCount);
 
     /**
      * Batch insert

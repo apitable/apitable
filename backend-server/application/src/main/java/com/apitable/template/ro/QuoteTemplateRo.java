@@ -19,6 +19,7 @@
 package com.apitable.template.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -31,11 +32,13 @@ import lombok.Data;
 @Schema(description = "Reference Template Request Parameters")
 public class QuoteTemplateRo {
 
-    @Schema(description = "Template ID", example = "tplHTbkg7qbNJ", required = true)
+    @Schema(description = "Template ID", requiredMode = RequiredMode.REQUIRED,
+        example = "tplHTbkg7qbNJ")
     @NotBlank(message = "Template ID cannot be empty")
     private String templateId;
 
-    @Schema(description = "Parent node ID", example = "fodSf4PZBNwut", required = true)
+    @Schema(description = "Parent node ID", requiredMode = RequiredMode.REQUIRED,
+        example = "fodSf4PZBNwut")
     private String parentId;
 
     @Schema(description = "Whether to retain data", example = "true")

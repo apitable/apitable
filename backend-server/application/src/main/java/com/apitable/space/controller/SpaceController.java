@@ -181,11 +181,9 @@ public class SpaceController {
      */
     @GetResource(path = "/list", requiredPermission = false)
     @Operation(summary = "Get space list")
-    @Parameters({
-        @Parameter(name = "onlyManageable", description = "Whether to query only the managed "
-            + "space list. By default, not include", schema = @Schema(type = "boolean"), in =
-            ParameterIn.QUERY, example = "true"),
-    })
+    @Parameter(name = "onlyManageable", in = ParameterIn.QUERY,
+        description = "Whether to query only the managed space list. By default, not include",
+        schema = @Schema(type = "boolean"), example = "true")
     public ResponseData<List<SpaceVO>> list(
         @RequestParam(name = "onlyManageable", required = false, defaultValue = "false")
         Boolean onlyManageable) {
@@ -243,8 +241,8 @@ public class SpaceController {
      * Delete space.
      */
     @Notification(templateId = NotificationTemplateId.SPACE_DELETED)
-    @PostResource(path = "/delete/{spaceId}", method = {
-        RequestMethod.DELETE}, tags = "DELETE_SPACE")
+    @PostResource(path = "/delete/{spaceId}",
+        method = { RequestMethod.DELETE}, tags = "DELETE_SPACE")
     @Operation(summary = "Delete space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -383,8 +381,8 @@ public class SpaceController {
      */
     @Deprecated
     @PostResource(path = "/remove/{spaceId}", requiredPermission = false)
-    @Operation(summary = "Remove hot point in space", description = "Scenario: Remove the red dot"
-        + " in the inactive space")
+    @Operation(summary = "Remove hot point in space",
+        description = "Scenario: Remove the red dot in the inactive space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<Void> remove(@PathVariable("spaceId") String spaceId) {
@@ -451,8 +449,8 @@ public class SpaceController {
     /**
      * Update security setting.
      */
-    @PostResource(path = "/updateSecuritySetting", tags = {"MANAGE_SHARE_SETTING",
-        "MANAGE_FILE_SETTING", "MANAGE_ADVANCE_SETTING"})
+    @PostResource(path = "/updateSecuritySetting",
+        tags = {"MANAGE_SHARE_SETTING", "MANAGE_FILE_SETTING", "MANAGE_ADVANCE_SETTING"})
     @Operation(summary = "Update security setting")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")

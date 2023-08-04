@@ -56,7 +56,7 @@ import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
 
 /**
  * <p>
- * Asset Upload Credentials Service Implement Class
+ * Asset Upload Credentials Service Implement Class.
  * </p>
  *
  * @author Pengap
@@ -88,14 +88,19 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
         // limit file type
         policy.setMimeLimit(MIME_LIMIT);
         policy.setInsertOnly(1);
-        Map<String, Object> putExtra = Dict.create().set("uploadSource", AssetUploadSource.PUBLISH_ASSET.getValue());
+        Map<String, Object> putExtra = Dict.create()
+            .set("uploadSource", AssetUploadSource.PUBLISH_ASSET.getValue());
         policy.setPutExtra(putExtra);
-        OssUploadAuth ossUploadAuth = ossTemplate.uploadToken(constProperties.getOssBucketByAsset().getBucketName(), key, 3600, policy);
-        return new AssetUploadCertificateVO(key, ossUploadAuth.getUploadUrl(), ossUploadAuth.getUploadRequestMethod());
+        OssUploadAuth ossUploadAuth =
+            ossTemplate.uploadToken(constProperties.getOssBucketByAsset().getBucketName(),
+                key, 3600, policy);
+        return new AssetUploadCertificateVO(key, ossUploadAuth.getUploadUrl(),
+            ossUploadAuth.getUploadRequestMethod());
     }
 
     @Override
-    public List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId, String nodeId, int assetType, int count) {
+    public List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId,
+        String nodeId, int assetType, int count) {
         ExceptionUtil.isTrue(count <= 20, ParameterException.INCORRECT_ARG);
         ExceptionUtil.isNotBlank(nodeId, ParameterException.INCORRECT_ARG);
         // query space, including whether the check node exists
@@ -117,16 +122,19 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
             policy.setInsertOnly(1);
             // extra params
             Map<String, Object> putExtra = Dict.create()
-                    .set("uploadSource", AssetUploadSource.SPACE_ASSET.getValue())
-                    .set("uploadUserId", userId)
-                    .set("spaceId", spaceId)
-                    .set("nodeId", nodeId)
-                    .set("uploadAssetId", entity.getId())
-                    .set("bucketType", bucketInfo.getType())
-                    .set("assetType", assetType);
+                .set("uploadSource", AssetUploadSource.SPACE_ASSET.getValue())
+                .set("uploadUserId", userId)
+                .set("spaceId", spaceId)
+                .set("nodeId", nodeId)
+                .set("uploadAssetId", entity.getId())
+                .set("bucketType", bucketInfo.getType())
+                .set("assetType", assetType);
             policy.setPutExtra(putExtra);
-            OssUploadAuth ossUploadAuth = ossTemplate.uploadToken(bucketInfo.getBucketName(), key, 3600, policy);
-            AssetUploadCertificateVO certificateVO = new AssetUploadCertificateVO(key, ossUploadAuth.getUploadUrl(), ossUploadAuth.getUploadRequestMethod());
+            OssUploadAuth ossUploadAuth =
+                ossTemplate.uploadToken(bucketInfo.getBucketName(), key, 3600, policy);
+            AssetUploadCertificateVO certificateVO =
+                new AssetUploadCertificateVO(key, ossUploadAuth.getUploadUrl(),
+                    ossUploadAuth.getUploadRequestMethod());
             vos.add(certificateVO);
             // Non datasheet asset, save relevant information to the cache
             // (required for updating spatial resource references)
@@ -142,13 +150,13 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
 
     private AssetEntity preBuildAssetRecord(String fileUrl, OssBucketInfo bucketInfo) {
         return AssetEntity.builder()
-                .id(IdWorker.getId())
-                .bucket(bucketInfo.getType())
-                .bucketName(bucketInfo.getBucketName())
-                .fileSize(0)
-                .fileUrl(fileUrl)
-                .extensionName("")
-                .build();
+            .id(IdWorker.getId())
+            .bucket(bucketInfo.getType())
+            .bucketName(bucketInfo.getBucketName())
+            .fileSize(0)
+            .fileUrl(fileUrl)
+            .extensionName("")
+            .build();
     }
 
 }

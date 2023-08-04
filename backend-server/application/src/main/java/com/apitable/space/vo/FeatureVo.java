@@ -36,19 +36,19 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Internal test function status")
 public class FeatureVo {
 
-    @Schema(description = "Unique identification of laboratory function", type = "java.lang"
-        + ".String", example = "robot")
+    @Schema(description = "Unique identification of laboratory function",
+        type = "java.lang.String", example = "robot")
     private String key;
 
-    @Schema(description = "Laboratory function category", type = "java.lang.String", example =
-        "review")
+    @Schema(description = "Laboratory function category",
+        type = "java.lang.String", example = "review")
     private String type;
 
-    @Schema(description = "Laboratory function application internal test form url", type = "java"
-        + ".lang.String")
+    @Schema(description = "Laboratory function application internal test form url",
+        type = "java.lang.String")
     private String url;
 
-    @Schema(description = "Laboratory function opening status", type = "java.lang.Boolean",
-        example = "true")
+    @Schema(description = "Laboratory function opening status",
+        type = "java.lang.Boolean", example = "true")
     private Boolean open;
 }

@@ -31,7 +31,8 @@ import lombok.Data;
 @Schema(description = "verify email parameters")
 public class EmailVerificationRo {
 
-    @Schema(description = "email", example = "123456@**", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "email", requiredMode = Schema.RequiredMode.REQUIRED,
+        example = "123456@**")
     @NotBlank(message = "email")
     private String email;
 }

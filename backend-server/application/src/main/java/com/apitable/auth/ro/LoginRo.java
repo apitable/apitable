@@ -20,6 +20,7 @@ package com.apitable.auth.ro;
 
 import com.apitable.auth.enums.LoginType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Data;
 
 /**
@@ -31,18 +32,18 @@ import lombok.Data;
 @Schema(description = "Authorization Request Parameters")
 public class LoginRo {
 
-    @Schema(description = "Login Name", example = "13829291111 ｜ xxxx@apitable.com", required =
-        true)
+    @Schema(description = "Login Name", example = "13829291111 ｜ xxxx@apitable.com",
+        requiredMode = RequiredMode.REQUIRED)
     private String username;
 
-    @Schema(description = "Login voucher, identified according to verify type", example =
-        "qwer1234 || 261527", required = true)
+    @Schema(description = "Login voucher, identified according to verify type",
+        example = "qwer1234 || 261527", requiredMode = RequiredMode.REQUIRED)
     private String credential;
 
     @Schema(description = "Login Type, fixed value, only password（Password）、sms_code（SMS "
         + "verification）、email_code（Email verification code）、wechat_sms_code（WeChat applet SMS "
         + "verification code）、sso_auth can be input", example = "password",
-        required = true)
+        requiredMode = RequiredMode.REQUIRED)
     private LoginType type;
 
     @Schema(description = "Area code（cell-phone number + password/SMS verification code, "
@@ -51,7 +52,7 @@ public class LoginRo {
 
     @Schema(description = "Password login for man-machine verification, and the front end "
         + "obtains the value of get NVC Val function", example = "FutureIsComing",
-        required = true)
+        requiredMode = RequiredMode.REQUIRED)
     private String data;
 
     @Schema(description = "The token temporarily saved by the third-party account information"

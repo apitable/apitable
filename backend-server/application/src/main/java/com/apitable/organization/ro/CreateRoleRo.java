@@ -19,6 +19,7 @@
 package com.apitable.organization.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class CreateRoleRo {
 
     @NotBlank
     @Size(min = 1, max = 100, message = "The role name cannot exceed 100 characters")
-    @Schema(description = "role name", required = true, example = "Finance")
+    @Schema(description = "role name", requiredMode = RequiredMode.REQUIRED, example = "Finance")
     private String roleName;
 
     @Schema(description = "role position", example = "2000")

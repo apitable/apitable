@@ -277,8 +277,8 @@ public class PlayerNotificationServiceImpl
     }
 
     @Override
-    public boolean createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template,
-                                             NotificationCreateRo ro) {
+    public void createNotifyWithoutVerify(List<Long> userIds,
+        NotificationTemplate template, NotificationCreateRo ro) {
         // todo message middle key
         List<PlayerNotificationEntity> creatEntities = new ArrayList<>();
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
@@ -309,7 +309,7 @@ public class PlayerNotificationServiceImpl
             TaskManager.me()
                 .execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
         }
-        return createBatch(notifyEntities, creatEntities);
+        createBatch(notifyEntities, creatEntities);
     }
 
     @Override

@@ -27,12 +27,13 @@ import com.apitable.base.entity.SystemConfigEntity;
 import com.apitable.base.model.SystemConfigDTO;
 
 /**
- * Basics - System Configuration Table Mapper Interface
+ * Basics - System Configuration Table Mapper Interface.
  */
 public interface SystemConfigMapper extends BaseMapper<SystemConfigEntity> {
 
     /**
-     * Find the configuration record id to which the most popular recommendations in the Template Center belong according to the language
+     * Find the configuration record id to which the most popular recommendations
+     * in the Template Center belong according to the language
      * @param type configuration type
      * @param lang configuration language
      * @return configuration primary key id

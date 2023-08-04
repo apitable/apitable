@@ -92,8 +92,7 @@ public class AssetUploadTokenController {
     /**
      * Get upload presigned URL.
      */
-    @PostResource(name = "Get upload presigned URL", path = "/upload/preSignedUrl",
-        requiredLogin = false)
+    @PostResource(path = "/upload/preSignedUrl", requiredLogin = false)
     @Operation(summary = "Get upload presigned URL")
     public ResponseData<List<AssetUploadCertificateVO>> generatePreSignedUrl(
         @RequestBody @Valid AssetUploadCertificateRO data) {
