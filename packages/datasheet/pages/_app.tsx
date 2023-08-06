@@ -30,6 +30,7 @@ import {
   IUserInfo,
   getTimeZoneOffsetByUtc,
   getTimeZone,
+  WasmApi
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -105,6 +106,7 @@ export interface IUserInfoError {
 }
 
 const initWorker = async() => {
+  await WasmApi.initializeDatabusWasm();
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
