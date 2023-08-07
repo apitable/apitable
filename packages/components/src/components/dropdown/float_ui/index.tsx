@@ -17,8 +17,8 @@ import {
   useId, FloatingArrow, Placement, FloatingPortal, ReferenceType
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Middleware } from '@floating-ui/dom';
 import { useFloatUiDropdown } from './useFloatUiDropdown';
+import { Middleware } from '@floating-ui/dom';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
 export type IOverLayProps = { toggle: () => void };
@@ -89,7 +89,6 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
   const theme = useProviderTheme();
 
   const arrowRef = useRef (null);
-
   const { refs, floatingStyles, context } =useFloatUiDropdown({
     ...options,
     middleware,
@@ -97,7 +96,6 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
     isOpen,
     arrowRef
   });
-
   const triggerEl = isValidElement(trigger) ? trigger :
     trigger({
       visible: isOpen,
@@ -120,7 +118,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
     refs.setReference(v);
     props.setTriggerRef?.(v as HTMLElement);
   };
-  
+
   return (
     <>
       <>

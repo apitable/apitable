@@ -5,7 +5,6 @@
     "arcanis.vscode-zipfs",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     "streetsidesoftware.code-spell-checker",
     "styled-components.vscode-styled-components",
     "sonarsource.sonarlint-vscode",

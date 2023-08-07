@@ -17,34 +17,36 @@
  */
 
 import { Button } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 // @ts-ignore
 import Image from 'next/image';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
-import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
+import { useContactUs } from 'pc/hooks/use_contact_us';
 
-// TODO add qrcode img
 export const ServerError: FC<React.PropsWithChildren<unknown>> = () => {
   const refresh = () => {
     window.location.reload();
   };
+  const contactUs = useContactUs();
 
-  console.log('Settings.server_error_page_bg.value', getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG);
   return (
     <div className={styles.serverPageWrapper}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileBar />
         <div className={styles.serverError}>
           <div className={styles.container}>
-            <Image src={ServerErrorPng} alt='server error' />
+            <Image src={ServerErrorPng} alt='server error'/>
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
               <Button color='primary' size='large' block onClick={refresh}>
                 {t(Strings.refresh)}
+              </Button>
+              <Button variant="jelly" color="primary" block onClick={() => contactUs()}>
+                {t(Strings.contact_us)} 
               </Button>
             </div>
           </div>
@@ -55,13 +57,16 @@ export const ServerError: FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.serverError}>
           <div className={styles.container}>
             <div className={styles.imgContent}>
-              <Image src={integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG!)} alt='server error' width={230}
+              <Image src={ServerErrorPng} alt='server error' width={300}
                 height={230} />
             </div>
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
               <Button color='primary' size='middle' block onClick={refresh}>
                 {t(Strings.refresh)}
+              </Button>
+              <Button variant="jelly" color="primary" block onClick={() => contactUs()}>
+                {t(Strings.contact_us)} 
               </Button>
             </div>
           </div>

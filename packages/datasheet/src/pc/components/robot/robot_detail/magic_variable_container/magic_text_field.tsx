@@ -49,23 +49,19 @@ type IMagicTextFieldProps = IWidgetProps & {
   triggerType: ITriggerType | null;
 };
 
-// The magic variable editor maintains state internally, and when out of focus, synchronization is given only to the parent form.
 export const MagicTextField = (props: IMagicTextFieldProps) => {
-  const { onChange, schema } = props;
-  // console.log(props.rawErrors);
-  // const fieldType = getSchemaType(props.schema);
-  // console.log('MagicTextField.fieldType', fieldType);
-  // console.log('MagicTextField.props.value', props.value);
+  const { onChange, schema, nodeOutputSchemaList: originalNodeOutputSchemaList } = props;
   const isJSONField = (schema as any)?.format === 'json';
   const [isOpen, setOpen] = useState(false);
   const ref = useRef(null);
   const inputRef = useRef<any>();
   const triggerRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
-  const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor))), []);
-  // console.log('3.Form input init value', props.value);
+  const triggerId = originalNodeOutputSchemaList?.[0]?.id;
+  
+  const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor), triggerId)), []);
+
   const slateValue = formData2SlateValue(props.value);
-  // console.log('4.Form input slate value', slateValue);
   const [value, setValue] = useState(slateValue);
 
   useClickAway(() => {
@@ -120,7 +116,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     }
     return nodeOutputSchema;
   });
-
+  
   const renderElement = (props: any) => {
     switch (props.element.type) {
       case 'magicVariable':
