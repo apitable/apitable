@@ -43,11 +43,6 @@ public class SpaceSecuritySettingRo {
     @Schema(description = "Allow others to apply for space status", example = "false")
     private Boolean joinable;
 
-    // Allow to export the (allowed by default)
-    @Schema(description = "All members of the node can be exported", example = "true")
-    @Deprecated
-    private Boolean nodeExportable;
-
     // Allow read-only roles to download attachments (allowed by default)
     @Schema(description = "Allow read-only members to download attachments", example = "true")
     private Boolean allowDownloadAttachment;

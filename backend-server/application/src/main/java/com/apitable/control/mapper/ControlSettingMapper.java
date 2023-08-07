@@ -27,7 +27,7 @@ import com.apitable.control.entity.ControlSettingEntity;
 
 
 /**
- * Control Setting Mapper
+ * Control Setting Mapper.
  *
  * @author Shawn Deng
  * @date 2021-04-06 20:09:12
@@ -48,7 +48,8 @@ public interface ControlSettingMapper extends BaseMapper<ControlSettingEntity> {
      * @param controlIds List of control unit IDs
      * @return ControlSettingEntities
      */
-    List<ControlSettingEntity> selectBatchByControlIds(@Param("controlIds") List<String> controlIds);
+    List<ControlSettingEntity> selectBatchByControlIds(
+        @Param("controlIds") List<String> controlIds);
 
     /**
      * Real batch addition
@@ -64,7 +65,8 @@ public interface ControlSettingMapper extends BaseMapper<ControlSettingEntity> {
      * @param controlIds Control unit ID set
      * @return Number of execution results
      */
-    int deleteByControlIds(@Param("userId") Long userId, @Param("controlIds") List<String> controlIds);
+    int deleteByControlIds(@Param("userId") Long userId,
+        @Param("controlIds") List<String> controlIds);
 
     /**
      * Find the deleted permission configuration
@@ -83,5 +85,5 @@ public interface ControlSettingMapper extends BaseMapper<ControlSettingEntity> {
      * @return Integer
      */
     Integer updateIsDeletedByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId,
-            @Param("isDeleted") Boolean isDeleted);
+        @Param("isDeleted") Boolean isDeleted);
 }

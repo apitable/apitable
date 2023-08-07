@@ -39,8 +39,8 @@ public class UserSpaceVo {
     @Schema(description = "Primary administrator or not", example = "true")
     private Boolean mainAdmin;
 
-    @Schema(description = "Permission", type = "List", example = "[\"MANAGE_TEAM\","
-        + "\"MANAGE_MAIN_ADMIN\"]")
+    @Schema(description = "Permission", type = "List",
+        example = "[\"MANAGE_TEAM\",\"MANAGE_MAIN_ADMIN\"]")
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private Collection<String> permissions;
 }

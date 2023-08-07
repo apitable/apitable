@@ -18,6 +18,14 @@
 
 package com.apitable.auth.service.impl;
 
+import static com.apitable.core.constants.RedisConstants.ERROR_PWD_NUM_DIR;
+import static com.apitable.core.constants.RedisConstants.USER_AUTH_INFO_TOKEN;
+import static com.apitable.user.enums.UserException.LOGIN_OFTEN;
+import static com.apitable.user.enums.UserException.MOBILE_EMPTY;
+import static com.apitable.user.enums.UserException.REGISTER_EMAIL_ERROR;
+import static com.apitable.user.enums.UserException.REGISTER_EMAIL_HAS_EXIST;
+import static com.apitable.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
+
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -26,7 +34,6 @@ import com.apitable.auth.dto.UserLoginDTO;
 import com.apitable.auth.ro.LoginRo;
 import com.apitable.auth.service.IAuthService;
 import com.apitable.base.enums.ActionException;
-import com.apitable.core.constants.RedisConstants;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
@@ -37,29 +44,27 @@ import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.SocialAuthInfo;
 import com.apitable.shared.cache.service.SocialAuthInfoCacheService;
-import com.apitable.shared.captcha.*;
-import com.apitable.shared.component.TaskManager;
+import com.apitable.shared.captcha.CodeValidateScope;
+import com.apitable.shared.captcha.ValidateCodeProcessor;
+import com.apitable.shared.captcha.ValidateCodeProcessorManage;
+import com.apitable.shared.captcha.ValidateCodeType;
+import com.apitable.shared.captcha.ValidateTarget;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.internal.concurrent.Task;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import static com.apitable.core.constants.RedisConstants.*;
-import static com.apitable.user.enums.UserException.*;
-
 /**
- * Authorization-related service interface implementation
+ * Authorization-related service interface implementation.
  */
 @Service
 @Slf4j
@@ -99,15 +104,18 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long loginUsingPassword(LoginRo loginRo) {
-        // Get the user according to the username (email area code + mobile phone), if the username cannot be queried, an exception will be thrown automatically
+        // Get the user according to the username (email area code + mobile phone),
+        // if the username cannot be queried, an exception will be thrown automatically
         UserEntity user = iUserService.getByUsername(loginRo.getAreaCode(), loginRo.getUsername());
         // Record the wrong keys of the user password, and lock them for 20 minutes each time
         String errorInputPwdCountKey = ERROR_PWD_NUM_DIR + user.getId();
         int errorPwdCount = 0;
         // Determine whether you have entered the wrong password more than five times in a row
         if (BooleanUtil.isTrue(redisTemplate.hasKey(errorInputPwdCountKey))) {
-            // There is a record of the number of wrong passwords, and calculate whether it is greater than 5 times
-            BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(errorInputPwdCountKey);
+            // There is a record of the number of wrong passwords,
+            // and calculate whether it is greater than 5 times
+            BoundValueOperations<String, Object> opts =
+                redisTemplate.boundValueOps(errorInputPwdCountKey);
             Object value = opts.get();
             if (!Objects.isNull(value)) {
                 errorPwdCount = Integer.parseInt(value.toString());
@@ -116,8 +124,11 @@ public class AuthServiceImpl implements IAuthService {
         }
         // Check if the passwords match
         if (!passwordService.matches(loginRo.getCredential(), user.getPassword())) {
-            // Record the number of wrong passwords entered, and the account will be locked for 20 minutes if the wrong password is entered more than five times in a row
-            BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(errorInputPwdCountKey);
+            // Record the number of wrong passwords entered,
+            // and the account will be locked for 20 minutes
+            // if the wrong password is entered more than five times in a row
+            BoundValueOperations<String, Object> opts =
+                redisTemplate.boundValueOps(errorInputPwdCountKey);
             opts.set(errorPwdCount + 1, 20, TimeUnit.MINUTES);
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
@@ -140,11 +151,13 @@ public class AuthServiceImpl implements IAuthService {
         String mobileValidCode = StrUtil.trim(loginRo.getCredential());
         ExceptionUtil.isNotBlank(mobileValidCode, ActionException.CODE_EMPTY);
         // Verify mobile phone verification code
-        ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS);
+        ValidateCodeProcessor processor =
+            ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS);
         ValidateTarget target = ValidateTarget.create(loginRo.getUsername(), loginRo.getAreaCode());
         processor.validate(target, mobileValidCode, false, CodeValidateScope.LOGIN);
         // Get user authorization information from cache
-        SocialAuthInfo authInfo = socialAuthInfoCacheService.getAuthInfoFromCache(loginRo.getToken());
+        SocialAuthInfo authInfo =
+            socialAuthInfoCacheService.getAuthInfoFromCache(loginRo.getToken());
         // Whether to bind the mobile phone number after the third-party scan code login operation
         boolean socialLogin = authInfo != null && StrUtil.isNotBlank(authInfo.getUnionId());
         if (socialLogin) {
@@ -156,15 +169,18 @@ public class AuthServiceImpl implements IAuthService {
             iUserService.updateLoginTime(userId);
             // Query whether there is a space member corresponding to a mobile phone number
             List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
-            iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
+            iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream()
+                .map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
             // registered a new user
             String nickName = socialLogin ? authInfo.getNickName() : null;
             String avatar = socialLogin ? authInfo.getAvatar() : null;
-            userId = registerUserUsingMobilePhone(areaCode, mobile, nickName, avatar, loginRo.getSpaceId());
+            userId = registerUserUsingMobilePhone(areaCode, mobile, nickName,
+                avatar, loginRo.getSpaceId());
             result.setIsSignUp(true);
         }
-        // If it is a third-party application that binds the account after scanning the code to log in
+        // If it is a third-party application that binds the account
+        // after scanning the code to log in
         if (socialLogin) {
             userLinkServiceFacade.createUserLink(new UserLinkRequest(userId, authInfo));
         }
@@ -186,16 +202,20 @@ public class AuthServiceImpl implements IAuthService {
         ExceptionUtil.isTrue(Validator.isEmail(email), REGISTER_EMAIL_ERROR);
         ExceptionUtil.isNotBlank(emailValidCode, ActionException.CODE_EMPTY);
         // Verify verification code
-        ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL);
-        processor.validate(ValidateTarget.create(email), emailValidCode, false, CodeValidateScope.REGISTER_EMAIL);
+        ValidateCodeProcessor processor =
+            ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL);
+        processor.validate(ValidateTarget.create(email), emailValidCode, false,
+            CodeValidateScope.REGISTER_EMAIL);
         // determine whether there is
         Long userId = iUserService.getUserIdByEmail(email);
         if (userId != null) {
             // Update last login time
             iUserService.updateLoginTime(userId);
-            // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
+            // Query whether there is a space member corresponding to the mailbox,
+            // only new registration will have this operation
             List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
-            iMemberService.activeIfExistInvitationSpace(userId, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
+            iMemberService.activeIfExistInvitationSpace(userId,
+                inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
             // Email automatic registration users do not provide third-party scan code login binding
             userId = registerUserUsingEmail(email, null, loginRo.getSpaceId());
@@ -207,16 +227,20 @@ public class AuthServiceImpl implements IAuthService {
         return result;
     }
 
-    public Long registerUserUsingMobilePhone(String areaCode, String mobile, String nickName, String avatar, String spaceId) {
+    public Long registerUserUsingMobilePhone(String areaCode, String mobile,
+        String nickName, String avatar, String spaceId) {
         // Create a new user based on the mobile phone number and activate the corresponding member
         UserEntity user = iUserService.createUserByMobilePhone(areaCode, mobile, nickName, avatar);
         // Query whether there is a space member corresponding to a mobile phone number
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByMobile(mobile);
-        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
+        // Invite new users to join the space station to reward attachment capacity,
+        // asynchronous  operation
         if (spaceId != null) {
-            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
+            entitlementServiceFacade.rewardGiftCapacity(spaceId,
+                new EntitlementRemark(user.getId(), user.getNickName()));
         }
-        createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
+        createOrActiveSpace(user,
+            inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }
 
@@ -226,9 +250,11 @@ public class AuthServiceImpl implements IAuthService {
         // Query whether there is a space member corresponding to the mailbox, only new
         // registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
-        // Invite new users to join the space station to reward attachment capacity, asynchronous operation
+        // Invite new users to join the space station to reward attachment capacity,
+        // asynchronous operation
         if (spaceId != null) {
-            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
+            entitlementServiceFacade.rewardGiftCapacity(spaceId,
+                new EntitlementRemark(user.getId(), user.getNickName()));
         }
         createOrActiveSpace(user,
             inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));

@@ -30,7 +30,4 @@ public class UserLoginDTO {
     private String nickName;
 
     private Boolean isSignUp;
-
-    @Deprecated
-    private String token;
 }

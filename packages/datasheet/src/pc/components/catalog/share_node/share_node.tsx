@@ -54,10 +54,6 @@ export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({
   isTriggerRender
 }) => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  console.log({
-    treeNodesMap,
-    data
-  });
   const { nodeName } = treeNodesMap[data.nodeId];
 
   if (isTriggerRender) {

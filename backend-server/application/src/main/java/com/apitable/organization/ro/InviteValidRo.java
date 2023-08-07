@@ -32,8 +32,8 @@ import lombok.Data;
 public class InviteValidRo {
 
     @NotBlank
-    @Schema(description = "Invite link one-time token", example =
-        "b10e5e36cd7249bdaeab3e424308deed")
+    @Schema(description = "Invite link one-time token",
+        example = "b10e5e36cd7249bdaeab3e424308deed")
     private String token;
 
     @Schema(description = "nodeId", example = "dst****")

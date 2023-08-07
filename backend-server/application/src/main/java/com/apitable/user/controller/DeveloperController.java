@@ -66,8 +66,8 @@ public class DeveloperController {
      * Verify the access token.
      */
     @GetResource(path = "/valid/{apiKey}", requiredLogin = false)
-    @Operation(summary = "Verify the access token", description = "Provides a mid-tier validation"
-        + " access token.")
+    @Operation(summary = "Verify the access token",
+        description = "Provides a mid-tier validation access token.")
     public ResponseData<Boolean> validateApiKey(@PathVariable("apiKey") String apiKey) {
         boolean valid = iDeveloperService.validateApiKey(apiKey);
         return ResponseData.success(valid);
@@ -77,8 +77,8 @@ public class DeveloperController {
      * Create the developer access token.
      */
     @PostResource(path = "/createApiKey", requiredPermission = false)
-    @Operation(summary = "Create the developer access token", description = "Create developer "
-        + "access tokens to access open platform functionality.")
+    @Operation(summary = "Create the developer access token",
+        description = "Create developer access tokens to access open platform functionality.")
     public ResponseData<DeveloperInfoVo> createApiKey() {
         Long userId = SessionContext.getUserId();
         boolean hasCreate = iDeveloperService.checkHasCreate(userId);
@@ -93,9 +93,9 @@ public class DeveloperController {
      * Refresh the developer access token.
      */
     @PostResource(path = "/refreshApiKey", requiredPermission = false)
-    @Operation(summary = "Refresh the developer access token", description = "Refresh developer "
-        + "access token before verifying phone number.If there is no verification mailbox, skip "
-        + "verification.")
+    @Operation(summary = "Refresh the developer access token",
+        description = "Refresh developer access token before verifying phone number."
+            + "If there is no verification mailbox, skip verification.")
     public ResponseData<DeveloperInfoVo> refreshApiKey(@RequestBody @Valid RefreshApiKeyRo data) {
         Long userId = SessionContext.getUserId();
         UserEntity userEntity = userMapper.selectById(userId);

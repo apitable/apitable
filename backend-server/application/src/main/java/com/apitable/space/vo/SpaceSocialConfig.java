@@ -36,8 +36,8 @@ public class SpaceSocialConfig {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean enabled;
 
-    @Schema(description = "Third party platform type（1: WeCom, 2: DingTalk, 3: Lark）", example =
-        "1")
+    @Schema(description = "Third party platform type（1: WeCom, 2: DingTalk, 3: Lark）",
+        example = "1")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer platform;
 

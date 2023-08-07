@@ -125,7 +125,7 @@ public class TeamController {
     /**
      * Query direct sub departments.
      */
-    @GetResource(path = "/subTeams", name = "Query direct sub departments")
+    @GetResource(path = "/subTeams")
     @Operation(summary = "Query direct sub departments",
         description = "query sub team by team id. if team id lack, default root team.")
     @Parameters({
@@ -174,7 +174,7 @@ public class TeamController {
     /**
      * Query team information.
      */
-    @GetResource(path = "/read", name = "Querying team information")
+    @GetResource(path = "/read")
     @Operation(summary = "Query team information",
         description = "Query department information. if team id lack, default root team")
     @Parameters({
@@ -194,7 +194,7 @@ public class TeamController {
     /**
      * Create team.
      */
-    @PostResource(path = "/create", name = "Create team", tags = "CREATE_TEAM")
+    @PostResource(path = "/create", tags = "CREATE_TEAM")
     @Operation(summary = "Create team", description = "Create team")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
@@ -214,9 +214,10 @@ public class TeamController {
     /**
      * Update team info.
      */
-    @PostResource(path = "/update", name = "Update team info", tags = "UPDATE_TEAM")
-    @Operation(summary = "Update team info", description = "Update team info. If modify team "
-        + "level, default sort in the end of parent team.")
+    @PostResource(path = "/update", tags = "UPDATE_TEAM")
+    @Operation(summary = "Update team info",
+        description = "Update team info. If modify team level,"
+            + "default sort in the end of parent team.")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateTeamRo data) {
@@ -251,8 +252,8 @@ public class TeamController {
     /**
      * Delete team.
      */
-    @PostResource(path = "/delete/{teamId}", method = { RequestMethod.DELETE },
-        name = "Delete team", tags = "DELETE_TEAM")
+    @PostResource(path = "/delete/{teamId}",
+        method = { RequestMethod.DELETE }, tags = "DELETE_TEAM")
     @Operation(summary = "Delete team",
         description = "Delete team. If team has members, it can be deleted.")
     @Parameters({

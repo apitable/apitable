@@ -39,19 +39,19 @@ public class WidgetPackageInfoVo {
         + "Default:zh-CN，Current Support List：「en-US/zh-CN」", example = "Chart")
     private String name;
 
-    @Schema(description = "Widget package icon", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Widget package icon",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String icon;
 
-    @Schema(description = "Cover drawing of component package", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Cover drawing of component package",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String cover;
 
     @Schema(description = "Widget description - returned according to the request Accept "
-        + "Language, default: zh CN, current support list:「en-US/zh-CN」", example = "This is the "
-        + "description of a chart applet")
+        + "Language, default: zh CN, current support list:「en-US/zh-CN」",
+        example = "This is the description of a chart applet")
     private String description;
 
     @Schema(description = "Widget package version number", example = "1.0.0")

@@ -22,7 +22,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Consumer;
 
 import cn.hutool.core.io.IoUtil;
@@ -260,4 +262,5 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
         ossUploadAuth.setUploadRequestMethod("PUT");
         return ossUploadAuth;
     }
+
 }

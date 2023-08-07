@@ -37,10 +37,6 @@ public class WidgetCopyRo {
         example = "dst11/dsb11")
     private String nodeId;
 
-    @Deprecated
-    @Schema(description = "Dashboard ID", required = true, example = "dsb11")
-    private String dashboardId;
-
     @Schema(description = "Widget ID List", requiredMode = RequiredMode.REQUIRED,
         example = "[\"wdtiJjVmNFcFmNtQFA\", \"wdtSbp8TkH7gTGAYR1\"]")
     @NotEmpty(message = "Widget ID list cannot be empty")

@@ -1755,7 +1755,7 @@ export class DatasheetOtService {
         const recordAction = DatasheetOtService.generateJotAction(
           OTActionName.ObjectInsert,
           ['recordMap', recordId, 'recordMeta', 'fieldUpdatedMap'],
-          {},
+          newRecordMeta.fieldUpdatedMap,
         );
         recordMapActions.push(recordAction);
       } else {

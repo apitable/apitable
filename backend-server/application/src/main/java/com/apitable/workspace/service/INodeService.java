@@ -30,6 +30,7 @@ import com.apitable.workspace.entity.DatasheetMetaEntity;
 import com.apitable.workspace.entity.DatasheetRecordEntity;
 import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.model.DatasheetCreateObject;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
 import com.apitable.workspace.ro.NodeMoveOpRo;
@@ -340,6 +341,16 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeInfoVo
      */
     NodeInfoTreeVo getNodeInfoTreeByNodeIds(String spaceId, Long memberId, List<String> nodeIds);
+
+    /**
+     * create datasheet node.
+     *
+     * @param userId  user id
+     * @param spaceId space id
+     * @param object  datasheet create object
+     * @return datasheet node id
+     */
+    String createDatasheetNode(Long userId, String spaceId, DatasheetCreateObject object);
 
     /**
      * create node.

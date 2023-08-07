@@ -150,11 +150,17 @@ export type StringKeysMapType = {
   'ai_datasheet_panel_create_btn_text': 'ai_datasheet_panel_create_btn_text',
   'ai_default_prologue': 'ai_default_prologue',
   'ai_default_prompt': 'ai_default_prompt',
+  'ai_discar_setting_edit_cancel_text': 'ai_discar_setting_edit_cancel_text',
+  'ai_discard_setting_edit_ok_text': 'ai_discard_setting_edit_ok_text',
+  'ai_embed_website': 'ai_embed_website',
+  'ai_embed_website_iframe_tips': 'ai_embed_website_iframe_tips',
+  'ai_embed_website_javascript_tips': 'ai_embed_website_javascript_tips',
   'ai_explore_card_title': 'ai_explore_card_title',
   'ai_explore_refresh_btn_text': 'ai_explore_refresh_btn_text',
   'ai_fallback_message_desc': 'ai_fallback_message_desc',
   'ai_fallback_message_title': 'ai_fallback_message_title',
   'ai_latest_train_date': 'ai_latest_train_date',
+  'ai_new_chatbot': 'ai_new_chatbot',
   'ai_new_conversation_btn_text': 'ai_new_conversation_btn_text',
   'ai_open_remark_can_not_empty': 'ai_open_remark_can_not_empty',
   'ai_open_remark_desc': 'ai_open_remark_desc',
@@ -175,6 +181,7 @@ export type StringKeysMapType = {
   'ai_setting_preview_suggestion_tip_2': 'ai_setting_preview_suggestion_tip_2',
   'ai_setting_preview_suggestion_tip_3': 'ai_setting_preview_suggestion_tip_3',
   'ai_setting_preview_user_chat_message': 'ai_setting_preview_user_chat_message',
+  'ai_setting_title': 'ai_setting_title',
   'ai_show_explore_card_desc': 'ai_show_explore_card_desc',
   'ai_show_explore_card_title': 'ai_show_explore_card_title',
   'ai_show_suggestion_for_follow_tip_desc': 'ai_show_suggestion_for_follow_tip_desc',
@@ -5526,5 +5533,5 @@ export type StringKeysMapType = {
 };
 
 export type StringKeysType = {
-  [K in keyof StringKeysMapType]: K;
-} & { [key: string]: unknown };
+          [K in keyof StringKeysMapType]: K;
+        } & { [key: string]: unknown };

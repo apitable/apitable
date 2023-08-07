@@ -34,8 +34,8 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Laboratory function setting request object")
 public class UserLabsFeatureRo {
 
-    @Schema(description = "Space ID, if left blank, identify the user level function", type =
-        "java.lang.String", example = "spc6e2CeZLBFN")
+    @Schema(description = "Space ID, if left blank, identify the user level function",
+        type = "java.lang.String", example = "spc6e2CeZLBFN")
     private String spaceId;
 
     @Schema(description = "Unique identification of the laboratory function to be operated",

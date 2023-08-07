@@ -21,6 +21,7 @@ package com.apitable.organization.ro;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,7 +38,8 @@ public class CreateTeamRo {
 
     @NotBlank
     @Size(min = 1, max = 100, message = "Department name cannot exceed 100 characters")
-    @Schema(description = "Department name", required = true, example = "Finance Department")
+    @Schema(description = "Department name",
+        requiredMode = RequiredMode.REQUIRED, example = "Finance Department")
     private String name;
 
     @NotNull

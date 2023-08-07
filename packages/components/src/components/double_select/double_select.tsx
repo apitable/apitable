@@ -41,7 +41,7 @@ export const DoubleSelect: React.FC<React.PropsWithChildren<IDoubleSelectProps>>
     renderValue={renderValue}
     disabled={disabled}
     dropdownRender={
-      <StyledDropdownContainer>
+      <StyledDropdownContainer className={triggerCls}>
         {
           options.map((option, index) => {
             return <WrapperTooltip

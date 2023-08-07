@@ -65,7 +65,8 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
 
     @Override
     public List<AlbumVo> getAlbumVosByCategoryCode(String categoryCode) {
-        List<String> albumIds = templateAlbumRelMapper.selectAlbumIdByRelateIdAndType(categoryCode, TemplateAlbumRelType.TEMPLATE_CATEGORY.getType());
+        List<String> albumIds = templateAlbumRelMapper.selectAlbumIdByRelateIdAndType(categoryCode,
+            TemplateAlbumRelType.TEMPLATE_CATEGORY.getType());
         if (albumIds.isEmpty()) {
             return new ArrayList<>();
         }
@@ -73,7 +74,8 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
     }
 
     @Override
-    public List<AlbumVo> getRecommendedAlbums(String lang, Integer maxCount, String excludeAlbumId) {
+    public List<AlbumVo> getRecommendedAlbums(String lang, Integer maxCount,
+        String excludeAlbumId) {
         List<String> allAlbumIds = templateAlbumMapper.selectAllAlbumIdsByI18nName(lang);
         if (excludeAlbumId != null) {
             allAlbumIds.remove(excludeAlbumId);
@@ -101,7 +103,8 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
         AlbumContentVo albumContentVo = templateAlbumMapper.selectAlbumContentVoByAlbumId(albumId);
         ExceptionUtil.isNotNull(albumContentVo, DatabaseException.QUERY_EMPTY_BY_ID);
         // query album relate ids
-        List<String> tagCodes = templateAlbumRelMapper.selectRelateIdByAlbumIdAndType(albumId, TemplateAlbumRelType.TEMPLATE_TAG.getType());
+        List<String> tagCodes = templateAlbumRelMapper.selectRelateIdByAlbumIdAndType(albumId,
+            TemplateAlbumRelType.TEMPLATE_TAG.getType());
         if (tagCodes.isEmpty()) {
             return albumContentVo;
         }

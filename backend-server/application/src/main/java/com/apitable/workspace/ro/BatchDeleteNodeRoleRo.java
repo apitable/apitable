@@ -21,6 +21,7 @@ package com.apitable.workspace.ro;
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -39,8 +40,8 @@ public class BatchDeleteNodeRoleRo {
     private String nodeId;
 
     @NotEmpty(message = "Organization unit cannot be empty")
-    @Schema(description = "Org Unit ID Set", type = "java.util.List", required = true, example =
-        "[\"1\",\"2\",\"3\"]")
+    @Schema(description = "Org Unit ID Set", type = "java.util.List",
+        requiredMode = RequiredMode.REQUIRED, example = "[\"1\",\"2\",\"3\"]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 }

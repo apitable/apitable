@@ -90,8 +90,8 @@ public class NodeFavoriteController {
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
         @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl"),
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> updateStatus(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();

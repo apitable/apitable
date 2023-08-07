@@ -17,7 +17,7 @@
  */
 
 import { CacheManager, getFieldTypeString, IReduxState } from '@apitable/core';
-import { Field, Selectors, t, Strings, ConfigConstant } from 'core';
+import { ConfigConstant, Field, Selectors, Strings, t } from 'core';
 import { FieldType, IWidgetContext } from 'interface';
 import { getActiveViewId, getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot, getView } from 'store/selector';
 import { isSandbox } from 'utils/private';

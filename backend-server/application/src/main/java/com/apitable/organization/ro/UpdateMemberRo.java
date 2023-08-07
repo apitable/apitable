@@ -22,6 +22,7 @@ import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,7 +38,8 @@ import lombok.Data;
 public class UpdateMemberRo {
 
     @NotNull
-    @Schema(description = "Member ID", required = true, type = "java.lang.String", example = "1")
+    @Schema(description = "Member ID",
+        requiredMode = RequiredMode.REQUIRED, type = "java.lang.String", example = "1")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long memberId;
 

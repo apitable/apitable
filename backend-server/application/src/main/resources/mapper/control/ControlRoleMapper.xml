@@ -110,17 +110,6 @@
         </foreach>
     </insert>
 
-    <update id="updateRoleCodeByControlIdAndUnitIds">
-        UPDATE ${tablePrefix}control_role
-        SET role_code = #{role}, updated_by = #{userId}
-        WHERE control_id = #{controlId} AND unit_id IN
-        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </update>
-
     <update id="updateRoleCodeByIds">
         UPDATE ${tablePrefix}control_role
         SET role_code = #{role}, updated_by = #{userId}
@@ -131,43 +120,6 @@
         </foreach>
         AND is_deleted = 0
     </update>
-
-    <delete id="deleteByIds">
-        UPDATE ${tablePrefix}control_role
-        SET is_deleted = 1
-        WHERE id IN
-        <foreach item="item" index="index" collection="ids" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-    </delete>
-
-    <delete id="deleteByControlIds">
-        UPDATE ${tablePrefix}control_role
-        SET is_deleted = 1, updated_by = #{userId}
-        WHERE control_id IN
-        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-    </delete>
-
-    <delete id="deleteByUnitIds">
-        UPDATE ${tablePrefix}control_role
-        SET is_deleted = 1
-        WHERE unit_id IN
-        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-    </delete>
-
-    <delete id="deleteByControlIdAndUnitId">
-        UPDATE ${tablePrefix}control_role
-        SET is_deleted = 1
-        WHERE control_id = #{controlId}
-        AND unit_id = #{unitId}
-    </delete>
 
     <select id="selectDeletedRole" resultType="com.apitable.control.entity.ControlRoleEntity">
         SELECT *

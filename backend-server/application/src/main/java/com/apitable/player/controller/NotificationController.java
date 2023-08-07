@@ -117,8 +117,8 @@ public class NotificationController {
      * Get Notification Detail List.
      */
     @GetResource(path = "/list", requiredPermission = false)
-    @Operation(summary = "Get Notification Detail List", description = "Default: System "
-        + "Notification")
+    @Operation(summary = "Get Notification Detail List",
+        description = "Default: System Notification")
     public ResponseData<List<NotificationDetailVo>> list(
         @Valid NotificationListRo notificationListRo) {
         return ResponseData.success(

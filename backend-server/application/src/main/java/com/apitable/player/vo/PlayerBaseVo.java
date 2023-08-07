@@ -72,8 +72,8 @@ public class PlayerBaseVo {
     private String email;
 
     @Deprecated
-    @Schema(description = "Whether the space station has been removed", example = "true", hidden
-        = true)
+    @Schema(description = "Whether the space station has been removed",
+        example = "true", hidden = true)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isDeleted;
 

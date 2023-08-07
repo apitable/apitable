@@ -20,6 +20,7 @@ package com.apitable.organization.ro;
 
 import com.apitable.shared.constants.PatternConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Pattern.Flag;
 import lombok.Data;
@@ -33,10 +34,10 @@ import lombok.Data;
 @Schema(description = "User Association Invited Mailbox Parameters")
 public class UserLinkEmailRo {
 
-    @Schema(description = "Email address, strictly checked", example = "123456@qq.com", required
-        = true)
-    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags =
-        Flag.CASE_INSENSITIVE)
+    @Schema(description = "Email address, strictly checked",
+        requiredMode = RequiredMode.REQUIRED, example = "123456@qq.com")
+    @Pattern(regexp = PatternConstants.EMAIL, flags = Flag.CASE_INSENSITIVE,
+        message = "Incorrect mailbox format")
     private String email;
 
     @Schema(description = "Invited workspace", example = "spcyQkKp9XJEl")

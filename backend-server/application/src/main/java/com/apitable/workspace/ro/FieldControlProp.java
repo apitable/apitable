@@ -30,7 +30,7 @@ import lombok.Data;
 public class FieldControlProp {
 
     @NotNull(message = "formSheetAccessible cannot be null")
-    @Schema(description = "Allow collection table access", type = "java.lang.Boolean", example =
-        "true")
+    @Schema(description = "Allow collection table access",
+        type = "java.lang.Boolean", example = "true")
     private Boolean formSheetAccessible;
 }

@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Attachment resource upload voucher result VO")
 public class AssetUploadCertificateVO {
 
-    @Schema(description = "File Access Path(possibly non-final value)", example = "spc10/2019/12"
-        + "/10/159.jpg")
+    @Schema(description = "File Access Path(possibly non-final value)",
+        example = "spc10/2019/12/10/159.jpg")
     private String token;
 
     @Schema(description = "Upload request URL", example = "https://bucket.s3.us-east-1.amazon"

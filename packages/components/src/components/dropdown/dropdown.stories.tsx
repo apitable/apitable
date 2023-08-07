@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { Dropdown } from './index';
-import { Dropdown as FloatDropdown } from './laag_dropdown';
+import { Dropdown as FloatDropdown } from './float_ui';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { IDropdownProps } from './interface';

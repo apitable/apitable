@@ -39,16 +39,16 @@ import { WidgetEmbed } from 'enterprise';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
-  isAI?: boolean;
 }
 
-export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId, isAI }) => {
+export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [deleting, setDeleting] = useState(false);
   const [shareStatus, setShareStatus] = useState(false);
   const dispatch = useDispatch();
   const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
+  const isAI = nodeId.startsWith('ai_');
 
   const hideShareCodeModal = useCallback(() => {
     setWidgetEmbedVisible(false);

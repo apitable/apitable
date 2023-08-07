@@ -33,8 +33,7 @@ public class NotificationPageRo {
 
     @Max(1)
     @Schema(description = "Read 1 Read, 0 Unread, Not Transferred means to query all",
-        allowableValues = "range[0,1]", type = "Integer",
-        example = "0")
+        allowableValues = "range[0,1]", type = "Integer", example = "0")
     private Integer isRead;
 
     @Schema(description = "Notification Type", example = "system")

@@ -102,7 +102,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG;
 
 /**
- * Basics - Attachment Table Service Implementation Class
+ * Basics - Attachment Table Service Implementation Class.
  */
 @Slf4j
 @Service
@@ -161,7 +161,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         }
         // When not logged in, perform human-machine verification
         int hash = HashUtil.javaDefaultHash(secret);
-        // The client uploads continuously, and the incoming secret remains unchanged. Therefore, the verification can be skipped within the validity period of the cache after the verification is passed.
+        // The client uploads continuously, and the incoming secret remains unchanged.
+        // Therefore, the verification can be skipped within the validity period of
+        // the cache after the verification is passed.
         String key = StrUtil.format(GENERAL_LOCKED, "anonymous:upload", hash);
         if (BooleanUtil.isTrue(redisTemplate.hasKey(key))) {
             return;
@@ -178,11 +180,14 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public AssetUploadResult uploadFileInSpace(String nodeId, InputStream in, String fileOriginalName, long fileSize, String mimeType, AssetType assetType) {
+    public AssetUploadResult uploadFileInSpace(String nodeId, InputStream in,
+        String fileOriginalName, long fileSize, String mimeType, AssetType assetType) {
         log.info("upload resources in the space");
-        ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(mimeType), ActionException.FILE_NOT_SUPPORT_HTML);
+        ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(mimeType),
+            ActionException.FILE_NOT_SUPPORT_HTML);
         AssetUploadResult result = new AssetUploadResult();
-        // Space capacity storage, requires computing capacity, for the storage of a node, the node is not allowed to be empty
+        // Space capacity storage, requires computing capacity,
+        // for the storage of a node, the node is not allowed to be empty
         ExceptionUtil.isNotBlank(nodeId, ParameterException.INCORRECT_ARG);
         // Check whether the node exists, otherwise it is regarded as inaccessible
         String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
@@ -195,7 +200,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             result.setSize(fileSize);
             // md5 check to determine whether the file already exists
             String checksum = DigestUtil.md5Hex(streamCache.getInputStream());
-            // Determine whether the upper limit of the attachment space is exceeded, and the whitelist space is skipped
+            // Determine whether the upper limit of the attachment space is exceeded,
+            // and the whitelist space is skipped
             // iSubscriptionService.checkCapacity(spaceId, fileSize, checksum);
             ImageDto imageDto = getImageInfo(streamCache.getInputStream());
             Integer height = null;
@@ -207,9 +213,11 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                 result.setWidth(width);
             }
             result.setMimeType(mimeType);
-            boolean isPdf = StrUtil.isNotBlank(mimeType) && mimeType.equals(MediaType.APPLICATION_PDF_VALUE);
+            boolean isPdf = StrUtil.isNotBlank(mimeType)
+                && mimeType.equals(MediaType.APPLICATION_PDF_VALUE);
 
-            // Lock checksum to prevent multiple new attachments from being uploaded concurrently for the first time
+            // Lock checksum to prevent multiple new attachments
+            // from being uploaded concurrently for the first time
             Lock lock = redisLockRegistry.obtain(checksum);
             try {
                 if (lock.tryLock(2, TimeUnit.MINUTES)) {
@@ -218,33 +226,39 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                         // does not exist, upload and store to the cloud
                         String uploadPath = buildPath(SPACE_PREFIX);
                         // upload attachment
-                        ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCache.getInputStream(), uploadPath, mimeType, checksum);
+                        ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(),
+                            streamCache.getInputStream(), uploadPath, mimeType, checksum);
                         result.setToken(uploadPath);
                         result.setBucket(constProperties.getOssBucketByAsset().getType());
                         if (isPdf) {
                             // upload pdf image
-                            String pdfImgUploadPath = uploadAndSavePdfImg(streamCache.getInputStream());
+                            String pdfImgUploadPath =
+                                uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                         }
                         // save in database
-                        Long assetId = save(checksum, null, fileSize, uploadPath, mimeType, height, width, result.getPreview());
-                        // The calculation of the number table is uniformly calculated in the op, without the need to process the data
+                        Long assetId =
+                            save(checksum, null, fileSize, uploadPath, mimeType,
+                                height, width, result.getPreview());
+                        // The calculation of the number table is uniformly calculated in the op,
+                        // without the need to process the data
                         if (assetType != AssetType.DATASHEET) {
-                            iSpaceAssetService.saveAssetInSpace(spaceId, nodeId, assetId, checksum, assetType, fileOriginalName, fileSize);
+                            iSpaceAssetService.saveAssetInSpace(spaceId, nodeId,
+                                assetId, checksum, assetType, fileOriginalName, fileSize);
                         }
                         // If it is a picture, you need to create an audit record
                         if (imageDto != null) {
                             iAssetAuditService.create(assetId, checksum, uploadPath);
                         }
-                    }
-                    else {
+                    } else {
                         // existed
                         result.setToken(assetEntity.getFileUrl());
                         result.setBucket(assetEntity.getBucket());
                         result.setPreview(assetEntity.getPreview());
                         if (isPdf && assetEntity.getPreview() == null) {
                             // upload pdf image
-                            String pdfImgUploadPath = uploadAndSavePdfImg(streamCache.getInputStream());
+                            String pdfImgUploadPath =
+                                uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                             // Basic resource records, supplementary preview data
                             AssetEntity update = new AssetEntity();
@@ -252,35 +266,42 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                             update.setPreview(result.getPreview());
                             updateById(update);
                         }
-                        // Determine whether the file has been referenced on the number table, if so, add the number of references once, otherwise add a space attachment record
-                        SpaceAssetDTO assetDto = spaceAssetMapper.selectDto(spaceId, nodeId, assetEntity.getId());
+                        // Determine whether the file has been referenced on the number table,
+                        // if so, add the number of references once,
+                        // otherwise add a space attachment record
+                        SpaceAssetDTO assetDto =
+                            spaceAssetMapper.selectDto(spaceId, nodeId, assetEntity.getId());
                         if (ObjectUtil.isNotNull(assetDto)) {
-                            // Once used as a cover image, the space resource record is rigidly recorded as cover image, which is convenient to obtain all used cover images.
-                            boolean flag = !assetDto.getType().equals(AssetType.COVER.getValue()) && assetType.equals(AssetType.COVER);
+                            // Once used as a cover image,
+                            // the space resource record is rigidly recorded as cover image,
+                            // which is convenient to obtain all used cover images.
+                            boolean flag = !assetDto.getType().equals(AssetType.COVER.getValue())
+                                && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue() : null;
                             if (assetType != AssetType.DATASHEET) {
-                                iSpaceAssetService.edit(assetDto.getId(), assetDto.getCite() + 1, type);
+                                iSpaceAssetService.edit(assetDto.getId(),
+                                    assetDto.getCite() + 1, type);
                                 spaceCapacityCacheService.del(spaceId);
                             }
-                        }
-                        else {
-                            // The calculation of the number table is uniformly calculated in the op, without the need to process the data
+                        } else {
+                            // The calculation of the number table is uniformly calculated
+                            // in the op, without the need to process the data
                             if (assetType != AssetType.DATASHEET) {
-                                iSpaceAssetService.saveAssetInSpace(spaceId, nodeId, assetEntity.getId(), checksum, assetType, fileOriginalName, fileSize);
+                                iSpaceAssetService.saveAssetInSpace(spaceId,
+                                    nodeId, assetEntity.getId(), checksum,
+                                    assetType, fileOriginalName, fileSize);
                             }
                         }
                     }
-                }
-                else {
-                    log.error("The upload operation is too frequent. Please try again later.checksum:{}", checksum);
+                } else {
+                    log.error("The upload operation is too frequent. "
+                            + "Please try again later.checksum:{}", checksum);
                     throw new BusinessException("Upload operation is too frequent, please try again later");
                 }
-            }
-            finally {
+            } finally {
                 lock.unlock();
             }
-        }
-        catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             String ignoreInfo = "limited mimeType";
             if (e.getMessage().contains(ignoreInfo)) {
                 throw new BusinessException(ActionException.FILE_NOT_SUPPORT_HTML);
@@ -300,7 +321,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         // upload to public area
         String uploadPath = buildPath(PUBLIC_PREFIX);
         try {
-            UrlFetchResponse response = ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), url, uploadPath);
+            String bucketName = constProperties.getOssBucketByAsset().getBucketName();
+            UrlFetchResponse response = ossTemplate.upload(bucketName, url, uploadPath);
             result.setMimeType(response.getMimeType());
             try {
                 MimeType mimeType = MimeTypeUtils.parseMimeType(response.getMimeType());
@@ -308,15 +330,13 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                     // read image
                     log.info("website resources are images");
                 }
-            }
-            catch (InvalidMimeTypeException e) {
+            } catch (InvalidMimeTypeException e) {
                 log.error("unrecognized file type");
                 // Ignore, don't set it
             }
             result.setSize(response.getSize());
             result.setToken(response.getKeyName());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error("Failed to upload public resource", e);
             throw new BusinessException("upload failed");
         }
@@ -328,21 +348,21 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         log.info("upload non space resource files");
         AssetUploadResult result = new AssetUploadResult();
 
-        try (InputStreamCache streamCacher = new InputStreamCache(in, fileSize)) {
+        try (InputStreamCache streamCache = new InputStreamCache(in, fileSize)) {
             result.setBucket(constProperties.getOssBucketByAsset().getType());
             // Upload public area
             String uploadPath = buildPath(PUBLIC_PREFIX);
             //upload files
-            ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCacher.getInputStream(), uploadPath);
+            ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(),
+                streamCache.getInputStream(), uploadPath);
             result.setToken(uploadPath);
             result.setMimeType(contentType);
-            ImageDto imageDto = getImageInfo(streamCacher.getInputStream());
+            ImageDto imageDto = getImageInfo(streamCache.getInputStream());
             if (imageDto != null) {
                 result.setHeight(imageDto.getHeight());
                 result.setWidth(imageDto.getWidth());
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error("failed to upload resource", e);
             throw new BusinessException("upload failed");
         }
@@ -351,8 +371,11 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath, String fileOriginalName, long fileSize, String contentType, Long createdBy, DeveloperAssetType developerAssetType) {
-        ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(contentType), ActionException.FILE_NOT_SUPPORT_HTML);
+    public AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath,
+        String fileOriginalName, long fileSize, String contentType, Long createdBy,
+        DeveloperAssetType developerAssetType) {
+        ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(contentType),
+            ActionException.FILE_NOT_SUPPORT_HTML);
         ExceptionUtil.isNotNull(createdBy, AuthException.UNAUTHORIZED);
 
         AssetUploadResult result = new AssetUploadResult();
@@ -377,23 +400,24 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                     uploadPath = buildPath(DEVELOP_PREFIX);
                 }
                 // upload attachment
-                ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), streamCache.getInputStream(), uploadPath, contentType, checksum);
+                ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(),
+                    streamCache.getInputStream(), uploadPath, contentType, checksum);
                 // Calculate the file header Sum
                 String headSum = DigestUtil.createHeadSum(streamCache.getInputStream());
                 // Save into the database and bind the developer attachment table relationship
-                Long assetId = this.save(checksum, headSum, fileSize, uploadPath, contentType, result.getHeight(), result.getWidth(), result.getPreview());
-                iDeveloperAssetService.saveAssetInDeveloper(assetId, createdBy, checksum, developerAssetType, fileOriginalName, fileSize);
+                Long assetId = this.save(checksum, headSum, fileSize, uploadPath, contentType,
+                    result.getHeight(), result.getWidth(), result.getPreview());
+                iDeveloperAssetService.saveAssetInDeveloper(assetId, createdBy, checksum,
+                    developerAssetType, fileOriginalName, fileSize);
 
                 result.setToken(uploadPath);
                 result.setBucket(constProperties.getOssBucketByAsset().getType());
-            }
-            else {
+            } else {
                 // exist
                 result.setToken(assetEntity.getFileUrl());
                 result.setBucket(assetEntity.getBucket());
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to upload resource", e);
         }
         return result;
@@ -404,22 +428,23 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         return StrUtil.join("/", prefix, date, IdUtil.fastSimpleUUID());
     }
 
-    public Long save(String checksum, String headSum, long size, String path, String mimeType, Integer height, Integer width, String preview) {
+    public Long save(String checksum, String headSum, long size, String path,
+        String mimeType, Integer height, Integer width, String preview) {
         log.info("save records of base attachments");
         OssBucketInfo ossBucketInfo = constProperties.getOssBucketByAsset();
         AssetEntity entity = AssetEntity.builder()
-                .checksum(checksum)
-                .headSum(headSum)
-                .bucket(ossBucketInfo.getType())
-                .bucketName(ossBucketInfo.getBucketName())
-                .fileSize((int) size)
-                .fileUrl(path)
-                .mimeType(mimeType)
-                .extensionName(MimeTypeMapping.mimeTypeToExtension(mimeType))
-                .preview(preview)
-                .height(height)
-                .width(width)
-                .build();
+            .checksum(checksum)
+            .headSum(headSum)
+            .bucket(ossBucketInfo.getType())
+            .bucketName(ossBucketInfo.getBucketName())
+            .fileSize((int) size)
+            .fileUrl(path)
+            .mimeType(mimeType)
+            .extensionName(MimeTypeMapping.mimeTypeToExtension(mimeType))
+            .preview(preview)
+            .height(height)
+            .width(width)
+            .build();
         boolean flag = this.save(entity);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return entity.getId();
@@ -446,18 +471,18 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                     String extension = MimeTypeMapping.mimeTypeToExtension(mimeType);
                     fileName = StrUtil.join(StrUtil.DOT, fileName, extension);
                 }
-            }
-            else {
+            } else {
                 mimeType = FileUtil.extName(fileName);
             }
             long contentLength = urlConnection.getContentLengthLong();
-            // If there is no description in the read request header, directly obtain the estimated size of the stream
+            // If there is no description in the read request header, directly obtain the
+            // estimated size of the stream
             if (-1 == contentLength) {
                 contentLength = inputStream.available();
             }
-            return this.uploadFileInSpace(attachUrlOpRo.getNodeId(), inputStream, fileName, contentLength, mimeType, AssetType.of(attachUrlOpRo.getType()));
-        }
-        catch (IOException e) {
+            return this.uploadFileInSpace(attachUrlOpRo.getNodeId(), inputStream, fileName,
+                contentLength, mimeType, AssetType.of(attachUrlOpRo.getType()));
+        } catch (IOException e) {
             log.error("URL cannot be read", e);
             // Could not resolve Content-Type of resource
             throw new BusinessException("Could not resolve file type");
@@ -471,13 +496,15 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             return null;
         }
 
-        try (InputStreamCache pdfImgStreamCache = new InputStreamCache(imageIn, imageIn.available())) {
+        try (InputStreamCache pdfImgStreamCache =
+                 new InputStreamCache(imageIn, imageIn.available())) {
             String pdfImgUploadPath = buildPath(SPACE_PREFIX);
             String pdfImgChecksum = DigestUtil.md5Hex(pdfImgStreamCache.getInputStream());
-            ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(), pdfImgStreamCache.getInputStream(), pdfImgUploadPath, MediaType.IMAGE_JPEG_VALUE, pdfImgChecksum);
+            ossTemplate.upload(constProperties.getOssBucketByAsset().getBucketName(),
+                pdfImgStreamCache.getInputStream(), pdfImgUploadPath, MediaType.IMAGE_JPEG_VALUE,
+                pdfImgChecksum);
             return pdfImgUploadPath;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error("Failed to upload resource", e);
             throw new BusinessException("upload failed");
         }
@@ -492,8 +519,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                 imageDto.setWidth(bi.getWidth());
                 return imageDto;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error reading image, error message: " + e.getMessage(), e);
         }
         return null;
@@ -511,7 +537,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = urlConnection.getInputStream();
             String fileName = StrUtil.subAfter(avatarUrl, StrUtil.SLASH, true);
-            String mimeType = fileName.contains(StrUtil.DOT) ? FileUtil.extName(fileName) : urlConnection.getContentType();
+            String mimeType = fileName.contains(StrUtil.DOT)
+                ? FileUtil.extName(fileName) : urlConnection.getContentType();
             long contentLength = urlConnection.getContentLengthLong();
             // If the read request header is -1, go directly to the estimated size of the stream
             if (-1 == contentLength) {
@@ -519,8 +546,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
             }
             AssetUploadResult uploadResult = uploadFile(inputStream, contentLength, mimeType);
             return uploadResult.getToken();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("Third-party avatar URL cannot be read, skip.", e);
         }
         return null;
@@ -529,16 +555,22 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<String> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate) {
-        // query resource information, judge template status, and filter records that do not need to be modified
+        // query resource information, judge template status, and filter records that do not need
+        // to be modified
         List<AssetEntity> assetEntities = this.listByIds(assetIds);
-        List<AssetEntity> updateEntities = assetEntities.stream().filter(asset -> !asset.getIsTemplate().equals(isTemplate))
-                .map(asset -> AssetEntity.builder().id(asset.getId()).isTemplate(isTemplate).build())
-                .collect(Collectors.toList());
+        List<AssetEntity> updateEntities = assetEntities.stream()
+            .filter(asset -> !asset.getIsTemplate().equals(isTemplate))
+            .map(asset -> AssetEntity.builder()
+                .id(asset.getId())
+                .isTemplate(isTemplate)
+                .build()
+            ).collect(Collectors.toList());
         // update template status of resources in batches
         List<List<AssetEntity>> split = CollUtil.split(updateEntities, 500);
         for (List<AssetEntity> entities : split) {
             this.updateBatchById(entities);
         }
-        return assetEntities.stream().map(AssetEntity::getChecksum).filter(Objects::nonNull).collect(Collectors.toList());
+        return assetEntities.stream().map(AssetEntity::getChecksum)
+            .filter(Objects::nonNull).collect(Collectors.toList());
     }
 }

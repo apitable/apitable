@@ -226,7 +226,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             } else if (typeEnum == UnitType.TEAM) {
                 // load the required team information
                 List<TeamBaseInfoDTO> teamBaseInfoDTOList =
-                    teamMapper.selectBaseInfoDTOByIds(refIds);
+                    iTeamService.getTeamBaseInfo(refIds);
                 teamBaseInfoDTOList.forEach(info -> teamBaseInfoMap.put(info.getId(), info));
             } else if (typeEnum == UnitType.ROLE) {
                 // load required role information
@@ -417,7 +417,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
         Map<Long, String> teamUnits = this.getUnitBaseInfoByRefIds(teamIds).stream()
             .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
                 UnitBaseInfoDTO::getUnitId));
-        List<TeamBaseInfoDTO> teams = teamMapper.selectBaseInfoDTOByIds(teamIds);
+        List<TeamBaseInfoDTO> teams = iTeamService.getTeamBaseInfo(teamIds);
         if (teams.isEmpty()) {
             return new ArrayList<>();
         }

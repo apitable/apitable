@@ -499,7 +499,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         results.forEach(result -> {
             ControlMemberDTO controlMemberDTO = memberControlRoleMap.get(result.getMemberId());
             result.setRole(controlMemberDTO.getControlRoleTag());
-            result.setIsWorkbenchAdmin(controlMemberDTO.getIsAdmin());
+            result.setIsWorkbenchAdmin(Boolean.TRUE.equals(controlMemberDTO.getIsAdmin()));
         });
         return results;
     }

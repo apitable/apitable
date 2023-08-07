@@ -20,9 +20,11 @@ package com.apitable.starter.beetl.autoconfigure;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * beetl properties.
+ */
 @ConfigurationProperties(prefix = "starter.beetl")
 public class BeetlProperties {
 
@@ -31,12 +33,12 @@ public class BeetlProperties {
     private String classPath = "templates";
 
     /**
-     * Customized template placeholder starting symbol, used as the second pair of placeholders
+     * Customized template placeholder starting symbol, used as the second pair of placeholders.
      */
     private String placeholderStart = "{{";
 
     /**
-     * Custom Template Placeholder End Symbol
+     * Custom Template Placeholder End Symbol.
      */
     private String placeholderEnd = "}}";
 
