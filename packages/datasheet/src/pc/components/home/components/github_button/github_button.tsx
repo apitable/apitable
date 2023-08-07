@@ -31,7 +31,7 @@ export const GithubButton = () => {
       <a className={styles.githubBtn} href="https://github.com/apitable/apitable" target="_blank"
         rel="noreferrer">
         <GithubFilled color={colorVars.textCommonPrimary} size={24} />
-        <Typography variant='h7' color={colors.textCommonPrimary}>Start us on Github</Typography>
+        <Typography variant='h7' color={colors.textCommonPrimary}>Star us on Github</Typography>
       </a>
     </div>
   );

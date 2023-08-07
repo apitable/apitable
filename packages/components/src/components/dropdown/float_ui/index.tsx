@@ -14,11 +14,11 @@ import {
   useClick,
   useInteractions,
   FloatingFocusManager,
-  useId, FloatingArrow, Placement, FloatingPortal, ReferenceType
+  useId, FloatingArrow, Placement, FloatingPortal, ReferenceType, size
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Middleware } from '@floating-ui/dom';
 import { useFloatUiDropdown } from './useFloatUiDropdown';
+import { Middleware, MiddlewareState } from '@floating-ui/dom';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
 export type IOverLayProps = { toggle: () => void };
@@ -53,7 +53,21 @@ export interface IDropdownControl {
     toggle: (open: Boolean) => void;
 }
 
+const DROP_DOWN_OFFSET = 11;
+
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+
+const setIndex = (zIndex: number) => {
+  return {
+    name: 'setIndexPlugin',
+    fn(state: MiddlewareState) {
+      Object.assign(state.elements.floating.style, {
+        zIndex: zIndex,
+      });
+      return {};
+    },
+  };
+};
 
 export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
   const { trigger, children, onVisibleChange, options= {
@@ -88,14 +102,36 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
 
   const theme = useProviderTheme();
 
+  const hasArrow = options.arrow ?? true;
+  const offsetParameter = hasArrow ? DROP_DOWN_OFFSET:4;
   const arrowRef = useRef (null);
-
-  const { refs, floatingStyles, context } =useFloatUiDropdown({
-    ...options,
-    middleware,
-    setOpen,
-    isOpen,
-    arrowRef
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setOpen,
+    placement: options?.placement ?? 'bottom',
+    middleware: [
+      setIndex(options?.zIndex ?? CONST_INITIAL_DROPDOWN_INDEX),
+      ...(
+        options?.autoWidth === true ? [
+          size({
+            apply({ rects,elements }) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`,
+              });
+            },
+          })]: []),
+      offset(options?.offset ?? offsetParameter),
+      flip({ fallbackAxisSideDirection: 'end' }),
+      ...(
+        arrowEnabled ? [
+          arrow({
+            element: arrowRef,
+          })
+        ]: []
+      ),
+      shift()
+    ].concat(middleware),
+    whileElementsMounted: autoUpdate
   });
 
   const triggerEl = isValidElement(trigger) ? trigger :
@@ -120,7 +156,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
     refs.setReference(v);
     props.setTriggerRef?.(v as HTMLElement);
   };
-  
+
   return (
     <>
       <>
