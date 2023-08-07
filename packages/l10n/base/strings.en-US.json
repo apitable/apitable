@@ -5492,8 +5492,6 @@
   "ai_advanced_mode_desc": "Advanced mode allows users to customize prompts, providing greater control over the behavior and responses of the chatbot.",
   "ai_advanced_mode_title": "Advanced mode",
   "ai_robot_type_title": "Bot type",
-  "api_params_lookup_filter_field_not_exists": "The filter field ID \"{fieldId}\" specified by the magic reference field does not exist",
-  "api_params_lookup_filter_field_invalid_operation": "The filter field ID \"{fieldId}\" specified by the magic reference field does not support the \"{operator}\" operator",
   "ai_robot_data_source_title": "Datasets",
   "ai_latest_train_date": "Last Trained: ${date}",
   "ai_data_source_rows": "${rows} rows of data",
