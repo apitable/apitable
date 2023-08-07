@@ -175,8 +175,8 @@ public class TemplateController {
      */
     @GetResource(path = "/template/categories/{categoryCode}", requiredLogin = false)
     @Operation(summary = "Get The Template Category Content")
-    @Parameter(name = "categoryCode", description = "Template Category Code", schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "tpcEm7VDcbnnr")
+    @Parameter(name = "categoryCode", description = "Template Category Code",
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "tpcEm7VDcbnnr")
     public ResponseData<TemplateCategoryContentVo> getCategoryContent(
         @PathVariable("categoryCode") String categoryCode) {
         return ResponseData.success(iTemplateService.getTemplateCategoryContentVo(categoryCode));
@@ -187,8 +187,8 @@ public class TemplateController {
      */
     @GetResource(path = "/spaces/{spaceId}/templates", requiredPermission = false)
     @Operation(summary = "Get Space Templates")
-    @Parameter(name = ParamsConstants.SPACE_ID, description = "Space Id", schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "spczJrh2i3tLW")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "Space Id",
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spczJrh2i3tLW")
     public ResponseData<List<TemplateVo>> getSpaceTemplates(
         @PathVariable("spaceId") String spaceId) {
         // check if the user is in the space
@@ -287,14 +287,14 @@ public class TemplateController {
      * Check if the template name already exists.
      */
     @GetResource(path = "/template/validate")
-    @Operation(summary = "Check if the template name already exists", description = "Called "
-        + "before creating a template, the same name will overwrite the old template, you need to"
-        + " confirm the operation again")
+    @Operation(summary = "Check if the template name already exists",
+        description = "Called before creating a template, the same name will"
+            + " overwrite the old template. you need to confirm the operation again")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "Space Id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
-        @Parameter(name = "name", description = "Template Name", required = true, schema
-            = @Schema(type = "string"), in = ParameterIn.QUERY, example = "this is a template")
+        @Parameter(name = "name", description = "Template Name", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "i am template")
     })
     public ResponseData<Boolean> validate(@RequestParam("name") String name) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -306,9 +306,9 @@ public class TemplateController {
      * Create Template.
      */
     @PostResource(path = "/template/create", requiredPermission = false)
-    @Operation(summary = "Create Template", description = "Created nodes (including child "
-        + "descendant nodes) have administrative rights and are not associated with data tables "
-        + "other than nodes.")
+    @Operation(summary = "Create Template",
+        description = "Created nodes (including child descendant nodes) have administrative"
+            + " rights and are not associated with data tables other than nodes.")
     public ResponseData<String> create(@RequestBody @Valid CreateTemplateRo ro) {
         Long userId = SessionContext.getUserId();
         // Get the space id(the method includes judging whether the node exists)
@@ -341,12 +341,13 @@ public class TemplateController {
     /**
      * Delete Template.
      */
-    @PostResource(path = "/template/delete/{templateId}", method = RequestMethod.DELETE,
-        requiredPermission = false)
-    @Operation(summary = "Delete Template", description = "Deletion objects: main administrator, "
+    @PostResource(path = "/template/delete/{templateId}",
+        method = RequestMethod.DELETE, requiredPermission = false)
+    @Operation(summary = "Delete Template",
+        description = "Deletion objects: main administrator, "
         + "sub-admins with template permissions, creator of the template")
-    @Parameter(name = "templateId", description = "Template ID", required = true, schema
-        = @Schema(type = "string"), in = ParameterIn.PATH, example = "tplHTbkg7qbNJ")
+    @Parameter(name = "templateId", description = "Template ID", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "tplHTbkg7qbNJ")
     public ResponseData<Void> delete(@PathVariable("templateId") String templateId) {
         Long userId = SessionContext.getUserId();
         // Get the space id(the method includes judging whether the template exists)

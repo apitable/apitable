@@ -19,6 +19,7 @@
 package com.apitable.player.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -39,14 +40,14 @@ public class NotificationRevokeRo {
     protected String spaceId = null;
 
     @NotBlank(message = "Template ID cannot be empty")
-    @Schema(description = "Template ID", example = "user_filed", required = true)
+    @Schema(description = "Template ID", requiredMode = RequiredMode.REQUIRED, example = "tplxx")
     private String templateId;
 
     @Schema(description = "Version number (optional)", example = "v0.12.1.release")
     private String version;
 
-    @Schema(description = "Expiration time (optional) accurate to milliseconds", example =
-        "1614587900000")
+    @Schema(description = "Expiration time (optional) accurate to milliseconds",
+        example = "1614587900000")
     private String expireAt;
 
     @Schema(description = "Undo type: 1 read, 2 delete, read by default", example = "1614587900000")

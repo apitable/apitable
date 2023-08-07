@@ -93,12 +93,13 @@ public class NodeRubbishController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
-        @Parameter(name = "isOverLimit", description = "whether to request an overrun "
-            + "node（default FALSE）", schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example
-            = "true"),
-        @Parameter(name = "size", description = "expected load quantity（May be because the total"
-            + " number or permissions are not enough）", schema = @Schema(type = "integer"), in
-            = ParameterIn.QUERY, example = "15"),
+        @Parameter(name = "isOverLimit", in = ParameterIn.QUERY,
+            description = "whether to request an overrun node（default FALSE）",
+            schema = @Schema(type = "boolean"), example = "true"),
+        @Parameter(name = "size", in = ParameterIn.QUERY,
+            description = "expected load quantity（May be because the total"
+            + " number or permissions are not enough）",
+            schema = @Schema(type = "integer"), example = "15"),
         @Parameter(name = "lastNodeId", description = "id of the last node in the loaded list",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstM5qG7")
     })
@@ -164,8 +165,8 @@ public class NodeRubbishController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> delete(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();

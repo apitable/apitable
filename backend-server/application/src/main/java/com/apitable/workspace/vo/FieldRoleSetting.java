@@ -30,8 +30,8 @@ import lombok.Data;
 @Schema(description = "Attribute View of Digital Table Field Role Configuration")
 public class FieldRoleSetting {
 
-    @Schema(description = "Enable Allow Collection Table Access", type = "java.lang.Boolean",
-        example = "true")
+    @Schema(description = "Enable Allow Collection Table Access",
+        type = "java.lang.Boolean", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean formSheetAccessible;
 }

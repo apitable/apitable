@@ -46,8 +46,8 @@ public class AttachOfficePreviewRo {
 
 
     @NotBlank(message = "Source file name and suffix of cloud files")
-    @Schema(description = "Source file name and suffix of cloud files", example = "Leida Team "
-        + "Books.xls")
+    @Schema(description = "Source file name and suffix of cloud files",
+        example = "Leida Team Books.xls")
     private String attname;
 
 }

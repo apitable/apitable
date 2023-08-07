@@ -20,6 +20,7 @@ package com.apitable.starter.oss.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class OssClientTemplate {
@@ -104,6 +105,7 @@ public class OssClientTemplate {
     public OssUploadAuth uploadToken(String bucket, String key, long expires) {
         return uploadToken(bucket, key, expires, new OssUploadPolicy());
     }
+
 
     public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
         OssClientRequest request = getOssClientRequestFactory().createClient();

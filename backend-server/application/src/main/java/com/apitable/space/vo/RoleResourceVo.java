@@ -34,7 +34,7 @@ public class RoleResourceVo {
     @Schema(description = "Group Name", example = "Address book management")
     private String groupName;
 
-    @Schema(description = "Resource list", example = "[\"Manage Members\",\"Administrative "
-        + "department\",\"Manage Labels\"]")
+    @Schema(description = "Resource list",
+        example = "[\"Manage Members\",\"Administrative department\",\"Manage Labels\"]")
     private List<String> resourceNames;
 }

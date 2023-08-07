@@ -43,21 +43,4 @@ public class TemplateGroupVo {
 
     @Schema(description = "Template View List")
     private List<TemplateVo> templates;
-
-    @Deprecated
-    @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    private String categoryName;
-
-    @Deprecated
-    private List<TemplateVo> templateVos;
-
-    /**
-     * TemplateGroupVo.
-     */
-    public TemplateGroupVo(String name, List<TemplateVo> templates) {
-        this.name = name;
-        this.templates = templates;
-        this.categoryName = name;
-        this.templateVos = templates;
-    }
 }

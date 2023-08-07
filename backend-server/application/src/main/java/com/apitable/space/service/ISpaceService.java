@@ -23,6 +23,7 @@ import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
 import com.apitable.space.entity.SpaceEntity;
+import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceUpdateOpRo;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
@@ -75,9 +76,9 @@ public interface ISpaceService extends IService<SpaceEntity> {
      *
      * @param user      user
      * @param spaceName spaceName
-     * @return space id
+     * @return space object
      */
-    String createSpace(UserEntity user, String spaceName);
+    Space createSpace(UserEntity user, String spaceName);
 
     /**
      * update space information.

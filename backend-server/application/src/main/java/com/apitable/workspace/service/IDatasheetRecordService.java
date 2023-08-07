@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.service;
 
-import java.util.Collection;
-import java.util.List;
-
 import cn.hutool.json.JSONObject;
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.apitable.workspace.dto.NodeCopyDTO;
 import com.apitable.workspace.entity.DatasheetRecordEntity;
+import com.apitable.workspace.model.Datasheet;
+import com.apitable.workspace.vo.DatasheetRecordMapVo;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Collection;
+import java.util.List;
 
 public interface IDatasheetRecordService extends IService<DatasheetRecordEntity> {
 
@@ -36,27 +35,38 @@ public interface IDatasheetRecordService extends IService<DatasheetRecordEntity>
     void batchSave(List<DatasheetRecordEntity> entities);
 
     /**
-     * @param userId user id
+     * bulk create record.
+     *
+     * @param userId  user id
+     * @param dstId   dst id
+     * @param records record list
+     * @return record list
+     */
+    Datasheet.Records createRecords(Long userId, String dstId, Datasheet.Records records);
+
+    /**
+     * @param userId    user id
      * @param recordMap json format: record - field
-     * @param dstId datasheet id
+     * @param dstId     datasheet id
      */
     void saveBatch(Long userId, JSONObject recordMap, String dstId);
 
     /**
      * copy datasheet records
      *
-     * @param userId user id
+     * @param userId      user id
      * @param oDstId      source datasheet id
      * @param tDstId      target datasheet id
      * @param nodeCopyDTO node replication DTO
      * @param retain      reserved RecordMeta
      */
-    void copyRecords(Long userId, String oDstId, String tDstId, NodeCopyDTO nodeCopyDTO, boolean retain);
+    void copyRecords(Long userId, String oDstId, String tDstId, NodeCopyDTO nodeCopyDTO,
+                     boolean retain);
 
     /**
      * copy data from a column to a new column
      *
-     * @param dstId datasheet id
+     * @param dstId    datasheet id
      * @param oFieldId source field id
      * @param tFieldId target field id
      */
@@ -65,7 +75,7 @@ public interface IDatasheetRecordService extends IService<DatasheetRecordEntity>
     /**
      * Deletes the data of the specified field in the number table record.
      *
-     * @param dstId datasheet id
+     * @param dstId       datasheet id
      * @param delFieldIds deleted field id list
      * @param saveDb      whether save to database
      * @return map

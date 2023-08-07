@@ -19,6 +19,7 @@
 package com.apitable.asset.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -33,7 +34,8 @@ public class AttachAuditResultDisableRo {
 
     @Schema(description = "Indicates whether the file is disabled. True indicates that the file "
         + "is disabled, and false indicates that the file is not disabled. (You need to enable the "
-        + "[Auto Disable] function in the incremental audit configuration)", required = true)
+        + "[Auto Disable] function in the incremental audit configuration)",
+        requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "Identification of whether the file is disabled")
     private boolean disable;
 

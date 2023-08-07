@@ -58,8 +58,8 @@ public class RoleMemberVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @Schema(description = "unit type is member, team's avatar", example = "https://www.apitable"
-        + ".com/image.png")
+    @Schema(description = "unit type is member, team's avatar",
+        example = "https://www.apitable.com/image.png")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 

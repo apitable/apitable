@@ -29,6 +29,7 @@ import {
 import { DefaultFixedArrayFieldTemplate } from './DefaultFixedArrayFieldTemplate';
 import { DefaultNormalArrayFieldTemplate } from './DefaultNormalArrayFieldTemplate';
 import { EmptyArrayOperand, generateKeyedFormData, generateRowId, keyedToPlainFormData } from './helper';
+import { cloneDeep } from 'lodash'
 // import { DefaultArrayItem } from './DefaultArrayItem';
 
 const ArrayField = (props: IFieldProps) => {
@@ -277,8 +278,10 @@ const ArrayField = (props: IFieldProps) => {
       // console.log('ArrayField.onChangeForIndex', formData, transArray, jsonValue);
       setState((data) => {
         const oldData = data.keyedFormData.value.operands[index];
-        data.keyedFormData.value.operands[index] = { ...oldData, ...jsonValue };
-        return data;
+        // freeze object is read only, need clone a new variable to edit.
+        const _data = cloneDeep(data);
+        _data.keyedFormData.value.operands[index] = { ...oldData, ...jsonValue };
+        return _data;
       });
 
       onChange(

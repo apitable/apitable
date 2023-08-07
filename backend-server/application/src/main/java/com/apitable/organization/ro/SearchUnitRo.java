@@ -19,6 +19,7 @@
 package com.apitable.organization.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -31,7 +32,8 @@ import lombok.Data;
 @Schema(description = "Search Org Unit Request Parameters")
 public class SearchUnitRo {
 
-    @Schema(description = "Name List", required = true, example = "Zhang San, Li Si")
+    @Schema(description = "Name List",
+        requiredMode = RequiredMode.REQUIRED, example = "Zhang San, Li Si")
     @NotBlank(message = "Name list cannot be empty")
     private String names;
 

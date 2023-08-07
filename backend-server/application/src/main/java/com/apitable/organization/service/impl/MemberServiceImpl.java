@@ -41,7 +41,9 @@ import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.user.facade.InvitationServiceFacade;
 import com.apitable.interfaces.user.model.MultiInvitationMetadata;
+import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.dto.UploadDataDTO;
 import com.apitable.organization.entity.AuditUploadParseRecordEntity;
@@ -114,6 +116,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -199,6 +202,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId) {
         return baseMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+    }
+
+    @Override
+    public List<Long> getUserIdsByMemberIds(List<Long> memberIds) {
+        return baseMapper.selectUserIdsByMemberIds(memberIds);
     }
 
     @Override
@@ -577,18 +585,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();
-        //TODO remove user_name at next version
-        dict.set("USER_NAME", inviterName);
         dict.set("SPACE_NAME", spaceName);
         dict.set("MEMBER_NAME", inviterName);
         dict.set("INVITE_URL", inviteUrl);
-        Dict mapDict = Dict.create();
-        // remove user_name at next version
-        mapDict.set("USER_NAME", inviterName);
-        mapDict.set("SPACE_NAME", spaceName);
-        mapDict.set("MEMBER_NAME", inviterName);
         NotifyMailFactory.me()
-            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, mapDict, dict,
+            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, dict, dict,
                 Collections.singletonList(emailAddress));
     }
 
@@ -740,6 +741,45 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     CollUtil.newArrayList(value));
             }
         });
+        TaskManager.me().execute(() ->
+            this.sendAssignGroupEmail(spaceId, teamIds, memberIds, toAddMap));
+    }
+
+    private void sendAssignGroupEmail(String spaceId, List<Long> teamIds,
+        List<Long> memberIds, Map<Long, List<Long>> toAddMap) {
+        List<MemberBaseInfoDTO> memberBaseInfoDTOS =
+            memberMapper.selectBaseInfoDTOByIds(memberIds);
+        List<String> emails = memberBaseInfoDTOS.stream().map(MemberBaseInfoDTO::getEmail)
+            .collect(Collectors.toList());
+        if (emails.isEmpty()) {
+            return;
+        }
+        String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
+        List<UserLangDTO> emailsWithLang =
+            iUserService.getLangByEmails(defaultLang, emails);
+        Map<String, MemberBaseInfoDTO> emailTomemberMap = memberBaseInfoDTOS.stream()
+            .filter(m -> !m.getEmail().isEmpty())
+            .collect(Collectors.toMap(MemberBaseInfoDTO::getEmail, Function.identity()));
+
+        String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+        List<TeamBaseInfoDTO> teams = iTeamService.getTeamBaseInfo(teamIds);
+        Map<Long, String> teamIdToNameMap = teams.stream()
+            .collect(Collectors.toMap(TeamBaseInfoDTO::getId, TeamBaseInfoDTO::getTeamName));
+        for (UserLangDTO userDto : emailsWithLang) {
+            String email = userDto.getEmail();
+            MemberBaseInfoDTO member = emailTomemberMap.get(email);
+            Long teamId = toAddMap.get(member.getId()).get(0);
+            String teamName = teamIdToNameMap.get(teamId);
+
+            Dict dict = Dict.create();
+            dict.set("SPACE_NAME", spaceName);
+            dict.set("TEAM_NAME", teamName);
+            dict.set("MEMBER_NAME", member.getMemberName());
+            dict.set("URL", constProperties.getServerDomain() + "/management");
+            NotifyMailFactory.me()
+                .sendMail(userDto.getLocale(), MailPropConstants.SUBJECT_ASSIGN_GROUP, dict, dict,
+                    Collections.singletonList(email));
+        }
     }
 
     @Override

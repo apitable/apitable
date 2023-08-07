@@ -30,6 +30,17 @@ declare let window: {
 
 let databus: DataBusBridge;
 
+const _global = global || window;
+const envVars = () => {
+  if (!_global) {
+    return {};
+  }
+  if (_global['__initialization_data__'] && _global['__initialization_data__']['envVars']) {
+    return _global['__initialization_data__']['envVars'];
+  }
+  return {};
+};
+
 const CONST_SKIP_FETCH_INTERCEPTOR = ['print', '__destroy_into_raw', 'constructor','free'];
 
 // Get all properties of DataBusBridge that return a Promise
@@ -99,7 +110,10 @@ const initializeDatabusWasm = async() => {
   }
   if (!isInitialized()) {
     await databusWasm();
-    const dataBusWasmInstance = new DataBusBridge(window.location.origin);
+    const nestApiUrl = envVars().WASM_NEST_BASE_URL || window.location.origin + '/nest/v1';
+    const rustApiUrl = envVars().WASM_RUST_BASE_URL || window.location.origin;
+    const dataBusWasmInstance = new DataBusBridge(rustApiUrl, nestApiUrl);
+    await dataBusWasmInstance.init();
     databus = new Proxy(dataBusWasmInstance, handler);
   }
 };
@@ -111,25 +125,12 @@ const getInstance = () => {
   return databus;
 };
 
-const enabledDatabusApi = process.env.ENABLE_DATABUS_API === 'true';
 const getBrowserDatabusApiEnabled = () => {
-  if (typeof window === 'undefined') {
+
+  if (!_global) {
     return false;
   }
-
-  if (enabledDatabusApi) {
-    return true;
-  }
-
-  try {
-    // @ts-ignore
-    const testFunctionSettings = window.localStorage.getItem('_common_datasheet.TestFunctions');
-    const parsedTestFunctionSettings = testFunctionSettings == null ? {} : JSON.parse(testFunctionSettings);
-    return parsedTestFunctionSettings['dataBusWasmEnable'] != null;
-  } catch (e) {
-    console.error('error getting browser databus api enabled', e);
-    return false;
-  }
+  return !!envVars().ENABLE_DATABUS_API;
 };
 
 export { getInstance, initializeDatabusWasm, getDatasheetPack, getBrowserDatabusApiEnabled };

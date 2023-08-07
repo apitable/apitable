@@ -19,6 +19,7 @@
 package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -34,11 +35,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Schema(description = "Import data table request parameters")
 public class ImportExcelOpRo {
 
-    @Schema(description = "Parent Node Id", example = "nod10", required = true)
+    @Schema(description = "Parent Node Id",
+        requiredMode = RequiredMode.REQUIRED, example = "nod10")
     @NotBlank(message = "The parent node ID cannot be empty")
     private String parentId;
 
-    @Schema(description = "Import File", required = true)
+    @Schema(description = "Import File", requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "The import file cannot be empty")
     private MultipartFile file;
 

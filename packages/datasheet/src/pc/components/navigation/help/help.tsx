@@ -121,7 +121,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
           top: '242px',
           right: '20px'
         };
-        showTodoList({ style: taskStyle, onClose: destroyTodoList });
+        showTodoList?.({ style: taskStyle, onClose: destroyTodoList });
       },
     },
     {

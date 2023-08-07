@@ -107,6 +107,11 @@ export class DatasheetController {
     return { revision, recordMap };
   }
 
+  @Get('datasheets/:dstId/revision')
+  async getDataSheetRevision(@Param('dstId') dstId: string): Promise<number | undefined> {
+    return await this.resourceMetaService.getRevisionByDstId(dstId) ;
+  }
+
   @Get('datasheets/:dstId/views/:viewId/dataPack')
   async getViewPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Param('viewId') viewId: string): Promise<ViewPack> {
     // check if the user belongs to this space
@@ -124,8 +129,7 @@ export class DatasheetController {
     return await this.datasheetService.fetchViewPack(dstId, viewId);
   }
 
-  //TODO: remove `datasheet/:dstId/record/:recordId/comments` path after release/0.22.0
-  @Get(['datasheets/:dstId/records/:recordId/comments', 'datasheet/:dstId/record/:recordId/comments'])
+  @Get(['datasheets/:dstId/records/:recordId/comments'])
   async getCommentByIds(
     @Headers('cookie') cookie: string,
     @Param('dstId') dstId: string,

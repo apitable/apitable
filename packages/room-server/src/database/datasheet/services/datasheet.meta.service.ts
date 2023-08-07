@@ -25,7 +25,8 @@ import { IBaseException } from 'shared/exception/base.exception';
 
 @Injectable()
 export class DatasheetMetaService {
-  public constructor(private repository: DatasheetMetaRepository) {}
+  public constructor(private repository: DatasheetMetaRepository) {
+  }
 
   async getMetaDataMaybeNull(dstId: string): Promise<IMeta | undefined> {
     const metaEntity = await this.repository.selectMetaByDstId(dstId);
@@ -70,7 +71,7 @@ export class DatasheetMetaService {
     return metaMap;
   }
 
-  async batchSave(metas: any[]){
+  async batchSave(metas: any[]) {
     return await this.repository
       .createQueryBuilder()
       .insert()
@@ -142,5 +143,10 @@ export class DatasheetMetaService {
       return viewIds && viewIds.includes(viewId);
     }
     return true;
+  }
+
+  async isFieldNameExist(dstId: string, fieldName: string): Promise<boolean> {
+    const count = await this.repository.selectCountByDstIdAndFieldName(dstId, fieldName);
+    return 0 != count;
   }
 }

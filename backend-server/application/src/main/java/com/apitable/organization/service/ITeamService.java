@@ -19,6 +19,7 @@
 package com.apitable.organization.service;
 
 import com.apitable.organization.dto.MemberIsolatedInfo;
+import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.MemberPageVo;
@@ -34,6 +35,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public interface ITeamService extends IService<TeamEntity> {
+
+    /**
+     * Get Team Base Information.
+     *
+     * @param teamIds team ids
+     * @return List<TeamBaseInfoDTO>
+     * @author Chambers
+     */
+    List<TeamBaseInfoDTO> getTeamBaseInfo(List<Long> teamIds);
 
     /**
      * Get team Tree.

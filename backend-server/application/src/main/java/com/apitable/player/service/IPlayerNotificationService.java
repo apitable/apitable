@@ -79,7 +79,7 @@ public interface IPlayerNotificationService extends IService<PlayerNotificationE
     /**
      * Create records and send notifications without any data validation
      */
-    boolean createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template,
+    void createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template,
             NotificationCreateRo ro);
 
     /**
