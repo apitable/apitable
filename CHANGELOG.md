@@ -1,6 +1,25 @@
 # APITable CHANGELOG
 
-## [v0.99.0-alpha](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-08-01)
+## [v0.99.0-beta](https://github.com/apitable/apitable/releases/tag/v0.99.0-beta) (2023-08-07)
+
+
+### Bug fixes
+
+* fix: fix code issues @ranglang 
+* fix:press Enter to login ([#1147](https://github.com/apitable/apitable/pull/1147)) @yo-ooiii 
+* fix: typo ([#1170](https://github.com/apitable/apitable/pull/1170)) @okisdev 
+* fix: fix code issues @ranglang 
+* fix: fix code issues @ranglang 
+* fix: remove the deprecated vscode extension ([#1178](https://github.com/apitable/apitable/pull/1178)) @okisdev 
+
+### What's more
+
+* Press Enter to submit the form @yo-ooiii 
+* chore: 0.99.0 release ([#1167](https://github.com/apitable/apitable/pull/1167)) @dage233 
+* Merge branch 'develop' into fix/password-enter-login @yo-ooiii 
+* Feature/robot rich test ([#1175](https://github.com/apitable/apitable/pull/1175)) @JaneSu 
+* sync: hosted cloud ([#1183](https://github.com/apitable/apitable/pull/1183)) @Exclamation-mark 
+## [v0.99.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.99.0-alpha) (2023-08-01)
 
 
 ### Features and enhancements
