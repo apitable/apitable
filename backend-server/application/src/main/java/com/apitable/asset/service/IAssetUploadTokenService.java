@@ -24,19 +24,19 @@ import com.apitable.asset.vo.AssetUploadCertificateVO;
 
 
 /**
- * Asset Upload Credentials Service
+ * Asset Upload Credentials Service.
  */
 public interface IAssetUploadTokenService {
 
     /**
-     * create public asset pre-signed url
+     * create public asset pre-signed url.
      *
      * @return AssetUploadCertificateVO
      */
     AssetUploadCertificateVO createPublishAssetPreSignedUrl();
 
     /**
-     * batch create space asset pre-signed url
+     * batch create space asset pre-signed url.
      *
      * @param userId            user id
      * @param nodeId            node id
@@ -44,5 +44,6 @@ public interface IAssetUploadTokenService {
      * @param count             created count
      * @return AssetUploadCertificateVO
      */
-    List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId, String nodeId, int assetType, int count);
+    List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId,
+        String nodeId, int assetType, int count);
 }

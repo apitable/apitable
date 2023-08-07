@@ -1,5 +1,49 @@
 # APITable CHANGELOG
 
+## [v0.24.0-alpha](https://github.com/apitable/apitable/releases/tag/v0.24.0-alpha) (2023-07-25)
+
+
+### Features and enhancements
+
+* feat: enable experimental multi-arch build for linux/amd64 and linux/arm64 ([#1103](https://github.com/apitable/apitable/pull/1103)) @networkhermit
+
+### Bug fixes
+
+* fix: update error message ([#1097](https://github.com/apitable/apitable/pull/1097)) @llkevin13579
+
+### What's more
+
+* chore: changelog for v0.23.0-beta.2 ([#1099](https://github.com/apitable/apitable/pull/1099)) @ChambersChan
+* chore: trigger multi-arch build only on tag as it is extreme slow ([#1106](https://github.com/apitable/apitable/pull/1106)) @networkhermit
+* chore(deps): bump word-wrap from 1.2.3 to 1.2.4 ([#1104](https://github.com/apitable/apitable/pull/1104)) @dependabot[bot]
+* sync/hosted into develop ([#1123](https://github.com/apitable/apitable/pull/1123)) @functionChenGuoFeng
+
+
+## [v0.23.0-beta.2](https://github.com/apitable/apitable/releases/tag/v0.23.0-beta.2) (2023-07-18)
+
+
+### Features and enhancements
+
+* feat: enable delete space ([#1079](https://github.com/apitable/apitable/pull/1079)) @wmEvie 
+
+### Bug fixes
+
+* fix: fix dashboard connected for widget  [#5133](https://github.com/apitable/apitable/pull/5133) (#1059) @ranglang 
+* fix: Improved security by replacing the custom secret CR_PAT with the built-in GITHUB_TOKEN in the GitHub Actions workflow file ai_code_reviewer.yml. ([#1075](https://github.com/apitable/apitable/pull/1075)) @mr-kelly 
+* fix: sign up password match issue ([#1052](https://github.com/apitable/apitable/pull/1052)) (#1074) @llkevin13579 
+* fix: fix i18n tips ([#1078](https://github.com/apitable/apitable/pull/1078)) @ranglang 
+* fix: disable USE_NATIVE_MODULE by default ([#1086](https://github.com/apitable/apitable/pull/1086)) @maltoze 
+
+### What's more
+
+* chore(deps-dev): bump stylelint from 13.9.0 to 15.10.1 ([#1046](https://github.com/apitable/apitable/pull/1046)) @dependabot[bot] 
+* chore(deps): bump semver from 7.3.8 to 7.5.2 ([#983](https://github.com/apitable/apitable/pull/983)) @dependabot[bot] 
+* chore(deps): bump posthog-js from 1.51.1 to 1.57.2 ([#843](https://github.com/apitable/apitable/pull/843)) @dependabot[bot] 
+* chore(deps): bump @grpc/grpc-js from 1.7.1 to 1.8.8 ([#1031](https://github.com/apitable/apitable/pull/1031)) @dependabot[bot] 
+* chore(deps): bump socket.io-parser from 3.3.0 to 3.3.3 ([#863](https://github.com/apitable/apitable/pull/863)) @dependabot[bot] 
+* chore: Added GitHub Actions workflow file for AI code review. ([#1071](https://github.com/apitable/apitable/pull/1071)) @mr-kelly 
+* sync: hosted cloud ([#1094](https://github.com/apitable/apitable/pull/1094)) @ChambersChan 
+
 
 ## [v0.23.0-beta.1](https://github.com/apitable/apitable/releases/tag/v0.23.0-beta.1) (2023-07-10)
 

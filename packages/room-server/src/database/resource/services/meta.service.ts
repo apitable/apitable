@@ -32,6 +32,7 @@ export class MetaService {
   constructor(
     @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
+    @Inject(forwardRef(() => DatasheetService))
     private readonly datasheetService: DatasheetService,
     private readonly widgetService: WidgetService,
     private readonly resourceMetaRepository: ResourceMetaRepository,

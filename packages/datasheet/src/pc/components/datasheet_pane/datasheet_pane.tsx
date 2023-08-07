@@ -34,22 +34,22 @@ import {
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 // @ts-ignore
-import { WeixinShareWrapper } from 'enterprise';
+import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
 import { get } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import { ApiPanel } from 'pc/components/api_panel';
-import { VikaSplitPanel } from 'pc/components/common';
+import { Message, VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
-import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
+import { SideBarClickType, SideBarContext, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { exportDatasheetBase } from 'pc/utils';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
-import { FC, useCallback, useEffect, useMemo } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -64,6 +64,7 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -214,6 +215,22 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     },
     [dispatch, activeDatasheetId],
   );
+
+  const { setNewTdbId } = useContext(SideBarContext);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const _createBackupSnapshot = async() => {
+    const res = await createBackupSnapshot(datasheetId);
+    if (res.data.success) {
+      setNewTdbId?.(res?.data?.data?.tbdId || '');
+      Message.success({
+        content: t(Strings.backup_create_success),
+      });
+    } else {
+      Message.error({
+        content: res.data.message,
+      });
+    }
+  };
   const { onSetSideBarVisibleByOhter, onSetPanelVisible, toggleType, clickType, sideBarVisible } = useSideBar();
 
   // TODO: Unified control logic for right sidebar expand/collapse states
@@ -245,6 +262,14 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   useEffect(() => {
     ShortcutActionManager.bind(ShortcutActionName.ToggleTimeMachinePanel, toggleTimeMachineOpen);
   }, [toggleTimeMachineOpen]);
+
+  useEffect(() => {
+    if (createBackupSnapshot && !getEnvVariables().IS_APITABLE) {
+      ShortcutActionManager.bind(ShortcutActionName.CreateBackup, () => {
+        _createBackupSnapshot();
+      });
+    }
+  }, [_createBackupSnapshot]);
 
   useEffect(() => {
     if (!activeDatasheetId) {

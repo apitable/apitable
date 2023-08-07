@@ -45,7 +45,7 @@ export const Header: React.FC<React.PropsWithChildren<IHeader>> = props => {
     <header className={styles.previewHeader}>
       <div className={styles.headerLeft}>
         <div className={styles.toolClose} onClick={onClose}>
-          <CloseOutlined color={colors.defaultBg} size={16} />
+          <CloseOutlined color={colors.staticWhite0} size={16} />
         </div>
       </div>
       <span className={styles.fileName}>{fileName}</span>

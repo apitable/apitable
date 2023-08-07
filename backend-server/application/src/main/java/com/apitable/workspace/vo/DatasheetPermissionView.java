@@ -37,8 +37,8 @@ public class DatasheetPermissionView {
     @Schema(description = "Node ID", example = "dstGxznHFXf9pvF1LZ")
     private String nodeId;
 
-    @Schema(description = "DatasheetID（Node ID / Source Datasheet Node ID / null）", example =
-        "dstGxznHFXf9pvF1LZ")
+    @Schema(description = "DatasheetID（Node ID / Source Datasheet Node ID / null）",
+        example = "dstGxznHFXf9pvF1LZ")
     private String datasheetId;
 
     @Schema(description = "Whether the node is a star")

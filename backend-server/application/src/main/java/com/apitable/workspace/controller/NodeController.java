@@ -205,10 +205,10 @@ public class NodeController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "className", description = "highlight style", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
-        @Parameter(name = "keyword", description = "keyword", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet")
+        @Parameter(name = "className", description = "highlight style",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "keyword", description = "keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet")
     })
     public ResponseData<List<NodeSearchResult>> searchNode(
         @RequestParam(name = "keyword") String keyword,
@@ -231,9 +231,9 @@ public class NodeController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "depth", description = "tree depth, we can specify the query depth, "
-            + "maximum 2 layers depth.", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
-            example = "2")
+        @Parameter(name = "depth", in = ParameterIn.QUERY,
+            description = "tree depth, we can specify the query depth, maximum 2 layers depth.",
+            schema = @Schema(type = "integer"), example = "2")
     })
     public ResponseData<NodeInfoTreeVo> getTree(
         @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth) {
@@ -248,15 +248,15 @@ public class NodeController {
      * Get nodes of the specified type.
      */
     @GetResource(path = "/list")
-    @Operation(summary = "Get nodes of the specified type", description = "scenario: query an "
-        + "existing dashboard")
+    @Operation(summary = "Get nodes of the specified type",
+        description = "scenario: query an existing dashboard")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             in = ParameterIn.HEADER, schema = @Schema(type = "string"), example = "spczJrh2i3tLW"),
-        @Parameter(name = "type", description = "node type", required = true, schema =
-            @Schema(type = "integer"), in = ParameterIn.QUERY, example = "2"),
-        @Parameter(name = "role", description = "role（manageable by default）", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "manager")
+        @Parameter(name = "type", description = "node type", required = true,
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "2"),
+        @Parameter(name = "role", description = "role（manageable by default）",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "manager")
     })
     public ResponseData<List<NodeInfo>> list(@RequestParam(value = "type") Integer type,
         @RequestParam(value = "role", required = false, defaultValue = "manager") String role) {
@@ -284,10 +284,10 @@ public class NodeController {
      * Query nodes.
      */
     @GetResource(path = "/get", requiredPermission = false)
-    @Operation(summary = "Query nodes", description = "obtain information about the node "
-        + ROLE_DESC)
-    @Parameter(name = "nodeIds", description = "node ids", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
+    @Operation(summary = "Query nodes",
+        description = "obtain information about the node " + ROLE_DESC)
+    @Parameter(name = "nodeIds", in = ParameterIn.QUERY, description = "node ids", required = true,
+        schema = @Schema(type = "string"), example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
     public ResponseData<List<NodeInfoVo>> getByNodeId(
         @RequestParam("nodeIds") List<String> nodeIds) {
         // Obtain the space ID. The method includes determining whether the node exists.
@@ -304,8 +304,8 @@ public class NodeController {
     @Operation(summary = "Folder preview", description = "Nodes that are not in the center of the"
         + " template, make cross-space judgments.")
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
         @Parameter(name = "shareId", description = "share id", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "shrRTGSy43DJ9")
     })
@@ -390,8 +390,8 @@ public class NodeController {
     @GetResource(path = "/parents", requiredPermission = false)
     @Operation(summary = "Get parent nodes", description =
         "Gets a list of all parent nodes of the specified node " + ROLE_DESC)
-    @Parameter(name = "nodeId", description = "node id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9")
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9")
     public ResponseData<List<NodePathVo>> getParentNodes(
         @RequestParam(name = "nodeId") String nodeId) {
         // The method includes determining whether a node exists.
@@ -406,13 +406,12 @@ public class NodeController {
      * Get child nodes.
      */
     @GetResource(path = "/children", requiredPermission = false)
-    @Operation(summary = "Get child nodes", description =
-        "Obtain the list of child nodes of the specified node. The nodes are classified into "
-            + "folders or datasheet by type "
-            + ROLE_DESC)
+    @Operation(summary = "Get child nodes",
+        description = "Obtain the list of child nodes of the specified node."
+            + " The nodes are classified into folders or datasheet by type " + ROLE_DESC)
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
         @Parameter(name = "nodeType", description = "node type 1:folder,2:datasheet",
             schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1")
     })
@@ -437,8 +436,8 @@ public class NodeController {
      */
     @GetResource(path = "/position/{nodeId}", requiredPermission = false)
     @Operation(summary = "Position node", description = "node in must " + ROLE_DESC)
-    @Parameter(name = "nodeId", description = "node id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<NodeInfoTreeVo> position(@PathVariable("nodeId") String nodeId) {
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -456,8 +455,8 @@ public class NodeController {
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/create", requiredPermission = false)
-    @Operation(summary = "Create child node", description = "create a new node under the node"
-        + ROLE_DESC)
+    @Operation(summary = "Create child node",
+        description = "create a new node under the node" + ROLE_DESC)
     @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> create(@RequestBody @Valid NodeOpRo nodeOpRo) {
@@ -506,11 +505,13 @@ public class NodeController {
      */
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE)
     @PostResource(path = "/update/{nodeId}", requiredPermission = false)
-    @Operation(summary = "Edit node", description = "node id must. name, icon is not required"
-        + ROLE_DESC)
+    @Operation(summary = "Edit node",
+        description = "node id must. name, icon is not required" + ROLE_DESC)
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
-        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id", schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
     public ResponseData<NodeInfoVo> update(@PathVariable("nodeId") String nodeId,
                                            @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
@@ -568,8 +569,8 @@ public class NodeController {
      */
     @Notification(templateId = NotificationTemplateId.NODE_MOVE)
     @PostResource(path = "/move")
-    @Operation(summary = "Move node", description = "Node ID and parent node ID are required, and"
-        + " pre Node Id is not required.")
+    @Operation(summary = "Move node",
+        description = "Node ID and parent node ID are required, and pre Node Id is not required.")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
@@ -614,13 +615,13 @@ public class NodeController {
      * Delete node.
      */
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
-    @PostResource(path = "/delete/{nodeId}", method = {RequestMethod.DELETE,
-        RequestMethod.POST}, requiredPermission = false)
-    @Operation(summary = "Delete node", description = "You can pass in an ID array and delete "
-        + "multiple nodes.")
+    @PostResource(path = "/delete/{nodeId}",
+        method = {RequestMethod.DELETE, RequestMethod.POST}, requiredPermission = false)
+    @Operation(summary = "Delete node",
+        description = "You can pass in an ID array and delete multiple nodes.")
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
         @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     })
@@ -647,8 +648,8 @@ public class NodeController {
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/copy", requiredPermission = false)
-    @Operation(summary = "Copy node", description = "node id is required, whether to copy data is"
-        + " not required.")
+    @Operation(summary = "Copy node",
+        description = "node id is required, whether to copy data is not required.")
     @Parameter(name = ParamsConstants.PLAYER_SOCKET_ID, description = "user socket id",
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> copy(@RequestBody @Valid NodeCopyOpRo nodeOpRo) {
@@ -692,12 +693,12 @@ public class NodeController {
     @GetResource(path = "/exportBundle", requiredPermission = false)
     @Operation(summary = "Export Bundle")
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "fod8mXUeiXyVo"),
-        @Parameter(name = "saveData", description = "whether to retain data", schema =
-            @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true"),
-        @Parameter(name = "password", description = "encrypted password", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "qwer1234")
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "fod8mXUeiXyVo"),
+        @Parameter(name = "saveData", description = "whether to retain data",
+            schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true"),
+        @Parameter(name = "password", description = "encrypted password",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "qwer1234")
     })
     public void exportBundle(@RequestParam("nodeId") String nodeId,
         @RequestParam(value = "saveData", required = false, defaultValue = "true") Boolean saveData,
@@ -815,9 +816,9 @@ public class NodeController {
     /**
      * Record active node.
      */
-    @PostResource(name = "record active nodes", path = "/active", requiredPermission = false)
-    @Operation(summary = "Record active node", description = "node id and view id are not "
-        + "required（do not pass means all closed）")
+    @PostResource(path = "/active", requiredPermission = false)
+    @Operation(summary = "Record active node",
+        description = "node id and view id are not required（do not pass means all closed）")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcBrtP3ulTXR")
     public ResponseData<Void> activeSheets(@RequestBody @Valid ActiveSheetsOpRo opRo) {
@@ -844,7 +845,7 @@ public class NodeController {
     /**
      * Remind notification.
      */
-    @PostResource(name = "Remind notification", path = "/remind", requiredLogin = false)
+    @PostResource(path = "/remind", requiredLogin = false)
     @Operation(summary = "Remind notification")
     public ResponseData<Void> remind(@RequestBody @Valid RemindMemberRo ro) {
         Long userId = SessionContext.getUserIdWithoutException();
@@ -888,17 +889,17 @@ public class NodeController {
      * Check for associated nodes.
      */
     @GetResource(path = "/checkRelNode", requiredPermission = false)
-    @Operation(summary = "check for associated nodes", description = "permission of the "
-        + "associated node is not required. Scenario: Check whether the view associated mirror "
-        + "before deleting the table.")
+    @Operation(summary = "check for associated nodes",
+        description = "permission of the associated node is not required."
+            + " Scenario: Check whether the view associated mirror before deleting the table.")
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2Je9J7AKsv"),
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2"),
         @Parameter(name = "viewId", description = "view id（do not specify full return）",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "viwF1CqEW2GxY"),
-        @Parameter(name = "type", description = "node type（do not specify full "
-            + "return，form:3/mirror:5）", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
-            example = "5")
+        @Parameter(name = "type", in = ParameterIn.QUERY,
+            description = "node type（do not specify full return，form:3/mirror:5）",
+            schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> checkRelNode(@RequestParam("nodeId") String nodeId,
         @RequestParam(value = "viewId", required = false) String viewId,
@@ -911,17 +912,17 @@ public class NodeController {
      * Get associated node.
      */
     @GetResource(path = "/getRelNode", requiredPermission = false)
-    @Operation(summary = "Get associated node", description = "This interface requires readable "
-        + "or above permissions of the associated node.Scenario: Open the display columns of form"
-        + " and mirror in the datasheet.")
+    @Operation(summary = "Get associated node",
+        description = "This interface requires readable or above permissions of the associated"
+            + " node. Scenario: Open the display columns of form and mirror in the datasheet.")
     @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2Je9J7AKsv"),
+        @Parameter(name = "nodeId", description = "node id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstU8Agt2Jv"),
         @Parameter(name = "viewId", description = "view id（do not specify full return）",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "viwF1CqEW2GxY"),
-        @Parameter(name = "type", description = "node type（do not specify full "
-            + "return，form:3/mirror:5）", schema = @Schema(type = "integer"), in = ParameterIn.QUERY,
-            example = "5")
+        @Parameter(name = "type", in = ParameterIn.QUERY,
+            description = "node type（do not specify full return，form:3/mirror:5）",
+            schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> getNodeRel(@RequestParam("nodeId") String nodeId,
         @RequestParam(value = "viewId", required = false) String viewId,
@@ -942,8 +943,10 @@ public class NodeController {
      * Member recent open node list.
      */
     @GetResource(path = "/recentList", requiredPermission = false)
-    @Operation(summary = "member recent open node list", description = "member recent open node list")
-    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true, schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
+    @Operation(summary = "member recent open node list",
+        description = "member recent open node list")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<List<NodeSearchResult>> recentList() {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();

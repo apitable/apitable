@@ -103,8 +103,8 @@ public class UserInfoVo implements Serializable {
     /**
      * user avtar.
      */
-    @JsonSerialize(nullsUsing = NullStringSerializer.class, using =
-        ImageSerializer.class)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = ImageSerializer.class)
     @Schema(description = "Avatar", example = "null")
     private String avatar;
 
@@ -143,8 +143,8 @@ public class UserInfoVo implements Serializable {
     @Builder.Default
     @Schema(description = "Whether it is necessary to create a space "
         + "indicates that the user does not have any space association, which"
-        + " is a standard field for space creation guidance", example =
-        "false")
+        + " is a standard field for space creation guidance",
+        example = "false")
     private Boolean needCreate = true;
 
     /**
@@ -164,16 +164,16 @@ public class UserInfoVo implements Serializable {
     /**
      * space logo.
      */
-    @JsonSerialize(nullsUsing = NullStringSerializer.class, using =
-        ImageSerializer.class)
+    @JsonSerialize(nullsUsing = NullStringSerializer.class,
+        using = ImageSerializer.class)
     @Schema(description = "Space logo", example = "http://...")
     private String spaceLogo;
 
     /**
      * member id.
      */
-    @JsonSerialize(using = ToStringSerializer.class, nullsUsing =
-        NullStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class,
+        nullsUsing = NullStringSerializer.class)
     @Schema(description = "Member ID corresponding to the space")
     private Long memberId;
 
@@ -187,8 +187,8 @@ public class UserInfoVo implements Serializable {
     /**
      * unit id.
      */
-    @JsonSerialize(using = ToStringSerializer.class, nullsUsing =
-        NullStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class,
+        nullsUsing = NullStringSerializer.class)
     @Schema(description = "Organization unit ID of the corresponding "
         + "member of the space")
     private Long unitId;
@@ -205,15 +205,14 @@ public class UserInfoVo implements Serializable {
      * active view id.
      */
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @Schema(description = "ID of the view opened in the meter", example =
-        "views135")
+    @Schema(description = "ID of the view opened in the meter",
+        example = "views135")
     private String activeViewId;
 
     /**
      * active node location.
      */
-    @Schema(description = "Active node location (0: working directory; 1:"
-        + " star)")
+    @Schema(description = "Active node location (0: working directory; 1: star)")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer activeNodePos;
 
@@ -229,8 +228,8 @@ public class UserInfoVo implements Serializable {
      * is main admin.
      */
     @Builder.Default
-    @Schema(description = "Primary administrator or not", example =
-        "false")
+    @Schema(description = "Primary administrator or not",
+        example = "false")
     private Boolean isMainAdmin = false;
 
     /**
@@ -254,23 +253,23 @@ public class UserInfoVo implements Serializable {
      * is deleted space.
      */
     @Builder.Default
-    @Schema(description = "Whether the space is deleted", example =
-        "false")
+    @Schema(description = "Whether the space is deleted",
+        example = "false")
     private Boolean isDelSpace = false;
 
     /**
      * api key.
      */
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @Schema(description = "Developer Access Token", example =
-        "uskPtGBUw8EuVKoo3X6")
+    @Schema(description = "Developer Access Token",
+        example = "uskPtGBUw8EuVKoo3X6")
     private String apiKey;
 
     /**
      * wizards.
      */
-    @Schema(description = "Boot related status values", example = "{\"1"
-        + "\":1, \"3\":5}")
+    @Schema(description = "Boot related status values",
+        example = "{\"1\":1, \"3\":5}")
     @JsonSerialize(nullsUsing = NullJsonObjectSerializer.class)
     private JSONObject wizards;
 
@@ -336,8 +335,8 @@ public class UserInfoVo implements Serializable {
     /**
      * user time zone.
      */
-    @Schema(description = "user time zone", example = "UTC-5"
-        + "(America/Toronto)")
+    @Schema(description = "user time zone",
+        example = "UTC-5(America/Toronto)")
     private String timeZone;
 
 

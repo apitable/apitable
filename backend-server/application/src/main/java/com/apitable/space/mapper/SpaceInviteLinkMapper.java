@@ -113,24 +113,6 @@ public interface SpaceInviteLinkMapper extends BaseMapper<SpaceInviteLinkEntity>
     int updateByCreators(@Param("creators") List<Long> creators);
 
     /**
-     * logically deleted
-     *
-     * @param teamId team id
-     * @return affected rows
-     */
-    @Deprecated
-    int updateByTeamId(@Param("teamId") Long teamId);
-
-    /**
-     * logically deleted
-     *
-     * @param teamIds team ids
-     * @return affected rows
-     */
-    @Deprecated
-    int updateBatchByTeamId(@Param("teamIds") Collection<Long> teamIds);
-
-    /**
      * @param teamIds team ids
      * @return invite ids
      */

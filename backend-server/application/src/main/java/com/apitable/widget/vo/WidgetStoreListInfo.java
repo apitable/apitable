@@ -42,13 +42,13 @@ public class WidgetStoreListInfo {
     @Schema(description = "Widget package name", example = "Chart")
     private String name;
 
-    @Schema(description = "Widget package icon", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Widget package icon",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String icon;
 
-    @Schema(description = "Cover drawing of component package", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Cover drawing of component package",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 
@@ -110,8 +110,8 @@ public class WidgetStoreListInfo {
     private List<String> runtimeEnv;
 
     @Deprecated
-    @Schema(description = "Permission - Obsolete, unified to resource for judgment", example =
-        "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
+    @Schema(description = "Permission - Obsolete, unified to resource for judgment",
+        example = "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private List<String> permissions;
 

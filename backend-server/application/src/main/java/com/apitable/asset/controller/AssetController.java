@@ -80,9 +80,9 @@ public class AssetController {
     /**
      * Upload resources.
      */
-    @PostResource(name = "Upload resources", path = "/upload", requiredLogin = false)
-    @Operation(summary = "Upload resources", description = "Upload resource files, any file type "
-        + "is unlimited")
+    @PostResource(path = "/upload", requiredLogin = false)
+    @Operation(summary = "Upload resources",
+        description = "Upload resource files, any file type is unlimited")
     public ResponseData<AssetUploadResult> upload(@Valid AttachOpRo data) throws IOException {
         AssetType assetType = AssetType.of(data.getType());
         MultipartFile file = data.getFile();
@@ -96,23 +96,21 @@ public class AssetController {
                 iAssetService.uploadFileInSpace(data.getNodeId(), file.getInputStream(),
                     file.getOriginalFilename(), file.getSize(), file.getContentType(), assetType);
             return ResponseData.success(result);
-        } else {
-            ExceptionUtil.isNotNull(userId, AuthException.UNAUTHORIZED);
-            AssetUploadResult result =
-                iAssetService.uploadFile(file.getInputStream(), file.getSize(),
-                    file.getContentType());
-            return ResponseData.success(result);
         }
+        ExceptionUtil.isNotNull(userId, AuthException.UNAUTHORIZED);
+        AssetUploadResult result = iAssetService.uploadFile(file.getInputStream(),
+            file.getSize(), file.getContentType());
+        return ResponseData.success(result);
     }
 
     /**
      * Image review result callback.
      */
-    @PostResource(name = "Image review result callback", path = "/auditCallback", requiredLogin =
-        false, requiredPermission = false)
-    @Operation(summary = "Image review result callback", description = "Accept the image review "
-        + "results stored in the OSS cloud, and carry out special treatment for illegal images "
-        + "and results requiring manual review", hidden = true)
+    @PostResource(path = "/auditCallback", requiredLogin = false)
+    @Operation(summary = "Image review result callback",
+        description = "Accept the image review results stored in the OSS cloud, "
+            + "and carry out special treatment for illegal images "
+            + "and results requiring manual review", hidden = true)
     public ResponseData<Void> auditCallback(@RequestBody @Valid AttachAuditCallbackRo result) {
         iAssetAuditService.auditCallback(result);
         return ResponseData.success();
@@ -121,12 +119,10 @@ public class AssetController {
     /**
      * Paging query pictures that need manual review.
      */
-    @GetResource(name = "Paging query pictures that need manual review", path = "/readReviews",
-        requiredLogin = false, requiredPermission = false)
-    @Operation(summary = "Paging query pictures that need manual review", description = "Paging "
-        + "query pictures that need manual review")
-    @Parameter(name = PAGE_PARAM, description = "Page params", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
+    @GetResource(path = "/readReviews", requiredLogin = false)
+    @Operation(summary = "Paging query pictures that need manual review")
+    @Parameter(name = PAGE_PARAM, description = "Page params", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
     @SuppressWarnings("rawtypes")
     public ResponseData<PageInfo<AssetsAuditVo>> readReviews(@PageObjectParam Page page) {
         String auditorUserId = SessionContext.getDingtalkUserId();
@@ -137,10 +133,9 @@ public class AssetController {
     /**
      * Submit image review results.
      */
-    @PostResource(name = "Submit image review results", path = "/submitAuditResult",
-        requiredLogin = false, requiredPermission = false)
-    @Operation(summary = "Submit image review results", description = "Submit the image review "
-        + "results, enter the reviewer's name when submitting")
+    @PostResource(path = "/submitAuditResult", requiredLogin = false)
+    @Operation(summary = "Submit image review results",
+        description = "Submit the image review results, enter the reviewer's name when submitting")
     public ResponseData<Void> submitAuditResult(@RequestBody @Valid AssetsAuditRo results) {
         // Query the DingTalk member information in the session
         String auditorUserId = SessionContext.getDingtalkUserId();
@@ -152,9 +147,8 @@ public class AssetController {
     /**
      * Image URL upload interface.
      */
-    @PostResource(name = "Image URL upload interface", path = "/urlUpload", requiredPermission =
-        false)
-    @Operation(summary = "Image URL upload interface", description = "Image URL upload interface")
+    @PostResource(path = "/urlUpload", requiredPermission = false)
+    @Operation(summary = "Image URL upload interface")
     public ResponseData<AssetUploadResult> urlUpload(@Valid AttachUrlOpRo opRo) {
         AssetUploadResult result = iAssetService.urlUpload(opRo);
         return ResponseData.success(result);
@@ -163,8 +157,7 @@ public class AssetController {
     /**
      * Changes in the number of references to space attachment resources.
      */
-    @PostResource(name = "Changes in the number of references to space attachment resources",
-        path = "/cite", requiredLogin = false, requiredPermission = false)
+    @PostResource(path = "/cite", requiredLogin = false)
     @Operation(summary = "Changes in the number of references to space attachment resources",
         description = "The same attachment needs to pass the token repeatedly")
     public ResponseData<Void> cite(@RequestBody @Valid SpaceAssetOpRo opRo) {

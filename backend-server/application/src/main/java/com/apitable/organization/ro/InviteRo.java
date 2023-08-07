@@ -19,6 +19,7 @@
 package com.apitable.organization.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -37,7 +38,7 @@ public class InviteRo {
     @Valid
     @NotEmpty
     @Size(max = 50, message = "Invite up to 50 members")
-    @Schema(description = "Invite Member List", required = true)
+    @Schema(description = "Invite Member List", requiredMode = RequiredMode.REQUIRED)
     private List<InviteMemberRo> invite;
 
     @Schema(description = "Password login for human-machine verification, and the front end "

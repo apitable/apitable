@@ -18,6 +18,28 @@
 
 package com.apitable.workspace.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.apitable.shared.util.IdUtil;
+import com.apitable.user.mapper.UserMapper;
+import com.apitable.workspace.dto.DataSheetRecordDTO;
+import com.apitable.workspace.dto.DataSheetRecordGroupDTO;
+import com.apitable.workspace.dto.NodeCopyDTO;
+import com.apitable.workspace.entity.DatasheetRecordEntity;
+import com.apitable.workspace.mapper.DatasheetRecordMapper;
+import com.apitable.workspace.model.Datasheet;
+import com.apitable.workspace.ro.RecordMapRo;
+import com.apitable.workspace.service.IDatasheetRecordService;
+import com.apitable.workspace.vo.DatasheetRecordMapVo;
+import com.apitable.workspace.vo.DatasheetRecordVo;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -28,39 +50,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
-
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.workspace.dto.DataSheetRecordDTO;
-import com.apitable.workspace.dto.DataSheetRecordGroupDTO;
-import com.apitable.workspace.ro.RecordMapRo;
-import com.apitable.workspace.vo.DatasheetRecordMapVo;
-import com.apitable.workspace.vo.DatasheetRecordVo;
-import com.apitable.user.mapper.UserMapper;
-import com.apitable.workspace.mapper.DatasheetRecordMapper;
-import com.apitable.workspace.dto.NodeCopyDTO;
-import com.apitable.workspace.service.IDatasheetRecordService;
-import com.apitable.shared.util.IdUtil;
-import com.apitable.workspace.entity.DatasheetRecordEntity;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * datasheet record service implements.
+ */
 @Slf4j
 @Service
-public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMapper, DatasheetRecordEntity> implements IDatasheetRecordService {
+public class DatasheetRecordServiceImpl
+    extends ServiceImpl<DatasheetRecordMapper, DatasheetRecordEntity>
+    implements IDatasheetRecordService {
 
     @Resource
     private UserMapper userMapper;
@@ -78,6 +80,32 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public Datasheet.Records createRecords(Long userId, String dstId,
+                                           Datasheet.Records records) {
+        List<DatasheetRecordEntity> recordList = new ArrayList<>();
+        records.forEach(record -> {
+            String recordId = Optional.ofNullable(record.getId()).orElse(IdUtil.createRecordId());
+            record.setId(recordId);
+            DatasheetRecordEntity recordEntity = DatasheetRecordEntity.builder()
+                .id(IdWorker.getId())
+                .recordId(recordId)
+                .data(record.getData().toJsonString())
+                .dstId(dstId)
+                .fieldUpdatedInfo(record.getFieldUpdatedInfo().toJsonString())
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
+            recordList.add(recordEntity);
+        });
+        List<List<DatasheetRecordEntity>> split = CollUtil.split(recordList, 1000);
+        for (List<DatasheetRecordEntity> entities : split) {
+            baseMapper.insertBatch(entities);
+        }
+        return records;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveBatch(Long userId, JSONObject recordMap, String dstId) {
         List<DatasheetRecordEntity> recordList = new ArrayList<>();
         JSONObject recordMeta = this.getInitRecordMeta(userId);
@@ -88,15 +116,15 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
                 recordMeta.set("fieldUpdatedMap", fieldUpdatedMap);
             }
             DatasheetRecordEntity recordEntity = DatasheetRecordEntity.builder()
-                    .id(IdWorker.getId())
-                    .recordId(Optional.ofNullable(recordMapRo.getId()).
-                            orElse(IdUtil.createRecordId()))
-                    .data(StrUtil.isEmptyIfStr(recordMapRo.getData()) ? null : StrUtil.toString(recordMapRo.getData()))
-                    .dstId(dstId)
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .fieldUpdatedInfo(recordMeta.toString())
-                    .build();
+                .id(IdWorker.getId())
+                .recordId(Optional.ofNullable(recordMapRo.getId()).orElse(IdUtil.createRecordId()))
+                .data(StrUtil.isEmptyIfStr(recordMapRo.getData()) ? null :
+                    StrUtil.toString(recordMapRo.getData()))
+                .dstId(dstId)
+                .createdBy(userId)
+                .updatedBy(userId)
+                .fieldUpdatedInfo(recordMeta.toString())
+                .build();
             recordList.add(recordEntity);
         }
         List<List<DatasheetRecordEntity>> split = CollUtil.split(recordList, 1000);
@@ -106,14 +134,15 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
     }
 
     @Override
-    public void copyRecords(Long userId, String oDstId, String nDstId, NodeCopyDTO nodeCopyDTO, boolean retain) {
+    public void copyRecords(Long userId, String oldDstId, String newDstId, NodeCopyDTO nodeCopyDTO,
+                            boolean retain) {
         log.info("Copy records");
-        List<DatasheetRecordVo> voList = baseMapper.selectListByDstId(oDstId);
+        List<DatasheetRecordVo> voList = baseMapper.selectListByDstId(oldDstId);
         if (CollUtil.isEmpty(voList)) {
             return;
         }
         Set<String> delFieldIds = CollUtil.unionDistinct(nodeCopyDTO.getDelFieldIds(),
-                nodeCopyDTO.getLinkFieldIds());
+            nodeCopyDTO.getLinkFieldIds());
         List<String> autoNumberFieldIds = nodeCopyDTO.getAutoNumberFieldIds();
         JSONObject recordMeta = this.getInitRecordMeta(userId);
         List<DatasheetRecordEntity> list = new ArrayList<>(voList.size());
@@ -125,19 +154,18 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
             }
             DatasheetRecordEntity entity = new DatasheetRecordEntity();
             entity.setId(IdWorker.getId());
-            entity.setDstId(nDstId);
+            entity.setDstId(newDstId);
             entity.setRecordId(vo.getId());
             entity.setData(StrUtil.toString(data));
             String fieldUpdatedInfo;
             if (retain) {
                 fieldUpdatedInfo = vo.getRecordMeta();
-            }
-            else if (autoNumberFieldIds.isEmpty()) {
+            } else if (autoNumberFieldIds.isEmpty()) {
                 fieldUpdatedInfo = recordMeta.toString();
-            }
-            else {
+            } else {
                 // Keep the value of the self-increasing number without keeping all recordMeta.
-                JSONObject fieldUpdatedMap = this.copyFieldUpdatedMap(vo.getRecordMeta(), autoNumberFieldIds);
+                JSONObject fieldUpdatedMap =
+                    this.copyFieldUpdatedMap(vo.getRecordMeta(), autoNumberFieldIds);
                 fieldUpdatedInfo = recordMeta.set("fieldUpdatedMap", fieldUpdatedMap).toString();
             }
             entity.setFieldUpdatedInfo(fieldUpdatedInfo);
@@ -152,17 +180,18 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
     }
 
     @Override
-    public void copyFieldData(String dstId, String oFieldId, String nFieldId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void copyFieldData(String dstId, String oldFieldId, String newFieldId) {
         log.info("Copy data from a column to a new column");
         List<DataSheetRecordDTO> voList = baseMapper.selectDtoByDstId(dstId);
         List<DatasheetRecordEntity> list = new ArrayList<>();
         voList.forEach(vo -> {
             JSONObject data = vo.getData();
-            Object fieldData = data.get(oFieldId);
+            Object fieldData = data.get(oldFieldId);
             if (ObjectUtil.isNotNull(fieldData)) {
-                data.set(nFieldId, fieldData);
+                data.set(newFieldId, fieldData);
                 DatasheetRecordEntity entity = DatasheetRecordEntity.builder()
-                        .id(vo.getId()).data(StrUtil.toString(data)).build();
+                    .id(vo.getId()).data(StrUtil.toString(data)).build();
                 list.add(entity);
             }
         });
@@ -173,7 +202,8 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public DatasheetRecordMapVo delFieldData(String dstId, List<String> delFieldIds, boolean saveDb) {
+    public DatasheetRecordMapVo delFieldData(String dstId, List<String> delFieldIds,
+                                             boolean saveDb) {
         log.info("Deletes the data of the specified field in the datasheet record.");
         if (CollUtil.isNotEmpty(delFieldIds)) {
             List<DataSheetRecordDTO> voList = baseMapper.selectDtoByDstId(dstId);
@@ -183,9 +213,10 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
                 JSONObject data = vo.getData();
                 delFieldIds.forEach(data::remove);
                 DatasheetRecordEntity entity = DatasheetRecordEntity.builder()
-                        .id(vo.getId()).data(StrUtil.toString(data)).build();
+                    .id(vo.getId()).data(StrUtil.toString(data)).build();
                 list.add(entity);
-                map.put(vo.getRecordId(), DatasheetRecordVo.builder().id(vo.getRecordId()).data(data).build());
+                map.put(vo.getRecordId(),
+                    DatasheetRecordVo.builder().id(vo.getRecordId()).data(data).build());
             });
             if (saveDb) {
                 this.updateBatchById(list, list.size());
@@ -202,7 +233,8 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
         List<DataSheetRecordGroupDTO> dtoList = new ArrayList<>();
         double size = 5.0;
         for (int i = 0; i < Math.ceil(dstIds.size() / size); i++) {
-            List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
+            List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size)
+                .collect(Collectors.toList());
             dtoList.addAll(baseMapper.selectGroupDtoByDstIds(split));
         }
         if (CollUtil.isNotEmpty(dtoList)) {
@@ -216,7 +248,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
     }
 
     /**
-     * processing records
+     * processing records.
      */
     private DatasheetRecordMapVo processRecordMapVo(List<DatasheetRecordVo> list) {
         log.info("handle large records begin：{}", DateUtil.now());
@@ -224,14 +256,14 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
             return new DatasheetRecordMapVo();
         }
         Map<String, DatasheetRecordVo> map = list.stream()
-                .collect(Collectors.toMap(DatasheetRecordVo::getId, record -> record));
+            .collect(Collectors.toMap(DatasheetRecordVo::getId, record -> record));
         JSONObject recordMap = JSONUtil.parseObj(map);
         log.info("handle large records end：{}", DateUtil.now());
         return DatasheetRecordMapVo.builder().recordMap(recordMap).build();
     }
 
     /**
-     * gets the initialized recordmeta
+     * gets the initialized record meta.
      */
     private JSONObject getInitRecordMeta(Long userId) {
         String uuid = userMapper.selectUuidById(userId);
@@ -244,7 +276,8 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     private JSONObject copyFieldUpdatedMap(String recordMeta, List<String> autoNumberFieldIds) {
         JSONObject fieldUpdatedMap = JSONUtil.createObj();
-        JSONObject originFieldUpdatedMap = JSONUtil.parseObj(recordMeta).getJSONObject("fieldUpdatedMap");
+        JSONObject originFieldUpdatedMap =
+            JSONUtil.parseObj(recordMeta).getJSONObject("fieldUpdatedMap");
         if (originFieldUpdatedMap == null) {
             return fieldUpdatedMap;
         }

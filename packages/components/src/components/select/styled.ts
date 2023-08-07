@@ -202,7 +202,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const hightLightCls = styled.div.attrs(applyDefaultTheme)`
   background: none;
-  color: ${(props) => props.theme.palette.primary};
+  color: ${(props) => props.theme.color.primaryColor};
   padding: 0;
 `;
 
@@ -218,9 +218,7 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width:
 `;
 
 export const OptionOutside = styled(ListDeprecate.Item).attrs(applyDefaultTheme)`
-
   ${CssItem};
-
   padding-left: ${props => {
     if (props.prefixIcon) {
       return '28px';

@@ -33,7 +33,7 @@ import {
   IMoveView,
   ISetRecordOptions
 } from 'commands';
-import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors } from 'exports/store';
+import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, StoreActions } from 'exports/store';
 import { Store } from 'redux';
 import { IField, ResourceType } from 'types';
 import { Field } from '.';
@@ -117,6 +117,9 @@ export class Datasheet implements IResource {
    * @deprecated This method is not intended for public use.
    */
   public async doCommand<R>(command: ICollaCommandOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<R>> {
+    if (saveOptions['prependOps'] && saveOptions['prependOps'].length > 0) {
+      this.store.dispatch(StoreActions.applyJOTOperations(saveOptions['prependOps'], this.type, this.id));
+    }
     const result = this._commandManager.execute<R>(command);
     if (result.result === ExecuteResult.Success) {
       const saveResult = await this.saver.saveOps(result.resourceOpsCollects, {

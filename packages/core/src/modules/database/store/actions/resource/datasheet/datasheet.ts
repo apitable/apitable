@@ -213,7 +213,7 @@ const checkSortInto = (snapshot: ISnapshot) => {
   return produce(snapshot, draft => {
     const views = draft.meta.views;
     for (const v of views) {
-      if (Array.isArray(v.sortInfo)) {
+      if (Array.isArray(v?.sortInfo)) {
         v.sortInfo = {
           keepSort: true,
           rules: v.sortInfo,

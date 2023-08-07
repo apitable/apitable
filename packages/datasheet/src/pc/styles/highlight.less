@@ -1,0 +1,161 @@
+/* PrismJS 1.21.0
+https://prismjs.com/download.html#themes=prism-okaidia&languages=clike+javascript+bash&plugins=treeview */
+/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+
+code[class*='language-ai-'],
+pre[class*='language-ai-'] {
+  color: var(--textCommonPrimary);
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  text-shadow: none;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*='language-ai-'] {
+  overflow: auto;
+  position: relative;
+}
+
+
+
+:not(pre) > code[class*='language-ai-'],
+pre[class*='language-ai'] {
+  border-radius: 4px;
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-ai-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
+}
+
+:root[data-theme='light'] {
+  code[class*='language-ai-'],
+  pre[class*='language-ai-'] {
+    --color-highlight-syntax-comment: #777;
+    --color-highlight-syntax-punctuation: var(--textCommonPrimary);
+    --color-highlight-syntax-tag: #e14348;
+    --color-highlight-syntax-function-name: #357fc9;
+    --color-highlight-syntax-boolean: #b75716;
+    --color-highlight-syntax-number: #b75716;
+    --color-highlight-syntax-property: #f7ae10;
+    --color-highlight-syntax-selector: #954b96;
+    --color-highlight-syntax-string: #318b54;
+    --color-highlight-syntax-operator: #1f9694;
+    --color-highlight-syntax-inserted: green;
+  }
+}
+
+:root[data-theme='dark'] {
+  code[class*='language-ai-'],
+  pre[class*='language-ai-'] {
+    --color-highlight-syntax-comment: #999;
+    --color-highlight-syntax-punctuation: var(--textCommonPrimary);
+    --color-highlight-syntax-tag: #e2777a;
+    --color-highlight-syntax-function-name: #6196cc;
+    --color-highlight-syntax-boolean: #f08d49;
+    --color-highlight-syntax-number: #f08d49;
+    --color-highlight-syntax-property: #f8c555;
+    --color-highlight-syntax-selector: #cc99cd;
+    --color-highlight-syntax-string: #7ec699;
+    --color-highlight-syntax-operator: #67cdcc;
+    --color-highlight-syntax-inserted: green;
+  }
+}
+
+code[class*='language-ai-'],
+pre[class*='language-ai-'] {
+  .token.comment,
+  .token.block-comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: var(--color-highlight-syntax-comment);
+  }
+
+  .token.punctuation {
+    color: var(--textCommonPrimary);
+  }
+
+  .token.tag,
+  .token.attr-name,
+  .token.namespace,
+  .token.deleted {
+    color: var(--color-highlight-syntax-tag);
+  }
+
+  .token.function-name {
+    color: var(--color-highlight-syntax-function-name);
+  }
+
+  .token.boolean,
+  .token.number,
+  .token.function {
+    color: var(--color-highlight-syntax-boolean);
+  }
+
+  .token.property,
+  .token.class-name,
+  .token.constant,
+  .token.symbol {
+    color: var(--color-highlight-syntax-property);
+  }
+
+  .token.selector,
+  .token.important,
+  .token.atrule,
+  .token.keyword,
+  .token.builtin {
+    color: var(--color-highlight-syntax-selector);
+  }
+
+  .token.string,
+  .token.char,
+  .token.attr-value,
+  .token.regex,
+  .token.variable {
+    color: var(--color-highlight-syntax-string);
+  }
+
+  .token.operator,
+  .token.entity,
+  .token.url {
+    color: var(--color-highlight-syntax-operator);
+    background: none;
+  }
+
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+  .token.italic {
+    font-style: italic;
+  }
+
+  .token.entity {
+    cursor: help;
+  }
+
+  .token.inserted {
+    color: var(--color-highlight-syntax-inserted);
+  }
+}

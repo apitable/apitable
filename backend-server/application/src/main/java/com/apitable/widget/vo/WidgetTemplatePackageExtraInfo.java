@@ -32,13 +32,13 @@ import lombok.Data;
 @Schema(description = "Template Widget Package Extension Information View")
 public class WidgetTemplatePackageExtraInfo {
 
-    @Schema(description = "Open source address", example = "https://apitable"
-        + ".com/code/2020/12/23/aqa")
+    @Schema(description = "Open source address",
+        example = "https://apitable.com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String widgetOpenSource;
 
-    @Schema(description = "Template Extension Cover", example = "https://apitable"
-        + ".com/code/2020/12/23/aqa")
+    @Schema(description = "Template Extension Cover",
+        example = "https://apitable.com/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String templateCover;
 

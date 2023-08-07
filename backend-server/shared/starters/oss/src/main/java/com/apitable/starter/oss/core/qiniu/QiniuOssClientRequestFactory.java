@@ -18,10 +18,11 @@
 
 package com.apitable.starter.oss.core.qiniu;
 
-import com.qiniu.util.Auth;
-
+import com.apitable.starter.oss.autoconfigure.OssProperties.Callback;
+import com.apitable.starter.oss.autoconfigure.OssProperties.Signature;
 import com.apitable.starter.oss.core.OssClientRequest;
 import com.apitable.starter.oss.core.OssClientRequestFactory;
+import com.qiniu.util.Auth;
 
 public class QiniuOssClientRequestFactory implements OssClientRequestFactory {
 
@@ -31,23 +32,22 @@ public class QiniuOssClientRequestFactory implements OssClientRequestFactory {
 
     private final String downloadDomain;
 
-    private final String callbackUrl;
-
-    private final String callbackBodyType;
-
     private final String uploadUrl;
 
-    public QiniuOssClientRequestFactory(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType, String uploadUrl) {
+    private final Callback callback;
+
+    public QiniuOssClientRequestFactory(Auth auth, String regionId,
+        String downloadDomain, Callback callback, String uploadUrl) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
-        this.callbackUrl = callbackUrl;
-        this.callbackBodyType = callbackBodyType;
+        this.callback = callback;
         this.uploadUrl = uploadUrl;
     }
 
     @Override
     public OssClientRequest createClient() {
-        return new QiniuOssClientRequest(auth, regionId, downloadDomain, callbackUrl, callbackBodyType, uploadUrl, true);
+        return new QiniuOssClientRequest(auth, regionId, downloadDomain, callback,
+            uploadUrl, true);
     }
 }

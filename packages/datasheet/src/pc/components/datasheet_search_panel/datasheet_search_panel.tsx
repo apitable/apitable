@@ -43,6 +43,7 @@ interface ISearchPanelProps {
     widgetIds?: string[],
     nodeName?: string;
     meta?: IMeta;
+    secondConfirmType?: SecondConfirmType
   }) => void;
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType;

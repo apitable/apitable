@@ -19,6 +19,7 @@
 package com.apitable.organization.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadMemberTemplateRo {
 
     @NotNull(message = "The import file cannot be empty")
-    @Schema(description = "Import File", required = true)
+    @Schema(description = "Import File", requiredMode = RequiredMode.REQUIRED)
     private MultipartFile file;
 
     @Schema(description = "Password login for human-machine verification, and the front end "

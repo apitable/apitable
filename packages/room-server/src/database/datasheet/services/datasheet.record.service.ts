@@ -24,7 +24,7 @@ import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
 import { In } from 'typeorm';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
-import { DatasheetRecordRepository } from '../../datasheet/repositories/datasheet.record.repository';
+import { DatasheetRecordRepository } from '../repositories/datasheet.record.repository';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
 import { CommentEmojiDto } from '../dtos/comment.emoji.dto';
 import { RecordHistoryDto } from '../dtos/record.history.dto';

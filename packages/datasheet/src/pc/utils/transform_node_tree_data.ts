@@ -14,6 +14,7 @@ export const transformNodeTreeData = (data: INode[]) => {
     console.log('Invalid transform node tree data');
     return [];
   }
+  
   return data.reduce((prev, node) => {
     if (
       (node.type !== ConfigConstant.NodeType.FOLDER &&
@@ -28,13 +29,14 @@ export const transformNodeTreeData = (data: INode[]) => {
       pId: node.parentId,
       value: node.nodeId,
       title: node.nodeName,
-      isLeaf: !node.hasChildren,
+      isLeaf: !(node.hasChildren && 
+        node.children && node.children?.length > 0 ? 
+        node.children?.some(child => child.type === ConfigConstant.NodeType.FOLDER) : true),
     };
-    let result: ISelectTreeNode[] = [];
+    let childrenResult: ISelectTreeNode[] = [];
     if (node.hasChildren && Array.isArray(node.children)) {
-      result = transformNodeTreeData(node.children);
+      childrenResult = transformNodeTreeData(node.children);
     }
-    prev.push(newNode, ...result);
-    return prev;
+    return [...prev, newNode, ...childrenResult];
   }, [] as ISelectTreeNode[]);
 };

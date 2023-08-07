@@ -41,7 +41,7 @@ const StyledColor = styled.div<{ rgbaColor: RGBColor }>(props => (
 
 const StyledSwatch = styled.div.attrs(applyDefaultTheme)(props => ({
   padding: '5px',
-  background: props.theme.palette.background.primary,
+  background: props.theme.color.bgCommonHigh,
   borderRadius: '1px',
   boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
   display: 'inline-block',

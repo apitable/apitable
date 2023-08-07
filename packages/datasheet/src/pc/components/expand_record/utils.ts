@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, ICellValue, IField, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { Field, ICellValue, IField, Navigation, PREVIEW_DATASHEET_ID, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { debounce } from 'lodash';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 import { Router } from 'pc/components/route_manager/router';
@@ -52,6 +52,10 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
   const state = store.getState();
   const spaceId = state.space.activeId;
   const { datasheetId, viewId, shareId, templateId, categoryId, mirrorId, embedId } = state.pageParams;
+  const datasheet = Selectors.getDatasheet(state);
+  if (datasheet?.id === PREVIEW_DATASHEET_ID) {
+    return;
+  }
 
   const urlObj = new URL(location.href);
   const searchParams = urlObj.searchParams;

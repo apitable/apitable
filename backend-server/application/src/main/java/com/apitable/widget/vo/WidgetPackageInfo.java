@@ -43,13 +43,13 @@ public class WidgetPackageInfo {
     @Schema(description = "English name", example = "chart")
     private String nameEn;
 
-    @Schema(description = "Widget package icon", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Widget package icon",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String icon;
 
-    @Schema(description = "Cover drawing of component package", example = "https://apitable"
-        + ".com/space/2020/12/23/aqa")
+    @Schema(description = "Cover drawing of component package",
+        example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 

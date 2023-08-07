@@ -1,6 +1,6 @@
 {
   "name": "@apitable/datasheet",
-  "version": "0.24.0",
+  "version": "0.99.0",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -86,7 +86,7 @@
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
     "posthog-js": "^1.57.2",
-    "prismjs": "^1.27.0",
+    "prismjs": "^1.29.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.4.4",
     "raf": "^3.4.1",
@@ -210,6 +210,7 @@
     "webpack-bundle-analyzer": "^3.9.0",
     "webpack-node-externals": "^3.0.0",
     "webpack-sources": "^3.2.3",
+    "webpackbar": "^5.0.2",
     "worker-plugin": "^5.0.1"
   },
   "browserslist": {

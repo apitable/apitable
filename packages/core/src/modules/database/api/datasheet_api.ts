@@ -21,12 +21,14 @@ import {
   IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, IGetTreeSelectDataReq,
   IGetTreeSelectDataRes, IGetTreeSelectSnapshotReq, IGetTreeSelectSnapshotRes, ISubOrUnsubByRecordIdsReq, IUpdateTreeSelectSnapshotReq,
 } from 'modules/database/api/datasheet_api.interface';
-import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
 import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack, ISnapshot } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
+import { WasmApi } from 'modules/database/api';
+import { getBrowserDatabusApiEnabled } from './wasm';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 
@@ -35,9 +37,18 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  * @param dstId 
  * @param recordIds 
  * @returns 
+ * 
+ * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
-export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]) {
+export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
   console.log({ baseURL });
+
+  if (getBrowserDatabusApiEnabled()) {
+    if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
+      return WasmApi.getInstance().get_datasheet_pack(dstId);
+    }
+  }
+
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
     baseURL,
     params: {

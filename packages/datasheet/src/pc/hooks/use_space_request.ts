@@ -164,7 +164,6 @@ export const useSpaceRequest = () => {
       // Compatible with corporate domain name creation space station jump
       if (isSocialDomain?.()) {
         getUserAndRedirect(data.spaceId);
-        return;
       }
       dispatch(StoreActions.updateUserInfo({ needCreate: false }));
       Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
@@ -174,6 +173,7 @@ export const useSpaceRequest = () => {
         msg: message,
       }));
     }
+    return res.data;
   });
 
   return {

@@ -48,7 +48,7 @@ export class KeybindingService {
 
   private keyEventHandle = async(e: KeyboardEvent) => {
     const keyEvent = new StandardKeyboardEvent(e);
-    const shouldPreventDefault = await this.dispatch(keyEvent) === false ? false : true;
+    const shouldPreventDefault = await this.dispatch(keyEvent) !== false;
     if (shouldPreventDefault) {
       keyEvent.preventDefault();
     }

@@ -53,8 +53,8 @@ public class TemplateAlbumController {
      */
     @GetResource(path = "/template/albums/{albumId}", requiredLogin = false)
     @Operation(summary = "Get The Template Album Content")
-    @Parameter(name = "albumId", description = "Template Album ID", schema = @Schema(type = "string"),
-        in = ParameterIn.PATH, example = "albnafuwa2snc")
+    @Parameter(name = "albumId", description = "Template Album ID",
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "albnafuwa2snc")
     public ResponseData<AlbumContentVo> getAlbumContent(@PathVariable("albumId") String albumId) {
         return ResponseData.success(iTemplateAlbumService.getAlbumContentVo(albumId));
     }
@@ -65,11 +65,11 @@ public class TemplateAlbumController {
     @GetResource(path = "/template/albums/recommend", requiredLogin = false)
     @Operation(summary = "Get Recommended Template Albums")
     @Parameters({
-        @Parameter(name = "excludeAlbumId", description = "Exclude Album", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "albnafuwa2snc"),
-        @Parameter(name = "maxCount", description = "Max Count of Load(The number of response "
-            + "result may be smaller than this)", schema = @Schema(type = "integer"), in =
-            ParameterIn.QUERY, example = "5")
+        @Parameter(name = "excludeAlbumId", description = "Exclude Album",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "albnafuwa2snc"),
+        @Parameter(name = "maxCount", in = ParameterIn.QUERY,
+            description = "Max Count of Load.The number of response result may be smaller than it",
+            schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<AlbumVo>> getRecommendedAlbums(
         @RequestParam(value = "excludeAlbumId", required = false) String excludeAlbumId,

@@ -42,7 +42,8 @@ export enum Navigation {
   DINGTALK,
   WECOM,
   WECOM_SHOP_CALLBACK,
-  EMBED_SPACE
+  EMBED_SPACE,
+  EMBED_AI_SPACE
 }
 
 export enum SpacePathType {

@@ -18,7 +18,7 @@
 
 // FIXME:THEME
 import { colors, ThemeName } from '@apitable/components';
-import { ISegment, SegmentType } from '@apitable/core';
+import { IHyperlinkSegment, ISegment, SegmentType } from '@apitable/core';
 import { UserGroupOutlined, WebOutlined } from '@apitable/icons';
 import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
@@ -304,7 +304,7 @@ export class KonvaDrawer {
         if (item.type === SegmentType.Url || isLinkSplit) {
           linkMap[linkIndex] = {
             endIndex: nextIndex - 1,
-            url: item.text
+            url: (item as IHyperlinkSegment).link || item.text
           };
         }
         linkIndex = isLinkSplit ? nextIndex + 2 : nextIndex;

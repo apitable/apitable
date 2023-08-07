@@ -21,6 +21,7 @@ import { FieldType, FilterDuration, FOperator, getLanguage, IDateTimeField, ITim
 import { useClickOutside } from '@huse/click-outside';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
+import { toString } from 'lodash';
 import debounce from 'lodash/debounce';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_time_editor/date_time_editor';
@@ -83,7 +84,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   }
 
   if (defaultValue && durationValue === FilterDuration.DateRange && defaultValue[1]) {
-    const [startDate, endDate] = defaultValue[1]!.split('-');
+    const [startDate, endDate] = toString(defaultValue[1]).split('-');
     dataValue = [dayjs(Number(startDate)), dayjs(Number(endDate))];
   }
 
@@ -175,8 +176,10 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
               <div ref={divRef}>
                 {
                   showRangeCalendar && <RangePicker
-                    onChange={(value) => {rangePickerChange(value);}}
-                    format='YYYY-MM-DD'
+                    onChange={(value) => {
+                      rangePickerChange(value);
+                    }}
+                    format="YYYY-MM-DD"
                     className={styles.dateRange}
                     allowClear={false}
                     suffixIcon={null}
@@ -190,7 +193,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
             </WrapperTooltip>
           </ComponentDisplay>
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} disabled={isViewLock} />
+            <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} disabled={isViewLock}/>
           </ComponentDisplay>
         </>
       );
@@ -220,7 +223,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   return (
     <div className={classNames(styles.filterDate, 'filterDate')} onClick={stopPropagation} ref={ref}>
       {operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty && (
-        <FilterDateDuration changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex} />
+        <FilterDateDuration changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex}/>
       )}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>{dom}</ComponentDisplay>
 

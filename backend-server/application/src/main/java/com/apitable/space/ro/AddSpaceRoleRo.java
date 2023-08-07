@@ -21,6 +21,7 @@ package com.apitable.space.ro;
 import com.apitable.core.support.deserializer.StringArrayToLongArrayDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -35,12 +36,14 @@ import lombok.Data;
 public class AddSpaceRoleRo {
 
     @NotEmpty(message = "The selected member list cannot be empty")
-    @Schema(description = "Member ID", type = "List", example = "[1,2]", required = true)
+    @Schema(description = "Member ID", requiredMode = RequiredMode.REQUIRED,
+        type = "List", example = "[1,2]")
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> memberIds;
 
     @NotEmpty(message = "Resource cannot be empty")
-    @Schema(description = "Operation resource set, no sorting, automatic verification", type =
-        "List", required = true, example = "[\"MANAGE_TEAM\",\"MANAGE_MEMBER\"]")
+    @Schema(description = "Operation resource set, no sorting, automatic verification",
+        requiredMode = RequiredMode.REQUIRED, type = "List",
+        example = "[\"MANAGE_TEAM\",\"MANAGE_MEMBER\"]")
     private List<String> resourceCodes;
 }

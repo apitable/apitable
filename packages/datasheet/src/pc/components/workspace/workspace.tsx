@@ -53,8 +53,8 @@ const resumeUserHistory = (path: string) => {
   const state = store.getState();
   const user = state.user.info!;
   const spaceId = state.space.activeId;
-  const { datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId } = getPageParams(path);
-  const nodeId = datasheetId || folderId || formId || mirrorId || dashboardId;
+  const { datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId, aiId } = getPageParams(path);
+  const nodeId = datasheetId || folderId || formId || mirrorId || dashboardId || aiId;
   if (spaceId === user.spaceId) {
     if (mirrorId) {
       Router.replace(Navigation.WORKBENCH, {
@@ -160,7 +160,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
         style={{ marginTop: 16 }}
         alt="Upgrade Succeed"
       />,
-      btnText: t(Strings.got_it)
+      btnText: t(Strings.got_it),
     });
   });
 
@@ -232,7 +232,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
         () => {
           handleSetSideBarByUser(!sideBarVisible, panelVisible);
         },
-      ]
+      ],
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -298,7 +298,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     onSetPanelVisible: setPanelVisible,
     onSetSideBarVisibleByUser: handleSetSideBarByUser,
     onSetSideBarVisibleByOhter: handleSetSideBarByOther,
-    newTdbId, setNewTdbId
+    newTdbId, setNewTdbId,
   };
 
   return (
@@ -315,7 +315,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
            that can not be dragged, the next version to solve. 0.4 temporarily do not add animation */}
           <VikaSplitPanel
             panelLeft={
-              <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id='workspace-sidebar'>
+              <div style={{ width: sideBarVisible ? '100%' : 0 }} className={styles.splitLeft} data-test-id="workspace-sidebar">
                 <div
                   style={{
                     width: sideBarVisible ? '100%' : templeVisible ? defaultSidePanelSize : 0,
@@ -347,7 +347,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
                         setTempleVisible(true);
                       }
                     }}
-                    data-test-id='sidebar-toggle-btn'
+                    data-test-id="sidebar-toggle-btn"
                   >
                     {!sideBarVisible ? <CollapseOpenOutlined /> : <CollapseOutlined />}
                   </div>
@@ -355,7 +355,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
               </div>
             }
             panelRight={<div className={styles.splitRight}>{children}</div>}
-            split='vertical'
+            split="vertical"
             minSize={335}
             defaultSize={defaultSidePanelSize}
             maxSize={640}

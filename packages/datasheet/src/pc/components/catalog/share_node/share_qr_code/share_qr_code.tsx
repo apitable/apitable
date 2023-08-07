@@ -16,61 +16,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, useThemeColors, ThemeName } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { Button, IconButton } from '@apitable/components';
+import { IUserInfo, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
 import { Message } from 'pc/components/common';
-import { getEnvVariables } from 'pc/utils/env';
 import QRCode from 'qrcode';
 import { FC } from 'react';
-import QrCodePng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_bj.png';
-import GapBgPngLight from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_light.png';
-import GapBgPngDark from 'static/icon/datasheet/share/qrcode/datasheet_img_share_qrcode_dark.png';
-import FooterBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_down.png';
-import DuckPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_top.png';
-import MainBgPng from 'static/icon/datasheet/share/qrcode/datasheet_img_qr_up.png';
+import { Avatar, AvatarSize } from '../../../common';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
-import { CloseOutlined, DownloadOutlined } from '@apitable/icons';
+import { DownloadOutlined, CloseOutlined } from '@apitable/icons';
 export interface IShareQrCodeProps {
   url: string;
-  user: string;
+  user?: IUserInfo | null;
   nodeName: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ url, user, nodeName, onClose }) => {
-  const colors = useThemeColors();
-  useMount(() => {
-    QRCode.toCanvas(url,
-      {
-        errorCorrectionLevel: 'H',
-        margin: 0,
-        width: 128,
-        color: {
-          dark: colors.primaryColor,
-        },
-      },
-      (err, canvas) => {
-        if (err) {
-          Message.error({ content: 'generation QrCode failed' });
-          return;
-        }
-        const container = document.getElementById('shareQrCode');
-        container?.appendChild(canvas);
-      });
-  });
 
-  const themeName = useSelector(state => state.theme);
-  const GapBgPng = themeName === ThemeName.Light ? GapBgPngLight : GapBgPngDark;
+  useMount(() => {
+    QRCode.toCanvas(url,{
+      errorCorrectionLevel: 'H',
+      margin: 0,
+      width: 176,
+
+    },
+    (err, canvas) => {
+      if (err) {
+        Message.error({ content: 'generation QrCode failed' });
+        return;
+      }
+      const container = document.getElementById('shareQrCode');
+      container?.appendChild(canvas);
+    });
+  });
 
   const downloadImage = () => {
     const downloadNode = document.getElementById('downloadContainer');
     if (!downloadNode) { return; }
     domtoimage.toPng(downloadNode, {
-      width: 400,
-      height: 620,
+      width: 288,
+      height: 372,
       style: {
         marginLeft: '40px',
       },
@@ -91,41 +78,52 @@ export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ ur
   };
 
   return (
-    <div id="downloadContainer" className={styles.downloadContainer}>
+    <div className={styles.downloadContainer}>
       <div className={styles.contentContainer}>
-        {
-          !(getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE) && <div className={styles.mascot}>
-            <img src={DuckPng.src} alt="vika mascot" />
+        <div className={styles.mainContainer} id="downloadContainer">
+          {onClose && (
+            <IconButton id="closeBtn" icon={() => <CloseOutlined />} className={styles.closeBtn} onClick={onClose} />
+          )}
+          <div className={styles.user}>
+            {user && (
+              <>
+                <Avatar
+                  src={user.avatar}
+                  title={user.nickName || user.memberName}
+                  avatarColor={user.avatarColor}
+                  id={user.memberId}
+                  size={AvatarSize.Size24}
+                  style={{ marginRight: 8 }}
+                />
+                <span className={styles.nickName}>
+                  { user.memberName }
+                </span>
+                {t(Strings.who_shares)}
+              </>
+            )}
           </div>
-        }
-        <div className={styles.mainContainer} style={{ position:'relative', backgroundImage: `url(${MainBgPng.src})` }}>
-          <IconButton id="closeBtn" icon={() => <CloseOutlined />} className={styles.closeBtn} onClick={onClose} />
-          <div className={styles.user}>{t(Strings.who_shares, { userName: user })}</div>
-          <div className={styles.nodeName}>《{nodeName}》</div>
+          <div className={styles.nodeName}>{nodeName}</div>
           <div className={styles.qrcode}>
             <div className={styles.shareQrCodeWrapper}>
-              <img src={QrCodePng.src} alt="qrcode background" />
               <div id="shareQrCode" className={styles.shareQrCode} />
             </div>
           </div>
           <div className={styles.tip}>{t(Strings.share_code_desc)}</div>
         </div>
-        <div className={styles.gapBg}>
-          <img src={GapBgPng.src} alt="gap background" />
-        </div>
-        <div id="footer" className={styles.footer} style={{ backgroundImage: `url(${FooterBgPng.src})` }}>
+        <div id="footer" className={styles.footer}>
           <div id="downloadBtn" className={styles.downloadBtn}>
             <Button
+              size="small"
               color="primary"
               shape="round"
               onClick={downloadImage}
+              style={{ borderRadius: 4 }}
               prefixIcon={<DownloadOutlined size="16" color="currentColor" />}
               block
             >
               {t(Strings.download_image)}
             </Button>
           </div>
-          <div className={styles.useTips}>{t(Strings.share_card_tips)}</div>
         </div>
       </div>
     </div>

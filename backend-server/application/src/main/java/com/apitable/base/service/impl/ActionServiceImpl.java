@@ -79,7 +79,8 @@ public class ActionServiceImpl implements IActionService {
         String inviteSpaceId = record.getInviteSpaceId();
         SpaceEntity spaceEntity = spaceMapper.selectBySpaceId(inviteSpaceId);
         // Determine whether the space does not exist or is in the deletion state
-        ExceptionUtil.isFalse(Objects.isNull(spaceEntity) || !Objects.isNull(spaceEntity.getPreDeletionTime()), SPACE_NOT_EXIST);
+        ExceptionUtil.isFalse(Objects.isNull(spaceEntity)
+            || !Objects.isNull(spaceEntity.getPreDeletionTime()), SPACE_NOT_EXIST);
         String inviteSpaceName = spaceEntity.getName();
         String inviteEmail = record.getInviteEmail();
         MemberDTO member = memberMapper.selectDtoByMemberId(record.getInviteMemberId());

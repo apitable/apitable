@@ -205,7 +205,7 @@ export const Notification: FC<React.PropsWithChildren> = () => {
             <AllToReadButton />
           </ComponentDisplay>
         </div>
-        <Tabs onChange={onTabActiveChange} activeKey={tabActiveKey}>
+        <Tabs className={styles.tabs} onChange={onTabActiveChange} activeKey={tabActiveKey}>
           <TabPane tab={t(Strings.unprocessed) + `(${unReadCount})`} key={TabKey.Unprocessed}>
             {unReadCount !== 0 && !firstLoading && (
               <div className={styles.tabContent} id={tabActiveKey === TabKey.Unprocessed ? NOTIFICATION_ID.NOTICE_LIST_WRAPPER : ''}>

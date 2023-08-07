@@ -49,8 +49,10 @@ import com.apitable.integration.grpc.BasicResult;
 import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
-import com.apitable.interfaces.ai.model.AiChatBotFromDatasheetCreateParam;
-import com.apitable.interfaces.ai.model.DatasheetSourceSettingParam;
+import com.apitable.interfaces.ai.model.AiCreateParam;
+import com.apitable.interfaces.ai.model.AiType;
+import com.apitable.interfaces.ai.model.AiUpdateParam;
+import com.apitable.interfaces.ai.model.DatasheetSource;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -104,6 +106,7 @@ import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
+import com.apitable.workspace.model.DatasheetCreateObject;
 import com.apitable.workspace.ro.AiDatasheetNodeSettingParam;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
@@ -650,6 +653,33 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public String createDatasheetNode(Long userId, String spaceId, DatasheetCreateObject object) {
+        String nodeId = IdUtil.createNodeId(object.getType().getNodeType());
+        NodeEntity nodeEntity = NodeEntity.builder()
+            .spaceId(spaceId)
+            .parentId(object.getParentId())
+            .nodeId(nodeId)
+            .type(object.getType().getNodeType())
+            .nodeName(object.getName())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
+        boolean flag = save(nodeEntity);
+        ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
+        if (object.hasDescription()) {
+            NodeDescEntity descEntity = NodeDescEntity.builder()
+                .id(IdWorker.getId())
+                .nodeId(nodeId)
+                .description(object.getDescription())
+                .build();
+            nodeDescService.insertBatch(Collections.singletonList(descEntity));
+        }
+        iDatasheetService.create(userId, nodeEntity, object.getDatasheetObject());
+        return nodeId;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public String createNode(Long userId, String spaceId, NodeOpRo nodeOpRo) {
         log.info("create children node");
         // The parent id and space id must match.
@@ -780,6 +810,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // The datasheet node, corresponding to the modification.
         if (entity.getType() == NodeType.DATASHEET.getNodeType()) {
             iDatasheetService.updateDstName(userId, nodeId, nodeName);
+        } else if (entity.getType() == NodeType.AI_CHAT_BOT.getNodeType()) {
+            aiServiceFacade.updateAi(nodeId, AiUpdateParam.builder().name(nodeName).build());
         }
         // publish space audit events
         JSONObject info = JSONUtil.createObj();
@@ -982,6 +1014,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
             // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
+            // if node is ai chat bot, auto delete
+            aiServiceFacade.deleteAi(nodeIds);
         }
         for (NodeEntity node : nodes) {
             Lock lock = redisLockRegistry.obtain(node.getParentId());
@@ -1265,23 +1299,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         this.processNodeHasSourceDatasheet(NodeType.MIRROR.getNodeType(), filterNodeIds,
             nodeTypeToNodeIdsMap);
 
-        // Verify that the number of nodes reaches the upper limit
-        // if (options.isVerifyNodeCount()) {
-        //     int subCount;
-        //     if (nodeTypeToNodeIdsMap.containsKey(NodeType.FOLDER.getNodeType())) {
-        //         List<String> fodIds = nodeTypeToNodeIdsMap.get(NodeType.FOLDER.getNodeType())
-        //         .stream().map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        //         // Take out the double union to avoid some folders already in the filtered list.
-        //         subCount = CollUtil.unionDistinct(fodIds, filterNodeIds).size();
-        //     }
-        //     else {
-        //         subCount = filterNodeIds.size();
-        //     }
-        //     if (subTrees.size() > subCount) {
-        //         iSubscriptionService.checkSheetNums(spaceId, subTrees.size() - subCount);
-        //     }
-        // }
-        // Original node-> front node MAP
         Map<String, String> originNodeToPreNodeMap = new HashMap<>(subTrees.size());
         subTrees.forEach(sub -> {
             originNodeToPreNodeMap.put(sub.getNodeId(), sub.getPreNodeId());
@@ -1566,6 +1583,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         aiChatBotCreateParam.getDatasheet().iterator().next();
                     DatasheetSnapshot snapshot =
                         iDatasheetMetaService.getMetaByDstId(param.getId());
+                    DatasheetEntity datasheet = iDatasheetService.getByDstId(param.getId());
                     DatasheetSnapshot.View viewTarget =
                         snapshot.getMeta().getViews().stream()
                             .filter(view -> view.getId().equals(param.getViewId()))
@@ -1580,18 +1598,21 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                             fields.add(fieldMap.get(column.getFieldId()));
                         }
                     });
-                    DatasheetSourceSettingParam sourceSettingParam =
-                        DatasheetSourceSettingParam.builder()
+                    DatasheetSource datasheetSource =
+                        DatasheetSource.builder()
                             .datasheetId(param.getId())
                             .viewId(param.getViewId())
                             .fields(fields)
                             .rows(viewTarget.getRows().size())
+                            .revision(datasheet.getRevision())
                             .build();
                     // build request object
-                    aiServiceFacade.createAiChatBot(AiChatBotFromDatasheetCreateParam.builder()
+                    aiServiceFacade.createAi(AiCreateParam.builder()
                         .spaceId(spaceId)
                         .aiId(nodeId)
-                        .dataSources(Collections.singletonList(sourceSettingParam))
+                        .type(AiType.QA)
+                        .aiName(name)
+                        .dataSources(Collections.singletonList(datasheetSource))
                         .build()
                     );
                 }

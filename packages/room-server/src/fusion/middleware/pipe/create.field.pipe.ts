@@ -22,6 +22,7 @@ import {
   FieldType,
   getFieldClass,
   getFieldTypeByString,
+  getFieldTypeString,
   getNewId,
   IAddOpenMagicLookUpFieldProperty,
   IDPrefix,
@@ -41,7 +42,8 @@ import { CreateDatasheetPipe } from './create.datasheet.pipe';
 
 @Injectable()
 export class CreateFieldPipe implements PipeTransform {
-  constructor(@Inject(REQUEST) private readonly request: FastifyRequest, private readonly metaService: DatasheetMetaService) {}
+  constructor(@Inject(REQUEST) private readonly request: FastifyRequest, private readonly metaService: DatasheetMetaService) {
+  }
 
   async transform(ro: FieldCreateRo): Promise<FieldCreateRo> {
     await this.validate(ro);
@@ -72,7 +74,7 @@ export class CreateFieldPipe implements PipeTransform {
       property: getFieldClass(fieldType).defaultProperty(),
     } as IField;
     const fieldContext = Field.bindContext(fieldInfo, {} as IReduxState);
-    const { error } = fieldContext.validateAddOpenFieldProperty(field.property || null);
+    const { error } = fieldContext.validateAddOpenFieldProperty(field.property || null, true);
     if (error) {
       throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'property', value: field.property });
     }
@@ -112,6 +114,25 @@ export class CreateFieldPipe implements PipeTransform {
           const context = Field.bindContext(sortField, {} as IReduxState);
           if (!context.canGroup || context.hasError) {
             throw ApiException.tipError(ApiTipConstant.api_params_lookup_field_can_not_sort, { fieldId: sortFieldId });
+          }
+        }
+      }
+    }
+    if (property.filterInfo && property.filterInfo.conditions.length) {
+      const foreignFieldMap = isSelfLink ? fieldMap : await this.metaService.getFieldMapByDstId(foreignDatasheetId);
+      for (const condition of property.filterInfo.conditions) {
+        const filterField = foreignFieldMap[condition.fieldId];
+        if (!filterField) {
+          throw ApiException.tipError(ApiTipConstant.api_params_lookup_filter_field_not_exists, { fieldId: condition.fieldId });
+        }
+        condition.fieldType = getFieldTypeString(filterField.type);
+        if (![FieldType.Formula, FieldType.LookUp].includes(filterField.type)) {
+          const context = Field.bindContext(filterField, {} as IReduxState);
+          if (!context.acceptFilterOperators.includes(condition.operator)) {
+            throw ApiException.tipError(ApiTipConstant.api_params_lookup_filter_field_invalid_operation, {
+              fieldId: condition.fieldId,
+              operator: condition.operator,
+            });
           }
         }
       }

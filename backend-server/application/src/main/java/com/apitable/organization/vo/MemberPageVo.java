@@ -44,8 +44,8 @@ public class MemberPageVo {
     private Long memberId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
-        + ".com/2019/11/12/17123187253.png")
+    @Schema(description = "Head portrait address",
+        example = "http://wwww.apitable.com/2019/11/12/17123187253.png")
     private String avatar;
 
     @Schema(description = "User nickname", example = "This is a user nickname")
@@ -65,8 +65,8 @@ public class MemberPageVo {
     @Schema(description = "Department ID", example = "1,2,3")
     private String teamIds;
 
-    @Schema(description = "Department", example = "R&D Department | Operation Department | Design"
-        + " Department")
+    @Schema(description = "Department",
+        example = "R&D Department | Operation Department | Design Department")
     private String teams;
 
     @Schema(description = "Whether activated", example = "true")

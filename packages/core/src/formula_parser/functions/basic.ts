@@ -57,9 +57,10 @@ export const getBlankValueByType = function(type: string, value: any) {
     return null;
   }
   switch (type) {
-    case BasicValueType.Number: {
-      return 0;
-    }
+    // https://github.com/vikadata/vikadata/issues/6359
+    // case BasicValueType.Number: {
+    //   return 0;
+    // }
     case BasicValueType.String: {
       return '';
     }
