@@ -22,11 +22,6 @@ public class HttpServletUtil {
     public static Map<String, String> getParameterAsMap(HttpServletRequest request,
                                                         boolean fetchCookies) {
         Map<String, String> queryMap = new HashMap<>();
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            queryMap.put(parameterNames.nextElement(),
-                request.getParameter(parameterNames.nextElement()));
-        }
         if (fetchCookies) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
