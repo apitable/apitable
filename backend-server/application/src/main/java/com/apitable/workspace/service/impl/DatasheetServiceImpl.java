@@ -406,7 +406,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 }
             }
             FieldType type = FieldType.create(fieldMapRo.getType());
-            Object originDstId = fieldMapRo.getProperty().get("datasheetId");
+            Object originDstId = Optional.ofNullable(fieldMapRo.getProperty())
+                .orElseGet(JSONObject::new).get("datasheetId");
             switch (type) {
                 case LINK:
                     LinkFieldProperty property =
@@ -471,7 +472,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case AUTO_NUMBER:
                     autoNumberFieldIds.add(fieldMapRo.getId());
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
@@ -490,7 +490,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case CREATED_BY:
                 case LAST_MODIFIED_BY:
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
