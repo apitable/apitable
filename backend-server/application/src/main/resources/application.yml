@@ -14,7 +14,7 @@ spring:
       namespace: ${SESSION_NAMESPACE:apitable:session}
     timeout: ${SESSION_TIMEOUT:30d}
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true&useSSL=${MYSQL_SSL:false}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:apitable@com}
   # Redis
