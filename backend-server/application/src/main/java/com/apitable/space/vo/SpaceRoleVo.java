@@ -47,8 +47,8 @@ public class SpaceRoleVo {
     private Long memberId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
-        + ".com/2019/11/12/17123187253.png")
+    @Schema(description = "Head portrait address",
+        example = "http://wwww.apitable.com/2019/11/12/17123187253.png")
     private String avatar;
 
     @Schema(description = "Member Name", example = "Zhang San")
@@ -66,13 +66,9 @@ public class SpaceRoleVo {
     @JsonIgnore
     private String tempResourceGroupCodes;
 
-    @Schema(description = "Resource group code list", example = "[\"MANAGE_SECURITY\","
-        + "\"MANAGE_TEAM\"]")
+    @Schema(description = "Resource group code list",
+        example = "[\"MANAGE_SECURITY\",\"MANAGE_TEAM\"]")
     private List<String> resourceGroupCodes;
-
-    @Deprecated
-    @Schema(description = "Permission range (old)")
-    private List<RoleResourceVo> resourceScope;
 
     @Schema(description = "Creation time", example = "2020-03-18T15:29:59.000")
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)

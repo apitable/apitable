@@ -28,28 +28,31 @@ import java.util.List;
 public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEntity> {
 
     /**
-     * All the specified invitation email links in the spaces have expired
+     * All the specified invitation email links in the spaces have expired.
      *
      * @param spaceIds space ids
      * @param email    email
      * @return affected rows
      */
-    int expireBySpaceIdAndEmail(@Param("spaceIds") List<String> spaceIds, @Param("email") String email);
+    int expireBySpaceIdAndEmail(@Param("spaceIds") List<String> spaceIds,
+        @Param("email") String email);
 
     /**
-     * All the specified invitation email links in the space have expired
+     * All the specified invitation email links in the space have expired.
      *
      * @param spaceId space id
      * @param emails  emails
      * @return affected rows
      */
-    int expireBySpaceIdAndEmails(@Param("spaceId") String spaceId, @Param("emails") Collection<String> emails);
+    int expireBySpaceIdAndEmails(@Param("spaceId") String spaceId,
+        @Param("emails") Collection<String> emails);
 
     /**
+     * Query invite record.
+     *
      * @param inviteToken invite unique token
      * @return invite records
      */
     SpaceInviteRecordEntity selectByInviteToken(@Param("inviteToken") String inviteToken);
-
 
 }

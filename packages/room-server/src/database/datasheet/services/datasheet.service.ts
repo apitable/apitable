@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IBaseDatasheetPack, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
+import { FieldType, IBaseDatasheetPack, IViewProperty, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import type { DatasheetEntity } from '../entities/datasheet.entity';
 import { CommandService } from 'database/command/services/command.service';
+import { MetaService } from 'database/resource/services/meta.service';
 import { isEmpty } from 'lodash';
+import { NodeService } from 'node/services/node.service';
 import type { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
 import { DatasheetException, ServerException } from 'shared/exception';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
 import { Logger } from 'winston';
-import type { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
-import { DatasheetRepository } from '../repositories/datasheet.repository';
-import { NodeService } from 'node/services/node.service';
 import { UserService } from '../../../user/services/user.service';
+import type { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
+import type { DatasheetEntity } from '../entities/datasheet.entity';
+import { DatasheetRepository } from '../repositories/datasheet.repository';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
-import { MetaService } from 'database/resource/services/meta.service';
 
 @Injectable()
 export class DatasheetService {
@@ -50,7 +50,8 @@ export class DatasheetService {
     private readonly commandService: CommandService,
     @Inject(forwardRef(() => MetaService))
     private readonly resourceMetaService: MetaService,
-  ) {}
+  ) {
+  }
 
   /**
    * Obtain datasheet info, throw exception if not exist
@@ -97,8 +98,8 @@ export class DatasheetService {
     const meta = options?.meta ?? (await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException));
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
-      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds)
-      : await this.datasheetRecordService.getRecordsByDstId(dstId);
+      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount)
+      : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
     const { mainDstRecordMap, foreignDatasheetMap, units } = await this.datasheetFieldHandler.analyze(dstId, {
@@ -120,7 +121,7 @@ export class DatasheetService {
     };
   }
 
-  async batchSave(records: any[]){
+  async batchSave(records: any[]) {
     return await this.datasheetRepository
       .createQueryBuilder()
       .insert()
@@ -281,8 +282,11 @@ export class DatasheetService {
   async fillBaseSnapshotStoreByDstIds(dstIds: string[], options?: ILoadBasePackOptions): Promise<Store<IReduxState>> {
     const packs: IBaseDatasheetPack[] = [];
     for (const dstId of dstIds) {
-      const basePack = await this.getBasePacks(dstId, options);
-      packs.push(...basePack);
+      const basePacks: IBaseDatasheetPack[] = await this.getBasePacks(dstId, options);
+      if (options?.filterViewFilterInfo) {
+        basePacks.forEach((pack) => pack.snapshot.meta.views.forEach((view: IViewProperty) => (view.filterInfo = undefined)));
+      }
+      packs.push(...basePacks);
     }
     const store = this.commandService.fillStore(packs);
     return this.commandService.setPageParam({ datasheetId: dstIds[0]! }, store);

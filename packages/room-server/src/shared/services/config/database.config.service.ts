@@ -29,13 +29,14 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const { host, port, username, password, database, entityPrefix, connectionLimit, keepConnectionAlive, retryDelay } = {
+    const { host, port, username, password, database, ssl, entityPrefix, connectionLimit, keepConnectionAlive, retryDelay } = {
       host: process.env.MYSQL_HOST || 'localhost',
       port: parseInt(process.env.MYSQL_PORT!) || 3306,
       username: process.env.MYSQL_USERNAME || 'root',
-      password: process.env.MYSQL_PASSWORD || 'qwe123456',
+      password: process.env.MYSQL_PASSWORD || 'apitable@com',
       database: process.env.MYSQL_DATABASE || 'apitable',
       entityPrefix: process.env.DATABASE_TABLE_PREFIX || 'apitable_',
+      ssl: process.env.MYSQL_SSL,
       connectionLimit: parseInt(process.env.MYSQL_CONNECTION_LIMIT!) || 20,
       keepConnectionAlive: !!process.env.MYSQL_KEEP_CONNECTION_ALIVE || this.configService.get<boolean>('MYSQL_KEEP_CONNECTION_ALIVE', true),
       retryDelay: parseInt(process.env.MYSQL_RETRY_DELAY!) || 300,
@@ -47,6 +48,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       username,
       password,
       database,
+      ssl,
       entityPrefix,
       // don't change the below settings
       // entities: ['dist/**/*.entity{.ts,.js}'],

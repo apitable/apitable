@@ -28,12 +28,12 @@ import com.apitable.asset.ro.AttachAuditCallbackRo;
 import com.apitable.asset.vo.AssetsAuditVo;
 
 /**
- * Resource Audit Form Service Class
+ * Resource Audit Form Service Class.
  */
 public interface IAssetAuditService extends IService<AssetAuditEntity> {
 
     /**
-     * Create resource audit records
+     * Create resource audit records.
      *
      * @param assetId    resource ID
      * @param checksum   resource summary
@@ -42,14 +42,14 @@ public interface IAssetAuditService extends IService<AssetAuditEntity> {
     void create(Long assetId, String checksum, String uploadPath);
 
     /**
-     * Callback for audit result processing
+     * Callback for audit result processing.
      *
      * @param result callback result
      */
     void auditCallback(AttachAuditCallbackRo result);
 
     /**
-     * Query the list of pictures to be reviewed manually
+     * Query the list of pictures to be reviewed manually.
      *
      * @param page pagination parameters
      * @return List<AssetsAuditVo> callback result
@@ -57,7 +57,7 @@ public interface IAssetAuditService extends IService<AssetAuditEntity> {
     IPage<AssetsAuditVo> readReviews(Page page);
 
     /**
-     * Submit audit results
+     * Submit audit results.
      *
      * @param results Submit audit results
      */

@@ -29,6 +29,7 @@ import {
   ICollaCommandOptions,
   IDeleteFieldData,
   IFieldMap,
+  IInternalFix,
   ILocalChangeset,
   IMeta,
   IOperation,
@@ -38,14 +39,12 @@ import {
   IViewRow,
   NoticeTemplatesConstant,
   Selectors,
-  IInternalFix,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { CommandService } from 'database/command/services/command.service';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { DatasheetRecordSourceService } from 'database/datasheet/services/datasheet.record.source.service';
-import { UserService } from 'user/services/user.service';
 import { FastifyRequest } from 'fastify';
 import { ApiRecordDto } from 'fusion/dtos/api.record.dto';
 import { DataBusService } from 'fusion/services/databus/databus.service';
@@ -71,6 +70,7 @@ import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
+import { UserService } from 'user/services/user.service';
 import { Logger } from 'winston';
 import { DatasheetViewDto } from '../dtos/datasheet.view.dto';
 import { FusionApiFilter } from '../filter/fusion.api.filter';
@@ -100,7 +100,8 @@ export class FusionApiService {
     private readonly databusService: DataBusService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
-  ) {}
+  ) {
+  }
 
   public async getSpaceList(): Promise<IAPISpace[]> {
     const authHeader = { token: this.request.headers.authorization };
@@ -149,6 +150,7 @@ export class FusionApiService {
       loadOptions: {
         auth: { token: this.request.headers.authorization },
         recordIds: [],
+        includeCommentCount: false,
       },
     });
     if (datasheet === null) {
@@ -436,9 +438,9 @@ export class FusionApiService {
     const recordIdSet: Set<string> = new Set(body.records.map((record) => record.recordId));
     const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
     linkedRecordMap &&
-      linkedRecordMap[dstId]?.forEach((recordId) => {
-        recordIdSet.add(recordId);
-      });
+    linkedRecordMap[dstId]?.forEach((recordId) => {
+      recordIdSet.add(recordId);
+    });
     const recordIds = Array.from(recordIdSet);
     const rows: IViewRow[] = recordIds.map((recordId) => {
       return { recordId };
@@ -452,6 +454,7 @@ export class FusionApiService {
         // meta,
         recordIds,
         linkedRecordMap,
+        includeCommentCount: false
       },
     });
     if (datasheet === null) {
@@ -591,6 +594,7 @@ export class FusionApiService {
         // meta,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
+        includeCommentCount: false
       },
     });
     if (datasheet === null) {
@@ -620,7 +624,7 @@ export class FusionApiService {
     const recordIds = result.data as string[];
 
     // API submission requires a record source for tracking the source of the record
-    await this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
+    this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
     const rows = recordIds.map((recordId) => {
       return { recordId };
     });
@@ -628,8 +632,8 @@ export class FusionApiService {
     // success doesn't mean that all records are updated successfully, could be partial success
     // such as the field type is changed while updating, the value may be invalid
     // so we need to reload the record map to get the correct value
-    const recordMap = await this.fusionApiRecordService.getBasicRecordsByRecordIds(dstId, recordIds);
-    await datasheet.resetRecords(recordMap, { auth, applyChangesets: false });
+    // const recordMap = await this.fusionApiRecordService.getBasicRecordsByRecordIds(dstId, recordIds);
+    // await datasheet.resetRecords(recordMap, { auth, applyChangesets: false });
 
     addRecordsProfiler.done({
       message: `addRecords ${dstId} profiler`,

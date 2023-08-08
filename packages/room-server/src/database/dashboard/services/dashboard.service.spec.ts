@@ -17,17 +17,15 @@
  */
 
 import { IPermissions, IResourceMeta, Role } from '@apitable/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
 import { NodeInfo } from 'database/interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
 import { NodeService } from 'node/services/node.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { DashboardService } from './dashboard.service';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('DashboardService', () => {
-  let app: NestFastifyApplication;
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let service: DashboardService;
   let nodeService: NodeService;
   let restService: RestService;
@@ -71,59 +69,51 @@ describe('DashboardService', () => {
       },
     }
   };
-
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [],
       providers: [
         DashboardService,
-        { 
-          provide: NodeService, 
-          useValue: { 
-            getNodeDetailInfo: jest.fn() 
+        {
+          provide: NodeService,
+          useValue: {
+            getNodeDetailInfo: jest.fn()
           }
-        }, 
-        { 
-          provide: RestService, 
-          useValue: { 
-            hasLogin: jest.fn(), 
-            fetchMe: jest.fn() 
+        },
+        {
+          provide: RestService,
+          useValue: {
+            hasLogin: jest.fn(),
+            fetchMe: jest.fn()
           }
-        }, 
-        { 
-          provide: MetaService, 
-          useValue: { 
-            selectMetaByResourceId: jest.fn() 
+        },
+        {
+          provide: MetaService,
+          useValue: {
+            selectMetaByResourceId: jest.fn()
           }
-        }, 
+        },
       ],
     }).compile();
-    // module = await Test.createTestingModule({
-    //   imports: [AppModule],
-    // }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-  });
-
-  afterAll(async() => {
-    await app.close();
-  });
-
-  beforeEach(() => {
-    service = module.get<DashboardService>(DashboardService);
-    nodeService = module.get<NodeService>(NodeService);
-    restService = module.get<RestService>(RestService);
-    resourceMetaService = module.get<MetaService>(MetaService);
-    jest.spyOn(resourceMetaService, 'selectMetaByResourceId').mockImplementation(async(dashboardId) => {
+    service = moduleFixture.get<DashboardService>(DashboardService);
+    nodeService = moduleFixture.get<NodeService>(NodeService);
+    restService = moduleFixture.get<RestService>(RestService);
+    resourceMetaService = moduleFixture.get<MetaService>(MetaService);
+    jest.spyOn(resourceMetaService, 'selectMetaByResourceId').mockImplementation((dashboardId) => {
       if (dashboardId === knownDashboardId) {
-        return await Promise.resolve(meta);
+        return Promise.resolve(meta);
       }
-      return await Promise.resolve({});
+      return Promise.resolve({});
     });
-    jest.spyOn(nodeService, 'getNodeDetailInfo').mockImplementation(async() => {
-      return await Promise.resolve({ node: nodeInfo });
+    jest.spyOn(nodeService, 'getNodeDetailInfo').mockImplementation(() => {
+      return Promise.resolve({ node: nodeInfo });
     });
 
+  });
+
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   describe('All services exist', () => {

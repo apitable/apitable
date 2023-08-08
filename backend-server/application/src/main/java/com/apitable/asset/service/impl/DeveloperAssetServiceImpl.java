@@ -29,24 +29,25 @@ import com.apitable.asset.service.IDeveloperAssetService;
 import org.springframework.stereotype.Service;
 
 /**
- * Workbench-Developer Attachment Table Service Implementation Class
+ * Workbench-Developer Attachment Table Service Implementation Class.
  */
 @Slf4j
 @Service
 public class DeveloperAssetServiceImpl extends ServiceImpl<DeveloperAssetMapper, DeveloperAssetEntity> implements IDeveloperAssetService {
 
     @Override
-    public boolean saveAssetInDeveloper(Long assetId, Long createdBy, String assetChecksum, DeveloperAssetType developerAssetType, String originalFileName, long fileSize) {
+    public void saveAssetInDeveloper(Long assetId, Long createdBy, String assetChecksum,
+        DeveloperAssetType developerAssetType, String originalFileName, long fileSize) {
         log.info("Added developer attachment record");
         DeveloperAssetEntity entity = DeveloperAssetEntity.builder()
-                .assetId(assetId)
-                .assetChecksum(assetChecksum)
-                .type(developerAssetType.getValue())
-                .sourceName(originalFileName)
-                .fileSize((int) fileSize)
-                .createdBy(createdBy)
-                .build();
-        return this.save(entity);
+            .assetId(assetId)
+            .assetChecksum(assetChecksum)
+            .type(developerAssetType.getValue())
+            .sourceName(originalFileName)
+            .fileSize((int) fileSize)
+            .createdBy(createdBy)
+            .build();
+        this.save(entity);
     }
 
 }

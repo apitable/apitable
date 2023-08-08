@@ -29,6 +29,7 @@ import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.organization.dto.MemberIsolatedInfo;
 import com.apitable.organization.dto.MemberTeamInfoDTO;
+import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TeamCteInfo;
 import com.apitable.organization.dto.TeamMemberDTO;
 import com.apitable.organization.dto.TeamPathInfo;
@@ -118,6 +119,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Resource
     private IRoleMemberService iRoleMemberService;
+
+    @Override
+    public List<TeamBaseInfoDTO> getTeamBaseInfo(List<Long> teamIds) {
+        return teamMapper.selectBaseInfoDTOByIds(teamIds);
+    }
 
     @Override
     public List<TeamTreeVo> getTeamTree(String spaceId, Long memberId, Integer depth) {

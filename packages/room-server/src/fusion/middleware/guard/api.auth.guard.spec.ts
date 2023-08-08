@@ -17,34 +17,19 @@
  */
 
 import { ApiTipConstant } from '@apitable/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { ApiException } from '../../../shared/exception';
 import { ApiAuthGuard } from './api.auth.guard';
 
 describe('ApiAuthGuard', () => {
-  let app: NestFastifyApplication;
   let guard: ApiAuthGuard;
   // let request;
   let context: any;
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
-    // request = app.resolve(REQUEST);
+  beforeEach(() => {
     context = {
       switchToHttp: jest.fn().mockReturnThis(),
       getRequest: jest.fn().mockReturnThis(),
     };
     guard = new ApiAuthGuard();
-  });
-
-  afterAll(async() => {
-    await app.close();
   });
 
   describe('canActivate', () => {

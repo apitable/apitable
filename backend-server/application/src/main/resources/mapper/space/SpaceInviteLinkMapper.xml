@@ -115,21 +115,6 @@
         </foreach>
     </update>
 
-    <update id="updateByTeamId">
-        UPDATE ${tablePrefix}space_invite_link
-        SET is_deleted = 1
-        WHERE team_id = #{teamId}
-    </update>
-
-    <update id="updateBatchByTeamId">
-        UPDATE ${tablePrefix}space_invite_link
-        SET is_deleted = 1
-        WHERE team_id IN
-        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </update>
-
     <select id="selectIdByTeamId" resultType="java.lang.Long">
         SELECT id
         FROM ${tablePrefix}space_invite_link

@@ -20,6 +20,7 @@ package com.apitable.starter.oss.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface OssClientRequest {

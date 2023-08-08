@@ -19,6 +19,7 @@
 package com.apitable.widget.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -31,11 +32,13 @@ import lombok.Data;
 @Schema(description = "Request parameters for widget creation")
 public class WidgetCreateRo {
 
-    @Schema(description = "Node ID", required = true, example = "dstAAA/dsbBBB")
+    @Schema(description = "Node ID", requiredMode = RequiredMode.REQUIRED,
+        example = "dstAAA/dsbBBB")
     @NotBlank(message = "Node ID cannot be empty")
     private String nodeId;
 
-    @Schema(description = "Widget Package ID", required = true, example = "wpkBBB")
+    @Schema(description = "Widget Package ID",
+        requiredMode = RequiredMode.REQUIRED, example = "wpkBBB")
     @NotBlank(message = "The Widget package ID cannot be empty")
     private String widgetPackageId;
 

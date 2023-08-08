@@ -279,8 +279,8 @@ export class OtService {
             };
           }
           results.push(remoteChangeset);
-          // member field auto subscription
-          this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
+          // member field auto subscription，async method
+          void this.recordSubscriptionService.handleRecordAutoSubscriptions(commonData, resultSet);
         }
       });
       const endTime = +new Date();
@@ -307,24 +307,17 @@ export class OtService {
       }
       return ids;
     }, [] as string[]);
-
     const allEffectDstIds: string[] = await this.relService.getEffectDatasheetIds(thisBatchResourceIds);
-    const hasRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
-    this.logger.info('applyRoomChangeset-hasRobot', {
-      roomId: message.roomId,
-      msgIds,
-      thisBatchResourceIds,
-      allEffectDstIds,
-      hasRobot,
-    });
-    if (hasRobot) {
+    const hasActiveRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
+    if (hasActiveRobot) {
       // Handle event here
-      this.logger.info('applyRoomChangeset-robot-event-start', { roomId: message.roomId, msgIds });
+      this.logger.info('applyRoomChangeset-robot-event-start', { roomId: message.roomId, msgIds, allEffectDstIds, thisBatchResourceIds });
       // Clear cache
       allEffectDstIds.forEach(resourceId => {
         clearComputeCache(resourceId);
       });
-      await this.eventService.handleChangesets(results);
+      // automation async function
+      void this.eventService.handleChangesets(results);
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }
 
@@ -754,7 +747,7 @@ export class OtService {
    * @date 2021/3/25 11:27 AM
    */
   async copyNodeEffectOt(data: INodeCopyRo): Promise<boolean> {
-    const store = await this.datasheetService.fillBaseSnapshotStoreByDstIds([data.copyNodeId, data.nodeId]);
+    const store = await this.datasheetService.fillBaseSnapshotStoreByDstIds([data.copyNodeId, data.nodeId], { filterViewFilterInfo: true });
     const copyNodeChangesets = this.datasheetChangesetService.getCopyNodeChangesets(data, store);
     if (copyNodeChangesets) {
       const { error } = await this.applyDstChangeset({

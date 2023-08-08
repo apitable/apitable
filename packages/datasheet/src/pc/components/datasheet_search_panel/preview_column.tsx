@@ -26,7 +26,6 @@ import { SecondConfirmType } from './datasheet_search_panel';
 interface IPriviewColumnProps {
   currentMeta: IMeta | null;
   setLoading: React.Dispatch<boolean>;
-  showSubColumnWithWidget: boolean;
   currentViewId: string;
   currentDatasheetId: string;
   secondConfirmType?: SecondConfirmType;
@@ -35,7 +34,7 @@ interface IPriviewColumnProps {
 }
 
 export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps>> = props => {
-  const { currentMeta, setLoading, showSubColumnWithWidget, currentViewId, currentDatasheetId, onChange, secondConfirmType } = props;
+  const { currentMeta, setLoading, currentViewId, currentDatasheetId, onChange, secondConfirmType } = props;
   const [installedWidgets, setInstalledWidgets] = useState<INodeInstalledWidget[] | null>(null);
 
   useEffect(() => {
@@ -44,6 +43,7 @@ export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps
     // eslint-disable-next-line
   }, [currentDatasheetId]);
 
+  const showSubColumnWithWidget = secondConfirmType === SecondConfirmType.Widget;
   const searchDatasheetInstalledWidget = (datasheetId: string) => {
     if (!showSubColumnWithWidget) {
       return;

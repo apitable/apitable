@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetApi, Events, IMeta, Player } from '@apitable/core';
-import { useMount } from 'ahooks';
+import { Events, IMeta, Player, Strings, t } from '@apitable/core';
 import { PreviewColumn } from './preview_column';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
@@ -30,6 +29,8 @@ import { PcWrapper } from './pc_wrapper';
 import { getModalTitle } from './utils';
 import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
+import { Button } from '@apitable/components';
+import classNames from 'classnames';
 
 interface ISearchPanelProps {
   folderId: string;
@@ -42,6 +43,7 @@ interface ISearchPanelProps {
     widgetIds?: string[],
     nodeName?: string;
     meta?: IMeta;
+    secondConfirmType?: SecondConfirmType
   }) => void;
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType;
@@ -62,25 +64,26 @@ export enum SecondConfirmType {
 }
 
 const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = props => {
-  const { activeDatasheetId, noCheckPermission, folderId, secondConfirmType, showMirrorNode } = props;
+  const { activeDatasheetId, noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
 
   const [state, updateState] = useReducer(searchPanelReducer, {
     currentMeta: null,
     loading: true,
     currentDatasheetId: activeDatasheetId,
+    currentFolderId: folderId,
+    currentMirrorId: '',
     currentViewId: '',
+    showSearch: false,
+    parents: [],
+    searchValue: '',
+    onlyShowEditableNode: secondConfirmType === SecondConfirmType.Form,
+    nodes: [],
+    searchResult: '',
+    folderLoaded: false,
   });
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-
-  const needSearchDatasheetMetaData = secondConfirmType === SecondConfirmType.Form || secondConfirmType === SecondConfirmType.Chat;
-
-  useMount(() => {
-    if (secondConfirmType === SecondConfirmType.Form && state.currentMeta == null) {
-      searchDatasheetMetaData(activeDatasheetId);
-    }
-  });
 
   useEffect(() => {
     return () => {
@@ -97,29 +100,6 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
     }, 1000);
   }, [state.loading, secondConfirmType]);
 
-  // 这个方法是需要调取视图数据，进行表单的预览时会调用的接口，如果不需要预览表单，则不会调用
-  const searchDatasheetMetaData = (datasheetId: string) => {
-    if (!datasheetId || !needSearchDatasheetMetaData) {
-      return;
-    }
-    updateState({ loading: true });
-    DatasheetApi.fetchDatasheetMeta(datasheetId).then(res => {
-      const { data, success } = res.data;
-      if (success) {
-        updateState({
-          currentMeta: data,
-          loading: false,
-          currentDatasheetId: datasheetId,
-        });
-        if (data.views?.length) {
-          updateState({
-            currentViewId: data.views[0].id,
-          });
-        }
-      }
-    });
-  };
-
   const hidePanel = (e: any) => {
     stopPropagation(e);
     props.setSearchPanelVisible(false);
@@ -131,20 +111,25 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
     return <SearchPanelMain
       hidePanel={hidePanel}
       noCheckPermission={noCheckPermission}
-      searchDatasheetMetaData={searchDatasheetMetaData}
       showMirrorNode={showMirrorNode}
-      parentState={state}
-      parentUpdateState={updateState}
+      localState={state}
+      localDispatch={updateState}
       {...props}
     />;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     state, updateState, props.onChange, folderId, showMirrorNode,
-    secondConfirmType, searchDatasheetMetaData, noCheckPermission, secondConfirmType, hidePanel,
+    secondConfirmType, noCheckPermission, secondConfirmType, hidePanel,
   ]);
 
   const SearchContainer = useMemo(() => {
-    return <div className={styles.searchPanelContainer}>
+    return <div
+      className={classNames(styles.searchPanelContainer, {
+        [styles.secondConfirmTypeForWidget]: secondConfirmType === SecondConfirmType.Widget,
+        [styles.secondConfirmTypeForForm]: secondConfirmType === SecondConfirmType.Form,
+        [styles.secondConfirmTypeForChat]: secondConfirmType === SecondConfirmType.Chat,
+      })}
+    >
       {isMobile ? (!viewDataLoaded ? _SearchPanel : null) : _SearchPanel}
       {/* Preview section on the right side of the page. */}
       <PreviewColumn
@@ -152,12 +137,28 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
         setLoading={(value: boolean) => {
           updateState({ loading: value });
         }}
-        showSubColumnWithWidget={secondConfirmType === SecondConfirmType.Widget}
         currentViewId={state.currentViewId}
         currentDatasheetId={state.currentDatasheetId}
-        onChange={props.onChange}
+        onChange={onChange}
         secondConfirmType={secondConfirmType}
       />
+      {
+        secondConfirmType === SecondConfirmType.Chat && <div className={styles.chatbotCreateButtonGroup}>
+          <Button color={'default'} onClick={hidePanel}>
+            {t(Strings.cancel)}
+          </Button>
+          <Button color={'primary'} disabled={!state.currentDatasheetId} onClick={() => {
+            props.onChange({
+              datasheetId: state.currentDatasheetId,
+              nodeName: state.nodes.find(node => node.nodeId === state.currentDatasheetId)?.nodeName,
+              viewId: state.currentViewId,
+              meta: state.currentMeta || undefined,
+            });
+          }}>
+            {t(Strings.ai_datasheet_panel_create_btn_text)}
+          </Button>
+        </div>
+      }
     </div>;
   }, [
     _SearchPanel, isMobile, props.onChange, secondConfirmType,

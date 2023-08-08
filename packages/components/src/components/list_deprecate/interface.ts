@@ -62,12 +62,13 @@ export interface IListItemProps extends HTMLAttributes<HTMLDivElement> {
    * Current option index
    */
   currentIndex: number;
-
+  setRef?: (node: (HTMLElement | null)) => void;
   /**
    * Wrapper component
    */
   wrapperComponent?(children: ReactNode): ReactNode
-
+  active?:boolean;
+  selected?:boolean;
   disabled?: boolean;
 }
 

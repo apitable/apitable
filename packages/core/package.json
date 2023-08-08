@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.23.0",
+  "version": "0.99.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,6 +21,7 @@
     "node": ">=8.x"
   },
   "dependencies": {
+    "@apitable/databus-wasm": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "4.14.161",
     "@types/socket.io-client": "^1.4.36",
@@ -89,6 +90,9 @@
       "node_modules",
       "src"
     ],
+    "moduleNameMapper": {
+      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [

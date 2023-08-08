@@ -52,4 +52,5 @@ export interface ICellUpdatedContext {
     from: any;
     to: any;
   }
+  linkDatasheetId?: string;
 }

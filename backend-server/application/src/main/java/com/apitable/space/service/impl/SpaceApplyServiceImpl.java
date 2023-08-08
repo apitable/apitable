@@ -51,6 +51,7 @@ import com.apitable.space.entity.SpaceApplyEntity;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import static com.apitable.shared.component.notification.NotificationTemplateId.SPACE_JOIN_APPLY_APPROVED;
 import static com.apitable.shared.component.notification.NotificationTemplateId.SPACE_JOIN_APPLY_REFUSED;
@@ -86,6 +87,9 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
 
     @Resource
     private PlayerNotificationMapper playerNotificationMapper;
+
+    @Resource
+    private TransactionTemplate transactionTemplate;
 
     @Override
     public Long create(Long userId, String spaceId) {
@@ -131,7 +135,10 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
             playerNotificationMapper.updateNotifyBodyByIdAndKey(notifyId, applyStatusKey, apply.getStatus());
             throw new BusinessException(APPLY_EXPIRED_OR_PROCESSED);
         }
-        this.updateApplyStatus(userId, agree, apply, notifyId, applyStatusKey);
+        transactionTemplate.execute(a -> {
+            this.updateApplyStatus(userId, agree, apply, notifyId, applyStatusKey);
+            return null;
+        });
     }
 
     @Transactional(rollbackFor = Exception.class)

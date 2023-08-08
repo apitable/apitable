@@ -37,8 +37,8 @@ public class MainAdminInfoVo {
     private String name;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @Schema(description = "Head portrait address", example = "http://wwww.apitable"
-        + ".com/2019/11/12/17123187253.png")
+    @Schema(description = "Head portrait address",
+        example = "http://wwww.apitable.com/2019/11/12/17123187253.png")
     private String avatar;
 
     @Schema(description = "Position", example = "Manager")

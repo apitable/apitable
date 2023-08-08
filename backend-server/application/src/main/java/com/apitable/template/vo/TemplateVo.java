@@ -61,8 +61,8 @@ public class TemplateVo {
     @Schema(description = "Describe", example = "This is a showcase")
     private String description;
 
-    @Schema(description = "Creator user ID (the actual return is uuid)", type = "java.lang"
-        + ".String", example = "1")
+    @Schema(description = "Creator user ID (the actual return is uuid)",
+        type = "java.lang.String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 

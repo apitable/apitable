@@ -17,9 +17,6 @@
  */
 
 import { RedisService } from '@apitable/nestjs-redis';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { DeveloperService } from 'developer/services/developer.service';
 import { I18nService } from 'nestjs-i18n';
 import sha1 from 'sha1';
@@ -27,6 +24,10 @@ import { NodeRateLimiterMiddleware } from 'shared/middleware/node.rate.limiter.m
 import { NODE_LIMITER_PREFIX } from '../common';
 import { IBaseRateLimiter } from '../interfaces';
 import Mock = jest.Mock;
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../../app.module';
+import { clearRedis } from '../testing/test-util';
 
 describe('FusionApiRateLimiter', () => {
   let app: NestFastifyApplication;
@@ -41,7 +42,6 @@ describe('FusionApiRateLimiter', () => {
   let res: any;
 
   beforeAll(async() => {
-    jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -63,23 +63,18 @@ describe('FusionApiRateLimiter', () => {
     callHandler = jest.fn();
   });
 
-  afterAll(async() => {
-    await app.close();
-  });
-
   beforeEach(async() => {
     res = {
       setHeader: jest.fn(),
       end: jest.fn(),
       write: jest.fn(),
     };
-
-    await clearRedis();
+    await clearRedis(redisService);
   });
 
-  async function clearRedis() {
-    await redisService.getClient().flushdb();
-  }
+  afterAll(async() => {
+    await app.close();
+  });
 
   async function waitForAsyncProcessing(seconds = 0.2) {
     await new Promise((r) => setTimeout(r, seconds * 1000));

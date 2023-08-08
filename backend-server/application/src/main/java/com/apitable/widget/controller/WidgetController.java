@@ -279,8 +279,7 @@ public class WidgetController {
     public ResponseData<List<WidgetPack>> copyWidget(
         @RequestBody @Valid final WidgetCopyRo widgetRo) {
         Long userId = SessionContext.getUserId();
-        String nodeId = StrUtil.isNotBlank(widgetRo.getNodeId())
-            ? widgetRo.getNodeId() : widgetRo.getDashboardId();
+        String nodeId = widgetRo.getNodeId();
         ExceptionUtil.isNotBlank(nodeId, NO_ARG);
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);

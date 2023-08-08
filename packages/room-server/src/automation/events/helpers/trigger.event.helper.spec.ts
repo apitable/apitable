@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { AutomationService } from '../../services/automation.service';
-import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
-import { LoggerConfigService } from '../../../shared/services/config/logger.config.service';
-import { WinstonModule } from 'nest-winston/dist/winston.module';
-import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { FieldType } from '@apitable/core';
+import { AutomationTriggerEntity } from '../../entities/automation.trigger.entity';
 import { CommonEventContext } from '../domains/common.event';
 import { EventTypeEnums } from '../domains/event.type.enums';
+import { OFFICIAL_SERVICE_SLUG, TriggerEventHelper } from './trigger.event.helper';
+import { Test, TestingModule } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { QueueDynamicModule } from 'shared/services/queue/queue.dynamic.module';
 
 describe('TriggerEventHelper', () => {
-  let module: TestingModule;
+  let moduleFixture: TestingModule;
   let automationService: AutomationService;
   let triggerEventHelper: TriggerEventHelper;
   const getTrigger = (input: object | undefined) => {
@@ -123,29 +124,30 @@ describe('TriggerEventHelper', () => {
     };
   };
 
-  beforeAll(async() => {
-    module = await Test.createTestingModule({
+  beforeEach(async() => {
+    moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
           useClass: LoggerConfigService,
         }),
+        QueueDynamicModule.forRoot()
       ],
       providers: [
         {
           provide: AutomationService,
           useValue: {
             handleTask: jest.fn().mockReturnValue(Promise.resolve()),
-          },
-        },
-        TriggerEventHelper,
+          }
+        }
+        , TriggerEventHelper,
       ],
     }).compile();
-    automationService = module.get<AutomationService>(AutomationService);
-    triggerEventHelper = module.get<TriggerEventHelper>(TriggerEventHelper);
+    automationService = moduleFixture.get<AutomationService>(AutomationService);
+    triggerEventHelper = moduleFixture.get<TriggerEventHelper>(TriggerEventHelper);
   });
 
-  afterAll(async() => {
-    await module.close();
+  afterEach(async() => {
+    await moduleFixture.close();
   });
 
   it('should be defined', () => {

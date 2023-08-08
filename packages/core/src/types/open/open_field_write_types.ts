@@ -46,6 +46,7 @@ export interface IEffectOption {
    * Whether to allow deletion of options
    */
   enableSelectOptionDelete?: boolean;
+  isBackend?: boolean;
 }
 
 export interface IAddOpenField extends Omit<IOpenField, 'isPrimary' | 'id' | 'property'> {

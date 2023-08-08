@@ -17,7 +17,7 @@
  */
 
 // import App from 'next/app'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Api,
   integrateCdnHost,
@@ -30,6 +30,7 @@ import {
   IUserInfo,
   getTimeZoneOffsetByUtc,
   getTimeZone,
+  WasmApi
 } from '@apitable/core';
 import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
@@ -105,6 +106,7 @@ export interface IUserInfoError {
 }
 
 const initWorker = async() => {
+  await WasmApi.initializeDatabusWasm();
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -148,6 +150,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   });
   const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    window.parent.postMessage({
+      message: 'pageLoaded',
+    }, '*');
+  }, []);
 
   useEffect(() => {
     const handleStart = () => {
@@ -386,20 +394,20 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       <title>
         {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
-      <meta name='description' content='' />
+      <meta name='description' content=''/>
       <meta
         name='keywords'
         content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
       />
-      <meta name='renderer' content='webkit' />
+      <meta name='renderer' content='webkit'/>
       <meta
         name='viewport'
         content='width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
       />
-      <meta name='theme-color' content='#000000' />
+      <meta name='theme-color' content='#000000'/>
       {/* In the pinning browser, join the monitoring center */}
-      <meta name='wpk-bid' content='dta_2_83919' />
+      <meta name='wpk-bid' content='dta_2_83919'/>
     </Head>
     {
       env.ENABLED_REWARDFUL && <>
@@ -410,7 +418,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         `
           }
         </Script>
-        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927' />
+        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927'/>
       </>
     }
 
@@ -463,11 +471,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     </Script>
     {!env.IS_SELFHOST &&
       <>
-        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
-        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
+        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin'/>
+        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin'/>
       </>
     }
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />}
+    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js'/>}
     {
       env.GOOGLE_TAG_MANAGER_ID && <>
         <Script id={'googleTag'}>
@@ -481,7 +489,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         </Script>
         <noscript>
           <iframe src={`https://www.googletagmanager.com/ns.html?id=${env.GOOGLE_TAG_MANAGER_ID}`}
-            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }} />
+            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }}/>
         </noscript>
       </>
     }
@@ -492,7 +500,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             <Provider store={store}>
               <RouterProvider>
                 <ThemeWrapper>
-                  <Component {...pageProps} userInfo={userData} />
+                  <Component {...pageProps} userInfo={userData}/>
                 </ThemeWrapper>
               </RouterProvider>
             </Provider>
@@ -505,9 +513,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
               { 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }
             )}>
             {
-              ((loading !== LoadingStatus.Complete) || userLoading) && <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo' />
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img' alt='logo_text_dark' />
+              ((loading !== LoadingStatus.Complete) || userLoading) &&
+              <div className='main-img-wrap' style={{ height: 'auto' }}>
+                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
+                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img'
+                  alt='logo_text_dark'/>
               </div>
             }
           </div>

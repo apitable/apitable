@@ -19,6 +19,7 @@
 package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -44,11 +45,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class RemindUnitsNoPermissionRo {
 
-    @Schema(description = "Node ID", required = true)
+    @Schema(description = "Node ID", requiredMode = RequiredMode.REQUIRED)
     @NotBlank
     private String nodeId;
 
-    @Schema(description = "Organizational Unit ID List", required = true)
+    @Schema(description = "Organizational Unit ID List", requiredMode = RequiredMode.REQUIRED)
     @NotEmpty
     private List<Long> unitIds;
 

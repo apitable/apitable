@@ -47,9 +47,9 @@ import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.UnitType;
-import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.mapper.UnitMapper;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IRoleService;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
@@ -68,12 +68,13 @@ import com.apitable.workspace.dto.NodeCopyDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.SnapshotDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.enums.FieldType;
 import com.apitable.workspace.enums.NodeException;
 import com.apitable.workspace.mapper.DatasheetMapper;
-import com.apitable.workspace.mapper.DatasheetMetaMapper;
 import com.apitable.workspace.mapper.NodeMapper;
+import com.apitable.workspace.model.DatasheetObject;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
 import com.apitable.workspace.observer.RemindMemberOpSubject;
 import com.apitable.workspace.observer.remind.MailRemind;
@@ -115,25 +116,22 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Datasheet service implements.
+ */
 @Service
 @Slf4j
 public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, DatasheetEntity>
     implements IDatasheetService {
 
     @Resource
-    private IDatasheetMetaService datasheetMetaService;
-
-    @Resource
     private IDatasheetMetaService iDatasheetMetaService;
 
     @Resource
-    private DatasheetMetaMapper datasheetMetaMapper;
+    private IDatasheetRecordService iDatasheetRecordService;
 
     @Resource
-    private IDatasheetRecordService datasheetRecordService;
-
-    @Resource
-    private MemberMapper memberMapper;
+    private IMemberService iMemberService;
 
     @Resource
     private BeetlTemplate beetlTemplate;
@@ -175,11 +173,37 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private IWidgetService iWidgetService;
 
     @Override
+    public DatasheetEntity getByDstId(String dstId) {
+        return baseMapper.selectByDstId(dstId);
+    }
+
+    @Override
     public void batchSave(List<DatasheetEntity> entities) {
         if (CollUtil.isEmpty(entities)) {
             return;
         }
         baseMapper.insertBatch(entities);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void create(Long userId, NodeEntity nodeEntity, DatasheetObject datasheetObject) {
+        DatasheetEntity datasheet = DatasheetEntity.builder()
+            .spaceId(nodeEntity.getSpaceId())
+            .nodeId(nodeEntity.getNodeId())
+            .dstId(nodeEntity.getNodeId())
+            .dstName(nodeEntity.getNodeName())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
+        boolean flag = this.save(datasheet);
+        ExceptionUtil.isTrue(flag, DataSheetException.CREATE_FAIL);
+        iDatasheetMetaService.create(userId, datasheet.getDstId(),
+            datasheetObject.getMeta().toJsonString());
+        // save records
+        iDatasheetRecordService.createRecords(userId, datasheet.getDstId(),
+                datasheetObject.getRecords());
+
     }
 
     @Override
@@ -206,16 +230,15 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         SnapshotMapRo snapshot = initialize(viewName);
         // Save Meta information
         String meta = JSONUtil.parseObj(snapshot.getMeta()).toString();
-        datasheetMetaService.create(creator, datasheet.getDstId(), meta);
+        iDatasheetMetaService.create(creator, datasheet.getDstId(), meta);
         // Save record information
-        datasheetRecordService.saveBatch(creator, snapshot.getRecordMap(),
-            dstId);
+        iDatasheetRecordService.saveBatch(creator, snapshot.getRecordMap(), dstId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo,
-        JSONObject recordMap) {
+                       JSONObject recordMap) {
         DatasheetEntity datasheet = DatasheetEntity.builder()
             .dstName(name)
             .dstId(nodeId)
@@ -223,11 +246,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             .spaceId(spaceId)
             .build();
         // Save Meta information
-        datasheetMetaService.create(userId, datasheet.getDstId(),
+        iDatasheetMetaService.create(userId, datasheet.getDstId(),
             JSONUtil.parseObj(metaMapRo).toString());
         if (recordMap.size() > 0) {
             // Save record information
-            datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
+            iDatasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
 
         boolean flag = this.save(datasheet);
@@ -248,7 +271,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     public void updateIsDeletedStatus(Long userId, List<String> nodeIds, Boolean isDel) {
         log.info("Change the logical deletion status of the datasheet and meta");
         baseMapper.updateIsDeletedByNodeIds(userId, nodeIds, isDel);
-        datasheetMetaMapper.updateIsDeletedByNodeId(userId, nodeIds, isDel);
+        iDatasheetMetaService.batchRemove(nodeIds, isDel, userId);
     }
 
     private SnapshotMapRo initialize(final String viewName) {
@@ -292,7 +315,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId,
-        String destDstName, NodeCopyOptions options, Map<String, String> newNodeMap) {
+                             String destDstName, NodeCopyOptions options,
+                             Map<String, String> newNodeMap) {
         log.info("Copy datasheet");
         // Copy the datasheet, meta, and record.
         DatasheetEntity datasheet = DatasheetEntity.builder()
@@ -310,7 +334,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         MetaMapRo metaMapRo = nodeCopyDTO.getMetaMapRo();
         // save record
         if (ObjectUtil.isNotNull(options) && options.isCopyData()) {
-            datasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(),
+            iDatasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(),
                 nodeCopyDTO, options.isRetainRecordMeta());
         } else {
             // Remove the original record id in each view rows and fill in a blank line.
@@ -341,20 +365,21 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 recordMapRo.setFieldUpdatedMap(fieldUpdatedMap);
             }
             recordMap.set(recordId, recordMapRo);
-            datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
+            iDatasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
         // Save Meta information
-        datasheetMetaService.create(userId, datasheet.getDstId(),
+        iDatasheetMetaService.create(userId, datasheet.getDstId(),
             JSONUtil.parseObj(metaMapRo).toString());
         return nodeCopyDTO.getLinkFieldIds();
     }
 
     private NodeCopyDTO processMeta(Long userId, String spaceId, String sourceDstId,
-        String destDstId, NodeCopyOptions options, Map<String, String> newNodeMap) {
+                                    String destDstId, NodeCopyOptions options,
+                                    Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
         // Obtain the information of the original node correspondence datasheet.
-        SimpleDatasheetMetaDTO metaVo = datasheetMetaService.findByDstId(sourceDstId);
+        SimpleDatasheetMetaDTO metaVo = iDatasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
         // gets the space id of the original node.
         // If it is inconsistent with the space after replication and storage,
@@ -381,6 +406,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 }
             }
             FieldType type = FieldType.create(fieldMapRo.getType());
+            Object originDstId = Optional.ofNullable(fieldMapRo.getProperty())
+                .orElseGet(JSONObject::new).get("datasheetId");
             switch (type) {
                 case LINK:
                     LinkFieldProperty property =
@@ -407,7 +434,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         // Determine whether the columns of the associated datasheet exceed the
                         // limit.
                         SimpleDatasheetMetaDTO meta =
-                            datasheetMetaService.findByDstId(foreignDstId);
+                            iDatasheetMetaService.findByDstId(foreignDstId);
                         MetaMapRo mapRo = meta.getMeta().toBean(MetaMapRo.class);
                         // Check whether the number of columns in the associated datasheet
                         // exceeds the 200 column limit
@@ -431,7 +458,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case FORMULA:
                 case CREATED_TIME:
                 case LAST_MODIFIED_TIME:
-                    Object originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
@@ -446,7 +472,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case AUTO_NUMBER:
                     autoNumberFieldIds.add(fieldMapRo.getId());
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
@@ -465,7 +490,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case CREATED_BY:
                 case LAST_MODIFIED_BY:
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeMap.get(originDstId.toString()));
@@ -497,10 +521,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * Deletes the view that contains the attribute information of the specified field id
+     * Deletes the view that contains the attribute information of the specified field id.
      */
     private void delViewFieldId(MetaMapRo metaMapRo, List<String> delFieldIds,
-        List<String> delFieldIdsInFilter) {
+                                List<String> delFieldIdsInFilter) {
         if (CollUtil.isNotEmpty(delFieldIds) || CollUtil.isNotEmpty(delFieldIdsInFilter)) {
             JSONArray views = JSONUtil.createArray();
             metaMapRo.getViews().jsonIter().forEach(view -> {
@@ -562,7 +586,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * Deletes the object containing the specified field id from the object array
+     * Deletes the object containing the specified field id from the object array.
      */
     private JSONArray delInfoIfExistFieldId(List<String> delFieldIds, JSONArray filterInfo) {
         if (!JSONUtil.isNull(filterInfo)) {
@@ -579,10 +603,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * copy panel
+     * copy panel.
      */
     private void copyWidgetPanels(Long userId, String spaceId, String destDstId,
-        MetaMapRo metaMapRo, Map<String, String> newNodeMap) {
+                                  MetaMapRo metaMapRo, Map<String, String> newNodeMap) {
         // construct a new component panel
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
         JSONArray newWidgetPanels =
@@ -603,7 +627,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public JSONArray generateWidgetPanels(JSONArray widgetPanels,
-        Map<String, String> newWidgetIdMap) {
+                                          Map<String, String> newWidgetIdMap) {
         // construct a new component panel
         JSONArray newWidgetPanels = JSONUtil.createArray();
         if (widgetPanels == null || widgetPanels.size() == 0) {
@@ -685,11 +709,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds,
-        boolean saveDb) {
+                                             boolean saveDb) {
         log.info("Delete the field of the specified association datasheet ");
         if (CollUtil.isNotEmpty(linkDstIds)) {
             // get datasheet information
-            SimpleDatasheetMetaDTO meta = datasheetMetaService.findByDstId(dstId);
+            SimpleDatasheetMetaDTO meta = iDatasheetMetaService.findByDstId(dstId);
             MetaMapRo metaMapRo = meta.getMeta().toBean(MetaMapRo.class);
             List<String> delFieldIds = new ArrayList<>();
             // find the field id of the associated datasheet
@@ -710,12 +734,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             this.delViewFieldId(metaMapRo, delFieldIds, delFieldIds);
             if (saveDb && CollUtil.isNotEmpty(delFieldIds)) {
                 // save changes
-                datasheetMetaService.edit(userId, dstId,
+                iDatasheetMetaService.edit(userId, dstId,
                     MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
             }
             // record processing
             DatasheetRecordMapVo recordMapVo =
-                datasheetRecordService.delFieldData(dstId, delFieldIds, saveDb);
+                iDatasheetRecordService.delFieldData(dstId, delFieldIds, saveDb);
             return SnapshotMapRo.builder().meta(JSONUtil.parseObj(metaMapRo))
                 .recordMap(recordMapVo.getRecordMap()).build();
         }
@@ -724,7 +748,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public Map<String, SnapshotMapRo> findSnapshotMapByDstIds(List<String> dstIds,
-        boolean hasRecordMap) {
+                                                              boolean hasRecordMap) {
         log.info("Get multiple datasheets and corresponding snapshot ");
         List<SnapshotDTO> dtoList = new ArrayList<>();
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIds);
@@ -735,7 +759,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             Map<String, JSONObject> dstIdToRecordMapMap = new HashMap<>(dstIdToMetaMap.size());
             if (hasRecordMap) {
                 List<DatasheetRecordMapVo> mapByDstIds =
-                    datasheetRecordService.findMapByDstIds(dstIdToMetaMap.keySet());
+                    iDatasheetRecordService.findMapByDstIds(dstIdToMetaMap.keySet());
                 dstIdToRecordMapMap = mapByDstIds.stream().collect(
                     Collectors.toMap(DatasheetRecordMapVo::getDstId,
                         DatasheetRecordMapVo::getRecordMap));
@@ -757,7 +781,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo,
-        Map<String, String> newNodeIdMap) {
+                                          Map<String, String> newNodeIdMap) {
         log.info("Replace the datasheet ID in the field attribute ");
         JSONObject fieldMap = JSONUtil.createObj();
         List<String> delFieldIds = new ArrayList<>();
@@ -766,6 +790,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         for (Object field : metaMapRo.getFieldMap().values()) {
             FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
             FieldType type = FieldType.create(fieldMapRo.getType());
+            Object originDstId = fieldMapRo.getProperty().get("datasheetId");
             switch (type) {
                 case LINK:
                     LinkFieldProperty property =
@@ -785,7 +810,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case FORMULA:
                 case CREATED_TIME:
                 case LAST_MODIFIED_TIME:
-                    Object originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
                             .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
@@ -844,7 +868,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
         // self don't need to send notifications, filter
         Long memberId =
-            userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+            userId == null ? -2L : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         // Gets the organizational unit of the member type, the corresponding member.
         Map<Long, Long> unitIdToMemberIdMap = units.stream()
             .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
@@ -893,7 +917,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         }
         // distinct, build notification message
         List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
-        List<Long> userIds = memberMapper.selectUserIdsByMemberIds(distinctMemberIds);
+        List<Long> userIds = iMemberService.getUserIdsByMemberIds(distinctMemberIds);
         CollUtil.removeNull(userIds);
         if (CollUtil.isEmpty(userIds)) {
             return;
@@ -989,7 +1013,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     private void getRoleMemberIds(Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds,
-        Map<Long, Long> unitIdToMemberIdMap, Map<Long, List<Long>> unitIdToMemberIdsMap) {
+                                  Map<Long, Long> unitIdToMemberIdMap,
+                                  Map<Long, List<Long>> unitIdToMemberIdsMap) {
         roleUnitIdToRoleMemberUnitIds.forEach((key, value) -> {
             HashSet<Long> readyAddMemberIds = CollUtil.newHashSet();
             value.forEach((unitId) -> {

@@ -163,18 +163,6 @@ public interface IControlRoleService extends IService<ControlRoleEntity> {
     void removeByControlIdAndUnitIds(String controlId, List<Long> unitIds);
 
     /**
-     * Obtain Org Unit ID according to permission
-     *
-     * @param controlId Control Unit ID
-     * @param unitId    Org Unit ID
-     * @param roleCode Role Code
-     * @param ignoreDeleted Ignore delete flag
-     * @return Org Unit ID
-     */
-    ControlRoleEntity getByControlIdAndUnitIdAndRoleCode(String controlId, Long unitId, String roleCode,
-            boolean ignoreDeleted);
-
-    /**
      * Update whether the permission is deleted
      *
      * @param ids Primary key ID

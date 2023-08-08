@@ -22,6 +22,8 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.model.DatasheetObject;
 import com.apitable.workspace.ro.MetaMapRo;
 import com.apitable.workspace.ro.RemindMemberRo;
 import com.apitable.workspace.ro.SnapshotMapRo;
@@ -33,44 +35,61 @@ import java.util.Map;
 public interface IDatasheetService extends IService<DatasheetEntity> {
 
     /**
+     * get by datasheet id.
+     *
+     * @param dstId datasheet id
+     * @return DatasheetEntity
+     */
+    DatasheetEntity getByDstId(String dstId);
+
+    /**
      * @param entities datasheet
      */
     void batchSave(List<DatasheetEntity> entities);
 
     /**
-     * @param creator creator
-     * @param spaceId space id
-     * @param dstId datasheet id
-     * @param dstName datasheet name
+     * create datasheet.
+     *
+     * @param userId          user id
+     * @param nodeEntity      node entity
+     * @param datasheetObject datasheet object
+     */
+    void create(Long userId, NodeEntity nodeEntity, DatasheetObject datasheetObject);
+
+    /**
+     * @param creator  creator
+     * @param spaceId  space id
+     * @param dstId    datasheet id
+     * @param dstName  datasheet name
      * @param viewName view name
      */
     void create(Long creator, String spaceId, String dstId, String dstName,
-        String viewName);
+                String viewName);
 
     /**
      * create datasheet
      *
-     * @param userId user id
-     * @param spaceId space id
+     * @param userId    user id
+     * @param spaceId   space id
      * @param nodeId    node id
      * @param name      node name
      * @param metaMapRo meta map
      * @param recordMap record map
      */
     void create(Long userId, String spaceId, String nodeId, String name, MetaMapRo metaMapRo,
-        JSONObject recordMap);
+                JSONObject recordMap);
 
     /**
      * update the datasheet name according to node id
      *
-     * @param userId user id
-     * @param dstId datasheet id
+     * @param userId  user id
+     * @param dstId   datasheet id
      * @param dstName datasheet name
      */
     void updateDstName(Long userId, String dstId, String dstName);
 
     /**
-     * @param userId user id
+     * @param userId  user id
      * @param nodeIds node ids
      * @param isDel   false is recovery
      */
@@ -79,8 +98,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     /**
      * copy table
      *
-     * @param userId user id
-     * @param spaceId space id
+     * @param userId      user id
+     * @param spaceId     space id
      * @param sourceDstId source datasheet id
      * @param destDstId   new datasheet id
      * @param destDstName new datasheet name
@@ -89,21 +108,20 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @return List<String>
      */
     List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId,
-        String destDstName,
-        NodeCopyOptions options, Map<String, String> newNodeMap);
+                      String destDstName,
+                      NodeCopyOptions options, Map<String, String> newNodeMap);
 
     /**
-     *
-     * @param widgetPanels      source widget panel
-     * @param newWidgetIdMap    widget ID MAP
+     * @param widgetPanels   source widget panel
+     * @param newWidgetIdMap widget ID MAP
      * @return WidgetPanels
      */
     JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap);
 
     /**
-     * @param dstIds    datasheet ids
-     * @author Chambers
+     * @param dstIds datasheet ids
      * @return List<BaseNodeInfo>
+     * @author Chambers
      */
     List<BaseNodeInfo> getForeignDstIdsFilterSelf(List<String> dstIds);
 
@@ -119,19 +137,19 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     /**
      * Deletes the field of the specified association table
      *
-     * @param userId user id
-     * @param dstId datasheet id
+     * @param userId     user id
+     * @param dstId      datasheet id
      * @param linkDstIds associated datasheet id
      * @param saveDb     whether save to database
      * @return snapshot
      */
     SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds,
-        boolean saveDb);
+                                      boolean saveDb);
 
     /**
      * get multiple tables and corresponding snapshot
      *
-     * @param dstIds datasheet ids
+     * @param dstIds       datasheet ids
      * @param hasRecordMap whether record map is included
      * @return dstId - snapshot map
      */
@@ -140,19 +158,19 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     /**
      * Replace the number table ID in the field attribute.
      *
-     * @param userId user id
+     * @param userId       user id
      * @param sameSpace    is it the same space
      * @param metaMapRo    meta data
      * @param newNodeIdMap original node id - new node id map
      * @return delFieldIds
      */
     List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo,
-        Map<String, String> newNodeIdMap);
+                                   Map<String, String> newNodeIdMap);
 
     /**
      * Member field mentions other people's record operation
      *
-     * @param userId user id
+     * @param userId  user id
      * @param spaceId space id
      * @param ro      request parameters
      */

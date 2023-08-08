@@ -17,8 +17,8 @@
  */
 
 import { FieldType, IField, IFieldMap, IMeta } from '@apitable/core';
-import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
+import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 
 @EntityRepository(DatasheetMetaEntity)
 export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
@@ -63,7 +63,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
    */
   selectMetaWithFirstViewByDstId(dstId: string): Promise<{ metadata: IMeta } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select("JSON_OBJECT('fieldMap', vdm.meta_data->'$.fieldMap', 'views', JSON_ARRAY(vdm.meta_data->'$.views[0]'))", 'metadata')
+      .select('JSON_OBJECT(\'fieldMap\', vdm.meta_data->\'$.fieldMap\', \'views\', JSON_ARRAY(vdm.meta_data->\'$.views[0]\'))', 'metadata')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ metadata: IMeta }>();
@@ -95,7 +95,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldMapByDstId(dstId: string): Promise<{ fieldMap: IFieldMap } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select("vdm.meta_data->'$.fieldMap'", 'fieldMap')
+      .select('vdm.meta_data->\'$.fieldMap\'', 'fieldMap')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ fieldMap: IFieldMap }>();
@@ -103,7 +103,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ field: IField } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select("JSON_EXTRACT(vdm.meta_data, CONCAT('$.fieldMap.', :fieldId))", 'field')
+      .select('JSON_EXTRACT(vdm.meta_data, CONCAT(\'$.fieldMap.\', :fieldId))', 'field')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .setParameter('fieldId', fieldId)
@@ -112,7 +112,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldTypeByFldIdAndDstId(dstId: string, fieldId: string): Promise<{ type?: FieldType } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select("JSON_EXTRACT(vdm.meta_data, CONCAT('$.fieldMap.', :fieldId, '.type'))", 'type')
+      .select('JSON_EXTRACT(vdm.meta_data, CONCAT(\'$.fieldMap.\', :fieldId, \'.type\'))', 'type')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .setParameter('fieldId', fieldId)
@@ -121,7 +121,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   countRowsByDstId(dstId: string): Promise<{ count: number } | undefined> {
     return this.createQueryBuilder('vdm')
-      .select("IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> '$.views[0].rows' )), 0)", 'count')
+      .select('IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> \'$.views[0].rows\' )), 0)', 'count')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ count: number }>();
@@ -129,12 +129,21 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectViewIdsByDstId(dstId: string): Promise<string[] | null> {
     return this.createQueryBuilder('vdm')
-      .select("vdm.meta_data->'$.views[*].id'", 'viewId')
+      .select('vdm.meta_data->\'$.views[*].id\'', 'viewId')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ viewId: string[] }>()
       .then((result) => {
         return result && result.viewId ? result.viewId : null;
       });
+  }
+
+  selectCountByDstIdAndFieldName(dstId: string, fieldName: string): Promise<number> {
+    return this.createQueryBuilder('vdm')
+      .where('JSON_SEARCH(vdm.meta_data, \'one\', :fieldName,  NULL, \'$.fieldMap.*.name\')')
+      .andWhere('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .setParameter('fieldName', fieldName)
+      .getCount();
   }
 }

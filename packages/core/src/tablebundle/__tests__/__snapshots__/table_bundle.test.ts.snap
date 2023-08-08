@@ -3,6 +3,7 @@
 exports[`TableBundle add data sheet 1`] = `
 Map {
   "dst001" => TableBundleDataSheet {
+    "extras": undefined,
     "snapshot": {
       "meta": {
         "fieldMap": {
@@ -103,6 +104,7 @@ Map {
 
 exports[`TableBundle add data sheet 2`] = `
 TableBundleDataSheet {
+  "extras": undefined,
   "snapshot": {
     "meta": {
       "fieldMap": {
@@ -203,6 +205,7 @@ TableBundleDataSheet {
 exports[`TableBundle parser zip file 1`] = `
 Map {
   "dst001" => TableBundleDataSheet {
+    "extras": undefined,
     "snapshot": {
       "meta": {
         "fieldMap": {
@@ -303,6 +306,7 @@ Map {
 
 exports[`TableBundle parser zip file 2`] = `
 TableBundleDataSheet {
+  "extras": undefined,
   "snapshot": {
     "meta": {
       "fieldMap": {

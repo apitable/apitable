@@ -18,28 +18,14 @@
 
 import { ApiTipConstant } from '@apitable/core';
 import '@apitable/i18n-lang';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'app.module';
 import { FieldCreateRo } from 'fusion/ros/field.create.ro';
 import { ApiException } from 'shared/exception';
 import { CreateFieldPipe } from './create.field.pipe';
 
 describe('CreateFieldPipe', () => {
-  let app: NestFastifyApplication;
   let pipe: CreateFieldPipe;
-  beforeAll(async() => {
-    jest.setTimeout(60000);
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    app = module.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-    await app.init();
+  beforeAll(() => {
     pipe = new CreateFieldPipe({} as any, {} as any);
-  });
-
-  afterAll(async() => {
-    await app.close();
   });
 
   describe('validate field', () => {

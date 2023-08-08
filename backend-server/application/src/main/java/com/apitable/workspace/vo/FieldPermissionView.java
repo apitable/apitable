@@ -38,8 +38,8 @@ public class FieldPermissionView {
     @Schema(description = "Node ID", example = "dstGxznHFXf9pvF1LZ")
     private String nodeId;
 
-    @Schema(description = "Datasheet ID（Node ID / Source Datasheet node ID）", example =
-        "dstGxznHFXf9pvF1LZ")
+    @Schema(description = "Datasheet ID（Node ID / Source Datasheet node ID）",
+        example = "dstGxznHFXf9pvF1LZ")
     private String datasheetId;
 
     @Schema(description = "Datasheet field permission information", type = "java.util.Map")

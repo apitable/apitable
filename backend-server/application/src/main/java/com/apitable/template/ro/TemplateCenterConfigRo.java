@@ -19,6 +19,7 @@
 package com.apitable.template.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Data;
 
 /**
@@ -36,25 +37,29 @@ public class TemplateCenterConfigRo {
     @Schema(description = "Request Bearer Token", example = "uskxx")
     private String token;
 
-    @Schema(description = "Recommend Datasheet ID", example = "dstxxx", required = true)
+    @Schema(description = "Recommend Datasheet ID",
+        requiredMode = RequiredMode.REQUIRED, example = "dstxxx")
     private String recommendDatasheetId;
 
     @Schema(description = "Recommend View ID", example = "viwxxx")
     private String recommendViewId;
 
-    @Schema(description = "Template Category Datasheet ID", example = "dstxxx", required = true)
+    @Schema(description = "Template Category Datasheet ID",
+        requiredMode = RequiredMode.REQUIRED, example = "dstxxx")
     private String categoryDatasheetId;
 
     @Schema(description = "Template Category View ID", example = "viwxxx")
     private String categoryViewId;
 
-    @Schema(description = "Template Album Datasheet ID", example = "dstxxx", required = true)
+    @Schema(description = "Template Album Datasheet ID",
+        requiredMode = RequiredMode.REQUIRED, example = "dstxxx")
     private String albumDatasheetId;
 
     @Schema(description = "Template Album View ID", example = "viwxxx")
     private String albumViewId;
 
-    @Schema(description = "Template Datasheet ID", example = "dstxxx", required = true)
+    @Schema(description = "Template Datasheet ID",
+        requiredMode = RequiredMode.REQUIRED, example = "dstxxx")
     private String templateDatasheetId;
 
     @Schema(description = "Template View ID", example = "viwxxx")

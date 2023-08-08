@@ -17,7 +17,7 @@
  */
 
 import { blackBlue } from '@apitable/components';
-import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, RollUpFuncType, Selectors, Strings, t } from '@apitable/core';
+import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, PREVIEW_DATASHEET_ID, RollUpFuncType, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -293,6 +293,7 @@ export const useGrid = (props: IUseGridProps) => {
 
   // Row head toolbar
   const hoverRowHeadOperation: React.ReactNode[] = [];
+  const datasheet = useSelector(state => Selectors.getDatasheet(state));
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
     const row = linearRows[rowIndex];
@@ -304,6 +305,7 @@ export const useGrid = (props: IUseGridProps) => {
     if ((!isActive && !isChecked) && realAreaType === AreaType.None) continue;
     const isHovered = recordId === pointRecordId && pointRowType === CellType.Record;
     const commentCount = Selectors.getRecord(state, recordId, datasheetId)?.commentCount || 0;
+    const isPreview = datasheet?.id === PREVIEW_DATASHEET_ID;
     hoverRowHeadOperation.push(
       <RowHeadOperation
         key={`hover-head-operation-${recordId}`}
@@ -314,6 +316,7 @@ export const useGrid = (props: IUseGridProps) => {
         rowIndex={rowIndex}
         commentCount={commentCount}
         isAllowDrag={isAllowDrag}
+        isPreview={isPreview}
         recordId={recordId}
       />
     );

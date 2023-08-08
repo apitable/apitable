@@ -23,7 +23,7 @@ import { IJOTAction } from 'engine/ot';
 import { isEmpty, isEqual, isNumber, isString } from 'lodash';
 import { DatasheetActions, Field, handleEmptyCellValue, ICellValue } from 'model';
 import { IRecordAlarm, Selectors } from '../../exports/store';
-import { ResourceType, WithOptional } from 'types';
+import { ResourceType, SegmentType, WithOptional } from 'types';
 import { FieldType, IField, IUnitIds } from 'types/field_types';
 import { getNewId, IDPrefix, num2number, str2number } from 'utils';
 import { IInternalFix } from '../common/field';
@@ -139,7 +139,15 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
         }
       }
 
-      // There will be some data problems on the line, and brotherFieldId will also exist in the case of self-table association, 
+      if (field.type === FieldType.URL && Array.isArray(value)) {
+        value = value?.map((v: any) => ({
+          type: SegmentType.Url,
+          text: v.link || v.text,
+          title: v.title || v.text,
+        })) as any;
+      }
+
+      // There will be some data problems on the line, and brotherFieldId will also exist in the case of self-table association,
       // resulting in the existence of redundant actions
       if (field.type === FieldType.Link && field.property.brotherFieldId && field.property.foreignDatasheetId !== datasheetId) {
         /**

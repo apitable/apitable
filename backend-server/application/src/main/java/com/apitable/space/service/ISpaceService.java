@@ -23,6 +23,7 @@ import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
 import com.apitable.space.entity.SpaceEntity;
+import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceUpdateOpRo;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
@@ -75,9 +76,9 @@ public interface ISpaceService extends IService<SpaceEntity> {
      *
      * @param user      user
      * @param spaceName spaceName
-     * @return space id
+     * @return space object
      */
-    String createSpace(UserEntity user, String spaceName);
+    Space createSpace(UserEntity user, String spaceName);
 
     /**
      * update space information.
@@ -202,6 +203,14 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param consumer consumer
      */
     void checkMemberIsMainAdmin(String spaceId, Long memberId, Consumer<Boolean> consumer);
+
+    /**
+     * throw exception if member is not admin in space.
+     *
+     * @param spaceId  space id
+     * @param memberId member id
+     */
+    void checkMemberIsAdmin(String spaceId, Long memberId);
 
     /**
      * Check that the members is not the master administrator of the space

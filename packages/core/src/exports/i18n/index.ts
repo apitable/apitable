@@ -24,12 +24,11 @@ import type { StringKeysMapType, StringKeysType } from 'config/stringkeys.interf
 
 export * from 'config/stringkeys.interface';
 
-// String.key will return key, for compatibility
-export const Strings = new Proxy({}, {
-  get: function(_target, key) {
+export const Strings = new Proxy({} as Record<keyof StringKeysMapType, string>, {
+  get: function(_target, key: string) {
     return key;
   },
-}) as (StringKeysMapType) as any;
+}) as StringKeysType;
 
 /**
  * read Settings in config
@@ -41,9 +40,11 @@ const _global = global || window;
 
 export function getLanguage() {
   let clientLang = null;
-  if(_global.document){
-    // @ts-ignore
-    clientLang = localStorage.getItem('client-lang');
+  if (typeof window !== 'undefined') {
+    try {
+      // @ts-ignore
+      clientLang = localStorage.getItem('client-lang');
+    } catch (e) {}
   }
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
@@ -75,13 +76,21 @@ const loadLanguage = (lang: string) => {
     }
   } else {
     try {
-      const path = require('path');
+      // load language for room-server. suitable for docker environment
       const fs = require('fs');
-      const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
-      const jsonData = fs.readFileSync(pagesDirectory);
-      data = JSON.parse(jsonData.toString());
-    } catch(error) {
-      console.error('load strings.json error', error);
+      const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
+      data = JSON.parse(jsonData);
+    } catch (_e) {
+      // load language for frontend
+      try {
+        const path = require('path');
+        const fs = require('fs');
+        const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
+        const jsonData = fs.readFileSync(pagesDirectory);
+        data = JSON.parse(jsonData);
+      } catch (error) {
+        console.error('load strings.json error', error);
+      }
     }
   }
   return data;
@@ -109,6 +118,6 @@ require('@apitable/i18n-lang');
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
 
-export function t(stringKey: StringKeysType, options: any = null, isPlural = false): string {
-  return i18n.getText(stringKey, options, isPlural);
+export function t(stringKey: keyof StringKeysMapType | unknown, options: any = null, isPlural = false): string {
+  return i18n.getText(stringKey as string, options, isPlural);
 }

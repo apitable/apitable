@@ -22,6 +22,9 @@ interface IProps {
     children: ReactElement,
     placement?: Placement,
     className?: string,
+    options?: {
+      offset?: number
+    },
     arrow?: boolean
 }
 
@@ -30,6 +33,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
   className,
   placement = 'bottom',
   children,
+  options,
   arrow: hasArrow = true
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +46,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
     placement,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(16),
+      offset(options?.offset ?? 16),
       ...(
         hasArrow ? (
           [

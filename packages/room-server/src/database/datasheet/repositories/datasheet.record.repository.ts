@@ -65,4 +65,8 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
       [path, dstId, recordId],
     );
   }
+
+  selectDeletedCountByDstIdAndRecordIs(dstId: string, recordIds: string[]): Promise<number> {
+    return this.count({ where: [{ dstId, recordId: In(recordIds), isDeleted: true }] });
+  }
 }

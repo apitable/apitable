@@ -33,7 +33,6 @@ import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.ro.SearchUnitRo;
 import com.apitable.organization.service.IMemberSearchService;
-import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IOrganizationService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.vo.OrganizationUnitVo;
@@ -90,9 +89,6 @@ public class OrganizationController {
     private TeamMapper teamMapper;
 
     @Resource
-    private IMemberService memberService;
-
-    @Resource
     private IOrganizationService iOrganizationService;
 
     @Resource
@@ -116,15 +112,15 @@ public class OrganizationController {
     /**
      * Global search.
      */
-    @GetResource(path = "/search", name = "Global search")
+    @GetResource(path = "/search")
     @Operation(summary = "Global search", description = "fuzzy search department or members")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "keyword", description = "keyword", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
-        @Parameter(name = "className", description = "the highlight style", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
+        @Parameter(name = "keyword", description = "keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
+        @Parameter(name = "className", description = "the highlight style",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
     public ResponseData<SearchResultVo> searchTeamInfo(@RequestParam("keyword") String keyword,
         @RequestParam(value = "className", required = false, defaultValue = "highLight")
@@ -153,16 +149,16 @@ public class OrganizationController {
     /**
      * Search departments or members（it will be abandoned）.
      */
-    @GetResource(path = "/search/unit", name = "search for departments or members")
-    @Operation(summary = "Search departments or members（it will be abandoned）", description =
-        "fuzzy search unit")
+    @GetResource(path = "/search/unit")
+    @Operation(summary = "Search departments or members（it will be abandoned）",
+        description = "fuzzy search unit")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "keyword", description = "keyword", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
-        @Parameter(name = "className", description = "the highlight style", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
+        @Parameter(name = "keyword", description = "keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "design"),
+        @Parameter(name = "className", description = "the highlight style",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
     public ResponseData<List<OrganizationUnitVo>> searchSubTeamAndMembers(
         @RequestParam("keyword") String keyword,
@@ -210,17 +206,17 @@ public class OrganizationController {
      * search organization resources.
      */
     @GetResource(path = "/searchUnit", requiredLogin = false)
-    @Operation(summary = "search organization resources", description = "Provide input word fuzzy"
-        + " search organization resources")
+    @Operation(summary = "search organization resources",
+        description = "Provide input word fuzzy search organization resources")
     @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
-            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
         @Parameter(name = "linkId", description = "link id: node share id | template id",
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG"),
-        @Parameter(name = "className", description = "the highlight style", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
-        @Parameter(name = "keyword", description = "keyword", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "design")
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8Tx"),
+        @Parameter(name = "className", description = "the highlight style",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "keyword", description = "keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "design")
     })
     public ResponseData<UnitSearchResultVo> search(@RequestParam(name = "keyword") String keyword,
         @RequestParam(value = "linkId", required = false) String linkId,
@@ -237,15 +233,16 @@ public class OrganizationController {
      * Query the sub departments and members of department.
      */
     @GetResource(path = "/getSubUnitList", requiredLogin = false)
-    @Operation(summary = "Query the sub departments and members of department", description =
-        "Query the sub departments and members of department. if team id lack, default is 0")
+    @Operation(summary = "Query the sub departments and members of department",
+        description = "Query the sub departments and members of department."
+            + " if team id lack, default is 0")
     @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
-            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "0"),
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "teamId", description = "team id",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "0"),
         @Parameter(name = "linkId", description = "link id: node share id | template id",
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG")
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8Txx")
     })
     public ResponseData<SubUnitResultVo> getSubUnitList(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
@@ -278,16 +275,17 @@ public class OrganizationController {
         + "selected units are loaded by default when not keyword. The most recently added member "
         + "of the same group are loaded when not selected. Load max 10")
     @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
-            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
         @Parameter(name = "linkId", description = "link id: node share id | template id",
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8T8vAfehg3yj3McmDG"),
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr8Tx"),
         @Parameter(name = "keyword", description = "keyword", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "Lili"),
         @Parameter(name = "unitIds", description = "unitIds", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "1271,1272"),
-        @Parameter(name = "filterIds", description = "specifies the organizational unit to "
-            + "filter", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "123,124"),
+        @Parameter(name = "filterIds", in = ParameterIn.QUERY,
+            description = "specifies the organizational unit to filter",
+            schema = @Schema(type = "string"), example = "123,124"),
         @Parameter(name = "all", description = "whether to load all departments and members",
             schema = @Schema(type = "boolean"), in = ParameterIn.QUERY),
         @Parameter(name = "searchEmail", description = "whether to search for emails",
@@ -330,11 +328,11 @@ public class OrganizationController {
      * accurately query departments and members.
      */
     @PostResource(path = "/searchUnitInfoVo", requiredLogin = false)
-    @Operation(summary = "accurately query departments and members", description = "scenario"
-        + ":field conversion（If the amount of data is large, the content requested by GET will "
-        + "exceed the limit.）")
-    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
-        @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
+    @Operation(summary = "accurately query departments and members",
+        description = "scenario field conversion（If the amount of data is large,"
+            + " the content requested by GET will exceed the limit.）")
+    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<List<UnitInfoVo>> searchUnitInfoVo(@RequestBody @Valid SearchUnitRo ro) {
         String spaceId = this.getSpaceId(ro.getLinkId());
         List<UnitInfoVo> vos =

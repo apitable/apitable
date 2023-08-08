@@ -41,7 +41,9 @@ import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.user.facade.InvitationServiceFacade;
 import com.apitable.interfaces.user.model.MultiInvitationMetadata;
+import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.dto.UploadDataDTO;
 import com.apitable.organization.entity.AuditUploadParseRecordEntity;
@@ -114,6 +116,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -199,6 +202,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId) {
         return baseMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+    }
+
+    @Override
+    public List<Long> getUserIdsByMemberIds(List<Long> memberIds) {
+        return baseMapper.selectUserIdsByMemberIds(memberIds);
     }
 
     @Override
@@ -295,7 +303,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public List<MemberEntity> getBySpaceIdAndEmailsIgnoreDeleted(String spaceId,
-        List<String> emails) {
+                                                                 List<String> emails) {
         return baseMapper.selectBySpaceIdAndEmailsIgnoreDeleted(spaceId, emails);
     }
 
@@ -525,7 +533,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email) {
         log.info("send Invite email");
         // Other invitation links of the mailbox corresponding to the current space are invalid
@@ -550,7 +557,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             // record success
             spaceInviteRecordMapper.insert(record.setSendStatus(true).setStatusDesc("Success"));
         } catch (Exception e) {
-            log.error("Send invitation email {} fail, Cause: {}", email, e);
+            log.error("Send invitation email {} fail", email, e);
             // record fail
             spaceInviteRecordMapper.insert(record.setSendStatus(false).setStatusDesc("Fail"));
             throw new BusinessException(e.getMessage());
@@ -559,7 +566,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendUserInvitationNotifyEmail(String lang, String spaceId,
-        Long fromMemberId, String email) {
+                                              Long fromMemberId, String email) {
         try {
             log.info("Begin send user invitation notify email :{}", DateUtil.now());
             //  email HTML main body
@@ -574,22 +581,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl,
-        String emailAddress) {
+                                        String emailAddress) {
         String inviterName = getMemberNameById(inviter);
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         Dict dict = Dict.create();
-        //TODO remove user_name at next version
-        dict.set("USER_NAME", inviterName);
         dict.set("SPACE_NAME", spaceName);
         dict.set("MEMBER_NAME", inviterName);
         dict.set("INVITE_URL", inviteUrl);
-        Dict mapDict = Dict.create();
-        // remove user_name at next version
-        mapDict.set("USER_NAME", inviterName);
-        mapDict.set("SPACE_NAME", spaceName);
-        mapDict.set("MEMBER_NAME", inviterName);
         NotifyMailFactory.me()
-            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, mapDict, dict,
+            .sendMail(lang, MailPropConstants.SUBJECT_INVITE_NOTIFY, dict, dict,
                 Collections.singletonList(emailAddress));
     }
 
@@ -741,6 +741,45 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     CollUtil.newArrayList(value));
             }
         });
+        TaskManager.me().execute(() ->
+            this.sendAssignGroupEmail(spaceId, teamIds, memberIds, toAddMap));
+    }
+
+    private void sendAssignGroupEmail(String spaceId, List<Long> teamIds,
+        List<Long> memberIds, Map<Long, List<Long>> toAddMap) {
+        List<MemberBaseInfoDTO> memberBaseInfoDTOS =
+            memberMapper.selectBaseInfoDTOByIds(memberIds);
+        List<String> emails = memberBaseInfoDTOS.stream().map(MemberBaseInfoDTO::getEmail)
+            .collect(Collectors.toList());
+        if (emails.isEmpty()) {
+            return;
+        }
+        String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
+        List<UserLangDTO> emailsWithLang =
+            iUserService.getLangByEmails(defaultLang, emails);
+        Map<String, MemberBaseInfoDTO> emailTomemberMap = memberBaseInfoDTOS.stream()
+            .filter(m -> !m.getEmail().isEmpty())
+            .collect(Collectors.toMap(MemberBaseInfoDTO::getEmail, Function.identity()));
+
+        String spaceName = iSpaceService.getNameBySpaceId(spaceId);
+        List<TeamBaseInfoDTO> teams = iTeamService.getTeamBaseInfo(teamIds);
+        Map<Long, String> teamIdToNameMap = teams.stream()
+            .collect(Collectors.toMap(TeamBaseInfoDTO::getId, TeamBaseInfoDTO::getTeamName));
+        for (UserLangDTO userDto : emailsWithLang) {
+            String email = userDto.getEmail();
+            MemberBaseInfoDTO member = emailTomemberMap.get(email);
+            Long teamId = toAddMap.get(member.getId()).get(0);
+            String teamName = teamIdToNameMap.get(teamId);
+
+            Dict dict = Dict.create();
+            dict.set("SPACE_NAME", spaceName);
+            dict.set("TEAM_NAME", teamName);
+            dict.set("MEMBER_NAME", member.getMemberName());
+            dict.set("URL", constProperties.getServerDomain() + "/management");
+            NotifyMailFactory.me()
+                .sendMail(userDto.getLocale(), MailPropConstants.SUBJECT_ASSIGN_GROUP, dict, dict,
+                    Collections.singletonList(email));
+        }
     }
 
     @Override
@@ -796,7 +835,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchDeleteMemberFromSpace(String spaceId, List<Long> memberIds,
-        boolean mailNotify) {
+                                           boolean mailNotify) {
         if (CollUtil.isEmpty(memberIds)) {
             return;
         }
@@ -947,7 +986,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
      * @param inviteEmails email
      */
     private void batchSendInviteEmailOnUpload(String spaceId, Long fromMemberId,
-        List<String> inviteEmails) {
+                                              List<String> inviteEmails) {
         // send invitation emails
         if (CollUtil.isEmpty(inviteEmails)) {
             return;
@@ -963,14 +1002,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     /**
-     * send invitation notification emails in batches
+     * send invitation notification emails in batches.
      *
      * @param spaceId      space id
      * @param fromMemberId sender（member id）
      * @param notifyEmails email
      */
     private void batchSendInviteNotifyEmailOnUpload(String spaceId,
-        Long fromMemberId, List<String> notifyEmails) {
+                                                    Long fromMemberId, List<String> notifyEmails) {
         // send an invitation notification email
         if (CollUtil.isEmpty(notifyEmails)) {
             return;
@@ -988,7 +1027,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveUploadData(String spaceId, UploadDataDTO uploadData, List<String> inviteEmails,
-        List<String> notifyEmails, boolean teamCreatable) {
+                               List<String> notifyEmails, boolean teamCreatable) {
         log.info("saving template data:{}", JSONUtil.toJsonStr(uploadData));
         Long memberId = IdWorker.getId();
         MemberEntity member = new MemberEntity();
@@ -1113,7 +1152,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendInviteNotification(Long fromUserId,
-        List<Long> invitedMemberIds, String spaceId, Boolean isToFromUser) {
+                                       List<Long> invitedMemberIds, String spaceId,
+                                       Boolean isToFromUser) {
         if (ObjectUtil.isEmpty(invitedMemberIds)) {
             return;
         }
@@ -1306,6 +1346,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void activeIfExistInvitationSpace(Long userId, List<Long> memberIds) {
         List<MemberEntity> memberEntities = new ArrayList<>();
         for (Long memberId : memberIds) {

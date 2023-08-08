@@ -188,7 +188,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
   return (
     <div className={styles.modifyPasswordWrapper}>
       <div className={styles.title}>{user!.needPwd ? t(Strings.set_password) : t(Strings.change_password)}</div>
-      { env.IS_APITABLE && env.IS_ENTERPRISE ? 
+      { env.AUTH0_ENABLED ? 
         <div>
           <Button color='primary' size='middle' loading={buttonLoading} onClick={handRest} >{t(Strings.reset_password_via_email)}</Button>
         </div> 

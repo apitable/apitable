@@ -75,8 +75,8 @@ public class NodeInfoVo extends BaseNodeInfo {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean columnLimit;
 
-    @Schema(description = "Metadata of data table node - data table field set length", hidden =
-        true)
+    @Schema(description = "Metadata of data table node - data table field set length",
+        hidden = true)
     @JsonIgnore
     private Integer mdFieldMapSize;
 

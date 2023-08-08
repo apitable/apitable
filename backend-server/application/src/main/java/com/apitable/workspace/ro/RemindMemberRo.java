@@ -19,6 +19,7 @@
 package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -33,7 +34,8 @@ import lombok.Data;
 @Schema(description = "Mention member request parameters")
 public class RemindMemberRo {
 
-    @Schema(description = "Whether to enable notification", example = "true", required = true)
+    @Schema(description = "Whether to enable notification",
+        requiredMode = RequiredMode.REQUIRED, example = "true")
     @NotNull(message = "Whether to enable notification cannot be blank")
     private Boolean isNotify;
 
@@ -43,19 +45,20 @@ public class RemindMemberRo {
     @Schema(description = "View ID", example = "viwwkxEZ3XaDg")
     private String viewId;
 
-    @Schema(description = "Organizational Unit and Record List", required = true)
+    @Schema(description = "Organizational Unit and Record List",
+        requiredMode = RequiredMode.REQUIRED)
     @NotEmpty(message = "Organizational unit and record list cannot be empty")
     private List<RemindUnitRecRo> unitRecs;
 
-    @Schema(description = "Association ID: node sharing ID, template ID", example =
-        "shr8T8vAfehg3yj3McmDG")
+    @Schema(description = "Association ID: node sharing ID, template ID",
+        example = "shr8T8vAfehg3yj3McmDG")
     private String linkId;
 
     @Schema(description = "Type of notification: 1 member notification, 2 comment notification",
         example = "1")
     private Integer type = 1;
 
-    @Schema(description = "Send additional content of email notification", example = "@aaa&nbsp;"
-        + "&nbsp;Incorrect")
+    @Schema(description = "Send additional content of email notification",
+        example = "@aaa&nbsp;&nbsp;Incorrect")
     private RemindExtraRo extra = null;
 }

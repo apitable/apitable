@@ -255,12 +255,6 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
     }
 
     @Override
-    public ControlRoleEntity getByControlIdAndUnitIdAndRoleCode(String controlId, Long unitId, String roleCode,
-            boolean ignoreDeleted) {
-        return controlRoleMapper.selectByControlIdAndUnitIdAndRoleCode(controlId, unitId, roleCode, ignoreDeleted);
-    }
-
-    @Override
     public void editIsDeletedByIds(List<Long> ids, Long userId, boolean isDeleted) {
         if (CollUtil.isEmpty(ids)) {
             return;
