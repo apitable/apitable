@@ -84,11 +84,10 @@ public class NodeOpRo {
             case DATASHEET:
             case FORM: // The name of the magic form is transmitted from the front end
             case DASHBOARD:
+            case AI_CHAT_BOT:
             case MIRROR: // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
                 return I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
-            case AI_CHAT_BOT:
-                return nodeType.name().toLowerCase().replace('_', ' ');
             default:
                 return I18nStringsUtil.t("default_create_file");
         }

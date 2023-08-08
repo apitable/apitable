@@ -1217,6 +1217,7 @@
   "debug_cell_text_1": "*",
   "decimal": "decimale (1,0)",
   "default": "Predefinito",
+  "default_create_ai_chat_bot": "Nuovo assistente AI",
   "default_create_dashboard": "Nuovo cruscotto",
   "default_create_datasheet": "Nuovo foglio dati",
   "default_create_file": "Nuovo file",

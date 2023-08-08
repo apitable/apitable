@@ -1223,6 +1223,7 @@
   "default_create_folder": "새 폴더",
   "default_create_form": "새 양식",
   "default_create_mirror": "새 백미러",
+  "default_create_ai_chat_bot": "새로운 AI 어시스턴트",
   "default_datasheet_attachments": "첨부 파일",
   "default_datasheet_options": "옵션",
   "default_datasheet_title": "제목",

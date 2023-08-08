@@ -1219,6 +1219,7 @@
   "debug_cell_text_1": "这才是纯的东西",
   "decimal": "小数（1.0）",
   "default": "默认",
+  "default_create_ai_chat_bot": "新建AI助理",
   "default_create_dashboard": "新建仪表盘",
   "default_create_datasheet": "新建表格",
   "default_create_file": "新建节点",

@@ -1223,6 +1223,7 @@
   "default_create_folder": "Nouveau dossier",
   "default_create_form": "Nouveau formulaire",
   "default_create_mirror": "Nouveau miroir",
+  "default_create_ai_chat_bot": "Nouveau assistant IA",
   "default_datasheet_attachments": "Fichiers joints",
   "default_datasheet_options": "Choix",
   "default_datasheet_title": "Titre de la page",
