@@ -61,7 +61,7 @@ export const getPageParams = (path: string) => {
   const mirrorId = getRegResult(path, mirrorIdReg);
   const embedId = getRegResult(path, embedIdReg);
   const aiId = getRegResult(path, aiIdReg);
-  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId;
+  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId;
 
   return {
     datasheetId, viewId, shareId, recordId,
