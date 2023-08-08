@@ -52,9 +52,8 @@
     "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
-    "packages/*/(src|pages)/**/!(*system_config.interface|strings.interface).{ts,tsx}": [
-      "eslint --fix --debug"
-    ]
+    "packages/datasheet/src/**/*.{css,less,scss}": "yarn stylelint:datasheet",
+    "packages/*/(src|pages)/**/!(*system_config.interface|strings.interface).{ts,tsx}": "eslint --fix --no-cache"
   },
   "eslintConfig": {
     "extends": "react-app"

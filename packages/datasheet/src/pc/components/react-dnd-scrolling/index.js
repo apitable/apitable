@@ -19,7 +19,7 @@
 import React, { Component } from 'react';
 import { DndContext } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
-import { throttle } from 'lodash';
+import { throttle, omit } from 'lodash';
 import raf from 'raf';
 import getDisplayName from 'react-display-name';
 import hoist from 'hoist-non-react-statics';
@@ -228,15 +228,7 @@ export default function createScrollingComponent(WrappedComponent) {
     }
 
     render() {
-      const {
-        // not passing down these props
-        strengthMultiplier,
-        verticalStrength,
-        horizontalStrength,
-        onScrollChange,
-
-        ...props
-      } = this.props;
+      const props = omit(this.props, ['strengthMultiplier', 'verticalStrength', 'horizontalStrength', 'onScrollChange']);
 
       return (
         <WrappedComponent
