@@ -148,6 +148,7 @@ const SortableItem = (
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
+    canDrag: () => !readonly
   });
 
   drag(drop(ref));
