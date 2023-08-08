@@ -1,0 +1,13 @@
+{
+  "name": "editor-lexical",
+  "packageManager": "yarn@3.4.1",
+  "devDependencies": {
+    "@ladle/react": "^2.17.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@lexical/react": "^0.11.3",
+    "lexical": "^0.11.3"
+  }
+}
