@@ -1,3 +1,4 @@
+---
 server:
   max-http-header-size: ${MAX_HTTP_HEADER_SIZE:32KB}
 spring:
@@ -188,4 +189,3 @@ springdoc:
 system:
   default-time-zone: ${DEFAULT_TIME_ZONE:UTC}
   test-enabled: ${TEST_ENABLED:false}
-
