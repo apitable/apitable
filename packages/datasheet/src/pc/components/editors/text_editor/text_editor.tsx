@@ -64,7 +64,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
     blur: () => { blur(); },
     onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
     onStartEdit: (value?: ISegment[] | null) => { onStartEdit(value); },
-    setValue: (value?: ISegment[] | null) => { onStartEdit(value); },
+    setValue: (value?: ISegment[] | null) => { handleSetValue(value ?? null); },
     saveValue: () => { saveValue(); },
   }));
 
@@ -142,6 +142,11 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
       return;
     }
     element.scrollTop = element.scrollHeight;
+  };
+
+  const handleSetValue = (value: ISegment[] | null) => {
+    setEditorValue(value);
+    setCellValue(value);
   };
 
   const onStartEdit = (value?: ISegment[] | null) => {
