@@ -148,6 +148,7 @@ export type StringKeysMapType = {
   'ai_data_source_rows': 'ai_data_source_rows',
   'ai_data_source_update': 'ai_data_source_update',
   'ai_datasheet_panel_create_btn_text': 'ai_datasheet_panel_create_btn_text',
+  'ai_default_idk': 'ai_default_idk',
   'ai_default_prologue': 'ai_default_prologue',
   'ai_default_prompt': 'ai_default_prompt',
   'ai_discar_setting_edit_cancel_text': 'ai_discar_setting_edit_cancel_text',

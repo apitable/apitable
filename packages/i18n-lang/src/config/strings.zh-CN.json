@@ -147,6 +147,7 @@
   "ai_data_source_rows": "${rows} 行数据",
   "ai_data_source_update": "数据有更新",
   "ai_datasheet_panel_create_btn_text": "创建聊天机器人",
+  "ai_default_idk": "我不知道",
   "ai_default_prologue": "您好，我是AI聊天机器人，很荣幸为您服务。\\n\\r经过对多个数据集的深入学习，我可以为您解答各种相关问题。如果您有任何需要，请随时向我提问。",
   "ai_default_prompt": "Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:",
   "ai_discar_setting_edit_cancel_text": "返回",
