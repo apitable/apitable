@@ -19,7 +19,7 @@
 import { testPath } from 'event_manager';
 import { ResourceType } from 'types';
 import { IAtomEventType } from '../interface';
-import { EventRealTypeEnums, OPEventNameEnums } from './../../const';
+import { EventRealTypeEnums, OPEventNameEnums } from './../../enum';
 import { IOPBaseContext } from './../../interface/event.interface';
 
 interface IFieldUpdated {

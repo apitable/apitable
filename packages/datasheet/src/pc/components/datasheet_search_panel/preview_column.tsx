@@ -18,10 +18,9 @@
 
 import { IMeta, WidgetApi } from '@apitable/core';
 import { FormPreviewer, WidgetPreview } from 'pc/components/datasheet_search_panel/components';
-import { INodeInstalledWidget } from './interface';
+import { INodeInstalledWidget, SecondConfirmType } from './interface';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { SecondConfirmType } from './datasheet_search_panel';
 
 interface IPriviewColumnProps {
   currentMeta: IMeta | null;

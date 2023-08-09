@@ -21,7 +21,7 @@ import { groupBy } from 'lodash';
 import { IReduxState, Selectors } from '../../../exports/store';
 import { ResourceType } from 'types';
 import { IAtomEventType, ICombEventType } from '../interface';
-import { EventSourceTypeEnums, OPEventNameEnums } from './../../const';
+import { EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
 import {
   IAtomEvent, IEventInstance, IEventTestResult, IOPBaseContext, IOPEvent
 } from './../../interface/event.interface';

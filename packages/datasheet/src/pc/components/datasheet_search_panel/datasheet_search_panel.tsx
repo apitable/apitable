@@ -31,6 +31,7 @@ import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
 import { Button } from '@apitable/components';
 import classNames from 'classnames';
+import { SecondConfirmType } from './interface';
 
 interface ISearchPanelProps {
   folderId: string;
@@ -55,12 +56,6 @@ export interface ISearchChangeProps {
   mirrorId?: string;
   viewId?: string;
   widgetIds?: string[];
-}
-
-export enum SecondConfirmType {
-  Widget,
-  Form,
-  Chat
 }
 
 const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = props => {

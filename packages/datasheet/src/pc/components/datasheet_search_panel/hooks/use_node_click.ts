@@ -1,8 +1,8 @@
-import { SecondConfirmType } from 'pc/components/datasheet_search_panel/datasheet_search_panel';
 import { Api, StoreActions } from '@apitable/core';
 import { useDispatch } from 'react-redux';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import * as React from 'react';
+import { SecondConfirmType } from '../interface';
 
 interface IParams {
   localState: ISearchPanelState

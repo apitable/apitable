@@ -23,7 +23,7 @@ import { IReduxState, Selectors } from '../../../exports/store';
 import { FieldType } from 'types';
 import { ResourceType } from 'types/resource_types';
 import { IAtomEventType, ICellUpdatedContext } from '../interface';
-import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './../../const';
+import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
 import { IEventInstance, IOPBaseContext, IOPEvent, IVirtualAtomEvent } from './../../interface/event.interface';
 
 // @EventMeta(OPEventNameEnums.CellUpdated)

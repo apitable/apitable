@@ -13,12 +13,11 @@ import { useResponsive } from '../../hooks';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
 import { useSelector } from 'react-redux';
 import { getModalTitle } from './utils';
-import { SecondConfirmType } from './datasheet_search_panel';
 import { useThemeColors } from '@apitable/components';
 import { useMount } from 'ahooks';
 import { useNodeClick } from 'pc/components/datasheet_search_panel/hooks/use_node_click';
 import { insertViewNode } from 'pc/components/datasheet_search_panel/utils/insert_view_nodes';
-import { ISearchPanelProps } from 'pc/components/datasheet_search_panel/interface';
+import { ISearchPanelProps, SecondConfirmType } from './interface';
 import { useSearch } from 'pc/components/datasheet_search_panel/hooks/use_search';
 
 export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {

@@ -19,11 +19,8 @@
 import { IReduxState } from '../exports/store';
 import { ResourceType } from 'types';
 import { IChangeset, IOperation } from '../engine/ot/interface';
-import {
-  EventAtomTypeEnums,
-  EventNameClsMap, EventRealTypeEnums, EventSourceTypeEnums,
-  OPEventNameEnums, REMOTE_NEW_CHANGES
-} from './const';
+import { EventNameClsMap, REMOTE_NEW_CHANGES } from './const';
+import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './enum';
 import { OPEventCellUpdated } from './events/datasheet/cell_updated';
 import { IAtomEventType } from './events/interface';
 import {

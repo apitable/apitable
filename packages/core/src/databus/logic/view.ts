@@ -21,7 +21,7 @@ import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewLockInfo, I
 import { keyBy } from 'lodash';
 import { getViewClass, ICellValue } from 'model';
 import { Store } from 'redux';
-import { Datasheet, ICommandExecutionResult, ISaveOptions } from './datasheet';
+import type { Datasheet, ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { Field } from './field';
 import { IRecordVoTransformOptions, Record } from './record';
 
