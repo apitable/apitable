@@ -179,12 +179,12 @@ public class MemberController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "className", description = "the highlighting style", schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
+        @Parameter(name = "className", description = "the highlighting style",
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
         @Parameter(name = "filter", description = "whether to filter unadded members",
             schema = @Schema(type = "boolean"), in = ParameterIn.QUERY, example = "true"),
-        @Parameter(name = "keyword", description = "keyword", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.QUERY, example = "Luck")
+        @Parameter(name = "keyword", description = "keyword", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "Luck")
     })
     @Operation(summary = "Fuzzy Search Members", description = "Fuzzy Search Members")
     public ResponseData<List<SearchMemberVo>> getMembers(
@@ -210,14 +210,16 @@ public class MemberController {
      * Query the team's members.
      */
     @GetResource(path = "/list")
-    @Operation(summary = "Query the team's members", description = "Query all the members of the "
-        + "department, including the members of the sub department.if root team can lack teamId, "
-        + "teamId default 0.")
+    @Operation(summary = "Query the team's members",
+        description = "Query all the members of the department,"
+            + " including the members of the sub department."
+            + "if root team can lack teamId, teamId default 0.")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id. if root team can lack teamId, teamId"
-            + " default 0.", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "0")
+        @Parameter(name = "teamId", in = ParameterIn.QUERY,
+            description = "team id. if root team can lack teamId, teamId default 0.",
+            schema = @Schema(type = "string"), example = "0")
     })
     public ResponseData<List<MemberInfoVo>> getMemberList(
         @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
@@ -247,15 +249,16 @@ public class MemberController {
      * Page query the team's member.
      */
     @GetResource(path = "/page")
-    @Operation(summary = "Page query the team's member", description =
-        "Query all the members of the department, including the members of the sub department. "
-            + "The query must be paging not full query.\n"
-            + PAGE_DESC)
+    @Operation(summary = "Page query the team's member",
+        description = "Query all the members of the department, "
+            + " including the members of the sub department. "
+            + "The query must be paging not full query.\n" + PAGE_DESC)
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", description = "team id. if root team can lack teamId, teamId"
-            + " default 0.", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "teamId", in = ParameterIn.QUERY,
+            description = "team id. if root team can lack teamId, teamId default 0.",
+            schema = @Schema(type = "string"), example = "1"),
         @Parameter(name = "isActive", description = "whether to filter unadded members",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "1"),
         @Parameter(name = PAGE_PARAM, description = "page's parameter", required = true,
@@ -294,8 +297,8 @@ public class MemberController {
      */
     @Deprecated
     @GetResource(path = "/checkEmail")
-    @Operation(summary = "Check whether email in space", description = "Check whether email in "
-        + "space")
+    @Operation(summary = "Check whether email in space",
+        description = "Check whether email in space")
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
@@ -324,7 +327,8 @@ public class MemberController {
     public ResponseData<MemberInfoVo> read(
         @RequestParam(value = "memberId", required = false) Long memberId,
         @RequestParam(value = "uuid", required = false) String uuid) {
-        ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId) || StrUtil.isNotBlank(uuid), NO_ARG);
+        ExceptionUtil.isTrue(ObjectUtil.isNotNull(memberId)
+            || StrUtil.isNotBlank(uuid), NO_ARG);
         String spaceId = LoginContext.me().getSpaceId();
         // For member information hiding use
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
@@ -349,8 +353,8 @@ public class MemberController {
      * Query the units which a user belongs in space.
      */
     @GetResource(path = "/units")
-    @Operation(summary = "Query the units which a user belongs in space", description = "Query "
-        + "the units which a user belongs, include self")
+    @Operation(summary = "Query the units which a user belongs in space",
+        description = "Query the units which a user belongs, include self")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> getUnits() {
@@ -361,7 +365,7 @@ public class MemberController {
     }
 
     /**
-     * Send an email to invite members.
+     * Send email to invite members.
      */
     @PostResource(path = "/sendInvite", tags = "INVITE_MEMBER")
     @Operation(summary = "Send an email to invite members",
@@ -449,8 +453,8 @@ public class MemberController {
      * Edit self member information.
      */
     @PostResource(path = "/update")
-    @Operation(summary = "Edit self member information", description = "Edit self member "
-        + "information")
+    @Operation(summary = "Edit self member information",
+        description = "Edit self member information")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> update(@RequestBody @Valid UpdateMemberOpRo opRo) {
@@ -495,8 +499,8 @@ public class MemberController {
      * Delete a Member.
      */
     @PostResource(path = "/delete", method = {RequestMethod.DELETE}, tags = "DELETE_MEMBER")
-    @Operation(summary = "Delete a Member", description = "action provides two deletion modes，1"
-        + ".delete from organization 2. delete from team")
+    @Operation(summary = "Delete a Member", description = "action provides two deletion modes."
+        + "1.delete from organization 2. delete from team")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> deleteMember(@RequestBody @Valid DeleteMemberRo data) {
@@ -624,8 +628,8 @@ public class MemberController {
      * Upload employee sheet.
      */
     @PostResource(path = "/uploadExcel", tags = "INVITE_MEMBER")
-    @Operation(summary = "Upload employee sheet", description = "Upload employee sheet，then parse"
-        + " it.")
+    @Operation(summary = "Upload employee sheet",
+        description = "Upload employee sheet，then parse it.")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<UploadParseResultVO> uploadExcel(UploadMemberTemplateRo data) {

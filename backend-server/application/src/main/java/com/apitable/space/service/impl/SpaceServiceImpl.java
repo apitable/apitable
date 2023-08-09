@@ -101,6 +101,7 @@ import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
+import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceUpdateOpRo;
 import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
@@ -246,7 +247,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String createSpace(final UserEntity user, final String spaceName) {
+    public Space createSpace(final UserEntity user, final String spaceName) {
         Long userId = user.getId();
         // Check whether the user reaches the upper limit
         boolean limit = this.checkSpaceNumber(userId);
@@ -300,7 +301,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             iNodeService.copyNodeToSpace(userId, spaceId, rootNodeId,
                 templateNodeId, NodeCopyOptions.create());
         }
-        return spaceId;
+        return new Space(spaceId, rootNodeId);
     }
 
     /**
@@ -795,8 +796,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (ObjectUtil.isNotNull(newMember)
             && StrUtil.isNotBlank(newMember.getEmail())) {
             Dict dict = Dict.create();
-            //TODO remove user_name at next version
-            dict.set("USER_NAME", dto.getMemberName());
             dict.set("SPACE_NAME", dto.getSpaceName());
             dict.set("MEMBER_NAME", dto.getMemberName());
             dict.set("AVATAR", constProperties.spliceAssetUrl(dto.getAvatar()));

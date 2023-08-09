@@ -40,9 +40,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Organizational unit to which the member belongs")
 public class MemberUnitsVo {
 
-    @Schema(description = "Org Unit ID List", type = "List", example = "[\"10101\",\"10102\","
-        + "\"10103\",\"10104\"]")
-    @JsonSerialize(using = NumberListToStringListSerializer.class, nullsUsing =
-        NullArraySerializer.class)
+    @Schema(description = "Org Unit ID List", type = "List",
+        example = "[\"10101\",\"10102\",\"10103\",\"10104\"]")
+    @JsonSerialize(using = NumberListToStringListSerializer.class,
+        nullsUsing = NullArraySerializer.class)
     private List<Long> unitIds;
 }

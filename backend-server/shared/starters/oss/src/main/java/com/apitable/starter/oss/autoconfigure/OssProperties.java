@@ -32,6 +32,8 @@ public class OssProperties {
 
     private OssType type;
 
+    private Signature signature;
+
     private Aws aws;
 
     private Qiniu qiniu;
@@ -120,6 +122,14 @@ public class OssProperties {
 
     public void setMinio(Minio minio) {
         this.minio = minio;
+    }
+
+    public Signature getSignature() {
+        return signature;
+    }
+
+    public void setSignature(Signature signature) {
+        this.signature = signature;
     }
 
     public static class Aws {
@@ -359,11 +369,75 @@ public class OssProperties {
         }
     }
 
+    public static class Signature {
+
+        private boolean enabled = false;
+
+        private SignatureModel model;
+
+        /**
+         * timestamp anti leech encrypt key
+         */
+        private String encryptKey;
+
+        private Integer expireSecond;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public SignatureModel getModel() {
+            return model;
+        }
+
+        public void setModel(SignatureModel model) {
+            this.model = model;
+        }
+
+        public String getEncryptKey() {
+            return encryptKey;
+        }
+
+        public void setEncryptKey(String encryptKey) {
+            this.encryptKey = encryptKey;
+        }
+
+        public Integer getExpireSecond() {
+            return expireSecond;
+        }
+
+        public void setExpireSecond(Integer expireSecond) {
+            this.expireSecond = expireSecond;
+        }
+    }
+
+    public enum SignatureModel {
+
+        // PRIVATE_BUCKET_CDN_TOKEN,
+
+        CDN_TIMESTAMP_ANTI_LEECH,
+
+    }
+
     public static class Callback {
+
+        private boolean enabled = false;
 
         private String url;
 
         private String bodyType;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
 
         public String getUrl() {
             return url;

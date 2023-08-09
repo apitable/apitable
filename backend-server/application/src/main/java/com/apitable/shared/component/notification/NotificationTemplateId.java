@@ -40,6 +40,11 @@ public enum NotificationTemplateId implements BaseTemplateId{
     INVITE_MEMBER_TO_USER("invite_member_touser"),
 
     /**
+     * Notify users when they are invited to join a space as a member
+     */
+    INVITE_MEMBER_TO_MYSELF("invite_member_tomyself"),
+
+    /**
      * Notify users when they are assigned to a group in a space
      */
     ASSIGNED_TO_GROUP("assigned_to_group"),
@@ -139,11 +144,6 @@ public enum NotificationTemplateId implements BaseTemplateId{
     NODE_SHARE("node_share"),
 
     NODE_FAVORITE("node_favorite"),
-
-    /**
-     * Notify users when they are invited to join a space as a member
-     */
-    INVITE_MEMBER_TO_MYSELF("invite_member_tomyself"),
 
     /**
      * Notify users when they are removed from a space

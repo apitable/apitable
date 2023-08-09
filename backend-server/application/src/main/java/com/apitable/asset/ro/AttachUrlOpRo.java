@@ -19,6 +19,7 @@
 package com.apitable.asset.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -32,12 +33,12 @@ import lombok.Data;
 @Schema(description = "Attachment Request Parameters")
 public class AttachUrlOpRo {
 
-    @Schema(description = "URL of uploaded file", required = true)
+    @Schema(description = "URL of uploaded file", requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "File URL cannot be empty")
     private String url;
 
     @Schema(description = "Type (0: user profile 1: space logo 2: data table attachment)",
-        example = "0", required = true)
+        example = "0", requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "Type cannot be empty")
     @Max(value = 2, message = "ERROR IN TYPE")
     private Integer type;

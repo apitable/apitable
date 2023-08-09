@@ -21,6 +21,7 @@ package com.apitable.workspace.ro;
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -38,8 +39,8 @@ public class DeleteNodeRoleRo {
     private String nodeId;
 
     @NotNull(message = "Organization unit cannot be empty")
-    @Schema(description = "Org Unit ID", type = "java.lang.String", required = true, example =
-        "71638172638")
+    @Schema(description = "Org Unit ID", type = "java.lang.String",
+        requiredMode = RequiredMode.REQUIRED, example = "71638172638")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;
 }

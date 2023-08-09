@@ -211,16 +211,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   }, [activeNodeId, rootId]);
 
   useEffect(() => {
-    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
-    // Compatible with older versions, which is array
-    if (Array.isArray(defaultActiveKey)) {
-      defaultActiveKey = defaultActiveKey[0];
-    }
-    setActiveKey(defaultActiveKey);
-  }, []);
-
-  useEffect(() => {
     if (activedNodeId && !treeNodesMap[activedNodeId] && !loading) {
       dispatch(StoreActions.getNodeInfo(activedNodeId));
     }
@@ -229,8 +219,39 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   const changeHandler = (key: string) => {
     setActiveKey(key);
-    localStorage.setItem('vika_workbench_active_key', JSON.stringify(key));
+    updateActiveKey(key);
   };
+
+  const updateActiveKey=React.useCallback((key:string='get')=>{
+    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
+    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
+    if('get'===key){
+      // Compatible with older versions, which is array
+      if(typeof defaultActiveKey[0]==='string')defaultActiveKey=ConfigConstant.Modules.CATALOG;
+      if (Array.isArray(defaultActiveKey)) {
+        defaultActiveKey=defaultActiveKey.find((i: { spaceId: string }) =>i.spaceId===spaceId );
+        defaultActiveKey=defaultActiveKey?defaultActiveKey.activeKey:ConfigConstant.Modules.CATALOG;
+      }
+      return defaultActiveKey;
+    }
+    if(typeof defaultActiveKey[0]==='string')defaultActiveKey=[{ spaceId,activeKey:key }];
+    if(Array.isArray(defaultActiveKey)){
+      let noSpaceId=true;
+      for (const item of defaultActiveKey) {
+        if(item.spaceId===spaceId){
+          noSpaceId=false;
+          item.activeKey=key;
+          break;
+        }
+      }
+      if(noSpaceId)defaultActiveKey.push({ spaceId,activeKey:key });
+      localStorage.setItem('vika_workbench_active_key', JSON.stringify(defaultActiveKey));
+    }
+  },[spaceId]);
+
+  useEffect(()=>{
+    setActiveKey(updateActiveKey());
+  },[updateActiveKey]);
 
   const jumpTrash = () => {
     Router.push(Navigation.TRASH, { params: { spaceId }});

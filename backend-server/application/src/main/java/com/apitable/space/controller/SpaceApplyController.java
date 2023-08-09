@@ -113,9 +113,7 @@ public class SpaceApplyController {
             memberMapper.selectEmailByBatchMemberId(memberIds);
         if (CollUtil.isNotEmpty(emails)) {
             Dict dict = Dict.create();
-            //TODO remove user_name at next version
             String nickName = LoginContext.me().getLoginUser().getNickName();
-            dict.set("USER_NAME", nickName);
             dict.set("MEMBER_NAME", nickName);
             dict.set("SPACE_NAME",
                 spaceMapper.selectSpaceNameBySpaceId(ro.getSpaceId()));

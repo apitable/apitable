@@ -106,6 +106,7 @@ import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
+import com.apitable.workspace.model.DatasheetCreateObject;
 import com.apitable.workspace.ro.AiDatasheetNodeSettingParam;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
@@ -648,6 +649,33 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setPermissions(
                 roleDict.get(node.getNodeId()).permissionToBean(NodePermissionView.class, feature));
         });
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String createDatasheetNode(Long userId, String spaceId, DatasheetCreateObject object) {
+        String nodeId = IdUtil.createNodeId(object.getType().getNodeType());
+        NodeEntity nodeEntity = NodeEntity.builder()
+            .spaceId(spaceId)
+            .parentId(object.getParentId())
+            .nodeId(nodeId)
+            .type(object.getType().getNodeType())
+            .nodeName(object.getName())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
+        boolean flag = save(nodeEntity);
+        ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
+        if (object.hasDescription()) {
+            NodeDescEntity descEntity = NodeDescEntity.builder()
+                .id(IdWorker.getId())
+                .nodeId(nodeId)
+                .description(object.getDescription())
+                .build();
+            nodeDescService.insertBatch(Collections.singletonList(descEntity));
+        }
+        iDatasheetService.create(userId, nodeEntity, object.getDatasheetObject());
+        return nodeId;
     }
 
     @Override

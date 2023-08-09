@@ -56,8 +56,7 @@ public class UserOpRo {
     /**
      * is init.
      */
-    @Schema(description = "Whether it is a registered initialization "
-        + "nickname", example = "true")
+    @Schema(description = "Whether it is a registered initialization nickname", example = "true")
     private Boolean init;
 
     /**

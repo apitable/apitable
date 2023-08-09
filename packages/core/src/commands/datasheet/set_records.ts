@@ -147,7 +147,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
         })) as any;
       }
 
-      // There will be some data problems on the line, and brotherFieldId will also exist in the case of self-table association, 
+      // There will be some data problems on the line, and brotherFieldId will also exist in the case of self-table association,
       // resulting in the existence of redundant actions
       if (field.type === FieldType.Link && field.property.brotherFieldId && field.property.foreignDatasheetId !== datasheetId) {
         /**

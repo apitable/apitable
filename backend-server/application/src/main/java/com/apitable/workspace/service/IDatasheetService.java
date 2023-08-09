@@ -22,6 +22,8 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.model.DatasheetObject;
 import com.apitable.workspace.ro.MetaMapRo;
 import com.apitable.workspace.ro.RemindMemberRo;
 import com.apitable.workspace.ro.SnapshotMapRo;
@@ -44,6 +46,15 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param entities datasheet
      */
     void batchSave(List<DatasheetEntity> entities);
+
+    /**
+     * create datasheet.
+     *
+     * @param userId          user id
+     * @param nodeEntity      node entity
+     * @param datasheetObject datasheet object
+     */
+    void create(Long userId, NodeEntity nodeEntity, DatasheetObject datasheetObject);
 
     /**
      * @param creator  creator

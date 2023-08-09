@@ -22,6 +22,9 @@
 export const getEnvVars = () => {
   return {
     LOGIN_MOTTO: process.env.LOGIN_MOTTO,
+    ENABLE_DATABUS_API: process.env.ENABLE_DATABUS_API === 'true',
+    WASM_NEST_BASE_URL: process.env.NEXT_PUBLIC_NEXT_API,
+    WASM_RUST_BASE_URL: process.env.WASM_RUST_BASE_URL,
     LOGIN_SOCIAL_ICONS_DISABLE: process.env.LOGIN_SOCIAL_ICONS_DISABLE === 'true',
     DINGTALK_LOGIN_APPID: process.env.DINGTALK_LOGIN_APPID,
     QQ_CONNECT_WEB_APPID: process.env.QQ_CONNECT_WEB_APPID,

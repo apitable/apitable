@@ -27,6 +27,20 @@ package com.apitable.shared.constants;
  */
 public class MailPropConstants {
 
+    public static final String SUBJECT_MEMBER_APPLY_CLOSE_ACCOUNT = "memberAppliedToCloseAccount";
+
+    public static final String SUBJECT_ADD_SUB_ADMIN = "addSubAdmin";
+
+    public static final String SUBJECT_REMOVE_SUB_ADMIN = "changedOrdinaryUser";
+
+    public static final String SUBJECT_ASSIGN_GROUP = "assignedToGroup";
+
+    public static final String SUBJECT_ASSIGN_ROLE = "assignedToRole";
+
+    public static final String SUBJECT_REMOVE_ROLE = "removeFromRole";
+
+    public static final String SUBJECT_ACCEPT_INVITE = "acceptInvite";
+
     public static final String SUBJECT_INVITE_NOTIFY = "inviteEmail";
 
     public static final String SUBJECT_CHANGE_ADMIN = "adminNotify";
@@ -40,6 +54,16 @@ public class MailPropConstants {
     public static final String SUBJECT_DATASHEET_REMIND = "remindMember";
 
     public static final String SUBJECT_SPACE_APPLY = "spaceApply";
+
+    public static final String SUBJECT_SPACE_APPLY_APPROVE = "spaceApplyApproved";
+
+    public static final String SUBJECT_SPACE_APPLY_REFUSE = "spaceApplyRefused";
+
+    public static final String SUBJECT_SPACE_BETA_FEATURE_APPLY_SUCCESS = "applySpaceBetaFeatureSuccess";
+
+    public static final String SUBJECT_SPACE_CERTIFICATION_NOTIFY = "spaceCertificationNotify";
+
+    public static final String SUBJECT_SPACE_CERTIFICATION_FAIL_NOTIFY = "spaceCertificationFailNotify";
 
     public static final String SUBJECT_RECORD_COMMENT = "remindComment";
 

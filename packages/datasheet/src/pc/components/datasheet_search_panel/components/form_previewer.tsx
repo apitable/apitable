@@ -30,12 +30,13 @@ import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+import { SecondConfirmType } from 'pc/components/datasheet_search_panel/datasheet_search_panel';
 
 interface IFormPreviewerProps {
   datasheetId: string;
   viewId: string;
   meta: IMeta;
-  onChange: (result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string }) => void;
+  onChange: (result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string, secondConfirmType: SecondConfirmType }) => void;
 }
 
 export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps>> = props => {
@@ -69,7 +70,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
 
   const onFormCreate = () => {
     const viewName = currentView.name ? `${currentView.name}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` : undefined;
-    onChange({ datasheetId, viewId, viewName });
+    onChange({ datasheetId, viewId, viewName, secondConfirmType: SecondConfirmType.Form });
   };
   useMount(() => {
     Player.doTrigger(Events.workbench_create_form_previewer_shown);

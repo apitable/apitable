@@ -22,7 +22,7 @@ import com.apitable.auth.dto.UserLoginDTO;
 import com.apitable.auth.ro.LoginRo;
 
 /**
- * Authorization related service interface
+ * Authorization related service interface.
  */
 public interface IAuthService {
 

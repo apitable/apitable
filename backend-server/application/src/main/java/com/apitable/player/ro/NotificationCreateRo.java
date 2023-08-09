@@ -21,6 +21,7 @@ package com.apitable.player.ro;
 import cn.hutool.json.JSONObject;
 import com.apitable.shared.constants.NotificationConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -55,7 +56,7 @@ public class NotificationCreateRo {
     private String spaceId = null;
 
     @NotBlank
-    @Schema(description = "Template ID", example = "user_filed", required = true)
+    @Schema(description = "Template ID", requiredMode = RequiredMode.REQUIRED, example = "tplxx")
     private String templateId;
 
     @Schema(description = "Additional fields for notification (optional)"
@@ -66,8 +67,8 @@ public class NotificationCreateRo {
     @Schema(description = "Version number (optional)", example = "v0.12.1.release")
     private String version;
 
-    @Schema(description = "Expiration time (optional) accurate to milliseconds", example =
-        "1614587900000")
+    @Schema(description = "Expiration time (optional) accurate to milliseconds",
+        example = "1614587900000")
     private String expireAt;
 
     @Schema(description = "Notification ID (optional)", example = "1614587900000")

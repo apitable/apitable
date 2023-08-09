@@ -22,29 +22,33 @@ import { ConfigConstant } from '@apitable/core';
 import { SecondConfirmType } from '../components/datasheet_search_panel';
 
 export interface IPanelInfo {
-    folderId: string;
-    datasheetId?: string;
-    secondConfirmType?: SecondConfirmType
+  folderId: string;
+  datasheetId?: string;
+  secondConfirmType?: SecondConfirmType
 }
 
 export const useSearchPanel = () => {
-  const [previousModalVisible,setPreviousModalVisible] = useState(false);
+  const [previousModalVisible, setPreviousModalVisible] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
   const [panelInfo, setPanelInfo] = useState<IPanelInfo | null>(null);
   const { addTreeNode } = useCatalog();
-  const onChange = ({ datasheetId, viewId, viewName }: {
-        datasheetId?: string,
-        viewId?: string,
-        viewName?: string
-    }) => {
+  const onChange = ({ datasheetId, viewId, viewName, secondConfirmType }: {
+    datasheetId?: string,
+    viewId?: string,
+    viewName?: string,
+    secondConfirmType?: SecondConfirmType
+  }) => {
     setPanelVisible(false);
-    if (panelInfo?.secondConfirmType === SecondConfirmType.Form) {
+
+    const _secondConfirmType = panelInfo?.secondConfirmType || secondConfirmType;
+
+    if (_secondConfirmType === SecondConfirmType.Form) {
       addTreeNode(panelInfo?.folderId, ConfigConstant.NodeType.FORM, {
         datasheetId,
         viewId,
       }, viewName);
     }
-    if (panelInfo?.secondConfirmType === SecondConfirmType.Chat) {
+    if (_secondConfirmType === SecondConfirmType.Chat) {
       setPreviousModalVisible(false);
       addTreeNode(panelInfo?.folderId, ConfigConstant.NodeType.AI, {
         datasheetId,
@@ -61,6 +65,6 @@ export const useSearchPanel = () => {
     setPanelInfo,
     setPanelVisible,
     previousModalVisible,
-    setPreviousModalVisible
+    setPreviousModalVisible,
   };
 };

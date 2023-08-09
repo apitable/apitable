@@ -60,10 +60,10 @@ public class AlbumContentVo extends AlbumVo {
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> tags;
 
-    @Schema(description = "creation time millisecond timestamp", type = "java.lang.Long",
-        example = "1573561644000")
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class, nullsUsing =
-        NullNumberSerializer.class)
+    @Schema(description = "creation time millisecond timestamp",
+        type = "java.lang.Long", example = "1573561644000")
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class,
+        nullsUsing = NullNumberSerializer.class)
     private LocalDateTime createdAt;
 
 }

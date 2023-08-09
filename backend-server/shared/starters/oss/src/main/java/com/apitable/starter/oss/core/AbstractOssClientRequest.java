@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.function.Consumer;
 
 import cn.hutool.core.util.URLUtil;
@@ -51,8 +52,10 @@ public abstract class AbstractOssClientRequest implements OssClientRequest {
         throw new NoSuchMethodError("Oss Client NoSuchMethod - 「createAuth」");
     }
 
+
     @Override
     public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
         throw new NoSuchMethodError("Oss Client NoSuchMethod - 「isValidCallback」");
     }
+
 }

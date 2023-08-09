@@ -165,8 +165,8 @@ public class SpaceSubAdminController {
      * Delete admin.
      */
     @Notification(templateId = NotificationTemplateId.CHANGE_ORDINARY_USER)
-    @PostResource(path = "/deleteRole/{memberId}", method = RequestMethod.DELETE, tags =
-        "DELETE_SUB_ADMIN")
+    @PostResource(path = "/deleteRole/{memberId}",
+        method = RequestMethod.DELETE, tags = "DELETE_SUB_ADMIN")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     @Operation(summary = "delete admin", description = "delete admin")

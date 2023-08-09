@@ -17,7 +17,7 @@
  */
 
 // eslint-disable-next-line no-restricted-imports
-import { Select as SelectBase } from '@apitable/components';
+import { DropdownSelect as SelectBase } from '@apitable/components';
 import { useControllableValue } from 'ahooks';
 
 /**

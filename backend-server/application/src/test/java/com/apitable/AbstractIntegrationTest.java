@@ -280,7 +280,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
-        return iSpaceService.createSpace(user, "test space");
+        return iSpaceService.createSpace(user, "test space").getId();
     }
 
     protected Long createMember(Long userId, String spaceId) {

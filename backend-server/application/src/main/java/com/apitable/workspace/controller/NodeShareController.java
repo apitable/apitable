@@ -101,10 +101,8 @@ public class NodeShareController {
      */
     @GetResource(path = "/shareSettings/{nodeId}", requiredPermission = false)
     @Operation(summary = "Get node share info")
-    @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
-    })
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<NodeShareSettingInfoVO> nodeShareInfo(
         @PathVariable("nodeId") String nodeId) {
         // get operator information
@@ -125,12 +123,10 @@ public class NodeShareController {
     @Notification(templateId = NotificationTemplateId.NODE_SHARE)
     @PostResource(path = "/updateShare/{nodeId}", requiredPermission = false,
         requiredAccessDomain = true)
-    @Operation(summary = "Update node share setting", description = "Update node share setting \n"
-        + SHARE_PARAM_DESC)
-    @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9"),
-    })
+    @Operation(summary = "Update node share setting",
+        description = "Update node share setting \n" + SHARE_PARAM_DESC)
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<ShareBaseInfoVo> updateNodeShare(@PathVariable("nodeId") String nodeId,
         @RequestBody @Valid UpdateNodeShareSettingRo body) {
         // get operator information
@@ -158,10 +154,8 @@ public class NodeShareController {
     @Notification(templateId = NotificationTemplateId.NODE_SHARE)
     @PostResource(path = "/disableShare/{nodeId}", requiredPermission = false)
     @Operation(summary = "Disable node sharing")
-    @Parameters({
-        @Parameter(name = "nodeId", description = "node id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
-    })
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<Void> disableShare(@PathVariable("nodeId") String nodeId) {
         // get operator information
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -213,12 +207,11 @@ public class NodeShareController {
     /**
      * Get share node info.
      */
-    @GetResource(path = "/readShareInfo/{shareId}", requiredLogin = false, requiredPermission =
-        false)
-    @Operation(summary = "Get share node info", description = "get shared content according to "
-        + "share id")
-    @Parameter(name = "shareId", description = "share id", required = true, schema =
-        @Schema(type = "string"), in = ParameterIn.PATH, example = "shrRTGSy43DJ9")
+    @GetResource(path = "/readShareInfo/{shareId}", requiredLogin = false)
+    @Operation(summary = "Get share node info",
+        description = "get shared content according to share id")
+    @Parameter(name = "shareId", description = "share id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "shrRTGSy43DJ9")
     public ResponseData<NodeShareInfoVO> readShareInfo(@PathVariable("shareId") String shareId) {
         NodeShareInfoVO nodeShareInfoVo = iNodeShareService.getNodeShareInfo(shareId);
         return ResponseData.success(nodeShareInfoVo);

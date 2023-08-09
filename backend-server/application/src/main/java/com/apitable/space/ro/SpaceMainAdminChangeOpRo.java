@@ -19,6 +19,7 @@
 package com.apitable.space.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -32,7 +33,7 @@ import lombok.Data;
 public class SpaceMainAdminChangeOpRo {
 
     @Schema(description = "Member ID of the new master administrator", example = "123456",
-        required = true)
+        requiredMode = RequiredMode.REQUIRED)
     @NotNull(message = "The member ID of the new master administrator cannot be empty")
     private Long memberId;
 }

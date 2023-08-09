@@ -36,6 +36,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { AttachmentService } from 'database/attachment/services/attachment.service';
+import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
@@ -97,6 +98,7 @@ export class FusionApiController {
     private readonly fusionApiService: FusionApiService,
     private readonly attachService: AttachmentService,
     private readonly restService: RestService,
+    private readonly datasheetMetaService: DatasheetMetaService
   ) {
   }
 
@@ -348,10 +350,7 @@ export class FusionApiController {
     @Param('dstId') datasheetId: string,
     @Body(CreateFieldPipe) createRo: FieldCreateRo,
   ): Promise<FieldCreateVo> {
-    // TODO only fetch field names
-    const fields = await this.fusionApiService.getFieldList(datasheetId, { viewId: '' });
-    const duplicatedName = fields.filter((field) => field.name === createRo.name);
-    if (duplicatedName.length > 0) {
+    if (await this.datasheetMetaService.isFieldNameExist(datasheetId, createRo.name)) {
       throw ApiException.tipError(ApiTipConstant.api_params_must_unique, { property: 'name' });
     }
     const fieldCreateDto = await this.fusionApiService.addField(datasheetId, createRo);

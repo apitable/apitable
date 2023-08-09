@@ -18,12 +18,6 @@
 
 package com.apitable.starter.oss.core.qiniu;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.map.MapUtil;
@@ -31,6 +25,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONObject;
+import com.apitable.starter.oss.autoconfigure.OssProperties.Callback;
+import com.apitable.starter.oss.core.*;
 import com.google.gson.Gson;
 import com.qiniu.cdn.CdnManager;
 import com.qiniu.cdn.CdnResult;
@@ -47,15 +43,13 @@ import com.qiniu.storage.model.FetchRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.apitable.starter.oss.core.AbstractOssClientRequest;
-import com.apitable.starter.oss.core.OssObject;
-import com.apitable.starter.oss.core.OssUploadAuth;
-import com.apitable.starter.oss.core.OssUploadPolicy;
-import com.apitable.starter.oss.core.UrlFetchResponse;
-
 import org.springframework.lang.NonNull;
 
 /**
@@ -81,15 +75,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
      */
     private final String downloadDomain;
 
-    /**
-     * callback url
-     */
-    private final String callbackUrl;
-
-    /**
-     * callbackBody's Content-Type. default is application/x-www-form-urlencoded
-     */
-    private final String callbackBodyType;
+    private final Callback callback;
 
     /**
      * upload url
@@ -120,15 +106,8 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
      */
     private static final int RESUMABLE_UPLOAD_MAX_CONCURRENT_COUNT = 8;
 
-    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain) {
-        this(auth, regionId, downloadDomain, false);
-    }
-
-    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain, boolean autoCreateBucket) {
-        this(auth, regionId, downloadDomain, null, null, null, false);
-    }
-
-    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain, String callbackUrl, String callbackBodyType, String uploadUrl, boolean autoCreateBucket) {
+    public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain,
+        Callback callback, String uploadUrl, boolean autoCreateBucket) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
@@ -140,8 +119,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         this.uploadManager = new UploadManager(configuration);
         this.bucketManager = new BucketManager(auth, configuration);
         this.autoCreateBucket = autoCreateBucket;
-        this.callbackUrl = callbackUrl;
-        this.callbackBodyType = callbackBodyType;
+        this.callback = callback;
         this.uploadUrl = uploadUrl;
     }
 
@@ -289,11 +267,25 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         Map<String, Object> policy = BeanUtil.beanToMap(uploadPolicy, false, true);
         policy.putAll(this.defaultCallbackMeta(uploadPolicy.getPutExtra()));
 
-        String uploadToken = auth.uploadToken(bucket, key, expires, new StringMap(policy));
+        String uploadToken = auth.uploadToken(bucket, key, expires, new StringMap(policy), true);
         ossUploadAuth.setUploadToken(uploadToken);
+        StringBuilder builder = new StringBuilder();
+        builder.append(uploadUrl).append("?key").append(key).append("&token=").append(uploadToken);
+        String uploadUrl = builder.toString();
         ossUploadAuth.setUploadUrl(uploadUrl);
-        ossUploadAuth.setUploadRequestMethod("PUT");
+        ossUploadAuth.setUploadRequestMethod("POST");
         return ossUploadAuth;
+    }
+
+    @Override
+    public OssStatObject getStatObject(String bucketName, String key) {
+        try {
+            FileInfo stat = bucketManager.stat(bucketName, key);
+            return new OssStatObject(stat.key, stat.hash, stat.fsize, stat.mimeType);
+        } catch (QiniuException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -308,9 +300,11 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
      */
     private Map<String, Object> defaultCallbackMeta(Map<String, Object> putExtra) {
         Map<String, Object> defaultMeta = new HashMap<>();
-        defaultMeta.put("callbackUrl", callbackUrl);
-        defaultMeta.put("callbackBody", this.createCallbackBody(putExtra));
-        defaultMeta.put("callbackBodyType", callbackBodyType);
+        if (callback != null && callback.isEnabled()) {
+            defaultMeta.put("callbackUrl", callback.getUrl());
+            defaultMeta.put("callbackBody", this.createCallbackBody(putExtra));
+            defaultMeta.put("callbackBodyType", callback.getBodyType());
+        }
         return defaultMeta;
     }
 

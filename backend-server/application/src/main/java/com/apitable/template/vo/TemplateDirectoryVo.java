@@ -57,8 +57,8 @@ public class TemplateDirectoryVo {
     @Schema(description = "Node tree of template mapping")
     private NodeShareTree nodeTree;
 
-    @Schema(description = "Creator user ID (the actual return is uuid)", type = "java.lang"
-        + ".String", example = "1")
+    @Schema(description = "Creator user ID (the actual return is uuid)",
+        type = "java.lang.String", example = "1")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 

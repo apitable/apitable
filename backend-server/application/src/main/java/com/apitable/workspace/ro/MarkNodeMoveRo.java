@@ -19,6 +19,7 @@
 package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -31,7 +32,7 @@ import lombok.Data;
 @Schema(description = "Star mark node move request parameters")
 public class MarkNodeMoveRo {
 
-    @Schema(description = "Node Id", example = "nod10", required = true)
+    @Schema(description = "Node Id", requiredMode = RequiredMode.REQUIRED, example = "nod10")
     @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 

@@ -24,7 +24,7 @@ import { colorVars } from '@apitable/components';
 import { getEnvVariables } from 'pc/utils/env';
 import { isMobile } from 'react-device-detect';
 import { makeNodeIconComponent, NodeIcon } from './node_icons';
-
+import styles from './style.module.less';
 export enum ContextItemKey {
   Rename,
   Favorite,
@@ -194,7 +194,12 @@ export const contextItemMap = new Map<ContextItemKey, any>([
   })],
   [ContextItemKey.addAi, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Ai),
-    text: 'New ChatBot',
+    text: () => {
+      return <div className={styles.beta}>
+        <span>{ t(Strings.ai_new_chatbot) }</span>
+        <span className={styles.betaTag}>Beta</span>
+      </div>;
+    },
     shortcutKey: getShortcutKeyString(ShortcutActionName.NewAi),
     onClick,
     hidden,
