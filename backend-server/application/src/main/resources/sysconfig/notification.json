@@ -367,7 +367,7 @@
       "is_mobile": true,
       "is_mail": true,
       "is_notification": true,
-      "mail_template_subject": "assignedToGroup",
+      "mail_template_subject": "addSubAdmin",
       "notifications_type": "member",
       "to_tag": "members",
       "url": "/management"
@@ -422,7 +422,7 @@
       "mail_template_subject": "assignedToGroup",
       "notifications_type": "member",
       "to_tag": "members",
-      "url": "/management"
+      "url": "/org"
     },
     "assigned_to_role": {
       "can_jump": true,
@@ -436,7 +436,7 @@
       "mail_template_subject": "assignedToRole",
       "notifications_type": "member",
       "to_tag": "members",
-      "url": "/management"
+      "url": "/workbench"
     },
     "auto_cancel_record_subscription": {
       "can_jump": true,
@@ -656,7 +656,7 @@
       "mail_template_subject": "removeFromRole",
       "notifications_type": "member",
       "to_tag": "members",
-      "url": "/management"
+      "url": "/workbench"
     },
     "removed_from_space_toadmin": {
       "can_jump": true,

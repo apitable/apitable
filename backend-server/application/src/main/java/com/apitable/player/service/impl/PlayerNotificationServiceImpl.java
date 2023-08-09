@@ -728,7 +728,8 @@ public class PlayerNotificationServiceImpl
                 }
             }
         } else {
-            String url = constProperties.getServerDomain() + template.getUrl();
+            String url = template.getUrl() == null ? constProperties.getServerDomain()
+                : constProperties.getServerDomain() + template.getUrl();
             dict.set(EMAIL_URL, url);
         }
         return dict;

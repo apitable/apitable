@@ -473,9 +473,10 @@ public class MemberController {
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateInfo(@RequestBody @Valid UpdateMemberRo data) {
+        Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
-        iMemberService.updateMember(data);
+        iMemberService.updateMember(userId, data);
         return ResponseData.success();
     }
 

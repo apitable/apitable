@@ -395,7 +395,7 @@ public interface IMemberService extends IService<MemberEntity> {
      *
      * @param data member info
      */
-    void updateMember(UpdateMemberRo data);
+    void updateMember(Long userId, UpdateMemberRo data);
 
     /**
      * batch update member departments.

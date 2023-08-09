@@ -662,7 +662,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateMember(UpdateMemberRo data) {
+    public void updateMember(Long userId, UpdateMemberRo data) {
         log.info("update member");
         Long memberId = data.getMemberId();
         MemberEntity member = getById(memberId);
@@ -706,6 +706,26 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 iRoleMemberService.addRoleMembers(roleId, Collections.singletonList(roleMember));
             }
         }
+        TaskManager.me().execute(() -> {
+            if (CollUtil.isEmpty(addTeamList)) {
+                return;
+            }
+            Long rootTeamId = teamMapper.selectRootIdBySpaceId(member.getSpaceId());
+            addTeamList.remove(rootTeamId);
+            Optional<Long> first = addTeamList.stream().findFirst();
+            if (first.isPresent()) {
+                Long operatorMemberId =
+                    memberMapper.selectIdByUserIdAndSpaceId(userId, member.getSpaceId());
+                if (operatorMemberId == null || operatorMemberId.equals(memberId)) {
+                    return;
+                }
+                String teamName = teamMapper.selectTeamNameById(first.get());
+                Dict dict = Dict.create().set(TEAM_NAME, teamName)
+                    .set(TEAM_ID, first.get());
+                NotificationManager.me().playerNotify(NotificationTemplateId.ASSIGNED_TO_GROUP,
+                    ListUtil.toList(memberId), userId, member.getSpaceId(), dict);
+            }
+        });
     }
 
     @Override
@@ -1165,10 +1185,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             .playerNotify(NotificationTemplateId.INVITE_MEMBER_TO_USER, invitedMemberIds,
                 fromUserId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, invitedMemberIds));
         if (isToFromUser) {
+            String memberName = memberMapper.selectMemberNameById(invitedMemberIds.get(0));
             NotificationManager.me()
                 .playerNotify(NotificationTemplateId.INVITE_MEMBER_TO_MYSELF,
                     ListUtil.toList(fromUserId), 0L, spaceId,
-                    Dict.create().set(INVOLVE_MEMBER_ID, invitedMemberIds));
+                    Dict.create().set(INVOLVE_MEMBER_ID, invitedMemberIds)
+                        .set("MEMBER_NAME", memberName));
         }
     }
 
