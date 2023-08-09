@@ -48,6 +48,7 @@
     "cookies-next": "^2.1.1",
     "current-device": "^0.10.2",
     "dayjs": "^1.11.7",
+    "decimal.js": "^10.4.3",
     "dingtalk-design-libs": "^0.0.20",
     "dingtalk-jsapi": "^2.13.71",
     "dom-to-image": "^2.6.0",
