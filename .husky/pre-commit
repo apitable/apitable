@@ -3,3 +3,15 @@
 . "$(dirname "$0")/_/husky.sh"
 
 # npx lint-staged
+
+function check_forbidden_folder() {
+  local forbidden_folder=$1
+
+  if git diff --cached --name-only | grep -q $forbidden_folder; then
+    echo "Error: Files in $forbidden_folder cannot be committed"
+    exit 1
+  fi
+
+}
+
+check_forbidden_folder "packages/core/src/model"

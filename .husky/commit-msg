@@ -2,4 +2,4 @@
 
 . "$(dirname "$0")/_/husky.sh"
 
-npx commitlint --edit $1
+npx commitlint -g $(dirname "$0")/../commitlint.config.js --edit $1
