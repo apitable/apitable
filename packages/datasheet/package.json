@@ -86,6 +86,7 @@
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
     "posthog-js": "^1.57.2",
+    "prettier-plugin-tailwindcss": "^0.4.1",
     "prismjs": "^1.29.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.4.4",
