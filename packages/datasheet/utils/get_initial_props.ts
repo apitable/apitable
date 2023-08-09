@@ -44,7 +44,7 @@ export const getInitialProps = (context: { ctx: NextPageContext }) => {
 
   const baseResponse = {
     env: process.env.ENV,
-    version: process.env.WEB_CLIENT_VERSION,
+    version: process.env.WEB_CLIENT_VERSION || 'development',
     envVars: JSON.stringify(envVars),
   };
 
