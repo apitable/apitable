@@ -306,6 +306,7 @@ public class NotifyMailFactory {
         }
         EmailMessage emailMessage = new EmailMessage();
         emailMessage.setPersonal(personal);
+        emailMessage.setFrom(emailSendProperties.getFrom());
         emailMessage.setSubject(subject);
         emailMessage.setTo(to);
         if (subjectType != null) {
@@ -349,6 +350,7 @@ public class NotifyMailFactory {
         for (int i = 0; i < to.size(); i++) {
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.setPersonal(emailSendProperties.getPersonal());
+            emailMessage.setFrom(emailSendProperties.getFrom());
             emailMessage.setSubject(subject);
             emailMessage.setTo(Collections.singletonList(to.get(i)));
             emailMessage.setPlainText(plainText);

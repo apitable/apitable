@@ -36,6 +36,8 @@ public class EmailMessage {
      */
     private String personal;
 
+    private String from;
+
     /**
      * Recipient list (multiple supported)
      */
@@ -77,6 +79,14 @@ public class EmailMessage {
 
     public void setPersonal(String personal) {
         this.personal = personal;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public List<String> getTo() {

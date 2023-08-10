@@ -95,6 +95,7 @@ socket:
 
 email:
   personal: ${EMAIL_PERSONAL:APITable}
+  from: ${MAIL_FROM:}
 
 starter:
   socketio:
