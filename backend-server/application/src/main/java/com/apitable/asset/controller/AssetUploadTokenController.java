@@ -21,10 +21,12 @@ package com.apitable.asset.controller;
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.ro.AssetUploadCertificateRO;
 import com.apitable.asset.ro.AssetUploadNotifyRO;
+import com.apitable.asset.ro.AssetUrlSignatureRo;
 import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.vo.AssetUploadCertificateVO;
 import com.apitable.asset.vo.AssetUploadResult;
+import com.apitable.asset.vo.AssetUrlSignatureVo;
 import com.apitable.auth.enums.AuthException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
@@ -37,8 +39,8 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.starter.oss.core.OssSignatureTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,16 +81,23 @@ public class AssetUploadTokenController {
 
     @PostResource(path = "/signatures", requiredLogin = false)
     @Operation(summary = "Batch get asset signature url")
-    public ResponseData<List<String>> notifyCallback(
-            @RequestBody final List<String> resourceKeys) {
+    public ResponseData<List<AssetUrlSignatureVo>> getSignatureUrls(
+            @RequestBody final AssetUrlSignatureRo assetUrlSignatureRo) {
         if (ossSignatureTemplate == null) {
             throw new BusinessException("Signature is not turned on.");
         }
+        List<AssetUrlSignatureVo> vos = new ArrayList<>();
         String host = constProperties.getOssBucketByAsset().getResourceUrl();
-        List<String> signedUrls = ossSignatureTemplate.getSignatureUrls(host, resourceKeys);
-        return ResponseData.success(signedUrls);
+        List<String> resourceKeys = assetUrlSignatureRo.getResourceKeys();
+        for (String resourceKey : resourceKeys) {
+            String signedUrl = ossSignatureTemplate.getSignatureUrl(host, resourceKey);
+            AssetUrlSignatureVo vo = new AssetUrlSignatureVo();
+            vo.setResourceKey(resourceKey);
+            vo.setUrl(signedUrl);
+            vos.add(vo);
+        }
+        return ResponseData.success(vos);
     }
-
     /**
      * Get upload presigned URL.
      */
