@@ -24,6 +24,7 @@ import {
   databus,
   ExecuteResult,
   FieldKeyEnum,
+  FieldType,
   getViewTypeString,
   IAddFieldOptions,
   ICollaCommandOptions,
@@ -65,7 +66,7 @@ import {
 import { OrderEnum } from 'shared/enums';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
-import { IAuthHeader, ILinkedRecordMap, IServerConfig } from 'shared/interfaces';
+import {IAuthHeader, ILinkedRecordMap, IOssConfig, IServerConfig} from 'shared/interfaces';
 import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
@@ -310,7 +311,8 @@ export class FusionApiService {
       },
     });
 
-    const recordVos = this.getRecordViewObjects(records, query.cellFormat);
+    const recordVos = await this.getRecordViewObjects(records, query.cellFormat);
+
 
     getRecordsProfiler.done({
       message: `getRecords ${dstId} profiler`,
@@ -491,7 +493,7 @@ export class FusionApiService {
       }
 
       const records = await view.getRecords({});
-      const recordViewObjects = this.getRecordViewObjects(records);
+      const recordViewObjects = await this.getRecordViewObjects(records);
       updateRecordsProfiler.done({ message: `update ${dstId}'s records profiler, records count: ${records.length}` });
       return {
         records: recordViewObjects,
@@ -558,9 +560,9 @@ export class FusionApiService {
     }
 
     const records = await newView.getRecords({});
-
+    const recordVos = await this.getRecordViewObjects(records);
     return {
-      records: this.getRecordViewObjects(records),
+      records: recordVos,
     };
   }
 
@@ -642,8 +644,84 @@ export class FusionApiService {
     return this.getNewRecordListVo(datasheet, { viewId, rows, fieldMap });
   }
 
-  private getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
-    return records.map((record) => record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)));
+  private async getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): Promise<ApiRecordDto[]> {
+    const roomConfig = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
+    const ossSignatureEnabled = roomConfig.ossSignatureEnabled;
+    const apiRecordDtos = records.map((record) => record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)));
+    if (!ossSignatureEnabled){
+      return apiRecordDtos;
+    }
+
+    const attachmentColmns: string[] = [];
+    const attachmentTokens: string[] = [];
+
+    // Fields for recording attachment types
+    if (records.length){
+      const record = records[0]!;
+      const voTransformOptions = record.getVoTransformOptions();
+      const fieldMap = voTransformOptions.fieldMap;
+      Object.keys(fieldMap).forEach(fieldId => {
+        const fieldValue = fieldMap[fieldId]!;
+        if (fieldValue.type === FieldType.Attachment) {
+          attachmentColmns.push(fieldId);
+        }
+      });
+    }
+
+    if (!attachmentColmns.length) {
+      // attachmentColmns is empty
+      return apiRecordDtos;
+    }
+
+    // Collect all attachment URL
+    apiRecordDtos.forEach(apiRecordDto => {
+      const fields = apiRecordDto.fields;
+      Object.keys(fields).forEach(fieldId => {
+        if (attachmentColmns.includes(fieldId)) {
+          const fieldValue = fields[fieldId];
+          if (Array.isArray(fieldValue)) {
+            fieldValue.forEach(obj => {
+              attachmentTokens.push(obj.token);
+            });
+          }
+        }
+      });
+    });
+
+    if (!attachmentTokens.length) {
+      // attachmentTokens is empty
+      return apiRecordDtos;
+    }
+
+    // Retrieve in batches, fetching 100 at a time.
+    const batchSize = 100;
+    const signatureMap = new Map();
+
+    for (let i = 0; i < attachmentTokens.length; i += batchSize) {
+      const batchTokens = attachmentTokens.slice(i, i + batchSize);
+      const batchSignatures = await this.restService.getSignatures(batchTokens);
+      batchSignatures.forEach(obj => {
+        const key = obj.resourceKey;
+        const value = obj.url;
+        signatureMap.set(key, value);
+      });
+    }
+
+    // Loop Replace URL
+    apiRecordDtos.forEach(apiRecordDto => {
+      const fields = apiRecordDto.fields;
+      Object.keys(fields).forEach(fieldId => {
+        if (attachmentColmns.includes(fieldId)) {
+          const fieldValue = fields[fieldId];
+          if (Array.isArray(fieldValue)) {
+            fieldValue.forEach(obj => {
+              obj.url = signatureMap.get(obj.token);
+            });
+          }
+        }
+      });
+    });
+    return apiRecordDtos;
   }
 
   /**

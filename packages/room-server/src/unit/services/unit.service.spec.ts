@@ -99,6 +99,7 @@ describe('Test', () => {
       .mockReturnValue({
         host: 'host',
         bucket: 'bucket',
+        ossSignatureEnabled: false,
       });
     jest.spyOn(userService, 'selectUserBaseInfoByIds')
       .mockResolvedValue([{

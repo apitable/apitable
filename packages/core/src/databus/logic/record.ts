@@ -49,6 +49,10 @@ export class Record {
   getViewObject<R>(transform: (record: IRecord, options: IRecordVoTransformOptions) => R): R {
     return transform(this.record, this.voTransformOptions);
   }
+
+  getVoTransformOptions(): IRecordVoTransformOptions {
+    return this.voTransformOptions;
+  }
 }
 
 /**

@@ -50,6 +50,7 @@ export interface IServerConfig {
 export interface IOssConfig {
   host: string;
   bucket: string;
+  ossSignatureEnabled: boolean;
 }
 
 export interface IActuatorConfig {
