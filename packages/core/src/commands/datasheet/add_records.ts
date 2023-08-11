@@ -181,17 +181,11 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       //   record: newRecord,
       //   index: index + i,
       // });
-      const preAction = ts_add_record_to_action(snapshot, {
+      const action = ts_add_record_to_action(snapshot, {
         viewId,
         record: newRecord,
         index: index + i,
       });
-      const action = [];
-      for (const dic of preAction) {
-        for (const key in dic) {
-          action.push(dic[key]);
-        }
-      }
       
       if (!action) {
         return collected;
