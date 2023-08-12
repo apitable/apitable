@@ -24,7 +24,7 @@ import {
   DateFormat, FieldType, ICreatedTimeField, ICreatedTimeFieldProperty, IField,
   TimeFormat
 } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { DateTimeBaseField } from './date_time_base_field';
 import { datasheetIdString, enumKeyToArray, enumToArray, joiErrorResult } from './validate_schema';
 import { IOpenCreatedTimeFieldProperty } from 'types/open/open_field_read_types';

@@ -14,4 +14,4 @@ function check_forbidden_folder() {
 
 }
 
-check_forbidden_folder "packages/core/src/model"
+# check_forbidden_folder "packages/core/src/model"

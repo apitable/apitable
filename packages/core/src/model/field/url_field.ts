@@ -21,7 +21,7 @@ import { first } from 'lodash';
 import { IReduxState } from 'exports/store';
 import { FieldType, IField, IHyperlinkSegment, ISegment, IURLField } from 'types/field_types';
 
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { ICellValue } from '../record';
 import { TextBaseField } from './text_base_field';
 

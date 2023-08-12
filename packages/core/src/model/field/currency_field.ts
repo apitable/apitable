@@ -18,7 +18,7 @@
 
 import Joi from 'joi';
 import { IReduxState } from '../../exports/store';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { NumberBaseField } from './number_base_field';
 import { ICellToStringOption, ICellValue } from 'model/record';
 import { numberToShow, str2Currency, str2number } from 'utils';

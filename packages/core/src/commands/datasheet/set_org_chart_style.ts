@@ -20,10 +20,10 @@ import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { t, Strings } from '../../exports/i18n';
-import { OrgChartView } from 'model';
 import { ISetOrgChartStyle } from '../../exports/store';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
+import { ViewAction } from 'commands_actions/view';
 
 export type ISetOrgChartStyleOptions = ISetOrgChartStyle & {
   cmd: CollaCommandName.SetOrgChartStyle;
@@ -47,7 +47,7 @@ export const setOrgChartStyle: ICollaCommandDef<ISetOrgChartStyleOptions> = {
     }
 
     const actions: IJOTAction[] = [];
-    const setOrgChartStyleAction = OrgChartView.setOrgChartStyle2Action(datasheet.snapshot, options);
+    const setOrgChartStyleAction = ViewAction.setOrgChartStyle2Action(datasheet.snapshot, options);
     // action && collected.push(action);
     setOrgChartStyleAction && actions.push(setOrgChartStyleAction);
     if (actions.length === 0) {

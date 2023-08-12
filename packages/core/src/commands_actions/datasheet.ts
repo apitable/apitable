@@ -58,9 +58,9 @@ import {
 import { FilterConjunction, IFilterCondition, IFilterInfo, IGroupInfo, ISortInfo, ResourceType } from 'types';
 import { FieldType, IField } from 'types/field_types';
 import { assertNever, getNewId, getUniqName, IDPrefix, NamePrefix } from 'utils';
-import { Field, OtherTypeUnitId, StatType } from './field';
-import { ICellValue } from './record';
-import { getViewClass } from './views';
+import { Field, OtherTypeUnitId, StatType } from '../model/field';
+import { ICellValue } from '../model/record';
+import { getViewClass } from '../model/views';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate';
 
 // TODO: all fields should be checked, not only the first one

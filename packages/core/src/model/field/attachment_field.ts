@@ -22,7 +22,7 @@ import { ICellValue } from '../record';
 import { ArrayValueField } from './field';
 import { IFilterCondition, FOperator } from 'types/view_types';
 import { isArray, isNumber, isString, isEqual } from 'lodash';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { IAttacheField, FieldType, IAttachmentValue, IStandardValue, IField, BasicValueType } from 'types/field_types';
 import { cellValueToImageSrc } from 'utils';
 import { BasicOpenValueTypeBase, IAttachmentFieldOpenValue } from 'types/field_types_open';

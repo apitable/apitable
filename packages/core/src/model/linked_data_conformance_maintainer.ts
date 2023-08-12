@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetActions } from './datasheet';
+import { DatasheetActions } from '../commands_actions/datasheet';
 import { without } from 'lodash';
 import { ILinkField, FieldType, BasicValueType } from 'types/field_types';
 import { Selectors, ISnapshot, IReduxState } from '../exports/store';

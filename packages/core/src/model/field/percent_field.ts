@@ -19,7 +19,7 @@
 import Joi from 'joi';
 import { IReduxState } from '../../exports/store';
 import { FieldType, IField, IPercentField } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { NumberBaseField } from './number_base_field';
 import { ICellValue, ICellToStringOption } from 'model/record';
 import { numberToShow, str2number, times } from 'utils';

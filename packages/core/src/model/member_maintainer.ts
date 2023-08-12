@@ -18,7 +18,7 @@
 
 import { getSnapshot } from '../exports/store/selectors';
 import { IJOTAction } from 'engine';
-import { DatasheetActions } from 'model/datasheet';
+import { DatasheetActions } from 'commands_actions/datasheet';
 import { FieldType, IMemberField } from 'types';
 import { IReduxState } from '../exports/store';
 
