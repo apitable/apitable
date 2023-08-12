@@ -26,7 +26,7 @@ import { FieldType, IField, ILinkField, ResourceType } from 'types';
 import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands';
 import { ConfigConstant } from 'config';
-import { ts_add_record_to_action } from '@apitable/databus-wasm';
+// import { ts_add_record_to_action } from '@apitable/databus-wasm';
 
 export interface IAddRecordsOptions {
   cmd: CollaCommandName.AddRecords;
@@ -176,16 +176,16 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         newRecord.data = _recordData;
       }
 
-      // const action = DatasheetActions.addRecord2Action(snapshot, {
-      //   viewId,
-      //   record: newRecord,
-      //   index: index + i,
-      // });
-      const action = ts_add_record_to_action(snapshot, {
+      const action = DatasheetActions.addRecord2Action(snapshot, {
         viewId,
         record: newRecord,
         index: index + i,
       });
+      // const action = ts_add_record_to_action(snapshot, {
+      //   viewId,
+      //   record: newRecord,
+      //   index: index + i,
+      // });
       
       if (!action) {
         return collected;
