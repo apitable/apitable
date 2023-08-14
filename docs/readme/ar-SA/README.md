@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="لغة جافا، إطار الربيع" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#تثبيت">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -70,7 +70,7 @@
 
 إذا كنت ترغب في عرض هذا المشروع مفتوح المصدر القابل للتطبيق ، فانقر هنا للحصول على [ ⚡️Gitpod Online Demo ](https://gitpod.io/#https://github.com/apitable/apitable).
 
-إذا كنت ترغب في تثبيت APITable في بيئة الحوسبة المحلية أو السحابية، انظر [💾 Ininstallation](#installation)
+إذا كنت ترغب في تثبيت APITable في بيئة الحوسبة المحلية أو السحابية، انظر [💾 Ininstallation](#تثبيت)
 
 إذا كنت ترغب في إعداد بيئة التنمية المحلية الخاصة بك، اقرأ دليل المطور [🧑<unk> :laptop_computer](./docs/contribute/developer-guide.md)
 

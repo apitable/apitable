@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#설치">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -66,15 +66,15 @@
 
 ## ✨ 빠른 시작
 
-만약 APITable 을 시험해보고 싶다면, 클라우드 호스팅 버전인 apitable.com을 사용하세요.
+만약 APITable 을 시험해보고 싶다면, 클라우드 호스팅 버전인 [apitable.com](https://apitable.com) 을 사용하세요.
 
-만약 APITable 오픈소스 프로젝트를 데모해보고 싶다면, ⚡️Gitpod Online Demo에서 확인하세요.
+만약 APITable 오픈소스 프로젝트를 데모해보고 싶다면, [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable) 에서 확인하세요.
 
-만약 로컬 또는 클라우드 컴퓨팅 환경에 APITable을 설치하고 싶다면, 💾 설치를 참고하세요.
+만약 로컬 또는 클라우드 컴퓨팅 환경에 APITable을 설치하고 싶다면, 💾 [설치를](#설치) 참고하세요.
 
-만약 로컬 개발 환경을 설정하고 싶다면, 🧑💻 개발자 가이드를 읽으세요.
+만약 로컬 개발 환경을 설정하고 싶다면, [🧑‍💻개발자가이드를](./docs/contribute/developer-guide.md) 읽으세요.
 
-Discord나 Twitter에 가입하여 연락을 유지하세요.
+[Discord](https://discord.gg/TwNb9nfdBU) 또는 [Twitter](https://twitter.com/apitable_com)에 가입하여 최신 소식을 받아보세요.
 ## 🔥 기능
 
 <table>

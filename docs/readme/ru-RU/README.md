@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Язык Java, Spring Framework" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#Установка">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -70,7 +70,7 @@
 
 Если вы хотите посмотреть этот проект с открытым исходным кодом, нажмите сюда для [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-Если вы хотите установить APITable локально или в облаке, смотрите [💾 Установка](#installation)
+Если вы хотите установить APITable локально или в облаке, смотрите [💾 Установка](#Установка)
 
 Если вы хотите установить локальную среду разработки, прочитайте наше [🧑<unk> 💻 Руководство разработчика](./docs/contribute/developer-guide.md)
 

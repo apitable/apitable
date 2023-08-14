@@ -201,8 +201,12 @@ export const integrateCdnHost = (
 };
 
 function startsWithIgnoreSlashPre(str: string, prefix: string): boolean {
-  if (prefix.startsWith('/')) {
-    prefix = prefix.substring(1, prefix.length);
+  if (str.startsWith(prefix)) {
+    return true;
   }
-  return str.startsWith(prefix);
+  return removeSlashPrefix(str).startsWith(removeSlashPrefix(prefix));
+}
+
+function removeSlashPrefix(str: string): string {
+  return str.startsWith('/') ? str.substring(1, str.length) : str;
 }

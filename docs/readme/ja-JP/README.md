@@ -70,7 +70,7 @@ APITable[^info]を試してみたい場合は、 [apitable.com](https://apitable
 
 この APITable オープンソースプロジェクトをデモしたい場合は、こちらをクリックしてください [⚡Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
-ローカルまたはクラウドコンピューティング環境に APITable をインストールしたい場合は、 [💾 インストール](#installation) を参照してください。
+ローカルまたはクラウドコンピューティング環境に APITable をインストールしたい場合は、 [💾 インストール](#インストール) を参照してください。
 
 ローカルの開発環境を設定したい場合は、 [🧑<unk> 💻 開発者ガイド](./docs/contribute/developer-guide.md) をご覧ください。
 
