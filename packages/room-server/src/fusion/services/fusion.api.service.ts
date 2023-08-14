@@ -66,7 +66,7 @@ import {
 import { OrderEnum } from 'shared/enums';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
-import {IAuthHeader, ILinkedRecordMap, IOssConfig, IServerConfig} from 'shared/interfaces';
+import { IAuthHeader, ILinkedRecordMap, IOssConfig, IServerConfig } from 'shared/interfaces';
 import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
@@ -313,7 +313,6 @@ export class FusionApiService {
 
     const recordVos = await this.getRecordViewObjects(records, query.cellFormat);
 
-
     getRecordsProfiler.done({
       message: `getRecords ${dstId} profiler`,
     });
@@ -456,7 +455,7 @@ export class FusionApiService {
         // meta,
         recordIds,
         linkedRecordMap,
-        includeCommentCount: false
+        includeCommentCount: false,
       },
     });
     if (datasheet === null) {
@@ -596,7 +595,7 @@ export class FusionApiService {
         // meta,
         recordIds: [],
         linkedRecordMap: this.request[DATASHEET_LINKED],
-        includeCommentCount: false
+        includeCommentCount: false,
       },
     });
     if (datasheet === null) {
@@ -647,8 +646,10 @@ export class FusionApiService {
   private async getRecordViewObjects(records: databus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): Promise<ApiRecordDto[]> {
     const roomConfig = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     const ossSignatureEnabled = roomConfig.ossSignatureEnabled;
-    const apiRecordDtos = records.map((record) => record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat)));
-    if (!ossSignatureEnabled){
+    const apiRecordDtos = records.map((record) =>
+      record.getViewObject<ApiRecordDto>(
+        (id, options) => this.transform.recordVoTransform(id, options, cellFormat)));
+    if (!ossSignatureEnabled) {
       return apiRecordDtos;
     }
 
@@ -656,7 +657,7 @@ export class FusionApiService {
     const attachmentTokens: string[] = [];
 
     // Fields for recording attachment types
-    if (records.length){
+    if (records.length) {
       const record = records[0]!;
       const voTransformOptions = record.getVoTransformOptions();
       const fieldMap = voTransformOptions.fieldMap;
