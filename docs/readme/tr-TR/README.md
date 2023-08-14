@@ -14,7 +14,7 @@
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Dili, Bahar Çerçevesi" />
     <!-- hub.docker.com-->
-    <a target="_blank" href="#installation">
+    <a target="_blank" href="#Kurulum">
         <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
     </a>
     <!-- Github Release Latest -->
@@ -70,7 +70,7 @@ Sadece APITable[^info]'i denemek istiyorsanız, [apitable.com](https://apitable.
 
 Bu APITable açık kaynak projesinin demosunu yapmak istiyorsanız, [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable) için buraya tıklayın.
 
-APITable'ı yerel veya bulut bilişim ortamınıza kurmak istiyorsanız, bkz. 💾 [Kurulum](#installation)
+APITable'ı yerel veya bulut bilişim ortamınıza kurmak istiyorsanız, bkz. 💾 [Kurulum](#Kurulum)
 
 Yerel geliştirme ortamınızı kurmak istiyorsanız 🧑‍💻 [Geliştirici Kılavuzumuzu okuyun](./docs/contribute/developer-guide.md)
 
