@@ -1,5 +1,23 @@
 # APITable CHANGELOG
 
+## [v0.99.0-beta.1](https://github.com/apitable/apitable/releases/tag/v0.99.0-beta.1) (2023-08-14)
+
+
+### Features and enhancements
+
+* feat: support db ssl config ([#1187](https://github.com/apitable/apitable/pull/1187)) @ChambersChan 
+
+### Bug fixes
+
+* fix: avatar display ([#1188](https://github.com/apitable/apitable/pull/1188)) @ChambersChan 
+* fix: share crash @laboonly 
+* fix: share crash ([#1201](https://github.com/apitable/apitable/pull/1201)) @laboonly 
+* fix: README broken links ([#1124](https://github.com/apitable/apitable/pull/1124)) @okisdev 
+
+### What's more
+
+* chore: v0.99.0-beta release ([#1184](https://github.com/apitable/apitable/pull/1184)) @Exclamation-mark 
+* Merge branch 'develop' into release/0.99.0 @zoe-icu 
 ## [v0.99.0-beta](https://github.com/apitable/apitable/releases/tag/v0.99.0-beta) (2023-08-07)
 
 
