@@ -398,11 +398,11 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           </Tooltip>
 
         </ComponentDisplay>
-        <WidgetEmbed
+        {WidgetEmbed && <WidgetEmbed
           visible={WidgetEmbedVisible}
           hide={hideShareCodeModal}
           shareId={shareSettings.shareId}
-        />
+        />}
       </div>
     </div>
   );
