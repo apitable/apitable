@@ -1,15 +1,17 @@
 import { IJOTAction, OTActionName } from 'index';
-import {
-  ICalendarViewProperty,
-  ISetCalendarStyle,
-  ISnapshot,
-  ViewType
-} from '../exports/store';
+import { ICalendarViewProperty, ISetCalendarStyle, ISnapshot, ViewType } from '../exports/store';
 import { getViewIndex } from '../exports/store/selectors';
-import { IGalleryViewProperty, 
-  IGanttViewProperty, 
-  IKanbanViewProperty, IOrgChartViewProperty, 
-  ISetGalleryStyle, ISetGanttStyle, ISetKanbanStyleValue, ISetOrgChartStyle } from '../exports/store/interfaces';
+import {
+  IGalleryViewProperty,
+  IGanttViewProperty,
+  IKanbanViewProperty,
+  IOrgChartViewProperty,
+  ISetGalleryStyle,
+  ISetGanttStyle,
+  ISetKanbanStyleValue,
+  ISetOrgChartStyle,
+} from '../exports/store/interfaces';
+
 export class ViewAction {
 
   /**
@@ -38,7 +40,11 @@ export class ViewAction {
     };
   };
 
-  static setCalendarStyle2Action = (snapshot: ISnapshot, payload: { viewId: string, data: ISetCalendarStyle[], isClear?: boolean }): IJOTAction[] => {
+  static setCalendarStyle2Action = (snapshot: ISnapshot, payload: {
+    viewId: string,
+    data: ISetCalendarStyle[],
+    isClear?: boolean
+  }): IJOTAction[] => {
     const { viewId, data, isClear } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
     if (viewIndex < 0) return [];
@@ -119,7 +125,10 @@ export class ViewAction {
     };
   };
 
-  static setGanttStyle2Action = (snapshot: ISnapshot, payload: { viewId: string, data: ISetGanttStyle[] }): IJOTAction[] => {
+  static setGanttStyle2Action = (snapshot: ISnapshot, payload: {
+    viewId: string,
+    data: ISetGanttStyle[]
+  }): IJOTAction[] => {
     const { viewId, data } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
     if (viewIndex < 0) return [];
