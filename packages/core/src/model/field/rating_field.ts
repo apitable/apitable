@@ -21,7 +21,7 @@ import { isNumber } from 'lodash';
 import { ICellValue } from 'model/record';
 import { FieldType, IField, IRatingField, IStandardValue } from 'types/field_types';
 import { str2number } from 'utils/convert';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { NumberBaseField, commonNumberFields } from './number_base_field';
 import { IReduxState } from '../../exports/store';
 import { FOperator, IFilterNumber } from 'types';

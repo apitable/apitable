@@ -98,6 +98,7 @@ export class RestService {
   private GET_UPLOAD_PRESIGNED_URL = 'internal/asset/upload/preSignedUrl';
   private GET_UPLOAD_CALLBACK = 'asset/upload/callback';
   private GET_ASSET = 'internal/asset/get';
+  private GET_ASSET_SIGNATURES = 'internal/asset/signatures';
   // Calculate the references to datasheet OP attachments
   private DST_ATTACH_CITE = 'base/attach/cite';
   // Create notification
@@ -656,4 +657,18 @@ export class RestService {
   async updateSpaceStatistics(spaceId: string, ro: InternalSpaceStatisticsRo): Promise<void> {
     await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
+
+
+  public async getSignatures(keys: string[]): Promise<Array<{ resourceKey: string; url: string }>> {
+    const queryParams = new URLSearchParams();
+    keys.forEach(key => queryParams.append('resourceKeys', key));
+
+    const url = `${this.GET_ASSET_SIGNATURES}?${queryParams.toString()}`;
+
+    const response = await lastValueFrom(
+        this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
+    );
+    return response.data;
+  }
+
 }

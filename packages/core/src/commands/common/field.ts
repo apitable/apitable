@@ -35,7 +35,7 @@ import { KanbanStyleKey } from '../../modules/shared/store/constants';
 import { getDatasheet, getSnapshot } from '../../exports/store/selectors';
 import { FieldType, IField, ILinkField, ISelectField, readonlyFields } from 'types';
 import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
-import { KanbanView } from '../../model/views/kanban_view';
+import { ViewAction } from 'commands_actions/view';
 
 // The store cannot be called here! !
 
@@ -283,7 +283,7 @@ function clearViewAttribute(snapshot: ISnapshot, oldField: IField, newField: IFi
         newField.type !== oldField.type || newField.property.isMulti
       )
     ) {
-      const action = KanbanView.setViewStyle2Action(snapshot, {
+      const action = ViewAction.setViewStyle2Action(snapshot, {
         viewId: view.id,
         styleKey: KanbanStyleKey.KanbanFieldId,
         styleValue: null,

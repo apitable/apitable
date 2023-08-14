@@ -22,7 +22,7 @@ import {
   ILastModifiedTimeField, ILastModifiedTimeFieldProperty, FieldType, IField,
   DateFormat, TimeFormat, CollectType,
 } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { DateTimeBaseField } from './date_time_base_field';
 import { ICellValue } from 'model/record';
 import { IRecord } from '../../exports/store';

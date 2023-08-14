@@ -18,7 +18,7 @@
 
 import Joi from 'joi';
 import { isEqual } from 'lodash';
-import { DatasheetActions } from 'model/datasheet';
+import { DatasheetActions } from 'commands_actions/datasheet';
 import { ICellValue } from 'model/record';
 import { getApiMetaUserProperty } from 'model/utils';
 import { IRecord, IRecordMap, IReduxState, Selectors } from '../../exports/store';

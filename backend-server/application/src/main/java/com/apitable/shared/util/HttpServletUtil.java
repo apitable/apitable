@@ -1,6 +1,5 @@
 package com.apitable.shared.util;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.Cookie;
@@ -21,15 +20,22 @@ public class HttpServletUtil {
      */
     public static Map<String, String> getParameterAsMap(HttpServletRequest request,
                                                         boolean fetchCookies) {
-        Map<String, String> queryMap = new HashMap<>();
+        Map<String, String> parameters = new HashMap<>();
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        for (String key : parameterMap.keySet()) {
+            String[] values = parameterMap.get(key);
+            if (values.length > 0) {
+                parameters.put(key, values[0]);
+            }
+        }
         if (fetchCookies) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
-                    queryMap.put(cookie.getName(), DecoderUtil.decode(cookie.getValue()));
+                    parameters.put(cookie.getName(), DecoderUtil.decode(cookie.getValue()));
                 }
             }
         }
-        return queryMap;
+        return parameters;
     }
 }

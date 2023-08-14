@@ -28,7 +28,7 @@ import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
 import { FOperator, IFilterCondition, IFilterMultiSelect } from 'types/view_types';
 import { hasIntersect, isSameSet, isSelectType } from 'utils';
-import { DatasheetActions } from '../../datasheet';
+import { DatasheetActions } from '../../../commands_actions/datasheet';
 import { isOptionId, SelectField } from './common_select_field';
 import { IOpenFilterValueMultiSelect } from 'types/open/open_filter_types';
 

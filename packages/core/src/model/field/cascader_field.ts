@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { FieldType, IField, ICascaderField, ISegment } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { TextBaseField } from './text_base_field';
 import { ICellValue } from '../record';
 import { Strings, t } from '../../exports/i18n';

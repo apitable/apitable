@@ -17,7 +17,7 @@
  */
 
 import { FieldType, IField, ITextField } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { TextBaseField } from './text_base_field';
 
 export class TextField extends TextBaseField {

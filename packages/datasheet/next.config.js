@@ -48,6 +48,8 @@ const plugins = [
 module.exports = withPlugins(plugins, {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
+  // Possible fix for  timeout error in static page generation
+  staticPageGenerationTimeout: 120,
   images: {
     unoptimized: true,
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 's1.apitable.com'],

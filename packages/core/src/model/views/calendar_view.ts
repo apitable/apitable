@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IJOTAction, integrateCdnHost, OTActionName, Settings } from 'index';
+import { integrateCdnHost, Settings } from 'index';
 import { Field } from 'model';
 import { BasicValueType } from 'types';
 import { Strings, t } from '../../exports/i18n';
@@ -27,13 +27,11 @@ import {
   ICalendarViewStyle,
   IFieldMap,
   IReduxState,
-  ISetCalendarStyle,
   ISnapshot,
   IViewProperty,
   ViewType
 } from '../../exports/store';
-import { getViewIndex } from '../../exports/store/selectors';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { View } from './views';
 
 export class CalendarView extends View {
@@ -107,29 +105,4 @@ export class CalendarView extends View {
     };
   }
 
-  static setCalendarStyle2Action = (snapshot: ISnapshot, payload: { viewId: string, data: ISetCalendarStyle[], isClear?: boolean }): IJOTAction[] => {
-    const { viewId, data, isClear } = payload;
-    const viewIndex = getViewIndex(snapshot, viewId);
-    if (viewIndex < 0) return [];
-    const view = snapshot.meta.views[viewIndex] as ICalendarViewProperty;
-    if (view.type !== ViewType.Calendar) return [];
-
-    return data.filter(({ styleKey, styleValue }) => {
-      return styleValue !== view.style[styleKey];
-    }).map(({ styleKey, styleValue }) => {
-      if (isClear) {
-        return {
-          n: OTActionName.ObjectDelete,
-          p: ['meta', 'views', viewIndex, 'style', styleKey],
-          od: view.style[styleKey],
-        };
-      }
-      return {
-        n: OTActionName.ObjectReplace,
-        p: ['meta', 'views', viewIndex, 'style', styleKey],
-        oi: styleValue,
-        od: view.style[styleKey],
-      };
-    });
-  };
 }

@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IJOTAction, OTActionName } from 'engine';
 import { Strings, t } from '../../exports/i18n';
 import { LayoutType, ViewType } from '../../exports/store';
-import { getViewById, getViewIndex } from '../../exports/store/selectors';
+import { getViewById } from '../../exports/store/selectors';
 import { FieldType } from 'types';
-import { IGalleryViewProperty, ISetGalleryStyle, ISnapshot, IViewProperty } from '../../exports/store/interfaces';
-import { DatasheetActions } from '../datasheet';
+import { IGalleryViewProperty, ISnapshot, IViewProperty } from '../../exports/store/interfaces';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { CardView } from './card_view';
 import { Settings } from 'config';
 import { integrateCdnHost } from 'utils';
@@ -74,32 +73,6 @@ export class GalleryView extends CardView {
       displayHiddenColumnWithinMirror: true
     };
   }
-
-  /**
-   * gallery view UI setting
-   */
-  static setGalleryStyle2Action = (
-    snapshot: ISnapshot,
-    payload: ISetGalleryStyle,
-  ): IJOTAction | null => {
-    const { viewId, styleKey, styleValue } = payload;
-
-    const viewIndex = getViewIndex(snapshot, viewId);
-    if (viewIndex < 0) {
-      return null;
-    }
-
-    const view = snapshot.meta.views[viewIndex] as IGalleryViewProperty;
-    if (view.type !== ViewType.Gallery || styleValue === view.style[styleKey]) {
-      return null;
-    }
-    return {
-      n: OTActionName.ObjectReplace,
-      p: ['meta', 'views', viewIndex, 'style', styleKey],
-      oi: styleValue,
-      od: view.style[styleKey],
-    };
-  };
 
   static getViewIntroduce() {
     return {

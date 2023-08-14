@@ -24,7 +24,7 @@ import {
   ICheckboxField, ICheckboxFieldProperty, IStandardValue,
   FieldType, IField, BasicValueType,
 } from '../../types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { isEmpty } from 'lodash';
 import { StatType } from './stat';
 import { t, Strings } from '../../exports/i18n';

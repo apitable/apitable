@@ -24,7 +24,7 @@ import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager
 import { IRecordMap, IReduxState, ISnapshot } from '../../exports/store';
 import { fastCloneDeep, getNewId, getUniqName, IDPrefix, ActionType, parseAction } from 'utils';
 import { getField, getSnapshot, getDatasheet } from '../../exports/store/selectors';
-import { DatasheetActions } from 'model/datasheet';
+import { DatasheetActions } from 'commands_actions/datasheet';
 import { createNewField, setField } from 'commands/common/field';
 import { TextField } from 'model/field/text_field';
 import { Events, Player } from '../../modules/shared/player';

@@ -2,7 +2,7 @@ import { sortBy } from 'lodash';
 
 import { ICellValue } from 'model/record';
 import { Field } from 'model/field';
-import { DatasheetActions } from 'model/datasheet';
+import { DatasheetActions } from 'commands_actions/datasheet';
 
 import { IRecord, IRecordMap, IReduxState, IViewProperty, IViewRow } from 'exports/store/interfaces';
 import { findRealField, getCellValue, getFilterInfoExceptInvalid } from 'modules/database/store/selectors/resource/datasheet';

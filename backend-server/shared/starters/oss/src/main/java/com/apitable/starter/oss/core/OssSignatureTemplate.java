@@ -22,9 +22,7 @@ import cn.hutool.core.date.DateUtil;
 import com.qiniu.cdn.CdnManager;
 import com.qiniu.common.QiniuException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class OssSignatureTemplate {
 
@@ -54,16 +52,5 @@ public class OssSignatureTemplate {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public List<String> getSignatureUrls(String host, List<String> resourceKeys) {
-        List signatureUrls = new ArrayList<>();
-        for (String key : resourceKeys) {
-            String signatureUrl = this.getSignatureUrl(host, key);
-            if (signatureUrl != null) {
-                signatureUrls.add(signatureUrl);
-            }
-        }
-        return signatureUrls;
     }
 }
