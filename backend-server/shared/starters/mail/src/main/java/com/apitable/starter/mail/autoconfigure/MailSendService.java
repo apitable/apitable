@@ -18,6 +18,7 @@
 
 package com.apitable.starter.mail.autoconfigure;
 
+import cn.hutool.core.util.StrUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -91,7 +92,9 @@ public class MailSendService implements MailTemplate {
     private MimeMessage createMimeMessage(EmailMessage emailMessage) throws MessagingException, IOException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom(new InternetAddress(properties.getUsername(), emailMessage.getPersonal()));
+        String address = StrUtil.isNotBlank(emailMessage.getFrom())
+            ? emailMessage.getFrom() : properties.getUsername();
+        helper.setFrom(new InternetAddress(address, emailMessage.getPersonal()));
         // set recipient
         helper.setTo(ArrayUtil.toArray(emailMessage.getTo(), String.class));
         // set CC

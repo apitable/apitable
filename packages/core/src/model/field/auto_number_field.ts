@@ -19,7 +19,7 @@
 import Joi from 'joi';
 import { IRecord } from '../../exports/store';
 import { FieldType, IField, IAutoNumberField } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { ICellValue } from 'model/record';
 import { NumberBaseField } from './number_base_field';
 import { FOperator, IAddOpenAutoNumberFieldProperty } from 'types';

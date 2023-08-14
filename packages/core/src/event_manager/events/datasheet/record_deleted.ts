@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EventRealTypeEnums, OPEventNameEnums } from 'event_manager/const';
+import { EventRealTypeEnums, OPEventNameEnums } from 'event_manager/enum';
 import { testPath } from 'event_manager/helper';
 import { ResourceType } from 'types/resource_types';
 import { IAtomEventType } from '../interface';

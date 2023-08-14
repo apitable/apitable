@@ -19,7 +19,7 @@
 import { getResourceWidgetPanels } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { DatasheetActions } from '../../model/datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { CollaCommandName } from '..';
 
 export interface IDeleteWidgetPanel {

@@ -18,7 +18,7 @@
 
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { DashboardAction } from '../../model/dashboard';
+import { DashboardAction } from '../../commands_actions/dashboard';
 import { IDashboardLayout, Selectors } from '../../exports/store';
 import { CollaCommandName } from '..';
 

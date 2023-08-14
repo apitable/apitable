@@ -105,6 +105,7 @@ ENV \
     MAIL_PORT= \
     MAIL_SSL_ENABLE=true \
     MAIL_USERNAME= \
+    MAIL_FROM= \
     \
     OSS_CLIENT_TYPE=aws \
     OSS_ENABLED=true \

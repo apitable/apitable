@@ -22,7 +22,7 @@ import { IReduxState, Selectors } from '../../../exports/store';
 import { ResourceType } from 'types';
 import { transformOpFields } from '../../helper';
 import { IAtomEventType } from '../interface';
-import { EventRealTypeEnums, OPEventNameEnums } from './../../const';
+import { EventRealTypeEnums, OPEventNameEnums } from './../../enum';
 import { AnyObject, IEventInstance, IOPBaseContext, IOPEvent } from './../../interface/event.interface';
 
 interface IRecordCreated {

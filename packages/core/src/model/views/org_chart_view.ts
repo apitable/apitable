@@ -18,14 +18,13 @@
 
 import { Strings, t } from '../../exports/i18n';
 import { ViewType } from '../../modules/shared/store/constants';
-import { IOrgChartViewProperty, ISnapshot, ISetOrgChartStyle, IViewProperty, IOrgChartViewColumn } from '../../exports/store/interfaces';
-import { getViewById, getViewIndex } from '../../exports/store/selectors';
-import { DatasheetActions } from '../datasheet';
+import { IOrgChartViewProperty, ISnapshot, IViewProperty, IOrgChartViewColumn } from '../../exports/store/interfaces';
+import { getViewById } from '../../exports/store/selectors';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { View } from './views';
 import { Settings } from 'config';
 import { integrateCdnHost } from 'utils';
 import { FieldType } from 'types/field_types';
-import { IJOTAction, OTActionName } from 'engine/ot/interface';
 
 export class OrgChartView extends View {
   override get recordShowName() {
@@ -56,29 +55,6 @@ export class OrgChartView extends View {
       horizontal: false,
     };
   }
-
-  static setOrgChartStyle2Action = (
-    snapshot: ISnapshot,
-    payload: ISetOrgChartStyle,
-  ): IJOTAction | null => {
-    const { viewId, styleKey, styleValue } = payload;
-
-    const viewIndex = getViewIndex(snapshot, viewId);
-    if (viewIndex < 0) {
-      return null;
-    }
-
-    const view = snapshot.meta.views[viewIndex] as IOrgChartViewProperty;
-    if (view.type !== ViewType.OrgChart || styleValue === view.style[styleKey]) {
-      return null;
-    }
-    return {
-      n: OTActionName.ObjectReplace,
-      p: ['meta', 'views', viewIndex, 'style', styleKey],
-      oi: styleValue,
-      od: view.style[styleKey],
-    };
-  };
 
   static defaultColumns(srcView: IViewProperty) {
     if (!srcView) {

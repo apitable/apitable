@@ -26,7 +26,7 @@ import { IReduxState } from '../../../exports/store';
 import { BasicValueType, FieldType, IField, ISelectFieldProperty, ISingleSelectField, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { FOperator, IFilterCondition, IFilterSingleSelect } from 'types/view_types';
-import { DatasheetActions } from '../../datasheet';
+import { DatasheetActions } from '../../../commands_actions/datasheet';
 import { isOptionId, SelectField } from './common_select_field';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
 import { IOpenFilterValueSelect } from 'types/open/open_filter_types';

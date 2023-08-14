@@ -1223,6 +1223,7 @@
   "default_create_folder": "新規フォルダ",
   "default_create_form": "新規フォーム",
   "default_create_mirror": "新しいバックミラー",
+  "default_create_ai_chat_bot": "新しいAIアシスタント",
   "default_datasheet_attachments": "添付ファイル",
   "default_datasheet_options": "オプション",
   "default_datasheet_title": "タイトル",

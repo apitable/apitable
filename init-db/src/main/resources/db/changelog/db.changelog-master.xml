@@ -37,4 +37,5 @@
     <include file="db/changelog/0.15/master.xml"/>
     <include file="db/changelog/0.18/master.xml"/>
     <include file="db/changelog/0.21/master.xml"/>
+    <include file="db/changelog/0.99/master.xml"/>
 </databaseChangeLog>

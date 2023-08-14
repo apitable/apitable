@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-import { SecondConfirmType } from 'pc/components/datasheet_search_panel/datasheet_search_panel';
+import { SecondConfirmType } from 'pc/components/datasheet_search_panel/interface';
 
 interface IFormPreviewerProps {
   datasheetId: string;

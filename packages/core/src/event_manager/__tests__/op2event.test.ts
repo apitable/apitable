@@ -18,7 +18,7 @@
 
 import { OP2Event } from 'event_manager/op2event';
 import { IChangeset } from './../../engine/ot/interface';
-import { OPEventNameEnums } from './../const';
+import { OPEventNameEnums } from './../enum';
 import { eventRecordDeleted } from './expectEvents';
 import { createRecordOps, deleteRecordOps, duplicateRecordOps, updateRecordOps, updateRecordsOpsByFill } from './mockOps';
 import { state } from './mockState';

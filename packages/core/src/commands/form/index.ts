@@ -18,7 +18,7 @@
 
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { FormAction } from '../../model/form';
+import { FormAction } from '../../commands_actions/form';
 import { IFormProps, Selectors } from '../../exports/store';
 import { CollaCommandName } from '..';
 

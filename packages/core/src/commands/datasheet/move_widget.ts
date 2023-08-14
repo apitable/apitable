@@ -18,7 +18,7 @@
 
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { DatasheetActions } from '../../model/datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { CollaCommandName } from '..';
 import { getResourceWidgetPanels } from '../../exports/store/selectors';
 import { IWidgetInPanel } from '../../exports/store';

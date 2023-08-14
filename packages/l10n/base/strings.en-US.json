@@ -1137,6 +1137,7 @@
   "default_create_folder": "New folder",
   "default_create_form": "New form",
   "default_create_mirror": "New mirror",
+  "default_create_ai_chat_bot": "New chatbot",
   "default_datasheet_attachments": "Attachments",
   "default_datasheet_options": "Options",
   "default_datasheet_title": "Title",
@@ -5528,5 +5529,6 @@
   "ai_embed_website": "Embed website",
   "ai_embed_website_iframe_tips": "To add a chatbot to any location on the website, please add this iframe to your HTML code.",
   "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html.",
-  "ai_setting_title": "Setting"
+  "ai_setting_title": "Setting",
+  "ai_default_idk": "I don't know"
 }

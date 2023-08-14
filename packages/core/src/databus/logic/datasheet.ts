@@ -36,7 +36,7 @@ import {
 import { IRecordMap, IReduxState, IServerDatasheetPack, ISnapshot, IViewProperty, Selectors, StoreActions } from 'exports/store';
 import { Store } from 'redux';
 import { IField, ResourceType } from 'types';
-import { Field } from '.';
+import { Field } from './field';
 import { IDataSaver, ILoadDatasheetPackOptions, ISaveOpsOptions, IStoreOptions } from '../providers';
 import { IResource } from './resource.interface';
 import { IAddRecordsOptions, IViewOptions, View } from './view';

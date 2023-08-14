@@ -1217,6 +1217,7 @@
   "debug_cell_text_1": "*",
   "decimal": "Десятичная (1.0)",
   "default": "Нарушение обязательств",
+  "default_create_ai_chat_bot": "Новый ИИ-помощник",
   "default_create_dashboard": "Новые приборные панели",
   "default_create_datasheet": "Новая таблица данных",
   "default_create_file": "Новый файл",

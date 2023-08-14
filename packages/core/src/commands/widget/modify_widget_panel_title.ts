@@ -20,7 +20,7 @@ import { getResourceWidgetPanels } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { CollaCommandName } from '..';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
-import { DatasheetActions } from '../../model/datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 
 export interface IModifyWidgetPanelName {
   cmd: CollaCommandName.ModifyWidgetPanelName;

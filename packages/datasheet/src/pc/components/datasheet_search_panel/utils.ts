@@ -1,5 +1,5 @@
 import { Strings, t } from '@apitable/core';
-import { SecondConfirmType } from './datasheet_search_panel';
+import { SecondConfirmType } from './interface';
 
 export const getModalTitle = (secondConfirmType?: SecondConfirmType) => {
   switch (secondConfirmType) {

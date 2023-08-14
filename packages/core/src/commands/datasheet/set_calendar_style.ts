@@ -20,10 +20,10 @@ import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { Strings, t } from '../../exports/i18n';
-import { CalendarView } from 'model';
 import { ISetCalendarStyle } from '../../exports/store';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
+import { ViewAction } from 'commands_actions/view';
 
 export type ISetCalendarStyleOptions = {
   cmd: CollaCommandName.SetCalendarStyle;
@@ -50,7 +50,7 @@ export const setCalendarStyle: ICollaCommandDef<ISetCalendarStyleOptions> = {
     }
 
     const actions: IJOTAction[] = [];
-    const setCalendarStyleAction = CalendarView.setCalendarStyle2Action(datasheet.snapshot, options);
+    const setCalendarStyleAction = ViewAction.setCalendarStyle2Action(datasheet.snapshot, options);
     setCalendarStyleAction && actions.push(...setCalendarStyleAction);
     if (actions.length === 0) {
       return null;

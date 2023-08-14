@@ -17,7 +17,6 @@
  */
 
 import { Strings, t } from '../../exports/i18n';
-import { KanbanView } from 'model';
 import { ISetKanbanStyleValue } from '../../exports/store';
 import { getActiveDatasheetId, getActualRowCount } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
@@ -26,6 +25,7 @@ import { IJOTAction } from '../../engine/ot';
 import { getDatasheet } from '../../exports/store/selectors';
 import { CollaCommandName } from '..';
 import { addRecords } from './add_records';
+import { ViewAction } from 'commands_actions/view';
 
 export type ISetKanbanStyleOptions = {
   cmd: CollaCommandName.SetKanbanStyle;
@@ -52,7 +52,7 @@ export const setKanbanStyle: ICollaCommandDef<ISetKanbanStyleOptions> = {
 
     const actions: IJOTAction[] = [];
 
-    const setKanbanStyleAction = KanbanView.setViewStyle2Action(datasheet.snapshot, options);
+    const setKanbanStyleAction = ViewAction.setViewStyle2Action(datasheet.snapshot, options);
     setKanbanStyleAction && actions.push(setKanbanStyleAction);
 
     if (addRecord) {

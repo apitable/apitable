@@ -350,6 +350,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
                 src: '',
                 title: item.roleName,
                 type: AvatarType.Team,
+                isRole
               }}
             />
           </div>

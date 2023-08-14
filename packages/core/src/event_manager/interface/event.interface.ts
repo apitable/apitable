@@ -18,7 +18,7 @@
 
 import { IJOTAction, IOperation } from 'engine/ot/interface';
 import { ResourceType } from '../../types/resource_types';
-import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from '../const';
+import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from '../enum';
 
 export type AnyObject = Record<string, any>;
 

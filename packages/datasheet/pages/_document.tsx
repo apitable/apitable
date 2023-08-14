@@ -57,7 +57,7 @@ class MyDocument extends Document<IClientInfo> {
           }
           <script src='/file/js/browser_check.2.js' async />
           {/* injection of custom configs of editions, e.g. APITable */}
-          <script src='/custom/custom_config.js' defer />
+          <script src={`/custom/custom_config.js?version=${version}`} defer/>
           {
             JSON.parse(envVars).COOKIEBOT_ID &&
             <script

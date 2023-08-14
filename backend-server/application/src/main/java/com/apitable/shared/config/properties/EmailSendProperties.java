@@ -41,4 +41,9 @@ public class EmailSendProperties {
      * Signature of all messages
      */
     private String personal;
+
+    /**
+     * From email of all messages
+     */
+    private String from;
 }

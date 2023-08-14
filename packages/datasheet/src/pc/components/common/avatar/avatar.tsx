@@ -18,7 +18,7 @@
 
 import { getThemeColors, lightColors, getThemeName } from '@apitable/components';
 import { CutMethod, getImageThumbSrc, integrateCdnHost } from '@apitable/core';
-import { UserGroupOutlined } from '@apitable/icons';
+import { UserGroupOutlined,UserRoleOutlined } from '@apitable/icons';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import * as React from 'react';
 
@@ -71,6 +71,7 @@ export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
   avatarColor?: number | null;
   style?: React.CSSProperties;
   defaultIcon?: JSX.Element;
+  isRole?:boolean;
 }
 
 const AvatarHoc = (Component: any) => {
@@ -80,7 +81,7 @@ const AvatarHoc = (Component: any) => {
   const bgColorList = createAvatarRainbowColorsArr(themeName);
 
   return (props: IAvatarProps) => {
-    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon, avatarColor } = props;
+    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon, avatarColor,isRole } = props;
     if (!title || !id) return null;
     if (type === AvatarType.Team) {
       return (
@@ -94,7 +95,8 @@ const AvatarHoc = (Component: any) => {
             ...style,
           }}
         >
-          {!src && <UserGroupOutlined size={size * 0.625} color={colors.textCommonPrimary} />}
+          { isRole? <UserRoleOutlined size={size * 0.625} color={colors.textStaticPrimary} />
+            :!src &&<UserGroupOutlined size={size * 0.625} color={colors.textStaticPrimary} />}
         </Component>
       );
     }

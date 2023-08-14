@@ -18,14 +18,10 @@
 
 package com.apitable.shared.sysconfig.i18n;
 
-import java.util.Locale;
-
-import javax.validation.constraints.NotNull;
-
 import cn.hutool.core.util.StrUtil;
-
 import com.apitable.shared.constants.LanguageConstants;
-
+import java.util.Locale;
+import javax.validation.constraints.NotNull;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
@@ -38,13 +34,14 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public class I18nStringsUtil {
 
     /**
-     * get strings text in multiple languages
+     * get strings text in multiple languages.
      *
-     * @param stringsKey    strings.json key
-     * @param lang          language currently supported languages {@link LanguageConstants#SUPPORTED_LANGUAGE}、{@link I18nTypes#isSupport()}
-     * @param defaultStr    if str is {@code null} or &quot;&quot;or empty，returns the specified default string
+     * @param stringsKey strings.json key
+     * @param lang       language currently supported languages {@link LanguageConstants#SUPPORTED_LANGUAGE}、{@link I18nTypes#isSupport()}
+     * @param defaultStr if str is {@code null} or &quot;&quot;or empty，returns the specified default string
      * @return String
      */
+    @SuppressWarnings("checkstyle:MethodName")
     public static String t(String stringsKey, @NotNull Locale lang, String defaultStr) {
         if (StrUtil.isNotBlank(stringsKey)) {
             I18nTypes i18nTypes = I18nTypes.aliasOf(lang.toLanguageTag()).isBackoff();
@@ -55,14 +52,14 @@ public class I18nStringsUtil {
     }
 
     /**
-     * Use the local language by default, convert the T function
-     * </br>
+     * Use the local language by default, convert the T function.
      * Local language representation: the language of the currently logged in person, parsed according to the cookie
-     * use LocaleContextHolder#defaultLocale if you can not parse
+     * use LocaleContextHolder#defaultLocale if you can not parse.
      *
-     * @param stringsKey    strings.json key
-     * @param defaultStr    f str is {@code null} or &quot;&quot;or empty，returns the specified default string
+     * @param stringsKey strings.json key
+     * @param defaultStr f str is {@code null} or &quot;&quot;or empty，returns the specified default string
      */
+    @SuppressWarnings("checkstyle:MethodName")
     public static String t(String stringsKey, String defaultStr) {
         // get the current locale
         Locale currentLang = LocaleContextHolder.getLocale();
@@ -70,20 +67,22 @@ public class I18nStringsUtil {
     }
 
     /**
-     * get strings text in multiple languages
+     * get strings text in multiple languages.
      *
-     * @param stringsKey    strings.json key
-     * @param lang          language, currently supported languages
+     * @param stringsKey strings.json key
+     * @param lang       language, currently supported languages
      */
+    @SuppressWarnings("checkstyle:MethodName")
     public static String t(String stringsKey, @NotNull Locale lang) {
         return t(stringsKey, lang, StrUtil.EMPTY);
     }
 
     /**
-     * Execute the T function, convert to null and return {@link StrUtil#EMPTY}
+     * Execute the T function, convert to null and return {@link StrUtil#EMPTY}.
      *
-     * @param stringsKey    strings.json key
+     * @param stringsKey strings.json key
      */
+    @SuppressWarnings("checkstyle:MethodName")
     public static String t(String stringsKey) {
         return t(stringsKey, StrUtil.EMPTY);
     }

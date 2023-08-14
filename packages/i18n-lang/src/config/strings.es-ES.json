@@ -1217,6 +1217,7 @@
   "debug_cell_text_1": "*",
   "decimal": "Decimal (1.0)",
   "default": "Incumplimiento de contrato",
+  "default_create_ai_chat_bot": "Nuevo asistente de IA",
   "default_create_dashboard": "Nuevo salpicadero",
   "default_create_datasheet": "Nouvelle fiche technique",
   "default_create_file": "Nuevos archivos",

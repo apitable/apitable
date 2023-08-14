@@ -22,6 +22,7 @@ import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { FC, memo, useContext } from 'react';
 import { CalendarContext } from '../calendar_context';
 import styles from './styles.module.less';
+import { isNil } from 'lodash';
 import cls from 'classnames';
 
 interface IRecordItem {
@@ -43,7 +44,7 @@ const RecordItemBase: FC<React.PropsWithChildren<IRecordItem>> = props => {
       </div>
     );
   }
-  if (!cellValue) return null;
+  if(isNil(cellValue)) return null;
   return (
     <div key={column.fieldId} className={cls(styles.recordItem, {
       [styles.bolder]: isFirst,

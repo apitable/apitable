@@ -16,9 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { IMeta } from '@apitable/core';
-import { SecondConfirmType } from 'pc/components/datasheet_search_panel/datasheet_search_panel';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import * as React from 'react';
+
+export enum SecondConfirmType {
+  Widget,
+  Form,
+  Chat
+}
 
 export interface INodeInstalledWidget {
   datasheetId: string;

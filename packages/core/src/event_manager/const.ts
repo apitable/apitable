@@ -16,39 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './enum';
 import { datasheetEvent } from './events/datasheet';
-import { IEventListenerOptions } from './interface/event_manager.interface';
-
-/**
- * Before defining a new event, declare it below
- */
-export enum OPEventNameEnums {
-  FieldUpdated = 'FieldUpdated',
-  CellUpdated = 'CellUpdated',
-  RecordCreated = 'RecordCreated',
-  RecordDeleted = 'RecordDeleted',
-  RecordUpdated = 'RecordUpdated',
-  RecordMetaUpdated = 'RecordMetaUpdated',
-  RecordCommentUpdated = 'RecordCommentUpdated',
-  FormSubmitted = 'FormSubmitted',
-}
-
-export enum EventRealTypeEnums {
-  VIRTUAL = 'VIRTUAL',
-  REAL = 'REAL',
-  ALL = 'ALL',
-}
-
-export enum EventAtomTypeEnums {
-  ATOM = 'ATOM',
-  COMB = 'COMB',
-}
-
-export enum EventSourceTypeEnums {
-  LOCAL = 'LOCAL',
-  REMOTE = 'REMOTE',
-  ALL = 'ALL',
-}
+import type { IEventListenerOptions } from './interface/event_manager.interface';
 
 /**
  * When listening for events, you can pass in option parameters. 

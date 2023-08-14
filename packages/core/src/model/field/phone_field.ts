@@ -18,7 +18,7 @@
 
 import { IReduxState } from '../../exports/store';
 import { FieldType, IField, IPhoneField } from 'types/field_types';
-import { DatasheetActions } from '../datasheet';
+import { DatasheetActions } from '../../commands_actions/datasheet';
 import { TextBaseField } from './text_base_field';
 
 export class PhoneField extends TextBaseField {

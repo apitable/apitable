@@ -20,10 +20,10 @@ import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { Strings, t } from '../../exports/i18n';
-import { GanttView } from 'model';
 import { ISetGanttStyle } from '../../exports/store';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
+import { ViewAction } from 'commands_actions/view';
 
 export type ISetGanttStyleOptions = {
   cmd: CollaCommandName.SetGanttStyle;
@@ -49,7 +49,7 @@ export const setGanttStyle: ICollaCommandDef<ISetGanttStyleOptions> = {
     }
 
     const actions: IJOTAction[] = [];
-    const setGanttStyleAction = GanttView.setGanttStyle2Action(datasheet.snapshot, options);
+    const setGanttStyleAction = ViewAction.setGanttStyle2Action(datasheet.snapshot, options);
     setGanttStyleAction && actions.push(...setGanttStyleAction);
     if (actions.length === 0) {
       return null;

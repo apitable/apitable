@@ -724,11 +724,13 @@ public class PlayerNotificationServiceImpl
                     dict.set(EMAIL_CREATED_AT,
                         ClockManager.me().getUtcNow().toInstant().toEpochMilli());
                 } else {
+                    notifyUr.append(notifyPath.build(CharsetUtil.CHARSET_UTF_8));
                     dict.set(EMAIL_DATASHEET_URL, notifyUr.toString());
                 }
             }
         } else {
-            String url = constProperties.getServerDomain() + template.getUrl();
+            String url = template.getUrl() == null ? constProperties.getServerDomain()
+                : constProperties.getServerDomain() + template.getUrl();
             dict.set(EMAIL_URL, url);
         }
         return dict;

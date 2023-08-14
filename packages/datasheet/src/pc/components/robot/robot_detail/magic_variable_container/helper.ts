@@ -44,12 +44,17 @@ const parseConfig = {
   ...payloadHtmlToSlateConfig,
   elementTags: {
     ...payloadHtmlToSlateConfig.elementTags,
+    p: () => ({
+      type: 'paragraph',
+    }),
     // @ts-ignore
     div: (args) => {
       const data = args.attribs[CONST_MAGIC_VARIABLE_NODE_ATTRI];
       
       if(!data) {
-        return null;
+        return {
+          type: 'paragraph',
+        };
       }
       return JSON.parse(atob(data));
     },
@@ -519,7 +524,11 @@ const modifyTriggerId = (triggerId: string, list: Node[]) => {
   return produce(list, draft => {
     list.forEach(nodeItem => {
       // @ts-ignore
-      if(nodeItem.type ==='magicVariable'){
+      if(nodeItem.type === 'magicVariable'){
+        // @ts-ignore
+        nodeItem.children = [{
+          text: ''
+        }];
         // @ts-ignore
         const firstOperand = nodeItem.data.operands[0];
         // @ts-ignore

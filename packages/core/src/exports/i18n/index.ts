@@ -58,10 +58,11 @@ const loadLanguage = (lang: string) => {
   if (typeof window !== 'undefined') {
     // @ts-ignore
     const xhr = new XMLHttpRequest();
+    const version = window.__initialization_data__.version;
     if (lang) {
-      xhr.open('GET', `/file/langs/strings.${lang}.json`, false);
+      xhr.open('GET', `/file/langs/strings.${lang}.json?version=${version}`, false);
     } else {
-      xhr.open('GET', '/file/langs/strings.json', false);
+      xhr.open('GET', '/file/langs/strings.json?version=${version}', false);
     }
     xhr.send();
     if (xhr.readyState === 4 && xhr.status === 200) {
