@@ -17,12 +17,6 @@ export function ping_2(_some_th: string): Promise<any>;
 */
 export function get_records(_dst_id: string): any;
 /**
-* @param {any} ts_snapshot
-* @param {any} ts_payload
-* @returns {any}
-*/
-export function ts_add_record_to_action(ts_snapshot: any, ts_payload: any): any;
-/**
 */
 export class DataBusBridge {
   free(): void;
@@ -56,17 +50,15 @@ export interface InitOutput {
   readonly databusbridge_get_datasheet_pack: (a: number, b: number, c: number) => number;
   readonly ping_2: (a: number, b: number) => number;
   readonly get_records: (a: number, b: number) => number;
-  readonly ts_add_record_to_action: (a: number, b: number) => number;
   readonly add_tn: (a: number, b: number) => number;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
-  readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h47e21f3d6b8a22a0: (a: number, b: number, c: number, d: number) => void;
-  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hd80c5e366b8a49da: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h084f3026b3171f65: (a: number, b: number, c: number) => void;
+  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h23513aa3ca602191: (a: number, b: number, c: number) => void;
+  readonly _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hf88c8e3624339deb: (a: number, b: number, c: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
-  readonly wasm_bindgen__convert__closures__invoke2_mut__h6afbe4eb6b3c2cb5: (a: number, b: number, c: number, d: number) => void;
+  readonly wasm_bindgen__convert__closures__invoke2_mut__h6f2d41a93fab5bb6: (a: number, b: number, c: number, d: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

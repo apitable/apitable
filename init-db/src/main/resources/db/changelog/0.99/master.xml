@@ -1,3 +1,4 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <!--
  APITable <https://github.com/apitable/apitable>
  Copyright (C) 2022 APITable Ltd. <https://apitable.com>
@@ -17,25 +18,9 @@
 -->
 
 <databaseChangeLog
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/0.2/master.xml"/>
-    <include file="db/changelog/0.3/master.xml"/>
-    <include file="db/changelog/0.4/master.xml"/>
-    <include file="db/changelog/0.5/master.xml"/>
-    <include file="db/changelog/0.6/master.xml"/>
-    <include file="db/changelog/0.7/master.xml"/>
-    <include file="db/changelog/0.8/master.xml"/>
-    <include file="db/changelog/0.9/master.xml"/>
-    <include file="db/changelog/0.10/master.xml"/>
-    <include file="db/changelog/0.11/master.xml"/>
-    <include file="db/changelog/0.12/master.xml"/>
-    <include file="db/changelog/0.13/master.xml"/>
-    <include file="db/changelog/0.14/master.xml"/>
-    <include file="db/changelog/0.15/master.xml"/>
-    <include file="db/changelog/0.18/master.xml"/>
-    <include file="db/changelog/0.21/master.xml"/>
-    <include file="db/changelog/0.99/master.xml"/>
+    <include file="db/changelog/0.99/20230811_changeset.xml"/>
 </databaseChangeLog>
