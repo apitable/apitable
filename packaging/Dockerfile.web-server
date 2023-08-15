@@ -10,6 +10,7 @@ COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 COPY packages/components/package.json ./packages/components/
 COPY packages/core/package.json ./packages/core/
 COPY packages/databus-wasm-web/package.json ./packages/databus-wasm-web/
+COPY packages/databus-wasm-nodejs/package.json ./packages/databus-wasm-nodejs/
 COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 COPY packages/icons/package.json ./packages/icons/
 COPY packages/widget-sdk/package.json ./packages/widget-sdk/
