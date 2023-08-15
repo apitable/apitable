@@ -52,7 +52,6 @@ import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.AiCreateParam;
 import com.apitable.interfaces.ai.model.AiType;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
-import com.apitable.interfaces.ai.model.DatasheetSource;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -84,7 +83,6 @@ import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.widget.service.IWidgetService;
 import com.apitable.workspace.dto.CreateNodeDto;
-import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
@@ -107,7 +105,6 @@ import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.model.DatasheetCreateObject;
-import com.apitable.workspace.ro.AiDatasheetNodeSettingParam;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
 import com.apitable.workspace.ro.NodeMoveOpRo;
@@ -690,8 +687,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 null);
         String nodeId = IdUtil.createNodeId(nodeOpRo.getType());
         // If the new node is a file, it corresponds to the creation of a datasheet form.
-        this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra(),
-            nodeOpRo.getAiCreateParams());
+        this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());
         // When an empty string is not passed in,
         // if the pre-node is deleted or not under the parent id, the move fails.
         String preNodeId = this.verifyPreNodeId(nodeOpRo.getPreNodeId(), nodeOpRo.getParentId());
@@ -1547,8 +1543,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private void createFileMeta(Long userId, String spaceId, String nodeId, Integer type,
-                                String name, NodeRelRo nodeRel,
-                                NodeOpRo.AiChatBotCreateParam aiChatBotCreateParam) {
+                                String name, NodeRelRo nodeRel) {
         switch (NodeType.toEnum(type)) {
             case DATASHEET:
                 String viewName = nodeRel != null
@@ -1574,48 +1569,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     JSONUtil.createObj().toString());
                 break;
             case AI_CHAT_BOT:
-                if (aiChatBotCreateParam == null) {
-                    throw new BusinessException(NodeException.NODE_CREATE_LOST_PARAMS);
-                }
-                if (aiChatBotCreateParam.getDatasheet() != null) {
-                    // datasheet datasource
-                    AiDatasheetNodeSettingParam param =
-                        aiChatBotCreateParam.getDatasheet().iterator().next();
-                    DatasheetSnapshot snapshot =
-                        iDatasheetMetaService.getMetaByDstId(param.getId());
-                    DatasheetEntity datasheet = iDatasheetService.getByDstId(param.getId());
-                    DatasheetSnapshot.View viewTarget =
-                        snapshot.getMeta().getViews().stream()
-                            .filter(view -> view.getId().equals(param.getViewId()))
-                            .findFirst().orElseThrow(() ->
-                                new BusinessException("fail to find view in datasheet"));
-                    // build a sorted field list in view
-                    Map<String, DatasheetSnapshot.Field> fieldMap =
-                        snapshot.getMeta().getFieldMap();
-                    List<DatasheetSnapshot.Field> fields = new ArrayList<>();
-                    viewTarget.getColumns().forEach(column -> {
-                        if (!column.isHidden()) {
-                            fields.add(fieldMap.get(column.getFieldId()));
-                        }
-                    });
-                    DatasheetSource datasheetSource =
-                        DatasheetSource.builder()
-                            .datasheetId(param.getId())
-                            .viewId(param.getViewId())
-                            .fields(fields)
-                            .rows(viewTarget.getRows().size())
-                            .revision(datasheet.getRevision())
-                            .build();
-                    // build request object
-                    aiServiceFacade.createAi(AiCreateParam.builder()
-                        .spaceId(spaceId)
-                        .aiId(nodeId)
-                        .type(AiType.QA)
-                        .aiName(name)
-                        .dataSources(Collections.singletonList(datasheetSource))
-                        .build()
-                    );
-                }
+                aiServiceFacade.createAi(AiCreateParam.builder()
+                    .spaceId(spaceId)
+                    .aiId(nodeId)
+                    .type(AiType.QA)
+                    .aiName(name)
+                    .build()
+                );
                 break;
             default:
                 break;

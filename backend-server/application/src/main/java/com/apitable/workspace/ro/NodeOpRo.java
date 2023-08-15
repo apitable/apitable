@@ -68,9 +68,6 @@ public class NodeOpRo {
     @Schema(description = "Whether to detect duplicate node names", example = "true")
     private Boolean checkDuplicateName;
 
-    @Schema(description = "extra params for ai node")
-    private AiChatBotCreateParam aiCreateParams;
-
     /**
      * Get Node Name.
      */
