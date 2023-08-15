@@ -293,6 +293,15 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         return auth.isValidCallback(originAuthorization, url, body, contentType);
     }
 
+    @Override
+    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey) {
+        try {
+            bucketManager.copy(sourceBucket, resourceKey, targetBucket, resourceKey);
+        } catch (Exception e) {
+            LOGGER.error("Failed to copy " + resourceKey + ": " + e.getMessage());
+        }
+    }
+
     /**
      * The default callback information, which the business developer should not pay too much attention to, is all configuration items
      * @param putExtra put extra param
