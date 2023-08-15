@@ -284,7 +284,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apitable/core@workspace:packages/core"
   dependencies:
-    "@apitable/databus-wasm": "*"
+    "@apitable/databus-wasm-nodejs": "*"
+    "@apitable/databus-wasm-web": "*"
     "@apitable/i18n": ^1.0.4
     "@types/color": ^3.0.1
     "@types/jest": ^29.2.1
@@ -354,9 +355,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@apitable/databus-wasm@*, @apitable/databus-wasm@workspace:packages/databus-wasm":
+"@apitable/databus-wasm-nodejs@*, @apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs":
   version: 0.0.0-use.local
-  resolution: "@apitable/databus-wasm@workspace:packages/databus-wasm"
+  resolution: "@apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs"
+  languageName: unknown
+  linkType: soft
+
+"@apitable/databus-wasm-web@*, @apitable/databus-wasm-web@workspace:packages/databus-wasm-web":
+  version: 0.0.0-use.local
+  resolution: "@apitable/databus-wasm-web@workspace:packages/databus-wasm-web"
   languageName: unknown
   linkType: soft
 

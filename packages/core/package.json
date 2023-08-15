@@ -21,7 +21,8 @@
     "node": ">=8.x"
   },
   "dependencies": {
-    "@apitable/databus-wasm": "*",
+    "@apitable/databus-wasm-nodejs": "*",
+    "@apitable/databus-wasm-web": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "4.14.161",
     "@types/socket.io-client": "^1.4.36",
@@ -91,7 +92,8 @@
       "src"
     ],
     "moduleNameMapper": {
-      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+      "@apitable/databus-wasm-nodejs": "<rootDir>/_skip_transpile_databus_wasm_web.ts",
+      "@apitable/databus-wasm-web": "<rootDir>/_skip_transpile_databus_wasm_web.ts"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

@@ -14,7 +14,8 @@
     "node_modules"
   ],
   "moduleNameMapper": {
-    "@apitable/databus-wasm": "<rootDir>/src/_skip_transpile_databus_wasm.ts"
+    "@apitable/databus-wasm-web": "<rootDir>/src/_skip_transpile_databus_wasm_web.ts",
+    "@apitable/databus-wasm-nodejs": "<rootDir>/src/_skip_transpile_databus_wasm_web.ts"
   },
   "setupFiles": [
     "dotenv/config"
