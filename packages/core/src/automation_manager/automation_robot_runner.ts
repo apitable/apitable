@@ -32,6 +32,7 @@ import {
   flatten,
 } from './magic_variable/sys_functions';
 import { omit } from 'lodash';
+import { Strings, t } from '../exports/i18n';
 
 /**
  * handle workflow execution
@@ -127,7 +128,12 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
           )} AutomationRobotRunner:executeAction:requestActionOutput error`,
           error,
         );
-        throw new Error(`action execute failed. error message: ${error.message}`);
+
+        const errorText = t(Strings.action_execute_error, {
+          value: error.message,
+        });
+        throw new Error(errorText);
+
       }
       nextActionId = actionInstance.nextActionId;
       if (output && !output.success) {

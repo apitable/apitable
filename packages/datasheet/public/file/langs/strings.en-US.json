@@ -20,6 +20,7 @@
   "account_nickname": "Account name: ",
   "account_password_incorrect": "Wrong account or password",
   "account_wallet": "Wallet",
+  "action_execute_error": "Action execute error\nError message:\n${value}\n\nIf you are unable to solve the above problems or need further assistance, please send the above information to the relevant space manager or official customer service for assistance.",
   "activate_space": "Activate Space",
   "active_record_hidden": "The record has been hidden",
   "active_space": "Activate Space",

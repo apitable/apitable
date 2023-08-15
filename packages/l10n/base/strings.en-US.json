@@ -5530,5 +5530,6 @@
   "ai_embed_website_iframe_tips": "To add a chatbot to any location on the website, please add this iframe to your HTML code.",
   "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html.",
   "ai_setting_title": "Setting",
-  "ai_default_idk": "I don't know"
+  "ai_default_idk": "I don't know",
+  "action_execute_error": "Action execute error\nError message:\n${value}\n\nIf you are unable to solve the above problems or need further assistance, please send the above information to the relevant space manager or official customer service for assistance."
 }
