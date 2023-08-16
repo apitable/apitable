@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { htmlToSlate, payloadHtmlToSlateConfig } from 'slate-serializers';
+import { payloadHtmlToSlateConfig } from 'slate-serializers';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   EmptyNullOperand,
@@ -40,6 +40,8 @@ import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
 const CONST_MAGIC_VARIABLE_NODE_ATTRI= 'data-magic-variable-entity';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const parseConfig = {
   ...payloadHtmlToSlateConfig,
   elementTags: {
@@ -520,7 +522,7 @@ export const transformSlateValue = (paragraphs: any): {
   };
 };
 
-const modifyTriggerId = (triggerId: string, list: Node[]) => {
+export const modifyTriggerId = (triggerId: string, list: Node[]) => {
   return produce(list, draft => {
     list.forEach(nodeItem => {
       // @ts-ignore
@@ -543,7 +545,7 @@ const modifyTriggerId = (triggerId: string, list: Node[]) => {
 };
 
 export const withMagicVariable = (editor: any, triggerId: string) => {
-  const { insertData, isInline, isVoid, onChange } = editor;
+  const { isInline, isVoid, onChange } = editor;
 
   editor.isInline = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
@@ -563,18 +565,19 @@ export const withMagicVariable = (editor: any, triggerId: string) => {
     onChange(...params);
   };
 
-  // @ts-ignore
-  editor.insertData = data => {
-    const html = data.getData('text/html');
+  // // @ts-ignore
+  // editor.insertData = data => {
+  //   const html = data.getData('text/html');
+  //
+  //   if (html) {
+  //     const serializedToSlate = htmlToSlate(html, parseConfig);
+  //     const modifiedNodes = modifyTriggerId(triggerId, serializedToSlate);
+  //     Transforms.insertFragment(editor, modifiedNodes);
+  //     return;
+  //   }
+  //   insertData(data);
+  // };
 
-    if (html) {
-      const serializedToSlate = htmlToSlate(html, parseConfig);
-      const modifiedNodes = modifyTriggerId(triggerId, serializedToSlate);
-      Transforms.insertFragment(editor, modifiedNodes);
-      return;
-    }
-    insertData(data);
-  };
   return editor;
 };
 
