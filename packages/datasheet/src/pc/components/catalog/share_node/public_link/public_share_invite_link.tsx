@@ -231,9 +231,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle}/>
         </Popconfirm>
         <Typography variant='h7'
-          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone, {
-            nodeName: shareSettings?.nodeName
-          })}</Typography>
+          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
             <QuestionCircleOutlined currentColor/>

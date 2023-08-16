@@ -720,8 +720,8 @@
   --bgStaticLightDisabled: rgba(255, 255, 255, 0.5);
   --bgStaticLightActive: rgba(255, 255, 255, 0.68);
   --bgStaticLightHover: rgba(255, 255, 255, 0.84);
-  --bgControlsDegradeHigh: rgba(51, 51, 51, 0.12);
-  --bgControlsDegradeDefault: rgba(51, 51, 51, 0.08);
+  --bgControlsDegradeHigh: rgba(51, 51, 51, 0.08);
+  --bgControlsDegradeDefault: rgba(51, 51, 51, 0.04);
   --bgControlsDefaultSolid: rgba(245, 245, 245, 1);
   --bgControlsHoverSolid: rgba(232, 232, 232, 1);
   --bgControlsActiveSolid: rgba(219, 219, 219, 1);

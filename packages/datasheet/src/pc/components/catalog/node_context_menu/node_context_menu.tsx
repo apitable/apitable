@@ -86,10 +86,6 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     openDatasheetPanel({ folderId, secondConfirmType: SecondConfirmType.Form });
   };
 
-  const addAi = (folderId: string) => {
-    openDatasheetPanel({ folderId, secondConfirmType: SecondConfirmType.Chat }, true);
-  };
-
   const exportAsCsv = (nodeId: string) => {
     if (nodeId.startsWith('mir')) {
       return exportMirror(nodeId, ConfigConstant.EXPORT_TYPE_CSV);
@@ -308,7 +304,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 return;
               }
               openCatalog();
-              addAi(targetId);
+              addTreeNode(targetId, ConfigConstant.NodeType.AI);
             }) : undefined,
           ],
           [
