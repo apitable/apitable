@@ -17,7 +17,7 @@
  */
 
 import { getThemeColors, lightColors, getThemeName } from '@apitable/components';
-import { CutMethod, getImageThumbSrc, integrateCdnHost } from '@apitable/core';
+import { CutMethod, getImageThumbSrc } from '@apitable/core';
 import { UserGroupOutlined,UserRoleOutlined } from '@apitable/icons';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import * as React from 'react';
@@ -100,7 +100,7 @@ const AvatarHoc = (Component: any) => {
         </Component>
       );
     }
-    const avatarSrc = isGzip && src ? getImageThumbSrc(integrateCdnHost(src), {
+    const avatarSrc = isGzip && src ? getImageThumbSrc(src, {
       method: CutMethod.CUT,
       quality: 100,
       size: size * ratio,
