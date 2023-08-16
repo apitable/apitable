@@ -12,7 +12,7 @@
     "import/order": ["warn", {
       "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
     }],
-    "comma-spacing": ["error", {"before": false, "after": true}],
+    "comma-spacing": ["warn", {"before": false, "after": true}],
     "react/display-name": 0,
     "react/no-find-dom-node": 0,
     "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
