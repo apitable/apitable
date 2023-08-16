@@ -536,6 +536,7 @@ __metadata:
     react-split-pane: ^0.1.92
     react-transition-group: ^4.4.2
     react-virtualized-auto-sizer: 1.0.2
+    react18-json-view: ^0.1.0
     redux: 4.2.0
     redux-batched-actions: 0.5.0
     redux-thunk: 2.4.1
@@ -35584,6 +35585,15 @@ fsevents@^1.2.7:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: a19f43b9015fb84e16db983617dac618a8b298881d2ca96ffc2fb00534afd958ee57a00fd0017733b56f8c34dd84e5be59337877aed3c66329ed3b84e8d018ba
+  languageName: node
+  linkType: hard
+
+"react18-json-view@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "react18-json-view@npm:0.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 0e875464d213ea9f8be841b334a88fa24047b2c0cf547b40c6fd4e0c0fa3d31c2ecdaa4edd29055d5998436997df7c5f30ac36de57af94123ff7b73a8b9252e1
   languageName: node
   linkType: hard
 
