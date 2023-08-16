@@ -54,7 +54,7 @@ export class RobotActionService {
 
   async checkCreateActionCount(robotId: string) {
     const count = await this.automationActionRepository.selectCountByRobotId(robotId);
-    if (count > maxRobotActionCount) {
+    if (count >= maxRobotActionCount) {
       throw new ServerException(CommonException.ROBOT_ACTION_CREATE_OVER_MAX_COUNT_LIMIT);
     }
   }
