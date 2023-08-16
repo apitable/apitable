@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { payloadHtmlToSlateConfig } from 'slate-serializers';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   EmptyNullOperand,
@@ -39,29 +38,29 @@ import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
-const CONST_MAGIC_VARIABLE_NODE_ATTRI= 'data-magic-variable-entity';
+// @ts-ignore
+// const CONST_MAGIC_VARIABLE_NODE_ATTRI= 'data-magic-variable-entity';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const parseConfig = {
-  ...payloadHtmlToSlateConfig,
-  elementTags: {
-    ...payloadHtmlToSlateConfig.elementTags,
-    p: () => ({
-      type: 'paragraph',
-    }),
-    // @ts-ignore
-    div: (args) => {
-      const data = args.attribs[CONST_MAGIC_VARIABLE_NODE_ATTRI];
-      
-      if(!data) {
-        return {
-          type: 'paragraph',
-        };
-      }
-      return JSON.parse(atob(data));
-    },
-  },
-};
+// const parseConfig = {
+//   ...payloadHtmlToSlateConfig,
+//   elementTags: {
+//     ...payloadHtmlToSlateConfig.elementTags,
+//     p: () => ({
+//       type: 'paragraph',
+//     }),
+//     // @ts-ignore
+//     div: (args) => {
+//       const data = args.attribs[CONST_MAGIC_VARIABLE_NODE_ATTRI];
+//
+//       if(!data) {
+//         return {
+//           type: 'paragraph',
+//         };
+//       }
+//       return JSON.parse(atob(data));
+//     },
+//   },
+// };
 
 const parser = new MagicVariableParser<any>(ACTION_INPUT_PARSER_BASE_FUNCTIONS);
 const inputParser = new InputParser(parser);

@@ -24,10 +24,9 @@ interface IFieldInputProps {
   field: IField;
   fop: FOperator;
   value: any;
-  disabled?: boolean;
   onChange: (value: any) => void;
 }
-export const FieldInput = ({ field, disabled, fop, onChange, value }: IFieldInputProps) => {
+export const FieldInput = ({ field, fop, onChange, value }: IFieldInputProps) => {
 
   // Here the incoming value is converted to a single filterInfo, which has only one expression. 
   // Our goal is to get the value of the input from filterValue.
@@ -54,7 +53,6 @@ export const FieldInput = ({ field, disabled, fop, onChange, value }: IFieldInpu
 
   return (
     <FilterValue
-      disabled={disabled}
       style={{ width: '100%' }}
       field={field}
       conditionIndex={0}

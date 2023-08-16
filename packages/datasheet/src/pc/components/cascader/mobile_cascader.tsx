@@ -8,19 +8,13 @@ import { isEmpty } from 'lodash';
 import styles from './styles.module.less';
 
 export const MobileCascader = (props: IMobileCascader) => {
-  const { value, disabled, cascaderRef, options, onChange } = props;
+  const { value, cascaderRef, options, onChange } = props;
 
   const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <div className={`${styles.mobileCascaderText} mobileCascaderText`} onClick={() => {
-        if(disabled) {
-          return;
-        }
-        setVisible(true);
-      }}
-      >
+      <div className={`${styles.mobileCascaderText} mobileCascaderText`} onClick={() => setVisible(true)}>
         {!isEmpty(value) ?
           (typeof value[0] === 'string' ? value[0] : value[0].join('/'))
           : <AddOutlined color={colorVars.secondLevelText} size={16}/>

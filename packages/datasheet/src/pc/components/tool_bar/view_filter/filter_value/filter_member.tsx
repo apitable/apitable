@@ -31,13 +31,12 @@ interface IExFilterMemberProps extends IFilterMemberProps {
 }
 
 export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps>> = props => {
-  const { field, disabled=false, condition, onChange, hiddenClientOption } = props;
+  const { field, condition, onChange, hiddenClientOption } = props;
   const [isMulti, setIsMulti] = useState(false);
   const fieldType = condition.fieldType;
   const filterValue = condition.value || [];
   const stashList = memberStash.getMemberStash();
   const { isViewLock } = useContext(ViewFilterContext);
-  const disabledFlag = disabled || isViewLock;
   const unitList = useMemo(() => {
 
     let tempUnitList: IUnitValue[] = [...new Set(stashList)];
@@ -98,7 +97,7 @@ export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps
       onChange={onChange}
       cellValue={filterValue}
       listData={unitList}
-      isViewLock={disabledFlag}
+      isViewLock={isViewLock}
     />
   );
 };

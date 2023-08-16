@@ -43,14 +43,12 @@ interface IFilterGeneralSelectProps {
   onChange: (value: string | IMultiSelectedIds | null) => void;
   cellValue?: ICellValue;
   listData: (IUnitValue | IUserValue)[] | ISelectFieldOption[];
-  disabled?: boolean;
   isViewLock?: boolean;
 }
 
 export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = props => {
   const colors = useThemeColors();
-  const { placeholder, disabled, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData, isViewLock: isViewLockOriginal } = props;
-  const isViewLock = isViewLockOriginal || disabled;
+  const { placeholder, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData, isViewLock } = props;
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
   let TriggerComponent: any;

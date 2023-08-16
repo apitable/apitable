@@ -24,7 +24,7 @@ import { IFilterOptionProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
 export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>> = props => {
-  const { condition, disabled, field, onChange } = props;
+  const { condition, field, onChange } = props;
   const [isMulti, setIsMulti] = useState(false);
   // The field passed in here is the entity field. fieldType inside the condition is the real field.
   const fieldType = condition.fieldType === FieldType.LookUp ? FieldType.MultiSelect : condition.fieldType;
@@ -59,7 +59,6 @@ export const FilterOptions: React.FC<React.PropsWithChildren<IFilterOptionProps>
     <FilterGeneralSelect
       field={field}
       isMulti={isMulti}
-      disabled={disabled}
       onChange={_onChange}
       cellValue={filterValue.map((item: { id: any; }) => item.id)}
       listData={field.property.options}

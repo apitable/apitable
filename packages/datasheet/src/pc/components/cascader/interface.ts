@@ -16,4 +16,4 @@ export interface ICascader {
 
 export type IMobileCascader = Pick<
   ICascader,
-  'options' | 'onChange' | 'cascaderRef' | 'value' | 'disabled'>;
+  'options' | 'onChange' | 'cascaderRef' | 'value'>;
