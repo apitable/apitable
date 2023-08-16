@@ -40,7 +40,6 @@ import { IOverLayProps } from '../../dropdown/float_ui';
 import styled from 'styled-components';
 import { ListDropdown, SelectContext } from './list_dropdown';
 import { useListItem } from '@floating-ui/react';
-import { highlightStyle } from '@storybook/addon-a11y';
 
 const StyledDropdown = styled(ListDropdown)`
   z-index: 1200;
@@ -310,7 +309,6 @@ function OptionItem({ item,currentIndex, value , keyword,
       {
         !keyword ? null : <Highlighter
           highlightClassName={hightLightCls.toString()}
-          highlightStyle={highlightStyle as any}
           searchWords={[keyword]}
           autoEscape
           textToHighlight={item.label}
