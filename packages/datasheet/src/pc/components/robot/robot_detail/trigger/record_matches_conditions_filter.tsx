@@ -45,6 +45,7 @@ interface IRecordMatchesConditionsFilterProps {
   hasParent?: boolean;
   path?: string;
   onChange?: (filter: ILiteralOperand) => void;
+  readonly ?: boolean;
   depth?: number;
 }
 
@@ -73,7 +74,7 @@ const WarningTip = (props: any) => {
  *   + or / and concatenated expressions. It can be a base expression or a grouping expression
  */
 export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFilterProps) => {
-  const { datasheetId, hasParent = false, onChange, depth = 0 } = props;
+  const { datasheetId, readonly = false, hasParent = false, onChange, depth = 0 } = props;
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
@@ -171,11 +172,13 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
       <>
         <FieldSelect
           fields={fields}
+          disabled={readonly}
           value={filter.operands[0].value}
           onChange={(value) => handleChange('operands[0].value', value)}
         />
         <Select
           options={operatorOptions}
+          disabled={readonly}
           value={filter.operator}
           onChange={(value) => handleChange('operator', value)}
         />
@@ -183,6 +186,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
           {
             showFieldInput && <FieldInput
               field={field}
+              disabled={readonly}
               fop={fop}
               value={filter.operands[1].value}
               onChange={(value) => handleChange('operands[1].value', value)}
@@ -219,6 +223,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
                   <RecordMatchesConditionsFilter
                     path={path}
                     filter={item.value}
+                    readonly={readonly}
                     datasheetId={datasheetId}
                     hasParent
                     depth={depth + 1}
@@ -226,19 +231,26 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
                       handleChange(path, value);
                     }}
                   />
-                  <IconButton
-                    shape="square"
-                    icon={DeleteOutlined} onClick={() => {
-                      deleteOperandByIndex(index);
-                    }} />
+                  {
+                    !readonly && (
+                      <IconButton
+                        shape="square"
+                        icon={DeleteOutlined} onClick={() => {
+                          deleteOperandByIndex(index);
+                        }} />
+                    )
+
+                  }
                 </Fragment>
               );
             })
           }
         </div>
-        <div className={styles.addFilterWrapper}>
-          {/* Here we need to change a component */}
-          {/* <DoubleSelect
+        {
+          !readonly && (
+            <div className={styles.addFilterWrapper}>
+              {/* Here we need to change a component */}
+              {/* <DoubleSelect
            value={''}
            options={addFilterOptions}
            triggerStyle={{ width: 180 }}
@@ -248,18 +260,20 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
            addNewFilter(option.value as FilterTypeEnums);
            }}
            /> */}
-          <Button
-            prefixIcon={<AddOutlined />}
-            variant="fill"
-            onClick={() => {
-              // console.log('addNewFilter', FilterTypeEnums.Filter);
-              addNewFilter(FilterTypeEnums.Filter);
-            }}
-          >
-            {t(Strings.robot_trigger_add_match_condition_button)}
-          </Button>
-          {/* <span onClick={() => addNewFilter(FilterTypeEnums.Filter)}> ++++</span> */}
-        </div>
+              <Button
+                prefixIcon={<AddOutlined />}
+                variant="fill"
+                onClick={() => {
+                  // console.log('addNewFilter', FilterTypeEnums.Filter);
+                  addNewFilter(FilterTypeEnums.Filter);
+                }}
+              >
+                {t(Strings.robot_trigger_add_match_condition_button)}
+              </Button>
+              {/* <span onClick={() => addNewFilter(FilterTypeEnums.Filter)}> ++++</span> */}
+            </div>
+          )
+        }
       </div>
     </Wrapper>
   );

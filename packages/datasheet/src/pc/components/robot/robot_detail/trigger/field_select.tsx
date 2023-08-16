@@ -85,13 +85,15 @@ const transformOptions = (fields: IField[], theme: ITheme) => {
 interface IFieldSelectProps {
   fields: IField[];
   value: string;
+  disabled?:boolean;
   onChange?: (value: any) => void;
 }
-export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
+export const FieldSelect = ({ disabled, fields, value, onChange }: IFieldSelectProps) => {
   const theme = useTheme();
   const options = transformOptions(fields, theme);
   return <>
     <Select
+      disabled={disabled}
       options={options}
       value={value}
       onSelected={(option) => {

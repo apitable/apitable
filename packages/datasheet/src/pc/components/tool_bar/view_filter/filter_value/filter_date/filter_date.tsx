@@ -43,7 +43,7 @@ import { LocalFormat } from './local_format';
 const { RangePicker } = DatePicker;
 
 export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = props => {
-  const { changeFilter, condition, field, conditionIndex, onChange } = props;
+  const { changeFilter, condition , disabled = false, field, conditionIndex, onChange } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
   const { screenIsAtMost } = useResponsive();
@@ -63,7 +63,8 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
 
-  const { isViewLock } = useContext(ViewFilterContext);
+  const { isViewLock: isViewLockOriginal } = useContext(ViewFilterContext);
+  const isViewLock = isViewLockOriginal || disabled;
 
   const showRangeCalendar = durationValue === FilterDuration.DateRange;
 

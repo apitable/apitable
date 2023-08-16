@@ -29,11 +29,12 @@ import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
 export const FilterRating: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = props => {
-  const { condition, onChange, field } = props;
+  const { condition, onChange, disabled = false, field } = props;
   const colors = useThemeColors();
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);
-  const { isViewLock } = useContext(ViewFilterContext);
+  const { isViewLock : isViewLockOriginal } = useContext(ViewFilterContext);
+  const isViewLock = isViewLockOriginal || disabled;
 
   useEffect(() => {
     numberRef.current!.onStartEdit(condition.value ? Number(condition.value[0]) : null);

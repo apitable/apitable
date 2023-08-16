@@ -27,15 +27,16 @@ export const Select = (props: {
   value?: any,
   onChange?: (value: any) => void,
   options: any[],
+  disabled?: boolean,
   placeholder?: string,
 }) => {
   const [state] = useControllableValue<any>(props);
-  const { onChange, options, placeholder } = props;
+  const { disabled, onChange, options, placeholder } = props;
   const handleChange = (option: { value: any; }) => {
     // setState(option.value);
     onChange && onChange(option.value);
   };
   return (
-    <SelectBase placeholder={placeholder} options={options} value={state} onSelected={handleChange} />
+    <SelectBase disabled={disabled} placeholder={placeholder} options={options} value={state} onSelected={handleChange} />
   );
 };
