@@ -35,7 +35,6 @@ export const useContactUs = () => {
     if (HELP_MENU_CONTACT_US_TYPE !== 'qrcode') {
       window.LiveChatWidget?.call('maximize');
     } else {
-      console.log('xxxxx');
       clearWizardsData?.();
       localStorage.setItem('vika_guide_start', 'vikaby');
       TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.CONTACT_US_GUIDE);
