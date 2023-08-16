@@ -123,6 +123,7 @@
     "react-split-pane": "^0.1.92",
     "react-transition-group": "^4.4.2",
     "react-virtualized-auto-sizer": "1.0.2",
+    "react18-json-view": "^0.1.0",
     "redux": "4.2.0",
     "redux-batched-actions": "0.5.0",
     "redux-thunk": "2.4.1",
