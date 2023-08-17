@@ -101,6 +101,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
         />)
       }
       <CreateNewAction
+        disabled={actionList.length >= 9}
         robotId={robotId}
         actionTypes={filterActionTypes}
         prevActionId={actionList[actionList.length - 1].id}

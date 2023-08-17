@@ -5545,5 +5545,6 @@
   "cui_wizard_select_datasheet_message": "接着再选择（关联）一张数据表作为训练机器人的数据集",
   "cui_wizard_select_datasheet": "请选择一张表作为训练数据集",
   "cui_wizard_select_chatbot_model_message": "选择 AIBot 想要使用的的模型",
-  "cui_wizard_select_chatbot_model": "请选择需要创建的机器人类型"
+  "cui_wizard_select_chatbot_model": "请选择需要创建的机器人类型",
+  "automation_action_num_warning": "每个自动化最多支持 ${value} 个动作"
 }
