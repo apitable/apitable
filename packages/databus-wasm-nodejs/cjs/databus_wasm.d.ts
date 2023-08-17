@@ -27,6 +27,12 @@ export function action_set_cell(snapshot: any, payload: any): any;
 */
 export function get_records(_dst_id: string): any;
 /**
+* @param {any} ts_snapshot
+* @param {any} ts_payload
+* @returns {any}
+*/
+export function ts_add_record_to_action(ts_snapshot: any, ts_payload: any): any;
+/**
 */
 export class DataBusBridge {
   free(): void;
