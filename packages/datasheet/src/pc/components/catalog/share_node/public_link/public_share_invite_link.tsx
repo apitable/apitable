@@ -31,11 +31,11 @@ import { FC, useState, useCallback } from 'react';
 import { copy2clipBoard } from 'pc/utils';
 import { Router } from 'pc/components/route_manager/router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+// @ts-ignore
+import { WidgetEmbed } from 'enterprise';
 import { ShareQrCode } from '../share_qr_code';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import styles from './style.module.less';
-// @ts-ignore
-import { WidgetEmbed } from 'enterprise';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
