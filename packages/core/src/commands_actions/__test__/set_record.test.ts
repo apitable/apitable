@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { action_set_cell } from '../../../../databus-wasm-nodejs/cjs/databus_wasm';
+import { action_set_cell } from '@apitable/databus-wasm-nodejs';
 import { DatasheetActions } from '../datasheet';
 import { ISnapshot } from '../../modules/database/store/interfaces/resource';
 import MockDataForAction from './mock_data/action_mock';
