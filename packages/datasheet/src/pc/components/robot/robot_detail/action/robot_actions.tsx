@@ -101,7 +101,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
         />)
       }
       <CreateNewAction
-        disabled={CONST_MAX_ACTION_COUNT}
+        disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
         robotId={robotId}
         actionTypes={filterActionTypes}
         prevActionId={actionList[actionList.length - 1].id}
