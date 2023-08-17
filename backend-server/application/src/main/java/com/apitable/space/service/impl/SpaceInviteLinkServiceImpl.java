@@ -18,26 +18,21 @@
 
 package com.apitable.space.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERROR;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
+import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
+import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
+import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
+import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.user.facade.UserServiceFacade;
 import com.apitable.organization.mapper.MemberMapper;
@@ -59,20 +54,21 @@ import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERROR;
-import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
-import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
-import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
-import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
-import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 
 @Slf4j
 @Service
@@ -184,6 +180,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         // get the link creator s personal invitation code
         String inviteCode = userServiceFacade.getUserInvitationCode(dto.getUserId()).getCode();
         infoVo.setInviteCode(inviteCode);
+        infoVo.setSeatAvailable(iSpaceService.getSpaceSeatAvailableStatus(dto.getSpaceId()));
         return infoVo;
     }
 

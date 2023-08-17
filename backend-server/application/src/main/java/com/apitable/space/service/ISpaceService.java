@@ -333,4 +333,13 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return SpaceSubscribeVo
      */
     SpaceSubscribeVo getSpaceSubscriptionInfo(String spaceId);
+
+    /**
+     * Get space seat available status.
+     *
+     * @param spaceId space id
+     * @return SeatAvailableStatus
+     * @author Chambers
+     */
+    boolean getSpaceSeatAvailableStatus(String spaceId);
 }
