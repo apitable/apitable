@@ -60,4 +60,8 @@ public class SpaceLinkInfoVo {
 
     @Schema(description = "Inviter's personal invitation code", example = "test")
     private String inviteCode;
+
+    @Schema(description = "Whether enough seats in the space", example = "true")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean seatAvailable;
 }
