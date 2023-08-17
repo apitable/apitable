@@ -31,7 +31,7 @@ export function get_records(_dst_id: string): any;
 * @param {any} ts_payload
 * @returns {any}
 */
-export function ts_add_record_to_action(ts_snapshot: any, ts_payload: any): any;
+export function action_add_record(ts_snapshot: any, ts_payload: any): any;
 /**
 */
 export class DataBusBridge {

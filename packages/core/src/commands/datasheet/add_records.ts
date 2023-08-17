@@ -26,8 +26,8 @@ import { FieldType, IField, ILinkField, ResourceType } from 'types';
 import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands';
 import { ConfigConstant } from 'config';
-// import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
-// import { ts_add_record_to_action } from '../../../../databus-wasm-nodejs/cjs/databus_wasm';
+import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
+import { action_add_record } from '@apitable/databus-wasm-web';
 
 export interface IAddRecordsOptions {
   cmd: CollaCommandName.AddRecords;
@@ -176,21 +176,21 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         }
         newRecord.data = _recordData;
       }
-      // let action;
-      // if (getBrowserDatabusApiEnabled()) {
-      //   console.log('rs addRecord2Action');
-      //   action = ts_add_record_to_action(snapshot, {
-      //     viewId,
-      //     record: newRecord,
-      //     index: index + i,
-      //   });
-      // }else{
-      const action = DatasheetActions.addRecord2Action(snapshot, {
-        viewId,
-        record: newRecord,
-        index: index + i,
-      });
-      // }
+      let action;
+      if (getBrowserDatabusApiEnabled()) {
+        console.log('rs addRecord2Action');
+        action = action_add_record(snapshot, {
+          viewId,
+          record: newRecord,
+          index: index + i,
+        });
+      }else{
+        action = DatasheetActions.addRecord2Action(snapshot, {
+          viewId,
+          record: newRecord,
+          index: index + i,
+        });
+      }
       
       if (!action) {
         return collected;

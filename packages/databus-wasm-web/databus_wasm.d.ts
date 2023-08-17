@@ -31,7 +31,7 @@ export function get_records(_dst_id: string): any;
 * @param {any} ts_payload
 * @returns {any}
 */
-export function ts_add_record_to_action(ts_snapshot: any, ts_payload: any): any;
+export function action_add_record(ts_snapshot: any, ts_payload: any): any;
 /**
 */
 export class DataBusBridge {
@@ -64,7 +64,7 @@ export interface InitOutput {
   readonly json0_inverse: (a: number, b: number) => void;
   readonly action_set_cell: (a: number, b: number, c: number) => void;
   readonly get_records: (a: number, b: number) => number;
-  readonly ts_add_record_to_action: (a: number, b: number) => number;
+  readonly action_add_record: (a: number, b: number) => number;
   readonly add_tn: (a: number, b: number) => number;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;

@@ -327,8 +327,8 @@ module.exports.get_records = function(_dst_id) {
 * @param {any} ts_payload
 * @returns {any}
 */
-module.exports.ts_add_record_to_action = function(ts_snapshot, ts_payload) {
-    const ret = wasm.ts_add_record_to_action(addHeapObject(ts_snapshot), addHeapObject(ts_payload));
+module.exports.action_add_record = function(ts_snapshot, ts_payload) {
+    const ret = wasm.action_add_record(addHeapObject(ts_snapshot), addHeapObject(ts_payload));
     return takeObject(ret);
 };
 

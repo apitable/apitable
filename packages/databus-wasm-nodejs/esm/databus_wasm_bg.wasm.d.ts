@@ -9,7 +9,7 @@ export function json0_seri(a: number): void;
 export function json0_inverse(a: number, b: number): void;
 export function action_set_cell(a: number, b: number, c: number): void;
 export function get_records(a: number, b: number): number;
-export function ts_add_record_to_action(a: number, b: number): number;
+export function action_add_record(a: number, b: number): number;
 export function add_tn(a: number, b: number): number;
 export function __wbindgen_malloc(a: number, b: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number, d: number): number;
