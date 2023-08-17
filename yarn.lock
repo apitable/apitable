@@ -284,7 +284,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apitable/core@workspace:packages/core"
   dependencies:
-    "@apitable/databus-wasm": "*"
+    "@apitable/databus-wasm-nodejs": "*"
+    "@apitable/databus-wasm-web": "*"
     "@apitable/i18n": ^1.0.4
     "@types/color": ^3.0.1
     "@types/jest": ^29.2.1
@@ -354,9 +355,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@apitable/databus-wasm@*, @apitable/databus-wasm@workspace:packages/databus-wasm":
+"@apitable/databus-wasm-nodejs@*, @apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs":
   version: 0.0.0-use.local
-  resolution: "@apitable/databus-wasm@workspace:packages/databus-wasm"
+  resolution: "@apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs"
+  languageName: unknown
+  linkType: soft
+
+"@apitable/databus-wasm-web@*, @apitable/databus-wasm-web@workspace:packages/databus-wasm-web":
+  version: 0.0.0-use.local
+  resolution: "@apitable/databus-wasm-web@workspace:packages/databus-wasm-web"
   languageName: unknown
   linkType: soft
 
@@ -516,7 +523,7 @@ __metadata:
     react-dom: 18.2.0
     react-dropzone: ^11.2.0
     react-grid-layout: ^1.2.0
-    react-highlight-words: ^0.16.0
+    react-highlight-words: ^0.20.0
     react-image-crop: ^8.6.2
     react-infinite-scroll-hook: ^4.0.1
     react-konva: ^18.2.2
@@ -35078,6 +35085,19 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^0.14.0 || ^15.0.0 || ^16.0.0-0
   checksum: 6779322d5d85c2565ae253c2d894f3d6986a7d4d157d2de93dcb03de02609ab724e89acd50b67abf8391001b78872a52d7bbb0e79c861c2f9c627ad25a2acf11
+  languageName: node
+  linkType: hard
+
+"react-highlight-words@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "react-highlight-words@npm:0.20.0"
+  dependencies:
+    highlight-words-core: ^1.2.0
+    memoize-one: ^4.0.0
+    prop-types: ^15.5.8
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
+  checksum: 6794b6fe409ee81390e342ccdb951696e06354d8591b4cac050a6d64dbc77dfc7bb636fee0aabcfda841e57778aa5108fe351e7c1dc27b28abedd36aec8141e7
   languageName: node
   linkType: hard
 

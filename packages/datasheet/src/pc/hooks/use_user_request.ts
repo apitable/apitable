@@ -166,7 +166,7 @@ export const useUserRequest = () => {
         }
 
         if (data) {
-          if (data?.isNewUser && urlParams.has('inviteLinkToken')) {
+          if (data.hasOwnProperty('isNewUser') && urlParams.has('inviteLinkToken')) {
             join();
           }
           Router.redirect(Navigation.WORKBENCH);

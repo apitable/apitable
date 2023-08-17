@@ -144,7 +144,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = p
         });
       };
 
-      if (isUrl(url) && cellValue?.[0].text !== (value[0] as any)?.text) {
+      if (isUrl(url) && (cellValue?.[0]?.text !== (value[0] as any)?.text)) {
         recognizeURLAndSetTitle({
           url,
           callback,

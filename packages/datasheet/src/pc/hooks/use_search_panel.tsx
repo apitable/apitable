@@ -28,7 +28,6 @@ export interface IPanelInfo {
 }
 
 export const useSearchPanel = () => {
-  const [previousModalVisible, setPreviousModalVisible] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
   const [panelInfo, setPanelInfo] = useState<IPanelInfo | null>(null);
   const { addTreeNode } = useCatalog();
@@ -48,13 +47,6 @@ export const useSearchPanel = () => {
         viewId,
       }, viewName);
     }
-    if (_secondConfirmType === SecondConfirmType.Chat) {
-      setPreviousModalVisible(false);
-      addTreeNode(panelInfo?.folderId, ConfigConstant.NodeType.AI, {
-        datasheetId,
-        viewId,
-      }, viewName);
-    }
 
   };
 
@@ -64,7 +56,5 @@ export const useSearchPanel = () => {
     onChange,
     setPanelInfo,
     setPanelVisible,
-    previousModalVisible,
-    setPreviousModalVisible,
   };
 };

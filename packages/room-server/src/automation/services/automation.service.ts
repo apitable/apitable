@@ -268,7 +268,7 @@ export class AutomationService {
     if (contentType && contentType.includes('application/json')) {
       // Response is JSON
       const data = await resp.json();
-      return { success, data };
+      return { success: !data?.errors, data };
     }
     // Response is not JSON
     const data = { data: await resp.text() };

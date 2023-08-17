@@ -138,7 +138,6 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
     const postSnapshot = fastCloneDeep(preSnapshot);
     const actions = getRollbackActions(operations, state, postSnapshot);
 
-    console.log(postSnapshot, preSnapshot);
     if (!actions.length) {
       return null;
     }
@@ -432,6 +431,5 @@ function patchFieldValues(
     action && foreignActions.push(action);
   });
 
-  console.log({ sourceActions, foreignActions });
   return { sourceActions, foreignActions };
 }

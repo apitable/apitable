@@ -38,11 +38,12 @@ import {
 import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
-import { isMobileApp } from 'pc/utils/env';
+import { isMobileApp, getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AnimationJson from 'static/json/notification_new.json';
+import { useContactUs } from 'pc/hooks/use_contact_us';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { Popup } from '../common/mobile/popup';
 import { openEruda } from '../development/dev_tools_panel';
@@ -54,8 +55,6 @@ import { SpaceListDrawer } from './space_list_drawer';
 import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
-import { useContactUs } from 'pc/hooks/use_contact_us';
-import { getEnvVariables } from 'pc/utils/env';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -93,7 +92,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [clickCount, setClickCount] = useState(0);
-  const contactUs = useContactUs(); 
+  const contactUs = useContactUs();
   const env = getEnvVariables();
   useRequest(notificationStatistics);
   // Check if there is a system banner notification to be displayed
@@ -255,8 +254,9 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     return (
       <>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <Link href={'/notify' + search} onClick={noticeIconClick}>
+          <Link href={'/notify' + search}>
             <a
+              onClick={noticeIconClick}
               className={classNames(styles.notificationNavLink, {
                 [styles.navActiveItem]: router.pathname.includes('notify'),
               })}

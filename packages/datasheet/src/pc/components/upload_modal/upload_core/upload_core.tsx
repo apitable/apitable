@@ -325,7 +325,9 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = p
           [styles[`columnCount${columnCount}`]]: true,
         })}
       >
-        <DndProvider manager={isTouchDevice() ? dndTouchManager : dndH5Manager}>
+        <DndProvider manager={isTouchDevice() ? dndTouchManager : dndH5Manager} options={{
+          delayTouchStart: 300,
+        }}>
           <ScrollingComponent className={styles.scrollBox}>
             <SortableList
               cellValue={cellValue}

@@ -113,6 +113,13 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     updateFilter(_filter);
   };
 
+  const handleFilterChange = (value: ILiteralOperand) => {
+    const _filter = JSON.parse(JSON.stringify(filter));
+    set(_filter, 'operands[0].value', value);
+    set(_filter, 'operands[1].value', null);
+    updateFilter(_filter);
+  };
+
   const deleteOperandByIndex = (operandIndex: number) => {
     const _filter = produce(filter, (draft) => {
       draft.operands.splice(operandIndex, 1);
@@ -172,7 +179,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
         <FieldSelect
           fields={fields}
           value={filter.operands[0].value}
-          onChange={(value) => handleChange('operands[0].value', value)}
+          onChange={(value) => handleFilterChange (value)}
         />
         <Select
           options={operatorOptions}
