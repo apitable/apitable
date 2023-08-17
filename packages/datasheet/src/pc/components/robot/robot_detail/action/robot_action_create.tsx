@@ -29,7 +29,6 @@ import { mutate } from 'swr';
 import { flatContextData } from 'pc/utils';
 import { createAction } from '../../api';
 import { IActionType } from '../../interface';
-import { Message } from '../../../common';
 
 export const CONST_MAX_ACTION_COUNT = 9;
 

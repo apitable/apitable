@@ -24,7 +24,7 @@ import useSWR from 'swr';
 import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
 import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
 import { RobotAction } from './robot_action';
-import { CreateNewAction } from './robot_action_create';
+import { CreateNewAction, CONST_MAX_ACTION_COUNT } from './robot_action_create';
 
 const req = axios.create({
   baseURL: '/nest/v1/',
@@ -101,7 +101,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
         />)
       }
       <CreateNewAction
-        disabled={actionList.length >= 9}
+        disabled={CONST_MAX_ACTION_COUNT}
         robotId={robotId}
         actionTypes={filterActionTypes}
         prevActionId={actionList[actionList.length - 1].id}
