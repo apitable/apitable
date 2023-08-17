@@ -18,6 +18,8 @@
 
 import * as React from 'react';
 import { Box, Typography, useTheme } from '@apitable/components';
+import ReactJson from 'react18-json-view';
+import 'react18-json-view/src/style.css';
 
 interface IKeyValueDisplayProps {
   label: string;
@@ -35,7 +37,7 @@ export const KeyValueDisplay = (props: IKeyValueDisplayProps) => {
     </Typography>
     <Typography variant="body4" color={theme.color.fc2}>
       {
-        typeof value === 'object' ? JSON.stringify(value, null, '\t') : value.toString()
+        typeof value === 'object' ? <ReactJson src={value} collapsed={3} /> : value.toString()
       }
     </Typography>
   </Box>;

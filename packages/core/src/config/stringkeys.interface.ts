@@ -21,6 +21,7 @@ export type StringKeysMapType = {
   'account_nickname': 'account_nickname',
   'account_password_incorrect': 'account_password_incorrect',
   'account_wallet': 'account_wallet',
+  'action_execute_error': 'action_execute_error',
   'activate_space': 'activate_space',
   'active_record_hidden': 'active_record_hidden',
   'active_space': 'active_space',

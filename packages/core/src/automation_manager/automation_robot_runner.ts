@@ -127,7 +127,7 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
           )} AutomationRobotRunner:executeAction:requestActionOutput error`,
           error,
         );
-        throw new Error(`action execute failed. error message: ${error.message}`);
+        throw new Error(error.message);
       }
       nextActionId = actionInstance.nextActionId;
       if (output && !output.success) {
