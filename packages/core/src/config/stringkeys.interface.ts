@@ -141,6 +141,7 @@ export type StringKeysMapType = {
   'ai_advanced_mode_title': 'ai_advanced_mode_title',
   'ai_bot_modal_title': 'ai_bot_modal_title',
   'ai_can_train_count': 'ai_can_train_count',
+  'ai_chat_default_prologue': 'ai_chat_default_prologue',
   'ai_chat_textarea_placeholder': 'ai_chat_textarea_placeholder',
   'ai_close_setting_tip_content': 'ai_close_setting_tip_content',
   'ai_close_setting_tip_title': 'ai_close_setting_tip_title',
