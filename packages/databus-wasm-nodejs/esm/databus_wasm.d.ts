@@ -7,11 +7,6 @@
 */
 export function add_tn(a: number, b: number): number;
 /**
-* @param {string} _some_th
-* @returns {Promise<any>}
-*/
-export function ping_2(_some_th: string): Promise<any>;
-/**
 * @param {string} _dst_id
 * @returns {any}
 */
@@ -29,9 +24,6 @@ export class DataBusBridge {
 * @returns {Promise<void>}
 */
   init(): Promise<void>;
-/**
-*/
-  print(): void;
 /**
 * @param {string} dst_id
 * @returns {Promise<any>}
