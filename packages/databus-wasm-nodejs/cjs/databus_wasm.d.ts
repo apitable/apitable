@@ -28,5 +28,10 @@ export class DataBusBridge {
 * @param {string} dst_id
 * @returns {Promise<any>}
 */
+  delete_cache(dst_id: string): Promise<any>;
+/**
+* @param {string} dst_id
+* @returns {Promise<any>}
+*/
   get_datasheet_pack(dst_id: string): Promise<any>;
 }

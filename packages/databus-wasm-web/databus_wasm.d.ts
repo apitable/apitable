@@ -28,6 +28,11 @@ export class DataBusBridge {
 * @param {string} dst_id
 * @returns {Promise<any>}
 */
+  delete_cache(dst_id: string): Promise<any>;
+/**
+* @param {string} dst_id
+* @returns {Promise<any>}
+*/
   get_datasheet_pack(dst_id: string): Promise<any>;
 }
 
@@ -38,6 +43,7 @@ export interface InitOutput {
   readonly __wbg_databusbridge_free: (a: number) => void;
   readonly databusbridge_new: (a: number, b: number, c: number, d: number) => number;
   readonly databusbridge_init: (a: number) => number;
+  readonly databusbridge_delete_cache: (a: number, b: number, c: number) => number;
   readonly databusbridge_get_datasheet_pack: (a: number, b: number, c: number) => number;
   readonly get_records: (a: number, b: number) => number;
   readonly add_tn: (a: number, b: number) => number;

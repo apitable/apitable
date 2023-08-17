@@ -4,6 +4,7 @@ export const memory: WebAssembly.Memory;
 export function __wbg_databusbridge_free(a: number): void;
 export function databusbridge_new(a: number, b: number, c: number, d: number): number;
 export function databusbridge_init(a: number): number;
+export function databusbridge_delete_cache(a: number, b: number, c: number): number;
 export function databusbridge_get_datasheet_pack(a: number, b: number, c: number): number;
 export function get_records(a: number, b: number): number;
 export function add_tn(a: number, b: number): number;

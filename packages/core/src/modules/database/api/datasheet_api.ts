@@ -27,7 +27,7 @@ import Qs from 'qs';
 import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack, ISnapshot } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
-import { WasmApi } from 'modules/database/api';
+// import { WasmApi } from 'modules/database/api';
 import { getBrowserDatabusApiEnabled } from './wasm';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
@@ -45,7 +45,7 @@ export function fetchDatasheetPack(dstId: string, recordIds?: string | string[])
 
   if (getBrowserDatabusApiEnabled()) {
     if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
-      return WasmApi.getInstance().get_datasheet_pack(dstId);
+      // return WasmApi.getInstance().get_datasheet_pack(dstId);
     }
   }
 
