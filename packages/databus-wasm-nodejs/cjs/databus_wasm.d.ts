@@ -7,6 +7,21 @@
 */
 export function add_tn(a: number, b: number): number;
 /**
+* @returns {any}
+*/
+export function json0_seri(): any;
+/**
+* @param {any} op
+* @returns {any}
+*/
+export function json0_inverse(op: any): any;
+/**
+* @param {any} snapshot
+* @param {any} payload
+* @returns {any}
+*/
+export function action_set_cell(snapshot: any, payload: any): any;
+/**
 * @param {string} _dst_id
 * @returns {any}
 */
