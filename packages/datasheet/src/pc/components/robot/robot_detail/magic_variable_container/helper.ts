@@ -38,29 +38,6 @@ import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
-// @ts-ignore
-// const CONST_MAGIC_VARIABLE_NODE_ATTRI= 'data-magic-variable-entity';
-
-// const parseConfig = {
-//   ...payloadHtmlToSlateConfig,
-//   elementTags: {
-//     ...payloadHtmlToSlateConfig.elementTags,
-//     p: () => ({
-//       type: 'paragraph',
-//     }),
-//     // @ts-ignore
-//     div: (args) => {
-//       const data = args.attribs[CONST_MAGIC_VARIABLE_NODE_ATTRI];
-//
-//       if(!data) {
-//         return {
-//           type: 'paragraph',
-//         };
-//       }
-//       return JSON.parse(atob(data));
-//     },
-//   },
-// };
 
 const parser = new MagicVariableParser<any>(ACTION_INPUT_PARSER_BASE_FUNCTIONS);
 const inputParser = new InputParser(parser);
@@ -521,30 +498,28 @@ export const transformSlateValue = (paragraphs: any): {
   };
 };
 
-export const modifyTriggerId = (triggerId: string, list: Node[]) => {
-  return produce(list, draft => {
-    list.forEach(nodeItem => {
+export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
+  return produce(nodeItem, draft => {
+    // @ts-ignore
+    if(nodeItem.type === 'magicVariable'){
       // @ts-ignore
-      if(nodeItem.type === 'magicVariable'){
-        // @ts-ignore
-        nodeItem.children = [{
-          text: ''
-        }];
-        // @ts-ignore
-        const firstOperand = nodeItem.data.operands[0];
-        // @ts-ignore
-        const firstOperandType = nodeItem.data.operands[0]?.type;
-        if(firstOperandType === 'Expression') {
-          const firstInnerOperand = firstOperand['value']?.operands[0];
-          firstInnerOperand.value = triggerId;
-        }
+      nodeItem.children = [{
+        text: ''
+      }];
+      // @ts-ignore
+      const firstOperand = nodeItem.data.operands[0];
+      // @ts-ignore
+      const firstOperandType = nodeItem.data.operands[0]?.type;
+      if(firstOperandType === 'Expression') {
+        const firstInnerOperand = firstOperand['value']?.operands[0];
+        firstInnerOperand.value = triggerId;
       }
-    });
+    }
   });
 };
 
 export const withMagicVariable = (editor: any, triggerId: string) => {
-  const { isInline, isVoid, onChange } = editor;
+  const { isInline, isVoid, onChange, normalizeNode } = editor;
 
   editor.isInline = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
@@ -564,6 +539,19 @@ export const withMagicVariable = (editor: any, triggerId: string) => {
     onChange(...params);
   };
 
+  // @ts-ignore
+  editor.normalizeNode = entry => {
+    const [node, path] = entry;
+
+    if (node.type ==='magicVariable') {
+      const modifiedNodes = modifyTriggerId(triggerId, node);
+      // @ts-ignore
+      Transforms.setNodes(editor, { data: modifiedNodes.data }, { at: path });
+      return ;
+    }
+    normalizeNode(entry);
+  };
+  
   // // @ts-ignore
   // editor.insertData = data => {
   //   const html = data.getData('text/html');
