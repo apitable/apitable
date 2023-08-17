@@ -27,7 +27,7 @@ import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands';
 import { ConfigConstant } from 'config';
 import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
-import { ts_add_record_to_action } from '@apitable/databus-wasm';
+import { ts_add_record_to_action } from '../../../../databus-wasm-nodejs/cjs/databus_wasm';
 
 export interface IAddRecordsOptions {
   cmd: CollaCommandName.AddRecords;
