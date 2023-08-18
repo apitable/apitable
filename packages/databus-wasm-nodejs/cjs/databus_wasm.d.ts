@@ -1,6 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* @returns {any}
+*/
+export function json0_seri(): any;
+/**
+* @param {any} op
+* @returns {any}
+*/
+export function json0_inverse(op: any): any;
+/**
+* @param {any} snapshot
+* @param {any} payload
+* @returns {any}
+*/
+export function action_set_cell(snapshot: any, payload: any): any;
+/**
 * @param {number} a
 * @param {number} b
 * @returns {number}
