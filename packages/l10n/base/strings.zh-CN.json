@@ -198,6 +198,8 @@
   "ai_training_message": "聊天机器人正在学习所有数据表格中的内容。请稍等片刻...",
   "ai_update_setting_success": "更新成功",
   "ai_default_idk": "我不知道",
+  "ai_typing": "输入中...",
+  "ai_send_cancel": "发送已取消",
   "alarm_no_member_field_tips": "请在表中先新建一列成员字段",
   "alarm_save_fail": "日期提醒配置不全，保存失败",
   "alarm_specifical_field_member": "提醒指定成员列的人",
