@@ -742,9 +742,8 @@ export class DatasheetActions {
     if (getBrowserDatabusApiEnabled() && WasmApi.getFunctionManager()){
       console.log('function manager inited');
       return WasmApi.getFunctionManager()?.action_add_record(snapshot, payload);
-    }{
-      console.log('function manager is not ready');
     }
+    console.log('function manager is not ready');
     
     const recordMap = snapshot.recordMap;
     const views = snapshot.meta.views;
