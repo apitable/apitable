@@ -1,12 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {number} a
-* @param {number} b
-* @returns {number}
-*/
-export function add_tn(a: number, b: number): number;
-/**
 * @returns {any}
 */
 export function json0_seri(): any;
@@ -21,6 +15,12 @@ export function json0_inverse(op: any): any;
 * @returns {any}
 */
 export function action_set_cell(snapshot: any, payload: any): any;
+/**
+* @param {number} a
+* @param {number} b
+* @returns {number}
+*/
+export function add_tn(a: number, b: number): number;
 /**
 * @param {string} _dst_id
 * @returns {any}
@@ -45,6 +45,11 @@ export class DataBusBridge {
 * @returns {Promise<void>}
 */
   init(): Promise<void>;
+/**
+* @param {string} dst_id
+* @returns {Promise<any>}
+*/
+  delete_cache(dst_id: string): Promise<any>;
 /**
 * @param {string} dst_id
 * @returns {Promise<any>}

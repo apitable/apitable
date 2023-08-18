@@ -684,6 +684,7 @@
   "auto_save_has_been_opend_content": "All members modify the current view configurations will be automatically saved and synchronized to other members.",
   "auto_save_view_property": "Autosave view",
   "autofill_createtime": "Autofill creation time when record created",
+  "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
   "autonumber_check_info": "To configure the field of self-incrementing ID, operate in the drop-down menu of the field.",
   "avatar_modified_successfully": "Avatar changed successfully",
   "azerbaijan": "Azerbaijan",

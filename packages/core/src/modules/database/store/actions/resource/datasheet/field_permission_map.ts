@@ -86,7 +86,7 @@ export const loadFieldPermissionMap = (fieldPermissionMap: IFieldPermissionMap, 
 export const fetchFieldPermission = (dstIds: string[],) => {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
-    const shareId = state.pageParams.shareId || state.pageParams.embedId;
+    const shareId = state.pageParams.shareId;
     DatasheetApi.getFieldPermissionMap(dstIds, shareId).then(res => {
       const { success, data } = res.data;
       if (success) {
