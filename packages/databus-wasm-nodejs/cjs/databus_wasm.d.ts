@@ -7,24 +7,6 @@
 */
 export function add_tn(a: number, b: number): number;
 /**
-<<<<<<< HEAD
-* @returns {any}
-*/
-export function json0_seri(): any;
-/**
-* @param {any} op
-* @returns {any}
-*/
-export function json0_inverse(op: any): any;
-/**
-* @param {any} snapshot
-* @param {any} payload
-* @returns {any}
-*/
-export function action_set_cell(snapshot: any, payload: any): any;
-/**
-=======
->>>>>>> release/0.99.1
 * @param {string} _dst_id
 * @returns {any}
 */
@@ -43,14 +25,11 @@ export class DataBusBridge {
 */
   init(): Promise<void>;
 /**
-<<<<<<< HEAD
-=======
 * @param {string} dst_id
 * @returns {Promise<any>}
 */
   delete_cache(dst_id: string): Promise<any>;
 /**
->>>>>>> release/0.99.1
 * @param {string} dst_id
 * @returns {Promise<any>}
 */
