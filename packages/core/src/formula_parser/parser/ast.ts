@@ -182,8 +182,6 @@ export abstract class ValueOperandNodeBase extends AstNode {
 }
 
 export class ValueOperandNode extends ValueOperandNodeBase {
-  override readonly value!: string;
-  override readonly valueType!: BasicValueType;
   override readonly name = AstNodeType.ValueOperandNode;
   override readonly field!: IField;
 
@@ -195,8 +193,6 @@ export class ValueOperandNode extends ValueOperandNodeBase {
 }
 
 export class PureValueOperandNode extends ValueOperandNodeBase {
-  override readonly value!: string;
-  override readonly valueType!: BasicValueType;
   override readonly name = AstNodeType.PureValueOperandNode;
   override readonly field!: IField;
 
@@ -245,7 +241,7 @@ export class StringOperandNode extends AstNode {
     const terminatorMap = new Map([
       [/\\n/g, '\n'], // newline
       [/\\r/g, '\r'], // newline
-      [/\\t/g, '\t'], // tab 
+      [/\\t/g, '\t'], // tab
     ]);
 
     terminatorMap.forEach((v, k) => {
