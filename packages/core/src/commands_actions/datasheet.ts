@@ -62,6 +62,8 @@ import { Field, OtherTypeUnitId, StatType } from '../model/field';
 import { ICellValue } from '../model/record';
 import { getViewClass } from '../model/views';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate';
+import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
+import { action_add_record } from '@apitable/databus-wasm-web';
 
 // TODO: all fields should be checked, not only the first one
 function validateFilterInfo(filterInfo?: IFilterInfo) {
@@ -737,6 +739,9 @@ export class DatasheetActions {
    * add record to table
    */
   static addRecord2Action(snapshot: ISnapshot, payload: { viewId: string; record: IRecord; index: number }): IJOTAction[] | null {
+    if (getBrowserDatabusApiEnabled()) {
+      return action_add_record(snapshot, payload);
+    }
     const recordMap = snapshot.recordMap;
     const views = snapshot.meta.views;
     const { record, index, viewId } = payload;

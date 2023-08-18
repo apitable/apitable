@@ -27,11 +27,11 @@ export function add_tn(a: number, b: number): number;
 */
 export function get_records(_dst_id: string): any;
 /**
-* @param {any} ts_snapshot
-* @param {any} ts_payload
+* @param {any} snapshot
+* @param {any} payload
 * @returns {any}
 */
-export function action_add_record(ts_snapshot: any, ts_payload: any): any;
+export function action_add_record(snapshot: any, payload: any): any;
 /**
 */
 export class DataBusBridge {
