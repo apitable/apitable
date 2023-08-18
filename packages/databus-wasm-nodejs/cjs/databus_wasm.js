@@ -217,7 +217,11 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 function __wbg_adapter_30(arg0, arg1, arg2) {
+<<<<<<< HEAD
     wasm.wasm_bindgen__convert__closures__invoke1_mut__hf23339cf76b8d7b8(arg0, arg1, addHeapObject(arg2));
+=======
+    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h961698b875b81453(arg0, arg1, addHeapObject(arg2));
+>>>>>>> release/0.99.1
 }
 
 function __wbg_adapter_35(arg0, arg1, arg2) {
@@ -243,6 +247,7 @@ module.exports.add_tn = function(a, b) {
 };
 
 /**
+<<<<<<< HEAD
 * @returns {any}
 */
 module.exports.json0_seri = function() {
@@ -303,6 +308,8 @@ module.exports.action_set_cell = function(snapshot, payload) {
 };
 
 /**
+=======
+>>>>>>> release/0.99.1
 * @param {string} _dst_id
 * @returns {any}
 */
@@ -320,7 +327,11 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
+<<<<<<< HEAD
 function __wbg_adapter_176(arg0, arg1, arg2, arg3) {
+=======
+function __wbg_adapter_174(arg0, arg1, arg2, arg3) {
+>>>>>>> release/0.99.1
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h6f2d41a93fab5bb6(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -367,6 +378,19 @@ class DataBusBridge {
         return takeObject(ret);
     }
     /**
+<<<<<<< HEAD
+=======
+    * @param {string} dst_id
+    * @returns {Promise<any>}
+    */
+    delete_cache(dst_id) {
+        const ptr0 = passStringToWasm0(dst_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.databusbridge_delete_cache(this.__wbg_ptr, ptr0, len0);
+        return takeObject(ret);
+    }
+    /**
+>>>>>>> release/0.99.1
     * @param {string} dst_id
     * @returns {Promise<any>}
     */
@@ -815,7 +839,11 @@ module.exports.__wbg_new_43f1b47c28813cbd = function(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
+<<<<<<< HEAD
                 return __wbg_adapter_176(a, state0.b, arg0, arg1);
+=======
+                return __wbg_adapter_174(a, state0.b, arg0, arg1);
+>>>>>>> release/0.99.1
             } finally {
                 state0.a = a;
             }
@@ -919,6 +947,7 @@ module.exports.__wbindgen_memory = function() {
     return addHeapObject(ret);
 };
 
+<<<<<<< HEAD
 module.exports.__wbindgen_closure_wrapper619 = function(arg0, arg1, arg2) {
     const ret = makeMutClosure(arg0, arg1, 167, __wbg_adapter_30);
     return addHeapObject(ret);
@@ -946,6 +975,35 @@ module.exports.__wbindgen_closure_wrapper1228 = function(arg0, arg1, arg2) {
 
 module.exports.__wbindgen_closure_wrapper2963 = function(arg0, arg1, arg2) {
     const ret = makeMutClosure(arg0, arg1, 901, __wbg_adapter_43);
+=======
+module.exports.__wbindgen_closure_wrapper195 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 51, __wbg_adapter_30);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbindgen_closure_wrapper197 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 51, __wbg_adapter_30);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbindgen_closure_wrapper732 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 188, __wbg_adapter_35);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbindgen_closure_wrapper734 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 188, __wbg_adapter_35);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbindgen_closure_wrapper901 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 280, __wbg_adapter_40);
+    return addHeapObject(ret);
+};
+
+module.exports.__wbindgen_closure_wrapper2520 = function(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 816, __wbg_adapter_43);
+>>>>>>> release/0.99.1
     return addHeapObject(ret);
 };
 

@@ -5544,5 +5544,6 @@
   "cui_wizard_select_datasheet": "Please select a table as the training dataset",
   "cui_wizard_select_chatbot_model_message": "Select the model that AIBot wants to use",
   "cui_wizard_select_chatbot_model": "Please select the type of robot to create",
+  "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
   "ai_default_idk": "I don't know"
 }

@@ -684,6 +684,7 @@
   "auto_save_has_been_opend_content": "所有成员修改当前视图配置会自动保存并同步给其他成员。（视图配置包括：筛选、分组、排序、隐藏列、布局、样式等）",
   "auto_save_view_property": "开启自动保存",
   "autofill_createtime": "新增记录自动填写创建时间",
+  "automation_action_num_warning": "每个自动化最多支持 ${value} 个动作",
   "autonumber_check_info": "自增ID的字段应在字段的下拉菜单中配置",
   "avatar_modified_successfully": "头像修改成功",
   "azerbaijan": "阿塞拜疆",

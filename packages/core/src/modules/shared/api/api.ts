@@ -41,6 +41,8 @@ import {
   ITemplateRecommendResponse,
   IUpdateSecuritySetting,
 } from './api.interface';
+import { WasmApi } from '../../database/api';
+import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
 
 export * from '../../enterprise';
 export * from '../../user/api/api.auth';
@@ -399,6 +401,11 @@ export function enableRoleExtend(nodeId: string) {
  */
 export function disableRoleExtend(nodeId: string, includeExtend?: boolean) {
   const params = includeExtend ? { includeExtend } : {};
+  if (getBrowserDatabusApiEnabled()){
+    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
+      console.log('delete indexDb cache', result);
+    });
+  }
   return axios.post(Url.DISABLE_ROLE_EXTEND + `?nodeId=${nodeId}`, params);
 }
 

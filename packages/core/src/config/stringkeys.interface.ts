@@ -685,6 +685,7 @@ export type StringKeysMapType = {
   'auto_save_has_been_opend_content': 'auto_save_has_been_opend_content',
   'auto_save_view_property': 'auto_save_view_property',
   'autofill_createtime': 'autofill_createtime',
+  'automation_action_num_warning': 'automation_action_num_warning',
   'autonumber_check_info': 'autonumber_check_info',
   'avatar_modified_successfully': 'avatar_modified_successfully',
   'azerbaijan': 'azerbaijan',
