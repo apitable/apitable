@@ -62,6 +62,8 @@ dependencies {
     implementation(rootProject.ext.dependencies['shedlock-redis'])
     implementation rootProject.ext.dependencies['springdoc-openapi-ui']
     implementation rootProject.ext.dependencies['knife4j-openapi3']
+    implementation rootProject.ext.dependencies['micrometer-core']
+    implementation rootProject.ext.dependencies['micrometer-prometheus']
 
     runtimeOnly rootProject.ext.dependencies['mysql']
 

@@ -194,3 +194,26 @@ system:
   default-time-zone: ${DEFAULT_TIME_ZONE:UTC}
   test-enabled: ${TEST_ENABLED:false}
 
+management:
+#  security:
+#    enabled: false
+#  address: 127.0.0.1
+  port: ${BACKEND_SERVER_MANAGEMENT_PORT:30001}
+  health:
+    mail:
+      enabled: false
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      enabled: true
+      show-details: always
+  # no implement yet
+  #    shutdown:
+  #      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health, info, prometheus
+

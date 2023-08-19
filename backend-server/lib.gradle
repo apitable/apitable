@@ -151,5 +151,8 @@ ext {
             'stripe'                       : "com.stripe:stripe-java:${stripe_version}",
             'shedlock'                     : "net.javacrumbs.shedlock:shedlock-spring:${shedlock_version}",
             'shedlock-redis'               : "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlock_version}",
+            // Observation
+            'micrometer-prometheus'        : "io.micrometer:micrometer-registry-prometheus:${micrometer_version}",
+            'micrometer-core'              : "io.micrometer:micrometer-core:${micrometer_version}",
     ]
 }
