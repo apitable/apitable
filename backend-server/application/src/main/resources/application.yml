@@ -195,10 +195,6 @@ system:
   test-enabled: ${TEST_ENABLED:false}
 
 management:
-#  security:
-#    enabled: false
-#  address: 127.0.0.1
-  port: ${BACKEND_SERVER_MANAGEMENT_PORT:30001}
   health:
     mail:
       enabled: false
