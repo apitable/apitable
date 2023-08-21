@@ -18,12 +18,11 @@
 
 import databusWasmServer from '@apitable/databus-wasm-nodejs';
 import databusWasm from '@apitable/databus-wasm-web';
-import { DataBusBridge, action_add_record } from '@apitable/databus-wasm-web';
+import { DataBusBridge } from '@apitable/databus-wasm-web';
 import { isClient } from '../../../../utils/env';
 import { IAxiosResponse } from '../../../../types';
 import { IApiWrapper } from '../../store/interfaces/resource';
 import { AxiosResponse } from 'axios';
-import { FunctionManager } from './function_manager';
 
 declare let window: {
   __global_handle_response: any
@@ -31,7 +30,6 @@ declare let window: {
 };
 
 let databus: DataBusBridge;
-let functionManager: FunctionManager;
 
 const _global = global || window;
 const envVars = () => {
@@ -119,7 +117,6 @@ const initializeDatabusWasm = async() => {
     const rustApiUrl = envVars().WASM_RUST_BASE_URL || window.location.origin;
     const dataBusWasmInstance = new DataBusBridge(rustApiUrl, nestApiUrl);
     await dataBusWasmInstance.init();
-    functionManager = { action_add_record };
     databus = new Proxy(dataBusWasmInstance, handler);
   }
 };
@@ -137,17 +134,6 @@ const getInstance = () => {
   
 };
 
-const getFunctionManager = () => {
-  if (!isClient()) {
-    return null;
-  }
-  if (!isInitialized()) {
-    throw new Error('databus not initialized');
-  }
-  console.log('functionManager', functionManager);
-  return functionManager;
-};
-
 const getBrowserDatabusApiEnabled = () => {
 
   if (!_global) {
@@ -156,4 +142,4 @@ const getBrowserDatabusApiEnabled = () => {
   return !!envVars().ENABLE_DATABUS_API;
 };
 
-export { getInstance, getFunctionManager, initializeDatabusWasm, getDatasheetPack, getBrowserDatabusApiEnabled };
+export { getInstance, initializeDatabusWasm, getDatasheetPack, getBrowserDatabusApiEnabled };
