@@ -35,15 +35,17 @@ import {
   ViewDerivateBase,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
+import React from 'react';
 import { browser } from 'modules/shared/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
-import React from 'react';
+import { runInTimeSlicing } from './utils';
 
 export const nodeConfigData = [
   {
@@ -227,29 +229,40 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
   // Filter out fields without permissions
   const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
 
-  const data = rows.map(row => {
-    return visibleCols.map(col => {
-      const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
-      const propsField = fieldMap[col.fieldId]!;
-      return Field.bindModel(propsField).cellValueToString(cellValue) || '';
-    });
-  });
   const Excel = await import('exceljs');
-  const workbook = new Excel.Workbook();
-  const nodeName = datasheet.name;
-  const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
-  const tempWorksheet = workbook.addWorksheet(`${viewName}`);
-  tempWorksheet.columns = getColumnHeader(datasheet, visibleCols);
-  tempWorksheet.addRows(data);
-  const fileName = `${nodeName}-${viewName}`;
-  switch (exportType) {
-    case ConfigConstant.EXPORT_TYPE_XLSX:
-      exportExcel(workbook, fileName, !!view);
-      break;
-    case ConfigConstant.EXPORT_TYPE_CSV:
-    default:
-      exportCSV(workbook, fileName, !!view);
-  }
+  const list: string[][] = [];
+  const runTask = runInTimeSlicing(function*() {
+    for (const row of rows) {
+      const item = visibleCols.map(col => {
+        const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
+        const propsField = fieldMap[col.fieldId]!;
+        return Field.bindModel(propsField).cellValueToString(cellValue) || '';
+      });
+      list.push(item);
+      yield;
+    }
+
+    const workbook = new Excel.Workbook();
+    const nodeName = datasheet.name;
+    const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
+    const tempWorksheet = workbook.addWorksheet(`${viewName}`);
+    tempWorksheet.columns = getColumnHeader(datasheet, visibleCols);
+
+    // @ts-ignore
+    tempWorksheet.addRows(list);
+
+    const fileName = `${nodeName}-${viewName}`;
+    switch (exportType) {
+      case ConfigConstant.EXPORT_TYPE_XLSX:
+        exportExcel(workbook, fileName, !!view);
+        break;
+      case ConfigConstant.EXPORT_TYPE_CSV:
+      default:
+        exportCSV(workbook, fileName, !!view);
+    }
+  });
+
+  runTask?.();
 };
 
 /**
