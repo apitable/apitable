@@ -14,6 +14,7 @@
     "start:core": "yarn workspace @apitable/core start",
     "start:i18n": "yarn workspace @apitable/i18n-lang start",
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
+    "check:datasheet": "yarn workspace @apitable/datasheet check",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
     "start:socket-server": "yarn workspace @apitable/room-server start:socket:dev",
