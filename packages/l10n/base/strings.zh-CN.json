@@ -3663,6 +3663,7 @@
   "preview_copy_attach_url_succeed": "附件地址复制成功",
   "preview_doc_error_no_support_in_this_station": "当前空间站未启用「office 文件预览」功能，不支持预览",
   "preview_doc_type_attachment_loading": "正在加载中，请耐心等待",
+  "start_download_loading": "开始下载，请耐心等待",
   "preview_fail_content": "",
   "preview_fail_title": "预览失败",
   "preview_form_title": "神奇表单",

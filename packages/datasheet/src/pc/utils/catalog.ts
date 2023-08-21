@@ -205,6 +205,9 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
 export const exportDatasheetBase = async(datasheetId: string, exportType: string, option: {
   view?: IViewProperty; mirrorId?: string, ignorePermission?: boolean
 } = {}) => {
+  Message.info({
+    content: t(Strings.start_download_loading),
+  });
   const { view, mirrorId, ignorePermission } = option;
   const state = store.getState();
   const datasheet = Selectors.getDatasheet(state, datasheetId)!;

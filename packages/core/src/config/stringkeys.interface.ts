@@ -4711,6 +4711,7 @@ export type StringKeysMapType = {
   'stacked_column_chart': 'stacked_column_chart',
   'stacked_line_chart': 'stacked_line_chart',
   'standard': 'standard',
+  'start_download_loading': 'start_download_loading',
   'start_field_name': 'start_field_name',
   'start_onfiguration': 'start_onfiguration',
   'start_time': 'start_time',
