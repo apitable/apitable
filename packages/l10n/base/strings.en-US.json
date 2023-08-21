@@ -5532,6 +5532,12 @@
   "ai_embed_website_iframe_tips": "To add a chatbot to any location on the website, please add this iframe to your HTML code.",
   "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html.",
   "ai_setting_title": "Setting",
+  "ai_default_idk": "I don't know",
+  "pre_fill_title": "Pre fill",
+  "pre_fill_helper_title": "What is pre fill?",
+  "pre_fill_content": "Enter the content to be pre filled in the left form field, and the system will pre fill it as a parameter in the link below. After opening the link, the form will automatically pre fill in the content (note: some fields do not support pre filling).",
+  "pre_fill_copy_title": "Link to a website form with pre filled values",
+  "pre_fill_share_copy_title": "Public form link with pre filled values"
   "action_execute_error": "Action execute error\nError message:\n${value}\n\nIf you are unable to solve the above problems or need further assistance, please send the above information to the relevant space manager or official customer service for assistance.",
   "cui_next_text": "Next",
   "cui_select_datasheet_description": "Click to add a datasheet and make the training process of your AI more efficient and intelligent.",
@@ -5544,6 +5550,5 @@
   "cui_wizard_select_datasheet": "Please select a table as the training dataset",
   "cui_wizard_select_chatbot_model_message": "Select the model that AIBot wants to use",
   "cui_wizard_select_chatbot_model": "Please select the type of robot to create",
-  "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
-  "ai_default_idk": "I don't know"
+  "automation_action_num_warning": "Each automation supports up to ${value} actions at most"
 }

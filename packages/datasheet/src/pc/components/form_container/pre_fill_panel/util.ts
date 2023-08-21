@@ -1,0 +1,88 @@
+import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
+import dayjs from 'dayjs';
+import { compact, find } from 'lodash';
+import qs from 'qs';
+import { IFormData, IFormQuery } from './interface';
+
+const FORM_FIELD_TYPE = {
+  select: [FieldType.SingleSelect, FieldType.MultiSelect],
+  primary: [FieldType.Member, FieldType.Link],
+  number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
+  bool: [FieldType.Checkbox],
+  datetime: [FieldType.DateTime],
+  filter: [FieldType.Attachment, FieldType.Cascader]
+};
+
+export const formData2String = (formData: IFormData, fieldMap: IFieldMap) => {
+  const newValue: IFormQuery = {};
+  for(const key in formData) {
+    let value = formData[key];
+    const field = fieldMap[key];
+    if (!field) { continue; }
+    if (FORM_FIELD_TYPE.select.includes(field.type)) {
+      const options = field.property.options;
+      value = (value as string[]).map((item: string) => find(options, { id: item }).name);
+      newValue[key] = value as string[];
+    } else if ([...FORM_FIELD_TYPE.primary, ...FORM_FIELD_TYPE.number].includes(field.type)) {
+      newValue[key] = value as string;
+    } else if (!FORM_FIELD_TYPE.filter.includes(field.type)) {
+      const cellString = Field.bindModel(field).cellValueToString(value);
+      if (cellString !== null) {
+        newValue[key] = cellString;
+      }
+    }
+  }
+  const urlString = qs.stringify(newValue);
+  return urlString ? `?${urlString}` : '';
+};
+
+export const string2Query = () => {
+  const search = window.location.search.slice(1);
+  return qs.parse(search) as IFormQuery;
+};
+
+export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPermissionMap?: IFieldPermissionMap) => {
+  const res: IFormData = {};
+  for (const key in query) {
+    const value = query[key];
+    const field = fieldMap[key];
+    if (field) {
+      const fieldAccessible = Selectors.getFormSheetAccessibleByFieldId(fieldPermissionMap, key);
+      if (fieldAccessible) {
+        // select match item's id or value，exam: ['val1', 'val2'] or ['opt-xxx1', 'opt-xxx2']
+        if (FORM_FIELD_TYPE.select.includes(field.type)) {
+          // filter invalid item opt item
+          if (value[0].startsWith('opt')) {
+            res[key] = compact((value as string[]).map(v => find(field.property.options, { id: v })?.id));
+          } else { // filter invalid item name item
+            res[key] = compact((value as string[]).map(v => find(field.property.options, { name: v })?.id));
+          }
+        } else if ([FieldType.SingleText, FieldType.Text].includes(field.type)) {
+          res[key] = string2Segment(value as string);
+        } else if (FORM_FIELD_TYPE.number.includes(field.type)) { // only number type is valid
+          const _value = Number(value);
+          if (!isNaN(_value)) {
+            res[key] = Number(value);
+          }
+        } else if (FORM_FIELD_TYPE.bool.includes(field.type)) {
+          if (value === 'true') {
+            res[key] = true;
+          }
+          if (value === 'false') {
+            res[key] = false;
+          }
+        } else if (FORM_FIELD_TYPE.datetime.includes(field.type)) {
+          const _value = value as string;
+          const isValidDate = dayjs(_value).isValid();
+          if (isValidDate) { // only valid date valid, exam: 2023-10-30 or 1692028800000
+            const isTimestamp = Field.bindModel(field).validateCellValue(_value);
+            res[key] = isTimestamp.error ? dayjs(_value).tz(field.property.timeZone).valueOf() : value;
+          }
+        } else if (!FORM_FIELD_TYPE.filter.includes(field.type)) {
+          res[key] = value;
+        }
+      }
+    }
+  }
+  return res;
+};
