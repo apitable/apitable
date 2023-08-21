@@ -2,30 +2,30 @@ const MockDataForAddRecordAction = {
   meta: {
     views: [
       {
-        id: 'viwzmCdQt493r',
-        name: 'Grid view',
+        id: 'viwDtemXMuFxz',
+        name: '维格视图',
         rows: [
           {
-            recordId: 'rec1j8vKtwrc5'
+            recordId: 'recNMf9zMl35W'
           },
           {
-            recordId: 'rec6iVgaz41fw'
+            recordId: 'recPdpql2YDk4'
           },
           {
-            recordId: 'recQ8h7BkoZxl'
+            recordId: 'reclUKfZZxqcN'
           }
         ],
         type: 1,
         columns: [
           {
-            fieldId: 'fldfMyqnl2N1p',
+            fieldId: 'fldm00Cuo2tjC',
             statType: 1
           },
           {
-            fieldId: 'fldyGQJZSEpQt'
+            fieldId: 'fld476LXGEkTb'
           },
           {
-            fieldId: 'fldMu5bJRk9tf'
+            fieldId: 'fldxvNfURNX1z'
           }
         ],
         autoSave: false,
@@ -34,74 +34,113 @@ const MockDataForAddRecordAction = {
       }
     ],
     fieldMap: {
-      fldMu5bJRk9tf: {
-        id: 'fldMu5bJRk9tf',
-        name: 'Attachments',
-        type: 6
+      fld476LXGEkTb: {
+        id: 'fld476LXGEkTb',
+        name: '选项',
+        type: 4,
+        property: {
+          options: []
+        }
       },
-      fldfMyqnl2N1p: {
-        id: 'fldfMyqnl2N1p',
-        name: 'Title',
+      fldm00Cuo2tjC: {
+        id: 'fldm00Cuo2tjC',
+        name: '标题',
         type: 19,
         property: {
           defaultValue: ''
         }
       },
-      fldyGQJZSEpQt: {
-        id: 'fldyGQJZSEpQt',
-        name: 'Options',
-        type: 4,
-        property: {
-          options: []
-        }
+      fldxvNfURNX1z: {
+        id: 'fldxvNfURNX1z',
+        name: '附件',
+        type: 6
       }
     }
   },
   recordMap: {
-    rec1j8vKtwrc5: {
-      id: 'rec1j8vKtwrc5',
-      data: {},
-      createdAt: 1691821108000,
-      updatedAt: 1691821108000,
+    reclUKfZZxqcN: {
+      id: 'reclUKfZZxqcN',
+      data: {
+        fldm00Cuo2tjC: [
+          {
+            type: 1,
+            text: 3
+          }
+        ]
+      },
+      createdAt: 1692425335000,
+      updatedAt: 1692425335000,
       revisionHistory: [
         0
       ],
       recordMeta: {
-        createdAt: 1691821108904,
-        createdBy: '8fcd23f82ec74d09915f7939845a8401'
+        createdAt: 1692425335984,
+        createdBy: '0a6622aa1f40437ab1fa2ed30afc1ee4',
+        fieldUpdatedMap: {
+          fldm00Cuo2tjC: {
+            at: 1692425346026,
+            by: '0a6622aa1f40437ab1fa2ed30afc1ee4'
+          }
+        }
       },
       commentCount: 0
     },
-    rec6iVgaz41fw: {
-      id: 'rec6iVgaz41fw',
-      data: {},
-      createdAt: 1691821108000,
-      updatedAt: 1691821108000,
+    recNMf9zMl35W: {
+      id: 'recNMf9zMl35W',
+      data: {
+        fldm00Cuo2tjC: [
+          {
+            type: 1,
+            text: 1
+          }
+        ]
+      },
+      createdAt: 1692425335000,
+      updatedAt: 1692425335000,
       revisionHistory: [
         0
       ],
       recordMeta: {
-        createdAt: 1691821108904,
-        createdBy: '8fcd23f82ec74d09915f7939845a8401'
+        createdAt: 1692425335984,
+        createdBy: '0a6622aa1f40437ab1fa2ed30afc1ee4',
+        fieldUpdatedMap: {
+          fldm00Cuo2tjC: {
+            at: 1692425341986,
+            by: '0a6622aa1f40437ab1fa2ed30afc1ee4'
+          }
+        }
       },
       commentCount: 0
     },
-    recQ8h7BkoZxl: {
-      id: 'recQ8h7BkoZxl',
-      data: {},
-      createdAt: 1691821108000,
-      updatedAt: 1691821108000,
+    recPdpql2YDk4: {
+      id: 'recPdpql2YDk4',
+      data: {
+        fldm00Cuo2tjC: [
+          {
+            type: 1,
+            text: 2
+          }
+        ]
+      },
+      createdAt: 1692425335000,
+      updatedAt: 1692425335000,
       revisionHistory: [
         0
       ],
       recordMeta: {
-        createdAt: 1691821108904,
-        createdBy: '8fcd23f82ec74d09915f7939845a8401'
+        createdAt: 1692425335984,
+        createdBy: '0a6622aa1f40437ab1fa2ed30afc1ee4',
+        fieldUpdatedMap: {
+          fldm00Cuo2tjC: {
+            at: 1692425342427,
+            by: '0a6622aa1f40437ab1fa2ed30afc1ee4'
+          }
+        }
       },
       commentCount: 0
     }
   },
-  datasheetId: 'dst5rANU3FyLWZ6TjQ'
+  datasheetId: 'dstcuTMYsyA78z5suJ'
 };
 
 export default MockDataForAddRecordAction;
