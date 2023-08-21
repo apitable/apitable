@@ -1,6 +1,6 @@
 # APITable CHANGELOG
 
-## [0.99.1-release](https://github.com/apitable/apitable/releases/tag/0.99.1-release) (2023-08-21)
+## [v0.99.1-release](https://github.com/apitable/apitable/releases/tag/v0.99.1-release) (2023-08-21)
 
 
 ### What's more
