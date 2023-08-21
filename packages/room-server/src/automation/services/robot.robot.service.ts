@@ -201,7 +201,7 @@ export class RobotRobotService {
     const entryAction = actionIdToActionMap[entryActionId!];
     actionSortList.push(entryAction);
     let action = entryAction;
-    while (action.nextActionId) {
+    while (action && action.nextActionId) {
       action = actionIdToActionMap[action.nextActionId];
       actionSortList.push(action);
     }
