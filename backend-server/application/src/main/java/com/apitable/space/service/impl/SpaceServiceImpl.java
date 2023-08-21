@@ -62,8 +62,8 @@ import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.cache.bean.UserSpaceDto;
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
 import com.apitable.shared.cache.service.CommonCacheService;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.ValidateCodeProcessorManage;
@@ -1025,6 +1025,23 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             Boolean.FALSE) : Boolean.FALSE;
         result.setBlackSpace(blackSpace);
         return result;
+    }
+
+    @Override
+    public boolean getSpaceSeatAvailableStatus(String spaceId) {
+        // seat information
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        Long seat = subscriptionInfo.getFeature().getSeat().getValue();
+        if (seat == null || seat == 0) {
+            return false;
+        }
+        if (seat < 0) {
+            return true;
+        }
+        long activeMemberTotalCount =
+            iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
+        return seat - activeMemberTotalCount > 0;
     }
 
 }

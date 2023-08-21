@@ -284,7 +284,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apitable/core@workspace:packages/core"
   dependencies:
-    "@apitable/databus-wasm": "*"
+    "@apitable/databus-wasm-nodejs": "*"
+    "@apitable/databus-wasm-web": "*"
     "@apitable/i18n": ^1.0.4
     "@types/color": ^3.0.1
     "@types/jest": ^29.2.1
@@ -354,9 +355,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@apitable/databus-wasm@*, @apitable/databus-wasm@workspace:packages/databus-wasm":
+"@apitable/databus-wasm-nodejs@*, @apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs":
   version: 0.0.0-use.local
-  resolution: "@apitable/databus-wasm@workspace:packages/databus-wasm"
+  resolution: "@apitable/databus-wasm-nodejs@workspace:packages/databus-wasm-nodejs"
+  languageName: unknown
+  linkType: soft
+
+"@apitable/databus-wasm-web@*, @apitable/databus-wasm-web@workspace:packages/databus-wasm-web":
+  version: 0.0.0-use.local
+  resolution: "@apitable/databus-wasm-web@workspace:packages/databus-wasm-web"
   languageName: unknown
   linkType: soft
 
@@ -516,7 +523,7 @@ __metadata:
     react-dom: 18.2.0
     react-dropzone: ^11.2.0
     react-grid-layout: ^1.2.0
-    react-highlight-words: ^0.16.0
+    react-highlight-words: ^0.20.0
     react-image-crop: ^8.6.2
     react-infinite-scroll-hook: ^4.0.1
     react-konva: ^18.2.2
@@ -529,6 +536,7 @@ __metadata:
     react-split-pane: ^0.1.92
     react-transition-group: ^4.4.2
     react-virtualized-auto-sizer: 1.0.2
+    react18-json-view: ^0.1.0
     redux: 4.2.0
     redux-batched-actions: 0.5.0
     redux-thunk: 2.4.1
@@ -4924,6 +4932,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jest/create-cache-key-function@npm:^27.4.2":
+  version: 27.5.1
+  resolution: "@jest/create-cache-key-function@npm:27.5.1"
+  dependencies:
+    "@jest/types": ^27.5.1
+  checksum: a6c3a8c769aca6f66f5dc80f1c77e66980b4f213a6b2a15a92ba3595f032848a1261c06c9c798dcf2b672b1ffbefad5085af89d130548741c85ddbe0cf4284e7
+  languageName: node
+  linkType: hard
+
 "@jest/environment@npm:^26.6.0, @jest/environment@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/environment@npm:26.6.2"
@@ -5572,6 +5589,19 @@ __metadata:
     "@types/yargs": ^15.0.0
     chalk: ^4.0.0
   checksum: a0bd3d2f22f26ddb23f41fddf6e6a30bf4fab2ce79ec1cb6ce6fdfaf90a72e00f4c71da91ec61e13db3b10c41de22cf49d07c57ff2b59171d64b29f909c1d8d6
+  languageName: node
+  linkType: hard
+
+"@jest/types@npm:^27.5.1":
+  version: 27.5.1
+  resolution: "@jest/types@npm:27.5.1"
+  dependencies:
+    "@types/istanbul-lib-coverage": ^2.0.0
+    "@types/istanbul-reports": ^3.0.0
+    "@types/node": "*"
+    "@types/yargs": ^16.0.0
+    chalk: ^4.0.0
+  checksum: d1f43cc946d87543ddd79d49547aab2399481d34025d5c5f2025d3d99c573e1d9832fa83cef25e9d9b07a8583500229d15bbb07b8e233d127d911d133e2f14b1
   languageName: node
   linkType: hard
 
@@ -9524,12 +9554,138 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/core-darwin-arm64@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-darwin-arm64@npm:1.3.78"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-darwin-x64@npm:1.3.78"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm-gnueabihf@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.78"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.78"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-musl@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-linux-arm64-musl@npm:1.3.78"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-linux-x64-gnu@npm:1.3.78"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-musl@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-linux-x64-musl@npm:1.3.78"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.78"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-ia32-msvc@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.78"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core-win32-x64-msvc@npm:1.3.78"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core@npm:^1.3.78":
+  version: 1.3.78
+  resolution: "@swc/core@npm:1.3.78"
+  dependencies:
+    "@swc/core-darwin-arm64": 1.3.78
+    "@swc/core-darwin-x64": 1.3.78
+    "@swc/core-linux-arm-gnueabihf": 1.3.78
+    "@swc/core-linux-arm64-gnu": 1.3.78
+    "@swc/core-linux-arm64-musl": 1.3.78
+    "@swc/core-linux-x64-gnu": 1.3.78
+    "@swc/core-linux-x64-musl": 1.3.78
+    "@swc/core-win32-arm64-msvc": 1.3.78
+    "@swc/core-win32-ia32-msvc": 1.3.78
+    "@swc/core-win32-x64-msvc": 1.3.78
+  peerDependencies:
+    "@swc/helpers": ^0.5.0
+  dependenciesMeta:
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc/helpers":
+      optional: true
+  checksum: b7494c4ca9a2e968cd00430c9dbb5cc4f0c3dd3baaf66d129185c5a8816caf6424a2da8e0f181ed94e7c0c39f76046ee995d6c5ec08198d5f5d6f60735ffb1ab
+  languageName: node
+  linkType: hard
+
 "@swc/helpers@npm:0.4.11":
   version: 0.4.11
   resolution: "@swc/helpers@npm:0.4.11"
   dependencies:
     tslib: ^2.4.0
   checksum: 736857d524b41a8a4db81094e9b027f554004e0fa3e86325d85bdb38f7e6459ce022db079edb6c61ba0f46fe8583b3e663e95f7acbd13e51b8da6c34e45bba2e
+  languageName: node
+  linkType: hard
+
+"@swc/jest@npm:^0.2.29":
+  version: 0.2.29
+  resolution: "@swc/jest@npm:0.2.29"
+  dependencies:
+    "@jest/create-cache-key-function": ^27.4.2
+    jsonc-parser: ^3.2.0
+  peerDependencies:
+    "@swc/core": "*"
+  checksum: 9eaad322310f34e81f67d41411a7d60663341af1bd9fb65456faa914c936d849d6f643fa3b942a187d52e71e62c33097098c639d25c2047fa874f49bf51cec76
   languageName: node
   linkType: hard
 
@@ -11395,6 +11551,15 @@ __metadata:
   dependencies:
     "@types/yargs-parser": "*"
   checksum: a6ebb0ec63f168280e02370fcf24ff29c3eb0335e1c46e3b34e04d32eb7c818446e0b7de8badb339b07c0ddba322827ce13ccb604d14a0de422335ae56b2120d
+  languageName: node
+  linkType: hard
+
+"@types/yargs@npm:^16.0.0":
+  version: 16.0.5
+  resolution: "@types/yargs@npm:16.0.5"
+  dependencies:
+    "@types/yargs-parser": "*"
+  checksum: 22697f7cc8aa32dcc10981a87f035e183303a58351c537c81fb450270d5c494b1d918186210e445b0eb2e4a8b34a8bda2a595f346bdb1c9ed2b63d193cb00430
   languageName: node
   linkType: hard
 
@@ -27279,6 +27444,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jsonc-parser@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "jsonc-parser@npm:3.2.0"
+  checksum: 946dd9a5f326b745aa326d48a7257e3f4a4b62c5e98ec8e49fa2bdd8d96cef7e6febf1399f5c7016114fd1f68a1c62c6138826d5d90bc650448e3cf0951c53c7
+  languageName: node
+  linkType: hard
+
 "jsonfile@npm:^2.1.0":
   version: 2.4.0
   resolution: "jsonfile@npm:2.4.0"
@@ -35081,6 +35253,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-highlight-words@npm:^0.20.0":
+  version: 0.20.0
+  resolution: "react-highlight-words@npm:0.20.0"
+  dependencies:
+    highlight-words-core: ^1.2.0
+    memoize-one: ^4.0.0
+    prop-types: ^15.5.8
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
+  checksum: 6794b6fe409ee81390e342ccdb951696e06354d8591b4cac050a6d64dbc77dfc7bb636fee0aabcfda841e57778aa5108fe351e7c1dc27b28abedd36aec8141e7
+  languageName: node
+  linkType: hard
+
 "react-image-crop@npm:^8.6.2":
   version: 8.6.2
   resolution: "react-image-crop@npm:8.6.2"
@@ -35577,6 +35762,15 @@ fsevents@^1.2.7:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: a19f43b9015fb84e16db983617dac618a8b298881d2ca96ffc2fb00534afd958ee57a00fd0017733b56f8c34dd84e5be59337877aed3c66329ed3b84e8d018ba
+  languageName: node
+  linkType: hard
+
+"react18-json-view@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "react18-json-view@npm:0.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 0e875464d213ea9f8be841b334a88fa24047b2c0cf547b40c6fd4e0c0fa3d31c2ecdaa4edd29055d5998436997df7c5f30ac36de57af94123ff7b73a8b9252e1
   languageName: node
   linkType: hard
 
@@ -36701,6 +36895,8 @@ resolve@^2.0.0-next.3:
     "@commitlint/cli": 8.1.0
     "@commitlint/config-conventional": 8.1.0
     "@microsoft/eslint-formatter-sarif": ^3.0.0
+    "@swc/core": ^1.3.78
+    "@swc/jest": ^0.2.29
     "@types/dot-object": ^2.1.2
     "@types/lru-cache": ^5.1.0
     "@types/node": 12.7.3

@@ -53,7 +53,7 @@ export function getLanguage() {
 }
 
 const loadLanguage = (lang: string) => {
-  console.log('start load language', lang);
+  // console.log('start load language', lang);
   let data = {};
   if (typeof window !== 'undefined') {
     // @ts-ignore

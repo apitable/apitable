@@ -28,10 +28,11 @@ import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
 
 export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckboxProps, 'execute'>>> = props => {
-  const { condition, onChange, field } = props;
+  const { condition, onChange, field , disabled} = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const checkboxRef = useRef<IEditor>(null);
   const { isViewLock } = useContext(ViewFilterContext);
+  const editable = isViewLock && !Boolean(disabled);
 
   useEffect(() => {
     checkboxRef.current!.onStartEdit(condition.value != null ? condition.value : null);
@@ -51,7 +52,7 @@ export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckb
       <CheckboxEditor
         style={{ boxShadow: 'none', opacity: isViewLock ? 0.5 : 1, cursor: isViewLock ? 'not-allowed' : 'pointer' }}
         ref={checkboxRef}
-        editable={!isViewLock}
+        editable={editable}
         editing
         width={160}
         datasheetId={datasheetId}

@@ -17,25 +17,25 @@
  */
 
 import { Events, IMeta, Player, Strings, t } from '@apitable/core';
-import { PreviewColumn } from './preview_column';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useEffect, useMemo, useReducer } from 'react';
+import { Button } from '@apitable/components';
+import classNames from 'classnames';
 import { ScreenSize } from '../common/component_display/enum';
 import { Popup } from '../common/mobile/popup';
+import { PreviewColumn } from './preview_column';
 import styles from './style.module.less';
 import { PcWrapper } from './pc_wrapper';
 import { getModalTitle } from './utils';
 import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
-import { Button } from '@apitable/components';
-import classNames from 'classnames';
 import { SecondConfirmType } from './interface';
 
 interface ISearchPanelProps {
   folderId: string;
-  activeDatasheetId: string;
+  activeDatasheetId?: string;
   setSearchPanelVisible: (v: boolean) => void;
   onChange: (result: {
     datasheetId?: string;
@@ -59,8 +59,8 @@ export interface ISearchChangeProps {
 }
 
 const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = props => {
-  const { activeDatasheetId, noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
-
+  const { activeDatasheetId = '', noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
+  const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {
     currentMeta: null,
     loading: true,
@@ -142,15 +142,20 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
           <Button color={'default'} onClick={hidePanel}>
             {t(Strings.cancel)}
           </Button>
-          <Button color={'primary'} disabled={!state.currentDatasheetId} onClick={() => {
-            props.onChange({
-              datasheetId: state.currentDatasheetId,
-              nodeName: state.nodes.find(node => node.nodeId === state.currentDatasheetId)?.nodeName,
-              viewId: state.currentViewId,
-              meta: state.currentMeta || undefined,
-            });
+          <Button color={'primary'} loading={loading} disabled={!state.currentDatasheetId} onClick={async() => {
+            try {
+              setLoading(true);
+              await props.onChange({
+                datasheetId: state.currentDatasheetId,
+                nodeName: state.nodes.find(node => node.nodeId === state.currentDatasheetId)?.nodeName,
+                viewId: state.currentViewId,
+                meta: state.currentMeta || undefined,
+              });
+            } finally {
+              setLoading(false);
+            }
           }}>
-            {t(Strings.ai_datasheet_panel_create_btn_text)}
+            {t(Strings.confirm)}
           </Button>
         </div>
       }

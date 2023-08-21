@@ -45,4 +45,6 @@ public interface OssClientRequest {
 
     boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType);
 
+    void migrationResources(String sourceBucket, String targetBucket, String resourceKey);
+
 }

@@ -82,10 +82,10 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
             ...defaultVariant,
             css`
               &:hover {
-                background: ${color.bgBglessSolidHover};
+                background: ${color.bgBglessHover};
               }
               &:active {
-                background: ${color.bgBglessSolidActive};
+                background: ${color.bgBglessActive};
               }
             `
           ];

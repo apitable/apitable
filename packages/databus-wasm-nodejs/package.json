@@ -1,0 +1,23 @@
+{
+  "name": "@apitable/databus-wasm-nodejs",
+  "collaborators": [
+    "Kelly Peilin Chan <kelly@vikadata.com>"
+  ],
+  "version": "0.99.1",
+  "files": [
+    "databus_wasm_bg.wasm",
+    "databus_wasm.js",
+    "databus_wasm_bg.js",
+    "databus_wasm.d.ts"
+  ],
+  "main": "./cjs/databus_wasm.js",
+  "module": "./esm/databus_wasm.js",
+  "exports": {
+    ".": {
+      "module": "./esm/databus_wasm.js",
+      "import": "./esm/databus_wasm.js",
+      "require": "./cjs/databus_wasm.js"
+    }
+  },
+  "types": "esm/databus_wasm.d.ts"
+}

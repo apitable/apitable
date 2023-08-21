@@ -16,16 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, ContextMenu, TextButton, Tooltip, useContextMenu } from '@apitable/components';
+import {
+  Box,
+  ContextMenu,
+  TextButton,
+  FloatUiTooltip as Tooltip,
+  useContextMenu,
+} from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { flatContextData } from 'pc/utils';
 import { mutate } from 'swr';
+import { flatContextData } from 'pc/utils';
 import { createAction } from '../../api';
 import { IActionType } from '../../interface';
 
-export const CreateNewAction = ({ robotId, actionTypes, prevActionId }: {
+export const CONST_MAX_ACTION_COUNT = 9;
+
+export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled }: {
   robotId: string;
+  disabled?:boolean;
   actionTypes: IActionType[];
   prevActionId?: string;
 }) => {
@@ -49,19 +58,18 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId }: {
 
   return (
     <Box marginTop='16px' display='flex' alignItems='center' justifyContent='center'>
-      <Tooltip content={t(Strings.robot_new_action_tooltip)}>
+      <Tooltip content={
+        disabled ?
+          t(Strings.automation_action_num_warning, {
+            value: CONST_MAX_ACTION_COUNT,
+          }): 
+          t(Strings.robot_new_action_tooltip)}>
         <Box>
-          <TextButton onClick={show} prefixIcon={<AddOutlined />}>
+          <TextButton onClick={show} prefixIcon={<AddOutlined />} disabled={disabled}>
             <span>{t(Strings.robot_new_action)}</span>
           </TextButton>
         </Box>
       </Tooltip>
-      {/* <span
-       style={{ cursor: 'pointer', padding: '4px' }}
-       onClick={(e) => show(e)}
-       >
-       <AddFilled color={theme.color.fc0} />
-       </span> */}
       <ContextMenu
         menuId={CONTEXT_MENU_ID_1}
         overlay={
@@ -70,6 +78,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId }: {
               text: actionType.name,
               icon: <img src={integrateCdnHost(actionType.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
               onClick: () => {
+                
                 createNewAction({
                   robotId,
                   actionTypeId: actionType.actionTypeId,

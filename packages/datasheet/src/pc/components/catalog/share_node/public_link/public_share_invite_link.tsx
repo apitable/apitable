@@ -31,11 +31,11 @@ import { FC, useState, useCallback } from 'react';
 import { copy2clipBoard } from 'pc/utils';
 import { Router } from 'pc/components/route_manager/router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+// @ts-ignore
+import { WidgetEmbed } from 'enterprise';
 import { ShareQrCode } from '../share_qr_code';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import styles from './style.module.less';
-// @ts-ignore
-import { WidgetEmbed } from 'enterprise';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -231,9 +231,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle}/>
         </Popconfirm>
         <Typography variant='h7'
-          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone, {
-            nodeName: shareSettings?.nodeName
-          })}</Typography>
+          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
           <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
             <QuestionCircleOutlined currentColor/>

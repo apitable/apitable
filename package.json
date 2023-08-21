@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "0.99.0",
+  "version": "0.99.1",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -14,6 +14,7 @@
     "start:core": "yarn workspace @apitable/core start",
     "start:i18n": "yarn workspace @apitable/i18n-lang start",
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
+    "check:datasheet": "yarn workspace @apitable/datasheet check",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
     "start:socket-server": "yarn workspace @apitable/room-server start:socket:dev",
@@ -66,6 +67,8 @@
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-conventional": "8.1.0",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
+    "@swc/core": "^1.3.78",
+    "@swc/jest": "^0.2.29",
     "@types/dot-object": "^2.1.2",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "12.7.3",

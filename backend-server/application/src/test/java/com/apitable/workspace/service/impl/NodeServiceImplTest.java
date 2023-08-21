@@ -34,7 +34,6 @@ import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.ro.NodeOpRo;
-import com.apitable.workspace.ro.NodeOpRo.AiChatBotCreateParam;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
@@ -68,7 +67,6 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .parentId(rootNodeId)
             .type(NodeType.AI_CHAT_BOT.getNodeType())
             .checkDuplicateName(false)
-            .aiCreateParams(AiChatBotCreateParam.builder().build())
             .build();
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
@@ -83,7 +81,6 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .parentId(rootNodeId)
             .type(NodeType.AI_CHAT_BOT.getNodeType())
             .checkDuplicateName(false)
-            .aiCreateParams(AiChatBotCreateParam.builder().build())
             .build();
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);

@@ -35,7 +35,7 @@ export const CommonSide: FC<React.PropsWithChildren<unknown>> = () => {
     return user && user.isAdmin ? <SpaceMenuTree /> : <div />;
   }
 
-  if (router.asPath.includes('workbench')) {
+  if (router.pathname.includes('workbench')) {
     return <WorkbenchSide />;
   }
 

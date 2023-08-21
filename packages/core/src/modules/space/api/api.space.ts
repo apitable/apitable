@@ -23,6 +23,8 @@ import { NodeType, ShowRecordHistory } from '../../../config/constant';
 import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
 import * as Url from '../../shared/api/url';
 import { IAddNodeParams } from './api.space.interface';
+import { getBrowserDatabusApiEnabled } from '../../database/api/wasm';
+import { WasmApi } from '../../database/api';
 
 const CancelToken = axios.CancelToken;
 
@@ -162,6 +164,11 @@ export function addNode(nodeInfo: IAddNodeParams) {
  * @param nodeId Node Id
  */
 export function delNode(nodeId: string) {
+  if (getBrowserDatabusApiEnabled()){
+    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
+      console.log('delete indexDb cache', result);
+    });
+  }
   return axios.delete(Url.DELETE_NODE + nodeId);
 }
 

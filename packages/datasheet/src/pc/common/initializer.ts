@@ -372,14 +372,12 @@ function checkFps(fn: (arg0: WheelEvent) => void, id: string, totalCount: number
         count++;
         const timeEscape = (Date.now() - time) / 1000;
         const fps = (frame / timeEscape);
-        console.log(fps);
         result.fps.push(fps);
         if (count >= totalCount) {
           // Remove the first and last seconds
           result.fps.shift();
           result.fps.pop();
           result.averageFps = result.fps.reduce((cur: any, prev: any) => cur + prev) / result.fps.length;
-          console.log(result);
           window.clearInterval(timer);
           window.clearInterval(scrollTmer);
           window.cancelAnimationFrame(rafId);

@@ -23,9 +23,16 @@ import { useThemeColors } from '@apitable/components';
 import style from './style.module.less';
 import classNames from 'classnames';
 import { CloseOutlined } from '@apitable/icons';
+import { useMemo } from 'react';
 
 export const Popup: React.FC<React.PropsWithChildren<DrawerProps>> = props => {
+  const { headerStyle, className, ...rest } = props;
   const colors = useThemeColors();
+  const _headerStyle: React.CSSProperties = useMemo(() => {
+    const titleStyle = props.title ? {} : { padding: 0 };
+    return headerStyle ? { ...headerStyle, ...titleStyle } : titleStyle;
+  }, [headerStyle, props.title]);
+
   return (
     <Drawer
       closeIcon={(
@@ -35,8 +42,9 @@ export const Popup: React.FC<React.PropsWithChildren<DrawerProps>> = props => {
       )}
       push={{ distance: 0 }}
       placement='bottom'
-      {...props}
-      className={classNames(style.drawerPopup, props.className)}
+      {...rest}
+      className={classNames(style.drawerPopup, className)}
+      headerStyle={_headerStyle}
     >
       {props.children}
     </Drawer>

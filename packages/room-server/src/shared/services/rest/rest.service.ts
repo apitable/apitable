@@ -62,7 +62,6 @@ import { AttachmentTypeEnum } from '../../enums/attachment.enum';
 import fs from 'fs';
 import * as os from 'os';
 import { SUBSCRIBE_INFO } from '@apitable/core/dist/modules/space/api/url.space';
-
 const util = require('util');
 const stream = require('stream');
 const pipeline = util.promisify(stream.pipeline);
@@ -130,17 +129,15 @@ export class RestService {
     this.httpService.axiosRef.interceptors.response.use(
       (res) => {
         const restResponse = res.data as IHttpSuccessResponse<any>;
-        if (containSkipHeader(res.config.headers)) {
+        if(containSkipHeader(res.config.headers)) {
           return res;
         }
-
-        function containSkipHeader(headers: any) {
+        function containSkipHeader( headers: any) {
           if (!headers) {
             return false;
           }
           return headers['Skip-Interceptor'];
         }
-
         if (!restResponse.success) {
           this.logger.error(`Server request ${res.config.url} failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
           responseCodeHandler(restResponse.code);
@@ -291,7 +288,7 @@ export class RestService {
         baseURL: host,
         validateStatus: null,
         headers: {
-          'Skip-Interceptor': 'true',
+          'Skip-Interceptor': 'true'
         },
       });
     const filePath = `${os.tmpdir()}/${fileName}`; // Replace with the desired file path and name
@@ -316,8 +313,8 @@ export class RestService {
       this.httpService.post(this.GET_UPLOAD_CALLBACK, { resourceKeys, type },
         {
           headers: HttpHelper.createAuthHeaders(headers),
-        },
-      ),
+        }
+      )
     );
     return response.data;
   }
@@ -374,11 +371,7 @@ export class RestService {
         }
         error = res.data || res;
       } catch (e) {
-        this.logger.error('Datasheet attachment reference calculation failed', {
-          stack: (e as any)?.stack,
-          code: (e as any)?.code,
-          retryTimes: i,
-        });
+        this.logger.error('Datasheet attachment reference calculation failed', { stack: (e as any)?.stack, code: (e as any)?.code, retryTimes: i });
         error = e;
       }
     }
@@ -398,7 +391,7 @@ export class RestService {
     if (skipUsageVerification) {
       this.logger.log(`skipApiUsage:${spaceId}`);
       return Promise.resolve({
-        isAllowOverLimit: true,
+        isAllowOverLimit: true
       });
     }
     const res = await lastValueFrom(
@@ -439,7 +432,7 @@ export class RestService {
     const res = await lastValueFrom(
       this.httpService.post<INode>(this.NODE_CREATE, payload, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
-      }),
+      })
     );
     return res.data;
   }
@@ -510,8 +503,8 @@ export class RestService {
   async getSpaceSubscriptionInfo(cookie: string, spaceId: string): Promise<any> {
     const response = await lastValueFrom(
       this.httpService.get<any>(SUBSCRIBE_INFO + spaceId, {
-        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders({ cookie }), spaceId),
-      }),
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders({ cookie }), spaceId)
+      })
     );
     return response!.data;
   }
@@ -646,9 +639,7 @@ export class RestService {
     return response!.data;
   }
 
-  async unitLoadOrSearch(auth: IAuthHeader, spaceId: string, params: api.ILoadOrSearchArg & {
-    userId: string
-  }): Promise<IUnitValue[]> {
+  async unitLoadOrSearch(auth: IAuthHeader, spaceId: string, params: api.ILoadOrSearchArg & { userId: string }): Promise<IUnitValue[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.UNIT_LOAD_OR_SEARCH, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),
@@ -667,6 +658,7 @@ export class RestService {
     await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
 
+
   public async getSignatures(keys: string[]): Promise<Array<{ resourceKey: string; url: string }>> {
     const queryParams = new URLSearchParams();
     keys.forEach(key => queryParams.append('resourceKeys', key));
@@ -674,7 +666,7 @@ export class RestService {
     const url = `${this.GET_ASSET_SIGNATURES}?${queryParams.toString()}`;
 
     const response = await lastValueFrom(
-      this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
+        this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
     );
     return response.data;
   }

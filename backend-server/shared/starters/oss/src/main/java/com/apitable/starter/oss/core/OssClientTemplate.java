@@ -112,4 +112,9 @@ public class OssClientTemplate {
         return request.isValidCallback(originAuthorization, url, body, contentType);
     }
 
+    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey){
+        OssClientRequest request = getOssClientRequestFactory().createClient();
+        request.migrationResources(sourceBucket, targetBucket, resourceKey);
+    }
+
 }

@@ -327,7 +327,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
             </Tooltip>
             {!isIdassPrivateDeployment() && (
               <button className={styles.editNameButton}>
-                <EditOutlined color={colors.black[50]} />
+                <EditOutlined currentColor />
               </button>
             )}
             {inEditName && (

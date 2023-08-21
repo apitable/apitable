@@ -55,14 +55,32 @@ export class UnitService {
   public async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
     const unitInfos = await this.unitRepo.selectUnitInfosBySpaceIdAndUnitIds(spaceId, unitIds);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return unitInfos.reduce((pre, cur) => {
+    const needSignatureOldUrlMap = new Map();
+    const afterUnitInfos = unitInfos.reduce((pre, cur) => {
       if (cur.avatar && !cur.avatar.startsWith('http')) {
+        needSignatureOldUrlMap.set(cur.uuid, cur.avatar);
         cur.avatar = oss.host + '/' + cur.avatar;
       }
       cur.isMemberNameModified = Number(cur.isMemberNameModified) === 1;
       pre.push(cur);
       return pre;
     }, []);
+    const attachmentTokens: string[] = Array.from(needSignatureOldUrlMap.values());
+
+
+    if (!oss.ossSignatureEnabled || !attachmentTokens.length){
+      return afterUnitInfos;
+    }
+
+    const signatureMap = await this.userService.getSignatureMap(attachmentTokens);
+
+    // Loop Replace URL
+    afterUnitInfos.forEach((dto: UnitInfo) => {
+      if (needSignatureOldUrlMap.has(dto.uuid)){
+        dto.avatar = signatureMap.get(needSignatureOldUrlMap.get(dto.uuid))!;
+      }
+    });
+    return afterUnitInfos;
   }
 
   /**
@@ -90,9 +108,13 @@ export class UnitService {
       this.teamService.getTeamsByIdsIncludeDeleted(unitMemberRefIdMap[MemberType.Team]!),
     ]);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
-    return units.reduce<UnitInfoDto[]>((pre, cur) => {
+    const needSignatureOldUrlMap = new Map();
+    const unitInfos = units.reduce<UnitInfoDto[]>((pre, cur) => {
       const tmp = cur.unitType === MemberType.Member ? members[cur.unitRefId] : teams[cur.unitRefId];
       if (tmp) {
+        if (tmp.avatar && !tmp.avatar.startsWith('http')) {
+          needSignatureOldUrlMap.set(tmp.userId, tmp.avatar);
+        }
         const avatar = tmp.avatar ? (tmp.avatar.startsWith('http') ? tmp.avatar : oss.host + '/' + tmp.avatar) : '';
         pre.push({
           avatar,
@@ -111,6 +133,23 @@ export class UnitService {
       }
       return pre;
     }, []);
+
+    const attachmentTokens: string[] = Array.from(needSignatureOldUrlMap.values());
+
+
+    if (!oss.ossSignatureEnabled || !attachmentTokens.length){
+      return unitInfos;
+    }
+
+    const signatureMap = await this.userService.getSignatureMap(attachmentTokens);
+
+    // Loop Replace URL
+    unitInfos.forEach(dto => {
+      if (needSignatureOldUrlMap.has(dto.uuid)){
+        dto.avatar = signatureMap.get(needSignatureOldUrlMap.get(dto.uuid))!;
+      }
+    });
+    return unitInfos;
   }
 
   /**
@@ -287,8 +326,12 @@ export class UnitService {
       : await this.userService.selectUserBaseInfoByIdsWithDeleted(userIds);
     const memberMap = await this.memberService.getMembersBaseInfoBySpaceIdAndUserIds(spaceId, userIds, excludeDeleted);
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
+    const needSignatureOldUrlMap = new Map();
     users.map(user => {
       const member = memberMap[user.id];
+      if (user.avatar && !user.avatar.startsWith('http')) {
+        needSignatureOldUrlMap.set(user.id, user.avatar);
+      }
       const avatar = user.avatar ? (user.avatar.startsWith('http') ? user.avatar : oss.host + '/' + user.avatar) : '';
       // key is ID of user table
       userMap.set(user.id, {
@@ -306,6 +349,21 @@ export class UnitService {
         unitId: member?.unitId!,
         uuid: user.uuid!,
       });
+    });
+    const attachmentTokens: string[] = Array.from(needSignatureOldUrlMap.values());
+
+
+    if (!oss.ossSignatureEnabled || !attachmentTokens.length){
+      return userMap;
+    }
+
+    const signatureMap = await this.userService.getSignatureMap(attachmentTokens);
+
+    // Loop Replace URL
+    userMap.forEach((value, key) => {
+      if (needSignatureOldUrlMap.has(key)){
+        value.avatar = signatureMap.get(needSignatureOldUrlMap.get(key))!;
+      }
     });
     return userMap;
   }

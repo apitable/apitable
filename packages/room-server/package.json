@@ -1,6 +1,6 @@
 {
   "name": "@apitable/room-server",
-  "version": "0.99.0",
+  "version": "0.99.1",
   "description": "nodejs room server",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
@@ -170,7 +170,7 @@
       "^.+\\.js$"
     ],
     "moduleNameMapper": {
-      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+      "@apitable/databus-wasm-web": "<rootDir>/_skip_transpile_databus_wasm_web.ts"
     },
     "moduleDirectories": [
       "dist",

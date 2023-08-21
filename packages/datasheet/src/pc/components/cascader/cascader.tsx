@@ -6,7 +6,7 @@ import { MobileCascader } from './mobile_cascader';
 import { PcCascader } from './pc_cascader';
 
 export const Cascader = (props: ICascader) => {
-  const { options, onChange, cascaderRef, ...rest } = props;
+  const { options, disabled, onChange, cascaderRef, ...rest } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
@@ -14,6 +14,7 @@ export const Cascader = (props: ICascader) => {
     return (
       <MobileCascader
         cascaderRef={cascaderRef}
+        disabled={disabled}
         options={options}
         value={rest.value}
         onChange={onChange}
