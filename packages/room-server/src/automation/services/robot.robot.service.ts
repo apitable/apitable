@@ -215,7 +215,7 @@ export class RobotRobotService {
   private actionAddNextActionId(actionIdToActionMap: {}) {
     Object.keys(actionIdToActionMap).forEach(item => {
       const action = actionIdToActionMap[item]!;
-      if (action.prevActionId) {
+      if (action.prevActionId && actionIdToActionMap[action.prevActionId]) {
         actionIdToActionMap[action.prevActionId].nextActionId = action.actionId;
       }
     });
