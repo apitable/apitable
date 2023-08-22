@@ -10,13 +10,14 @@ interface IFilterCascader {
   field: ICascaderField;
   onChange: (val: any) => void;
   value: string[];
+  disabled ?: boolean;
   linkedFieldId?: string;
 }
 
 export const FilterCascader = (props: IFilterCascader) => {
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
   const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId));
-  const { field, onChange, value, linkedFieldId } = props;
+  const { field, disabled, onChange, value, linkedFieldId } = props;
   const linkedDatasheetId = linkedFieldId ? (fieldMap?.[linkedFieldId] as ILinkField)?.property.foreignDatasheetId : '';
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,9 @@ export const FilterCascader = (props: IFilterCascader) => {
       <Cascader
         loading={loading}
         onChange={(val) => {
+          if(disabled) {
+            return;
+          }
           onChange(val);
         }}
         options={options}

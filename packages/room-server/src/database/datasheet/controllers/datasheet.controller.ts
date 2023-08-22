@@ -108,8 +108,12 @@ export class DatasheetController {
   }
 
   @Get('datasheets/:dstId/revision')
-  async getDataSheetRevision(@Param('dstId') dstId: string): Promise<number | undefined> {
-    return await this.resourceMetaService.getRevisionByDstId(dstId) ;
+  async getDataSheetRevision(@Param('dstId') dstId: string): Promise<number> {
+    const version = await this.resourceMetaService.getRevisionByDstId(dstId);
+    if (null === version || undefined == version) {
+      return -1;
+    }
+    return version;
   }
 
   @Get('datasheets/:dstId/views/:viewId/dataPack')

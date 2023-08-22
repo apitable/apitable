@@ -97,9 +97,18 @@ build: ## build
 	make build-local
 
 build-local:
+	make _pre-check
 	make _build-java
 	make _build-room
 	make _build-web
+
+_pre-check:
+	make _check-web
+
+_check-web:
+	yarn install && yarn build:pre
+	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
+	yarn check:datasheet
 
 _build-web:
 	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root

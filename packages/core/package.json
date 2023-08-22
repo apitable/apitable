@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "0.99.0",
+  "version": "0.99.1",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,8 @@
     "node": ">=8.x"
   },
   "dependencies": {
-    "@apitable/databus-wasm": "*",
+    "@apitable/databus-wasm-nodejs": "*",
+    "@apitable/databus-wasm-web": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "4.14.161",
     "@types/socket.io-client": "^1.4.36",
@@ -84,20 +85,16 @@
     "rootDir": "src",
     "testRegex": ".(spec|test).ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": "@swc/jest"
     },
     "moduleDirectories": [
       "node_modules",
       "src"
     ],
     "moduleNameMapper": {
-      "@apitable/databus-wasm": "<rootDir>/_skip_transpile_databus_wasm.ts"
+      "@apitable/databus-wasm-web": "<rootDir>/_skip_transpile_databus_wasm_web.ts"
     },
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node",
-    "setupFiles": [
-      "../jest.setup.js",
-      "@apitable/i18n-lang"
-    ]
+    "testEnvironment": "node"
   }
 }

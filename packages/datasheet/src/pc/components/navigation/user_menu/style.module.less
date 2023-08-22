@@ -76,7 +76,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: var(--static-white);
     cursor: default;
     position: relative;
     .name {
@@ -283,6 +282,9 @@
       height: 128px;
       padding: 20px 24px 32px;
       background: var(--primaryColor);
+      .topRight {
+        color: var(--static-white);
+      }
     }
   }
 }
@@ -296,6 +298,9 @@
     .userMenuTop {
       padding: 0 8px;
       flex-shrink: 0;
+      .topRight {
+        color: var(--textCommonPrimary);
+      }
     }
     .userMenuCenter {
       border-radius: 16px;

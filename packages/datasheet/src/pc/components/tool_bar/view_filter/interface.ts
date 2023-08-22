@@ -24,6 +24,7 @@ import {
 export interface IFilterValueProps {
   primaryField?: IField;
   field: IField;
+  disabled?: boolean;
   conditionIndex: number;
   condition: IFilterCondition<FieldType>;
   changeFilter: (cb: ExecuteFilterFn) => void;
@@ -33,6 +34,7 @@ export interface IFilterValueProps {
 
 export interface IFilterOptionProps {
   field: IField;
+  disabled ?: boolean;
   condition: IFilterCondition<FieldType>;
   onChange: (value: string | string[] | null) => void;
 }
@@ -40,6 +42,7 @@ export interface IFilterOptionProps {
 export type IFilterMemberProps = IFilterOptionProps;
 
 export interface IFilterBaseProps {
+  disabled ?: boolean;
   field: IField;
   condition: IFilterCondition<FieldType>;
 }

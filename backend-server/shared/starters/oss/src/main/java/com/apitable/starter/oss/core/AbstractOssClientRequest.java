@@ -58,4 +58,10 @@ public abstract class AbstractOssClientRequest implements OssClientRequest {
         throw new NoSuchMethodError("Oss Client NoSuchMethod - 「isValidCallback」");
     }
 
+    @Override
+    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey) {
+        throw new NoSuchMethodError("Oss Client NoSuchMethod - 「migrationResources」");
+    }
+
+
 }

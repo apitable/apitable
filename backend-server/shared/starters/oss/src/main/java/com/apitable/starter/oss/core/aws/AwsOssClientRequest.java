@@ -35,11 +35,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkBaseException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.internal.SkipMd5CheckStrategy;
-import com.amazonaws.services.s3.model.CreateBucketRequest;
-import com.amazonaws.services.s3.model.GetBucketLocationRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.Transfer;
 import com.amazonaws.services.s3.transfer.Transfer.TransferState;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -261,6 +257,18 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
         ossUploadAuth.setUploadUrl(preSignedUrl);
         ossUploadAuth.setUploadRequestMethod("PUT");
         return ossUploadAuth;
+    }
+
+    @Override
+    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey) {
+        CopyObjectRequest copyObjectRequest = new CopyObjectRequest(sourceBucket, resourceKey,
+                targetBucket, resourceKey);
+        CopyObjectResult copyObjectResult = amazonClient.copyObject(copyObjectRequest);
+        if (copyObjectResult.getETag() != null) {
+            LOGGER.info("Object copied successfully. ETag:{}", copyObjectResult.getETag());
+        } else {
+            LOGGER.error("Object {} copy failed.", resourceKey);
+        }
     }
 
 }

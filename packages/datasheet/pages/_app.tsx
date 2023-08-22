@@ -87,6 +87,7 @@ const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
 
+
 if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
     api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,

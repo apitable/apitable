@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import databusWasm from '@apitable/databus-wasm';
-import { DataBusBridge } from '@apitable/databus-wasm';
+import databusWasmServer from '@apitable/databus-wasm-nodejs';
+import databusWasm from '@apitable/databus-wasm-web';
+import { DataBusBridge } from '@apitable/databus-wasm-web';
 import { isClient } from '../../../../utils/env';
 import { IAxiosResponse } from '../../../../types';
 import { IApiWrapper } from '../../store/interfaces/resource';
@@ -106,6 +107,8 @@ async function fetchInterceptor<T>(fetch: () => Promise<any>): Promise<AxiosResp
 
 const initializeDatabusWasm = async() => {
   if (!isClient()) {
+    // @ts-ignore
+    databus = databusWasmServer;
     return;
   }
   if (!isInitialized()) {
@@ -119,10 +122,16 @@ const initializeDatabusWasm = async() => {
 };
 
 const getInstance = () => {
+  if (!isClient()) {
+    // @ts-ignore
+    databus = databusWasmServer;
+    return databus;
+  }
   if (!isInitialized()) {
     throw new Error('databus not initialized');
   }
   return databus;
+  
 };
 
 const getBrowserDatabusApiEnabled = () => {

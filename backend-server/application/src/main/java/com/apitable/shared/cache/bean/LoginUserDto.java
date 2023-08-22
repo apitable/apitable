@@ -121,4 +121,8 @@ public class LoginUserDto implements Serializable {
      * is nicName modified.
      */
     private Boolean isNickNameModified;
+
+    public String getLocale() {
+        return locale == null ? null : locale.replace("_", "-");
+    }
 }

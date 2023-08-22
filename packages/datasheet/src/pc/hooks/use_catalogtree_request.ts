@@ -119,7 +119,6 @@ export const useCatalogTreeRequest = () => {
       nodeName,
       preNodeId,
       extra,
-      aiCreateParams: { datasheet: [{ id: extra?.datasheetId, viewId: extra?.viewId }] }
     }).then((res: IAxiosResponse) => {
       const { data, code, success } = res.data;
       if (success) {

@@ -79,8 +79,6 @@ import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
 import { usePostHog } from 'posthog-js/react';
 import { useCatalog } from 'pc/hooks/use_catalog';
-// @ts-ignore
-import { ChatGuide } from 'enterprise';
 
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
@@ -89,7 +87,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const [activeKey, setActiveKey] = useState<string>('');
   const {
     panelVisible, panelInfo, onChange,
-    setPanelInfo, setPanelVisible, previousModalVisible, setPreviousModalVisible
+    setPanelInfo, setPanelVisible,
   } = useSearchPanel();
   const { addTreeNode } = useCatalog();
   const {
@@ -277,12 +275,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     onSetContextMenu(e);
   };
 
-  const openDatasheetPanel = (info: IPanelInfo, previous?: boolean) => {
-    if (!previous) {
-      setPanelVisible(true);
-    }else{
-      setPreviousModalVisible(true);
-    }
+  const openDatasheetPanel = (info: IPanelInfo) => {
+    setPanelVisible(true);
     setPanelInfo(info);
   };
 
@@ -499,15 +493,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
               onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))}
             />
           )
-        }
-        {
-          Boolean(ChatGuide) && <ChatGuide
-            visible={previousModalVisible}
-            hide={() => setPreviousModalVisible(false)}
-            nextStep={() => {
-              setPanelVisible(true);
-            }}
-          />
         }
       </div>
     </WorkbenchSideContext.Provider>

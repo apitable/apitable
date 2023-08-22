@@ -69,17 +69,20 @@ export const useCatalog = () => {
       dispatch(StoreActions.setExpandedKeys([...expandedKeys, parentNodeId]));
     }
     const childNodes = treeNodesMap[parentNodeId]?.children || [];
-    if (!nodeName && type === ConfigConstant.NodeType.FORM) {
-      const existForm = childNodes.reduce((acc, item) => {
-        if (item.startsWith(ResourceIdPrefix.Form)) {
-          return acc + 1;
-        }
-        return acc;
-      }, 0);
-      nodeName = existForm ? `${t(Strings.view_form)}${existForm + 1}` : t(Strings.view_form);
-    }
-    if (type === ConfigConstant.NodeType.DATASHEET) {
+    if (type === ConfigConstant.NodeType.FORM) {
+      if (!nodeName) {
+        const existForm = childNodes.reduce((acc, item) => {
+          if (item.startsWith(ResourceIdPrefix.Form)) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+        nodeName = existForm ? `${t(Strings.view_form)}${existForm + 1}` : t(Strings.view_form);
+      }
+    } else if (type === ConfigConstant.NodeType.DATASHEET) {
       extra = { viewName: t(Strings.default_view) };
+    } else if (type === ConfigConstant.NodeType.AI) {
+      // nodeName = t(Strings.ai_new_chatbot);
     }
     addNode(parentNodeId, type, nodeName, undefined, extra);
   };
