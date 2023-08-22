@@ -1,5 +1,12 @@
 # APITable CHANGELOG
 
+## [v0.99.1-release](https://github.com/apitable/apitable/releases/tag/v0.99.1-release) (2023-08-21)
+
+
+### What's more
+
+* sync: hosted cloud ([#1207](https://github.com/apitable/apitable/pull/1207)) @zoe-icu 
+* sync: hosted cloud ([#1237](https://github.com/apitable/apitable/pull/1237)) @BinsonZoom 
 ## [v0.99.0-beta](https://github.com/apitable/apitable/releases/tag/v0.99.0-beta) (2023-08-07)
 
 
