@@ -51,7 +51,7 @@ export const NodeForm = (props: any) => {
       okText: t(Strings.confirm),
       onOk: async() => {
         const deleteOk = await deleteRobotAction(nodeId);
-        deleteOk && mutate(`/robots/${currentRobotId}/actions`);
+        deleteOk && mutate(`/automation/robots/${currentRobotId}/actions`);
       },
       onCancel: () => {
         return;

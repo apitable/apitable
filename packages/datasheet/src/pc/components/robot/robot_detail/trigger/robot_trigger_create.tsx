@@ -43,7 +43,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
       const triggerRes = await createTrigger(robotId, triggerTypeId, input);
-      mutate(`/robots/${robotId}/trigger`);
+      mutate(`/automation/robots/${robotId}/trigger`);
       return triggerRes.data;
     };
   }, [robotId, defaultFormData, triggerTypes]);

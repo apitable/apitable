@@ -46,7 +46,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled }
     input?: any;
   }) => {
     const res = await createAction(action);
-    mutate(`/robots/${robotId}/actions`);
+    mutate(`/automation/robots/${robotId}/actions`);
     return res.data;
   };
 

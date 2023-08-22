@@ -32,7 +32,7 @@ interface IRobotRunHistoryItemDetailProps {
 
 export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps) => {
   const { taskId } = props;
-  const taskDetailUrl = `/robots/run-history/${taskId}`;
+  const taskDetailUrl = `/automation/run-history/${taskId}`;
   const nodeTypeByIds = useNodeTypeByIds();
   const { data, error } = useSWR(taskDetailUrl, nestReq);
   const theme = useTheme();

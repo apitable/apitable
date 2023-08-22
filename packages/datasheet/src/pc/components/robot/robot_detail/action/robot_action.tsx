@@ -54,7 +54,7 @@ export const RobotAction = (props: IRobotActionProps) => {
       okText: t(Strings.confirm),
       onOk: () => {
         changeActionTypeId(action?.id!, actionTypeId).then(() => {
-          mutate(`/robots/${robotId}/actions`);
+          mutate(`/automation/robots/${robotId}/actions`);
         });
       },
       onCancel: () => {
@@ -72,7 +72,7 @@ export const RobotAction = (props: IRobotActionProps) => {
     const newFormData = props.formData;
     if (!shallowEqual(newFormData, propsFormData)) {
       updateActionInput(action.id, newFormData).then(() => {
-        mutate(`/robots/${robotId}/actions`);
+        mutate(`/automation/robots/${robotId}/actions`);
         Message.success({
           content: t(Strings.robot_save_step_success)
         });
