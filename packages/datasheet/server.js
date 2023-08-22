@@ -23,60 +23,63 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDevelopment, port, hostname: 'localhost' });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
-  const server = express();
+console.log('PWD:' + process.cwd());
 
-  if (isDevelopment) {
-    server.use(createProxyMiddleware('/databus', {
-              target: process.env.API_PROXY || 'http://127.0.0.1:8082',
-              changeOrigin: true,
-              cookieDomainRewrite: '',
-          })
-    );
+app.prepare();
+// app.prepare().then(() => {
+//   const server = express();
 
-    server.use(createProxyMiddleware('/nest', {
-        // Direct connection to local NodeJS environment
-        target: process.env.API_PROXY || process.env.API_ROOM_SERVER || 'http://127.0.0.1:3333',
-        changeOrigin: true,
-        cookieDomainRewrite: '',
-      })
-    );
+//   if (isDevelopment) {
+//     server.use(createProxyMiddleware('/databus', {
+//               target: process.env.API_PROXY || 'http://127.0.0.1:8082',
+//               changeOrigin: true,
+//               cookieDomainRewrite: '',
+//           })
+//     );
 
-    server.use(createProxyMiddleware('/api', {
-        target: process.env.API_PROXY || process.env.API_BACKEND_SERVER || 'http://127.0.0.1:8081',
-        changeOrigin: true,
-        cookieDomainRewrite: '',
-      })
-    );
+//     server.use(createProxyMiddleware('/nest', {
+//         // Direct connection to local NodeJS environment
+//         target: process.env.API_PROXY || process.env.API_ROOM_SERVER || 'http://127.0.0.1:3333',
+//         changeOrigin: true,
+//         cookieDomainRewrite: '',
+//       })
+//     );
 
-    server.use(createProxyMiddleware('/fusion', {
-        target: process.env.API_PROXY || process.env.API_FUSION_SERVER || 'http://127.0.0.1',
-        changeOrigin: true,
-        cookieDomainRewrite: '',
-      })
-    );
+//     server.use(createProxyMiddleware('/api', {
+//         target: process.env.API_PROXY || process.env.API_BACKEND_SERVER || 'http://127.0.0.1:8081',
+//         changeOrigin: true,
+//         cookieDomainRewrite: '',
+//       })
+//     );
 
-    server.use(createProxyMiddleware('/room', {
-      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_ROOM || 'http://127.0.0.1:3005',
-      ws: true,
-      changeOrigin: true,
-      cookieDomainRewrite: ''
-    }));
+//     server.use(createProxyMiddleware('/fusion', {
+//         target: process.env.API_PROXY || process.env.API_FUSION_SERVER || 'http://127.0.0.1',
+//         changeOrigin: true,
+//         cookieDomainRewrite: '',
+//       })
+//     );
 
-    server.use(createProxyMiddleware('/notification', {
-      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_NOTIFICATION || 'http://127.0.0.1:3002',
-      ws: true,
-      changeOrigin: true,
-      cookieDomainRewrite: ''
-    }));
-  }
+//     server.use(createProxyMiddleware('/room', {
+//       target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_ROOM || 'http://127.0.0.1:3005',
+//       ws: true,
+//       changeOrigin: true,
+//       cookieDomainRewrite: ''
+//     }));
 
-  server.all('*', (req, res) => {
-    return handle(req, res);
-  });
+//     server.use(createProxyMiddleware('/notification', {
+//       target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_NOTIFICATION || 'http://127.0.0.1:3002',
+//       ws: true,
+//       changeOrigin: true,
+//       cookieDomainRewrite: ''
+//     }));
+//   }
 
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
-  });
-});
+//   server.all('*', (req, res) => {
+//     return handle(req, res);
+//   });
+
+//   server.listen(port, () => {
+//     console.log(`> Ready on http://localhost:${port}`);
+//   });
+// });
 
