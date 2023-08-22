@@ -66,6 +66,15 @@
         WHERE vau.space_id = #{spaceId} AND vau.id >= #{minId}
     </select>
 
+    <select id="countChatbotNodesBySpaceId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+          AND `type` = 9
+          AND is_template = 0
+          AND is_rubbish = 0
+    </select>
+
     <select id="selectApiUsageMinIdByCreatedAt" resultType="java.lang.Long">
         SELECT MIN(id)
         FROM ${tablePrefix}api_usage
@@ -76,7 +85,7 @@
         created_at >= #{startTime}
     </select>
 
-    <select id="selectMaxId" resultType="java.lang.Long">
+    <select id="selectApiUsageMaxId" resultType="java.lang.Long">
         SELECT MAX(id)
         FROM ${tablePrefix}api_usage
     </select>

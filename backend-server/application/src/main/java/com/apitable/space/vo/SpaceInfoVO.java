@@ -156,4 +156,7 @@ public class SpaceInfoVO {
     @Schema(description = "Whether enable chatbot feature")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isEnableChatbot;
+
+    @Schema(description = "Seat usage")
+    private SeatUsage seatUsage;
 }

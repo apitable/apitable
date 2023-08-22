@@ -85,7 +85,7 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/api-usage-data.sql")
     void testSelectMaxId() {
-        Long id = staticsMapper.selectMaxId();
+        Long id = staticsMapper.selectApiUsageMaxId();
         assertThat(id).isEqualTo(41L);
     }
 

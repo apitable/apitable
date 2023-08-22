@@ -44,6 +44,9 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.ai.facade.AiServiceFacade;
+import com.apitable.interfaces.ai.model.ChartTimeDimension;
+import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
@@ -101,6 +104,7 @@ import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceResourceGroupCode;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
+import com.apitable.space.model.CreditUsages;
 import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceUpdateOpRo;
 import com.apitable.space.service.IInvitationService;
@@ -108,6 +112,7 @@ import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
+import com.apitable.space.vo.SeatUsage;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
 import com.apitable.space.vo.SpaceSocialConfig;
@@ -212,6 +217,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
+
+    @Resource
+    private AiServiceFacade aiServiceFacade;
 
     @Resource
     private INodeShareSettingService iNodeShareSettingService;
@@ -529,6 +537,22 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         return resultList;
     }
 
+    @Override
+    public CreditUsages getCreditUsagesChart(
+        String spaceId, ChartTimeDimension chartTimeDimension) {
+        List<CreditTransactionChartData> dataCollection =
+            aiServiceFacade.loadCreditTransactionChartData(spaceId, chartTimeDimension);
+        return CreditUsages.of(dataCollection);
+    }
+
+    @Override
+    public SeatUsage getSeatUsage(String spaceId) {
+        long memberCount =
+            iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
+        long chatbotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
+        return new SeatUsage(memberCount, chatbotCount);
+    }
+
     /**
      * Get Space Info.
      *
@@ -538,9 +562,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public SpaceInfoVO getSpaceInfo(final String spaceId) {
         SpaceEntity entity = getBySpaceId(spaceId);
-        // numbers statistics
-        long memberNumber =
-            iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
+        SeatUsage seatUsage = getSeatUsage(spaceId);
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
         // admin statistics
@@ -582,7 +604,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder().spaceName(entity.getName())
             .spaceLogo(entity.getLogo()).createTime(entity.getCreatedAt())
-            .deptNumber(teamCount).seats(memberNumber).sheetNums(sheetNums)
+            .deptNumber(teamCount).seats(seatUsage.getMemberCount()).sheetNums(sheetNums)
             .recordNums(recordCount).adminNums(adminCount)
             .apiRequestCountUsage(apiUsage)
             .capacityUsedSizes(capacityUsedSize).nodeRoleNums(nodeRoleNums)
@@ -591,6 +613,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             .calendarViewNums(viewVO.getCalendarViews())
             .galleryViewNums(viewVO.getGalleryViews())
             .ganttViewNums(viewVO.getGanttViews()).mirrorNums(mirrorNums)
+            .seatUsage(seatUsage)
             .build();
         // space attachment capacity usage information
         SpaceCapacityUsedInfo spaceCapacityUsedInfo =
@@ -916,7 +939,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                                 final SpaceGlobalFeature feature) {
         log.info("switch space pros，userId:{},spaceId:{}", userId, spaceId);
         JSONObject json = JSONUtil.parseObj(feature);
-        if (json.size() == 0) {
+        if (json.isEmpty()) {
             return;
         }
         List<MapDTO> features = new ArrayList<>(json.size());

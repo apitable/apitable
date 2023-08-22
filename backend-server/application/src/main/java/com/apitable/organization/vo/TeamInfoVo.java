@@ -42,5 +42,5 @@ public class TeamInfoVo {
 
     @Schema(description = "Number of department members", example = "3")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    private Integer memberCount;
+    private Long memberCount;
 }

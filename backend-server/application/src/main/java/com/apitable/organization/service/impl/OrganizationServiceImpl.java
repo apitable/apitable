@@ -44,6 +44,7 @@ import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -196,7 +197,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         log.info("query the team's unit info.");
         UnitTeamVo unitTeam = teamMapper.selectUnitTeamVoByTeamId(spaceId, teamId);
         // the number of statistics
-        unitTeam.setMemberCount(iTeamService.countMemberCountByParentId(teamId));
+        unitTeam.setMemberCount(SqlHelper.retCount(iTeamService.countMemberCountByParentId(teamId)));
         // query whether there are sub-organizational units（team or member）
         unitTeam.setHasChildren(iTeamService.checkHasSubUnitByTeamId(spaceId, teamId));
         return unitTeam;
@@ -208,7 +209,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         List<UnitTeamVo> unitTeamList = teamMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
         CollUtil.filter(unitTeamList, (Editor<UnitTeamVo>) unitTeamVo -> {
             // the number of statistics
-            int memberCount = iTeamService.countMemberCountByParentId(unitTeamVo.getTeamId());
+            long memberCount = iTeamService.countMemberCountByParentId(unitTeamVo.getTeamId());
             unitTeamVo.setMemberCount(memberCount);
             // query whether sub-departments exist
             List<Long> subTeamIds =

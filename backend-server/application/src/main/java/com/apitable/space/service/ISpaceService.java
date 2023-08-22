@@ -18,13 +18,16 @@
 
 package com.apitable.space.service;
 
+import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.dto.SpaceCapacityUsedInfo;
 import com.apitable.space.entity.SpaceEntity;
+import com.apitable.space.model.CreditUsages;
 import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceUpdateOpRo;
+import com.apitable.space.vo.SeatUsage;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
 import com.apitable.space.vo.SpaceSubscribeVo;
@@ -128,6 +131,24 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return SpaceVO List
      */
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
+
+    /**
+     * get credit usage chart data.
+     *
+     * @param spaceId            space id
+     * @param chartTimeDimension time dimension
+     * @return CreditUsages
+     */
+    CreditUsages getCreditUsagesChart(
+        String spaceId, ChartTimeDimension chartTimeDimension);
+
+    /**
+     * query the seat usage of space.
+     *
+     * @param spaceId space id
+     * @return SeatUsage
+     */
+    SeatUsage getSeatUsage(String spaceId);
 
     /**
      * get space info.

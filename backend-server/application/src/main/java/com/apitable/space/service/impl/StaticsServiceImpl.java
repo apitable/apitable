@@ -44,6 +44,7 @@ import com.apitable.space.mapper.StaticsMapper;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.workspace.enums.ViewType;
 import com.apitable.workspace.mapper.NodeMapper;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -188,7 +189,7 @@ public class StaticsServiceImpl implements IStaticsService {
         Long lastMonthMinId = redisTemplate.opsForValue().get(lastMonthKey);
         // If the minimum table ID of last month does not exist, query the maximum table ID directly
         if (lastMonthMinId == null) {
-            id = staticsMapper.selectMaxId();
+            id = staticsMapper.selectApiUsageMaxId();
         } else {
             LocalDateTime startDayOfMonth = now.with(firstDayOfMonth());
             id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, startDayOfMonth);
@@ -206,6 +207,18 @@ public class StaticsServiceImpl implements IStaticsService {
             return cacheValue.longValue();
         }
         long count = iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
+        redisTemplate.opsForValue().set(key, count, Long.valueOf(cacheHours), TimeUnit.HOURS);
+        return count;
+    }
+
+    @Override
+    public long getTotalChatbotNodesfromCache(String spaceId) {
+        String key = StrUtil.format(GENERAL_STATICS, "space:chatbot-count", spaceId);
+        Number cacheValue = redisTemplate.opsForValue().get(key);
+        if (cacheValue != null) {
+            return cacheValue.longValue();
+        }
+        long count = SqlHelper.retCount(staticsMapper.countChatbotNodesBySpaceId(spaceId));
         redisTemplate.opsForValue().set(key, count, Long.valueOf(cacheHours), TimeUnit.HOURS);
         return count;
     }
