@@ -37,7 +37,7 @@
     --color-canvas-default: #0d1117;
     --color-canvas-subtle: #161b22;
     --color-border-default: #30363d;
-    --color-border-muted: #21262d;
+    --color-border-muted: rgba(110,118,129,0.4);
     --color-neutral-muted: rgba(110,118,129,0.4);
     --color-accent-fg: #58a6ff;
     --color-accent-emphasis: #1f6feb;
@@ -99,7 +99,6 @@
   -webkit-text-size-adjust: 100%;
   margin: 0;
   color: var(--color-fg-default);
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -158,14 +157,6 @@
 
 .markdown-body dfn {
   font-style: italic;
-}
-
-.markdown-body h1 {
-  margin: .67em 0;
-  font-weight: var(--base-text-weight-semibold, 600);
-  padding-bottom: .3em;
-  font-size: 2em;
-  border-bottom: 1px solid var(--color-border-muted);
 }
 
 .markdown-body mark {
@@ -361,37 +352,47 @@
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-  margin-top: 24px;
-  margin-bottom: 16px;
   font-weight: var(--base-text-weight-semibold, 600);
-  line-height: 1.25;
+}
+
+.markdown-body h1 {
+  font-weight: var(--base-text-weight-semibold, 600);
+  font-size: 32px;
+  line-height: 42px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border-muted);
 }
 
 .markdown-body h2 {
   font-weight: var(--base-text-weight-semibold, 600);
-  padding-bottom: .3em;
-  font-size: 1.5em;
+  padding-bottom: 5px;
+  font-size: 28px;
+  line-height: 42px;
   border-bottom: 1px solid var(--color-border-muted);
 }
 
 .markdown-body h3 {
   font-weight: var(--base-text-weight-semibold, 600);
-  font-size: 1.25em;
+  font-size: 24px;
+  line-height: 36px;
 }
 
 .markdown-body h4 {
   font-weight: var(--base-text-weight-semibold, 600);
-  font-size: 1em;
+  font-size: 20px;
+  line-height: 30px;
 }
 
 .markdown-body h5 {
   font-weight: var(--base-text-weight-semibold, 600);
-  font-size: .875em;
+  font-size: 18px;
+  line-height: 28px;
 }
 
 .markdown-body h6 {
   font-weight: var(--base-text-weight-semibold, 600);
-  font-size: .85em;
+  font-size: 16px;
+  line-height: 24px;
   color: var(--color-fg-muted);
 }
 
