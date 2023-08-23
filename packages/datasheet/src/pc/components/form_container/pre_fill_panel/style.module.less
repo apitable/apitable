@@ -13,17 +13,19 @@
   }
   .content {
     padding: 16px;
+    height: calc(100% - 40px);
+    overflow: auto;
   }
   .tips {
     color: var(--textCommonTertiary);
-    margin: 32px 0 24px;
+    margin: 24px 0 16px;
   }
   .section {
     margin-bottom: 24px;
     header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
   }
   .code {
@@ -34,7 +36,6 @@
     white-space: pre-wrap;
     overflow-wrap: break-word;
     word-break: break-all;
-    max-height: 148px;
     overflow: auto;
   }
 }
@@ -44,7 +45,7 @@
   justify-content: space-between;
   padding: 0 8px;
   border-radius: 4px;
-  background-color: var(--fc6);
+  background-color: var(--bgBrandLightDefault);
   height: 36px;
   cursor: pointer;
   transition: all 0.3s;

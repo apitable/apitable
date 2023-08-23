@@ -19,9 +19,13 @@ export const formData2String = (formData: IFormData, fieldMap: IFieldMap) => {
     let value = formData[key];
     const field = fieldMap[key];
     if (!field) { continue; }
-    if (FORM_FIELD_TYPE.select.includes(field.type)) {
+    if (value && FORM_FIELD_TYPE.select.includes(field.type)) {
       const options = field.property.options;
-      value = (value as string[]).map((item: string) => find(options, { id: item }).name);
+      if (typeof value === 'string') {
+        value = [find(options, { id: value }).name];
+      } else {
+        value = (value as string[]).map((item: string) => find(options, { id: item }).name);
+      }
       newValue[key] = value as string[];
     } else if ([...FORM_FIELD_TYPE.primary, ...FORM_FIELD_TYPE.number].includes(field.type)) {
       newValue[key] = value as string;

@@ -785,7 +785,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
         />
         {isMobile && preFill && (
           <Popup width="100%" height="90%" open={preFill} onClose={() => setPreFill(false)} closable={false} className={styles.mobilePreFill}>
-            {<PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} /> }
+            {<PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill}/> }
           </Popup>
         )}
 
