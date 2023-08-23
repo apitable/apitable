@@ -24,7 +24,7 @@
     "@apitable/core": "*",
     "@apitable/i18n-lang": "*",
     "@apitable/icons": "*",
-    "@apitable/react-flow": "^9.6.11",
+    "@apitable/react-flow": "^9.6.12",
     "@apitable/widget-sdk": "*",
     "@futpib/dagre": "^0.8.5-pre1",
     "@huse/click-outside": "^1.0.1",
