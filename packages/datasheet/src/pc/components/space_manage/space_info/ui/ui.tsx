@@ -21,15 +21,16 @@ import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 // eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
-import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useContext, useMemo } from 'react';
-import { SpaceContext } from '../context';
-import styles from './style.module.less';
 import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
 import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
 import { useSelector } from 'react-redux';
+import { isMobileApp } from 'pc/utils/env';
+import { Tooltip } from 'pc/components/common';
+import { SpaceContext } from '../context';
+import styles from './style.module.less';
+
 interface IAvertProps {
   className?: string;
   desc?: string;
@@ -64,21 +65,21 @@ export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
   if (!adData) {
     return (
       <div className={styles.advert} style={style}>
-        <Skeleton width='38%' />
+        <Skeleton width="38%" />
         <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width="61%" />
       </div>
     );
   }
   return (
     <div className={classnames(styles.advert, props.className)} style={style}>
       <span className={styles.advertImg}>
-        <Image src={marketingAdvertisement} width={160} height={110} alt='' />
+        <Image src={marketingAdvertisement} width={160} height={110} alt="" />
       </span>
-      <Typography variant='body3' className={styles.content}>
+      <Typography variant="body3" className={styles.content}>
         {props.desc || adData.desc}
       </Typography>
-      <Button color='primary' onClick={handleClick}>
+      <Button color="primary" onClick={handleClick}>
         {props.linkText || adData.linkText}
       </Button>
     </div>
@@ -91,38 +92,47 @@ type CardTitleType = {
   link?: { text: string; href?: string; onClick?: () => void };
   button?: { text: string; onClick: () => void };
   isMobile?: boolean;
+  rightSlot?: React.ReactElement
 };
 
-export const CardTitle = ({ title, tipTitle, link, button, isMobile }: CardTitleType) => {
+export const CardTitle = ({ title, tipTitle, link, button, isMobile, rightSlot }: CardTitleType) => {
   const colors = useThemeColors();
   return (
     <div className={styles.cardTitle}>
-      <div className={styles.titleText}>
-        <Typography variant='h7' className={styles.title}>
-          {title}
-        </Typography>
-        {!isMobile && (
-          <Tooltip title={tipTitle} trigger='hover' placement='top'>
-            <span className={styles.infoIcon}>
-              <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIconInDesc} />
-            </span>
-          </Tooltip>
+      <div className={'vk-flex vk-justify-between vk-flex-1'}>
+        <div className={classnames(styles.titleText)}>
+          <Typography variant="h7" className={styles.title}>
+            {title}
+          </Typography>
+          {!isMobile && (
+            <Tooltip title={tipTitle} trigger="hover" placement="top">
+              <span className={styles.infoIcon}>
+                <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIconInDesc} />
+              </span>
+            </Tooltip>
+          )}
+        </div>
+        {link && (
+          <a
+            className={styles.link}
+            {...(link.href ? { href: link.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+            onClick={link.href ? undefined : link.onClick}
+          >
+            {link.text} <ChevronRightOutlined color={colors.textCommonSecondary} />
+          </a>
+        )}
+        {button && (
+          <a className={styles.link} onClick={button.onClick}>
+            {button.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
+          </a>
         )}
       </div>
-      {link && (
-        <a
-          className={styles.link}
-          {...(link.href ? { href: link.href, target: '_blank', rel: 'noopener noreferrer' } : {})}
-          onClick={link.href ? undefined : link.onClick}
-        >
-          {link.text} <ChevronRightOutlined color={colors.textCommonSecondary} />
-        </a>
-      )}
-      {button && (
-        <a className={styles.link} onClick={button.onClick}>
-          {button.text} <ChevronRightOutlined color={colors.deepPurple[500]} />
-        </a>
-      )}
+      {
+        rightSlot && <div>
+          {rightSlot}
+        </div>
+      }
+
     </div>
   );
 };
@@ -131,13 +141,13 @@ export const InfoHighlightTitle = (data: { value: number; unit: string; desc: st
   const { value, unit, desc, style, themeColor } = data;
   return (
     <div className={styles.infoHighlightTitle} style={style}>
-      <Typography variant='h1' className={styles.value} color={themeColor}>
+      <Typography variant="h1" className={styles.value} color={themeColor}>
         {value.toLocaleString()}
       </Typography>
-      <Typography variant='h6' className={styles.unit} color={themeColor}>
+      <Typography variant="h6" className={styles.unit} color={themeColor}>
         {unit}
       </Typography>
-      <Typography variant='body4' className={styles.desc}>
+      <Typography variant="body4" className={styles.desc}>
         {desc}
       </Typography>
     </div>

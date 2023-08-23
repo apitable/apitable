@@ -34,7 +34,9 @@ export const Xs = (props: ILayoutProps) => {
     ViewsCard,
     OthersCard,
     InfoCard,
-    LevelCard
+    LevelCard,
+    CreditCard,
+    CreditCostCard,
   } = useCards(props);
 
   return <div className={styles.lg} >
@@ -53,6 +55,12 @@ export const Xs = (props: ILayoutProps) => {
       </Block>
       <Block flex={27}>
         <FileCard />
+      </Block>
+      <Block flex={27}>
+        <CreditCard minHeight={372} />
+      </Block>
+      <Block flex={27}>
+        <CreditCostCard minHeight={372} />
       </Block>
       <Block flex={27}>
         <RecordCard />

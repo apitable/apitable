@@ -1,0 +1,89 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.card {
+  border-radius: 8px;
+  height: 1px;
+  width: 100%;
+  background: var(--defaultBg) center center no-repeat;
+  background-size: cover;
+  position: relative;
+
+  .cardBg {
+    border-radius: 8px;
+  }
+
+  .skin {
+    position: absolute;
+  }
+
+  .tag {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 18px;
+    border-radius: 0 8px;
+    color: var(--defaultBg);
+    font-size: 12px;
+
+    &.tagLeft {
+      right: auto;
+      left: 0;
+      border-radius: 8px 0;
+    }
+  }
+
+  .titleWrap {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    display: flex;
+    align-items: center;
+
+    &.mt24 {
+      top: 24px;
+    }
+
+    .infoIcon {
+      margin-left: 4px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .buttonWrap {
+    position: absolute;
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .expiration {
+      flex: 1;
+      .ellipsis();
+    }
+
+    .expirationText {
+      font-family: BebasNeue;
+      margin-right: 4px;
+      font-size: 16px;
+    }
+
+    .payRecord {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .buttonWrap button {
+    border-radius: 19px;
+  }
+}
+
+.chart{
+  height: 100% !important;
+}

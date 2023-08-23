@@ -19,15 +19,17 @@
 import { Button, TextButton, TextInput } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
-import { useEmailInviteInModal } from 'pc/hooks';
 import { forwardRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './style.module.less';
-import { InviteAlert } from '../components/invite-alert';
-import { getEnvVariables } from 'pc/utils/env';
 import { AddOutlined, CheckOutlined, DeleteOutlined, WarnOutlined } from '@apitable/icons';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { getEnvVariables } from 'pc/utils/env';
+import { useEmailInviteInModal } from 'pc/hooks';
+import { Tooltip } from 'pc/components/common';
+import { InviteAlert } from '../components/invite-alert';
+import styles from './style.module.less';
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -59,7 +61,7 @@ export const InputEmail = forwardRef(({
   const spaceId = useSelector((state: IReduxState) => state.space.activeId || '');
   const [inviteLoading, setInviteLoading] = useState(false);
   const [inviteList, setInviteList] = useState<IInviteMemberList[]>([]);
-
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const { isInvited, invitedCount, err } = useEmailInviteInModal(spaceId, inviteList, shareId, secondVerify);
 
   useEffect(() => {
@@ -152,6 +154,12 @@ export const InputEmail = forwardRef(({
 
   const inviteBtnValid = inputKeyArr.some(key => inputArr[key].text !== '');
   const inviteBtnClick = () => {
+    const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+
+    if (result1) {
+      return;
+    }
+
     setInviteLoading(true);
     const allValid = handleCheckEmail();
     if (!allValid) {
