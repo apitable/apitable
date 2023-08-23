@@ -131,6 +131,7 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.INodeShareSettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -593,7 +594,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             .filter(condition ->
                 NodeType.MIRROR == NodeType.toEnum(condition.getType()))
             .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
-
+        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
         Map<Integer, Integer> typeStaticsMap = nodeTypeStaticDtos.stream()
             .collect(Collectors.toMap(NodeTypeStaticsDTO::getType,
                 NodeTypeStaticsDTO::getTotal));
@@ -613,6 +614,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             .calendarViewNums(viewVO.getCalendarViews())
             .galleryViewNums(viewVO.getGalleryViews())
             .ganttViewNums(viewVO.getGanttViews()).mirrorNums(mirrorNums)
+            .usedCredit(usedCredit)
             .seatUsage(seatUsage)
             .build();
         // space attachment capacity usage information

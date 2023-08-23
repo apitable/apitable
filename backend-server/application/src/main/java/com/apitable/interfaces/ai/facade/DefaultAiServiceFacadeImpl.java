@@ -4,6 +4,7 @@ import com.apitable.interfaces.ai.model.AiCreateParam;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class DefaultAiServiceFacadeImpl implements AiServiceFacade {
     @Override
     public void deleteAi(List<String> aiId) {
 
+    }
+
+    @Override
+    public BigDecimal getUsedCreditCount(String spaceId) {
+        return BigDecimal.ZERO;
     }
 
     @Override
