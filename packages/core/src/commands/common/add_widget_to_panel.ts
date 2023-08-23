@@ -35,7 +35,7 @@ export const addWidgetToPanel: ICollaCommandDef<IAddWidgetToPanel> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { widgetId, resourceId, resourceType } = options;
     const widgetPanels = getResourceWidgetPanels(state, resourceId, resourceType);
     let panelIndex = 0;

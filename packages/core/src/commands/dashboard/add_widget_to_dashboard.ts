@@ -37,7 +37,7 @@ export const addWidgetToDashboard: ICollaCommandDef<IAddWidgetToDashboard> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IAddWidgetToDashboard) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { dashboardId, widgetIds, cols } = options;
     const dashboardSnapshot = Selectors.getDashboardSnapshot(state, dashboardId);
 

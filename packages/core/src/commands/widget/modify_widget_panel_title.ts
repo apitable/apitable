@@ -34,7 +34,7 @@ export const modifyWidgetPanelName: ICollaCommandDef<IModifyWidgetPanelName> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IModifyWidgetPanelName) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { panelName, panelId, resourceId, resourceType } = options;
 
     if (!panelName) {

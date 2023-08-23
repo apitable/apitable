@@ -40,7 +40,7 @@ export interface IPasteSetFieldsOptions {
 export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
   undoable: true,
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { viewId, column, stdValues } = options;
     const { fields } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;

@@ -35,7 +35,7 @@ export const deleteComment: ICollaCommandDef<IDeleteComment> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IDeleteComment) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { recordId, datasheetId, comment } = options;
     const actions: IJOTAction[] = [];
     const record = getRecord(state, recordId, datasheetId);

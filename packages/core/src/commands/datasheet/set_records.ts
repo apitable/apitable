@@ -45,7 +45,7 @@ export interface ISetRecordsOptions {
 }
 
 function collectMemberProperty(datasheetId: string, actions: IJOTAction[], context: ICollaCommandExecuteContext) {
-  const { model: state, memberFieldMaintainer } = context;
+  const { state: state, memberFieldMaintainer } = context;
   const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
   const isAddFieldAction = actions.map(item => item.p[3]!).some(fieldId => !fieldMap[fieldId]);
   if (isAddFieldAction) {
@@ -94,7 +94,7 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, ldcMaintainer, fieldMapSnapshot } = context;
+    const { state: state, ldcMaintainer, fieldMapSnapshot } = context;
     const { data: _data, internalFix, alarm } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const mirrorId = options.mirrorId;

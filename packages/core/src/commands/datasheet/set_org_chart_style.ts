@@ -33,7 +33,7 @@ export const setOrgChartStyle: ICollaCommandDef<ISetOrgChartStyleOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { viewId } = options;
     const datasheetId = getActiveDatasheetId(state)!;
     const datasheet = getDatasheet(state, datasheetId);

@@ -37,7 +37,7 @@ export const setKanbanStyle: ICollaCommandDef<ISetKanbanStyleOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { viewId, addRecord, styleValue } = options;
     const datasheetId = getActiveDatasheetId(state)!;
     const datasheet = getDatasheet(state, datasheetId);

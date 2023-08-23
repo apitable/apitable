@@ -29,7 +29,7 @@ export const setWidgetName: ICollaCommandDef<ISetWidgetName> = {
   undoable: false,
 
   execute(context, options) {
-    const state = context.model;
+    const state = context.state;
     const { resourceId, newWidgetName } = options;
     const widgetPack = Selectors.getResourcePack(state, resourceId, ResourceType.Widget);
 

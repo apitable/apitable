@@ -50,7 +50,7 @@ export interface IPasteSetRecordsOptions {
 export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
   undoable: true,
   execute: (context, options) => {
-    const { model: state, fieldMapSnapshot } = context;
+    const { state: state, fieldMapSnapshot } = context;
     const { recordIds, column, row, viewId, stdValues, cut, groupCellValues, notifyExistIncompatibleField } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

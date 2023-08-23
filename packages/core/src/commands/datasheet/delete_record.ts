@@ -33,7 +33,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, ldcMaintainer } = context;
+    const { state: state, ldcMaintainer } = context;
     const { data } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

@@ -44,7 +44,7 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { data, recordData, viewId } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

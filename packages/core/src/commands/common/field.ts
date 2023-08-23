@@ -126,7 +126,7 @@ function switchFieldRecordData(
   oldField: IField,
   newField: IField,
 ) {
-  const { model: state, ldcMaintainer } = context;
+  const { state: state, ldcMaintainer } = context;
   const actions: IJOTAction[] = [];
   // Converted into an associated field to synchronize the associated data of the associated table
   // Only related fields with sibling fields need data consistency maintenance
@@ -334,7 +334,7 @@ export function createConvertActions(
 export function setField(
   context: ICollaCommandExecuteContext, snapshot: ISnapshot, oldField: IField, newField: IField, datasheetId?: string,
 ) {
-  const state = context.model;
+  const state = context.state;
   const actions: IJOTAction[] = [];
   // When different types are converted to each other, the property needs to be updated
   if (newField.type !== oldField.type) {
@@ -454,7 +454,7 @@ export function createNewBrotherField(state: IReduxState, newField: ILinkField, 
 export function clearOldBrotherField(
   context: ICollaCommandExecuteContext, oldField: ILinkField, deleteField?: boolean,
 ): ILinkedActions | null {
-  const { model: state } = context;
+  const { state: state } = context;
 
   // If the old field is not associated with a sibling field, no additional operations are required
   if (!oldField.property.brotherFieldId) {

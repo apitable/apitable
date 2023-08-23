@@ -47,7 +47,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, ldcMaintainer, memberFieldMaintainer, fieldMapSnapshot } = context;
+    const { state: state, ldcMaintainer, memberFieldMaintainer, fieldMapSnapshot } = context;
     const { viewId, index, count, groupCellValues, cellValues, ignoreFieldPermission } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

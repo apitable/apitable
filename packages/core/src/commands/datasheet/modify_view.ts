@@ -59,7 +59,7 @@ export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { data, datasheetId: _datasheetId } = options;
     const activeDatasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheetId = _datasheetId || activeDatasheetId;

@@ -126,7 +126,7 @@ export class CollaCommandManager {
     }
 
     if (!resourceId) {
-      resourceId = Selectors.getActiveDatasheetId(this._getContext().model)!;
+      resourceId = Selectors.getActiveDatasheetId(this._getContext().state)!;
     }
 
     return {
@@ -178,8 +178,8 @@ export class CollaCommandManager {
       return ret;
     }
 
-    const flushedActions = context.ldcMaintainer.flushLinkedActions(context.model);
-    const memberFieldAction = context.memberFieldMaintainer.flushMemberAction(context.model);
+    const flushedActions = context.ldcMaintainer.flushLinkedActions(context.state);
+    const memberFieldAction = context.memberFieldMaintainer.flushMemberAction(context.state);
 
     if (memberFieldAction.length) {
       ret.actions.push(...memberFieldAction);
@@ -196,7 +196,7 @@ export class CollaCommandManager {
   private _getContext(): ICollaCommandExecuteContext {
     // Each time the context is executed, a new maintainer is initialized to maintain the data consistency of the associated field cell
     return {
-      model: this.store.getState(),
+      state: this.store.getState(),
       ldcMaintainer: new LinkedDataConformanceMaintainer(),
       memberFieldMaintainer: new MemberFieldMaintainer(),
       fieldMapSnapshot: {},

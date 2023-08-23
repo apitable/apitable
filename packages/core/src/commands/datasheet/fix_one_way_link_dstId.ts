@@ -42,7 +42,7 @@ export const fixOneWayLinkDstId: ICollaCommandDef<IFixOneWayLinkDstId> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { datasheetId, fieldId, data } = options;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
 

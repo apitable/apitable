@@ -33,7 +33,7 @@ export const setViewFrozenColumnCount: ICollaCommandDef<ISetViewFrozenColumnCoun
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { count, viewId } = options;
     const datasheetId = getActiveDatasheetId(state)!;
     const datasheet = getDatasheet(state, datasheetId);

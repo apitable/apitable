@@ -32,7 +32,7 @@ export const updateFormProps: ICollaCommandDef<IUpdateFormProps> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { formId, partialProps } = options;
     const snapshot = Selectors.getFormSnapshot(state, formId);
     if (!snapshot) {
