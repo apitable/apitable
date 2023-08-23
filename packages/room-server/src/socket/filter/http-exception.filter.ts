@@ -34,7 +34,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         params: request.params,
         query: request.query,
         body: request.body,
-        replyHeaders: response.getHeaders(),
+        replyHeaders: response.headers,
       },
     });
 
