@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, Typography, useThemeColors, ThemeName } from '@apitable/components';
+import { Button, Skeleton, ThemeName, Typography, useThemeColors } from '@apitable/components';
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
@@ -27,6 +27,7 @@ import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketin
 import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
 import { useSelector } from 'react-redux';
 import { isMobileApp } from 'pc/utils/env';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
@@ -39,7 +40,7 @@ interface IAvertProps {
   minHeight?: string | number;
 }
 
-export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
+export const Advert: FC<React.PropsWithChildren<IAvertProps>> = (props) => {
   const { adData } = useContext(SpaceContext);
 
   const handleClick = () => {
@@ -48,7 +49,7 @@ export const Advert: FC<React.PropsWithChildren<IAvertProps>> = props => {
     }
   };
 
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const marketingAdvertisement = themeName === ThemeName.Light ? MarketingAdvertisementLight : MarketingAdvertisementDark;
 
   const style: React.CSSProperties = useMemo(() => {
@@ -92,14 +93,14 @@ type CardTitleType = {
   link?: { text: string; href?: string; onClick?: () => void };
   button?: { text: string; onClick: () => void };
   isMobile?: boolean;
-  rightSlot?: React.ReactElement
+  rightSlot?: React.ReactElement;
 };
 
 export const CardTitle = ({ title, tipTitle, link, button, isMobile, rightSlot }: CardTitleType) => {
   const colors = useThemeColors();
   return (
     <div className={styles.cardTitle}>
-      <div className={'vk-flex vk-justify-between vk-flex-1'}>
+      <div className={'vk-flex vk-flex-1 vk-justify-between'}>
         <div className={classnames(styles.titleText)}>
           <Typography variant="h7" className={styles.title}>
             {title}
@@ -127,12 +128,7 @@ export const CardTitle = ({ title, tipTitle, link, button, isMobile, rightSlot }
           </a>
         )}
       </div>
-      {
-        rightSlot && <div>
-          {rightSlot}
-        </div>
-      }
-
+      {rightSlot && <div>{rightSlot}</div>}
     </div>
   );
 };
