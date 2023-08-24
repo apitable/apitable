@@ -457,7 +457,7 @@ export function clearOldBrotherField(
   const { model: state } = context;
 
   // If the old field is not associated with a sibling field, no additional operations are required
-  if (!oldField.property.brotherFieldId) {
+  if (!oldField.property?.brotherFieldId) {
     return {
       datasheetId: '',
       actions: [],
