@@ -75,7 +75,7 @@ export class FormService {
   ) {
   }
 
-  async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
+  async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string, embedId?: string): Promise<FormDataPack> {
     const beginTime = +new Date();
     this.logger.info(`Start loading form data [${formId}]`);
     // Query node info
@@ -86,11 +86,8 @@ export class FormService {
     );
     const { formProps, nodeRelInfo, dstId, meta } = await this.getRelDatasheetInfo(formId);
     // Get source datasheet permission in space
-    if (!templateId) {
-      nodeRelInfo.datasheetPermissions = await this.nodeService.getPermissions(dstId, auth, {
-        internal: true,
-        main: false
-      });
+    if (!templateId && !embedId) {
+      nodeRelInfo.datasheetPermissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
     }
     const endTime = +new Date();
     this.logger.info(`Finished loading form data, duration: ${endTime - beginTime}ms`);
