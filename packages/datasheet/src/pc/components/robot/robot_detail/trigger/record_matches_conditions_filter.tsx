@@ -23,9 +23,9 @@ import {
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import produce from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
-import { useAllColumns } from 'pc/hooks';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAllColumns } from 'pc/hooks';
 import { Select } from '../select';
 import { FieldInput } from './field_input';
 import { FieldSelect } from './field_select';
@@ -221,6 +221,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
                       {t(Strings.robot_trigger_match_condition_when)}
                     </Typography> : (
                       index === 1 ? <Select
+                        disabled={readonly}
                         options={boolOperatorOptions}
                         value={filter.operator}
                         onChange={(value) => handleChange('operator', value)}
@@ -238,16 +239,15 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
                       handleChange(path, value);
                     }}
                   />
-                  {
-                    !readonly && (
-                      <IconButton
-                        shape="square"
-                        icon={DeleteOutlined} onClick={() => {
-                          deleteOperandByIndex(index);
-                        }} />
-                    )
-
-                  }
+                  <IconButton
+                    disabled={readonly}
+                    shape="square"
+                    icon={DeleteOutlined} onClick={() => {
+                      if(readonly) {
+                        return;
+                      }
+                      deleteOperandByIndex(index);
+                    }} />
                 </Fragment>
               );
             })
