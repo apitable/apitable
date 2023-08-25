@@ -433,7 +433,7 @@ major: # bump version number patch
 dataenv: _check_env
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
+DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata databus-server
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes
