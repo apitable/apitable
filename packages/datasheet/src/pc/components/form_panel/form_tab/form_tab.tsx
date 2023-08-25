@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, LinkButton, useThemeColors } from '@apitable/components';
+import { Button, LinkButton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { ListOutlined, EditOutlined } from '@apitable/icons';
 import { useSize } from 'ahooks';
@@ -189,15 +189,14 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               {t(Strings.pre_fill_title)}
             </Button>
           ) : (
-            <LinkButton
+            <TextButton
               onClick={() => setPreFill(true)}
-              component='button'
-              underline={false}
               prefixIcon={<EditOutlined currentColor />}
               className={styles.preFillBtn}
+              size="small"
             >
               {t(Strings.pre_fill_title)}
-            </LinkButton>
+            </TextButton>
           ))}
           {!shareId && editable && <ToolBar nodeShared={nodeShared} showLabel={showLabel} />}
         </div>
