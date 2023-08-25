@@ -26,7 +26,7 @@
         <comment>add props column to automation table</comment>
         <sql>
             ALTER TABLE `${table.prefix}automation_robot`
-                ADD COLUMN `props` json NOT NULL DEFAULT ('{}') COMMENT 'Option Properties' AFTER `description`;
+                ADD COLUMN `props` json DEFAULT NULL COMMENT 'Option Properties' AFTER `description`;
         </sql>
     </changeSet>
     <changeSet id="V0.99-20230822-002" author="Chambers" labels="automation">
@@ -42,6 +42,14 @@
         <sql>
             ALTER TABLE `${table.prefix}automation_trigger`
                 ADD INDEX `idx_resource_id`(`resource_id` ASC) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.99-20230822-004" author="Chambers" labels="automation">
+        <comment>add previous trigger id column to automation trigger table</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}automation_trigger`
+                ADD COLUMN `prev_trigger_id` varchar(50) CHARACTER SET
+                    utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Previous Trigger ID' AFTER `trigger_id`;
         </sql>
     </changeSet>
 </databaseChangeLog>
