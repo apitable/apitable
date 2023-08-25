@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IField, IRatingField, Strings, t } from '@apitable/core';
+import { ConfigConstant, IField, IRatingField, Strings, t } from '@apitable/core';
 import { SelectValue } from 'antd/lib/select';
-import { Emoji } from 'pc/components/common';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Button, useThemeColors } from '@apitable/components';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import styles from './styles.module.less';
-import { EMOJI_SIZE } from '../../catalog/tree/tree';
 import classNames from 'classnames';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { EmojiPicker } from 'pc/components/common/emoji_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { ChevronDownOutlined } from '@apitable/icons';
+import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { EMOJI_SIZE } from '../../catalog/tree/tree';
+import styles from './styles.module.less';
 
 interface IFormateRatingProps {
   currentField: IRatingField;
@@ -67,7 +67,10 @@ export const FormateRating: React.FC<React.PropsWithChildren<IFormateRatingProps
         <div className={styles.horizontalItemTitle}>{t(Strings.icon_setting)}</div>
         <EmojiPicker onSelect={onSelect}>
           <Button style={btnStyle} className={styles.emojiBtn} suffixIcon={<ChevronDownOutlined size={16} color={colors.fourthLevelText} />}>
-            <Emoji emoji={props.currentField.property.icon} size={EMOJI_SIZE} />
+            {getNodeIcon(props.currentField.property.icon, ConfigConstant.NodeType.DATASHEET, {
+              size: EMOJI_SIZE,
+              emojiSize: EMOJI_SIZE,
+            })}
           </Button>
         </EmojiPicker>
       </div>
