@@ -18,17 +18,11 @@
 
 import { useState } from 'react';
 import * as React from 'react';
-// import { useSelector, shallowEqual } from 'react-redux';
-// import { Selectors } from '@apitable/core';
-import { Emoji } from '../emoji';
-import styles from './styles.module.less';
 import classNames from 'classnames';
-import { EmojiPopover } from 'pc/components/catalog/emoji_popover';
-import { Tooltip } from '../tooltip';
 import { getNodeTypeByNodeId } from 'pc/utils';
-import { useThemeColors } from '@apitable/components';
-import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
-import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
+import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { Tooltip } from '../tooltip';
+import styles from './styles.module.less';
 
 interface IInlineNodeNameProps {
   nodeId: string;
@@ -50,7 +44,6 @@ export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNamePro
     nodeId, nodeName, nodeIcon, withIcon, iconSize = 18, size = 16, withBrackets, nodeNameStyle,
     prefix = '', className, withTip, iconEditable,
   } = props;
-  const colors = useThemeColors();
   const [showTip, setShowTip] = useState(false);
 
   if (!nodeName && !nodeIcon) return <></>;
@@ -69,11 +62,15 @@ export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNamePro
       <div className={classNames(styles.datasheetInfo, className, iconEditable && styles.iconEditable)}>
         {prefix}
         {withBrackets && '「'}
-        {withIcon && (nodeIcon ? (
-          <EmojiPopover nodeId={nodeId} type={getNodeTypeByNodeId(nodeId)} iconEditable={iconEditable} offset={[5]}>
-            <Emoji emoji={nodeIcon} size={iconSize} />
-          </EmojiPopover>
-        ) : makeNodeIconComponent(NodeIcon.Datasheet, { size, color: colors.fourthLevelText }))}
+        {withIcon && (
+          <NodeIcon
+            nodeId={nodeId}
+            icon={nodeIcon}
+            type={getNodeTypeByNodeId(nodeId)}
+            size={nodeIcon ? iconSize : size}
+            editable={iconEditable}
+          />
+        )}
         <Tooltip title={nodeName} textEllipsis>
           <span className={styles.name} style={nodeNameStyle}>{nodeName}</span>
         </Tooltip>

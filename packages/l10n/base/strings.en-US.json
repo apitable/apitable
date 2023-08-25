@@ -3554,6 +3554,7 @@
   "preview_copy_attach_url_succeed": "Copied",
   "preview_doc_error_no_support_in_this_station": "The current Space hasn't turn on office preview function yet. Preview failed.",
   "preview_doc_type_attachment_loading": "Loading\b... please wait a sec",
+  "start_download_loading": "DownLoading\b... please wait a sec",
   "preview_fail_content": "",
   "preview_fail_title": "Preview failed",
   "preview_form_title": "Form",
