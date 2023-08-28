@@ -52,28 +52,56 @@ export function getLanguage() {
   return clientLang || language || defaultLang;
 }
 
+const fetchLanguagePack = (lang: string, data: any) => {
+  // @ts-ignore
+  const xhr = new XMLHttpRequest();
+  const version = window.__initialization_data__.version;
+  if (lang) {
+    xhr.open('GET', `/file/langs/strings.${lang}.json?version=${version}`, false);
+  } else {
+    xhr.open('GET', '/file/langs/strings.json?version=${version}', false);
+  }
+  xhr.send();
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    const languageData = JSON.parse(xhr.responseText);
+    if (lang) {
+      data[lang] = languageData;
+    } else {
+      Object.keys(languageData).forEach((key) => {
+        data[key] = languageData[key];
+      });
+    }
+  } else {
+    console.error('load language from remote error', xhr.statusText);
+  }
+};
+
+// get English language pack asynchronously
+const fetchLanguagePackAsync = (lang: string, data: any) => {
+  const version = window.__initialization_data__.version;
+  // @ts-ignore
+  fetch(`/file/langs/strings.${lang}.json?version=${version}`)
+    .then((response: any) => {
+      if (!response.ok) {
+        throw new Error('get lang pack error: ' + response.status);
+      }
+      return response.json(); // 解析响应为JSON格式
+    })
+    .then((langPack: any) => {
+      data[lang] = langPack;
+      if (_global.apitable_i18n){
+        _global.apitable_i18n[lang] = langPack;
+      }
+    });
+};
+
 const loadLanguage = (lang: string) => {
   // console.log('start load language', lang);
   let data = {};
   if (typeof window !== 'undefined') {
-    // @ts-ignore
-    const xhr = new XMLHttpRequest();
-    const version = window.__initialization_data__.version;
-    if (lang) {
-      xhr.open('GET', `/file/langs/strings.${lang}.json?version=${version}`, false);
-    } else {
-      xhr.open('GET', '/file/langs/strings.json?version=${version}', false);
-    }
-    xhr.send();
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      const languageData = JSON.parse(xhr.responseText);
-      if (lang) {
-        data[lang] = languageData;
-      } else {
-        data = languageData;
-      }
-    } else {
-      console.error('load language from remote error', xhr.statusText);
+    fetchLanguagePack(lang, data);
+    if (lang != 'en-US') {
+      fetchLanguagePackAsync('en-US', data);
     }
   } else {
     try {
@@ -118,7 +146,14 @@ _global.apitable_i18n = loadLanguage(currentLang);
 require('@apitable/i18n-lang');
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
-
+let engI18n: I18N | null = null;
+if (currentLang != 'en-US') {
+  engI18n = I18N.createByLanguagePacks(_global.apitable_i18n, 'en-US');
+}
 export function t(stringKey: keyof StringKeysMapType | unknown, options: any = null, isPlural = false): string {
-  return i18n.getText(stringKey as string, options, isPlural);
+  const text = i18n.getText(stringKey as string, options, isPlural);
+  if (currentLang != 'en-US' && !text && engI18n != null && _global.apitable_i18n['en-US']) {
+    return engI18n.getText(stringKey as string, options, isPlural);
+  }
+  return text;
 }
