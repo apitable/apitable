@@ -3,3 +3,4 @@ packages/room-server/src/grpc/generated/*
 packages/datasheet/src/static/lang/*
 packages/core/src/config/*.interface.ts
 packages/room-server/ecosystem.config.js
+packages/core/src/commands_actions/view.ts

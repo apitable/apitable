@@ -660,6 +660,7 @@ export class RestService {
     await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
 
+
   public async getSignatures(keys: string[]): Promise<Array<{ resourceKey: string; url: string }>> {
     const queryParams = new URLSearchParams();
     keys.forEach(key => queryParams.append('resourceKeys', key));
@@ -667,7 +668,7 @@ export class RestService {
     const url = `${this.GET_ASSET_SIGNATURES}?${queryParams.toString()}`;
 
     const response = await lastValueFrom(
-      this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
+        this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
     );
     return response.data;
   }

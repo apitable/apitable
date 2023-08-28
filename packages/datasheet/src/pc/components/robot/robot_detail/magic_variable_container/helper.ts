@@ -497,8 +497,28 @@ export const transformSlateValue = (paragraphs: any): {
   };
 };
 
+export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
+  return produce(nodeItem, draft => {
+    // @ts-ignore
+    if(nodeItem.type === 'magicVariable'){
+      // @ts-ignore
+      nodeItem.children = [{
+        text: ''
+      }];
+      // @ts-ignore
+      const firstOperand = nodeItem.data.operands[0];
+      // @ts-ignore
+      const firstOperandType = nodeItem.data.operands[0]?.type;
+      if(firstOperandType === 'Expression') {
+        const firstInnerOperand = firstOperand['value']?.operands[0];
+        firstInnerOperand.value = triggerId;
+      }
+    }
+  });
+};
+
 export const withMagicVariable = (editor: any, triggerId: string) => {
-  const { isInline, isVoid, onChange } = editor;
+  const { isInline, isVoid, onChange, normalizeNode } = editor;
 
   editor.isInline = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
@@ -517,6 +537,32 @@ export const withMagicVariable = (editor: any, triggerId: string) => {
     }
     onChange(...params);
   };
+
+  // @ts-ignore
+  editor.normalizeNode = entry => {
+    const [node, path] = entry;
+
+    if (node.type ==='magicVariable') {
+      const modifiedNodes = modifyTriggerId(triggerId, node);
+      // @ts-ignore
+      Transforms.setNodes(editor, { data: modifiedNodes.data }, { at: path });
+      return ;
+    }
+    normalizeNode(entry);
+  };
+  
+  // // @ts-ignore
+  // editor.insertData = data => {
+  //   const html = data.getData('text/html');
+  //
+  //   if (html) {
+  //     const serializedToSlate = htmlToSlate(html, parseConfig);
+  //     const modifiedNodes = modifyTriggerId(triggerId, serializedToSlate);
+  //     Transforms.insertFragment(editor, modifiedNodes);
+  //     return;
+  //   }
+  //   insertData(data);
+  // };
 
   return editor;
 };

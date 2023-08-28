@@ -88,10 +88,10 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
               <FilterValueDisplay label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />
             );
           }
-          return (<KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />);
+          return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />;
         })
       }
-    </Box>
+    </Box>;
 
     <StyledTitle>
       {t(Strings.robot_run_history_output)}
