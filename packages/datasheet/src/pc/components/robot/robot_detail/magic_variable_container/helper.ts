@@ -518,7 +518,7 @@ export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
 };
 
 export const withMagicVariable = (editor: any, triggerId: string) => {
-  const { isInline, isVoid, onChange, normalizeNode } = editor;
+  const { isInline, isVoid, onChange } = editor;
 
   editor.isInline = (element: { type: string; }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
