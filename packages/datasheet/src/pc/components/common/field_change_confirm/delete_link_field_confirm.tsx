@@ -39,7 +39,7 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datas
   const datasheet = useSelector(state => Selectors.getDatasheet(state, datasheetId))!;
   const field = datasheet.snapshot.meta.fieldMap[fieldId] as ILinkField;
   const foreignDatasheet = useSelector(state => Selectors.getDatasheet(state, field?.property.foreignDatasheetId));
-  const foreignDatasheetEditable = useSelector(state => Selectors.getPermissions(state, field.property.foreignDatasheetId).editable);
+  const foreignDatasheetEditable = useSelector(state => Selectors.getPermissions(state, field?.property.foreignDatasheetId).editable);
   const [_shouldDelForeign, setShouldDelForeign] = useLocalStorageState('shouldDelForeignField', { defaultValue: false });
   /**
    * No editable permissions for related tables, no permission to use delete fields in advanced rules, 
