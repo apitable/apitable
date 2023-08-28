@@ -34,46 +34,60 @@ export const Md = (props: ILayoutProps) => {
     ViewsCard,
     OthersCard,
     InfoCard,
-    LevelCard
+    LevelCard,
+    CreditCard,
+    CreditCostCard
   } = useCards(props);
 
   return <div className={styles.lg}>
     <Block isWrap vertical style={{ maxWidth: '33.3%' }}>
       <Block flex={43}>
-        <InfoCard minHeight={494} />
+        <InfoCard minHeight={494}/>
       </Block>
       <Block flex={27}>
-        <RecordCard />
+        <CreditCard minHeight={372}/>
+      </Block>
+      <Block flex={27} >
+        <RecordCard minHeight={372}/>
       </Block>
       <Block flex={27}>
-        <OthersCard />
+        <OthersCard/>
       </Block>
     </Block>
     <Block isWrap vertical>
+      <Block flex={16} isWrap>
+        <Block>
+          <LevelCard minHeight={176}/>
+        </Block>
+        <Block>
+          <MemberCard minHeight={176}/>
+        </Block>
+      </Block>
+      <Block flex={16} isWrap>
+        <Block>
+          <CapacityCard/>
+        </Block>
+        <Block>
+          <FileCard/>
+        </Block>
+      </Block>
       <Block flex={16}>
-        <LevelCard minHeight={176} />
+        <CreditCostCard minHeight={372}/>
       </Block>
-      <Block flex={27}>
-        <CapacityCard />
+      <Block flex={16} isWrap>
+        <Block>
+          <ApiCard/>
+        </Block>
+        <Block>
+          <ViewsCard/>
+        </Block>
       </Block>
-      <Block flex={27}>
-        <ApiCard />
+      <Block flex={16} isWrap>
+        <Block flex={1}>
+          <AdCard/>
+        </Block>
+        <Block flex={1} visible={false}/>
       </Block>
-      <Block flex={27}>
-        <AdCard />
-      </Block>
-    </Block>
-    <Block isWrap vertical>
-      <Block flex={16}>
-        <MemberCard minHeight={176} />
-      </Block>
-      <Block flex={27}>
-        <FileCard />
-      </Block>
-      <Block flex={27}>
-        <ViewsCard />
-      </Block>
-      <Block flex={27} visible={false} />
     </Block>
   </div>;
 };

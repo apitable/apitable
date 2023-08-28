@@ -42,7 +42,7 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
     // When the record is created, the default value needs to be filled in.
     const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
     await createTrigger(robotId!, triggerTypeId, input);
-    mutate(`/robots/${robotId}/trigger`);
+    mutate(`/automation/robots/${robotId}/trigger`);
     const robotBaseInfo = await getRobotBaseInfo(robotId!);
     updateRobot(robotBaseInfo);
   }, [robotId, defaultFormData, triggerTypes, updateRobot]);

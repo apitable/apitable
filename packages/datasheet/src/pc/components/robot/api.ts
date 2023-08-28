@@ -33,19 +33,19 @@ export const getRobotRunHistoryList = async(url: string): Promise<IRobotRunHisto
 };
 
 export const deleteRobotAction = async(actionId: string) => {
-  const res = await nestReq.delete(`/robots/actions/${actionId}`);
+  const res = await nestReq.delete(`/automation/actions/${actionId}`);
   return res.data.success;
 };
 
 export const updateRobotName = async(robotId: string, name: string) => {
-  const res = await nestReq.patch(`/robots/${robotId}`, {
+  const res = await nestReq.patch(`/automation/robots/${robotId}`, {
     name
   });
   return res.data.success;
 };
 
 export const updateRobotDescription = async(robotId: string, description: string) => {
-  const res = await nestReq.patch(`/robots/${robotId}`, {
+  const res = await nestReq.patch(`/automation/robots/${robotId}`, {
     description
   });
   return res.data.success;
@@ -61,7 +61,7 @@ export const getResourceRobots = (url: string): Promise<IRobotBaseInfo[]> => {
 };
 
 export const activeRobot = (robotId: string): Promise<boolean> => {
-  const url = `/robots/${robotId}/active`;
+  const url = `/automation/robots/${robotId}/active`;
   return nestReq.post(url).then(res => {
     if (res.data.success) {
       if (res.data.data.ok) {
@@ -74,7 +74,7 @@ export const activeRobot = (robotId: string): Promise<boolean> => {
 };
 
 export const deActiveRobot = (robotId: string): Promise<any> => {
-  const url = `/robots/${robotId}/deactive`;
+  const url = `/automation/robots/${robotId}/deactive`;
   return nestReq.post(url).then(res => {
     if (res.data.success) {
       return true;
@@ -83,7 +83,7 @@ export const deActiveRobot = (robotId: string): Promise<any> => {
   });
 };
 export const deleteRobot = (robotId: string) => {
-  return nestReq.delete(`/robots/${robotId}`).then(res => {
+  return nestReq.delete(`/automation/robots/${robotId}`).then(res => {
     if (res.data.success) {
       return true;
     }
@@ -92,12 +92,12 @@ export const deleteRobot = (robotId: string) => {
 };
 
 export const refreshRobotList = (resourceId: string) => {
-  const thisResourceRobotUrl = `/robots?resourceId=${resourceId}`;
+  const thisResourceRobotUrl = `/automation/robots?resourceId=${resourceId}`;
   return mutate(thisResourceRobotUrl);
 };
 
 export const createTrigger = (robotId: string, triggerTypeId: string, input?: any) => {
-  return nestReq.post('/robots/triggers', {
+  return nestReq.post('/automation/triggers', {
     robotId: robotId,
     triggerTypeId,
     input,
@@ -105,13 +105,13 @@ export const createTrigger = (robotId: string, triggerTypeId: string, input?: an
 };
 
 export const changeTriggerTypeId = (triggerId: string, triggerTypeId: string) => {
-  return nestReq.patch(`/robots/triggers/${triggerId}`, {
+  return nestReq.patch(`/automation/triggers/${triggerId}`, {
     triggerTypeId
   });
 };
 
 export const updateTriggerInput = (triggerId: string, input: any) => {
-  return nestReq.patch(`/robots/triggers/${triggerId}`, {
+  return nestReq.patch(`/automation/triggers/${triggerId}`, {
     input
   });
 };
@@ -119,17 +119,17 @@ export const updateTriggerInput = (triggerId: string, input: any) => {
 export const createAction = (data: {
   robotId: string, actionTypeId: string, prevActionId?: string, input?: any
 }) => {
-  return nestReq.post('/robots/actions', data);
+  return nestReq.post('/automation/actions', data);
 };
 
 export const changeActionTypeId = (actionId: string, actionTypeId: string) => {
-  return nestReq.patch(`/robots/actions/${actionId}`, {
+  return nestReq.patch(`/automation/actions/${actionId}`, {
     actionTypeId
   });
 };
 
 export const updateActionInput = (actionId: string, input: any) => {
-  return nestReq.patch(`/robots/actions/${actionId}`, {
+  return nestReq.patch(`/automation/actions/${actionId}`, {
     input
   });
 };
@@ -141,7 +141,7 @@ export const getRobotTrigger = (url: string): Promise<IRobotTrigger | undefined>
 };
 
 export const getRobotBaseInfo = (robotId: string): Promise<IRobotBaseInfo | undefined> => {
-  return nestReq.get(`/robots/${robotId}/base-info`).then(res => {
+  return nestReq.get(`/automation/robots/${robotId}/base-info`).then(res => {
     return res?.data.data[0];
   });
 };

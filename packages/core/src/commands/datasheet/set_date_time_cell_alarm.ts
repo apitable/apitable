@@ -39,7 +39,7 @@ export interface ISetDateTimeCellAlarmOptions {
 export const setDateTimeCellAlarm: ICollaCommandDef<ISetDateTimeCellAlarmOptions> = {
   undoable: true,
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { fieldId, recordId, alarm } = options;
     const newAlarmId = getNewId(IDPrefix.DateTimeAlarm);
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;

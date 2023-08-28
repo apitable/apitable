@@ -48,7 +48,7 @@ public class RoleInfoVo {
 
     @Schema(description = "role's member amount", example = "1")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    private Integer memberCount;
+    private Long memberCount;
 
     @Schema(description = "the role's position in role list", example = "1")
     private Integer position;

@@ -199,7 +199,7 @@ export const useRobot = (_robotId?: string) => {
     name?: string;
     description?: string;
   }) => {
-    const res = await nestReq.post('/robots', robot);
+    const res = await nestReq.post('/automation/robots', robot);
     if (res.data.success) {
       refreshRobotList(robot.resourceId);
       return res.data.data.robotId as string;
@@ -260,7 +260,7 @@ const covertThemeIcon = (data: (ITriggerType | IActionType)[] | undefined, theme
 };
 
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
-  const { data: triggerTypeData, error: triggerTypeError } = useSWR(`/robots/trigger-types?lang=${getLanguage()}`, nestReq);
+  const { data: triggerTypeData, error: triggerTypeError } = useSWR(`/automation/trigger-types?lang=${getLanguage()}`, nestReq);
   const { dispatch } = useRobotContext();
   const themeName = useSelector(state => state.theme);
   useEffect(() => {
@@ -286,7 +286,7 @@ export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } =>
 };
 
 export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
-  const { data: actionTypeData, error: actionTypeError } = useSWR(`/robots/action-types?lang=${getLanguage()}`, nestReq);
+  const { data: actionTypeData, error: actionTypeError } = useSWR(`/automation/action-types?lang=${getLanguage()}`, nestReq);
   const { dispatch } = useRobotContext();
   const themeName = useSelector(state => state.theme);
   useEffect(() => {

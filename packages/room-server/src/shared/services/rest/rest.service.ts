@@ -525,6 +525,7 @@ export class RestService {
         maxKanbanViewsInSpace: -1,
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
+        maxMessageCredits: 0,
         allowEmbed: true,
         allowOrgApi: true,
       };
@@ -548,6 +549,7 @@ export class RestService {
         kanbanViewNums: 0,
         ganttViewNums: 0,
         calendarViewNums: 0,
+        usedCredit: 0,
       };
     }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceUsageView>(sprintf(this.SPACE_USAGES, { spaceId })));

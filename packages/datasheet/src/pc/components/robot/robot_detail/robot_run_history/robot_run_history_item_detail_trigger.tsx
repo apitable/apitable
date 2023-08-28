@@ -19,16 +19,16 @@
 import { Box, Typography, useTheme } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
 import { useSelector } from 'react-redux';
+import * as React from 'react';
+import styled from 'styled-components';
 import { useAllFields } from '../../hooks';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { enrichDatasheetTriggerOutputSchema } from '../magic_variable_container/helper';
+import { RecordMatchesConditionsFilter } from '../trigger/record_matches_conditions_filter';
+import { retrieveSchema } from '../node_form/core/utils';
 import { KeyValueDisplay, StyledTitle } from './common';
 import { FormDataRender } from './form_data_render';
-import { RecordMatchesConditionsFilter } from '../trigger/record_matches_conditions_filter';
 import styles from './style.module.less';
-import { retrieveSchema } from '../node_form/core/utils';
-import * as React from 'react';
-import styled from 'styled-components';
 
 interface IRobotRunHistoryTriggerDetail {
   nodeType: INodeType
@@ -42,14 +42,14 @@ const FilterWrapper = styled.div`
 export const FilterValueDisplay = ({ filter, label, datasheetId }: {filter: any, label: string, datasheetId: string}) => {
   const theme = useTheme();
   if (!filter) return null;
-  return <Box>
+  return (<Box>
     <Typography variant="body3" color={theme.color.fc1}>
       {label}
     </Typography>
     <FilterWrapper>
       <RecordMatchesConditionsFilter filter={filter} datasheetId={datasheetId} readonly />
     </FilterWrapper>
-  </Box>;
+  </Box>);
 };
 
 export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetail) => {

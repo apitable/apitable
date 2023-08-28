@@ -25,7 +25,7 @@ import { CollaCommandName } from 'commands';
 import { IResourceOpsCollect } from './command_manager';
 
 export interface ICollaCommandExecuteContext {
-  model: IReduxState;
+  state: IReduxState;
   ldcMaintainer: LinkedDataConformanceMaintainer;
   memberFieldMaintainer: MemberFieldMaintainer;
   fieldMapSnapshot: IFieldMap;

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable Ltd. <legal@apitable.com>
+ Copyright (C)  2022 APITable Ltd. <https://apitable.com>
+
+ This code file is part of APITable Enterprise Edition.
+
+ It is subject to the APITable Commercial License and conditional on having a fully paid-up license from APITable.
+
+ Access to this code file or other code files in this `enterprise` directory and its subdirectories does not constitute permission to use this code or APITable Enterprise Edition features.
+
+ Unless otherwise noted, all files Copyright © 2022 APITable Ltd.
+
+ For purchase of APITable Enterprise Edition license, please contact <sales@apitable.com>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.automation.mapper.AutomationRobotMapper">
+    <select id="getRobotsByResourceId"
+            resultType="com.apitable.automation.model.AutomationRobotDto">
+        SELECT robot_id, name, description
+        FROM ${tablePrefix}automation_robot
+        WHERE resource_id = #{resourceId}
+          AND is_deleted = 0
+    </select>
+
+    <update id="updateByRobotId">
+        UPDATE ${tablePrefix}automation_robot
+        SET is_deleted = 0,
+            resource_id = #{resourceId},
+            `name` = #{name},
+            description = #{description}
+        WHERE robot_id = #{robotId}
+    </update>
+
+    <update id="removeByRobotIds">
+        UPDATE ${tablePrefix}automation_robot
+        SET is_deleted = 1
+        WHERE robot_id IN
+        <foreach item="item" index="index" collection="robotIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

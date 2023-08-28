@@ -16,8 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import languageManifest from './config/language.manifest.json';
-// @ts-ignore
-import { strings as _strings } from './enterprise';
 
 declare const window: any;
 declare const global: any;
@@ -32,11 +30,7 @@ function loadAllLang() {
   // console.log('language package keys: ', Object.keys(strings));
   const newStrings = {};
   for (const key in strings) {
-    if (_strings) {
-      newStrings[key] = { ...strings[key], ..._strings[key] };
-    } else {
-      newStrings[key] = strings[key];
-    }
+    newStrings[key] = strings[key];
   }
   if (typeof window !== 'undefined') {
     (window as any).apitable_i18n = newStrings;

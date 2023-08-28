@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.billing.model;
 
+/**
+ * boolean type of plan feature.
+ */
 public abstract class AbstractBooleanPlanFeature implements PlanFeature<Boolean> {
 
     private final boolean value;

@@ -36,7 +36,7 @@ export const updateComment: ICollaCommandDef<IUpdateComment> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IUpdateComment) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { recordId, datasheetId, comments, emojiAction } = options;
     const actions: IJOTAction[] = [];
     const record = getRecord(state, recordId, datasheetId);

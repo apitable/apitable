@@ -35,7 +35,7 @@ export const setViewAutoSave: ICollaCommandDef<ISetViewAutoSave> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { model: state, fieldMapSnapshot } = context;
+    const { state: state, fieldMapSnapshot } = context;
     const { autoSave, viewId, viewProperty } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

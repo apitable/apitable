@@ -74,6 +74,22 @@ services:
       mysql:
         condition: service_healthy
 
+  databus-server:
+    image: ${IMAGE_REGISTRY}/${IMAGE_DATABUS_SERVER}
+    pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
+    restart: always
+    expose:
+      - "8625"
+    env_file:
+      - "${ENV_FILE:-.env}"
+    environment:
+      - TZ=${TIMEZONE}
+    networks:
+      - apitable
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   # Third Party Dockers
   gateway:
     image: ${IMAGE_REGISTRY}/${IMAGE_GATEWAY}

@@ -34,7 +34,7 @@ export const moveWidgetPanel: ICollaCommandDef<IMoveWidgetPanel> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IMoveWidgetPanel) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { targetIndex, panelId, resourceId, resourceType } = options;
 
     if (targetIndex > 2) {

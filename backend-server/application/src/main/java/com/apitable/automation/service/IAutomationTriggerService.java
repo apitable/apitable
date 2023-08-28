@@ -16,28 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.shared.support.serializer;
+package com.apitable.automation.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import com.apitable.automation.entity.AutomationTriggerEntity;
+import com.apitable.automation.model.AutomationTriggerDto;
+import java.util.List;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+public interface IAutomationTriggerService {
 
-/**
- * BigDecimal formatter serializer
- * @author Shawn Deng
- */
-public class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
-    @Override
-    public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
-        if (value != null) {
-            gen.writeString(value.setScale(2, RoundingMode.HALF_EVEN) + "");
-        }
-        else {
-            gen.writeNumber(0.00);
-        }
-    }
+    List<AutomationTriggerDto> getTriggers(String seqId, String resourceId);
+
+    void create(AutomationTriggerEntity entity);
+
+    /**
+     * Update trigger by trigger id
+     *
+     * @param trigger trigger
+     */
+    void updateByTriggerId(AutomationTriggerEntity trigger);
+
 }

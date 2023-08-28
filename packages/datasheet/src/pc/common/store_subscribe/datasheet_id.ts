@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType, StoreActions } from '@apitable/core';
+import { ResourceType, StoreActions, WasmApi } from '@apitable/core';
+import { batchActions } from 'redux-batched-actions';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getStorage, StorageName } from 'pc/utils/storage/storage';
-import { batchActions } from 'redux-batched-actions';
 import { expandRecordManager } from '../../../modules/database/expand_record_manager';
 
 let datasheetId: string | undefined;
@@ -72,11 +72,19 @@ store.subscribe(function datasheetIdChange() {
   if (widgetMapKey.length) {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }
-
+  
   setTimeout(() => {
-    resourceService.instance?.initialized && resourceService.instance?.switchResource({
-      from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
-    });
+    if(WasmApi.getBrowserDatabusApiEnabled())  {
+      WasmApi.initializeDatabusWasm().then(() => {
+        resourceService.instance?.initialized && resourceService.instance?.switchResource({
+          from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
+        });
+      });
+      return;
+    }
+      resourceService.instance?.initialized && resourceService.instance?.switchResource({
+        from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
+      });
   }, 200);
  
 });

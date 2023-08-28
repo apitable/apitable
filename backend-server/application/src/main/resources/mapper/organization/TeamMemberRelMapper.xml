@@ -39,7 +39,7 @@
           AND vodmr.member_id = #{memberId}
     </select>
 
-    <select id="countByTeamId" resultType="java.lang.Integer">
+    <select id="countByTeamId" resultType="java.lang.Long">
         SELECT COUNT(DISTINCT vom.id)
         FROM ${tablePrefix}unit_team_member_rel vodmr
         JOIN ${tablePrefix}unit_member vom ON vodmr.member_id = vom.id AND vom.is_deleted = 0

@@ -50,7 +50,7 @@ public class UnitTeamVo {
 
     @Schema(description = "Number of members", example = "3")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    private Integer memberCount;
+    private Long memberCount;
 
     @Schema(description = "Whether there are sub departments and members", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)

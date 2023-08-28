@@ -34,22 +34,27 @@ export const Sm = (props: ILayoutProps) => {
     ViewsCard,
     OthersCard,
     InfoCard,
-    LevelCard
+    LevelCard,
+    CreditCard,
+    CreditCostCard
   } = useCards(props);
 
   return <div className={styles.lg} >
     <Block isWrap vertical style={{ maxWidth: '50%' }}>
       <Block flex={43}>
-        <InfoCard minHeight={476} />
+        <InfoCard minHeight={486} />
       </Block>
       <Block flex={27}>
         <CapacityCard />
       </Block>
       <Block flex={27}>
+        <CreditCard minHeight={372} />
+      </Block>
+      <Block flex={27}>
         <RecordCard />
       </Block>
       <Block flex={27}>
-        <ViewsCard />
+        <ViewsCard minHeight={372}/>
       </Block>
       <Block flex={27}>
         <AdCard />
@@ -66,10 +71,13 @@ export const Sm = (props: ILayoutProps) => {
         <FileCard />
       </Block>
       <Block flex={27}>
+        <CreditCostCard minHeight={372} />
+      </Block>
+      <Block flex={27}>
         <ApiCard />
       </Block>
       <Block flex={27}>
-        <OthersCard />
+        <OthersCard minHeight={372}/>
       </Block>
       <Block flex={27} visible={false} />
     </Block>

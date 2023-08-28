@@ -20,11 +20,14 @@ import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
 import Image from 'next/image';
+import { FC, useState } from 'react';
+import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { useSelector } from 'react-redux';
 import { ButtonPlus } from 'pc/components/common';
 import { execNoTraceVerification } from 'pc/utils';
-import { FC, useState } from 'react';
 // import FileSvg from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.svg';
-import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
 import { IErrorInfo } from '../interface';
 import { Records } from './records';
 import styles from './style.module.less';
@@ -42,9 +45,17 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
 }) => {
   const [preview, setPreview] = useState(false);
   const colors = useThemeColors();
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+
   if (!file) return null;
 
   const _confirmImport = () => {
+    const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + previewList.length, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+
+    if (result1) {
+      return;
+    }
+
     window['nvc'] ? execNoTraceVerification(confirmImport) : confirmImport();
   };
 

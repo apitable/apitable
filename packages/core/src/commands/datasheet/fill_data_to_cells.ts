@@ -126,7 +126,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, fieldMapSnapshot } = context;
+    const { state: state, fieldMapSnapshot } = context;
     const { selectionRange, fillRange, direction } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state);
 

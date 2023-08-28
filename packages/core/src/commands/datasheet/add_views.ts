@@ -41,7 +41,7 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { data } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

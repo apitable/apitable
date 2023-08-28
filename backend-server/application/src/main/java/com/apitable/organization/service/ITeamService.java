@@ -98,7 +98,7 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param teamId team id
      * @return the member amount
      */
-    int countMemberCountByParentId(Long teamId);
+    long countMemberCountByParentId(Long teamId);
 
     /**
      * count the teams' members, only count self teams' members.
@@ -106,7 +106,7 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param teamIds team ids
      * @return the member amount
      */
-    int getMemberCount(List<Long> teamIds);
+    long getMemberCount(List<Long> teamIds);
 
     /**
      * @param teamIds team ids

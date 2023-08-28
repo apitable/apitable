@@ -64,6 +64,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * <p>
+ * role member service impl.
+ * </p>
+ */
 @Slf4j
 @Service
 public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMemberEntity>
@@ -98,7 +103,7 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         List<RoleMemberEntity> roleMembers = new ArrayList<>(distinctUnits.size());
         List<Long> teamIds = new ArrayList<>();
         List<Long> memberIds = new ArrayList<>();
-        // begin add role members.
+        // add role members begin.
         distinctUnits.forEach(unit -> {
             RoleMemberEntity roleMember = RoleMemberEntity.builder()
                 .roleId(roleId)
@@ -144,7 +149,7 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
         // page query role members' information.
         IPage<RoleMemberInfoDTO> roleMemberUnitPage =
             baseMapper.selectRoleMembersByRoleId(roleId, page);
-        // begin populate role member vo information.
+        // populate role member vo information begins.
         IPage<RoleMemberVo> roleMembersPage = roleMemberUnitPage
             .convert(roleMemberUnit -> RoleMemberVo.builder()
                 .unitRefId(roleMemberUnit.getUnitRefId())
@@ -214,7 +219,7 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
             roleMember.setUnitId(unitTeam.getUnitId());
             roleMember.setUnitName(unitTeam.getTeamName());
             // query the team's member amount.
-            int memberCount = iTeamService.getMemberCount(CollUtil.newArrayList(teamId));
+            long memberCount = iTeamService.getMemberCount(CollUtil.newArrayList(teamId));
             roleMember.setMemberCount(memberCount);
         });
     }

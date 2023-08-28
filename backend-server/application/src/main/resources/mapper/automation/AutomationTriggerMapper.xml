@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable Ltd. <legal@apitable.com>
+ Copyright (C)  2022 APITable Ltd. <https://apitable.com>
+
+ This code file is part of APITable Enterprise Edition.
+
+ It is subject to the APITable Commercial License and conditional on having a fully paid-up license from APITable.
+
+ Access to this code file or other code files in this `enterprise` directory and its subdirectories does not constitute permission to use this code or APITable Enterprise Edition features.
+
+ Unless otherwise noted, all files Copyright © 2022 APITable Ltd.
+
+ For purchase of APITable Enterprise Edition license, please contact <sales@apitable.com>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.automation.mapper.AutomationTriggerMapper">
+
+    <resultMap id="triggerDto" type="com.apitable.automation.model.AutomationTriggerDto">
+        <result column="robot_id" property="robotId" javaType="String"/>
+        <result column="trigger_id" property="triggerId" javaType="String"/>
+        <result column="trigger_type_id" property="triggerTypeId" javaType="String"/>
+        <result column="input" property="input"
+                typeHandler="com.apitable.shared.util.ibatis.JsonHandler"/>
+    </resultMap>
+
+    <select id="getTriggers" resultMap="triggerDto">
+        SELECT trg.robot_id AS robot_id,
+               trg.trigger_id,
+               trg.trigger_type_id,
+               trg.input
+        FROM ${tablePrefix}automation_robot rbt
+                     JOIN ${tablePrefix}automation_trigger trg
+                ON rbt.robot_id = trg.robot_id AND trg.is_deleted = 0
+        WHERE rbt.resource_id = #{robotResourceId}
+          AND rbt.seq_id = #{seqId}
+          AND rbt.is_active = 1
+    </select>
+
+    <update id="updateByTriggerId">
+        UPDATE ${tablePrefix}automation_trigger
+        SET `input` = #{input},
+            trigger_type_id = #{triggerTypeId}
+        WHERE trigger_id = #{triggerId}
+          AND is_deleted = 0
+    </update>
+
+</mapper>

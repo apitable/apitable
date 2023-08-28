@@ -34,7 +34,7 @@ export const insertComment: ICollaCommandDef<IInsertComment> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IInsertComment) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { datasheetId, recordId, comments } = options;
 
     const snapshot = Selectors.getSnapshot(state, datasheetId);

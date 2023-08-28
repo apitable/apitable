@@ -18,17 +18,24 @@
 
 package com.apitable.space.assembler;
 
-import java.time.ZoneOffset;
-
 import cn.hutool.core.collection.CollUtil;
-
 import com.apitable.core.util.DateTimeUtil;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.space.vo.SpaceSubscribeVo;
+import java.time.ZoneOffset;
 
+/**
+ * Subscribe Assembler.
+ */
 public class SubscribeAssembler {
 
+    /**
+     * transform vo.
+     *
+     * @param subscriptionInfo subscription info
+     * @return SpaceSubscribeVo
+     */
     public SpaceSubscribeVo toVo(SubscriptionInfo subscriptionInfo) {
         SpaceSubscribeVo result = new SpaceSubscribeVo();
         result.setVersion(subscriptionInfo.getVersion());
@@ -37,7 +44,8 @@ public class SubscribeAssembler {
         result.setOnTrial(subscriptionInfo.onTrial());
         result.setBillingMode(subscriptionInfo.getBillingMode());
         result.setRecurringInterval(subscriptionInfo.getRecurringInterval());
-        result.setExpireAt(DateTimeUtil.localDateToSecond(subscriptionInfo.getEndDate(), ZoneOffset.UTC));
+        result.setExpireAt(
+            DateTimeUtil.localDateToSecond(subscriptionInfo.getEndDate(), ZoneOffset.UTC));
         result.setDeadline(subscriptionInfo.getEndDate());
         if (CollUtil.isNotEmpty(subscriptionInfo.getAddOnPlans())) {
             result.setAddOnPlans(subscriptionInfo.getAddOnPlans());
@@ -58,6 +66,7 @@ public class SubscribeAssembler {
         result.setMaxCalendarViewsInSpace(feature.getCalendarViews().getValue());
         result.setFieldPermissionNums(feature.getFieldPermissionNums().getValue());
         result.setNodePermissionNums(feature.getNodePermissionNums().getValue());
+        result.setMaxMessageCredits(feature.getMessageCreditNums().getValue());
 
         result.setIntegrationFeishu(feature.getSocialConnect().getValue());
         result.setIntegrationDingtalk(feature.getSocialConnect().getValue());
@@ -81,7 +90,8 @@ public class SubscribeAssembler {
         result.setMaxAuditQueryDays(feature.getAuditQueryDays().getValue());
 
         result.setUnExpireGiftCapacity(subscriptionInfo.getGiftCapacity().getValue());
-        result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue() - subscriptionInfo.getGiftCapacity().getValue());
+        result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue()
+            - subscriptionInfo.getGiftCapacity().getValue());
         return result;
     }
 }

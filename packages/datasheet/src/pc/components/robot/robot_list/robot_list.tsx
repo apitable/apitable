@@ -37,7 +37,7 @@ export const RobotList = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const canManageRobot = permissions.manageable;
   const { currentRobotId, isHistory, setCurrentRobotId, updateRobotList } = useRobot();
-  const thisResourceRobotUrl = `/robots?resourceId=${datasheetId}`;
+  const thisResourceRobotUrl = `/automation/robots?resourceId=${datasheetId}`;
   const { data: robots, error } = useSWR(thisResourceRobotUrl, getResourceRobots);
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();

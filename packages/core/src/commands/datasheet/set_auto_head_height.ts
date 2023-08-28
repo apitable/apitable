@@ -34,7 +34,7 @@ export const setAutoHeadHeight: ICollaCommandDef<ISetAutoHeadHeightOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { isAuto, viewId } = options;
     const datasheetId = getActiveDatasheetId(state)!;
     const datasheet = getDatasheet(state, datasheetId);

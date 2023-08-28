@@ -274,7 +274,7 @@ public class TeamController {
         int retCount = SqlTool.retCount(teamMapper.existChildrenByParentId(teamId));
         ExceptionUtil.isTrue(retCount == 0, TEAM_HAS_SUB);
         // query the all team's member number.
-        int count = iTeamService.countMemberCountByParentId(teamId);
+        long count = iTeamService.countMemberCountByParentId(teamId);
         ExceptionUtil.isFalse(count > 0, TEAM_HAS_MEMBER);
         // delete the team
         iTeamService.deleteTeam(teamId);

@@ -23,7 +23,8 @@ export class InternalSpaceSubscriptionView {
   maxKanbanViewsInSpace!: number; // The maximum number of kanban views allowed in the space
   maxGanttViewsInSpace!: number; // The maximum quantity of the allowable Gantt view in the space
   maxCalendarViewsInSpace!: number; // The maximum number of calendar views allowed in the space
-  allowEmbed!: boolean; // Is it possible to call enterprise-level APIs
+  maxMessageCredits!: number; // The maximum number of chatBot credits allowed in the space
+  allowEmbed!: boolean; // Is it possible to call enterprise-level api?
   allowOrgApi!: boolean;
 }
 
@@ -33,6 +34,7 @@ export class InternalSpaceUsageView {
   kanbanViewNums!: number; // The number of all kanban views in the space
   ganttViewNums!: number; // The number of all gantt views in the space
   calendarViewNums!: number; // The number of all calender views in the space
+  usedCredit!: number; // The number of credits in the space
 }
 
 export class InternalCreateDatasheetVo {

@@ -46,7 +46,7 @@ function generateLinkedFieldActions(
 ): { actions: IJOTAction[], linkedActions?: ILinkedActions[] } {
   const actions: IJOTAction[] = [];
   const linkedActions: ILinkedActions[] = [];
-  const { model: state } = context;
+  const { state: state } = context;
   if (oldField.type === FieldType.Link && newField.type === FieldType.Link) {
     // If the associated table id has not changed, no related operations are required.
     if (oldField.property.foreignDatasheetId === newField.property.foreignDatasheetId) {
@@ -84,7 +84,7 @@ export const setFieldAttr: ICollaCommandDef<ISetFieldAttrOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const activeDatasheetId = Selectors.getActiveDatasheetId(state)!;
     const { fieldId, datasheetId = activeDatasheetId, deleteBrotherField, internalFix } = options;
     const newField = { ...options.data };

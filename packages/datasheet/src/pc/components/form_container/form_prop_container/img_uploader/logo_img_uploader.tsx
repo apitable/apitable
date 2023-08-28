@@ -45,17 +45,17 @@ const customTips = {
 
 export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderProps>> = props => {
   const colors = useThemeColors();
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
   const {
     nodeId,
     mode,
     logoUrl,
     updateProps,
-    size = UploadContainerSize.normal,
+    size = isMobile ? UploadContainerSize.MobileNormal : UploadContainerSize.Normal,
     shape = UploadContainerShape.Square
   } = props;
   const [isModalShow, setModalShow] = useState(false);
-  const { screenIsAtMost } = useResponsive();
-  const isMobile = screenIsAtMost(ScreenSize.md);
   const logoSize = isMobile ? 80 : 120;
   const logoAddIconSize = isMobile ? 16 : 32;
   const logoWrapClassName = classnames(styles.logoImgWrapper, isMobile && styles.logoWrapMobile, logoUrl && styles.notEmpty);

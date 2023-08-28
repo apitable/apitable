@@ -32,7 +32,7 @@ export const deleteDashboardWidget: ICollaCommandDef<IDeleteDashboardWidget> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IDeleteDashboardWidget) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { dashboardId, widgetId } = options;
     const snapshot = Selectors.getDashboardSnapshot(state);
 

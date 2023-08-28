@@ -55,7 +55,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const activeDatasheetId = Selectors.getActiveDatasheetId(state)!;
     const { data, copyCell, internalFix, fieldId, datasheetId = activeDatasheetId } = options;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

@@ -31,7 +31,7 @@ export const setWidgetDepDstId: ICollaCommandDef<ISetWidgetDepDstId> = {
   undoable: false,
 
   execute(context, options) {
-    const state = context.model;
+    const state = context.state;
     const { dstId, resourceId, sourceId } = options;
     const widgetPack = Selectors.getResourcePack(state, resourceId, ResourceType.Widget);
 

@@ -7,6 +7,11 @@
   overflow-y: auto;
   overflow-x: hidden;
 
+  .formContentWrapper {
+    overflow: auto;
+    height: 100%;
+  }
+
   .formContent {
     display: flex;
     align-items: center;
@@ -200,5 +205,15 @@
     width: 134px;
     height: 24px;
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mobilePreFill {
+    :global {
+      .ant-drawer-body {
+        padding: 0;
+      }
+    }
   }
 }

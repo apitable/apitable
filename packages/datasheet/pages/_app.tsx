@@ -81,6 +81,7 @@ import { getInitialProps } from '../utils/get_initial_props';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import * as immer from 'immer';
+import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -107,12 +108,16 @@ export interface IUserInfoError {
 }
 
 const initWorker = async() => {
-  await WasmApi.initializeDatabusWasm();
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
   const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
+  if (getBrowserDatabusApiEnabled()){
+    await WasmApi.initializeDatabusWasm();
+  } else {
+    console.log('web assembly is not supported');
+  }
 };
 
 immer.setAutoFreeze(false);

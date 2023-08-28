@@ -766,10 +766,10 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     private void sendAssignGroupEmail(String spaceId, List<Long> teamIds,
-        List<Long> memberIds, Map<Long, List<Long>> toAddMap) {
-        List<MemberBaseInfoDTO> memberBaseInfoDTOS =
+                                      List<Long> memberIds, Map<Long, List<Long>> toAddMap) {
+        List<MemberBaseInfoDTO> memberBaseInfoDTOs =
             memberMapper.selectBaseInfoDTOByIds(memberIds);
-        List<String> emails = memberBaseInfoDTOS.stream().map(MemberBaseInfoDTO::getEmail)
+        List<String> emails = memberBaseInfoDTOs.stream().map(MemberBaseInfoDTO::getEmail)
             .collect(Collectors.toList());
         if (emails.isEmpty()) {
             return;
@@ -777,7 +777,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         List<UserLangDTO> emailsWithLang =
             iUserService.getLangByEmails(defaultLang, emails);
-        Map<String, MemberBaseInfoDTO> emailTomemberMap = memberBaseInfoDTOS.stream()
+        Map<String, MemberBaseInfoDTO> emailTomemberMap = memberBaseInfoDTOs.stream()
             .filter(m -> !m.getEmail().isEmpty())
             .collect(Collectors.toMap(MemberBaseInfoDTO::getEmail, Function.identity()));
 
@@ -987,11 +987,10 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             TaskManager.me().execute(
                 () -> this.sendInviteNotification(userId, listener.getMemberIds(), spaceId, false));
         } catch (IOException e) {
-            e.printStackTrace();
             log.error("file cannot be read", e);
             throw new BusinessException(OrganizationException.EXCEL_CAN_READ_ERROR);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("fail to parse file", e);
             throw new BusinessException(
                 "Failed to parse the file. Download the template and import it");
         }
@@ -1260,12 +1259,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
-    public int getTotalMemberCountBySpaceId(String spaceId) {
+    public long getTotalMemberCountBySpaceId(String spaceId) {
         return SqlTool.retCount(baseMapper.selectCountBySpaceId(spaceId));
     }
 
     @Override
-    public int getTotalActiveMemberCountBySpaceId(String spaceId) {
+    public long getTotalActiveMemberCountBySpaceId(String spaceId) {
         return SqlTool.retCount(baseMapper.selectActiveMemberCountBySpaceId(spaceId));
     }
 
