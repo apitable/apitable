@@ -537,19 +537,6 @@ export const withMagicVariable = (editor: any, triggerId: string) => {
     }
     onChange(...params);
   };
-
-  // @ts-ignore
-  editor.normalizeNode = entry => {
-    const [node, path] = entry;
-
-    if (node.type ==='magicVariable') {
-      const modifiedNodes = modifyTriggerId(triggerId, node);
-      // @ts-ignore
-      Transforms.setNodes(editor, { data: modifiedNodes.data }, { at: path });
-      return ;
-    }
-    normalizeNode(entry);
-  };
   
   // // @ts-ignore
   // editor.insertData = data => {
