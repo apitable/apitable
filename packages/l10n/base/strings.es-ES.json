@@ -205,8 +205,6 @@
   "ai_training_message_title": "Ai Chatbot está entrenando.",
   "ai_typing": "Typing...",
   "ai_update_setting_success": "La actualización fue exitosa.",
-  "ai_typing": "Typing...",
-  "ai_send_cancel": "Send request canceled",
   "alarm_no_member_field_tips": "Por favor, cree un nuevo campo de miembros primero",
   "alarm_save_fail": "Guardar falló",
   "alarm_specifical_field_member": "Notificar a miembros específicos por campo",
