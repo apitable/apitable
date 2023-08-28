@@ -23,7 +23,3 @@ services:
   databus-server:
     ports:
       - "8625:8625"
-    environment:
-      - BACKEND_BASE_URL=http://host.docker.internal:8081/api/v1/
-    extra_hosts:
-      - host.docker.internal:host-gateway

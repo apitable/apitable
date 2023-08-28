@@ -269,6 +269,7 @@ Which service do you want to start run?
   1) backend-server
   2) room-server
   3) web-server
+  4) databus-server
 endef
 export RUN_LOCAL_TXT
 
@@ -299,7 +300,8 @@ run-local: ## run services with local programming language envinroment
 	@read -p "ENTER THE NUMBER: " SERVICE ;\
  	if [ "$$SERVICE" = "1" ]; then make _run-local-backend-server; fi ;\
  	if [ "$$SERVICE" = "2" ]; then make _run-local-room-server; fi ;\
- 	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi
+ 	if [ "$$SERVICE" = "3" ]; then make _run-local-web-server; fi ;\
+ 	if [ "$$SERVICE" = "4" ]; then make _run-docker-databus-server; fi
 
 .PHONY: run-perf
 run-perf: ## run room-server with local programming language envinroment for performance profiling
@@ -335,6 +337,9 @@ _run-local-web-server:
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	rm -rf packages/datasheet/web_build;\
 	yarn sd
+
+_run-docker-databus-server:
+	$(_DATAENV) up databus-server
 
 define DEVENV_TXT
 Which devenv do you want to start run?
@@ -433,7 +438,7 @@ major: # bump version number patch
 dataenv: _check_env
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata databus-server
+DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes
