@@ -55,6 +55,10 @@ public class InternalSpaceSubscriptionVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxCalendarViewsInSpace;
 
+    @Schema(description = "the maximum credit number for ai query(unit: int)", example = "1000")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxMessageCredits;
+
     @Schema(description = "allow use embed", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEmbed;

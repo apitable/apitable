@@ -47,7 +47,7 @@ export class DatasheetEntity extends BaseEntity {
     comment: 'datasheet name',
     length: 255,
   })
-  dstName?: string;
+  dstName!: string;
 
   @Column({
     name: 'space_id',

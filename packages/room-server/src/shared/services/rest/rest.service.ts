@@ -525,6 +525,7 @@ export class RestService {
         maxKanbanViewsInSpace: -1,
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
+        maxMessageCredits: 0,
         allowEmbed: true,
         allowOrgApi: true,
       };
@@ -548,6 +549,7 @@ export class RestService {
         kanbanViewNums: 0,
         ganttViewNums: 0,
         calendarViewNums: 0,
+        usedCredit: 0,
       };
     }
     const response = await lastValueFrom(this.httpService.get<InternalSpaceUsageView>(sprintf(this.SPACE_USAGES, { spaceId })));
@@ -658,7 +660,6 @@ export class RestService {
     await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
 
-
   public async getSignatures(keys: string[]): Promise<Array<{ resourceKey: string; url: string }>> {
     const queryParams = new URLSearchParams();
     keys.forEach(key => queryParams.append('resourceKeys', key));
@@ -666,7 +667,7 @@ export class RestService {
     const url = `${this.GET_ASSET_SIGNATURES}?${queryParams.toString()}`;
 
     const response = await lastValueFrom(
-        this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
+      this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
     );
     return response.data;
   }

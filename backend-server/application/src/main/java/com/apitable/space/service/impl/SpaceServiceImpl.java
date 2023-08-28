@@ -744,6 +744,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         vo.setKanbanViewNums(viewVO.getKanbanViews());
         vo.setGanttViewNums(viewVO.getGanttViews());
         vo.setCalendarViewNums(viewVO.getCalendarViews());
+        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
+        vo.setUsedCredit(usedCredit);
         return vo;
     }
 
