@@ -9,9 +9,27 @@
 //  },
   "rules": {
     "import/no-duplicates": ["warn", {"considerQueryString": true}],
-    "import/order": ["warn", {
-      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
-    }],
+    "import/order": [
+      "warn",
+      {
+        "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+        "pathGroups": [
+          { "pattern": "@apitable/**", "group": "external", "position": "after" },
+          { "pattern": "pc/**", "group": "internal","position": "after"},
+          { "pattern": "static/**", "group": "internal","position": "after"},
+          { "pattern": "enterprise", "group": "sibling","position": "after"},
+          { "pattern": "*.module.less", "group": "index","position": "after"}
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    // "import/order": ["warn", {
+    //   "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
+    // }],
     "comma-spacing": ["warn", {"before": false, "after": true}],
     "react/display-name": 0,
     "react/no-find-dom-node": 0,

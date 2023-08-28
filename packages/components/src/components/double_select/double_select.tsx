@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select } from 'components/select';
 import { StyledDropdownContainer } from 'components/double_select/styled';
 import { IDoubleSelectProps } from 'components/double_select/interface';
@@ -26,6 +26,10 @@ import { WrapperTooltip } from 'components/tooltip';
 export const DoubleSelect: React.FC<React.PropsWithChildren<IDoubleSelectProps>> = (props) => {
   const { onSelected, disabled, options, value, triggerStyle, triggerCls } = props;
   const [selectedValue, setSelectedValue] = useState(value);
+
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
 
   const renderValue = () => {
     const option = options.find(option => option.value === selectedValue);

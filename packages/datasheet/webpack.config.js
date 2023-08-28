@@ -134,7 +134,6 @@ module.exports = (config, options) => {
     // if (process.env.IS_ENTERPRISE === 'true') {
     //   config.resolve.symlinks = false
     // }
-
     config.entry = compatibleIE11(config)
 
     // if (!options.isServer) {
