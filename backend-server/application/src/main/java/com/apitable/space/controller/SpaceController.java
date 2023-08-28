@@ -29,6 +29,7 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
@@ -63,6 +64,7 @@ import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceUpdateOperate;
 import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.model.CreditUsages;
 import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceDeleteRo;
 import com.apitable.space.ro.SpaceMemberSettingRo;
@@ -82,7 +84,6 @@ import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -104,7 +105,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Space - Space Api")
-@ApiResource(path = "/space")
+@ApiResource(path = "/")
 @Slf4j
 public class SpaceController {
 
@@ -138,7 +139,7 @@ public class SpaceController {
     /**
      * Get space capacity info.
      */
-    @GetResource(path = "/capacity", requiredLogin = false)
+    @GetResource(path = "/space/capacity", requiredLogin = false)
     @Operation(summary = "Get space capacity info")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
@@ -152,7 +153,7 @@ public class SpaceController {
     /**
      * Get user space resource.
      */
-    @GetResource(path = "/resource", requiredPermission = false)
+    @GetResource(path = "/space/resource", requiredPermission = false)
     @Operation(summary = "Get user space resource")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
@@ -167,7 +168,7 @@ public class SpaceController {
     /**
      * Get space feature.
      */
-    @GetResource(path = "/features", requiredPermission = false)
+    @GetResource(path = "/space/features", requiredPermission = false)
     @Operation(summary = "Get space feature")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
@@ -180,7 +181,7 @@ public class SpaceController {
     /**
      * Get space list.
      */
-    @GetResource(path = "/list", requiredPermission = false)
+    @GetResource(path = "/space/list", requiredPermission = false)
     @Operation(summary = "Get space list")
     @Parameter(name = "onlyManageable", in = ParameterIn.QUERY,
         description = "Whether to query only the managed space list. By default, not include",
@@ -197,7 +198,7 @@ public class SpaceController {
     /**
      * Create space.
      */
-    @PostResource(path = "/create", requiredPermission = false)
+    @PostResource(path = "/space/create", requiredPermission = false)
     @Operation(summary = "Create Space")
     public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo,
                                                     HttpServletRequest request) {
@@ -225,7 +226,7 @@ public class SpaceController {
     /**
      * Update space.
      */
-    @PostResource(path = "/update", tags = "UPDATE_SPACE")
+    @PostResource(path = "/space/update", tags = "UPDATE_SPACE")
     @Operation(summary = "Update space", description = "at least one item is name and logo")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
@@ -242,8 +243,8 @@ public class SpaceController {
      * Delete space.
      */
     @Notification(templateId = NotificationTemplateId.SPACE_DELETED)
-    @PostResource(path = "/delete/{spaceId}",
-        method = { RequestMethod.DELETE}, tags = "DELETE_SPACE")
+    @PostResource(path = "/space/delete/{spaceId}",
+        method = {RequestMethod.DELETE}, tags = "DELETE_SPACE")
     @Operation(summary = "Delete space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -287,7 +288,7 @@ public class SpaceController {
     /**
      * Delete space immediately.
      */
-    @PostResource(path = "/del", method = {RequestMethod.DELETE}, tags = "DELETE_SPACE")
+    @PostResource(path = "/space/del", method = {RequestMethod.DELETE}, tags = "DELETE_SPACE")
     @Operation(summary = "Delete space immediately")
     public ResponseData<Void> del() {
         String spaceId = LoginContext.me().getSpaceId();
@@ -315,7 +316,7 @@ public class SpaceController {
      * Undo delete space.
      */
     @Notification(templateId = NotificationTemplateId.SPACE_RECOVER)
-    @PostResource(path = "/cancel/{spaceId}", tags = "DELETE_SPACE")
+    @PostResource(path = "/space/cancel/{spaceId}", tags = "DELETE_SPACE")
     @Operation(summary = "Undo delete space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -345,7 +346,7 @@ public class SpaceController {
      * Quit space.
      */
     @Notification(templateId = NotificationTemplateId.QUIT_SPACE)
-    @PostResource(path = "/quit/{spaceId}", requiredPermission = false)
+    @PostResource(path = "/space/quit/{spaceId}", requiredPermission = false)
     @Operation(summary = "Quit space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -368,7 +369,7 @@ public class SpaceController {
     /**
      * Get space info.
      */
-    @GetResource(path = "/info/{spaceId}", requiredPermission = false)
+    @GetResource(path = "/space/info/{spaceId}", requiredPermission = false)
     @Operation(summary = "Get space info")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -381,7 +382,7 @@ public class SpaceController {
      * Remove hot point in space.
      */
     @Deprecated
-    @PostResource(path = "/remove/{spaceId}", requiredPermission = false)
+    @PostResource(path = "/space/remove/{spaceId}", requiredPermission = false)
     @Operation(summary = "Remove hot point in space",
         description = "Scenario: Remove the red dot in the inactive space")
     @Parameter(name = "spaceId", description = "space id", required = true,
@@ -398,7 +399,7 @@ public class SpaceController {
     /**
      * Switch space.
      */
-    @PostResource(path = "/{spaceId}/switch", requiredPermission = false)
+    @PostResource(path = "/space/{spaceId}/switch", requiredPermission = false)
     @Operation(summary = "switch space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
@@ -412,7 +413,7 @@ public class SpaceController {
      * Update workbench setting.
      */
     @Deprecated
-    @PostResource(path = "/updateWorkbenchSetting", tags = "MANAGE_WORKBENCH_SETTING")
+    @PostResource(path = "/space/updateWorkbenchSetting", tags = "MANAGE_WORKBENCH_SETTING")
     @Operation(summary = "Update workbench setting")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
@@ -430,7 +431,7 @@ public class SpaceController {
      * Update member setting.
      */
     @Deprecated
-    @PostResource(path = "/updateMemberSetting", tags = "MANAGE_MEMBER_SETTING")
+    @PostResource(path = "/space/updateMemberSetting", tags = "MANAGE_MEMBER_SETTING")
     @Operation(summary = "Update member setting")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
@@ -450,7 +451,7 @@ public class SpaceController {
     /**
      * Update security setting.
      */
-    @PostResource(path = "/updateSecuritySetting",
+    @PostResource(path = "/space/updateSecuritySetting",
         tags = {"MANAGE_SHARE_SETTING", "MANAGE_FILE_SETTING", "MANAGE_ADVANCE_SETTING"})
     @Operation(summary = "Update security setting")
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
@@ -472,11 +473,27 @@ public class SpaceController {
     /**
      * Gets subscription information for the space.
      */
-    @GetResource(path = "/subscribe/{spaceId}", requiredPermission = false)
+    @GetResource(path = "/space/subscribe/{spaceId}", requiredPermission = false)
     @Operation(summary = "Gets subscription information for the space")
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceSubscribeVo> subscribe(@PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iSpaceService.getSpaceSubscriptionInfo(spaceId));
+    }
+
+    /**
+     * Gets message credit chart data for the space.
+     */
+    @GetResource(path = "/space/{spaceId}/credit/chart", requiredPermission = false)
+    @Operation(summary = "Gets message credit chart data for the space")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
+    public ResponseData<CreditUsages> getCreditUsages(@PathVariable("spaceId") String spaceId,
+                                                      @RequestParam(name = "timeDimension", required = false, defaultValue = "WEEKDAY")
+                                                      String timeDimension) {
+        ChartTimeDimension timeDimensionOfChart = ChartTimeDimension.of(timeDimension);
+        CreditUsages creditUsages =
+            iSpaceService.getCreditUsagesChart(spaceId, timeDimensionOfChart);
+        return ResponseData.success(creditUsages);
     }
 }

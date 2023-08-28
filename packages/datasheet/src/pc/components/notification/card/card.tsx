@@ -16,33 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Method } from 'pc/components/route_manager/const';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { IQuery } from 'pc/components/route_manager/interface';
-import { FC, useRef, useState } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
-import { Modal } from 'pc/components/common';
+import { FC, useRef, useState } from 'react';
 import { Button, ButtonGroup } from '@apitable/components';
 import QueueAnim from 'rc-queue-anim';
 import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
-import { useNotificationRequest, useResponsive } from 'pc/hooks';
-import { useRequest } from 'pc/hooks';
 
 import classNames from 'classnames';
-import { AnimationItem } from 'lottie-web/index';
-import { canJumpWhenClickCard, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody, commentContentFormat } from './utils';
-import { timeFormatter } from 'pc/utils';
-
-import { ScreenSize } from 'pc/components/common/component_display';
-import { NoticeTypesConstant } from '../utils';
-import { navigationToConfigUrl } from '../publish';
-import { expandRecord } from 'pc/components/expand_record';
 import classnames from 'classnames';
-import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
-import { HandleMsg } from './handle_msg';
-import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
+import { AnimationItem } from 'lottie-web/index';
+
 import { useSelector } from 'react-redux';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
+import { expandRecord } from 'pc/components/expand_record';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { timeFormatter } from 'pc/utils';
+import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
+import { Modal } from 'pc/components/common';
+import { IQuery } from 'pc/components/route_manager/interface';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { Method } from 'pc/components/route_manager/const';
+import { navigationToConfigUrl } from '../publish';
+import { NoticeTypesConstant } from '../utils';
+import { HandleMsg } from './handle_msg';
+import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
+import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
+import styles from './style.module.less';
+
 interface ICard {
   data: INoticeDetail;
   isProcessed?: boolean;
@@ -87,6 +89,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
       window.clearTimeout(timerRef.current);
     }, 300);
   };
+
   function joinPath(pathParams: (string | undefined)[]) {
     const params: string[] = [];
     pathParams.forEach(param => {
@@ -94,6 +97,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
     });
     return params.join('/');
   }
+
   const cardClick = (data: INoticeDetail) => {
     // Priority Notes: toastUrl > canJump > configUrl > notifySpace > curSpace
     if (toastUrl) {
@@ -154,8 +158,8 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
       }
       default: {
         /**
-         * Currently space/member/record types will contain space information, 
-         * here just to be compatible with dirty data, such as the use of GM commands lead to field value errors, 
+         * Currently space/member/record types will contain space information,
+         * here just to be compatible with dirty data, such as the use of GM commands lead to field value errors,
          * the result did not find the corresponding space, to prevent the problem of large-scale notification center crash online
          */
         text = notifyBody.space?.spaceName || '';
@@ -170,6 +174,12 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
     stopPropagation(e);
   };
   const agreeJoinSpace = (e: React.MouseEvent) => {
+    const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+
+    if (result1) {
+      return;
+    }
+
     processJoin(true);
     stopPropagation(e);
   };

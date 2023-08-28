@@ -34,7 +34,7 @@ export const resetRecords: ICollaCommandDef<IResetRecordsOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, fieldMapSnapshot } = context;
+    const { state: state, fieldMapSnapshot } = context;
     const { data: _data } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

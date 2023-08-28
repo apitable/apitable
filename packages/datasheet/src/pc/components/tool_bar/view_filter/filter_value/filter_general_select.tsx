@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
+import { Dropdown, useThemeColors } from '@apitable/components';
 import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
+import * as React from 'react';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { OptionList } from 'pc/components/list';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
-import Trigger from 'rc-trigger';
-import * as React from 'react';
-import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CellOptions } from '../../../multi_grid/cell/cell_options/cell_options';
 import styles from './style.module.less';
 
@@ -109,30 +108,25 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
   return (
     <div className={styles.select} ref={refSelect}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <Trigger
-          action={['click']}
-          popup={renderPopup()}
-          destroyPopupOnHide
-          popupAlign={{ points: ['tl', 'bl'], offset: [0, 8], overflow: { adjustX: true, adjustY: true }}}
-          popupVisible={visible}
-          onPopupVisibleChange={visible => {
-            if (isViewLock) return;
-            setVisible(visible);
-          }}
-          stretch='width,height'
-          popupStyle={{ height: 'max-content' }}
-        >
-          <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
-            {!cellValue && placeholder ? (
-              <div className={styles.placeholder}>{placeholder}</div>
-            ) : (
-              <DisplayComponent cellValue={cellValue as any} field={field as any} />
-            )}
-            <div className={styles.iconArrow}>
-              <ChevronDownOutlined color={colors.black[500]} />
+        <Dropdown options={{ disabled: isViewLock, autoWidth: true }} trigger={
+          (
+            <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
+              {!cellValue && placeholder ? (
+                <div className={styles.placeholder}>{placeholder}</div>
+              ) : (
+                <DisplayComponent cellValue={cellValue as any} field={field as any} />
+              )}
+              <div className={styles.iconArrow}>
+                <ChevronDownOutlined color={colors.black[500]} />
+              </div>
             </div>
-          </div>
-        </Trigger>
+          )
+        }>
+          {
+            () => renderPopup()
+          }
+        </Dropdown>
+        
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

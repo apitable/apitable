@@ -29,6 +29,7 @@ import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.SpaceResourceGroupCode;
+import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
 import java.util.Collections;
@@ -57,7 +58,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         SpaceHolder.set(mockUserSpace.getSpaceId());
         // check no exceptions
         assertThatNoException().isThrownBy(
-            () -> iSpaceService.checkMemberIsAdmin(mockUserSpace.getSpaceId(), mockUserSpace.getMemberId()));
+            () -> iSpaceService.checkMemberIsAdmin(mockUserSpace.getSpaceId(),
+                mockUserSpace.getMemberId()));
     }
 
     @Test
@@ -120,5 +122,52 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         UserEntity user = iUserService.createUserByEmail("boy@apitable.com");
         iSpaceService.checkUserInSpace(user.getId(), userSpace.getSpaceId(),
             status -> assertThat(status).isNotNull().isFalse());
+    }
+
+    @Test
+    void testGetSpaceSubscriptionInfo() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        SpaceSubscribeVo spaceSubscribeVo =
+            iSpaceService.getSpaceSubscriptionInfo(userSpace.getSpaceId());
+        assertThat(spaceSubscribeVo).isNotNull();
+        assertThat(spaceSubscribeVo.getProduct()).isEqualTo("CE");
+        assertThat(spaceSubscribeVo.getPlan()).isEqualTo("ce_unlimited");
+        assertThat(spaceSubscribeVo.getOnTrial()).isFalse();
+        assertThat(spaceSubscribeVo.getExpireAt()).isNull();
+        assertThat(spaceSubscribeVo.getDeadline()).isNull();
+        assertThat(spaceSubscribeVo.getMaxSeats()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxCapacitySizeInBytes()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxSheetNums()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxRowsPerSheet()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxRowsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxAdminNums()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxMirrorNums()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxApiCall()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxGalleryViewsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxKanbanViewsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxFormViewsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxGanttViewsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxCalendarViewsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getFieldPermissionNums()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getNodePermissionNums()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxMessageCredits()).isEqualTo(0L);
+        assertThat(spaceSubscribeVo.getMaxRemainTimeMachineDays()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxRemainRecordActivityDays()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxAuditQueryDays()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getRainbowLabel()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getWatermark()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getIntegrationFeishu()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getIntegrationDingtalk()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getIntegrationWeCom()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getIntegrationOfficePreview()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingAddressListIsolation()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingApplyJoinSpace()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingExport()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingCatalogManagement()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingDownloadFile()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingMobile()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingCopyCellData()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingInviteMember()).isEqualTo(false);
+        assertThat(spaceSubscribeVo.getSecuritySettingShare()).isEqualTo(false);
     }
 }

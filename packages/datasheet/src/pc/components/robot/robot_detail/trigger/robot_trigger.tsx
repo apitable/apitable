@@ -176,7 +176,7 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
 
 // trigger component = select prototype dropdown box + input form form.
 export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
-  const { data: trigger, error, mutate } = useSWR(`/robots/${robotId}/trigger`, getRobotTrigger);
+  const { data: trigger, error, mutate } = useSWR(`/automation/robots/${robotId}/trigger`, getRobotTrigger);
   useEffect(() => {
     if (trigger) {
       setTrigger(trigger);

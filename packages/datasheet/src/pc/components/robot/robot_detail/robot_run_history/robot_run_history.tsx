@@ -34,7 +34,7 @@ const PAGE_SIZE = 20;
 export const RobotRunHistory = () => {
   const { currentRobotId } = useRobot();
   const { data, error, size, setSize } = useSWRInfinite(
-    index => `/robots/run-history?size=${PAGE_SIZE}&page=${index + 1}&robotId=${currentRobotId}`,
+    index => `/automation/run-history?size=${PAGE_SIZE}&page=${index + 1}&robotId=${currentRobotId}`,
     getRobotRunHistoryList
   );
   const themeName = useSelector(state => state.theme);

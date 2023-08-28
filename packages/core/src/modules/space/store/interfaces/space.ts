@@ -102,7 +102,7 @@ export type ISocialAppType = 1 | 2;
 
 export enum SocialAppType {
   SelfApp = 1,
-  ThirdPartyAtt = 2
+  ThirdPartyAtt = 2,
 }
 
 export interface ISpaceBasicInfo {
@@ -137,12 +137,12 @@ export interface ISpaceBasicInfo {
     appType: ISocialAppType;
     contactSyncing: boolean;
     authMode: number;
-
-  },
+  };
   isEnableChatbot: boolean;
   lastUpdateTime?: number;
   isCreatorNameModified?: boolean;
   isOwnerNameModified?: boolean;
+  usedCredit: number;
 }
 
 export interface IApp {

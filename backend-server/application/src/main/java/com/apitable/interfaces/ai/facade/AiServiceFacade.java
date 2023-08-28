@@ -2,6 +2,9 @@ package com.apitable.interfaces.ai.facade;
 
 import com.apitable.interfaces.ai.model.AiCreateParam;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
+import com.apitable.interfaces.ai.model.ChartTimeDimension;
+import com.apitable.interfaces.ai.model.CreditTransactionChartData;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,4 +35,22 @@ public interface AiServiceFacade {
      * @param aiId ai unique id
      */
     void deleteAi(List<String> aiId);
+
+    /**
+     * get total credit transaction count.
+     *
+     * @param spaceId space id
+     * @return total credit transaction count
+     */
+    BigDecimal getUsedCreditCount(String spaceId);
+
+    /**
+     * load credit transaction chart data.
+     *
+     * @param spaceId            space id
+     * @param chartTimeDimension chart time dimension
+     * @return CreditConsumeChartData
+     */
+    List<CreditTransactionChartData> loadCreditTransactionChartData(
+        String spaceId, ChartTimeDimension chartTimeDimension);
 }

@@ -35,7 +35,7 @@ export const setRowHeight: ICollaCommandDef<ISetRowHeightOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { level, viewId } = options;
     const datasheetId = getActiveDatasheetId(state)!;
     const datasheet = getDatasheet(state, datasheetId);

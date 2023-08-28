@@ -32,7 +32,7 @@ export const changeDashboardLayout: ICollaCommandDef<IChangeDashboardLayout> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { dashboardId, layout } = options;
     const installedWidgetIds = Selectors.getInstalledWidgetInDashboard(state);
     if (!installedWidgetIds) { return null; }

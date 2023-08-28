@@ -62,6 +62,7 @@ import com.apitable.space.vo.SpaceRoleDetailVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -246,13 +247,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     public boolean checkHasSubUnitByTeamId(String spaceId, Long teamId) {
         log.info("Check whether the team has members or teams");
         List<Long> subTeamIds = baseMapper.selectTeamIdsByParentId(spaceId, teamId);
-        int subMemberCount =
+        long subMemberCount =
             SqlTool.retCount(teamMemberRelMapper.countByTeamId(Collections.singletonList(teamId)));
         return CollUtil.isNotEmpty(subTeamIds) || subMemberCount > 0;
     }
 
     @Override
-    public int countMemberCountByParentId(Long teamId) {
+    public long countMemberCountByParentId(Long teamId) {
         log.info("count the team's members, includes the sub teams' members.");
         List<Long> allSubTeamIds = this.getAllTeamIdsInTeamTree(teamId);
         return CollUtil.isNotEmpty(allSubTeamIds)
@@ -260,7 +261,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
-    public int getMemberCount(List<Long> teamIds) {
+    public long getMemberCount(List<Long> teamIds) {
         // obtain the number of all members in a department
         return SqlTool.retCount(teamMemberRelMapper.countByTeamId(teamIds));
     }
@@ -463,13 +464,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         teamInfo.setTeamName(team.getTeamName());
         if (team.getParentId() == 0L) {
             teamInfo.setTeamId(0L);
-            Integer memberCount = memberMapper.selectCountBySpaceId(team.getSpaceId());
+            Long memberCount = SqlTool.retCount(memberMapper.selectCountBySpaceId(team.getSpaceId()));
             teamInfo.setMemberCount(memberCount);
             return teamInfo;
         }
         teamInfo.setTeamId(teamId);
         List<Long> teamIds = this.getAllTeamIdsInTeamTree(teamId);
-        Integer memberCount = teamMemberRelMapper.countByTeamId(teamIds);
+        Long memberCount = SqlHelper.retCount(teamMemberRelMapper.countByTeamId(teamIds));
         teamInfo.setMemberCount(memberCount);
         return teamInfo;
     }

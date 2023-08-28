@@ -34,7 +34,7 @@ export const manualSaveView: ICollaCommandDef<IManualSaveView> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { model: state, fieldMapSnapshot } = context;
+    const { state: state, fieldMapSnapshot } = context;
     const { viewProperty, viewId } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);

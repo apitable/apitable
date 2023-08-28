@@ -17,7 +17,7 @@
  */
 
 import { Field, FieldType, IField, IRecord, IReduxState, IViewColumn, Selectors, Strings, t } from '@apitable/core';
-import { SubtractCircleFilled } from '@apitable/icons';
+import { SubtractCircleColorFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { DisplayFile } from 'pc/components/display_file';
@@ -159,7 +159,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = p
 
   return (
     <div className={styles.recordCardWrapper}>
-      {onDelete && <SubtractCircleFilled className={styles.deleteLinkRecord} onClick={() => onDelete(record.id)} />}
+      {onDelete && <SubtractCircleColorFilled className={styles.deleteLinkRecord} onClick={() => onDelete(record.id)} />}
       <div className={classNames(styles.recordCard, props.className)} onClick={() => onClick && onClick(record.id)}>
         {record ? (
           <>

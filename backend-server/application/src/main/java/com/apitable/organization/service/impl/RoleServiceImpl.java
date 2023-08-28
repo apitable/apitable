@@ -172,7 +172,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
                     .roleId(roleInfo.getId())
                     .roleName(roleInfo.getRoleName())
                     .position(roleInfo.getPosition())
-                    .memberCount(0)
+                    .memberCount(0L)
                     .build();
             roles.add(role);
         });
@@ -331,7 +331,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             } else {
                 memberCount = memberIds.size();
             }
-            role.setMemberCount(memberCount);
+            role.setMemberCount((long) memberCount);
         });
     }
 

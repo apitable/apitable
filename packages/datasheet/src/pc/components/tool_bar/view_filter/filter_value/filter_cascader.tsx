@@ -46,6 +46,7 @@ export const FilterCascader = (props: IFilterCascader) => {
     <div className={styles.cascaderEditorContainer} ref={containerRef}>
       <Cascader
         loading={loading}
+        disabled={disabled}
         onChange={(val) => {
           if(disabled) {
             return;

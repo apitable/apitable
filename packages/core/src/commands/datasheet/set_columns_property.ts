@@ -38,7 +38,7 @@ export const setColumnsProperty: ICollaCommandDef<ISetColumnsPropertyOptions> = 
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { fieldId, viewId, data } = options;
     const { width, statType } = data;
     const datasheetId = getActiveDatasheetId(state)!;

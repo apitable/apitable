@@ -19,8 +19,9 @@
 import { Skeleton } from '@apitable/components';
 import styles from './style.module.less';
 import { FormContainer } from '../form_container';
+import { Dispatch, SetStateAction } from 'react';
 
-export const ViewContainer = (props: { loading?: boolean; }) => {
+export const ViewContainer = (props: { loading?: boolean; preFill: boolean, setPreFill: Dispatch<SetStateAction<boolean>>; }) => {
   if (props.loading) {
     return (
       <div className={styles.skeletonWrapper}>
@@ -31,6 +32,6 @@ export const ViewContainer = (props: { loading?: boolean; }) => {
   }
 
   return (
-    <FormContainer />
+    <FormContainer preFill={props.preFill} setPreFill={props.setPreFill} />
   );
 };

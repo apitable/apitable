@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, FC, useContext, useEffect } from 'react';
+import { memo, FC, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { NoPermission } from '../no_permission';
@@ -32,6 +32,7 @@ import { WeixinShareWrapper } from 'enterprise';
 const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props => {
   const { shareId, templateId, embedId } = useSelector(state => state.pageParams);
   const formErrCode = useSelector(state => Selectors.getFormErrorCode(state));
+  const [preFill, setPreFill] = useState(false);
   const loading = useSelector(state => {
     const form = Selectors.getForm(state);
     const formLoading = Selectors.getFormLoading(state);
@@ -78,9 +79,9 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
         !formErrCode ? (
           <>
             {
-              !shareId && showTabBar && <TabBar loading={loading} />
+              !shareId && showTabBar && <TabBar loading={loading} setPreFill={setPreFill} preFill={preFill} />
             }
-            <ViewContainer loading={loading || (shareId && (!shareInfo || userLoading)) || props.loading} />
+            <ViewContainer loading={loading || (shareId && (!shareInfo || userLoading)) || props.loading} preFill={preFill} setPreFill={setPreFill} />
           </>
         ) : (isNoPermission ? <NoPermission desc={noPermissionDesc} /> : <ServerError />)
       }

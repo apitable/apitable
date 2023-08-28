@@ -35,7 +35,7 @@ export const addWidgetPanel: ICollaCommandDef<IAddWidgetPanel> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IAddWidgetPanel) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { resourceId, resourceType } = options;
     const snapshot = resourceType === ResourceType.Datasheet ? getSnapshot(state, resourceId)! : getMirrorSnapshot(state, resourceId)!;
     const widgetPanels = (resourceType === ResourceType.Datasheet ? (snapshot as ISnapshot).meta.widgetPanels :

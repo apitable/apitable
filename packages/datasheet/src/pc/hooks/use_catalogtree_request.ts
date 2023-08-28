@@ -33,13 +33,13 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { shallowEqual, useSelector } from 'react-redux';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
-import { shallowEqual, useSelector } from 'react-redux';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
@@ -91,6 +91,14 @@ export const useCatalogTreeRequest = () => {
       // Next, check that the number of forms or mirrors meets the requirements according to the node type
       const result1 = triggerUsageAlert?.('maxMirrorNums',
         { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      if (result1) {
+        return true;
+      }
+    }
+    if (nodeType === ConfigConstant.NodeType.AI) {
+      // Next, check that the number of forms or mirrors meets the requirements according to the node type
+      const result1 = triggerUsageAlert?.('maxSeats',
+        { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
       if (result1) {
         return true;
       }

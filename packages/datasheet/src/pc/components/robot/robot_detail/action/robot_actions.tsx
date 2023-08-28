@@ -45,7 +45,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
     return getFilterActionTypes(actionTypes);
   }, [actionTypes]);
 
-  const { data, error } = useSWR(`/robots/${robotId}/actions`, req);
+  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
   if (!data || error) {
     return null;
   }

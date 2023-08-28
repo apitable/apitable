@@ -527,7 +527,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param spaceId space id
      * @return member amount
      */
-    int getTotalMemberCountBySpaceId(String spaceId);
+    long getTotalMemberCountBySpaceId(String spaceId);
 
     /**
      * get space's total active member amount.
@@ -535,7 +535,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param spaceId space id
      * @return member amount
      */
-    int getTotalActiveMemberCountBySpaceId(String spaceId);
+    long getTotalActiveMemberCountBySpaceId(String spaceId);
 
     /**
      * pre delete user info.

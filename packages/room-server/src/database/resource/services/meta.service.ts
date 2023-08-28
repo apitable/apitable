@@ -74,7 +74,7 @@ export class MetaService {
   }
 
   public async getRevisionByDstId(dstId: string): Promise<number | undefined> {
-    const rawData = await this.datasheetService.selectRevisionByDstId(dstId);
+    const rawData = await this.datasheetService.getRevisionByDstId(dstId);
     return rawData && Number(rawData.revision);
   }
 }

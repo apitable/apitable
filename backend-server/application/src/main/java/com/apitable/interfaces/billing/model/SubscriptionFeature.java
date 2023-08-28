@@ -28,6 +28,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeature
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViews;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageCreditNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowNums;
@@ -125,4 +126,8 @@ public interface SubscriptionFeature {
     AuditQueryDays getAuditQueryDays();
 
     AllowOrgApi getAllowOrgApi();
+
+    default MessageCreditNums getMessageCreditNums() {
+        return new MessageCreditNums(0L);
+    }
 }

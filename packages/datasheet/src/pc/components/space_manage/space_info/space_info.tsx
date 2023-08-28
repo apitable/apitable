@@ -129,6 +129,7 @@ export const SpaceInfo = () => {
     }
     return Lg;
   }, [clientWidth]);
+
   const handleUpgrade = useCallback(() => {}, []);
   const { show: showContextMenu } = useContextMenu({ id: DELETE_SPACE_CONTEXT_MENU_ID });
 

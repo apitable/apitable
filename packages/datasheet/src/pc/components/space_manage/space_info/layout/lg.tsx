@@ -35,6 +35,8 @@ export const Lg = (props: ILayoutProps) => {
     OthersCard,
     InfoCard,
     LevelCard,
+    CreditCard,
+    CreditCostCard,
   } = useCards(props);
 
   return <div className={styles.lg} style={{ height: '100%' }}>
@@ -42,41 +44,57 @@ export const Lg = (props: ILayoutProps) => {
       <Block flex={43}>
         <InfoCard minHeight={494} />
       </Block>
-      <Block flex={27}>
-        <AdCard minHeight={372} />
-      </Block>
-    </Block>
-    <Block isWrap vertical>
-      <Block flex={16}>
-        <LevelCard minHeight={176} />
-      </Block>
-      <Block flex={27}>
-        <CapacityCard />
+      <Block flex={57}>
+        <CreditCard minHeight={372} />
       </Block>
       <Block flex={27}>
         <ApiCard minHeight={372} />
+        {/*<AdCard minHeight={372} />*/}
       </Block>
     </Block>
+    {/*<Block isWrap vertical>*/}
+    {/*  <Block flex={16}>*/}
+    {/*    <LevelCard minHeight={176} />*/}
+    {/*  </Block>*/}
+    {/*  <Block flex={27}>*/}
+    {/*    <CapacityCard />*/}
+    {/*  </Block>*/}
+    {/*  <Block flex={27}>*/}
+    {/*    <ApiCard minHeight={372} />*/}
+    {/*  </Block>*/}
+    {/*</Block>*/}
     <Block isWrap vertical flex={2}>
-      <Block flex={16}>
-        <MemberCard minHeight={176} />
-      </Block>
-      <Block isWrap flex={54}>
-        <Block isWrap vertical>
-          <Block>
-            <FileCard />
-          </Block>
-          <Block>
-            <ViewsCard />
-          </Block>
+      <Block flex={16} isWrap>
+        <Block flex={1}>
+          <LevelCard minHeight={176} />
         </Block>
-        <Block isWrap vertical>
-          <Block>
-            <RecordCard />
-          </Block>
-          <Block >
-            <OthersCard minHeight={372} />
-          </Block>
+        <Block flex={2}>
+          <MemberCard minHeight={176} />
+        </Block>
+      </Block>
+      <Block flex={16} isWrap>
+        <Block flex={16}>
+          <CapacityCard />
+        </Block>
+        <Block flex={16}>
+          <FileCard />
+        </Block>
+        <Block flex={16}>
+          <RecordCard />
+        </Block>
+      </Block>
+      <Block flex={16}>
+        <CreditCostCard minHeight={372} />
+      </Block>
+      <Block flex={16} isWrap>
+        <Block flex={16}>
+          <ViewsCard />
+        </Block>
+        <Block flex={16}>
+          <OthersCard minHeight={372} />
+        </Block>
+        <Block flex={16}>
+          <AdCard minHeight={372} />
         </Block>
       </Block>
     </Block>

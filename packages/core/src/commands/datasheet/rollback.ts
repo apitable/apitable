@@ -126,7 +126,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { datasheetId, data } = options;
     const { operations } = data;
     const preDatasheet = getDatasheet(state, datasheetId);

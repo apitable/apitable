@@ -205,7 +205,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
           <NumberEditor
             style={{}}
             ref={numberRef}
-            editable
+            editable={!isViewLock}
             editing
             width={160}
             datasheetId={datasheetId}
@@ -224,7 +224,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   return (
     <div className={classNames(styles.filterDate, 'filterDate')} onClick={stopPropagation} ref={ref}>
       {operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty && (
-        <FilterDateDuration changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex}/>
+        <FilterDateDuration disabled={isViewLock} changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex}/>
       )}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>{dom}</ComponentDisplay>
 

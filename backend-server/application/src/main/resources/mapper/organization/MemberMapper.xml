@@ -939,13 +939,13 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectCountBySpaceId" resultType="java.lang.Integer">
+    <select id="selectCountBySpaceId" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId} AND is_deleted = 0
     </select>
 
-    <select id="selectActiveMemberCountBySpaceId" resultType="java.lang.Integer">
+    <select id="selectActiveMemberCountBySpaceId" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId}

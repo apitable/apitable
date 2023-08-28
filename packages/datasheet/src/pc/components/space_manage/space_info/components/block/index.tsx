@@ -30,11 +30,21 @@ interface IBlockProps {
   visible?: boolean;
 }
 
+/*
+  <Block isWrap>
+    <Block>
+      <div>test</div>
+    </Block>
+  </Block>
+
+  如果是像上面的写法，一个 block 包裹一个 block，则外层的 block 需要设置 isWrap，内层的 block 不需要设置 isWrap
+*/
+
 export const Block = (props: IBlockProps & React.PropsWithChildren<any>) => {
 
   const { children, style, className, flex = 1, vertical, isWrap, visible = true } = props;
 
-  const blockStyle = useMemo(() => { 
+  const blockStyle = useMemo(() => {
     const innerStyle = style || {};
     if (flex) {
       innerStyle.flex = flex;

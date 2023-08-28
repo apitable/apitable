@@ -115,6 +115,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           <FilterOptions
             field={field}
             condition={condition}
+            disabled={isViewLock || disabled}
             onChange={submitFilterValue}
           />
         );
@@ -122,6 +123,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
         if (field.type === FieldType.Cascader) {
           return (
             <FilterCascader
+              disabled={isViewLock || disabled}
               field={field}
               linkedFieldId={linkedFieldId}
               onChange={(value) => {

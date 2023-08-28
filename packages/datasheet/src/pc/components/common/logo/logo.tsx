@@ -66,9 +66,8 @@ export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
   const renderLogo = () => {
     return <img
       alt='logo'
-      height={logoSize.logoSize}
       src={integrateCdnHost(getEnvVariables().LOGO!)}
-      style={{ display: 'block' }}
+      style={{ display: 'block', height: `${logoSize.logoSize}px` }}
       width={logoSize.logoSize}
     />;
   };
@@ -83,7 +82,7 @@ export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
         <img
           alt='logoText'
           className={styles.logoText}
-          height={logoSize.logoTextHeight}
+          style={{ height: `${logoSize.logoTextHeight}px` }}
           src={isLightTheme ? lightSrc : darkSrc}
         />
       );

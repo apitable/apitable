@@ -33,7 +33,7 @@ export const deleteWidgetPanel: ICollaCommandDef<IDeleteWidgetPanel> = {
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options: IDeleteWidgetPanel) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { deletePanelId, resourceType, resourceId } = options;
 
     const widgetPanels = getResourceWidgetPanels(state, resourceId, resourceType);

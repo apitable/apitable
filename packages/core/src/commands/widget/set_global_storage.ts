@@ -33,7 +33,7 @@ export const setGlobalStorage: ICollaCommandDef<ISetGlobalStorage> = {
   undoable: false,
 
   execute(context, options) {
-    const state = context.model;
+    const state = context.state;
     const { resourceId, key, value } = options;
     const widgetPack = Selectors.getResourcePack(state, resourceId, ResourceType.Widget);
 

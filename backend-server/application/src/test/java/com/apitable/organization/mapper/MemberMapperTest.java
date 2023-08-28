@@ -442,15 +442,15 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/unit-member-data.sql")
     void testSelectCountBySpaceId() {
-        Integer count = memberMapper.selectCountBySpaceId("spc41");
-        assertThat(count).isEqualTo(1);
+        Long count = memberMapper.selectCountBySpaceId("spc41");
+        assertThat(count).isEqualTo(1L);
     }
 
     @Test
     @Sql("/sql/unit-member-data.sql")
     void testSelectActiveMemberCountBySpaceId() {
-        Integer count = memberMapper.selectActiveMemberCountBySpaceId("spc41");
-        assertThat(count).isEqualTo(1);
+        Long count = memberMapper.selectActiveMemberCountBySpaceId("spc41");
+        assertThat(count).isEqualTo(1L);
     }
 
     @Test

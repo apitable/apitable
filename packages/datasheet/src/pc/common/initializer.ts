@@ -49,6 +49,7 @@ import { APITable } from '../../modules/shared/apitable_lib';
 import { Store } from 'redux';
 // @ts-ignore
 import { isSocialUrlIgnored } from 'enterprise';
+import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 
 declare let window: any;
 if (!process.env.SSR && window !== undefined) {
@@ -303,7 +304,11 @@ export function redirectIfUserApplyLogout() {
 export function initializer(comlink: any) {
   initAxios(comlink.store);
 
-  WasmApi.initializeDatabusWasm();
+  if (getBrowserDatabusApiEnabled()){
+    WasmApi.initializeDatabusWasm().then(r => {});
+  } else {
+    console.log('web assembly is not supported');
+  }
 
   window.__global_handle_response = handleResponse;
 

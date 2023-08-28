@@ -35,7 +35,7 @@ export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHei
   undoable: false,
 
   execute(context: ICollaCommandExecuteContext, options) {
-    const { model: state } = context;
+    const { state: state } = context;
     const { widgetId, resourceId, resourceType, panelId, widgetHeight } = options;
     const widgetPanels = getResourceWidgetPanels(state, resourceId, resourceType);
 

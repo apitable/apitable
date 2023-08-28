@@ -40,7 +40,7 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state } = context;
+    const { state: state } = context;
     const { data, datasheetId: _datasheetId } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, _datasheetId || datasheetId);

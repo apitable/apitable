@@ -384,7 +384,7 @@ export class DatasheetService {
     return await this.datasheetRepository.selectRevisionByDstIds(dstIds);
   }
 
-  async selectRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
+  async getRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
     return await this.datasheetRepository.selectRevisionByDstId(dstId);
   }
 }

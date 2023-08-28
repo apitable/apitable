@@ -1,0 +1,35 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable max-len */
+import React from 'react';
+import { makeIcon, IIconProps } from '../utils/icon';
+
+export const DislikeOutlined: React.FC<IIconProps> = makeIcon({
+  Path: ({ colors }) => <>
+    <path d="M8.42084 14.4823C9.01514 14.5866 9.48248 14.2146 9.6759 13.8117L11.7355 9.52075H13.2636C13.954 9.52075 14.5136 8.96111 14.5136 8.27075V2.27075C14.5136 1.5804 13.954 1.02075 13.2636 1.02075L4.29538 1.02075C3.32517 1.01209 2.4959 1.71826 2.35015 2.67788L1.52228 8.07708L1.5221 8.07821C1.43625 8.64388 1.60315 9.21865 1.97854 9.65037C2.35289 10.0809 2.89701 10.3258 3.46736 10.3208H6.31361V11.9708C6.31361 13.2285 7.2235 14.2723 8.42084 14.4823ZM10.5136 2.52075H4.28313C4.05877 2.51821 3.86678 2.68134 3.83313 2.90322L3.00512 8.3033C2.98552 8.43363 3.02394 8.56661 3.11048 8.66613C3.19708 8.76573 3.32311 8.8223 3.45509 8.8208L3.46361 8.8207L6.56361 8.82075C7.25397 8.82075 7.81361 9.3804 7.81361 10.0708V11.9708C7.81361 12.3977 8.06894 12.766 8.43528 12.9299L10.5136 8.60007V2.52075ZM12.0136 2.52075V8.02075H13.0136V2.52075H12.0136Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
+
+  </>,
+  name: 'dislike_outlined',
+  defaultColors: ['#D9D9D9'],
+  colorful: false,
+  allPathData: ['M8.42084 14.4823C9.01514 14.5866 9.48248 14.2146 9.6759 13.8117L11.7355 9.52075H13.2636C13.954 9.52075 14.5136 8.96111 14.5136 8.27075V2.27075C14.5136 1.5804 13.954 1.02075 13.2636 1.02075L4.29538 1.02075C3.32517 1.01209 2.4959 1.71826 2.35015 2.67788L1.52228 8.07708L1.5221 8.07821C1.43625 8.64388 1.60315 9.21865 1.97854 9.65037C2.35289 10.0809 2.89701 10.3258 3.46736 10.3208H6.31361V11.9708C6.31361 13.2285 7.2235 14.2723 8.42084 14.4823ZM10.5136 2.52075H4.28313C4.05877 2.51821 3.86678 2.68134 3.83313 2.90322L3.00512 8.3033C2.98552 8.43363 3.02394 8.56661 3.11048 8.66613C3.19708 8.76573 3.32311 8.8223 3.45509 8.8208L3.46361 8.8207L6.56361 8.82075C7.25397 8.82075 7.81361 9.3804 7.81361 10.0708V11.9708C7.81361 12.3977 8.06894 12.766 8.43528 12.9299L10.5136 8.60007V2.52075ZM12.0136 2.52075V8.02075H13.0136V2.52075H12.0136Z'],
+  width: '16',
+  height: '16',
+  viewBox: '0 0 16 16',
+});
