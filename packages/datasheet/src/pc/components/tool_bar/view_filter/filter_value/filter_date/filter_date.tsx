@@ -201,7 +201,6 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
     }
     if (condition.value[0] === FilterDuration.SomeDayBefore || condition.value[0] === FilterDuration.SomeDayAfter) {
       return (
-        <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
           <NumberEditor
             style={{}}
             ref={numberRef}
@@ -213,7 +212,6 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
             field={field}
             commandFn={commandNumberFn}
           />
-        </WrapperTooltip>
       );
     }
     return null;
