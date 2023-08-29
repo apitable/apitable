@@ -20,7 +20,7 @@
   "account_nickname": "帐号昵称：",
   "account_password_incorrect": "帐号或密码错误",
   "account_wallet": "账户钱包",
-  "action_execute_error": "执行失败\n错误信息：\n${value}\n\n了解详细信息可以参考：https://help.vika.cn/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "执行失败\n错误信息：\n${value}\n\n了解详细信息可以参考：https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "激活空间",
   "active_record_hidden": "记录已被隐藏",
   "active_space": "已激活空间",
