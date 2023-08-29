@@ -13,7 +13,8 @@ import styles from './style.module.less';
 import { ShareContent } from './share_content';
 
 export const PreFillPanel = (props: IPreFillPanel )=> {
-  const { formData, fieldMap, setPreFill } = props;
+  const { formData, fieldMap, setPreFill, columns } = props;
+  const visibleColumns = columns.filter(column => !column.hidden);
   const colors = useThemeColors();
   const dispatch = useDispatch();
   const [suffix, setSuffix] = useState('');
@@ -23,9 +24,9 @@ export const PreFillPanel = (props: IPreFillPanel )=> {
   };
 
   useEffect(() => {
-    const urlStrings = formData2String(formData, fieldMap);
+    const urlStrings = formData2String(formData, fieldMap, visibleColumns);
     setSuffix(urlStrings);
-  }, [fieldMap, formData]);
+  }, [fieldMap, formData, visibleColumns]);
 
   useEffect(() => {
     if (window.innerWidth < 1500) {

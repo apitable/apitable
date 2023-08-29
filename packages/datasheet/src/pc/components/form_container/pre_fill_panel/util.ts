@@ -1,4 +1,4 @@
-import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
+import { Field, FieldType, IFieldMap, IFieldPermissionMap, IViewColumn, Selectors, string2Segment } from '@apitable/core';
 import dayjs from 'dayjs';
 import { compact, find } from 'lodash';
 import qs from 'qs';
@@ -13,12 +13,12 @@ const FORM_FIELD_TYPE = {
   filter: [FieldType.Attachment, FieldType.Cascader]
 };
 
-export const formData2String = (formData: IFormData, fieldMap: IFieldMap) => {
+export const formData2String = (formData: IFormData, fieldMap: IFieldMap, columns: IViewColumn[]) => {
   const newValue: IFormQuery = {};
   for(const key in formData) {
     let value = formData[key];
     const field = fieldMap[key];
-    if (!field) { continue; }
+    if (!field || !columns.some(column => column.fieldId === field.id)) { continue; }
     if (value && FORM_FIELD_TYPE.select.includes(field.type)) {
       const options = field.property.options;
       if (typeof value === 'string') {
