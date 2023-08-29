@@ -42,7 +42,7 @@ const envVars = () => {
   return {};
 };
 
-const CONST_SKIP_FETCH_INTERCEPTOR = ['print', '__destroy_into_raw', 'constructor','free'];
+const CONST_SKIP_FETCH_INTERCEPTOR = ['print', '__destroy_into_raw', 'constructor', 'free' , 'json0_apply'];
 
 // Get all properties of DataBusBridge that return a Promise
 const promiseProperties = Object.getOwnPropertyNames(DataBusBridge?.prototype ?? {})
