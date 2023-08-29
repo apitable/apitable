@@ -11,8 +11,11 @@ import { formData2String } from './util';
 import { IPreFillPanel } from './interface';
 import styles from './style.module.less';
 import { ShareContent } from './share_content';
+import { Tabs } from 'antd';
 
-export const PreFillPanel = (props: IPreFillPanel )=> {
+const { TabPane } = Tabs;
+
+export const PreFillPanel = (props: IPreFillPanel) => {
   const { formData, fieldMap, setPreFill, columns } = props;
   const visibleColumns = columns.filter(column => !column.hidden);
   const colors = useThemeColors();
@@ -37,23 +40,31 @@ export const PreFillPanel = (props: IPreFillPanel )=> {
   return (
     <div className={styles.preFillPanel}>
       <header>
-        <Typography variant='h6'>{t(Strings.pre_fill_title)}</Typography>
+        <Tabs activeKey="pre_fill">
+          <TabPane key="pre_fill" tab={<Typography variant="h6">{t(Strings.pre_fill_title)}</Typography>} />
+          <TabPane disabled key="copilot" tab={
+            <div className={styles.copilotTab}>
+              <Typography variant="h6">{t(Strings.ai_assistant)}</Typography>
+              <div className={styles.comingSoon}>{t(Strings.coming_soon)}</div>
+            </div>
+          } />
+        </Tabs>
         <IconButton
-          shape='square'
+          shape="square"
           onClick={() => setPreFill(false)}
           icon={CloseOutlined}
         />
       </header>
       <div className={styles.content}>
-        <div className={styles.guideWrap} onClick={() => {}}>
+        <a className={styles.guideWrap} href={t(Strings.pre_fill_help)} target="_blank" rel="noreferrer">
           <span className={styles.left}>
-            <BookOutlined size={16} color={colors.primaryColor} />
-            <Typography variant='body3' color={colors.secondLevelText}>
+            <BookOutlined size={16} color={colors.primaryColor}/>
+            <Typography variant="body3" color={colors.secondLevelText}>
               {t(Strings.pre_fill_helper_title)}
             </Typography>
           </span>
-          <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
-        </div>
+          <ChevronRightOutlined size={16} color={colors.thirdLevelText}/>
+        </a>
         <Typography variant="body4" className={styles.tips}>
           {t(Strings.pre_fill_content)}
         </Typography>
@@ -70,7 +81,7 @@ export const PreFillPanel = (props: IPreFillPanel )=> {
           </header>
           <div className={styles.code}>{window.location.origin + window.location.pathname}{suffix}</div>
         </div>
-        <ShareContent suffix={suffix} />
+        <ShareContent suffix={suffix}/>
       </div>
     </div>
   );

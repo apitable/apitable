@@ -3,6 +3,39 @@
 .preFillPanel {
   height: 100%;
   background-color: var(--bgCommonDefault);
+  .copilotTab {
+    display: flex;
+    align-items: center;
+    .comingSoon {
+      background-color: var(--bgTagDefault);
+      color: var(--textCommonTertiary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--borderCommonDefault);
+      font-size: 12px;
+      margin-left: 4px;
+    }
+  }
+  :global {
+    .ant-tabs {
+      height: 100%;
+    }
+    .ant-tabs-nav::before {
+      border: 0 !important;
+    }
+    .ant-tabs-tab {
+      padding: 8px 0;
+    }
+    .ant-tabs-tab-disabled h6 {
+      color: var(--textCommonTertiary);
+    }
+    .ant-tabs-tab-active h6 {
+      color: var(--primaryColor);
+    }
+    .ant-tabs-ink-bar {
+      display: none;
+    }
+  }
   & > header {
     display: flex;
     justify-content: space-between;

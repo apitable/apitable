@@ -1,5 +1,6 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
 
 .tabBarWrapper {
   height: 50px;
@@ -152,6 +153,18 @@
     font-size: 13px;
     & > span {
       font-size: 13px;
+    }
+  }
+}
+
+@media screen and (max-width: @w-lg)  {
+  .left {
+    padding-left: 16px;
+    .container {
+      flex-direction: column;
+      .sourceInfo {
+        margin-left: 0;
+      }
     }
   }
 }

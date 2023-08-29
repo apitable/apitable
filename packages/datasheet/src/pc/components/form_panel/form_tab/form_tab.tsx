@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useSize } from 'ahooks';
+import classNames from 'classnames';
+import { Dispatch, memo, SetStateAction, useRef } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Button, LinkButton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { ListOutlined, EditOutlined } from '@apitable/icons';
-import { useSize } from 'ahooks';
-import classNames from 'classnames';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -30,15 +32,12 @@ import { Router } from 'pc/components/route_manager/router';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
-import { Dispatch, memo, SetStateAction, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
 const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAction<boolean>>; preFill: boolean }) => {
-  const { sideBarVisible } = useSideBarVisible();
   const colors = useThemeColors();
   const tabRef = useRef<HTMLDivElement>(null);
   const { screenIsAtMost } = useResponsive();
@@ -117,7 +116,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
         </div>
       )}
       {!isMobile && (
-        <div className={styles.left} style={{ paddingLeft: !sideBarVisible ? 60 : '' }}>
+        <div className={classNames(styles.left)}>
           <div className={styles.container}>
             { showNodeInfoBar && <div className={styles.nodeInfo}>
               <NodeInfoBar

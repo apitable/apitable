@@ -169,6 +169,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
   const { datasheetId, viewId } = sourceInfo;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const isPad = screenIsAtMost(ScreenSize.lg);
   const { shareInfo } = useContext(ShareContext);
   const fillDisabled = shareId && !fillAnonymous && !isLogin;
   const hasSubmitPermission = isLogin || fillAnonymous;
@@ -777,14 +778,22 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
               </div>
             ) : <div/>
           }
-          panelRight={!isMobile && preFill ? <PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> : <div/>}
+          panelRight={!isPad && preFill ?
+            <PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> : <div/>}
           primary='second'
-          size={!isMobile && preFill ? 320 : 0}
+          size={!isPad && preFill ? 320 : 0}
           allowResize={false}
           pane1Style={{ overflow: 'hidden' }}
         />
-        {isMobile && preFill && (
-          <Popup width="100%" height="90%" open={preFill} onClose={() => setPreFill(false)} closable={false} className={styles.mobilePreFill}>
+        {isPad && preFill && (
+          <Popup
+            width="100%"
+            height={isPad ? '60%' : '90%'}
+            open={preFill}
+            onClose={() => setPreFill(false)}
+            closable={false}
+            className={styles.mobilePreFill}
+          >
             {<PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> }
           </Popup>
         )}
