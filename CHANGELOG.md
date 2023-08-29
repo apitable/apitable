@@ -1,5 +1,16 @@
 # APITable CHANGELOG
 
+## [v0.99.1-beta.1](https://github.com/apitable/apitable/releases/tag/v0.99.1-beta.1) (2023-08-28)
+
+
+### Bug fixes
+
+* fix: delete link field crash ([#1253](https://github.com/apitable/apitable/pull/1253)) @wangkailang
+
+### What's more
+
+* chore: changelog for v0.99.1-beta ([#1243](https://github.com/apitable/apitable/pull/1243)) @BinsonZoom
+* sync: hosted cloud ([#1248](https://github.com/apitable/apitable/pull/1248)) @robot518
 ## [v0.99.1-beta](https://github.com/apitable/apitable/releases/tag/v0.99.1-beta) (2023-08-22)
 
 
