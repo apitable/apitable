@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useDebounceFn } from 'ahooks';
+import { Input } from 'antd';
+import classnames from 'classnames';
+import isNumber from 'lodash/isNumber';
 import {
   memo,
   ChangeEvent,
@@ -28,25 +32,21 @@ import {
 } from 'react';
 
 import * as React from 'react';
-import { IBaseEditorProps, IEditor } from '../interface';
+import { useThemeColors } from '@apitable/components';
 import {
   FieldType, t, Strings, number2str, str2NumericStr, numberToShow,
   str2Currency, str2number, times, divide, digitLength, numberThresholdValue,
 } from '@apitable/core';
-import style from './style.module.less';
-import classnames from 'classnames';
-import { printableKey, isNumeralKey, stopPropagation } from 'pc/utils';
-import { Input } from 'antd';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import isNumber from 'lodash/isNumber';
-import { useThemeColors } from '@apitable/components';
-import { useDebounceFn } from 'ahooks';
+import { printableKey, isNumeralKey, stopPropagation } from 'pc/utils';
+import { IBaseEditorProps, IEditor } from '../interface';
+import style from './style.module.less';
 
 export interface INumberEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
-  editable: boolean;
   editing: boolean;
+
   commandFn?: (data: string) => void;
   isFromFormat?: boolean;
   isFromFieldEditor?: boolean;
@@ -55,8 +55,7 @@ export interface INumberEditorProps extends IBaseEditorProps {
 
 const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorProps> = (props, ref) => {
   const {
-    isFromFieldEditor, field, editing, commandFn, onSave, onBlur,
-    editable, isFromFormat, disabled, style: propStyle, height, onChange
+    isFromFieldEditor, field, editing, commandFn, onSave, onBlur, isFromFormat, disabled = false, style: propStyle, height, onChange
   } = props;
   const colors = useThemeColors();
   const [value, setValue] = useState('');
@@ -215,7 +214,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     disabled,
     value,
     onKeyDown,
-    readOnly: !editable,
+    readOnly: disabled,
     onChange: updateValue,
   };
 
@@ -239,7 +238,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
           style={{ width: '100%' }}
         >
           <input
-            className={classnames(style.numberInput, 'numberEditorInput')}
+            className={classnames(style.numberInput, 'numberEditorInput', { [style.numberEditorDisabled]: disabled })}
             style={{ textAlign: isFromFieldEditor ? 'left' : 'right' }}
             ref={editorRef}
             onBlur={onBlur}

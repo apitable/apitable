@@ -191,6 +191,7 @@ export const FormateNumber: React.FC<React.PropsWithChildren<IFormateNumberProps
     width: 160,
     height: 35,
     editable: true,
+    disabled: false,
     editing: true,
     datasheetId,
     field: currentField,

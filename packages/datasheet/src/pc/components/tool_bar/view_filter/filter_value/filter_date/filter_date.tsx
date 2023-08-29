@@ -16,13 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { WrapperTooltip } from '@apitable/components';
-import { FieldType, FilterDuration, FOperator, getLanguage, IDateTimeField, ITimestamp, Selectors, Strings, t } from '@apitable/core';
 import { useClickOutside } from '@huse/click-outside';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { toString } from 'lodash';
 import debounce from 'lodash/debounce';
+import * as React from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { WrapperTooltip } from '@apitable/components';
+import { FieldType, FilterDuration, FOperator, getLanguage, IDateTimeField, ITimestamp, Selectors, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_time_editor/date_time_editor';
 import { IEditor } from 'pc/components/editors/interface';
@@ -31,9 +34,6 @@ import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { IFilterDateProps } from '../../interface';
 import styles from '../style.module.less';
 import { DatePicker } from './date_picker';
@@ -43,7 +43,7 @@ import { LocalFormat } from './local_format';
 const { RangePicker } = DatePicker;
 
 export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = props => {
-  const { changeFilter, condition , disabled = false, field, conditionIndex, onChange } = props;
+  const { changeFilter, condition, disabled = false, field, conditionIndex, onChange } = props;
   const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
 
   const { screenIsAtMost } = useResponsive();
@@ -147,7 +147,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
     }
     if (condition.value[0] === FilterDuration.ExactDate) {
       return (
-        <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+        <WrapperTooltip wrapper={isViewLockOriginal} tip={t(Strings.view_lock_setting_desc)}>
           <div>
             <DateTimeEditor
               style={{ position: 'unset' }}
@@ -173,7 +173,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
       return (
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+            <WrapperTooltip wrapper={isViewLockOriginal} tip={t(Strings.view_lock_setting_desc)}>
               <div ref={divRef}>
                 {
                   showRangeCalendar && <RangePicker
@@ -201,17 +201,17 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
     }
     if (condition.value[0] === FilterDuration.SomeDayBefore || condition.value[0] === FilterDuration.SomeDayAfter) {
       return (
-          <NumberEditor
-            style={{}}
-            ref={numberRef}
-            editable={!isViewLock}
-            editing
-            width={160}
-            datasheetId={datasheetId}
-            height={editorHeight}
-            field={field}
-            commandFn={commandNumberFn}
-          />
+        <NumberEditor
+          style={{}}
+          ref={numberRef}
+          disabled={isViewLock}
+          editing
+          width={160}
+          datasheetId={datasheetId}
+          height={editorHeight}
+          field={field}
+          commandFn={commandNumberFn}
+        />
       );
     }
     return null;

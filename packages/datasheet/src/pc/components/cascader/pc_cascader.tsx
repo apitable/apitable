@@ -1,12 +1,11 @@
 import { Cascader as AntCascader } from 'antd';
-import styles from './styles.module.less';
-import { ChevronRightOutlined, AddOutlined, CloseOutlined } from '@apitable/icons';
-import { colorVars, IconButton } from '@apitable/components';
-import React, { useState } from 'react';
-import { ICascader } from './interface';
 import classNames from 'classnames';
+import React, { useState } from 'react';
+import { colorVars, IconButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-
+import { ChevronRightOutlined, AddOutlined, CloseOutlined } from '@apitable/icons';
+import { ICascader } from './interface';
+import styles from './styles.module.less';
 export const PcCascader = (props: ICascader) => {
   const { showSearch = true, disabled, loading, options, onChange, editing, cascaderRef, ...rest } = props;
 
@@ -18,7 +17,7 @@ export const PcCascader = (props: ICascader) => {
       showSearch={showSearch}
       disabled={disabled}
       bordered={false}
-      className={styles.cascader}
+      className={classNames(styles.cascader, { [styles.cascaderDisbaled]: disabled })}
       dropdownRender={menus => options.length > 0 ? menus : (
         <div className={styles.emptyPlaceholder}>
           {loading ? t(Strings.loading) : t(Strings.cascader_no_data_field_error)}
