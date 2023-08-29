@@ -5549,7 +5549,7 @@
   "ai_setting_change_data_source_tooltip": "Switch data source",
   "ai_credit_cost_chart_title": "Credit cost",
   "ai_message_credit_title": "Message credit",
-  "action_execute_error": "Action execute error\nError message:\n${value}\n\nIf you are unable to solve the above problems or need further assistance, please send the above information to the relevant space manager or official customer service for assistance.",
+  "action_execute_error": "Step execute error\nError message:\n${value}\n\nFor details, please refer to https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "cui_next_text": "Next",
   "cui_select_datasheet_description": "Click here to select datasheets",
   "cui_wizard_welcome_message_1": "Hello there! 🌟 Your AI chatbot is ready to roll. But first, let's set the stage with some initial configurations.",
