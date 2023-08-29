@@ -16,13 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './api.exception';
-export * from './common.exception';
-export * from './datasheet.exception';
-export * from './ot.exception';
-export * from './permission.exception';
-export * from './server.exception';
-export * from './resource.exception';
-export * from './base.exception';
-export * from './limit.exception';
-export * from './exception.util';
+import { IBaseException } from './base.exception';
+
+/**
+ * Limit Exception
+ */
+export class LimitException implements IBaseException {
+  private static AllValues: { [name: string]: LimitException } = {};
+
+  // Exception Type =================================================================
+  static readonly OVER_LIMIT= new LimitException(1501, 'exceed over limit');
+  // Exception Type =================================================================
+
+  private constructor(public readonly code: number, public readonly message: string) {
+    LimitException.AllValues[message] = this;
+  }
+
+  getCode() {
+    return this.code;
+  }
+
+  getMessage() {
+    return this.message;
+  }
+}
