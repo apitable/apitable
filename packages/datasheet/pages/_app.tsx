@@ -393,12 +393,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     return () => {
       clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curTimezone]);
 
   return <>
     <Head>
       <title>
-        {env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
+        {env.IS_AITABLE ? (env.APITABLE_NAME || 'AITable') : env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
       </title>
       <meta name='description' content=''/>
       <meta
