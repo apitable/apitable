@@ -213,14 +213,7 @@ public class StaticsServiceImpl implements IStaticsService {
 
     @Override
     public long getTotalChatbotNodesfromCache(String spaceId) {
-        String key = StrUtil.format(GENERAL_STATICS, "space:chatbot-count", spaceId);
-        Number cacheValue = redisTemplate.opsForValue().get(key);
-        if (cacheValue != null) {
-            return cacheValue.longValue();
-        }
-        long count = SqlHelper.retCount(staticsMapper.countChatbotNodesBySpaceId(spaceId));
-        redisTemplate.opsForValue().set(key, count, Long.valueOf(cacheHours), TimeUnit.HOURS);
-        return count;
+        return SqlHelper.retCount(staticsMapper.countChatbotNodesBySpaceId(spaceId));
     }
 
     @Override

@@ -151,6 +151,21 @@ public interface ISpaceService extends IService<SpaceEntity> {
     SeatUsage getSeatUsage(String spaceId);
 
     /**
+     * check whether seat nums of the space is over limit.
+     *
+     * @param spaceId space id
+     */
+    void checkSeatOverLimit(String spaceId);
+
+    /**
+     * check whether seat nums of the space is over limit.
+     *
+     * @param spaceId       space id
+     * @param addedSeatNums added seat nums
+     */
+    void checkSeatOverLimit(String spaceId, long addedSeatNums);
+
+    /**
      * get space info.
      *
      * @param spaceId space id

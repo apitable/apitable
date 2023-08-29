@@ -1077,6 +1077,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         NodeType nodeType = NodeType.toEnum(copyNode.getType());
         // Restrict replication of root nodes and folders
         ExceptionUtil.isFalse(nodeType.equals(NodeType.ROOT), NodeException.NOT_ALLOW);
+        ExceptionUtil.isFalse(nodeType.equals(NodeType.AI_CHAT_BOT), NodeException.NOT_ALLOW);
         ExceptionUtil.isFalse(nodeType.equals(NodeType.FOLDER),
             NodeException.NODE_COPY_FOLDER_ERROR);
         // Verify that the number of nodes reaches the upper limit
@@ -1569,6 +1570,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     JSONUtil.createObj().toString());
                 break;
             case AI_CHAT_BOT:
+                iSpaceService.checkSeatOverLimit(spaceId, 1);
                 aiServiceFacade.createAi(AiCreateParam.builder()
                     .spaceId(spaceId)
                     .aiId(nodeId)

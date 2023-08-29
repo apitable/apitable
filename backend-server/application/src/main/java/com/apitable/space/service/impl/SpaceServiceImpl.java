@@ -82,6 +82,7 @@ import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.constants.AuditConstants;
 import com.apitable.shared.constants.MailPropConstants;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.exception.LimitException;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
@@ -550,8 +551,39 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SeatUsage getSeatUsage(String spaceId) {
         long memberCount =
             iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
-        long chatbotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
-        return new SeatUsage(memberCount, chatbotCount);
+        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
+        return new SeatUsage(chatBotCount, memberCount);
+    }
+
+    @Override
+    public void checkSeatOverLimit(String spaceId) {
+        SeatUsage seatUsage = getSeatUsage(spaceId);
+        // get subscription max seat nums
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        // only free space has validation
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
+        if (maxSeatNums != -1 && (seatUsage.getTotal() == maxSeatNums)) {
+            throw new BusinessException(LimitException.OVER_LIMIT);
+        }
+    }
+
+    @Override
+    public void checkSeatOverLimit(String spaceId, long addedSeatNums) {
+        SeatUsage seatUsage = getSeatUsage(spaceId);
+        // get subscription max seat nums
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
+        if (maxSeatNums != -1 && (seatUsage.getTotal() + addedSeatNums > maxSeatNums)) {
+            throw new BusinessException(LimitException.OVER_LIMIT);
+        }
     }
 
     /**
