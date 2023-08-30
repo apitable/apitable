@@ -23,14 +23,13 @@ import { useSelector } from 'react-redux';
 import { Button, TextButton, TextInput } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { AddOutlined, CheckOutlined, DeleteOutlined, WarnOutlined } from '@apitable/icons';
-// @ts-ignore
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useEmailInviteInModal } from 'pc/hooks';
 // eslint-disable-next-line no-restricted-imports
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 interface IInputEmailProps {
   cancel: () => void;
