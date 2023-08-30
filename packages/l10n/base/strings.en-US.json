@@ -5592,5 +5592,7 @@
   "ai_credit_cost_chart_tooltip": "Message credit",
   "ai_credit_usage_tooltip": "Credit cost",
   "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
-  "subscribe_seats_usage_over_lit": "The number of seats in the current space station exceeds the limit, please upgrade your subscription."
+  "subscribe_seats_usage_over_limit": "The number of seats in the current space station exceeds the limit, please upgrade your subscription.",
+  "subscribe_credit_usage_over_limit": "The credit of the current space station exceeds the limit, please upgrade your subscription.",
+  "ai_input_credit_usage_tooltip": "One Al response with gpt-3.5-turbo (the default) costs 1 Al credit"
 }

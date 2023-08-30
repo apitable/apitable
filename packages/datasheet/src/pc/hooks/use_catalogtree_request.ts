@@ -141,7 +141,7 @@ export const useCatalogTreeRequest = () => {
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
       } else {
         if (code === billingErrorCode.OVER_LIMIT) {
-          return triggerUsageAlertUniversal();
+          return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
         }
         if (code === StatusCode.NODE_NOT_EXIST) {
           return;
@@ -217,7 +217,7 @@ export const useCatalogTreeRequest = () => {
         return;
       }
       if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal();
+        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Message.error({ content: message });
     });

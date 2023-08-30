@@ -98,7 +98,7 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setM
         setErr(message);
         if (code === billingErrorCode.OVER_LIMIT) {
           setFile(undefined);
-          return triggerUsageAlertUniversal();
+          return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
         }
         if (secondStepVerify(code) || code === StatusCode.COMMON_ERR) {
           setFile(undefined);

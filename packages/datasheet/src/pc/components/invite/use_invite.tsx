@@ -18,7 +18,18 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState, Navigation, StatusCode, StoreActions } from '@apitable/core';
+import {
+  Api,
+  IInviteEmailInfo,
+  IInviteLinkInfo,
+  IInviteMemberList,
+  IReduxState,
+  Navigation,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
+} from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
@@ -151,7 +162,7 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
           setErr('');
         } else {
           if (code === billingErrorCode.OVER_LIMIT) {
-            return triggerUsageAlertUniversal();
+            return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
           }
           if (secondStepVerify(code)) {
             return;

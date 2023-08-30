@@ -70,7 +70,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
         return;
       }
       if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal();
+        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Modal.warning({
         title: t(Strings.please_note),

@@ -77,7 +77,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
           query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId },
         });
       } else if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal();
+        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       } else {
         window.location.reload();
       }
