@@ -29,9 +29,12 @@ import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.SpaceResourceGroupCode;
+import com.apitable.space.vo.SeatUsage;
 import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.ro.NodeOpRo;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -169,5 +172,23 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(spaceSubscribeVo.getSecuritySettingCopyCellData()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getSecuritySettingInviteMember()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getSecuritySettingShare()).isEqualTo(false);
+    }
+
+    @Test
+    void testGetSeatUsage() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        // create ai node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.AI_CHAT_BOT.getNodeType())
+            .checkDuplicateName(false)
+            .build();
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
+        SeatUsage seatUsage = iSpaceService.getSeatUsage(userSpace.getSpaceId());
+        assertThat(seatUsage).isNotNull();
+        assertThat(seatUsage.getChatBotCount()).isEqualTo(1L);
+        assertThat(seatUsage.getMemberCount()).isEqualTo(1L);
+        assertThat(seatUsage.getTotal()).isEqualTo(2L);
     }
 }

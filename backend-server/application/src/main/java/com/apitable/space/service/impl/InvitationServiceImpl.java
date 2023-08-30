@@ -54,7 +54,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Invitation service implement.
+ */
 @Slf4j
 @Service
 public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, InvitationEntity> implements IInvitationService {
@@ -181,12 +185,14 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public InvitationUserDTO invitedUserJoinSpaceByToken(Long userId, String token) {
         InvitationEntity entity = invitationMapper.selectByInviteToken(token);
         // 1. if the information of the link does not exist or the status is 0, it is determined to be
         // invalid.
         ExceptionUtil.isFalse(entity == null || !entity.getStatus(), INVITE_EXPIRE);
         String spaceId = entity.getSpaceId();
+        iSpaceService.checkSeatOverLimit(spaceId);
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         // 2. member invitation expired
         ExceptionUtil.isTrue(Boolean.TRUE.equals(feature.getInvitable()), INVITE_EXPIRE);

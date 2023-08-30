@@ -550,14 +550,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public SeatUsage getSeatUsage(String spaceId) {
         long memberCount =
-            iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
+            iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
         long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
         return new SeatUsage(chatBotCount, memberCount);
     }
 
     @Override
     public void checkSeatOverLimit(String spaceId) {
-        SeatUsage seatUsage = getSeatUsage(spaceId);
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
@@ -565,6 +564,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (!subscriptionInfo.isFree()) {
             return;
         }
+        SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         if (maxSeatNums != -1 && (seatUsage.getTotal() == maxSeatNums)) {
             throw new BusinessException(LimitException.OVER_LIMIT);
@@ -573,13 +573,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Override
     public void checkSeatOverLimit(String spaceId, long addedSeatNums) {
-        SeatUsage seatUsage = getSeatUsage(spaceId);
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
         if (!subscriptionInfo.isFree()) {
             return;
         }
+        SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         if (maxSeatNums != -1 && (seatUsage.getTotal() + addedSeatNums > maxSeatNums)) {
             throw new BusinessException(LimitException.OVER_LIMIT);

@@ -1265,7 +1265,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public long getTotalActiveMemberCountBySpaceId(String spaceId) {
-        return SqlTool.retCount(baseMapper.selectActiveMemberCountBySpaceId(spaceId));
+        return SqlHelper.retCount(baseMapper.selectActiveMemberCountBySpaceId(spaceId));
     }
 
     @Override

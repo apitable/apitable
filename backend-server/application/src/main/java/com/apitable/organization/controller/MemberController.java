@@ -381,6 +381,7 @@ public class MemberController {
         String spaceId = LoginContext.me().getSpaceId();
         // whether in black list
         blackListServiceFacade.checkSpace(spaceId);
+        iSpaceService.checkSeatOverLimit(spaceId);
         Long userId = SessionContext.getUserId();
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
@@ -417,6 +418,7 @@ public class MemberController {
         String spaceId = LoginContext.me().getSpaceId();
         // check black space
         blackListServiceFacade.checkSpace(spaceId);
+        iSpaceService.checkSeatOverLimit(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         // Again email invite members
         MemberEntity member = memberMapper.selectBySpaceIdAndEmail(spaceId, data.getEmail());

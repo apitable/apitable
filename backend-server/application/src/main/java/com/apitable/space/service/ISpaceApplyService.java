@@ -18,19 +18,23 @@
 
 package com.apitable.space.service;
 
+/**
+ * space apply service.
+ */
 public interface ISpaceApplyService {
 
     /**
-     * @param userId userId
+     * create space join application
+     * @param userId  userId
      * @param spaceId space id
      * @return ID
      */
     Long create(Long userId, String spaceId);
 
     /**
-     * process space join application
+     * process space join application.
      *
-     * @param userId userId
+     * @param userId   userId
      * @param notifyId notify id
      * @param agree    agree or not
      */
