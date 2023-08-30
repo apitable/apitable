@@ -5529,7 +5529,7 @@
   "ai_update_setting_success": "Update successful.",
   "ai_default_prologue": "Hi there, I'm an AI chatbot. Nice to meet you! With my training on various datasets, I'm capable of answering your questions.",
   "ai_chat_default_prologue": "Welcome aboard! I'm all set and ready to chat with you. Let's have some great conversations!",
-  "ai_chat_default_prompt":"The following is a conversation between a human and an AI. \n\nCurrent conversation:\n{history}\n\nHuman: {input}\nAI:",
+  "ai_chat_default_prompt": "The following is a conversation between a human and an AI. \n\nCurrent conversation:\n{history}\n\nHuman: {input}\nAI:",
   "ai_default_prompt": "Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:",
   "ai_discard_setting_edit_ok_text": "Discard",
   "ai_discar_setting_edit_cancel_text": "Cancel",
@@ -5592,7 +5592,11 @@
   "ai_credit_cost_chart_tooltip": "Message credit",
   "ai_credit_usage_tooltip": "Credit cost",
   "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
-  "subscribe_seats_usage_over_limit": "The number of seats in the current space station exceeds the limit, please upgrade your subscription.",
-  "subscribe_credit_usage_over_limit": "The credit of the current space station exceeds the limit, please upgrade your subscription.",
-  "ai_input_credit_usage_tooltip": "One Al response with gpt-3.5-turbo (the default) costs 1 Al credit"
+  "subscribe_seats_usage_over_limit": "The number of seats in the current space exceeds the limit, please upgrade your subscription.\n（Seats include number of members and chatbots）",
+  "subscribe_credit_usage_over_limit": "The number of credits in the current space exceeds the limit, please upgrade your subscription.\n",
+  "ai_input_credit_usage_tooltip": "One Al response with gpt-3.5-turbo (the default) costs 1 Al credit",
+  "ai_credit_time_dimension_today": "Today",
+  "ai_credit_time_dimension_week": "This week",
+  "ai_credit_time_dimension_month": "This month",
+  "ai_credit_time_dimension_year": "This year"
 }

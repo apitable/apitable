@@ -1,16 +1,16 @@
 import classnames from 'classnames';
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import React, { useState } from 'react';
-import { DropdownSelect, IOption, Typography, useThemeColors } from '@apitable/components';
-import useSWR from 'swr';
 import { useSelector } from 'react-redux';
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import useSWR from 'swr';
 import urlcat from 'urlcat';
+import { DropdownSelect, IOption, Typography, useThemeColors } from '@apitable/components';
 import { TextLabel } from 'pc/components/space_manage/space_info/components/credit_cost_card/components/text_label';
-import { CardTitle } from 'pc/components/space_manage/space_info/ui';
 import { GET_CREDIT_STATISTICS, SELECT_LIST, TimeDimension } from 'pc/components/space_manage/space_info/components/credit_cost_card/enum';
-import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/fetcher';
 import { convertDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/convert_date';
 import { formatDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/date';
+import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/fetcher';
+import { CardTitle } from 'pc/components/space_manage/space_info/ui';
 import styles from './style.module.less';
 
 interface ICreditCostCardProps {
@@ -60,7 +60,7 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
             margin={{
               top: 5,
               right: 30,
-              left: -35,
+              left: -15,
               bottom: 5,
             }}
           >
@@ -68,14 +68,14 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
             {/*<XAxis dataKey="name" />*/}
             <XAxis
               dataKey="dateline"
-              tick={{ stroke: color.textCommonPrimary, strokeWidth: 1 }}
+              tick={{ stroke: color.textCommonPrimary, strokeWidth: 0.5 }}
               // tickLine={{ stroke: 'red' }}
               // tickFormatter={(timeStr) => {
               //   return dayjs(timeStr).format('YYYY-MM-DD');
               // }}
               stroke={color.borderCommonDefault}
             />
-            <YAxis domain={[0, 'dataMax + 5']} tick={{ stroke: color.textCommonPrimary, strokeWidth: 1 }} stroke={color.borderCommonDefault} />
+            <YAxis domain={[0, 'dataMax + 5']} tick={{ stroke: color.textCommonPrimary, strokeWidth: 0.5 }} stroke={color.borderCommonDefault} />
             <Tooltip
               labelStyle={{ color: color.textReverseDefault }}
               itemStyle={{ color: color.textReverseDefault }}
@@ -91,9 +91,9 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
               dataKey="credit"
               stroke={strokeColor}
               strokeWidth={3}
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 4 }}
               label={<TextLabel color={color.textCommonPrimary} />}
-              dot={{ stroke: color.rainbowIndigo4, strokeWidth: 1 }}
+              dot={{ stroke: strokeColor, strokeWidth: 1 }}
               // activeDot={false}
             />
             {/*<Line type="linear" dataKey="uv" stroke="#82ca9d"/>*/}

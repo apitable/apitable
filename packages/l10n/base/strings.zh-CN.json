@@ -154,7 +154,7 @@
   "ai_default_idk": "我不知道",
   "ai_default_prologue": "你好，我是一个人工智能聊天机器人。见到你很高兴!凭借我在各种数据集上的培训，我有能力回答您的问题。",
   "ai_default_prompt": "Use the following pieces of context to answer the question at the end. \n\n If you don't know the answer, just say that you don't know, don't try to make up an answer. \n\n{context} \n\nQuestion: {question} \n\nAnswer:",
-  "ai_chat_default_prompt":"The following is a conversation between a human and an AI. \n\nCurrent conversation:\n{history}\n\nHuman: {input}\nAI:",
+  "ai_chat_default_prompt": "The following is a conversation between a human and an AI. \n\nCurrent conversation:\n{history}\n\nHuman: {input}\nAI:",
   "ai_discar_setting_edit_cancel_text": "返回",
   "ai_discard_setting_edit_ok_text": "放弃并离开",
   "ai_embed_website": "嵌入网站",
@@ -5592,8 +5592,12 @@
   "zimbabwe": "津巴布韦",
   "zoom_in": "放大",
   "zoom_out": "缩小",
-  "subscribe_seats_usage_over_limit": "当前空间站的席位数超过限制，请升级订阅",
+  "subscribe_seats_usage_over_limit": "空间站的席位数超过限制，请升级你的空间站。\n（席位数包含成员数和聊天机器人数）",
   "workflow_execute_failed_notify": "<a class=\"automationName\"></a>于<a class=\"endAt\"></a>执行失败，请根据运行历史排查问题，需要任何帮助或有任何疑问，请随时与客服团队联系",
-  "subscribe_credit_usage_over_limit": "当前空间站的信用点已用完，请升级订阅",
-  "ai_input_credit_usage_tooltip": "一次使用gpt-3.5-turbo（默认）的Al响应需要1个Al信用"
+  "subscribe_credit_usage_over_limit": "空间站的算力点数量已耗尽，请升级你的空间站。",
+  "ai_input_credit_usage_tooltip": "一次使用gpt-3.5-turbo（默认）的Al响应需要1个Al信用",
+  "ai_credit_time_dimension_today": "今日",
+  "ai_credit_time_dimension_week": "本周",
+  "ai_credit_time_dimension_month": "本月",
+  "ai_credit_time_dimension_year": "今年"
 }
