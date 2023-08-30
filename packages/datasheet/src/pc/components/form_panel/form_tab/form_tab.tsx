@@ -34,6 +34,8 @@ import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
+// @ts-ignore
+import { isEnterprise } from 'enterprise';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
@@ -176,7 +178,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               {t(Strings.form_tour_desc)}
             </LinkButton>
           </a>}
-          {editable && (preFill ? (
+          {isEnterprise && editable && (preFill ? (
             <Button
               prefixIcon={<EditOutlined currentColor />}
               size="small"

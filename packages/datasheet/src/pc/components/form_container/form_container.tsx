@@ -50,7 +50,7 @@ import * as Sentry from '@sentry/nextjs';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
 // @ts-ignore
-import { triggerUsageAlertForDatasheet } from 'enterprise';
+import { triggerUsageAlertForDatasheet, PreFillPanel } from 'enterprise';
 import produce from 'immer';
 import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
@@ -82,8 +82,7 @@ import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import { getEnvVariables } from 'pc/utils/env';
 import { VikaSplitPanel } from '../common/vika_split_panel';
-import { PreFillPanel } from './pre_fill_panel/pre_fill_panel';
-import { query2formData, string2Query } from './pre_fill_panel/util';
+import { query2formData, string2Query } from './util';
 import { Popup } from 'pc/components/common/mobile/popup';
 import styles from './style.module.less';
 
@@ -424,7 +423,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
     let str = t(Strings.form_error_tip);
     if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
     if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
-      return triggerUsageAlertForDatasheet(errMsg);
+      return triggerUsageAlertForDatasheet?.(errMsg);
     }
     warningTip(str);
   };
@@ -778,14 +777,14 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
               </div>
             ) : <div/>
           }
-          panelRight={!isPad && preFill ?
+          panelRight={!isPad && preFill && PreFillPanel ?
             <PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> : <div/>}
           primary='second'
           size={!isPad && preFill ? 320 : 0}
           allowResize={false}
           pane1Style={{ overflow: 'hidden' }}
         />
-        {isPad && preFill && (
+        {isPad && preFill && PreFillPanel && (
           <Popup
             width="100%"
             height={isPad ? '60%' : '90%'}
