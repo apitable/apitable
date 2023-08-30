@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useMemo } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
+import { FC, useMemo } from 'react';
 import classNames from 'classnames';
-import { t, Strings } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
 import { PercentOutlined } from '@apitable/icons';
-import { CardTitle } from '../../ui';
 import { Typography, useThemeColors } from '@apitable/components';
 import { ProgressProps } from 'antd/lib/progress';
+import { CardTitle } from '../../ui';
 import { useAnimationNum } from '../../hooks/use_animation_num';
 import { ISpaceLevelType, needHideUnLimitedSpaceLevel } from '../../interface';
+import styles from './style.module.less';
 
 interface ICardProps {
   trailColor: string;
@@ -40,11 +40,12 @@ interface ICardProps {
   totalText: string;
   remainText: string;
   usedText: string;
+  usedString?: string;
   usedPercent: number;
   remainPercent: number;
 
-  titleLink?: { text: string, href?: string, onClick?: () => void };
-  titleButton?: { text: string, onClick: () => void };
+  titleLink?: { text: string; href?: string; onClick?: () => void };
+  titleButton?: { text: string; onClick: () => void };
   valueIntro?: string;
   showPercent?: boolean;
   usedTextIsFloat?: boolean;
@@ -56,8 +57,27 @@ interface ICardProps {
 
 export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
   const {
-    title, usedPercent, usedText, remainText, totalText, remainPercent, trailColor, strokeColor, shape, unit, titleTip,
-    titleLink, titleButton, valueIntro, showPercent, usedTextIsFloat, minHeight = 302, className, level, isMobile,
+    title,
+    usedPercent,
+    usedText,
+    remainText,
+    totalText,
+    remainPercent,
+    usedString,
+    trailColor,
+    strokeColor,
+    shape,
+    unit,
+    titleTip,
+    titleLink,
+    titleButton,
+    valueIntro,
+    showPercent,
+    usedTextIsFloat,
+    minHeight = 302,
+    className,
+    level,
+    isMobile,
   } = props;
 
   const colors = useThemeColors();
@@ -80,22 +100,14 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
       <Desc
         color={_strokeColor}
         label={t(Strings.used)}
-        text={usedText}
+        text={usedString || usedText}
         unit={unit}
         showPercent={showPercent}
         usedPercent={usedPercent}
       />
-      {
-        !unLimited &&
-        <Desc
-          color={trailColor}
-          label={t(Strings.remain)}
-          text={remainText}
-          unit={unit}
-          showPercent={showPercent}
-          usedPercent={remainPercent}
-        />
-      }
+      {!unLimited && (
+        <Desc color={trailColor} label={t(Strings.remain)} text={remainText} unit={unit} showPercent={showPercent} usedPercent={remainPercent} />
+      )}
     </>
   );
 
@@ -103,23 +115,19 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
     <div className={classNames(styles.card, className)} style={style}>
       <CardTitle isMobile={isMobile} title={title} tipTitle={titleTip} link={titleLink} button={titleButton} />
       <div className={styles.cardNumber}>
-        <span className={styles.usedNum}>
-          {usedTitleText}
-        </span>
-        {
-          !hiddenUnLimitedText && <>
+        <span className={styles.usedNum}>{usedTitleText}</span>
+        {!hiddenUnLimitedText && (
+          <>
             <span className={classNames(!unLimited && styles.totalNum, { [styles.unlimited]: unLimited })}>
               /{unLimited ? t(Strings.unlimited) : totalText}
             </span>
             <span className={styles.totalUnit}>{unit}</span>
             {valueIntro && <span className={styles.numIntro}>({valueIntro})</span>}
           </>
-        }
+        )}
       </div>
       <div className={styles.progressWrap} data-is-line={isLine}>
-        {
-          isLine && <div className={styles.lineDesc}> {detail} </div>
-        }
+        {isLine && <div className={styles.lineDesc}> {detail} </div>}
         <ProgressInCard
           type={shape}
           trailColor={trailColor}
@@ -130,11 +138,11 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
         />
       </div>
       {/* Show xx used, xx remaining */}
-      {
-        !isLine && <div className={styles.descWrap}>
+      {!isLine && (
+        <div className={styles.descWrap}>
           <div> {detail} </div>
         </div>
-      }
+      )}
     </div>
   );
 };
@@ -143,23 +151,29 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
  * Usage Description
  */
 interface IDescProps {
-  color: string,
-  label: string,
-  text: string,
-  unit?: string,
-  showPercent?: boolean
-  usedPercent: number,
+  color: string;
+  label: string;
+  text: string;
+  unit?: string;
+  showPercent?: boolean;
+  usedPercent: number;
 }
 
 const Desc: FC<React.PropsWithChildren<IDescProps>> = ({ color, label, text, unit, showPercent, usedPercent }) => {
   return (
-    <Typography variant='body4' className={styles.descItem}>
+    <Typography variant="body4" className={styles.descItem}>
       <span className={styles.before} style={{ backgroundColor: color }} />
       <span>{label}</span>
       <span className={styles.customFont} style={{ fontSize: 14 }}>
         {text}
-      </span>{unit}{' '}
-      {showPercent && <span className={styles.customFont}>({t(Strings.proportion)}{usedPercent}%)</span>}
+      </span>
+      {unit}{' '}
+      {showPercent && (
+        <span className={styles.customFont}>
+          ({t(Strings.proportion)}
+          {usedPercent}%)
+        </span>
+      )}
     </Typography>
   );
 };
@@ -184,17 +198,16 @@ const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = (props
     strokeWidth: 6,
     strokeColor: 'red',
     trailColor: colors.lineColor,
-    format: percent => <Typography
-      variant='h3'
-      color={color}
-      className={styles.progressFormat}
-    >
-      {percent}<PercentOutlined color={color} />
-    </Typography>,
+    format: (percent) => (
+      <Typography variant="h3" color={color} className={styles.progressFormat}>
+        {percent}
+        <PercentOutlined color={color} />
+      </Typography>
+    ),
   });
   const progressConfig = {
     ...getDefaultProgressConfig(color),
-    ...props
+    ...props,
   };
   return <Progress {...progressConfig} />;
 };

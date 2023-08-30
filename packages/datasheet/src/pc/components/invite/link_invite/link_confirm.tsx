@@ -16,21 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@apitable/components';
+import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Message, Wrapper } from 'pc/components/common';
+import { HomeWrapper } from 'pc/components/home/home_wrapper';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
+import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
-import { HomeWrapper } from 'pc/components/home/home_wrapper';
+// @ts-ignore
+import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
@@ -42,19 +44,18 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
   const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0, IS_ENTERPRISE } = getEnvVariables();
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
 
   const InviteImage = themeName === ThemeName.Light ? inviteImageLight : inviteImageDark;
 
   const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
-    onSuccess: res => {
+    onSuccess: (res) => {
       const { success, code } = res.data;
       if (success) {
         Router.push(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo!.data.spaceId, nodeId: shareId }, clearQuery: true });
         dispatch(StoreActions.updateInviteLinkInfo(null));
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
-        
         if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
           const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
           location.href = `${LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL}${redirectUri}`;
@@ -73,8 +74,10 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
         }
         Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/login' },
-          query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId }
+          query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId },
         });
+      } else if (code === billingErrorCode.OVER_LIMIT) {
+        return triggerUsageAlertUniversal();
       } else {
         window.location.reload();
       }
@@ -83,7 +86,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
     onError: () => {
       Message.error({ content: t(Strings.error) });
     },
-    manual: true
+    manual: true,
   });
 
   useMount(() => {
@@ -97,52 +100,30 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
     return null;
   }
 
-  return (
-    IS_ENTERPRISE ?
-      <Wrapper>
-        <div className='invite-children-center'>
-          <span style={{ marginBottom: '24px' }}>
-            <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
-          </span>
-          <InviteTitle
-            inviter={inviteLinkInfo.data.memberName}
-            spaceName={inviteLinkInfo.data.spaceName}
-            titleMarginBottom='40px'
-          />
-          <Button
-            onClick={confirmBtn}
-            color='primary'
-            size='large'
-            style={{ width: '220px' }}
-            loading={loading}
-            disabled={loading}
-          >
-            {t(Strings.confirm_join)}
-          </Button>
-        </div>
-      </Wrapper> :
-      <HomeWrapper>
-        <div className='invite-children-center'>
-          <span style={{ marginBottom: '24px' }}>
-            <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
-          </span>
-          <InviteTitle
-            inviter={inviteLinkInfo.data.memberName}
-            spaceName={inviteLinkInfo.data.spaceName}
-            titleMarginBottom='40px'
-          />
-          <Button
-            onClick={confirmBtn}
-            color='primary'
-            size='large'
-            style={{ width: '220px' }}
-            loading={loading}
-            disabled={loading}
-          >
-            {t(Strings.confirm_join)}
-          </Button>
-        </div>
-      </HomeWrapper>
+  return IS_ENTERPRISE ? (
+    <Wrapper>
+      <div className="invite-children-center">
+        <span style={{ marginBottom: '24px' }}>
+          <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
+        </span>
+        <InviteTitle inviter={inviteLinkInfo.data.memberName} spaceName={inviteLinkInfo.data.spaceName} titleMarginBottom="40px" />
+        <Button onClick={confirmBtn} color="primary" size="large" style={{ width: '220px' }} loading={loading} disabled={loading}>
+          {t(Strings.confirm_join)}
+        </Button>
+      </div>
+    </Wrapper>
+  ) : (
+    <HomeWrapper>
+      <div className="invite-children-center">
+        <span style={{ marginBottom: '24px' }}>
+          <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
+        </span>
+        <InviteTitle inviter={inviteLinkInfo.data.memberName} spaceName={inviteLinkInfo.data.spaceName} titleMarginBottom="40px" />
+        <Button onClick={confirmBtn} color="primary" size="large" style={{ width: '220px' }} loading={loading} disabled={loading}>
+          {t(Strings.confirm_join)}
+        </Button>
+      </div>
+    </HomeWrapper>
   );
 };
 

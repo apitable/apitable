@@ -94,7 +94,7 @@ export const useCards = (props: ILayoutProps) => {
           isMobile={isMobile}
           level={level}
           shape="line"
-          unit={t(Strings.people)}
+          unit={memberData.usedString ? '' : t(Strings.people)}
           trailColor={trailColor}
           strokeColor={strokeColor}
           title={t(Strings.current_count_of_person)}
@@ -215,7 +215,14 @@ export const useCards = (props: ILayoutProps) => {
           lines={othersData}
         />
       ),
-      CreditCostCard: (props: ICardProps) => <CreditCostCard {...props} title={t(Strings.ai_message_credit_title)} titleTip={'tooltip'} />,
+      CreditCostCard: (props: ICardProps) => (
+        <CreditCostCard
+          {...props}
+          title={t(Strings.ai_message_credit_title)}
+          titleTip={t(Strings.ai_credit_cost_chart_tooltip)}
+          strokeColor={strokeColor}
+        />
+      ),
       CreditCard: (props: ICardProps) => (
         <Card
           {...props}
@@ -226,7 +233,7 @@ export const useCards = (props: ILayoutProps) => {
           trailColor={trailColor}
           strokeColor={strokeColor}
           title={t(Strings.ai_credit_cost_chart_title)}
-          titleTip={'tooltip'}
+          titleTip={t(Strings.ai_credit_usage_tooltip)}
         />
       ),
     };

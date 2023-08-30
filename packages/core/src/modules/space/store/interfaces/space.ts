@@ -143,6 +143,11 @@ export interface ISpaceBasicInfo {
   isCreatorNameModified?: boolean;
   isOwnerNameModified?: boolean;
   usedCredit: number;
+  seatUsage: {
+    total: number;
+    chatBotCount: number;
+    memberCount: number;
+  };
 }
 
 export interface IApp {
