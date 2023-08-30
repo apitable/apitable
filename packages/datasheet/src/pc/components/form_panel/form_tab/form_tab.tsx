@@ -187,7 +187,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               onClick={() => setPreFill(false)}
               className={styles.preFillBtn}
             >
-              {t(Strings.pre_fill_title)}
+              {t(Strings.pre_fill_title_btn)}
             </Button>
           ) : (
             <TextButton
@@ -196,7 +196,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               className={styles.preFillBtn}
               size="small"
             >
-              {t(Strings.pre_fill_title)}
+              {t(Strings.pre_fill_title_btn)}
             </TextButton>
           ))}
           {!shareId && editable && <ToolBar nodeShared={nodeShared} showLabel={showLabel} />}
