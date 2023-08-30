@@ -105,7 +105,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
         }
       </h1>
       <h2 className={styles.panelName}>
-        <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
+        <InlineNodeName className={styles.nodeName} nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
 
       <CloseOutlined className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} size={24} color='white' />
