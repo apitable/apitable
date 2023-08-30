@@ -5557,6 +5557,7 @@
   "workbench_share_link_template": "【APITable】- ${nickName} 给你分享了《${nodeName}》",
   "workbench_side_space_template": "空间站模版",
   "workbenck_shortcuts": "工作台快捷键",
+  "workflow_execute_failed_notify": "<a class=\"automationName\"></a>于<a class=\"endAt\"></a>执行失败，请根据运行历史排查问题，需要任何帮助或有任何疑问，请随时与客服团队联系",
   "workspace_data": "空间站数据",
   "workspace_files": "工作台数据",
   "workspace_list": "空间站列表",

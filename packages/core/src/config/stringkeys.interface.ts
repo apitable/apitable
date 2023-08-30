@@ -5557,6 +5557,7 @@ export type StringKeysMapType = {
   'workbench_share_link_template': 'workbench_share_link_template',
   'workbench_side_space_template': 'workbench_side_space_template',
   'workbenck_shortcuts': 'workbenck_shortcuts',
+  'workflow_execute_failed_notify': 'workflow_execute_failed_notify',
   'workspace_data': 'workspace_data',
   'workspace_files': 'workspace_files',
   'workspace_list': 'workspace_list',

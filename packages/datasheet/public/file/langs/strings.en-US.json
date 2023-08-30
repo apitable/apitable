@@ -5556,6 +5556,7 @@
   "workbench_share_link_template": "From APITable: ${nickName} has shared the \"${nodeName}\" file with you.",
   "workbench_side_space_template": "Custom templates",
   "workbenck_shortcuts": "Workbench",
+  "workflow_execute_failed_notify": "<a class=\"automationName\"></a> failed to execute at <a class=\"endAt\"></a>. Please review the execution history to troubleshoot the issue. If you need any assistance, please contact our customer service team.",
   "workspace_data": "Space data",
   "workspace_files": "Workbench data",
   "workspace_list": "Spaces",

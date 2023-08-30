@@ -5583,5 +5583,6 @@
   "ai_feedback_box_alert": "The message record of this session will be submitted together to help chatbot administrators improve the quality of the dataset",
   "ai_feedback_box_placeholder": "Please enter your feedback",
   "ai_feedback_box_send": "Send",
-  "automation_action_num_warning": "Each automation supports up to ${value} actions at most"
+  "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
+  "workflow_execute_failed_notify": "<a class=\"automationName\"></a> failed to execute at <a class=\"endAt\"></a>. Please review the execution history to troubleshoot the issue. If you need any assistance, please contact our customer service team."
 }

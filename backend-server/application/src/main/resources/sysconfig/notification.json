@@ -1217,6 +1217,19 @@
       "is_mobile": true,
       "notifications_type": "system",
       "to_tag": "all_users"
+    },
+    "workflow_execute_failed_notify": {
+      "can_jump": true,
+      "format_string": "workflow_execute_failed_notify",
+      "id": "workflow_execute_failed_notify",
+      "is_browser": true,
+      "is_mail": true,
+      "is_mobile": false,
+      "is_notification": true,
+      "mail_template_subject": "automationError",
+      "notifications_type": "space",
+      "to_tag": "member",
+      "url": "/workbench"
     }
   },
   "types": {
