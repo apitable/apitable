@@ -58,8 +58,9 @@
         "message": "Please use ScrollBar from pc/components/scroll_bar instead."
       }
       ]
-    }]
-//    "@typescript-eslint/no-misused-promises": 1,
+    }],
+    "@typescript-eslint/no-unused-vars": ["warn", {"argsIgnorePattern": "^_"}]
+  //  "@typescript-eslint/no-misused-promises": 1,
 //    "@typescript-eslint/no-floating-promises": 1
   }
 }
