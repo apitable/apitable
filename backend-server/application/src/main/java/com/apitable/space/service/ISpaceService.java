@@ -44,6 +44,14 @@ import java.util.function.Consumer;
 public interface ISpaceService extends IService<SpaceEntity> {
 
     /**
+     * get space entity by space id.
+     *
+     * @param spaceId space id
+     * @return SpaceEntity
+     */
+    SpaceEntity getEntityBySpaceId(String spaceId);
+
+    /**
      * get by space id.
      *
      * @param spaceId space id

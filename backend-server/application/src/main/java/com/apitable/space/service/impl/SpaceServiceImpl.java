@@ -233,6 +233,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     private IInvitationService iInvitationService;
 
     @Override
+    public SpaceEntity getEntityBySpaceId(String spaceId) {
+        return baseMapper.selectBySpaceId(spaceId);
+    }
+
+    @Override
     public SpaceEntity getBySpaceId(final String spaceId) {
         SpaceEntity entity = baseMapper.selectBySpaceId(spaceId);
         ExceptionUtil.isNotNull(entity, SPACE_NOT_EXIST);
