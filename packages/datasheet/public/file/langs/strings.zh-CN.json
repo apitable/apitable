@@ -221,6 +221,8 @@
   "ai_setting_preview_suggestion_tip_2": "建议的问题 2",
   "ai_setting_preview_suggestion_tip_3": "建议的问题 3",
   "ai_setting_preview_user_chat_message": "金鱼的记忆只有7秒吗？",
+  "ai_setting_temperature": "温度",
+  "ai_setting_temperature_desc": "温度越高，聊天机器人的创造力越强。温度越低，聊天机器人的预测性越高。",
   "ai_setting_title": "设置",
   "ai_show_explore_card_desc": "“试一试”消息框会随机展示一些建议的问题，帮助用户得到启发。这个消息框仅在用户开始新会话时出现。",
   "ai_show_explore_card_title": "显示“试一试”消息框",

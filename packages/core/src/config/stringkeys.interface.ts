@@ -222,6 +222,8 @@ export type StringKeysMapType = {
   'ai_setting_preview_suggestion_tip_2': 'ai_setting_preview_suggestion_tip_2',
   'ai_setting_preview_suggestion_tip_3': 'ai_setting_preview_suggestion_tip_3',
   'ai_setting_preview_user_chat_message': 'ai_setting_preview_user_chat_message',
+  'ai_setting_temperature': 'ai_setting_temperature',
+  'ai_setting_temperature_desc': 'ai_setting_temperature_desc',
   'ai_setting_title': 'ai_setting_title',
   'ai_show_explore_card_desc': 'ai_show_explore_card_desc',
   'ai_show_explore_card_title': 'ai_show_explore_card_title',

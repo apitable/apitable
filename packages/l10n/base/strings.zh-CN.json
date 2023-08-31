@@ -5599,5 +5599,7 @@
   "ai_credit_time_dimension_today": "今日",
   "ai_credit_time_dimension_week": "本周",
   "ai_credit_time_dimension_month": "本月",
-  "ai_credit_time_dimension_year": "今年"
+  "ai_credit_time_dimension_year": "今年",
+  "ai_setting_temperature": "温度",
+  "ai_setting_temperature_desc": "温度越高，聊天机器人的创造力越强。温度越低，聊天机器人的预测性越高。"
 }

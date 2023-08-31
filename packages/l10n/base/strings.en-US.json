@@ -5598,5 +5598,7 @@
   "ai_credit_time_dimension_today": "Today",
   "ai_credit_time_dimension_week": "This week",
   "ai_credit_time_dimension_month": "This month",
-  "ai_credit_time_dimension_year": "This year"
+  "ai_credit_time_dimension_year": "This year",
+  "ai_setting_temperature": "Temperature",
+  "ai_setting_temperature_desc": "The higher the temperature, the more creative the chatbot will be. The lower the temperature, the more predictable the chatbot will be."
 }
