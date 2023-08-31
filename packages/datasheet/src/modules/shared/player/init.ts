@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+// @ts-ignore
 import { IWizardsConfig, Player, SystemConfig } from '@apitable/core';
 import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
