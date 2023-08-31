@@ -99,7 +99,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
       })}
     >
       {optionList.length ? (
-        <GroupComponent value={value} onChange={onChange}>
+        <GroupComponent value={isSingleSelect && value?.length === 1 ? value[0] as any : value} onChange={onChange}>
           {optionList.map((option: ISelectFieldOption) => {
             return (
               <div className={styles.optionItemWrapper} key={option.id}>

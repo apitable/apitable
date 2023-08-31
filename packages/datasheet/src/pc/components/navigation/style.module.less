@@ -43,7 +43,7 @@
     }
 
     .spaceIcon {
-      fill: var(--thirdLevelText);
+      fill: var(--textCommonTertiary);
       width: 16px;
       height: 16px;
     }
@@ -207,6 +207,11 @@
       background-color: var(--blackBlue_800);
     }
   }
+  .spaceLogo {
+    .spaceIcon {
+      fill: var(--textStaticTertiary);
+    }
+  }
 }
 
 .templateActived.noticeOpend {
@@ -223,12 +228,6 @@
   }
 }
 .templateActived:not(.noticeOpend) {
-  .spaceLogo {
-    .spaceIcon {
-// FIXME:THEME
-      fill: rgba(var(--defaultBg-rgb), 50%);
-    }
-  }
   .navWrapper {
     .navItem {
       background-color: transparent;
