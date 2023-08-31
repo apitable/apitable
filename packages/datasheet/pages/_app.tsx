@@ -17,36 +17,38 @@
  */
 
 // import App from 'next/app'
+import { Scope } from '@sentry/browser';
+import * as Sentry from '@sentry/nextjs';
+import axios from 'axios';
+import classNames from 'classnames';
+import elementClosest from 'element-closest';
+import { merge } from 'lodash';
+import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Api,
+  getTimeZone,
+  getTimeZoneOffsetByUtc,
   integrateCdnHost,
+  IUserInfo,
   Navigation,
   StatusCode,
   StoreActions,
   Strings,
   SystemConfig,
   t,
-  IUserInfo,
-  getTimeZoneOffsetByUtc,
-  getTimeZone,
-  WasmApi
+  WasmApi,
 } from '@apitable/core';
-import { Scope } from '@sentry/browser';
-import * as Sentry from '@sentry/nextjs';
 import 'antd/es/date-picker/style/index';
-import axios from 'axios';
-import classNames from 'classnames';
-import elementClosest from 'element-closest';
+import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 import ErrorPage from 'error_page';
-import { defaultsDeep } from 'lodash';
 import { init as initPlayer } from 'modules/shared/player/init';
-import type { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Script from 'next/script';
 import 'normalize.css';
+import reportWebVitals from 'reportWebVitals';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
@@ -58,7 +60,6 @@ import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
 import { initWorkerStore } from 'pc/worker';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import reportWebVitals from 'reportWebVitals';
 import 'prismjs/themes/prism.css';
 import 'rc-swipeout/assets/index.css';
 import 'rc-trigger/assets/index.css';
@@ -81,7 +82,6 @@ import { getInitialProps } from '../utils/get_initial_props';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import * as immer from 'immer';
-import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -298,15 +298,9 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         _batchActions.push(StoreActions.setActiveSpaceId(userInfo.spaceId));
       }
 
-      store.dispatch(
-        batchActions(
-          _batchActions,
-          LOGIN_SUCCESS,
-        ),
-      );
-
+      store.dispatch(batchActions(_batchActions, LOGIN_SUCCESS));
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = defaultsDeep(JSON.parse(res.data.wizards), {
+      window.__initialization_data__.wizards = merge(JSON.parse(res.data.wizards), {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
       });
