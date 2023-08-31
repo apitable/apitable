@@ -127,7 +127,7 @@ export const getConditionArgsValue = (str: any) => {
       return state.space.activeId;
     }
     case PlayerRulesConditionArgsType.AI_ONBOARDING: {
-      return new URLSearchParams(window.location.href).get('source');
+      return new URLSearchParams(window.location.search).get('source');
     }
     default:
       return str;
