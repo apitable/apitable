@@ -3606,6 +3606,7 @@ export type StringKeysMapType = {
   'player_step_ui_config_168': 'player_step_ui_config_168',
   'player_step_ui_config_169': 'player_step_ui_config_169',
   'player_step_ui_config_17': 'player_step_ui_config_17',
+  'player_step_ui_config_176': 'player_step_ui_config_176',
   'player_step_ui_config_18': 'player_step_ui_config_18',
   'player_step_ui_config_19': 'player_step_ui_config_19',
   'player_step_ui_config_2': 'player_step_ui_config_2',

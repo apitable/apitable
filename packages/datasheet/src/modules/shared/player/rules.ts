@@ -16,17 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Selectors, ScreenWidth } from '@apitable/core';
-import { store } from 'pc/store';
 import dayjs from 'dayjs';
 import * as dot from 'dot-object';
 import { isMatch } from 'lodash';
+import { ScreenWidth, Selectors } from '@apitable/core';
+import { store } from 'pc/store';
 import { getInitializationData, isMobileApp } from 'pc/utils/env';
 
 type IPlayerRulesCondition = 'device' | 'identity' | 'sign_up_time' | 'url';
-type IPlayerRulesOperator = 'IS' | 'IS_BEFORE' | 'IS_AFTER' | 'GREATER_THAN' | 'GREATER_THAN_OR_EQUAL'
-  | 'LESS_THAN' | 'LESS_THAN_OR_EQUAL' | 'EQUAL' | 'ONE_OF_TRUE' | 'ALL_OF_TRUE' | 'ALL_OF_FALSE'
-  | 'INCLUDES' | 'EXCLUDES';
+type IPlayerRulesOperator =
+  | 'IS'
+  | 'IS_BEFORE'
+  | 'IS_AFTER'
+  | 'GREATER_THAN'
+  | 'GREATER_THAN_OR_EQUAL'
+  | 'LESS_THAN'
+  | 'LESS_THAN_OR_EQUAL'
+  | 'EQUAL'
+  | 'ONE_OF_TRUE'
+  | 'ALL_OF_TRUE'
+  | 'ALL_OF_FALSE'
+  | 'INCLUDES'
+  | 'EXCLUDES';
 
 enum PlayerRulesConditionType {
   DEVICE = 'device',
@@ -40,13 +51,14 @@ enum PlayerRulesConditionType {
 enum DeviceType {
   Mobile = 'mobile',
   PC = 'pc',
-  App = 'app'
+  App = 'app',
 }
 
 enum PlayerRulesConditionArgsType {
   SHARE_ID = 'shareId',
   SPACE_ID = 'spaceId',
   TEMPLATE_ID = 'templateId',
+  AI_ONBOARDING = 'ai_onboarding',
 }
 
 export const getConditionValue = (str: string) => {
@@ -60,7 +72,7 @@ export const getConditionValue = (str: string) => {
     switch (strKey) {
       case 'wizard': {
         const id = tempObj[strKey].findIndex((item: any) => item);
-        return (userWizards && userWizards.hasOwnProperty(id)) ? userWizards[id] : 0;
+        return userWizards && userWizards.hasOwnProperty(id) ? userWizards[id] : 0;
       }
       default: {
         return str;
@@ -74,16 +86,16 @@ export const getConditionValue = (str: string) => {
       if (isMobileApp()) {
         return DeviceType.App;
       }
-      return (width > ScreenWidth.md) ? DeviceType.PC : DeviceType.Mobile;
+      return width > ScreenWidth.md ? DeviceType.PC : DeviceType.Mobile;
     }
     case PlayerRulesConditionType.IDENTITY: {
       const rulesContext = {
         main_admin: userInfo && userInfo?.isMainAdmin,
-        sub_admin: userInfo && (!userInfo.isMainAdmin) && userInfo.isAdmin,
+        sub_admin: userInfo && !userInfo.isMainAdmin && userInfo.isAdmin,
         member: true, // All have the status of ordinary members by default for the time being
         visitor: false,
       };
-      return Object.keys(rulesContext).filter(key => rulesContext[key]);
+      return Object.keys(rulesContext).filter((key) => rulesContext[key]);
     }
     case PlayerRulesConditionType.SIGN_UP_TIME: {
       return userInfo?.signUpTime;
@@ -113,6 +125,9 @@ export const getConditionArgsValue = (str: any) => {
     }
     case PlayerRulesConditionArgsType.SPACE_ID: {
       return state.space.activeId;
+    }
+    case PlayerRulesConditionArgsType.AI_ONBOARDING: {
+      return new URLSearchParams(window.location.href).get('source');
     }
     default:
       return str;
@@ -174,8 +189,8 @@ export const isRulesPassed = (rulesConfig: any[] | undefined, ruleIds: string[] 
   if (!ruleIds) {
     return true;
   }
-  const someIsNotPass = ruleIds.find(ruleId => {
-    const curRule = rulesConfig?.find(item => item.id === ruleId);
+  const someIsNotPass = ruleIds.find((ruleId) => {
+    const curRule = rulesConfig?.find((item) => item.id === ruleId);
     if (!curRule) {
       return true;
     }
