@@ -221,6 +221,7 @@ export const getEnvVars = () => {
     ROBOT_TRIGGER_ICON: process.env.ROBOT_TRIGGER_ICON,
     LOGIN_LOGO_LIGHT: process.env.LOGIN_LOGO_LIGHT,
     AI_ENTRANCE_VISIBLE: process.env.AI_ENTRANCE_VISIBLE === 'true',
+    AI_OPEN_FORM: process.env.AI_OPEN_FORM,
     AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
   };
 };

@@ -1,6 +1,17 @@
 import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
 
-export const judgeShowAIEntrance = (enable?: boolean) => {
+export const judgeShowAIEntrance = () => {
   const version = getReleaseVersion();
-  return getEnvVariables().AI_ENTRANCE_VISIBLE && (enable || version === 'development');
+  return getEnvVariables().AI_ENTRANCE_VISIBLE || version === 'development';
+};
+
+export const getAIOpenFormUrl = () => {
+  const env = getEnvVariables();
+  if (env.ENV === 'apitable-integration') {
+    return 'https://integration.aitable.ai/share/shrs5C6Gw4shPl826fjeD/fomAEFm52XjVGctUx4';
+  }
+  if (env.ENV === 'vika-integration') {
+    return 'https://integration.vika.ltd/share/shrBUWrYskgQKxzGT4rtz/fom0zfvUnZkPwp9nrC';
+  }
+  return env.AI_OPEN_FORM;
 };

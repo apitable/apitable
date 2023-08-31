@@ -19,7 +19,7 @@ import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { judgeShowAIEntrance } from 'pc/components/catalog/node_context_menu/utils';
+import { judgeShowAIEntrance, getAIOpenFormUrl } from 'pc/components/catalog/node_context_menu/utils';
 import { Message, MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
@@ -28,7 +28,7 @@ import { SideBarContext } from 'pc/context';
 import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useRootManageable, useSideBarVisible } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
-import { isMobileApp } from 'pc/utils/env';
+import { isMobileApp, getReleaseVersion } from 'pc/utils/env';
 import { SecondConfirmType } from '../../datasheet_search_panel';
 import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
@@ -307,8 +307,15 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 openCatalog();
                 addTreeNode(targetId, ConfigConstant.NodeType.DASHBOARD);
               }),
-              judgeShowAIEntrance(spaceInfo?.isEnableChatbot)
+              judgeShowAIEntrance()
                 ? contextItemMap.get(ContextItemKey.addAi)(() => {
+                  if (!spaceInfo?.isEnableChatbot) {
+                    const version = getReleaseVersion();
+                    if (version !== 'development') {
+                      window.open(getAIOpenFormUrl());
+                      return;
+                    }
+                  }
                   const result = triggerUsageAlert?.(
                     'maxFormViewsInSpace',
                     { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true },
