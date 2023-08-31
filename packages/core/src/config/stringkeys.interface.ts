@@ -186,6 +186,7 @@ export type StringKeysMapType = {
   'ai_feedback_box_send': 'ai_feedback_box_send',
   'ai_feedback_box_title': 'ai_feedback_box_title',
   'ai_feedback_comment': 'ai_feedback_comment',
+  'ai_feedback_insight_pagination_total': 'ai_feedback_insight_pagination_total',
   'ai_feedback_state': 'ai_feedback_state',
   'ai_feedback_state_ignore': 'ai_feedback_state_ignore',
   'ai_feedback_state_processed': 'ai_feedback_state_processed',

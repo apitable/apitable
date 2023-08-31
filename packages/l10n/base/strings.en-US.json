@@ -5601,5 +5601,6 @@
   "ai_credit_time_dimension_month": "This month",
   "ai_credit_time_dimension_year": "This year",
   "ai_setting_temperature": "Temperature",
-  "ai_setting_temperature_desc": "The higher the temperature, the more creative the chatbot will be. The lower the temperature, the more predictable the chatbot will be."
+  "ai_setting_temperature_desc": "The higher the temperature, the more creative the chatbot will be. The lower the temperature, the more predictable the chatbot will be.",
+  "ai_feedback_insight_pagination_total": "Total ${total} items"
 }

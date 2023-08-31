@@ -1,26 +1,64 @@
 {
   "extends": [
     "../../.eslintrc",
-//    "next/core-web-vitals",
+    //    "next/core-web-vitals",
     "next"
   ],
-//  "parserOptions": {
-//    "project": "./tsconfig.json"
-//  },
+  //  "parserOptions": {
+  //    "project": "./tsconfig.json"
+  //  },
   "rules": {
-    "import/no-duplicates": ["warn", {"considerQueryString": true}],
+    "import/no-duplicates": [
+      "warn",
+      {
+        "considerQueryString": true
+      }
+    ],
     "import/order": [
       "warn",
       {
-        "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
-        "pathGroups": [
-          { "pattern": "@apitable/**", "group": "external", "position": "after" },
-          { "pattern": "pc/**", "group": "internal","position": "after"},
-          { "pattern": "static/**", "group": "internal","position": "after"},
-          { "pattern": "enterprise", "group": "sibling","position": "after"},
-          { "pattern": "*.module.less", "group": "index","position": "after"}
+        "groups": [
+          [
+            "builtin",
+            "external"
+          ],
+          "internal",
+          [
+            "parent",
+            "sibling",
+            "index"
+          ]
         ],
-        "pathGroupsExcludedImportTypes": ["builtin"],
+        "pathGroups": [
+          {
+            "pattern": "@apitable/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "pc/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "static/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "enterprise",
+            "group": "sibling",
+            "position": "after"
+          },
+          {
+            "pattern": "*.module.less",
+            "group": "index",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ],
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
@@ -30,37 +68,63 @@
     // "import/order": ["warn", {
     //   "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
     // }],
-    "comma-spacing": ["warn", {"before": false, "after": true}],
+    "comma-spacing": [
+      "warn",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
     "react/display-name": 0,
     "react/no-find-dom-node": 0,
-    "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
+    "react/no-unknown-property": 1,
+    "@next/next/no-html-link-for-pages": [
+      "error",
+      "packages/datasheet/pages/"
+    ],
     "@next/next/no-img-element": "off",
-    "no-restricted-imports": ["error", {
-      "paths": [
-        {
-          "name": "@apitable/components",
-          "importNames": ["Select"],
-          "message": "Please use tooltip DropdownSelect from '@apitable/components instead ."
-        },
-        {
-          "name": "pc/components/common/tooltip",
-          "importNames": ["Tooltip"],
-          "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
-        },
-        {
-          "name": "pc/components/common",
-          "importNames": ["Tooltip"],
-          "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
-        },
-        {
-        "name": "react-custom-scrollbars",
-        "importNames": ["Scrollbars"],
-        "message": "Please use ScrollBar from pc/components/scroll_bar instead."
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "@apitable/components",
+            "importNames": [
+              "Select"
+            ],
+            "message": "Please use tooltip DropdownSelect from '@apitable/components instead ."
+          },
+          {
+            "name": "pc/components/common/tooltip",
+            "importNames": [
+              "Tooltip"
+            ],
+            "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
+          },
+          {
+            "name": "pc/components/common",
+            "importNames": [
+              "Tooltip"
+            ],
+            "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
+          },
+          {
+            "name": "react-custom-scrollbars",
+            "importNames": [
+              "Scrollbars"
+            ],
+            "message": "Please use ScrollBar from pc/components/scroll_bar instead."
+          }
+        ]
       }
-      ]
-    }],
-    "@typescript-eslint/no-unused-vars": ["warn", {"argsIgnorePattern": "^_"}]
-  //  "@typescript-eslint/no-misused-promises": 1,
-//    "@typescript-eslint/no-floating-promises": 1
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+    //  "@typescript-eslint/no-misused-promises": 1,
+    //    "@typescript-eslint/no-floating-promises": 1
   }
 }

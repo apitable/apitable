@@ -186,6 +186,7 @@
   "ai_feedback_box_send": "发送",
   "ai_feedback_box_title": "反馈",
   "ai_feedback_comment": "反馈评论",
+  "ai_feedback_insight_pagination_total": "总计 ${total} 条",
   "ai_feedback_state": "状态",
   "ai_feedback_state_ignore": "忽略",
   "ai_feedback_state_processed": "已处理",

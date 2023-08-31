@@ -185,6 +185,7 @@
   "ai_feedback_box_send": "Send",
   "ai_feedback_box_title": "Feedback",
   "ai_feedback_comment": "feedback comment",
+  "ai_feedback_insight_pagination_total": "Total ${total} items",
   "ai_feedback_state": "state",
   "ai_feedback_state_ignore": "ignore",
   "ai_feedback_state_processed": "processed",
