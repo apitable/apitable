@@ -44,4 +44,5 @@ export enum TrackEvents {
   TemplateConfirmUse='templateConfirmUse',
   InviteByContacts='inviteByContacts',
   InviteByWorkbench='inviteByWorkbench',
+  FormPrefill='formPrefill'
 }

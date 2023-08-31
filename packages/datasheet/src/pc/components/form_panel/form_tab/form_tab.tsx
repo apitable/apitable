@@ -21,7 +21,18 @@ import classNames from 'classnames';
 import { Dispatch, memo, SetStateAction, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Button, LinkButton, TextButton, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
+import {
+  ConfigConstant,
+  IReduxState,
+  Navigation,
+  ResourceType,
+  Selectors,
+  Strings,
+  t,
+  TrackEvents,
+  ViewType,
+  WORKBENCH_SIDE_ID,
+} from '@apitable/core';
 import { ListOutlined, EditOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
@@ -36,11 +47,13 @@ import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
 // @ts-ignore
 import { isEnterprise } from 'enterprise';
+import { usePostHog } from 'posthog-js/react';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
 const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAction<boolean>>; preFill: boolean }) => {
   const colors = useThemeColors();
+  const posthog = usePostHog();
   const tabRef = useRef<HTMLDivElement>(null);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -99,6 +112,11 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
 
   const jumpHandler = () => {
     Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId }});
+  };
+
+  const handlePreFill = () => {
+    posthog?.capture(TrackEvents.FormPrefill);
+    setPreFill(true);
   };
 
   const embedInfo = useSelector(state => state.embedInfo);
@@ -184,14 +202,14 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               size="small"
               variant="jelly"
               color="primary"
-              onClick={() => setPreFill(false)}
+              onClick={handlePreFill}
               className={styles.preFillBtn}
             >
               {t(Strings.pre_fill_title_btn)}
             </Button>
           ) : (
             <TextButton
-              onClick={() => setPreFill(true)}
+              onClick={handlePreFill}
               prefixIcon={<EditOutlined currentColor />}
               className={styles.preFillBtn}
               size="small"
