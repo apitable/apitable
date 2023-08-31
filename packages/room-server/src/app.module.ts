@@ -34,16 +34,15 @@ import { I18nModule } from 'nestjs-i18n';
 import { NodeModule } from 'node/node.module';
 import path, { resolve } from 'path';
 import { I18nJsonParser } from 'shared/adapters/I18n.json.parser';
-import { DatabaseConfigService } from 'shared/services/config/database.config.service';
-import { EnvConfigModule } from 'shared/services/config/env.config.module';
-import { redisModuleOptions } from 'shared/services/config/redis.config.service';
-import { JaegerDynamicModule } from 'shared/services/jaeger/jaeger.dynamic.module';
 import { SchedTaskDynamicModule } from 'shared/services/sched_task/sched.task.dynamic.module';
 import { SharedModule } from 'shared/shared.module';
 import { SocketModule } from 'socket/socket.module';
 import { UnitModule } from 'unit/unit.module';
 import { UserModule } from 'user/user.module';
 import { DeveloperModule } from './developer/developer.module';
+import { BullModule } from '@nestjs/bull';
+import { DatabaseConfigService, EnvConfigModule, redisModuleOptions, bullModuleOptions } from 'shared/services/config';
+import { JaegerDynamicModule } from 'shared/services/jaeger/jaeger.dynamic.module';
 
 @Module({
   imports: [
@@ -63,6 +62,11 @@ import { DeveloperModule } from './developer/developer.module';
     RedisModule.forRootAsync({
       inject: [ConfigService],
       useFactory: () => redisModuleOptions(),
+    }),
+    // bull configuration
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: () => bullModuleOptions()
     }),
     EnvConfigModule,
     I18nModule.forRoot({
