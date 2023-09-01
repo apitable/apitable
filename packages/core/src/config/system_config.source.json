@@ -2787,7 +2787,8 @@
       },
       "176": {
         "onClose": [
-          "set_wizard_completed({\"curWizard\": true})"
+          "set_wizard_completed({\"curWizard\": true})",
+          "clear_guide_all_ui()"
         ],
         "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
         "uiConfigId": "player_step_ui_config_176",
