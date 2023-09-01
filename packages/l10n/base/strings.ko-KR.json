@@ -20,7 +20,7 @@
   "account_nickname": "계정 이름:",
   "account_password_incorrect": "잘못된 계정 또는 암호",
   "account_wallet": "지갑",
-  "action_execute_error": "단계 실행 오류\n오류 메시지:\n${Value}\n\n자세한 내용은 https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "단계 실행 오류\n오류 메시지:\n${value}\n\n자세한 내용은 https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot를 참조하세요.",
   "activate_space": "스페이스 활성화",
   "active_record_hidden": "레코드가 숨겨졌습니다.",
   "active_space": "스페이스 활성화",

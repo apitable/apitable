@@ -20,7 +20,7 @@
   "account_nickname": "アカウント名：",
   "account_password_incorrect": "不正なアカウントまたはパスワード",
   "account_wallet": "財布",
-  "action_execute_error": "手順実行エラー\nエラーメッセージ：\n${Value}\n\n詳細は https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "ステップ実行エラー\nエラー メッセージ:\n${value}\n\n詳細については、https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot を参照してください",
   "activate_space": "アクティブスペース",
   "active_record_hidden": "レコードが非表示になっています",
   "active_space": "アクティブスペース",
