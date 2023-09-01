@@ -20,7 +20,7 @@
   "account_nickname": "Kontoname:",
   "account_password_incorrect": "Falsches Konto oder Passwort",
   "account_wallet": "Geldbörse",
-  "action_execute_error": "Schritt Fehler ausführen\nFehlermeldung:\nWert\n\nWeitere Informationen finden Sie unter https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "Schrittausführungsfehler\nFehlermeldung:\n${value}\n\nWeitere Informationen finden Sie unter https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "Leerzeichen aktivieren",
   "active_record_hidden": "Der Datensatz wurde ausgeblendet",
   "active_space": "Leerzeichen aktivieren",

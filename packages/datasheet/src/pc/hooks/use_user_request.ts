@@ -123,11 +123,9 @@ export const useUserRequest = () => {
         }
         if (urlParams.has('inviteLinkToken')) {
           join();
+          return;
         }
         if (!data) {
-          if (urlParams.has('inviteLinkToken')) {
-            return res.data;
-          }
           if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
             Router.redirect(Navigation.WORKBENCH, {
               params: { spaceId: inviteEmailInfo.data.spaceId },

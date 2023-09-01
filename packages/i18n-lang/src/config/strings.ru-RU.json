@@ -20,7 +20,7 @@
   "account_nickname": "Имя учетной записи:",
   "account_password_incorrect": "Неправильная учетная запись или пароль",
   "account_wallet": "Бумажник",
-  "action_execute_error": "ошибка выполнения шага\nсообщение об ошибке:\n${значение}\n\nболее подробную информацию можно найти на сайте https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "Ошибка выполнения шага\nСообщение об ошибке:\n${value}\n\nПодробную информацию см. в https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot.",
   "activate_space": "Активировать пространство",
   "active_record_hidden": "Записи были скрыты.",
   "active_space": "Активировать пространство",
