@@ -20,7 +20,7 @@
   "account_nickname": "帳號暱稱：",
   "account_password_incorrect": "帳號或密碼錯誤",
   "account_wallet": "賬戶錢包",
-  "action_execute_error": "步驟執行錯誤\n錯誤消息：\n${Value}\n\n有關詳情，請訪問 https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "步驟執行錯誤\n錯誤消息：\n${value}\n\n有關詳情，請訪問 https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "激活空間",
   "active_record_hidden": "記錄已被隱藏",
   "active_space": "已激活空間",
