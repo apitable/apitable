@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://apitable.com" target="_blank">
+    <a href="https://aitable.ai" target="_blank">
         <img src="docs/static/cover.png" alt="APITable Cover Image" />
     </a>
 </p>
@@ -66,7 +66,7 @@
 
 ## ✨ Quick Start
 
-If you just want to try out APITable[^info], use our cloud-hosted version at [apitable.com](https://apitable.com).
+If you just want to try out APITable[^info], use our cloud-hosted AI version at [aitable.ai](https://aitable.ai).
 
 If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
@@ -237,7 +237,7 @@ Embed them by copying and pasting HTML scripts.
 
 #### Enterprise-ready Embedding
 
-[APITable.com](https://apitable.com) provides more Enterprise-ready Embedding features for securities.
+[AITable.ai](https://aitable.ai) provides more Enterprise-ready Embedding features for securities.
 
 ## Installation
 
@@ -313,16 +313,16 @@ APITable use these common conventions:
 
 ### Documentations
 
-- [Help Center](https://help.apitable.com/)
-- [👩‍💻 Developer Center](https://developers.apitable.com/)
-  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
-  - [Widget SDK](https://developers.apitable.com/widget/introduction/)
-  - [Scripting Widget](https://developers.apitable.com/script/introduction/)
+- [Help Center](https://help.aitable.ai/)
+- [👩‍💻 Developer Center](https://developers.aitable.ai/)
+  - [🪡 REST API Docs](https://developers.aitable.ai/api/introduction/)
+  - [Widget SDK](https://developers.aitable.ai/widget/introduction/)
+  - [Scripting Widget](https://developers.aitable.ai/script/introduction/)
 - [Design System](https://figma.com/@apitable)
 
 ## 🛣 Roadmap
 
-Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
+Please refer to the [Roadmap of AITable](https://aitable.ai/roadmap)
 
 ### Future Features
 
@@ -344,7 +344,7 @@ Please refer to the [Roadmap of APITable](https://apitable.com/roadmap)
 - Integrate with ChatGPT, Zapier, Slack, Google Workspace……
 - Watermark
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
+For more information on our product, including enterprise self-hosted license, please contact us at <support@aitable.ai> or [book a demo](https://aitable.ai/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@aitable.ai).
 
 ## 👫 Get Involved
 
@@ -362,7 +362,7 @@ We always search for good talents for APITable:
 - **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
 - **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
+Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@aitable.ai>.
 
 ## 📺 Screenshot
 
@@ -405,8 +405,8 @@ Regardless of time and conditions, if you want to get involved to the team of AP
 >
 > See [LICENSING](./LICENSING.md) for details.
 >
-> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
+> If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [AITable.ai](https://aitable.ai) which optimized for global accelerator.
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
+[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://aitable.ai).
