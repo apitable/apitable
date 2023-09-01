@@ -50,7 +50,7 @@ app.prepare().then(() => {
     );
 
     server.use(createProxyMiddleware('/fusion', {
-        target: process.env.API_PROXY || process.env.API_FUSION_SERVER || 'http://127.0.0.1',
+        target: process.env.API_PROXY || process.env.API_FUSION_SERVER || 'http://127.0.0.1:3333',
         changeOrigin: true,
         cookieDomainRewrite: '',
       })
