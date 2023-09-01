@@ -1,42 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- APITable Ltd. <legal@apitable.com>
- Copyright (C)  2022 APITable Ltd. <https://apitable.com>
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
 
- This code file is part of APITable Enterprise Edition.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
- It is subject to the APITable Commercial License and conditional on having a fully paid-up license from APITable.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
 
- Access to this code file or other code files in this `enterprise` directory and its subdirectories does not constitute permission to use this code or APITable Enterprise Edition features.
-
- Unless otherwise noted, all files Copyright © 2022 APITable Ltd.
-
- For purchase of APITable Enterprise Edition license, please contact <sales@apitable.com>.
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.apitable.automation.mapper.AutomationTriggerMapper">
-
-    <resultMap id="triggerDto" type="com.apitable.automation.model.AutomationTriggerDto">
-        <result column="robot_id" property="robotId" javaType="String"/>
-        <result column="trigger_id" property="triggerId" javaType="String"/>
-        <result column="trigger_type_id" property="triggerTypeId" javaType="String"/>
-        <result column="input" property="input"
-                typeHandler="com.apitable.shared.util.ibatis.JsonHandler"/>
-    </resultMap>
-
-    <select id="getTriggers" resultMap="triggerDto">
-        SELECT trg.robot_id AS robot_id,
-               trg.trigger_id,
-               trg.trigger_type_id,
-               trg.input
-        FROM ${tablePrefix}automation_robot rbt
-                     JOIN ${tablePrefix}automation_trigger trg
-                ON rbt.robot_id = trg.robot_id AND trg.is_deleted = 0
-        WHERE rbt.resource_id = #{robotResourceId}
-          AND rbt.seq_id = #{seqId}
-          AND rbt.is_active = 1
+    <select id="selectTriggersByRobotIds"
+            resultType="com.apitable.automation.model.AutomationTriggerDto">
+        SELECT DISTINCT robot_id, resource_id
+        FROM ${tablePrefix}automation_trigger
+        WHERE robot_id IN
+        <foreach item="item" index="index" collection="robotIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
     </select>
+
+    <select id="selectByRobotIds"
+            resultType="com.apitable.automation.entity.AutomationTriggerEntity">
+        SELECT *
+        FROM ${tablePrefix}automation_trigger
+        WHERE robot_id IN
+        <foreach item="item" index="index" collection="robotIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertList">
+        INSERT INTO ${tablePrefix}automation_trigger(id, robot_id,
+                                                     trigger_type_id,
+                                                     trigger_id,
+                                                     prev_trigger_id,
+                                                     resource_id, input,
+                                                     created_by,
+                                                     updated_by)VALUES
+        <foreach collection="entities" item="element" index="index"
+                 separator=",">
+            (#{element.id}, #{element.robotId}, #{element.triggerTypeId},
+             #{element.triggerId}, #{element.prevTriggerId},
+             #{element.resourceId}, #{element.input},
+             #{element.createdBy}, #{element.updatedBy})
+        </foreach>
+    </insert>
 
     <update id="updateByTriggerId">
         UPDATE ${tablePrefix}automation_trigger

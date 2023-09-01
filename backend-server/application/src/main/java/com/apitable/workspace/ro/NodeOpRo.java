@@ -55,7 +55,7 @@ public class NodeOpRo {
         example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Type cannot be empty")
     @Min(value = 1, message = "Error in type")
-    @Max(value = 9, message = "Error in type")
+    @Max(value = 10, message = "Error in type")
     private Integer type;
 
     @Schema(description = "The previous node of the target position moves to the first position "
@@ -81,8 +81,10 @@ public class NodeOpRo {
             case DATASHEET:
             case FORM: // The name of the magic form is transmitted from the front end
             case DASHBOARD:
+            case MIRROR:
             case AI_CHAT_BOT:
-            case MIRROR: // The image name is transmitted from the front end
+            case AUTOMATION:
+                // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
                 return I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
             default:

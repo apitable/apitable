@@ -51,6 +51,8 @@ public enum TemplateException implements BaseException {
 
     FOLDER_DASHBOARD_LINK_FOREIGN_NODE(430, "The table referenced by the '{FOREIGN WIDGET NAME}' applet in the '{NODE NAME}' dashboard in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
+    FOLDER_AUTOMATION_LINK_FOREIGN_NODE(430, "The '{NODE_NAME}' table referenced by the '{AUTOMATION_NAME}' automation in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
+
     FOLDER_MIRROR_LINK_FOREIGN_NODE(430, "The original table connected to the '{NODE NAME}' image in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
     NODE_LINK_FOREIGN_NODE(430, "The {FOREIGN FIELD NAMES} column in the current table is related to another table. In this case, it will not be possible to save as a template"),

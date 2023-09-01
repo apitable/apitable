@@ -21,16 +21,19 @@ package com.apitable.automation.mapper;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AutomationTriggerMapper extends BaseMapper<AutomationTriggerEntity> {
 
-    /**
-     * Get triggers.
-     */
-    List<AutomationTriggerDto> getTriggers(@Param("seqId") String seqId,
-        @Param("robotResourceId") String robotResourceId);
+    List<AutomationTriggerDto> selectTriggersByRobotIds(
+        @Param("robotIds") Collection<String> robotIds);
+
+    List<AutomationTriggerEntity> selectByRobotIds(
+        @Param("robotIds") Collection<String> robotIds);
+
+    int insertList(@Param("entities") Collection<AutomationTriggerEntity> entities);
 
     /**
      * Update trigger.

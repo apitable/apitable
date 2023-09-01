@@ -18,7 +18,6 @@
 
 package com.apitable.automation.model;
 
-import cn.hutool.json.JSONObject;
 import lombok.Data;
 
 @Data
@@ -26,9 +25,6 @@ public class AutomationTriggerDto {
 
     private String robotId;
 
-    private String triggerId;
+    private String resourceId;
 
-    private String triggerTypeId;
-
-    private JSONObject input;
 }

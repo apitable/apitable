@@ -16,28 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.automation.service;
+package com.apitable.automation.model;
 
-import com.apitable.automation.entity.AutomationTriggerEntity;
-import com.apitable.automation.model.AutomationTriggerDto;
-import com.apitable.automation.model.TriggerCopyResultDto;
-import java.util.List;
-import java.util.Map;
+import lombok.Data;
 
-public interface IAutomationTriggerService {
+@Data
+public class RobotTriggerDto {
 
-    List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds);
+    private String robotId;
 
-    void create(AutomationTriggerEntity entity);
-
-    TriggerCopyResultDto copy(Long userId, boolean sameSpace,
-        Map<String, String> newRobotMap, Map<String, String> newNodeMap);
-
-    /**
-     * Update trigger by trigger id
-     *
-     * @param trigger trigger
-     */
-    void updateByTriggerId(AutomationTriggerEntity trigger);
+    private String triggerId;
 
 }

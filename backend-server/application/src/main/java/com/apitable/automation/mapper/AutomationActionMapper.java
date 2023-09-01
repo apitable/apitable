@@ -20,9 +20,16 @@ package com.apitable.automation.mapper;
 
 import com.apitable.automation.entity.AutomationActionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Collection;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AutomationActionMapper extends BaseMapper<AutomationActionEntity> {
+
+    List<AutomationActionEntity> selectByRobotIdIds(
+        @Param("robotIds") Collection<String> robotIds);
+
+    void insertList(@Param("entities") Collection<AutomationActionEntity> entities);
 
     int updateActionTypeIdAndInputByRobotId(@Param("robotId") String robotId,
         @Param("updatedActionTypeId") String updatedActionTypeId,

@@ -1,28 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- APITable Ltd. <legal@apitable.com>
- Copyright (C)  2022 APITable Ltd. <https://apitable.com>
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
 
- This code file is part of APITable Enterprise Edition.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
- It is subject to the APITable Commercial License and conditional on having a fully paid-up license from APITable.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
 
- Access to this code file or other code files in this `enterprise` directory and its subdirectories does not constitute permission to use this code or APITable Enterprise Edition features.
-
- Unless otherwise noted, all files Copyright © 2022 APITable Ltd.
-
- For purchase of APITable Enterprise Edition license, please contact <sales@apitable.com>.
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.apitable.automation.mapper.AutomationRobotMapper">
-    <select id="getRobotsByResourceId"
+    <select id="selectRobotsByResourceIds"
             resultType="com.apitable.automation.model.AutomationRobotDto">
-        SELECT robot_id, name, description
+        SELECT resource_id, robot_id
         FROM ${tablePrefix}automation_robot
+        WHERE resource_id IN
+        <foreach item="item" index="index" collection="resourceIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByResourceIds"
+            resultType="com.apitable.automation.entity.AutomationRobotEntity">
+        SELECT *
+        FROM ${tablePrefix}automation_robot
+        WHERE resource_id IN
+        <foreach item="item" index="index" collection="resourceIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertList">
+        INSERT INTO ${tablePrefix}automation_robot(id, resource_id, robot_id,
+                                                   `name`, description, props,
+                                                   is_active, created_by,
+                                                   updated_by, seq_id)VALUES
+        <foreach collection="entities" item="element" index="index"
+                 separator=",">
+            (#{element.id}, #{element.resourceId}, #{element.robotId},
+             #{element.name}, #{element.description}, #{element.props},
+             #{element.isActive}, #{element.createdBy}, #{element.updatedBy},
+             #{element.seqId})
+        </foreach>
+    </insert>
+
+    <update id="updateNameByResourceId">
+        UPDATE ${tablePrefix}automation_robot
+        SET `name` = #{name}
         WHERE resource_id = #{resourceId}
           AND is_deleted = 0
-    </select>
+    </update>
 
     <update id="updateByRobotId">
         UPDATE ${tablePrefix}automation_robot
@@ -33,6 +73,18 @@
         WHERE robot_id = #{robotId}
     </update>
 
+    <update id="updateIsDeletedByResourceIds">
+        UPDATE ${tablePrefix}automation_robot
+        SET is_deleted = #{isDeleted},
+            updated_by = #{userId}
+        WHERE resource_id IN
+        <foreach item="item" index="index" collection="resourceIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDeleted}
+    </update>
+
     <update id="removeByRobotIds">
         UPDATE ${tablePrefix}automation_robot
         SET is_deleted = 1
@@ -41,4 +93,15 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="getRobotTriggers"
+            resultType="com.apitable.automation.model.RobotTriggerDto">
+        SELECT trg.robot_id, trg.trigger_id
+        FROM ${tablePrefix}automation_robot rbt
+                     JOIN ${tablePrefix}automation_trigger trg
+                ON rbt.robot_id = trg.robot_id AND trg.is_deleted = 0
+        WHERE rbt.resource_id = #{resourceId}
+          AND rbt.seq_id = #{seqId}
+          AND rbt.is_active = 1
+    </select>
 </mapper>
