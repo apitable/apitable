@@ -223,5 +223,6 @@ export const getEnvVars = () => {
     AI_ENTRANCE_VISIBLE: process.env.AI_ENTRANCE_VISIBLE === 'true',
     AI_OPEN_FORM: process.env.AI_OPEN_FORM,
     AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
+    AI_API_HELP_URL: process.env.AI_API_HELP_URL,
   };
 };
