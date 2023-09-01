@@ -20,7 +20,7 @@
   "account_nickname": "Nome del conto:",
   "account_password_incorrect": "Account o password errati",
   "account_wallet": "Portafoglio",
-  "action_execute_error": "Errore di esecuzione del passo\nMessaggio di errore:\n${valore}\n\nPer i dettagli, si prega di fare riferimento a https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "Errore di esecuzione del passaggio\nMessaggio di errore:\n${valore}\n\nPer i dettagli, fare riferimento a https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "Attiva spazio",
   "active_record_hidden": "Il record è stato nascosto",
   "active_space": "Attiva spazio",

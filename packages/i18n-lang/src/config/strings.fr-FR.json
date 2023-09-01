@@ -20,7 +20,7 @@
   "account_nickname": "Nom du compte: ",
   "account_password_incorrect": "Compte ou mot de passe incorrect",
   "account_wallet": "Portefeuille",
-  "action_execute_error": "Erreur d'exécution de l'étape\nMessage d'erreur & # 160;:\n${valeur}\n\nPour plus de détails, veuillez vous référer à https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "Erreur d'exécution de l'étape\nMessage d'erreur :\n${value}\n\nPour plus de détails, veuillez vous référer à https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "Activer l'espace",
   "active_record_hidden": "L'enregistrement a été masqué",
   "active_space": "Activer l'espace",

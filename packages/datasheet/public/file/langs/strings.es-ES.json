@@ -20,7 +20,7 @@
   "account_nickname": "Nombre de la cuenta:",
   "account_password_incorrect": "Cuenta o contraseña incorrecta",
   "account_wallet": "Billetera",
-  "action_execute_error": "Paso Ejecutar error\nMensaje de error:\n${valor}\n\nPara más detalles, consulte https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
+  "action_execute_error": "Error de ejecución de paso\nMensaje de error:\n${value}\n\nPara obtener más información, consulte https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "activate_space": "Espacio activado",
   "active_record_hidden": "El Registro ha sido oculto",
   "active_space": "Espacio activado",
