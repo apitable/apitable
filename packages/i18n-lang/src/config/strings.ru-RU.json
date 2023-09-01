@@ -175,7 +175,7 @@
   "ai_new_conversation_btn_text": "Новый разговор",
   "ai_open_remark_can_not_empty": "Пожалуйста, предоставьте текст, чтобы пользователи знали, как чат - боты могут помочь им.",
   "ai_open_remark_desc": "The content that the chatbot will say when a member chats with it for the first time.",
-  "ai_open_remark_title": "Opening Remarks",
+  "ai_open_remark_title": "Opening remarks",
   "ai_page_loading_text": "Загружается.",
   "ai_preview_title": "Предварительный просмотр",
   "ai_prompt_desc": "Исходный текст или сообщение, предоставленное пользователем для начала диалога с языковой моделью. Это может рассматриваться как подсказка или подсказка для генерирования ответа LLM.",
