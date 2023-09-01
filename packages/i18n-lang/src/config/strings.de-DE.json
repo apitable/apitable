@@ -175,7 +175,7 @@
   "ai_new_conversation_btn_text": "Neues Gespräch",
   "ai_open_remark_can_not_empty": "Bitte geben Sie einen Text an, um Benutzer wissen zu lassen, wie der Chatbot ihnen helfen kann.",
   "ai_open_remark_desc": "The content that the chatbot will say when a member chats with it for the first time.",
-  "ai_open_remark_title": "Opening Remarks",
+  "ai_open_remark_title": "Opening remarks",
   "ai_page_loading_text": "Laden...",
   "ai_preview_title": "Vorschau",
   "ai_prompt_desc": "Der Starttext oder die Nachricht, die ein Benutzer zur Einleitung einer Konversation mit dem Sprachmodell bereitstellt. Es kann als eine Aufforderung oder ein Stichwort für LLM betrachtet werden, um eine Antwort zu generieren.",

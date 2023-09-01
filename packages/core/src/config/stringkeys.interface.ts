@@ -144,7 +144,7 @@ export type StringKeysMapType = {
   'ai_api_python_template': 'ai_api_python_template',
   'ai_api_tab_title_1': 'ai_api_tab_title_1',
   'ai_assistant': 'ai_assistant',
-  'ai_bot_modal_title': 'ai_bot_modal_title',
+  'ai_bot_model_title': 'ai_bot_model_title',
   'ai_can_train_count': 'ai_can_train_count',
   'ai_chat_default_prologue': 'ai_chat_default_prologue',
   'ai_chat_default_prompt': 'ai_chat_default_prompt',
