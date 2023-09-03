@@ -16,32 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.automation.enums;
+package com.apitable.automation.model;
 
-import com.apitable.core.exception.BaseException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
- * <p>
- * automation exception
- * </p>
- *
- * @author feng penglong
+ * Automation run history request object.
  */
-@Getter
-@AllArgsConstructor
-public enum AutomationException implements BaseException {
+@Data
+@Schema(description = "Automation run history request parameters")
+public class AutomationRunHistoryRo {
 
-    DST_ROBOT_LIMIT(1101, "The single-table robot has reached the upper limit"),
+    @Schema(description = "Robot id", example = "arb***", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String robotId;
 
-    DST_ROBOT_REPEAT(1102, "Do not recreate"),
+    @Schema(description = "Current page number, default: 1", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pageNum = 1;
 
-    AUTOMATION_ERROR(1103, "Server error"),
-
-    ;
-
-    private final Integer code;
-
-    private final String message;
+    @Schema(description = "Page size, default: 20", example = "20", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Integer pageSize = 20;
 }

@@ -194,3 +194,6 @@ system:
   default-time-zone: ${DEFAULT_TIME_ZONE:UTC}
   test-enabled: ${TEST_ENABLED:false}
 
+databus:
+  client:
+    host: ${DATABUS_SERVER_HOST:http://127.0.0.1:8625}

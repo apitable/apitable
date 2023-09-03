@@ -16,32 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.automation.enums;
+package com.apitable.automation.service.impl;
 
-import com.apitable.core.exception.BaseException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.apitable.automation.service.IAutomationRunHistoryService;
+import com.apitable.databusclient.ApiException;
+import com.apitable.databusclient.api.AutomationDaoApiApi;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
- * <p>
- * automation exception
- * </p>
- *
- * @author feng penglong
+ * Automation run history interface implement.
  */
-@Getter
-@AllArgsConstructor
-public enum AutomationException implements BaseException {
+@Slf4j
+@Service
+public class AutomationRunHistoryServiceImpl implements IAutomationRunHistoryService {
 
-    DST_ROBOT_LIMIT(1101, "The single-table robot has reached the upper limit"),
+    @Resource
+    private AutomationDaoApiApi automationDaoApiApi;
 
-    DST_ROBOT_REPEAT(1102, "Do not recreate"),
-
-    AUTOMATION_ERROR(1103, "Server error"),
-
-    ;
-
-    private final Integer code;
-
-    private final String message;
+    @Override
+    public void getRobotRunHistory(String robotId) throws ApiException {
+        automationDaoApiApi.daoGetAutomationRunHistory(robotId);
+    }
 }

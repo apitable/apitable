@@ -16,32 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.automation.enums;
+package com.apitable.shared.support.serializer;
 
-import com.apitable.core.exception.BaseException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
 
 /**
- * <p>
- * automation exception
- * </p>
- *
- * @author feng penglong
+ * Integer to boolean.
  */
-@Getter
-@AllArgsConstructor
-public enum AutomationException implements BaseException {
+public class IntegerToBooleanSerializer extends JsonSerializer<Integer> {
 
-    DST_ROBOT_LIMIT(1101, "The single-table robot has reached the upper limit"),
-
-    DST_ROBOT_REPEAT(1102, "Do not recreate"),
-
-    AUTOMATION_ERROR(1103, "Server error"),
-
-    ;
-
-    private final Integer code;
-
-    private final String message;
+    @Override
+    public void serialize(Integer value, JsonGenerator gen, SerializerProvider provider)
+        throws IOException {
+        if (null != value && 1 == value) {
+            gen.writeBoolean(true);
+        }
+        gen.writeBoolean(false);
+    }
 }
