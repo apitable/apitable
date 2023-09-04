@@ -35,6 +35,10 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import produce from 'immer';
+import { isSafari } from 'react-device-detect';
+import { BaseEditor, Selection, Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
