@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction } from '@apitable/core';
+import {
+  IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction, CollaCommandName, Strings, OTActionName,
+  RowHeightLevel, ViewType, FieldTypeDescriptionMap
+} from '@apitable/core';
+import { commandTran, StringsCommandName } from './interface';
 
 export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
   const actions = opList.reduce((acc, op) => {
@@ -39,3 +43,84 @@ export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
   });
   return [...ids];
 };
+
+export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
+  const cmdStringKey: string = StringsCommandName[op.cmd] || op.cmd;
+  const countMap = {};
+  let actionCount = '';
+
+  for (const item of op.actions) {
+    if (item.n === OTActionName.ListMove) {
+      countMap[item.n] = countMap[item.n] || [];
+      countMap[item.n].push(item.lm + 1);
+    } else if (item.n && item.n !== OTActionName.NumberAdd) {
+      countMap[item.n] = (countMap[item.n] || 0) + 1;
+    }
+  }
+  for (const nValue in countMap) {
+    const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
+    actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
+  }
+
+  //commandString
+  switch (op.cmd) {
+    case CollaCommandName.AddFields:
+      op.actions.find(item => {
+        if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {
+          actionCount = item['oi'].type;
+        }
+      });
+      return commandTran(cmdStringKey, { name: FieldTypeDescriptionMap[actionCount]?.title });
+
+    case CollaCommandName.AddWidgetPanel:
+      return commandTran(cmdStringKey, { name: op.actions[0]['li'].name });
+
+    case CollaCommandName.AddViews:
+      actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['li'].type]]];
+      return commandTran(cmdStringKey, { name: commandTran(actionCount) });
+
+    case CollaCommandName.DeleteViews:
+      actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['ld'].type]]];
+      return commandTran(cmdStringKey, { type: commandTran(actionCount) });
+
+    case CollaCommandName.SetViewFrozenColumnCount:
+      return commandTran(cmdStringKey, { count: op.actions[0]['oi'] });
+
+    case 'UNDO:SetViewFrozenColumnCount':
+      return commandTran(cmdStringKey, { count: op.actions[0]['od'] });
+
+    case CollaCommandName.SetAutoHeadHeight:
+    case CollaCommandName.SetViewLockInfo:
+      actionCount = op.actions[0]['oi'] ? 'open' : 'close';
+      return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
+
+    case CollaCommandName.SetRowHeight:
+      actionCount = StringsCommandName[RowHeightLevel[op.actions[0]['oi']]];
+      return commandTran(cmdStringKey) + ': ' + commandTran(actionCount);
+
+    case CollaCommandName.DeleteField:
+      const newRecordCount = op.actions.filter(item => item['od'] instanceof Object && !Array.isArray(item['od']));
+      return commandTran(cmdStringKey, { record_count: newRecordCount.length });
+
+    case CollaCommandName.MoveViews:
+    case CollaCommandName.AddRecords:
+    case CollaCommandName.AddWidgetToPanel:
+    case CollaCommandName.MoveWidget:
+    case CollaCommandName.DeleteWidget:
+    case CollaCommandName.DeleteRecords:
+      return commandTran(cmdStringKey);
+
+    case CollaCommandName.ModifyWidgetPanelName:
+      actionCount = op.actions[0]['oi'];
+      return commandTran(cmdStringKey) + ': ' + actionCount;
+
+    case CollaCommandName.DeleteWidgetPanel:
+      actionCount = op.actions[0]['ld'].name;
+      return commandTran(cmdStringKey) + ': ' + actionCount;
+
+    default:
+      const recordCount = op.actions.length > 1 ? op.actions.length : 1;
+      return commandTran(cmdStringKey, { record_count: recordCount }) + ' ' + actionCount;
+  }
+
+}).join('');
