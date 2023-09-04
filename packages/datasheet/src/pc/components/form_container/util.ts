@@ -1,43 +1,16 @@
-import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
 import dayjs from 'dayjs';
 import { compact, find } from 'lodash';
 import qs from 'qs';
-import { IFormData, IFormQuery } from './interface';
+import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
+import { IFormQuery, IFormData } from './interface';
 
-const FORM_FIELD_TYPE = {
+export const FORM_FIELD_TYPE = {
   select: [FieldType.SingleSelect, FieldType.MultiSelect],
   primary: [FieldType.Member, FieldType.Link],
   number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
   bool: [FieldType.Checkbox],
   datetime: [FieldType.DateTime],
   filter: [FieldType.Attachment, FieldType.Cascader]
-};
-
-export const formData2String = (formData: IFormData, fieldMap: IFieldMap) => {
-  const newValue: IFormQuery = {};
-  for(const key in formData) {
-    let value = formData[key];
-    const field = fieldMap[key];
-    if (!field) { continue; }
-    if (value && FORM_FIELD_TYPE.select.includes(field.type)) {
-      const options = field.property.options;
-      if (typeof value === 'string') {
-        value = [find(options, { id: value }).name];
-      } else {
-        value = (value as string[]).map((item: string) => find(options, { id: item }).name);
-      }
-      newValue[key] = value as string[];
-    } else if ([...FORM_FIELD_TYPE.primary, ...FORM_FIELD_TYPE.number].includes(field.type)) {
-      newValue[key] = value as string;
-    } else if (!FORM_FIELD_TYPE.filter.includes(field.type)) {
-      const cellString = Field.bindModel(field).cellValueToString(value);
-      if (cellString !== null) {
-        newValue[key] = cellString;
-      }
-    }
-  }
-  const urlString = qs.stringify(newValue);
-  return urlString ? `?${urlString}` : '';
 };
 
 export const string2Query = () => {

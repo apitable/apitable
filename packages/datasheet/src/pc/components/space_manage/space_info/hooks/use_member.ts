@@ -17,33 +17,37 @@
  */
 
 import { useMemo } from 'react';
-import { decimalCeil } from '@apitable/core';
-import { getPercent } from '../utils';
+import { decimalCeil, Strings, t } from '@apitable/core';
 import { IHooksParams, IHooksResult } from '../interface';
+import { getPercent } from '../utils';
 
-export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResult => {
-  const { used, total } = useMemo(() => {
+export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResult & { usedString: string } => {
+  const { seatUsage, total } = useMemo(() => {
     return {
-      used: spaceInfo?.seats || 0,
+      seatUsage: spaceInfo?.seatUsage || { total: 0, chatBotCount: 0, memberCount: 0 },
       total: subscription?.maxSeats || 0,
     };
   }, [subscription, spaceInfo]);
+
   return useMemo(() => {
-    const remain = Math.max(0, total - used);
-    const usedText = used.toLocaleString();
+    const remain = Math.max(0, total - seatUsage.total);
+    const usedText = seatUsage.total.toLocaleString();
+    const usedString = `${seatUsage.memberCount} ${t(Strings.people)} + ${seatUsage.chatBotCount} ${t(Strings.ai_chat_unit)}`;
     const totalText = total.toLocaleString();
-    const usedPercent = decimalCeil(getPercent(used / total) * 100);
+    const usedPercent = decimalCeil(getPercent(seatUsage.total / total) * 100);
     const remainText = remain.toLocaleString();
     const remainPercent = Math.max(0, 100 - usedPercent);
+
     return {
-      used,
+      used: seatUsage.total,
       usedText,
+      usedString,
       total,
       totalText,
       remain,
       usedPercent,
       remainPercent,
-      remainText
+      remainText,
     };
-  }, [used, total]);
+  }, [seatUsage, total]);
 };

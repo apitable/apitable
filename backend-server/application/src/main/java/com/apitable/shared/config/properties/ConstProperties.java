@@ -97,7 +97,7 @@ public class ConstProperties {
             || token.startsWith("http")) {
             return token;
         }
-        return StrUtil.format("{}/{}", this.getOssBucketByAsset(), token);
+        return StrUtil.format("{}/{}", this.getOssBucketByAsset().resourceUrl, token);
     }
 
     public String defaultServerDomain() {

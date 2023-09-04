@@ -19,8 +19,12 @@
 package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationRobotEntity;
+import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationRobotDto;
+import com.apitable.automation.model.AutomationVO;
+import com.apitable.databusclient.ApiException;
 import java.util.List;
+import java.util.Map;
 
 public interface IAutomationRobotService {
 
@@ -33,7 +37,14 @@ public interface IAutomationRobotService {
 
     void create(AutomationRobotEntity robot);
 
+    void copy(Long userId, List<String> resourceIds,
+              AutomationCopyOptions options, Map<String, String> newNodeMap);
+
+    void updateNameByResourceId(String resourceId, String name);
+
     void updateByRobotId(AutomationRobotEntity robot);
+
+    void updateIsDeletedByResourceIds(Long userId, List<String> resourceIds, Boolean isDeleted);
 
     /**
      * Batch delete robot.
@@ -42,4 +53,12 @@ public interface IAutomationRobotService {
      */
     void delete(List<String> robotIds);
 
+    /**
+     * get robots introduction list.
+     *
+     * @param resourceId resource id
+     */
+    List<AutomationVO> getRobotsByResourceId(String resourceId) throws ApiException;
+
+    void checkAutomationReference(List<String> subNodeIds, List<String> resourceIds);
 }

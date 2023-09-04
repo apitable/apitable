@@ -91,13 +91,13 @@ public class AutomationRobotEntity implements Serializable {
     /**
      * Is it active
      */
-    private Integer isActive;
+    private Boolean isActive;
 
     /**
      * Delete Tag(0: No, 1: Yes)
      */
     @TableLogic
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
     /**
      * Creator

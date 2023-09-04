@@ -16,19 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@apitable/components';
+import { useScroll } from 'ahooks';
+import { message, Tabs } from 'antd';
+import dayjs from 'dayjs';
+import { difference } from 'lodash';
+import Image from 'next/image';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Box, IconButton, Loading, Skeleton, Tooltip, Typography } from '@apitable/components';
 import {
   Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset,
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t, ThemeName
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
-import { useScroll } from 'ahooks';
-import { message, Tabs } from 'antd';
-import dayjs from 'dayjs';
-// @ts-ignore
-import { getSocialWecomUnitName, Backup } from 'enterprise';
-import { difference } from 'lodash';
-import { Modal } from 'pc/components/common';
+import { Avatar, Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { Portal } from 'pc/components/portal';
@@ -36,21 +38,20 @@ import { Beta } from 'pc/components/robot/robot_panel/robot_list_head';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Image from 'next/image';
+import { getEnvVariables } from 'pc/utils/env';
 import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
 import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
-import styles from './style.module.less';
-import { getForeignDatasheetIdsByOp } from './utils';
 import { TabPaneKeys } from './interface';
-import { getEnvVariables } from 'pc/utils/env';
+import styles from './style.module.less';
+import { getForeignDatasheetIdsByOp, getOperationInfo } from './utils';
+// @ts-ignore
+import { getSocialWecomUnitName, Backup } from 'enterprise';
 
 const { TabPane } = Tabs;
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
+const DATEFORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -278,29 +279,24 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                     spaceInfo
                   }) || memberInfo?.memberName) : '';
                   const ops = item.operations.filter(op => !op.cmd.startsWith('System'));
-                  const expanded = expandMap[index];
                   return (
-                    <section className={styles.listItem} key={item.messageId} data-active={index === curPreview}>
-                      <h5>Message Id: {item.messageId}</h5>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{t(Strings.rollback_version_field)}{item.revision}</span>
-                        <span>{t(Strings.rollback_time_field)}{dayjs(item.createdAt).format('MM/DD HH:mm:ss')}</span>
-                        <span>{t(Strings.rollback_operator_field)}{title}</span>
-                      </div>
-                      <div className={styles.operationWrap}>
-                        <div className={styles.cmdText}>
-                          cmd: {ops.map(op => op.cmd).join()}
-                        </div>
-                        <div className={styles.operation}>
-                          <TextButton disabled={isEmpty} onClick={() => onExpandClick(index)}>
-                            {expanded ? t(Strings.collapse) : t(Strings.expand)}
-                          </TextButton>
-                          <TextButton color='primary' disabled={isEmpty} onClick={() => onPreviewClick(index)}>
-                            {t(Strings.preview_revision)}
-                          </TextButton>
+                    <section className={styles.listItem} key={item.messageId} data-active={index === curPreview}
+                      onClick={() => onPreviewClick(index)}>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Avatar
+                          id={item.userId || ''}
+                          title={title}
+                          size={24}
+                          src={memberInfo?.avatar}
+                        />
+                        <div>
+                          <div className={styles.title}>
+                            <span style={{ paddingRight: '4px' }}>{title}</span>
+                            <span>{getOperationInfo(ops)}</span>
+                          </div>
+                          <div className={styles.timestamp}>{dayjs(item.createdAt).format(DATEFORMAT)}</div>
                         </div>
                       </div>
-                      {expanded && <pre><code>{JSON.stringify(ops, null, 2)}</code></pre>}
                     </section>
                   );
                 })}

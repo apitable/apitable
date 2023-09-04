@@ -23,9 +23,8 @@ import lombok.Data;
 @Data
 public class AutomationRobotDto {
 
+    private String resourceId;
+
     private String robotId;
 
-    private String name;
-
-    private String description;
 }

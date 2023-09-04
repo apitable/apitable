@@ -35,7 +35,11 @@ public enum AutomationException implements BaseException {
 
     DST_ROBOT_LIMIT(1101, "The single-table robot has reached the upper limit"),
 
-    DST_ROBOT_REPEAT(1102, "Do not recreate");
+    DST_ROBOT_REPEAT(1102, "Do not recreate"),
+
+    AUTOMATION_ERROR(1103, "Server error"),
+
+    ;
 
     private final Integer code;
 

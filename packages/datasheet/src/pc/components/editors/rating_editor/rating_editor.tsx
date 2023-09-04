@@ -17,17 +17,17 @@
  */
 
 import { ConfigConstant, t, Strings } from '@apitable/core';
-import { Rate } from 'pc/components/common/rate';
 import { forwardRef, memo, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
-import { IBaseEditorProps, IEditor } from '../interface';
-import style from './style.module.less';
-import { Emoji } from 'pc/components/common/emoji';
-import { FocusHolder } from '../focus_holder';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { RatingEditorMobile } from './rating_editor_mobile';
-import { isNumberKey, isTouchDevice } from 'pc/utils';
 import { Message } from '@apitable/components';
+import { Rate } from 'pc/components/common/rate';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { isNumberKey, isTouchDevice } from 'pc/utils';
+import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { IBaseEditorProps, IEditor } from '../interface';
+import { FocusHolder } from '../focus_holder';
+import style from './style.module.less';
+import { RatingEditorMobile } from './rating_editor_mobile';
 
 export interface IRatingEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -138,7 +138,12 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
         <Rate
           disabled={!editable}
           value={value}
-          character={<Emoji emoji={props.field.property.icon} set="apple" size={emojiSize || ConfigConstant.CELL_EMOJI_SIZE} />}
+          character={
+            getNodeIcon(props.field.property.icon, ConfigConstant.NodeType.DATASHEET, {
+              size: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
+              emojiSize: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
+            })
+          }
           onChange={handleChange}
           max={props.field.property.max}
         />

@@ -16,17 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Image from 'next/image';
+import { FC, useState } from 'react';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
-import Image from 'next/image';
-import { FC, useState } from 'react';
-import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { useSelector } from 'react-redux';
 import { ButtonPlus } from 'pc/components/common';
 import { execNoTraceVerification } from 'pc/utils';
+import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
 // import FileSvg from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.svg';
 import { IErrorInfo } from '../interface';
 import { Records } from './records';
@@ -39,23 +37,13 @@ interface IFileSelected {
   confirmImport: (nvcVal?: string) => void;
 }
 
-export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
-  file, init,
-  previewList, confirmImport
-}) => {
+export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({ file, init, previewList, confirmImport }) => {
   const [preview, setPreview] = useState(false);
   const colors = useThemeColors();
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
 
   if (!file) return null;
 
   const _confirmImport = () => {
-    const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + previewList.length, alwaysAlert: true }, SubscribeUsageTipType.Alert);
-
-    if (result1) {
-      return;
-    }
-
     window['nvc'] ? execNoTraceVerification(confirmImport) : confirmImport();
   };
 
@@ -68,26 +56,14 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({
     <div className={styles.fileSelected}>
       <div className={styles.fileImg}>
         <Image src={ExcelPng} alt="" />
-        <ButtonPlus.Font
-          icon={<DeleteOutlined color={colors.thirdLevelText} />}
-          onClick={init}
-          size="small"
-        />
+        <ButtonPlus.Font icon={<DeleteOutlined color={colors.thirdLevelText} />} onClick={init} size="small" />
       </div>
       <div className={styles.fileName}>{fileName}</div>
       <div className={styles.btnWrap}>
-        <Button
-          color="primary"
-          block
-          onClick={_confirmImport}
-          style={{ marginBottom: '8px' }}
-        >
+        <Button color="primary" block onClick={_confirmImport} style={{ marginBottom: '8px' }}>
           {t(Strings.confirm_import)}
         </Button>
-        <TextButton
-          block
-          onClick={previewClick}
-        >
+        <TextButton block onClick={previewClick}>
           {t(Strings.member_list_review)}
         </TextButton>
       </div>

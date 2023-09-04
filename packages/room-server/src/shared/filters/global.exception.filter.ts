@@ -17,13 +17,21 @@
  */
 
 import { ApiTipConstant, ConfigConstant } from '@apitable/core';
-import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  BadRequestException,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
 import { I18nService } from 'nestjs-i18n';
 import { USER_HTTP_DECORATE } from 'shared/common';
-import { ApiException, ServerException } from 'shared/exception';
+import { ApiException, OverLimitException, ServerException } from 'shared/exception';
 import { IHttpErrorResponse } from 'shared/interfaces/http.interfaces';
 
 /**
@@ -106,6 +114,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         lang: request[USER_HTTP_DECORATE]?.locale,
         args: exception.getExtra(),
       });
+    }
+
+    if (exception instanceof OverLimitException) {
+      httpStatusCode = exception.getStatus();
+      statusCode = exception.ex.getCode();
+      errMsg = exception.ex.getMessage();
     }
 
     // standard error response

@@ -20,6 +20,7 @@ package com.apitable.workspace.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
@@ -73,6 +74,9 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
 
     @Resource
     private IDatasheetService iDatasheetService;
+
+    @Resource
+    private IAutomationRobotService iAutomationRobotService;
 
     @Resource
     private ISpaceAssetService iSpaceAssetService;
@@ -155,6 +159,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         if (CollUtil.isNotEmpty(subNodeIds)) {
             // recovery datasheet
             iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, false);
+            iAutomationRobotService.updateIsDeletedByResourceIds(userId, subNodeIds, false);
             // Restore the spatial attachment resources of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(subNodeIds, false);
             // Only child nodes are restored, and the original node is handed over to the method of restoring node information.

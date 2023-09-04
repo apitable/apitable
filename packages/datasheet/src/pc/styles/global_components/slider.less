@@ -23,11 +23,21 @@
 
 // The desired effect cannot be achieved by overriding the above variable names, overloading the style class
 .ant-slider {
-  .ant-slider-track {
-    height: 2px;
+  &-rail {
+    background: var(--bgControlsDefault);
+    height: 4px;
   }
   .ant-slider-handle {
     border: 2px solid var(--primaryColor);
-    margin-top: -6px;
+    margin-top: -5px;
+  }
+  &-track {
+    height: 4px;
+  }
+  &:hover &-rail {
+    background: var(--bgControlsHover);
+  }
+  &:hover &-track {
+    height: 4px;
   }
 }

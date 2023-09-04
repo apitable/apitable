@@ -1,11 +1,17 @@
 @import "~pc/styles/lib_mixins.less";
 @import "~pc/styles/lib_screen.less";
 
+.numberEditorDisabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .numberEditor {
   position: relative;
   width: 100%;
   box-sizing: border-box;
   border-radius: 1px;
+
 
   .numberInput {
     text-align: right;
@@ -21,9 +27,6 @@
     padding: 7px 10px;
     font-size: 13px;
 
-    &[disabled] {
-      cursor: not-allowed;
-    }
   }
 }
 

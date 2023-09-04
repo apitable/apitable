@@ -67,7 +67,7 @@ public class SpaceLinkController {
 
     @Resource
     private IInvitationService iInvitationService;
-
+    
     /**
      * Get a list of links.
      */

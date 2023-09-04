@@ -265,7 +265,7 @@ const Option = ListDeprecate.Item;
 
 DropdownSelect.Option = Option;
 
-function OptionItem({ item,currentIndex, value , keyword,
+export function OptionItem({ item,currentIndex, value , keyword,
   onClick
 }: {item: IOption, currentIndex: number, value: any, keyword: string,onClick: () => void}) {
 

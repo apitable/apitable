@@ -186,9 +186,9 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   const singleFormShare = formId && nodeTree?.nodeId === formId;
 
   const isIframeShowShareMenu = nodeTree?.children?.length === 0 && isIframe();
-  const { IS_APITABLE } = getEnvVariables();
-  const LightLogo = IS_APITABLE ? apitableLogoLight : vikaLogoLight;
-  const DarkLogo = IS_APITABLE ? apitableLogoDark : vikaLogoDark;
+  const { IS_APITABLE, IS_AITABLE, LONG_DARK_LOGO, LONG_LIGHT_LOGO } = getEnvVariables();
+  const LightLogo = IS_AITABLE ? LONG_LIGHT_LOGO! : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
+  const DarkLogo = IS_AITABLE ? LONG_DARK_LOGO! : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
   let localSize = null;
   try {
     localSize = localStorage.getItem('splitPos');

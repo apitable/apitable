@@ -43,6 +43,13 @@ export class AutomationTriggerEntity extends BaseEntity {
   })
   triggerTypeId?: string;
 
+  @Column({
+    name: 'resource_id',
+    nullable: false,
+    length: 50,
+  })
+  resourceId?: string;
+
   @Column('json', {
     name: 'input',
     nullable: true,

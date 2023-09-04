@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import produce from 'immer';
+import { isSafari } from 'react-device-detect';
+import { BaseEditor, Selection, Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   EmptyNullOperand,
@@ -31,10 +35,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import produce from 'immer';
-import { isSafari } from 'react-device-detect';
-import { BaseEditor, Selection, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
@@ -517,7 +517,7 @@ export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
   });
 };
 
-export const withMagicVariable = (editor: any, triggerId: string) => {
+export const withMagicVariable = (editor: any, triggerId?: string) => {
   const { isInline, isVoid, onChange } = editor;
 
   editor.isInline = (element: { type: string; }) => {

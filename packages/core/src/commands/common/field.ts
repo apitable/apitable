@@ -472,7 +472,7 @@ export function clearOldBrotherField(
   const foreignFieldMap = foreignSnapshot.meta.fieldMap;
   const foreignOldField = foreignFieldMap[oldField.property.brotherFieldId] as ILinkField;
 
-  if (!foreignOldField || foreignOldField.property.brotherFieldId !== oldField.id) {
+  if (!foreignOldField || foreignOldField.property?.brotherFieldId !== oldField.id) {
     return null;
   }
 

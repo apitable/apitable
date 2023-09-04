@@ -337,7 +337,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
           <div className={styles.spaceDown}>
             <Tooltip title={t(Strings.workspace_list)} placement='bottom'>
               <div>
-                <ChevronDownOutlined className={styles.spaceIcon} color={colors.textStaticTertiary} />
+                <ChevronDownOutlined className={styles.spaceIcon} />
               </div>
             </Tooltip>
           </div>

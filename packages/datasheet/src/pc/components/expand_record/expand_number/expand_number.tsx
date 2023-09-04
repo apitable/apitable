@@ -54,7 +54,7 @@ const ExpandNumberBase: React.ForwardRefRenderFunction<IEditor, IExpandNumberPro
         width={width}
         height={height}
         style={style}
-        editable={editable}
+        disabled={!editable}
         editing={editing}
         isFromFieldEditor
         onSave={onSave}

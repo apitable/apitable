@@ -23,6 +23,9 @@ import { Strings, t } from '../../exports/i18n';
 import json0 from 'ot-json0/lib/json0';
 import { IJot } from './interface';
 
+import { WasmApi } from 'modules/database/api';
+import { getBrowserDatabusApiEnabled } from 'modules/database/api/wasm';
+
 export * from './interface';
 export * from './compose';
 
@@ -30,6 +33,31 @@ export const jot: IJot = {
   ...json0,
   apply(json, actions) {
     try {
+      if (getBrowserDatabusApiEnabled()) {
+        const jsonString = JSON.stringify(json);
+        const actionsString = JSON.stringify(actions);
+
+        let result;
+        let resultString;
+
+        try {
+          resultString = WasmApi.getInstance().json0_apply(jsonString, actionsString);
+          result = JSON.parse(resultString);
+        } catch (error) {
+          console.error('Error applying json0:', error);
+          throw error;
+        }
+
+        // update previous json Proxy(Object) with new result
+        for (const key in result) {
+          if (Object.prototype.hasOwnProperty.call(result, key)) {
+            json[key] = result[key];
+          }
+        }
+
+        return result;
+      }
+
       return json0.apply(json, actions);
     } catch (e: any) {
       if ((e as Error).message === 'invalid / missing instruction in op') {
@@ -38,5 +66,5 @@ export const jot: IJot = {
         throw e;
       }
     }
-  }
+  },
 };

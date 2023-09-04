@@ -222,7 +222,7 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 function __wbg_adapter_30(arg0, arg1, arg2) {
-    wasm.wasm_bindgen__convert__closures__invoke1_mut__h4e50add4ab1bcd2d(arg0, arg1, addHeapObject(arg2));
+    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h44a3920d8c065956(arg0, arg1, addHeapObject(arg2));
 }
 
 function __wbg_adapter_35(arg0, arg1, arg2) {
@@ -346,7 +346,7 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
-function __wbg_adapter_178(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_184(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h6f2d41a93fab5bb6(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -412,6 +412,157 @@ export class DataBusBridge {
         const ret = wasm.databusbridge_get_datasheet_pack(this.__wbg_ptr, ptr0, len0);
         return takeObject(ret);
     }
+    /**
+    * @param {string | undefined} data
+    * @returns {string | undefined}
+    */
+    json0_create(data) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            var ptr0 = isLikeNone(data) ? 0 : passStringToWasm0(data, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len0 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_create(retptr, this.__wbg_ptr, ptr0, len0);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            let v2;
+            if (r0 !== 0) {
+                v2 = getStringFromWasm0(r0, r1).slice();
+                wasm.__wbindgen_free(r0, r1 * 1);
+            }
+            return v2;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {string} snapshot
+    * @param {string} operation
+    * @returns {string}
+    */
+    json0_apply(snapshot, operation) {
+        let deferred4_0;
+        let deferred4_1;
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            const ptr0 = passStringToWasm0(snapshot, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ptr1 = passStringToWasm0(operation, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len1 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_apply(retptr, this.__wbg_ptr, ptr0, len0, ptr1, len1);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var r2 = getInt32Memory0()[retptr / 4 + 2];
+            var r3 = getInt32Memory0()[retptr / 4 + 3];
+            var ptr3 = r0;
+            var len3 = r1;
+            if (r3) {
+                ptr3 = 0; len3 = 0;
+                throw takeObject(r2);
+            }
+            deferred4_0 = ptr3;
+            deferred4_1 = len3;
+            return getStringFromWasm0(ptr3, len3);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+            wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
+        }
+    }
+    /**
+    * @param {string} _op
+    * @param {string} _other_op
+    * @param {string} _op_type
+    * @returns {any}
+    */
+    json0_transform(_op, _other_op, _op_type) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            const ptr0 = passStringToWasm0(_op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ptr1 = passStringToWasm0(_other_op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len1 = WASM_VECTOR_LEN;
+            const ptr2 = passStringToWasm0(_op_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len2 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_transform(retptr, this.__wbg_ptr, ptr0, len0, ptr1, len1, ptr2, len2);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var r2 = getInt32Memory0()[retptr / 4 + 2];
+            if (r2) {
+                throw takeObject(r1);
+            }
+            return takeObject(r0);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {string} left_op
+    * @param {string} right_op
+    * @returns {any}
+    */
+    json0_transform_x(left_op, right_op) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            const ptr0 = passStringToWasm0(left_op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ptr1 = passStringToWasm0(right_op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len1 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_transform_x(retptr, this.__wbg_ptr, ptr0, len0, ptr1, len1);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var r2 = getInt32Memory0()[retptr / 4 + 2];
+            if (r2) {
+                throw takeObject(r1);
+            }
+            return takeObject(r0);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {string} op
+    * @returns {any}
+    */
+    json0_invert(op) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            const ptr0 = passStringToWasm0(op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_invert(retptr, this.__wbg_ptr, ptr0, len0);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var r2 = getInt32Memory0()[retptr / 4 + 2];
+            if (r2) {
+                throw takeObject(r1);
+            }
+            return takeObject(r0);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
+    /**
+    * @param {string} op
+    * @param {string} other_op
+    * @returns {any}
+    */
+    json0_compose(op, other_op) {
+        try {
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            const ptr0 = passStringToWasm0(op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ptr1 = passStringToWasm0(other_op, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len1 = WASM_VECTOR_LEN;
+            wasm.databusbridge_json0_compose(retptr, this.__wbg_ptr, ptr0, len0, ptr1, len1);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var r2 = getInt32Memory0()[retptr / 4 + 2];
+            if (r2) {
+                throw takeObject(r1);
+            }
+            return takeObject(r0);
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
+    }
 }
 
 export function __wbindgen_cb_drop(arg0) {
@@ -422,6 +573,11 @@ export function __wbindgen_cb_drop(arg0) {
     }
     const ret = false;
     return ret;
+};
+
+export function __wbindgen_string_new(arg0, arg1) {
+    const ret = getStringFromWasm0(arg0, arg1);
+    return addHeapObject(ret);
 };
 
 export function __wbindgen_object_drop_ref(arg0) {
@@ -436,11 +592,6 @@ export function __wbindgen_is_undefined(arg0) {
 export function __wbindgen_is_null(arg0) {
     const ret = getObject(arg0) === null;
     return ret;
-};
-
-export function __wbindgen_string_new(arg0, arg1) {
-    const ret = getStringFromWasm0(arg0, arg1);
-    return addHeapObject(ret);
 };
 
 export function __wbindgen_number_new(arg0) {
@@ -850,7 +1001,7 @@ export function __wbg_new_43f1b47c28813cbd(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_178(a, state0.b, arg0, arg1);
+                return __wbg_adapter_184(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -954,33 +1105,33 @@ export function __wbindgen_memory() {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper616(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 170, __wbg_adapter_30);
+export function __wbindgen_closure_wrapper241(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 41, __wbg_adapter_30);
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper618(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 170, __wbg_adapter_30);
+export function __wbindgen_closure_wrapper243(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 41, __wbg_adapter_30);
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper1058(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 255, __wbg_adapter_35);
+export function __wbindgen_closure_wrapper1116(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 268, __wbg_adapter_35);
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper1060(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 255, __wbg_adapter_35);
+export function __wbindgen_closure_wrapper1118(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 268, __wbg_adapter_35);
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper1228(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 346, __wbg_adapter_40);
+export function __wbindgen_closure_wrapper1286(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 358, __wbg_adapter_40);
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper2973(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 904, __wbg_adapter_43);
+export function __wbindgen_closure_wrapper3132(arg0, arg1, arg2) {
+    const ret = makeMutClosure(arg0, arg1, 962, __wbg_adapter_43);
     return addHeapObject(ret);
 };
 

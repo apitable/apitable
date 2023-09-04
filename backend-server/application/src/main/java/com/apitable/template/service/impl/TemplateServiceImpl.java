@@ -25,6 +25,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.SystemConfigType;
 import com.apitable.base.model.SystemConfigDTO;
@@ -163,6 +164,9 @@ public class TemplateServiceImpl
     @Resource
     private IWidgetService iWidgetService;
 
+    @Resource
+    private IAutomationRobotService iAutomationRobotService;
+
     /**
      * Get SpaceId.
      *
@@ -266,6 +270,9 @@ public class TemplateServiceImpl
         this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap,
             NodeType.MIRROR.getNodeType(),
             TemplateException.FOLDER_MIRROR_LINK_FOREIGN_NODE);
+        // Check automation whether the external data table is referenced
+        iAutomationRobotService.checkAutomationReference(subNodeIds,
+            nodeTypeToNodeIdsMap.get(NodeType.AUTOMATION.getNodeType()));
     }
 
     /**

@@ -121,11 +121,11 @@ export const useUserRequest = () => {
         if (inviteCode) {
           Api.submitInviteCode(inviteCode);
         }
+        if (urlParams.has('inviteLinkToken')) {
+          join();
+          return;
+        }
         if (!data) {
-          if (urlParams.has('inviteLinkToken')) {
-            join();
-            return res.data;
-          }
           if (urlParams.has('inviteMailToken') && inviteEmailInfo) {
             Router.redirect(Navigation.WORKBENCH, {
               params: { spaceId: inviteEmailInfo.data.spaceId },
@@ -166,9 +166,6 @@ export const useUserRequest = () => {
         }
 
         if (data) {
-          if (data.hasOwnProperty('isNewUser') && urlParams.has('inviteLinkToken')) {
-            join();
-          }
           Router.redirect(Navigation.WORKBENCH);
           return res.data;
         }

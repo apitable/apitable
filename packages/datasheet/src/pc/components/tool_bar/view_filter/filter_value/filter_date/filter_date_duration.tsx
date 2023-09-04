@@ -124,7 +124,6 @@ export const FilterDateDuration: React.FC<React.PropsWithChildren<IFilterDateDur
       openSearch={false}
       triggerStyle={{ width: 100 }}
       disabled={isViewLock}
-      disabledTip={'123'}
     />
   );
 };

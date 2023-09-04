@@ -150,6 +150,8 @@ export const getEnvVars = () => {
     HELP_MENU_CONTACT_US_URL: process.env.HELP_MENU_CONTACT_US_URL,
     LOGO: process.env.LOGO,
     COMMON_IMG_LOGO: process.env.COMMON_IMG_LOGO,
+    LONG_DARK_LOGO: process.env.LONG_DARK_LOGO,
+    LONG_LIGHT_LOGO: process.env.LONG_LIGHT_LOGO,
     FAVICON: process.env.FAVICON,
     LOGO_TEXT_LIGHT: process.env.LOGO_TEXT_LIGHT,
     LOGO_TEXT_DARK: process.env.LOGO_TEXT_DARK,
@@ -190,6 +192,7 @@ export const getEnvVars = () => {
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
     APITABLE_NAME: process.env.APITABLE_NAME,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
+    IS_AITABLE: process.env.IS_APITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
     IS_ENTERPRISE: process.env.IS_ENTERPRISE === 'true',
@@ -218,6 +221,8 @@ export const getEnvVars = () => {
     ROBOT_TRIGGER_ICON: process.env.ROBOT_TRIGGER_ICON,
     LOGIN_LOGO_LIGHT: process.env.LOGIN_LOGO_LIGHT,
     AI_ENTRANCE_VISIBLE: process.env.AI_ENTRANCE_VISIBLE === 'true',
+    AI_OPEN_FORM: process.env.AI_OPEN_FORM,
     AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
+    AI_API_HELP_URL: process.env.AI_API_HELP_URL,
   };
 };

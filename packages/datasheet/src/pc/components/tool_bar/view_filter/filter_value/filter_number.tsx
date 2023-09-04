@@ -78,7 +78,6 @@ export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberPr
             cursor: isViewLock ? 'not-allowed' : 'pointer',
           }}
           ref={numberRef}
-          editable={!isViewLock}
           editing
           width={160}
           datasheetId={datasheetId}

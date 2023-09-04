@@ -18,11 +18,22 @@
 
 package com.apitable.automation.service.impl;
 
+import static java.util.stream.Collectors.toList;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.mapper.AutomationTriggerMapper;
 import com.apitable.automation.model.AutomationTriggerDto;
+import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.service.IAutomationTriggerService;
+import com.apitable.shared.util.IdUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,13 +46,58 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     private AutomationTriggerMapper triggerMapper;
 
     @Override
-    public List<AutomationTriggerDto> getTriggers(String seqId, String resourceId) {
-        return triggerMapper.getTriggers(seqId, resourceId);
+    public List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds) {
+        return triggerMapper.selectTriggersByRobotIds(robotIds);
     }
 
     @Override
     public void create(AutomationTriggerEntity entity) {
         triggerMapper.insert(entity);
+    }
+
+    @Override
+    public TriggerCopyResultDto copy(Long userId, boolean sameSpace,
+        Map<String, String> newRobotMap, Map<String, String> newNodeMap) {
+        List<AutomationTriggerEntity> triggers =
+            triggerMapper.selectByRobotIds(newRobotMap.keySet());
+        if (CollUtil.isEmpty(triggers)) {
+            return new TriggerCopyResultDto();
+        }
+        Map<String, String> newTriggerMap = triggers.stream()
+            .collect(Collectors.toMap(AutomationTriggerEntity::getTriggerId,
+                i -> IdUtil.createAutomationTriggerId()));
+        List<AutomationTriggerEntity> entities = new ArrayList<>(triggers.size());
+        for (AutomationTriggerEntity trigger : triggers) {
+            AutomationTriggerEntity entity = AutomationTriggerEntity.builder()
+                .id(IdWorker.getId())
+                .robotId(newRobotMap.get(trigger.getRobotId()))
+                .triggerTypeId(trigger.getTriggerTypeId())
+                .triggerId(newTriggerMap.get(trigger.getTriggerId()))
+                .input(trigger.getInput())
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
+            if (trigger.getPrevTriggerId() != null) {
+                entity.setPrevTriggerId(newTriggerMap.get(trigger.getPrevTriggerId()));
+            }
+            if (StrUtil.isNotBlank(trigger.getResourceId())) {
+                String newNodeId = sameSpace ? trigger.getResourceId() :
+                    Optional.ofNullable(newNodeMap.get(trigger.getResourceId()))
+                        .orElse(StrUtil.EMPTY);
+                String input = sameSpace ? trigger.getInput() :
+                    trigger.getInput().replace(trigger.getResourceId(), newNodeId);
+                entity.setResourceId(newNodeId);
+                entity.setInput(input);
+            } else {
+                entity.setResourceId(StrUtil.EMPTY);
+            }
+            entities.add(entity);
+        }
+        triggerMapper.insertList(entities);
+        Map<String, List<String>> robotIdToTriggerIdsMap =
+            triggers.stream().collect(Collectors.groupingBy(AutomationTriggerEntity::getRobotId,
+                Collectors.mapping(AutomationTriggerEntity::getTriggerId, toList())));
+        return new TriggerCopyResultDto(robotIdToTriggerIdsMap, newTriggerMap);
     }
 
     @Override

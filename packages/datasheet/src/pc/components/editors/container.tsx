@@ -16,6 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUnmount } from 'ahooks';
+import dayjs from 'dayjs';
+import { isEqual, noop, omit } from 'lodash';
+import * as React from 'react';
+import {
+  ClipboardEvent,
+  forwardRef,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Message } from '@apitable/components';
 import {
   Cell,
@@ -45,40 +61,28 @@ import {
   ViewType,
 } from '@apitable/core';
 
-import { isEqual, noop, omit } from 'lodash';
 import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
+import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { IURLMeta, printableKey, recognizeURLAndSetTitle } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 
-import * as React from 'react';
-import {
-  ClipboardEvent,
-  forwardRef,
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { stopPropagation } from '../../utils/dom';
+import { stopPropagation } from '../../utils';
+import { expandRecordIdNavigate } from '../expand_record';
 import { IEditorContainerOwnProps } from './attach_event_hoc';
 import { AttachmentEditor } from './attachment_editor';
+import { CascaderEditor } from './cascader_editor';
 import { CheckboxEditor } from './checkbox_editor';
 import { DateTimeEditor } from './date_time_editor';
+import { setEndEditCell } from './end_edit_cell';
 import { EnhanceTextEditor } from './enhance_text_editor';
-import { CascaderEditor } from './cascader_editor';
 import { useCellEditorVisibleStyle } from './hooks';
 import { IContainerEdit, IEditor } from './interface';
 import { LinkEditor } from './link_editor';
 import { MemberEditor } from './member_editor';
-import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 
 // Editors
 import { NoneEditor } from './none_editor';
@@ -88,12 +92,8 @@ import { RatingEditor } from './rating_editor';
 
 import styles from './style.module.less';
 import { TextEditor } from './text_editor';
-import { expandRecordIdNavigate } from '../expand_record';
-import { useUnmount } from 'ahooks';
-import { setEndEditCell } from './end_edit_cell';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
-import dayjs from 'dayjs';
 
 export interface IEditorPosition {
   width: number;
@@ -781,6 +781,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const commonProps = {
     datasheetId,
     editable: recordEditable,
+    disabled: !recordEditable,
     field,
     height,
     width,

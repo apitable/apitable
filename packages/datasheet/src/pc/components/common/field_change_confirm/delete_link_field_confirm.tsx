@@ -53,6 +53,7 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string, datas
   if (!field) {
     return null;
   }
+
   const foreignField = foreignDatasheet && foreignDatasheet.snapshot.meta.fieldMap[field.property.brotherFieldId!];
 
   function onConfirm() {

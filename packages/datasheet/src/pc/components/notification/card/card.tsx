@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
-import { FC, useRef, useState } from 'react';
-import { Button, ButtonGroup } from '@apitable/components';
-import QueueAnim from 'rc-queue-anim';
-import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
-
 import classNames from 'classnames';
 import classnames from 'classnames';
 import { AnimationItem } from 'lottie-web/index';
+import QueueAnim from 'rc-queue-anim';
+import * as React from 'react';
+import { FC, useRef, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
-import { expandRecord } from 'pc/components/expand_record';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { timeFormatter } from 'pc/utils';
-import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
+import { Button, ButtonGroup } from '@apitable/components';
+import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
+
 import { Modal } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { expandRecord } from 'pc/components/expand_record';
+import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Method } from 'pc/components/route_manager/const';
+import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
+import { timeFormatter } from 'pc/utils';
+import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
 import { navigationToConfigUrl } from '../publish';
 import { NoticeTypesConstant } from '../utils';
-import { HandleMsg } from './handle_msg';
 import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
-import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
+import { HandleMsg } from './handle_msg';
 import styles from './style.module.less';
+import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
+// @ts-ignore
+import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 
 interface ICard {
   data: INoticeDetail;
@@ -59,15 +59,18 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
   const notifyType = data.notifyType;
   const isAskForJoining = isAskForJoiningMsg(data);
   const { transferNoticeToRead, transferNoticeToReadAndRefresh } = useNotificationRequest();
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const { run: processJoin } = useRequest((agree: boolean) => Api.processSpaceJoin(data.id, agree), {
     manual: true,
-    onSuccess: res => {
-      const { success, message } = res.data;
+    onSuccess: (res) => {
+      const { success, message, code } = res.data;
       if (success) {
         transferNoticeToReadAndRefresh([data]);
         setShow(false);
         return;
+      }
+      if (code === billingErrorCode.OVER_LIMIT) {
+        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Modal.warning({
         title: t(Strings.please_note),
@@ -92,7 +95,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
 
   function joinPath(pathParams: (string | undefined)[]) {
     const params: string[] = [];
-    pathParams.forEach(param => {
+    pathParams.forEach((param) => {
       param && params.push(param);
     });
     return params.join('/');
@@ -174,12 +177,6 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
     stopPropagation(e);
   };
   const agreeJoinSpace = (e: React.MouseEvent) => {
-    const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
-
-    if (result1) {
-      return;
-    }
-
     processJoin(true);
     stopPropagation(e);
   };

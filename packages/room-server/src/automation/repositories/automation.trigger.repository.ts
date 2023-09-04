@@ -35,7 +35,7 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     });
   }
 
-  createTrigger(trigger: TriggerCreateRo, userId: string): Promise<AutomationTriggerEntity> {
+  createTrigger(trigger: TriggerCreateRo, userId: string, resourceId?: string): Promise<AutomationTriggerEntity> {
     const newTrigger = this.create({
       triggerId: `atr${generateRandomString(15)}`,
       triggerTypeId: trigger.triggerTypeId,
@@ -43,12 +43,13 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
       createdBy: userId,
       updatedBy: userId,
       input: trigger.input,
+      resourceId,
     });
     return this.save(newTrigger);
   }
 
-  updateTriggerInput(triggerId: string, input: object, userId: string) {
-    return this.update({ triggerId }, { input, updatedBy: userId });
+  updateTriggerInput(triggerId: string, input: object, userId: string, resourceId?: string) {
+    return this.update({ triggerId }, { input, updatedBy: userId, resourceId });
   }
 
   changeTriggerTypeId(triggerId: string, triggerTypeId: string, userId: string) {

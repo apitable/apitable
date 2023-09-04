@@ -2784,6 +2784,15 @@
         "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/04/04/bcf0695cf35840e6b85e032a8e5ea0a1\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-04-06-updates\",\n    \"children\": \"<h3>🚀 新功能介绍</h3>\\n<ul><li>推出新字段类型「多级联动」，神奇表单支持多级选项</li><li>脚本小程序上架，少少代码满足多多定制化</li><li>维格表机器人支持「发送邮件」</li><li>维格表机器人支持「发送到Slack」</li></ul>\"\n}",
         "uiConfigId": "player_step_ui_config_169",
         "uiType": "notice"
+      },
+      "176": {
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "clear_guide_all_ui()"
+        ],
+        "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
+        "uiConfigId": "player_step_ui_config_176",
+        "uiType": "modal"
       }
     },
     "wizard": {
@@ -3408,6 +3417,15 @@
           ]
         },
         "steps": "[[170]]"
+      },
+      "115": {
+        "completeIndex": -1,
+        "player": {
+          "action": [
+            "recIPTZiGHiIK"
+          ]
+        },
+        "steps": "[[176]]"
       }
     }
   },
@@ -4863,6 +4881,11 @@
         "commandArgs": "[105, 104]"
       },
       {
+        "id": "open_guide_wizards([105, 104, 115])",
+        "command": "open_guide_wizards",
+        "commandArgs": "[105, 104, 115]"
+      },
+      {
         "id": "open_guide_wizards([19])",
         "command": "open_guide_wizards",
         "commandArgs": "[19]"
@@ -5419,6 +5442,18 @@
         "condition": "wizard[43].count",
         "id": "wizard[43].count_GREATER_THAN_200",
         "conditionArgs": "200"
+      },
+      {
+        "operator": "INCLUDES",
+        "condition": "url",
+        "id": "url_INCLUDES_ai_onboarding",
+        "conditionArgs": "ai_onboarding"
+      },
+      {
+        "operator": "EXCLUDES",
+        "condition": "url",
+        "id": "url_EXCLUDES_ai_onboarding",
+        "conditionArgs": "ai_onboarding"
       }
     ],
     "tips": {
@@ -5762,9 +5797,26 @@
           "sign_up_time_IS_AFTER_2023-04-06 20:00",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_apitable"
+          "edition_IS_apitable",
+          "url_EXCLUDES_ai_onboarding"
         ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-04-06 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-08-23 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable, url_EXCLUDES_ai_onboarding],[open_guide_wizards([105, 104])]",
+        "event": [
+          "workbench_shown"
+        ]
+      },
+      {
+        "actions": [
+          "open_guide_wizards([105, 104, 115])"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId",
+          "edition_IS_apitable",
+          "url_INCLUDES_ai_onboarding"
+        ],
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId,edition_IS_apitable, url_INCLUDES_ai_onboarding],[open_guide_wizards([105, 104, 115])]",
         "event": [
           "workbench_shown"
         ]

@@ -55,4 +55,39 @@ export class DataBusBridge {
 * @returns {Promise<any>}
 */
   get_datasheet_pack(dst_id: string): Promise<any>;
+/**
+* @param {string | undefined} data
+* @returns {string | undefined}
+*/
+  json0_create(data?: string): string | undefined;
+/**
+* @param {string} snapshot
+* @param {string} operation
+* @returns {string}
+*/
+  json0_apply(snapshot: string, operation: string): string;
+/**
+* @param {string} _op
+* @param {string} _other_op
+* @param {string} _op_type
+* @returns {any}
+*/
+  json0_transform(_op: string, _other_op: string, _op_type: string): any;
+/**
+* @param {string} left_op
+* @param {string} right_op
+* @returns {any}
+*/
+  json0_transform_x(left_op: string, right_op: string): any;
+/**
+* @param {string} op
+* @returns {any}
+*/
+  json0_invert(op: string): any;
+/**
+* @param {string} op
+* @param {string} other_op
+* @returns {any}
+*/
+  json0_compose(op: string, other_op: string): any;
 }

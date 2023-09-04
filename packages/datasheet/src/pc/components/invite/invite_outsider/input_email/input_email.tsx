@@ -16,19 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, TextButton, TextInput } from '@apitable/components';
-import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import * as React from 'react';
 import { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Button, TextButton, TextInput } from '@apitable/components';
+import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { AddOutlined, CheckOutlined, DeleteOutlined, WarnOutlined } from '@apitable/icons';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { getEnvVariables } from 'pc/utils/env';
-import { useEmailInviteInModal } from 'pc/hooks';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { useEmailInviteInModal } from 'pc/hooks';
+// eslint-disable-next-line no-restricted-imports
+import { getEnvVariables } from 'pc/utils/env';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
 
@@ -60,7 +59,6 @@ export const InputEmail = forwardRef(
     const spaceId = useSelector((state: IReduxState) => state.space.activeId || '');
     const [inviteLoading, setInviteLoading] = useState(false);
     const [inviteList, setInviteList] = useState<IInviteMemberList[]>([]);
-    const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
     const { isInvited, invitedCount, err } = useEmailInviteInModal(spaceId, inviteList, shareId, secondVerify);
 
     useEffect(() => {
@@ -150,12 +148,6 @@ export const InputEmail = forwardRef(
 
     const inviteBtnValid = inputKeyArr.some((key) => inputArr[key].text !== '');
     const inviteBtnClick = () => {
-      const result1 = triggerUsageAlert?.('maxSeats', { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
-
-      if (result1) {
-        return;
-      }
-
       setInviteLoading(true);
       const allValid = handleCheckEmail();
       if (!allValid) {

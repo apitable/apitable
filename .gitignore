@@ -93,3 +93,6 @@ eslint-results.sarif
 /packages/i18n-lang/src/config/language.manifest.origin.json
 /packages/room-native-api/target/**
 /packages/room-native-api/Cargo.lock
+
+# openapi generated
+/backend-server/application/.openapi-generator/

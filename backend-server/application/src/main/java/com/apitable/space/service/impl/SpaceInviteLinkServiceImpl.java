@@ -70,9 +70,14 @@ import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Space - Invite Link Service Implement.
+ */
 @Slf4j
 @Service
-public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMapper, SpaceInviteLinkEntity> implements ISpaceInviteLinkService {
+public class SpaceInviteLinkServiceImpl
+    extends ServiceImpl<SpaceInviteLinkMapper, SpaceInviteLinkEntity>
+    implements ISpaceInviteLinkService {
 
     @Resource
     private ISpaceService iSpaceService;
@@ -128,14 +133,13 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         if (ObjectUtil.isNull(id)) {
             // generate or refresh links
             SpaceInviteLinkEntity entity = SpaceInviteLinkEntity.builder()
-                    .spaceId(spaceId)
-                    .teamId(teamId)
-                    .creator(memberId)
-                    .inviteToken(token)
-                    .build();
+                .spaceId(spaceId)
+                .teamId(teamId)
+                .creator(memberId)
+                .inviteToken(token)
+                .build();
             flag = this.save(entity);
-        }
-        else {
+        } else {
             flag = SqlHelper.retBool(baseMapper.updateInviteTokenById(token, id));
         }
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -147,16 +151,17 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     public SpaceLinkInfoVo valid(String token) {
         SpaceLinkDTO dto = baseMapper.selectDtoByToken(token);
         // If one of the records, inviting departments and creators corresponding to the link does not exist, all of them are determined to be invalid.
-        ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
+        ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getTeamId())
+            && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
         // determine whether the invited space exists
         ExceptionUtil.isNotNull(dto.getSpaceId(), SPACE_NOT_EXIST);
         // Determine if the creator also has permission to invite members
         boolean contain = false;
         if (dto.isMainAdmin()) {
             contain = true;
-        }
-        else if (dto.isAdmin()) {
-            List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByMemberId(dto.getMemberId());
+        } else if (dto.isAdmin()) {
+            List<String> resourceCodes =
+                spaceResourceMapper.selectResourceCodesByMemberId(dto.getMemberId());
             String tag = "INVITE_MEMBER";
             if (CollUtil.isNotEmpty(resourceCodes) && resourceCodes.contains(tag)) {
                 contain = true;
@@ -167,7 +172,9 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
             Boolean invite = iSpaceService.getSpaceGlobalFeature(dto.getSpaceId()).getInvitable();
             ExceptionUtil.isTrue(Boolean.TRUE.equals(invite), INVITE_EXPIRE);
         }
-        SpaceLinkInfoVo infoVo = SpaceLinkInfoVo.builder().memberName(dto.getMemberName()).spaceId(dto.getSpaceId()).spaceName(dto.getSpaceName()).build();
+        SpaceLinkInfoVo infoVo =
+            SpaceLinkInfoVo.builder().memberName(dto.getMemberName()).spaceId(dto.getSpaceId())
+                .spaceName(dto.getSpaceName()).build();
         // determine if the user is logged in
         HttpSession session = HttpContextUtil.getSession(false);
         if (ObjectUtil.isNotNull(session)) {
@@ -195,22 +202,22 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
                 InvitationUserDTO dto;
                 if (StrUtil.isNotBlank(nodeId)) {
                     dto = invitationService.invitedUserJoinSpaceByToken(userId, token);
-                }
-                else {
+                } else {
                     dto = invitedUserJoinSpaceByToken(userId, token);
                 }
                 if (dto != null) {
-                    iAuditInviteRecordService.save(dto.getSpaceId(), dto.getCreator(), dto.getMemberId(),
-                            InviteType.LINK_INVITE.getType());
+                    iAuditInviteRecordService.save(dto.getSpaceId(), dto.getCreator(),
+                        dto.getMemberId(),
+                        InviteType.LINK_INVITE.getType());
                     invitationService.asyncActionsForSuccessJoinSpace(dto);
                 }
-            }
-            else {
-                log.warn("user「{}」use invite uri「{}」Join the space station operation is too frequent", userId, token);
+            } else {
+                log.warn(
+                    "user「{}」use invite uri「{}」Join the space station operation is too frequent",
+                    userId, token);
                 throw new BusinessException(INVITE_TOO_OFTEN);
             }
-        }
-        finally {
+        } finally {
             if (locked) {
                 lock.unlock();
             }
@@ -218,12 +225,15 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public InvitationUserDTO invitedUserJoinSpaceByToken(Long userId, String token) {
         // Get link information, including space information, creating member information, link source department information
         SpaceLinkDTO dto = baseMapper.selectDtoByToken(token);
         // If one of the information corresponding to the link does not exist, it is judged to be invalid.
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getSpaceId())
-                && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
+                && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()),
+            INVITE_EXPIRE);
+        iSpaceService.checkSeatOverLimit(dto.getSpaceId());
         // Determine whether the space has a third party enabled
         boolean isBoundSocial = socialServiceFacade.checkSocialBind(dto.getSpaceId());
         ExceptionUtil.isFalse(isBoundSocial, INVITE_EXPIRE);
@@ -237,11 +247,12 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         // The link accumulates the number of successful invitees and creates an audit invitation record
         boolean flag = SqlHelper.retBool(baseMapper.updateInviteNumByInviteToken(token));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
-        return InvitationUserDTO.builder().userId(userId).memberId(memberId).spaceId(dto.getSpaceId()).creator(dto.getMemberId()).build();
+        return InvitationUserDTO.builder().userId(userId).memberId(memberId)
+            .spaceId(dto.getSpaceId()).creator(dto.getMemberId()).build();
     }
 
     /**
-     * If the user is in the space but not in the specified department, join the department
+     * If the user is in the space but not in the specified department, join the department.
      *
      * @return true | false
      */
@@ -249,8 +260,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
         if (ObjectUtil.isNull(memberId)) {
             return false;
-        }
-        else {
+        } else {
             Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
             if (rootTeamId.equals(teamId)) {
                 return true;
@@ -262,9 +272,11 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
             }
             // When joining other departments, unbind from the root department
             if (teamIds.contains(rootTeamId)) {
-                teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId, Collections.singletonList(rootTeamId));
+                teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId,
+                    Collections.singletonList(rootTeamId));
             }
-            iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId), Collections.singletonList(teamId));
+            iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId),
+                Collections.singletonList(teamId));
             return true;
         }
     }
@@ -278,14 +290,15 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
             if (memberIds.contains(adminMemberId)) {
                 if (memberIds.size() == 1) {
                     return;
-                }
-                else {
+                } else {
                     CollUtil.removeAny(memberIds, adminMemberId);
                 }
             }
-            List<SpaceMemberResourceDto> dtoList = spaceResourceMapper.selectMemberResource(memberIds);
+            List<SpaceMemberResourceDto> dtoList =
+                spaceResourceMapper.selectMemberResource(memberIds);
             Map<Long, List<String>> map = dtoList.stream()
-                    .collect(Collectors.toMap(SpaceMemberResourceDto::getMemberId, SpaceMemberResourceDto::getResources));
+                .collect(Collectors.toMap(SpaceMemberResourceDto::getMemberId,
+                    SpaceMemberResourceDto::getResources));
             // records members without permission
             List<Long> list = new ArrayList<>();
             String tag = "INVITE_MEMBER";
@@ -324,6 +337,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByTeamIds(Collection<Long> teamIds) {
         List<Long> ids = baseMapper.selectIdByTeamIds(teamIds);
         if (!ids.isEmpty()) {
