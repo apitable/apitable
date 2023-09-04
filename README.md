@@ -362,7 +362,8 @@ We always search for good talents for APITable:
 - **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
 - **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
 
-Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@aitable.ai>.
+Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate to [fill out this form](https://aitable.ai/share/shrDNBDeVlLvB1eFDMWhl) or send your CV to <talent@aitable.ai>.
+
 
 ## 📺 Screenshot
 
