@@ -47,6 +47,7 @@ import { Collapse, ICollapseFunc } from '../common/collapse';
 import { ScreenSize } from '../common/component_display';
 import { expandRecordIdNavigate } from '../expand_record';
 import { showKanbanSetting } from '../kanban_view';
+import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 import { getRowHeightIcon } from './change_row_height';
 import { Display } from './display/display';
 import { Find } from './find';
@@ -56,7 +57,6 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
-import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -481,16 +481,16 @@ const ToolbarBase = () => {
       show: !mirrorId && !shareId && !templateId && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
     },
   ];
-
+  const iframeShowTool = shareId ? !isIframe() : true;
   return (
     <div className={classNames(styles.toolbar, { [styles.toolbarVisible]: !!size })} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
-      {!isMobile && embedSetting.basicTools && !isIframe() && <Undo className={styles.toolbarLeft} />}
+      {!isMobile && embedSetting.basicTools && iframeShowTool && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>
         {isGalleryView && embedSetting.basicTools &&
           !isMobile &&
           GalleryLayoutNode(activeView! as IGalleryViewProperty, showIconBarLabel, !visualizationEditable || disabledWithMirror)}
-        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && embedSetting.basicTools && !isIframe() && (
+        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && embedSetting.basicTools && iframeShowTool && (
           <ToolItem
             showLabel={showIconBarLabel}
             disabled={!permissions.rowCreatable}
