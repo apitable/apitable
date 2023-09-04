@@ -711,6 +711,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
       <Head>
         <meta property='og:description'
           content={serialize(formProps.description)}/>
+        <title>{name}</title>
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         <VikaSplitPanel

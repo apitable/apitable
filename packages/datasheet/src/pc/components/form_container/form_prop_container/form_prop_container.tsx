@@ -37,13 +37,12 @@ interface IFormPropContainerProps {
 }
 
 export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = props => {
-  const { formId, editable, formProps } = props;
+  const { formId, editable, formProps, title } = props;
   const { description, fullScreen, coverVisible, logoVisible, logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareId } = useSelector(state => state.pageParams);
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
-  const title = useSelector(state => Selectors.getForm(state)!.name);
   const updateProps = (partProps: Partial<IFormProps>) => {
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.UpdateFormProps,
