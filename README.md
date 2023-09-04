@@ -364,7 +364,6 @@ We always search for good talents for APITable:
 
 Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate to [fill out this form](https://aitable.ai/share/shrDNBDeVlLvB1eFDMWhl) or send your CV to <talent@aitable.ai>.
 
-
 ## 📺 Screenshot
 
 <p align="center">
