@@ -20,17 +20,33 @@ package com.apitable.automation.mapper;
 
 import com.apitable.automation.entity.AutomationRobotEntity;
 import com.apitable.automation.model.AutomationRobotDto;
+import com.apitable.automation.model.RobotTriggerDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 
 public interface AutomationRobotMapper extends BaseMapper<AutomationRobotEntity> {
 
-    List<AutomationRobotDto> getRobotsByResourceId(@Param("resourceId") String resourceId);
+    List<AutomationRobotDto> selectRobotsByResourceIds(
+        @Param("resourceIds") Collection<String> resourceIds);
+
+    List<AutomationRobotEntity> selectByResourceIds(
+        @Param("resourceIds") Collection<String> resourceIds);
+
+    int insertList(@Param("entities") Collection<AutomationRobotEntity> entities);
+
+    void updateNameByResourceId(@Param("resourceId") String resourceId, @Param("name") String name);
 
     void updateByRobotId(@Param("robotId") String robotId, @Param("name") String name,
         @Param("description") String description, @Param("resourceId") String resourceId);
 
+    void updateIsDeletedByResourceIds(@Param("userId") Long userId,
+        @Param("resourceIds") List<String> resourceIds, @Param("isDeleted") Boolean isDeleted);
+
     void removeByRobotIds(@Param("robotIds") List<String> robotIds);
+
+    List<RobotTriggerDto> getRobotTriggers(@Param("seqId") String seqId,
+        @Param("resourceId") String resourceId);
 }

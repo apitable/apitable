@@ -70,6 +70,9 @@ public class IdUtil {
             case AI_CHAT_BOT:
                 return IdRulePrefixEnum.AI.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case AUTOMATION:
+                return IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum()
+                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             default:
                 return IdRulePrefixEnum.FOD.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(ID_FIXED_LENGTH);

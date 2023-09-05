@@ -20,13 +20,18 @@ package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.model.AutomationTriggerDto;
+import com.apitable.automation.model.TriggerCopyResultDto;
 import java.util.List;
+import java.util.Map;
 
 public interface IAutomationTriggerService {
 
-    List<AutomationTriggerDto> getTriggers(String seqId, String resourceId);
+    List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds);
 
     void create(AutomationTriggerEntity entity);
+
+    TriggerCopyResultDto copy(Long userId, boolean sameSpace,
+        Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 
     /**
      * Update trigger by trigger id

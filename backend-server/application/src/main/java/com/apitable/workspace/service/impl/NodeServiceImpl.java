@@ -35,6 +35,9 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.apitable.automation.entity.AutomationRobotEntity;
+import com.apitable.automation.model.AutomationCopyOptions;
+import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
 import com.apitable.control.infrastructure.ControlRoleDict;
@@ -239,6 +242,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private AiServiceFacade aiServiceFacade;
+
+    @Resource
+    private IAutomationRobotService iAutomationRobotService;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -803,11 +809,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String nodeName = duplicateNameModify(entity.getParentId(), entity.getType(), name, nodeId);
         boolean flag = SqlHelper.retBool(nodeMapper.updateNameByNodeId(nodeId, nodeName));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // The datasheet node, corresponding to the modification.
-        if (entity.getType() == NodeType.DATASHEET.getNodeType()) {
-            iDatasheetService.updateDstName(userId, nodeId, nodeName);
-        } else if (entity.getType() == NodeType.AI_CHAT_BOT.getNodeType()) {
-            aiServiceFacade.updateAi(nodeId, AiUpdateParam.builder().name(nodeName).build());
+        // Correspondingly modify the name.
+        switch (NodeType.toEnum(entity.getType())) {
+            case DATASHEET:
+                iDatasheetService.updateDstName(userId, nodeId, nodeName);
+                break;
+            case AI_CHAT_BOT:
+                aiServiceFacade.updateAi(nodeId, AiUpdateParam.builder().name(nodeName).build());
+                break;
+            case AUTOMATION:
+                iAutomationRobotService.updateNameByResourceId(nodeId, nodeName);
+                break;
+            default:
+                break;
         }
         // publish space audit events
         JSONObject info = JSONUtil.createObj();
@@ -1012,6 +1026,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
             // if node is ai chat bot, auto delete
             aiServiceFacade.deleteAi(nodeIds);
+            iAutomationRobotService.updateIsDeletedByResourceIds(userId, nodeIds, true);
         }
         for (NodeEntity node : nodes) {
             Lock lock = redisLockRegistry.obtain(node.getParentId());
@@ -1130,6 +1145,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(),
                     opRo.getNodeId(), copyNodeId, ResourceType.MIRROR);
                 return copyEffect;
+            case AUTOMATION:
+                AutomationCopyOptions automationCopyOptions =
+                    AutomationCopyOptions.builder().sameSpace(true).overriddenName(name).build();
+                iAutomationRobotService.copy(userId, Collections.singletonList(opRo.getNodeId()),
+                    automationCopyOptions, newNodeMap);
+                return copyEffect;
             default:
                 break;
         }
@@ -1234,6 +1255,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case DASHBOARD:
             case MIRROR:
                 throw new BusinessException(NodeException.SHARE_NODE_STORE_FAIL);
+            case AUTOMATION:
+                AutomationCopyOptions automationCopyOptions =
+                    AutomationCopyOptions.builder().overriddenName(name).build();
+                iAutomationRobotService.copy(userId, Collections.singletonList(sourceNodeId),
+                    automationCopyOptions, newNodeMap);
+                break;
             default:
                 break;
         }
@@ -1396,6 +1423,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iNodeRelService.copyBatch(userId, mirrorIds, newNodeMap);
                 iResourceMetaService.batchCopyResourceMeta(userId, spaceId, mirrorIds, newNodeMap,
                     ResourceType.MIRROR);
+            }
+        }
+        // Copy automation processing
+        if (nodeTypeToNodeIdsMap.containsKey(NodeType.AUTOMATION.getNodeType())) {
+            List<String> automationNodeIds =
+                nodeTypeToNodeIdsMap.get(NodeType.AUTOMATION.getNodeType()).stream()
+                    .map(NodeShareTree::getNodeId)
+                    .filter(nodeId -> !filterNodeIds.contains(nodeId))
+                    .collect(Collectors.toList());
+            if (CollUtil.isNotEmpty(automationNodeIds)) {
+                iAutomationRobotService.copy(userId, automationNodeIds,
+                    new AutomationCopyOptions(), newNodeMap);
             }
         }
     }
@@ -1578,6 +1617,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     .aiName(name)
                     .build()
                 );
+                break;
+            case AUTOMATION:
+                iAutomationRobotService.create(AutomationRobotEntity.builder()
+                    .resourceId(nodeId)
+                    .robotId(IdUtil.createAutomationRobotId())
+                    .name(name)
+                    .createdBy(userId)
+                    .build());
                 break;
             default:
                 break;

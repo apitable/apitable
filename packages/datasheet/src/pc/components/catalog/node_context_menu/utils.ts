@@ -1,8 +1,7 @@
-import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
+import { getEnvVariables } from 'pc/utils/env';
 
 export const judgeShowAIEntrance = () => {
-  const version = getReleaseVersion();
-  return getEnvVariables().AI_ENTRANCE_VISIBLE || version === 'development';
+  return getEnvVariables().AI_ENTRANCE_VISIBLE;
 };
 
 export const getAIOpenFormUrl = () => {

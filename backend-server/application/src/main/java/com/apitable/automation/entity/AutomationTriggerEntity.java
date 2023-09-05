@@ -74,6 +74,11 @@ public class AutomationTriggerEntity implements Serializable {
     private String triggerId;
 
     /**
+     * Previous Trigger ID
+     */
+    private String prevTriggerId;
+
+    /**
      * Resource ID(link#xxxx_node#node_id)
      */
     private String resourceId;

@@ -19,10 +19,14 @@
 package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationActionEntity;
+import com.apitable.automation.model.TriggerCopyResultDto;
+import java.util.Map;
 
 public interface IAutomationActionService {
 
     void create(AutomationActionEntity action);
+
+    void copy(Long userId, Map<String, String> newRobotMap, TriggerCopyResultDto resultDto);
 
     void updateActionTypeIdAndInputByRobotId(String robotId, String actionTypeId, String input);
 }

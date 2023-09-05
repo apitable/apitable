@@ -74,6 +74,11 @@ public enum NodeType {
     AI_CHAT_BOT(9),
 
     /**
+     * automation.
+     */
+    AUTOMATION(10),
+
+    /**
      * static resource file.
      */
     ASSET_FILE(98),
