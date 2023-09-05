@@ -1,5 +1,18 @@
 # APITable CHANGELOG
 
+## [v1.0.0-beta](https://github.com/apitable/apitable/releases/tag/v1.0.0-beta) (2023-09-05)
+
+
+### Bug fixes
+
+* fix: fusion path proxy ([#1261](https://github.com/apitable/apitable/pull/1261)) @ChambersChan 
+
+### What's more
+
+* chore: changelog for v0.99.1-beta.1 ([#1254](https://github.com/apitable/apitable/pull/1254)) @robot518 
+* Update README.md @mr-kelly 
+* chore: update readme.md ([#1274](https://github.com/apitable/apitable/pull/1274)) @shawndenggh 
+* sync: hosted cloud ([#1276](https://github.com/apitable/apitable/pull/1276)) @chalme 
 ## [v0.99.1-beta.1](https://github.com/apitable/apitable/releases/tag/v0.99.1-beta.1) (2023-08-28)
 
 
