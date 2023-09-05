@@ -376,4 +376,6 @@ export { LogOutlined } from './log_outlined';
 export { EscFilled } from './esc_filled';
 export { EscOutlined } from './esc_outlined';
 export { PasteFilled } from './paste_filled';
+export { AutomationFilled } from './automation_filled';
+export { AutomationOutlined } from './automation_outlined';
 export * from '../doc_hide_components';
