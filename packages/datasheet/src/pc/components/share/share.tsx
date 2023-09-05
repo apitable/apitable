@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeName } from '@apitable/components';
-import { IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import SplitPane from 'react-split-pane';
+import { ThemeName } from '@apitable/components';
+import { IShareInfo, Navigation, StoreActions, Strings, t, integrateCdnHost } from '@apitable/core';
+import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message';
 // eslint-disable-next-line no-restricted-imports
 // eslint-disable-next-line no-restricted-imports
@@ -28,25 +34,19 @@ import { Router } from 'pc/components/route_manager/router';
 import { getPageParams, usePageParams, useSideBarVisible } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables, isIframe } from 'pc/utils/env';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import SplitPane from 'react-split-pane';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { FormPanel } from '../form_panel';
-import { ShareMenu } from '../share/share_menu';
-import { IShareSpaceInfo } from './interface';
-import { ShareFail } from './share_fail';
-import { ShareMobile } from './share_mobile/share_mobile';
-import styles from './style.module.less';
 import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
 import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
 import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
 import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
-import Image from 'next/image';
-import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
-import { useRouter } from 'next/router';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { FormPanel } from '../form_panel';
+import { ShareMenu } from '../share/share_menu';
+import { IShareSpaceInfo } from './interface';
 import { ShareContent } from './share_content';
 import { ShareContentWrapper } from './share_content_wrapper';
+import { ShareFail } from './share_fail';
+import { ShareMobile } from './share_mobile/share_mobile';
+import styles from './style.module.less';
 import { useMountShare } from './use_mount_share';
 
 const _SplitPane: any = SplitPane;
@@ -187,8 +187,8 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
 
   const isIframeShowShareMenu = nodeTree?.children?.length === 0 && isIframe();
   const { IS_APITABLE, IS_AITABLE, LONG_DARK_LOGO, LONG_LIGHT_LOGO } = getEnvVariables();
-  const LightLogo = IS_AITABLE ? LONG_LIGHT_LOGO! : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
-  const DarkLogo = IS_AITABLE ? LONG_DARK_LOGO! : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
+  const LightLogo = IS_AITABLE ? integrateCdnHost(LONG_LIGHT_LOGO!) : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
+  const DarkLogo = IS_AITABLE ? integrateCdnHost(LONG_DARK_LOGO!) : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
   let localSize = null;
   try {
     localSize = localStorage.getItem('splitPos');
@@ -274,7 +274,10 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
           ) : shareContent}
         </ComponentDisplay>
         {isIframe() && !formId && <div className={styles.brandContainer}>
-          <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20}
+          <Image 
+            src={themeName === ThemeName.Light ? LightLogo : DarkLogo} 
+            width={IS_AITABLE ? 132 : IS_APITABLE ? 111 : 75} 
+            height={IS_AITABLE ? 29 : 20}
             alt="" />
         </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
