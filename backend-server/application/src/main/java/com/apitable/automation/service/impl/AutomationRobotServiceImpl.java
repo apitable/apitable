@@ -39,6 +39,7 @@ import com.apitable.automation.model.AutomationVO;
 import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.TriggerSimpleVO;
 import com.apitable.automation.model.TriggerVO;
+import com.apitable.automation.model.UpdateRobotRO;
 import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
@@ -49,6 +50,7 @@ import com.apitable.databusclient.model.AutomationActionIntroductionPO;
 import com.apitable.databusclient.model.AutomationRobotIntroductionSO;
 import com.apitable.databusclient.model.AutomationRobotPO;
 import com.apitable.databusclient.model.AutomationRobotSO;
+import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
@@ -187,7 +189,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                     .map(i -> {
                         TriggerSimpleVO trigger = new TriggerSimpleVO();
                         trigger.setTriggerId(i.getTriggerId());
-                        trigger.setTriggerTypeId(trigger.getTriggerTypeId());
+                        trigger.setTriggerTypeId(i.getTriggerTypeId());
                         trigger.setPrevTriggerId(i.getPrevTriggerId());
                         return trigger;
                     }).sorted(triggerComparator).collect(Collectors.toList());
@@ -308,6 +310,30 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             body.put("NODE_NAME", node.getNodeName());
         }
         throw new BusinessException(TemplateException.FOLDER_AUTOMATION_LINK_FOREIGN_NODE, body);
+    }
+
+    @Override
+    public boolean update(String robotId, UpdateRobotRO data) {
+        AutomationRobotUpdateRO ro = new AutomationRobotUpdateRO();
+        if (null != data.getDescription()) {
+            ro.setDescription(data.getDescription());
+        }
+        if (StrUtil.isNotBlank(data.getName())) {
+            ro.setName(data.getName());
+        }
+        if (null != data.getProps() && null != data.getProps().getFailureNotifyEnable()) {
+            UpdateRobotRO.AutomationPropertyRO propertyRO =
+                new UpdateRobotRO.AutomationPropertyRO();
+            propertyRO.setFailureNotifyEnable(data.getProps().getFailureNotifyEnable());
+            ro.setProps(JSONUtil.toJsonStr(propertyRO));
+        }
+        try {
+            automationDaoApiApi.daoUpdateAutomationRobot(robotId, ro);
+            return true;
+        } catch (ApiException e) {
+            log.error("Update automation error", e);
+            return false;
+        }
     }
 
     private AutomationRobotIntroductionSO getRobotsByResourceIdFromDatabus(String resourceId) {

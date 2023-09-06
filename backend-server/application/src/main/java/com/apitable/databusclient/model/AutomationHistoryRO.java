@@ -51,7 +51,7 @@ import com.apitable.databusclient.JSON;
 /**
  * AutomationHistoryRO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-05T18:12:41.738286+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
 public class AutomationHistoryRO {
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)

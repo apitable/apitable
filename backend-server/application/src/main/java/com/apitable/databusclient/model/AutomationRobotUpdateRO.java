@@ -49,22 +49,26 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * IViewLockInfo
+ * AutomationRobotUpdateRO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
-public class IViewLockInfo {
+public class AutomationRobotUpdateRO {
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
   private String description;
 
-  public static final String SERIALIZED_NAME_UNIT_ID = "unitId";
-  @SerializedName(SERIALIZED_NAME_UNIT_ID)
-  private String unitId;
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  private String name;
 
-  public IViewLockInfo() {
+  public static final String SERIALIZED_NAME_PROPS = "props";
+  @SerializedName(SERIALIZED_NAME_PROPS)
+  private String props;
+
+  public AutomationRobotUpdateRO() {
   }
 
-  public IViewLockInfo description(String description) {
+  public AutomationRobotUpdateRO description(String description) {
     
     this.description = description;
     return this;
@@ -85,24 +89,45 @@ public class IViewLockInfo {
   }
 
 
-  public IViewLockInfo unitId(String unitId) {
+  public AutomationRobotUpdateRO name(String name) {
     
-    this.unitId = unitId;
+    this.name = name;
     return this;
   }
 
    /**
-   * Get unitId
-   * @return unitId
+   * Get name
+   * @return name
   **/
-  @javax.annotation.Nonnull
-  public String getUnitId() {
-    return unitId;
+  @javax.annotation.Nullable
+  public String getName() {
+    return name;
   }
 
 
-  public void setUnitId(String unitId) {
-    this.unitId = unitId;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
+  public AutomationRobotUpdateRO props(String props) {
+    
+    this.props = props;
+    return this;
+  }
+
+   /**
+   * Get props
+   * @return props
+  **/
+  @javax.annotation.Nullable
+  public String getProps() {
+    return props;
+  }
+
+
+  public void setProps(String props) {
+    this.props = props;
   }
 
 
@@ -115,9 +140,10 @@ public class IViewLockInfo {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IViewLockInfo iviewLockInfo = (IViewLockInfo) o;
-    return Objects.equals(this.description, iviewLockInfo.description) &&
-        Objects.equals(this.unitId, iviewLockInfo.unitId);
+    AutomationRobotUpdateRO automationRobotUpdateRO = (AutomationRobotUpdateRO) o;
+    return Objects.equals(this.description, automationRobotUpdateRO.description) &&
+        Objects.equals(this.name, automationRobotUpdateRO.name) &&
+        Objects.equals(this.props, automationRobotUpdateRO.props);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -126,7 +152,7 @@ public class IViewLockInfo {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, unitId);
+    return Objects.hash(description, name, props);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -139,9 +165,10 @@ public class IViewLockInfo {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class IViewLockInfo {\n");
+    sb.append("class AutomationRobotUpdateRO {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    unitId: ").append(toIndentedString(unitId)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    props: ").append(toIndentedString(props)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -165,46 +192,42 @@ public class IViewLockInfo {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("description");
-    openapiFields.add("unitId");
+    openapiFields.add("name");
+    openapiFields.add("props");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("unitId");
   }
 
  /**
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to IViewLockInfo
+  * @throws IOException if the JSON Element is invalid with respect to AutomationRobotUpdateRO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!IViewLockInfo.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in IViewLockInfo is not found in the empty JSON string", IViewLockInfo.openapiRequiredFields.toString()));
+        if (!AutomationRobotUpdateRO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AutomationRobotUpdateRO is not found in the empty JSON string", AutomationRobotUpdateRO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!IViewLockInfo.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `IViewLockInfo` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : IViewLockInfo.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        if (!AutomationRobotUpdateRO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationRobotUpdateRO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
-      if (!jsonObj.get("unitId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `unitId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("unitId").toString()));
+      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+      }
+      if ((jsonObj.get("props") != null && !jsonObj.get("props").isJsonNull()) && !jsonObj.get("props").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `props` to be a primitive type in the JSON string but got `%s`", jsonObj.get("props").toString()));
       }
   }
 
@@ -212,22 +235,22 @@ public class IViewLockInfo {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!IViewLockInfo.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'IViewLockInfo' and its subtypes
+       if (!AutomationRobotUpdateRO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'AutomationRobotUpdateRO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<IViewLockInfo> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(IViewLockInfo.class));
+       final TypeAdapter<AutomationRobotUpdateRO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(AutomationRobotUpdateRO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<IViewLockInfo>() {
+       return (TypeAdapter<T>) new TypeAdapter<AutomationRobotUpdateRO>() {
            @Override
-           public void write(JsonWriter out, IViewLockInfo value) throws IOException {
+           public void write(JsonWriter out, AutomationRobotUpdateRO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public IViewLockInfo read(JsonReader in) throws IOException {
+           public AutomationRobotUpdateRO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -238,18 +261,18 @@ public class IViewLockInfo {
   }
 
  /**
-  * Create an instance of IViewLockInfo given an JSON string
+  * Create an instance of AutomationRobotUpdateRO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of IViewLockInfo
-  * @throws IOException if the JSON string is invalid with respect to IViewLockInfo
+  * @return An instance of AutomationRobotUpdateRO
+  * @throws IOException if the JSON string is invalid with respect to AutomationRobotUpdateRO
   */
-  public static IViewLockInfo fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, IViewLockInfo.class);
+  public static AutomationRobotUpdateRO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, AutomationRobotUpdateRO.class);
   }
 
  /**
-  * Convert an instance of IViewLockInfo to an JSON string
+  * Convert an instance of AutomationRobotUpdateRO to an JSON string
   *
   * @return JSON string
   */

@@ -29,7 +29,9 @@ import java.io.IOException;
 
 import com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO;
 import com.apitable.databusclient.model.ApiResponseAutomationRobotSO;
+import com.apitable.databusclient.model.ApiResponseEmptySO;
 import com.apitable.databusclient.model.AutomationHistoryStatusRO;
+import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -934,6 +936,139 @@ public class AutomationDaoApiApi {
 
         okhttp3.Call localVarCall = daoGetRobotsTriggersValidateBeforeCall(robotIds, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for daoUpdateAutomationRobot
+     * @param robotId robot id (required)
+     * @param automationRobotUpdateRO  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call daoUpdateAutomationRobotCall(String robotId, AutomationRobotUpdateRO automationRobotUpdateRO, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = automationRobotUpdateRO;
+
+        // create path and map variables
+        String localVarPath = "/databus/dao/automations/robots/{robot_id}"
+            .replace("{" + "robot_id" + "}", localVarApiClient.escapeString(robotId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call daoUpdateAutomationRobotValidateBeforeCall(String robotId, AutomationRobotUpdateRO automationRobotUpdateRO, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'robotId' is set
+        if (robotId == null) {
+            throw new ApiException("Missing the required parameter 'robotId' when calling daoUpdateAutomationRobot(Async)");
+        }
+
+        // verify the required parameter 'automationRobotUpdateRO' is set
+        if (automationRobotUpdateRO == null) {
+            throw new ApiException("Missing the required parameter 'automationRobotUpdateRO' when calling daoUpdateAutomationRobot(Async)");
+        }
+
+        return daoUpdateAutomationRobotCall(robotId, automationRobotUpdateRO, _callback);
+
+    }
+
+    /**
+     * Get automation task input and output
+     * Get automation task input and output
+     * @param robotId robot id (required)
+     * @param automationRobotUpdateRO  (required)
+     * @return ApiResponseEmptySO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponseEmptySO daoUpdateAutomationRobot(String robotId, AutomationRobotUpdateRO automationRobotUpdateRO) throws ApiException {
+        ApiResponse<ApiResponseEmptySO> localVarResp = daoUpdateAutomationRobotWithHttpInfo(robotId, automationRobotUpdateRO);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get automation task input and output
+     * Get automation task input and output
+     * @param robotId robot id (required)
+     * @param automationRobotUpdateRO  (required)
+     * @return ApiResponse&lt;ApiResponseEmptySO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<ApiResponseEmptySO> daoUpdateAutomationRobotWithHttpInfo(String robotId, AutomationRobotUpdateRO automationRobotUpdateRO) throws ApiException {
+        okhttp3.Call localVarCall = daoUpdateAutomationRobotValidateBeforeCall(robotId, automationRobotUpdateRO, null);
+        Type localVarReturnType = new TypeToken<ApiResponseEmptySO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get automation task input and output (asynchronously)
+     * Get automation task input and output
+     * @param robotId robot id (required)
+     * @param automationRobotUpdateRO  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call daoUpdateAutomationRobotAsync(String robotId, AutomationRobotUpdateRO automationRobotUpdateRO, final ApiCallback<ApiResponseEmptySO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = daoUpdateAutomationRobotValidateBeforeCall(robotId, automationRobotUpdateRO, _callback);
+        Type localVarReturnType = new TypeToken<ApiResponseEmptySO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**

@@ -14,7 +14,6 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
-import com.apitable.databusclient.model.AutomationRobotSO;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -50,17 +49,17 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * ApiResponseAutomationRobotSO
+ * ApiResponseEmptySO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
-public class ApiResponseAutomationRobotSO {
+public class ApiResponseEmptySO {
   public static final String SERIALIZED_NAME_CODE = "code";
   @SerializedName(SERIALIZED_NAME_CODE)
   private Integer code;
 
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
-  private AutomationRobotSO data;
+  private Boolean data;
 
   public static final String SERIALIZED_NAME_MESSAGE = "message";
   @SerializedName(SERIALIZED_NAME_MESSAGE)
@@ -70,10 +69,10 @@ public class ApiResponseAutomationRobotSO {
   @SerializedName(SERIALIZED_NAME_SUCCESS)
   private Boolean success;
 
-  public ApiResponseAutomationRobotSO() {
+  public ApiResponseEmptySO() {
   }
 
-  public ApiResponseAutomationRobotSO code(Integer code) {
+  public ApiResponseEmptySO code(Integer code) {
     
     this.code = code;
     return this;
@@ -95,7 +94,7 @@ public class ApiResponseAutomationRobotSO {
   }
 
 
-  public ApiResponseAutomationRobotSO data(AutomationRobotSO data) {
+  public ApiResponseEmptySO data(Boolean data) {
     
     this.data = data;
     return this;
@@ -106,17 +105,17 @@ public class ApiResponseAutomationRobotSO {
    * @return data
   **/
   @javax.annotation.Nullable
-  public AutomationRobotSO getData() {
+  public Boolean getData() {
     return data;
   }
 
 
-  public void setData(AutomationRobotSO data) {
+  public void setData(Boolean data) {
     this.data = data;
   }
 
 
-  public ApiResponseAutomationRobotSO message(String message) {
+  public ApiResponseEmptySO message(String message) {
     
     this.message = message;
     return this;
@@ -137,7 +136,7 @@ public class ApiResponseAutomationRobotSO {
   }
 
 
-  public ApiResponseAutomationRobotSO success(Boolean success) {
+  public ApiResponseEmptySO success(Boolean success) {
     
     this.success = success;
     return this;
@@ -167,11 +166,11 @@ public class ApiResponseAutomationRobotSO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ApiResponseAutomationRobotSO apiResponseAutomationRobotSO = (ApiResponseAutomationRobotSO) o;
-    return Objects.equals(this.code, apiResponseAutomationRobotSO.code) &&
-        Objects.equals(this.data, apiResponseAutomationRobotSO.data) &&
-        Objects.equals(this.message, apiResponseAutomationRobotSO.message) &&
-        Objects.equals(this.success, apiResponseAutomationRobotSO.success);
+    ApiResponseEmptySO apiResponseEmptySO = (ApiResponseEmptySO) o;
+    return Objects.equals(this.code, apiResponseEmptySO.code) &&
+        Objects.equals(this.data, apiResponseEmptySO.data) &&
+        Objects.equals(this.message, apiResponseEmptySO.message) &&
+        Objects.equals(this.success, apiResponseEmptySO.success);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -193,7 +192,7 @@ public class ApiResponseAutomationRobotSO {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ApiResponseAutomationRobotSO {\n");
+    sb.append("class ApiResponseEmptySO {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
@@ -236,34 +235,30 @@ public class ApiResponseAutomationRobotSO {
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ApiResponseAutomationRobotSO
+  * @throws IOException if the JSON Element is invalid with respect to ApiResponseEmptySO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!ApiResponseAutomationRobotSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ApiResponseAutomationRobotSO is not found in the empty JSON string", ApiResponseAutomationRobotSO.openapiRequiredFields.toString()));
+        if (!ApiResponseEmptySO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ApiResponseEmptySO is not found in the empty JSON string", ApiResponseEmptySO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!ApiResponseAutomationRobotSO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ApiResponseAutomationRobotSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ApiResponseEmptySO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ApiResponseEmptySO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ApiResponseAutomationRobotSO.openapiRequiredFields) {
+      for (String requiredField : ApiResponseEmptySO.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `data`
-      if (jsonObj.get("data") != null && !jsonObj.get("data").isJsonNull()) {
-        AutomationRobotSO.validateJsonElement(jsonObj.get("data"));
-      }
       if (!jsonObj.get("message").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
       }
@@ -273,22 +268,22 @@ public class ApiResponseAutomationRobotSO {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ApiResponseAutomationRobotSO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ApiResponseAutomationRobotSO' and its subtypes
+       if (!ApiResponseEmptySO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ApiResponseEmptySO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ApiResponseAutomationRobotSO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ApiResponseAutomationRobotSO.class));
+       final TypeAdapter<ApiResponseEmptySO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ApiResponseEmptySO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<ApiResponseAutomationRobotSO>() {
+       return (TypeAdapter<T>) new TypeAdapter<ApiResponseEmptySO>() {
            @Override
-           public void write(JsonWriter out, ApiResponseAutomationRobotSO value) throws IOException {
+           public void write(JsonWriter out, ApiResponseEmptySO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public ApiResponseAutomationRobotSO read(JsonReader in) throws IOException {
+           public ApiResponseEmptySO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -299,18 +294,18 @@ public class ApiResponseAutomationRobotSO {
   }
 
  /**
-  * Create an instance of ApiResponseAutomationRobotSO given an JSON string
+  * Create an instance of ApiResponseEmptySO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of ApiResponseAutomationRobotSO
-  * @throws IOException if the JSON string is invalid with respect to ApiResponseAutomationRobotSO
+  * @return An instance of ApiResponseEmptySO
+  * @throws IOException if the JSON string is invalid with respect to ApiResponseEmptySO
   */
-  public static ApiResponseAutomationRobotSO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ApiResponseAutomationRobotSO.class);
+  public static ApiResponseEmptySO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ApiResponseEmptySO.class);
   }
 
  /**
-  * Convert an instance of ApiResponseAutomationRobotSO to an JSON string
+  * Convert an instance of ApiResponseEmptySO to an JSON string
   *
   * @return JSON string
   */

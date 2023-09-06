@@ -57,13 +57,13 @@ import com.apitable.databusclient.JSON;
 /**
  * AutomationRobotSO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-05T18:12:41.738286+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
 public class AutomationRobotSO {
   public static final String SERIALIZED_NAME_ACTIONS = "actions";
   @SerializedName(SERIALIZED_NAME_ACTIONS)
   private List<AutomationActionPO> actions = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_RELATED_RESOURCES = "related_resources";
+  public static final String SERIALIZED_NAME_RELATED_RESOURCES = "relatedResources";
   @SerializedName(SERIALIZED_NAME_RELATED_RESOURCES)
   private List<NodeSimplePO> relatedResources;
 
@@ -249,7 +249,7 @@ public class AutomationRobotSO {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("actions");
-    openapiFields.add("related_resources");
+    openapiFields.add("relatedResources");
     openapiFields.add("robot");
     openapiFields.add("triggers");
 
@@ -298,15 +298,15 @@ public class AutomationRobotSO {
       for (int i = 0; i < jsonArrayactions.size(); i++) {
         AutomationActionPO.validateJsonElement(jsonArrayactions.get(i));
       };
-      if (jsonObj.get("related_resources") != null && !jsonObj.get("related_resources").isJsonNull()) {
-        JsonArray jsonArrayrelatedResources = jsonObj.getAsJsonArray("related_resources");
+      if (jsonObj.get("relatedResources") != null && !jsonObj.get("relatedResources").isJsonNull()) {
+        JsonArray jsonArrayrelatedResources = jsonObj.getAsJsonArray("relatedResources");
         if (jsonArrayrelatedResources != null) {
           // ensure the json data is an array
-          if (!jsonObj.get("related_resources").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `related_resources` to be an array in the JSON string but got `%s`", jsonObj.get("related_resources").toString()));
+          if (!jsonObj.get("relatedResources").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `relatedResources` to be an array in the JSON string but got `%s`", jsonObj.get("relatedResources").toString()));
           }
 
-          // validate the optional field `related_resources` (array)
+          // validate the optional field `relatedResources` (array)
           for (int i = 0; i < jsonArrayrelatedResources.size(); i++) {
             NodeSimplePO.validateJsonElement(jsonArrayrelatedResources.get(i));
           };

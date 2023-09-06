@@ -23,6 +23,7 @@ import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationRobotDto;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationVO;
+import com.apitable.automation.model.UpdateRobotRO;
 import java.util.List;
 import java.util.Map;
 
@@ -68,4 +69,12 @@ public interface IAutomationRobotService {
     AutomationVO getRobotByResourceId(String resourceId);
 
     void checkAutomationReference(List<String> subNodeIds, List<String> resourceIds);
+
+    /**
+     * Update automation robot.
+     *
+     * @param robotId robot id
+     * @param data    ro data
+     */
+    boolean update(String robotId, UpdateRobotRO data);
 }
