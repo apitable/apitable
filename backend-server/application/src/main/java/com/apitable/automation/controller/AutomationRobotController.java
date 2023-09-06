@@ -56,7 +56,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Automation robots")
-@ApiResource(path = {"/automation/robots"})
+@ApiResource(path = {"/automation"})
 @Slf4j
 public class AutomationRobotController {
 
@@ -75,7 +75,7 @@ public class AutomationRobotController {
      * @param resourceId resource id
      * @return {@link ResponseData}
      */
-    @GetResource(path = "", requiredPermission = false)
+    @GetResource(path = "/robots", requiredPermission = false)
     @Operation(summary = "Get automation robots")
     @Parameter(name = "resourceId", description = "resource id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dst****")
@@ -95,21 +95,26 @@ public class AutomationRobotController {
     /**
      * get automation detail.
      *
-     * @param resourceId resource id
+     * @param robotId robot id
+     * @param resourceId node id
      * @return AutomationVO
      */
-    @GetResource(path = "/{resourceId}", requiredPermission = false)
+    @GetResource(path = "/{resourceId}/robots/{robotId}", requiredPermission = false)
     @Operation(summary = "Get node automation detail. ")
-    @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****")
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+    })
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
-    public ResponseData<AutomationVO> getNodeRobot(@PathVariable String resourceId) {
+    public ResponseData<AutomationVO> getNodeRobot(@PathVariable String resourceId,
+                                                   @PathVariable String robotId) {
         Long userId = SessionContext.getUserId();
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
         // check whether the node has the specified operation permission
         controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        return ResponseData.success(iAutomationRobotService.getRobotByResourceId(resourceId));
+        return ResponseData.success(iAutomationRobotService.getRobotByRobotId(robotId));
     }
 
     /**

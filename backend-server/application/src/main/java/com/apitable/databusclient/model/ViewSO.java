@@ -60,7 +60,7 @@ import com.apitable.databusclient.JSON;
 /**
  * ViewSO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
 public class ViewSO {
   public static final String SERIALIZED_NAME_AUTO_HEAD_HEIGHT = "autoHeadHeight";
   @SerializedName(SERIALIZED_NAME_AUTO_HEAD_HEIGHT)

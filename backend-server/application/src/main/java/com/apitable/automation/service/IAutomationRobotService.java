@@ -64,9 +64,9 @@ public interface IAutomationRobotService {
     /**
      * get automation detail.
      *
-     * @param resourceId resource id
+     * @param robotId robot id
      */
-    AutomationVO getRobotByResourceId(String resourceId);
+    AutomationVO getRobotByRobotId(String robotId);
 
     void checkAutomationReference(List<String> subNodeIds, List<String> resourceIds);
 

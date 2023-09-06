@@ -569,8 +569,8 @@ public class AutomationDaoApiApi {
         return localVarCall;
     }
     /**
-     * Build call for daoGetRobotByResourceId
-     * @param resourceId Automation node id (required)
+     * Build call for daoGetRobotByRobotId
+     * @param robotId Automation robot id (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -580,7 +580,7 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call daoGetRobotByResourceIdCall(String resourceId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call daoGetRobotByRobotIdCall(String robotId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -597,8 +597,8 @@ public class AutomationDaoApiApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/databus/dao/automations/robots/{resource_id}"
-            .replace("{" + "resource_id" + "}", localVarApiClient.escapeString(resourceId.toString()));
+        String localVarPath = "/databus/dao/automations/robots/{robot_id}"
+            .replace("{" + "robot_id" + "}", localVarApiClient.escapeString(robotId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -626,20 +626,20 @@ public class AutomationDaoApiApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call daoGetRobotByResourceIdValidateBeforeCall(String resourceId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'resourceId' is set
-        if (resourceId == null) {
-            throw new ApiException("Missing the required parameter 'resourceId' when calling daoGetRobotByResourceId(Async)");
+    private okhttp3.Call daoGetRobotByRobotIdValidateBeforeCall(String robotId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'robotId' is set
+        if (robotId == null) {
+            throw new ApiException("Missing the required parameter 'robotId' when calling daoGetRobotByRobotId(Async)");
         }
 
-        return daoGetRobotByResourceIdCall(resourceId, _callback);
+        return daoGetRobotByRobotIdCall(robotId, _callback);
 
     }
 
     /**
      * Get automation robot detail.
      * Get automation robot detail.
-     * @param resourceId Automation node id (required)
+     * @param robotId Automation robot id (required)
      * @return ApiResponseAutomationRobotSO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -648,15 +648,15 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponseAutomationRobotSO daoGetRobotByResourceId(String resourceId) throws ApiException {
-        ApiResponse<ApiResponseAutomationRobotSO> localVarResp = daoGetRobotByResourceIdWithHttpInfo(resourceId);
+    public ApiResponseAutomationRobotSO daoGetRobotByRobotId(String robotId) throws ApiException {
+        ApiResponse<ApiResponseAutomationRobotSO> localVarResp = daoGetRobotByRobotIdWithHttpInfo(robotId);
         return localVarResp.getData();
     }
 
     /**
      * Get automation robot detail.
      * Get automation robot detail.
-     * @param resourceId Automation node id (required)
+     * @param robotId Automation robot id (required)
      * @return ApiResponse&lt;ApiResponseAutomationRobotSO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -665,8 +665,8 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ApiResponseAutomationRobotSO> daoGetRobotByResourceIdWithHttpInfo(String resourceId) throws ApiException {
-        okhttp3.Call localVarCall = daoGetRobotByResourceIdValidateBeforeCall(resourceId, null);
+    public ApiResponse<ApiResponseAutomationRobotSO> daoGetRobotByRobotIdWithHttpInfo(String robotId) throws ApiException {
+        okhttp3.Call localVarCall = daoGetRobotByRobotIdValidateBeforeCall(robotId, null);
         Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotSO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -674,7 +674,7 @@ public class AutomationDaoApiApi {
     /**
      * Get automation robot detail. (asynchronously)
      * Get automation robot detail.
-     * @param resourceId Automation node id (required)
+     * @param robotId Automation robot id (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -684,9 +684,9 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call daoGetRobotByResourceIdAsync(String resourceId, final ApiCallback<ApiResponseAutomationRobotSO> _callback) throws ApiException {
+    public okhttp3.Call daoGetRobotByRobotIdAsync(String robotId, final ApiCallback<ApiResponseAutomationRobotSO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = daoGetRobotByResourceIdValidateBeforeCall(resourceId, _callback);
+        okhttp3.Call localVarCall = daoGetRobotByRobotIdValidateBeforeCall(robotId, _callback);
         Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotSO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

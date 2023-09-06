@@ -58,7 +58,7 @@ import com.apitable.databusclient.JSON;
 /**
  * DatasheetMetaSO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T15:12:05.433596+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
 public class DatasheetMetaSO {
   public static final String SERIALIZED_NAME_FIELD_MAP = "fieldMap";
   @SerializedName(SERIALIZED_NAME_FIELD_MAP)

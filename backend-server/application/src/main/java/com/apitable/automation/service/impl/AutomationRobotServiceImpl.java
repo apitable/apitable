@@ -213,8 +213,8 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     }
 
     @Override
-    public AutomationVO getRobotByResourceId(String resourceId) {
-        AutomationRobotSO automation = getRobotByResourceIdFromDatabus(resourceId);
+    public AutomationVO getRobotByRobotId(String robotId) {
+        AutomationRobotSO automation = getRobotByRobotIdFromDatabus(robotId);
         if (null == automation) {
             return null;
         }
@@ -354,9 +354,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         }
     }
 
-    private AutomationRobotSO getRobotByResourceIdFromDatabus(String resourceId) {
+    private AutomationRobotSO getRobotByRobotIdFromDatabus(String robotId) {
         try {
-            return automationDaoApiApi.daoGetRobotByResourceId(resourceId).getData();
+            return automationDaoApiApi.daoGetRobotByRobotId(robotId).getData();
         } catch (ApiException e) {
             log.error("Get automation detail error", e);
             return null;
