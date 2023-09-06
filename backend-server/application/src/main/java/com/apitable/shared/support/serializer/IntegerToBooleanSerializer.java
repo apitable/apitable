@@ -31,9 +31,6 @@ public class IntegerToBooleanSerializer extends JsonSerializer<Integer> {
     @Override
     public void serialize(Integer value, JsonGenerator gen, SerializerProvider provider)
         throws IOException {
-        if (null != value && 1 == value) {
-            gen.writeBoolean(true);
-        }
-        gen.writeBoolean(false);
+        gen.writeBoolean(null != value && value.equals(1));
     }
 }

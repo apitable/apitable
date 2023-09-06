@@ -30,12 +30,15 @@ import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationRobotEntity;
 import com.apitable.automation.mapper.AutomationRobotMapper;
 import com.apitable.automation.model.ActionSimpleVO;
+import com.apitable.automation.model.ActionVO;
 import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationRobotDto;
+import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.apitable.automation.model.AutomationVO;
 import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.TriggerSimpleVO;
+import com.apitable.automation.model.TriggerVO;
 import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
@@ -43,6 +46,7 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.databusclient.ApiException;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
 import com.apitable.databusclient.model.AutomationActionIntroductionPO;
+import com.apitable.databusclient.model.AutomationRobotIntroductionSO;
 import com.apitable.databusclient.model.AutomationRobotPO;
 import com.apitable.databusclient.model.AutomationRobotSO;
 import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
@@ -50,6 +54,7 @@ import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
+import com.apitable.workspace.vo.NodeSimpleVO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -151,9 +156,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     }
 
     @Override
-    public List<AutomationVO> getRobotsByResourceId(String resourceId) {
-        List<AutomationVO> vos = new ArrayList<>();
-        AutomationRobotSO result = getRobotsByResourceIdFromDatabus(resourceId);
+    public List<AutomationSimpleVO> getRobotsByResourceId(String resourceId) {
+        List<AutomationSimpleVO> vos = new ArrayList<>();
+        AutomationRobotIntroductionSO result = getRobotsByResourceIdFromDatabus(resourceId);
         if (null == result) {
             return vos;
         }
@@ -166,12 +171,12 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                 .collect(groupingBy(AutomationTriggerIntroductionPO::getRobotId));
         for (AutomationRobotPO robot : robots) {
             // convert to robot vo.
-            AutomationVO vo =
-                AutomationVO.builder().robotId(robot.getRobotId()).name(robot.getName())
+            AutomationSimpleVO vo =
+                AutomationSimpleVO.builder().robotId(robot.getRobotId()).name(robot.getName())
                     .description(robot.getDescription())
-                    .isActive(robot.getIsActive()).props(
-                        BeanUtil.toBean(robot.getProps(),
-                            AutomationVO.AutomationPropertyVO.class))
+                    .isActive(robot.getIsActive())
+                    .props(BeanUtil.toBean(robot.getProps(),
+                        AutomationSimpleVO.AutomationPropertyVO.class))
                     .updatedAt(LocalDateTimeUtil.parse(robot.getUpdatedAt()))
                     .updatedBy(robot.getUpdatedBy())
                     .build();
@@ -179,22 +184,79 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             List<TriggerSimpleVO> triggers =
                 Optional.ofNullable(triggerMap.get(robot.getRobotId())).orElse(new ArrayList<>())
                     .stream()
-                    .map(i -> TriggerSimpleVO.builder().triggerId(i.getTriggerId())
-                        .triggerTypeId(i.getTriggerTypeId()).prevTriggerId(i.getPrevTriggerId())
-                        .build()).sorted(triggerComparator).collect(Collectors.toList());
+                    .map(i -> {
+                        TriggerSimpleVO trigger = new TriggerSimpleVO();
+                        trigger.setTriggerId(i.getTriggerId());
+                        trigger.setTriggerTypeId(trigger.getTriggerTypeId());
+                        trigger.setPrevTriggerId(i.getPrevTriggerId());
+                        return trigger;
+                    }).sorted(triggerComparator).collect(Collectors.toList());
             // get robot actions.
             List<ActionSimpleVO> actions =
                 Optional.ofNullable(actionMap.get(robot.getRobotId())).orElse(new ArrayList<>())
                     .stream()
-                    .map(i -> ActionSimpleVO.builder().actionId(i.getActionId())
-                        .actionTypeId(i.getActionTypeId()).prevActionId(i.getPrevActionId())
-                        .nextActionId(i.getActionId())
-                        .build()).sorted(actionComparator).collect(Collectors.toList());
+                    .map(i -> {
+                        ActionSimpleVO action = new ActionSimpleVO();
+                        action.setActionId(i.getActionId());
+                        action.setPrevActionId(i.getPrevActionId());
+                        action.setNextActionId(i.getActionId());
+                        action.setActionTypeId(i.getActionTypeId());
+                        return action;
+                    }).sorted(actionComparator).collect(Collectors.toList());
             vo.setTriggers(triggers);
             vo.setActions(actions);
             vos.add(vo);
         }
         return vos;
+    }
+
+    @Override
+    public AutomationVO getRobotByResourceId(String resourceId) {
+        AutomationRobotSO automation = getRobotByResourceIdFromDatabus(resourceId);
+        if (null == automation) {
+            return null;
+        }
+        AutomationRobotPO robot = automation.getRobot();
+        AutomationVO vo = AutomationVO.builder()
+            .robotId(robot.getRobotId()).name(robot.getName())
+            .description(robot.getDescription())
+            .isActive(robot.getIsActive())
+            .props(BeanUtil.toBean(robot.getProps(), AutomationSimpleVO.AutomationPropertyVO.class))
+            .updatedAt(LocalDateTimeUtil.parse(robot.getUpdatedAt()))
+            .updatedBy(robot.getUpdatedBy())
+            .build();
+        List<NodeSimpleVO> relatedResources =
+            Optional.ofNullable(automation.getRelatedResources()).orElse(new ArrayList<>()).stream()
+                .map(i -> {
+                    NodeSimpleVO node = new NodeSimpleVO();
+                    node.setNodeId(i.getNodeId());
+                    node.setIcon(i.getIcon());
+                    node.setNodeName(i.getNodeName());
+                    return node;
+                }).collect(Collectors.toList());
+        List<TriggerVO> triggers =
+            Optional.of(automation.getTriggers()).orElse(new ArrayList<>()).stream().map(i -> {
+                TriggerVO trigger = new TriggerVO();
+                trigger.setTriggerId(i.getTriggerId());
+                trigger.setTriggerTypeId(trigger.getTriggerTypeId());
+                trigger.setPrevTriggerId(i.getPrevTriggerId());
+                trigger.setInput(i.getInput());
+                return trigger;
+            }).sorted(triggerComparator).collect(Collectors.toList());
+        List<ActionVO> actions =
+            Optional.of(automation.getActions()).orElse(new ArrayList<>()).stream().map(i -> {
+                ActionVO action = new ActionVO();
+                action.setInput(i.getInput());
+                action.setActionId(i.getActionId());
+                action.setPrevActionId(i.getPrevActionId());
+                action.setNextActionId(i.getActionId());
+                action.setActionTypeId(i.getActionTypeId());
+                return action;
+            }).sorted(actionComparator).collect(Collectors.toList());
+        vo.setTriggers(triggers);
+        vo.setActions(actions);
+        vo.setRelatedResources(relatedResources);
+        return vo;
     }
 
 
@@ -248,9 +310,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         throw new BusinessException(TemplateException.FOLDER_AUTOMATION_LINK_FOREIGN_NODE, body);
     }
 
-    private AutomationRobotSO getRobotsByResourceIdFromDatabus(String resourceId) {
+    private AutomationRobotIntroductionSO getRobotsByResourceIdFromDatabus(String resourceId) {
         try {
-            AutomationRobotSO result =
+            AutomationRobotIntroductionSO result =
                 automationDaoApiApi.daoGetRobotsByResourceId(resourceId).getData();
             if (null == result) {
                 return null;
@@ -262,6 +324,15 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             return result;
         } catch (ApiException e) {
             log.error("Get automation error", e);
+            return null;
+        }
+    }
+
+    private AutomationRobotSO getRobotByResourceIdFromDatabus(String resourceId) {
+        try {
+            return automationDaoApiApi.daoGetRobotByResourceId(resourceId).getData();
+        } catch (ApiException e) {
+            log.error("Get automation detail error", e);
             return null;
         }
     }

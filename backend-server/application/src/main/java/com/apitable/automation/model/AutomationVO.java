@@ -21,8 +21,8 @@ package com.apitable.automation.model;
 import com.apitable.shared.support.serializer.IntegerToBooleanSerializer;
 import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
+import com.apitable.workspace.vo.NodeSimpleVO;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * AutomationVO.
+ * AutomationSimpleVO.
  */
 @Data
 @Builder(toBuilder = true)
@@ -61,25 +61,18 @@ public class AutomationVO {
     private LocalDateTime updatedAt;
 
     @Schema(description = "Automation props")
-    private AutomationPropertyVO props;
+    private AutomationSimpleVO.AutomationPropertyVO props;
 
     @Schema(description = "Automation triggers list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
-    private List<TriggerSimpleVO> triggers;
+    private List<TriggerVO> triggers;
 
     @Schema(description = "Automation actions list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
-    private List<ActionSimpleVO> actions;
+    private List<ActionVO> actions;
 
-    /**
-     * AutomationPropertyVO.
-     */
-    @Data
-    @Builder(toBuilder = true)
-    public static class AutomationPropertyVO {
+    @Schema(description = "Automation related resource list")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<NodeSimpleVO> relatedResources;
 
-        @Schema(description = "Automation actions list")
-        @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-        private Boolean failureNotifyEnable;
-    }
 }
