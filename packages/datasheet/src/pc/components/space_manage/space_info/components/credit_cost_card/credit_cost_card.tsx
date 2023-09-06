@@ -68,14 +68,14 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
             {/*<XAxis dataKey="name" />*/}
             <XAxis
               dataKey="dateline"
-              tick={{ stroke: color.textCommonPrimary, strokeWidth: 0.5 }}
+              tick={{ fill: color.textCommonPrimary }}
               // tickLine={{ stroke: 'red' }}
               // tickFormatter={(timeStr) => {
               //   return dayjs(timeStr).format('YYYY-MM-DD');
               // }}
               stroke={color.borderCommonDefault}
             />
-            <YAxis domain={[0, 'dataMax + 5']} tick={{ stroke: color.textCommonPrimary, strokeWidth: 0.5 }} stroke={color.borderCommonDefault} />
+            <YAxis domain={[0, 'dataMax + 5']} tick={{ fill: color.textCommonPrimary }} stroke={color.borderCommonDefault} />
             <Tooltip
               labelStyle={{ color: color.textReverseDefault }}
               itemStyle={{ color: color.textReverseDefault }}
