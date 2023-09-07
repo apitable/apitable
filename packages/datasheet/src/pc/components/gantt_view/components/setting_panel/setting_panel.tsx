@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line no-restricted-imports
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FC, memo, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { black, IOption, Select, Switch, Tooltip, Typography, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
