@@ -52,6 +52,7 @@ import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
+import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -104,6 +105,7 @@ import com.apitable.user.service.IUserHistoryService;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserInfoVo;
 import com.apitable.user.vo.UserLinkVo;
+import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.service.INodeShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -112,6 +114,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -1158,5 +1161,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     public List<UserSensitiveDTO> getUserSensitiveInfoByIds(List<Long> userIds) {
         return baseMapper.selectEmailAndMobilePhoneByIds(userIds);
+    }
+
+    @Override
+    public Map<Long, UserSimpleVO> getUserSimpleInfoMap(List<Long> userIds) {
+        if (userIds.isEmpty()) {
+            return new HashMap<>();
+        }
+        UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
+        return userMapper.selectByIds(userIds).stream().collect(
+            Collectors.toMap(UserEntity::getId, i -> {
+                UserSimpleVO vo = new UserSimpleVO();
+                vo.setUuid(i.getUuid());
+                vo.setNickName(i.getNickName());
+                vo.setAvatar(i.getAvatar());
+                return vo;
+            }));
     }
 }

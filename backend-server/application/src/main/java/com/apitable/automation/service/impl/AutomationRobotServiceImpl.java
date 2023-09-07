@@ -24,6 +24,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -54,6 +55,8 @@ import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
+import com.apitable.user.service.IUserService;
+import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
@@ -88,6 +91,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
 
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
+
+    @Resource
+    private IUserService iUserService;
 
     @Override
     public List<AutomationRobotDto> getRobotListByResourceId(String resourceId) {
@@ -165,6 +171,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             return vos;
         }
         List<AutomationRobotPO> robots = result.getRobots();
+        List<Long> userIds =
+            robots.stream().map(AutomationRobotPO::getUpdatedBy).collect(Collectors.toList());
+        Map<Long, UserSimpleVO> users = iUserService.getUserSimpleInfoMap(userIds);
         Map<String, List<AutomationActionIntroductionPO>> actionMap =
             result.getActions().stream()
                 .collect(groupingBy(AutomationActionIntroductionPO::getRobotId));
@@ -178,10 +187,10 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                     .description(robot.getDescription())
                     .resourceId(robot.getResourceId())
                     .isActive(robot.getIsActive())
-                    .props(BeanUtil.toBean(robot.getProps(),
+                    .props(BeanUtil.toBean(JSONUtil.parse(robot.getProps()),
                         AutomationSimpleVO.AutomationPropertyVO.class))
                     .updatedAt(LocalDateTimeUtil.parse(robot.getUpdatedAt()))
-                    .updatedBy(robot.getUpdatedBy())
+                    .updatedBy(users.get(robot.getUpdatedBy()))
                     .build();
             // get robot triggers.
             List<TriggerSimpleVO> triggers =
@@ -225,10 +234,14 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             .description(robot.getDescription())
             .resourceId(robot.getResourceId())
             .isActive(robot.getIsActive())
-            .props(BeanUtil.toBean(robot.getProps(), AutomationSimpleVO.AutomationPropertyVO.class))
+            .props(
+                BeanUtil.toBean(JSONUtil.parse(robot.getProps()),
+                    AutomationSimpleVO.AutomationPropertyVO.class))
             .updatedAt(LocalDateTimeUtil.parse(robot.getUpdatedAt()))
-            .updatedBy(robot.getUpdatedBy())
             .build();
+        UserSimpleVO user = iUserService.getUserSimpleInfoMap(ListUtil.toList(robot.getUpdatedBy()))
+            .get(robot.getUpdatedBy());
+        vo.setUpdatedBy(user);
         List<NodeSimpleVO> relatedResources =
             Optional.ofNullable(automation.getRelatedResources()).orElse(new ArrayList<>()).stream()
                 .map(i -> {

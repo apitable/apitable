@@ -21,9 +21,8 @@ package com.apitable.automation.model;
 import com.apitable.shared.support.serializer.IntegerToBooleanSerializer;
 import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.apitable.shared.support.serializer.UserIdToUserObjectSerializer;
+import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.vo.NodeSimpleVO;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,8 +59,7 @@ public class AutomationVO {
     private Integer isActive;
 
     @Schema(description = "updated by", type = "java.lang.Long", example = "1573561644000")
-    @JsonSerialize(nullsUsing = NullNumberSerializer.class, using = UserIdToUserObjectSerializer.class)
-    private Long updatedBy;
+    private UserSimpleVO updatedBy;
 
     @Schema(description = "updated time(millisecond)", type = "java.lang.Long", example = "1573561644000")
     @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
@@ -81,5 +79,4 @@ public class AutomationVO {
     @Schema(description = "Automation related resource list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeSimpleVO> relatedResources;
-
 }
