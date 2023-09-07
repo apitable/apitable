@@ -164,6 +164,7 @@ export type StringKeysMapType = {
   'ai_credit_time_dimension_weekend': 'ai_credit_time_dimension_weekend',
   'ai_credit_time_dimension_year': 'ai_credit_time_dimension_year',
   'ai_credit_usage_tooltip': 'ai_credit_usage_tooltip',
+  'ai_data_source_required': 'ai_data_source_required',
   'ai_data_source_rows': 'ai_data_source_rows',
   'ai_data_source_update': 'ai_data_source_update',
   'ai_datasheet_panel_create_btn_text': 'ai_datasheet_panel_create_btn_text',
