@@ -393,7 +393,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return <>
     <Head>
       <title>
-        {env.IS_AITABLE ? (env.APITABLE_NAME || 'AITable') : env.IS_APITABLE ? (env.APITABLE_NAME || 'APITable') : t(Strings.og_page_title)}
+        {env.DEFAULT_TITLE_NAME || (env.IS_AITABLE ? 'AITable' : env.IS_APITABLE ? 'APITable' : 'vikadata')}
       </title>
       <meta name='description' content=''/>
       <meta
