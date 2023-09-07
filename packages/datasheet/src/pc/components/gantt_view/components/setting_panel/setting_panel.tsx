@@ -17,6 +17,11 @@
  */
 
 // eslint-disable-next-line no-restricted-imports
+import { Select as MultiSelect } from 'antd';
+import classNames from 'classnames';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { FC, memo, useContext, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { black, IOption, Select, Switch, Tooltip, Typography, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
@@ -26,9 +31,6 @@ import {
 import {
   AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined, WarnCircleOutlined, ChevronDownOutlined
 } from '@apitable/icons';
-import { Select as MultiSelect } from 'antd';
-import classNames from 'classnames';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { ColorGroup } from 'pc/components/common/color_picker/color_group';
@@ -44,8 +46,6 @@ import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
-import { FC, memo, useContext, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 const Option = Select.Option;
@@ -652,7 +652,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
             {
               isViewLock ? <Tooltip content={t(Strings.view_lock_setting_desc)}>
                 <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
-              </Tooltip> : <Switch checked={Boolean(onlyCalcWorkDay)} onClick={onSwitchClick} />
+              </Tooltip> : <Switch checked={Boolean(autoTaskLayout)} onClick={onSwitchAutoTaskLayoutClick} />
             }
             <span style={{ marginLeft: 4 }}>{t(Strings.gantt_open_auto_schedule_switch)}</span>
           </div>
