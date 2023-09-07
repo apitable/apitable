@@ -51,6 +51,10 @@ public class AutomationVO {
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String description;
 
+    @Schema(description = "Robot resource id", type = "java.lang.String", example = "dst***")
+    @JsonSerialize(nullsUsing = NullStringSerializer.class)
+    private String resourceId;
+
     @Schema(description = "Weather the robot is on use", type = "java.lang.Boolean", example = "true")
     @JsonSerialize(using = IntegerToBooleanSerializer.class)
     private Integer isActive;

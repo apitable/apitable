@@ -176,6 +176,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             AutomationSimpleVO vo =
                 AutomationSimpleVO.builder().robotId(robot.getRobotId()).name(robot.getName())
                     .description(robot.getDescription())
+                    .resourceId(robot.getResourceId())
                     .isActive(robot.getIsActive())
                     .props(BeanUtil.toBean(robot.getProps(),
                         AutomationSimpleVO.AutomationPropertyVO.class))
@@ -222,6 +223,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         AutomationVO vo = AutomationVO.builder()
             .robotId(robot.getRobotId()).name(robot.getName())
             .description(robot.getDescription())
+            .resourceId(robot.getResourceId())
             .isActive(robot.getIsActive())
             .props(BeanUtil.toBean(robot.getProps(), AutomationSimpleVO.AutomationPropertyVO.class))
             .updatedAt(LocalDateTimeUtil.parse(robot.getUpdatedAt()))
