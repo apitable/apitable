@@ -1,33 +1,46 @@
 import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import utc from 'dayjs/plugin/utc';
 import weekday from 'dayjs/plugin/weekday';
 import { TimeDimension } from 'pc/components/space_manage/space_info/components/credit_cost_card/enum';
 
+dayjs.extend(utc);
 dayjs.extend(weekday);
-export const formatDate = (timeDimension: TimeDimension, value: number) => {
-  if (timeDimension === TimeDimension.MONTH) {
-    return formatMonth(value);
-  }
-  if (timeDimension === TimeDimension.WEEKDAY) {
-    return formatWeekday(value);
-  }
-  if (timeDimension === TimeDimension.TODAY) {
+dayjs.extend(localizedFormat);
+
+export const formatDate = (timeDimension: TimeDimension, value: string) => formatStrategy[timeDimension](value);
+
+const formatStrategy = {
+  [TimeDimension.TODAY]: (value: string) => {
     return formatToday(value);
-  }
-  return formatYear(value);
+  },
+  [TimeDimension.WEEKDAY]: (value: string) => {
+    return formatWeekday(value);
+  },
+  [TimeDimension.MONTH]: (value: string) => {
+    return formatMonth(value);
+  },
+  [TimeDimension.YEAR]: (value: string) => {
+    return formatYear(value);
+  },
 };
 
-const formatMonth = (value: number) => {
-  return dayjs().date(value).format('YYYY-MM-DD');
+const formatToday = (value: string) => {
+  // format 23:00
+  return dayjs().hour(Number(value)).format('H:mm');
 };
 
-const formatWeekday = (value: number) => {
-  return dayjs().weekday(value).format('YYYY-MM-DD');
+const formatWeekday = (value: string) => {
+  // format Monday-Sunday, expect 1 = Monday, 7 = Sunday
+  return dayjs().day(Number(value)).format('dddd');
 };
 
-const formatToday = (value: number) => {
-  return dayjs().hour(value).format('hh:mm');
+const formatMonth = (value: string) => {
+  // format 1-31
+  return dayjs().date(Number(value)).format('MM-DD');
 };
 
-const formatYear = (value: number) => {
-  return dayjs().month(value).format('YYYY-MM');
+const formatYear = (value: string) => {
+  // format January-December, expect 0 = January, 11 = December
+  return dayjs().month(Number(value) - 1).format('MMMM');
 };

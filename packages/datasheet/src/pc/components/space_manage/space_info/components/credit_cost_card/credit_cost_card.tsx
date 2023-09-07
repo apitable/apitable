@@ -5,10 +5,10 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import useSWR from 'swr';
 import urlcat from 'urlcat';
 import { DropdownSelect, IOption, Typography, useThemeColors } from '@apitable/components';
+import { IReduxState } from '@apitable/core';
 import { TextLabel } from 'pc/components/space_manage/space_info/components/credit_cost_card/components/text_label';
 import { GET_CREDIT_STATISTICS, SELECT_LIST, TimeDimension } from 'pc/components/space_manage/space_info/components/credit_cost_card/enum';
 import { convertDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/convert_date';
-import { formatDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/date';
 import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/fetcher';
 import { CardTitle } from 'pc/components/space_manage/space_info/ui';
 import styles from './style.module.less';
@@ -23,7 +23,7 @@ interface ICreditCostCardProps {
 
 export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, minHeight, className, titleTip, ...props }) => {
   const color = useThemeColors();
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const [timeDimension, setTimeDimension] = useState(TimeDimension.WEEKDAY);
 
   const { data } = useSWR(urlcat(GET_CREDIT_STATISTICS, { spaceId }) + `?timeDimension=${timeDimension}`, getCreditStatisticsFetcher);
@@ -81,9 +81,6 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
               itemStyle={{ color: color.textReverseDefault }}
               contentStyle={{ background: color.bgReverseDefault }}
               cursor={false}
-              // cursor={<CustomCursor />}
-              // viewBox={{ x:110, y: 111, width: 400, height: 400 }}
-              labelFormatter={(str) => formatDate(timeDimension, str)}
             />
             {/*<Legend />*/}
             <Line
