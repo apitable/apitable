@@ -80,6 +80,8 @@ export enum TemplateKeyword {
   Content = 'content',
   Number = 'number',
   RoleName = 'roleName',
+  AutomationRunEndAt = 'endAt',
+  AutomationName = 'automationName',
 }
 
 export enum NotifyType {
@@ -304,6 +306,8 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   const content = data.notifyBody.extras?.content;
   const number = data.notifyBody.extras?.number || 0;
   const roleName = data.notifyBody.extras?.roleName;
+  const automationName = data.notifyBody.extras?.automation?.automationName;
+  const automationRunEndAt = data.notifyBody.extras?.automation?.endAt;
 
   const parseOptions: HTMLReactParserOptions = {
     replace: ({ attribs }) => {
@@ -419,6 +423,16 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
         case TemplateKeyword.RoleName: {
           return <b>{roleName}</b>;
         }
+        case TemplateKeyword.AutomationRunEndAt: {
+          return (
+            <b>
+              &nbsp;{dayjs(Number(automationRunEndAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
+            </b>
+          );
+        }
+        case TemplateKeyword.AutomationName: {
+          return <b>{automationName}</b>;
+        }
         default:
           return;
       }
@@ -454,7 +468,9 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
       .replace(keyWordAddClass(TemplateKeyword.NewDisplayValue), newDisplayValue)
       .replace(keyWordAddClass(TemplateKeyword.Content), content)
       .replace(keyWordAddClass(TemplateKeyword.Number), number)
-      .replace(keyWordAddClass(TemplateKeyword.RoleName), roleName);
+      .replace(keyWordAddClass(TemplateKeyword.RoleName), roleName)
+      .replace(keyWordAddClass(TemplateKeyword.AutomationName), automationName)
+      .replace(keyWordAddClass(TemplateKeyword.AutomationRunEndAt), dayjs(Number(automationRunEndAt)).format('YYYY-MM-DD HH:mm'));
   }
   return parser(template, parseOptions);
 };

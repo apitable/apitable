@@ -419,6 +419,7 @@ export interface Templates {
     task_reminder:                               AddRecordOutOfLimit;
     user_field:                                  AutoCancelRecordSubscription;
     web_publish:                                 LivingstoneSouthernWhiteFacedOwl;
+    workflow_execute_failed_notify:              LivingstoneSouthernWhiteFacedOwl;
 }
 
 export interface ActivityIntegralIncomeNotify {
@@ -426,8 +427,19 @@ export interface ActivityIntegralIncomeNotify {
     is_component?:      boolean;
     is_notification?:   boolean;
     notifications_type: NotificationsTypeEnum;
-    to_tag:             string;
+    to_tag:             ToTag;
     can_jump?:          boolean;
+}
+
+export enum ToTag {
+    AllMembers = "all_members",
+    AllUsers = "all_users",
+    Members = "members",
+    Myself = "myself",
+    SpaceAdmins = "space_admins",
+    SpaceMainAdmin = "space_main_admin",
+    SpaceMemberAdmins = "space_member_admins",
+    Users = "users",
 }
 
 export interface AddRecordOutOfLimit {
@@ -439,7 +451,7 @@ export interface AddRecordOutOfLimit {
     is_notification:       boolean;
     mail_template_subject: string;
     notifications_type:    NotificationsTypeEnum;
-    to_tag:                string;
+    to_tag:                ToTag;
     url:                   URL;
     billing_notify?:       string;
     is_browser?:           boolean;
@@ -459,7 +471,7 @@ export interface AssignedToGroupClass {
     is_mobile:          boolean;
     is_notification:    boolean;
     notifications_type: NotificationsTypeEnum;
-    to_tag:             string;
+    to_tag:             ToTag;
     url:                URL;
 }
 
@@ -470,7 +482,7 @@ export interface LivingstoneSouthernWhiteFacedOwl {
     is_mail?:               boolean;
     is_notification?:       boolean;
     notifications_type:     NotificationsTypeEnum;
-    to_tag:                 string;
+    to_tag:                 ToTag;
     can_jump?:              boolean;
     is_mobile?:             boolean;
     url?:                   URL;
@@ -478,6 +490,7 @@ export interface LivingstoneSouthernWhiteFacedOwl {
     billing_notify?:        string;
     frequency?:             number;
     mail_template_subject?: string;
+    id?:                    string;
 }
 
 export interface AutoCancelRecordSubscription {
@@ -488,7 +501,7 @@ export interface AutoCancelRecordSubscription {
     is_mobile:              boolean;
     is_notification:        boolean;
     notifications_type:     any[];
-    to_tag:                 string;
+    to_tag:                 ToTag;
     url:                    URL;
     is_component?:          boolean;
     mail_template_subject?: string;
