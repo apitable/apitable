@@ -23,23 +23,19 @@ import { useRobot } from '../hooks';
 
 export const RobotRunHistoryHead = () => {
   const { setIsHistory } = useRobot();
-  return <>
-    <TextButton
-      size="small"
-      prefixIcon={<ChevronLeftOutlined />}
-      onClick={() => {
-        setIsHistory(false);
-      }}
-    >
-      <span style={{ lineHeight: 1 }}>{t(Strings.robot_return)}</span>
-    </TextButton>
-    <Typography variant="h6">
-      {t(Strings.robot_run_history_title)}
-    </Typography>
-    <Box
-      display="flex"
-      width="48px"
-      justifyContent="space-between"
-    />
-  </>;
+  return (
+    <>
+      <TextButton
+        size="small"
+        prefixIcon={<ChevronLeftOutlined />}
+        onClick={() => {
+          setIsHistory(false);
+        }}
+      >
+        <span style={{ lineHeight: 1 }}>{t(Strings.robot_return)}</span>
+      </TextButton>
+      <Typography variant="h6">{t(Strings.robot_run_history_title)}</Typography>
+      <Box display="flex" width="48px" justifyContent="space-between" />
+    </>
+  );
 };

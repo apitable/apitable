@@ -21,11 +21,7 @@
 
 const stylelint = require('stylelint');
 
-const {
-  report,
-  ruleMessages,
-  validateOptions,
-} = stylelint.utils;
+const { report, ruleMessages, validateOptions } = stylelint.utils;
 
 const ruleName = 'plugin/font-weight-no-number';
 const messages = ruleMessages(ruleName, {
@@ -34,18 +30,17 @@ const messages = ruleMessages(ruleName, {
 
 module.exports = stylelint.createPlugin(ruleName, function getPlugin(primaryOption) {
   return function lint(postcssRoot, postcssResult) {
-    const validOptions = validateOptions(
-      postcssResult,
-      ruleName, {
-        actual: primaryOption,
-        possible: ['named-only'],
-      }
-    );
+    const validOptions = validateOptions(postcssResult, ruleName, {
+      actual: primaryOption,
+      possible: ['named-only'],
+    });
 
-    if (!validOptions) { //If the options are invalid, don't lint
+    if (!validOptions) {
+      //If the options are invalid, don't lint
       return;
     }
-    postcssRoot.walkDecls(decl => { //Iterate CSS declarations
+    postcssRoot.walkDecls((decl) => {
+      //Iterate CSS declarations
       if (decl.prop.toLowerCase() === 'font-weight') {
         if (isNaN(Number(decl.value))) {
           return; //Nothing to do with this node - continue

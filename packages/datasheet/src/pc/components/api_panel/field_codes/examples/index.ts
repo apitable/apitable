@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { runInContext } from 'lodash';
+import { Strings, t } from '@apitable/core';
 import { CodeLanguage } from '../enum';
 import { markdown as md } from './markdown_render';
 

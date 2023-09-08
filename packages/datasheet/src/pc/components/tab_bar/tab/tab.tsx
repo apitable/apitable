@@ -16,32 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors } from '@apitable/components';
-import {
-  CollaCommandName, ConfigConstant, getMaxViewCountPerSheet, IReduxState, isIdassPrivateDeployment, IViewProperty, PREVIEW_DATASHEET_ID, ResourceType,
-  Selectors
-} from '@apitable/core';
 import classNames from 'classnames';
 import { get } from 'lodash';
+import * as React from 'react';
+import { FC, memo, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Typography, useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName,
+  ConfigConstant,
+  getMaxViewCountPerSheet,
+  IReduxState,
+  isIdassPrivateDeployment,
+  IViewProperty,
+  PREVIEW_DATASHEET_ID,
+  ResourceType,
+  Selectors,
+} from '@apitable/core';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
 import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { TemplateUseButton } from 'pc/components/template_centre/template_use_button';
 // import { ToolHandleType } from 'pc/components/tool_bar/interface';
+import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
 import { changeView, usePrevious, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import { useViewNameChecker } from 'pc/hooks/use_view_name_checker';
 import { resourceService } from 'pc/resource_service';
 import { KeyCode, stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { FC, memo, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 // import { Display } from '../../tool_bar/display/display';
 // import { DescriptionModal } from '../description_modal';
 import { TabAddView } from '../tab_add_view';
 import styles from './style.module.less';
 import { ViewBar } from './view_bar';
-import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
 
 export interface ITabStateProps {
   width: number;
@@ -49,15 +56,15 @@ export interface ITabStateProps {
 
 export type ICustomViewProps = Pick<IViewProperty, 'name' | 'id' | 'type'>;
 
-export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
+export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo((props) => {
   const [editIndex, setEditIndex] = useState<null | number>(null);
   const [viewEditor, setViewEditor] = useState(false);
 
-  const { datasheetId, viewId: activeView, templateId, shareId, embedId } = useSelector(state => state.pageParams);
+  const { datasheetId, viewId: activeView, templateId, shareId, embedId } = useSelector((state) => state.pageParams);
   const datasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state));
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const { viewCreatable, editable, iconEditable, renamable } = useSelector((state: IReduxState) => Selectors.getDatasheet(state)?.permissions) || {};
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
 
   const datasheetName = treeNodesMap[datasheetId!]?.nodeName || datasheet?.name;
   const datasheetIcon = datasheet?.icon;
@@ -72,7 +79,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
   const { errMsg, checkViewName } = useViewNameChecker();
   const colors = useThemeColors();
-  const operateViewIds = useSelector(state => {
+  const operateViewIds = useSelector((state) => {
     return Selectors.getDatasheetClient(state)?.operateViewIds;
   });
   const [currentView, setCurrentView] = useState<IViewProperty>();
@@ -86,7 +93,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
     if (!activeView) {
       return;
     }
-    const view = views!.find(item => {
+    const view = views!.find((item) => {
       return item.id === activeView;
     });
     if (!view) {
@@ -112,7 +119,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
 
   const embedOnlyViewName = useMemo(() => {
     if (!views || !get(embedInfo, 'viewControl.viewId', false) || !embedId) return '';
-    const view = views.filter(view => view.id === embedInfo.viewControl?.viewId);
+    const view = views.filter((view) => view.id === embedInfo.viewControl?.viewId);
 
     return view.length > 0 ? view[0].name : '';
   }, [views, embedInfo, embedId]);
@@ -123,13 +130,17 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
     // Avoid initialization phase execution
     if (!previousEmbedOnlyViewName || !embedOnlyViewName) return;
     if (previousEmbedOnlyViewName === embedOnlyViewName) return;
-    window.parent.postMessage({
-      message: 'changeViewName', data: {
-        roomId: datasheetId,
-        viewId: activeView,
-        viewName: embedOnlyViewName
-      }
-    }, '*');
+    window.parent.postMessage(
+      {
+        message: 'changeViewName',
+        data: {
+          roomId: datasheetId,
+          viewId: activeView,
+          viewName: embedOnlyViewName,
+        },
+      },
+      '*',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [embedOnlyViewName, previousEmbedOnlyViewName]);
 
@@ -157,7 +168,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
         {
           viewId: activeView!,
           key: 'name',
-          value: name
+          value: name,
         },
       ],
       datasheetId: datasheetId!,
@@ -190,19 +201,19 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
   return (
     <div
       className={classNames(styles.nav, {
-        [styles.isShowNodeInfoBar]: !isShowNodeInfoBar
+        [styles.isShowNodeInfoBar]: !isShowNodeInfoBar,
       })}
     >
-      {
-        isOnlyView ?
-          isShowNodeInfoBar && <div className={styles.embedTitle}>
-            {
-              viewEditor && editable ? <div className={styles.embedOnlyViewName}>
+      {isOnlyView
+        ? isShowNodeInfoBar && (
+          <div className={styles.embedTitle}>
+            {viewEditor && editable ? (
+              <div className={styles.embedOnlyViewName}>
                 <input
                   className={classNames(styles.inputBox, {
-                    [styles.error]: errMsg
+                    [styles.error]: errMsg,
                   })}
-                  type='text'
+                  type="text"
                   defaultValue={embedOnlyViewName}
                   autoFocus
                   onBlur={handleInputBlur}
@@ -212,77 +223,71 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo(props => {
                   onMouseDown={stopPropagation}
                 />
                 {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
-                {
-                  errMsg && <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
+                {errMsg && (
+                  <Typography component={'span'} variant={'body3'} color={colors.errorColor}>
                     {errMsg}
                   </Typography>
-                }
-
-              </div> : <div className={styles.embedOnlyViewName}>
-                <p
-                  onDoubleClick={() => setViewEditor(true)}
-                >
-                  {embedOnlyViewName}
-                </p>
+                )}
+              </div>
+            ) : (
+              <div className={styles.embedOnlyViewName}>
+                <p onDoubleClick={() => setViewEditor(true)}>{embedOnlyViewName}</p>
                 {showSyncIcon && <ViewLockIcon viewId={activeView!} view={currentView!} />}
               </div>
-            }
-          </div> : (
-            isShowNodeInfoBar && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
-              {
-                datasheetName && (
-                  <NodeInfoBar
-                    data={{
-                      nodeId: datasheetId!,
-                      type: ConfigConstant.NodeType.DATASHEET,
-                      icon: datasheetIcon,
-                      name: datasheetName,
-                      role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
-                      favoriteEnabled: nodeFavorite,
-                      nameEditable: renamable,
-                      iconEditable: iconEditable,
-                    }}
-                    hiddenModule={{ favorite: Boolean(shareId || templateId) }}
-                  />
-                )
-              }
-            </div>
-          )
-      }
-      {isShowViewbar && !isOnlyView && <ViewBar
-        editIndex={editIndex}
-        setEditIndex={setEditIndex}
-        views={views || []}
-        switchView={switchView}
-        className={classNames(styles.viewBarWrapper, {
-          [styles.embedView]: isOnlyView
-        })}
-        extra={views && views.length > 0 && viewCreatable && (
-          <TabAddView
-            viewCount={views ? views.length : 0}
-            activityViewId={activeView}
-            switchView={switchView}
-            setEditIndex={setEditIndex}
-            disabled={views && views.length >= getMaxViewCountPerSheet()}
-          />
+            )}
+          </div>
+        )
+        : isShowNodeInfoBar && (
+          <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
+            {datasheetName && (
+              <NodeInfoBar
+                data={{
+                  nodeId: datasheetId!,
+                  type: ConfigConstant.NodeType.DATASHEET,
+                  icon: datasheetIcon,
+                  name: datasheetName,
+                  role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
+                  favoriteEnabled: nodeFavorite,
+                  nameEditable: renamable,
+                  iconEditable: iconEditable,
+                }}
+                hiddenModule={{ favorite: Boolean(shareId || templateId) }}
+              />
+            )}
+          </div>
         )}
-        {...props}
-      />}
-      {
-        !templateId && showCollaborator &&
+      {isShowViewbar && !isOnlyView && (
+        <ViewBar
+          editIndex={editIndex}
+          setEditIndex={setEditIndex}
+          views={views || []}
+          switchView={switchView}
+          className={classNames(styles.viewBarWrapper, {
+            [styles.embedView]: isOnlyView,
+          })}
+          extra={
+            views &&
+            views.length > 0 &&
+            viewCreatable && (
+              <TabAddView
+                viewCount={views ? views.length : 0}
+                activityViewId={activeView}
+                switchView={switchView}
+                setEditIndex={setEditIndex}
+                disabled={views && views.length >= getMaxViewCountPerSheet()}
+              />
+            )
+          }
+          {...props}
+        />
+      )}
+      {!templateId && showCollaborator && (
         <div className={styles.status}>
           <CollaboratorStatus resourceId={datasheetId!} resourceType={ResourceType.Datasheet} />
           <NetworkStatus currentStatus={status} />
         </div>
-      }
-      {
-        templateId && !isIdassPrivateDeployment() &&
-        <TemplateUseButton
-          block={false}
-          style={{ marginRight: 12 }}
-          showIcon
-        />
-      }
+      )}
+      {templateId && !isIdassPrivateDeployment() && <TemplateUseButton block={false} style={{ marginRight: 12 }} showIcon />}
     </div>
   );
 });

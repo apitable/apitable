@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useSelector, useDispatch } from 'react-redux';
+import { IReduxState, StoreActions, Selectors, ConfigConstant, t, Strings, ResourceIdPrefix } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 
-import {
-  IReduxState, StoreActions, Selectors,
-  ConfigConstant, t, Strings, ResourceIdPrefix,
-} from '@apitable/core';
-import { useSelector, useDispatch } from 'react-redux';
-import { useCatalogTreeRequest } from './use_catalogtree_request';
 import { getPropertyByTree } from 'pc/utils';
+import { useCatalogTreeRequest } from './use_catalogtree_request';
 
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',
@@ -38,7 +35,7 @@ export enum NodeChangeInfoType {
 
 export const useCatalog = () => {
   const { treeNodesMap, rootId, expandedKeys, editNodeId } = useSelector((state: IReduxState) => state.catalogTree);
-  const activeNodeId = useSelector(state => Selectors.getNodeId(state));
+  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
   const { addNodeReq } = useCatalogTreeRequest();
   const dispatch = useDispatch();
   const { run: addNode, loading: addNodeLoading } = useRequest(addNodeReq, { manual: true });
@@ -48,9 +45,9 @@ export const useCatalog = () => {
     const names = getPropertyByTree(treeNodesMap, parentNodeId, [editNodeId], 'nodeName');
     if (type) {
       const types = getPropertyByTree(treeNodesMap, parentNodeId, [editNodeId], 'type');
-      return ((names.filter((item, index) => item === str && types[index] === type).length >= 1));
+      return names.filter((item, index) => item === str && types[index] === type).length >= 1;
     }
-    return names.filter(item => item === str).length >= 1;
+    return names.filter((item) => item === str).length >= 1;
   };
 
   const addTreeNode = (

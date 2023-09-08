@@ -18,25 +18,14 @@
 
 // https://cses.fi/problemset/task/1678
 
-import { CARD_WIDTH, NODESEP, NodeType, RANKSEP } from '../constants';
-import {
-  IGraphData,
-  IDegrees,
-  IPre,
-  IEdge,
-  INodesMap,
-  IAdj,
-  INode,
-  INodeStateMap,
-  NodeHandleState,
-  IBounds
-} from '../interfaces';
 // @ts-ignore
 import dagre from '@futpib/dagre';
-import { createGhostNodes } from './create_ghost_nodes';
-import { markHiddenNodes } from './mark_hidden_nodes';
-import { getCycleElements } from './get_cycle_elements';
 import { isNode, Position } from '@apitable/react-flow';
+import { CARD_WIDTH, NODESEP, NodeType, RANKSEP } from '../constants';
+import { IGraphData, IDegrees, IPre, IEdge, INodesMap, IAdj, INode, INodeStateMap, NodeHandleState, IBounds } from '../interfaces';
+import { createGhostNodes } from './create_ghost_nodes';
+import { getCycleElements } from './get_cycle_elements';
+import { markHiddenNodes } from './mark_hidden_nodes';
 
 // https://www.notion.so/cb051fc572b6462abc2d05ede0eaf91c
 export const findCycles = (nodes: Array<string>, adj: IAdj) => {
@@ -77,7 +66,7 @@ export const findCycles = (nodes: Array<string>, adj: IAdj) => {
       return;
     }
     color[source] = 1;
-    adj[source]?.forEach(target => {
+    adj[source]?.forEach((target) => {
       if (color[target] == null) {
         pre[target] = source;
         dfs(target);
@@ -89,7 +78,7 @@ export const findCycles = (nodes: Array<string>, adj: IAdj) => {
     color[source] = 2;
   };
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     if (color[node] == null) {
       dfs(node);
     }
@@ -105,10 +94,10 @@ export const getPre = (data: IGraphData, nodesMap: INodesMap): IPre => {
     pre[node.id] = [];
   });
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     const id = node.id;
     const { linkIds } = node.data;
-    linkIds.forEach(linkId => {
+    linkIds.forEach((linkId) => {
       const preNode = nodesMap[id];
       pre[linkId]?.push(preNode);
     });
@@ -136,34 +125,23 @@ export interface IRenderData {
   unhandledNodes: INode[];
   handlingCount: number;
   cycleElements: INode[];
-  nodesMap: INodesMap
+  nodesMap: INodesMap;
   pre: IPre;
   bounds: IBounds;
 }
 
 export const getRenderData = (props: {
-  data: IGraphData,
-  nodeStateMap: INodeStateMap | undefined,
-  degrees: IDegrees,
-  otherEdges: IEdge[],
+  data: IGraphData;
+  nodeStateMap: INodeStateMap | undefined;
+  degrees: IDegrees;
+  otherEdges: IEdge[];
   adj: IAdj;
   fieldVisible: boolean;
   fieldEditable: boolean;
   cardHeight: number;
   horizontal: boolean;
-
 }): IRenderData => {
-  const {
-    data,
-    nodeStateMap = {},
-    degrees,
-    otherEdges,
-    adj,
-    fieldVisible,
-    fieldEditable,
-    cardHeight,
-    horizontal,
-  } = props;
+  const { data, nodeStateMap = {}, degrees, otherEdges, adj, fieldVisible, fieldEditable, cardHeight, horizontal } = props;
 
   const nodesMap: INodesMap = {};
 
@@ -179,7 +157,7 @@ export const getRenderData = (props: {
       top: 0,
       right: 0,
       bottom: 0,
-    }
+    },
   };
 
   if (data.nodes.length === 0) {
@@ -197,7 +175,10 @@ export const getRenderData = (props: {
     nodesMap[node.id] = node;
   });
 
-  const cycle = findCycles(data.nodes.map(n => n.id), adj);
+  const cycle = findCycles(
+    data.nodes.map((n) => n.id),
+    adj,
+  );
   if (cycle.length) {
     return getCycleElements({
       nodesMap,
@@ -215,27 +196,25 @@ export const getRenderData = (props: {
     pre,
   });
 
-  const {
-    renderNodes,
-    unhandledNodes,
-    handlingNodes,
-  } = data.nodes.filter((node) => !nodesMap[node.id].isHidden).reduce((prev, cur) => {
-    if (degrees[cur.id].degree === 0) {
-      if (nodeStateMap[cur.id]?.handleState === NodeHandleState.Handling) {
-        prev.handlingNodes.push(cur);
-      } else {
-        prev.unhandledNodes.push(cur);
-      }
-    } else {
-      prev.renderNodes.push(cur);
-    }
-    return prev;
-  }, { renderNodes: [], unhandledNodes: [], handlingNodes: [] } as { renderNodes: INode[], unhandledNodes: INode[], handlingNodes: INode[] });
-
-  const renderEdges = (data.edges || [])
-    .filter(
-      (edge) => !nodesMap[edge.source]?.isHidden && !nodesMap[edge.target]?.isHidden
+  const { renderNodes, unhandledNodes, handlingNodes } = data.nodes
+    .filter((node) => !nodesMap[node.id].isHidden)
+    .reduce(
+      (prev, cur) => {
+        if (degrees[cur.id].degree === 0) {
+          if (nodeStateMap[cur.id]?.handleState === NodeHandleState.Handling) {
+            prev.handlingNodes.push(cur);
+          } else {
+            prev.unhandledNodes.push(cur);
+          }
+        } else {
+          prev.renderNodes.push(cur);
+        }
+        return prev;
+      },
+      { renderNodes: [], unhandledNodes: [], handlingNodes: [] } as { renderNodes: INode[]; unhandledNodes: INode[]; handlingNodes: INode[] },
     );
+
+  const renderEdges = (data.edges || []).filter((edge) => !nodesMap[edge.source]?.isHidden && !nodesMap[edge.target]?.isHidden);
 
   const dagreGraph = new dagre.graphlib.Graph({
     multigraph: true,
@@ -262,7 +241,6 @@ export const getRenderData = (props: {
   });
 
   const enhancedNodes = renderNodes.map((node) => {
-
     const enhancedNode = {
       ...node,
       type: NodeType.CustomNode,
@@ -286,7 +264,7 @@ export const getRenderData = (props: {
     return enhancedNode;
   });
 
-  const enhancedHandlingNodes = handlingNodes.map(node => {
+  const enhancedHandlingNodes = handlingNodes.map((node) => {
     const enhancedHandlingNode = {
       ...node,
       type: NodeType.CustomNode,
@@ -313,10 +291,7 @@ export const getRenderData = (props: {
   let initialElements = [...enhancedNodes, ...enhancedHandlingNodes, ...renderEdges, ...otherEdges] as INode[];
 
   if (fieldEditable) {
-    const {
-      ghostNodes,
-      ghostEdges,
-    } = createGhostNodes({
+    const { ghostNodes, ghostEdges } = createGhostNodes({
       adj,
       nodesMap,
       cardHeight,

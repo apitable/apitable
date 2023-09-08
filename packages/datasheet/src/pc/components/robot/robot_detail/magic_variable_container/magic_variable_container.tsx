@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
 import { SchemaPropertyList } from './magic_variable_list';
@@ -44,11 +44,11 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   let variableList: ISchemaPropertyListItem[] = getCurrentVariableList({
     schemaExpressionList,
     nodeOutputSchemaList,
-    isJSONField
+    isJSONField,
   });
 
   // List of dynamic parameters after filtering by keyword search
-  variableList = variableList.filter(item => item.label?.includes(searchValue));
+  variableList = variableList.filter((item) => item.label?.includes(searchValue));
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,50 +63,56 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     // eslint-disable-next-line
   }, [schemaExpressionList]);
 
-  const goPrev = useCallback((_deepIndex?: number) => {
-    if (schemaExpressionList.length) {
-      if (_deepIndex != null) {
-        setSchemaExpressionList([...schemaExpressionList.slice(0, _deepIndex)]);
-        // setDeepIndex(_deepIndex);
-      } else {
-        setSchemaExpressionList([...schemaExpressionList.slice(0, schemaExpressionList.length - 1)]);
-        // setDeepIndex(Math.max(0, deepIndex - 1));
+  const goPrev = useCallback(
+    (_deepIndex?: number) => {
+      if (schemaExpressionList.length) {
+        if (_deepIndex != null) {
+          setSchemaExpressionList([...schemaExpressionList.slice(0, _deepIndex)]);
+          // setDeepIndex(_deepIndex);
+        } else {
+          setSchemaExpressionList([...schemaExpressionList.slice(0, schemaExpressionList.length - 1)]);
+          // setDeepIndex(Math.max(0, deepIndex - 1));
+        }
       }
-    }
-  }, [schemaExpressionList]);
+    },
+    [schemaExpressionList],
+  );
 
-  const goNext = useCallback((listItem: ISchemaPropertyListItem) => {
-    if (listItem.disabled) {
-      return;
-    }
-    let nextSchemaExpression = {
-      schema: listItem.schema,
-      uiSchema: listItem.uiSchema,
-      expression: listItem.expression,
-    };
-    // The string is inserted directly and does not go to the next step. 
-    // Here you have to choose the prototype method of string.
-    const isStringType = listItem.schema?.type === 'string';
-    if (isJSONField && isStringType) {
-      const expression: IExpression = {
-        operator: OperatorEnums.JSONStringify,
-        operands: [
-          {
-            type: OperandTypeEnums.Expression,
-            value: listItem.expression,
-          }
-        ]
+  const goNext = useCallback(
+    (listItem: ISchemaPropertyListItem) => {
+      if (listItem.disabled) {
+        return;
+      }
+      let nextSchemaExpression = {
+        schema: listItem.schema,
+        uiSchema: listItem.uiSchema,
+        expression: listItem.expression,
       };
-      nextSchemaExpression = {
-        schema: undefined,
-        uiSchema: undefined,
-        expression,
-      };
-    }
-    const newSchemaExpressionList = [...schemaExpressionList, nextSchemaExpression];
-    setSchemaExpressionList(newSchemaExpressionList);
-    // setDeepIndex(deepIndex + 1);
-  }, [isJSONField, schemaExpressionList]);
+      // The string is inserted directly and does not go to the next step.
+      // Here you have to choose the prototype method of string.
+      const isStringType = listItem.schema?.type === 'string';
+      if (isJSONField && isStringType) {
+        const expression: IExpression = {
+          operator: OperatorEnums.JSONStringify,
+          operands: [
+            {
+              type: OperandTypeEnums.Expression,
+              value: listItem.expression,
+            },
+          ],
+        };
+        nextSchemaExpression = {
+          schema: undefined,
+          uiSchema: undefined,
+          expression,
+        };
+      }
+      const newSchemaExpressionList = [...schemaExpressionList, nextSchemaExpression];
+      setSchemaExpressionList(newSchemaExpressionList);
+      // setDeepIndex(deepIndex + 1);
+    },
+    [isJSONField, schemaExpressionList],
+  );
 
   const handleItemClick = (listItem: ISchemaPropertyListItem, goIntoChildren?: boolean) => {
     if (listItem.disabled) {
@@ -152,16 +158,10 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     },
     onEscapePress: () => {
       setOpen(false);
-    }
+    },
   });
   return (
-    <Box
-      backgroundColor={theme.color.fc8}
-      borderRadius="8px"
-      border={`1px solid ${theme.color.fc5}`}
-      ref={ref as any}
-      padding="8px 16px"
-    >
+    <Box backgroundColor={theme.color.fc8} borderRadius="8px" border={`1px solid ${theme.color.fc5}`} ref={ref as any} padding="8px 16px">
       <TextInput
         type="text"
         ref={searchRef}
@@ -175,29 +175,15 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       />
       <Box margin="8px 0px">
         <Typography variant="body4" style={{ marginLeft: 8 }}>
-          {t(Strings.robot_variables_select_step)}{
-            schemaExpressionList.map(({ schema }, index) => {
-              return (
-                <span key={index}>
-                  /{schema?.title}
-                </span>
-              );
-            })
-          }
+          {t(Strings.robot_variables_select_step)}
+          {schemaExpressionList.map(({ schema }, index) => {
+            return <span key={index}>/{schema?.title}</span>;
+          })}
         </Typography>
       </Box>
-      <Box
-        ref={listContainerRef}
-        maxHeight="300px"
-        overflow="scroll"
-      >
-        <SchemaPropertyList
-          list={variableList}
-          layout={layout}
-          activeIndex={activeIndex}
-          handleItemClick={handleItemClick}
-        />
+      <Box ref={listContainerRef} maxHeight="300px" overflow="scroll">
+        <SchemaPropertyList list={variableList} layout={layout} activeIndex={activeIndex} handleItemClick={handleItemClick} />
       </Box>
-    </Box >
+    </Box>
   );
 });

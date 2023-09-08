@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useContext, useEffect } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
-import { ConfigConstant, INodesMapItem, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import * as React from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
-import { useRequest } from 'pc/hooks';
-import { TComponent } from 'pc/components/common/t_component';
-import { ScreenSize } from 'pc/components/common/component_display';
+import { ConfigConstant, INodesMapItem, StoreActions, Strings, t } from '@apitable/core';
 import { Popconfirm } from 'pc/components/common';
-import { getContextTypeByNodeType } from 'pc/utils';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
+import { TComponent } from 'pc/components/common/t_component';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
+import { useRequest, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { getContextTypeByNodeType } from 'pc/utils';
 import { ItemRender } from './node_item_render';
+import styles from './style.module.less';
 
 export interface INodeItemProps {
   node: INodesMapItem;
@@ -46,7 +45,14 @@ export interface INodeItemProps {
 let mobileModalClose: () => void;
 
 const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
-  node, expanded = false, actived = false, hasChildren = false, editing, deleting, from, level
+  node,
+  expanded = false,
+  actived = false,
+  hasChildren = false,
+  editing,
+  deleting,
+  from,
+  level,
 }) => {
   const { deleteNodeReq } = useCatalogTreeRequest();
   const { run: deleteNode } = useRequest(deleteNodeReq, { manual: true });
@@ -128,7 +134,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
       title={ConfirmContent}
       onCancel={cancelDeleteModalHandler}
       onOk={deleteNodeHandler}
-      type='danger'
+      type="danger"
     >
       <ItemRender
         id={`${from}${node.nodeId}`}

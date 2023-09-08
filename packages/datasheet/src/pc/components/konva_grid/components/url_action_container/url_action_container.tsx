@@ -33,7 +33,7 @@ export const UrlActionContainer = (props: IUrlActionContainer) => {
     const rect = rectCalculator ? rectCalculator(activeCell) : getCellRelativeRect(activeCell);
     if (rect) {
       const { x, y, width, height } = rect;
-      setEditPositionInfo(prev => ({
+      setEditPositionInfo((prev) => ({
         x: x || prev.x,
         y: y || prev.y,
         width: width || prev.width,
@@ -66,7 +66,7 @@ export const UrlActionContainer = (props: IUrlActionContainer) => {
       datasheetId={datasheetId}
       style={{
         left: x - scrollLeft,
-        top: y + height + 2 - scrollTop
+        top: y + height + 2 - scrollTop,
       }}
     />
   );

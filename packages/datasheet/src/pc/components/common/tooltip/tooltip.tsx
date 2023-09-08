@@ -18,8 +18,8 @@
 
 import { Tooltip as AntdTooltip } from 'antd';
 import { TooltipProps as AntdTooltipProps } from 'antd/es/tooltip';
-import { isTouchDevice } from 'pc/utils';
 import { FC, useEffect, useRef, useState } from 'react';
+import { isTouchDevice } from 'pc/utils';
 import styles from './style.module.less';
 
 export interface ITooltipProps {
@@ -58,20 +58,12 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProp
     // eslint-disable-next-line
   }, [myrefs.current, overflowWidth]);
 
-  if (
-    showTipAnyway ||
-    (textEllipsis && showPopover && !isTouchDevice()) ||
-    (!showTipAnyway && !textEllipsis && !isTouchDevice())
-  ) {
-    return <AntdTooltip
-      align={{ offset }}
-      trigger='hover'
-      overlayClassName={rowsNumber ? styles.controlRowsNum : ''}
-      ref={myrefs}
-      {...props}
-    >
-      {props.children}
-    </AntdTooltip>;
+  if (showTipAnyway || (textEllipsis && showPopover && !isTouchDevice()) || (!showTipAnyway && !textEllipsis && !isTouchDevice())) {
+    return (
+      <AntdTooltip align={{ offset }} trigger="hover" overlayClassName={rowsNumber ? styles.controlRowsNum : ''} ref={myrefs} {...props}>
+        {props.children}
+      </AntdTooltip>
+    );
   }
   return <>{props.children}</> || null;
 };

@@ -16,18 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  IDragTarget, IFieldRanges, IGridViewColumn,
-  ILinearRow,
-  ISnapshot,
-  IViewRow,
-  Selectors,
-  StoreActions,
-} from '@apitable/core';
-import { store } from 'pc/store';
-import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { IDragTarget, IFieldRanges, IGridViewColumn, ILinearRow, ISnapshot, IViewRow, Selectors, StoreActions } from '@apitable/core';
+import { store } from 'pc/store';
 import { CellValue } from '../cell/cell_value';
 import { Header } from './header';
 import styles from './styles.module.less';
@@ -48,16 +41,7 @@ interface IMicroColumnStateProps {
 
 const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const {
-    snapshot,
-    fieldRanges,
-    dragTarget,
-    visibleColumns,
-    datasheetId,
-    linearRows,
-    rowHeight,
-    fieldIndexMap,
-  } = useSelector(
+  const { snapshot, fieldRanges, dragTarget, visibleColumns, datasheetId, linearRows, rowHeight, fieldIndexMap } = useSelector(
     (state): IMicroColumnStateProps => {
       const rowHeightLevel = Selectors.getViewRowHeight(state);
       return {
@@ -70,12 +54,14 @@ const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
         datasheetId: Selectors.getActiveDatasheetId(state)!,
         rowHeight: Selectors.getRowHeightFromLevel(rowHeightLevel),
       };
-    }, shallowEqual);
+    },
+    shallowEqual,
+  );
   const fieldMap = snapshot.meta.fieldMap;
   const recordFieldCollection: Pick<IGridViewColumn, 'fieldId' | 'width'>[] = [];
   const existInQueue = fieldRanges && fieldRanges.includes(dragTarget.fieldId!);
 
-  if (dragTarget.fieldId && !visibleColumns.some(item => item.fieldId === dragTarget.fieldId)) {
+  if (dragTarget.fieldId && !visibleColumns.some((item) => item.fieldId === dragTarget.fieldId)) {
     store.dispatch(StoreActions.setDragTarget(datasheetId, {}));
     return <></>;
   }
@@ -83,19 +69,14 @@ const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (dragTarget.fieldId) {
       recordFieldCollection.push({
         fieldId: dragTarget.fieldId,
-        width: (visibleColumns
-          .find(column => column.fieldId === dragTarget.fieldId)?.width),
+        width: visibleColumns.find((column) => column.fieldId === dragTarget.fieldId)?.width,
       });
     }
   } else {
     if (fieldRanges) {
-      const fieldIndexRanges = visibleColumns
-        .slice(
-          fieldIndexMap.get(fieldRanges[0]),
-          fieldIndexMap.get(fieldRanges[fieldRanges.length - 1])! + 1
-        );
+      const fieldIndexRanges = visibleColumns.slice(fieldIndexMap.get(fieldRanges[0]), fieldIndexMap.get(fieldRanges[fieldRanges.length - 1])! + 1);
 
-      fieldIndexRanges?.forEach(column => recordFieldCollection.push({ fieldId: column.fieldId, width: column.width }));
+      fieldIndexRanges?.forEach((column) => recordFieldCollection.push({ fieldId: column.fieldId, width: column.width }));
     }
   }
 
@@ -108,14 +89,10 @@ const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
           key={index}
           style={{
             height: rowHeight,
-            borderBottom: `1px solid ${colors.sheetLineColor}`
+            borderBottom: `1px solid ${colors.sheetLineColor}`,
           }}
         >
-          <CellValue
-            field={field}
-            recordId={recordId}
-            cellValue={cellValue}
-          />
+          <CellValue field={field} recordId={recordId} cellValue={cellValue} />
         </div>
       );
     });
@@ -123,26 +100,20 @@ const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.wrapper}>
-      {
-        recordFieldCollection.map(
-          (item) => {
-            return (
-              <div
-                className={styles.content}
-                key={item.fieldId}
-                style={{
-                  width: item.width || DEFAULT_COLUMN_WIDTH
-                }}
-              >
-                <Header field={fieldMap[item.fieldId]} />
-                <div style={{ backgroundColor: colors.lowestBg }}>
-                  {returnMicroElement(item.fieldId)}
-                </div>
-              </div>
-            );
-          },
-        )
-      }
+      {recordFieldCollection.map((item) => {
+        return (
+          <div
+            className={styles.content}
+            key={item.fieldId}
+            style={{
+              width: item.width || DEFAULT_COLUMN_WIDTH,
+            }}
+          >
+            <Header field={fieldMap[item.fieldId]} />
+            <div style={{ backgroundColor: colors.lowestBg }}>{returnMicroElement(item.fieldId)}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };

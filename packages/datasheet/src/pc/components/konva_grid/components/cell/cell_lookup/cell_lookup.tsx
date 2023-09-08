@@ -16,29 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  BasicValueType, Field, FieldType, handleNullArray, ILookUpField, LookUpField, LOOKUP_VALUE_FUNC_SET,
-  ORIGIN_VALUES_FUNC_SET, RollUpFuncType
-} from '@apitable/core';
 import { useContext, useMemo } from 'react';
 import * as React from 'react';
+import {
+  BasicValueType,
+  Field,
+  FieldType,
+  handleNullArray,
+  ILookUpField,
+  LookUpField,
+  LOOKUP_VALUE_FUNC_SET,
+  ORIGIN_VALUES_FUNC_SET,
+  RollUpFuncType,
+} from '@apitable/core';
+import { KonvaGridContext } from 'pc/components/konva_grid';
+import { CellAttachment } from '../cell_attachment';
 import { CellCheckbox } from '../cell_checkbox';
 import { CellLink } from '../cell_link';
 import { CellMember } from '../cell_member';
+import { CellMultiSelect } from '../cell_multi_select';
 import { CellText } from '../cell_text';
 import { ICellProps } from '../cell_value';
-import { CellAttachment } from '../cell_attachment';
-import { CellMultiSelect } from '../cell_multi_select';
-import { KonvaGridContext } from 'pc/components/konva_grid';
 
-const CellPlaceHolder = (props: { rowHeight: number; }) => {
+const CellPlaceHolder = (props: { rowHeight: number }) => {
   const { rowHeight } = props;
   const { setActiveCellBound } = useContext(KonvaGridContext);
   useMemo(() => setActiveCellBound({ height: rowHeight }), [rowHeight, setActiveCellBound]);
   return null;
 };
 
-export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props => {
+export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const { field, cellValue: originCellValue, rowHeight } = props;
   const cellValue = handleNullArray(originCellValue);
   const realField = (Field.bindModel(field) as LookUpField).getLookUpEntityField();
@@ -53,13 +60,9 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props =
     switch (valueType) {
       case BasicValueType.String:
       case BasicValueType.Number:
-        return (
-          <CellText {...commonProps} />
-        );
+        return <CellText {...commonProps} />;
       case BasicValueType.Boolean:
-        return (
-          <CellCheckbox {...commonProps} />
-        );
+        return <CellCheckbox {...commonProps} />;
       case BasicValueType.Array:
       default:
         break;
@@ -71,34 +74,24 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props =
   }
 
   if (LOOKUP_VALUE_FUNC_SET.has(rollUpType)) {
-    return (
-      <CellText {...commonProps} />
-    );
+    return <CellText {...commonProps} />;
   }
 
   // Non-plain text fields are displayed as-is.
   switch (realField.type) {
     case FieldType.Attachment:
-      return (
-        <CellAttachment {...commonProps} />
-      );
+      return <CellAttachment {...commonProps} />;
     case FieldType.SingleSelect:
     case FieldType.MultiSelect:
-      return (
-        <CellMultiSelect {...commonProps} />
-      );
+      return <CellMultiSelect {...commonProps} />;
     case FieldType.Member:
     case FieldType.CreatedBy:
     case FieldType.LastModifiedBy:
-      return (
-        <CellMember {...commonProps} />
-      );
+      return <CellMember {...commonProps} />;
     case FieldType.Checkbox:
       return <CellPlaceHolder rowHeight={rowHeight} />;
     case FieldType.Link:
-      return (
-        <CellLink {...commonProps} />
-      );
+      return <CellLink {...commonProps} />;
     // Text comma splitting
     case FieldType.Number:
     case FieldType.Percent:
@@ -115,9 +108,7 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = props =
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
     case FieldType.Cascader:
-      return (
-        <CellText {...commonProps} />
-      );
+      return <CellText {...commonProps} />;
     case FieldType.NotSupport:
     default:
       return <CellPlaceHolder rowHeight={rowHeight} />;

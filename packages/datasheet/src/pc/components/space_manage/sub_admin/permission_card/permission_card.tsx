@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
 import { Checkbox } from 'antd';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { Strings, t, IReduxState } from '@apitable/core';
-import styles from './style.module.less';
+import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { useSelector } from 'react-redux';
+import styles from './style.module.less';
 // @ts-ignore
 import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
-import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IPermissionCardProps {
   defaultChecked?: string[];
@@ -110,7 +110,7 @@ export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> =
 
   return (
     <div className={styles.cardWrap}>
-      {checkData.map(item => (
+      {checkData.map((item) => (
         <div className={styles.permissionCard} key={item.key}>
           <div className={styles.title}>
             <span>{item.title}</span>
@@ -121,10 +121,10 @@ export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> =
             </Tooltip>
           </div>
           <div className={styles.checkboxWrap}>
-            {item.checkList.map(_item => (
+            {item.checkList.map((_item) => (
               <div className={styles.checkboxItem} key={_item.value} style={{ width: `${100 / item.checkList.length}%` }}>
                 <Checkbox
-                  onChange={e => onCheckChange(e.target.value, e.target.checked)}
+                  onChange={(e) => onCheckChange(e.target.value, e.target.checked)}
                   value={_item.value}
                   defaultChecked={defaultChecked ? defaultChecked.includes(_item.value) : undefined}
                   checked={checked ? checked.includes(_item.value) : undefined}

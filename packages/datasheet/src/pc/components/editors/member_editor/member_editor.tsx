@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, ICellValue, IMemberField, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids } from '@apitable/core';
 import classNames from 'classnames';
-import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import * as React from 'react';
+import { FieldType, ICellValue, IMemberField, IUnitIds, IUnitMap, IUnitValue, IUserValue, IUuids } from '@apitable/core';
+import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { useFocusEffect } from '../hooks/use_focus_effect';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { PopStructure } from '../pop_structure';
@@ -44,17 +44,42 @@ export interface IEditorProps extends IBaseEditorProps {
 }
 
 export const MemberEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorProps> = (props, ref) => {
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: (preventScroll: boolean) => { inputRef.current && inputRef.current!.focus({ preventScroll: preventScroll }); },
-    onEndEdit: () => { return; },
-    onStartEdit: () => { return; },
-    setValue: () => { return; },
-    saveValue: () => { return; },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: (preventScroll: boolean) => {
+        inputRef.current && inputRef.current!.focus({ preventScroll: preventScroll });
+      },
+      onEndEdit: () => {
+        return;
+      },
+      onStartEdit: () => {
+        return;
+      },
+      setValue: () => {
+        return;
+      },
+      saveValue: () => {
+        return;
+      },
+    }),
+  );
 
   const {
-    datasheetId, field, style, height, editing, width, isMulti: propIsMulti,
-    toggleEditing, cellValue, onSave, unitMap, linkId, recordId, listData,
+    datasheetId,
+    field,
+    style,
+    height,
+    editing,
+    width,
+    isMulti: propIsMulti,
+    toggleEditing,
+    cellValue,
+    onSave,
+    unitMap,
+    linkId,
+    recordId,
+    listData,
   } = props;
 
   const isMemberField: boolean = field.type === FieldType.Member;
@@ -74,7 +99,7 @@ export const MemberEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorPr
     if (editing) {
       setTimeout(() => {
         inputRef.current?.focus();
-      },0);
+      }, 0);
     }
   }, [editing]);
   return (
@@ -100,7 +125,6 @@ export const MemberEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorPr
         inputRef={inputRef}
         monitorId={`${recordId},${field?.id},${editing}`}
       />
-
     </PopStructure>
   );
 };

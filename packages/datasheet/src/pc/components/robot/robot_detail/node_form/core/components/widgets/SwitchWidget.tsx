@@ -20,17 +20,7 @@ import { Box, Switch } from '@apitable/components';
 import { IWidgetProps } from '../../interface';
 
 export const SwitchWidget = (props: IWidgetProps) => {
-  const {
-    schema,
-    id,
-    value,
-    disabled,
-    readonly,
-    label,
-    onBlur,
-    onFocus,
-    onChange,
-  } = props;
+  const { schema, id, value, disabled, readonly, label, onBlur, onFocus, onChange } = props;
 
   // const required = schemaRequiresTrueValue(schema);
   const shouldDisabled = disabled || readonly;

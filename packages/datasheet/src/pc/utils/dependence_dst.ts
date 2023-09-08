@@ -52,7 +52,6 @@ export const getDependenceByDstIds = (state: IReduxState, datasheetId: string) =
  * @param datasheetId
  */
 export const getDependenceByDstIdsByGlobalResource = (state: IReduxState, datasheetId: string, computeRefManager: ComputeRefManager) => {
-
   const fieldMap = Selectors.getFieldMap(state, datasheetId);
   if (!fieldMap) {
     return [];

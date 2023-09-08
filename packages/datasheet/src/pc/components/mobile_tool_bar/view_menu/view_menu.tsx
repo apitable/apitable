@@ -18,20 +18,17 @@
 
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import styles from './style.module.less';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { ViewSwitcher } from 'pc/components/tool_bar/mobile/view_switcher';
+import styles from './style.module.less';
 
 interface IViewMenu {
   visible: boolean;
   onClose: () => void;
 }
 
-export const ViewMenu: React.FC<React.PropsWithChildren<IViewMenu>> = props => {
-  const {
-    visible,
-    onClose,
-  } = props;
+export const ViewMenu: React.FC<React.PropsWithChildren<IViewMenu>> = (props) => {
+  const { visible, onClose } = props;
 
   return (
     <Popup
@@ -39,7 +36,7 @@ export const ViewMenu: React.FC<React.PropsWithChildren<IViewMenu>> = props => {
       title={t(Strings.view_list)}
       open={visible}
       onClose={onClose}
-      height='auto'
+      height="auto"
       destroyOnClose
       bodyStyle={{ padding: '0 0 24px 24px' }}
     >

@@ -75,7 +75,7 @@ export default function createScrollingComponent(WrappedComponent) {
       onScrollChange: noop,
       verticalStrength: defaultVerticalStrength,
       horizontalStrength: defaultHorizontalStrength,
-      strengthMultiplier: 30
+      strengthMultiplier: 30,
     };
 
     static contextType = DndContext;
@@ -98,9 +98,7 @@ export default function createScrollingComponent(WrappedComponent) {
       // have to attach the listeners to the body
       window.document.body.addEventListener('touchmove', this.handleEvent);
 
-      this.clearMonitorSubscription = this.context.dragDropManager
-        .getMonitor()
-        .subscribeToStateChange(() => this.handleMonitorChange());
+      this.clearMonitorSubscription = this.context.dragDropManager.getMonitor().subscribeToStateChange(() => this.handleMonitorChange());
     }
 
     componentWillUnmount() {
@@ -110,7 +108,7 @@ export default function createScrollingComponent(WrappedComponent) {
       this.stopScrolling();
     }
 
-    handleEvent = evt => {
+    handleEvent = (evt) => {
       if (this.dragging && !this.attached) {
         this.attach();
         this.updateScrolling(evt);
@@ -143,13 +141,8 @@ export default function createScrollingComponent(WrappedComponent) {
     // Update scaleX and scaleY every 100ms or so
     // and start scrolling if necessary
     updateScrolling = throttle(
-      evt => {
-        const {
-          left: x,
-          top: y,
-          width: w,
-          height: h
-        } = this.container.getBoundingClientRect();
+      (evt) => {
+        const { left: x, top: y, width: w, height: h } = this.container.getBoundingClientRect();
         const box = { x, y, w, h };
         const coords = getCoords(evt);
 
@@ -163,7 +156,7 @@ export default function createScrollingComponent(WrappedComponent) {
         }
       },
       100,
-      { trailing: false }
+      { trailing: false },
     );
 
     startScrolling() {
@@ -183,29 +176,14 @@ export default function createScrollingComponent(WrappedComponent) {
         // event that same frame. So we double the strengthMultiplier and only adjust
         // the scroll position at 30fps
         if (i++ % 2) {
-          const {
-            scrollLeft,
-            scrollTop,
-            scrollWidth,
-            scrollHeight,
-            clientWidth,
-            clientHeight
-          } = container;
+          const { scrollLeft, scrollTop, scrollWidth, scrollHeight, clientWidth, clientHeight } = container;
 
           const newLeft = scaleX
-            ? (container.scrollLeft = intBetween(
-              0,
-              scrollWidth - clientWidth,
-              scrollLeft + scaleX * strengthMultiplier
-            ))
+            ? (container.scrollLeft = intBetween(0, scrollWidth - clientWidth, scrollLeft + scaleX * strengthMultiplier))
             : scrollLeft;
 
           const newTop = scaleY
-            ? (container.scrollTop = intBetween(
-              0,
-              scrollHeight - clientHeight,
-              scrollTop + scaleY * strengthMultiplier
-            ))
+            ? (container.scrollTop = intBetween(0, scrollHeight - clientHeight, scrollTop + scaleY * strengthMultiplier))
             : scrollTop;
 
           onScrollChange(newLeft, newTop);
@@ -232,7 +210,7 @@ export default function createScrollingComponent(WrappedComponent) {
 
       return (
         <WrappedComponent
-          ref={ref => {
+          ref={(ref) => {
             this.wrappedInstance = ref;
           }}
           {...props}

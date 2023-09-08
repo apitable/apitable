@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSetState } from 'pc/hooks';
 import { useCallback, useMemo } from 'react';
 import { ToolTip } from 'pc/components/konva_components';
+import { useSetState } from 'pc/hooks';
 
 interface IUseTooltip {
   isScrolling: boolean;
@@ -36,7 +36,7 @@ export const useTooltip = (props: IUseTooltip) => {
     pointerWidth: 0,
     pointerHeight: 0,
     background: undefined,
-    fill: undefined
+    fill: undefined,
   });
 
   const clearTooltip = useCallback(() => {
@@ -51,7 +51,7 @@ export const useTooltip = (props: IUseTooltip) => {
     }
     const { x, y, text, pointerDirection, pointerWidth, pointerHeight, background, fill } = tooltipInfo;
     return (
-      <ToolTip 
+      <ToolTip
         x={x}
         y={y}
         text={text}
@@ -64,10 +64,13 @@ export const useTooltip = (props: IUseTooltip) => {
     );
   }, [tooltipInfo, clearTooltip, isScrolling]);
 
-  return useMemo(() => ({
-    tooltip,
-    tooltipInfo,
-    setTooltipInfo,
-    clearTooltip,
-  }), [tooltip, tooltipInfo, setTooltipInfo, clearTooltip]);
+  return useMemo(
+    () => ({
+      tooltip,
+      tooltipInfo,
+      setTooltipInfo,
+      clearTooltip,
+    }),
+    [tooltip, tooltipInfo, setTooltipInfo, clearTooltip],
+  );
 };

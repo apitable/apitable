@@ -41,10 +41,10 @@ export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = mem
   const colors = theme.color;
   const columnStartIndex = _columnStartIndex + 1;
   const textSizer = useRef(autoSizerCanvas);
-  const startDateList: { date: Dayjs; x: number; }[] = [];
+  const startDateList: { date: Dayjs; x: number }[] = [];
   const { unitType, dateUnitType } = instance;
-  const formatStr = dateUnitType === DateUnitType.Year ? t(Strings.gantt_date_form_start_time_year) 
-    : t(Strings.gantt_date_form_start_time_year_month);
+  const formatStr =
+    dateUnitType === DateUnitType.Year ? t(Strings.gantt_date_form_start_time_year) : t(Strings.gantt_date_form_start_time_year_month);
 
   for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex - 1; columnIndex++) {
     switch (dateUnitType) {
@@ -52,8 +52,8 @@ export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = mem
       case DateUnitType.Month: {
         const dateOfMonth = instance.getDateFromStartDate(columnIndex);
         if (dateOfMonth.date() === 1) {
-          startDateList.push({ 
-            x: instance.getColumnOffset(columnIndex), 
+          startDateList.push({
+            x: instance.getColumnOffset(columnIndex),
             date: dateOfMonth,
           });
         }
@@ -65,8 +65,8 @@ export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = mem
         const startDateOfMonth = endDateOfWeek.startOf('month');
         if (startDateOfMonth.isSame(endDateOfWeek, 'week')) {
           const diffCount = instance.getIndexFromStartDate(startDateOfMonth);
-          startDateList.push({ 
-            x: instance.getUnitOffset(diffCount), 
+          startDateList.push({
+            x: instance.getUnitOffset(diffCount),
             date: startDateOfMonth,
           });
         }
@@ -75,8 +75,8 @@ export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = mem
       case DateUnitType.Year: {
         const dateOfYear = instance.getDateFromStartDate(columnIndex, unitType);
         if (dateOfYear.month() === 0) {
-          startDateList.push({ 
-            x: instance.getColumnOffset(columnIndex), 
+          startDateList.push({
+            x: instance.getColumnOffset(columnIndex),
             date: dateOfYear,
           });
         }
@@ -93,42 +93,20 @@ export const OperationBar: FC<React.PropsWithChildren<IOperationBarProps>> = mem
   const curDateFormatStr = curDate ? curDate.format(formatStr) : '';
   const maxThreshold = textSizer.current.measureText(prevDateFormatStr).width + INNER_PADDING + 5;
   // Display of real time distances within the upper and lower thresholds
-  const flagX = (0 <= diff && diff <= maxThreshold) ? 
-    scrollLeft + INNER_PADDING - maxThreshold + diff: 
-    scrollLeft + INNER_PADDING;
+  const flagX = 0 <= diff && diff <= maxThreshold ? scrollLeft + INNER_PADDING - maxThreshold + diff : scrollLeft + INNER_PADDING;
   const flagText = diff < INNER_PADDING ? curDateFormatStr : prevDateFormatStr;
 
   return (
     <>
-      {
-        isStartDateExist && 
+      {isStartDateExist &&
         startDateList.map((item, index) => {
           if (index === 0 && diff <= 0) return;
           const { x, date } = item;
           const formatText = date.format(formatStr);
-          return (
-            <Text
-              key={index}
-              x={x + TEXT_MARGIN_LEFT}
-              height={TAB_BAR_HEIGHT}
-              text={formatText}
-              fill={colors.fc1}
-            />
-          );
-        })
-      }
-      <Text
-        x={flagX}
-        height={TAB_BAR_HEIGHT}
-        text={flagText}
-        fill={colors.fc1}
-      />
-      <Rect
-        x={scrollLeft}
-        y={1}
-        width={INNER_PADDING}
-        height={TAB_BAR_HEIGHT - 2}
-      />
+          return <Text key={index} x={x + TEXT_MARGIN_LEFT} height={TAB_BAR_HEIGHT} text={formatText} fill={colors.fc1} />;
+        })}
+      <Text x={flagX} height={TAB_BAR_HEIGHT} text={flagText} fill={colors.fc1} />
+      <Rect x={scrollLeft} y={1} width={INNER_PADDING} height={TAB_BAR_HEIGHT - 2} />
     </>
   );
 });

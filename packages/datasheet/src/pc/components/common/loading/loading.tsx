@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import classNames from 'classnames';
-import { LoadingOutlined } from '@apitable/icons';
 import * as React from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Strings, t } from '@apitable/core';
+import { LoadingOutlined } from '@apitable/icons';
 import styles from './style.module.less';
 
 export interface ILoadingProps {
@@ -31,20 +31,20 @@ export interface ILoadingProps {
   style?: React.CSSProperties;
 }
 
-export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = props => {
+export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = (props) => {
   const { showText = true, style, className } = props;
-  const shareId = useSelector(state => state.pageParams.shareId);
+  const shareId = useSelector((state) => state.pageParams.shareId);
   return (
     <div
       className={classNames(styles.loading, className)}
       style={{
-        top: shareId ? 16 : 0, bottom: shareId ? 16 : 0, borderRadius: shareId ? 8 : 0, ...style,
+        top: shareId ? 16 : 0,
+        bottom: shareId ? 16 : 0,
+        borderRadius: shareId ? 8 : 0,
+        ...style,
       }}
     >
-      <Spin
-        tip={showText ? t(Strings.loading) : ''}
-        indicator={<LoadingOutlined size={24} className="circle-loading" />}
-      />
+      <Spin tip={showText ? t(Strings.loading) : ''} indicator={<LoadingOutlined size={24} className="circle-loading" />} />
     </div>
   );
 };

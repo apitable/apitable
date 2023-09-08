@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IWidgetPanelStatus, ResourceType, Selectors, StoreActions } from '@apitable/core';
-import { store } from 'pc/store';
 import { useCallback, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { batchActions } from 'redux-batched-actions';
+import { IWidgetPanelStatus, ResourceType, Selectors, StoreActions } from '@apitable/core';
+import { store } from 'pc/store';
 import { EXPAND_WIDGET } from '../components/widget/expand_widget';
 
 export const useExpandWidget = () => {
-  const { widgetId, datasheetId, mirrorId } = useSelector(state => state.pageParams);
+  const { widgetId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
   const dispatch = useDispatch();
 
   const openWidgetPanel = useCallback(() => {
@@ -36,7 +36,7 @@ export const useExpandWidget = () => {
     const state = store.getState();
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
     const resourceId = mirrorId || datasheetId || '';
-    const widgetPanelStatus = Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || {} as IWidgetPanelStatus;
+    const widgetPanelStatus = Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
     const snapshot = Selectors.getSnapshot(state, datasheetId);
     const widgetPanels = snapshot?.meta.widgetPanels;
     if (!widgetPanels) {
@@ -49,9 +49,9 @@ export const useExpandWidget = () => {
       actions.push(StoreActions.toggleWidgetPanel(resourceId, resourceType, true));
     }
 
-    const panelHadWidget = widgetPanels!.find(item => {
+    const panelHadWidget = widgetPanels!.find((item) => {
       const widgets = item.widgets;
-      return widgets.some(widget => widget.id === widgetId);
+      return widgets.some((widget) => widget.id === widgetId);
     });
 
     if (panelHadWidget && panelHadWidget.id !== activePanelId) {
@@ -67,7 +67,7 @@ export const useExpandWidget = () => {
     function clearExpandModal() {
       const container = document.querySelectorAll(`.${EXPAND_WIDGET}`);
       if (container.length) {
-        container.forEach(item => {
+        container.forEach((item) => {
           createRoot(item).unmount();
           item.parentElement!.removeChild(item);
         });

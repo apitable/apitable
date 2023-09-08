@@ -26,17 +26,23 @@ class ExpandRecordManager {
   }
 
   pushFocusHolderRef(ref: React.RefObject<HTMLInputElement>) {
-    if (!this.checkData()) { return; }
+    if (!this.checkData()) {
+      return;
+    }
     this.focusHolderRefs.push(ref);
   }
 
   destroyCurrentRef() {
-    if (!this.checkData()) { return; }
+    if (!this.checkData()) {
+      return;
+    }
     return this.focusHolderRefs.pop();
   }
 
   getPreviousFocusHolderRef() {
-    if (!this.focusHolderRefs.length) { return; }
+    if (!this.focusHolderRefs.length) {
+      return;
+    }
     return this.focusHolderRefs[this.focusHolderRefs.length - 1];
   }
 

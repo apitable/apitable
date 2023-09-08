@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { createElement } from 'react';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS,
@@ -30,9 +31,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { createElement } from 'react';
-// @ts-ignore
-import { isWecomFunc } from 'enterprise';
 import { getEnvVariables } from 'pc/utils/env';
 import {
   IActionType,
@@ -46,6 +44,8 @@ import {
   IRobotTrigger,
   ITriggerType,
 } from './interface';
+// @ts-ignore
+import { isWecomFunc } from 'enterprise';
 
 /**
  * The client parses the expression without context, skipping dynamic parameters.
@@ -57,30 +57,35 @@ export const operand2PureValue = (operand: any) => {
 };
 
 export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
-  return nodeTypes.map(nodeType => {
+  return nodeTypes.map((nodeType) => {
     return {
       value: 'triggerTypeId' in nodeType ? nodeType.triggerTypeId : nodeType.actionTypeId,
       label: nodeType.name,
-      prefixIcon: createElement('img', {
-        src: integrateCdnHost(('triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON) ?
-          getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo),
-        style: {
-          width: '16px',
-          height: '16px',
-        }
-      }, null)
+      prefixIcon: createElement(
+        'img',
+        {
+          src: integrateCdnHost(
+            'triggerTypeId' in nodeType && getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo,
+          ),
+          style: {
+            width: '16px',
+            height: '16px',
+          },
+        },
+        null,
+      ),
     };
   });
 };
 
 export const getNodeOutputSchemaList = (props: {
-  actionList: IRobotAction[],
-  trigger?: IRobotTrigger,
-  triggerTypes: ITriggerType[],
-  actionTypes: IActionType[]
+  actionList: IRobotAction[];
+  trigger?: IRobotTrigger;
+  triggerTypes: ITriggerType[];
+  actionTypes: IActionType[];
 }) => {
   const { actionList, triggerTypes, actionTypes, trigger } = props;
-  const triggerType = trigger && triggerTypes.find(triggerType => triggerType.triggerTypeId === trigger?.triggerTypeId);
+  const triggerType = trigger && triggerTypes.find((triggerType) => triggerType.triggerTypeId === trigger?.triggerTypeId);
   const schemaList: INodeOutputSchema[] = [];
   if (triggerType) {
     schemaList.push({
@@ -89,15 +94,15 @@ export const getNodeOutputSchemaList = (props: {
       schema: triggerType.outputJsonSchema,
     });
   }
-  actionList.forEach(action => {
-    const actionType = actionTypes.find(actionType => actionType.actionTypeId === action.typeId);
+  actionList.forEach((action) => {
+    const actionType = actionTypes.find((actionType) => actionType.actionTypeId === action.typeId);
 
     if (actionType) {
       schemaList.push({
         id: action.id,
         title: actionType.name,
         // TODO: After integration, remove the judgement here, the three actions that send IM messages do not have outputJsonSchema.
-        schema: ['sendWecomMsg', 'sendLarkMsg', 'sendDingtalkMsg'].includes(actionType?.endpoint) ? undefined : actionType.outputJsonSchema
+        schema: ['sendWecomMsg', 'sendLarkMsg', 'sendDingtalkMsg'].includes(actionType?.endpoint) ? undefined : actionType.outputJsonSchema,
       });
     }
   });
@@ -110,11 +115,11 @@ export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerT
     name: robot.name,
     description: robot.description,
     isActive: robot.isActive,
-    nodeTypeList: []
+    nodeTypeList: [],
   };
   robot.nodes.forEach((node, index) => {
     if (index === 0) {
-      const triggerType = triggerTypes.find(triggerType => triggerType.triggerTypeId === node.triggerTypeId);
+      const triggerType = triggerTypes.find((triggerType) => triggerType.triggerTypeId === node.triggerTypeId);
       if (triggerType) {
         robotCardInfo.nodeTypeList.push({
           nodeTypeId: node.triggerTypeId,
@@ -123,7 +128,7 @@ export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerT
         });
       }
     } else {
-      const actionType = actionTypes.find(actionType => actionType.actionTypeId === node.actionTypeId);
+      const actionType = actionTypes.find((actionType) => actionType.actionTypeId === node.actionTypeId);
       if (actionType) {
         robotCardInfo.nodeTypeList.push({
           nodeTypeId: node.actionTypeId,
@@ -141,16 +146,16 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
   const fieldsSchema = {
     title: '列属性',
     type: 'object',
-    properties: {}
+    properties: {},
   };
   const getFieldCommonSchema = (field: IField) => {
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, field.id) === ConfigConstant.Role.None;
     return {
       title: isCryptoField ? t(Strings.robot_variables_cant_view_field) : field.name,
-      disabled: isCryptoField
+      disabled: isCryptoField,
     };
   };
-  fields.forEach(field => {
+  fields.forEach((field) => {
     const fieldOpenValueJsonSchema = Field.bindModel(field).openValueJsonSchema;
     fieldsSchema.properties[field.id] = {
       ...fieldOpenValueJsonSchema,
@@ -165,9 +170,7 @@ export const getFilterActionTypes = (actionTypes: IActionType[], ignoreActionId?
   let tmpActionTypes = actionTypes;
   // Enterprise Web Browser blocks Feishu and Dingtalk
   if (isWecomFunc?.() && tmpActionTypes) {
-    tmpActionTypes = tmpActionTypes.filter(ad =>
-      !['sendLarkMsg', 'sendDingtalkMsg'].includes(ad.endpoint) || ad.actionTypeId === ignoreActionId
-    );
+    tmpActionTypes = tmpActionTypes.filter((ad) => !['sendLarkMsg', 'sendDingtalkMsg'].includes(ad.endpoint) || ad.actionTypeId === ignoreActionId);
   }
   return tmpActionTypes;
 };

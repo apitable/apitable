@@ -16,35 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  Box,
-  ContextMenu,
-  TextButton,
-  FloatUiTooltip as Tooltip,
-  useContextMenu,
-} from '@apitable/components';
+import { mutate } from 'swr';
+import { Box, ContextMenu, TextButton, FloatUiTooltip as Tooltip, useContextMenu } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { mutate } from 'swr';
 import { flatContextData } from 'pc/utils';
 import { createAction } from '../../api';
 import { IActionType } from '../../interface';
 
 export const CONST_MAX_ACTION_COUNT = 9;
 
-export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled }: {
+export const CreateNewAction = ({
+  robotId,
+  actionTypes,
+  prevActionId,
+  disabled,
+}: {
   robotId: string;
-  disabled?:boolean;
+  disabled?: boolean;
   actionTypes: IActionType[];
   prevActionId?: string;
 }) => {
-
-  const createNewAction = async(action: {
-    actionTypeId: string;
-    robotId: string;
-    prevActionId?: string;
-    input?: any;
-  }) => {
+  const createNewAction = async(action: { actionTypeId: string; robotId: string; prevActionId?: string; input?: any }) => {
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
     return res.data;
@@ -53,17 +46,20 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled }
   const CONTEXT_MENU_ID_1 = 'CONTEXT_MENU_ID_1';
 
   const { show } = useContextMenu({
-    id: CONTEXT_MENU_ID_1
+    id: CONTEXT_MENU_ID_1,
   });
 
   return (
-    <Box marginTop='16px' display='flex' alignItems='center' justifyContent='center'>
-      <Tooltip content={
-        disabled ?
-          t(Strings.automation_action_num_warning, {
-            value: CONST_MAX_ACTION_COUNT,
-          }): 
-          t(Strings.robot_new_action_tooltip)}>
+    <Box marginTop="16px" display="flex" alignItems="center" justifyContent="center">
+      <Tooltip
+        content={
+          disabled
+            ? t(Strings.automation_action_num_warning, {
+              value: CONST_MAX_ACTION_COUNT,
+            })
+            : t(Strings.robot_new_action_tooltip)
+        }
+      >
         <Box>
           <TextButton onClick={show} prefixIcon={<AddOutlined />} disabled={disabled}>
             <span>{t(Strings.robot_new_action)}</span>
@@ -72,22 +68,22 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled }
       </Tooltip>
       <ContextMenu
         menuId={CONTEXT_MENU_ID_1}
-        overlay={
-          flatContextData([
+        overlay={flatContextData(
+          [
             actionTypes.map((actionType) => ({
               text: actionType.name,
               icon: <img src={integrateCdnHost(actionType.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
               onClick: () => {
-                
                 createNewAction({
                   robotId,
                   actionTypeId: actionType.actionTypeId,
-                  prevActionId
+                  prevActionId,
                 });
-              }
-            }))
-          ], true)
-        }
+              },
+            })),
+          ],
+          true,
+        )}
       />
     </Box>
   );

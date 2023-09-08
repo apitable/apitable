@@ -16,33 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, useThemeColors, ThemeName } from '@apitable/components';
-import { IReduxState, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';
 import Image from 'next/image';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useRequest, useSpaceRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
-import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
-import styles from './style.module.less';
+import { Button, useThemeColors, ThemeName } from '@apitable/components';
+import { IReduxState, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useRequest, useSpaceRequest } from 'pc/hooks';
+import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import styles from './style.module.less';
 
 export interface ICreateSpaceModalProps {
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
   isMobile: boolean;
 }
 
-export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps>> = props => {
+export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps>> = (props) => {
   const { isMobile } = props;
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
   const err = useSelector((state: IReduxState) => state.space.err);
   const colors = useThemeColors();
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const { createSpaceReq } = useSpaceRequest();
   const spaceNameImg = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const { run: createSpace, loading } = useRequest(createSpaceReq, { manual: true });
@@ -78,7 +78,7 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
     return (
       <div>
         <div className={styles.spaceNameImg}>
-          <Image src={spaceNameImg} alt='createSpace Logo' width={320} height={240} />
+          <Image src={spaceNameImg} alt="createSpace Logo" width={320} height={240} />
         </div>
         {!isMobile && <div className={styles.title}>{t(Strings.new_space)}</div>}
         <div className={styles.subTitle}>{t(Strings.new_space_tips)}</div>
@@ -92,15 +92,13 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
             onChange={handleChange}
             autoFocus
           />
-          <div className={styles.errorMsg}>
-            {err && err.code !== StatusCode.STATUS_OK ? err.msg : ''}
-          </div>
+          <div className={styles.errorMsg}>{err && err.code !== StatusCode.STATUS_OK ? err.msg : ''}</div>
           <Button
-            color='primary'
+            color="primary"
             className={styles.submit}
             disabled={!spaceName || loading}
             loading={loading}
-            size='large'
+            size="large"
             block
             onClick={handleSubmit}
           >
@@ -116,7 +114,7 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
     return (
       <Drawer
         title={t(Strings.new_space)}
-        placement='bottom'
+        placement="bottom"
         visible
         onClose={() => !loading && props.setShowCreateModal(false)}
         height={566}

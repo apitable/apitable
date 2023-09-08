@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUnmount, useMount } from 'ahooks';
+import classNames from 'classnames';
 import { useCallback, useEffect, useRef, useContext } from 'react';
 import * as React from 'react';
-import { FieldType, IField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { useUnmount, useMount } from 'ahooks';
-import { FieldEditor } from './field_editor';
-import { usePrevious, useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { IEditor } from 'pc/components/editors/interface';
-import { FormContext } from '../form_context';
 import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
+import { FieldType, IField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { IEditor } from 'pc/components/editors/interface';
+import { usePrevious, useResponsive } from 'pc/hooks';
+import { FormContext } from '../form_context';
+import { FieldEditor } from './field_editor';
+import styles from './style.module.less';
 
 export type IFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
 
@@ -59,12 +59,12 @@ const needTriggerStartEditField = [FieldType.Number, FieldType.Percent, FieldTyp
 
 const compactField = [FieldType.SingleSelect, FieldType.MultiSelect, FieldType.Cascader];
 
-export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = props => {
+export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (props) => {
   const colors = useThemeColors();
-  const shareId = useSelector(state => state.pageParams.shareId);
+  const shareId = useSelector((state) => state.pageParams.shareId);
   const { datasheetId, field, isFocus = false, setFocusId, onClose, editable, recordId } = props;
   const previousFocus = usePrevious(isFocus);
-  const editorRef = (useRef<(IFieldEditRef & HTMLDivElement) | null>(null) as any) as React.MutableRefObject<IEditor>;
+  const editorRef = useRef<(IFieldEditRef & HTMLDivElement) | null>(null) as any as React.MutableRefObject<IEditor>;
   const { formData, formProps } = useContext(FormContext);
   const fieldId = field.id;
   // TODO(kailang) Next sprint supports form defaults
@@ -72,7 +72,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = pro
   // const defaultValue = Field.bindModel(field).defaultValue();
   // const cellValue = hasSetField ? (formData[fieldId] ?? null) : defaultValue;
   const cellValue = formData ? formData[fieldId] ?? null : null;
-  const isLogin = useSelector(state => state.user.isLogin);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;
@@ -136,7 +136,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = pro
     Message.destroy();
   });
 
-  const { entityField, lookupCellValue } = useSelector(state => {
+  const { entityField, lookupCellValue } = useSelector((state) => {
     if (field.type !== FieldType.LookUp) {
       return {
         entityField: undefined,

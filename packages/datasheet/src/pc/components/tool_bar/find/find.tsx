@@ -16,31 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useKeyPress } from 'ahooks';
 import classNames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { store } from 'pc/store';
-import { useThemeColors } from '@apitable/components';
-import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
+import { SearchOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { store } from 'pc/store';
+import { setStorage, StorageName } from 'pc/utils/storage/storage';
+import { dispatch } from 'pc/worker/store';
 import { ToolItem } from '../tool_item';
 import { FindSearchInput } from './find_search_input';
 import styles from './styles.module.less';
-import { dispatch } from 'pc/worker/store';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { SearchOutlined } from '@apitable/icons';
 interface ISearchInputRef {
-  select(): void
+  select(): void;
 }
 
 type IKanbanGroupCollapse = string[];
 type IGirdGroupCollapse = string[];
 type IGroupCollapse = IKanbanGroupCollapse | IGirdGroupCollapse | null;
 type IGroupCollapseState = {
-  [datasheetIdViewId: string]: IGroupCollapse,
+  [datasheetIdViewId: string]: IGroupCollapse;
 };
 
 type IFindProps = {
@@ -48,17 +48,17 @@ type IFindProps = {
   showLabel?: boolean;
   onOpen?: () => void;
   isFindOpen: boolean;
-  setIsFindOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsFindOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const FIND = 'FIND';
 
 export const Find = (props: IFindProps) => {
   const colors = useThemeColors();
   const { className, showLabel = true, onOpen, isFindOpen, setIsFindOpen } = props;
-  const { viewId, datasheetId } = useSelector(state => state.pageParams);
+  const { viewId, datasheetId } = useSelector((state) => state.pageParams);
   const [keyword, setKeyword] = useState('');
   const inputRef = useRef<ISearchInputRef>(null);
-  const viewType = useSelector(state => {
+  const viewType = useSelector((state) => {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
     const view = Selectors.getViewById(snapshot, viewId!)!;
     return view?.type || ViewType.NotSupport;
@@ -97,22 +97,25 @@ export const Find = (props: IFindProps) => {
     setLastGroupingCollapseState({ [storageId]: lastGroupingCollapseState });
   }, [viewType, storageId]);
 
-  const changeGroupCollapse = useCallback((groupCollapseState: IGroupCollapseState) => {
-    const status = groupCollapseState[storageId];
-    if (!status) return;
-    switch (viewType) {
-      case ViewType.Grid:
-      case ViewType.Gallery:
-        dispatch(StoreActions.setGroupingCollapse(datasheetId!, status as IGirdGroupCollapse));
-        setStorage(StorageName.GroupCollapse, { [storageId]: status as IGirdGroupCollapse });
-        break;
-      case ViewType.Kanban:
-      default:
-        dispatch(StoreActions.setKanbanGroupingExpand(datasheetId!, status as IKanbanGroupCollapse));
-        setStorage(StorageName.KanbanCollapse, { [storageId]: status as IKanbanGroupCollapse });
-        break;
-    }
-  }, [viewType, storageId, datasheetId]);
+  const changeGroupCollapse = useCallback(
+    (groupCollapseState: IGroupCollapseState) => {
+      const status = groupCollapseState[storageId];
+      if (!status) return;
+      switch (viewType) {
+        case ViewType.Grid:
+        case ViewType.Gallery:
+          dispatch(StoreActions.setGroupingCollapse(datasheetId!, status as IGirdGroupCollapse));
+          setStorage(StorageName.GroupCollapse, { [storageId]: status as IGirdGroupCollapse });
+          break;
+        case ViewType.Kanban:
+        default:
+          dispatch(StoreActions.setKanbanGroupingExpand(datasheetId!, status as IKanbanGroupCollapse));
+          setStorage(StorageName.KanbanCollapse, { [storageId]: status as IKanbanGroupCollapse });
+          break;
+      }
+    },
+    [viewType, storageId, datasheetId],
+  );
 
   useEffect(() => {
     if (isFindOpen) {
@@ -171,7 +174,7 @@ export const Find = (props: IFindProps) => {
     setIsFindOpen(!isFindOpen);
   }, [isFindOpen, setIsFindOpen]);
 
-  const previewModalVisible = useSelector(state => state.space.previewModalVisible);
+  const previewModalVisible = useSelector((state) => state.space.previewModalVisible);
 
   useKeyPress('Esc', () => {
     if (!previewModalVisible) {
@@ -180,14 +183,7 @@ export const Find = (props: IFindProps) => {
   });
 
   if (isFindOpen) {
-    return (
-      <FindSearchInput
-        setVisible={setIsFindOpen}
-        keyword={keyword}
-        setKeyword={setKeyword}
-        ref={inputRef}
-      />
-    );
+    return <FindSearchInput setVisible={setIsFindOpen} keyword={keyword} setKeyword={setKeyword} ref={inputRef} />;
   }
 
   return (
@@ -201,8 +197,7 @@ export const Find = (props: IFindProps) => {
             [styles.active]: isFindOpen,
           })}
           onClick={toggleFinder}
-          icon={<SearchOutlined size={16}
-            color={isFindOpen ? colors.primaryColor : colors.secondLevelText} />}
+          icon={<SearchOutlined size={16} color={isFindOpen ? colors.primaryColor : colors.secondLevelText} />}
           text={t(Strings.find)}
         />
       </div>

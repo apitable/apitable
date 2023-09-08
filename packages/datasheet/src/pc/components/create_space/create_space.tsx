@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ThemeName } from '@apitable/components';
-import { IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';
-import { Logo } from 'pc/components/common';
-import { Router } from 'pc/components/route_manager/router';
-import { useRequest, useSpaceRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
+import { Button, ThemeName } from '@apitable/components';
+import { IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
+import { Logo } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useSpaceRequest } from 'pc/hooks';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
+import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
 
 interface ICreateSpace {
@@ -35,19 +35,22 @@ interface ICreateSpace {
   submitCb?: (name: string) => Promise<void>;
 }
 
-const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
+const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = (props) => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const CreateSpaceIcon = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const theme = useSelector(Selectors.getTheme);
 
-  const { isCreateSpace, err, user } = useSelector((state: IReduxState) => ({
-    isCreateSpace: state.user.isCreateSpace,
-    err: state.space.err,
-    user: state.user.info,
-  }), shallowEqual);
+  const { isCreateSpace, err, user } = useSelector(
+    (state: IReduxState) => ({
+      isCreateSpace: state.user.isCreateSpace,
+      err: state.space.err,
+      user: state.user.info,
+    }),
+    shallowEqual,
+  );
   const { createSpaceReq } = useSpaceRequest();
   const { run: createSpace } = useRequest(createSpaceReq, { manual: true });
 
@@ -70,8 +73,7 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
 
   const handleSubmit = () => {
     setDisabled(true);
-    props.submitCb ? props.submitCb(spaceName) :
-      createSpace(spaceName);
+    props.submitCb ? props.submitCb(spaceName) : createSpace(spaceName);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,12 +86,11 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
 
   return (
     <div className={styles.createSpaceWrapper}>
-      {
-        !props.isShare &&
+      {!props.isShare && (
         <div className={styles.logo}>
-          <Logo size='large' theme={theme} />
+          <Logo size="large" theme={theme} />
         </div>
-      }
+      )}
 
       <div className={styles.formBox} style={{ marginTop: props.isShare ? 0 : '' }}>
         <span className={styles.createSpaceIcon}>
@@ -98,23 +99,9 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = props => {
         <div className={styles.title}>{t(Strings.create_workspace)}</div>
         <div className={styles.subTitle}>{t(Strings.create_space_sub_title)}~</div>
         <Form>
-          <Input
-            className={err ? 'error' : ''}
-            onChange={handleChange}
-            placeholder={t(Strings.enter_workspace_name)}
-            type='primary'
-          />
-          <div className={styles.errorMsg}>
-            {err ? err.msg : ''}
-          </div>
-          <Button
-            className={styles.createSpaceBtn}
-            color='primary'
-            disabled={disabled}
-            block
-            type='submit'
-            onClick={handleSubmit}
-          >
+          <Input className={err ? 'error' : ''} onChange={handleChange} placeholder={t(Strings.enter_workspace_name)} type="primary" />
+          <div className={styles.errorMsg}>{err ? err.msg : ''}</div>
+          <Button className={styles.createSpaceBtn} color="primary" disabled={disabled} block type="submit" onClick={handleSubmit}>
             {props.isShare ? t(Strings.create_and_save) : t(Strings.create)}
           </Button>
         </Form>

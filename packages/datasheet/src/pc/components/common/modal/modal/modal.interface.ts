@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IButtonProps, IButtonType, ITextButtonProps } from '@apitable/components';
 import { ModalFuncProps as AntdModalFuncProps, ModalProps } from 'antd/lib/modal';
 import React from 'react';
+import { IButtonProps, IButtonType, ITextButtonProps } from '@apitable/components';
 
 export interface IModalFuncProps extends Omit<AntdModalFuncProps, 'okButtonProps' | 'cancelButtonProps' | 'okType' | 'type'> {
   okButtonProps?: IButtonProps;

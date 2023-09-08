@@ -16,66 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, ILinearRowRecord, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { ReactNode, useContext } from 'react';
+import { CellType, ILinearRowRecord, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { AvatarSize } from 'pc/components/common';
 import { generateTargetName, getDetailByTargetName } from 'pc/components/gantt_view';
 import { Line, Rect } from 'pc/components/konva_components';
 import { getCellHeight, getCellHorizontalPosition, IUseGridBaseProps, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { backCorrectName, getCollaboratorColor } from 'pc/components/multi_grid/cell/cell_other';
 import { store } from 'pc/store';
-import { ReactNode, useContext } from 'react';
 import { Avatar } from '../components';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/circle'), { ssr: false });
 const EMPTY_ARRAY: never[] = [];
 
-const COLLABORATOR_CELL_TARGET_NAMES = new Set([
-  KONVA_DATASHEET_ID.GRID_CELL,
-  KONVA_DATASHEET_ID.GRID_COLLABORATOR_AVATAR
-]);
+const COLLABORATOR_CELL_TARGET_NAMES = new Set([KONVA_DATASHEET_ID.GRID_CELL, KONVA_DATASHEET_ID.GRID_COLLABORATOR_AVATAR]);
 
 export const useCellCollaborator = (props: IUseGridBaseProps) => {
-  const {
-    instance,
-    rowStartIndex,
-    rowStopIndex,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-  } = props;
+  const { instance, rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex, pointPosition } = props;
 
-  const {
-    fieldMap,
-    linearRows,
-    visibleColumns,
-    collaboratorCursorMap,
-    activeCell,
-  } = useContext(KonvaGridViewContext);
+  const { fieldMap, linearRows, visibleColumns, collaboratorCursorMap, activeCell } = useContext(KonvaGridViewContext);
   const { setTooltipInfo, clearTooltipInfo, activeCellBound } = useContext(KonvaGridContext);
   const state = store.getState();
   const { rowHeight, rowCount, columnCount, frozenColumnCount } = instance;
-  const {
-    targetName,
-    realTargetName,
-    columnIndex: pointColumnIndex,
-  } = pointPosition;
-  const {
-    fieldId: targetFieldId,
-    recordId: targetRecordId,
-  } = getDetailByTargetName(realTargetName);
+  const { targetName, realTargetName, columnIndex: pointColumnIndex } = pointPosition;
+  const { fieldId: targetFieldId, recordId: targetRecordId } = getDetailByTargetName(realTargetName);
 
   let frozenCollaboratorAvatars: React.ReactNode[] | null = null;
   let collaboratorAvatars: React.ReactNode[] | null = null;
-  const collaboratorCell = (
-    COLLABORATOR_CELL_TARGET_NAMES.has(targetName) &&
-    collaboratorCursorMap[`${targetFieldId}_${targetRecordId}`]
-  ) || EMPTY_ARRAY;
+  const collaboratorCell =
+    (COLLABORATOR_CELL_TARGET_NAMES.has(targetName) && collaboratorCursorMap[`${targetFieldId}_${targetRecordId}`]) || EMPTY_ARRAY;
   if (collaboratorCell.length) {
     const cellUIIndex = Selectors.getCellUIIndex(state, {
       fieldId: targetFieldId!,
-      recordId: targetRecordId!
+      recordId: targetRecordId!,
     });
     if (cellUIIndex) {
       const { rowIndex, columnIndex } = cellUIIndex;
@@ -91,7 +66,7 @@ export const useCellCollaborator = (props: IUseGridBaseProps) => {
         field,
         rowHeight,
         activeHeight: activeCellBound.height,
-        isActive
+        isActive,
       });
       const realY = isBottom ? y + height : y - AvatarSize.Size24;
       const isFrozen = columnIndex < frozenColumnCount;
@@ -116,7 +91,7 @@ export const useCellCollaborator = (props: IUseGridBaseProps) => {
                 height: AvatarSize.Size24,
                 x: realX,
                 y: realY,
-                coordXEnable: !isFrozen
+                coordXEnable: !isFrozen,
               });
             }}
             onMouseOut={clearTooltipInfo}
@@ -125,32 +100,17 @@ export const useCellCollaborator = (props: IUseGridBaseProps) => {
               name={generateTargetName({
                 targetName: KONVA_DATASHEET_ID.GRID_COLLABORATOR_AVATAR,
                 fieldId: targetFieldId,
-                recordId: targetRecordId
+                recordId: targetRecordId,
               })}
               width={AvatarSize.Size24}
               height={AvatarSize.Size24}
               fill={'transparent'}
             />
-            <Group
-              y={isBottom ? 2 : -2}
-              listening={false}
-            >
-              <Circle
-                x={radius}
-                y={radius}
-                radius={radius}
-                fill={color}
-              />
-              <Avatar
-                x={1}
-                y={1}
-                id={userId}
-                size={AvatarSize.Size24}
-                src={c.avatar}
-                title={backCorrectName(c)}
-              />
+            <Group y={isBottom ? 2 : -2} listening={false}>
+              <Circle x={radius} y={radius} radius={radius} fill={color} />
+              <Avatar x={1} y={1} id={userId} size={AvatarSize.Size24} src={c.avatar} title={backCorrectName(c)} />
             </Group>
-          </Group>
+          </Group>,
         );
       }
       if (pointColumnIndex < frozenColumnCount) {
@@ -188,15 +148,15 @@ export const useCellCollaborator = (props: IUseGridBaseProps) => {
           realField,
           rowHeight,
           activeHeight: activeCellBound.height,
-          isActive
+          isActive,
         });
-        const collaborator = collaboratorCell.reduce((a, b) => a > b ? a : b);
+        const collaborator = collaboratorCell.reduce((a, b) => (a > b ? a : b));
         const stroke = getCollaboratorColor(collaborator);
         const { width, offset } = getCellHorizontalPosition({
           depth,
           columnWidth,
           columnIndex,
-          columnCount
+          columnCount,
         });
         const realX = x + offset;
 
@@ -222,19 +182,16 @@ export const useCellCollaborator = (props: IUseGridBaseProps) => {
 
     return {
       borders,
-      activeBorder
+      activeBorder,
     };
   };
 
-  const {
-    borders: frozenCollaboratorBorders,
-    activeBorder: frozenActiveCollaboratorBorder
-  } = getCollaboratorBorders(0, frozenColumnCount - 1);
+  const { borders: frozenCollaboratorBorders, activeBorder: frozenActiveCollaboratorBorder } = getCollaboratorBorders(0, frozenColumnCount - 1);
 
-  const {
-    borders: collaboratorBorders,
-    activeBorder: activeCollaboratorBorder
-  } = getCollaboratorBorders(Math.max(columnStartIndex, frozenColumnCount), columnStopIndex);
+  const { borders: collaboratorBorders, activeBorder: activeCollaboratorBorder } = getCollaboratorBorders(
+    Math.max(columnStartIndex, frozenColumnCount),
+    columnStopIndex,
+  );
 
   return {
     frozenCollaboratorAvatars,

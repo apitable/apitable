@@ -16,49 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { LinkButton, Skeleton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
-import classNames from 'classnames';
+import { ChevronLeftOutlined, Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
 import styles from './style.module.less';
-import { ChevronLeftOutlined, Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const officialLogo = integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_AVATAR!);
 
-  const categoryId = useSelector(state => state.pageParams.categoryId);
-  const spaceId = useSelector(state => state.space.activeId);
-  const templateId = useSelector(state => state.pageParams.templateId);
+  const categoryId = useSelector((state) => state.pageParams.categoryId);
+  const spaceId = useSelector((state) => state.space.activeId);
+  const templateId = useSelector((state) => state.pageParams.templateId);
   const { spaceInfo } = useSpaceInfo(spaceId);
 
   const goBack = () => {
     const uncategorized = categoryId === ConfigConstant.TEMPLATE_UNCATEGORIZED;
-    Router.push(Navigation.TEMPLATE, { params: {
-      spaceId, categoryId: uncategorized ? undefined : categoryId
-    }});
+    Router.push(Navigation.TEMPLATE, {
+      params: {
+        spaceId,
+        categoryId: uncategorized ? undefined : categoryId,
+      },
+    });
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const templateDirectory = useSelector(state => state.templateCentre.directory);
+  const templateDirectory = useSelector((state) => state.templateCentre.directory);
   const title = templateDirectory
-    ? (getSocialWecomUnitName?.({
+    ? getSocialWecomUnitName?.({
       name: templateDirectory.nickName,
       isModified: templateDirectory.isMemberNameModified,
       spaceInfo,
-    }) || templateDirectory.nickName)
+    }) || templateDirectory.nickName
     : '';
 
   const isOfficial = categoryId !== 'tpcprivate';
@@ -94,18 +97,18 @@ export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = ()
           <Skeleton className={styles.categoryName} />
           <div className={styles.creator}>
             <Skeleton image circle style={{ width: '80px', height: '80px' }} />
-            <Skeleton count={2} width='100%' />
+            <Skeleton count={2} width="100%" />
           </div>
-          <Skeleton count={1} width='38%' />
+          <Skeleton count={1} width="38%" />
           <Skeleton count={2} />
-          <Skeleton count={1} width='61%' />
+          <Skeleton count={1} width="61%" />
         </div>
       )}
       {templateDirectory && (
         <>
           <div className={styles.categoryName}>
             <div className={styles.goBackWrapper} onClick={goBack}>
-              <ChevronLeftOutlined color='currentColor' />
+              <ChevronLeftOutlined color="currentColor" />
               <span>
                 {t(Strings.template_go_back, {
                   category:
@@ -142,7 +145,7 @@ export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = ()
                 onClick={shareTemplate}
                 style={{
                   color: colors.blackBlue[50],
-                  marginTop: 16
+                  marginTop: 16,
                 }}
               >
                 {t(Strings.copy_template_share_link)}

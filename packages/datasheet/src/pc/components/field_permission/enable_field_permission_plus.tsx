@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount, useToggle } from 'ahooks';
+import { Switch } from 'antd';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, IOption, Skeleton } from '@apitable/components';
 import {
   ConfigConstant,
@@ -30,8 +34,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { useMount, useToggle } from 'ahooks';
-import { Switch } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
@@ -41,8 +43,6 @@ import styles from 'pc/components/field_permission/styles.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useRequest } from 'pc/hooks';
 import { dispatch } from 'pc/worker/store';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
@@ -54,13 +54,13 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
   const [memberList, setMemberList] = useState<IFieldPermissionMember[]>([]);
   const [setting, setSetting] = useState<{ formSheetAccessible: boolean }>();
-  const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
+  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const fieldPermission = useSelector(Selectors.getFieldPermissionMap)!;
   const readonly = fieldPermission[field.id] && !fieldPermission[field.id].manageable;
   const [enabledFieldPermission, setEnabledFieldPermission] = useState<boolean>();
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo)!;
-  const spaceId = useSelector(state => state.space.activeId)!;
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
+  const spaceId = useSelector((state) => state.space.activeId)!;
 
   const { run } = useRequest(DatasheetApi.fetchFieldPermissionRoleList, {
     manual: true,
@@ -122,11 +122,11 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     if (!unitInfos.length || !permission) {
       return;
     }
-    if (unitInfos.some(({ unitId }) => roleList.some(v => v.unitId === unitId && (v.isAdmin || v.isOwner)))) {
+    if (unitInfos.some(({ unitId }) => roleList.some((v) => v.unitId === unitId && (v.isAdmin || v.isOwner)))) {
       Message.error({ content: t(Strings.no_permission_setting_admin) });
       return;
     }
-    const unitIds = unitInfos.map(item => {
+    const unitIds = unitInfos.map((item) => {
       return item.unitId;
     });
     const role = permission.value + '';
@@ -248,7 +248,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     if (!openFieldPermissionRes) {
       return;
     }
-    const unitIds = (roleList || []).filter(v => !v.isAdmin && !v.isOwner).map(v => v.unitId);
+    const unitIds = (roleList || []).filter((v) => !v.isAdmin && !v.isOwner).map((v) => v.unitId);
     if (!unitIds.length) {
       return;
     }
@@ -272,7 +272,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     if (!openFieldPermissionRes) {
       return;
     }
-    const unitIds = (roleList || []).filter(v => !v.isAdmin && !v.isOwner).map(v => v.unitId);
+    const unitIds = (roleList || []).filter((v) => !v.isAdmin && !v.isOwner).map((v) => v.unitId);
 
     if (!unitIds.length) {
       return;
@@ -307,7 +307,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
           classNames={styles.permissionSelect}
           permissionList={permissionList}
           onSubmit={submitAddRole}
-          adminAndOwnerUnitIds={roleList.filter(v => v.isAdmin || v.isOwner).map(v => v.unitId)}
+          adminAndOwnerUnitIds={roleList.filter((v) => v.isAdmin || v.isOwner).map((v) => v.unitId)}
         />
       )}
       <PermissionInfoSetting
@@ -328,7 +328,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
         }}
       />
       <div className={styles.unitPermissionList}>
-        {roleList.map(item => {
+        {roleList.map((item) => {
           return (
             <UnitItem
               key={item.unitId}
@@ -369,7 +369,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
         <MembersDetail
           data={{
             members: memberList,
-            admins: (memberList.filter(member => member.isAdmin) as any) as IMember[],
+            admins: memberList.filter((member) => member.isAdmin) as any as IMember[],
           }}
           onCancel={toggleIsMemberDetail}
         />

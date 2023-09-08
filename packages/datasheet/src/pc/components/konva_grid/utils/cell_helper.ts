@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { get, keyBy, sortBy } from 'lodash';
+import LRU from 'lru-cache';
 import { colors, ThemeName } from '@apitable/components';
 import {
   Api,
@@ -54,8 +56,6 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { get, keyBy, sortBy } from 'lodash';
-import LRU from 'lru-cache';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
@@ -132,7 +132,7 @@ const DEFAULT_RENDER_DATA = {
 };
 
 export class CellHelper extends KonvaDrawer {
-  public initStyle(field: IField, styleProps: { fontWeight: any; }): void | null {
+  public initStyle(field: IField, styleProps: { fontWeight: any }): void | null {
     const { type: fieldType } = field;
     const { fontWeight = 'normal' } = styleProps;
 
@@ -163,7 +163,7 @@ export class CellHelper extends KonvaDrawer {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
-        const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
+        const realField = (Field.bindModel(field) as any as LookUpField).getLookUpEntityField();
         const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
         if (realField && ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
           return this.initStyle(realField, styleProps);
@@ -414,7 +414,7 @@ export class CellHelper extends KonvaDrawer {
 
     const isNumberField =
       Field.bindModel(field).basicValueType === BasicValueType.Number ||
-      ((Field.bindModel(field) as any) as ArrayValueField).innerBasicValueType === BasicValueType.Number;
+      (Field.bindModel(field) as any as ArrayValueField).innerBasicValueType === BasicValueType.Number;
     const isComputedField = Field.bindModel(field).isComputed;
     const isFromGantt = !columnWidth && !isActive;
     const isSingleLine = (rowHeightLevel === RowHeightLevel.Short || !columnWidth) && !isActive;
@@ -636,7 +636,7 @@ export class CellHelper extends KonvaDrawer {
       let offsetX = GRID_CELL_VALUE_PADDING;
 
       (cellValue as boolean[])
-        .filter(i => i)
+        .filter((i) => i)
         .map((_, index) => {
           if (index > 0) offsetX += ConfigConstant.CELL_EMOJI_SIZE + 4;
           if (columnWidth && offsetX >= columnWidth) return;
@@ -720,7 +720,7 @@ export class CellHelper extends KonvaDrawer {
       // The attachment being uploaded uses a placeholder image of the corresponding type as loading
       if (file.fileId) {
         const { name, type } = file.file;
-        imgUrl = (renderFileIconUrl({ name, type }) as any) as string;
+        imgUrl = renderFileIconUrl({ name, type }) as any as string;
       } else {
         // The icons in the cell are scaled
         imgUrl = getCellValueThumbSrc(file, {
@@ -788,7 +788,9 @@ export class CellHelper extends KonvaDrawer {
       cacheTheme,
     } = renderProps;
     const isMemberField = field.type === FieldType.Member;
-    const cellValue = isMemberField ? MemberField.polyfillOldData((_cellValue as IUnitIds)?.flat()) : [_cellValue as IUnitIds].flat().filter(v => v);
+    const cellValue = isMemberField
+      ? MemberField.polyfillOldData((_cellValue as IUnitIds)?.flat())
+      : [_cellValue as IUnitIds].flat().filter((v) => v);
 
     if (!cellValue?.length) return DEFAULT_RENDER_DATA;
 
@@ -813,7 +815,7 @@ export class CellHelper extends KonvaDrawer {
 
     const state = store.getState();
     const unitMap = isMemberField ? Selectors.getUnitMap(state) : Selectors.getUserMap(state);
-    const missInfoUnitIds: string[] = cellValue.filter(v => {
+    const missInfoUnitIds: string[] = cellValue.filter((v) => {
       return !unitMap?.[v] && v !== OtherTypeUnitId.Alien;
     });
     const cacheKey = missInfoUnitIds.length ? sortBy(missInfoUnitIds).join(',') : null;
@@ -826,7 +828,7 @@ export class CellHelper extends KonvaDrawer {
       if (isMemberField) {
         const linkId = shareId || templateId;
         Api.loadOrSearch({ unitIds: cacheKey, linkId })
-          .then(res => {
+          .then((res) => {
             const {
               data: { data: resData, success },
             } = res;
@@ -836,7 +838,7 @@ export class CellHelper extends KonvaDrawer {
           .finally(() => httpCache.del(cacheKey));
       } else {
         DatasheetApi.fetchUserList(datasheetId!, cellValue as string[])
-          .then(res => {
+          .then((res) => {
             const {
               data: { data: resData, success },
             } = res as any;
@@ -988,7 +990,7 @@ export class CellHelper extends KonvaDrawer {
 
     if (!linkRecordIds?.length) return DEFAULT_RENDER_DATA;
     let linkInfoList: { recordId: string; text: string | symbol | null }[] = [];
-    linkInfoList = linkRecordIds.map(recordId => {
+    linkInfoList = linkRecordIds.map((recordId) => {
       if (!snapshot) {
         return {
           recordId,
@@ -1139,9 +1141,9 @@ export class CellHelper extends KonvaDrawer {
   private renderCellLookUp(renderProps: IRenderProps, ctx?: any) {
     renderProps = { ...renderProps, cellValue: handleNullArray(renderProps.cellValue) };
     const { field, cellValue } = renderProps;
-    const realField = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityField();
-    const entityFieldInfo = ((Field.bindModel(field) as any) as LookUpField).getLookUpEntityFieldInfo();
-    const valueType = ((Field.bindModel(field) as any) as LookUpField).basicValueType;
+    const realField = (Field.bindModel(field) as any as LookUpField).getLookUpEntityField();
+    const entityFieldInfo = (Field.bindModel(field) as any as LookUpField).getLookUpEntityFieldInfo();
+    const valueType = (Field.bindModel(field) as any as LookUpField).basicValueType;
     if (cellValue != null && realField != null) {
       const rollUpType = (field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES;
       if (!ORIGIN_VALUES_FUNC_SET.has(rollUpType)) {
@@ -1176,8 +1178,12 @@ export class CellHelper extends KonvaDrawer {
 
       const realCellValue = cellValue?.flat(1) as ICellValue;
       const realRenderProps = { ...renderProps, cellValue: realCellValue, editable: false };
-      const realFieldRenderProps =
-        { ...realRenderProps, cellValue: realCellValue, field: realField, currentResourceId: entityFieldInfo?.datasheetId };
+      const realFieldRenderProps = {
+        ...realRenderProps,
+        cellValue: realCellValue,
+        field: realField,
+        currentResourceId: entityFieldInfo?.datasheetId,
+      };
 
       // Non-plain text fields are displayed as is
       switch (realField.type) {

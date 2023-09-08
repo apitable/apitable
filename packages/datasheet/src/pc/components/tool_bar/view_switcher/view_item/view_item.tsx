@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
-import { stopPropagation } from 'pc/utils';
+import { Tooltip } from 'antd';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Selectors, Strings, t } from '@apitable/core';
+import { AutosaveOutlined } from '@apitable/icons';
+import { stopPropagation } from 'pc/utils';
 import { ViewIcon } from '../view_icon';
 import { OperateItem } from './operate_item';
-import { AutosaveOutlined } from '@apitable/icons';
-import { Tooltip } from 'antd';
 
 interface IViewItemOwnProps {
   currentViewId: string;
@@ -42,21 +42,31 @@ interface IViewItemOwnProps {
   renameEvent: (id: string, name: string) => void;
   duplicateView: (id: string) => void;
   autoSave?: boolean;
-  isViewLock?: boolean
+  isViewLock?: boolean;
 }
 
 type IViewItemProps = IViewItemOwnProps;
 
 // TODO: Deletion requires pop-up confirmation.
-export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props => {
+export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = (props) => {
   const {
-    currentViewId, currentViewName, isEditingId, renameEvent, viewType,
-    switchView, confirmDelete, errorMsg, onInput, onPressEnter,
-    duplicateView, autoSave,isViewLock
+    currentViewId,
+    currentViewName,
+    isEditingId,
+    renameEvent,
+    viewType,
+    switchView,
+    confirmDelete,
+    errorMsg,
+    onInput,
+    onPressEnter,
+    duplicateView,
+    autoSave,
+    isViewLock,
   } = props;
   const colors = useThemeColors();
   const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = useSelector(Selectors.getPermissions);
-  const spaceManualSaveViewIsOpen = useSelector(state => {
+  const spaceManualSaveViewIsOpen = useSelector((state) => {
     return state.labs.includes('view_manual_save');
   });
 
@@ -79,38 +89,50 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = props
     <OperateItem
       allowSort={viewMovable}
       editing={isEditingId === currentViewId}
-      prefixIcon={<span style={{ display: 'flex' }} onClick={stopPropagation}><ViewIcon viewType={viewType} size={16} color={viewIconFill} /></span>}
+      prefixIcon={
+        <span style={{ display: 'flex' }} onClick={stopPropagation}>
+          <ViewIcon viewType={viewType} size={16} color={viewIconFill} />
+        </span>
+      }
       isActive={props.activityViewId === currentViewId}
       onItemClick={clickView}
       id={currentViewId}
       suffixIcon={
-        showSuffixIcon ? <Tooltip title={t(Strings.auto_save_has_been_opend)}>
-          <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}><AutosaveOutlined color={colors.primaryColor} /></span>
-        </Tooltip> : undefined
+        showSuffixIcon ? (
+          <Tooltip title={t(Strings.auto_save_has_been_opend)}>
+            <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}>
+              <AutosaveOutlined color={colors.primaryColor} />
+            </span>
+          </Tooltip>
+        ) : undefined
       }
-      inputData={
-        {
-          value: currentViewName,
-          errMsg: errorMsg,
-          onEnter: onPressEnter,
-          onChange: onInput,
-        }
-      }
+      inputData={{
+        value: currentViewName,
+        errMsg: errorMsg,
+        onEnter: onPressEnter,
+        onChange: onInput,
+      }}
       operateData={{
         delete: {
           show: viewRemovable && props.viewLength > 1 && !isViewLock,
           tooltip: t(Strings.delete),
-          onClick: (e) => { confirmDelete(e as any as React.MouseEvent, currentViewId); },
+          onClick: (e) => {
+            confirmDelete(e as any as React.MouseEvent, currentViewId);
+          },
         },
         duplicate: {
           show: viewCreatable,
           tooltip: t(Strings.duplicate),
-          onClick: () => { duplicateView(currentViewId); },
+          onClick: () => {
+            duplicateView(currentViewId);
+          },
         },
         rename: {
           show: viewRenamable,
           tooltip: t(Strings.rename),
-          onClick: (e) => { rename(e); },
+          onClick: (e) => {
+            rename(e);
+          },
         },
       }}
     />

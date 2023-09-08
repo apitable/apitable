@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { validateMagicForm } from '@apitable/core';
 import Ajv from 'ajv';
 import { JSONSchema7 } from 'json-schema';
 import toPath from 'lodash/toPath';
+import { validateMagicForm } from '@apitable/core';
 import { isObject, mergeObjects } from './func';
 
 const ajv = createAjvInstance();
@@ -174,7 +174,7 @@ function transformAjvErrors(errors = []) {
     return [];
   }
 
-  return errors.map(e => {
+  return errors.map((e) => {
     const { dataPath, keyword, message, params, schemaPath } = e;
     const property = `${dataPath}`;
 

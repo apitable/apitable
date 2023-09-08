@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
 import { ComputeRefManager, getComputeRefManager, FieldType, Selectors } from '@apitable/core';
+import { store } from 'pc/store';
 
 type Group = 'Link' | 'Dst' | 'Formula' | 'Lookup' | 'BaseField';
 type Node = {
@@ -27,10 +27,10 @@ type Node = {
 };
 
 type Edge = {
-  from: string,
-  to: string,
-  label?: string,
-  dashes?: boolean,
+  from: string;
+  to: string;
+  label?: string;
+  dashes?: boolean;
 };
 
 /**
@@ -65,7 +65,7 @@ export const getDstNetworkData = (dstId?: string) => {
     const [selfDstId] = key.split('-');
     dstIds.add(selfDstId);
     fieldIds.add(key);
-    item.forEach(key => {
+    item.forEach((key) => {
       const [dstId] = key.split('-');
       dstIds.add(dstId);
       fieldIds.add(key);
@@ -76,7 +76,7 @@ export const getDstNetworkData = (dstId?: string) => {
   });
 
   // Collate all number datasheet nodes
-  dstIds.forEach(dstId => {
+  dstIds.forEach((dstId) => {
     const datasheet = Selectors.getDatasheet(state, dstId);
     if (datasheet) {
       data.nodes.push({
@@ -87,8 +87,8 @@ export const getDstNetworkData = (dstId?: string) => {
     }
   });
 
-  // Collate all field nodes 
-  fieldIds.forEach(key => {
+  // Collate all field nodes
+  fieldIds.forEach((key) => {
     const [dstId, fieldId] = key.split('-');
     const field = Selectors.getField(state, fieldId, dstId);
     let group: Group = 'BaseField';
@@ -117,7 +117,7 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  fieldIds.forEach(key => {
+  fieldIds.forEach((key) => {
     const [dstId] = key.split('-');
     data.edges.push({
       from: key,
@@ -127,7 +127,7 @@ export const getDstNetworkData = (dstId?: string) => {
     });
   });
 
-  dstLinkIds.forEach(key => {
+  dstLinkIds.forEach((key) => {
     const [a, b] = key.split('-');
     data.edges.push({
       from: a,
@@ -138,7 +138,7 @@ export const getDstNetworkData = (dstId?: string) => {
 
   // Field dependencies
   computeRefManager.reRefMap.forEach((item, key) => {
-    item.forEach(otherKey => {
+    item.forEach((otherKey) => {
       data.edges.push({
         from: key,
         to: otherKey,

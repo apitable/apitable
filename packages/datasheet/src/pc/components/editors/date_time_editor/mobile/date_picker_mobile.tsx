@@ -16,17 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import dayjs from 'dayjs';
+import { memo, useCallback, useEffect, useImperativeHandle, useRef, useState, forwardRef } from 'react';
 import * as React from 'react';
 import { diffTimeZone, Field, getDay, getToday, ICellValue } from '@apitable/core';
 import { IDateTimeEditorProps } from '..';
-import { useState } from 'react';
-import { forwardRef } from 'react';
 import { IEditor } from '../../interface';
 import { PickerContent } from './picker_content';
-import dayjs from 'dayjs';
 
-const noop = () => { };
+const noop = () => {};
 
 enum OptionType {
   ONCHANGE,
@@ -34,15 +32,7 @@ enum OptionType {
 }
 
 const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEditorProps> = (props, ref) => {
-  const {
-    field,
-    editable,
-    onClose,
-    onSave,
-    commandFn,
-    curAlarm,
-    disabled
-  } = props;
+  const { field, editable, onClose, onSave, commandFn, curAlarm, disabled } = props;
 
   const { dateFormat, timeZone, includeTimeZone } = Field.bindModel(field);
 
@@ -62,13 +52,16 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     setValue(new Date(cellValue as number));
   };
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: noop,
-    onEndEdit: noop,
-    onStartEdit: noop,
-    setValue: setEditorValue,
-    saveValue: () => onSave?.(value?.getTime(), curAlarm),
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: noop,
+      onEndEdit: noop,
+      onStartEdit: noop,
+      setValue: setEditorValue,
+      saveValue: () => onSave?.(value?.getTime(), curAlarm),
+    }),
+  );
 
   useEffect(() => {
     if (!visible && onClose) {
@@ -77,31 +70,30 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
     // eslint-disable-next-line
   }, [visible]);
 
-  const onChange = useCallback((val: Date, option: OptionType = OptionType.ONCHANGE) => {
-    const nextOptions = [...options.current, option];
+  const onChange = useCallback(
+    (val: Date, option: OptionType = OptionType.ONCHANGE) => {
+      const nextOptions = [...options.current, option];
 
-    options.current = (nextOptions);
+      options.current = nextOptions;
 
-    let _val = val;
+      let _val = val;
 
-    const [lastPrev, last] = nextOptions.slice(-2);
+      const [lastPrev, last] = nextOptions.slice(-2);
 
-    if (
-      value &&
-      last === OptionType.ONCHANGE
-      && lastPrev === OptionType.BACKTONOW
-    ) {
-      _val = value;
-    }
-    if (timeZone && option !== OptionType.BACKTONOW) {
-      const diff = diffTimeZone(timeZone);
-      _val = dayjs(dayjs(_val).valueOf() + diff).toDate();
-    }
+      if (value && last === OptionType.ONCHANGE && lastPrev === OptionType.BACKTONOW) {
+        _val = value;
+      }
+      if (timeZone && option !== OptionType.BACKTONOW) {
+        const diff = diffTimeZone(timeZone);
+        _val = dayjs(dayjs(_val).valueOf() + diff).toDate();
+      }
 
-    setValue(_val);
-    commandFn?.(getDay(_val).getTime());
-    onSave?.(_val.getTime(), curAlarm);
-  }, [value, timeZone, commandFn, onSave, curAlarm]);
+      setValue(_val);
+      commandFn?.(getDay(_val).getTime());
+      onSave?.(_val.getTime(), curAlarm);
+    },
+    [value, timeZone, commandFn, onSave, curAlarm],
+  );
 
   const onBackToNow = useCallback(() => {
     let now = new Date();
@@ -125,7 +117,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
 
   const onValueChange = useCallback(() => {
     const nextOptions = [...options.current, OptionType.ONCHANGE];
-    options.current = (nextOptions);
+    options.current = nextOptions;
   }, [options]);
 
   return (

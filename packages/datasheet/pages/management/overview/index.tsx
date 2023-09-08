@@ -23,11 +23,13 @@ const DynamicComponentWithNoSSR = dynamic(() => import('pc/components/route_mana
 const SpaceCockpitWithNoSSR = dynamic(() => import('pc/components/space_manage/space_info/space_cockpit'), { ssr: false });
 
 const App = () => {
-  return <>
-    <DynamicComponentWithNoSSR>
-      <SpaceCockpitWithNoSSR />
-    </DynamicComponentWithNoSSR>
-  </>;
+  return (
+    <>
+      <DynamicComponentWithNoSSR>
+        <SpaceCockpitWithNoSSR />
+      </DynamicComponentWithNoSSR>
+    </>
+  );
 };
 
 export default App;

@@ -16,31 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
+import classnames from 'classnames';
+import { FC, useEffect, useState } from 'react';
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList as List } from 'react-window';
 import { Button, TextInput } from '@apitable/components';
 import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } from '@apitable/core';
-import { useMount } from 'ahooks';
-import { useRequest } from 'pc/hooks';
-import classnames from 'classnames';
+import { ChevronRightOutlined, EyeOpenOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
-import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest, useRequest } from 'pc/hooks';
 import { NodeChangeInfoType } from 'pc/hooks/use_catalog';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useEffect, useState } from 'react';
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { MembersDetail } from '../../permission_settings/permission/members_detail';
 import { UnitItem } from '../../permission_settings/permission/unit_item';
 import { TeamTreeSelect } from '../team_tree_select';
 import styles from './style.module.less';
-import { FixedSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { ChevronRightOutlined, EyeOpenOutlined } from '@apitable/icons';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise';
 
 export interface ITeamworkProps {
   nodeId: string;
@@ -163,7 +162,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
           <div className={styles.invite}>
             <div className={styles.inputContainer}>
               <TextInput value={inviteEmail} placeholder={t(Strings.placeholder_input_member_email)} onChange={inviteEmailChange} block />
-              <TeamTreeSelect className={styles.teamTreeSelect} onChange={checkedTeamId => setJoinTeamId(checkedTeamId)} />
+              <TeamTreeSelect className={styles.teamTreeSelect} onChange={(checkedTeamId) => setJoinTeamId(checkedTeamId)} />
             </div>
             <Button
               color="primary"

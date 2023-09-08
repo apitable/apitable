@@ -14,7 +14,9 @@
     "check": "tsc --noEmit",
     "check:watch": "tsc --noEmit --watch",
     "lint": "next lint --dir ./src  --dir ./utils --dir ./pages",
-    "lint:fix": "eslint --fix --no-cache ./src ./pages"
+    "lint:fix": "eslint --fix --no-cache ./src ./pages",
+    "prettier:check": "npx prettier --check **/*.{js,ts,tsx}",
+    "prettier:fix": "npx prettier --write **/*.{js,ts,tsx} && eslint --fix --no-cache ./src ./pages"
   },
   "engines": {
     "node": "16.15.0"

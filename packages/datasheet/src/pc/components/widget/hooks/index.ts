@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { ResourceType, Selectors } from '@apitable/core';
-import { useSelector } from 'react-redux';
 import { useCounter } from 'ahooks';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ResourceType, Selectors } from '@apitable/core';
+import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useUrlQuery } from 'pc/hooks';
 import { closeWidgetRoute, expandWidgetRoute, IWidgetFullScreenType } from '../expand_widget';
 
@@ -37,11 +37,12 @@ export const useResourceManageable = () => {
 };
 
 export const useDevLoadCheck = (
-  widgetId: string, isDevMode?: boolean):
-  [boolean, boolean, WidgetLoadError | undefined, (delta?: number | undefined) => void] => {
+  widgetId: string,
+  isDevMode?: boolean,
+): [boolean, boolean, WidgetLoadError | undefined, (delta?: number | undefined) => void] => {
   const [devSandbox, setDevSandbox] = useState<boolean>(false);
   const [devSandboxLoading, setDevSandboxLoading] = useState<boolean>(false);
-  const widget = useSelector(state => Selectors.getWidget(state, widgetId));
+  const widget = useSelector((state) => Selectors.getWidget(state, widgetId));
   const widgetPackageId = widget?.widgetPackageId;
   const devWidgetUrl = widget && widget.widgetPackageId && widget.snapshot.storage[`widget_loader_code_url_${widget.widgetPackageId}`];
   const [error, setError] = useState<WidgetLoadError>();
@@ -50,13 +51,15 @@ export const useDevLoadCheck = (
     setError(undefined);
     if (isDevMode && devWidgetUrl && widgetPackageId) {
       setDevSandboxLoading(true);
-      loadWidgetCheck(devWidgetUrl, widgetPackageId).then(res => {
-        setDevSandbox(Boolean(res.sandbox));
-        setDevSandboxLoading(false);
-      }).catch((error) => {
-        setError(error);
-        setDevSandboxLoading(false);
-      });
+      loadWidgetCheck(devWidgetUrl, widgetPackageId)
+        .then((res) => {
+          setDevSandbox(Boolean(res.sandbox));
+          setDevSandboxLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setDevSandboxLoading(false);
+        });
     }
   }, [widgetPackageId, devWidgetUrl, isDevMode, setDevSandbox, setDevSandboxLoading, count]);
 

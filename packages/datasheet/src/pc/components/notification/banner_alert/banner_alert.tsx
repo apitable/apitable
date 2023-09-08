@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import Image from 'next/image';
+import { createRoot } from 'react-dom/client';
 import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
-import classNames from 'classnames';
-import Image from 'next/image';
 import { Emoji } from 'pc/components/common';
-import { createRoot } from 'react-dom/client';
 import Vikaby from 'static/icon/workbench/vikaby-good.png';
 import styles from './style.module.less';
 
@@ -47,18 +47,34 @@ export const AlertUi = (props: IAlertProps) => {
   const { showVikaby = true, content, btnText, onBtnClick, closable, onClose, upgrade } = props;
   return (
     <div className={classNames(styles.alert, { [styles.hasUpgradeBtn!]: upgrade })}>
-      {showVikaby && <span className={styles.img}><Image src={Vikaby} alt="" /></span>}
-      <div className={styles.body}>
-        <Typography variant='h7' color={colors.primaryColor}>{content}</Typography>
-      </div>
-      {btnText && <LinkButton className={styles.reloadBtn} color={colors.primaryColor} onClick={onBtnClick}>{btnText}</LinkButton>}
-      {upgrade && <Button color='primary' size={'middle'} className={styles.upgradeBtn} onClick={onBtnClick}>
-        <span style={{ position: 'relative', top: 3 }}>
-          <Emoji emoji={'star2'} set='apple' size={ConfigConstant.CELL_EMOJI_SIZE} />
+      {showVikaby && (
+        <span className={styles.img}>
+          <Image src={Vikaby} alt="" />
         </span>
-        <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade)}</span>
-      </Button>}
-      {closable && <span onClick={onClose} className={styles.close}><CloseOutlined /></span>}
+      )}
+      <div className={styles.body}>
+        <Typography variant="h7" color={colors.primaryColor}>
+          {content}
+        </Typography>
+      </div>
+      {btnText && (
+        <LinkButton className={styles.reloadBtn} color={colors.primaryColor} onClick={onBtnClick}>
+          {btnText}
+        </LinkButton>
+      )}
+      {upgrade && (
+        <Button color="primary" size={'middle'} className={styles.upgradeBtn} onClick={onBtnClick}>
+          <span style={{ position: 'relative', top: 3 }}>
+            <Emoji emoji={'star2'} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />
+          </span>
+          <span style={{ position: 'relative', left: 3 }}>{t(Strings.upgrade)}</span>
+        </Button>
+      )}
+      {closable && (
+        <span onClick={onClose} className={styles.close}>
+          <CloseOutlined />
+        </span>
+      )}
     </div>
   );
 };
@@ -89,7 +105,6 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
   }
 
   function render() {
-
     setTimeout(() => {
       root.render(
         <AlertUi

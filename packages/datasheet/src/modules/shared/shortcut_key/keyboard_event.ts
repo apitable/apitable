@@ -223,13 +223,12 @@ let metaKeyMod: number | KeyMod;
 
 (() => {
   if (!process.env.SSR) {
-    ctrlKeyMod = (browser?.is('macOS') ? KeyMod.WinCtrl : KeyMod.CtrlCmd);
-    metaKeyMod = (browser?.is('macOS') ? KeyMod.CtrlCmd : KeyMod.WinCtrl);
+    ctrlKeyMod = browser?.is('macOS') ? KeyMod.WinCtrl : KeyMod.CtrlCmd;
+    metaKeyMod = browser?.is('macOS') ? KeyMod.CtrlCmd : KeyMod.WinCtrl;
   }
 })();
 
 export class StandardKeyboardEvent implements IKeyboardEvent {
-
   public readonly browserEvent: KeyboardEvent;
   public readonly target: HTMLElement;
 
@@ -293,11 +292,7 @@ export class StandardKeyboardEvent implements IKeyboardEvent {
 
   private _computeKeybinding(): number {
     let key = KeyCode.Unknown;
-    if (
-      this.keyCode !== KeyCode.Ctrl &&
-      this.keyCode !== KeyCode.Shift &&
-      this.keyCode !== KeyCode.Alt &&
-      this.keyCode !== KeyCode.Meta) {
+    if (this.keyCode !== KeyCode.Ctrl && this.keyCode !== KeyCode.Shift && this.keyCode !== KeyCode.Alt && this.keyCode !== KeyCode.Meta) {
       key = this.keyCode;
     }
 
@@ -321,11 +316,7 @@ export class StandardKeyboardEvent implements IKeyboardEvent {
 
   private _computeRuntimeKeybinding(): SimpleKeybinding {
     let key = KeyCode.Unknown;
-    if (
-      this.keyCode !== KeyCode.Ctrl &&
-      this.keyCode !== KeyCode.Shift &&
-      this.keyCode !== KeyCode.Alt &&
-      this.keyCode !== KeyCode.Meta) {
+    if (this.keyCode !== KeyCode.Ctrl && this.keyCode !== KeyCode.Shift && this.keyCode !== KeyCode.Alt && this.keyCode !== KeyCode.Meta) {
       key = this.keyCode;
     }
     return new SimpleKeybinding(this.ctrlKey, this.shiftKey, this.altKey, this.metaKey, key);

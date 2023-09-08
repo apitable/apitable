@@ -16,22 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton } from '@apitable/components';
-import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { useRequest } from 'pc/hooks';
 import { Popover, Radio } from 'antd';
 import classnames from 'classnames';
-import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { TComponent } from 'pc/components/common/t_component';
-import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Button, Skeleton } from '@apitable/components';
+import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { TriangleDownFilled, CheckOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Message } from 'pc/components/common/message';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { TComponent } from 'pc/components/common/t_component';
+import { useRequest, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { ShareLink } from './share_link';
 import styles from './style.module.less';
-import { TriangleDownFilled, CheckOutlined } from '@apitable/icons';
 
 export interface IShareProps {
   shareSettings: IShareSettings;
@@ -103,7 +102,7 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings,
   // Share settings
   const updateShare = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
     const onOk = () =>
-      Api.updateShare(shareSettings.nodeId, permission).then(res => {
+      Api.updateShare(shareSettings.nodeId, permission).then((res) => {
         const { success } = res.data;
         if (success) {
           getShareSettings();
@@ -159,7 +158,7 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings,
 
   const closeShare = () => {
     const onOk = () =>
-      Api.disableShare(shareSettings.nodeId).then(res => {
+      Api.disableShare(shareSettings.nodeId).then((res) => {
         const { success } = res.data;
         if (success) {
           getShareSettings();
@@ -206,7 +205,7 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings,
     return (
       <div className={styles.menu} onClick={() => setMenuVisible(false)}>
         <div className={styles.main}>
-          {data.map(item => (
+          {data.map((item) => (
             <div
               key={item.title}
               className={classnames(styles.item, item.active && styles.active, isMobile && styles.itemMobile, item.disabled && styles.disabled)}
@@ -244,8 +243,8 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings,
               placement="bottomLeft"
               destroyTooltipOnHide={{ keepParent: false }}
               align={{ offset: [0, -8] }}
-              onVisibleChange={visible => setMenuVisible(visible)}
-              getPopupContainer={triggerNode => triggerNode.parentElement!}
+              onVisibleChange={(visible) => setMenuVisible(visible)}
+              getPopupContainer={(triggerNode) => triggerNode.parentElement!}
             >
               <div className={classnames(styles.currentStatus, shareSettings.shareOpened && styles.sharing)}>
                 {status.title} <TriangleDownFilled />

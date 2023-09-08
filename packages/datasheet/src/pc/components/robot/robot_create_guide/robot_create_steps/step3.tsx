@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { mutate } from 'swr';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
 import { integrateCdnHost, Selectors, Strings, t } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
-import { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { mutate } from 'swr';
 import { createAction, getRobotBaseInfo, refreshRobotList } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions } from '../../helper';
 import { useActionTypes, useRobot } from '../../hooks';
@@ -57,17 +57,20 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
   //   }
   // }, [actionTypes, triggerTypes, robot, updateRobot]);
 
-  const createRobotAction = useCallback(async(actionTypeId: string) => {
-    const actionRes: any = await createAction({
-      robotId: robotId!,
-      actionTypeId
-    });
-    await mutate(`/automation/robots/${robotId}/action`);
-    const robotBaseInfo = await getRobotBaseInfo(robotId!);
-    updateRobot(robotBaseInfo);
-    refreshRobotList(datasheetId!);
-    return actionRes.data;
-  }, [robotId, updateRobot, datasheetId]);
+  const createRobotAction = useCallback(
+    async(actionTypeId: string) => {
+      const actionRes: any = await createAction({
+        robotId: robotId!,
+        actionTypeId,
+      });
+      await mutate(`/automation/robots/${robotId}/action`);
+      const robotBaseInfo = await getRobotBaseInfo(robotId!);
+      updateRobot(robotBaseInfo);
+      refreshRobotList(datasheetId!);
+      return actionRes.data;
+    },
+    [robotId, updateRobot, datasheetId],
+  );
 
   if (!actionTypes) {
     return null;
@@ -80,7 +83,7 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
     props.goNextStep();
   };
 
-  const handleActionTypeIdChange = (option: { value: any; }) => {
+  const handleActionTypeIdChange = (option: { value: any }) => {
     const actionTypeId = option.value;
     if (actionTypeId) {
       setActionTypeId(actionTypeId);
@@ -91,49 +94,33 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
   const options = getNodeTypeOptions(getFilterActionTypes(actionTypes));
 
   return (
-    <Box
-      width="336px"
-      margin="24px 0px 118px 0px"
-    >
-      <Box
-        display='flex'
-        height='40px'
-        margin='0px 0px 40px 0px'
-      >
+    <Box width="336px" margin="24px 0px 118px 0px">
+      <Box display="flex" height="40px" margin="0px 0px 40px 0px">
         <Tooltip
           content={t(Strings.robot_create_wizard_step_3_desc)}
           color={theme.color.textStaticPrimary}
           visible={isActive}
           style={{
             backgroundColor: theme.color.primaryColor,
-            zIndex: 1000
+            zIndex: 1000,
           }}
           placement="right-center"
         >
           <span>
-            <Avatar
-              icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
-              size='l'
-            />
+            <Avatar icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />} size="l" />
           </span>
         </Tooltip>
       </Box>
-      <Box
-        height="120px"
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        {
-          !actionTypesLoading && isActive && <Select
+      <Box height="120px" width="100%" display="flex" flexDirection="column" justifyContent="space-between">
+        {!actionTypesLoading && isActive && (
+          <Select
             options={options}
             value={actionTypeId}
             onSelected={handleActionTypeIdChange}
             placeholder={t(Strings.robot_select_option)}
             defaultVisible
           />
-        }
+        )}
         <Button
           block
           loading={loading}
@@ -141,7 +128,7 @@ export const RobotCreateGuideStep3 = (props: IStepProps) => {
           color="primary"
           onClick={handleClick}
           style={{
-            marginTop: 40
+            marginTop: 40,
           }}
         >
           {t(Strings.robot_create_wizard_next)}

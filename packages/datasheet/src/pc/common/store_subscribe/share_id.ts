@@ -32,12 +32,14 @@ store.subscribe(function shareIdChange() {
   }
   console.log('init shareId: ', shareId);
 
-  Api.readShareInfo(shareId).then(res => {
+  Api.readShareInfo(shareId).then((res) => {
     const { success, data } = res.data;
     if (success) {
-      store.dispatch(StoreActions.setShareInfo({
-        spaceId: data.spaceId,
-      }));
+      store.dispatch(
+        StoreActions.setShareInfo({
+          spaceId: data.spaceId,
+        }),
+      );
     }
     resourceService.instance!.destroy();
     resourceService.instance!.init();

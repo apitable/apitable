@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import classNames from 'classnames';
-import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
-import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
-import styles from '../../styles.module.less';
-import { OPERATE_BUTTON_CLASS, ButtonOperateType } from 'pc/utils';
-import { PRIMARY_COLOR_BORDER, GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
-import { useShowKeepSortBorder } from '../../hooks/use_show_keep_sort_border';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
+import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
+import { OPERATE_BUTTON_CLASS, ButtonOperateType } from 'pc/utils';
+import { useShowKeepSortBorder } from '../../hooks/use_show_keep_sort_border';
+import styles from '../../styles.module.less';
+import { PRIMARY_COLOR_BORDER, GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
 
 interface ICellAddRecord {
   row: ILinearRowAdd;
@@ -43,17 +43,14 @@ interface ICellAddRecord {
 
 const DEFAULT_ADD_RECORD_PATH = 'default';
 
-export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = React.memo(props => {
+export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = React.memo((props) => {
   const colors = useThemeColors();
-  const {
-    actualColumnIndex, row, style, className, preRow,
-    columnsLength, rightRegion, isEmptyRows, groupInfo, permissions,
-  } = props;
+  const { actualColumnIndex, row, style, className, preRow, columnsLength, rightRegion, isEmptyRows, groupInfo, permissions } = props;
   const showKeepSortBorder = useShowKeepSortBorder(preRow ? preRow.groupHeadRecordId : '');
   const marginTop = 0;
   const height = RowHeight.Short;
   const addIconClass = classNames(styles.addRecordIcon, OPERATE_BUTTON_CLASS);
-  const hoverRowOfAddRecord = useSelector(state => Selectors.getGridViewDragState(state).hoverRowOfAddRecord);
+  const hoverRowOfAddRecord = useSelector((state) => Selectors.getGridViewDragState(state).hoverRowOfAddRecord);
   let width = parseInt(style.width as string, 10);
 
   if (columnsLength > 1 && actualColumnIndex === columnsLength - 1 && groupInfo && groupInfo.length === 3) {
@@ -76,7 +73,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
     if (showKeepSortBorder && actualColumnIndex === columnsLength - 1) {
       return PRIMARY_COLOR_BORDER;
     }
-    if (!isEmptyRows && (actualColumnIndex === columnsLength - 1 && groupInfo.length > 1)) {
+    if (!isEmptyRows && actualColumnIndex === columnsLength - 1 && groupInfo.length > 1) {
       return GRAY_COLOR_BORDER;
     }
     return 'none';
@@ -98,8 +95,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
         marginLeft: !rightRegion && groupInfo.length - 1 > 0 ? (groupInfo.length - 1) * 16 : 0,
         background: createAble && hoverRowOfAddRecord === path ? colors.rowSelectedBg : '',
       }}
-      className={classNames(className, (actualColumnIndex === 0 && groupInfo.length && row) ?
-        styles['groupOffset' + row.depth] : '')}
+      className={classNames(className, actualColumnIndex === 0 && groupInfo.length && row ? styles['groupOffset' + row.depth] : '')}
     >
       <div
         className={addIconClass}
@@ -108,10 +104,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
         data-group-head-record-id={preRow?.groupHeadRecordId}
         data-test-id={'addRecord'}
       >
-        {
-          !rightRegion && actualColumnIndex === 0 && createAble &&
-          <AddOutlined color={colors.thirdLevelText} size={12} />
-        }
+        {!rightRegion && actualColumnIndex === 0 && createAble && <AddOutlined color={colors.thirdLevelText} size={12} />}
       </div>
     </div>
   );

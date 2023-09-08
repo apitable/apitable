@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Skeleton } from '@apitable/components';
-import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
+import * as React from 'react';
+import { FC, useContext, useMemo, useRef } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Skeleton } from '@apitable/components';
+import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { NodeItem } from 'pc/components/catalog/tree/node_item';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { getContextTypeByNodeType, shouldOpenInNewTab } from 'pc/utils';
-import * as React from 'react';
-import { FC, useContext, useMemo, useRef } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import EmptyFavoritePng from 'static/icon/workbench/catalogue/favorite.png';
 import { WorkbenchSideContext } from '../workbench_side_context';
 import styles from './style.module.less';
@@ -159,7 +159,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
 
   const loadData = (nodeId: string) => {
     if (!treeNodesMap[nodeId]?.hasChildren) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         resolve(false);
       });
     }
@@ -196,12 +196,12 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
 
   const dropHandler = (info: any) => {
     const { dragNodeId, dropNodeId, dropPosition } = info;
-    if (favoriteTreeNodeIds.findIndex(nodeId => [dropNodeId, dragNodeId].includes(nodeId)) === -1 || !dropPosition || dragNodeId === dropNodeId) {
+    if (favoriteTreeNodeIds.findIndex((nodeId) => [dropNodeId, dragNodeId].includes(nodeId)) === -1 || !dropPosition || dragNodeId === dropNodeId) {
       return;
     }
 
     if (dropPosition === -1) {
-      const index = favoriteTreeNodeIds.findIndex(id => id === dropNodeId);
+      const index = favoriteTreeNodeIds.findIndex((id) => id === dropNodeId);
       const prevNodeId = favoriteTreeNodeIds[index - 1] || '';
       dispatch(StoreActions.moveFavoriteNode(dragNodeId, prevNodeId));
       moveFavoriteNode(dragNodeId, prevNodeId);
@@ -214,9 +214,9 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   if (favoriteLoading) {
     return (
       <div style={{ margin: '0 8px', width: '100%' }}>
-        <Skeleton width='38%' />
+        <Skeleton width="38%" />
         <Skeleton />
-        <Skeleton width='61%' />
+        <Skeleton width="61%" />
       </div>
     );
   }
@@ -240,7 +240,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
       ) : (
         <div className={styles.empty}>
           <span className={styles.emptyFavoritePng}>
-            <Image src={EmptyFavoritePng} alt='empty favorite' width={60} height={44} />
+            <Image src={EmptyFavoritePng} alt="empty favorite" width={60} height={44} />
           </span>
           <div className={styles.tip}>{t(Strings.favorite_empty_tip1)}</div>
           <div className={styles.tip}>{t(Strings.favorite_empty_tip2)}~</div>

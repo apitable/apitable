@@ -18,6 +18,7 @@
 
 import { useSize } from 'ahooks';
 import classNames from 'classnames';
+import { usePostHog } from 'posthog-js/react';
 import { Dispatch, memo, SetStateAction, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Button, LinkButton, TextButton, useThemeColors } from '@apitable/components';
@@ -47,7 +48,6 @@ import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
 // @ts-ignore
 import { isEnterprise } from 'enterprise';
-import { usePostHog } from 'posthog-js/react';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
@@ -58,7 +58,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setSideBarVisible } = useSideBarVisible();
-  const { formId, shareId, templateId, embedId } = useSelector(state => state.pageParams);
+  const { formId, shareId, templateId, embedId } = useSelector((state) => state.pageParams);
 
   const {
     icon,
@@ -104,7 +104,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
       viewType,
     };
   }, shallowEqual);
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
 
   const tabSize = useSize(tabRef);
 
@@ -119,7 +119,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
     setPreFill(true);
   };
 
-  const embedInfo = useSelector(state => state.embedInfo);
+  const embedInfo = useSelector((state) => state.embedInfo);
 
   const showNodeInfoBar = embedId ? embedInfo.viewControl?.nodeInfoBar : true;
   const showCollaborator = embedId ? embedInfo.viewControl?.collaboratorStatusBar : true;
@@ -138,23 +138,24 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
       {!isMobile && (
         <div className={classNames(styles.left)}>
           <div className={styles.container}>
-            { showNodeInfoBar && <div className={styles.nodeInfo}>
-              <NodeInfoBar
-                data={{
-                  nodeId: formId!,
-                  name: name,
-                  type: ConfigConstant.NodeType.FORM,
-                  icon: icon,
-                  role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
-                  favoriteEnabled: nodeFavorite,
-                  nameEditable: renamable,
-                  iconEditable: iconEditable,
-                }}
-                hiddenModule={{ favorite: Boolean(shareId || templateId || embedId) }}
-                style={{ maxWidth: showLabel ? 256 : 120 }}
-              />
-            </div>
-            }
+            {showNodeInfoBar && (
+              <div className={styles.nodeInfo}>
+                <NodeInfoBar
+                  data={{
+                    nodeId: formId!,
+                    name: name,
+                    type: ConfigConstant.NodeType.FORM,
+                    icon: icon,
+                    role: role === ConfigConstant.Role.Foreigner && editable ? ConfigConstant.Role.Editor : role,
+                    favoriteEnabled: nodeFavorite,
+                    nameEditable: renamable,
+                    iconEditable: iconEditable,
+                  }}
+                  hiddenModule={{ favorite: Boolean(shareId || templateId || embedId) }}
+                  style={{ maxWidth: showLabel ? 256 : 120 }}
+                />
+              </div>
+            )}
             {/* Source information */}
             {!shareId && !templateId && !embedId && (
               <div className={styles.sourceInfo}>
@@ -191,32 +192,31 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
           })}
         >
           {!isMobile && showCollaborator && <CollaboratorStatus resourceId={formId!} resourceType={ResourceType.Form} />}
-          {!embedId && <a href={t(Strings.form_tour_link)} target='_blank' rel='noreferrer'>
-            <LinkButton component='button' className={styles.tourDesc} underline={false} id={WORKBENCH_SIDE_ID.FORM_USE_GUIDE_BTN}>
-              {t(Strings.form_tour_desc)}
-            </LinkButton>
-          </a>}
-          {isEnterprise && editable && (preFill ? (
-            <Button
-              prefixIcon={<EditOutlined currentColor />}
-              size="small"
-              variant="jelly"
-              color="primary"
-              onClick={handlePreFill}
-              className={styles.preFillBtn}
-            >
-              {t(Strings.pre_fill_title_btn)}
-            </Button>
-          ) : (
-            <TextButton
-              onClick={handlePreFill}
-              prefixIcon={<EditOutlined currentColor />}
-              className={styles.preFillBtn}
-              size="small"
-            >
-              {t(Strings.pre_fill_title_btn)}
-            </TextButton>
-          ))}
+          {!embedId && (
+            <a href={t(Strings.form_tour_link)} target="_blank" rel="noreferrer">
+              <LinkButton component="button" className={styles.tourDesc} underline={false} id={WORKBENCH_SIDE_ID.FORM_USE_GUIDE_BTN}>
+                {t(Strings.form_tour_desc)}
+              </LinkButton>
+            </a>
+          )}
+          {isEnterprise &&
+            editable &&
+            (preFill ? (
+              <Button
+                prefixIcon={<EditOutlined currentColor />}
+                size="small"
+                variant="jelly"
+                color="primary"
+                onClick={handlePreFill}
+                className={styles.preFillBtn}
+              >
+                {t(Strings.pre_fill_title_btn)}
+              </Button>
+            ) : (
+              <TextButton onClick={handlePreFill} prefixIcon={<EditOutlined currentColor />} className={styles.preFillBtn} size="small">
+                {t(Strings.pre_fill_title_btn)}
+              </TextButton>
+            ))}
           {!shareId && editable && <ToolBar nodeShared={nodeShared} showLabel={showLabel} />}
         </div>
       )}

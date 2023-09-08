@@ -25,7 +25,7 @@ interface IDetectorOptions {
   // order?: Array<
   //   "querystring" | "cookie" | "localStorage" | "navigator" | "htmlTag" | string
   // >;
-  order?: ('querystring' | 'cookie' | 'localStorage' | 'navigator' | 'htmlTag' | string) [];
+  order?: ('querystring' | 'cookie' | 'localStorage' | 'navigator' | 'htmlTag' | string)[];
   /**
    * keys or params to lookup language from
    */
@@ -64,7 +64,7 @@ interface ICustomDetector {
 }
 
 export default class I18nextBrowserLanguageDetector {
-//   implements i18next.LanguageDetectorModule {
+  //   implements i18next.LanguageDetectorModule {
   constructor(services?: any, options?: IDetectorOptions);
   /**
    * Adds detector.

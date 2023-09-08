@@ -16,19 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
-import {
-  AutoTestID, ConfigConstant, CutMethod, Events, FOLDER_SHOWCASE_ID, getImageThumbSrc, INodePermissions, integrateCdnHost, IReduxState, Navigation,
-  Player, Settings, StoreActions, Strings, t,
-} from '@apitable/core';
-import { uploadAttachToS3 } from '@apitable/widget-sdk';
 import { useToggle, useUnmount } from 'ahooks';
 import { Spin } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
+import * as React from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
+import {
+  AutoTestID,
+  ConfigConstant,
+  CutMethod,
+  Events,
+  FOLDER_SHOWCASE_ID,
+  getImageThumbSrc,
+  INodePermissions,
+  integrateCdnHost,
+  IReduxState,
+  Navigation,
+  Player,
+  Settings,
+  StoreActions,
+  Strings,
+  t,
+} from '@apitable/core';
+import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
+import { uploadAttachToS3 } from '@apitable/widget-sdk';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Share } from 'pc/components/catalog/share';
-import { ButtonPlus } from 'pc/components/common';
+import { ButtonPlus, ImageCropUpload, Message } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { Router } from 'pc/components/route_manager/router';
@@ -38,23 +56,17 @@ import { useCatalogTreeRequest, usePrevious, useRequest } from 'pc/hooks';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
-import * as React from 'react';
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { ContextMenuTrigger } from 'react-contextmenu';
-import { useDispatch, useSelector } from 'react-redux';
 import { GenerateTemplate } from '../catalog/generate_template';
 import { makeNodeIconComponent, NodeIcon } from '../catalog/node_context_menu';
 import { getNodeIcon } from '../catalog/tree/node_icon';
-import { ImageCropUpload, Message } from '../common';
 import { NodeInfoBar } from '../common/node_info_bar';
 import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
+import styles from './style.module.less';
 // @ts-ignore
 import { WeixinShareWrapper, inSocialApp } from 'enterprise';
-import styles from './style.module.less';
-import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
@@ -95,7 +107,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
   const moreRef = useRef<any>();
   const dispatch = useDispatch();
   const { folderId: _folderId, templateId, shareId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const { treeNodesMap, socketData } = useSelector((state: IReduxState) => state.catalogTree);
   const { getNodeShowcaseReq, updateNodeReq, getChildNodeListReq } = useCatalogTreeRequest();
   const { run: updateNode } = useRequest(updateNodeReq, { manual: true });
@@ -285,7 +297,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
       file: formData.get('file') as File,
       fileType: 3,
       nodeId: folderId,
-    }).then(res => {
+    }).then((res) => {
       const { success, data } = res.data;
       if (success) {
         setShowcaseData({ ...showcaseData, cover: data.token });
@@ -348,15 +360,15 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
             <Skeleton image style={{ width: 240, height: 240 }} />
           </div>
           <div style={{ flexGrow: 1, marginLeft: 8 }}>
-            <Skeleton width='38%' />
+            <Skeleton width="38%" />
             <Skeleton count={2} />
-            <Skeleton width='61%' />
+            <Skeleton width="61%" />
           </div>
         </div>
         <div style={{ marginTop: 80 }}>
-          <Skeleton width='38%' />
+          <Skeleton width="38%" />
           <Skeleton count={2} />
-          <Skeleton width='61%' />
+          <Skeleton width="61%" />
         </div>
       </div>
     );
@@ -384,10 +396,10 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
             <Spin spinning={bannerLoading}>
               <div className={styles.folderShowcaseBanner}>
                 <div className={styles.banner}>
-                  <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
+                  <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
                   {permissions.descriptionEditable && (
                     <div className={styles.editBtn}>
-                      <ButtonPlus.Icon size='small' onClick={() => toggleIsBannerModal()} icon={<EditOutlined color={colors.textCommonPrimary} />} />
+                      <ButtonPlus.Icon size="small" onClick={() => toggleIsBannerModal()} icon={<EditOutlined color={colors.textCommonPrimary} />} />
                     </div>
                   )}
                 </div>
@@ -419,7 +431,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
               >
                 <div className={styles.desc}>
                   {memoDesc ? (
-                    <SlateEditor className={styles.onlyReadEditor} sectionSpacing='small' value={memoDesc} readOnly />
+                    <SlateEditor className={styles.onlyReadEditor} sectionSpacing="small" value={memoDesc} readOnly />
                   ) : (
                     <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
                   )}
@@ -429,10 +441,10 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                 {permissions.sharable && (
                   <Button
                     className={styles.shareBtn}
-                    shape='round'
-                    size='small'
+                    shape="round"
+                    size="small"
                     onClick={() => setShareNodeId(nodeInfo.id)}
-                    prefixIcon={<ShareOutlined color='currentColor' />}
+                    prefixIcon={<ShareOutlined color="currentColor" />}
                   >
                     {t(Strings.share)}
                   </Button>
@@ -441,15 +453,15 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
                   <DingTalkDa suiteKey={socialInfo.dingTalkSuiteKey} corpId={socialInfo.dingTalkCorpId} bizAppId={folderId} />
                 )}
                 {(permissions.nodeAssignable || permissions.templateCreatable) && (
-                  <_ContextMenuTrigger id='folder_showcase_moreBtn' ref={moreRef}>
+                  <_ContextMenuTrigger id="folder_showcase_moreBtn" ref={moreRef}>
                     <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                       <Button
                         id={FOLDER_SHOWCASE_ID.BTN_MORE}
                         className={styles.settingBtn}
-                        size='small'
+                        size="small"
                         onClick={openMoreContextMenu}
-                        shape='round'
-                        prefixIcon={<MoreOutlined color='currentColor' />}
+                        shape="round"
+                        prefixIcon={<MoreOutlined color="currentColor" />}
                       />
                     </ComponentDisplay>
                     {/* <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -465,7 +477,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
           <div className={styles.mobileDescWrapper}>
             <div className={styles.desc} onClick={openDescModal}>
               {memoDesc ? (
-                <SlateEditor sectionSpacing='small' value={memoDesc} readOnly />
+                <SlateEditor sectionSpacing="small" value={memoDesc} readOnly />
               ) : (
                 <span className={styles.defaultText}>{t(Strings.edit_node_desc)}</span>
               )}
@@ -487,10 +499,10 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
       {isDescriptionModal && <DescriptionModal onCancel={toggleIsDescriptionModal} nodeInfo={showcaseData} updateDesc={updateDesc} />}
       <ImageCropUpload
         visible={isBannerModal}
-        confirm={data => uploadConfirm(data)}
+        confirm={(data) => uploadConfirm(data)}
         initPreview={
           <span style={{ width: '100%', height: '100%', objectFit: 'cover' }} className={styles.imgWrapper}>
-            <Image src={bannerImgUrl} alt='banner' layout={'fill'} />
+            <Image src={bannerImgUrl} alt="banner" layout={'fill'} />
           </span>
         }
         customTips={customTips}
@@ -525,15 +537,5 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
     </div>
   );
 
-  return (
-    <>
-      {
-        WeixinShareWrapper ? (
-          <WeixinShareWrapper info={folderShareInfo}>
-            {childComponent}
-          </WeixinShareWrapper>
-        ) : childComponent
-      }
-    </>
-  );
+  return <>{WeixinShareWrapper ? <WeixinShareWrapper info={folderShareInfo}>{childComponent}</WeixinShareWrapper> : childComponent}</>;
 };

@@ -16,37 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
 import omit from 'lodash/omit';
-import styles from './style.module.less';
+import * as React from 'react';
 import { colorVars } from '@apitable/components';
 
 // import { useThemeColors } from '@apitable/components';
 
 import { ElementType, NodeType, LIST_ITEM_TYPE_DICT, HIGHLIGHT_COLORS } from '../constant';
 import { IElementRenderProps, ILeafRenderProps, IElement } from '../interface/element';
-import {
-  HeadingFive,
-  HeadingFour,
-  HeadingOne,
-  HeadingSix,
-  HeadingThree,
-  HeadingTwo,
-} from './heading';
-import Paragraph from './paragraph';
-import Section from './section';
-import Link from './link';
-import OrderedList from './ordered_list';
-import UnorderedList from './unordered_list';
-import ListItem from './list_item';
-import QuoteItem from './quote_item';
-import Quote from './quote';
-import TaskItem from './task_item';
-import Task from './task';
 import { CodeBlockWrap, CodeBlock } from './codeBlock';
-import Image from './image';
-import Mention from './mention';
 import Divider from './divider';
+import { HeadingFive, HeadingFour, HeadingOne, HeadingSix, HeadingThree, HeadingTwo } from './heading';
+import Image from './image';
+import Link from './link';
+import ListItem from './list_item';
+import Mention from './mention';
+import OrderedList from './ordered_list';
+import Paragraph from './paragraph';
+import Quote from './quote';
+import QuoteItem from './quote_item';
+import Section from './section';
+import styles from './style.module.less';
+import Task from './task';
+import TaskItem from './task_item';
+import UnorderedList from './unordered_list';
 
 export const ElementRender = (props: IElementRenderProps<IElement>) => {
   const { element } = props;
@@ -117,27 +110,20 @@ export const ElementRender = (props: IElementRenderProps<IElement>) => {
       break;
   }
 
-  return isInline || isListItem
-    ? <Element {...props} />
-    : <Section {...props}>
+  return isInline || isListItem ? (
+    <Element {...props} />
+  ) : (
+    <Section {...props}>
       <Element {...props} />
-    </Section>;
+    </Section>
+  );
 };
 
 export const LeafRender = (props: ILeafRenderProps) => {
   const { attributes, children, leaf } = props;
   let renderedChildren = children;
   const marks = omit(leaf, 'text');
-  const {
-    bold,
-    underLine,
-    strikeThrough,
-    inlineCode,
-    italic,
-    highlight,
-    codeToken,
-    ...otherMarks
-  } = marks;
+  const { bold, underLine, strikeThrough, inlineCode, italic, highlight, codeToken, ...otherMarks } = marks;
   const style = otherMarks as React.CSSProperties;
   let hasBg = false;
   if (highlight != null) {
@@ -148,7 +134,7 @@ export const LeafRender = (props: ILeafRenderProps) => {
     hasBg = true;
   }
   if (codeToken) {
-    renderedChildren = <span className={codeToken as string} >{renderedChildren}</span>;
+    renderedChildren = <span className={codeToken as string}>{renderedChildren}</span>;
   }
   if (bold) {
     renderedChildren = <b>{renderedChildren}</b>;
@@ -166,5 +152,9 @@ export const LeafRender = (props: ILeafRenderProps) => {
     renderedChildren = <s>{renderedChildren}</s>;
   }
 
-  return <span {...attributes} style={style} data-has-bg={hasBg} >{renderedChildren}</span>;
+  return (
+    <span {...attributes} style={style} data-has-bg={hasBg}>
+      {renderedChildren}
+    </span>
+  );
 };

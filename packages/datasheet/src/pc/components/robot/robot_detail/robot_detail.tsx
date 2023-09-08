@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useState, useRef } from 'react';
 import { Box } from '@apitable/components';
 import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { useState, useRef } from 'react';
 import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';
 import { IRobotTrigger } from '../interface';
 import { RobotActions } from './action/robot_actions';
@@ -26,9 +26,9 @@ import { RobotBaseInfo } from './robot_base_info';
 import { RobotTrigger } from './trigger/robot_trigger';
 
 interface IRobotDetailProps {
-  index: number,
-  datasheetId: string,
-  formList: IFormNodeItem[],
+  index: number;
+  datasheetId: string;
+  formList: IFormNodeItem[];
 }
 export const RobotDetailForm = ({ formList }: IRobotDetailProps) => {
   const [trigger, setTrigger] = useState<IRobotTrigger>();
@@ -60,24 +60,11 @@ export const RobotDetailForm = ({ formList }: IRobotDetailProps) => {
   // });
   // console.log(nodeList);
   return (
-    <Box
-      ref={ref}
-    >
+    <Box ref={ref}>
       <RobotBaseInfo />
-      <RobotTrigger
-        robotId={robot.robotId}
-        triggerTypes={triggerTypes}
-        formList={formList}
-        setTrigger={setTrigger}
-      />
-      <RobotActions
-        robotId={robot.robotId}
-        trigger={trigger}
-        triggerTypes={triggerTypes}
-        actionTypes={actionTypes}
-        onScrollBottom={scrollBottom}
-      />
+      <RobotTrigger robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} setTrigger={setTrigger} />
+      <RobotActions robotId={robot.robotId} trigger={trigger} triggerTypes={triggerTypes} actionTypes={actionTypes} onScrollBottom={scrollBottom} />
       {/* <NodeConnectionLine nodeList={nodeList} /> */}
-    </Box >
+    </Box>
   );
 };

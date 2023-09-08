@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { WarnCircleFilled, ChevronDownOutlined } from '@apitable/icons';
+import cls from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
+import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { WarnCircleFilled, ChevronDownOutlined } from '@apitable/icons';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import styles from 'style.module.less';
-import cls from 'classnames';
 
 interface IRobotRunHistoryNodeDetail {
   index: number;
@@ -38,54 +38,37 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
   const theme = useTheme();
   const [showDetail, setShowDetail] = useState(false);
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
-  return <Box>
-    <Box
-      height="24px"
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      marginTop={isTrigger ? '0px' : '24px'}
-      style={{ cursor: 'pointer' }}
-      onClick={() => setShowDetail(!showDetail)}
-    >
+  return (
+    <Box>
       <Box
+        height="24px"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
+        marginTop={isTrigger ? '0px' : '24px'}
+        style={{ cursor: 'pointer' }}
+        onClick={() => setShowDetail(!showDetail)}
       >
-        <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={24} height={24} />
-        <Typography variant="h7" color={theme.color.fc1} style={{ marginLeft: 8 }}>
-          {nodeType.name}
-        </Typography>
-        {
-          hasError && <Box
-            marginLeft="4px"
-            display="flex"
-            alignItems="center"
-          >
-            <Tooltip content={t(Strings.robot_run_history_fail_tooltip)}>
-              <Box
-                as="span"
-                marginLeft="4px"
-                display="flex"
-                alignItems="center"
-              >
-                <WarnCircleFilled />
-              </Box>
-            </Tooltip>
-          </Box>
-        }
+        <Box display="flex" alignItems="center">
+          <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={24} height={24} />
+          <Typography variant="h7" color={theme.color.fc1} style={{ marginLeft: 8 }}>
+            {nodeType.name}
+          </Typography>
+          {hasError && (
+            <Box marginLeft="4px" display="flex" alignItems="center">
+              <Tooltip content={t(Strings.robot_run_history_fail_tooltip)}>
+                <Box as="span" marginLeft="4px" display="flex" alignItems="center">
+                  <WarnCircleFilled />
+                </Box>
+              </Tooltip>
+            </Box>
+          )}
+        </Box>
+        <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
+          <IconButton icon={ChevronDownOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
+        </span>
       </Box>
-      <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
-        <IconButton
-          icon={ChevronDownOutlined}
-          className={styles.dropIcon}
-          onClick={() => setShowDetail(!showDetail)} />
-      </span>
+      {showDetail && <Box marginTop="16px">{children}</Box>}
     </Box>
-    {
-      showDetail && <Box marginTop="16px">
-        {children}
-      </Box>
-    }
-  </Box>;
+  );
 };

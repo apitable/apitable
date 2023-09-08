@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DateFormat, getLanguage } from '@apitable/core';
 import getDataOrAriaProps from 'antd/es/_util/getDataOrAriaProps';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -33,7 +32,6 @@ import 'moment/locale/ru';
 import 'moment/locale/es';
 import 'moment/locale/en-ca';
 
-import { stopPropagation } from 'pc/utils';
 // @ts-ignore
 import MonthCalendar from 'rc-calendar/es/MonthCalendar';
 // @ts-ignore
@@ -42,6 +40,8 @@ import * as React from 'react';
 import { ChangeEvent } from 'react';
 // @ts-ignore
 import { polyfill } from 'react-lifecycles-compat';
+import { DateFormat, getLanguage } from '@apitable/core';
+import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
 
 const lang = {
@@ -54,7 +54,7 @@ const lang = {
   'ko-KR': 'ko',
   'ru-RU': 'ru',
   'es-ES': 'es',
-  'en-US': 'en-ca'
+  'en-US': 'en-ca',
 }[getLanguage()];
 moment.locale(lang);
 
@@ -73,7 +73,7 @@ export interface IPickerState {
 export default function createPicker(TheCalendar: React.ComponentClass): any {
   class CalenderWrapper extends React.Component<any, IPickerState> {
     static defaultProps = {
-      showToday: true
+      showToday: true,
     };
 
     static getDerivedStateFromProps(nextProps: IPickerProps, prevState: IPickerState) {
@@ -86,10 +86,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       if (nextProps.hasOwnProperty('value')) {
         state.value = nextProps.value;
 
-        if (
-          nextProps.value !== prevState.value ||
-          (!open && nextProps.value !== prevState.showDate)
-        ) {
+        if (nextProps.value !== prevState.value || (!open && nextProps.value !== prevState.showDate)) {
           state.showDate = nextProps.value;
         }
       }
@@ -104,25 +101,25 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       if (value && !dayjs.isDayjs(value)) {
         throw new Error(
           'The value/defaultValue of DatePicker or MonthPicker must be ' +
-          'a dayjs object after `antd@2.0`, see: https://u.ant.design/date-picker-value'
+            'a dayjs object after `antd@2.0`, see: https://u.ant.design/date-picker-value',
         );
       }
       this.state = {
         value,
         showDate: value,
-        open: false
+        open: false,
       };
     }
 
     handleChange = (value: dayjs.Dayjs | null) => {
       const props = this.props;
-      if (!(props.hasOwnProperty('value'))) {
+      if (!props.hasOwnProperty('value')) {
         this.setState({
           value,
-          showDate: value
+          showDate: value,
         });
       }
-      props.onChange(value, (value && value.format(DateFormat[1])), (value && value.format(props.format)));
+      props.onChange(value, value && value.format(DateFormat[1]), value && value.format(props.format));
       props.onPanelValueChange?.();
     };
 
@@ -153,21 +150,22 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       this.input = node;
     };
 
-    noop = () => { return; };
+    noop = () => {
+      return;
+    };
 
     override render() {
       const { value, showDate, open } = this.state;
       const props = omit(this.props, ['onChange']);
       const { prefixCls, suffixIcon, locale, localeCode } = props;
 
-      const placeholder = props.hasOwnProperty('placeholder')
-        ? props.placeholder : locale.lang.placeholder;
+      const placeholder = props.hasOwnProperty('placeholder') ? props.placeholder : locale.lang.placeholder;
 
       const disabledTime = props.showTime ? props.disabledTime : null;
 
       const calendarClassName = classNames({
         [`${prefixCls}-time`]: props.showTime,
-        [`${prefixCls}-month`]: MonthCalendar === TheCalendar
+        [`${prefixCls}-month`]: MonthCalendar === TheCalendar,
       });
 
       if (value && localeCode) {
@@ -179,11 +177,11 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       if (props.showTime) {
         calendarProps = {
           // fix https://github.com/ant-design/ant-design/issues/1902
-          onSelect: this.handleChange
+          onSelect: this.handleChange,
         };
       } else {
         pickerProps = {
-          onChange: this.handleChange
+          onChange: this.handleChange,
         };
       }
       if (props.hasOwnProperty('mode')) {
@@ -194,19 +192,18 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
         calendarProps.renderFooter = props.renderFooter;
       }
 
-      const inputIcon = suffixIcon && (
-        React.isValidElement<{ className?: string }>(suffixIcon)
-          ? React.cloneElement(
-            suffixIcon,
-            {
-              className: classNames({
-                [suffixIcon.props.className!]: suffixIcon.props.className,
-                [`${prefixCls}-picker-icon`]: true
-              })
-            }
-          )
-          : <span className={`${prefixCls}-picker-icon`}>{suffixIcon}</span>
-      );
+      const inputIcon =
+        suffixIcon &&
+        (React.isValidElement<{ className?: string }>(suffixIcon) ? (
+          React.cloneElement(suffixIcon, {
+            className: classNames({
+              [suffixIcon.props.className!]: suffixIcon.props.className,
+              [`${prefixCls}-picker-icon`]: true,
+            }),
+          })
+        ) : (
+          <span className={`${prefixCls}-picker-icon`}>{suffixIcon}</span>
+        ));
 
       // warning(
       //   !('onOK' in props),
@@ -224,7 +221,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
           dateInputPlaceholder={placeholder}
           prefixCls={prefixCls}
           className={classNames(calendarClassName, {
-            [styles.withFooter]: hasFooter
+            [styles.withFooter]: hasFooter,
           })}
           format={props.format}
           showToday={props.showToday}
@@ -239,7 +236,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       const input = () => (
         <div>
           <input
-            type='text'
+            type="text"
             ref={this.saveInput}
             readOnly={!!props.readOnly}
             value={props.inputDateValue}
@@ -256,12 +253,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       );
 
       return (
-        <span
-          id={props.id}
-          onFocus={() => this.focus()}
-          className={classNames(props.className, props.pickerClass)}
-          onMouseDown={stopPropagation}
-        >
+        <span id={props.id} onFocus={() => this.focus()} className={classNames(props.className, props.pickerClass)} onMouseDown={stopPropagation}>
           <RcDatePicker
             {...props}
             {...pickerProps}

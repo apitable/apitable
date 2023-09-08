@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, ILinearRow, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
+import { CellType, ILinearRow, Selectors } from '@apitable/core';
 
 export const useIsGroupCollapsing = (row: ILinearRow) => {
   const groupingCollapseIds = useSelector(Selectors.getGroupingCollapseIds);

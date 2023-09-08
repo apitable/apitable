@@ -37,7 +37,7 @@ export interface ICellComponentProps {
 
   /**
    * Provides the ability to edit only the cells within the component.
-   * When the cell content is changed, the onChange callback function is called, passing in the changed value, 
+   * When the cell content is changed, the onChange callback function is called, passing in the changed value,
    * and the external component handles the command execution matter.
    */
   onChange?: (value: ICellValue) => void;
@@ -54,7 +54,7 @@ export interface ICellComponentProps {
 
   /**
    * Why is there no recordId?
-   * When rendering cell components, you should only focus on what is being rendered. 
+   * When rendering cell components, you should only focus on what is being rendered.
    * It has nothing to do with the exact position of the cell and its id.
    * If the recordId/fieldId is used when writing the cell rendering component, it means that there is a problem with the logic design
    */

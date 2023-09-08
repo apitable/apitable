@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { ThemeName } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-import { ThemeName } from '@apitable/components';
 
 export const NoData: FC<React.PropsWithChildren<unknown>> = () => {
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   return (
     <div className={styles.invalidMsg}>

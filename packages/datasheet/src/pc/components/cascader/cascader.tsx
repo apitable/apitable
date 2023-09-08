@@ -11,17 +11,7 @@ export const Cascader = (props: ICascader) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   if (isMobile) {
-    return (
-      <MobileCascader
-        cascaderRef={cascaderRef}
-        disabled={disabled}
-        options={options}
-        value={rest.value}
-        onChange={onChange}
-      />
-    );
+    return <MobileCascader cascaderRef={cascaderRef} disabled={disabled} options={options} value={rest.value} onChange={onChange} />;
   }
-  return (
-    <PcCascader {...props} />
-  );
+  return <PcCascader {...props} />;
 };

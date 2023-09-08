@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { FC } from 'react';
 import { Button, LinkButton, stopPropagation, Typography } from '@apitable/components';
 import { Navigation, SpacePathType, Strings, t } from '@apitable/core';
+import { DownloadOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { FileType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
-import { FC } from 'react';
 import { directDownload } from '../tool_bar';
 import styles from './style.module.less';
 // @ts-ignore
 import { Marketing } from 'enterprise';
-import { DownloadOutlined } from '@apitable/icons';
 
 interface INoSupportProps {
   icon?: React.ReactNode;
@@ -48,7 +48,7 @@ const getExt = (fileName: string) => {
   return matchedStr === '.' ? null : matchedStr;
 };
 
-export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => {
+export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = (props) => {
   const { icon, downloadUrl, isMainAdmin, footer, spaceId, onClose, fileName, type, disabledDownload } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -76,12 +76,12 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => 
     <div className={styles.noSupport} onMouseDown={stopPropagation}>
       <main>
         <div className={styles.iconWrapper}>{icon}</div>
-        <Typography variant='h5' className={styles.error}>
+        <Typography variant="h5" className={styles.error}>
           {Notice[type].error}
         </Typography>
 
         {Marketing && Notice[type].tip && (
-          <Typography variant='body4' className={styles.tip}>
+          <Typography variant="body4" className={styles.tip}>
             {Notice[type].tip}
           </Typography>
         )}
@@ -89,7 +89,7 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => 
           <div className={styles.btnGroup}>
             {!isMobile && (
               <Button
-                color='primary'
+                color="primary"
                 block
                 onClick={() => {
                   Router.push(Navigation.SPACE_MANAGE, {
@@ -107,9 +107,9 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => 
             {!disabledDownload && (
               <div className={styles.download} onClick={handleDownload}>
                 {isMobile ? (
-                  <Button color='primary'>{t(Strings.download)}</Button>
+                  <Button color="primary">{t(Strings.download)}</Button>
                 ) : (
-                  <LinkButton underline={false} component='button' style={{ width: '100%' }}>
+                  <LinkButton underline={false} component="button" style={{ width: '100%' }}>
                     {t(Strings.download)}
                   </LinkButton>
                 )}
@@ -117,11 +117,10 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = props => 
             )}
           </div>
         )}
-        {!isMainAdmin &&
-          !disabledDownload && (
+        {!isMainAdmin && !disabledDownload && (
           <div className={styles.download} onClick={handleDownload}>
-            <Button color='primary' block>
-              <DownloadOutlined color='currentColor' />
+            <Button color="primary" block>
+              <DownloadOutlined color="currentColor" />
               <span style={{ marginLeft: 4 }}>{t(Strings.download)}</span>
             </Button>
           </div>

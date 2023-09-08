@@ -16,31 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ReactEditor } from 'slate-react';
-import { Transforms, Text, Range, Editor, Element, Point, Path, Node, Selection, Operation } from 'slate';
-
 import { message } from 'antd';
+import { Transforms, Text, Range, Editor, Element, Point, Path, Node, Selection, Operation } from 'slate';
+import { ReactEditor } from 'slate-react';
 
-import { isUrl, isImage, getImgData } from '../helpers/utils';
-import { IElement } from '../interface/element';
-import { NodeType, LIST_TYPE_DICT, LIST_ITEM_TYPE_DICT,ALIGN, ElementType, IS_WRAP } from '../constant';
-import { wrapLink, insertBlockElement, descElementIndent, updateElementData, insertImage, updateImage, toggleBlock } from '../commands';
-import { GENERATOR, uniqueElement, generateId } from '../elements';
-import { IVikaEditor, IEventBusEditor, IMetaEditor } from '../interface/editor';
 import * as API from '../api';
+import { wrapLink, insertBlockElement, descElementIndent, updateElementData, insertImage, updateImage, toggleBlock } from '../commands';
+import { NodeType, LIST_TYPE_DICT, LIST_ITEM_TYPE_DICT, ALIGN, ElementType, IS_WRAP } from '../constant';
+import { GENERATOR, uniqueElement, generateId } from '../elements';
+import { isUrl, isImage, getImgData } from '../helpers/utils';
+import { IVikaEditor, IEventBusEditor, IMetaEditor } from '../interface/editor';
+import { IElement } from '../interface/element';
 
-export const withVika = <T extends ReactEditor> (inEditor: T) => {
+export const withVika = <T extends ReactEditor>(inEditor: T) => {
   const editor = inEditor as T & IVikaEditor & IEventBusEditor & IMetaEditor;
-  const {
-    deleteBackward,
-    isInline,
-    isVoid,
-    insertData,
-    insertText,
-    normalizeNode,
-    onChange,
-    apply,
-  } = editor;
+  const { deleteBackward, isInline, isVoid, insertData, insertText, normalizeNode, onChange, apply } = editor;
 
   // Record whether the current editor wakes up the insertion surface
   editor.hasInsertPanel = false;
@@ -55,7 +45,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
   editor.isComposing = false;
 
   editor.onChange = (...params) => {
-    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus, 
+    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus,
     // for example, by adding a new link element
     if (editor.selection) {
       editor.lastSelection = editor.selection as unknown as Selection;
@@ -116,7 +106,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
       return;
     }
     // With editor-defined data
-    if(editorData || slateData) {
+    if (editorData || slateData) {
       editorData = editorData || slateData;
       let elements: any = [];
       try {
@@ -126,11 +116,11 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
         console.log(error);
       }
       if (hasVikaData) {
-        // This behavior is to start another block and copy the content to the new block, 
+        // This behavior is to start another block and copy the content to the new block,
         // mainly for operation scenarios where the editor is tapped to copy the node (code block copy, etc.)
         Transforms.insertNodes(editor, elements);
       } else {
-        // This behavior is to extract plain text from the first node and paste it to the current cursor, 
+        // This behavior is to extract plain text from the first node and paste it to the current cursor,
         // the other nodes are inserted as block-level elements, mainly for performing ctrl+c ctrl+v operations in the editor.
         if (Array.isArray(elements)) {
           elements = elements.filter((node) => !node.isVoid);
@@ -186,7 +176,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
           const nodeData = node.data || {};
           if (nodeData.indent) {
             descElementIndent(editor);
-            return ;
+            return;
           }
           if (nodeData.align && nodeData.align !== ALIGN.LEFT) {
             const next = ALIGN.RIGHT === nodeData.align ? ALIGN.CENTER : ALIGN.LEFT;
@@ -203,16 +193,11 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
             }
           }
           // Elements that are not of the initial paragraph type and are not code blocks or inline forms
-          if (
-            !node.isVoid &&
-            node.type !== ElementType.PARAGRAPH &&
-            node.type !== ElementType.CODE_BLOCK
-          ) {
+          if (!node.isVoid && node.type !== ElementType.PARAGRAPH && node.type !== ElementType.CODE_BLOCK) {
             toggleBlock(editor, ElementType.PARAGRAPH);
             return;
           }
         }
-
       }
     }
 
@@ -221,7 +206,7 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
 
   editor.normalizeNode = (params) => {
     const [_node, path] = params;
-    const node = _node as IElement ;
+    const node = _node as IElement;
     const listItemType = LIST_TYPE_DICT[node.type];
     const isListItem = LIST_ITEM_TYPE_DICT[node.type];
 
@@ -231,11 +216,11 @@ export const withVika = <T extends ReactEditor> (inEditor: T) => {
       // Make sure there is always a blank node at the end for easy editing
       const lastIndex = editor.children.length - 1;
       const lastNode = editor.children[lastIndex] as IElement;
-      if (lastIndex === -1 || (lastNode && (lastNode.type !== ElementType.PARAGRAPH || Node.string(lastNode) ))) {
+      if (lastIndex === -1 || (lastNode && (lastNode.type !== ElementType.PARAGRAPH || Node.string(lastNode)))) {
         Transforms.insertNodes(editor, GENERATOR.paragraph({}, []), { at: [lastIndex + 1] });
       }
 
-      // Make sure the first element is not of type void, 
+      // Make sure the first element is not of type void,
       // as of slate-react version 0.6.4 the first element is of type void and crashes in read-only rendering
       const firstNode = editor.children[0] as IElement;
       if (firstNode && firstNode.isVoid) {

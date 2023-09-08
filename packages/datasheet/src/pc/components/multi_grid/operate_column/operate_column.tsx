@@ -16,41 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useMemo } from 'react';
 import * as React from 'react';
-import styles from './styles.module.less';
-import { Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { store } from 'pc/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { useThemeColors } from '@apitable/components';
+import { Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, UncheckedOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import classNames from 'classnames';
-import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, UncheckedOutlined } from '@apitable/icons';
+import { store } from 'pc/store';
+import styles from './styles.module.less';
 
 interface IOperateColumnOwnProperty {
   isHeader: boolean;
   recordId?: string;
   commentCount?: number;
-  expand?(): void
+  expand?(): void;
 }
 
 export interface IRowCheckedProps {
   onCheck?(e: any): void;
   isChecked: boolean;
-  shape?: 'default' | 'circle'
+  shape?: 'default' | 'circle';
 }
 
-const noop = () => { };
+const noop = () => {};
 
-export const RowChecked: React.FC<React.PropsWithChildren<IRowCheckedProps>> = props => {
+export const RowChecked: React.FC<React.PropsWithChildren<IRowCheckedProps>> = (props) => {
   const colors = useThemeColors();
-  const {
-    onCheck = noop,
-    isChecked,
-    shape = 'default',
-  } = props;
+  const { onCheck = noop, isChecked, shape = 'default' } = props;
 
   if (shape === 'circle') {
     return (
@@ -63,51 +59,45 @@ export const RowChecked: React.FC<React.PropsWithChildren<IRowCheckedProps>> = p
   }
   return (
     <div onClick={onCheck} className={styles.iconCheckWrapper}>
-      {isChecked ?
-        <CheckboxFilled size={15} color={colors.primaryColor} /> :
-        <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
+      {isChecked ? <CheckboxFilled size={15} color={colors.primaryColor} /> : <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
     </div>
   );
 };
 
-export const CommentCount = ({ count, expand }: { count: number, expand(): void }) => {
-  return <div className={styles.commentCount} onClick={expand}>
-    <CommentBgFilled />
-    <span>{count}</span>
-  </div>;
+export const CommentCount = ({ count, expand }: { count: number; expand(): void }) => {
+  return (
+    <div className={styles.commentCount} onClick={expand}>
+      <CommentBgFilled />
+      <span>{count}</span>
+    </div>
+  );
 };
 
-export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnProperty>> = React.memo(props => {
+export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnProperty>> = React.memo((props) => {
   const { isHeader, recordId, commentCount, expand } = props;
   const colors = useThemeColors();
   const dispatch = useDispatch();
-  const {
-    datasheetId,
-    visibleRows,
-    recordRanges,
-    rowSortable,
-    isAllowDrag,
-    allowSHowCommentPane,
-    rowsIndexMap,
-    visibleColumns,
-  } = useSelector(state => {
-    const sortInfo = Selectors.getActiveViewSortInfo(state);
-    const groupInfo = Selectors.getActiveViewGroupInfo(state);
-    const isAllowDrag = !((!groupInfo || !groupInfo.length) && sortInfo && sortInfo.keepSort);
-    return {
-      datasheetId: Selectors.getActiveDatasheetId(state)!,
-      visibleRows: Selectors.getVisibleRows(state),
-      visibleColumns: Selectors.getVisibleColumns(state),
-      recordRanges: Selectors.getSelectionRecordRanges(state),
-      rowSortable: Selectors.getPermissions(state).rowSortable,
-      isAllowDrag,
-      allowSHowCommentPane: Selectors.allowShowCommentPane(state),
-      rowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
-    };
-  }, shallowEqual);
+  const { datasheetId, visibleRows, recordRanges, rowSortable, isAllowDrag, allowSHowCommentPane, rowsIndexMap, visibleColumns } = useSelector(
+    (state) => {
+      const sortInfo = Selectors.getActiveViewSortInfo(state);
+      const groupInfo = Selectors.getActiveViewGroupInfo(state);
+      const isAllowDrag = !((!groupInfo || !groupInfo.length) && sortInfo && sortInfo.keepSort);
+      return {
+        datasheetId: Selectors.getActiveDatasheetId(state)!,
+        visibleRows: Selectors.getVisibleRows(state),
+        visibleColumns: Selectors.getVisibleColumns(state),
+        recordRanges: Selectors.getSelectionRecordRanges(state),
+        rowSortable: Selectors.getPermissions(state).rowSortable,
+        isAllowDrag,
+        allowSHowCommentPane: Selectors.allowShowCommentPane(state),
+        rowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
+      };
+    },
+    shallowEqual,
+  );
 
-  const recordIds = visibleRows.map(row => row.recordId);
-  const fieldIds = visibleColumns.map(column => column.fieldId);
+  const recordIds = visibleRows.map((row) => row.recordId);
+  const fieldIds = visibleColumns.map((column) => column.fieldId);
 
   const isChecked = useMemo(() => {
     if (!recordId) {
@@ -116,8 +106,7 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
     return recordRanges?.includes(recordId);
   }, [recordRanges, recordId]);
 
-  const isCheckedAll = recordRanges &&
-    recordRanges.length === recordIds.length && recordIds.length !== 0;
+  const isCheckedAll = recordRanges && recordRanges.length === recordIds.length && recordIds.length !== 0;
 
   function onMouseDown(e: React.MouseEvent) {
     if (!rowSortable || !isAllowDrag) {
@@ -125,34 +114,36 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
     }
     e.persist();
 
-    store.dispatch(batchActions([
-      StoreActions.clearSelectionButKeepCheckedRecord(datasheetId),
-      StoreActions.setDragTarget(datasheetId, {
-        recordId,
-      }),
-    ]));
+    store.dispatch(
+      batchActions([
+        StoreActions.clearSelectionButKeepCheckedRecord(datasheetId),
+        StoreActions.setDragTarget(datasheetId, {
+          recordId,
+        }),
+      ]),
+    );
   }
 
   function onCheck(e: MouseEvent) {
-
     const defaultFn = () => {
       if (recordId) {
         dispatch(StoreActions.setRecordRange(datasheetId, [recordId]));
-        dispatch(StoreActions.setSelection({
-          start: {
-            recordId,
-            fieldId: fieldIds[0],
-          },
-          end: {
-            recordId,
-            fieldId: fieldIds[fieldIds.length - 1],
-          },
-        }));
+        dispatch(
+          StoreActions.setSelection({
+            start: {
+              recordId,
+              fieldId: fieldIds[0],
+            },
+            end: {
+              recordId,
+              fieldId: fieldIds[fieldIds.length - 1],
+            },
+          }),
+        );
       }
     };
 
     if (e.shiftKey) {
-
       if (!recordRanges || recordRanges.length === 0) {
         defaultFn();
         return;
@@ -162,25 +153,25 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
         return;
       }
 
-      const rowIndexes = recordRanges
-        .map((id) => rowsIndexMap.get(id)!)
-        .sort((a, b) => a - b);
+      const rowIndexes = recordRanges.map((id) => rowsIndexMap.get(id)!).sort((a, b) => a - b);
 
       const checkedRowIndex = rowsIndexMap.get(recordId!)!;
 
       const [startIndex, endIndex] = [Math.min(checkedRowIndex, rowIndexes[0]), Math.max(checkedRowIndex, rowIndexes[rowIndexes.length - 1])];
 
       dispatch(StoreActions.setRecordRange(datasheetId, recordIds.slice(startIndex, endIndex + 1)));
-      dispatch(StoreActions.setSelection({
-        start: {
-          recordId: recordIds[startIndex],
-          fieldId: fieldIds[0],
-        },
-        end: {
-          recordId: recordIds[endIndex],
-          fieldId: fieldIds[fieldIds.length - 1],
-        },
-      }));
+      dispatch(
+        StoreActions.setSelection({
+          start: {
+            recordId: recordIds[startIndex],
+            fieldId: fieldIds[0],
+          },
+          end: {
+            recordId: recordIds[endIndex],
+            fieldId: fieldIds[fieldIds.length - 1],
+          },
+        }),
+      );
       return;
     }
 
@@ -198,9 +189,7 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
   if (isHeader) {
     return (
       <div className={styles.headerIcon} onClick={selectAll} data-record-id={recordId}>
-        {isCheckedAll ?
-          <CheckboxFilled size={15} color={colors.primaryColor} /> :
-          <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
+        {isCheckedAll ? <CheckboxFilled size={15} color={colors.primaryColor} /> : <UncheckedOutlined size={15} color={colors.thirdLevelText} />}
       </div>
     );
   }
@@ -210,29 +199,22 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
   return (
     <div className={styles.rowColumnIndex} data-record-id={recordId}>
       <div className={styles.dragIcon} onMouseDown={onMouseDown}>
-        {
-          isAllowDrag ? <DragOutlined size={10} color={isChecked ? colors.defaultBg : colors.thirdLevelText} /> :
-            <Tooltip title={t(Strings.grit_keep_sort_disable_drag)}>
-              <span>
-                <DragOutlined size={10} color={isChecked ? colors.defaultBg : colors.thirdLevelText} />
-              </span>
-            </Tooltip>
-        }
+        {isAllowDrag ? (
+          <DragOutlined size={10} color={isChecked ? colors.defaultBg : colors.thirdLevelText} />
+        ) : (
+          <Tooltip title={t(Strings.grit_keep_sort_disable_drag)}>
+            <span>
+              <DragOutlined size={10} color={isChecked ? colors.defaultBg : colors.thirdLevelText} />
+            </span>
+          </Tooltip>
+        )}
       </div>
       <RowChecked onCheck={onCheck} isChecked={isChecked!} />
-      <Tooltip
-        title={showCommentCount ? t(Strings.activity_marker) : t(Strings.expand_current_record)}
-        placement="bottom"
-      >
+      <Tooltip title={showCommentCount ? t(Strings.activity_marker) : t(Strings.expand_current_record)} placement="bottom">
         <div className={styles.expandIcon} onClick={expand} data-test-id={'expandRecordButton'}>
-          {
-            showCommentCount ?
-              <CommentCount count={commentCount!} expand={expand!} /> :
-              <ExpandOutlined size={15} color={colors.primaryColor} />
-          }
+          {showCommentCount ? <CommentCount count={commentCount!} expand={expand!} /> : <ExpandOutlined size={15} color={colors.primaryColor} />}
         </div>
       </Tooltip>
     </div>
   );
 });
-

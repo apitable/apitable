@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { ChangeEvent, useState } from 'react';
 import { TextInput } from '@apitable/components';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container';
 import { literal2Operand } from 'pc/components/robot/robot_detail/node_form/ui/utils';
-import { ChangeEvent, useState } from 'react';
 
 interface IBaseInputProps {
   id: string;
@@ -44,7 +44,10 @@ function PasswordWidget(props: IBaseInputProps & any) {
     options,
     schema,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    uiSchema, formContext, registry, rawErrors,
+    uiSchema,
+    formContext,
+    registry,
+    rawErrors,
     ...inputProps
   } = props;
 
@@ -57,25 +60,27 @@ function PasswordWidget(props: IBaseInputProps & any) {
     setInputValue(value === '' ? options.emptyValue : value);
   };
 
-  return <TextInput
-    key={inputProps.id}
-    className='form-control form-control-password'
-    readOnly={readonly}
-    disabled={disabled}
-    autoFocus={autofocus}
-    value={inputValue}
-    {...inputProps}
-    list={schema.examples ? `examples_${inputProps.id}` : null}
-    onChange={_onChange}
-    onBlur={onBlur && (event => props.onChange(literal2Operand(event.target.value || null)))}
-    onFocus={onFocus && (event => onFocus(inputProps.id, literal2Operand(event.target.value)))}
-    placeholder={map2Text[placeholderKey]}
-    type={'password'}
-    style={{
-      borderColor: 'none',
-      width: '100%'
-    }}
-  />;
+  return (
+    <TextInput
+      key={inputProps.id}
+      className="form-control form-control-password"
+      readOnly={readonly}
+      disabled={disabled}
+      autoFocus={autofocus}
+      value={inputValue}
+      {...inputProps}
+      list={schema.examples ? `examples_${inputProps.id}` : null}
+      onChange={_onChange}
+      onBlur={onBlur && ((event) => props.onChange(literal2Operand(event.target.value || null)))}
+      onFocus={onFocus && ((event) => onFocus(inputProps.id, literal2Operand(event.target.value)))}
+      placeholder={map2Text[placeholderKey]}
+      type={'password'}
+      style={{
+        borderColor: 'none',
+        width: '100%',
+      }}
+    />
+  );
 }
 
 export default PasswordWidget;

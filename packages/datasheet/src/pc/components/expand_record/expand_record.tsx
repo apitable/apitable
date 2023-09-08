@@ -16,24 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
-import {
-  Api, DatasheetApi, FieldOperateType, Navigation, PermissionType, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode,
-  StoreActions, Strings, t
-} from '@apitable/core';
-import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
 import { ErrorBoundary } from '@sentry/nextjs';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { last } from 'lodash';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
+import {
+  Api,
+  DatasheetApi,
+  FieldOperateType,
+  Navigation,
+  PermissionType,
+  RecordVision,
+  ResourceIdPrefix,
+  ResourceType,
+  Selectors,
+  SetFieldFrom,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
+} from '@apitable/core';
+import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
 import { expandRecordManager } from 'modules/database/expand_record_manager';
-
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+
 // eslint-disable-next-line no-restricted-imports
 import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
-  IExpandRecordComponentProp, IExpandRecordInnerProp, IExpandRecordWrapperProp, IPaneIconProps,
+  IExpandRecordComponentProp,
+  IExpandRecordInnerProp,
+  IExpandRecordWrapperProp,
+  IPaneIconProps,
 } from 'pc/components/expand_record/expand_record.interface';
 import { ExpandRecordMoreOption } from 'pc/components/expand_record/expand_record_more_option';
 import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
@@ -48,10 +67,6 @@ import { ActivitySelectType, KeyCode } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { dispatch } from 'pc/worker/store';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { IModalReturn } from '../common/modal/modal/modal.interface';
 import { ActivityPane } from './activity_pane';
@@ -70,8 +85,8 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   return (
     <Tooltip title={active ? t(Strings.put_away_record_comments) : t(Strings.view_record_comments)}>
       <IconButton
-        component='button'
-        shape='square'
+        component="button"
+        shape="square"
         className={active ? styles.activeIcon : styles.icon}
         icon={() => <CommentOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
         onClick={() => onClick()}
@@ -97,8 +112,8 @@ const SubscribeButton = ({ active, onSubOrUnsub }: { active: boolean; onSubOrUns
   return (
     <Tooltip title={active ? t(Strings.cancel_watch_record_button_tooltips) : t(Strings.watch_record_button_tooltips)}>
       <IconButton
-        component='button'
-        shape='square'
+        component="button"
+        shape="square"
         disabled={updating}
         className={active ? styles.activeIcon : styles.icon}
         icon={() => <AttentionOutlined size={16} color={active ? colors.fc0 : colors.fc3} />}
@@ -182,7 +197,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
             clearExpandModal();
             setTimeout(() => Api.keepTabbar({}), 500);
           }}
-          beforeCapture={scope => {
+          beforeCapture={(scope) => {
             scope.setTag('catcher', 'expandRecordCrash');
           }}
         >
@@ -200,7 +215,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   );
 };
 
-const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = props => {
+const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (props) => {
   const { nodeId, viewId, recordIds, activeRecordId, recordType, modalClose } = props;
   const isIndependent = recordType === RecordType.Independent;
   const [realActiveRecordId, setRealActiveRecordId] = useState<string>();
@@ -208,7 +223,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
   const isMirror = nodeId.startsWith(ResourceIdPrefix.Mirror);
   const [datasheetId, setDatasheetId] = useState<string | undefined>(nodeId);
   const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useSelector(
-    state => ({
+    (state) => ({
       snapshot: Selectors.getSnapshot(state, datasheetId),
       isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
       datasheetErrorCode: isMirror ? Selectors.getMirrorErrorCode(state, nodeId) : Selectors.getDatasheetErrorCode(state, datasheetId),
@@ -219,7 +234,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
     }),
     shallowEqual,
   );
-  const hasRecordIdsData = () => snapshot && recordIds.every(recordId => snapshot.recordMap && snapshot.recordMap?.[recordId]);
+  const hasRecordIdsData = () => snapshot && recordIds.every((recordId) => snapshot.recordMap && snapshot.recordMap?.[recordId]);
   const [independentDataLoading, setIndependentDataLoading] = useState<boolean>(isIndependent && isPartOfData !== false && !hasRecordIdsData());
 
   useEffect(() => {
@@ -230,8 +245,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
           resourceType: isMirror ? ResourceType.Mirror : ResourceType.Datasheet,
           extra: { recordIds: recordIds },
         })
-        .catch(() => {
-        })
+        .catch(() => {})
         .then(() => {
           setIndependentDataLoading(false);
           isMirror && setDatasheetId(store.getState().mirrorMap[nodeId].mirror?.sourceInfo.datasheetId);
@@ -310,18 +324,20 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
     let curRecordIds: string[];
     let curActiveRecordId: string;
     switch (recordType) {
-      case RecordType.Independent: {
-
-        curRecordIds = recordIds.filter(id => snapshot?.recordMap[id]);
-        curActiveRecordId =
-          (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id)
-          || (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) || curRecordIds[0];
-      }
+      case RecordType.Independent:
+        {
+          curRecordIds = recordIds.filter((id) => snapshot?.recordMap[id]);
+          curActiveRecordId =
+            (realActiveRecordId && snapshot?.recordMap?.[realActiveRecordId]?.id) ||
+            (activeRecordId && snapshot?.recordMap?.[activeRecordId]?.id) ||
+            curRecordIds[0];
+        }
         break;
-      case RecordType.Datasheet: {
-        curRecordIds = visibleRows.map(row => row.recordId);
-        curActiveRecordId = pageParamsRecordId!;
-      }
+      case RecordType.Datasheet:
+        {
+          curRecordIds = visibleRows.map((row) => row.recordId);
+          curActiveRecordId = pageParamsRecordId!;
+        }
         break;
     }
     setRealRecordIds(curRecordIds);
@@ -353,9 +369,9 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = pro
   if (!realActiveRecordId) {
     return (
       <div className={styles.wrapper}>
-        <Skeleton width='38%' />
+        <Skeleton width="38%" />
         <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width="61%" />
       </div>
     );
   }
@@ -381,23 +397,23 @@ const WrapperWithTheme = (props: any) => {
   );
 };
 
-const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = props => {
+const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = (props) => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
   const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(
-    state => ({
+    (state) => ({
       nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
       allowShowCommentPane: Selectors.allowShowCommentPane(state),
       activeDatasheetId: Selectors.getActiveDatasheetId(state),
       snapshot: Selectors.getSnapshot(state, datasheetId)!,
       shareId: state.pageParams.shareId,
       templateId: state.pageParams.templateId,
-      embedId: state.pageParams.embedId
+      embedId: state.pageParams.embedId,
     }),
     shallowEqual,
   );
   // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const subscriptions = useSelector(state => state.subscriptions)!;
+  const subscriptions = useSelector((state) => state.subscriptions)!;
   const [commentPaneShow, { toggle: toggleCommentPane, set: setCommentPane }] = useToggle(Boolean(allowShowCommentPane));
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
@@ -406,7 +422,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
-  const embedInfo = useSelector(state => state.embedInfo);
+  const embedInfo = useSelector((state) => state.embedInfo);
   const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
@@ -417,8 +433,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     { defaultValue: {}},
   );
 
-  const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
-  const recordVision = useSelector(state => state.recordVision);
+  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const recordVision = useSelector((state) => state.recordVision);
   const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
@@ -433,9 +449,11 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     [cacheType, datasheetId, setCacheType],
   );
 
-  const { fieldId: activeFieldId, operate: activeFieldOperateType, from: setFieldFrom } = useSelector(state =>
-    Selectors.gridViewActiveFieldState(state, datasheetId),
-  );
+  const {
+    fieldId: activeFieldId,
+    operate: activeFieldOperateType,
+    from: setFieldFrom,
+  } = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
 
   useMount(() => {
     if (!allowShowCommentPane) {
@@ -462,7 +480,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   }, [_dispatch, recordVision]);
 
   const fromCurrentDatasheet = datasheetId === activeDatasheetId;
-  const activeCellFieldId = useSelector(state => {
+  const activeCellFieldId = useSelector((state) => {
     const activeCell = Selectors.getActiveCell(state);
     return activeCell?.fieldId || null;
   });
@@ -493,12 +511,9 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     return list.includes(`${datasheetId},${view.id}`);
   });
 
-  const _setShowHiddenField = useCallback(
-    (state: React.SetStateAction<boolean>) => {
-      setShowHiddenField(state);
-    },
-    [],
-  );
+  const _setShowHiddenField = useCallback((state: React.SetStateAction<boolean>) => {
+    setShowHiddenField(state);
+  }, []);
 
   useUpdateEffect(() => {
     setFocusFieldId(activeId);
@@ -536,12 +551,12 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   useEffect(() => {
     const els = [document.querySelector('.workspaceMenu'), document.querySelector('.dataspaceRight')];
     const _onMouseDown = onMouseDown;
-    els.forEach(el => {
+    els.forEach((el) => {
       el && el.addEventListener('mousedown', _onMouseDown, true);
     });
 
     return () => {
-      els.forEach(el => {
+      els.forEach((el) => {
         el && el.removeEventListener('mousedown', _onMouseDown, true);
       });
     };
@@ -579,7 +594,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
 
       if (data?.success) {
         Message.info({ content: t(Strings.cancel_watch_record_success) });
-        _dispatch(StoreActions.setSubscriptionsAction(subscriptions.filter(id => id !== activeRecordId)));
+        _dispatch(StoreActions.setSubscriptionsAction(subscriptions.filter((id) => id !== activeRecordId)));
       } else {
         Message.error({ content: data.message });
       }
@@ -677,8 +692,9 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                   }}
                 />
               )}
-              {!shareId && !templateId && !embedId &&
-                <SubscribeButton active={subscriptions.includes(activeRecordId)} onSubOrUnsub={() => onSubOrUnsub()} />}
+              {!shareId && !templateId && !embedId && (
+                <SubscribeButton active={subscriptions.includes(activeRecordId)} onSubOrUnsub={() => onSubOrUnsub()} />
+              )}
             </div>
           </div>
           <div className={classNames(styles.expandRecordWrapper, { [styles.columnLayout]: isColumnLayout })}>
@@ -754,7 +770,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
             <div className={styles.toCommentBtnWrapper}>
               {allowShowCommentPane && (
                 <IconButton
-                  shape='square'
+                  shape="square"
                   icon={() => <CommentOutlined size={16} color={colors.black[50]} />}
                   className={styles.mobileCommentButton}
                   onClick={() => toggleCommentPane()}

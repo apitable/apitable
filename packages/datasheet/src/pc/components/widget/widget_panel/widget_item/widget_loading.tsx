@@ -1,6 +1,6 @@
+import { Spin } from 'antd';
 import { Box, deepPurple } from '@apitable/components';
 import { LoadingOutlined } from '@apitable/icons';
-import { Spin } from 'antd';
 
 export const WidgetLoading = () => {
   return (

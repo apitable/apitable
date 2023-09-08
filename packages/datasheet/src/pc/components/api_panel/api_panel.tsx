@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
-import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { ApiOutlined, BookOutlined, AdjustmentOutlined, CloseOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
-import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
+import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { ApiOutlined, BookOutlined, AdjustmentOutlined, CloseOutlined } from '@apitable/icons';
+import { getEnvVariables } from 'pc/utils/env';
 import { Message } from '../common';
 import { InlineNodeName } from '../common/inline_node_name';
 import { AccountCenterModal } from '../navigation/account_center_modal';
@@ -34,19 +34,19 @@ import styles from './styles.module.less';
 
 export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const isApiPanelOpen = useSelector(state => state.space.isApiPanelOpen);
-  const apiToken = useSelector(state => state.user.info!.apiKey);
+  const isApiPanelOpen = useSelector((state) => state.space.isApiPanelOpen);
+  const apiToken = useSelector((state) => state.user.info!.apiKey);
   const dispatch = useDispatch();
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
-  const datasheetLoaded = useSelector(state => Boolean(Selectors.getSnapshot(state)));
-  const datasheet = useSelector(state => Selectors.getDatasheet(state, datasheetId));
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetLoaded = useSelector((state) => Boolean(Selectors.getSnapshot(state)));
+  const datasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [byFieldId, setByFieldId] = useState(false);
   const [showApiToken, _setShowApiToken] = useState(false);
   const [paneType, setPaneType] = useState('fields');
   const [language, setLanguage] = useState(CodeLanguage.Curl);
   const [showAccountCenter, setShowAccountCenter] = useState(false);
   const token = showApiToken ? apiToken : t(Strings.api_your_token);
-  const isWidgetPanelOpening = useSelector(state => {
+  const isWidgetPanelOpening = useSelector((state) => {
     const widgetPanelStatus = Selectors.getResourceWidgetPanelStatus(state, datasheetId, ResourceType.Datasheet);
     return widgetPanelStatus?.opening;
   });
@@ -76,39 +76,39 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
       <h1 className={styles.panelTitle}>
         <ApiOutlined size={24} color={colors.primaryColor} />
         {t(Strings.api_panel_title)}
-        {
-          getEnvVariables().API_PANEL_HELP_URL && <Button
+        {getEnvVariables().API_PANEL_HELP_URL && (
+          <Button
             onClick={() => {
               window.open(getEnvVariables().API_PANEL_HELP_URL, '_blank', 'noopener=yes,noreferrer=yes');
             }}
-            variant='fill'
+            variant="fill"
             color={colors.blackBlue[1000]}
             prefixIcon={<BookOutlined />}
             className={styles.linkButton}
           >
             {t(Strings.document_detail)}
           </Button>
-        }
-        <Divider orientation='vertical' style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
-        {
-          APIFOX_HOME_URL && <Button
+        )}
+        <Divider orientation="vertical" style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
+        {APIFOX_HOME_URL && (
+          <Button
             onClick={() => {
               window.open(APIFOX_HOME_URL, '_blank', 'noopener=yes,noreferrer=yes');
             }}
-            variant='fill'
+            variant="fill"
             color={colors.blackBlue[1000]}
             prefixIcon={<AdjustmentOutlined />}
             className={styles.linkButton}
           >
             {t(Strings.request_in_api_panel)}
           </Button>
-        }
+        )}
       </h1>
       <h2 className={styles.panelName}>
         <InlineNodeName className={styles.nodeName} nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
 
-      <CloseOutlined className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} size={24} color='white' />
+      <CloseOutlined className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} size={24} color="white" />
 
       <div className={styles.operationArea}>
         <div className={styles.switchApiToken}>
@@ -124,10 +124,10 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
       </div>
 
       <Tabs defaultActiveKey={paneType} onChange={setPaneType} hideAdd>
-        <Tabs.TabPane tab={t(Strings.api_fields)} key='fields'>
+        <Tabs.TabPane tab={t(Strings.api_fields)} key="fields">
           <FieldDocs />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_get)} key='get'>
+        <Tabs.TabPane tab={t(Strings.api_get)} key="get">
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -137,7 +137,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_add)} key='add'>
+        <Tabs.TabPane tab={t(Strings.api_add)} key="add">
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -147,7 +147,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_update)} key='update'>
+        <Tabs.TabPane tab={t(Strings.api_update)} key="update">
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -157,7 +157,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_delete)} key='delete'>
+        <Tabs.TabPane tab={t(Strings.api_delete)} key="delete">
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -167,7 +167,7 @@ export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_upload)} key='upload'>
+        <Tabs.TabPane tab={t(Strings.api_upload)} key="upload">
           <FieldCode
             language={language}
             setLanguage={setLanguage}

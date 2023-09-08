@@ -16,20 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
 import { Tooltip } from 'antd';
-import { LockOutlined } from '@apitable/icons';
-import { IReduxState, IViewProperty, Selectors, Strings, t } from '@apitable/core';
-import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
-import { useThemeColors } from '@apitable/components';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { IReduxState, IViewProperty, Selectors, Strings, t } from '@apitable/core';
+import { LockOutlined } from '@apitable/icons';
+import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
 
-export const ViewLockIcon: React.FC<React.PropsWithChildren<{
-    viewId: string, view: IViewProperty
-}>> = ({ view, viewId }) => {
+export const ViewLockIcon: React.FC<
+  React.PropsWithChildren<{
+    viewId: string;
+    view: IViewProperty;
+  }>
+> = ({ view, viewId }) => {
   const colors = useThemeColors();
 
-  const isViewModified = useSelector(state => {
+  const isViewModified = useSelector((state) => {
     if (!viewId) {
       return false;
     }
@@ -39,16 +42,18 @@ export const ViewLockIcon: React.FC<React.PropsWithChildren<{
   const labs = useSelector((state: IReduxState) => state.labs);
 
   if (isViewModified && labs.includes('view_manual_save') && Boolean(view.lockInfo)) {
-    return <ViewSyncStatus viewId={view.id}/>;
+    return <ViewSyncStatus viewId={view.id} />;
   }
 
   if (!view.lockInfo) {
-    return <ViewSyncStatus viewId={view.id}/>;
+    return <ViewSyncStatus viewId={view.id} />;
   }
 
-  return <Tooltip title={t(Strings.un_lock_view)} placement="bottom">
-    <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}>
-      <LockOutlined color={colors.primaryColor}/>
-    </span>
-  </Tooltip>;
+  return (
+    <Tooltip title={t(Strings.un_lock_view)} placement="bottom">
+      <span style={{ marginLeft: 4, display: 'flex', alignItems: 'center' }}>
+        <LockOutlined color={colors.primaryColor} />
+      </span>
+    </Tooltip>
+  );
 };

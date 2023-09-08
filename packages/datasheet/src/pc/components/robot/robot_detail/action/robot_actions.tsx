@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@apitable/components';
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
 import { useMemo } from 'react';
 import useSWR from 'swr';
+import { Box } from '@apitable/components';
 import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
 import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
 import { RobotAction } from './robot_action';
@@ -30,15 +30,19 @@ const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
-export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom }:
-  {
-    robotId: string;
-    trigger?: IRobotTrigger;
-    triggerTypes: ITriggerType[];
-    actionTypes: IActionType[];
-    onScrollBottom: () => void;
-  }
-) => {
+export const RobotActions = ({
+  robotId,
+  triggerTypes,
+  actionTypes,
+  trigger,
+  onScrollBottom,
+}: {
+  robotId: string;
+  trigger?: IRobotTrigger;
+  triggerTypes: ITriggerType[];
+  actionTypes: IActionType[];
+  onScrollBottom: () => void;
+}) => {
   const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
   const filterActionTypes = useMemo(() => {
@@ -60,14 +64,14 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
     return acc;
   }, {});
   // prev => next
-  Object.keys(actionsById).forEach(item => {
+  Object.keys(actionsById).forEach((item) => {
     const action = actionsById[item];
     if (action.prevActionId) {
       actionsById[action.prevActionId].nextActionId = action.id;
     }
   });
   const actionList: IRobotAction[] = [actionsById[entryActionId]];
-  Object.keys(actionsById).forEach(item => {
+  Object.keys(actionsById).forEach((item) => {
     const action = actionsById[item];
     if (action.nextActionId) {
       actionList.push(actionsById[action.nextActionId]);
@@ -86,26 +90,23 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
   // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
-    <Box
-      width='100%'
-      marginTop="24px"
-    >
-      {
-        actionList.map((action, index) => <RobotAction
+    <Box width="100%" marginTop="24px">
+      {actionList.map((action, index) => (
+        <RobotAction
           index={index}
           key={index}
           action={action}
           actionTypes={actionTypes}
           nodeOutputSchemaList={nodeOutputSchemaList}
           robotId={robotId}
-        />)
-      }
+        />
+      ))}
       <CreateNewAction
         disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
         robotId={robotId}
         actionTypes={filterActionTypes}
         prevActionId={actionList[actionList.length - 1].id}
       />
-    </Box >
+    </Box>
   );
 };

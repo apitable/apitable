@@ -33,37 +33,13 @@ export const RobotCreateGuideStep4 = (props: IStepProps) => {
     toggleNewRobotModal();
   };
   return (
-    <Box
-      width="336px"
-      margin="24px 0px 118px 0px"
-    >
-      <Box
-        display='flex'
-        flexDirection='column'
-        alignItems='center'
-        justifyContent='space-between'
-        margin='0px 0px 24px 0px'
-      >
-        <Avatar
-          icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
-          size='l'
-        />
-        <Typography >
-          {t(Strings.robot_create_wizard_step_4_desc)}
-        </Typography>
+    <Box width="336px" margin="24px 0px 118px 0px">
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="space-between" margin="0px 0px 24px 0px">
+        <Avatar icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />} size="l" />
+        <Typography>{t(Strings.robot_create_wizard_step_4_desc)}</Typography>
       </Box>
-      <Box
-        height="120px"
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Button
-          block
-          color="primary"
-          onClick={handleClick}
-        >
+      <Box height="120px" width="100%" display="flex" flexDirection="column" justifyContent="space-between">
+        <Button block color="primary" onClick={handleClick}>
           {t(Strings.robot_create_wizard_step_4_button)}
         </Button>
       </Box>

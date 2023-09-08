@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SearchOutlined } from '@apitable/icons';
-import { TextInput, ThemeName } from '@apitable/components';
-import { ISearchMemberData, Strings, t } from '@apitable/core';
 import cls from 'classnames';
 import Image from 'next/image';
-// @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom, WecomOpenData } from 'enterprise';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { TextInput, ThemeName } from '@apitable/components';
+import { ISearchMemberData, Strings, t } from '@apitable/core';
+import { SearchOutlined } from '@apitable/icons';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { InfoCard } from '../index';
 import styles from './style.module.less';
+// @ts-ignore
+import { getSocialWecomUnitName, isSocialWecom, WecomOpenData } from 'enterprise';
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;
@@ -39,15 +39,15 @@ interface ISearchMemberListProps {
   placehodler?: string;
 }
 
-export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps>> = props => {
+export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps>> = (props) => {
   const { searchResult, initInputText } = props;
   const [keyword, setKeyword] = useState('');
   const [listVisible, setListVisible] = useState(false);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const [isMemberInputFocus, setMemberInputFocus] = useState(false);
   const _isSocialWecom = isSocialWecom?.(spaceInfo);
   const wecomMemberNameVisible = _isSocialWecom && !isMemberInputFocus && keyword !== '' && !listVisible;
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   useEffect(() => {
     initInputText && setKeyword(initInputText);
@@ -62,11 +62,12 @@ export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps
       );
     }
     return searchResult.map((item: ISearchMemberData) => {
-      const title = getSocialWecomUnitName?.({
-        name: item.memberName,
-        isModified: item.isMemberNameModified,
-        spaceInfo
-      }) || item.memberName;
+      const title =
+        getSocialWecomUnitName?.({
+          name: item.memberName,
+          isModified: item.isMemberNameModified,
+          spaceInfo,
+        }) || item.memberName;
       return (
         <InfoCard
           title={title}
@@ -101,30 +102,30 @@ export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps
     e.nativeEvent.stopImmediatePropagation();
   };
   return (
-    <div className={cls(styles.searchMemberList, {
-      [styles.wecomContainer]: wecomMemberNameVisible
-    })}>
+    <div
+      className={cls(styles.searchMemberList, {
+        [styles.wecomContainer]: wecomMemberNameVisible,
+      })}
+    >
       <TextInput
         placeholder={props.placehodler || t(Strings.placeholder_input_member_name)}
-        onChange={(e:React.ChangeEvent<HTMLInputElement>) => onKeywordChange(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onKeywordChange(e.target.value)}
         value={keyword}
-        prefix={<span onClick={myStopPropagation}><SearchOutlined /></span>}
+        prefix={
+          <span onClick={myStopPropagation}>
+            <SearchOutlined />
+          </span>
+        }
         onClick={() => setMemberInputFocus(true)}
         onBlur={() => setMemberInputFocus(false)}
         block
       />
-      {wecomMemberNameVisible &&
+      {wecomMemberNameVisible && (
         <div className={styles.wecomLayer}>
           <WecomOpenData openId={keyword} />
         </div>
-      }
-      {
-        listVisible &&
-        <div className={styles.searchRes}>
-          {renderSearchMemberList()}
-        </div>
-      }
+      )}
+      {listVisible && <div className={styles.searchRes}>{renderSearchMemberList()}</div>}
     </div>
   );
 };
-

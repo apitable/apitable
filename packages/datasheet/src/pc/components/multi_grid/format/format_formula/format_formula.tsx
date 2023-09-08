@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BasicValueType, expressionTransform, IField, IFormulaField, parse, Selectors, Strings, t } from '@apitable/core';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
-import { store } from 'pc/store';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { BasicValueType, expressionTransform, IField, IFormulaField, parse, Selectors, Strings, t } from '@apitable/core';
+import { store } from 'pc/store';
 import { assignDefaultFormatting } from '../format_lookup';
 import { LookUpFormatDateTime } from '../format_lookup/lookup_format_datetime';
 import { LookUpFormatNumber } from '../format_lookup/lookup_format_number';
@@ -40,9 +40,9 @@ interface IFormatFormulaProps {
 
 export const FormatFormula: React.FC<React.PropsWithChildren<IFormatFormulaProps>> = (props: IFormatFormulaProps) => {
   const { from, currentField, setCurrentField, datasheetId: propDatasheetId } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
-  const fieldPermissionMap = useSelector(state => Selectors.getFieldPermissionMap(state, propDatasheetId));
-  const datasheetId = useSelector(state => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
+  const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state, propDatasheetId));
+  const datasheetId = useSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
   const inputRef = useRef<InputRef>(null);
   const transformedExp = useMemo(() => {
     try {
@@ -71,17 +71,22 @@ export const FormatFormula: React.FC<React.PropsWithChildren<IFormatFormulaProps
   const handleChange = (value: string) => {
     const showFormatType = getExpValueType(value);
 
-    setCurrentField(assignDefaultFormatting(showFormatType, {
-      ...currentField,
-      property: { ...currentField.property, datasheetId, expression: value },
-    }));
+    setCurrentField(
+      assignDefaultFormatting(showFormatType, {
+        ...currentField,
+        property: { ...currentField.property, datasheetId, expression: value },
+      }),
+    );
     inputRef.current && inputRef.current.focus();
   };
 
   useEffect(() => {
     if (from === 'cell') {
       openFormulaModal({
-        field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
+        field: currentField,
+        expression: currentField.property.expression,
+        onSave: handleChange,
+        datasheetId,
       });
     }
     // eslint-disable-next-line
@@ -93,26 +98,21 @@ export const FormatFormula: React.FC<React.PropsWithChildren<IFormatFormulaProps
         <div className={formatStyles.sectionTitle}>{t(Strings.field_name_formula)}</div>
         <Input
           ref={inputRef}
-          className='code'
+          className="code"
           placeholder={t(Strings.input_formula)}
           value={transformedExp}
-          onClick={() => openFormulaModal({
-            field: currentField, expression: currentField.property.expression, onSave: handleChange, datasheetId
-          })}
+          onClick={() =>
+            openFormulaModal({
+              field: currentField,
+              expression: currentField.property.expression,
+              onSave: handleChange,
+              datasheetId,
+            })
+          }
         />
       </div>
-      {
-        showFormatType === BasicValueType.DateTime && <LookUpFormatDateTime
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-        />
-      }
-      {
-        showFormatType === BasicValueType.Number && <LookUpFormatNumber
-          currentField={currentField}
-          setCurrentField={setCurrentField}
-        />
-      }
+      {showFormatType === BasicValueType.DateTime && <LookUpFormatDateTime currentField={currentField} setCurrentField={setCurrentField} />}
+      {showFormatType === BasicValueType.Number && <LookUpFormatNumber currentField={currentField} setCurrentField={setCurrentField} />}
     </>
   );
 };

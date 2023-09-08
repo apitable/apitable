@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import clamp from 'lodash/clamp';
 import { Editor, Transforms, Element as SlateElement, Range, Location as SlateLocation, Path, Node, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
-import clamp from 'lodash/clamp';
-
-import { isMarkActive, isBlockActive, getValidSelection, getCurrentElement, defaultSelection } from '../helpers/utils';
 
 import { ElementType, LIST_TYPE_DICT, MAX_INDENT } from '../constant';
-
-import { IElement, IElementData, IImageElementData } from '../interface/element';
-import { IMetaEditor } from '../interface/editor';
 import { GENERATOR, generateId } from '../elements/generator';
+import { isMarkActive, isBlockActive, getValidSelection, getCurrentElement, defaultSelection } from '../helpers/utils';
+
+import { IMetaEditor } from '../interface/editor';
+import { IElement, IElementData, IImageElementData } from '../interface/element';
 
 export const toggleMark = (editor: Editor, format: string, value: boolean | number | string = true) => {
   const isActive = isMarkActive(editor, format, value);
@@ -72,13 +71,13 @@ export const removeAllMarks = (editor: Editor) => {
 export const updateElementData = (editor: BaseEditor, partialData: IElementData, location?: SlateLocation, autoSelect = true) => {
   ReactEditor.focus(editor as any);
   try {
-    const validSection = location || getValidSelection(editor) ;
+    const validSection = location || getValidSelection(editor);
     if (autoSelect) {
       Transforms.select(editor, validSection);
     }
     const curElement = getCurrentElement(editor, validSection);
     const newData = { ...curElement.data, ...partialData };
-    Transforms.setNodes(editor, { data: newData } as Partial<IElement>, { at: validSection } );
+    Transforms.setNodes(editor, { data: newData } as Partial<IElement>, { at: validSection });
   } catch (error) {
     console.log(error);
   }
@@ -88,10 +87,7 @@ const changeElementIndent = (editor: Editor, isAdd: boolean) => {
   const validSection = getValidSelection(editor);
   const step = isAdd ? 1 : -1;
   // TODO: The problem of multiple indentations when nesting multiple layers is to be solved
-  const nodes = Editor.nodes(
-    editor,
-    { at: validSection, match: (node) => SlateElement.isElement(node) && !LIST_TYPE_DICT[(node as IElement).type] }
-  );
+  const nodes = Editor.nodes(editor, { at: validSection, match: (node) => SlateElement.isElement(node) && !LIST_TYPE_DICT[(node as IElement).type] });
   for (const [node, path] of nodes) {
     const nodeData = (node as IElement).data ?? {};
     let nextIndent = (nodeData.indent ?? 0) + step;
@@ -111,16 +107,14 @@ export const descElementIndent = (editor: Editor) => {
 
 const isLinkActive = (editor: Editor) => {
   const [link] = Editor.nodes(editor, {
-    match: n =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && (n as IElement).type === ElementType.LINK,
+    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && (n as IElement).type === ElementType.LINK,
   });
   return !!link;
 };
 
 const unwrapLink = (editor: Editor) => {
   Transforms.unwrapNodes(editor, {
-    match: n =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && (n as IElement).type === ElementType.LINK,
+    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && (n as IElement).type === ElementType.LINK,
   });
 };
 
@@ -168,11 +162,10 @@ export const insertBlockElement = (editor: Editor, element: IElement, options: {
     return;
   }
 
-  const [match] = Editor.nodes(editor,
-    {
-      match: (n) => !Editor.isEditor(n) && Editor.isBlock(editor, n) && SlateElement.isElement(n),
-      mode: 'lowest'
-    });
+  const [match] = Editor.nodes(editor, {
+    match: (n) => !Editor.isEditor(n) && Editor.isBlock(editor, n) && SlateElement.isElement(n),
+    mode: 'lowest',
+  });
   if (!match) {
     return;
   }

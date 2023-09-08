@@ -17,8 +17,8 @@
  */
 
 import { Node } from 'slate';
-import { EditorValue } from '../interface/editor';
 import { ElementType } from '../constant';
+import { EditorValue } from '../interface/editor';
 
 export const text = (document: EditorValue) => {
   return document.reduce((res, node) => {

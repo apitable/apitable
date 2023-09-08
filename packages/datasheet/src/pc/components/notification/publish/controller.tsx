@@ -19,8 +19,6 @@
 import { colors } from '@apitable/components';
 import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
-// @ts-ignore
-import { isSocialDingTalk, showOrderModalAfterPay, showVikaby } from 'enterprise';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
@@ -28,6 +26,8 @@ import { getPlatformType } from 'pc/utils/os';
 import { dispatch } from 'pc/worker/store';
 import { showBannerAlert } from '../banner_alert';
 import { isUserInOldVersionOrLocal, NoticeTemplatesConstant, requestWebNotification, stringToActions } from '../utils';
+// @ts-ignore
+import { isSocialDingTalk, showOrderModalAfterPay, showVikaby } from 'enterprise';
 
 export interface IToast {
   btnText?: string;
@@ -75,9 +75,7 @@ export const PublishController = (props: INoticeDetail) => {
     if (platform != null && platform !== getPlatformType()) {
       return;
     }
-    const isVersionRuleTrue =
-      !needVersionCompare ||
-      (needVersionCompare && version && isUserInOldVersionOrLocal(version));
+    const isVersionRuleTrue = !needVersionCompare || (needVersionCompare && version && isUserInOldVersionOrLocal(version));
     if (!isVersionRuleTrue) {
       return;
     }
@@ -87,12 +85,12 @@ export const PublishController = (props: INoticeDetail) => {
     if (templateId === NoticeTemplatesConstant.space_paid_notify || templateId === NoticeTemplatesConstant.space_vika_paid_notify) {
       const state = store.getState();
       const spaceId = state.space.activeId;
-      if (!spaceId || (notifyBody.space?.spaceId !== spaceId)) return;
+      if (!spaceId || notifyBody.space?.spaceId !== spaceId) return;
 
       templateId === NoticeTemplatesConstant.space_paid_notify && showTipInDingTalk(IDingTalkModalType.Subscribe);
       templateId === NoticeTemplatesConstant.space_vika_paid_notify && showOrderModalAfterPay(colors.fc2, notifyBody.extras.orderType);
 
-      Api.transferNoticeToRead([id], false).then(res => {
+      Api.transferNoticeToRead([id], false).then((res) => {
         const { success } = res.data;
         if (success) {
           dispatch(StoreActions.delUnReadNoticeList([id], false));
@@ -111,10 +109,11 @@ export const PublishController = (props: INoticeDetail) => {
             showBannerAlert({ ...transformToastData(toast, id) });
             break;
           case NotifyChannel.VIKABY_DIALOG:
-            isSocialRulePassed && showVikaby({
-              defaultExpandDialog: true,
-              dialogConfig: { ...transformToastData(toast, id) },
-            });
+            isSocialRulePassed &&
+              showVikaby({
+                defaultExpandDialog: true,
+                dialogConfig: { ...transformToastData(toast, id) },
+              });
             break;
           case NotifyChannel.WEB_NOTIFICATION:
             requestWebNotification({
@@ -133,8 +132,7 @@ export const PublishController = (props: INoticeDetail) => {
         }
       });
     }
-  } catch {
-  }
+  } catch {}
 };
 
 export const navigationToConfigUrl = (configUrl: string) => {

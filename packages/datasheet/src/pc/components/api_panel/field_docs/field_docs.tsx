@@ -17,12 +17,12 @@
  */
 
 import * as React from 'react';
-import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
-import { Selectors, FieldTypeDescriptionMap, t, Strings, Field } from '@apitable/core';
-import { getFieldDocs } from './api_panel_config';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useThemeColors } from '@apitable/components';
+import { Selectors, FieldTypeDescriptionMap, t, Strings, Field } from '@apitable/core';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { getFieldDocs } from './api_panel_config';
+import styles from './styles.module.less';
 
 interface IFieldDocs {
   recordId?: string;
@@ -38,11 +38,11 @@ const convertToPrintString = (v: any) => {
   return v;
 };
 
-const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
+const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = (props) => {
   const colors = useThemeColors();
   const { fieldId, recordId } = props;
-  const field = useSelector(state => Selectors.getField(state, fieldId));
-  const cellValue = useSelector(state => {
+  const field = useSelector((state) => Selectors.getField(state, fieldId));
+  const cellValue = useSelector((state) => {
     if (!recordId) {
       return null;
     }
@@ -51,9 +51,7 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
   });
 
   const fieldDocs = getFieldDocs(field.type);
-  const fieldExample =
-    convertToPrintString(Field.bindModel(field).cellValueToApiStandardValue(cellValue)) 
-    || t(Strings[fieldDocs.defaultExampleId!]);
+  const fieldExample = convertToPrintString(Field.bindModel(field).cellValueToApiStandardValue(cellValue)) || t(Strings[fieldDocs.defaultExampleId!]);
   const fieldInfo = FieldTypeDescriptionMap[field.type];
   const fieldSmallIcon = getFieldTypeIcon(field.type, colors.primaryColor, 16, 16);
   const fieldLargeIcon = getFieldTypeIcon(field.type, colors.black[50], 24, 24);
@@ -66,9 +64,7 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
       </h2>
       <div className={styles.splitWrapper}>
         <div className={styles.leftPart}>
-          <h4 className={styles.subTitle}>
-            {t(Strings.field_type)}
-          </h4>
+          <h4 className={styles.subTitle}>{t(Strings.field_type)}</h4>
           <div className={styles.largeIconWrapper}>
             {fieldLargeIcon}
             <div className={styles.title}>{fieldInfo.title}</div>
@@ -79,7 +75,9 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
           <h4 className={styles.subTitle}>{t(Strings.description)}</h4>
           <pre className={styles.fieldValueDescription}>{fieldDescription}</pre>
           <h4 className={styles.subTitle}>{t(Strings.example_value)}</h4>
-          <pre className={styles.fieldValueExample}><code>{fieldExample}</code></pre>
+          <pre className={styles.fieldValueExample}>
+            <code>{fieldExample}</code>
+          </pre>
         </div>
       </div>
     </div>
@@ -88,14 +86,16 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = props => {
 
 export const FieldDocs: React.FC<React.PropsWithChildren<unknown>> = () => {
   const columns = useSelector(Selectors.getVisibleColumns);
-  const firstRecordId = useSelector(state => {
+  const firstRecordId = useSelector((state) => {
     const firstRow = Selectors.getVisibleRows(state)[0];
     return firstRow?.recordId;
   });
 
-  return <>
-    {columns.map(column => {
-      return <FieldDocsItem key={column.fieldId} fieldId={column.fieldId} recordId={firstRecordId} />;
-    })}
-  </>;
+  return (
+    <>
+      {columns.map((column) => {
+        return <FieldDocsItem key={column.fieldId} fieldId={column.fieldId} recordId={firstRecordId} />;
+      })}
+    </>
+  );
 };

@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
-import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable_field_permission_plus';
-import { Selectors, Strings, t } from '@apitable/core';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import styles from 'pc/components/field_permission/styles.module.less';
+import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
+import { Selectors, Strings, t } from '@apitable/core';
+import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable_field_permission_plus';
+import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
+import styles from 'pc/components/field_permission/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
-import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames';
 
-export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = props => {
+export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = (props) => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
   const theme = useSelector(Selectors.getTheme);
@@ -47,7 +47,7 @@ export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermiss
         targetIcon={getFieldTypeIcon(field.type, colors.textCommonTertiary)}
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
-            <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon} rel="noreferrer">
+            <a href={t(Strings.field_permission_help_url)} target="_blank" className={styles.helpIcon} rel="noreferrer">
               <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIcon} />
             </a>
           </Tooltip>

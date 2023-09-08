@@ -16,27 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ISetRecordOptions, moveArrayElement } from '@apitable/core';
-import { Handle, NodeProps, Position } from '@apitable/react-flow';
 import classNames from 'classnames';
 import { without } from 'lodash';
+import { FC, memo, useContext } from 'react';
+import { useDragLayer, DragLayerMonitor } from 'react-dnd';
+import { ISetRecordOptions, moveArrayElement } from '@apitable/core';
+import { Handle, NodeProps, Position } from '@apitable/react-flow';
 import { DragNodeType, GHOST_NODE_SIZE } from 'pc/components/org_chart_view/constants';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
 import useRafState from 'pc/components/org_chart_view/hooks/use_raf_state';
 import { IDragItem, INodeData } from 'pc/components/org_chart_view/interfaces';
-import { FC, memo, useContext } from 'react';
-import { useDragLayer, DragLayerMonitor } from 'react-dnd';
 import { DropWrapper } from '../../drop_wrapper';
 import styles from '../styles.module.less';
 
 export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo((props) => {
-
-  const {
-    id,
-    data,
-    sourcePosition,
-    targetPosition,
-  } = props;
+  const { id, data, sourcePosition, targetPosition } = props;
 
   const { parents } = data;
 
@@ -51,9 +45,7 @@ export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo
 
   const [nodeVisible, setNodeVisible] = useRafState(false);
 
-  const {
-    dragItem,
-  } = useDragLayer((monitor: DragLayerMonitor) => ({
+  const { dragItem } = useDragLayer((monitor: DragLayerMonitor) => ({
     dragItem: monitor.getItem(),
   }));
 
@@ -73,13 +65,8 @@ export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo
     return false;
   };
 
-  const visible = (
-    nodeVisible && 
-    dragItem && 
-    overGhostRef.current?.id === id && 
-    !overGhostRef.current?.id.includes(dragItem.id) && 
-    !isParent(dragItem.id)
-  );
+  const visible =
+    nodeVisible && dragItem && overGhostRef.current?.id === id && !overGhostRef.current?.id.includes(dragItem.id) && !isParent(dragItem.id);
 
   const handleDrop = (dragItem: IDragItem) => {
     if (!id.includes(dragItem.id) && !isParent(dragItem.id)) {
@@ -98,7 +85,7 @@ export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo
         fieldId: linkFieldId,
         value: newLinkIds,
       };
-      
+
       /**
        * There are three cases:
        * 1. Unprocessed list node insertion
@@ -117,7 +104,7 @@ export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo
           value: without(dragItemParent.data.linkIds, dragItem.id),
         });
       } else {
-        const dragIndex = parent.data.linkIds.findIndex(linkId => linkId === dragItem.id);
+        const dragIndex = parent.data.linkIds.findIndex((linkId) => linkId === dragItem.id);
         const targetIndex = dragIndex > leftIndex ? leftIndex + 1 : leftIndex;
         moveArrayElement(linkIds, dragIndex, targetIndex);
         newData.push({
@@ -161,10 +148,7 @@ export const GhostNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo
         }}
       >
         <div
-          className={classNames(
-            styles.ghost, 
-            horizontal && styles.horizontal
-          )}
+          className={classNames(styles.ghost, horizontal && styles.horizontal)}
           style={{
             height: horizontal ? GHOST_NODE_SIZE : '',
           }}

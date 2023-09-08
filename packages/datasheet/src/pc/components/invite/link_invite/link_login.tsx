@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
-
-import { Wrapper } from 'pc/components/common';
-// @ts-ignore
-import { LoginToggle } from 'enterprise';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { InviteTitle } from '../components';
+import { IReduxState } from '@apitable/core';
+import { Wrapper } from 'pc/components/common';
 import { PcHome } from 'pc/components/home/pc_home';
-import { useInvitePageRefreshed } from '../use_invite';
 import { getEnvVariables } from 'pc/utils/env';
-// import '../invite.common.less';
+import { InviteTitle } from '../components';
+import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
+// import '../invite.common.less';
+// @ts-ignore
+import { LoginToggle } from 'enterprise';
 
 const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
@@ -42,22 +41,15 @@ const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { IS_ENTERPRISE } = getEnvVariables();
 
   if (!inviteLinkInfo) return null;
-  return (
-    !IS_ENTERPRISE ? <PcHome />:
-      <Wrapper>
-        <div className={classNames(styles.linkLogin, 'invite-children-center')}>
-          {
-            <InviteTitle
-              inviter={inviteLinkInfo.data.memberName}
-              spaceName={inviteLinkInfo.data.spaceName}
-              titleMarginBottom="40px"
-            />
-          }
-          <div className={styles.loginContent}>
-            {LoginToggle && <LoginToggle />}
-          </div>
-        </div>
-      </Wrapper>
+  return !IS_ENTERPRISE ? (
+    <PcHome />
+  ) : (
+    <Wrapper>
+      <div className={classNames(styles.linkLogin, 'invite-children-center')}>
+        {<InviteTitle inviter={inviteLinkInfo.data.memberName} spaceName={inviteLinkInfo.data.spaceName} titleMarginBottom="40px" />}
+        <div className={styles.loginContent}>{LoginToggle && <LoginToggle />}</div>
+      </div>
+    </Wrapper>
   );
 };
 

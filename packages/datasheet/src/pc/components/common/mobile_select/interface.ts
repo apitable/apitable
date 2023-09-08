@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
 import { SelectProps } from 'antd/lib/select';
+import * as React from 'react';
 
 export interface IMobileSelectProps extends SelectProps<any> {
   /**
@@ -52,7 +52,7 @@ export interface IMobileSelectProps extends SelectProps<any> {
    * @param {any} setVisible
    * @returns {React.ReactNode}
    */
-  renderList?: ({ setVisible }: { setVisible: (bool: boolean) => void }) => React.ReactNode
+  renderList?: ({ setVisible }: { setVisible: (bool: boolean) => void }) => React.ReactNode;
 }
 
 interface IMobileOptionItem {

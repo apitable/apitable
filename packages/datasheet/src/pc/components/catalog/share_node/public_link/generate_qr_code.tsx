@@ -16,22 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
-import QRCode from 'qrcode';
 import { useMount } from 'ahooks';
+import QRCode from 'qrcode';
+import { FC } from 'react';
 
 import { Message } from 'pc/components/common';
 
 export interface IGenerateQrCodeProps {
-    url: string;
-    color: string;
-    width: number;
-    id: string
+  url: string;
+  color: string;
+  width: number;
+  id: string;
 }
 
 export const GenerateQrCode: FC<React.PropsWithChildren<IGenerateQrCodeProps>> = ({ url, color, width = 128, id }) => {
   useMount(() => {
-    QRCode.toCanvas(url,
+    QRCode.toCanvas(
+      url,
       {
         errorCorrectionLevel: 'H',
         margin: 0,
@@ -47,10 +48,9 @@ export const GenerateQrCode: FC<React.PropsWithChildren<IGenerateQrCodeProps>> =
         }
         const container = document.getElementById(id);
         container?.appendChild(canvas);
-      });
+      },
+    );
   });
 
-  return (
-    <div id={id} style={{ width, height: width }} />
-  );
+  return <div id={id} style={{ width, height: width }} />;
 };

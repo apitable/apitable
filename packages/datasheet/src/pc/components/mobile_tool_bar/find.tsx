@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StoreActions, Strings, t } from '@apitable/core';
-import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
-import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
-import { useDispatch } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
+import { StoreActions, Strings, t } from '@apitable/core';
+import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
+import { useDispatch } from 'pc/hooks';
 import styles from './style.module.less';
 
 interface IFind {
@@ -36,10 +36,7 @@ interface ISearch extends IFind {
   onClose(): void;
 }
 
-const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
-  datasheetId,
-  onClose,
-}) => {
+const Search: React.FC<React.PropsWithChildren<ISearch>> = ({ datasheetId, onClose }) => {
   const dispatch = useDispatch();
   const colors = useThemeColors();
   const [keyword, setKeyword] = useState('');
@@ -83,23 +80,25 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
     <div className={styles.wrapper}>
       <Input
         className={styles.search}
-        size='small'
+        size="small"
         autoFocus
         prefix={<SearchOutlined size={16} color={colors.fc3} />}
         onChange={onChange}
         value={keyword}
         ref={inputRef}
         placeholder={t(Strings.find)}
-        suffix={keyword.length !== 0 &&
-          <div
-            className={styles.clear}
-            onClick={() => {
-              setKeyword('');
-              inputRef.current?.focus();
-            }}
-          >
-            <CloseCircleFilled size={14} />
-          </div>
+        suffix={
+          keyword.length !== 0 && (
+            <div
+              className={styles.clear}
+              onClick={() => {
+                setKeyword('');
+                inputRef.current?.focus();
+              }}
+            >
+              <CloseCircleFilled size={14} />
+            </div>
+          )
         }
         onCompositionStart={onChange}
         onCompositionEnd={onChange}
@@ -109,7 +108,7 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
         <LinkButton
           onClick={onClose}
           style={{
-            color: colors.fc2
+            color: colors.fc2,
           }}
           underline={false}
         >
@@ -120,12 +119,10 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({
   );
 };
 
-export const Find: React.FC<React.PropsWithChildren<IFind>> = ({
-  datasheetId,
-}) => {
+export const Find: React.FC<React.PropsWithChildren<IFind>> = ({ datasheetId }) => {
   const [visible, setVisible] = useState(false);
   const colors = useThemeColors();
-  const viewId = useSelector(state => state.pageParams.viewId);
+  const viewId = useSelector((state) => state.pageParams.viewId);
 
   useEffect(() => {
     setVisible(false);
@@ -133,17 +130,8 @@ export const Find: React.FC<React.PropsWithChildren<IFind>> = ({
 
   return (
     <>
-      <IconButton
-        onClick={() => setVisible(true)}
-        className={styles.find}
-        icon={() => <SearchOutlined size={16} color={colors.fc2} />}
-      />
-      {visible &&
-        <Search
-          datasheetId={datasheetId}
-          onClose={() => setVisible(false)}
-        />
-      }
+      <IconButton onClick={() => setVisible(true)} className={styles.find} icon={() => <SearchOutlined size={16} color={colors.fc2} />} />
+      {visible && <Search datasheetId={datasheetId} onClose={() => setVisible(false)} />}
     </>
   );
 };

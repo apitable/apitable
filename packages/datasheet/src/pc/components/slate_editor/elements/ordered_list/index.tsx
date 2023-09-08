@@ -16,19 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IElementRenderProps, IElement } from '../../interface/element';
-
 import { MAX_INDENT } from '../../constant';
+import { IElementRenderProps, IElement } from '../../interface/element';
 
 import styles from './ordered_list.module.less';
 
-const counterReset = Array(MAX_INDENT + 1).fill('ordered').map((item, i) => `${item}-${i} 0`).join(' ');
+const counterReset = Array(MAX_INDENT + 1)
+  .fill('ordered')
+  .map((item, i) => `${item}-${i} 0`)
+  .join(' ');
 
 const OrderedList = (props: IElementRenderProps<IElement>) => {
-
   const { children } = props;
 
-  return <ol className={styles.orderedList} style={{ counterReset }}>{children}</ol>;
+  return (
+    <ol className={styles.orderedList} style={{ counterReset }}>
+      {children}
+    </ol>
+  );
 };
 
 export default OrderedList;

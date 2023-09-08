@@ -1,17 +1,15 @@
-
+import { useBoolean } from 'ahooks';
+import { Form } from 'antd';
+import { useState } from 'react';
 import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
 import { Strings, t, ConfigConstant } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
-import { Form } from 'antd';
-import { WithTipWrapper } from 'pc/components/common';
+import { WithTipWrapper, Message } from 'pc/components/common';
 import { IdentifyingCodeInput } from 'pc/components/common/input';
-import { useState } from 'react';
-import styles from './style.module.less';
-import { useBoolean } from 'ahooks';
-import { ActionType } from '../../pc_home';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
-import { Message } from 'pc/components/common';
 import { execNoTraceVerification } from 'pc/utils';
+import { ActionType } from '../../pc_home';
+import styles from './style.module.less';
 interface IForgetPasswordErrorMsg {
   accountErrMsg: string;
   identifyingCodeErrMsg: string;
@@ -27,7 +25,7 @@ interface ISignUpProps {
 const defaultData = {
   accountErrMsg: '',
   identifyingCodeErrMsg: '',
-  passwordErrMsg: ''
+  passwordErrMsg: '',
 };
 
 export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
@@ -42,13 +40,12 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
 
   const [errMsg, setErrMsg] = useSetState<IForgetPasswordErrorMsg>(defaultData);
   const handleSubmit = async() => {
-    if(!preCheckOnSubmit({ password, identifyingCode })) {
+    if (!preCheckOnSubmit({ password, identifyingCode })) {
       return;
     }
     const result = await retrievePwd('', account, identifyingCode, password, ConfigConstant.CodeTypes.EMAIL_CODE);
     const { success, message } = result;
-    if(success) {
-
+    if (success) {
       Message.success({ content: message });
       execNoTraceVerification((data?: string) => {
         loginOrRegisterReq({
@@ -59,7 +56,6 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
           data,
         });
       });
-
     } else {
       Message.error({ content: message });
     }
@@ -72,10 +68,8 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
     setAccount(e.target.value.replace(/\s/g, ''));
     setEmail(e.target.value.replace(/\s/g, ''));
   };
-  
-  const handleIdentifyingCodeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+
+  const handleIdentifyingCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (errMsg.identifyingCodeErrMsg) {
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
@@ -87,19 +81,19 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
     const errorMsg: IForgetPasswordErrorMsg = {
       accountErrMsg: '',
       identifyingCodeErrMsg: '',
-      passwordErrMsg: ''
+      passwordErrMsg: '',
     };
-    const checkPassword = (): boolean => { 
+    const checkPassword = (): boolean => {
       if (!data.password) {
         errorMsg.passwordErrMsg = t(Strings.placeholder_input_password);
         return false;
       }
-     
+
       return true;
     };
 
     const checkCode = (): boolean => {
-      if(!data.identifyingCode) {
+      if (!data.identifyingCode) {
         errorMsg.identifyingCodeErrMsg = t(Strings.placeholder_message_code);
         return false;
       }
@@ -112,7 +106,7 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
   const handPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const newValue = value.replace(/\s/g, '');
-    
+
     setPassword(newValue);
   };
 
@@ -175,8 +169,8 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
       </Button>
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_forget_password_text)}</p>
-        <LinkButton underline={false} component='button' 
-          onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_in)}
+        <LinkButton underline={false} component="button" onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>
+          {t(Strings.apitable_sign_in)}
         </LinkButton>
       </div>
     </div>

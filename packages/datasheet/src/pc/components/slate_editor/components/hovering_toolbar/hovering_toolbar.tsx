@@ -19,14 +19,14 @@
 import { useRef, useEffect } from 'react';
 import { Range, Editor } from 'slate';
 import { useSlate, ReactEditor } from 'slate-react';
-import { getValidSelection, getValidPopupPosition, getCurrentElement } from '../../helpers/utils';
-import { Toolbar } from '../toolbar';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Portal } from 'pc/components/portal';
+import { useResponsive } from 'pc/hooks';
 import { Z_INDEX, DISABLE_TOOLBAR_ELEMENT } from '../../constant';
+import { getValidSelection, getValidPopupPosition, getCurrentElement } from '../../helpers/utils';
 import { IEventBusEditor } from '../../interface/editor';
 import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
+import { Toolbar } from '../toolbar';
 
 import styles from './style.module.less';
 

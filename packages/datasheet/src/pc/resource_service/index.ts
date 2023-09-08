@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceServiceEnhanced } from './service';
-import { onError } from 'pc/resource_service/error';
-import { IReduxState } from '@apitable/core';
 import { Store } from 'redux';
+import { IReduxState } from '@apitable/core';
+import { onError } from 'pc/resource_service/error';
+import { ResourceServiceEnhanced } from './service';
 
 export * from './context';
 export const resourceService: { instance: ResourceServiceEnhanced } = { instance: null as any };

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
-import classNames from 'classnames';
-import styles from './style.module.less';
 import { getElementDataset } from 'pc/utils';
+import styles from './style.module.less';
 
 interface INavItem {
   key: string;
@@ -34,7 +34,7 @@ export interface INavProps {
   navlist: INavItem[];
 }
 
-export const Nav: FC<React.PropsWithChildren<INavProps>> = props => {
+export const Nav: FC<React.PropsWithChildren<INavProps>> = (props) => {
   const { activeItem, setActiveItem, navlist } = props;
 
   const handleClick = (e: React.MouseEvent) => {
@@ -50,11 +50,8 @@ export const Nav: FC<React.PropsWithChildren<INavProps>> = props => {
   };
 
   return (
-    <div
-      onClick={handleClick}
-    >
-      {navlist.map((item, index) => 
-      {
+    <div onClick={handleClick}>
+      {navlist.map((item, index) => {
         return item.hidden ? null : (
           <div
             className={classNames({
@@ -67,8 +64,7 @@ export const Nav: FC<React.PropsWithChildren<INavProps>> = props => {
             {item.name}
           </div>
         );
-      }
-      )}
+      })}
     </div>
   );
 };

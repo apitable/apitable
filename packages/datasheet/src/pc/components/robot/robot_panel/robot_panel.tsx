@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, useTheme, ThemeProvider } from '@apitable/components';
 import { memo } from 'react';
-import { SWRConfig } from 'swr';
-import { Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
+import { SWRConfig } from 'swr';
+import { Box, useTheme, ThemeProvider } from '@apitable/components';
+import { Selectors } from '@apitable/core';
 import { RobotContextProvider } from '../robot_context';
+import { RobotCreateGuideModal } from '../robot_create_guide';
 import { RobotList } from '../robot_list';
 import { RobotHead } from './robot_head';
-import { RobotCreateGuideModal } from '../robot_create_guide';
 
 const RobotBase = () => {
   const cacheTheme = useSelector(Selectors.getTheme);

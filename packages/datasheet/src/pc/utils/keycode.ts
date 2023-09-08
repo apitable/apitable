@@ -102,8 +102,7 @@ export enum KeyCode {
 
 export function isNumberKey(event: KeyboardEvent) {
   const { keyCode } = event;
-  return (keyCode >= KeyCode.Digit0 && keyCode <= KeyCode.Digit9) ||
-    (keyCode >= KeyCode.Numpad0 && keyCode <= KeyCode.Numpad9);
+  return (keyCode >= KeyCode.Digit0 && keyCode <= KeyCode.Digit9) || (keyCode >= KeyCode.Numpad0 && keyCode <= KeyCode.Numpad9);
 }
 
 export function printableKey(event: KeyboardEvent) {
@@ -120,9 +119,9 @@ export function printableKey(event: KeyboardEvent) {
     (keyCode >= KeyCode.Semicolon && keyCode <= KeyCode.Grave) ||
     (keyCode >= KeyCode.Bracket && keyCode <= KeyCode.Quot) ||
     (keyCode >= KeyCode.Asterisk && keyCode <= KeyCode.Slash) ||
-    (keyCode === KeyCode.Space) ||
-    (keyCode === 61) ||
-    (keyCode === 173) ||
+    keyCode === KeyCode.Space ||
+    keyCode === 61 ||
+    keyCode === 173 ||
     // Sogou input method under shift will be regarded as input content, need to filter
     ((keyCode === KeyCode.Ime || keyCode === 0) && event.key !== 'Shift')
   );
@@ -133,15 +132,15 @@ export function isNumeralKey(event: KeyboardEvent) {
   return (
     (keyCode >= KeyCode.Digit0 && keyCode <= KeyCode.Digit9) ||
     (keyCode >= KeyCode.Numpad0 && keyCode <= KeyCode.Numpad9) ||
-    (keyCode === KeyCode.NumpadPlus) ||
-    (keyCode === KeyCode.NumpadMinus) ||
-    (keyCode === KeyCode.NumpadDot) ||
-    (keyCode === KeyCode.Dot) ||
-    (keyCode === KeyCode.E) ||
-    (keyCode === KeyCode.Plus) ||
-    (keyCode === KeyCode.Minus) ||
-    (keyCode === KeyCode.FirefoxMinus) ||
-    (keyCode === KeyCode.Ime)
+    keyCode === KeyCode.NumpadPlus ||
+    keyCode === KeyCode.NumpadMinus ||
+    keyCode === KeyCode.NumpadDot ||
+    keyCode === KeyCode.Dot ||
+    keyCode === KeyCode.E ||
+    keyCode === KeyCode.Plus ||
+    keyCode === KeyCode.Minus ||
+    keyCode === KeyCode.FirefoxMinus ||
+    keyCode === KeyCode.Ime
   );
 }
 
@@ -150,9 +149,9 @@ export function isLegalDateKey(event: KeyboardEvent) {
   return (
     (keyCode >= KeyCode.Digit0 && keyCode <= KeyCode.Digit9) ||
     (keyCode >= KeyCode.Numpad0 && keyCode <= KeyCode.Numpad9) ||
-    (keyCode === KeyCode.Minus) ||
-    (keyCode === KeyCode.NumpadMinus) ||
-    (keyCode === KeyCode.BackSpace) ||
-    (keyCode === KeyCode['/'])
+    keyCode === KeyCode.Minus ||
+    keyCode === KeyCode.NumpadMinus ||
+    keyCode === KeyCode.BackSpace ||
+    keyCode === KeyCode['/']
   );
 }

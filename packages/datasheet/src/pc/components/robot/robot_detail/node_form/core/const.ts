@@ -36,7 +36,7 @@ export const widgetMap = {
     radio: 'RadioWidget',
     select: 'SelectWidget',
     hidden: 'HiddenWidget',
-    switch: 'SwitchWidget'
+    switch: 'SwitchWidget',
   },
   string: {
     text: 'TextWidget',

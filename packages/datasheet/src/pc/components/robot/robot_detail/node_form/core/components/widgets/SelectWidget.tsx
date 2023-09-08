@@ -43,9 +43,9 @@ function processValue(schema: JSONSchema7, value: any) {
   // If type is undefined, but an enum is present, try and infer the type from
   // the enum values
   if (schema.enum) {
-    if (schema.enum.every(x => guessType(x) === 'number')) {
+    if (schema.enum.every((x) => guessType(x) === 'number')) {
       return asNumber(value);
-    } else if (schema.enum.every(x => guessType(x) === 'boolean')) {
+    } else if (schema.enum.every((x) => guessType(x) === 'boolean')) {
       return value === 'true';
     }
   }
@@ -59,27 +59,12 @@ function getValue(event: any, multiple: any) {
       .call(event.target.options)
       .filter((o: any) => o.selected)
       .map((o: any) => o.value);
-  } 
+  }
   return event.target.value;
-  
 }
 
 function SelectWidget(props: any) {
-  const {
-    schema,
-    id,
-    options,
-    value,
-    required,
-    disabled,
-    readonly,
-    multiple,
-    autofocus,
-    onChange,
-    onBlur,
-    onFocus,
-    placeholder,
-  } = props;
+  const { schema, id, options, value, required, disabled, readonly, multiple, autofocus, onChange, onBlur, onFocus, placeholder } = props;
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : '';
   return (
@@ -93,25 +78,24 @@ function SelectWidget(props: any) {
       autoFocus={autofocus}
       onBlur={
         onBlur &&
-        (event => {
+        ((event) => {
           const newValue = getValue(event, multiple);
           onBlur(id, processValue(schema, newValue));
         })
       }
       onFocus={
         onFocus &&
-        (event => {
+        ((event) => {
           const newValue = getValue(event, multiple);
           onFocus(id, processValue(schema, newValue));
         })
       }
-      onChange={event => {
+      onChange={(event) => {
         const newValue = getValue(event, multiple);
         onChange(processValue(schema, newValue));
-      }}>
-      {!multiple && schema.default === undefined && (
-        <option value="">{placeholder}</option>
-      )}
+      }}
+    >
+      {!multiple && schema.default === undefined && <option value="">{placeholder}</option>}
       {enumOptions.map(({ value, label }: any, i: number) => {
         const disabled = enumDisabled && enumDisabled.indexOf(value) != -1;
         return (

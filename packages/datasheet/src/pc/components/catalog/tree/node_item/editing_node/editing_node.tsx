@@ -18,14 +18,13 @@
 
 import { FC, useState } from 'react';
 import * as React from 'react';
-import { RenameInput } from 'pc/components/common';
-import { t, Strings, StoreActions, INodesMapItem, ConfigConstant } from '@apitable/core';
 import { useDispatch } from 'react-redux';
-import { KeyCode } from 'pc/utils';
+import { t, Strings, StoreActions, INodesMapItem, ConfigConstant } from '@apitable/core';
+import { RenameInput } from 'pc/components/common';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
-import { useCatalogTreeRequest } from 'pc/hooks';
-import { useRequest } from 'pc/hooks';
 import { useKeyboardCollapse } from 'pc/hooks/use_keyborad_collapse';
+import { KeyCode } from 'pc/utils';
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
@@ -34,9 +33,7 @@ export interface IEditingNodeProps {
   node: INodesMapItem;
 }
 
-export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({
-  node,
-}) => {
+export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({ node }) => {
   const [errMsg, setErrMsg] = useState('');
   const { checkRepeat } = useCatalog();
   const dispatch = useDispatch();
@@ -90,14 +87,20 @@ export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({
         cancelEdit();
         break;
       }
-      default: return;
+      default:
+        return;
     }
   };
 
   const submit = (nodeName: string) => {
     const { nodeId, type } = node;
-    if (errMsg) { return; }
-    if (nodeName === node.nodeName) { cancelEdit(); return; }
+    if (errMsg) {
+      return;
+    }
+    if (nodeName === node.nodeName) {
+      cancelEdit();
+      return;
+    }
     if (checkRepeat(nodeId, nodeName, type)) {
       setErrMsg(t(Strings.name_repeat));
       return;
@@ -106,7 +109,9 @@ export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({
     cancelEdit();
   };
 
-  useKeyboardCollapse(() => {submit(value);});
+  useKeyboardCollapse(() => {
+    submit(value);
+  });
 
   return (
     <RenameInput

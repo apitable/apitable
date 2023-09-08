@@ -18,10 +18,10 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { getEnvVariables } from 'pc/utils/env';
-import { FileType, getDownloadSrc, isWhatFileType, renderFileIconUrl } from 'pc/utils/file_type';
 import * as React from 'react';
 import { memo } from 'react';
+import { getEnvVariables } from 'pc/utils/env';
+import { FileType, getDownloadSrc, isWhatFileType, renderFileIconUrl } from 'pc/utils/file_type';
 import { NoSupport } from './no_support';
 import { PreviewDoc } from './preview_doc';
 import { Loading } from './preview_doc/loading';
@@ -38,16 +38,8 @@ const PreviewMedia = dynamic(() => import('./preview_media/preview_media'), {
   loading: () => <Loading />,
 });
 
-export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = memo(props => {
-  const {
-    file,
-    userInfo,
-    spaceId,
-    onClose,
-    officePreviewEnable,
-    previewUrl,
-    disabledDownload
-  } = props;
+export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = memo((props) => {
+  const { file, userInfo, spaceId, onClose, officePreviewEnable, previewUrl, disabledDownload } = props;
 
   const fileType = isWhatFileType({ name: file.name, type: file.mimeType });
 
@@ -63,12 +55,7 @@ export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = 
 
   const DefaultNoSupportComponent = (
     <NoSupport
-      icon={
-        <Image
-          {...commonImgProps}
-          alt={file.name}
-        />
-      }
+      icon={<Image {...commonImgProps} alt={file.name} />}
       disabledDownload={disabledDownload}
       type={FileType.Other}
       downloadUrl={downloadUrl}
@@ -79,12 +66,7 @@ export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = 
   const PreviewDocComponent = (
     <PreviewDoc
       file={file}
-      icon={
-        <Image
-          {...commonImgProps}
-          alt={file.name}
-        />
-      }
+      icon={<Image {...commonImgProps} alt={file.name} />}
       previewEnable={officePreviewEnable}
       userInfo={userInfo}
       spaceId={spaceId}

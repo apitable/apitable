@@ -18,20 +18,16 @@
 
 import { FC } from 'react';
 import * as React from 'react';
+import { colorVars } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { WithTipTextInput } from 'pc/components/common';
-import styles from './style.module.less';
 import { TComponent } from 'pc/components/common/t_component';
-import { colorVars } from '@apitable/components';
+import styles from './style.module.less';
 interface IConfirmAgainModalProps {
   confirmText: string;
   setConfirmText: React.Dispatch<React.SetStateAction<string>>;
 }
-export const ConfirmAgainModal: FC<React.PropsWithChildren<IConfirmAgainModalProps>> = ({
-  confirmText,
-  setConfirmText,
-}) => {
-
+export const ConfirmAgainModal: FC<React.PropsWithChildren<IConfirmAgainModalProps>> = ({ confirmText, setConfirmText }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setConfirmText(value);
@@ -61,7 +57,7 @@ export const ConfirmAgainModal: FC<React.PropsWithChildren<IConfirmAgainModalPro
         placeholder={t(Strings.confirm_logout)}
         value={confirmText}
         autoFocus
-        onFocus={e => e.target.select()}
+        onFocus={(e) => e.target.select()}
         block
       />
     </>

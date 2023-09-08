@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import { FC } from 'react';
 import { Button } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
-import { FC } from 'react';
 import styles from './style.module.less';
-import classNames from 'classnames';
 
 export const MyInviteCode: FC<React.PropsWithChildren<{ inviteCode: string }>> = ({ inviteCode }) => {
   const inviteCodeUrl = `${location.origin}/?inviteCode=${inviteCode}`;

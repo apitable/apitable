@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useContext, useEffect, useState } from 'react';
+import * as React from 'react';
+import { DndProvider } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Skeleton } from '@apitable/components';
 import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@apitable/core';
-import { store } from 'pc/store';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useRootManageable } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
-import { useContext, useEffect, useState } from 'react';
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { store } from 'pc/store';
+import { getContextTypeByNodeType } from 'pc/utils';
+import { dndH5Manager } from 'pc/utils/dnd_manager';
+import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
 import styles from './style.module.less';
 import { Tree } from './tree';
-import { getContextTypeByNodeType } from 'pc/utils';
-import { Skeleton } from '@apitable/components';
-import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
-import { DndProvider } from 'react-dnd';
-import { dndH5Manager } from 'pc/utils/dnd_manager';
 
 export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   // Whether the node is loaded or not (expand the node)
@@ -41,16 +41,31 @@ export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
   const { setRightClickInfo, onSetContextMenu } = useContext(WorkbenchSideContext);
-  const activedNodeId = useSelector(state => Selectors.getNodeId(state));
+  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
   const { rootManageable } = useRootManageable();
   const { addTreeNode } = useCatalog();
 
   /* Shortcut keys for operations related to mounting/unmounting the directory tree */
   useEffect(() => {
     const eventBundle = new Map([
-      [ShortcutActionName.NewDatasheet, () => { openCatalogPanel(() => createNode()); }],
-      [ShortcutActionName.NewFolder, () => { openCatalogPanel(() => createNode(ConfigConstant.NodeType.FOLDER)); }],
-      [ShortcutActionName.RenameNode, () => { openCatalogPanel(() => renameNode(activedNodeId)); }],
+      [
+        ShortcutActionName.NewDatasheet,
+        () => {
+          openCatalogPanel(() => createNode());
+        },
+      ],
+      [
+        ShortcutActionName.NewFolder,
+        () => {
+          openCatalogPanel(() => createNode(ConfigConstant.NodeType.FOLDER));
+        },
+      ],
+      [
+        ShortcutActionName.RenameNode,
+        () => {
+          openCatalogPanel(() => renameNode(activedNodeId));
+        },
+      ],
     ]);
 
     eventBundle.forEach((cb, key) => {
@@ -71,9 +86,11 @@ export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
       return;
     }
     const activeNode = treeNodesMap[activedNodeId];
-    if (activeNode.type === ConfigConstant.NodeType.FOLDER) { // activeNode is a folder node
+    if (activeNode.type === ConfigConstant.NodeType.FOLDER) {
+      // activeNode is a folder node
       parentId = activedNodeId;
-    } else if (activeNode.type === ConfigConstant.NodeType.DATASHEET) { // activeNode is a file node
+    } else if (activeNode.type === ConfigConstant.NodeType.DATASHEET) {
+      // activeNode is a file node
       parentId = activeNode.parentId;
     }
     addTreeNode(parentId, nodeType);
@@ -121,15 +138,15 @@ export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
       <div style={{ margin: '0 8px', width: '100%' }}>
         <Skeleton width="38%" />
         <Skeleton />
-        <Skeleton width="61%"/>
+        <Skeleton width="61%" />
 
         <Skeleton width="38%" />
         <Skeleton count={2} />
-        <Skeleton width="61%"/>
+        <Skeleton width="61%" />
 
         <Skeleton width="38%" />
         <Skeleton />
-        <Skeleton width="61%"/>
+        <Skeleton width="61%" />
       </div>
     );
   }
@@ -145,9 +162,7 @@ export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
             }
           }}
         >
-          <Tree
-            rightClick={rightClickHandler}
-          />
+          <Tree rightClick={rightClickHandler} />
         </div>
       </DndProvider>
     </div>

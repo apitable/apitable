@@ -17,9 +17,9 @@
  */
 
 type IOptions<T extends string> = {
-  supportedLngs: T[],
-  fallbackLng?: { [key: string]: T },
-  defaultLng: T,
+  supportedLngs: T[];
+  fallbackLng?: { [key: string]: T };
+  defaultLng: T;
 };
 
 /**
@@ -62,20 +62,16 @@ export const getSupportedLang = (lang: string) => {
   type ISupportedLngs = string;
   const languageManifest = _global.languageManifest;
   const langKeys = { zh: 'zh-CN' };
-  Object.keys(languageManifest).forEach(item => {
+  Object.keys(languageManifest).forEach((item) => {
     const keys = item.split('-');
     if (keys.length === 2 && !langKeys[keys[0]]) {
       langKeys[keys[0]] = item;
       langKeys[keys[1]] = item;
     }
   });
-  return fallbackLang<ISupportedLngs>(
-    lang,
-    {
-      supportedLngs: Object.keys(languageManifest),
-      fallbackLng: langKeys,
-      defaultLng: 'en-US'
-    }
-  );
+  return fallbackLang<ISupportedLngs>(lang, {
+    supportedLngs: Object.keys(languageManifest),
+    fallbackLng: langKeys,
+    defaultLng: 'en-US',
+  });
 };
-

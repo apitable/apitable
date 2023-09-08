@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Box, TextInput, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useState } from 'react';
-import { createRoot } from 'react-dom/client';
 
 import styles from './style.module.less';
 
@@ -34,7 +34,7 @@ interface IEditRoleModalProps {
   onCancel?: () => void;
 }
 
-const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = props => {
+const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = (props) => {
   const { value, title, existed = [], onChange, onCancel } = props;
   const [input, setInput] = useState<string>(value);
   const [error, setError] = useState<string>();
@@ -48,7 +48,7 @@ const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = pr
       setError(t(Strings.add_role_error_limit, { max: MAX_NAME_LENGTH }));
       return;
     }
-    if (existed.some(v => v === input)) {
+    if (existed.some((v) => v === input)) {
       setError(t(Strings.add_role_error_exists));
       return;
     }
@@ -59,7 +59,7 @@ const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = pr
     <Modal className={styles.editRoleModal} width={400} title={title} visible onOk={onOk} onCancel={onCancel} centered>
       <TextInput
         placeholder={t(Strings.role_name_input_placeholder)}
-        onChange={e => {
+        onChange={(e) => {
           setInput(e.target.value);
           setError('');
         }}
@@ -69,7 +69,7 @@ const EditRoleModal: React.FC<React.PropsWithChildren<IEditRoleModalProps>> = pr
       />
       <Box position={'absolute'}>
         {error && (
-          <Typography variant='body4' color={colors.textDangerDefault}>
+          <Typography variant="body4" color={colors.textDangerDefault}>
             {error}
           </Typography>
         )}

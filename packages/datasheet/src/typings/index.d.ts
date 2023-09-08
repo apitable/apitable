@@ -16,19 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Object } from 'ts-toolbelt';
 import { ThemeName } from '@apitable/components';
 import {
-  IReduxState, IUserInfo,
+  IReduxState,
+  IUserInfo,
   // @ts-ignore
-  IWizardsConfig, TrackEvents,
+  IWizardsConfig,
+  TrackEvents,
 } from '@apitable/core';
 import { getEnvVars } from 'get_env';
 import 'react-redux';
-import { Object } from 'ts-toolbelt';
 
 declare module 'react-redux' {
   // eslint-disable-next-line
-  interface DefaultRootState extends IReduxState { }
+  interface DefaultRootState extends IReduxState {}
 
   export function useSelector<TState = DefaultRootState, TSelected = unknown>(
     selector: (state: TState, props?: any) => TSelected,
@@ -41,7 +43,7 @@ type IEnvVars = Object.Update<typeof envVars, 'THEME', ThemeName | undefined>;
 export interface IInitializationData {
   userInfo?: IUserInfo;
   version?: string;
-  wizards?: IWizardsConfig
+  wizards?: IWizardsConfig;
   env: string;
   locale: string;
   lang?: string;
@@ -49,11 +51,11 @@ export interface IInitializationData {
 }
 
 export interface ISensors {
-  login(userId: string, cb?: () => void):any;
-  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void):any;
-  setProfile(props: { [key: string]: any }, cb?: () => void):any;
-  setOnceProfile(props: { [key: string]: any }, cb?: () => void):any;
-  quick(key: string, target: Element | EventTarget, props?: { [key: string]: any }, cb?: () => void):any
+  login(userId: string, cb?: () => void): any;
+  track(eventName: TrackEvents, props: { [key: string]: any }, cb?: () => void): any;
+  setProfile(props: { [key: string]: any }, cb?: () => void): any;
+  setOnceProfile(props: { [key: string]: any }, cb?: () => void): any;
+  quick(key: string, target: Element | EventTarget, props?: { [key: string]: any }, cb?: () => void): any;
 }
 
 declare global {
@@ -75,7 +77,7 @@ declare global {
 
   const ResizeObserver: {
     prototype: ResizeObserver;
-    new(callback: ResizeObserverCallback): ResizeObserver;
+    new (callback: ResizeObserverCallback): ResizeObserver;
   };
 
   // eslint-disable-next-line @typescript-eslint/naming-convention

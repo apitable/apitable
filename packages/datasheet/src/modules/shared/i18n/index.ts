@@ -30,7 +30,8 @@ languageDetector.init();
 export function initLanguage() {
   !window.__initialization_data__ && ((window as any).__initialization_data__ = {});
   const locale = window.__initialization_data__.locale;
-  if (locale) { // The language is already set on the server side
+  if (locale) {
+    // The language is already set on the server side
     window.__initialization_data__.lang = window.__initialization_data__.locale = getSupportedLang(locale);
     return;
   }

@@ -16,6 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as Sentry from '@sentry/nextjs';
+import { useDebounceFn, useMount, useUnmount } from 'ahooks';
+import classnames from 'classnames';
+import produce from 'immer';
+import { debounce, isArray } from 'lodash';
+import _map from 'lodash/map';
+import { AnimationItem } from 'lottie-web';
+import Head from 'next/head';
+import Image from 'next/image';
+import * as React from 'react';
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Node } from 'slate';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
   Api,
@@ -46,19 +59,9 @@ import {
   t,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditOutlined, InfoCircleOutlined } from '@apitable/icons';
-import * as Sentry from '@sentry/nextjs';
-import { useDebounceFn, useMount, useUnmount } from 'ahooks';
-import classnames from 'classnames';
-// @ts-ignore
-import { triggerUsageAlertForDatasheet, PreFillPanel } from 'enterprise';
-import produce from 'immer';
-import { debounce, isArray } from 'lodash';
-import _map from 'lodash/map';
-import { AnimationItem } from 'lottie-web';
-import Head from 'next/head';
-import Image from 'next/image';
 import { Logo } from 'pc/components/common/logo';
 import { Message } from 'pc/components/common/message';
+import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
@@ -66,25 +69,22 @@ import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { flatContextData, IURLMeta } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
-import * as React from 'react';
-import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { Node } from 'slate';
 import IconSuccess from 'static/icon/datasheet/form/successful.png';
 import CompleteAnimationJson from 'static/json/complete_form.json';
 import { ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
+import { VikaSplitPanel } from '../common/vika_split_panel';
 import { getRecordName } from '../expand_record';
 import { ShareContext } from '../share';
 import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
-import { getEnvVariables } from 'pc/utils/env';
-import { VikaSplitPanel } from '../common/vika_split_panel';
-import { query2formData, string2Query } from './util';
-import { Popup } from 'pc/components/common/mobile/popup';
 import styles from './style.module.less';
+import { query2formData, string2Query } from './util';
+// @ts-ignore
+import { triggerUsageAlertForDatasheet, PreFillPanel } from 'enterprise';
 
 enum IFormContentType {
   Form = 'Form',
@@ -93,7 +93,7 @@ enum IFormContentType {
 
 const serialize = (nodes: any) => {
   if (Array.isArray(nodes)) {
-    return nodes.map(n => Node.string(n)).join('\n');
+    return nodes.map((n) => Node.string(n)).join('\n');
   }
   return '';
 };
@@ -116,7 +116,7 @@ const defaultMeta = {
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
 
-export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean, setPreFill: Dispatch<SetStateAction<boolean>>; }>> = (props) => {
+export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean; setPreFill: Dispatch<SetStateAction<boolean>> }>> = (props) => {
   const { preFill, setPreFill } = props;
   const {
     id,
@@ -131,7 +131,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
     fieldPermissionMap,
     activeFieldId,
     activeFieldOperateType,
-  } = useSelector(state => {
+  } = useSelector((state) => {
     const formState: IFormState = Selectors.getForm(state)!;
     const formRelMeta = Selectors.getFormRelMeta(state) || defaultMeta;
 
@@ -172,7 +172,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
   const { shareInfo } = useContext(ShareContext);
   const fillDisabled = shareId && !fillAnonymous && !isLogin;
   const hasSubmitPermission = isLogin || fillAnonymous;
-  const currentView = formRelMeta.views.filter(view => view.id === viewId)[0];
+  const currentView = formRelMeta.views.filter((view) => view.id === viewId)[0];
   const fieldMap = useMemo(() => formRelMeta.fieldMap || {}, [formRelMeta.fieldMap]);
   const prevFieldMap = useRef(fieldMap);
   const unmounted = useRef(false);
@@ -227,7 +227,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
   }, [shareId, _editable, shareInfo, fillDisabled]);
 
   const isEmpty = useMemo(() => {
-    const dataList = Object.values(formData).filter(v => {
+    const dataList = Object.values(formData).filter((v) => {
       return !isEmptyValue(v);
     });
     if (!dataList.length) {
@@ -270,7 +270,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
 
   const getRemindUnitIds = () => {
     const unitIds: string[] = [];
-    Object.keys(formData).forEach(fieldId => {
+    Object.keys(formData).forEach((fieldId) => {
       const fieldMap = formRelMeta.fieldMap;
       const { property, type } = fieldMap[fieldId];
       const value = formData[fieldId];
@@ -292,7 +292,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
       }[] = [];
       const frozenFieldId = currentView.columns[0].fieldId;
       const frozenField = fieldMap[frozenFieldId];
-      unitIds.forEach(unitId => {
+      unitIds.forEach((unitId) => {
         const { fieldId: firstMemberFieldId }: any = formRelMeta.views[0]?.columns.find(({ fieldId }) => {
           const value = formData[fieldId];
           return isArray(value) && value.includes(unitId);
@@ -361,7 +361,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
     setAnimationLoading(true);
 
     const noAccessibleFieldIdSet = currentView.columns
-      .filter(column => {
+      .filter((column) => {
         const { fieldId } = column;
         return !Selectors.getFormSheetAccessibleByFieldId(fieldPermissionMap, fieldId);
       })
@@ -371,7 +371,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
       }, new Set<string>());
 
     const postData = {};
-    for(const key in formData) {
+    for (const key in formData) {
       let val = formData[key];
       if (val != null && !noAccessibleFieldIdSet.has(key)) {
         const { property, type } = fieldMap[key];
@@ -382,12 +382,14 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
             const metaMap = res.data.data.contents;
             const meta: IURLMeta = metaMap[matchMeta];
             if (meta?.isAware) {
-              val = [{
-                text: matchMeta,
-                type: SegmentType.Url,
-                favicon: meta?.favicon,
-                title: meta?.title,
-              }];
+              val = [
+                {
+                  text: matchMeta,
+                  type: SegmentType.Url,
+                  favicon: meta?.favicon,
+                  title: meta?.title,
+                },
+              ];
             }
           }
         }
@@ -397,7 +399,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
 
     if (shareId) {
       return FormApi.addShareFormRecord(id, shareId, postData)
-        .then(response => {
+        .then((response) => {
           const { success, code, data, message } = response.data;
           if (success) {
             return onSubmitSuccess(data.recordId, shareId);
@@ -408,7 +410,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
         .finally(() => setLoading(false));
     }
     return FormApi.addFormRecord(id, postData)
-      .then(response => {
+      .then((response) => {
         const { success, code, data, message } = response.data;
         if (success) {
           return onSubmitSuccess(data.recordId);
@@ -544,13 +546,13 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
     if (!preSnapshot) {
       return;
     }
-    const newSnapshot = produce(preSnapshot, draft => {
-      const view = draft.meta.views.find(view => view.id === viewId);
+    const newSnapshot = produce(preSnapshot, (draft) => {
+      const view = draft.meta.views.find((view) => view.id === viewId);
       if (!view) {
         return draft;
       }
       const rows = view.rows;
-      const index = rows.findIndex(row => row.recordId === recordId);
+      const index = rows.findIndex((row) => row.recordId === recordId);
       if (index !== -1) {
         rows.splice(index, 1);
       }
@@ -569,7 +571,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
 
   const lottieRef = useRef<any>();
   useEffect(() => {
-    import('lottie-web/build/player/lottie_svg').then(module => {
+    import('lottie-web/build/player/lottie_svg').then((module) => {
       lottieRef.current = module.default;
     });
   }, []);
@@ -596,10 +598,10 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
     if (!preSnapshot) {
       return;
     }
-    const newSnapshot = produce(preSnapshot, draft => {
-      const view = draft.meta.views.find(view => view.id === viewId);
+    const newSnapshot = produce(preSnapshot, (draft) => {
+      const view = draft.meta.views.find((view) => view.id === viewId);
       if (view) {
-        if (!view.rows.find(row => row.recordId === recordId)) {
+        if (!view.rows.find((row) => row.recordId === recordId)) {
           view.rows.push({ recordId });
         }
         draft.recordMap[recordId] = record;
@@ -611,7 +613,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
   }, 300);
 
   const { run: setFormToStorage } = useDebounceFn(
-    formData => {
+    (formData) => {
       const formFieldContainer = getStorage(storageName);
       setStorage(
         storageName,
@@ -661,7 +663,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
 
   const _setFormData = useCallback(
     (fieldId: any, value: any) => {
-      setFormData(prev => {
+      setFormData((prev) => {
         const data = { ...prev, [fieldId]: value };
         patchRecord({ id: recordId, data } as IRecord);
         return data;
@@ -684,7 +686,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
           params={{
             logo: (
               <span className={styles.logoWrap} onClick={onJump}>
-                <Logo size='mini' theme={theme}/>
+                <Logo size="mini" theme={theme} />
               </span>
             ),
           }}
@@ -709,8 +711,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
       }}
     >
       <Head>
-        <meta property='og:description'
-          content={serialize(formProps.description)}/>
+        <meta property="og:description" content={serialize(formProps.description)} />
         <title>{name}</title>
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
@@ -733,7 +734,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
                     // Property editing is only possible with administrative rights
                     editable={manageable && !preFill}
                   />
-    
+
                   {/* Column attributes and filled data */}
                   <div
                     className={classnames(styles.formFieldContainer, {
@@ -749,38 +750,47 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
                       recordId={recordId}
                     />
                   </div>
-    
+
                   {/* Submit button */}
-                  {!preFill && <div
-                    className={classnames(styles.submitWrapper, {
-                      [styles.submitWrapperMobile]: isMobile,
-                      [styles.submitWrapperLoading]: loading || animationLoading,
-                    })}
-                  >
-                    <Button
-                      className={styles.submitBtn}
-                      block
-                      style={{
-                        height: '100%',
-                      }}
-                      color='primary'
-                      onClick={onSubmit}
-                      disabled={loading || !editable}
+                  {!preFill && (
+                    <div
+                      className={classnames(styles.submitWrapper, {
+                        [styles.submitWrapperMobile]: isMobile,
+                        [styles.submitWrapperLoading]: loading || animationLoading,
+                      })}
                     >
-                      {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')}/>}
-                      {animationLoading && !loading && t(Strings.form_submit_success)}
-                      {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.button_submit_anonymous) : t(Strings.form_submit))}
-                      {animationLoading && loading && t(Strings.form_submit_loading)}
-                    </Button>
-                  </div>}
+                      <Button
+                        className={styles.submitBtn}
+                        block
+                        style={{
+                          height: '100%',
+                        }}
+                        color="primary"
+                        onClick={onSubmit}
+                        disabled={loading || !editable}
+                      >
+                        {animationLoading && <span className={classnames(styles.submitLoading, 'formSubmitLoading')} />}
+                        {animationLoading && !loading && t(Strings.form_submit_success)}
+                        {!animationLoading && !loading && (fillAnonymous && shareId ? t(Strings.button_submit_anonymous) : t(Strings.form_submit))}
+                        {animationLoading && loading && t(Strings.form_submit_loading)}
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 {brandFooter}
               </div>
-            ) : <div/>
+            ) : (
+              <div />
+            )
           }
-          panelRight={!isPad && preFill && PreFillPanel ?
-            <PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> : <div/>}
-          primary='second'
+          panelRight={
+            !isPad && preFill && PreFillPanel ? (
+              <PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} />
+            ) : (
+              <div />
+            )
+          }
+          primary="second"
           size={!isPad && preFill ? 320 : 0}
           allowResize={false}
           pane1Style={{ overflow: 'hidden' }}
@@ -794,7 +804,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
             closable={false}
             className={styles.mobilePreFill}
           >
-            {<PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} /> }
+            {<PreFillPanel formData={formData} fieldMap={fieldMap} setPreFill={setPreFill} columns={currentView.columns} />}
           </Popup>
         )}
 
@@ -809,11 +819,11 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
               <div className={styles.welcome}>
                 <div className={styles.welcomeInner}>
                   <span className={styles.iconSuccess}>
-                    <Image src={IconSuccess} alt='submit_success' width={100} height={80}/>
+                    <Image src={IconSuccess} alt="submit_success" width={100} height={80} />
                   </span>
                   <span className={styles.thankText}>{t(Strings.form_thank_text)}</span>
                   {submitLimit === 0 && (
-                    <TextButton color='primary' className={styles.linkBtn} onClick={onFillAgain}>
+                    <TextButton color="primary" className={styles.linkBtn} onClick={onFillAgain}>
                       {t(Strings.form_fill_again)}
                     </TextButton>
                   )}
@@ -828,7 +838,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
         {brandVisible && shareId && !fullScreen && !isMobile && (
           <div className={classnames('formVikaLogo', styles.logoContainer)}>
             <span className={styles.img} onClick={onJump}>
-              <Logo theme={theme}/>
+              <Logo theme={theme} />
             </span>
           </div>
         )}
@@ -859,24 +869,24 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean,
             [
               [
                 {
-                  icon: <EditOutlined color={colors.thirdLevelText}/>,
+                  icon: <EditOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.modify_field),
                   hidden: ({ props }: any) => !props?.onEdit,
                   onClick: ({ props }: any) => props?.onEdit && props.onEdit(),
                 },
                 {
-                  icon: <InfoCircleOutlined color={colors.thirdLevelText}/>,
+                  icon: <InfoCircleOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.editing_field_desc),
                   onClick: ({ props }: any) => props?.onEditDesc && props.onEditDesc(),
                 },
                 {
-                  icon: <ArrowUpOutlined color={colors.thirdLevelText}/>,
+                  icon: <ArrowUpOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_above),
                   disabled: ({ props }: any) => !props.onInsertAbove,
                   onClick: ({ props }: any) => props?.onInsertAbove && props.onInsertAbove(),
                 },
                 {
-                  icon: <ArrowDownOutlined color={colors.thirdLevelText}/>,
+                  icon: <ArrowDownOutlined color={colors.thirdLevelText} />,
                   text: t(Strings.insert_field_below),
                   onClick: ({ props }: any) => props?.onInsertBelow && props.onInsertBelow(),
                 },

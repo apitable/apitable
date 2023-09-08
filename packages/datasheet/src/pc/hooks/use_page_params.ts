@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
-import { dispatch } from 'pc/worker/store';
 import { useEffect } from 'react';
+import { StoreActions } from '@apitable/core';
+import { dispatch } from 'pc/worker/store';
 
 export const spaceIdReg = /\/(spc\w+)/;
 export const datasheetIdReg = /\/(dst\w+)/;
@@ -64,10 +64,23 @@ export const getPageParams = (path: string) => {
   const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId;
 
   return {
-    datasheetId, viewId, shareId, recordId,
-    fieldId, folderId, formId, templateId, categoryId, memberId,
-    widgetId, dashboardId,
-    resourceId, nodeId, mirrorId, embedId, aiId,
+    datasheetId,
+    viewId,
+    shareId,
+    recordId,
+    fieldId,
+    folderId,
+    formId,
+    templateId,
+    categoryId,
+    memberId,
+    widgetId,
+    dashboardId,
+    resourceId,
+    nodeId,
+    mirrorId,
+    embedId,
+    aiId,
   };
 };
 
@@ -81,4 +94,3 @@ export const usePageParams = () => {
     dispatch(action);
   }, [router]);
 };
-

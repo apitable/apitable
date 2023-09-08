@@ -16,27 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography } from '@apitable/components';
-import {
-  Api, api, ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
-} from '@apitable/core';
 import { useRequest } from 'ahooks';
 import { Col, Row } from 'antd';
-// @ts-ignore
-import { isDingtalkFunc } from 'enterprise';
 import { take, takeRight } from 'lodash';
+import React, { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Carousel } from 'react-responsive-carousel';
+import { Typography } from '@apitable/components';
+import {
+  Api,
+  api,
+  ConfigConstant,
+  getImageThumbSrc,
+  integrateCdnHost,
+  IReduxState,
+  Navigation,
+  Settings,
+  Strings,
+  t,
+  TEMPLATE_CENTER_ID,
+} from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useTemplateRequest } from 'pc/hooks';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import React, { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
+// @ts-ignore
+import { isDingtalkFunc } from 'enterprise';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
@@ -48,7 +58,7 @@ export const imgUrl = (token: string, imageHeight: number) => {
   return getImageThumbSrc(token, { h: Math.ceil(imageHeight * 2), quality: 90 });
 };
 
-export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> = props => {
+export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> = (props) => {
   const { setUsingTemplate } = props;
   const [_templateRecommendData, setTemplateRecommendData] = useState<api.ITemplateRecommendResponse>();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
@@ -62,7 +72,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
       setTemplateRecommendData(templateRecommendData);
       return;
     }
-    Api.templateRecommend().then(res => {
+    Api.templateRecommend().then((res) => {
       const { data, success } = res.data;
       if (success) {
         setTemplateRecommendData(data);
@@ -118,7 +128,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                   />
                 ) : (
                   <Carousel showThumbs={false} showArrows={false} showStatus={false} autoPlay infiniteLoop swipeable>
-                    {carouselItems.map(topItem => (
+                    {carouselItems.map((topItem) => (
                       <TemplateItem
                         templateId={topItem.templateId}
                         key={topItem.templateId}
@@ -137,7 +147,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                 )}
               </div>
               <div className={styles.recommendWrapper}>
-                {takeRight(_templateRecommendData.top, 2).map(template => (
+                {takeRight(_templateRecommendData.top, 2).map((template) => (
                   <div className={styles.recommendItem} key={template.image}>
                     <TemplateItem
                       height={160}
@@ -156,14 +166,14 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
               </div>
             </>
           )}
-          {_templateRecommendData.albumGroups?.map(albumGroup => (
+          {_templateRecommendData.albumGroups?.map((albumGroup) => (
             <Row key={albumGroup.name}>
               <Col span={24} className={styles.category}>
                 <Row className={styles.categoryName}>
                   <Col span={24}>{albumGroup.name}</Col>
                 </Row>
                 <div className={styles.templateList}>
-                  {albumGroup.albums.map(album => {
+                  {albumGroup.albums.map((album) => {
                     return (
                       <div className={categoryStyles.albumItemWrapper} key={album.albumId}>
                         <TemplateItem
@@ -185,19 +195,19 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
             </Row>
           ))}
           {_templateRecommendData.templateGroups &&
-            _templateRecommendData.templateGroups.map(category => (
+            _templateRecommendData.templateGroups.map((category) => (
               <Row key={category.name}>
                 <Col span={24} className={styles.category}>
                   <Row className={styles.categoryName}>
                     <Col span={24}>{category.name}</Col>
                   </Row>
                   <div className={styles.templateList}>
-                    {category.templates.map(template => {
+                    {category.templates.map((template) => {
                       return (
                         <div className={styles.templateItemWrapper} key={template.templateId}>
                           <TemplateItem
                             templateId={template.templateId}
-                            type='card'
+                            type="card"
                             nodeType={template.nodeType}
                             img={imgUrl(template.cover || defaultBanner, 160)}
                             name={template.templateName}
@@ -217,10 +227,15 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
         </Col>
       </Row>
       {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
-        <Typography className={styles.notFoundTip} variant='body2' align='center'>
-          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
-            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab
-          })}>
+        <Typography className={styles.notFoundTip} variant="body2" align="center">
+          <span
+            className={styles.text}
+            onClick={() =>
+              navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+                method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
+              })
+            }
+          >
             {t(Strings.template_not_found)}
           </span>
         </Typography>

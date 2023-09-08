@@ -17,10 +17,10 @@
  */
 
 // FIXME:THEME
+import GraphemeSplitter from 'grapheme-splitter';
 import { colors, ThemeName } from '@apitable/components';
 import { IHyperlinkSegment, ISegment, SegmentType } from '@apitable/core';
 import { UserGroupOutlined, WebOutlined } from '@apitable/icons';
-import GraphemeSplitter from 'grapheme-splitter';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { autoSizerCanvas } from 'pc/components/konva_components';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
@@ -28,7 +28,16 @@ import { getEnvVariables } from 'pc/utils/env';
 import { getTextWidth, textDataCache } from './get_text_width';
 import { imageCache } from './image_cache';
 import {
-  ICtxStyleProps, IImageProps, ILabelProps, ILineProps, ILinkData, IRectProps, ITextEllipsisProps, ITextProps, IWrapTextDataProps, IWrapTextProps
+  ICtxStyleProps,
+  IImageProps,
+  ILabelProps,
+  ILineProps,
+  ILinkData,
+  IRectProps,
+  ITextEllipsisProps,
+  ITextProps,
+  IWrapTextDataProps,
+  IWrapTextProps,
 } from './interface';
 
 export const graphemeSplitter = new GraphemeSplitter();
@@ -55,12 +64,7 @@ export class KonvaDrawer {
   }
 
   public setStyle(props: ICtxStyleProps) {
-    const {
-      fontSize,
-      fontWeight,
-      fillStyle,
-      strokeStyle
-    } = props;
+    const { fontSize, fontWeight, fillStyle, strokeStyle } = props;
 
     if (fontSize || fontWeight) {
       this.ctx.font = `${fontWeight || 'normal'} ${fontSize || 13}px ${DEFAULT_FONT_FAMILY}`;
@@ -76,25 +80,21 @@ export class KonvaDrawer {
   }
 
   public textEllipsis(props: ITextEllipsisProps) {
-    const {
-      text,
-      maxWidth,
-      fontSize = 13,
-      fontWeight = 'normal'
-    } = props;
+    const { text, maxWidth, fontSize = 13, fontWeight = 'normal' } = props;
 
-    if (text == null) return {
-      text: '',
-      textWidth: 0,
-      isEllipsis: false
-    };
+    if (text == null)
+      return {
+        text: '',
+        textWidth: 0,
+        isEllipsis: false,
+      };
     const fontStyle = `${fontWeight} ${fontSize}px ${DEFAULT_FONT_FAMILY}`;
 
     if (!maxWidth) {
       return {
         text,
         textWidth: getTextWidth(this.ctx, text, fontStyle),
-        isEllipsis: false
+        isEllipsis: false,
       };
     }
 
@@ -128,7 +128,7 @@ export class KonvaDrawer {
     return {
       text: `${guessText || text[0]}${ellipsis}`,
       textWidth: maxWidth,
-      isEllipsis: true
+      isEllipsis: true,
     };
   }
 
@@ -170,11 +170,7 @@ export class KonvaDrawer {
       let bottomRight = 0;
 
       if (typeof radius === 'number') {
-        topLeft = topRight = bottomLeft = bottomRight = Math.min(
-          radius,
-          width / 2,
-          height / 2
-        );
+        topLeft = topRight = bottomLeft = bottomRight = Math.min(radius, width / 2, height / 2);
       } else {
         topLeft = Math.min(radius[0] || 0, width / 2, height / 2);
         topRight = Math.min(radius[1] || 0, width / 2, height / 2);
@@ -184,32 +180,11 @@ export class KonvaDrawer {
 
       this.ctx.moveTo(x + topLeft, y);
       this.ctx.lineTo(x + width - topRight, y);
-      this.ctx.arc(
-        x + width - topRight,
-        y + topRight,
-        topRight,
-        (Math.PI * 3) / 2,
-        0,
-        false
-      );
+      this.ctx.arc(x + width - topRight, y + topRight, topRight, (Math.PI * 3) / 2, 0, false);
       this.ctx.lineTo(x + width, y + height - bottomRight);
-      this.ctx.arc(
-        x + width - bottomRight,
-        y + height - bottomRight,
-        bottomRight,
-        0,
-        Math.PI / 2,
-        false
-      );
+      this.ctx.arc(x + width - bottomRight, y + height - bottomRight, bottomRight, 0, Math.PI / 2, false);
       this.ctx.lineTo(x + bottomLeft, y + height);
-      this.ctx.arc(
-        x + bottomLeft,
-        y + height - bottomLeft,
-        bottomLeft,
-        Math.PI / 2,
-        Math.PI,
-        false
-      );
+      this.ctx.arc(x + bottomLeft, y + height - bottomLeft, bottomLeft, Math.PI / 2, Math.PI, false);
       this.ctx.lineTo(x, y + topLeft);
       this.ctx.arc(x + topLeft, y + topLeft, topLeft, Math.PI, (Math.PI * 3) / 2, false);
     }
@@ -242,7 +217,7 @@ export class KonvaDrawer {
       isLinkSplit = false,
       fieldType,
       needDraw = false,
-      favicon
+      favicon,
     } = props;
     let offsetX = 0 + (favicon ? 24 : 0);
     let offsetY = 0;
@@ -250,7 +225,7 @@ export class KonvaDrawer {
     const fontStyle = `${fontWeight}-${fontSize}px`;
     const isUnderline = textDecoration === 'underline';
     const textRenderer = (textDataList: any[]) => {
-      textDataList.forEach(data => {
+      textDataList.forEach((data) => {
         const { offsetX, offsetY, text, width, linkUrl } = data;
         this.ctx.fillText(text, x + offsetX, y + offsetY + baselineOffset);
         if (linkUrl || isUnderline) {
@@ -258,7 +233,7 @@ export class KonvaDrawer {
             x: x + offsetX,
             y: y + offsetY + 0.5,
             points: [0, fontSize, width, fontSize],
-            stroke: fillStyle
+            stroke: fillStyle,
           });
         }
       });
@@ -271,13 +246,18 @@ export class KonvaDrawer {
     const cacheTextData = textDataCache.get(cacheKey);
     if (cacheTextData) {
       if (this.needDraw && needDraw) {
-        favicon && this.image({
-          x,
-          y: y - 3,
-          url: favicon,
-          width: 16,
-          height: 16,
-        }, true, true);
+        favicon &&
+          this.image(
+            {
+              x,
+              y: y - 3,
+              url: favicon,
+              width: 16,
+              height: 16,
+            },
+            true,
+            true,
+          );
         textRenderer(cacheTextData.data);
       }
       return cacheTextData;
@@ -297,14 +277,14 @@ export class KonvaDrawer {
     const linkMap = {};
 
     if (originValue?.length) {
-      (originValue as ISegment[]).forEach(item => {
+      (originValue as ISegment[]).forEach((item) => {
         const length = item.text.length;
         const nextIndex = linkIndex + length;
         // The isLinkSplit is used as an identifier for special handling of multiple URL references
         if (item.type === SegmentType.Url || isLinkSplit) {
           linkMap[linkIndex] = {
             endIndex: nextIndex - 1,
-            url: (item as IHyperlinkSegment).link || item.text
+            url: (item as IHyperlinkSegment).link || item.text,
           };
         }
         linkIndex = isLinkSplit ? nextIndex + 2 : nextIndex;
@@ -318,10 +298,10 @@ export class KonvaDrawer {
       const isLineBreak = ['\n', '\r'].includes(curText);
       const singleText = isLineBreak ? '' : curText;
       const composeText = showText + singleText;
-      const isLimitRow = maxRow ? rowCount >= (maxRow - 1) : false;
+      const isLimitRow = maxRow ? rowCount >= maxRow - 1 : false;
       const singleTextWidth = isLineBreak ? 0 : this.ctx.measureText(singleText).width;
       showLineWidth += singleTextWidth;
-      const diffWidth = isLimitRow ? (showLineWidth + (isEllipsis ? ellipsisWidth : 0)) : showLineWidth;
+      const diffWidth = isLimitRow ? showLineWidth + (isEllipsis ? ellipsisWidth : 0) : showLineWidth;
       const isLineEnd = diffWidth > maxWidth;
       const linkData = linkMap[n];
 
@@ -333,7 +313,7 @@ export class KonvaDrawer {
             offsetY,
             width: Math.ceil(singleTextWidth),
             text: singleText,
-            linkUrl: linkData.url
+            linkUrl: linkData.url,
           });
           continue;
         }
@@ -343,7 +323,7 @@ export class KonvaDrawer {
             offsetY,
             width: Math.ceil(showTextWidth),
             text: showText,
-            linkUrl: null
+            linkUrl: null,
           });
         }
         showText = singleText;
@@ -360,7 +340,7 @@ export class KonvaDrawer {
           offsetY,
           width: Math.ceil(showTextWidth + singleTextWidth),
           text: composeText,
-          linkUrl: curLinkData.url
+          linkUrl: curLinkData.url,
         });
         showText = '';
         offsetX += showTextWidth + singleTextWidth;
@@ -387,7 +367,7 @@ export class KonvaDrawer {
           offsetY,
           width: Math.ceil(showTextWidth),
           text: isLimitRow ? (isLastLetter ? composeText : `${showText}…`) : showText,
-          linkUrl: (curLinkData && curLinkData.endIndex >= n) ? curLinkData.url : null,
+          linkUrl: curLinkData && curLinkData.endIndex >= n ? curLinkData.url : null,
         });
         showText = singleText;
         offsetX = 0;
@@ -413,7 +393,7 @@ export class KonvaDrawer {
         offsetY,
         width: Math.ceil(showTextWidth),
         text: showText,
-        linkUrl: null
+        linkUrl: null,
       });
     }
 
@@ -422,7 +402,7 @@ export class KonvaDrawer {
     }
 
     const res = {
-      height: rowCount < maxRow ? (offsetY + lineHeight) : offsetY,
+      height: rowCount < maxRow ? offsetY + lineHeight : offsetY,
       data: resultData,
     };
 
@@ -440,7 +420,7 @@ export class KonvaDrawer {
       textAlign = 'left',
       verticalAlign = 'top',
       fontWeight = 'normal',
-      textDecoration = 'none'
+      textDecoration = 'none',
     } = props;
 
     const fontStyle = `${fontWeight} ${fontSize}px ${DEFAULT_FONT_FAMILY}`;
@@ -451,7 +431,7 @@ export class KonvaDrawer {
         x: x,
         y: y + 0.5,
         points: [0, fontSize, textWidth, fontSize],
-        stroke: fillStyle
+        stroke: fillStyle,
       });
     }
 
@@ -489,25 +469,13 @@ export class KonvaDrawer {
     const isOrigin = opacity === 1;
 
     if (!clipFunc && isOrigin) {
-      return this.ctx.drawImage(
-        image,
-        x,
-        y,
-        width,
-        height
-      );
+      return this.ctx.drawImage(image, x, y, width, height);
     }
 
     if (!clipFunc && !isOrigin) {
       this.ctx.save();
       this.ctx.globalAlpha = opacity;
-      this.ctx.drawImage(
-        image,
-        x,
-        y,
-        width,
-        height
-      );
+      this.ctx.drawImage(image, x, y, width, height);
       this.ctx.restore();
       return;
     }
@@ -518,18 +486,12 @@ export class KonvaDrawer {
       clipFunc(this.ctx);
       this.ctx.clip();
       this.ctx.globalAlpha = opacity;
-      this.ctx.drawImage(
-        image,
-        x,
-        y,
-        width,
-        height
-      );
+      this.ctx.drawImage(image, x, y, width, height);
       this.ctx.restore();
     }
   }
 
-  public label(props: ILabelProps): { width: number; height: number; } {
+  public label(props: ILabelProps): { width: number; height: number } {
     const {
       x,
       y,
@@ -572,7 +534,7 @@ export class KonvaDrawer {
       fontSize,
       textAlign,
       verticalAlign,
-      fontWeight
+      fontWeight,
     });
 
     return {
@@ -605,17 +567,15 @@ export class KonvaDrawer {
       size = AvatarSize.Size32,
       type = AvatarType.Member,
       opacity = 1,
-      cacheTheme
+      cacheTheme,
     } = props;
 
     if (title == null || id == null) return null;
     const ratio = Math.max(window.devicePixelRatio, 2);
-    const avatarSrc = isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` :
-      (url || '');
+    const avatarSrc =
+      isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` : url || '';
     const avatarName = getFirstWordFromString(title);
-    const avatarBg = (
-      avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0]
-    );
+    const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
     switch (type) {
       case AvatarType.Team: {
         if (!url) {
@@ -625,7 +585,7 @@ export class KonvaDrawer {
             width: size,
             height: size,
             fill: getAvatarRandomColor(id),
-            radius: 4
+            radius: 4,
           });
           // const scale = size === AvatarSize.Size16 ? 0.5 : 0.6;
           return this.path({
@@ -660,7 +620,7 @@ export class KonvaDrawer {
             textAlign: 'center',
             verticalAlign: 'middle',
             text: avatarName,
-            fillStyle: colors.textStaticPrimary
+            fillStyle: colors.textStaticPrimary,
           });
         }
         return this.image({
@@ -674,7 +634,7 @@ export class KonvaDrawer {
             ctx.arc(x + radius, y + radius, radius, 0, Math.PI * 2, false);
             ctx.fill();
           },
-          opacity
+          opacity,
         });
       }
     }
@@ -689,14 +649,11 @@ export class KonvaDrawer {
     fs: number,
     rx: number,
     ry: number,
-    psiDeg: number
+    psiDeg: number,
   ) {
     const psi = psiDeg * (Math.PI / 180.0);
-    const xp =
-      (Math.cos(psi) * (x1 - x2)) / 2.0 + (Math.sin(psi) * (y1 - y2)) / 2.0;
-    const yp =
-      (-1 * Math.sin(psi) * (x1 - x2)) / 2.0 +
-      (Math.cos(psi) * (y1 - y2)) / 2.0;
+    const xp = (Math.cos(psi) * (x1 - x2)) / 2.0 + (Math.sin(psi) * (y1 - y2)) / 2.0;
+    const yp = (-1 * Math.sin(psi) * (x1 - x2)) / 2.0 + (Math.cos(psi) * (y1 - y2)) / 2.0;
 
     const lambda = (xp * xp) / (rx * rx) + (yp * yp) / (ry * ry);
 
@@ -705,10 +662,7 @@ export class KonvaDrawer {
       ry *= Math.sqrt(lambda);
     }
 
-    let f = Math.sqrt(
-      (rx * rx * (ry * ry) - rx * rx * (yp * yp) - ry * ry * (xp * xp)) /
-      (rx * rx * (yp * yp) + ry * ry * (xp * xp))
-    );
+    let f = Math.sqrt((rx * rx * (ry * ry) - rx * rx * (yp * yp) - ry * ry * (xp * xp)) / (rx * rx * (yp * yp) + ry * ry * (xp * xp)));
 
     if (fa === fs) {
       f *= -1;
@@ -825,54 +779,18 @@ export class KonvaDrawer {
         return this.getLineLength(x, y, points[0], points[1]);
       case 'C':
         len = 0.0;
-        p1 = this.getPointOnCubicBezier(
-          0,
-          x,
-          y,
-          points[0],
-          points[1],
-          points[2],
-          points[3],
-          points[4],
-          points[5]
-        );
+        p1 = this.getPointOnCubicBezier(0, x, y, points[0], points[1], points[2], points[3], points[4], points[5]);
         for (t = 0.01; t <= 1; t += 0.01) {
-          p2 = this.getPointOnCubicBezier(
-            t,
-            x,
-            y,
-            points[0],
-            points[1],
-            points[2],
-            points[3],
-            points[4],
-            points[5]
-          );
+          p2 = this.getPointOnCubicBezier(t, x, y, points[0], points[1], points[2], points[3], points[4], points[5]);
           len += this.getLineLength(p1.x, p1.y, p2.x, p2.y);
           p1 = p2;
         }
         return len;
       case 'Q':
         len = 0.0;
-        p1 = this.getPointOnQuadraticBezier(
-          0,
-          x,
-          y,
-          points[0],
-          points[1],
-          points[2],
-          points[3]
-        );
+        p1 = this.getPointOnQuadraticBezier(0, x, y, points[0], points[1], points[2], points[3]);
         for (t = 0.01; t <= 1; t += 0.01) {
-          p2 = this.getPointOnQuadraticBezier(
-            t,
-            x,
-            y,
-            points[0],
-            points[1],
-            points[2],
-            points[3]
-          );
+          p2 = this.getPointOnQuadraticBezier(t, x, y, points[0], points[1], points[2], points[3]);
           len += this.getLineLength(p1.x, p1.y, p2.x, p2.y);
           p1 = p2;
         }
@@ -886,49 +804,21 @@ export class KonvaDrawer {
         if (Math.abs(start - end) < inc) {
           inc = Math.abs(start - end);
         }
-        p1 = this.getPointOnEllipticalArc(
-          points[0],
-          points[1],
-          points[2],
-          points[3],
-          start,
-          0
-        );
+        p1 = this.getPointOnEllipticalArc(points[0], points[1], points[2], points[3], start, 0);
         if (dTheta < 0) {
           for (t = start - inc; t > end; t -= inc) {
-            p2 = this.getPointOnEllipticalArc(
-              points[0],
-              points[1],
-              points[2],
-              points[3],
-              t,
-              0
-            );
+            p2 = this.getPointOnEllipticalArc(points[0], points[1], points[2], points[3], t, 0);
             len += this.getLineLength(p1.x, p1.y, p2.x, p2.y);
             p1 = p2;
           }
         } else {
           for (t = start + inc; t < end; t += inc) {
-            p2 = this.getPointOnEllipticalArc(
-              points[0],
-              points[1],
-              points[2],
-              points[3],
-              t,
-              0
-            );
+            p2 = this.getPointOnEllipticalArc(points[0], points[1], points[2], points[3], t, 0);
             len += this.getLineLength(p1.x, p1.y, p2.x, p2.y);
             p1 = p2;
           }
         }
-        p2 = this.getPointOnEllipticalArc(
-          points[0],
-          points[1],
-          points[2],
-          points[3],
-          end,
-          0
-        );
+        p2 = this.getPointOnEllipticalArc(points[0], points[1], points[2], points[3], end, 0);
         len += this.getLineLength(p1.x, p1.y, p2.x, p2.y);
         return len;
     }
@@ -941,28 +831,7 @@ export class KonvaDrawer {
     }
 
     let cs = data;
-    const cc = [
-      'm',
-      'M',
-      'l',
-      'L',
-      'v',
-      'V',
-      'h',
-      'H',
-      'z',
-      'Z',
-      'c',
-      'C',
-      'q',
-      'Q',
-      't',
-      'T',
-      's',
-      'S',
-      'a',
-      'A',
-    ];
+    const cc = ['m', 'M', 'l', 'L', 'v', 'V', 'h', 'H', 'z', 'Z', 'c', 'C', 'q', 'Q', 't', 'T', 's', 'S', 'a', 'A'];
 
     cs = cs.replace(new RegExp(' ', 'g'), ',');
     for (let n = 0; n < cc.length; n++) {
@@ -1078,12 +947,7 @@ export class KonvaDrawer {
             points.push(cpx, cpy);
             break;
           case 'c':
-            points.push(
-              cpx + p.shift(),
-              cpy + p.shift(),
-              cpx + p.shift(),
-              cpy + p.shift()
-            );
+            points.push(cpx + p.shift(), cpy + p.shift(), cpx + p.shift(), cpy + p.shift());
             cpx += p.shift();
             cpy += p.shift();
             cmd = 'C';
@@ -1167,17 +1031,7 @@ export class KonvaDrawer {
             cpx = p.shift();
             cpy = p.shift();
             cmd = 'A';
-            points = this.convertEndpointToCenterParameterization(
-              x1,
-              y1,
-              cpx,
-              cpy,
-              fa,
-              fs,
-              rx,
-              ry,
-              psi
-            );
+            points = this.convertEndpointToCenterParameterization(x1, y1, cpx, cpy, fa, fs, rx, ry, psi);
             break;
           case 'a':
             rx = p.shift();
@@ -1190,17 +1044,7 @@ export class KonvaDrawer {
             cpx += p.shift();
             cpy += p.shift();
             cmd = 'A';
-            points = this.convertEndpointToCenterParameterization(
-              x1,
-              y1,
-              cpx,
-              cpy,
-              fa,
-              fs,
-              rx,
-              ry,
-              psi
-            );
+            points = this.convertEndpointToCenterParameterization(x1, y1, cpx, cpy, fa, fs, rx, ry, psi);
             break;
         }
 
@@ -1228,7 +1072,7 @@ export class KonvaDrawer {
     return ca;
   }
 
-  public path(props: { x: number; y: number; data: string; size?: AvatarSize; scaleX?: number; scaleY?: number; fill: string; }) {
+  public path(props: { x: number; y: number; data: string; size?: AvatarSize; scaleX?: number; scaleY?: number; fill: string }) {
     const { x, y, scaleX = 1, scaleY = 1, data, fill } = props;
     const dataArray = this.parsePathData(data);
 

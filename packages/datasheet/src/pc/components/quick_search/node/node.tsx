@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
 import { useSelector } from 'react-redux';
-import classNames from 'classnames';
-import { getNodeIcon } from '../../catalog/tree/node_icon';
 import { INode } from '@apitable/core';
+import { getNodeIcon } from '../../catalog/tree/node_icon';
+import styles from './style.module.less';
 
 export type ISearchNode = INode & { superiorPath: string };
 
@@ -32,23 +32,15 @@ export interface INodeProps {
   className?: string;
 }
 
-export const Node: FC<React.PropsWithChildren<INodeProps>> = props => {
+export const Node: FC<React.PropsWithChildren<INodeProps>> = (props) => {
   const { node, onMouseDown } = props;
-  const spaceName = useSelector(state => state.user.info?.spaceName);
+  const spaceName = useSelector((state) => state.user.info?.spaceName);
 
   return (
-    <div
-      className={classNames(styles.nodeContainer, props.className)}
-      data-node-id={node.nodeId}
-      data-node-type={node.type}
-      onMouseUp={onMouseDown}
-    >
+    <div className={classNames(styles.nodeContainer, props.className)} data-node-id={node.nodeId} data-node-type={node.type} onMouseUp={onMouseDown}>
       <div className={styles.node}>
         <div className={styles.icon}>{getNodeIcon(node.icon, node.type, { emojiSize: 16 })}</div>
-        <div
-          className={styles.nodeName}
-          dangerouslySetInnerHTML={{ __html: node.nodeName }}
-        />
+        <div className={styles.nodeName} dangerouslySetInnerHTML={{ __html: node.nodeName }} />
       </div>
       <div className={styles.superiorPath}>{node.superiorPath || spaceName}</div>
     </div>

@@ -16,12 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  ICell, IFieldMap, IFieldPermissionMap, IFieldRanges, IFillHandleStatus, IFilterInfo, IGridViewDragState,
-  IGroupInfo, ILinearRow, IPermissions, IRange, IRecordMap, IRecordRanges, ISelection, ISnapshot, ISortInfo,
-  IViewColumn, IViewProperty, IViewRow, RecordMoveType, ICollaboratorCursorMap, ThemeName,
-} from '@apitable/core';
 import { createContext, Dispatch } from 'react';
+import {
+  ICell,
+  IFieldMap,
+  IFieldPermissionMap,
+  IFieldRanges,
+  IFillHandleStatus,
+  IFilterInfo,
+  IGridViewDragState,
+  IGroupInfo,
+  ILinearRow,
+  IPermissions,
+  IRange,
+  IRecordMap,
+  IRecordRanges,
+  ISelection,
+  ISnapshot,
+  ISortInfo,
+  IViewColumn,
+  IViewProperty,
+  IViewRow,
+  RecordMoveType,
+  ICollaboratorCursorMap,
+  ThemeName,
+} from '@apitable/core';
 
 export interface IKonvaGridViewContextProps {
   /**
@@ -50,7 +69,7 @@ export interface IKonvaGridViewContextProps {
   fieldIndexMap: Map<string, number>;
   currentSearchCell: string | [string, string] | undefined;
   selection: ISelection | null | undefined;
-  dispatch: Dispatch<any>,
+  dispatch: Dispatch<any>;
   selectRecordIds: string[];
   recordMoveType: RecordMoveType;
   fieldRanges?: IFieldRanges;
@@ -66,7 +85,7 @@ export interface IKonvaGridViewContextProps {
 
   // Sorting Information
   sortInfo?: ISortInfo;
-  
+
   // Filter information
   filterInfo?: IFilterInfo;
 

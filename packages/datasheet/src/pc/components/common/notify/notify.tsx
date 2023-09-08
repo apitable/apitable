@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { ArgsProps } from 'antd/lib/notification';
+import React from 'react';
+import { Strings, t } from '@apitable/core';
 import { ButtonPlus } from 'pc/components/common/button_plus/button_plus';
-import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import { NotifyKey, ICustomNotifyConfig } from 'pc/components/common/notify/notify.interface';
 import { DASHBOARD_PANEL_ID } from 'pc/components/dashboard_panel';
 import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
-import React from 'react';
 import notification from './notification/index';
-import { ICustomNotifyConfig } from './notify.interface';
 
 notification.config({
   placement: 'bottom',
@@ -45,9 +44,9 @@ const commonConfig = {
 };
 
 /*
- * The notify has to appear within the view area, so the wrapped dom element needs to be located, 
+ * The notify has to appear within the view area, so the wrapped dom element needs to be located,
  * but in order to not fetch the wrapped dom too often, the
- * The data is cached here, but when switching the datasheet, the space is switched, as the original dom element is still stored, 
+ * The data is cached here, but when switching the datasheet, the space is switched, as the original dom element is still stored,
  * or the notify is not displayed properly
  * So a reset method was written to reset the dom
  * If you find that the notify call does not respond in subsequent development, you can refer here
@@ -58,11 +57,12 @@ const createMessage = (message: React.ReactNode, btnText?: string, btnFn?: () =>
   return (
     <>
       {message}
-      {
-        btnText &&
+      {btnText && (
         <ButtonPlus.Translucent
-          onClick={() => { btnFn && btnFn(); }}
-          size='small'
+          onClick={() => {
+            btnFn && btnFn();
+          }}
+          size="small"
           style={{
             marginLeft: '16px',
             height: '20px',
@@ -74,7 +74,7 @@ const createMessage = (message: React.ReactNode, btnText?: string, btnFn?: () =>
         >
           {btnText}
         </ButtonPlus.Translucent>
-      }
+      )}
     </>
   );
 };
@@ -85,28 +85,28 @@ const close = (key: string) => {
 
 const open = (config: ArgsProps & Partial<ICustomNotifyConfig>) => {
   notify.destroy();
-  const container = config.dom ||
-    document.querySelector(`#${DATASHEET_VIEW_CONTAINER_ID}`) as HTMLElement ||
-    document.querySelector(`#${DASHBOARD_PANEL_ID}`) as HTMLElement;
+  const container =
+    config.dom ||
+    (document.querySelector(`#${DATASHEET_VIEW_CONTAINER_ID}`) as HTMLElement) ||
+    (document.querySelector(`#${DASHBOARD_PANEL_ID}`) as HTMLElement);
 
   const { message, btnText, btnFn } = config;
-  notification.open(
-    {
-      ...commonConfig,
-      ...config,
-      message: createMessage(message, btnText, btnFn),
-      getContainer: () => container!,
-    },
-  );
+  notification.open({
+    ...commonConfig,
+    ...config,
+    message: createMessage(message, btnText, btnFn),
+    getContainer: () => container!,
+  });
 };
 
 export const notify = {
   close,
   open,
   // It is not recommended to use this method lightly and it is better to call close
-  destroy: () => { notification.destroy(); },
-  reset: () => {
+  destroy: () => {
+    notification.destroy();
   },
+  reset: () => {},
 };
 
 export function notifyWithUndo(msg: string, key: NotifyKey) {
@@ -115,8 +115,8 @@ export function notifyWithUndo(msg: string, key: NotifyKey) {
     btnText: t(Strings.undo),
     key,
     btnFn() {
-      import('modules/shared/shortcut_key').then(({ ShortcutActionManager, ShortcutActionName }) => 
-        ShortcutActionManager.trigger(ShortcutActionName.Undo)
+      import('modules/shared/shortcut_key').then(({ ShortcutActionManager, ShortcutActionName }) =>
+        ShortcutActionManager.trigger(ShortcutActionName.Undo),
       );
       notify.close(key);
     },

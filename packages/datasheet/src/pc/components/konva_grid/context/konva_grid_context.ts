@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { TooltipPlacement } from 'antd/lib/tooltip';
+import * as React from 'react';
 import { ITheme } from '@apitable/components';
 import { ICell } from '@apitable/core';
-import { TooltipPlacement } from 'antd/lib/tooltip';
 import { CellBound, ICellScrollState, IScrollHandler } from 'pc/components/gantt_view';
-import * as React from 'react';
 
 export interface ITooltipInfo {
   title: JSX.Element | string;
@@ -52,8 +52,8 @@ export interface IKonvaGridContext {
   clearTooltipInfo: () => void;
   activeCellBound: CellBound;
   setActiveCellBound: (cellBound: Partial<CellBound>) => void;
-  scrollTo: (params: { scrollTop?: number; scrollLeft?: number; }) => void;
-  scrollToItem: (params: { rowIndex?: number; columnIndex?: number; }) => void;
+  scrollTo: (params: { scrollTop?: number; scrollLeft?: number }) => void;
+  scrollToItem: (params: { rowIndex?: number; columnIndex?: number }) => void;
   onEditorPosition: (activeCell?: ICell) => void | undefined;
   setMouseStyle: (mouseStyle: string) => void;
   isCellDown: boolean;

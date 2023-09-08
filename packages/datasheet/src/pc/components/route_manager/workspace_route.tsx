@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import * as React from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Events, IReduxState, Player, Selectors } from '@apitable/core';
+import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
@@ -32,8 +32,8 @@ import { Welcome } from '../workspace/welcome';
 import { ChatPage } from 'enterprise';
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
-  const nodeId = useSelector(state => Selectors.getNodeId(state));
-  const activeNodeError = useSelector(state => state.catalogTree.activeNodeError);
+  const nodeId = useSelector((state) => Selectors.getNodeId(state));
+  const activeNodeError = useSelector((state) => state.catalogTree.activeNodeError);
   const { datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state: IReduxState) => state.pageParams);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
@@ -46,7 +46,7 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
     const parentNode = treeNodesMap[folderId];
     let childNodes: any[] = [];
     if (parentNode && treeNodesMap[parentNode.nodeId].hasChildren && parentNode.children.length) {
-      childNodes = parentNode.children.map(nodeId => treeNodesMap[nodeId]);
+      childNodes = parentNode.children.map((nodeId) => treeNodesMap[nodeId]);
     }
     return childNodes;
   };

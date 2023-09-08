@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { LinkButton, colorVars } from '@apitable/components';
-import styles from './style.module.less';
+import { Strings, t } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@apitable/icons';
+import styles from './style.module.less';
 
 interface IPageTurnProps {
   onClickPre(): void;
@@ -28,12 +28,7 @@ interface IPageTurnProps {
   disableNext: boolean;
 }
 
-export const PageTurnMobile = ({
-  onClickPre,
-  onClickNext,
-  disablePre,
-  disableNext
-}: IPageTurnProps): JSX.Element => (
+export const PageTurnMobile = ({ onClickPre, onClickNext, disablePre, disableNext }: IPageTurnProps): JSX.Element => (
   <div className={styles.bottomPageTurn}>
     <LinkButton
       underline={false}

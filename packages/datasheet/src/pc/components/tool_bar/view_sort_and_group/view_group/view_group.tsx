@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@apitable/core';
 import produce from 'immer';
 import { useCallback, useRef } from 'react';
 import * as React from 'react';
 import { DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
+import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@apitable/core';
+import { PopUpTitle } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { resourceService } from 'pc/resource_service';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { PopUpTitle } from 'pc/components/common';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { resourceService } from 'pc/resource_service';
-import { IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 
 interface IViewSetting {
   close(e: React.MouseEvent): void;
@@ -40,10 +40,10 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
+export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = (props) => {
   const { triggerInfo } = props;
-  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state));
-  const activityView = useSelector(state => Selectors.getCurrentView(state))!;
+  const activeViewGroupInfo = useSelector((state) => Selectors.getActiveViewGroupInfo(state));
+  const activityView = useSelector((state) => Selectors.getCurrentView(state))!;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { style, onListenResize } = useListenVisualHeight({
@@ -54,7 +54,7 @@ export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props 
   });
 
   const activityViewId = activityView.id;
-  const exitFieldIds = activeViewGroupInfo.map(item => item.fieldId);
+  const exitFieldIds = activeViewGroupInfo.map((item) => item.fieldId);
   const submitGroup = useCallback(
     (data: IGroupInfo | null) => {
       executeCommandWithMirror(
@@ -79,7 +79,7 @@ export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props 
 
   function setGroupField(index: number, fieldId: string) {
     submitGroup(
-      produce(activeViewGroupInfo, draft => {
+      produce(activeViewGroupInfo, (draft) => {
         if (!exitFieldIds.length) {
           // First add.
           draft.push({ fieldId, desc: false });
@@ -100,7 +100,7 @@ export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props 
         return;
       }
       submitGroup(
-        produce(activeViewGroupInfo, draft => {
+        produce(activeViewGroupInfo, (draft) => {
           draft.splice(destination.index, 0, draft.splice(source.index, 1)[0]);
           return draft;
         }),
@@ -111,7 +111,7 @@ export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = props 
 
   function setGroupRules(index: number, desc: boolean) {
     submitGroup(
-      produce(activeViewGroupInfo, draft => {
+      produce(activeViewGroupInfo, (draft) => {
         return draft.map((item, idx) => {
           if (idx === index) {
             return { ...item, desc };

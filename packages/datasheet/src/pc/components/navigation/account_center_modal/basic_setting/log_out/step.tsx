@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { Button, LinkButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { Message, NormalModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useSetState } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
-import * as React from 'react';
-import { useContext, useMemo, useState } from 'react';
 import { ChooseAccountType } from '../choose_account_type/choose_account_type';
 import { ConfirmAgainModal } from '../confirm_again_modal';
 import { Verify } from '../modify_mobile_modal/verify';
@@ -127,18 +127,18 @@ export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
         onClick: () => {
           setLoading(true);
           Api.logout()
-            .then(res => {
+            .then((res) => {
               setLoading(false);
               setStep(StepStatus.Done);
               const { success, message } = res.data;
               if (success) {
                 Message.success({ content: t(Strings.log_out_succeed) });
-                Router.push(Navigation.APPLY_LOGOUT,);
+                Router.push(Navigation.APPLY_LOGOUT);
               } else {
                 Message.error({ content: message });
               }
             })
-            .catch(err => {
+            .catch((err) => {
               setLoading(false);
               Message.error({ content: err.toString() });
             });
@@ -162,7 +162,7 @@ export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
         };
         return (
           <Button
-            color='primary'
+            color="primary"
             onClick={() => {
               setStep(getNextStep());
               if (!userData.email) {
@@ -190,7 +190,7 @@ export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
             <LinkButton color={colors.fc3} onClick={() => setStep(lastStep)} underline={false}>
               {t(Strings.last_step)}
             </LinkButton>
-            <Button color='primary' loading={loading} type='submit' {...btnPropsMap[step]}>
+            <Button color="primary" loading={loading} type="submit" {...btnPropsMap[step]}>
               {btnPropsMap[step].okBtnText}
             </Button>
           </div>

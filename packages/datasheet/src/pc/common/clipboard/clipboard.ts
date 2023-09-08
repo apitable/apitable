@@ -17,11 +17,30 @@
  */
 
 import {
-  CollaCommandManager, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IAttachmentValue, ICollaCommandExecuteResult, IGridViewColumn,
-  IGridViewProperty, IRange, IReduxState, isImage, IStandardValueTable, IViewColumn, IViewRow, Range, Selectors, StoreActions, Strings, t, ViewType,
+  CollaCommandManager,
+  CollaCommandName,
+  ConfigConstant,
+  ExecuteResult,
+  FieldType,
+  IAttachmentValue,
+  ICollaCommandExecuteResult,
+  IGridViewColumn,
+  IGridViewProperty,
+  IRange,
+  IReduxState,
+  isImage,
+  IStandardValueTable,
+  IViewColumn,
+  IViewRow,
+  Range,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
 } from '@apitable/core';
-import { notify } from 'pc/components/common/notify';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { store } from 'pc/store';
 import { UploadManager } from 'pc/utils';
@@ -43,7 +62,7 @@ function getCutRangeData(state: IReduxState, range: IRange): IGetCutRangeDataRet
 
   // If permissions are set for a column and the user currently operating does not have edit permissions, the data should be filtered during the cut
   const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
-  const columns = _columns.filter(column => {
+  const columns = _columns.filter((column) => {
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
     if (fieldRole && fieldRole !== ConfigConstant.Role.Editor) {
       return false;
@@ -59,12 +78,7 @@ function getCutRangeData(state: IReduxState, range: IRange): IGetCutRangeDataRet
   };
 }
 
-function extendViewIfNeed(
-  state: IReduxState,
-  range: IRange,
-  stdValueTable: IStandardValueTable,
-  callback: (paste: boolean) => void,
-) {
+function extendViewIfNeed(state: IReduxState, range: IRange, stdValueTable: IStandardValueTable, callback: (paste: boolean) => void) {
   const numberRange = Range.bindModel(range).toNumberBaseRange(state);
   if (!numberRange) {
     return;
@@ -72,10 +86,7 @@ function extendViewIfNeed(
   const rowOverflow = !Selectors.isRowSpaceEnough(state, stdValueTable.body.length, numberRange.row);
   const colOverflow = !Selectors.isColumnSpaceEnough(state, stdValueTable.header.length, numberRange.column);
   const sheetPermission = Selectors.getPermissions(store.getState());
-  if (
-    (!rowOverflow && !colOverflow) ||
-    (colOverflow && !rowOverflow && !sheetPermission.fieldCreatable)
-  ) {
+  if ((!rowOverflow && !colOverflow) || (colOverflow && !rowOverflow && !sheetPermission.fieldCreatable)) {
     callback(true);
     return;
   }
@@ -97,11 +108,15 @@ function extendViewIfNeed(
     centered: true,
     okText: t(Strings.submit),
     cancelText: t(Strings.cancel),
-    onCancel() { callback(false); },
-    onOk() { callback(true); },
+    onCancel() {
+      callback(false);
+    },
+    onOk() {
+      callback(true);
+    },
     okButtonProps: {
-      color: 'primary'
-    }
+      color: 'primary',
+    },
   });
 }
 
@@ -127,54 +142,67 @@ interface ICopyCutMessageMap {
   [type: string]: {
     [unit: string]: {
       [selectMode: string]: (count: number) => string;
-    },
+    };
   };
 }
 
 const copyCutToastMsgMap: ICopyCutMessageMap = {
   copy: {
     record: {
-      single: () => t(Strings.toast_copy_record_by_count, {
-        count: 1,
-      }),
-      multiple: count => t(Strings.toast_copy_record_by_count, {
-        count,
-      }),
+      single: () =>
+        t(Strings.toast_copy_record_by_count, {
+          count: 1,
+        }),
+      multiple: (count) =>
+        t(Strings.toast_copy_record_by_count, {
+          count,
+        }),
     },
     cell: {
-      single: () => t(Strings.toast_copy_cell_by_count, {
-        count: 1,
-      }),
-      multiple: count => t(Strings.toast_copy_cell_by_count, {
-        count,
-      }),
+      single: () =>
+        t(Strings.toast_copy_cell_by_count, {
+          count: 1,
+        }),
+      multiple: (count) =>
+        t(Strings.toast_copy_cell_by_count, {
+          count,
+        }),
     },
   },
   cut: {
     record: {
-      single: () => t(Strings.toast_cut_record_by_count, {
-        count: 1,
-      }),
-      multiple: count => t(Strings.toast_cut_record_by_count, {
-        count,
-      }),
+      single: () =>
+        t(Strings.toast_cut_record_by_count, {
+          count: 1,
+        }),
+      multiple: (count) =>
+        t(Strings.toast_cut_record_by_count, {
+          count,
+        }),
     },
     cell: {
-      single: () => t(Strings.toast_cut_cell_by_count, {
-        count: 1,
-      }),
-      multiple: count => t(Strings.toast_cut_cell_by_count, {
-        count,
-      }),
+      single: () =>
+        t(Strings.toast_cut_cell_by_count, {
+          count: 1,
+        }),
+      multiple: (count) =>
+        t(Strings.toast_cut_cell_by_count, {
+          count,
+        }),
     },
   },
 };
 
-function toastCopyCut({ type, unit, select, count }: {
-  type: 'copy' | 'cut',
-  unit: 'record' | 'cell',
-  select: 'single' | 'multiple',
-  count: number,
+function toastCopyCut({
+  type,
+  unit,
+  select,
+  count,
+}: {
+  type: 'copy' | 'cut';
+  unit: 'record' | 'cell';
+  select: 'single' | 'multiple';
+  count: number;
 }) {
   notify.open({ message: copyCutToastMsgMap[type][unit][select](count), key: NotifyKey.Paste });
 }
@@ -183,7 +211,7 @@ export class Clipboard {
   constructor(
     private readonly commandManager: CollaCommandManager,
     private readonly uploadManager: UploadManager,
-  ) { }
+  ) {}
 
   cuttingRangeData?: {
     datasheetId: string;
@@ -212,7 +240,7 @@ export class Clipboard {
     }
 
     this.interceptScreenShot(clipboardData);
-    const parsers: { format: string, parser: ISerializer<IStandardValueTable | null, string> }[] = [
+    const parsers: { format: string; parser: ISerializer<IStandardValueTable | null, string> }[] = [
       { format: 'text/datasheet', parser: Serializer.json },
       { format: 'text/html', parser: Serializer.html },
       { format: 'text/plain', parser: Serializer.csv },
@@ -240,40 +268,43 @@ export class Clipboard {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    extendViewIfNeed(state, selection, stdValueTable, paste => {
+    extendViewIfNeed(state, selection, stdValueTable, (paste) => {
       if (paste) {
         notify.open({ message: t(Strings.message_coping), key: NotifyKey.Paste });
         const pasteCellCount = stdValueTable!.body.length * (stdValueTable!.body[0]?.length || 0);
-        setTimeout(async() => {
-          const commandResult = await this.executePaste(
-            state,
-            view as any,
-            selection,
-            stdValueTable!,
-            clipboardText,
-          ) as any as (ICollaCommandExecuteResult<{}> & { isPasteIncompatibleField: boolean });
-          this.clearCuttingStatus();
-          if (commandResult.result === ExecuteResult.Fail) {
-            notify.open({
-              message: t(Strings.message_copy_failed, {
-                reason: commandResult.reason,
-              }), key: NotifyKey.Paste,
-            });
-            console.warn('! ' + `Paste failed, reason: ${commandResult.reason}`);
-          }
+        setTimeout(
+          async() => {
+            const commandResult = (await this.executePaste(
+              state,
+              view as any,
+              selection,
+              stdValueTable!,
+              clipboardText,
+            )) as any as ICollaCommandExecuteResult<{}> & { isPasteIncompatibleField: boolean };
+            this.clearCuttingStatus();
+            if (commandResult.result === ExecuteResult.Fail) {
+              notify.open({
+                message: t(Strings.message_copy_failed, {
+                  reason: commandResult.reason,
+                }),
+                key: NotifyKey.Paste,
+              });
+              console.warn('! ' + `Paste failed, reason: ${commandResult.reason}`);
+            }
 
-          if (commandResult.result === ExecuteResult.None) {
-            if (commandResult.isPasteIncompatibleField) {
-              notify.open({ message: t(Strings.message_copy_failed_reasoned_by_wrong_type), key: NotifyKey.Paste });
-            } else {
+            if (commandResult.result === ExecuteResult.None) {
+              if (commandResult.isPasteIncompatibleField) {
+                notify.open({ message: t(Strings.message_copy_failed_reasoned_by_wrong_type), key: NotifyKey.Paste });
+              } else {
+                notify.open({ message: t(Strings.message_copy_succeed), key: NotifyKey.Paste });
+              }
+            }
+            if (commandResult.result === ExecuteResult.Success) {
               notify.open({ message: t(Strings.message_copy_succeed), key: NotifyKey.Paste });
             }
-          }
-          if (commandResult.result === ExecuteResult.Success) {
-            notify.open({ message: t(Strings.message_copy_succeed), key: NotifyKey.Paste });
-          
-          }
-        }, pasteCellCount > 100 ? 100 : 0); // Delayed prompt when pasting more than 100 cells
+          },
+          pasteCellCount > 100 ? 100 : 0,
+        ); // Delayed prompt when pasting more than 100 cells
       }
     });
   }
@@ -289,10 +320,9 @@ export class Clipboard {
     const { row, column } = Range.bindModel(pasteRange).toNumberBaseRange(state)!;
     const { id: datasheetId, snapshot } = Selectors.getDatasheet(state)!;
     const rows = Selectors.getVisibleRows(state);
-    const groupFields = Selectors.getGroupFields(pasteView, Selectors.getFieldMap(state, state.pageParams.datasheetId!)!)
-      .map(f => f.id);
+    const groupFields = Selectors.getGroupFields(pasteView, Selectors.getFieldMap(state, state.pageParams.datasheetId!)!).map((f) => f.id);
     const recordValue = snapshot.recordMap[rows[row].recordId].data;
-    const cellValues = groupFields.map(f => recordValue ? recordValue[f] : null);
+    const cellValues = groupFields.map((f) => (recordValue ? recordValue[f] : null));
     let isPasteIncompatibleField = false;
     let commandResult = this.commandManager.execute({
       cmd: CollaCommandName.PasteSetFields,
@@ -325,7 +355,7 @@ export class Clipboard {
         groupCellValues: cellValues,
         notifyExistIncompatibleField: () => {
           isPasteIncompatibleField = true;
-        }
+        },
       });
       recogClipboardURLData({
         state,
@@ -451,7 +481,7 @@ export class Clipboard {
     const snapshot = Selectors.getSnapshot(store.getState());
     const fieldMap = snapshot!.meta.fieldMap;
     const { recordId, fieldId } = activeCell;
-    const files = Array.from(clipboardData.files).filter(item => {
+    const files = Array.from(clipboardData.files).filter((item) => {
       return isImage(item);
     });
     if (!files.length) {
@@ -468,12 +498,10 @@ export class Clipboard {
     const cellValue = Selectors.getCellValue(store.getState(), snapshot!, recordId, fieldId) as IAttachmentValue[];
     const stdFileList = uploadManager.buildStdUploadList(files, recordId, fieldId, cellValue);
     const datasheetId = Selectors.getDatasheet(store.getState())!.id;
-    stdFileList.forEach(item => {
+    stdFileList.forEach((item) => {
       uploadManager.register(
         UploadManager.getCellId(recordId, fieldId),
-        uploadManager.generateSuccessFn(
-          recordId, fieldId, { name: item.file.name, id: item.fileId },
-        ),
+        uploadManager.generateSuccessFn(recordId, fieldId, { name: item.file.name, id: item.fileId }),
         UploadManager.generateFormData(item.file, datasheetId),
         item.fileId,
       );
@@ -502,7 +530,7 @@ export class Clipboard {
     if (isOnlyCopyOneCell) {
       collectData.push(body[0][0].data[0].text);
     } else {
-      body.forEach(item => {
+      body.forEach((item) => {
         item.forEach((stdValue, index) => {
           if (!memberFieldIndex.includes(index)) {
             return;

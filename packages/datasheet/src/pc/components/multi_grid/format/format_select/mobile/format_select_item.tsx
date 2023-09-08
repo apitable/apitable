@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ISelectFieldOption } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
-import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { useThemeColors } from '@apitable/components';
-import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import styles from '../../styles.module.less';
 import { Draggable } from 'react-beautiful-dnd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { shallowEqual } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { ISelectFieldOption } from '@apitable/core';
 import { CloseOutlined, DragOutlined } from '@apitable/icons';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { stopPropagation } from 'pc/utils';
+import styles from '../../styles.module.less';
 
 export interface IFormatSelectItem {
   option: ISelectFieldOption;
@@ -39,7 +39,7 @@ export interface IFormatSelectItem {
   onChange(type: OptionSetting, id: string, value: number | string): void;
 }
 
-const FormatSelectItemBase: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
+const FormatSelectItemBase: React.FC<React.PropsWithChildren<IFormatSelectItem>> = (props) => {
   const { option, index, draggingId, optionsLength, setDraggingId, addNewItem, onChange } = props;
   const colors = useThemeColors();
   const pressEnter = (e: React.KeyboardEvent) => {
@@ -73,7 +73,7 @@ const FormatSelectItemBase: React.FC<React.PropsWithChildren<IFormatSelectItem>>
         <div style={{ flex: 1 }}>
           <Input
             size="small"
-            onChange={e => onChange(OptionSetting.RENAME, option.id, e.target.value)}
+            onChange={(e) => onChange(OptionSetting.RENAME, option.id, e.target.value)}
             value={option.name}
             onPressEnter={pressEnter}
             autoFocus={index === optionsLength - 1}
@@ -104,7 +104,7 @@ const FormatSelectItemBase: React.FC<React.PropsWithChildren<IFormatSelectItem>>
 
   return (
     <Draggable draggableId={option.id} index={index} key={option.id}>
-      {provided => (
+      {(provided) => (
         <div className={styles.selectionItem} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
           {DraggableChild}
         </div>

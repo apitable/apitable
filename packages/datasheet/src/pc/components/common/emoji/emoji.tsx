@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { colorVars, Loading, Skeleton, TextButton } from '@apitable/components';
-import { integrateCdnHost, Strings, t, SystemConfig } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { colorVars, Loading, Skeleton, TextButton } from '@apitable/components';
+import { integrateCdnHost, Strings, t, SystemConfig } from '@apitable/core';
 
 // @ts-ignore
 const EmojiEmoji = dynamic(() => import('emoji-mart/dist/components/emoji/emoji'), {
@@ -33,9 +33,9 @@ const EmojiPicker = dynamic(() => import('emoji-mart/dist/components/picker/pick
   ssr: false,
   loading: () => (
     <div style={{ margin: 16 }}>
-      <Skeleton width='38%' />
+      <Skeleton width="38%" />
       <Skeleton count={2} />
-      <Skeleton width='61%' />
+      <Skeleton width="61%" />
     </div>
   ),
 });
@@ -76,12 +76,7 @@ const i18n = {
 };
 
 export function Emoji(props: any) {
-  return (
-    <EmojiEmoji
-      backgroundImageFn={() => getEmojiSource(props.set, 64)}
-      {...props}
-    />
-  );
+  return <EmojiEmoji backgroundImageFn={() => getEmojiSource(props.set, 64)} {...props} />;
 }
 
 export const Picker: React.FC<React.PropsWithChildren<Record<any, any>>> = (props: any) => {
@@ -105,7 +100,11 @@ export const Picker: React.FC<React.PropsWithChildren<Record<any, any>>> = (prop
         buttonWrapper.setAttribute('class', 'resetBtn');
         const _buttonWrapper = searchWrapper.appendChild(buttonWrapper);
         const root = createRoot(_buttonWrapper);
-        root.render(<TextButton style={{ color: colorVars.fc1 }} onClick={props.onReset}>{t(Strings.reset)}</TextButton>);
+        root.render(
+          <TextButton style={{ color: colorVars.fc1 }} onClick={props.onReset}>
+            {t(Strings.reset)}
+          </TextButton>,
+        );
         clearInterval(interval);
       }
     }, 250);
@@ -115,8 +114,8 @@ export const Picker: React.FC<React.PropsWithChildren<Record<any, any>>> = (prop
   }, [props.onReset]);
 
   return (
-    <div className='emoji-wrapper'>
-      {visible ?
+    <div className="emoji-wrapper">
+      {visible ? (
         <EmojiPicker
           perLine={10}
           sheetSize={props.size || 32}
@@ -125,11 +124,14 @@ export const Picker: React.FC<React.PropsWithChildren<Record<any, any>>> = (prop
           backgroundImageFn={() => getEmojiSource(props.set, props.sheetSize)}
           i18n={i18n}
           {...props}
-        /> : <div style={{ margin: 16 }}>
-          <Skeleton width='38%' />
+        />
+      ) : (
+        <div style={{ margin: 16 }}>
+          <Skeleton width="38%" />
           <Skeleton count={2} />
-          <Skeleton width='61%' />
-        </div>}
+          <Skeleton width="61%" />
+        </div>
+      )}
     </div>
   );
 };

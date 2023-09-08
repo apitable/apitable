@@ -43,14 +43,12 @@ export const expandRecordPicker = (props: IRecordPickerProps) => {
     datasheetId,
     isSingle,
     onClose,
-    onSave
+    onSave,
   };
 
   root.render(
     <Provider store={store}>
-      <RecordPicker
-        {...pickerProps}
-      >
+      <RecordPicker {...pickerProps}>
         <div
           ref={focusHolderRef}
           tabIndex={-1}
@@ -59,6 +57,6 @@ export const expandRecordPicker = (props: IRecordPickerProps) => {
           }}
         />
       </RecordPicker>
-    </Provider>
+    </Provider>,
   );
 };

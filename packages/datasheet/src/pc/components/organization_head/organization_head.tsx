@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
-import styles from './style.module.less';
-import { Tooltip } from '../common/tooltip';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { Tooltip } from '../common/tooltip';
+import styles from './style.module.less';
 
 export interface IOrganizationHeadProps {
   className?: string;
@@ -28,22 +28,16 @@ export interface IOrganizationHeadProps {
 }
 
 export const OrganizationHead: React.FC<React.PropsWithChildren<IOrganizationHeadProps>> = ({ className, hideTooltip = false }) => {
-  const spaceName = useSelector(state => state.space.curSpaceInfo?.spaceName);
+  const spaceName = useSelector((state) => state.space.curSpaceInfo?.spaceName);
   return (
     <div className={classnames(styles.organization, className)}>
-      {
-        hideTooltip
-          ?
-          <h2 className={styles.orgName}>
-            {spaceName}
-          </h2>
-          :
-          <Tooltip title={spaceName} textEllipsis>
-            <h2 className={styles.orgName}>
-              {spaceName}
-            </h2>
-          </Tooltip>
-      }
+      {hideTooltip ? (
+        <h2 className={styles.orgName}>{spaceName}</h2>
+      ) : (
+        <Tooltip title={spaceName} textEllipsis>
+          <h2 className={styles.orgName}>{spaceName}</h2>
+        </Tooltip>
+      )}
     </div>
   );
 };

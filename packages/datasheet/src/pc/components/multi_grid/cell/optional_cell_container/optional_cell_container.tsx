@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { RowHeightLevel } from '@apitable/core';
 import classNames from 'classnames';
 import * as React from 'react';
+import { RowHeightLevel } from '@apitable/core';
 import styles from './style.module.less';
 interface IOptionalCellContainerProps {
   displayMinWidth: boolean;
@@ -27,18 +27,23 @@ interface IOptionalCellContainerProps {
   className?: string;
 }
 
-export const OptionalCellContainer: React.FC<React.PropsWithChildren<IOptionalCellContainerProps>> = props => {
+export const OptionalCellContainer: React.FC<React.PropsWithChildren<IOptionalCellContainerProps>> = (props) => {
   const { children, className, displayMinWidth, viewRowHeight, ...rest } = props;
 
-  return <div
-    className={classNames({
-      [styles.optionCellContainer]: true,
-      [styles.minWidth]: displayMinWidth,
-      [styles.rowHeightHigh]: viewRowHeight && viewRowHeight !== RowHeightLevel.Short,
-    }, className, 'optionCellContainer')}
-    
-    {...rest}
-  >
-    {children}
-  </div>;
+  return (
+    <div
+      className={classNames(
+        {
+          [styles.optionCellContainer]: true,
+          [styles.minWidth]: displayMinWidth,
+          [styles.rowHeightHigh]: viewRowHeight && viewRowHeight !== RowHeightLevel.Short,
+        },
+        className,
+        'optionCellContainer',
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
 };

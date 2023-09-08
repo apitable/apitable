@@ -83,4 +83,3 @@ export const Message = {
   loading,
   destroy,
 };
-

@@ -17,12 +17,12 @@
  */
 
 import dynamic from 'next/dynamic';
+import { FC, memo, useContext } from 'react';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { Icon, IconType, Image, Rect, Text } from 'pc/components/konva_components';
 import { KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, memo, useContext } from 'react';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/circle'), { ssr: false });
@@ -49,30 +49,16 @@ interface IAvatarProps {
 
 export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) => {
   const ratio = Math.max(window.devicePixelRatio, 2);
-  const {
-    x = 0,
-    y = 0,
-    src,
-    title,
-    isGzip = true,
-    id,
-    bgColor,
-    size = AvatarSize.Size32,
-    type = AvatarType.Member,
-    isDefaultIcon,
-  } = props;
+  const { x = 0, y = 0, src, title, isGzip = true, id, bgColor, size = AvatarSize.Size32, type = AvatarType.Member, isDefaultIcon } = props;
   const { theme } = useContext(KonvaGridContext);
   const { cacheTheme } = useContext(KonvaGridViewContext);
   const colors = theme.color;
   if (title == null || id == null) return null;
 
-  const avatarSrc = isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? 
-    `${src}?imageView2/1/w/${size * ratio}/q/100!` : 
-    (src || '');
+  const avatarSrc =
+    isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${src}?imageView2/1/w/${size * ratio}/q/100!` : src || '';
   const firstWord = getFirstWordFromString(title.trim());
-  const avatarBg = (
-    avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0]
-  );
+  const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
 
   const renderer = () => {
     switch (type) {
@@ -90,93 +76,39 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
             />
           );
         }
-        return (
-          <Image
-            url={src}
-            width={size}
-            height={size}
-            alt=""
-            fill={getAvatarRandomColor(id)}
-          />
-        );
+        return <Image url={src} width={size} height={size} alt="" fill={getAvatarRandomColor(id)} />;
       }
       case AvatarType.Space: {
         if (!avatarSrc) {
           return (
             <>
-              <Rect
-                width={size}
-                height={size}
-                cornerRadius={4}
-              />
-              <Text
-                width={size}
-                height={size}
-                align={'center'}
-                text={firstWord.toUpperCase()}
-              />
+              <Rect width={size} height={size} cornerRadius={4} />
+              <Text width={size} height={size} align={'center'} text={firstWord.toUpperCase()} />
             </>
           );
         }
-        return (
-          <Image
-            url={avatarSrc}
-            width={size}
-            height={size}
-            fill={avatarBg}
-            alt=""
-          />
-        );
+        return <Image url={avatarSrc} width={size} height={size} fill={avatarBg} alt="" />;
       }
       case AvatarType.Member: {
         if (!avatarSrc && isDefaultIcon) {
-          return <Icon
-            type={IconType.MemberAvatar}
-            shape="circle"
-            size={size}
-            background={colors.rc01}
-          />;
+          return <Icon type={IconType.MemberAvatar} shape="circle" size={size} background={colors.rc01} />;
         }
         if (!avatarSrc && !isDefaultIcon) {
           const radius = size / 2;
           return (
             <>
-              <Circle
-                x={radius}
-                y={radius}
-                radius={radius}
-                fill={avatarBg}
-              />
-              <Text
-                width={size}
-                height={size}
-                align={'center'}
-                text={getFirstWordFromString(title)}
-                fill={colors.textStaticPrimary}
-              />
+              <Circle x={radius} y={radius} radius={radius} fill={avatarBg} />
+              <Text width={size} height={size} align={'center'} text={getFirstWordFromString(title)} fill={colors.textStaticPrimary} />
             </>
           );
         }
-        return (
-          <Image
-            url={avatarSrc}
-            shape={'circle'}
-            width={size}
-            height={size}
-            fill={avatarBg}
-            alt=""
-          />
-        );
+        return <Image url={avatarSrc} shape={'circle'} width={size} height={size} fill={avatarBg} alt="" />;
       }
     }
   };
 
   return (
-    <Group
-      x={x}
-      y={y}
-      listening={false}
-    >
+    <Group x={x} y={y} listening={false}>
       {renderer()}
     </Group>
   );

@@ -25,7 +25,4 @@ const APITable = {
   t,
 };
 
-export {
-  APITable,
-};
-
+export { APITable };

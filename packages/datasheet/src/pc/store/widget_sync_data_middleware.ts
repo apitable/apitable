@@ -1,13 +1,6 @@
 import { Middleware, AnyAction, MiddlewareAPI, Dispatch } from 'redux';
-import {
-  IReduxState, ActionConstants, Selectors
-} from '@apitable/core';
-import {
-  aggregationWidgetPermission,
-  eventMessage,
-  mainMessage,
-  setPermissionAction
-} from '@apitable/widget-sdk';
+import { IReduxState, ActionConstants, Selectors } from '@apitable/core';
+import { aggregationWidgetPermission, eventMessage, mainMessage, setPermissionAction } from '@apitable/widget-sdk';
 import { getDependenceDstIds } from 'pc/utils/dependence_dst';
 import { CONST_BATCH_ACTIONS } from './view_derivation_middleware';
 
@@ -51,12 +44,12 @@ const syncActionBroadcast = (action: AnyAction) => {
 
 const syncActionDatasheet = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, action: AnyAction) => {
   mainMessage.widgets.forEach((_widget, widgetId) => {
-    const subscribeDstIds = _widget.subscribeViews.map(v => v.datasheetId);
+    const subscribeDstIds = _widget.subscribeViews.map((v) => v.datasheetId);
     const dstIds = new Set([_widget.bindDatasheetId, ...subscribeDstIds]);
     if (action.datasheetId) {
       const state = store.getState();
       const dependenceDstIds = getDependenceDstIds(state, action.datasheetId);
-      const needEmit = [...dstIds].find(dstId => dependenceDstIds?.includes(dstId) || dstId === action.datasheetId);
+      const needEmit = [...dstIds].find((dstId) => dependenceDstIds?.includes(dstId) || dstId === action.datasheetId);
       needEmit && mainMessage.syncAction(widgetId, action);
     }
   });
@@ -70,11 +63,11 @@ const syncActionDatasheet = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxSta
 
 type IUpdateWidgetAction = AnyAction;
 
-export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => next => (action: IUpdateWidgetAction) => {
+export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = (store) => (next) => (action: IUpdateWidgetAction) => {
   next(action);
-  
+
   const handleActions = (action: IUpdateWidgetAction) => {
-    switch(action.type) {
+    switch (action.type) {
       case ActionConstants.SET_DASHBOARD_DATA:
       case ActionConstants.UPDATE_DASHBOARD: {
         // permission update
@@ -165,10 +158,10 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = store => ne
     }
   };
 
-  switch(action.type) {
-    case CONST_BATCH_ACTIONS:{
+  switch (action.type) {
+    case CONST_BATCH_ACTIONS: {
       const actions = action.payload as IUpdateWidgetAction[];
-      actions.forEach(actionItem => {
+      actions.forEach((actionItem) => {
         switch (actionItem.type) {
           case ActionConstants.DATAPACK_LOADED: {
             handleActions(actionItem);

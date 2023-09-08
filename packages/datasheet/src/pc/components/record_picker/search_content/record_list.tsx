@@ -1,9 +1,9 @@
+import React, { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List, Align } from 'react-window';
-import React, { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
+import { IFieldMap, IViewColumn, IViewRow } from '@apitable/core';
 import { Row } from './row';
 import styles from './style.module.less';
-import { IFieldMap, IViewColumn, IViewRow } from '@apitable/core';
 
 interface IRecordListProps {
   datasheetId: string;
@@ -17,16 +17,7 @@ interface IRecordListProps {
 }
 
 const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (props, ref) => {
-  const {
-    datasheetId,
-    rows,
-    columns,
-    fieldMap,
-    selectedRecordIds,
-    selectable = true,
-    focusIndex,
-    onClick,
-  } = props;
+  const { datasheetId, rows, columns, fieldMap, selectedRecordIds, selectable = true, focusIndex, onClick } = props;
   const listRef = useRef<List>(null);
 
   const selectedSet = useMemo(() => new Set(selectedRecordIds), [selectedRecordIds]);

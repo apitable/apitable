@@ -51,8 +51,7 @@ export type IPathSchema<T = any> = IFieldPath & {
 };
 
 export interface IWidgetProps
-  extends Pick<React.HTMLAttributes<HTMLElement>,
-    Exclude<keyof React.HTMLAttributes<HTMLElement>, 'onBlur' | 'onFocus'>> {
+  extends Pick<React.HTMLAttributes<HTMLElement>, Exclude<keyof React.HTMLAttributes<HTMLElement>, 'onBlur' | 'onFocus'>> {
   id: string;
   schema: JSONSchema7;
   uiSchema: IUiSchema;
@@ -248,7 +247,7 @@ export type IThemeProps<T = any> = Omit<IFormProps<T>, 'schema'>;
 export interface INodeSchema {
   // Description of the node data type
   schema: JSONSchema7;
-  // An extension to IJsonSchema. The ui of the control form, i.e. the uiSchema in the react json schema form, 
+  // An extension to IJsonSchema. The ui of the control form, i.e. the uiSchema in the react json schema form,
   // is placed here in the schema of the described data.
   uiSchema?: object;
 }

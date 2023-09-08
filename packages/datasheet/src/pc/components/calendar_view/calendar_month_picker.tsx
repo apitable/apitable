@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
 import dayjs from 'dayjs';
+import { get } from 'lodash';
 import { useState } from 'react';
+import { getLanguage } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import MonthPicker from '../editors/date_time_editor/date_picker/month_picker';
+import { PickerContent } from '../editors/date_time_editor/mobile/picker_content';
 import { FORMAT_DATE } from './constants';
 import { formatString2Date } from './utils';
-import { PickerContent } from '../editors/date_time_editor/mobile/picker_content';
-import MonthPicker from '../editors/date_time_editor/date_picker/month_picker';
-import { useClickAway } from 'ahooks';
-import { get } from 'lodash';
-import { getLanguage } from '@apitable/core';
 interface ICalendarMonthPicker {
   showValue: string;
   setDate: (date: dayjs.Dayjs | null) => void;
@@ -40,7 +40,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
   const [open, setOpen] = useState(false);
 
   useClickAway(
-    event => {
+    (event) => {
       const targetCls = get(event, 'target.className');
       if (targetCls && typeof targetCls === 'string' && targetCls.includes('cp-calendar')) {
         return;
@@ -61,7 +61,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
             offset: [-8, 31],
           }}
           value={dayjs(formatString2Date(showValue))}
-          onChange={val => {
+          onChange={(val) => {
             setDate(val);
             setOpen(!open);
           }}
@@ -79,7 +79,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
           mode="month"
           editable
           visible={open}
-          onChange={val => {
+          onChange={(val) => {
             setDate(dayjs(val));
             setOpen(!open);
           }}

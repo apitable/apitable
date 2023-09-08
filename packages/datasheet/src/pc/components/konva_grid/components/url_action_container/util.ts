@@ -10,7 +10,7 @@ export const formatValue = (text: string | undefined, title: string | undefined,
   } = {
     type: SegmentType.Text,
     text: text || title,
-    title: title || text
+    title: title || text,
   };
   if (favicon) {
     item.favicon = favicon;

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IRightClickInfo } from '@apitable/core';
 import * as React from 'react';
+import { IRightClickInfo } from '@apitable/core';
 
 export interface IWorkbenchSideContext {
   rightClickInfo: IRightClickInfo | null;

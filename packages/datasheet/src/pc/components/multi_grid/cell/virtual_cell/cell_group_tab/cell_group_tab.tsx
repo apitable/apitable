@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IGroupInfo, ILinearRowGroupTab } from '@apitable/core';
 import classNames from 'classnames';
+import * as React from 'react';
+import { colorVars } from '@apitable/components';
+import { IGroupInfo, ILinearRowGroupTab } from '@apitable/core';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
 // FIXME:THEME
-import { colorVars } from '@apitable/components';
 import { GROUP_TITLE } from 'pc/utils';
-import * as React from 'react';
 import { useShowKeepSortBorder } from '../../hooks';
 import { useIsGroupCollapsing } from '../../hooks/use_is_group_collapsing';
 import styles from '../../styles.module.less';
-import { GroupTab } from './group_tab/group_tab';
 import { GROUP_HEIGHT } from './constant';
+import { GroupTab } from './group_tab/group_tab';
 
 export function groupColor(level: number) {
   if (level === 1) {
@@ -51,7 +51,7 @@ interface ICellGroupTab {
 export const GRAY_COLOR_BORDER = ' 1px solid ' + colorVars.sheetLineColor;
 export const PRIMARY_COLOR_BORDER = ' 1px solid ' + colorVars.primaryColor;
 
-export const CellGroupTab: React.FC<React.PropsWithChildren<ICellGroupTab>> = React.memo(props => {
+export const CellGroupTab: React.FC<React.PropsWithChildren<ICellGroupTab>> = React.memo((props) => {
   const { actualColumnIndex, row, style, columnsLength, groupInfo, isSort } = props;
   // const groupingCollapseMap = useSelector(state => Selectors.getGroupingCollapseMap(state));
   let width = parseInt(style.width as string, 10);

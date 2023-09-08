@@ -16,20 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IShareInfo } from '@apitable/core';
 import axios from 'axios';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
-import { getRegResult, shareIdReg } from 'pc/hooks';
 import React from 'react';
+import { Api, IShareInfo } from '@apitable/core';
+import { getRegResult, shareIdReg } from 'pc/hooks';
 import { getBaseUrl } from '../../utils/get_base_url';
 
 const DynamicComponentWithNoSSR = dynamic(() => import('../../src/pc/components/share/share'), { ssr: false });
 
 const App = (props: { shareInfo: Required<IShareInfo> | undefined }) => {
-  return <>
-    <DynamicComponentWithNoSSR {...props} />
-  </>;
+  return (
+    <>
+      <DynamicComponentWithNoSSR {...props} />
+    </>
+  );
 };
 
 export const getServerSideProps = async(context: NextPageContext) => {
@@ -59,14 +61,13 @@ export const getServerSideProps = async(context: NextPageContext) => {
   if (success) {
     return {
       props: {
-        shareInfo: data
-      }
+        shareInfo: data,
+      },
     };
   }
   return {
-    props: {}
+    props: {},
   };
 };
 
 export default App;
-

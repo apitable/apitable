@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, ICellValue, ISelectFieldOption, Strings, t } from '@apitable/core';
 import { Checkbox, Radio } from 'antd';
 import { CheckboxValueType } from 'antd/es/checkbox/Group';
 import classnames from 'classnames';
+import * as React from 'react';
+import { forwardRef, memo, useImperativeHandle, useState } from 'react';
+import { FieldType, ICellValue, ISelectFieldOption, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { OptionTag } from 'pc/components/list';
 import { useResponsive } from 'pc/hooks';
-import * as React from 'react';
-import { forwardRef, memo, useImperativeHandle, useState } from 'react';
 import styles from './style.module.less';
 
 interface IOptionFieldEditorProps extends IBaseEditorProps {
@@ -45,12 +45,9 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
   useImperativeHandle(
     ref,
     (): IEditor => ({
-      focus: () => {
-      },
-      onEndEdit: () => {
-      },
-      onStartEdit: () => {
-      },
+      focus: () => {},
+      onEndEdit: () => {},
+      onStartEdit: () => {},
       setValue: (value?: string | string[] | null) => {
         setValue((value || defaultValue) as CheckboxValueType[]);
       },
@@ -99,7 +96,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
       })}
     >
       {optionList.length ? (
-        <GroupComponent value={isSingleSelect && value?.length === 1 ? value[0] as any : value} onChange={onChange}>
+        <GroupComponent value={isSingleSelect && value?.length === 1 ? (value[0] as any) : value} onChange={onChange}>
           {optionList.map((option: ISelectFieldOption) => {
             return (
               <div className={styles.optionItemWrapper} key={option.id}>
@@ -115,7 +112,7 @@ const OptionFieldEditorBase: React.ForwardRefRenderFunction<IEditor, IOptionFiel
                     }
                   }}
                 >
-                  <OptionTag option={option} style={commonStyle} className='optionFieldTag' ellipsis={!isMobile} />
+                  <OptionTag option={option} style={commonStyle} className="optionFieldTag" ellipsis={!isMobile} />
                 </ChildComponent>
               </div>
             );

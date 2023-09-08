@@ -16,9 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import Calendar from 'dayjs/plugin/calendar';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import parser, { HTMLReactParserOptions } from 'html-react-parser';
+import { isArray } from 'lodash';
 import { FC } from 'react';
 import * as React from 'react';
-import parser, { HTMLReactParserOptions } from 'html-react-parser';
+import ReactDOMServer from 'react-dom/server';
 import {
   getTimeZone,
   getTimeZoneAbbrByUtc,
@@ -33,19 +39,13 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
-import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { UserCardTrigger } from 'pc/components/common';
-import classNames from 'classnames';
+import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import Calendar from 'dayjs/plugin/calendar';
-import { isArray } from 'lodash';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
-import ReactDOMServer from 'react-dom/server';
-import { getEnvVariables } from 'pc/utils/env';
 
 const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
@@ -162,13 +162,13 @@ const renderUser = (info: IFromUserInfo, spaceName: string) => {
         permissionVisible={false}
       >
         <div className={styles.unitTagWrap}>
-          <UnitTag 
-            {...unitTagBase} 
-            unitId={info.uuid} 
-            avatar={info.avatar} 
+          <UnitTag
+            {...unitTagBase}
+            unitId={info.uuid}
+            avatar={info.avatar}
             avatarColor={info.avatarColor}
             nickName={info.nickName}
-            name={info.userName || t(Strings.guests_per_space)} 
+            name={info.userName || t(Strings.guests_per_space)}
           />
         </div>
       </UserCardTrigger>
@@ -181,23 +181,23 @@ export const renderMember = (info: IFromUserInfo, spaceName: string, spaceInfo?:
   if (isDeleted) {
     return (
       <div className={unitTagWrapClasses}>
-        <UnitTag 
-          {...unitTagBase} 
-          unitId={info.memberId} 
-          avatar={info.avatar} 
+        <UnitTag
+          {...unitTagBase}
+          unitId={info.memberId}
+          avatar={info.avatar}
           avatarColor={info.avatarColor}
           nickName={info.nickName}
-          name={info.memberName || info.userName || t(Strings.unnamed)} 
+          name={info.memberName || info.userName || t(Strings.unnamed)}
         />
       </div>
     );
   }
   const title = spaceInfo
-    ? (getSocialWecomUnitName?.({
+    ? getSocialWecomUnitName?.({
       name: info?.memberName,
       isModified: info?.isMemberNameModified,
       spaceInfo,
-    }) || info?.memberName)
+    }) || info?.memberName
     : undefined;
   return (
     <div {...triggerWrapBase}>
@@ -270,7 +270,6 @@ const abbr = getTimeZoneAbbrByUtc(timeZone)!;
 
 // spaceName is the space to which the current notification belongs
 export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBodyOptions) => {
-
   const pureString = options ? options.pureString : false;
   const spaceInfo = options ? options.spaceInfo : null;
 
@@ -386,10 +385,18 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
           return <b>&nbsp;{payFee}</b>;
         }
         case TemplateKeyword.ExpireAt: {
-          return <b>&nbsp;{dayjs(Number(expireAt)).tz(timeZone).format('YYYY-MM-DD')}({abbr})</b>;
+          return (
+            <b>
+              &nbsp;{dayjs(Number(expireAt)).tz(timeZone).format('YYYY-MM-DD')}({abbr})
+            </b>
+          );
         }
         case TemplateKeyword.TaskExpireAt: {
-          return <b>&nbsp;{dayjs(Number(taskExpireAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})</b>;
+          return (
+            <b>
+              &nbsp;{dayjs(Number(taskExpireAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
+            </b>
+          );
         }
         case TemplateKeyword.FeatureName: {
           return <b>{featureName}</b>;
@@ -473,13 +480,14 @@ export const commentContentFormat = (commentContent: string, spaceInfo?: ISpaceI
   let content = commentContent;
   if (isSocialWecom?.(spaceInfo) && commentContent && spaceInfo) {
     const contentMatchArr = commentContent.match(/@(\$userName=)[a-zA-Z0-9-_]+?(\$)/g);
-    contentMatchArr?.forEach(matchString => {
+    contentMatchArr?.forEach((matchString) => {
       const name = matchString.replace(/(@(\$userName=))|(\$)/g, '');
-      const title = getSocialWecomUnitName?.({
-        name,
-        isModified: false,
-        spaceInfo,
-      }) || name;
+      const title =
+        getSocialWecomUnitName?.({
+          name,
+          isModified: false,
+          spaceInfo,
+        }) || name;
       // Convert the @$userName=wpOhr1DQAAwS6hkj_EMauEI4ljF-nAgQ$ format to the Enterprise Micro component
       content = content.replace(matchString, `${typeof title === 'string' ? title : '@' + ReactDOMServer.renderToStaticMarkup(title)}`);
     });

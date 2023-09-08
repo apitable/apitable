@@ -27,4 +27,3 @@ let _browser;
   }
 })();
 export const browser = _browser;
-

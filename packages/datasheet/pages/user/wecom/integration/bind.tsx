@@ -21,9 +21,11 @@ import React from 'react';
 import { WecomIntegration, WecomIntegrationBind } from 'enterprise';
 
 const App = () => {
-  return <WecomIntegration>
-    <WecomIntegrationBind />
-  </WecomIntegration>;
+  return (
+    <WecomIntegration>
+      <WecomIntegrationBind />
+    </WecomIntegration>
+  );
 };
 
 export default App;

@@ -37,26 +37,8 @@ export interface IImageProps extends ShapeConfig {
 }
 
 export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props) => {
-  const {
-    name,
-    url,
-    shape = 'square',
-    width = 0,
-    height = 0,
-    x = 0,
-    y = 0,
-    stroke,
-    strokeWidth,
-    listening,
-    failedDisplay,
-    ...rest
-  } = props;
-  const {
-    image,
-    width: imageWidth,
-    height: imageHeight,
-    status,
-  } = useImage({ url });
+  const { name, url, shape = 'square', width = 0, height = 0, x = 0, y = 0, stroke, strokeWidth, listening, failedDisplay, ...rest } = props;
+  const { image, width: imageWidth, height: imageHeight, status } = useImage({ url });
 
   const imageRef = useRef<any>();
 
@@ -79,9 +61,12 @@ export const Image: React.FC<React.PropsWithChildren<IImageProps>> = memo((props
     <Group
       x={x}
       y={y}
-      clipFunc={shape === 'circle' ? (ctx: {
-        arc: (arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: boolean) => any;
-      }) => ctx.arc(size, size, size, 0, Math.PI * 2, false) : undefined}
+      clipFunc={
+        shape === 'circle'
+          ? (ctx: { arc: (arg0: number, arg1: number, arg2: number, arg3: number, arg4: number, arg5: boolean) => any }) =>
+            ctx.arc(size, size, size, 0, Math.PI * 2, false)
+          : undefined
+      }
       listening={listening}
     >
       <ImageComponent

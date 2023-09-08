@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
+import { FC, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { useSelector } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { CloseOutlined, Star2Filled, UserAddOutlined } from '@apitable/icons';
-import classnames from 'classnames';
 import { ButtonPlus, Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSpaceRequest } from 'pc/hooks';
-import { FC, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 export interface IApplicationJoinSpaceAlertProps {
@@ -37,7 +37,9 @@ export interface IApplicationJoinSpaceAlertProps {
 }
 
 export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJoinSpaceAlertProps>> = ({
-  spaceId, spaceName, defaultVisible = true
+  spaceId,
+  spaceName,
+  defaultVisible = true,
 }) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
@@ -55,7 +57,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
           className={classnames(styles.joinBtn, minimized && !isMobile && styles.fadeIn)}
           onClick={() => applicationJoinHandler()}
           icon={<UserAddOutlined size={24} color={colors.secondLevelText} />}
-          size='small'
+          size="small"
           shadow
         />,
         container,
@@ -100,9 +102,9 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
         <div className={styles.container}>
           <span className={styles.text}>{t(Strings.apply_join_space_alert_text)}</span>
           <Button
-            color='warning'
+            color="warning"
             size={isMobile ? 'small' : 'middle'}
-            prefixIcon={!isMobile && <Star2Filled color='#FFEB3A' />}
+            prefixIcon={!isMobile && <Star2Filled color="#FFEB3A" />}
             className={styles.applicationBtn}
             onClick={applicationJoinHandler}
             shape={isMobile ? 'round' : undefined}

@@ -16,19 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { black, ILightOrDarkThemeColors } from '@apitable/components';
-import {
-  Field, getFieldResultByStatType, Group as GroupClass, ILinearRow, KONVA_DATASHEET_ID, Selectors, StatType, Strings, t, ViewType
-} from '@apitable/core';
-import { TriangleDownFilled } from '@apitable/icons';
 import { intersection } from 'lodash';
 import dynamic from 'next/dynamic';
+import { FC, memo, useCallback, useContext, useMemo, useState } from 'react';
+import { black, ILightOrDarkThemeColors } from '@apitable/components';
+import {
+  Field,
+  getFieldResultByStatType,
+  Group as GroupClass,
+  ILinearRow,
+  KONVA_DATASHEET_ID,
+  Selectors,
+  StatType,
+  Strings,
+  t,
+  ViewType,
+} from '@apitable/core';
+import { TriangleDownFilled } from '@apitable/icons';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
 import { GRID_ICON_COMMON_SIZE, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { getFieldStatType, hasLargeSelection } from 'pc/components/multi_grid/cell/stat_option';
 import { store } from 'pc/store';
-import { FC, memo, useCallback, useContext, useMemo, useState } from 'react';
 
 const TriangleDown16FilledPath = TriangleDownFilled.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -72,7 +81,7 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
     permissions,
     view,
     mirrorId,
-    isManualSaveView
+    isManualSaveView,
   } = useContext(KonvaGridViewContext);
   const field = fieldMap[fieldId];
   const statType = getFieldStatType(state, fieldId);
@@ -100,10 +109,10 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
     if (isGroupStat) {
       const groupSketch = new GroupClass(groupInfo, groupBreakpoint);
       // The statistics column for the grouping, showing the records under the grouping
-      res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map(row => row.recordId);
+      res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map((row) => row.recordId);
     }
     return res;
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [visibleRecordIds, isGroupStat, groupInfo, groupBreakpoint, row]);
 
   /**
@@ -126,13 +135,7 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
     if (!statType) {
       return t(Strings.statistics);
     }
-    const count = getFieldResultByStatType(
-      statType!,
-      multiSelection || getStatRecordIds(),
-      field,
-      snapshot,
-      state,
-    );
+    const count = getFieldResultByStatType(statType!, multiSelection || getStatRecordIds(), field, snapshot, state);
     if (statType === StatType.CountAll) {
       return t(Strings.records_of_count, {
         count,
@@ -170,33 +173,21 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
   const name = generateTargetName({
     targetName: recordId ? KONVA_DATASHEET_ID.GRID_GROUP_STAT : KONVA_DATASHEET_ID.GRID_BOTTOM_STAT,
     fieldId,
-    recordId
+    recordId,
   });
 
   return (
-    <Group
-      x={finalX}
-      y={y}
-      onMouseEnter={() => onMouseEnter()}
-      onMouseLeave={() => setCurrent(false)}
-    >
+    <Group x={finalX} y={y} onMouseEnter={() => onMouseEnter()} onMouseLeave={() => setCurrent(false)}>
       <Rect
         name={getStatClickStatus() ? name : undefined}
         y={recordId ? 1 : 0}
         width={finalWidth}
         height={recordId ? height - 1 : height}
-        fill={isCurrent ? colors.rowSelectedBgSolid : (background || colors.defaultBg)}
+        fill={isCurrent ? colors.rowSelectedBgSolid : background || colors.defaultBg}
       />
-      {
-        (statType || isCurrent) &&
+      {(statType || isCurrent) && (
         <>
-          <Text
-            width={finalWidth - 20}
-            height={height}
-            text={statText}
-            align={'right'}
-            fill={colors.thirdLevelText}
-          />
+          <Text width={finalWidth - 20} height={height} text={statText} align={'right'} fill={colors.thirdLevelText} />
           <Icon
             x={finalWidth - 20}
             y={(height - GRID_ICON_COMMON_SIZE) / 2 + 3}
@@ -208,7 +199,7 @@ export const Stat: FC<React.PropsWithChildren<IStatProps>> = memo((props) => {
             listening={false}
           />
         </>
-      }
+      )}
     </Group>
   );
 });

@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IconButton, useThemeColors } from '@apitable/components';
-import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@apitable/core';
-import { CloseOutlined, ListOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-// @ts-ignore
-import { AccountWallet, isSocialWecom } from 'enterprise';
-import { usePlatform } from 'pc/hooks/use_platform';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { compact } from 'lodash';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { IconButton, useThemeColors } from '@apitable/components';
+import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@apitable/core';
+import { CloseOutlined, ListOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useResponsive } from 'pc/hooks';
+import { usePlatform } from 'pc/hooks/use_platform';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { AccountManager } from './account_manager';
 import { BasicSetting } from './basic_setting';
 import { DeveloperConfiguration } from './developer_configuration';
@@ -36,8 +36,8 @@ import { ModifyPassword } from './modify_password';
 import { Nav } from './nav';
 import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
-import { useResponsive } from 'pc/hooks';
-import { compact } from 'lodash';
+// @ts-ignore
+import { AccountWallet, isSocialWecom } from 'enterprise';
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',
@@ -54,12 +54,12 @@ export interface IAccountCenterModalProps {
   setShowAccountCenter: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalProps>> = props => {
+export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalProps>> = (props) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const colors = useThemeColors();
-  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || ((isPrivateDeployment() && isMobile) ? 1 : 0));
+  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || (isPrivateDeployment() && isMobile ? 1 : 0));
   const [showNav, setShowNav] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const { socialLinkDisable } = getCustomConfig();
@@ -129,7 +129,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           <ListOutlined size={20} color={onClickNav ? colors.fc1 : colors.white} />
         </div>
         <span>{title}</span>
-        <IconButton icon={CloseOutlined} onClick={onClose} size='large' />
+        <IconButton icon={CloseOutlined} onClick={onClose} size="large" />
       </div>
     );
   };
@@ -175,7 +175,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           open
           maskClosable
           closable={false}
-          placement='bottom'
+          placement="bottom"
           bodyStyle={{
             padding: 16,
           }}
@@ -183,7 +183,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           {listData[activeItem].component}
           <Drawer
             visible={showNav}
-            placement='left'
+            placement="left"
             closable={false}
             title={<CustomTitle title={listData[activeItem].name} onClose={() => setShowNav(false)} />}
             onClose={() => setShowNav(false)}
@@ -193,7 +193,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
           >
             <Nav
               activeItem={activeItem}
-              setActiveItem={index => {
+              setActiveItem={(index) => {
                 setActiveItem(index);
                 setShowNav(false);
               }}

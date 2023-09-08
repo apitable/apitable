@@ -22,12 +22,21 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
+import ErrorPage from 'error_page';
+import * as immer from 'immer';
 import { merge } from 'lodash';
+import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import reportWebVitals from 'reportWebVitals';
 import {
   Api,
   getTimeZone,
@@ -44,11 +53,7 @@ import {
 } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
-import ErrorPage from 'error_page';
-import { init as initPlayer } from 'modules/shared/player/init';
-import Script from 'next/script';
 import 'normalize.css';
-import reportWebVitals from 'reportWebVitals';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
@@ -58,8 +63,6 @@ import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getEnvVariables, getReleaseVersion } from 'pc/utils/env';
 import { initWorkerStore } from 'pc/worker';
-import { Provider } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import 'prismjs/themes/prism.css';
 import 'rc-swipeout/assets/index.css';
 import 'rc-trigger/assets/index.css';
@@ -79,15 +82,11 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
-import * as immer from 'immer';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
-
 
 if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
@@ -98,7 +97,7 @@ if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
     // Disable in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
-    }
+    },
   });
 }
 
@@ -107,13 +106,13 @@ export interface IUserInfoError {
   message: string;
 }
 
-const initWorker = async() => {
+const initWorker = async () => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
   const resourceService = initResourceService(comlinkStore.store!);
   initEventListen(resourceService);
-  if (getBrowserDatabusApiEnabled()){
+  if (getBrowserDatabusApiEnabled()) {
     await WasmApi.initializeDatabusWasm();
   } else {
     console.log('web assembly is not supported');
@@ -121,7 +120,6 @@ const initWorker = async() => {
 };
 
 immer.setAutoFreeze(false);
-
 (() => {
   if (!process.env.SSR) {
     console.log('start init web');
@@ -133,7 +131,7 @@ immer.setAutoFreeze(false);
 enum LoadingStatus {
   None,
   Start,
-  Complete
+  Complete,
 }
 
 function MyApp(props: AppProps & { envVars: string }) {
@@ -158,9 +156,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   const [userLoading, setUserLoading] = useState(true);
 
   useLayoutEffect(() => {
-    window.parent.postMessage({
-      message: 'pageLoaded',
-    }, '*');
+    window.parent.postMessage(
+      {
+        message: 'pageLoaded',
+      },
+      '*',
+    );
   }, []);
 
   useEffect(() => {
@@ -190,10 +191,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       // Compatible with previous loading animation, private cloud retention
       // const ldsEle = document.querySelector('.lds-ripple');
       // ldsEle?.parentNode?.removeChild(ldsEle);
-
     };
     const handleComplete = () => {
-
       if (loading !== LoadingStatus.Start) {
         return;
       }
@@ -217,14 +216,14 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, [loading]);
 
   useEffect(() => {
-    const getUser = async() => {
+    const getUser = async () => {
       const pathUrl = window.location.pathname;
       const query = new URLSearchParams(window.location.search);
       const spaceId = query.get('spaceId') || getRegResult(pathUrl, spaceIdReg) || '';
       const res = await axios.get('/client/info', {
         params: {
-          spaceId
-        }
+          spaceId,
+        },
       });
       let userInfo = JSON.parse(res.data.userInfo);
       setUserData(userInfo);
@@ -238,15 +237,13 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
        */
       if (
         pathUrl &&
-        (
-          pathUrl.startsWith('/workbench') ||
+        (pathUrl.startsWith('/workbench') ||
           pathUrl.startsWith('/org') ||
           pathUrl.startsWith('/notification') ||
           pathUrl.startsWith('/management') ||
           pathUrl.includes('/tpl') ||
           pathUrl.includes('/space') ||
-          pathUrl.includes('/login')
-        ) &&
+          pathUrl.includes('/login')) &&
         (nodeId || spaceId)
       ) {
         const res = await Api.getUserMe({ nodeId, spaceId }, false);
@@ -257,7 +254,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         } else {
           userInfoError = {
             code,
-            message
+            message,
           };
         }
       }
@@ -322,10 +319,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    (function() {
+    (function () {
       const _Worker = window.Worker;
       if (typeof _Worker === 'function') {
-        window.Worker = function(url: string, opts: any) {
+        window.Worker = function (url: string, opts: any) {
           if (url.startsWith('//')) {
             url = `${window.location.protocol}${url}`;
           } else if (url.startsWith('/')) {
@@ -369,7 +366,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       // set default timeZone
       if (curTimezone === null) {
         updateUserTimeZone(timeZone);
-      } else if (curTimezone && curTimezone !== timeZone) { // update timeZone while client timeZone change
+      } else if (curTimezone && curTimezone !== timeZone) {
+        // update timeZone while client timeZone change
         updateUserTimeZone(timeZone, () => {
           Modal.warning({
             title: t(Strings.notify_time_zone_change_title),
@@ -377,7 +375,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             maskClosable: false,
             onOk: () => {
               window.location.reload();
-            }
+            },
           });
         });
       }
@@ -390,41 +388,39 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curTimezone]);
 
-  return <>
-    <Head>
-      <title>
-        {env.DEFAULT_TITLE_NAME || (env.IS_AITABLE ? 'AITable' : env.IS_APITABLE ? 'APITable' : 'vikadata')}
-      </title>
-      <meta name='description' content=''/>
-      <meta
-        name='keywords'
-        content='APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
-        数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具'
-      />
-      <meta name='renderer' content='webkit'/>
-      <meta
-        name='viewport'
-        content='width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
-      />
-      <meta name='theme-color' content='#000000'/>
-      {/* In the pinning browser, join the monitoring center */}
-      <meta name='wpk-bid' content='dta_2_83919'/>
-    </Head>
-    {
-      env.ENABLED_REWARDFUL && <>
-        <Script id={'rewardful'}>
-          {
-            `
+  return (
+    <>
+      <Head>
+        <title>{env.DEFAULT_TITLE_NAME || (env.IS_AITABLE ? 'AITable' : env.IS_APITABLE ? 'APITable' : 'vikadata')}</title>
+        <meta name="description" content="" />
+        <meta
+          name="keywords"
+          content="APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
+        数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具"
+        />
+        <meta name="renderer" content="webkit" />
+        <meta
+          name="viewport"
+          content="width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <meta name="theme-color" content="#000000" />
+        {/* In the pinning browser, join the monitoring center */}
+        <meta name="wpk-bid" content="dta_2_83919" />
+      </Head>
+      {env.ENABLED_REWARDFUL && (
+        <>
+          <Script id={'rewardful'}>
+            {`
         (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-        `
-          }
-        </Script>
-        <Script async src='https://r.wdfl.co/rw.js' data-rewardful='3a9927'/>
-      </>
-    }
+        `}
+          </Script>
+          <Script async src="https://r.wdfl.co/rw.js" data-rewardful="3a9927" />
+        </>
+      )}
 
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script strategy='lazyOnload' id={'error'}>
-      {`
+      {env.DINGTALK_MONITOR_PLATFORM_ID && (
+        <Script strategy="lazyOnload" id={'error'}>
+          {`
             window.addEventListener('error', function(event) {
             if (
               event.message.includes('ResizeObserver') ||
@@ -434,9 +430,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             }
           })
         `}
-    </Script>}
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script id={'userAgent'}>
-      {`
+        </Script>
+      )}
+      {env.DINGTALK_MONITOR_PLATFORM_ID && (
+        <Script id={'userAgent'}>
+          {`
           if (navigator.userAgent.toLowerCase().includes('dingtalk')) {
             !(function(c,i,e,b){var h=i.createElement("script");
             var f=i.getElementsByTagName("script")[0];
@@ -448,10 +446,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             h.src=e})(window,document,"https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js","__wpk");
           }
         `}
-    </Script>}
-    {/* script loading js */}
-    <Script id={'loadingAnimation'} strategy='lazyOnload'>
-      {`
+        </Script>
+      )}
+      {/* script loading js */}
+      <Script id={'loadingAnimation'} strategy="lazyOnload">
+        {`
           window._loading = new Date().getTime();
           const logoImg = document.querySelector('.script-loading-logo-img');
           window.requestAnimationFrame(() => {
@@ -469,64 +468,68 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
             }
           })
         `}
-    </Script>
-    {!env.IS_SELFHOST &&
-      <>
-        <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin'/>
-        <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin'/>
-      </>
-    }
-    {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js'/>}
-    {
-      env.GOOGLE_TAG_MANAGER_ID && <>
-        <Script id={'googleTag'}>
-          {`
+      </Script>
+      {!env.IS_SELFHOST && (
+        <>
+          <Script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" referrerPolicy="origin" />
+          <Script src="https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js" referrerPolicy="origin" />
+        </>
+      )}
+      {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js" />}
+      {env.GOOGLE_TAG_MANAGER_ID && (
+        <>
+          <Script id={'googleTag'}>
+            {`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer',window.__initialization_data__.envVars.GOOGLE_TAG_MANAGER_ID);
         `}
-        </Script>
-        <noscript>
-          <iframe src={`https://www.googletagmanager.com/ns.html?id=${env.GOOGLE_TAG_MANAGER_ID}`}
-            height='0' width='0' style={{ display: 'none', visibility: 'hidden' }}/>
-        </noscript>
-      </>
-    }
-    {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
-      <div className={'__next_main'}>
-        {!userLoading && <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
-          <PostHogProvider client={posthog}>
-            <Provider store={store}>
-              <RouterProvider>
-                <ThemeWrapper>
-                  <Component {...pageProps} userInfo={userData}/>
-                </ThemeWrapper>
-              </RouterProvider>
-            </Provider>
-          </PostHogProvider>
-        </div>}
-        {
-          <div
-            className={classNames(
-              'script-loading-wrap-default',
-              { 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }
-            )}>
+          </Script>
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${env.GOOGLE_TAG_MANAGER_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        </>
+      )}
+      {
+        <Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
+          <div className={'__next_main'}>
+            {!userLoading && (
+              <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
+                <PostHogProvider client={posthog}>
+                  <Provider store={store}>
+                    <RouterProvider>
+                      <ThemeWrapper>
+                        <Component {...pageProps} userInfo={userData} />
+                      </ThemeWrapper>
+                    </RouterProvider>
+                  </Provider>
+                </PostHogProvider>
+              </div>
+            )}
             {
-              ((loading !== LoadingStatus.Complete) || userLoading) &&
-              <div className='main-img-wrap' style={{ height: 'auto' }}>
-                <img src={integrateCdnHost(getEnvVariables().LOGO!)} className='script-loading-logo-img' alt='logo'/>
-                <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className='script-loading-logo-text-img'
-                  alt='logo_text_dark'/>
+              <div
+                className={classNames('script-loading-wrap-default', { 'script-loading-wrap': loading !== LoadingStatus.Complete || userLoading })}
+              >
+                {(loading !== LoadingStatus.Complete || userLoading) && (
+                  <div className="main-img-wrap" style={{ height: 'auto' }}>
+                    <img src={integrateCdnHost(getEnvVariables().LOGO!)} className="script-loading-logo-img" alt="logo" />
+                    <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className="script-loading-logo-text-img" alt="logo_text_dark" />
+                  </div>
+                )}
               </div>
             }
           </div>
-        }
-      </div>
-    </Sentry.ErrorBoundary>}
-
-  </>;
+        </Sentry.ErrorBoundary>
+      }
+    </>
+  );
 }
 
 /**

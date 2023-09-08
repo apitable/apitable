@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import styles from './style.module.less';
 import { get } from 'lodash';
-import { ReplyComment } from 'pc/components/expand_record/activity_pane/reply_comment';
 import { useContext } from 'react';
-import { ActivityContext } from 'pc/components/expand_record/activity_pane/activity_context';
-import { useRequest } from 'pc/hooks';
 import { DatasheetApi, IJOTAction } from '@apitable/core';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';
+import { ActivityContext } from 'pc/components/expand_record/activity_pane/activity_context';
+import { ReplyComment } from 'pc/components/expand_record/activity_pane/reply_comment';
+import { useRequest } from 'pc/hooks';
+import styles from './style.module.less';
 
 interface IReplyBox {
   action: number | IJOTAction;
-  handleEmoji: ( emojiKey: string) => void;
+  handleEmoji: (emojiKey: string) => void;
   datasheetId: string;
   expandRecordId: string;
 }
@@ -42,7 +42,7 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: I
 
     if (isDeleted) {
       return {
-        isDeleted
+        isDeleted,
       };
     }
 
@@ -58,7 +58,7 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: I
       return { blocks: [{ text: '' }] };
     }
 
-    getCommentsByIds(datasheetId, expandRecordId, commentId).then(res => {
+    getCommentsByIds(datasheetId, expandRecordId, commentId).then((res) => {
       if (!res || !res.data) {
         return;
       }
@@ -69,14 +69,16 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: I
     });
   };
 
-  return <div className={styles.comment}>
-    <ReplyComment reply={getReplyComment(action)} isStatic />
-    <SlateEditor
-      key={get(action, 'createdAt')}
-      initialValue={get(action, 'commentMsg.content')}
-      emojis={get(emojis, get(action, 'commentId'))}
-      handleEmoji={handleEmoji}
-      readOnly
-    />
-  </div>;
+  return (
+    <div className={styles.comment}>
+      <ReplyComment reply={getReplyComment(action)} isStatic />
+      <SlateEditor
+        key={get(action, 'createdAt')}
+        initialValue={get(action, 'commentMsg.content')}
+        emojis={get(emojis, get(action, 'commentId'))}
+        handleEmoji={handleEmoji}
+        readOnly
+      />
+    </div>
+  );
 };

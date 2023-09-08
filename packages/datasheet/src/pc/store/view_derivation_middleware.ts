@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import isEqual from 'lodash/isEqual';
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
+import { BatchAction } from 'redux-batched-actions';
 import {
   ActionConstants,
   IJOTActionPayload,
@@ -44,22 +47,27 @@ import {
   ViewDerivateFactory,
   IChangeViewAction,
 } from '@apitable/core';
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
-import { BatchAction } from 'redux-batched-actions';
-import isEqual from 'lodash/isEqual';
 
 type IUpdateDerivationAction =
-  BatchAction |
-  ILoadedDataPackAction | IJOTActionPayload | ISetGroupingCollapseAction | ISetActiveRowInfo |
-  IClearActiveRowInfo | ISetPageParamsAction | ITriggerViewDerivationComputed | StoreActions.ISetMirrorDataAction |
-  ICacheTemporaryView | ISetSearchKeyword | IChangeViewAction;
+  | BatchAction
+  | ILoadedDataPackAction
+  | IJOTActionPayload
+  | ISetGroupingCollapseAction
+  | ISetActiveRowInfo
+  | IClearActiveRowInfo
+  | ISetPageParamsAction
+  | ITriggerViewDerivationComputed
+  | StoreActions.ISetMirrorDataAction
+  | ICacheTemporaryView
+  | ISetSearchKeyword
+  | IChangeViewAction;
 
-export const CONST_BATCH_ACTIONS ='BATCHING_REDUCER.BATCH';
-export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => next => (action: IUpdateDerivationAction) => {
+export const CONST_BATCH_ACTIONS = 'BATCHING_REDUCER.BATCH';
+export const viewDerivationMiddleware: Middleware<{}, IReduxState> = (store) => (next) => (action: IUpdateDerivationAction) => {
   next(action);
 
   if (action.type === CONST_BATCH_ACTIONS) {
-    action.payload.forEach(action => {
+    action.payload.forEach((action) => {
       handleAction(store, action);
     });
     return;
@@ -67,10 +75,7 @@ export const viewDerivationMiddleware: Middleware<{}, IReduxState> = store => ne
   handleAction(store, action);
 };
 
-const handleAction = (
-  store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>,
-  action: IUpdateDerivationAction
-) => {
+const handleAction = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, action: IUpdateDerivationAction) => {
   const latestState = store.getState();
   switch (action.type) {
     case ActionConstants.DATAPACK_LOADED: {
@@ -94,7 +99,7 @@ const handleAction = (
     }
     case ActionConstants.DATASHEET_JOT_ACTION: {
       const operations = action.payload.operations;
-      if (operations.find(op => op.cmd === CollaCommandName.AddViews)) {
+      if (operations.find((op) => op.cmd === CollaCommandName.AddViews)) {
         // If you execute the cmd synchronously after the execution, the route viewId is not yet switched
         // The timeout is calculated after the route switch is completed
         setTimeout(() => dispatchNewViewDerivation(store, action.datasheetId));
@@ -102,9 +107,9 @@ const handleAction = (
         // Collection of changing viewIds
         const changeViewIds: string[] = [];
         // Changes in cell resources, changes in view configuration require recalculation of ViewDerivation
-        const needReCompute = operations.some(op => {
+        const needReCompute = operations.some((op) => {
           const actions = op.actions;
-          const hasChange = actions.some(jotAction => {
+          const hasChange = actions.some((jotAction) => {
             const { type, context } = parseAction(jotAction);
             // delete view - Delete the corresponding view-derived cache.
             if (ActionType.DelView === type) {
@@ -166,13 +171,15 @@ const handleAction = (
       const viewGroupDerivate = new ViewGroupDerivate(state, datasheetId);
       const linearRows = viewGroupDerivate.getLinearRowsAndGroupAfterCollapse(pureLinearRows, datasheetClientState.groupingCollapseIds);
 
-      store.dispatch(StoreActions.patchViewDerivation(datasheetId, {
-        viewId,
-        viewDerivation: {
-          linearRows,
-          linearRowsIndexMap: new Map(linearRows.map((row, index) => [`${row.type}_${row.recordId}`, index])),
-        },
-      }));
+      store.dispatch(
+        StoreActions.patchViewDerivation(datasheetId, {
+          viewId,
+          viewDerivation: {
+            linearRows,
+            linearRowsIndexMap: new Map(linearRows.map((row, index) => [`${row.type}_${row.recordId}`, index])),
+          },
+        }),
+      );
       console.log('DERIVATE: refreshDerivationByGroupCollapse %s %s cost: %s ms', datasheetId, viewId, Date.now() - timeStart);
       return;
     }
@@ -205,10 +212,12 @@ const handleAction = (
       }
 
       const timeStart = Date.now();
-      store.dispatch(StoreActions.patchViewDerivation(datasheetId, {
-        viewId: view.id,
-        viewDerivation: viewDerivate.getViewDerivationPatchByLazySort(view, viewDerivation, datasheetClientState.activeRowInfo)
-      }));
+      store.dispatch(
+        StoreActions.patchViewDerivation(datasheetId, {
+          viewId: view.id,
+          viewDerivation: viewDerivate.getViewDerivationPatchByLazySort(view, viewDerivation, datasheetClientState.activeRowInfo),
+        }),
+      );
       console.log('DERIVATE: refreshDerivationByActiveRow %s %s cost: %s ms', datasheetId, view.id, Date.now() - timeStart);
       return;
     }
@@ -220,10 +229,12 @@ const handleAction = (
 
       const viewDerivate = ViewDerivateFactory.createViewDerivate(state, datasheetId, view.type);
       const timeStart = Date.now();
-      store.dispatch(StoreActions.patchViewDerivation(datasheetId, {
-        viewId: view.id,
-        viewDerivation: viewDerivate.getViewDerivationWithSearch(view, visibleRowsWithoutSearch)
-      }));
+      store.dispatch(
+        StoreActions.patchViewDerivation(datasheetId, {
+          viewId: view.id,
+          viewDerivation: viewDerivate.getViewDerivationWithSearch(view, visibleRowsWithoutSearch),
+        }),
+      );
       console.log('DERIVATE: refreshDerivationBySearchKeyword %s %s cost: %sms', datasheetId, view.id, Date.now() - timeStart);
       return;
     }

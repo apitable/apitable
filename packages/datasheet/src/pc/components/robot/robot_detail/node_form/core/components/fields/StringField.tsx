@@ -18,14 +18,7 @@
 
 import { IFieldProps } from '../../interface';
 
-import {
-  getWidget,
-  getUiOptions,
-  isSelect,
-  optionsList,
-  getDefaultRegistry,
-  hasWidget,
-} from '../../utils';
+import { getWidget, getUiOptions, isSelect, optionsList, getDefaultRegistry, hasWidget } from '../../utils';
 
 export function StringField(props: IFieldProps) {
   const {

@@ -16,27 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading, stopPropagation, useThemeColors } from '@apitable/components';
-import { IBreadCrumbData, IMember, ISpaceBasicInfo, ISpaceInfo, ITeam, IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { useDebounceFn, useMount } from 'ahooks';
 import { Breadcrumb, Checkbox, Radio, Tabs } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import classnames from 'classnames';
-import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
-import { ScreenSize } from 'pc/components/common/component_display';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
-import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
-import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { ReactChild, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Loading, stopPropagation, useThemeColors } from '@apitable/components';
+import { IBreadCrumbData, IMember, ISpaceBasicInfo, ISpaceInfo, ITeam, IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
+import { ChevronRightOutlined } from '@apitable/icons';
+import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
+import { getEnvVariables } from 'pc/utils/env';
 import { SelectUnitSource } from '.';
 import { SearchResult } from '../search_result';
 import styles from './style.module.less';
-import { ChevronRightOutlined } from '@apitable/icons';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -65,10 +65,10 @@ const triggerBase = {
     points: ['tl', 'bl'],
     offset: [0, 18],
     overflow: { adjustX: true, adjustY: true },
-  }
+  },
 };
 
-export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftProps>> = props => {
+export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftProps>> = (props) => {
   const colors = useThemeColors();
   const {
     isSingleSelect,
@@ -103,8 +103,8 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
   const { isOpen: roleIsOpen, roles: roleList } = data;
 
   let linkId = useSelector(Selectors.getLinkId);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
-  const embedId = useSelector(state => state.pageParams.embedId);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo) || defaultSpaceInfo;
+  const embedId = useSelector((state) => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
@@ -179,22 +179,22 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
       return;
     }
     // Determine if the current data is all in the selected list
-    const unitsMemberWithoutDisabled = units.members.filter(item => !isDisabled(item));
-    const unitsTeamWithoutDisabled = units.teams.filter(item => !isDisabled(item));
+    const unitsMemberWithoutDisabled = units.members.filter((item) => !isDisabled(item));
+    const unitsTeamWithoutDisabled = units.teams.filter((item) => !isDisabled(item));
     const membersCheckedAll =
       unitsMemberWithoutDisabled.length !== 0
-        ? unitsMemberWithoutDisabled.every(item => checkedList.findIndex(checkedItem => checkedItem.unitId === item.unitId) !== -1)
+        ? unitsMemberWithoutDisabled.every((item) => checkedList.findIndex((checkedItem) => checkedItem.unitId === item.unitId) !== -1)
         : true;
     const teamsCheckedAll =
       unitsTeamWithoutDisabled.length !== 0
-        ? unitsTeamWithoutDisabled.every(item => checkedList.findIndex(checkedItem => checkedItem.unitId === item.unitId) !== -1)
+        ? unitsTeamWithoutDisabled.every((item) => checkedList.findIndex((checkedItem) => checkedItem.unitId === item.unitId) !== -1)
         : true;
     setCheckedAll(membersCheckedAll && teamsCheckedAll);
   }, [units, checkedList, isDisabled]);
 
   // Breadcrumb click event
   const skipUnit = (teamId: string) => {
-    const index = breadCrumbData.findIndex(item => item.teamId === teamId);
+    const index = breadCrumbData.findIndex((item) => item.teamId === teamId);
     setBreadCrumbData(breadCrumbData.slice(0, index + 1));
     setClickedTeamId(teamId);
     getSubUnitList(teamId, linkId);
@@ -211,9 +211,9 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
   };
 
   const onChangeChecked = (_e: CheckboxChangeEvent, unit: UnitItem) => {
-    const idx = checkedList.findIndex(item => item.unitId === unit.unitId);
+    const idx = checkedList.findIndex((item) => item.unitId === unit.unitId);
     if (idx !== -1) {
-      setCheckedList(checkedList.filter(item => item.unitId !== unit.unitId));
+      setCheckedList(checkedList.filter((item) => item.unitId !== unit.unitId));
       return;
     }
     setCheckedList([...checkedList, unit]);
@@ -230,10 +230,14 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
   const ItemWrapper = (props: { item: IMember | ITeam; children: ReactChild }) => {
     const { item, children } = props;
     if (isSingleSelect) {
-      return React.createElement(Radio, {
-        value: item.unitId,
-        disabled: source === SelectUnitSource.Admin && ('teamId' in item || (disableIdList && disableIdList.includes((item as IMember).memberId))),
-      }, children);
+      return React.createElement(
+        Radio,
+        {
+          value: item.unitId,
+          disabled: source === SelectUnitSource.Admin && ('teamId' in item || (disableIdList && disableIdList.includes((item as IMember).memberId))),
+        },
+        children,
+      );
     }
     const shouldDisableCheckbox =
       (disableList && disableList.includes(item.unitId)) ||
@@ -244,99 +248,110 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
         (('teamId' in item && disableIdList.includes((item as ITeam).teamId)) ||
           ('memberId' in item && disableIdList.includes((item as IMember).memberId)))) ||
       (source === SelectUnitSource.ChangeMemberTeam && disableIdList && disableIdList.includes((item as ITeam).teamId));
-    return React.createElement(Checkbox, {
-      value: item.unitId,
-      onChange: e => onChangeChecked(e, item),
-      disabled: shouldDisableCheckbox,
-    }, children);
-  };
-
-  const MemberItem = (inSearch = false) => (item: IMember) => {
-    let _item = item;
-
-    if (source === SelectUnitSource.SyncMember) {
-      _item = {
-        ...item,
-        syncingTeamId: clickedTeamId || '',
-      } as any;
-    }
-
-    const title = (spaceInfo || embedId )
-      ? (getSocialWecomUnitName?.({
-        name: _item.originName || _item.memberName,
-        isModified: _item.isMemberNameModified,
-        spaceInfo,
-      }) || _item.originName || _item.memberName)
-      : '';
-    const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName, email, memberId } = _item;
-    return (
-      <div className={classnames(styles.item, inSearch && styles.searchItem)} key={_item.unitId}>
-        <div className={styles.checkWrapper}>
-          <ItemWrapper item={_item}>
-            <div className={styles.itemContent}>
-              <InfoCard
-                title={title || t(Strings.unnamed)}
-                email={email}
-                memberId={memberId}
-                originTitle={memberName || t(Strings.unnamed)}
-                description={teamData ? teamData[0]?.fullHierarchyTeamName : ''}
-                style={{ backgroundColor: 'transparent' }}
-                inSearch={inSearch}
-                userId={uuid}
-                triggerBase={triggerBase}
-                avatarProps={{
-                  id: unitId,
-                  src: avatar,
-                  title: nickName || originName || memberName || t(Strings.unnamed),
-                  avatarColor,
-                }}
-              />
-            </div>
-          </ItemWrapper>
-        </div>
-      </div>
+    return React.createElement(
+      Checkbox,
+      {
+        value: item.unitId,
+        onChange: (e) => onChangeChecked(e, item),
+        disabled: shouldDisableCheckbox,
+      },
+      children,
     );
   };
 
-  const TeamItem = (inSearch = false) => (item: ITeam) => (
-    <div className={classnames(styles.item, inSearch && styles.searchItem)} key={item.unitId}>
-      <div className={styles.checkWrapper}>
-        <ItemWrapper item={item}>
-          <div className={styles.itemContent} onClick={() => !inSearch && onClickTeamItem(item)}>
-            <InfoCard
-              title={item.teamName}
-              originTitle={item.teamName}
-              description={t(Strings.display_member_by_count, {
-                memberCount: item.memberCount,
-              })}
-              style={{ backgroundColor: 'transparent' }}
-              inSearch={inSearch}
-              avatarProps={{
-                id: item.unitId,
-                src: '',
-                title: item.teamName,
-                type: AvatarType.Team,
-              }}
-            />
+  const MemberItem =
+    (inSearch = false) =>
+      (item: IMember) => {
+        let _item = item;
+
+        if (source === SelectUnitSource.SyncMember) {
+          _item = {
+            ...item,
+            syncingTeamId: clickedTeamId || '',
+          } as any;
+        }
+
+        const title =
+        spaceInfo || embedId
+          ? getSocialWecomUnitName?.({
+            name: _item.originName || _item.memberName,
+            isModified: _item.isMemberNameModified,
+            spaceInfo,
+          }) ||
+            _item.originName ||
+            _item.memberName
+          : '';
+        const { uuid, unitId, memberName, teamData, originName, avatar, avatarColor, nickName, email, memberId } = _item;
+        return (
+          <div className={classnames(styles.item, inSearch && styles.searchItem)} key={_item.unitId}>
+            <div className={styles.checkWrapper}>
+              <ItemWrapper item={_item}>
+                <div className={styles.itemContent}>
+                  <InfoCard
+                    title={title || t(Strings.unnamed)}
+                    email={email}
+                    memberId={memberId}
+                    originTitle={memberName || t(Strings.unnamed)}
+                    description={teamData ? teamData[0]?.fullHierarchyTeamName : ''}
+                    style={{ backgroundColor: 'transparent' }}
+                    inSearch={inSearch}
+                    userId={uuid}
+                    triggerBase={triggerBase}
+                    avatarProps={{
+                      id: unitId,
+                      src: avatar,
+                      title: nickName || originName || memberName || t(Strings.unnamed),
+                      avatarColor,
+                    }}
+                  />
+                </div>
+              </ItemWrapper>
+            </div>
           </div>
-        </ItemWrapper>
-      </div>
-      {canEntrySubItem(item) && !inSearch && (
-        <ButtonPlus.Icon
-          onClick={e => {
-            stopPropagation(e);
-            onClickTeamItem(item);
-          }}
-          icon={<ChevronRightOutlined size={16} color={colors.fourthLevelText} />}
-        />
-      )}
-    </div>
-  );
+        );
+      };
+
+  const TeamItem =
+    (inSearch = false) =>
+      (item: ITeam) => (
+        <div className={classnames(styles.item, inSearch && styles.searchItem)} key={item.unitId}>
+          <div className={styles.checkWrapper}>
+            <ItemWrapper item={item}>
+              <div className={styles.itemContent} onClick={() => !inSearch && onClickTeamItem(item)}>
+                <InfoCard
+                  title={item.teamName}
+                  originTitle={item.teamName}
+                  description={t(Strings.display_member_by_count, {
+                    memberCount: item.memberCount,
+                  })}
+                  style={{ backgroundColor: 'transparent' }}
+                  inSearch={inSearch}
+                  avatarProps={{
+                    id: item.unitId,
+                    src: '',
+                    title: item.teamName,
+                    type: AvatarType.Team,
+                  }}
+                />
+              </div>
+            </ItemWrapper>
+          </div>
+          {canEntrySubItem(item) && !inSearch && (
+            <ButtonPlus.Icon
+              onClick={(e) => {
+                stopPropagation(e);
+                onClickTeamItem(item);
+              }}
+              icon={<ChevronRightOutlined size={16} color={colors.fourthLevelText} />}
+            />
+          )}
+        </div>
+      );
 
   const RoleItem = (item: IRoleItem) => (
     <div className={styles.item} key={item.unitId}>
       <div className={styles.checkWrapper}>
-        <Checkbox value={item.unitId} disabled={disableList && disableList.includes(item.unitId)} onChange={e => onChangeChecked(e, item)}>
+        <Checkbox value={item.unitId} disabled={disableList && disableList.includes(item.unitId)} onChange={(e) => onChangeChecked(e, item)}>
           <div className={styles.itemContent}>
             <InfoCard
               title={item.roleName}
@@ -350,7 +365,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
                 src: '',
                 title: item.roleName,
                 type: AvatarType.Team,
-                isRole
+                isRole,
               }}
             />
           </div>
@@ -370,7 +385,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
       const selectUnit = units
         ? Object.values(units)
           .flat(1)
-          .filter(item => item.unitId === unitId)
+          .filter((item) => item.unitId === unitId)
         : [];
       setCheckedList(selectUnit);
     }
@@ -419,13 +434,13 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
       if (!checkedAll) {
         const newCheckedList: UnitItem[] = Object.values(units)
           .flat()
-          .filter(item => {
+          .filter((item) => {
             if (isDisabled(item)) {
               return false;
             }
-            return checkedList.findIndex(listItem => listItem.unitId === item.unitId) === -1;
+            return checkedList.findIndex((listItem) => listItem.unitId === item.unitId) === -1;
           })
-          .map(item => {
+          .map((item) => {
             if ((item as IMember).memberId) {
               return {
                 ...item,
@@ -439,12 +454,11 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
 
         setCheckedList(data);
       } else {
-
-        const newCheckedList = checkedList.filter(listItem => {
+        const newCheckedList = checkedList.filter((listItem) => {
           let isExist = true;
-          Object.values(units).forEach(eachUnits => {
+          Object.values(units).forEach((eachUnits) => {
             if (isExist) {
-              isExist = eachUnits.findIndex((item: { unitId: string; }) => item.unitId === listItem.unitId) === -1;
+              isExist = eachUnits.findIndex((item: { unitId: string }) => item.unitId === listItem.unitId) === -1;
             }
           });
           return isExist;
@@ -464,7 +478,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
           </div>
         )}
         <div className={styles.dataListWrapper}>
-          <Checkbox.Group value={checkedList.map(item => item.unitId)}>
+          <Checkbox.Group value={checkedList.map((item) => item.unitId)}>
             {isRole ? (
               <>{roleList.map(RoleItem)}</>
             ) : (
@@ -485,7 +499,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
     source === SelectUnitSource.ChangeMemberTeam ? searchUnitData && { ...searchUnitData, tags: [], members: [] } : searchUnitData;
 
   const listData = isRole ? roleList : units;
-  const searchData = isRole ? roleList.filter(v => !keyword || v.roleName.includes(keyword)) : orgSearchData;
+  const searchData = isRole ? roleList.filter((v) => !keyword || v.roleName.includes(keyword)) : orgSearchData;
 
   // search result is empty
   const isEmptySearch = isRole
@@ -506,7 +520,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
         <Tabs
           className={classnames(styles.tabWrap, isRole && styles.tabWrapRole)}
           activeKey={tabActiveKey}
-          onChange={value => setTabActiveKey(value as TabKey)}
+          onChange={(value) => setTabActiveKey(value as TabKey)}
         >
           <TabPane key={TabKey.Org} tab={t(Strings.tab_org)} />
           <TabPane key={TabKey.Role} tab={t(Strings.tab_role)} />
@@ -515,8 +529,8 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
       {!isRole && (
         <div className={styles.breadcrumb}>
           <HorizontalScroll>
-            <Breadcrumb separator='/'>
-              {breadCrumbData.map(breadItem => (
+            <Breadcrumb separator="/">
+              {breadCrumbData.map((breadItem) => (
                 <BreadcrumbItem key={breadItem.teamId || breadItem.name} onClick={() => skipUnit(breadItem.teamId)}>
                   {breadItem.name}
                 </BreadcrumbItem>

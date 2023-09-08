@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, byteMG, IAttachmentValue, Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
-import { useThemeColors } from '@apitable/components';
-import { stopPropagation } from 'pc/utils';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { Api, byteMG, IAttachmentValue, Strings, t } from '@apitable/core';
+import { stopPropagation } from 'pc/utils';
 import styles from './styles.module.less';
 
 interface IMemory {
   cellValue: IAttachmentValue[];
 }
 
-export const Memory: React.FC<React.PropsWithChildren<IMemory>> = props => {
+export const Memory: React.FC<React.PropsWithChildren<IMemory>> = (props) => {
   const { cellValue } = props;
   const [usedMemory, setUsedMemory] = useState(0);
   const [totalMemory, setTotalMemory] = useState(0);
   const colors = useThemeColors();
   useEffect(() => {
-    Api.searchSpaceSize().then(res => {
+    Api.searchSpaceSize().then((res) => {
       const { usedCapacity, currentBundleCapacity } = res.data.data;
       setUsedMemory(usedCapacity);
       setTotalMemory(currentBundleCapacity === -1 ? Number.POSITIVE_INFINITY : currentBundleCapacity);

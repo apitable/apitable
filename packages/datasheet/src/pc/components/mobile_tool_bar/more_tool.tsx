@@ -16,29 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useEffect } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
-import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { shallowEqual, useSelector } from 'react-redux';
-import { resourceService } from 'pc/resource_service';
+import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
-import classNames from 'classnames';
-import { expandNodeDescription, elementHasChild } from '../tab_bar/description_modal';
+import { FolderNormalFilled, MoreStandOutlined, RedoOutlined, UndoOutlined } from '@apitable/icons';
+import { resourceService } from 'pc/resource_service';
+import { stopPropagation } from 'pc/utils';
+import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
+import { Popover } from '../common/mobile/popover';
 import { notify } from '../common/notify';
 import { NotifyKey } from '../common/notify/notify.interface';
-import { Popover } from '../common/mobile/popover';
-import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
-import { stopPropagation } from 'pc/utils';
-import { FolderNormalFilled, MoreStandOutlined, RedoOutlined, UndoOutlined } from '@apitable/icons';
+import { expandNodeDescription, elementHasChild } from '../tab_bar/description_modal';
+import styles from './style.module.less';
 
 export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
-  const shareId = useSelector(state => state.pageParams.shareId);
-  const embedId = useSelector(state => state.pageParams.embedId);
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const shareId = useSelector((state) => state.pageParams.shareId);
+  const embedId = useSelector((state) => state.pageParams.embedId);
   const undoManager = resourceService.instance!.undoManager!;
-  const datasheetName = useSelector(state => {
+  const datasheetName = useSelector((state) => {
     const treeNodesMap = state.catalogTree.treeNodesMap;
     const datasheet = Selectors.getDatasheet(state);
     if (shareId) return datasheet ? datasheet.name : null;
@@ -82,55 +82,39 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const content = (
     <div className={styles.content}>
-      <div
-        className={styles.moreToolItem}
-        onClick={undo}
-      >
-        <LinkButton
-          underline={false}
-          disabled={!undoLength}
-          className={styles.moreToolBtn}
-        >
+      <div className={styles.moreToolItem} onClick={undo}>
+        <LinkButton underline={false} disabled={!undoLength} className={styles.moreToolBtn}>
           <UndoOutlined size={16} color={!undoLength ? colors.secondLevelText : colors.black[50]} />
           <span className={classNames({ [styles.toolName]: undoLength })}>{t(Strings.undo)}</span>
         </LinkButton>
       </div>
-      <div
-        className={styles.moreToolItem}
-        onClick={redo}
-      >
-        <LinkButton
-          underline={false}
-          disabled={!redoLength}
-          className={styles.moreToolBtn}
-        >
+      <div className={styles.moreToolItem} onClick={redo}>
+        <LinkButton underline={false} disabled={!redoLength} className={styles.moreToolBtn}>
           <RedoOutlined size={16} color={!redoLength ? colors.secondLevelText : colors.black[50]} />
           <span className={classNames({ [styles.toolName]: redoLength })}>{t(Strings.redo)}</span>
         </LinkButton>
       </div>
-      { !embedId && <div
-        className={styles.moreToolItem}
-        onClick={() => {
-          expandNodeDescription({
-            activeNodeId: datasheetId,
-            datasheetName,
-            isMobile: true,
-          });
-        }}
-      >
-        <LinkButton 
-          underline={false}
-          className={styles.moreToolBtn}
+      {!embedId && (
+        <div
+          className={styles.moreToolItem}
+          onClick={() => {
+            expandNodeDescription({
+              activeNodeId: datasheetId,
+              datasheetName,
+              isMobile: true,
+            });
+          }}
         >
-          <FolderNormalFilled size={16} color={colors.black[50]} />
-          <span className={styles.toolName}>{t(Strings.file_summary)}</span>
-        </LinkButton>
-      </div>
-      }
+          <LinkButton underline={false} className={styles.moreToolBtn}>
+            <FolderNormalFilled size={16} color={colors.black[50]} />
+            <span className={styles.toolName}>{t(Strings.file_summary)}</span>
+          </LinkButton>
+        </div>
+      )}
     </div>
   );
 
-  const desc = useSelector(state => Selectors.getNodeDesc(state), shallowEqual);
+  const desc = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
 
   useEffect(() => {
     const storage = getStorage(StorageName.Description) || [];
@@ -144,15 +128,12 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
         });
       }
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [datasheetId]);
 
   return (
     <Popover content={content}>
-      <IconButton
-        icon={() => <MoreStandOutlined size={16} color={colors.secondLevelText} />}
-        className={styles.trigger}
-      />
+      <IconButton icon={() => <MoreStandOutlined size={16} color={colors.secondLevelText} />} className={styles.trigger} />
     </Popover>
   );
 };

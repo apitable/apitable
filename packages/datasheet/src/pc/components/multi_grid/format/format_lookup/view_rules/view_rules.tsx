@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
-import classNames from 'classnames';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 interface IViewRules {
@@ -34,10 +34,10 @@ interface IViewRules {
   invalidTip?: string;
 }
 
-export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props => {
+export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = (props) => {
   const colors = useThemeColors();
   const { onChange, rulesItem, datasheetId } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const field = fieldMap[rulesItem.fieldId];
   const isViewLock = useShowViewLockModal();
 
@@ -53,7 +53,6 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
       return <ArrowRightOutlined color={colors.staticWhite0} />;
     }
     return <ArrowRightOutlined color={colors.thirdLevelText} />;
-
   }
 
   function changeDescType(_e: React.MouseEvent, type: boolean) {
@@ -65,19 +64,21 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
   function sortTypeForNumber() {
     return (
       <>
-        <div className={ascClass} onClick={e => { changeDescType(e, false); }}>
-          1
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(ascClass)}
-          </div>
-          9
+        <div
+          className={ascClass}
+          onClick={(e) => {
+            changeDescType(e, false);
+          }}
+        >
+          1<div className={styles.iconArrow}>{renderCorrectIcon(ascClass)}</div>9
         </div>
-        <div className={descClass} onClick={e => { changeDescType(e, true); }}>
-          9
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(descClass)}
-          </div>
-          1
+        <div
+          className={descClass}
+          onClick={(e) => {
+            changeDescType(e, true);
+          }}
+        >
+          9<div className={styles.iconArrow}>{renderCorrectIcon(descClass)}</div>1
         </div>
       </>
     );
@@ -89,18 +90,24 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
     const descIconColor = rulesItem.desc ? colors.staticWhite0 : colors.thirdLevelText;
     return (
       <>
-        <div className={ascClass} onClick={e => { changeDescType(e, false); }}>
+        <div
+          className={ascClass}
+          onClick={(e) => {
+            changeDescType(e, false);
+          }}
+        >
           <CheckboxOutlined size={15} color={ascIconColor} />
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(ascClass)}
-          </div>
+          <div className={styles.iconArrow}>{renderCorrectIcon(ascClass)}</div>
           <CheckboxFilled size={15} color={ascIconColor} />
         </div>
-        <div className={descClass} onClick={e => { changeDescType(e, true); }}>
+        <div
+          className={descClass}
+          onClick={(e) => {
+            changeDescType(e, true);
+          }}
+        >
           <CheckboxFilled size={15} color={descIconColor} />
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(descClass)}
-          </div>
+          <div className={styles.iconArrow}>{renderCorrectIcon(descClass)}</div>
           <CheckboxOutlined size={15} color={descIconColor} />
         </div>
       </>
@@ -111,20 +118,22 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
   function sortTypeForLetter() {
     return (
       <>
-        <div className={ascClass} onClick={e => { changeDescType(e, false); }}>
-          A
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(ascClass)}
-          </div>
-          Z
+        <div
+          className={ascClass}
+          onClick={(e) => {
+            changeDescType(e, false);
+          }}
+        >
+          A<div className={styles.iconArrow}>{renderCorrectIcon(ascClass)}</div>Z
         </div>
 
-        <div className={descClass} onClick={e => { changeDescType(e, true); }}>
-          Z
-          <div className={styles.iconArrow}>
-            {renderCorrectIcon(descClass)}
-          </div>
-          A
+        <div
+          className={descClass}
+          onClick={(e) => {
+            changeDescType(e, true);
+          }}
+        >
+          Z<div className={styles.iconArrow}>{renderCorrectIcon(descClass)}</div>A
         </div>
       </>
     );
@@ -134,10 +143,20 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
   function sortTypeForSequence() {
     return (
       <>
-        <div className={ascClass} onClick={e => { changeDescType(e, false); }}>
+        <div
+          className={ascClass}
+          onClick={(e) => {
+            changeDescType(e, false);
+          }}
+        >
           {t(Strings.desc_sort)}
         </div>
-        <div className={descClass} onClick={e => { changeDescType(e, true); }}>
+        <div
+          className={descClass}
+          onClick={(e) => {
+            changeDescType(e, true);
+          }}
+        >
           {t(Strings.asc_sort)}
         </div>
       </>
@@ -165,7 +184,5 @@ export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = props =>
     }
   }
 
-  return(<div className={classNames(styles.rules, { [styles.disabled]: isViewLock })}>
-    {judgeFieldRule(field)}
-  </div>);
+  return <div className={classNames(styles.rules, { [styles.disabled]: isViewLock })}>{judgeFieldRule(field)}</div>;
 };

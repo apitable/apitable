@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';
+import * as React from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useRequest, useUserRequest } from 'pc/hooks';
-import { getEnvVariables } from 'pc/utils/env';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
-// @ts-ignore
-import { getDingdingConfig, getQQConfig, Trial, QrCode } from 'enterprise';
+import { getEnvVariables } from 'pc/utils/env';
 import { isDesktop } from 'pc/utils/os';
-import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import BindingFeiShuPng from 'static/icon/account/feishu.png';
 import DingDingPng from 'static/icon/signin/signin_img_dingding.png';
 import QQPng from 'static/icon/signin/signin_img_qq.png';
 import WeChatPng from 'static/icon/signin/signin_img_wechat.png';
 import { ModeItem } from './mode_item';
 import styles from './style.module.less';
+// @ts-ignore
+import { getDingdingConfig, getQQConfig, Trial, QrCode } from 'enterprise';
 
 export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   // Control the display of the Wechat QR code modal box
   const [wechatVisible, setWechatVisible] = useState(false);
-  const userInfo = useSelector(state => state.user.info);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const userInfo = useSelector((state) => state.user.info);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const dispatch = useAppDispatch();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
@@ -63,9 +63,9 @@ export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
           Message.success({ content: t(Strings.binding_success) });
           getLoginStatus();
         } else {
-          StatusCode.BINDING_ACCOUNT_ERR.includes(Number(e.newValue)) ?
-            Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.dingtalk) }) }) :
-            Message.error({ content: t(Strings.binding_failure) });
+          StatusCode.BINDING_ACCOUNT_ERR.includes(Number(e.newValue))
+            ? Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.dingtalk) }) })
+            : Message.error({ content: t(Strings.binding_failure) });
         }
         localStorage.removeItem('binding_dingding_status');
       }
@@ -74,9 +74,9 @@ export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
           Message.success({ content: t(Strings.binding_success) });
           getLoginStatus();
         } else {
-          StatusCode.BINDING_ACCOUNT_ERR.includes(Number(e.newValue)) ?
-            Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.qq) }) }) :
-            Message.error({ content: t(Strings.binding_failure) });
+          StatusCode.BINDING_ACCOUNT_ERR.includes(Number(e.newValue))
+            ? Message.error({ content: t(Strings.binding_account_failure_tip, { mode: t(Strings.qq) }) })
+            : Message.error({ content: t(Strings.binding_failure) });
         }
         localStorage.removeItem('binding_qq_status');
       }
@@ -105,7 +105,7 @@ export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const clickWechat = () => {
-    if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.WECHAT) !== -1) {
+    if (userInfo?.thirdPartyInformation.findIndex((item) => item.type === BindAccount.WECHAT) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.wechat) }),
@@ -118,7 +118,7 @@ export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const clickDingDing = () => {
-    if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.DINGDING) !== -1) {
+    if (userInfo?.thirdPartyInformation.findIndex((item) => item.type === BindAccount.DINGDING) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.dingtalk) }),
@@ -135,7 +135,7 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
   };
 
   const clickQQ = () => {
-    if (userInfo?.thirdPartyInformation.findIndex(item => item.type === BindAccount.QQ) !== -1) {
+    if (userInfo?.thirdPartyInformation.findIndex((item) => item.type === BindAccount.QQ) !== -1) {
       Modal.confirm({
         title: t(Strings.confirm_unbind),
         content: t(Strings.unbind_third_party_accounts_desc, { mode: t(Strings.qq) }),
@@ -149,32 +149,36 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
     }
   };
 
-  const modes = [{
-    mod: 'DINGDING',
-    name: t(Strings.dingtalk),
-    img: DingDingPng,
-    onClick: clickDingDing,
-    hidden: isDesktop() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
-  }, {
-    mod: 'WECHAT',
-    name: t(Strings.wechat),
-    img: WeChatPng,
-    onClick: clickWechat,
-    hidden: getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE
-  }, {
-    mod: 'QQ',
-    name: t(Strings.qq),
-    img: QQPng,
-    onClick: clickQQ,
-    hidden: isDesktop() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
-  }];
+  const modes = [
+    {
+      mod: 'DINGDING',
+      name: t(Strings.dingtalk),
+      img: DingDingPng,
+      onClick: clickDingDing,
+      hidden: isDesktop() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
+    },
+    {
+      mod: 'WECHAT',
+      name: t(Strings.wechat),
+      img: WeChatPng,
+      onClick: clickWechat,
+      hidden: getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
+    },
+    {
+      mod: 'QQ',
+      name: t(Strings.qq),
+      img: QQPng,
+      onClick: clickQQ,
+      hidden: isDesktop() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
+    },
+  ];
 
   return (
     <div className={styles.accountManagerWrapper}>
       <div className={styles.title}>{t(Strings.account_ass_manage)}</div>
-      {(spaceInfo?.social.enabled && spaceInfo?.social.platform === ConfigConstant.SocialType.FEISHU) ?
+      {spaceInfo?.social.enabled && spaceInfo?.social.platform === ConfigConstant.SocialType.FEISHU ? (
         <div className={styles.tipWrapper}>
-          <Image src={BindingFeiShuPng} alt='binding feishu' width={154} height={48} />
+          <Image src={BindingFeiShuPng} alt="binding feishu" width={154} height={48} />
           <div className={styles.tip}>{t(Strings.account_manager_invalid_tip)}</div>
           <div className={styles.subTip}>
             <TComponent
@@ -183,13 +187,13 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
             />
           </div>
         </div>
-        :
+      ) : (
         <div className={styles.wrapper}>
           {modes.map((item, index) => {
             if (item.hidden) {
               return <></>;
             }
-            const modeInfo = userInfo?.thirdPartyInformation.find(item => item.type === index);
+            const modeInfo = userInfo?.thirdPartyInformation.find((item) => item.type === index);
             return (
               <ModeItem
                 key={index}
@@ -204,7 +208,7 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
             );
           })}
         </div>
-      }
+      )}
       {QrCode && <QrCode visible={wechatVisible} onClose={() => setWechatVisible(false)} action={QrAction.BIND} />}
     </div>
   );

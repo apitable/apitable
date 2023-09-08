@@ -16,19 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
 import { updateRobotDescription, updateRobotName } from '../api';
 import { useDefaultRobotDesc, useRobot, useToggleRobotActive } from '../hooks';
 
 export const RobotBaseInfo = () => {
-  const {
-    currentRobotId, robot, updateRobot,
-    setIsEditingRobotName, isEditingRobotName,
-    setIsEditingRobotDesc, isEditingRobotDesc
-  } = useRobot();
+  const { currentRobotId, robot, updateRobot, setIsEditingRobotName, isEditingRobotName, setIsEditingRobotDesc, isEditingRobotDesc } = useRobot();
   const defaultRobotDesc = useDefaultRobotDesc(currentRobotId!);
   const { loading, toggleRobotActive } = useToggleRobotActive(currentRobotId!);
   const theme = useTheme();
@@ -43,7 +39,7 @@ export const RobotBaseInfo = () => {
       if (ok) {
         updateRobot({
           ...robot,
-          name
+          name,
         });
       }
     }
@@ -56,7 +52,7 @@ export const RobotBaseInfo = () => {
       if (ok) {
         updateRobot({
           ...robot,
-          description: desc
+          description: desc,
         });
       }
     }
@@ -66,14 +62,8 @@ export const RobotBaseInfo = () => {
   const robotDesc = robot.description || defaultRobotDesc;
   return (
     <Box marginBottom="24px">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-        >
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
           <Avatar
             icon={<img src={integrateCdnHost(getEnvVariables().ROBOT_DEFAULT_AVATAR!)} width={24} height={24} alt="robot" />}
             size="xs"
@@ -82,38 +72,27 @@ export const RobotBaseInfo = () => {
             }}
           />
           <Box marginLeft="4px">
-            {
-              isEditingRobotName ? <TextInput
-                size="small"
-                autoFocus
-                block
-                defaultValue={robot.name}
-                onBlur={(e) => handleNameChange(e.target.value)} /> :
-                <div onDoubleClick={() => setIsEditingRobotName(true)}>
-                  <Typography variant="h6">
-                    {robot.name || t(Strings.robot_unnamed)}
-                  </Typography>
-                </div>
-            }
+            {isEditingRobotName ? (
+              <TextInput size="small" autoFocus block defaultValue={robot.name} onBlur={(e) => handleNameChange(e.target.value)} />
+            ) : (
+              <div onDoubleClick={() => setIsEditingRobotName(true)}>
+                <Typography variant="h6">{robot.name || t(Strings.robot_unnamed)}</Typography>
+              </div>
+            )}
           </Box>
-
         </Box>
         <Switch checked={robot.isActive} onClick={toggleRobotActive} loading={loading} disabled={loading} />
       </Box>
       <Box marginTop="4px" display="flex" alignItems="center">
-        {
-          isEditingRobotDesc ? <TextInput
-            size="small"
-            autoFocus
-            defaultValue={robotDesc}
-            block
-            onBlur={(e) => handleDescChange(e.target.value)} /> :
-            <div onDoubleClick={() => setIsEditingRobotDesc(true)}>
-              <Typography variant="body3" ellipsis={{ rows: 2, tooltip: robotDesc }} color={theme.color.fc3}>
-                {robotDesc}
-              </Typography>
-            </div>
-        }
+        {isEditingRobotDesc ? (
+          <TextInput size="small" autoFocus defaultValue={robotDesc} block onBlur={(e) => handleDescChange(e.target.value)} />
+        ) : (
+          <div onDoubleClick={() => setIsEditingRobotDesc(true)}>
+            <Typography variant="body3" ellipsis={{ rows: 2, tooltip: robotDesc }} color={theme.color.fc3}>
+              {robotDesc}
+            </Typography>
+          </div>
+        )}
       </Box>
     </Box>
   );

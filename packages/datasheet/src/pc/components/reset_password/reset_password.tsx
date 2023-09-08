@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Form } from 'antd';
+import * as React from 'react';
+import { FC } from 'react';
 import { Button, ThemeName, ThemeProvider, Typography } from '@apitable/components';
 import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
-import { Form } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
-import { FC } from 'react';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
+import styles from './style.module.less';
 // @ts-ignore
 import { initMode, IdentifyingCodeModes } from 'enterprise';
-import styles from './style.module.less';
 
 interface IState {
   areaCode: string;
@@ -50,12 +50,15 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
     account: '',
     identifyingCode: '',
     password: '',
-    secondPassword: ''
+    secondPassword: '',
   });
   const { LOGIN_DEFAULT_ACCOUNT_TYPE } = getEnvVariables();
-  const [mode, setMode] = React.useState(LOGIN_DEFAULT_ACCOUNT_TYPE?.includes(ConfigConstant.LoginMode.PHONE) ?
-    (initMode?.() || ConfigConstant.LoginMode.PHONE) : LOGIN_DEFAULT_ACCOUNT_TYPE);
-  const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
+  const [mode, setMode] = React.useState(
+    LOGIN_DEFAULT_ACCOUNT_TYPE?.includes(ConfigConstant.LoginMode.PHONE)
+      ? initMode?.() || ConfigConstant.LoginMode.PHONE
+      : LOGIN_DEFAULT_ACCOUNT_TYPE,
+  );
+  const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string; identifyingCodeErrMsg: string; passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
 
@@ -84,8 +87,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
       setErrMsg({ passwordErrMsg: t(Strings.password_not_identical_err) });
       return;
     }
-    const type = mode === ConfigConstant.LoginMode.PHONE ? ConfigConstant.CodeTypes.SMS_CODE :
-      ConfigConstant.CodeTypes.EMAIL_CODE;
+    const type = mode === ConfigConstant.LoginMode.PHONE ? ConfigConstant.CodeTypes.SMS_CODE : ConfigConstant.CodeTypes.EMAIL_CODE;
 
     const result = await retrievePwd(areaCode, account, identifyingCode, password, type);
     const { code, success, message } = result;
@@ -131,10 +133,11 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
       <Wrapper>
         <div className={styles.resetPwdWrapper}>
           <div className={styles.resetPwdBox}>
-            <Typography variant='h5' className={styles.title}>{t(Strings.reset_password)}</Typography>
+            <Typography variant="h5" className={styles.title}>
+              {t(Strings.reset_password)}
+            </Typography>
             <Form onFinish={handleSubmit}>
-              {
-                IdentifyingCodeModes &&
+              {IdentifyingCodeModes && (
                 <IdentifyingCodeModes
                   smsType={ConfigConstant.SmsTypes.MODIFY_PASSWORD}
                   emailType={ConfigConstant.EmailCodeType.COMMON}
@@ -143,35 +146,31 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
                   onChange={handleIdentifyingCodeChange}
                   mode={mode}
                 />
-              }
-              <Typography variant='body2' className={styles.gap}>{t(Strings.input_new_password)}</Typography>
+              )}
+              <Typography variant="body2" className={styles.gap}>
+                {t(Strings.input_new_password)}
+              </Typography>
               <WithTipWrapper tip={errMsg.passwordErrMsg}>
                 <PasswordInput
                   placeholder={t(Strings.password_rules)}
-                  onChange={e => handlePasswordChange(e, 'password')}
-                  autoComplete='new-password'
+                  onChange={(e) => handlePasswordChange(e, 'password')}
+                  autoComplete="new-password"
                   block
                 />
               </WithTipWrapper>
-              <Typography variant='body2' className={styles.gap}>{t(Strings.input_confirmation_password)}</Typography>
-              <WithTipWrapper tip=''>
+              <Typography variant="body2" className={styles.gap}>
+                {t(Strings.input_confirmation_password)}
+              </Typography>
+              <WithTipWrapper tip="">
                 <PasswordInput
                   error={Boolean(errMsg.passwordErrMsg)}
                   placeholder={t(Strings.placeholder_input_new_password_again)}
-                  onChange={e => handlePasswordChange(e, 'secondPassword')}
-                  autoComplete='new-password'
+                  onChange={(e) => handlePasswordChange(e, 'secondPassword')}
+                  autoComplete="new-password"
                   block
                 />
               </WithTipWrapper>
-              <Button
-                className={styles.confirmBtn}
-                type='submit'
-                color='primary'
-                size='large'
-                disabled={btnDisable}
-                loading={loading}
-                block
-              >
+              <Button className={styles.confirmBtn} type="submit" color="primary" size="large" disabled={btnDisable} loading={loading} block>
                 {t(Strings.confirm)}
               </Button>
               <div className={styles.backBtn}>

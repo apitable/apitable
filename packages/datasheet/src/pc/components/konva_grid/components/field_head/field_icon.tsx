@@ -18,12 +18,31 @@
 
 import { FC, memo } from 'react';
 import { FieldType } from '@apitable/core';
-import { 
-  AttachmentOutlined, AutonumberOutlined, CheckboxOutlined, UserAddOutlined, TimeOutlined,
-  CurrencyUsdOutlined, FormulaOutlined, UserEditOutlined, HistoryFilled,
-  LongtextOutlined, LookupOutlined, UserOutlined, PercentOutlined, TelephoneOutlined, StarOutlined,
-  SelectMultipleOutlined, SelectSingleOutlined, LinkOutlined, NumberOutlined, EmailOutlined,
-  LinktableOutlined, CalendarOutlined, TextOutlined, CascadeOutlined
+import {
+  AttachmentOutlined,
+  AutonumberOutlined,
+  CheckboxOutlined,
+  UserAddOutlined,
+  TimeOutlined,
+  CurrencyUsdOutlined,
+  FormulaOutlined,
+  UserEditOutlined,
+  HistoryFilled,
+  LongtextOutlined,
+  LookupOutlined,
+  UserOutlined,
+  PercentOutlined,
+  TelephoneOutlined,
+  StarOutlined,
+  SelectMultipleOutlined,
+  SelectSingleOutlined,
+  LinkOutlined,
+  NumberOutlined,
+  EmailOutlined,
+  LinktableOutlined,
+  CalendarOutlined,
+  TextOutlined,
+  CascadeOutlined,
 } from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 

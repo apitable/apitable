@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC, useContext, useState } from 'react';
 import { IAttachmentValue, KONVA_DATASHEET_ID } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -23,30 +24,15 @@ import { Icon, Rect } from 'pc/components/konva_components';
 import { GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_VALUE_PADDING, KonvaGridContext } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { expandPreviewModal } from 'pc/components/preview_file';
-import { FC, useContext, useState } from 'react';
+import { MouseDownType } from '../../../../multi_grid';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
-import { MouseDownType } from '../../../../multi_grid';
 
 const AddOutlinedPath = AddOutlined.toString();
 
 export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const {
-    x,
-    y,
-    cellValue,
-    isActive,
-    editable,
-    rowHeight,
-    columnWidth,
-    field,
-    recordId,
-    onChange,
-    renderData,
-    toggleEdit,
-    disabledDownload
-  } = props;
+  const { x, y, cellValue, isActive, editable, rowHeight, columnWidth, field, recordId, onChange, renderData, toggleEdit, disabledDownload } = props;
   const { datasheetId } = useContext(KonvaGridViewContext);
   const [isHover, setHover] = useState(false);
   const { theme, setTooltipInfo, clearTooltipInfo } = useContext(KonvaGridContext);
@@ -58,7 +44,7 @@ export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) =
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
   const { renderContent } = renderData;
 
@@ -73,7 +59,7 @@ export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) =
         cellValue: fileList,
         editable: Boolean(editable),
         onChange: onChange!,
-        disabledDownload: Boolean(disabledDownload)
+        disabledDownload: Boolean(disabledDownload),
       });
     }
   };
@@ -87,24 +73,15 @@ export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) =
       y: y + innerY,
       width: Math.min(
         width,
-        operatingEnable ? columnWidth - GRID_CELL_VALUE_PADDING - GRID_CELL_ADD_ITEM_BUTTON_SIZE - 4 : columnWidth - GRID_CELL_VALUE_PADDING
+        operatingEnable ? columnWidth - GRID_CELL_VALUE_PADDING - GRID_CELL_ADD_ITEM_BUTTON_SIZE - 4 : columnWidth - GRID_CELL_VALUE_PADDING,
       ),
       height: 1,
     });
   };
 
   return (
-    <CellScrollContainer
-      x={x}
-      y={y}
-      columnWidth={columnWidth}
-      rowHeight={rowHeight}
-      fieldId={fieldId}
-      recordId={recordId}
-      renderData={renderData}
-    >
-      {
-        operatingEnable &&
+    <CellScrollContainer x={x} y={y} columnWidth={columnWidth} rowHeight={rowHeight} fieldId={fieldId} recordId={recordId} renderData={renderData}>
+      {operatingEnable && (
         <Icon
           name={pointerName}
           x={GRID_CELL_VALUE_PADDING}
@@ -119,9 +96,8 @@ export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) =
           onClick={toggleEdit}
           onTap={toggleEdit}
         />
-      }
-      {
-        isActive &&
+      )}
+      {isActive &&
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height } = item;
@@ -141,8 +117,7 @@ export const CellAttachment: FC<React.PropsWithChildren<ICellProps>> = (props) =
               onMouseOut={() => clearTooltipInfo()}
             />
           );
-        })
-      }
+        })}
     </CellScrollContainer>
   );
 };

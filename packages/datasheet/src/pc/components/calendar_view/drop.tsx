@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import dayjs from 'dayjs';
 import { memo, useContext, useState } from 'react';
 import * as React from 'react';
 import { useDrop } from 'react-dnd';
-import { AddOutlined } from '@apitable/icons';
-import { PRE_RECORD, RECORD } from './constants';
-import dayjs from 'dayjs';
-import classNames from 'classnames';
-import styles from './styles.module.less';
-import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
-import { resourceService } from 'pc/resource_service';
-import { CalendarContext } from './calendar_context';
-import { getPosition } from './utils';
 import { ITask, useThemeColors } from '@apitable/components';
-import { dispatch } from 'pc/worker/store';
+import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { dispatch } from 'pc/worker/store';
+import { CalendarContext } from './calendar_context';
+import { PRE_RECORD, RECORD } from './constants';
+import styles from './styles.module.less';
+import { getPosition } from './utils';
 interface IDrop {
   children: React.ReactElement[];
   date: Date;
@@ -41,11 +41,8 @@ interface IDrop {
 
 const DropBase = ({ children, date, update }: IDrop) => {
   const colors = useThemeColors();
-  const { 
-    view, calendarStyle, setRecordModal, isStartDateTimeField,
-    isEndDateTimeField, isMobile, tasks, datasheetId,
-    permissions,
-  } = useContext(CalendarContext);
+  const { view, calendarStyle, setRecordModal, isStartDateTimeField, isEndDateTimeField, isMobile, tasks, datasheetId, permissions } =
+    useContext(CalendarContext);
   const { startFieldId, endFieldId } = calendarStyle;
   const [showAdd, setShowAdd] = useState(false);
   const [{ isOver, isOverCurrent }, drop] = useDrop(
@@ -57,7 +54,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
           return;
         }
         if (update) {
-          const task = tasks?.filter(t => item.id === t.id)[0];
+          const task = tasks?.filter((t) => item.id === t.id)[0];
           if (task) {
             let { startDate, endDate } = task;
             // diff ignores units of time below the day when the unit is a day
@@ -87,10 +84,10 @@ const DropBase = ({ children, date, update }: IDrop) => {
     [tasks],
   );
   const active = isOver || isOverCurrent;
-  
+
   const addRecord = (e: React.MouseEvent) => {
     const dateValue = dayjs(date).valueOf();
-    const cellValue: { [x: string]: number; } = {};
+    const cellValue: { [x: string]: number } = {};
     if (isStartDateTimeField) {
       cellValue[startFieldId] = dateValue;
     }
@@ -102,11 +99,9 @@ const DropBase = ({ children, date, update }: IDrop) => {
       count: 1,
       viewId: view.id,
       index: 0,
-      cellValues: [cellValue]
+      cellValues: [cellValue],
     });
-    if (
-      result.result === ExecuteResult.Success
-    ) {
+    if (result.result === ExecuteResult.Success) {
       const newRecordId = result.data && result.data[0];
       // move type
       if (newRecordId) {
@@ -122,22 +117,24 @@ const DropBase = ({ children, date, update }: IDrop) => {
                 fieldId: view.columns[0].fieldId,
               }),
             );
-            dispatch(StoreActions.setActiveRowInfo(datasheetId, {
-              type: WhyRecordMoveType.NewRecord,
-              positionInfo: {
-                recordId: newRecordId,
-                visibleRowIndex: 0,
-                isInit: false,
-              },
-              recordSnapshot: newRecordSnapshot
-            }));
+            dispatch(
+              StoreActions.setActiveRowInfo(datasheetId, {
+                type: WhyRecordMoveType.NewRecord,
+                positionInfo: {
+                  recordId: newRecordId,
+                  visibleRowIndex: 0,
+                  isInit: false,
+                },
+                recordSnapshot: newRecordSnapshot,
+              }),
+            );
           }
         }
       }
       const position = getPosition(e);
       /**
        * Delay setting modal Checked row
-       * When a modal exists, clicking on the + sign to add a new record will first trigger useClickAway to close the modal, 
+       * When a modal exists, clicking on the + sign to add a new record will first trigger useClickAway to close the modal,
        * then set the recordId to open the new record modal
        */
       setTimeout(() => {
@@ -145,12 +142,12 @@ const DropBase = ({ children, date, update }: IDrop) => {
       }, 0);
     }
   };
-  
+
   const isAllowAddRecord = !isMobile && permissions.rowCreatable;
 
   return (
     <div
-      ref={drop} 
+      ref={drop}
       className={classNames(styles.day, {
         active,
         [styles.hover]: isAllowAddRecord,
@@ -165,9 +162,11 @@ const DropBase = ({ children, date, update }: IDrop) => {
     >
       {isAllowAddRecord && showAdd ? (
         <span className={styles.add} onClick={addRecord}>
-          <AddOutlined size={14} color={colors.fc0}/>
+          <AddOutlined size={14} color={colors.fc0} />
         </span>
-      ) : <React.Fragment />}
+      ) : (
+        <React.Fragment />
+      )}
       {children}
     </div>
   );

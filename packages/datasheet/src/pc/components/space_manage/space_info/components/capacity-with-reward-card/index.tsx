@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Progress } from 'antd';
+import { ProgressProps } from 'antd/lib/progress';
+import classNames from 'classnames';
 import { FC, useMemo } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
-import classNames from 'classnames';
-import { t, Strings } from '@apitable/core';
-import { Progress } from 'antd';
-import { PercentOutlined } from '@apitable/icons';
-import { CardTitle } from '../../ui';
 import { Typography, useThemeColors } from '@apitable/components';
-import { ProgressProps } from 'antd/lib/progress';
+import { t, Strings } from '@apitable/core';
+import { PercentOutlined } from '@apitable/icons';
+import { expandInviteModal } from 'pc/components/invite';
 import { useAnimationNum } from '../../hooks/use_animation_num';
 import { ISpaceLevelType, needHideUnLimitedSpaceLevel } from '../../interface';
-import { expandInviteModal } from 'pc/components/invite';
+import { CardTitle } from '../../ui';
+import styles from './style.module.less';
 
 interface ICardProps {
   trailColor: string;
@@ -69,11 +69,32 @@ interface ICardProps {
   giftRemainText: string;
 }
 
-export const CapacityWithRewardCard: FC<React.PropsWithChildren<ICardProps>> = props => {
+export const CapacityWithRewardCard: FC<React.PropsWithChildren<ICardProps>> = (props) => {
   const {
-    title, allTotalText, usedPercent, usedText, remainText, totalText, remainPercent, trailColor, strokeColor, unit,
-    titleTip, titleLink, titleButton, valueIntro, showPercent, usedTextIsFloat,
-    minHeight = 302, className, level, isMobile, giftUsedText, giftUsedPercent, giftRemainPercent, giftRemainText,
+    title,
+    allTotalText,
+    usedPercent,
+    usedText,
+    remainText,
+    totalText,
+    remainPercent,
+    trailColor,
+    strokeColor,
+    unit,
+    titleTip,
+    titleLink,
+    titleButton,
+    valueIntro,
+    showPercent,
+    usedTextIsFloat,
+    minHeight = 302,
+    className,
+    level,
+    isMobile,
+    giftUsedText,
+    giftUsedPercent,
+    giftRemainPercent,
+    giftRemainText,
   } = props;
   const colors = useThemeColors();
   const overflow = usedPercent === 100;
@@ -221,7 +242,7 @@ interface IDescProps {
 
 const Desc: FC<React.PropsWithChildren<IDescProps>> = ({ color, label, text, unit, showPercent, usedPercent }) => {
   return (
-    <Typography variant='body4' className={styles.descItem}>
+    <Typography variant="body4" className={styles.descItem}>
       <span className={styles.before} style={{ backgroundColor: color }} />
       <span>{label}</span>
       <span className={styles.customFont} style={{ fontSize: 14 }}>
@@ -248,7 +269,7 @@ interface IProgressInCardProps extends ProgressProps {
   color?: string;
 }
 
-const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = props => {
+const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = (props) => {
   const color = props.color;
 
   const colors = useThemeColors();
@@ -258,8 +279,8 @@ const ProgressInCard: FC<React.PropsWithChildren<IProgressInCardProps>> = props 
     strokeWidth: 6,
     strokeColor: 'red',
     trailColor: colors.lineColor,
-    format: percent => (
-      <Typography variant='h3' color={color} className={styles.progressFormat}>
+    format: (percent) => (
+      <Typography variant="h3" color={color} className={styles.progressFormat}>
         {percent}
         <PercentOutlined color={color} />
       </Typography>

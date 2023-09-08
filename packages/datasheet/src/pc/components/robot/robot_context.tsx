@@ -30,21 +30,21 @@ const initState = {
 };
 
 export const RobotContext = createContext<{
-  state: IRobotContext,
-  dispatch: React.Dispatch<any>
+  state: IRobotContext;
+  dispatch: React.Dispatch<any>;
 }>({
-  state: initState, dispatch: () => {
-  },
+  state: initState,
+  dispatch: () => {},
 });
 
 const reducer = (state: IRobotContext, action: any) => {
   switch (action.type) {
     case 'setIsEditingRobotName':
-      return produce(state, draft => {
+      return produce(state, (draft) => {
         draft.isEditingRobotName = action.payload;
       });
     case 'setIsEditingRobotDesc':
-      return produce(state, draft => {
+      return produce(state, (draft) => {
         draft.isEditingRobotDesc = action.payload;
       });
     case 'setTriggerTypes':
@@ -75,8 +75,8 @@ const reducer = (state: IRobotContext, action: any) => {
     case 'updateRobot':
       const { robotList } = state;
       const { robot } = action.payload;
-      const newRobotList = produce(robotList, draft => {
-        const robotIndex = draft.findIndex(item => item.robotId === robot.robotId);
+      const newRobotList = produce(robotList, (draft) => {
+        const robotIndex = draft.findIndex((item) => item.robotId === robot.robotId);
         if (robotIndex > -1) {
           const oldRobot = draft[robotIndex];
           draft[robotIndex] = {
@@ -103,7 +103,5 @@ const reducer = (state: IRobotContext, action: any) => {
 export const RobotContextProvider = (props: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
-  return <RobotContext.Provider value={{ state, dispatch }}>
-    {props.children}
-  </RobotContext.Provider>;
+  return <RobotContext.Provider value={{ state, dispatch }}>{props.children}</RobotContext.Provider>;
 };

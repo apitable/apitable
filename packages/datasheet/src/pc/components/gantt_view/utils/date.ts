@@ -30,11 +30,7 @@ export const getDayjs = (dateTime: DateTimeType): Dayjs => {
  * Get the timestamp of the start of the day
  */
 export const getStartOfDate = (dateTime: DateTimeType) => {
-  return getDayjs(dateTime)
-    .hour(0)
-    .minute(0)
-    .second(0)
-    .millisecond(0);
+  return getDayjs(dateTime).hour(0).minute(0).second(0).millisecond(0);
 };
 
 /**
@@ -73,14 +69,14 @@ export const getDiffCountByWorkdays = (startTime: DateTimeType, endTime: DateTim
   const startDays = Array.from({ length: startDiffCount + 1 }, (_, index) => {
     const curIndex = startDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
-  }).filter(dayIndex => workDays.has(dayIndex)).length;
+  }).filter((dayIndex) => workDays.has(dayIndex)).length;
   // Get the number of working days in the last week
   const lastDayIndex = last.day();
   const endDiffCount = getDiffCount(end, last, 'day');
   const endDays = Array.from({ length: endDiffCount + 1 }, (_, index) => {
     const curIndex = lastDayIndex + index;
     return curIndex > 6 ? curIndex - 7 : curIndex;
-  }).filter(dayIndex => workDays.has(dayIndex)).length;
+  }).filter((dayIndex) => workDays.has(dayIndex)).length;
   // Total working days
   return startDays + middleDays + endDays;
 };

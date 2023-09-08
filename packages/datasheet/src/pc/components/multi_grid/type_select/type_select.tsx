@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors } from '@apitable/components';
-import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@apitable/core';
 import { useMount, useSize, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
+import * as React from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { Typography, useThemeColors } from '@apitable/components';
+import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
-import * as React from 'react';
-import { useEffect, useLayoutEffect, useRef } from 'react';
 import { getFieldTypeIcon } from '../field_setting';
 import styles from './styles.module.less';
 import { useShowTip } from './use_show_tip';
@@ -72,7 +72,7 @@ interface ITypeSelectItemProps extends ITypeSelect {
   style?: React.CSSProperties;
 }
 
-const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = props => {
+const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = (props) => {
   const { fieldList, fieldType, index, setInfo, style } = props;
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
@@ -151,7 +151,7 @@ function filterAdvanceGroup(fieldType: FieldType) {
   return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].fieldGroup === FieldGroup.Advanced;
 }
 
-export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = props => {
+export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (props) => {
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -178,7 +178,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = pr
     if (!doms.length) {
       return;
     }
-    doms.forEach(dom => {
+    doms.forEach((dom) => {
       dom.setAttribute('style', hidden ? 'display:none;' : '');
     });
   };
@@ -196,7 +196,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = pr
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }
 
-  const onScroll = ({ scrollTop, height, scrollHeight }: { scrollTop: number, height: number, scrollHeight: number }) => {
+  const onScroll = ({ scrollTop, height, scrollHeight }: { scrollTop: number; height: number; scrollHeight: number }) => {
     const shadowEle = scrollShadowRef.current;
     if (!shadowEle) return;
     if (scrollTop + height > scrollHeight - 10) {
@@ -267,15 +267,9 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = pr
     return fieldTitle.toLowerCase().includes(keyword.trim().toLowerCase());
   };
 
-  const basicFieldList = fieldSequence
-    .filter(filterPrimaryType)
-    .filter(filterCommonGroup)
-    .filter(filterByKeyword);
+  const basicFieldList = fieldSequence.filter(filterPrimaryType).filter(filterCommonGroup).filter(filterByKeyword);
 
-  const advanceFieldList = fieldSequence
-    .filter(filterPrimaryType)
-    .filter(filterAdvanceGroup)
-    .filter(filterByKeyword);
+  const advanceFieldList = fieldSequence.filter(filterPrimaryType).filter(filterAdvanceGroup).filter(filterByKeyword);
 
   return (
     <div className={styles.typeSelect} ref={divRef}>

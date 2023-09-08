@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Avatar, Box, Button, TextInput, Typography } from '@apitable/components';
 import { integrateCdnHost, Selectors, Strings, t } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useRobot } from '../../hooks';
 import { IStepProps } from '../interface';
 
@@ -50,50 +50,20 @@ export const RobotCreateGuideStep1 = (props: IStepProps) => {
     props.goNextStep();
   };
   return (
-    <Box
-      width='336px'
-      margin='24px 0px 118px 0px'
-    >
-      <Box
-        display='flex'
-        flexDirection='column'
-        alignItems='center'
-        height='110px'
-        justifyContent='space-between'
-        margin='0px 0px 24px 0px'
-      >
+    <Box width="336px" margin="24px 0px 118px 0px">
+      <Box display="flex" flexDirection="column" alignItems="center" height="110px" justifyContent="space-between" margin="0px 0px 24px 0px">
         <Avatar
           icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
-          size='l'
+          size="l"
           style={{
-            background: 'none'
+            background: 'none',
           }}
         />
-        <Typography>
-          {t(Strings.robot_create_wizard_step_1_desc)}
-        </Typography>
+        <Typography>{t(Strings.robot_create_wizard_step_1_desc)}</Typography>
       </Box>
-      <Box
-        height='120px'
-        width='100%'
-        display='flex'
-        flexDirection='column'
-        justifyContent='space-between'
-      >
-        <TextInput
-          placeholder={t(Strings.robot_create_name_placeholder)}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoFocus
-          block
-        />
-        <Button
-          block
-          disabled={loading || name.trim().length === 0}
-          loading={loading}
-          color='primary'
-          onClick={handleClick}
-        >
+      <Box height="120px" width="100%" display="flex" flexDirection="column" justifyContent="space-between">
+        <TextInput placeholder={t(Strings.robot_create_name_placeholder)} value={name} onChange={(e) => setName(e.target.value)} autoFocus block />
+        <Button block disabled={loading || name.trim().length === 0} loading={loading} color="primary" onClick={handleClick}>
           {t(Strings.robot_create_wizard_next)}
         </Button>
       </Box>

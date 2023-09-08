@@ -25,7 +25,7 @@ interface IWrapperTooltip {
   style?: React.CSSProperties;
 }
 
-export const WrapperTooltip: React.FC<React.PropsWithChildren<PropsWithChildren<IWrapperTooltip>>> = props => {
+export const WrapperTooltip: React.FC<React.PropsWithChildren<PropsWithChildren<IWrapperTooltip>>> = (props) => {
   const { tip, wrapper, children, style } = props;
 
   if (wrapper) {

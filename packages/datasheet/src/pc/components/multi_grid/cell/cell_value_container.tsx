@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@apitable/core';
 import classNames from 'classnames';
-import { useThemeColors } from '@apitable/components';
-import { CELL_CLASS } from 'pc/utils';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@apitable/core';
+import { CELL_CLASS } from 'pc/utils';
 import { GROUP_OFFSET } from '../enum';
 import { CollaboratorMark, getCollaboratorColor, renderFillHandle } from './cell_other';
 import { CellValue } from './cell_value';
@@ -44,11 +44,8 @@ interface ICellValueContainer {
 export const OPERATE_COLUMN_WIDTH = 72;
 const EMPTY_ARRAY: never[] = [];
 
-export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueContainer>> = props => {
-  const {
-    gridCellWrapper, row, rowHeightLevel, datasheetId,
-    actualColumnIndex, groupInfo, style, columns, recordMoveType,
-  } = props;
+export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueContainer>> = (props) => {
+  const { gridCellWrapper, row, rowHeightLevel, datasheetId, actualColumnIndex, groupInfo, style, columns, recordMoveType } = props;
   const colors = useThemeColors();
   const recordId = row.recordId;
   const fieldId = columns[actualColumnIndex] && columns[actualColumnIndex].fieldId;
@@ -74,7 +71,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
     isCurrentSearchCell,
     isHoverLine,
     showKeepSortBorder,
-  } = useSelector(state => {
+  } = useSelector((state) => {
     const selectionRange = Selectors.getSelectRanges(state)![0];
     const snapshot = Selectors.getSnapshot(state)!;
     const field = Selectors.getField(state, fieldId);
@@ -116,8 +113,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
       if (!fillHandleCellIndex) {
         return false;
       }
-      return fillHandleCellIndex.field.max === currentCellIndex?.fieldIndex
-        && fillHandleCellIndex.record.max === currentCellIndex?.recordIndex;
+      return fillHandleCellIndex.field.max === currentCellIndex?.fieldIndex && fillHandleCellIndex.record.max === currentCellIndex?.recordIndex;
     })();
     const isCellInSelection = (() => {
       if (!selectionRange) {
@@ -130,7 +126,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
       cellValue,
       isRowDragging: dragTarget.recordId === recordId,
       isActiveRow: Boolean(activeCell && activeCell.recordId === recordId),
-      recordChecked: Boolean(recordRanges && recordRanges.findIndex(item => item === recordId) !== -1),
+      recordChecked: Boolean(recordRanges && recordRanges.findIndex((item) => item === recordId) !== -1),
       isCellInSelection,
       isLastSelectionCell,
       showKeepSortBorder,
@@ -173,7 +169,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
   let addCollaboratorStyle = {};
   if (collaboratorCell.length) {
     // Collaboration cell wireframe color, based on the collaborator of the last activated cell.
-    const collaborator = collaboratorCell.reduce((a, b) => a > b ? a : b);
+    const collaborator = collaboratorCell.reduce((a, b) => (a > b ? a : b));
     const color = getCollaboratorColor(collaborator);
     addCollaboratorStyle = {
       outline: `1px solid ${color}`,
@@ -247,8 +243,8 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
         [styles.hasCollaborator]: Boolean(collaboratorCell.length),
       })}
     >
-      {
-        actualColumnIndex === 0 && <>
+      {actualColumnIndex === 0 && (
+        <>
           <CellRowHead
             row={row}
             recordId={recordId}
@@ -259,7 +255,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
             style={preOrderingStyle}
           />
         </>
-      }
+      )}
       <div
         className={cellClass}
         data-column-index={actualColumnIndex}
@@ -271,13 +267,10 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
         style={{
           opacity: '1',
           ...addCollaboratorStyle,
-          width:
-            (style.width && actualColumnIndex === 0) ?
-              (parseInt(style.width as string, 10) - OPERATE_COLUMN_WIDTH) : '',
+          width: style.width && actualColumnIndex === 0 ? parseInt(style.width as string, 10) - OPERATE_COLUMN_WIDTH : '',
           height: isActive ? 'max-content' : (style.height as number) - 1, // Subtract 1 pixel to ensure that the border can be displayed
           minHeight: (style.height as number) - 1,
-          borderBottom: !collaboratorCell.length && groupInfo.length ?
-            ' 1px solid ' + (isActive ? 'transparent' : colors.shadowColor) : '',
+          borderBottom: !collaboratorCell.length && groupInfo.length ? ' 1px solid ' + (isActive ? 'transparent' : colors.shadowColor) : '',
           boxSizing: groupInfo.length ? 'content-box' : 'inherit',
           fontWeight: actualColumnIndex === 0 ? 'bold' : 'normal',
           ...preOrderingStyle,
@@ -295,8 +288,7 @@ export const CellValueContainerFC: React.FC<React.PropsWithChildren<ICellValueCo
             showAlarm
           />
         </div>
-        {collaboratorCell.length ?
-          <CollaboratorMark displayRowIndex={displayRowIndex} collaboratorCell={collaboratorCell} /> : null}
+        {collaboratorCell.length ? <CollaboratorMark displayRowIndex={displayRowIndex} collaboratorCell={collaboratorCell} /> : null}
         {recordEditable && !isThisCellWillMove && renderFillHandle(isLastSelectionCell, actualColumnIndex)}
       </div>
     </div>

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import accept from 'attr-accept';
 import mime from 'mime-types';
+import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
 import { byte2Mb } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
@@ -48,11 +48,7 @@ export enum DocType {
   PPT,
 }
 
-export const NO_SUPPORT_IMG_MIME_TYPE = [
-  'image/vnd.adobe.photoshop',
-  'image/tiff',
-  'image/vnd.dwg',
-];
+export const NO_SUPPORT_IMG_MIME_TYPE = ['image/vnd.adobe.photoshop', 'image/tiff', 'image/vnd.dwg'];
 
 const WORD_MIME_TYPE = [
   'application/msword',
@@ -83,22 +79,14 @@ const EXCEL_MIME_TYPE = [
   'text/csv',
 ];
 
-export const DOC_MIME_TYPE = [
-  ...WORD_MIME_TYPE,
-  ...EXCEL_MIME_TYPE,
-  ...PPT_MIME_TYPE,
-];
+export const DOC_MIME_TYPE = [...WORD_MIME_TYPE, ...EXCEL_MIME_TYPE, ...PPT_MIME_TYPE];
 
 const MEDIA_TYPE = ['audio/*', 'video/*'];
 
 // ts suffix files are recognized as video/mp2t video format by default
 const INVALID_MEDIA_TYPE = ['video/mp2t'];
 
-const ZIPPED_TYPE = [
-  'application/zip',
-  'application/x-7z-compressed',
-  'application/x-rar-compressed',
-];
+const ZIPPED_TYPE = ['application/zip', 'application/x-7z-compressed', 'application/x-rar-compressed'];
 
 interface IFileLikeProps {
   name: string;
@@ -193,14 +181,7 @@ export const imageSizeExceeded = (size: number) => {
  */
 export const showOriginImageThumbnail = (file: IAttachmentValue) => {
   const fileArgument = { name: file.name, type: file.mimeType };
-  return (
-    (isPdf(fileArgument) && file.preview) ||
-    (
-      isImage(fileArgument) &&
-      !imageSizeExceeded(file.size) &&
-      isSupportImage(file.mimeType)
-    )
-  );
+  return (isPdf(fileArgument) && file.preview) || (isImage(fileArgument) && !imageSizeExceeded(file.size) && isSupportImage(file.mimeType));
 };
 
 export const isSupportImage = (mimeType: string) => {
@@ -210,10 +191,7 @@ export const isSupportImage = (mimeType: string) => {
 // Get a preview of the file
 // 1. Pictures, PDF Show pictures
 // 2. Other file types show the corresponding Icon
-export const getCellValueThumbSrc = (
-  file: IAttachmentValue,
-  option: IImageSrcOption,
-) => {
+export const getCellValueThumbSrc = (file: IAttachmentValue, option: IImageSrcOption) => {
   let imgSrc = '';
   if (!file) {
     return imgSrc;

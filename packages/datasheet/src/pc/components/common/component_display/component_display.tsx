@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useResponsive } from 'pc/hooks/use_responsive';
 import * as React from 'react';
+import { useResponsive } from 'pc/hooks/use_responsive';
 import { ScreenSize } from './enum';
 
 interface IComponentDisplay {
-  maxWidthCompatible?: ScreenSize; 
-  minWidthCompatible?: ScreenSize; 
+  maxWidthCompatible?: ScreenSize;
+  minWidthCompatible?: ScreenSize;
 }
 
-export const ComponentDisplay: React.FC<React.PropsWithChildren<IComponentDisplay>> = props => {
+export const ComponentDisplay: React.FC<React.PropsWithChildren<IComponentDisplay>> = (props) => {
   const { maxWidthCompatible, minWidthCompatible } = props;
   const { screenIsAtLeast, screenIsAtMost } = useResponsive();
 

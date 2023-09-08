@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUnmount } from 'ahooks';
 import { Fragment, FC, useContext } from 'react';
 import { Typography, ListDeprecate, Button, black } from '@apitable/components';
+import { CollaCommandName, ExecuteResult, t, Strings } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
+import { resourceService } from 'pc/resource_service';
+import { CalendarContext } from '../calendar_context';
 import { DragItem } from './drag_item';
 import { DropList } from './drop_list';
 import styles from './styles.module.less';
-import { CalendarContext } from '../calendar_context';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { CollaCommandName, ExecuteResult, t, Strings } from '@apitable/core';
-import { resourceService } from 'pc/resource_service';
-import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
-import { useUnmount } from 'ahooks';
 
 interface IRecordList {
   setRecord: (recordId: any, startTime: Date | null, endTime: Date | null) => void;
@@ -37,7 +37,7 @@ interface IRecordList {
   disabled?: boolean;
 }
 
-export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
+export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
   const { setRecord, records, disabled } = props;
   const { keyword, setKeyword, view, onCloseGrid } = useContext(CalendarContext);
 
@@ -48,9 +48,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
       viewId: view.id,
       index: 0,
     });
-    if (
-      result.result === ExecuteResult.Success
-    ) {
+    if (result.result === ExecuteResult.Success) {
       const newRecordId = result.data && result.data[0];
       expandRecordIdNavigate(newRecordId);
     }
@@ -69,21 +67,14 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
       setKeyword('');
     }
   });
-  
+
   return (
     <div className={styles.recordList}>
       <RecordMenu hideInsert />
       <DropList update={setRecord}>
         <div className={styles.header}>
-          <Typography variant="h6">
-            {t(Strings.calendar_pre_record_list)}
-          </Typography>
-          <CloseOutlined
-            className={styles.closeIcon}
-            size={16}
-            color={black[500]}
-            onClick={onCloseGrid}
-          />
+          <Typography variant="h6">{t(Strings.calendar_pre_record_list)}</Typography>
+          <CloseOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onCloseGrid} />
         </div>
         <ListDeprecate
           className={styles.list}
@@ -95,17 +86,17 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = props => {
         >
           {!disabled ? (
             <div className={styles.add}>
-              <Button onClick={appendRecord} block size="small" prefixIcon={<AddOutlined size={16} /> }>
+              <Button onClick={appendRecord} block size="small" prefixIcon={<AddOutlined size={16} />}>
                 {t(Strings.add_kanban_group_card)}
               </Button>
             </div>
-          ) : <Fragment />}
+          ) : (
+            <Fragment />
+          )}
           <div className={styles.listItems}>
-            {records.length > 0 ? records.map(pr => <DragItem {...pr} key={pr.id} disabled={disabled} />) : (
-              <div className={styles.empty}>
-                {keyword ? t(Strings.no_search_result) : t(Strings.empty_record)}
-              </div>
-            ) as any}
+            {records.length > 0
+              ? records.map((pr) => <DragItem {...pr} key={pr.id} disabled={disabled} />)
+              : ((<div className={styles.empty}>{keyword ? t(Strings.no_search_result) : t(Strings.empty_record)}</div>) as any)}
           </div>
         </ListDeprecate>
       </DropList>

@@ -16,45 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState, useEffect } from 'react';
-import * as React from 'react';
 import { Form } from 'antd';
-import styles from './style.module.less';
+import * as React from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { IReduxState, StoreActions, Api, t, Strings, ConfigConstant } from '@apitable/core';
 import { Message, NormalModal, WithTipTextInput } from 'pc/components/common';
-import { useRequest } from 'pc/hooks';
-import { useUserRequest } from 'pc/hooks';
+import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import styles from './style.module.less';
 
 export interface IModifyNameModalProps {
   setNameModal: React.Dispatch<React.SetStateAction<boolean>>;
   originName: string;
 }
 
-export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>> = props => {
+export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>> = (props) => {
   const { setNameModal, originName } = props;
   const { getLoginStatusReq } = useUserRequest();
-  const { err, loading } = useSelector((state: IReduxState) => ({
-    err: state.user.err,
-    loading: state.user.loading,
-    user: state.user.info,
-  }), shallowEqual);
+  const { err, loading } = useSelector(
+    (state: IReduxState) => ({
+      err: state.user.err,
+      loading: state.user.loading,
+      user: state.user.info,
+    }),
+    shallowEqual,
+  );
   const [name, setName] = useState(originName);
   const [disable, setDisable] = useState(true);
   const [isLimit, setLimit] = useState(false);
   const dispatch = useDispatch();
-  const { run: updateNickName } = useRequest(nickName => Api.updateUser({ nickName, init: false }).then(res => {
-    const { success, code, message } = res.data;
-    if (success) {
-      dispatch(StoreActions.updateUserInfo({ nickName, isNickNameModified: true }));
-      Message.success({ content: t(Strings.nickname_modified_successfully) });
-      getLoginStatusReq();
-      handleCancel();
-    } else {
-      dispatch(StoreActions.setHomeErr({ code, msg: message }));
-    }
-  }), { manual: true });
+  const { run: updateNickName } = useRequest(
+    (nickName) =>
+      Api.updateUser({ nickName, init: false }).then((res) => {
+        const { success, code, message } = res.data;
+        if (success) {
+          dispatch(StoreActions.updateUserInfo({ nickName, isNickNameModified: true }));
+          Message.success({ content: t(Strings.nickname_modified_successfully) });
+          getLoginStatusReq();
+          handleCancel();
+        } else {
+          dispatch(StoreActions.setHomeErr({ code, msg: message }));
+        }
+      }),
+    { manual: true },
+  );
 
   const handleCancel = () => {
     setNameModal(false);
@@ -106,7 +112,7 @@ export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>>
           placeholder={t(Strings.placeholder_input_new_nickname)}
           value={name}
           autoFocus
-          onFocus={e => e.target.select()}
+          onFocus={(e) => e.target.select()}
           error={Boolean(err)}
           helperText={err ? err.msg : isLimit ? t(Strings.member_err) : ''}
           block

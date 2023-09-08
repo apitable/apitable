@@ -41,17 +41,17 @@ export interface IRecordCardProps {
   className?: string;
 }
 
-export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = props => {
+export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = (props) => {
   const { record, columns, fieldMap, onClick, onDelete, datasheetId } = props;
   const [firstColumn, ...remainingColumns] = columns;
   const primaryField = fieldMap[firstColumn.fieldId];
   const state = store.getState();
-  const attachmentColumn = remainingColumns.find(column => {
+  const attachmentColumn = remainingColumns.find((column) => {
     const field = fieldMap[column.fieldId];
     return field?.type === FieldType.Attachment;
   });
 
-  const { formId, primaryCellValue } = useSelector(state => {
+  const { formId, primaryCellValue } = useSelector((state) => {
     const primaryCellValue = Selectors.getCellValue(
       state,
       {
@@ -76,7 +76,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = p
 
   const normalColumns = useMemo(() => {
     return remainingColumns
-      .filter(column => {
+      .filter((column) => {
         const field = fieldMap[column.fieldId];
         return field.type !== FieldType.Attachment;
       })
@@ -95,7 +95,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = p
         <h3 className={classNames(styles.cardTitle, title ? '' : styles.gray, 'ellipsis')}>{title || t(Strings.record_unnamed)}</h3>
         {foreignDstReadable && (
           <div className={styles.cellRow}>
-            {normalColumns.map(column => {
+            {normalColumns.map((column) => {
               const field = fieldMap[column.fieldId];
               const cellValue = Selectors.getCellValue(
                 state,

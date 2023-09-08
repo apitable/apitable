@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Interpreter, ResolverFunction } from './interpreter/interpreter';
 import { BooleanExprLexer } from './lexer/lexer';
 import { AstNode } from './parser/ast';
 import { BooleanExprParser } from './parser/parser';
-import { Interpreter, ResolverFunction } from './interpreter/interpreter';
 
-export interface IContext { [key: string]: () => boolean; }
+export interface IContext {
+  [key: string]: () => boolean;
+}
 export type Resolver = (value: string, context: IContext) => boolean;
 
 /**
@@ -78,4 +80,3 @@ export function ContextKeyEvaluate(expression: string, context: any, resolver?: 
 
   return interpreter.visit(rootNode);
 }
-

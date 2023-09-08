@@ -16,27 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, TextButton, useThemeColors } from '@apitable/components';
-import { CheckOutlined } from '@apitable/icons';
-import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
 import { Col, Row, Tabs, Upload } from 'antd';
 import { RowProps } from 'antd/lib/row';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { Message } from 'pc/components/common/message/message';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useCallback, useRef, useState } from 'react';
 // @ts-ignore
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import styles from './style.module.less';
 import { useSelector } from 'react-redux';
-import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
-import { Avatar, AvatarSize } from '../avatar';
+import { Button, TextButton, useThemeColors } from '@apitable/components';
+import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
+import { CheckOutlined } from '@apitable/icons';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { Message } from 'pc/components/common/message/message';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useResponsive } from 'pc/hooks';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
+import { Avatar, AvatarSize } from '../avatar';
+import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 const horizontalGutter = { xs: 16, sm: 16, md: 24, lg: 24, xl: 24 };
@@ -66,7 +66,7 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
     avatarColor: initAvatarColor = null,
   } = props;
   const colors = useThemeColors();
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const avatarColorList = createAvatarRainbowColorsArr(themeName);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const initCropConfig = initCropConfigMap.get(cropShape);
@@ -126,7 +126,7 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
     setUpImgFile('');
   };
 
-  const onComplete = (crop: { width: number; height: number; }, percentCrop: { width: number; height: number; }) => {
+  const onComplete = (crop: { width: number; height: number }, percentCrop: { width: number; height: number }) => {
     const image = imgRef.current;
     if (!image) {
       return;
@@ -210,13 +210,16 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
   };
 
   const canvasToFile = (canvas: HTMLCanvasElement) => {
-    canvas.toBlob(blob => {
-      if (!blob) {
-        new Error('Canvas is empty');
-      }
-      // Image Preview
-      setPreviewUrl(window.URL.createObjectURL(blob!));
-    }, (upImgFile as File).type);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          new Error('Canvas is empty');
+        }
+        // Image Preview
+        setPreviewUrl(window.URL.createObjectURL(blob!));
+      },
+      (upImgFile as File).type,
+    );
     const imgBase64 = canvas.toDataURL((upImgFile as File).type, 1);
     const file = dataURLtoFile(imgBase64, (upImgFile as File).name);
     setUpImgFile(file);
@@ -350,22 +353,20 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
               style={{ flexDirection: isMobile ? 'row' : 'column' }}
             >
               <div className={styles.previewImg}>
-                {
-                  avatarColor != null ?
-                    <Avatar
-                      id={avatarName || ''}
-                      title={avatarName || ''}
-                      avatarColor={avatarColor}
-                      size={isMobile ? AvatarSize.Size80 : AvatarSize.Size120}
-                    /> :
-                    (upImg || officialImgToken ? (
-                      <span className={styles.previewImgWrapper}>
-                        <img src={previewUrl} alt={''} />
-                      </span>
-                    ) : (
-                      initPreview
-                    ))
-                }
+                {avatarColor != null ? (
+                  <Avatar
+                    id={avatarName || ''}
+                    title={avatarName || ''}
+                    avatarColor={avatarColor}
+                    size={isMobile ? AvatarSize.Size80 : AvatarSize.Size120}
+                  />
+                ) : upImg || officialImgToken ? (
+                  <span className={styles.previewImgWrapper}>
+                    <img src={previewUrl} alt={''} />
+                  </span>
+                ) : (
+                  initPreview
+                )}
               </div>
               {renderReselect()}
             </div>
@@ -374,10 +375,9 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
             <Tabs
               activeKey={tabKey}
               className={classNames(styles.imgSelector, isCropRectangle && styles.imgRectangleSelector)}
-              onChange={key => setTabKey(key)}
+              onChange={(key) => setTabKey(key)}
             >
-              {
-                type === IUploadType.Avatar &&
+              {type === IUploadType.Avatar && (
                 <TabPane tab={t(Strings.default)} key={TabKeys.Default}>
                   <div className={styles.scrollWrapper}>
                     <div className={styles.colorList}>
@@ -385,16 +385,13 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
                         {avatarColorList.map((item, index) => {
                           return (
                             <Col key={item} span={4}>
-                              <div 
-                                key={item} 
-                                className={styles.colorItem} 
-                                style={{ backgroundColor: item }} 
+                              <div
+                                key={item}
+                                className={styles.colorItem}
+                                style={{ backgroundColor: item }}
                                 onClick={() => onAvatarColorSelect(index)}
                               >
-                                {
-                                  avatarColor === index &&
-                                  <CheckOutlined size={16} color={colors.textStaticPrimary} />
-                                }
+                                {avatarColor === index && <CheckOutlined size={16} color={colors.textStaticPrimary} />}
                               </div>
                             </Col>
                           );
@@ -403,37 +400,34 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
                     </div>
                   </div>
                 </TabPane>
-              }
-              {
-                type === IUploadType.Other &&
-                officialImgs?.length && (
-                  <TabPane tab={t(Strings.default)} key={TabKeys.Default}>
-                    <div className={styles.scrollWrapper}>
-                      <div className={styles.banners}>
-                        <Row {...rowConfig}>
-                          {officialImgs.map(imgToken => {
-                            const url = getImageThumbSrc(integrateCdnHost(imgToken), thumbOptions);
-                            return (
-                              <Col key={imgToken} span={isCropRectangle ? 12 : 8}>
-                                <div className={styles.bannerPreviewImg} onClick={() => officialImgClick(imgToken, url)}>
-                                  <span className={styles.bannerPreviewImgWrapper}>
-                                    <Image src={url} alt="vika.cn" layout={'fill'} />
-                                  </span>
-                                  {officialImgToken === imgToken && (
-                                    <div className={styles.checked}>
-                                      <CheckOutlined />
-                                    </div>
-                                  )}
-                                </div>
-                              </Col>
-                            );
-                          })}
-                        </Row>
-                      </div>
+              )}
+              {type === IUploadType.Other && officialImgs?.length && (
+                <TabPane tab={t(Strings.default)} key={TabKeys.Default}>
+                  <div className={styles.scrollWrapper}>
+                    <div className={styles.banners}>
+                      <Row {...rowConfig}>
+                        {officialImgs.map((imgToken) => {
+                          const url = getImageThumbSrc(integrateCdnHost(imgToken), thumbOptions);
+                          return (
+                            <Col key={imgToken} span={isCropRectangle ? 12 : 8}>
+                              <div className={styles.bannerPreviewImg} onClick={() => officialImgClick(imgToken, url)}>
+                                <span className={styles.bannerPreviewImgWrapper}>
+                                  <Image src={url} alt="vika.cn" layout={'fill'} />
+                                </span>
+                                {officialImgToken === imgToken && (
+                                  <div className={styles.checked}>
+                                    <CheckOutlined />
+                                  </div>
+                                )}
+                              </div>
+                            </Col>
+                          );
+                        })}
+                      </Row>
                     </div>
-                  </TabPane>
-                )
-              }
+                  </div>
+                </TabPane>
+              )}
               <TabPane tab={t(Strings.custom)} key={TabKeys.Custom}>
                 <div className={styles.uploadWrapper}>
                   {!upImg ? (

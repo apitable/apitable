@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, Strings, t } from '@apitable/core';
-import { DownloadOutlined } from '@apitable/icons';
 import { message } from 'antd';
 import classNames from 'classnames';
-// @ts-ignore
-import { SubscribeGrade, SubscribeLabel } from 'enterprise';
-import { Message } from 'pc/components/common';
 import { FC, useState } from 'react';
+import { IAttachmentValue, Strings, t } from '@apitable/core';
+import { DownloadOutlined } from '@apitable/icons';
+import { Message } from 'pc/components/common';
 import styles from './style.module.less';
 import { bulkDownload } from './util';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel } from 'enterprise';
 
 interface IBulkDownloadProps {
   files: IAttachmentValue[];
@@ -47,7 +47,7 @@ export const BulkDownload: FC<React.PropsWithChildren<IBulkDownloadProps>> = ({ 
           setLoading(true);
           Message.loading({
             content: t(Strings.downloading_attachments),
-            duration: 0
+            duration: 0,
           });
 
           try {
@@ -63,9 +63,11 @@ export const BulkDownload: FC<React.PropsWithChildren<IBulkDownloadProps>> = ({ 
         <div style={{ marginRight: 2 }} />
         {t(Strings.download_all)}
       </div>
-      {SubscribeLabel && <div className={styles.suffix}>
-        <SubscribeLabel grade={SubscribeGrade.Silver}/>
-      </div>}
+      {SubscribeLabel && (
+        <div className={styles.suffix}>
+          <SubscribeLabel grade={SubscribeGrade.Silver} />
+        </div>
+      )}
     </div>
   );
 };

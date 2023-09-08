@@ -16,21 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cls from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { IFieldProps } from '../../../interface';
 import { IHelp, HelpIconButton } from './style';
 import styles from './style.module.less';
-import cls from 'classnames';
-import { ChevronDownOutlined } from '@apitable/icons';
 
-export const TitleField = (props: Pick<IFieldProps, 'id' | 'title' | 'required'> & {
+export const TitleField = (
+  props: Pick<IFieldProps, 'id' | 'title' | 'required'> & {
     help?: IHelp;
     hasCollapse?: boolean;
     defaultCollapse?: boolean;
     onChange?: (collapse: boolean) => void;
     style?: React.CSSProperties;
-}) => {
+  },
+) => {
   const { title, id, help, hasCollapse, style, defaultCollapse = false, onChange, required } = props;
   const [, level] = (id || '').split('-');
   const titleLevel = Math.min(parseInt(level, 10) || 0, 2);
@@ -48,14 +50,17 @@ export const TitleField = (props: Pick<IFieldProps, 'id' | 'title' | 'required'>
     setCollapse(newValue);
     onChange && onChange(newValue);
   };
-  return <div className={titleCls} style={style} id={id} onClick={switchCollapse}>
-    {
-      required && <span style={{ color: 'red', width: 10 }}>*</span>
-    }
-    {title}
-    {help && <HelpIconButton help={help}/>}
-    {hasCollapse &&
-            <span className={cls(styles.suffixIcon, { [styles.isIconRotate]: !collapse })}> <ChevronDownOutlined
-              color="#8C8C8C"/></span>}
-  </div>;
+  return (
+    <div className={titleCls} style={style} id={id} onClick={switchCollapse}>
+      {required && <span style={{ color: 'red', width: 10 }}>*</span>}
+      {title}
+      {help && <HelpIconButton help={help} />}
+      {hasCollapse && (
+        <span className={cls(styles.suffixIcon, { [styles.isIconRotate]: !collapse })}>
+          {' '}
+          <ChevronDownOutlined color="#8C8C8C" />
+        </span>
+      )}
+    </div>
+  );
 };

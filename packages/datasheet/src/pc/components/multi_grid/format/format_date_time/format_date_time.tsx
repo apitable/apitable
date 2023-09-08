@@ -16,6 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Switch } from 'antd';
+import classNames from 'classnames';
+import { omit } from 'lodash';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import * as React from 'react';
+// eslint-disable-next-line no-restricted-imports
+import { Checkbox, Select, colorVars } from '@apitable/components';
 import {
   DateFormat,
   TimeFormat,
@@ -25,23 +32,19 @@ import {
   FieldType,
   CollectType,
   ILastModifiedTimeFieldProperty,
-  ILastModifiedTimeField, getUtcOptionList, getClientTimeZone, IDateTimeBaseFieldProperty,
+  ILastModifiedTimeField,
+  getUtcOptionList,
+  getClientTimeZone,
+  IDateTimeBaseFieldProperty,
 } from '@apitable/core';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import * as React from 'react';
-import styles from '../styles.module.less';
-import classNames from 'classnames';
-import { Switch } from 'antd';
-import settingStyles from '../../field_setting/styles.module.less';
-import { CollectTypeSelect } from './collect_type_select';
-import { FieldSelectModal } from './field_select_modal';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { MobileSelect, Tooltip } from 'pc/components/common';
-// eslint-disable-next-line no-restricted-imports
-import { Checkbox, Select, colorVars } from '@apitable/components';
-import { omit } from 'lodash';
-import { QuestionCircleOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import settingStyles from '../../field_setting/styles.module.less';
+import styles from '../styles.module.less';
+import { CollectTypeSelect } from './collect_type_select';
+import { FieldSelectModal } from './field_select_modal';
 
 interface IFormatDateTime {
   currentField: IDateTimeBaseField;
@@ -212,7 +215,7 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
         <MobileSelect
           defaultValue={dateFormat}
           optionData={optionDateFormatData}
-          onChange={value => handleDateFormatChange({ value })}
+          onChange={(value) => handleDateFormatChange({ value })}
           style={selectTriggerStyle}
         />
       </ComponentDisplay>
@@ -243,16 +246,19 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
                 dropdownMatchSelectWidth={false}
                 value={timeZone}
                 onSelected={handleTimeZoneChange}
-                renderValue={option => {
+                renderValue={(option) => {
                   if (!option.value) {
                     return `${option.label}: ${getClientTimeZone()}`;
                   }
                   return option.label;
                 }}
-                options={[{
-                  label: t(Strings.follow_system_time_zone),
-                  value: '',
-                }, ...getUtcOptionList()]}
+                options={[
+                  {
+                    label: t(Strings.follow_system_time_zone),
+                    value: '',
+                  },
+                  ...getUtcOptionList(),
+                ]}
                 openSearch
                 searchPlaceholder={t(Strings.search)}
                 highlightStyle={{ backgroundColor: colorVars.bgBrandLightDefault, color: 'inherit', borderRadius: '4px' }}
@@ -268,16 +274,19 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
               <MobileSelect
                 defaultValue={timeFormat}
                 optionData={optionTimeFormatData}
-                onChange={value => handleTimeFormatChange({ value })}
+                onChange={(value) => handleTimeFormatChange({ value })}
                 style={selectTriggerStyle}
               />
               <MobileSelect
                 defaultValue={timeZone}
-                onChange={value => handleTimeZoneChange({ value })}
-                optionData={[{
-                  label: t(Strings.follow_system_time_zone),
-                  value: '',
-                }, ...getUtcOptionList()]}
+                onChange={(value) => handleTimeZoneChange({ value })}
+                optionData={[
+                  {
+                    label: t(Strings.follow_system_time_zone),
+                    value: '',
+                  },
+                  ...getUtcOptionList(),
+                ]}
               />
               <div className={styles.showTimeZone}>
                 <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>

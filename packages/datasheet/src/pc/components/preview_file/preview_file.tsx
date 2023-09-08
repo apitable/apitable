@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { stopPropagation, ThemeProvider } from '@apitable/components';
-import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
-// @ts-ignore
-import { OFFICE_APP_ID } from 'enterprise';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, shallowEqual, useSelector } from 'react-redux';
+import { stopPropagation, ThemeProvider } from '@apitable/components';
+import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -29,24 +31,22 @@ import { store } from 'pc/store';
 import { KeyCode } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useSelector } from 'react-redux';
 import { ScreenSize } from '../common/component_display';
 import { IExpandPreviewModalFuncProps } from './preview_file.interface';
 import { PreviewMain } from './preview_main';
 import { isFocusingInput } from './preview_main/util';
 import styles from './style.module.less';
+// @ts-ignore
+import { OFFICE_APP_ID } from 'enterprise';
 
 interface IPreviewFileModal {
   onClose: () => void;
 }
 
-const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = props => {
+const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = (props) => {
   const { onClose } = props;
   const [isFullScreen, { toggle: toggleIsFullScreen }] = useToggle(false);
-  const previewFile = useSelector(state => state.previewFile, shallowEqual);
+  const previewFile = useSelector((state) => state.previewFile, shallowEqual);
   const { datasheetId, recordId, fieldId, activeIndex, editable, onChange, disabledDownload } = previewFile;
   let _cellValue = previewFile.cellValue;
 
@@ -86,7 +86,7 @@ const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = p
 
   const _spaceId = spaceId || shareInfo?.spaceId || getEnvVariables().TEMPLATE_SPACE_ID!;
 
-  const officePreviewEnable = marketplaceApps.find(app => app.appId === OFFICE_APP_ID)?.status ? true : false;
+  const officePreviewEnable = marketplaceApps.find((app) => app.appId === OFFICE_APP_ID)?.status ? true : false;
 
   const setActiveIndex = useCallback(
     (activeIndex: number) => {
@@ -228,7 +228,7 @@ export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpand
   preCloseModalFn();
   const div = document.createElement('div');
   document.body.appendChild(div);
-  const root= createRoot(div);
+  const root = createRoot(div);
   const close = () => {
     root.unmount();
     if (div && div.parentNode) {
@@ -259,7 +259,7 @@ export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpand
         <ThemeProvider>
           <PreviewFileModal onClose={close} />
         </ThemeProvider>
-      </Provider>
+      </Provider>,
     );
   };
 

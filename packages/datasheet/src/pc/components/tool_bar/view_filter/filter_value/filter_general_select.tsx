@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Dropdown, useThemeColors } from '@apitable/components';
-import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Dropdown, useThemeColors } from '@apitable/components';
+import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { OptionList } from 'pc/components/list';
@@ -46,9 +46,20 @@ interface IFilterGeneralSelectProps {
   isViewLock?: boolean;
 }
 
-export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = props => {
+export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = (props) => {
   const colors = useThemeColors();
-  const { placeholder, disabled, searchPlaceholder, popupClass, field, isMulti, onChange, cellValue, listData, isViewLock: isViewLockOriginal } = props;
+  const {
+    placeholder,
+    disabled,
+    searchPlaceholder,
+    popupClass,
+    field,
+    isMulti,
+    onChange,
+    cellValue,
+    listData,
+    isViewLock: isViewLockOriginal,
+  } = props;
   const isViewLock = isViewLockOriginal || disabled;
   const isMemberField: boolean = field.type === FieldType.Member;
   let DisplayComponent;
@@ -108,8 +119,9 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
   return (
     <div className={styles.select} ref={refSelect}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <Dropdown options={{ disabled: isViewLock, autoWidth: true }} trigger={
-          (
+        <Dropdown
+          options={{ disabled: isViewLock, autoWidth: true }}
+          trigger={
             <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
               {!cellValue && placeholder ? (
                 <div className={styles.placeholder}>{placeholder}</div>
@@ -120,18 +132,17 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
                 <ChevronDownOutlined color={colors.black[500]} />
               </div>
             </div>
-          )
-        }>
-          {
-            () => renderPopup()
           }
+        >
+          {() => renderPopup()}
         </Dropdown>
-        
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}
-          onClick={() => !isViewLock && setVisible(!visible)}>
+        <div
+          className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}
+          onClick={() => !isViewLock && setVisible(!visible)}
+        >
           <DisplayComponent cellValue={cellValue as any} field={field as any} />
           <div className={styles.iconArrow}>
             <ChevronDownOutlined size={16} color={colors.fourthLevelText} />
@@ -139,7 +150,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
         </div>
         <Popup
           title={t(Strings.please_choose)}
-          height='90%'
+          height="90%"
           open={visible}
           onClose={() => setVisible(false)}
           className={styles.filterGeneralPopupWrapper}

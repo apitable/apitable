@@ -17,14 +17,14 @@
  */
 
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { Button } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
+import { UserAddOutlined } from '@apitable/icons';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { expandInviteModal } from 'pc/components/invite';
 import { ISelectUnitLeftProps, SelectUnitLeft } from './select_unit_left';
 import styles from './style.module.less';
-import { Strings, t } from '@apitable/core';
-import { expandInviteModal } from 'pc/components/invite';
-import { Button } from '@apitable/components';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { useSelector } from 'react-redux';
-import { UserAddOutlined } from '@apitable/icons';
 
 interface ISelectPopupProps extends ISelectUnitLeftProps {
   onCancel(): void;
@@ -33,10 +33,10 @@ interface ISelectPopupProps extends ISelectUnitLeftProps {
   showTab?: boolean;
 }
 
-export const SelectUnitPopup: FC<React.PropsWithChildren<ISelectPopupProps>> = props => {
+export const SelectUnitPopup: FC<React.PropsWithChildren<ISelectPopupProps>> = (props) => {
   const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, onCancel, onOk, linkId, showTab } = props;
 
-  const formId = useSelector(state => state.pageParams.formId);
+  const formId = useSelector((state) => state.pageParams.formId);
 
   const Footer = (
     <div className={styles.popupFooter}>

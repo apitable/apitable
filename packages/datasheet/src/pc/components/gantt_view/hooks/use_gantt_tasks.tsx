@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { ReactNode, useContext, useMemo } from 'react';
 import { CellType, ConfigConstant, FieldType, IField, IFieldPermissionMap, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { ArrowLeftOutlined, ArrowRightOutlined, WarnCircleFilled } from '@apitable/icons';
-import dynamic from 'next/dynamic';
 import { getRecordName } from 'pc/components/expand_record';
 import {
   AreaType,
@@ -38,8 +40,6 @@ import { Icon, Transformer } from 'pc/components/konva_components';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { store } from 'pc/store';
-import * as React from 'react';
-import { ReactNode, useContext, useMemo } from 'react';
 import { useTooltip } from './use_gantt_tooltip';
 
 const GanttTask = dynamic(() => import('pc/components/gantt_view/group/gantt_task'), { ssr: false });
@@ -81,12 +81,10 @@ export const useTask = (props: IUseTaskProps) => {
   const { instance, rowStartIndex, rowStopIndex, pointPosition, scrollState, gridWidth } = props;
 
   // Context
-  const { fieldMap, snapshot, groupInfo, linearRows, rowsIndexMap, permissions, visibleColumns, fieldPermissionMap } = useContext(
-    KonvaGridViewContext,
-  );
-  const { dragTaskId, transformerId, ganttStyle, ganttGroupMap, dragSplitterInfo, targetTaskInfo, isTaskLineDrawing } = useContext(
-    KonvaGanttViewContext,
-  );
+  const { fieldMap, snapshot, groupInfo, linearRows, rowsIndexMap, permissions, visibleColumns, fieldPermissionMap } =
+    useContext(KonvaGridViewContext);
+  const { dragTaskId, transformerId, ganttStyle, ganttGroupMap, dragSplitterInfo, targetTaskInfo, isTaskLineDrawing } =
+    useContext(KonvaGanttViewContext);
   const { isMobile: _isMobile, isTouchDevice, setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
 
@@ -243,7 +241,7 @@ export const useTask = (props: IUseTaskProps) => {
   const errTaskTips = renderEnable
     ? Array.from({ length: rowStopIndex - rowStartIndex }, (_, index) => {
       return rowStartIndex + index;
-    }).map(rowIndex => {
+    }).map((rowIndex) => {
       const { recordId, type } = linearRows[rowIndex];
       if (type !== CellType.Record) return null;
       const startTime = cellValueMap[generateKeyName(startFieldId, recordId)];

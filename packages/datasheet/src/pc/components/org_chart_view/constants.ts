@@ -48,7 +48,7 @@ export enum Direction {
 
 export enum DragNodeType {
   OTHER_NODE = 'OTHER_NODE',
-  RENDER_NODE = 'RENDER_NODE'
+  RENDER_NODE = 'RENDER_NODE',
 }
 
 export enum NodeType {

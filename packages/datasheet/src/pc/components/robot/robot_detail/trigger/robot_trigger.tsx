@@ -17,15 +17,14 @@
  */
 
 // import { Message } from '@apitable/components';
-import { Message } from 'pc/components/common';
-import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
 import produce from 'immer';
 import { isEqual } from 'lodash';
-import { Modal } from 'pc/components/common';
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
+import { Modal, Message } from 'pc/components/common';
+import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { IRobotTrigger, ITriggerType } from '../../interface';
@@ -37,7 +36,7 @@ import { RobotTriggerCreateForm } from './robot_trigger_create';
 interface IRobotTriggerProps {
   robotId: string;
   triggerTypes: ITriggerType[];
-  formList: IFormNodeItem[],
+  formList: IFormNodeItem[];
   setTrigger: (trigger: IRobotTrigger) => void;
 }
 
@@ -54,41 +53,44 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
   const { trigger, mutate, triggerTypes, formList, datasheetId, datasheetName } = props;
   const formData = trigger.input;
   const triggerTypeId = trigger.triggerTypeId;
-  const triggerType = triggerTypes.find(t => t.triggerTypeId === trigger.triggerTypeId);
-  const handleTriggerTypeChange = useCallback((triggerTypeId: string) => {
-    if (triggerTypeId === trigger?.triggerTypeId) {
-      return;
-    }
-    Modal.confirm({
-      title: t(Strings.robot_change_trigger_tip_title),
-      content: t(Strings.robot_change_trigger_tip_content),
-      cancelText: t(Strings.cancel),
-      okText: t(Strings.confirm),
-      onOk: () => {
-        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(() => {
-          mutate({
-            ...trigger!,
-            input: null,
-            triggerTypeId,
-          });
-        });
-      },
-      onCancel: () => {
+  const triggerType = triggerTypes.find((t) => t.triggerTypeId === trigger.triggerTypeId);
+  const handleTriggerTypeChange = useCallback(
+    (triggerTypeId: string) => {
+      if (triggerTypeId === trigger?.triggerTypeId) {
         return;
-      },
-      type: 'warning',
-    });
-  }, [trigger, mutate]);
+      }
+      Modal.confirm({
+        title: t(Strings.robot_change_trigger_tip_title),
+        content: t(Strings.robot_change_trigger_tip_content),
+        cancelText: t(Strings.cancel),
+        okText: t(Strings.confirm),
+        onOk: () => {
+          changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(() => {
+            mutate({
+              ...trigger!,
+              input: null,
+              triggerTypeId,
+            });
+          });
+        },
+        onCancel: () => {
+          return;
+        },
+        type: 'warning',
+      });
+    },
+    [trigger, mutate],
+  );
 
   const { schema, uiSchema = {}} = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
-      return produce(triggerType.inputJsonSchema, draft => {
+      return produce(triggerType.inputJsonSchema, (draft) => {
         const properties = draft.schema.properties as any;
 
         switch (triggerType.endpoint) {
           case 'form_submitted':
-            properties!.formId.enum = formList.map(f => f.nodeId);
-            properties!.formId.enumNames = formList.map(f => f.nodeName);
+            properties!.formId.enum = formList.map((f) => f.nodeId);
+            properties!.formId.enumNames = formList.map((f) => f.nodeName);
             break;
           case 'record_matches_conditions':
             properties!.datasheetId.default = datasheetId;
@@ -115,48 +117,58 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
   }, [triggerTypes]);
   const mergedUiSchema = useMemo(() => {
     const isFilterForm = triggerType?.endpoint === 'record_matches_conditions';
-    return isFilterForm ? {
-      ...uiSchema,
-      filter: {
-        'ui:widget': ({ value, onChange }: any) => {
-          const transformedValue = value == null || isEqual(value, EmptyNullOperand) ? {
-            operator: OperatorEnums.And,
-            operands: [],
-          } : value.value;
-          return <RecordMatchesConditionsFilter
-            datasheetId={datasheetId!}
-            filter={transformedValue as IExpression}
-            onChange={(value) => {
-              onChange(value);
-            }}
-          />;
-        }
-      },
-      datasheetId: {
-        'ui:disabled': true,
+    return isFilterForm
+      ? {
+        ...uiSchema,
+        filter: {
+          'ui:widget': ({ value, onChange }: any) => {
+            const transformedValue =
+                value == null || isEqual(value, EmptyNullOperand)
+                  ? {
+                    operator: OperatorEnums.And,
+                    operands: [],
+                  }
+                  : value.value;
+            return (
+              <RecordMatchesConditionsFilter
+                datasheetId={datasheetId!}
+                filter={transformedValue as IExpression}
+                onChange={(value) => {
+                  onChange(value);
+                }}
+              />
+            );
+          },
+        },
+        datasheetId: {
+          'ui:disabled': true,
+        },
       }
-    } : {};
+      : {};
   }, [datasheetId, triggerType?.endpoint, uiSchema]);
 
-  const handleUpdateFormChange = useCallback(({
-    formData
-  }: any) => {
-    if (!shallowEqual(formData, trigger.input)) {
-      updateTriggerInput(trigger.triggerId, formData).then(() => {
-        mutate({
-          ...trigger,
-          input: formData,
-        });
-        Message.success({
-          content: t(Strings.robot_save_step_success)
-        });
-      }).catch(() => {
-        Message.error({
-          content: '步骤保存失败'
-        });
-      });
-    }
-  }, [mutate, trigger]);
+  const handleUpdateFormChange = useCallback(
+    ({ formData }: any) => {
+      if (!shallowEqual(formData, trigger.input)) {
+        updateTriggerInput(trigger.triggerId, formData)
+          .then(() => {
+            mutate({
+              ...trigger,
+              input: formData,
+            });
+            Message.success({
+              content: t(Strings.robot_save_step_success),
+            });
+          })
+          .catch(() => {
+            Message.error({
+              content: '步骤保存失败',
+            });
+          });
+      }
+    },
+    [mutate, trigger],
+  );
 
   return (
     <NodeForm
@@ -183,10 +195,7 @@ export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IR
     }
   }, [trigger, setTrigger]);
 
-  const {
-    datasheetId,
-    datasheetName
-  } = useSelector(state => {
+  const { datasheetId, datasheetName } = useSelector((state) => {
     const dst = Selectors.getDatasheet(state);
     return {
       datasheetId: dst?.id,
@@ -199,17 +208,17 @@ export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IR
   }
 
   if (!trigger) {
-    return (
-      <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
-    );
+    return <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />;
   }
   // The default value of the rich input form, the trigger, is officially controllable.
-  return <RobotTriggerBase
-    trigger={trigger}
-    mutate={mutate}
-    triggerTypes={triggerTypes}
-    formList={formList}
-    datasheetId={datasheetId}
-    datasheetName={datasheetName}
-  />;
+  return (
+    <RobotTriggerBase
+      trigger={trigger}
+      mutate={mutate}
+      triggerTypes={triggerTypes}
+      formList={formList}
+      datasheetId={datasheetId}
+      datasheetName={datasheetName}
+    />
+  );
 };

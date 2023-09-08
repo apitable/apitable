@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
+import * as React from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { PopStructureContext } from 'pc/components/editors/pop_structure/context';
 import { useResponsive } from 'pc/hooks';
 import { KeyCode, stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useListInteractive } from '../use_list_interactive';
 import { ICommonListProps, IOptionItemProps } from './common_list.interface';
 import { LineSearchInput } from './line_search_input';
@@ -37,8 +37,8 @@ const MIN_HGEIGHT = 80;
 const CLS = 'scroll-color-relative-absolute';
 
 export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & {
-  Option: React.FC<React.PropsWithChildren<IOptionItemProps>>
-} = props => {
+  Option: React.FC<React.PropsWithChildren<IOptionItemProps>>;
+} = (props) => {
   const {
     inputPlaceHolder,
     showInput,
@@ -155,7 +155,7 @@ export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & {
   };
 
   const cloneChild = () => {
-    return React.Children.map(children, item => {
+    return React.Children.map(children, (item) => {
       const props = item?.['props'];
 
       if (!React.isValidElement<IOptionItemProps>(item)) {
@@ -284,7 +284,7 @@ export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & {
   );
 };
 
-CommonList.Option = props => {
+CommonList.Option = (props) => {
   const { currentIndex, children, isChecked, className, ...rest } = props;
   return (
     <div

@@ -16,34 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Spin } from 'antd';
+import Image from 'next/image';
+import * as React from 'react';
+import { useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
-import { Spin } from 'antd';
-import Image from 'next/image';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
-import * as React from 'react';
-import { useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
 import styles from './style.module.less';
 
 const customTips = {
-  cropDesc: t(Strings.support_image_formats_limits, { number: 2 })
+  cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),
 };
 
 export const ChangeLogo = () => {
   const colors = useThemeColors();
   const ImageCropUploadRef = useRef<IImageCropUploadRef>(null);
-  const { spaceInfo, spaceId, spaceResource, userInfo } = useSelector((state: IReduxState) => ({
-    spaceInfo: state.space.curSpaceInfo,
-    spaceId: state.space.activeId || '',
-    spaceResource: state.spacePermissionManage.spaceResource,
-    userInfo: state.user.info,
-  }), shallowEqual);
+  const { spaceInfo, spaceId, spaceResource, userInfo } = useSelector(
+    (state: IReduxState) => ({
+      spaceInfo: state.space.curSpaceInfo,
+      spaceId: state.space.activeId || '',
+      spaceResource: state.spacePermissionManage.spaceResource,
+      userInfo: state.user.info,
+    }),
+    shallowEqual,
+  );
 
   const [logoLoading, setLogoLoading] = useState(false);
 
@@ -58,8 +61,8 @@ export const ChangeLogo = () => {
     setLogoLoading(true);
     return uploadAttachToS3({
       file: customFile as File,
-      fileType: UploadType.SpaceLogo
-    }).then(res => {
+      fileType: UploadType.SpaceLogo,
+    }).then((res) => {
       setLogoLoading(false);
       const { success, data } = res.data;
       if (success) {
@@ -84,31 +87,26 @@ export const ChangeLogo = () => {
   return (
     <div className={styles.logoWrap}>
       <div className={styles.bgWrap}>
-        <Image src={AvatarBgImg} alt='' layout={'fill'} objectFit={'contain'}/>
+        <Image src={AvatarBgImg} alt="" layout={'fill'} objectFit={'contain'} />
       </div>
       <div className={styles.logoContainer}>
         <div className={styles.logo}>
-          <Spin
-            spinning={Boolean(logoLoading || logo)}
-          >
-            {renderAvatar()}
-          </Spin>
+          <Spin spinning={Boolean(logoLoading || logo)}>{renderAvatar()}</Spin>
         </div>
-        {
-          spaceResource && spaceResource.mainAdmin &&
+        {spaceResource && spaceResource.mainAdmin && (
           <ImageCropUpload
             fileLimit={2}
             visible={Boolean(spaceResource?.mainAdmin)}
             initPreview={renderAvatar({ width: '100%', height: '100%' })}
             customTips={customTips}
-            cancel={() => { }}
-            confirm={data => confirmChangeLogo(data)}
+            cancel={() => {}}
+            confirm={(data) => confirmChangeLogo(data)}
           >
             <div className={styles.editIcon}>
               <EditOutlined color={colors.staticWhite0} />
             </div>
           </ImageCropUpload>
-        }
+        )}
       </div>
     </div>
   );

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { FC, useContext, useMemo } from 'react';
+import { KONVA_DATASHEET_ID } from '@apitable/core';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import { FC, useContext, useMemo } from 'react';
 import { IRenderData } from '../cell/interface';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -45,7 +45,7 @@ export const CellScrollContainer: FC<React.PropsWithChildren<ICellScrollContaine
   const name = generateTargetName({
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
-    recordId
+    recordId,
   });
   const { scrollTop } = cellScrollState;
 
@@ -60,10 +60,10 @@ export const CellScrollContainer: FC<React.PropsWithChildren<ICellScrollContaine
     setCellScrollState({
       scrollTop: 0,
       isOverflow,
-      totalHeight
+      totalHeight,
     });
     resetCellScroll();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [setActiveCellBound, height, setCellScrollState, fieldId, recordId, isOverflow, totalHeight]);
 
   const ratio = (height - 2 * SCROLL_BAR_PADDING) / totalHeight;
@@ -76,13 +76,8 @@ export const CellScrollContainer: FC<React.PropsWithChildren<ICellScrollContaine
   };
 
   return (
-    <Group
-      x={x}
-      y={y}
-      {...clipProps}
-    >
-      {
-        isOverflow &&
+    <Group x={x} y={y} {...clipProps}>
+      {isOverflow && (
         <Rect
           name={name}
           x={columnWidth - 7}
@@ -93,11 +88,8 @@ export const CellScrollContainer: FC<React.PropsWithChildren<ICellScrollContaine
           fill={theme.color.black[300]}
           listening={false}
         />
-      }
-      <Group
-        offsetY={isOverflow ? realScrollTop : 0}
-        {...rest}
-      >
+      )}
+      <Group offsetY={isOverflow ? realScrollTop : 0} {...rest}>
         {children}
       </Group>
     </Group>

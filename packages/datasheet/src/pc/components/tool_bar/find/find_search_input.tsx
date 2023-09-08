@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
-import { useDebounce } from 'ahooks';
-// eslint-disable-next-line no-restricted-imports
-import { ButtonPlus, Tooltip } from 'pc/components/common';
-import { Loading, useThemeColors } from '@apitable/components';
-import { KeyCode } from 'pc/utils';
+import { useDebounce, useClickAway } from 'ahooks';
+import classNames from 'classnames';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './styles.module.less';
+import { Loading, useThemeColors } from '@apitable/components';
+import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { ChevronDownOutlined, ChevronUpOutlined, CloseCircleFilled, SearchOutlined } from '@apitable/icons';
-import { useClickAway } from 'ahooks';
-import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
+import { ButtonPlus, Tooltip } from 'pc/components/common';
+import { KeyCode } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
+import styles from './styles.module.less';
+
 interface ISearchPanelProps {
   setVisible(visible: boolean): void;
   keyword: string;
@@ -37,7 +37,7 @@ interface ISearchPanelProps {
 }
 
 interface ISearchInputRef {
-  select(): void
+  select(): void;
 }
 const wrapperClassName = styles.findSearchInput;
 export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, ISearchPanelProps> = (props, ref) => {
@@ -52,14 +52,17 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
   const searchResultCursorIndex = useSelector(Selectors.getSearchResultCursorIndex);
   const searchResultArray = useSelector(Selectors.getSearchResult);
   const calcSearching = useSelector(Selectors.getComputedStatus)?.computing;
-  const searchResultItemCount = searchResultArray && searchResultArray.length || 0;
+  const searchResultItemCount = (searchResultArray && searchResultArray.length) || 0;
   const lock = useRef(false);
   const [refreshIndex, setRefreshIndex] = useState(0);
-  useClickAway(() => {
-    if (!keyword) {
-      setVisible(false);
-    }
-  }, () => document.querySelector('.' + wrapperClassName));
+  useClickAway(
+    () => {
+      if (!keyword) {
+        setVisible(false);
+      }
+    },
+    () => document.querySelector('.' + wrapperClassName),
+  );
   useImperativeHandle(ref, () => ({
     select: () => {
       inputRef.current?.focus();
@@ -127,8 +130,13 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
   const shouldShowFoundText = Boolean(!isSearching && searchKeyword);
   const shouldBanPrevNextButton = !shouldShowFoundText || searchResultItemCount < 1;
 
-  const countText = calcSearching ? <Loading /> : searchResultCursorIndex != null ?
-    `${searchResultItemCount > 0 ? searchResultCursorIndex + 1 : 0} / ${searchResultItemCount}` : '';
+  const countText = calcSearching ? (
+    <Loading />
+  ) : searchResultCursorIndex != null ? (
+    `${searchResultItemCount > 0 ? searchResultCursorIndex + 1 : 0} / ${searchResultItemCount}`
+  ) : (
+    ''
+  );
   return (
     <div
       className={classNames(wrapperClassName, {
@@ -153,15 +161,9 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
           />
         </span>
 
-        {
-          shouldShowFoundText && searchResultCursorIndex != null &&
-          <span className={styles.searchCountText}>
-            {countText}
-          </span>
-        }
+        {shouldShowFoundText && searchResultCursorIndex != null && <span className={styles.searchCountText}>{countText}</span>}
       </div>
-      {
-        !calcSearching && keyword &&
+      {!calcSearching && keyword && (
         <div className={styles.iconGroup}>
           <div className={styles.slash} />
           <ButtonPlus.Icon
@@ -169,11 +171,10 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
             onClick={setCursorIndex2Pre}
             className={styles.prevBtn}
             icon={
-              <Tooltip
-                title={t(Strings.find_prev)}
-                placement="top"
-              >
-                <span><ChevronUpOutlined size={16} color={colors.secondLevelText} /></span>
+              <Tooltip title={t(Strings.find_prev)} placement="top">
+                <span>
+                  <ChevronUpOutlined size={16} color={colors.secondLevelText} />
+                </span>
               </Tooltip>
             }
           />
@@ -182,11 +183,10 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
             onClick={setCursorIndex2Next}
             className={styles.nextBtn}
             icon={
-              <Tooltip
-                title={t(Strings.find_next)}
-                placement="top"
-              >
-                <span><ChevronDownOutlined size={16} color={colors.secondLevelText} /></span>
+              <Tooltip title={t(Strings.find_next)} placement="top">
+                <span>
+                  <ChevronDownOutlined size={16} color={colors.secondLevelText} />
+                </span>
               </Tooltip>
             }
           />
@@ -194,7 +194,7 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
             <CloseCircleFilled size={16} />
           </span>
         </div>
-      }
+      )}
     </div>
   );
 };

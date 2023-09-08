@@ -18,8 +18,8 @@
 
 import { ManipulateType, OpUnitType } from 'dayjs';
 import { DateUnitType, DEFAULT_WORK_DAYS } from '@apitable/core';
-import { IGanttCoordinate } from '../interface';
 import { Coordinate } from 'pc/components/konva_grid';
+import { IGanttCoordinate } from '../interface';
 import { getDiffCount, change, DateTimeType, getDayjs } from '../utils/date';
 
 // Unix time: from 01/01/1970 0:0:0
@@ -42,13 +42,13 @@ export class GanttCoordinate extends Coordinate {
   // Maximum number of days
   private _columnThreshold = 60;
 
-  constructor({ 
-    dateUnitType, 
-    workDays = DEFAULT_WORK_DAYS, 
-    onlyCalcWorkDay = false, 
-    columnThreshold = 60, 
+  constructor({
+    dateUnitType,
+    workDays = DEFAULT_WORK_DAYS,
+    onlyCalcWorkDay = false,
+    columnThreshold = 60,
     initDateTime,
-    ...rest 
+    ...rest
   }: IGanttCoordinate) {
     super(rest);
     this._workDays = new Set(workDays);
@@ -80,7 +80,7 @@ export class GanttCoordinate extends Coordinate {
   // Get horizontal spacing
   override get columnWidth() {
     switch (this.dateUnitType) {
-      case DateUnitType.Week: 
+      case DateUnitType.Week:
         return 100;
       case DateUnitType.Month:
         return 48;
@@ -96,9 +96,9 @@ export class GanttCoordinate extends Coordinate {
       case DateUnitType.Week:
       case DateUnitType.Month:
         return 1;
-      case DateUnitType.Quarter: 
+      case DateUnitType.Quarter:
         return 7;
-      case DateUnitType.Year: 
+      case DateUnitType.Year:
         return 30;
     }
   }
@@ -148,13 +148,13 @@ export class GanttCoordinate extends Coordinate {
   public initTimeline(dateUnitType: DateUnitType, dateTime: DateTimeType = this.nowTime) {
     this.dateUnitType = dateUnitType;
     const currentDate = getDayjs(dateTime);
-    let rangeStartDate = change(currentDate, - this.columnThreshold, this.unitType);
+    let rangeStartDate = change(currentDate, -this.columnThreshold, this.unitType);
     let rangeEndDate = change(currentDate, this.columnThreshold, this.unitType);
     if ([DateUnitType.Quarter, DateUnitType.Year].includes(dateUnitType)) {
       const startDate = currentDate.startOf(this.unitType);
       const diffCount = getDiffCount(startDate, currentDate.startOf('day'));
-      rangeStartDate = change(rangeStartDate, - diffCount);
-      rangeEndDate = change(rangeEndDate, - diffCount);
+      rangeStartDate = change(rangeStartDate, -diffCount);
+      rangeEndDate = change(rangeEndDate, -diffCount);
     }
     this.startDateIndex = this.getIndexFromUnix(rangeStartDate);
     this.endDateIndex = this.getIndexFromUnix(rangeEndDate);
@@ -169,7 +169,7 @@ export class GanttCoordinate extends Coordinate {
   }
 
   public prevTimelineStep(count: number = this.columnThreshold) {
-    const startDate = this.getDateFromStartDate(- count, this.unitType);
+    const startDate = this.getDateFromStartDate(-count, this.unitType);
     const startIndex = this.getIndexFromUnix(startDate);
     const diffCount = this.endDateIndex - this.startDateIndex;
     this.startDateIndex = startIndex;
@@ -224,10 +224,10 @@ export class GanttCoordinate extends Coordinate {
     const startOffset = this.getUnitStartOffset(startTime);
     const endOffset = this.getUnitStopOffset(endTime);
     const width = this.checkValid(startTime, endTime) ? Number(endOffset) - Number(startOffset) : null;
-    return { 
+    return {
       width,
-      startOffset, 
-      endOffset, 
+      startOffset,
+      endOffset,
     };
   }
 

@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line no-restricted-imports
-import { Scrollbars } from 'react-custom-scrollbars';
+import { useHover } from 'ahooks';
 import { FC } from 'react';
 import * as React from 'react';
-import { useHover } from 'ahooks';
+// eslint-disable-next-line no-restricted-imports
+import { Scrollbars } from 'react-custom-scrollbars';
+
 interface ICustomScrollbarsProps {
   onScroll?: (e: any) => void;
   style?: React.CSSProperties;
   autoHide?: boolean;
 }
+
 export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (props) => {
   const { autoHide = true } = props;
   const ref = React.useRef(null);
@@ -35,7 +37,7 @@ export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (p
     const thumbStyle = {
       borderRadius: 6,
       zIndex: 1,
-      opacity: (!autoHide || isHovering) ? '1' : '0',
+      opacity: !autoHide || isHovering ? '1' : '0',
       background: 'var(--bgScrollbarDefault)',
     };
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
@@ -45,13 +47,13 @@ export const ScrollBar: FC<React.PropsWithChildren<ICustomScrollbarsProps>> = (p
       renderThumbHorizontal={renderThumb}
       renderThumbVertical={renderThumb}
       autoHideTimeout={500}
-      autoHideDuration={200} 
+      autoHideDuration={200}
       autoHide={autoHide}
       {...props}
-    > 
+    >
       <div ref={ref} style={props.style}>
         {props.children}
-      </div>      
+      </div>
     </Scrollbars>
   );
 };

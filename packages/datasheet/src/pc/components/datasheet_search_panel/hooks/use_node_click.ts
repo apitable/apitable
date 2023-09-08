@@ -1,15 +1,15 @@
-import { Api, StoreActions } from '@apitable/core';
-import { useDispatch } from 'react-redux';
-import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { Api, StoreActions } from '@apitable/core';
+import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import { SecondConfirmType } from '../interface';
 
 interface IParams {
-  localState: ISearchPanelState
-  localDispatch: React.Dispatch<Partial<ISearchPanelState>>
-  secondConfirmType?: SecondConfirmType
+  localState: ISearchPanelState;
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
+  secondConfirmType?: SecondConfirmType;
 
-  searchDatasheetMetaData(datasheetId: string): void
+  searchDatasheetMetaData(datasheetId: string): void;
 }
 
 export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType }: IParams) => {
@@ -43,7 +43,7 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
     localDispatch({ folderLoaded: false });
     // 初始化时就会加载这部分数据
     Promise.all([Api.getParents(folderId), Api.getChildNodeList(folderId)])
-      .then(list => {
+      .then((list) => {
         const [parentsRes, childNodeListRes] = list;
         if (parentsRes.data.success) {
           localDispatch({ parents: parentsRes.data.data });
@@ -74,7 +74,7 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
   };
 
   const _onViewClick = (id: string) => {
-    const hasView = localState.currentMeta?.views.some(view => view.id === id);
+    const hasView = localState.currentMeta?.views.some((view) => view.id === id);
     if (hasView) {
       localDispatch({
         currentViewId: id,

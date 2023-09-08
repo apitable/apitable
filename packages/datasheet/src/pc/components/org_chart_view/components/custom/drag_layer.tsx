@@ -16,25 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUpdateEffect } from 'ahooks';
 import { FC, useContext } from 'react';
 import { DragLayerMonitor, useDragLayer, XYCoord } from 'react-dnd';
 import { useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { RecordCard } from '../../../record_card';
 import { CARD_WIDTH, DRAG_ITEM_WIDTH, COVER_HEIGHT, DragNodeType, SCROLL_SPEED, SHOW_EPMTY_COVER, SHOW_EPMTY_FIELD } from '../../constants';
-import styles from './styles.module.less';
 import { FlowContext } from '../../context/flow_context';
-import { useUpdateEffect } from 'ahooks';
+import styles from './styles.module.less';
 
 export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
-
-  const [translateX, translateY, scale] = useStoreState(state => state.transform);
+  const [translateX, translateY, scale] = useStoreState((state) => state.transform);
 
   const { transform } = useZoomPanHelper();
 
-  const getItemStyles = (
-    initialOffset: XYCoord | null,
-    currentOffset: XYCoord | null,
-  ) => {
+  const getItemStyles = (initialOffset: XYCoord | null, currentOffset: XYCoord | null) => {
     if (!initialOffset || !currentOffset) {
       return {
         display: 'none',
@@ -50,13 +46,7 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
     };
   };
 
-  const {
-    isDragging,
-    item,
-    initialOffset,
-    currentOffset,
-    diffOffset,
-  } = useDragLayer((monitor: DragLayerMonitor) => ({
+  const { isDragging, item, initialOffset, currentOffset, diffOffset } = useDragLayer((monitor: DragLayerMonitor) => ({
     item: monitor.getItem(),
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),
@@ -64,22 +54,9 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
     diffOffset: monitor.getDifferenceFromInitialOffset(),
   }));
 
-  const {
-    orgChartStyle,
-    bodySize,
-    offsetLeft,
-    offsetTop,
-    columns,
-    orgChartViewStatus,
-    datasheetId
-  } = useContext(FlowContext);
+  const { orgChartStyle, bodySize, offsetLeft, offsetTop, columns, orgChartViewStatus, datasheetId } = useContext(FlowContext);
 
-  const {
-    settingPanelVisible,
-    settingPanelWidth,
-    rightPanelWidth,
-    rightPanelVisible,
-  } = orgChartViewStatus;
+  const { settingPanelVisible, settingPanelWidth, rightPanelWidth, rightPanelVisible } = orgChartViewStatus;
 
   const { coverFieldId } = orgChartStyle;
 
@@ -88,7 +65,6 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
   const itemWidth = item?.type === DragNodeType.RENDER_NODE ? CARD_WIDTH * _scale : DRAG_ITEM_WIDTH;
 
   const overflowX = (currentOffset: XYCoord) => {
-
     // When the right sidebar is open, scrolling is not allowed
     if (settingPanelVisible && currentOffset.x + itemWidth >= bodySize.width - settingPanelWidth) {
       return false;
@@ -106,7 +82,6 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   useUpdateEffect(() => {
-
     if (!currentOffset || !initialOffset || !diffOffset || !item) {
       return;
     }
@@ -126,15 +101,15 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
           x: translateX - horizontalDir * SCROLL_SPEED,
           y: translateY,
           zoom: scale,
-        })
+        }),
       );
     } else if (overflowY(currentOffset)) {
       rafId = requestAnimationFrame(() =>
         transform({
           x: translateX,
           y: translateY - verticalDir * SCROLL_SPEED,
-          zoom: scale
-        })
+          zoom: scale,
+        }),
       );
     }
     return () => {
@@ -150,10 +125,7 @@ export const DragLayer: FC<React.PropsWithChildren<unknown>> = () => {
     <div className={styles.layer}>
       <div
         style={{
-          ...getItemStyles(
-            initialOffset,
-            currentOffset
-          ),
+          ...getItemStyles(initialOffset, currentOffset),
         }}
       >
         <RecordCard

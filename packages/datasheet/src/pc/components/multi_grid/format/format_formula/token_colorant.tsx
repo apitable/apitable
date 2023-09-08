@@ -24,7 +24,7 @@ interface IExpressionColorant {
   expression: string;
 }
 
-export const ExpressionColorantBase: React.FC<React.PropsWithChildren<IExpressionColorant>> = props => {
+export const ExpressionColorantBase: React.FC<React.PropsWithChildren<IExpressionColorant>> = (props) => {
   const { expression } = props;
   const tokens = new FormulaExprLexer(expression).fullMatches;
   const elements = tokens.map((token, index) => {
@@ -45,36 +45,68 @@ export const ExpressionColorantBase: React.FC<React.PropsWithChildren<IExpressio
       case TokenType.Not:
       case TokenType.Or:
       case TokenType.Times: {
-        return <span key={index} className="token t_operator">{token.value}</span>;
+        return (
+          <span key={index} className="token t_operator">
+            {token.value}
+          </span>
+        );
       }
 
       case TokenType.Value:
       case TokenType.PureValue: {
-        return <span key={index} className="token t_value">{token.value}</span>;
+        return (
+          <span key={index} className="token t_value">
+            {token.value}
+          </span>
+        );
       }
 
       case TokenType.String: {
-        return <span key={index} className="token t_string">{token.value}</span>;
+        return (
+          <span key={index} className="token t_string">
+            {token.value}
+          </span>
+        );
       }
       case TokenType.Number: {
-        return <span key={index} className="token t_number">{token.value}</span>;
+        return (
+          <span key={index} className="token t_number">
+            {token.value}
+          </span>
+        );
       }
       case TokenType.LeftParen:
       case TokenType.RightParen: {
-        return <span key={index} className="token t_paren">{token.value}</span>;
+        return (
+          <span key={index} className="token t_paren">
+            {token.value}
+          </span>
+        );
       }
       case TokenType.Call: {
-        return <span key={index} className="token t_call">{token.value}</span>;
+        return (
+          <span key={index} className="token t_call">
+            {token.value}
+          </span>
+        );
       }
       case TokenType.Blank: {
         return token.value;
       }
       case TokenType.Unknown: {
-        return <span key={index} className="token t_unknown">{token.value}</span>;
+        return (
+          <span key={index} className="token t_unknown">
+            {token.value}
+          </span>
+        );
       }
       default: {
         assertNever(token.type);
-        return <span key={index} className="token t_unknown">{token.value}</span>;
+        return (
+          <span key={index} className="token t_unknown">
+            {token.value}
+          </span>
+        );
       }
     }
   });

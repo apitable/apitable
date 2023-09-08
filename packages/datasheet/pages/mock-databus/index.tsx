@@ -7,7 +7,7 @@ const Error = () => {
       console.log(data);
     });
   }, []);
-    
+
   return <div />;
 };
 

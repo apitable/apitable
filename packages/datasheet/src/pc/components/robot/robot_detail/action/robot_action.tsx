@@ -17,11 +17,11 @@
  */
 
 // import { Message } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { Message, Modal } from 'pc/components/common';
 import { useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
 import { mutate } from 'swr';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { Message, Modal } from 'pc/components/common';
 import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useRobotTriggerType } from '../../hooks';
@@ -41,28 +41,31 @@ interface IRobotActionProps {
 export const RobotAction = (props: IRobotActionProps) => {
   const { actionTypes, action, robotId, nodeOutputSchemaList, index = 0 } = props;
   const triggerType = useRobotTriggerType(robotId);
-  const actionType = actionTypes.find(item => item.actionTypeId === action.typeId);
+  const actionType = actionTypes.find((item) => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
-  const handleActionTypeChange = useCallback((actionTypeId: string) => {
-    if (actionTypeId === action?.typeId) {
-      return;
-    }
-    Modal.confirm({
-      title: t(Strings.robot_change_action_tip_title),
-      content: t(Strings.robot_change_action_tip_content),
-      cancelText: t(Strings.cancel),
-      okText: t(Strings.confirm),
-      onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(() => {
-          mutate(`/automation/robots/${robotId}/actions`);
-        });
-      },
-      onCancel: () => {
+  const handleActionTypeChange = useCallback(
+    (actionTypeId: string) => {
+      if (actionTypeId === action?.typeId) {
         return;
-      },
-      type: 'warning',
-    });
-  }, [action, robotId]);
+      }
+      Modal.confirm({
+        title: t(Strings.robot_change_action_tip_title),
+        content: t(Strings.robot_change_action_tip_content),
+        cancelText: t(Strings.cancel),
+        okText: t(Strings.confirm),
+        onOk: () => {
+          changeActionTypeId(action?.id!, actionTypeId).then(() => {
+            mutate(`/automation/robots/${robotId}/actions`);
+          });
+        },
+        onCancel: () => {
+          return;
+        },
+        type: 'warning',
+      });
+    },
+    [action, robotId],
+  );
 
   if (!actionType) {
     return null;
@@ -71,20 +74,22 @@ export const RobotAction = (props: IRobotActionProps) => {
   const handleActionFormSubmit = (props: any) => {
     const newFormData = props.formData;
     if (!shallowEqual(newFormData, propsFormData)) {
-      updateActionInput(action.id, newFormData).then(() => {
-        mutate(`/automation/robots/${robotId}/actions`);
-        Message.success({
-          content: t(Strings.robot_save_step_success)
+      updateActionInput(action.id, newFormData)
+        .then(() => {
+          mutate(`/automation/robots/${robotId}/actions`);
+          Message.success({
+            content: t(Strings.robot_save_step_success),
+          });
+        })
+        .catch(() => {
+          Message.error({
+            content: '步骤保存失败',
+          });
         });
-      }).catch(() => {
-        Message.error({
-          content: '步骤保存失败'
-        });
-      });
     }
   };
   // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
-  const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
+  const currentActionIndex = nodeOutputSchemaList.findIndex((item) => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
@@ -107,34 +112,30 @@ export const RobotAction = (props: IRobotActionProps) => {
     return errors;
   };
 
-  return <NodeForm
-    nodeId={action.id}
-    type='action'
-    index={index}
-    key={action.id}
-    // noValidate
-    // noHtml5Validate
-    title={actionType.name}
-    validate={validate}
-    onSubmit={handleActionFormSubmit}
-    description={actionType.description}
-    formData={propsFormData}
-    serviceLogo={integrateCdnHost(actionType.service.logo)}
-    schema={schema}
-    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
-    nodeOutputSchemaList={prevActionSchemaList}
-    widgets={
-      {
+  return (
+    <NodeForm
+      nodeId={action.id}
+      type="action"
+      index={index}
+      key={action.id}
+      // noValidate
+      // noHtml5Validate
+      title={actionType.name}
+      validate={validate}
+      onSubmit={handleActionFormSubmit}
+      description={actionType.description}
+      formData={propsFormData}
+      serviceLogo={integrateCdnHost(actionType.service.logo)}
+      schema={schema}
+      uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
+      nodeOutputSchemaList={prevActionSchemaList}
+      widgets={{
         TextWidget: (props: any) => {
-          return <MagicTextField
-            {...props}
-            nodeOutputSchemaList={prevActionSchemaList}
-            triggerType={triggerType}
-          />;
-        }
-      }
-    }
-  >
-    <Select options={actionTypeOptions} onChange={handleActionTypeChange} value={action.typeId} />
-  </NodeForm>;
+          return <MagicTextField {...props} nodeOutputSchemaList={prevActionSchemaList} triggerType={triggerType} />;
+        },
+      }}
+    >
+      <Select options={actionTypeOptions} onChange={handleActionTypeChange} value={action.typeId} />
+    </NodeForm>
+  );
 };

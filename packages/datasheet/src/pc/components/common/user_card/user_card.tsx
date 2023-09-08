@@ -16,20 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import { FC, useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IShareSettings, Selectors, StoreActions, Strings, t, IMemberInfoInAddressList } from '@apitable/core';
 import { SettingOutlined, InfoCircleOutlined } from '@apitable/icons';
-import { Avatar, Loading, Tag } from 'pc/components/common';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { Avatar, Loading, Tag, IAvatarProps } from 'pc/components/common';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { TagColors } from '../tag';
 import styles from './style.module.less';
-import { IAvatarProps } from 'pc/components/common';
-import classNames from 'classnames';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 export interface IUserCard {
   memberId?: string;
@@ -61,12 +60,12 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   isDeleted = false,
   isActive = true,
   avatarProps,
-  onClose
+  onClose,
 }) => {
   const colors = useThemeColors();
   const [tagType, setTagType] = useState('');
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const activeNodeId = useSelector(state => Selectors.getNodeId(state));
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
   const { shareSettingsReq } = useCatalogTreeRequest();
   const { data: memberInfo, loading } = useRequest(getMemberInfo);
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });
@@ -74,23 +73,22 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
 
   // Get member information
   function getMemberInfo(): Promise<IMemberInfoInAddressList | null> {
-    if(memberId) {
-      return Api.getMemberInfo({ memberId, uuid: userId }).then(res => {
+    if (memberId) {
+      return Api.getMemberInfo({ memberId, uuid: userId }).then((res) => {
         const { success, data } = res.data;
         if (success) {
           setTagType(TAGTYPE.Member);
           permissionVisible && getMemberRole(data.memberId);
           return data;
         }
-       
+
         permissionVisible && getMemberRole();
         setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
         return null;
-       
       });
     }
-    if(userId) {
-      return Api.getNodeCollaboratorInfo({ uuid: userId, nodeId: activeNodeId }).then(res => {
+    if (userId) {
+      return Api.getNodeCollaboratorInfo({ uuid: userId, nodeId: activeNodeId }).then((res) => {
         const { success, data } = res.data;
         if (success) {
           setTagType(TAGTYPE.Member);
@@ -107,12 +105,10 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
       setTagType(isAlien ? TAGTYPE.Alien : TAGTYPE.Visitor);
       resolve(null);
     });
-  
   }
 
   // Get the member's role by memberId
   async function getMemberRoleReq(memberId?: string, role?: string) {
-
     if (memberId) {
       return role;
     }
@@ -137,7 +133,6 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
       return t(Strings.added_not_yet);
     }
     return '';
-
   }, [isDeleted, isActive, memberInfo]);
 
   const tooltipZIndex = 10001;
@@ -150,88 +145,93 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
     onClose && onClose();
   };
 
-  const title = getSocialWecomUnitName?.({
-    name: memberInfo?.memberName || memberInfo?.nickName || spareName,
-    isModified: memberInfo?.isMemberNameModified,
-    spaceInfo
-  }) || memberInfo?.memberName;
+  const title =
+    getSocialWecomUnitName?.({
+      name: memberInfo?.memberName || memberInfo?.nickName || spareName,
+      isModified: memberInfo?.isMemberNameModified,
+      spaceInfo,
+    }) || memberInfo?.memberName;
 
   return (
     <>
-      <div className={styles.userCard} onClick={e => e.stopPropagation()}>
-        {loading || (!memberRole && permissionVisible) ? <Loading /> :
-          (
-            <div>
-              {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE &&
-                <div className={styles.cardTool} onClick={openPermissionModal}>
-                  <div className={styles.settingPermissionBtn}>
-                    <SettingOutlined size={20} color={colors.textCommonPrimary} />
-                  </div>
-                  <span>{t(Strings.permission)}</span>
+      <div className={styles.userCard} onClick={(e) => e.stopPropagation()}>
+        {loading || (!memberRole && permissionVisible) ? (
+          <Loading />
+        ) : (
+          <div>
+            {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE && (
+              <div className={styles.cardTool} onClick={openPermissionModal}>
+                <div className={styles.settingPermissionBtn}>
+                  <SettingOutlined size={20} color={colors.textCommonPrimary} />
                 </div>
-              }
-              <div className={styles.avatarWrapper}>
-                <Avatar
-                  id={memberInfo?.memberId || userId || '0'}
-                  src={memberInfo?.avatar || spareSrc}
-                  title={memberInfo?.memberName || memberInfo?.nickName || spareName || ''}
-                  avatarColor={memberInfo?.avatarColor}
-                  {...avatarProps}
-                  size={40}
-                />
-                <div className={styles.nameWrapper}>
-                  <h6>
-                    <span>{ title }</span>
-                    {permissionVisible && memberRole &&
-                      <Tag className={styles.permissionWrapper} color={TagColors[memberRole]}>{ConfigConstant.permissionText[memberRole]}</Tag>
-                    }
-                    <TeamTag tagText={tagText} isActive={memberInfo ? memberInfo.isActive as boolean | undefined : isActive} />
-                  </h6>
-                </div>
+                <span>{t(Strings.permission)}</span>
               </div>
-              { memberInfo?.email && 
+            )}
+            <div className={styles.avatarWrapper}>
+              <Avatar
+                id={memberInfo?.memberId || userId || '0'}
+                src={memberInfo?.avatar || spareSrc}
+                title={memberInfo?.memberName || memberInfo?.nickName || spareName || ''}
+                avatarColor={memberInfo?.avatarColor}
+                {...avatarProps}
+                size={40}
+              />
+              <div className={styles.nameWrapper}>
+                <h6>
+                  <span>{title}</span>
+                  {permissionVisible && memberRole && (
+                    <Tag className={styles.permissionWrapper} color={TagColors[memberRole]}>
+                      {ConfigConstant.permissionText[memberRole]}
+                    </Tag>
+                  )}
+                  <TeamTag tagText={tagText} isActive={memberInfo ? (memberInfo.isActive as boolean | undefined) : isActive} />
+                </h6>
+              </div>
+            </div>
+            {memberInfo?.email && (
               <div className={styles.infoWrapper}>
                 <div className={styles.email}>
-                  <Typography variant='body4' color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
+                  <Typography variant="body4" color={colors.textCommonSecondary} ellipsis tooltipsZIndex={tooltipZIndex}>
                     {tagType === TAGTYPE.Alien ? t(Strings.alien_tip_in_user_card) : memberInfo?.email}
                   </Typography>
                 </div>
               </div>
-              }
-              <div 
-                className={styles.infoContent} 
-                style={{
-                  marginTop: memberInfo ? '16px' : '8px'
-                }}
-              >
-                {
-                  getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && <div className={styles.infoWrapper}>
-                    { (isAlien || !memberInfo) ? <div className={styles.infoText}>
+            )}
+            <div
+              className={styles.infoContent}
+              style={{
+                marginTop: memberInfo ? '16px' : '8px',
+              }}
+            >
+              {getEnvVariables().UNIT_LIST_TEAM_INFO_VISIBLE && (
+                <div className={styles.infoWrapper}>
+                  {isAlien || !memberInfo ? (
+                    <div className={styles.infoText}>
                       <InfoCircleOutlined size={16} />
                       <p>{t(Strings.alien_tip_in_user_card)}</p>
-                    </div> :
-                      <>
-                        <p>{t(Strings.role_member_table_header_team)}</p>
-                        <div className={styles.teamList}>
-                          { memberInfo ?
-                            memberInfo?.teamData?.map((item, index) => {
-                              return (
-                                <div key={index} className={styles.teamItem}>
-                                  <p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p>
-                                </div>
-                              );
-                            }) : '-'
-                          }
-                        </div>
-                      </>
-                    }
-                  </div>
-                }
-
-              </div>
+                    </div>
+                  ) : (
+                    <>
+                      <p>{t(Strings.role_member_table_header_team)}</p>
+                      <div className={styles.teamList}>
+                        {memberInfo
+                          ? memberInfo?.teamData?.map((item, index) => {
+                            return (
+                              <div key={index} className={styles.teamItem}>
+                                <p>-</p>
+                                <p className={styles.teamText}>{item.fullHierarchyTeamName}</p>
+                              </div>
+                            );
+                          })
+                          : '-'}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
-          )
-        }
+          </div>
+        )}
       </div>
     </>
   );
@@ -252,10 +252,12 @@ const TeamTag: FC<React.PropsWithChildren<ITeamTag>> = (props) => {
   }
 
   return (
-    <div className={classNames({
-      [styles.tag]: isActive,
-      [styles.dangerTag]: !isActive
-    })}>
+    <div
+      className={classNames({
+        [styles.tag]: isActive,
+        [styles.dangerTag]: !isActive,
+      })}
+    >
       <p style={{ color: isActive ? colors.secondLevelText : colors.borderDangerDefault }}>{tagText}</p>
     </div>
   );

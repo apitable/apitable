@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Form } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { Form } from 'antd';
-import styles from 'pc/components/navigation/account_center_modal/basic_setting/modify_email_modal/style.module.less';
+import { useDispatch } from 'react-redux';
 import { Api, ConfigConstant, hiddenMobile, StoreActions, Strings, t } from '@apitable/core';
 import { IdentifyingCodeInput, Message, NormalModal, WithTipWrapper } from 'pc/components/common';
+import styles from 'pc/components/navigation/account_center_modal/basic_setting/modify_email_modal/style.module.less';
 import { useSetState } from 'pc/hooks';
-import { useDispatch } from 'react-redux';
 import { usePlatform } from 'pc/hooks/use_platform';
 
-export type IUnbindType='mobile' | 'email';
+export type IUnbindType = 'mobile' | 'email';
 
 interface IUnBindModalProps {
   unbindType: IUnbindType;
@@ -64,11 +64,9 @@ export const UnBindModal: React.FC<React.PropsWithChildren<IUnBindModalProps>> =
       setLoading(false);
       if (success) {
         const info = isUnbindMobile ? { mobile: '', areaCode: '' } : { email: '' };
-        dispatch(
-          StoreActions.updateUserInfo(info)
-        );
+        dispatch(StoreActions.updateUserInfo(info));
         Message.success({
-          content: t(Strings.un_bind_success)
+          content: t(Strings.un_bind_success),
         });
         handleCancel();
         return;
@@ -77,9 +75,7 @@ export const UnBindModal: React.FC<React.PropsWithChildren<IUnBindModalProps>> =
     });
   };
 
-  const handleIdentifyingCodeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleIdentifyingCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (errMsg.identifyingCodeErrMsg) {
       setErrMsg({ identifyingCodeErrMsg: '' });
     }
@@ -95,43 +91,41 @@ export const UnBindModal: React.FC<React.PropsWithChildren<IUnBindModalProps>> =
   const modalTitle = isUnbindMobile ? t(Strings.un_bind_mobile) : t(Strings.un_bind_email);
   const { desktop } = usePlatform();
 
-  return <NormalModal
-    title={modalTitle}
-    className={styles.modifyEmail}
-    maskClosable={false}
-    onCancel={handleCancel}
-    visible
-    centered={desktop}
-    onOk={handleMobileCheck}
-    okButtonProps={{
-      loading,
-      disabled: Boolean(!identifyingCode || errMsg.accountErrMsg || errMsg.identifyingCodeErrMsg),
-    }}
-  >
-    <div>
-      <Form onFinish={handleMobileCheck} key="unbind">
-        <div className={styles.tip}>
-          {t(Strings.send_verification_code_to, {
-            mobile: isUnbindMobile ? `${data.areaCode} ${hiddenMobile(data.mobile)}` : data.email,
-          })}
-        </div>
-        <WithTipWrapper tip={errMsg.identifyingCodeErrMsg} captchaVisible>
-          <IdentifyingCodeInput
-            data={{ areaCode: data.areaCode, account: isUnbindMobile ? data.mobile : data.email }}
-            mode={isUnbindMobile ? ConfigConstant.LoginMode.PHONE : ConfigConstant.LoginMode.MAIL}
-            smsType={ConfigConstant.SmsTypes.UNBIND_MOBILE}
-            emailType={ConfigConstant.EmailCodeType.COMMON}
-            onChange={handleIdentifyingCodeChange}
-            setErrMsg={setErrMsg}
-            error={Boolean(errMsg.identifyingCodeErrMsg)}
-            disabled={Boolean(
-              !data.mobile ||
-              errMsg.accountErrMsg ||
-              errMsg.identifyingCodeErrMsg
-            )}
-          />
-        </WithTipWrapper>
-      </Form>
-    </div>
-  </NormalModal>;
+  return (
+    <NormalModal
+      title={modalTitle}
+      className={styles.modifyEmail}
+      maskClosable={false}
+      onCancel={handleCancel}
+      visible
+      centered={desktop}
+      onOk={handleMobileCheck}
+      okButtonProps={{
+        loading,
+        disabled: Boolean(!identifyingCode || errMsg.accountErrMsg || errMsg.identifyingCodeErrMsg),
+      }}
+    >
+      <div>
+        <Form onFinish={handleMobileCheck} key="unbind">
+          <div className={styles.tip}>
+            {t(Strings.send_verification_code_to, {
+              mobile: isUnbindMobile ? `${data.areaCode} ${hiddenMobile(data.mobile)}` : data.email,
+            })}
+          </div>
+          <WithTipWrapper tip={errMsg.identifyingCodeErrMsg} captchaVisible>
+            <IdentifyingCodeInput
+              data={{ areaCode: data.areaCode, account: isUnbindMobile ? data.mobile : data.email }}
+              mode={isUnbindMobile ? ConfigConstant.LoginMode.PHONE : ConfigConstant.LoginMode.MAIL}
+              smsType={ConfigConstant.SmsTypes.UNBIND_MOBILE}
+              emailType={ConfigConstant.EmailCodeType.COMMON}
+              onChange={handleIdentifyingCodeChange}
+              setErrMsg={setErrMsg}
+              error={Boolean(errMsg.identifyingCodeErrMsg)}
+              disabled={Boolean(!data.mobile || errMsg.accountErrMsg || errMsg.identifyingCodeErrMsg)}
+            />
+          </WithTipWrapper>
+        </Form>
+      </div>
+    </NormalModal>
+  );
 };

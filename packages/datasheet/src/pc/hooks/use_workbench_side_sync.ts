@@ -16,12 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { has } from 'lodash';
+import { useContext, useEffect } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
 import {
-  Api, collectProperty, ConfigConstant, DEFAULT_PERMISSION, INode, INodeChangeSocketData, INodeMeta, IPermissions, IReduxState, ResourceType,
-  Selectors, StatusCode, StoreActions, Strings, t
+  Api,
+  collectProperty,
+  ConfigConstant,
+  DEFAULT_PERMISSION,
+  INode,
+  INodeChangeSocketData,
+  INodeMeta,
+  IPermissions,
+  IReduxState,
+  ResourceType,
+  Selectors,
+  StatusCode,
+  StoreActions,
+  Strings,
+  t,
 } from '@apitable/core';
 import { WarnCircleFilled, WarnFilled } from '@apitable/icons';
-import { has } from 'lodash';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
@@ -30,9 +46,6 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
 import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
-import { useContext, useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
 
 export enum NodeChangeInfoType {
@@ -47,20 +60,22 @@ export enum NodeChangeInfoType {
 
 enum ErrorType {
   Delete = 'delete',
-  NoPermission = 'noPermission'
+  NoPermission = 'noPermission',
 }
 
 export const useWorkbenchSideSync = () => {
   const dispatch = useAppDispatch();
   const { getChildNodeListReq, updateNextNode, getPositionNodeReq } = useCatalogTreeRequest();
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
-  const { treeNodesMap, socketData, expandedKeys, spaceId } =
-    useSelector((state: IReduxState) => ({
+  const { treeNodesMap, socketData, expandedKeys, spaceId } = useSelector(
+    (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,
       expandedKeys: state.catalogTree.expandedKeys,
       spaceId: state.space.activeId,
-    }), shallowEqual);
+    }),
+    shallowEqual,
+  );
   const { setRightClickInfo, rightClickInfo } = useContext(WorkbenchSideContext);
 
   // Synchronous update of the directory tree via socket
@@ -88,14 +103,14 @@ export const useWorkbenchSideSync = () => {
 
   // If the number of nodes currently requested does not match the number of nodes returned, a diff operation is performed on the tree
   const diffOperation = (oldIds: string[], newNodes: INode[]) => {
-    const newIds = newNodes.map(node => node.nodeId);
+    const newIds = newNodes.map((node) => node.nodeId);
     const datasheetMapKeys = Selectors.getDatasheetIds(store.getState());
     /*
      * The number of nodes requested is greater than the number of nodes returned
      * (because the request only returns the nodes currently entitled to access), the tree is deleted
      **/
     if (oldIds.length > newIds.length) {
-      const diffNodeIds = oldIds.filter(nodeId => !newIds.includes(nodeId));
+      const diffNodeIds = oldIds.filter((nodeId) => !newIds.includes(nodeId));
       if (rightClickInfo && diffNodeIds.includes(rightClickInfo.id)) {
         setRightClickInfo(null);
       }
@@ -105,11 +120,15 @@ export const useWorkbenchSideSync = () => {
         }
         updateNextNode(nodeId);
         dispatch(StoreActions.deleteNode({ parentId: treeNodesMap[nodeId].parentId, nodeId }));
-        datasheetMapKeys.includes(nodeId) && updateResourceRole([{
-          type: ConfigConstant.NodeType.DATASHEET, nodeId, role: ConfigConstant.Role.Reader,
-          permissions: DEFAULT_PERMISSION,
-        },
-        ]);
+        datasheetMapKeys.includes(nodeId) &&
+          updateResourceRole([
+            {
+              type: ConfigConstant.NodeType.DATASHEET,
+              nodeId,
+              role: ConfigConstant.Role.Reader,
+              permissions: DEFAULT_PERMISSION,
+            },
+          ]);
         if (nodeId === activeNodeId) {
           popErrorModal(nodeId, ErrorType.NoPermission, treeNodesMap[nodeId].type);
         }
@@ -117,8 +136,9 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  const updateResourceRole = (data: INode[] |
-    { type: ConfigConstant.NodeType, nodeId: string, role: ConfigConstant.Role, permissions: IPermissions }[]) => {
+  const updateResourceRole = (
+    data: INode[] | { type: ConfigConstant.NodeType; nodeId: string; role: ConfigConstant.Role; permissions: IPermissions }[],
+  ) => {
     for (const node of data) {
       let resourceType: ResourceType = ResourceType.Datasheet;
       if (node.type === ConfigConstant.NodeType.DASHBOARD) {
@@ -132,8 +152,11 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Updating data sources, e.g. directory tree count tables, form data sources
-  const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<Omit<INodeMeta, 'name'> &
-    { nodeName?: string, showRecordHistory?: ConfigConstant.ShowRecordHistory }>) => {
+  const updateNodeInfo = (
+    nodeId: string,
+    nodeType: ConfigConstant.NodeType,
+    data: Partial<Omit<INodeMeta, 'name'> & { nodeName?: string; showRecordHistory?: ConfigConstant.ShowRecordHistory }>,
+  ) => {
     dispatch(StoreActions.updateTreeNodesMap(nodeId, data));
     const { nodeName: name, showRecordHistory, ...info } = data;
     const nodeData = name ? { ...info, name } : info;
@@ -141,11 +164,13 @@ export const useWorkbenchSideSync = () => {
       case ConfigConstant.NodeType.DATASHEET: {
         // Co-Update table history switch status
         if (has(data, 'showRecordHistory')) {
-          dispatch(StoreActions.updateNodeInfo(nodeId, nodeType, {
-            extra: {
-              showRecordHistory: showRecordHistory === ConfigConstant.ShowRecordHistory.OPEN,
-            },
-          }));
+          dispatch(
+            StoreActions.updateNodeInfo(nodeId, nodeType, {
+              extra: {
+                showRecordHistory: showRecordHistory === ConfigConstant.ShowRecordHistory.OPEN,
+              },
+            }),
+          );
         }
         dispatch(StoreActions.updateDatasheet(nodeId, nodeData));
         break;
@@ -165,10 +190,8 @@ export const useWorkbenchSideSync = () => {
     }
   };
 
-  const popErrorModal = (
-    nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET
-  ) => {
-    if(errorType === ErrorType.Delete) {
+  const popErrorModal = (nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET) => {
+    if (errorType === ErrorType.Delete) {
       Api.keepTabbar({}).then(() => {
         window.location.reload();
       });
@@ -179,13 +202,13 @@ export const useWorkbenchSideSync = () => {
       delete: {
         content: t(Strings.delete_file_message_content) + `(${StatusCode.NODE_DELETED})`,
         icon: WarnCircleFilled({ size: 24 }),
-        modalButtonType: 'error'
+        modalButtonType: 'error',
       },
       noPermission: {
         content: t(Strings.no_file_permission_message) + `(${StatusCode.NOT_PERMISSION})`,
         icon: WarnFilled({ size: 24 }),
-        modalButtonType: 'warning'
-      }
+        modalButtonType: 'warning',
+      },
     };
 
     const { content, modalButtonType, icon } = configObj[errorType];
@@ -203,10 +226,9 @@ export const useWorkbenchSideSync = () => {
       onOk: popErrorModalClose,
       maskClosable: false,
       icon,
-      modalButtonType
+      modalButtonType,
     });
     const modal = Modal.warning(modalConfig);
-
   };
 
   // Synchronising the error status of non-folder type nodes
@@ -240,9 +262,7 @@ export const useWorkbenchSideSync = () => {
     if (!result) {
       return;
     }
-    dispatch(batchActions([
-      StoreActions.addNodeToMap(result, false),
-      StoreActions.refreshTree(result)]));
+    dispatch(batchActions([StoreActions.addNodeToMap(result, false), StoreActions.refreshTree(result)]));
     for (const node of result) {
       // TODO: When the added node is a folder and it is the currently active node, the error status of the folder is removed
       if (node.type === ConfigConstant.NodeType.FOLDER) {
@@ -341,7 +361,7 @@ export const useWorkbenchSideSync = () => {
     const idsArray: string[] = collectProperty(treeNodesMap, nodeId);
     const ids = idsArray.join(',');
 
-    Api.getNodeInfo(ids).then(res => {
+    Api.getNodeInfo(ids).then((res) => {
       const { success, data } = res.data;
       if (success) {
         if (idsArray.length !== data.length) {
@@ -357,12 +377,7 @@ export const useWorkbenchSideSync = () => {
           return;
         }
         const newActiveNodeInfo = data.find((item: any) => item.nodeId === activeNodeId);
-        if (
-          activeNodeId &&
-          idsArray.includes(activeNodeId) &&
-          newActiveNodeInfo &&
-          treeNodesMap[activeNodeId].role !== newActiveNodeInfo.role
-        ) {
+        if (activeNodeId && idsArray.includes(activeNodeId) && newActiveNodeInfo && treeNodesMap[activeNodeId].role !== newActiveNodeInfo.role) {
           Message.info({
             content: t(Strings.node_permission_has_been_changed, {
               nodeRoleName: ConfigConstant.permissionText[newActiveNodeInfo.role],
@@ -418,7 +433,7 @@ export const useWorkbenchSideSync = () => {
       if (!childrenNodes) {
         return;
       }
-      const children = childrenNodes.map(node => node.nodeId);
+      const children = childrenNodes.map((node) => node.nodeId);
       dispatch(StoreActions.addNodeToMap(childrenNodes, false));
       dispatch(StoreActions.updateTreeNodesMap(parentId, { hasChildren: true, children }));
       return;
@@ -430,9 +445,8 @@ export const useWorkbenchSideSync = () => {
     }
     const result = await getPositionNodeReq(nodeId);
     if (!result) {
-      const nodeInfo = await Api.getNodeInfo(nodeId).then(res => res.data.data);
-      if (dragNode && !nodeInfo && dragNode.type !== ConfigConstant.NodeType.FOLDER &&
-        nodeId === activeNodeId && !treeNodesMap[parentId]) {
+      const nodeInfo = await Api.getNodeInfo(nodeId).then((res) => res.data.data);
+      if (dragNode && !nodeInfo && dragNode.type !== ConfigConstant.NodeType.FOLDER && nodeId === activeNodeId && !treeNodesMap[parentId]) {
         popErrorModal(nodeId, ErrorType.NoPermission);
       }
     }

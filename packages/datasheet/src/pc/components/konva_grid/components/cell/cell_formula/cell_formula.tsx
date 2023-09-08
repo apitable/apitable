@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { BasicValueType, Field, FormulaBaseError } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
+import { BasicValueType, Field, FormulaBaseError } from '@apitable/core';
 import { CellCheckbox } from '../cell_checkbox';
 import { CellText } from '../cell_text';
 import { ICellProps } from '../cell_value';
@@ -29,15 +29,8 @@ export const CellFormula: React.FC<React.PropsWithChildren<ICellProps>> = (props
   const isCheckbox = Field.bindModel(field).basicValueType === BasicValueType.Boolean;
 
   return (
-    <Group
-      x={x}
-      y={y}
-    >
-      {
-        isCheckbox && !(cellValue instanceof FormulaBaseError) ?
-          <CellCheckbox {...props} x={0} y={0} /> :
-          <CellText {...props} x={0} y={0} />
-      }
+    <Group x={x} y={y}>
+      {isCheckbox && !(cellValue instanceof FormulaBaseError) ? <CellCheckbox {...props} x={0} y={0} /> : <CellText {...props} x={0} y={0} />}
     </Group>
   );
 };

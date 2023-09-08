@@ -19,9 +19,9 @@
 import _pick from 'lodash/pick';
 import { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import * as React from 'react';
+import { isObject, mergeObjects } from '../func';
 import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
-import { isObject, mergeObjects } from '../func';
 import validateFormData, { toErrorList } from '../validate';
 import { default as DefaultErrorList } from './common/ErrorList';
 
@@ -66,8 +66,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     const { errors, errorSchema, schema, uiSchema } = state;
     const { ErrorList, showErrorList, formContext } = props;
     if (showErrorList && errors.length) {
-      return <ErrorList errors={errors} errorSchema={errorSchema} schema={schema} uiSchema={uiSchema}
-        formContext={formContext} />;
+      return <ErrorList errors={errors} errorSchema={errorSchema} schema={schema} uiSchema={uiSchema} formContext={formContext} />;
     }
     return null;
   };
@@ -80,7 +79,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
 
     const data = _pick(formData, fields);
     if (Array.isArray(formData)) {
-      return Object.keys(data).map(key => data[key]);
+      return Object.keys(data).map((key) => data[key]);
     }
 
     return data;
@@ -303,7 +302,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
         children
       ) : (
         <div>
-          <button type='submit' className='btn btn-info'>
+          <button type="submit" className="btn btn-info">
             Submit
           </button>
         </div>

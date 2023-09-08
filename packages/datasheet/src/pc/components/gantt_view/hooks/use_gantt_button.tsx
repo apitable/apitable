@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { useContext, useMemo } from 'react';
 import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
 import { ChevronLeftOutlined, ChevronRightOutlined } from '@apitable/icons';
-import dynamic from 'next/dynamic';
 import { getStyleConfig } from 'pc/common/style_config';
 import { GANTT_MONTH_TIMELINE_HEIGHT, GANTT_TAB_BAR_HEIGHT, GANTT_TIMELINE_HEIGHT, GanttCoordinate, PointPosition } from 'pc/components/gantt_view';
 
 import { Icon } from 'pc/components/konva_components';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import * as React from 'react';
-import { useContext, useMemo } from 'react';
 
 const Button = dynamic(() => import('pc/components/gantt_view/group/button'), { ssr: false });
 // Icon Path
@@ -40,12 +40,7 @@ interface IUseButtonProps {
 }
 
 export const useButton = (props: IUseButtonProps) => {
-  const {
-    instance,
-    pointPosition,
-    columnStartIndex,
-    columnStopIndex,
-  } = props;
+  const { instance, pointPosition, columnStartIndex, columnStopIndex } = props;
 
   const { todayIndex, containerWidth, dateUnitType } = instance;
   const { realTargetName: pointRealTargetName } = pointPosition;
@@ -65,15 +60,17 @@ export const useButton = (props: IUseButtonProps) => {
     const cornerRadius = todayIndex <= columnStartIndex ? [radius, radius, radius, 0] : [radius, radius, 0, radius];
     const marginRight = isMobile ? 90 + getStyleConfig('gantt_mobile_unit_select_width') : 180;
 
-    return <Button
-      containerWidth={containerWidth}
-      marginRight={marginRight}
-      btnHeight={btnHeight}
-      KONVA_DATASHEET_ID={KONVA_DATASHEET_ID}
-      btnWidth={btnWidth}
-      colors={colors}
-      cornerRadius={cornerRadius}
-    />;
+    return (
+      <Button
+        containerWidth={containerWidth}
+        marginRight={marginRight}
+        btnHeight={btnHeight}
+        KONVA_DATASHEET_ID={KONVA_DATASHEET_ID}
+        btnWidth={btnWidth}
+        colors={colors}
+        cornerRadius={cornerRadius}
+      />
+    );
   }, [colors, columnStartIndex, columnStopIndex, containerWidth, isMobile, todayIndex]);
 
   /**
@@ -96,7 +93,7 @@ export const useButton = (props: IUseButtonProps) => {
         backgroundWidth={timelineHeight}
         backgroundHeight={timelineHeight - 1}
         background={colors.white}
-      />
+      />,
     );
     skipButtons.push(
       <Icon
@@ -109,13 +106,13 @@ export const useButton = (props: IUseButtonProps) => {
         backgroundWidth={timelineHeight}
         backgroundHeight={timelineHeight - 1}
         background={colors.white}
-      />
+      />,
     );
     return skipButtons;
   }, [dateUnitType, isHoverLeft, colors.primaryColor, colors.thirdLevelText, colors.white, containerWidth, isHoverRight]);
 
   return {
     skipButtons,
-    backToNowButton
+    backToNowButton,
   };
 };

@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useMemo, useRef, useImperativeHandle } from 'react';
+import { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { FixedSizeList as List, Align } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList as List, Align } from 'react-window';
 import { Selectors, IViewProperty } from '@apitable/core';
-import style from './style.module.less';
-import { forwardRef } from 'react';
 import { Row } from './row';
+import style from './style.module.less';
 
 interface IRecordListProps {
   datasheetId: string;
@@ -48,9 +47,9 @@ const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (pr
     onClick,
     foreignDatasheetReadable: _foreignDatasheetReadable,
   } = props;
-  const formId = useSelector(state => state.pageParams.formId);
+  const formId = useSelector((state) => state.pageParams.formId);
   const foreignDatasheetReadable = Boolean(_foreignDatasheetReadable || formId);
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const listRef = useRef<List>(null);
   const selectedSet = useMemo(() => {
     return new Set(selectedRecordIds);
@@ -80,17 +79,19 @@ const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (pr
     <div className={style.recordListContainer}>
       <AutoSizer style={{ width: '100%', height: '100%' }}>
         {({ height, width }) => {
-          return <List
-            height={height}
-            width={width}
-            itemCount={rows.length}
-            itemSize={foreignDatasheetReadable ? 98 : 48}
-            ref={listRef}
-            itemKey={(index: number) => rows[index].recordId}
-            itemData={itemData}
-          >
-            {Row}
-          </List>;
+          return (
+            <List
+              height={height}
+              width={width}
+              itemCount={rows.length}
+              itemSize={foreignDatasheetReadable ? 98 : 48}
+              ref={listRef}
+              itemKey={(index: number) => rows[index].recordId}
+              itemData={itemData}
+            >
+              {Row}
+            </List>
+          );
         }}
       </AutoSizer>
     </div>

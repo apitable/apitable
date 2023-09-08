@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
-import { Api, MemberType, Strings, t, UnitItem } from '@apitable/core';
+import React, { useCallback, useContext, useEffect, useImperativeHandle, useState } from 'react';
 import { Message } from '@apitable/components';
-import React from 'react';
-import { useCallback, useContext, useEffect, useImperativeHandle, useState } from 'react';
-import { defaultPage, IPageInfo, RoleTable } from './role_table';
+import { Api, MemberType, Strings, t, UnitItem } from '@apitable/core';
+import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { RoleContext } from '../context';
-import { RightHeader } from './right_header';
 import { IMemberItem } from '../interface';
+import { RightHeader } from './right_header';
+import { defaultPage, IPageInfo, RoleTable } from './role_table';
 
 import styles from './style.module.less';
 
@@ -44,7 +43,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
     Api.getRoleMemberList(roleId, {
       pageNo: pageInfo.page,
       pageSize: pageInfo.pageSize,
-    }).then(res => {
+    }).then((res) => {
       const { data } = res;
       if (!data.success) {
         Message.error({ content: data.message });
@@ -74,7 +73,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
       return;
     }
     const list: { id: string; type: MemberType }[] = [];
-    unitList.forEach(item => {
+    unitList.forEach((item) => {
       const isTeam = 'teamId' in item;
       const isMember = 'memberId' in item;
 
@@ -85,7 +84,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
         });
       }
     });
-    Api.addRoleMember(activeRoleId, list).then(res => {
+    Api.addRoleMember(activeRoleId, list).then((res) => {
       const { success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -102,7 +101,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
     if (unitIds.length === 0) {
       return;
     }
-    Api.deleteRoleMember(activeRoleId, unitIds).then(res => {
+    Api.deleteRoleMember(activeRoleId, unitIds).then((res) => {
       const { success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -145,7 +144,7 @@ const RightBase: React.ForwardRefRenderFunction<IRightRefs, { activeRoleId: stri
       {selectMemberModal && (
         <SelectUnitModal
           source={SelectUnitSource.TeamAddMember}
-          disableIdList={list.map(v => v.unitId)}
+          disableIdList={list.map((v) => v.unitId)}
           onCancel={() => setSelectMemberModal(false)}
           onSubmit={addMember}
           maskClosable

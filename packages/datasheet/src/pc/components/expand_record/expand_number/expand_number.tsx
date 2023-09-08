@@ -18,10 +18,10 @@
 
 import { forwardRef, memo, useEffect } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
 import { IEditor, IBaseEditorProps } from 'pc/components/editors/interface';
-import { NumberEditor } from '../../editors/number_editor';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
+import { NumberEditor } from '../../editors/number_editor';
+import styles from './style.module.less';
 
 interface IExpandNumberProps extends IBaseEditorProps {
   isFocus: boolean;
@@ -60,12 +60,11 @@ const ExpandNumberBase: React.ForwardRefRenderFunction<IEditor, IExpandNumberPro
         onSave={onSave}
         onBlur={onBlur}
       />
-      {
-        editable && !isFocus && 
+      {editable && !isFocus && (
         <div className={styles.cellNumber}>
           <CellText cellValue={cellValue} field={field} className={className} />
         </div>
-      }
+      )}
     </div>
   );
 };

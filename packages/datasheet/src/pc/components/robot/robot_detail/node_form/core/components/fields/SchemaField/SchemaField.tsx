@@ -51,9 +51,9 @@ export function SchemaField(props: ISchemaFieldProps) {
   const disabled = Boolean(props.disabled || uiSchema['ui:disabled']);
   const readonly = Boolean(
     props.readonly ||
-    uiSchema['ui:readonly'] ||
-    // props.schema.readOnly ||
-    schema.readOnly,
+      uiSchema['ui:readonly'] ||
+      // props.schema.readOnly ||
+      schema.readOnly,
   );
   const autofocus = Boolean(props.autofocus || uiSchema['ui:autofocus']);
   // console.log('SchemaField.schema', schema);

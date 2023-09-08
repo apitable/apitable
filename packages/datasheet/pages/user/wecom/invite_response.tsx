@@ -21,7 +21,7 @@ import React from 'react';
 import { WecomInvite, isWecomFunc } from 'enterprise';
 
 const App = () => {
-  if(!isWecomFunc?.()){
+  if (!isWecomFunc?.()) {
     return null;
   }
   return <WecomInvite />;

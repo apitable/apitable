@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isEmpty } from 'lodash';
 import {
   FieldType,
   Selectors,
@@ -33,10 +34,9 @@ import {
   IHyperlinkSegment,
 } from '@apitable/core';
 
-import { resourceService } from 'pc/resource_service';
 import { Message } from 'pc/components/common';
+import { resourceService } from 'pc/resource_service';
 import { IURLMeta } from 'pc/utils';
-import { isEmpty } from 'lodash';
 
 interface IRecogClipboardURLDataProps {
   state: IReduxState;
@@ -71,7 +71,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
     if (fieldMap[fieldId]?.type === FieldType.URL && fieldMap[fieldId]?.property?.isRecogURLFlag) {
       if (!isUrl(clipboardText)) return;
 
-      Api.getURLMetaBatch([clipboardText]).then(res => {
+      Api.getURLMetaBatch([clipboardText]).then((res) => {
         if (res?.data?.success) {
           const metaMap: IURLMetaMap = res.data.data.contents;
           const meta = metaMap[clipboardText];
@@ -84,16 +84,18 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
             return;
           }
 
-          let opData = [{
-            text: clipboardText,
-            link: clipboardText,
-            type: SegmentType.Url,
-            favicon: meta?.favicon,
-            title: meta?.title,
-          }];
+          let opData = [
+            {
+              text: clipboardText,
+              link: clipboardText,
+              type: SegmentType.Url,
+              favicon: meta?.favicon,
+              title: meta?.title,
+            },
+          ];
 
           if (Array.isArray(cellValue)) {
-            opData = cellValue.map(v => ({
+            opData = cellValue.map((v) => ({
               ...(v as any),
               type: SegmentType.Url,
               title: meta?.title,
@@ -104,11 +106,13 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
           resourceService.instance!.commandManager.execute({
             cmd: CollaCommandName.SetRecords,
             datasheetId,
-            data: [{
-              fieldId,
-              recordId,
-              value: opData as IHyperlinkSegment[],
-            }],
+            data: [
+              {
+                fieldId,
+                recordId,
+                value: opData as IHyperlinkSegment[],
+              },
+            ],
           });
         } else {
           Message.error({
@@ -125,24 +129,24 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
   const targetFieldsWithURLRecogFlag = visibleColumns
     .slice(column, column + stdValueTable.header.length)
     .map((col, index) => ({ ...col, index }))
-    .filter(field => fieldMap[field.fieldId]?.type === FieldType.URL && fieldMap[field.fieldId]?.property?.isRecogURLFlag);
+    .filter((field) => fieldMap[field.fieldId]?.type === FieldType.URL && fieldMap[field.fieldId]?.property?.isRecogURLFlag);
 
   // The target area does not have URL recognition columns turned on do not operate
   if (!targetFieldsWithURLRecogFlag.length) return;
 
   // Need to identify more than 100 cells without operation
-  if (!stdValueTable.recordIds?.length
-    || targetFieldsWithURLRecogFlag.length * stdValueTable.recordIds.length > ConfigConstant.MAX_URL_COPY_RECOG_NUM
-  ) return;
+  if (
+    !stdValueTable.recordIds?.length ||
+    targetFieldsWithURLRecogFlag.length * stdValueTable.recordIds.length > ConfigConstant.MAX_URL_COPY_RECOG_NUM
+  )
+    return;
 
   const visibleRows = Selectors.getVisibleRows(state);
-  const targetRows = visibleRows
-    .slice(row, row + stdValueTable.recordIds.length)
-    .map((row, index) => ({ ...row, index }));
+  const targetRows = visibleRows.slice(row, row + stdValueTable.recordIds.length).map((row, index) => ({ ...row, index }));
 
   // Calculate the value of the target area that should be pasted
   const targetMatrix = targetRows.reduce((acc: any, row: IViewRow & { index: number }) => {
-    const cells = targetFieldsWithURLRecogFlag.map(field => ({
+    const cells = targetFieldsWithURLRecogFlag.map((field) => ({
       recordId: row.recordId,
       fieldId: field.fieldId,
       data: stdValueTable.body[row.index][field.index].data as ICellValue,
@@ -152,19 +156,17 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
   }, []);
 
   const urlsToBeRecog = targetMatrix
-    .filter(record => record.data.length <= 1)
-    .map(record => record.data[0]?.text || '')
-    .filter(text => isUrl(text));
+    .filter((record) => record.data.length <= 1)
+    .map((record) => record.data[0]?.text || '')
+    .filter((text) => isUrl(text));
 
-  const urls2Title = targetMatrix
-    .filter(record => record.data.length <= 1 && record.data[0]?.title)
-    .map(record => record.data[0]?.title);
+  const urls2Title = targetMatrix.filter((record) => record.data.length <= 1 && record.data[0]?.title).map((record) => record.data[0]?.title);
 
   if (!isEmpty(urls2Title)) {
     return;
   }
 
-  Api.getURLMetaBatch(urlsToBeRecog).then(res => {
+  Api.getURLMetaBatch(urlsToBeRecog).then((res) => {
     if (res?.data?.success) {
       const metaMap: IURLMetaMap = res.data.data.contents;
 

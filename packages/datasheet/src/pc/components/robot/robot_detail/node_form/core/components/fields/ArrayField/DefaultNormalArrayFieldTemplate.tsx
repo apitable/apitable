@@ -37,25 +37,15 @@ export function DefaultNormalArrayFieldTemplate(props: any) {
           key={`array-field-description-${props.idSchema.$id}`}
           DescriptionField={props.DescriptionField}
           idSchema={props.idSchema}
-          description={
-            props.uiSchema['ui:description'] || props.schema.description
-          }
+          description={props.uiSchema['ui:description'] || props.schema.description}
         />
       )}
 
-      <div
-        className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
+      <div className="row array-item-list" key={`array-item-list-${props.idSchema.$id}`}>
         {props.items && props.items.map((p: any) => DefaultArrayItem(p))}
       </div>
 
-      {props.canAdd && (
-        <AddButton
-          className="array-item-add"
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
+      {props.canAdd && <AddButton className="array-item-add" onClick={props.onAddClick} disabled={props.disabled || props.readonly} />}
     </fieldset>
   );
 }

@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ITableData } from './table_data';
+import { FieldType, IField, IStandardValue, IStandardValueTable, escapeHtml } from '@apitable/core';
 import { CsvDelimiter, parseCsv } from './csv_parser';
 import { parseHtml } from './html_parser';
-import { FieldType, IField, IStandardValue, IStandardValueTable, escapeHtml } from '@apitable/core';
+import { ITableData } from './table_data';
 
 const DATASHEET_CLASS = 'vika-datasheet';
 
 export interface ISerializer<T, U> {
+  serialize(value: T): U;
 
-  serialize (value: T): U;
-
-  parse (text: U): T;
+  parse(text: U): T;
 }
 
 // Separator only required for multiple choice
@@ -41,16 +40,20 @@ function tableDataToStandardValueTable(tableData: ITableData | null): IStandardV
   }
 
   return {
-    header: ' '.repeat(tableData.columnCount).split('').map(() => ({ type: FieldType.Text } as IField)),
-    body: tableData.data.map(row => row.map(cell => ({
-      sourceType: FieldType.Text,
-      data: cell.value,
-    }))),
+    header: ' '
+      .repeat(tableData.columnCount)
+      .split('')
+      .map(() => ({ type: FieldType.Text }) as IField),
+    body: tableData.data.map((row) =>
+      row.map((cell) => ({
+        sourceType: FieldType.Text,
+        data: cell.value,
+      })),
+    ),
   };
 }
 
 export class CSVSerializer implements ISerializer<IStandardValueTable | null, string> {
-
   serialize(value: IStandardValueTable | null): string {
     if (!value) {
       return '';
@@ -60,7 +63,7 @@ export class CSVSerializer implements ISerializer<IStandardValueTable | null, st
   }
 
   private serializeCell(cell: IStandardValue) {
-    let cellStr = cell.data.map(v => v.text).join(getSeparator(cell.sourceType));
+    let cellStr = cell.data.map((v) => v.text).join(getSeparator(cell.sourceType));
     const { columnDelimiter, rowDelimiter, cellDelimiter } = CsvDelimiter;
 
     if (cellStr.indexOf(columnDelimiter) > -1 || cellStr.indexOf(rowDelimiter) > -1) {
@@ -71,11 +74,11 @@ export class CSVSerializer implements ISerializer<IStandardValueTable | null, st
   }
 
   private serializeRow(row: IStandardValue[]): string {
-    return row.map(cell => this.serializeCell(cell)).join(CsvDelimiter.columnDelimiter);
+    return row.map((cell) => this.serializeCell(cell)).join(CsvDelimiter.columnDelimiter);
   }
 
   private serializeTable(table: IStandardValue[][]): string {
-    return table.map(row => this.serializeRow(row)).join(CsvDelimiter.rowDelimiter);
+    return table.map((row) => this.serializeRow(row)).join(CsvDelimiter.rowDelimiter);
   }
 
   parse(text: string): IStandardValueTable | null {
@@ -85,7 +88,6 @@ export class CSVSerializer implements ISerializer<IStandardValueTable | null, st
 }
 
 export class HtmlSerializer implements ISerializer<IStandardValueTable | null, string> {
-
   serialize(value: IStandardValueTable | null): string {
     if (!value) {
       return '';
@@ -95,15 +97,15 @@ export class HtmlSerializer implements ISerializer<IStandardValueTable | null, s
   }
 
   private serializeBody(body: IStandardValue[][]) {
-    return body.map(row => this.serializeRow(row)).join('');
+    return body.map((row) => this.serializeRow(row)).join('');
   }
 
   private serializeRow(row: IStandardValue[]) {
-    return `<tr>${row.map(cell => this.serializerCell(cell)).join('')}</tr>`;
+    return `<tr>${row.map((cell) => this.serializerCell(cell)).join('')}</tr>`;
   }
 
   private serializerCell(cell: IStandardValue) {
-    return `<td>${escapeHtml(cell.data.map(t => t.text).join(getSeparator(cell.sourceType)))}</td>`;
+    return `<td>${escapeHtml(cell.data.map((t) => t.text).join(getSeparator(cell.sourceType)))}</td>`;
   }
 
   parse(text: string): IStandardValueTable | null {
@@ -139,7 +141,6 @@ export class JSONSerializer implements ISerializer<IStandardValueTable | null, s
 }
 
 export class Serializer {
-
   static csv = new CSVSerializer();
 
   static html = new HtmlSerializer();

@@ -16,19 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Message } from 'pc/components/common';
 import { Api } from '@apitable/core';
+import { Message } from 'pc/components/common';
 
 export const useCapacityRequest = () => {
   const getCapacityListReq = (isExpire: boolean, pageNo: number) => {
-    return Api.getCapacityRewardList(isExpire, pageNo).then(res => {
+    return Api.getCapacityRewardList(isExpire, pageNo).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
       }
       Message.error({ content: message });
     });
-     
   };
   return { getCapacityListReq };
 };

@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
 import produce from 'immer';
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { OptionSetting } from 'pc/components/common/color_picker';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { usePrevious } from 'pc/components/common/hooks/use_previous';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
-import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import styles from '../../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
-import { AddOutlined } from '@apitable/icons';
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -45,7 +45,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const { currentField, setCurrentField } = props;
-  const fieldMap = useSelector(state => {
+  const fieldMap = useSelector((state) => {
     const { formId, datasheetId } = state.pageParams;
     if (formId) {
       const sourceInfo = Selectors.getForm(state, formId)?.sourceInfo;
@@ -72,7 +72,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
       Modal.prompt({
         title: t(Strings.add_an_option),
         defaultValue: newItem.name,
-        onOk: value => {
+        onOk: (value) => {
           if (value.length > 100) {
             Message.error({
               content: t(Strings.name_length_err),
@@ -89,7 +89,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     const { source, destination } = result;
 
     setDraggingId(null);
-    const _currentField = produce(currentField, draft => {
+    const _currentField = produce(currentField, (draft) => {
       moveArrayElement(draft.property.options, source.index, destination?.index!);
       return draft;
     });
@@ -99,9 +99,9 @@ const FormatSelectBase = (props: IFormatSelect) => {
   };
 
   const onChange = (type: OptionSetting, id: string, value: number | string) => {
-    setCurrentField(preState => {
-      const index = preState.property.options.findIndex((item: { id: string; }) => item.id === id);
-      return produce(preState, draft => {
+    setCurrentField((preState) => {
+      const index = preState.property.options.findIndex((item: { id: string }) => item.id === id);
+      return produce(preState, (draft) => {
         switch (type) {
           case OptionSetting.SETCOLOR: {
             draft.property.options[index].color = value;
@@ -148,8 +148,8 @@ const FormatSelectBase = (props: IFormatSelect) => {
     <>
       {Boolean(isPreview && curOptsLen) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={currentField.id} direction='vertical'>
-          {provided => {
+        <Droppable droppableId={currentField.id} direction="vertical">
+          {(provided) => {
             return (
               <div
                 ref={provided.innerRef}

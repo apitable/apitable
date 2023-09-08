@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DefaultCommaStyle, FieldType, IField, INumberFormatFieldProperty, Strings, t } from '@apitable/core';
+import { Input } from 'antd';
+import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import classNames from 'classnames';
-import styles from '../styles.module.less';
-import { Input } from 'antd';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Switch } from '@apitable/components';
+import { DefaultCommaStyle, FieldType, IField, INumberFormatFieldProperty, Strings, t } from '@apitable/core';
+import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import styles from '../styles.module.less';
 
 interface IFormateNumberProps {
   currentField: IField;
@@ -79,7 +79,7 @@ export const LookUpFormatNumber: React.FC<React.PropsWithChildren<IFormateNumber
         </ComponentDisplay>
 
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <MobileSelect defaultValue={formatType} optionData={optionData4Number} onChange={value => onChange({ formatType: value as number })} />
+          <MobileSelect defaultValue={formatType} optionData={optionData4Number} onChange={(value) => onChange({ formatType: value as number })} />
         </ComponentDisplay>
       </div>
       <div className={classNames(styles.section, formatType === FieldType.Currency ? styles.sectionCenter : styles.sectionRight)}>
@@ -94,11 +94,15 @@ export const LookUpFormatNumber: React.FC<React.PropsWithChildren<IFormateNumber
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <MobileSelect defaultValue={precision} onChange={value => onChange({ precision: value as number })} optionData={optionData4Precision} />
+          <MobileSelect defaultValue={precision} onChange={(value) => onChange({ precision: value as number })} optionData={optionData4Precision} />
         </ComponentDisplay>
         {formatType === FieldType.Number && (
           <div className={styles.commaStyleSwitch}>
-            <Switch size="small" checked={Boolean(commaStyle)} onChange={value => onChange({ commaStyle: value ? DefaultCommaStyle : undefined })} />
+            <Switch
+              size="small"
+              checked={Boolean(commaStyle)}
+              onChange={(value) => onChange({ commaStyle: value ? DefaultCommaStyle : undefined })}
+            />
             <span className={styles.commaStyleText}>{t(Strings.comma_style)}</span>
           </div>
         )}
@@ -106,7 +110,7 @@ export const LookUpFormatNumber: React.FC<React.PropsWithChildren<IFormateNumber
       {formatType === FieldType.Currency && (
         <div className={styles.section}>
           <div className={styles.sectionTitle}>{t(Strings.currency_field_configuration_symbol)}</div>
-          <Input style={{ width: 70 }} value={symbol} onChange={e => onChange({ symbol: e.target.value as string })} />
+          <Input style={{ width: 70 }} value={symbol} onChange={(e) => onChange({ symbol: e.target.value as string })} />
         </div>
       )}
     </div>

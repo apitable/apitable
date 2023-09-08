@@ -16,10 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  FieldType, IField, IFilterCondition,
-  IFilterInfo,
-} from '@apitable/core';
+import { FieldType, IField, IFilterCondition, IFilterInfo } from '@apitable/core';
 
 export interface IFilterValueProps {
   primaryField?: IField;
@@ -34,7 +31,7 @@ export interface IFilterValueProps {
 
 export interface IFilterOptionProps {
   field: IField;
-  disabled ?: boolean;
+  disabled?: boolean;
   condition: IFilterCondition<FieldType>;
   onChange: (value: string | string[] | null) => void;
 }
@@ -42,7 +39,7 @@ export interface IFilterOptionProps {
 export type IFilterMemberProps = IFilterOptionProps;
 
 export interface IFilterBaseProps {
-  disabled ?: boolean;
+  disabled?: boolean;
   field: IField;
   condition: IFilterCondition<FieldType>;
 }

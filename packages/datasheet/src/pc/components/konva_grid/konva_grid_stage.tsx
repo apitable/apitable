@@ -16,18 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Konva from 'konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 import dynamic from 'next/dynamic';
 
-import { AreaType, IScrollState, PointPosition, useViewExport } from 'pc/components/gantt_view';
-import {
-  DEFAULT_POINT_POSITION, GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGrid, KonvaGridContext, KonvaGridViewContext, useGridMouseEvent
-} from 'pc/components/konva_grid';
 import * as React from 'react';
 import { FC, memo, useContext, useMemo, useRef } from 'react';
+import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
+import { AreaType, IScrollState, PointPosition, useViewExport } from 'pc/components/gantt_view';
+import {
+  DEFAULT_POINT_POSITION,
+  GRID_GROUP_OFFSET,
+  GRID_ROW_HEAD_WIDTH,
+  GridCoordinate,
+  KonvaGrid,
+  KonvaGridContext,
+  KonvaGridViewContext,
+  useGridMouseEvent,
+} from 'pc/components/konva_grid';
 
 const Stage = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/stage'), { ssr: false });
 Konva.pixelRatio = 2;
@@ -56,29 +63,12 @@ export const isWithinFrozenColumnBoundary = (x: number, depth: number, frozenCol
 };
 
 export const KonvaGridStage: FC<React.PropsWithChildren<IKonvaGridStageProps>> = memo((props) => {
-  const {
-    instance,
-    pointPosition,
-    setPointPosition,
-    scrollState,
-    offsetX = 0,
-    isExporting = false,
-    listening = true,
-  } = props;
-  const {
-    view,
-    datasheetId,
-    linearRows,
-    visibleColumns,
-  } = useContext(KonvaGridViewContext);
+  const { instance, pointPosition, setPointPosition, scrollState, offsetX = 0, isExporting = false, listening = true } = props;
+  const { view, datasheetId, linearRows, visibleColumns } = useContext(KonvaGridViewContext);
   const { scrollTop, scrollLeft, isScrolling } = scrollState;
   const stageRef = useRef<any>(); // Konva Stage
   const wheelingRef = useRef<number | null>(null); // Storage timer to ensure smooth operation
-  const {
-    rowCount, columnCount, frozenColumnCount,
-    frozenColumnWidth, rowHeight, rowInitSize,
-    containerWidth, containerHeight
-  } = instance;
+  const { rowCount, columnCount, frozenColumnCount, frozenColumnWidth, rowHeight, rowInitSize, containerWidth, containerHeight } = instance;
   const viewName = view.name;
 
   const scrollMaxWidth = useMemo(() => {
@@ -131,7 +121,7 @@ export const KonvaGridStage: FC<React.PropsWithChildren<IKonvaGridStageProps>> =
     const realX = x - offsetX;
     const offsetLeft = isWithinFrozenColumnBoundary(realX, depth, frozenColumnWidth) ? realX : scrollLeft + realX;
     const columnIndex = instance.getColumnStartIndex(offsetLeft);
-    const areaType = (offsetLeft <= scrollMaxWidth && offsetTop <= scrollMaxHeight) ? AreaType.Grid : AreaType.None;
+    const areaType = offsetLeft <= scrollMaxWidth && offsetTop <= scrollMaxHeight ? AreaType.Grid : AreaType.None;
     const realAreaType = areaType;
     const targetName = getTargetName(_targetName);
     return {
@@ -207,14 +197,14 @@ export const KonvaGridStage: FC<React.PropsWithChildren<IKonvaGridStageProps>> =
     containerWidth,
     containerHeight,
     viewName,
-    datasheetId
+    datasheetId,
   });
 
   return (
     <KonvaGridViewContext.Consumer>
-      {wrapperValue => (
+      {(wrapperValue) => (
         <KonvaGridContext.Consumer>
-          {innerValue => (
+          {(innerValue) => (
             <Stage
               _ref={stageRef}
               width={containerWidth}

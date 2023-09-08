@@ -17,9 +17,9 @@
  */
 
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
 import { ConfigConstant } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
-import { useThemeColors } from '@apitable/components';
 
 const nodeIconMap = {
   [ConfigConstant.NodeType.FORM]: FormOutlined,
@@ -32,7 +32,7 @@ interface INodeIcon {
   onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
 }
 
-export const NodeIcon: React.FC<React.PropsWithChildren<INodeIcon>> = props => {
+export const NodeIcon: React.FC<React.PropsWithChildren<INodeIcon>> = (props) => {
   const colors = useThemeColors();
   const { nodeType, size = 15, color = colors.thirdLevelText, onClick } = props;
 
@@ -42,6 +42,6 @@ export const NodeIcon: React.FC<React.PropsWithChildren<INodeIcon>> = props => {
       color,
       onClick,
     });
-  } 
+  }
   return <></>;
 };

@@ -4,11 +4,7 @@ export class SocketService {
     this.init();
   }
 
-  init() {
+  init() {}
 
-  }
-
-  close() {
-
-  }
+  close() {}
 }

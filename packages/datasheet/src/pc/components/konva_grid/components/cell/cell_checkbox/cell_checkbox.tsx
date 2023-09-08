@@ -18,23 +18,23 @@
 
 import * as React from 'react';
 import { KONVA_DATASHEET_ID } from '@apitable/core';
-import { ICellProps } from '../cell_value';
+import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import { stopPropagation, KeyCode } from 'pc/utils';
 import { CellScrollContainer } from '../../cell_scroll_container';
+import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
-import { generateTargetName } from 'pc/components/gantt_view';
 
-export const CellCheckbox: React.FC<React.PropsWithChildren<ICellProps>> = props => {
+export const CellCheckbox: React.FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const { x, y, isActive, recordId, field, cellValue, columnWidth, rowHeight, onChange } = props;
   const fieldId = field.id;
   const name = generateTargetName({
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
-  
+
   const onClick = () => {
     onChange && onChange(!cellValue);
   };
@@ -60,15 +60,7 @@ export const CellCheckbox: React.FC<React.PropsWithChildren<ICellProps>> = props
       onClick={onClick}
       onTap={onClick}
     >
-      {
-        isActive &&
-        <Rect 
-          name={name}
-          width={columnWidth}
-          height={rowHeight}
-          fill={'transparent'}
-        />
-      }
+      {isActive && <Rect name={name} width={columnWidth} height={rowHeight} fill={'transparent'} />}
     </CellScrollContainer>
   );
 };

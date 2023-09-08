@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
 import { FC } from 'react';
-import styles from './style.module.less';
+import { t, Strings } from '@apitable/core';
 import LoadingAnimationJson from 'static/json/datasheet_icon_loading.json';
-import SyncAnimationJson from 'static/json/datasheet_icon_sync.json';
 import OfflineAnimationJson from 'static/json/datasheet_icon_offline.json';
 import OnlineAnimationJson from 'static/json/datasheet_icon_online.json';
-import { useMount } from 'ahooks';
-import { t, Strings } from '@apitable/core';
+import SyncAnimationJson from 'static/json/datasheet_icon_sync.json';
 import { Tooltip } from '../common';
+import styles from './style.module.less';
 
 export enum Network {
   Online = 'online',
@@ -51,11 +51,11 @@ const ID = {
   NETWORK_LOADING: 'network_loading',
 };
 
-export const NetworkStatus: FC<React.PropsWithChildren<INetworkStatusProps>> = props => {
+export const NetworkStatus: FC<React.PropsWithChildren<INetworkStatusProps>> = (props) => {
   const { currentStatus = Network.Online } = props;
 
   useMount(() => {
-    import('lottie-web/build/player/lottie_svg').then(module => {
+    import('lottie-web/build/player/lottie_svg').then((module) => {
       const lottie = module.default;
 
       [
@@ -63,8 +63,8 @@ export const NetworkStatus: FC<React.PropsWithChildren<INetworkStatusProps>> = p
         document.querySelector(`#${ID.NETWORK_OFFLINE}`),
         document.querySelector(`#${ID.NETWORK_SYNC}`),
         document.querySelector(`#${ID.NETWORK_LOADING}`),
-      ].forEach(el => {
-        if(el) el.innerHTML = '';
+      ].forEach((el) => {
+        if (el) el.innerHTML = '';
       });
 
       lottie.loadAnimation({
@@ -100,10 +100,7 @@ export const NetworkStatus: FC<React.PropsWithChildren<INetworkStatusProps>> = p
 
   return (
     <div className={styles.networkStatus}>
-      <Tooltip
-        title={NetworkTip[currentStatus]}
-        placement="bottomRight"
-      >
+      <Tooltip title={NetworkTip[currentStatus]} placement="bottomRight">
         <div className={styles.network}>
           <div id={ID.NETWORK_ONLINE} style={{ display: currentStatus === Network.Online ? 'flex' : 'none' }} />
           <div id={ID.NETWORK_OFFLINE} style={{ display: currentStatus === Network.Offline ? 'flex' : 'none' }} />

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
-// @ts-ignore
-import { goToUpgrade } from 'enterprise';
-import { showBannerAlert } from 'pc/components/notification/banner_alert';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Strings, t } from '@apitable/core';
+import { showBannerAlert } from 'pc/components/notification/banner_alert';
+// @ts-ignore
+import { goToUpgrade } from 'enterprise';
 
 const BLACK_SPACE_BANNER_ALERT = 'BLACK_SPACE_BANNER_ALERT';
 
@@ -31,12 +31,12 @@ const _showBannerAlert = (destroyPrev = false) => {
     upgrade: true,
     destroyPrev,
     onBtnClick: goToUpgrade,
-    id: BLACK_SPACE_BANNER_ALERT
+    id: BLACK_SPACE_BANNER_ALERT,
   });
 };
 
 export const useBlackSpace = () => {
-  const isBlackSpace = useSelector(state => state.billing?.subscription?.blackSpace);
+  const isBlackSpace = useSelector((state) => state.billing?.subscription?.blackSpace);
 
   useEffect(() => {
     if (!isBlackSpace || location.href.includes('upgrade')) {
@@ -46,9 +46,9 @@ export const useBlackSpace = () => {
     _showBannerAlert();
     const MutationObserver = window.MutationObserver || (window as any).WebKitMutationObserver || (window as any).MozMutationObserver;
     const mutationObserver = new MutationObserver((list) => {
-      list.forEach(item => {
+      list.forEach((item) => {
         if (item.target === document.body) {
-          const result = [...item.removedNodes.values()].some(node => {
+          const result = [...item.removedNodes.values()].some((node) => {
             return node['id'] === BLACK_SPACE_BANNER_ALERT;
           });
           if (result) {
@@ -64,7 +64,7 @@ export const useBlackSpace = () => {
 
     mutationObserver.observe(document.body, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
 
     const dom = document.getElementById(BLACK_SPACE_BANNER_ALERT);
@@ -75,9 +75,7 @@ export const useBlackSpace = () => {
 
     mutationObserver.observe(dom, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
-
   }, [isBlackSpace]);
-
 };

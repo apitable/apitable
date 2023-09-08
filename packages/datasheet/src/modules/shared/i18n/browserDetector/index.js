@@ -17,15 +17,15 @@
  */
 
 /* eslint-disable */
-import * as utils from "./utils.js";
-import cookie from "./browserLookups/cookie.js";
-import querystring from "./browserLookups/querystring.js";
-import localStorage from "./browserLookups/localStorage.js";
-import navigator from "./browserLookups/navigator.js";
-import htmlTag from "./browserLookups/htmlTag.js";
-import path from "./browserLookups/path.js";
-import subdomain from "./browserLookups/subdomain.js";
-import LanguageUtils from "./languageUtils";
+import * as utils from './utils.js';
+import cookie from './browserLookups/cookie.js';
+import querystring from './browserLookups/querystring.js';
+import localStorage from './browserLookups/localStorage.js';
+import navigator from './browserLookups/navigator.js';
+import htmlTag from './browserLookups/htmlTag.js';
+import path from './browserLookups/path.js';
+import subdomain from './browserLookups/subdomain.js';
+import LanguageUtils from './languageUtils';
 
 const languageUtils = new LanguageUtils({
   // whiteList: true,
@@ -36,14 +36,14 @@ const languageUtils = new LanguageUtils({
 
 function getDefaults() {
   return {
-    order: ["querystring", "cookie", "localStorage", "navigator", "htmlTag"],
-    lookupQuerystring: "lang",
-    lookupCookie: "vika-i18n",
-    lookupLocalStorage: "vika-i18n",
+    order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+    lookupQuerystring: 'lang',
+    lookupCookie: 'vika-i18n',
+    lookupLocalStorage: 'vika-i18n',
 
     // cache user language
-    caches: ["localStorage"],
-    excludeCacheFor: ["cimode"],
+    caches: ['localStorage'],
+    excludeCacheFor: ['cimode'],
     //cookieMinutes: 10,
     //cookieDomain: 'myDomain'
     checkWhitelist: true,
@@ -52,7 +52,7 @@ function getDefaults() {
 
 class Browser {
   constructor(services, options = {}) {
-    this.type = "languageDetector";
+    this.type = 'languageDetector';
     this.detectors = {};
 
     this.init(services, options);
@@ -88,10 +88,10 @@ class Browser {
     }
 
     let detected = [];
-    detectionOrder.forEach(detectorName => {
+    detectionOrder.forEach((detectorName) => {
       if (this.detectors[detectorName]) {
         let lookup = this.detectors[detectorName].lookup(this.options);
-        if (lookup && typeof lookup === "string") {
+        if (lookup && typeof lookup === 'string') {
           lookup = [lookup];
         }
         if (lookup) {
@@ -101,7 +101,7 @@ class Browser {
     });
 
     let found;
-    detected.forEach(lng => {
+    detected.forEach((lng) => {
       if (found) {
         return;
       }
@@ -113,14 +113,14 @@ class Browser {
 
     if (!found) {
       let fallbacks = this.i18nOptions.fallbackLng;
-      if (typeof fallbacks === "string") {
+      if (typeof fallbacks === 'string') {
         fallbacks = [fallbacks];
       }
       if (!fallbacks) {
         fallbacks = [];
       }
 
-      if (Object.prototype.toString.apply(fallbacks) === "[object Array]") {
+      if (Object.prototype.toString.apply(fallbacks) === '[object Array]') {
         found = fallbacks[0];
       } else {
         found = fallbacks[0] || (fallbacks.default && fallbacks.default[0]);
@@ -140,7 +140,7 @@ class Browser {
     if (this.options.excludeCacheFor && this.options.excludeCacheFor.indexOf(lng) > -1) {
       return;
     }
-    caches.forEach(cacheName => {
+    caches.forEach((cacheName) => {
       if (this.detectors[cacheName]) {
         this.detectors[cacheName].cacheUserLanguage(lng, this.options);
       }
@@ -148,6 +148,6 @@ class Browser {
   }
 }
 
-Browser.type = "languageDetector";
+Browser.type = 'languageDetector';
 
 export default Browser;

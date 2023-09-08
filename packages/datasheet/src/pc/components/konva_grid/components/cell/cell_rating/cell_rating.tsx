@@ -16,35 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { memo, useContext, useState } from 'react';
 import { ConfigConstant, KONVA_DATASHEET_ID } from '@apitable/core';
+import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect, Image } from 'pc/components/konva_components';
-import { GRID_CELL_VALUE_PADDING } from '../../../constant';
 import { KonvaGridContext } from 'pc/components/konva_grid';
+import { emojiUrl } from 'pc/utils';
+import { GRID_CELL_VALUE_PADDING } from '../../../constant';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
-import { generateTargetName } from 'pc/components/gantt_view';
-import { memo, useContext, useState } from 'react';
-import { emojiUrl } from 'pc/utils';
 
 export const CellRating: React.FC<React.PropsWithChildren<ICellProps>> = memo((props) => {
-  const {
-    x,
-    y,
-    field,
-    editable,
-    cellValue: _cellValue,
-    columnWidth,
-    rowHeight,
-    onChange,
-    recordId,
-    style,
-    isActive
-  } = props;
+  const { x, y, field, editable, cellValue: _cellValue, columnWidth, rowHeight, onChange, recordId, style, isActive } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { icon, max } = field.property;
-  const cellValue = _cellValue as number || 0;
+  const cellValue = (_cellValue as number) || 0;
   const { setTooltipInfo, clearTooltipInfo } = useContext(KonvaGridContext);
 
   const getTransValue = (): number => {
@@ -99,13 +87,13 @@ export const CellRating: React.FC<React.PropsWithChildren<ICellProps>> = memo((p
   const name = generateTargetName({
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
-    recordId
+    recordId,
   });
   const pointerName = generateTargetName({
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
 
   return (
@@ -118,45 +106,37 @@ export const CellRating: React.FC<React.PropsWithChildren<ICellProps>> = memo((p
       recordId={recordId}
       renderData={{} as IRenderData}
     >
-      {
-        columnWidth != null &&
-        <Rect
-          name={name}
-          width={columnWidth}
-          height={rowHeight}
-          fill={style?.background || (isActive ? colors.defaultBg : 'transparent')}
-        />
-      }
-      {
-        [...Array(transMax).keys()].splice(1).map((item, index) => {
-          let willChecked = false;
-          let opacity = 1;
-          const checked = item <= transValue;
-          const unChecked = item <= max && item > transValue;
-          if (pendingValue > transValue) willChecked = item > transValue && item <= pendingValue;
-          if (pendingValue < transValue) willChecked = item <= transValue && item > pendingValue;
-          if (unChecked) opacity = isActive ? 0.2 : 0;
-          if (willChecked) opacity = isActive ? 0.6 : 0;
-          if (checked) opacity = 1;
+      {columnWidth != null && (
+        <Rect name={name} width={columnWidth} height={rowHeight} fill={style?.background || (isActive ? colors.defaultBg : 'transparent')} />
+      )}
+      {[...Array(transMax).keys()].splice(1).map((item, index) => {
+        let willChecked = false;
+        let opacity = 1;
+        const checked = item <= transValue;
+        const unChecked = item <= max && item > transValue;
+        if (pendingValue > transValue) willChecked = item > transValue && item <= pendingValue;
+        if (pendingValue < transValue) willChecked = item <= transValue && item > pendingValue;
+        if (unChecked) opacity = isActive ? 0.2 : 0;
+        if (willChecked) opacity = isActive ? 0.6 : 0;
+        if (checked) opacity = 1;
 
-          return (
-            <Image
-              key={index}
-              name={pointerName}
-              {...commonProps}
-              x={index * 20 + GRID_CELL_VALUE_PADDING}
-              y={7}
-              opacity={opacity}
-              onMouseDown={() => handleClick(item)}
-              onTap={() => handleClick(item)}
-              onMouseEnter={() => handleMouseEnter(item)}
-              onMouseOut={handleMouseOut}
-              listening={isActive}
-              alt=""
-            />
-          );
-        })
-      }
+        return (
+          <Image
+            key={index}
+            name={pointerName}
+            {...commonProps}
+            x={index * 20 + GRID_CELL_VALUE_PADDING}
+            y={7}
+            opacity={opacity}
+            onMouseDown={() => handleClick(item)}
+            onTap={() => handleClick(item)}
+            onMouseEnter={() => handleMouseEnter(item)}
+            onMouseOut={handleMouseOut}
+            listening={isActive}
+            alt=""
+          />
+        );
+      })}
     </CellScrollContainer>
   );
 });

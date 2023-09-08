@@ -26,7 +26,7 @@ export interface IRobotRunHistoryDetail {
       startAt?: number;
       endAt?: number;
       errorStacks?: any[];
-    }
+    };
   };
 }
 
@@ -58,8 +58,8 @@ interface INodeBaseType {
     logo: string;
     themeLogo: {
       dark: string;
-      light: string
-    }
+      light: string;
+    };
   };
 }
 
@@ -181,7 +181,7 @@ export interface IJsonSchema {
    * Default json for the object represented by
    * this schema
    */
-  'default'?: any;
+  default?: any;
 
   /////////////////////////////////////////////////
   // Number Validation
@@ -262,7 +262,7 @@ export interface IJsonSchema {
    * {"type": "string",
    *  "enum": ["red", "green", "blue"]}
    */
-  'enum'?: any[];
+  enum?: any[];
   enumNames?: any[];
   /**
    * The basic type of this schema, can be one of

@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
-import { useThemeColors } from '@apitable/components';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { FilterOutlined, RankOutlined } from '@apitable/icons';
 
 export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => {
   const { rowHeight, y: _y } = props;
   const colors = useThemeColors();
-  const sideBarVisible = useSelector(state => state.space.sideBarVisible);
-  const {
-    recordMoveType,
-    activeCell,
-  } = useSelector(state => {
+  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
+  const { recordMoveType, activeCell } = useSelector((state) => {
     const recordMoveType = Selectors.getRecordMoveType(state);
     const activeCell = Selectors.getActiveCell(state);
     return {
@@ -41,15 +38,15 @@ export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => 
 
   const ref = useRef<number>(0);
   const [y, setY] = useState<number | null>(null);
-  const getActiveRelativeY = (cell: { fieldId: string, recordId: string }) => {
+  const getActiveRelativeY = (cell: { fieldId: string; recordId: string }) => {
     const containerDom = document.getElementById(DATASHEET_ID.DOM_CONTAINER);
-    // Note: The reason for the new handling of cell is that if the record is deleted, the redux update will not unload the component in time, 
+    // Note: The reason for the new handling of cell is that if the record is deleted, the redux update will not unload the component in time,
     // resulting in a missing data source, but the method will still be triggered, resulting in cell.row not being found
     if (!containerDom || !cell) {
       return null;
     }
     const cellDom = containerDom.querySelector(
-      `[data-record-id="${cell.recordId}"][data-field-id="${cell.fieldId}"][data-cell-type="${CellType.Record}"]`
+      `[data-record-id="${cell.recordId}"][data-field-id="${cell.fieldId}"][data-cell-type="${CellType.Record}"]`,
     );
     if (cellDom) {
       const cellRect = cellDom.getBoundingClientRect();

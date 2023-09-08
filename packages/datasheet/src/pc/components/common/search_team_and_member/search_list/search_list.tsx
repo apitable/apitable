@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
 import { List } from 'antd';
-import styles from './style.module.less';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { ITeamsInSearch, IMembersInSearch, t, Strings } from '@apitable/core';
 import { InfoCard } from 'pc/components/common';
+import { AvatarType } from '../../avatar';
+import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
-import { AvatarType } from '../../avatar';
-import { useSelector } from 'react-redux';
 
 export enum ListType {
   MemberList = 'MEMBER_LIST',
@@ -51,72 +51,72 @@ const triggerBase = {
     points: ['tl', 'bl'],
     offset: [0, 18],
     overflow: { adjustX: true, adjustY: true },
-  }
+  },
 };
 
-export const SearchList: FC<React.PropsWithChildren<ISearchListProps>> = props => {
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+export const SearchList: FC<React.PropsWithChildren<ISearchListProps>> = (props) => {
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   return (
     <div className={styles.searchList}>
-      {
-        props.type === ListType.MemberList ?
-          <>
-            <div className={styles.searchTitle}>{t(Strings.member)}</div>
-            <List
-              itemLayout="horizontal"
-              dataSource={props.dataSource}
-              renderItem={item => {
-                const title = getSocialWecomUnitName?.({
+      {props.type === ListType.MemberList ? (
+        <>
+          <div className={styles.searchTitle}>{t(Strings.member)}</div>
+          <List
+            itemLayout="horizontal"
+            dataSource={props.dataSource}
+            renderItem={(item) => {
+              const title =
+                getSocialWecomUnitName?.({
                   name: item.memberName,
                   isModified: item.isMemberNameModified,
-                  spaceInfo
+                  spaceInfo,
                 }) || item.memberName;
-                return (
-                  <List.Item onClick={() => props.listClick(item.memberId)}>
-                    <InfoCard
-                      title={title}
-                      originTitle={item.memberName}
-                      description={item.teamData[0]?.fullHierarchyTeamName || ''}
-                      style={cardStyle}
-                      inSearch
-                      triggerBase={triggerBase}
-                      memberId={item.memberId}
-                      avatarProps={{
-                        id: item.memberId,
-                        title: item.originName,
-                        src: item.avatar,
-                      }}
-                    />
-                  </List.Item>
-                );
-              }}
-            />
-          </> :
-          <>
-            <div className={styles.searchTitle}>{t(Strings.team)}</div>
-            <List
-              itemLayout="horizontal"
-              dataSource={props.dataSource}
-              renderItem={item => (
-                <List.Item onClick={() => props.listClick(item.teamId)}>
+              return (
+                <List.Item onClick={() => props.listClick(item.memberId)}>
                   <InfoCard
-                    title={item.teamName}
-                    originTitle={item.teamName}
-                    description={item.parentName}
+                    title={title}
+                    originTitle={item.memberName}
+                    description={item.teamData[0]?.fullHierarchyTeamName || ''}
                     style={cardStyle}
                     inSearch
+                    triggerBase={triggerBase}
+                    memberId={item.memberId}
                     avatarProps={{
-                      id: item.teamId,
+                      id: item.memberId,
                       title: item.originName,
-                      type: AvatarType.Team,
+                      src: item.avatar,
                     }}
                   />
                 </List.Item>
-              )}
-            />
-          </>
-      }
+              );
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <div className={styles.searchTitle}>{t(Strings.team)}</div>
+          <List
+            itemLayout="horizontal"
+            dataSource={props.dataSource}
+            renderItem={(item) => (
+              <List.Item onClick={() => props.listClick(item.teamId)}>
+                <InfoCard
+                  title={item.teamName}
+                  originTitle={item.teamName}
+                  description={item.parentName}
+                  style={cardStyle}
+                  inSearch
+                  avatarProps={{
+                    id: item.teamId,
+                    title: item.originName,
+                    type: AvatarType.Team,
+                  }}
+                />
+              </List.Item>
+            )}
+          />
+        </>
+      )}
     </div>
-
   );
 };

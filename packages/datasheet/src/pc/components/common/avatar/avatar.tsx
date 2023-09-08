@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { getThemeColors, lightColors, getThemeName } from '@apitable/components';
 import { CutMethod, getImageThumbSrc } from '@apitable/core';
-import { UserGroupOutlined,UserRoleOutlined } from '@apitable/icons';
+import { UserGroupOutlined, UserRoleOutlined } from '@apitable/icons';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
-import * as React from 'react';
 
 import { AvatarBase, IAvatarBaseProps } from './avatar_base';
 
@@ -63,7 +63,7 @@ export enum AvatarType {
 }
 
 export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
-  id: string; 
+  id: string;
   title: string;
   isGzip?: boolean;
   children?: JSX.Element;
@@ -71,7 +71,7 @@ export interface IAvatarProps extends Omit<IAvatarBaseProps, 'shape'> {
   avatarColor?: number | null;
   style?: React.CSSProperties;
   defaultIcon?: JSX.Element;
-  isRole?:boolean;
+  isRole?: boolean;
 }
 
 const AvatarHoc = (Component: any) => {
@@ -81,7 +81,7 @@ const AvatarHoc = (Component: any) => {
   const bgColorList = createAvatarRainbowColorsArr(themeName);
 
   return (props: IAvatarProps) => {
-    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon, avatarColor,isRole } = props;
+    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon, avatarColor, isRole } = props;
     if (!title || !id) return null;
     if (type === AvatarType.Team) {
       return (
@@ -95,18 +95,24 @@ const AvatarHoc = (Component: any) => {
             ...style,
           }}
         >
-          { isRole? <UserRoleOutlined size={size * 0.625} color={colors.textStaticPrimary} />
-            :!src &&<UserGroupOutlined size={size * 0.625} color={colors.textStaticPrimary} />}
+          {isRole ? (
+            <UserRoleOutlined size={size * 0.625} color={colors.textStaticPrimary} />
+          ) : (
+            !src && <UserGroupOutlined size={size * 0.625} color={colors.textStaticPrimary} />
+          )}
         </Component>
       );
     }
-    const avatarSrc = isGzip && src ? getImageThumbSrc(src, {
-      method: CutMethod.CUT,
-      quality: 100,
-      size: size * ratio,
-    }) : src;
+    const avatarSrc =
+      isGzip && src
+        ? getImageThumbSrc(src, {
+          method: CutMethod.CUT,
+          quality: 100,
+          size: size * ratio,
+        })
+        : src;
     const firstWord = getFirstWordFromString(title);
-    const avatarBg = avatarSrc ? colors.defaultBg : (avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id));
+    const avatarBg = avatarSrc ? colors.defaultBg : avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id);
     if (type === AvatarType.Space) {
       return (
         <Component

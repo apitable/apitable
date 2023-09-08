@@ -16,28 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
-import { DropDirectionType, Selectors, Strings, t, StoreActions, IViewRow } from '@apitable/core';
-import { areEqual } from 'react-window';
+import { useDebounceFn } from 'ahooks';
 import classNames from 'classnames';
 import { XYCoord } from 'dnd-core';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
-import { useResponsive } from 'pc/hooks';
-import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { CSSProperties, useEffect } from 'react';
 import * as React from 'react';
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { areEqual } from 'react-window';
+import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
+import { DropDirectionType, Selectors, Strings, t, StoreActions, IViewRow } from '@apitable/core';
+import { AddOutlined, TriangleDownFilled } from '@apitable/icons';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
+import { useResponsive } from 'pc/hooks';
+import { getIsColNameVisible } from 'pc/utils/datasheet';
+import { StorageName, setStorage } from 'pc/utils/storage/storage';
 import { RecordCard } from '../record_card/card';
 import { GalleryGroupItemType, ItemTypes } from './constant';
 import { GroupCardTitle } from './group_card_title';
 import { IDragItem } from './interface';
 import styles from './style.module.less';
 import { getAddValue, getGroupTitlePaddingTip } from './utils';
-import { StorageName, setStorage } from 'pc/utils/storage/storage';
-import { useDebounceFn } from 'ahooks';
-import { AddOutlined, TriangleDownFilled } from '@apitable/icons';
 
 interface IGalleryItemCardBase {
   columnIndex: number;
@@ -69,7 +69,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
     _visibleRecords,
   } = data;
 
-  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useSelector(state => {
+  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return {
       datasheetId: Selectors.getActiveDatasheetId(state),
@@ -88,7 +88,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
   const showAdd = !templateId && editable;
   const recordId: string = cardItem?.recordId;
   const groupHeadId: string = cardItem?.groupHeadRecordId;
-  const groupingCollapseIdsMap = new Map<string, boolean>(groupingCollapseIds?.map(v => [v, true]));
+  const groupingCollapseIdsMap = new Map<string, boolean>(groupingCollapseIds?.map((v) => [v, true]));
   const coverFieldId = galleryStyle.coverFieldId;
   const ref = React.useRef<HTMLDivElement>(null);
   const { screenIsAtMost } = useResponsive();
@@ -242,18 +242,15 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
         }}
         className={styles.cardGroupTitle}
       >
-        <div 
-          className={styles.icon} 
+        <div
+          className={styles.icon}
           style={{
             transition: 'all 0.3s',
             transform: groupingCollapseIds && groupingCollapseIds.includes(recordId) ? 'rotate(-90deg)' : 'rotate(0)',
           }}
           onClick={() => changeGroupCollapseState(recordId)}
         >
-          <TriangleDownFilled
-            color={colors.thirdLevelText}
-            size={10}
-          />
+          <TriangleDownFilled color={colors.thirdLevelText} size={10} />
         </div>
         <GroupCardTitle recordId={recordId} />
       </div>

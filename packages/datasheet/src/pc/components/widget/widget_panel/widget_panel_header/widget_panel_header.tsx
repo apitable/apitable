@@ -16,26 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { PermissionType, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined, ChevronDownOutlined, ChevronLeftOutlined, CloseOutlined } from '@apitable/icons';
-import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { expandWidgetCenter } from '../../widget_center/widget_center';
-import styles from './style.module.less';
-import { WidgetPanelList } from './widget_panel_list';
-import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { IconButton, useThemeColors } from '@apitable/components';
+import { PermissionType, ResourceType, Selectors, Strings, t } from '@apitable/core';
+import { AddOutlined, ChevronDownOutlined, ChevronLeftOutlined, CloseOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { WrapperTooltip } from './wrapper_tooltip';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
+import { expandWidgetCenter } from '../../widget_center/widget_center';
 import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
+import styles from './style.module.less';
+import { WidgetPanelList } from './widget_panel_list';
+import { WrapperTooltip } from './wrapper_tooltip';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
-  return <AddOutlined size={16} color={colors.black[500]}/>;
+  return <AddOutlined size={16} color={colors.black[500]} />;
 };
 
 export const installedWidgetHandle = (widgetId: string, isFocus = true) => {
@@ -52,15 +52,15 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
   const colors = useThemeColors();
   const triggerRef = useRef<any>(null);
   const [openPanelList, setOpenPanelList] = useState(false);
-  const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
-  const activeWidgetPanel = useSelector(state => {
+  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const activeWidgetPanel = useSelector((state) => {
     const resourceId = mirrorId || datasheetId;
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
     return Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType);
   })!;
-  const spaceId = useSelector(state => state.space.activeId);
-  const { embedId, shareId, templateId } = useSelector(state => state.pageParams);
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const spaceId = useSelector((state) => state.space.activeId);
+  const { embedId, shareId, templateId } = useSelector((state) => state.pageParams);
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
   const embedHidden = embedId && embedInfo && embedInfo.permissionType !== PermissionType.PRIVATEEDIT;
   const hiddenAddButton = shareId || templateId || embedHidden;
   const activePanelName = activeWidgetPanel!.name;
@@ -95,8 +95,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
     <div className={styles.panelHeader}>
       {/* Display on pc side */}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <WrapperTooltip wrapper
-          tip={reachLimitInstalledCount ? t(Strings.reach_limit_installed_widget) : t(Strings.add_widget)}>
+        <WrapperTooltip wrapper tip={reachLimitInstalledCount ? t(Strings.reach_limit_installed_widget) : t(Strings.add_widget)}>
           <IconButton
             component={'button'}
             onClick={openWidgetCenter}
@@ -106,7 +105,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
         </WrapperTooltip>
         <RcTrigger
           action={'click'}
-          popup={<WidgetPanelList/>}
+          popup={<WidgetPanelList />}
           destroyPopupOnHide
           popupAlign={{
             points: ['tc', 'bc'],
@@ -129,14 +128,14 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
             <span
               style={{
                 transform: openPanelList ? 'rotate(180deg)' : '',
-                verticalAlign: '-0.125em'
+                verticalAlign: '-0.125em',
               }}
             >
-              <ChevronDownOutlined size={16} color={colors.thirdLevelText}/>
+              <ChevronDownOutlined size={16} color={colors.thirdLevelText} />
             </span>
           </span>
         </RcTrigger>
-        <IconButton onClick={props.onClosePanel} icon={CloseOutlined}/>
+        <IconButton onClick={props.onClosePanel} icon={CloseOutlined} />
       </ComponentDisplay>
       {/** Mobile */}
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -144,7 +143,7 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
           <IconButton
             className={styles.closeButton}
             onClick={props.onClosePanel}
-            icon={() => <ChevronLeftOutlined color={colors.firstLevelText}/>}
+            icon={() => <ChevronLeftOutlined color={colors.firstLevelText} />}
           />
           <span
             onClick={() => {
@@ -156,16 +155,15 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
             <span
               style={{
                 transform: openPanelList ? 'rotate(180deg)' : '',
-                verticalAlign: '-0.125em'
+                verticalAlign: '-0.125em',
               }}
             >
-              <ChevronDownOutlined size={16} color={colors.thirdLevelText}/>
+              <ChevronDownOutlined size={16} color={colors.thirdLevelText} />
             </span>
           </span>
         </div>
-        <Popup className={styles.mobilePanelList} visible={openPanelList} height={'90vh'}
-          onClose={() => setOpenPanelList(false)}>
-          <WidgetPanelList onClickItem={() => setOpenPanelList(false)}/>
+        <Popup className={styles.mobilePanelList} visible={openPanelList} height={'90vh'} onClose={() => setOpenPanelList(false)}>
+          <WidgetPanelList onClickItem={() => setOpenPanelList(false)} />
         </Popup>
       </ComponentDisplay>
     </div>

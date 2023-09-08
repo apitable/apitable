@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IKanbanViewProperty, IRecord, Selectors } from '@apitable/core';
 import classNames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
-import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { useContextMenu } from '@apitable/components';
+import { IKanbanViewProperty, IRecord, Selectors } from '@apitable/core';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
+import { useResponsive } from 'pc/hooks';
+import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { RecordCard } from '../../../record_card/card';
 import styles from '../styles.module.less';
-import { useContextMenu } from '@apitable/components';
-import { getIsColNameVisible } from 'pc/utils/datasheet';
 
 // Spacing between top and bottom cards
 export const MARGIN_DISTANCE = 8;
@@ -43,11 +43,11 @@ interface ICardProps {
   className?: string;
 }
 
-export const Card: React.FC<React.PropsWithChildren<ICardProps>> = props => {
+export const Card: React.FC<React.PropsWithChildren<ICardProps>> = (props) => {
   const { provided, row, style, isDragging, cardHeight, groupId, className } = props;
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const activeView = useSelector(state => Selectors.getCurrentView(state)) as IKanbanViewProperty;
+  const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IKanbanViewProperty;
   const rowsIndexMap = useSelector(Selectors.getRowsIndexMap);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -125,11 +125,11 @@ interface IRowBaseProps {
   style: React.CSSProperties;
 }
 
-const RowBase: React.FC<React.PropsWithChildren<IRowBaseProps>> = props => {
+const RowBase: React.FC<React.PropsWithChildren<IRowBaseProps>> = (props) => {
   const { data: items, index, style } = props;
   const { rows, cardHeight, groupId, keepSort } = items;
   const row = rows[index];
-  const rowSortable = useSelector(state => Selectors.getPermissions(state).rowSortable);
+  const rowSortable = useSelector((state) => Selectors.getPermissions(state).rowSortable);
   // Leave space for PlaceHolder rendering
   if (!row) {
     return null;
@@ -144,7 +144,7 @@ const RowBase: React.FC<React.PropsWithChildren<IRowBaseProps>> = props => {
 
   return (
     <Draggable draggableId={row.id} index={index} key={row.id} isDragDisabled={!rowSortable}>
-      {provided => (
+      {(provided) => (
         <Card
           provided={provided}
           row={row}

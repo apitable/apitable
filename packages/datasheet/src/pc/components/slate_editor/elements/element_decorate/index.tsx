@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cx from 'classnames';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { Range, Editor } from 'slate';
 import { ReactEditor, useReadOnly, useSlate } from 'slate-react';
-import cx from 'classnames';
 
+import { ScreenSize } from 'pc/components/common/component_display';
+import { elementIsEmpty } from 'pc/components/slate_editor/helpers/utils';
+import { useResponsive } from 'pc/hooks';
 import { ALIGN, INDENT_SPACE, ElementType, BASIC_ELEMENT } from '../../constant';
 import { EditorContext } from '../../context';
 
-import { IElement } from '../../interface/element';
 import { IEventBusEditor } from '../../interface/editor';
+import { IElement } from '../../interface/element';
 import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 import styles from './decorate.module.less';
-import { elementIsEmpty } from 'pc/components/slate_editor/helpers/utils';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
 
 interface IDecorateProps {
   element: IElement;
@@ -107,14 +107,14 @@ const ElementDecorate = React.memo(
         }
 
         const match = Editor.nodes(editor, {
-          match: n => !Editor.isEditor(n) && Editor.isBlock(editor, n),
+          match: (n) => !Editor.isEditor(n) && Editor.isBlock(editor, n),
         });
 
         if (!match) {
           return false;
         }
         const [[_node]] = match;
-        const node = (_node as unknown) as IElement;
+        const node = _node as unknown as IElement;
 
         if ((node.data.align && node.data.align !== ALIGN.LEFT) || node.data.indent) {
           return false;
@@ -129,7 +129,7 @@ const ElementDecorate = React.memo(
         console.log(error);
         return false;
       }
-      // determine the need for the editor.selection dependency, editor for a memo cache object has been unchanged, 
+      // determine the need for the editor.selection dependency, editor for a memo cache object has been unchanged,
       // only the selection will change because the cursor changes
       // eslint-disable-next-line
     }, [isVoid, elementEmpty, elementType, editor, element, editor.selection, imeInputting, isFullMode, readOnly]);

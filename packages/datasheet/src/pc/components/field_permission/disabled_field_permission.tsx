@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Image from 'next/image';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Message } from '@apitable/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
-import Image from 'next/image';
 import { Modal } from 'pc/components/common';
 import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import permissionImage from 'static/icon/datasheet/datasheet_img_field_permission.png';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise';
 
 export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabledPermission>> = (props) => {
   const { setPermissionStatus, field } = props;
-  const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
+  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const views = useSelector(Selectors.getViewsList);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo)!;
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
 
   const openFieldPermission = async() => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, true);
@@ -63,13 +63,13 @@ export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabled
       Modal.confirm({
         type: 'warning',
         title: t(Strings.field_permission_open),
-        content: <>
-          <div className={styles.warningUl}>
-            <p>
-              {t(Strings.field_permission_open_warning)}
-            </p>
-          </div>
-        </>,
+        content: (
+          <>
+            <div className={styles.warningUl}>
+              <p>{t(Strings.field_permission_open_warning)}</p>
+            </div>
+          </>
+        ),
         onOk: openFieldPermission,
       });
       return;
@@ -77,22 +77,15 @@ export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabled
     openFieldPermission();
   };
 
-  return <div className={styles.unOpenPermissionWrapper}>
-    <div className={styles.lockIconWrapper}>
-      <Image src={permissionImage} alt="" width={240} height={180} />
+  return (
+    <div className={styles.unOpenPermissionWrapper}>
+      <div className={styles.lockIconWrapper}>
+        <Image src={permissionImage} alt="" width={240} height={180} />
+      </div>
+      <p>{t(Strings.field_permission_open_tip)}</p>
+      <Button color={'primary'} onClick={openPermission} style={{ width: 220 }}>
+        {t(Strings.field_permission_open)}
+      </Button>
     </div>
-    <p>
-      {t(Strings.field_permission_open_tip)}
-    </p>
-    <Button
-      color={'primary'}
-      onClick={openPermission}
-      style={{ width: 220 }}
-    >
-      {
-        t(Strings.field_permission_open)
-      }
-    </Button>
-  </div>;
+  );
 };
-

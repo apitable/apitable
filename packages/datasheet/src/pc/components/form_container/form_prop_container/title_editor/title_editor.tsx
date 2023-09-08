@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FormApi, IFormProps, StoreActions, Strings, t } from '@apitable/core';
-import styles from './style.module.less';
-import classnames from 'classnames';
 import { Message } from 'pc/components/common';
-import { IBasePropEditorProps, IModeEnum } from '../interface';
-import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { IBasePropEditorProps, IModeEnum } from '../interface';
+import styles from './style.module.less';
 
 interface ITitleEditorProps extends IBasePropEditorProps {
-    title: string
+  title: string;
 }
 
-export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> = props => {
+export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> = (props) => {
   const { mode, nodeId, title } = props;
   const [value, setValue] = useState<string>(title || '');
   const { screenIsAtMost } = useResponsive();
@@ -42,7 +42,7 @@ export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> =
   const dispatch = useDispatch();
 
   const updateTitle = (partProps: Partial<IFormProps>) => {
-    FormApi.updateFormProps(nodeId, partProps).then(res => {
+    FormApi.updateFormProps(nodeId, partProps).then((res) => {
       const { success } = res.data;
       if (success) {
         dispatch(StoreActions.updateFormProps(nodeId, partProps));
@@ -65,7 +65,7 @@ export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> =
       setValue(title);
     }
     // eslint-disable-next-line
-    }, [title, setValue]);
+  }, [title, setValue]);
 
   return (
     <div
@@ -78,7 +78,7 @@ export const TitleEditor: React.FC<React.PropsWithChildren<ITitleEditorProps>> =
           className={styles.titleInput}
           value={value}
           placeholder={t(Strings.form_title_placeholder)}
-          onChange={e => setValue(e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
           onBlur={onBlur}
         />
       ) : (

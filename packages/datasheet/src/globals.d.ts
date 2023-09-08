@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-declare module '*.md'
+declare module '*.md';
 
 declare namespace JSX {
   // eslint-disable-next-line @typescript-eslint/naming-convention

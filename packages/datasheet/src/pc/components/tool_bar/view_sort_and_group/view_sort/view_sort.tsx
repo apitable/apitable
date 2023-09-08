@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Col, Row, Switch } from 'antd';
+import produce from 'immer';
+import * as React from 'react';
+import { useCallback, useMemo, useRef } from 'react';
+import { DropResult } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
 import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors, WrapperTooltip } from '@apitable/components';
 import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
-import { Col, Row, Switch } from 'antd';
-import produce from 'immer';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import * as React from 'react';
-import { useCallback, useMemo, useRef } from 'react';
-import { DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
@@ -44,16 +44,16 @@ interface IViewSetting {
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;
 
-export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props => {
+export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = (props) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
   const activeViewGroupInfo = useSelector(Selectors.getActiveViewGroupInfo);
-  const fieldMap = useSelector(state => {
+  const fieldMap = useSelector((state) => {
     return Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   })!;
   const sortInfo = useSelector(Selectors.getActiveViewSortInfo);
   const activityViewId = useSelector(Selectors.getActiveViewId)!;
-  const sortFieldIds = sortInfo ? sortInfo.rules.map(item => item.fieldId) : [];
+  const sortFieldIds = sortInfo ? sortInfo.rules.map((item) => item.fieldId) : [];
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { editable } = useSelector(Selectors.getPermissions);
@@ -97,7 +97,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
 
   const invalidFieldsByGroup = useMemo(() => {
     const invalidFields: string[] = [];
-    activeViewGroupInfo.forEach(item => {
+    activeViewGroupInfo.forEach((item) => {
       const field = fieldMap[item.fieldId];
       // Sorting is invalid after non-multi-selected FieldType grouping.
       if (field && ![FieldType.MultiSelect].includes(field.type)) {
@@ -115,7 +115,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
         return;
       }
       submitSort(
-        produce(sortInfo, draft => {
+        produce(sortInfo, (draft) => {
           draft!.rules.splice(destination.index, 0, draft!.rules.splice(source.index, 1)[0]);
           return draft;
         })!,
@@ -127,8 +127,8 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
 
   function deleteViewItem(index: number) {
     if (sortInfo) {
-      const newSortInfo = produce(sortInfo, draft => {
-        draft.rules.splice(index, 1).filter(item => invalidFieldsByGroup.includes(item.fieldId));
+      const newSortInfo = produce(sortInfo, (draft) => {
+        draft.rules.splice(index, 1).filter((item) => invalidFieldsByGroup.includes(item.fieldId));
         return draft;
       });
       submitSort(newSortInfo);
@@ -188,7 +188,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
         {!isMobile && (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant={'h7'}>{t(Strings.set_sort)}</Typography>
-            <a href={t(Strings.sort_help_url)} target='_blank' rel='noopener noreferrer'>
+            <a href={t(Strings.sort_help_url)} target="_blank" rel="noopener noreferrer">
               <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </div>
@@ -197,8 +197,13 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
           <div className={styles.keepSort}>
             {t(Strings.keep_sort)}
             <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-              <Switch checked={sortInfo!.keepSort} size={isMobile ? 'default' : 'small'} style={{ marginLeft: isMobile ? 8 : 4 }}
-                onChange={onChange} disabled={isViewLock} />
+              <Switch
+                checked={sortInfo!.keepSort}
+                size={isMobile ? 'default' : 'small'}
+                style={{ marginLeft: isMobile ? 8 : 4 }}
+                onChange={onChange}
+                disabled={isViewLock}
+              />
             </WrapperTooltip>
           </div>
         )}
@@ -230,7 +235,7 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <Row align='middle' style={{ width: '100%' }}>
+          <Row align="middle" style={{ width: '100%' }}>
             <Col span={sortInfo ? 9 : 10} offset={sortInfo ? 1 : 0}>
               <div style={{ paddingLeft: sortInfo ? 8 : 0, paddingRight: 8 }}>
                 <ViewFieldOptionsMobile
@@ -248,9 +253,9 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
           {isMobile ? (
             <Button
               style={{ marginRight: '16px' }}
-              size='large'
-              onClick={e => {
-                props.close((e as any) as React.MouseEvent);
+              size="large"
+              onClick={(e) => {
+                props.close(e as any as React.MouseEvent);
               }}
               block
               disabled={isViewLock}
@@ -260,9 +265,9 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
           ) : (
             <TextButton
               style={{ marginRight: '16px' }}
-              size='small'
-              onClick={e => {
-                props.close((e as any) as React.MouseEvent);
+              size="small"
+              onClick={(e) => {
+                props.close(e as any as React.MouseEvent);
               }}
               disabled={isViewLock}
             >
@@ -271,11 +276,11 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
           )}
           <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
             <Button
-              color='primary'
+              color="primary"
               size={isMobile ? 'large' : 'small'}
-              onClick={e => {
+              onClick={(e) => {
                 sortInfo && submitSort(sortInfo, true);
-                props.close((e as any) as React.MouseEvent);
+                props.close(e as any as React.MouseEvent);
               }}
               block={isMobile}
               disabled={isViewLock}
@@ -283,7 +288,6 @@ export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = props =
               <span>{t(Strings.sort_apply)}</span>
             </Button>
           </WrapperTooltip>
-
         </div>
       )}
     </div>

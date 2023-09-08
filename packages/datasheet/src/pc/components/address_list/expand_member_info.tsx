@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
-import { store } from 'pc/store';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { Strings, t } from '@apitable/core';
+import { ChevronLeftOutlined } from '@apitable/icons';
+import { store } from 'pc/store';
 import { MemberInfo } from './member_info';
 import styles from './style.module.less';
 
@@ -46,25 +46,17 @@ export const expandMemberInfo = () => {
   function render() {
     setTimeout(() => {
       root.render(
-        (
-          <Provider store={store}>
-            <div className={styles.memberInfoDrawer}>
-              <Drawer
-                placement='right'
-                height={'100%'}
-                width={'100%'}
-                visible
-                closable={false}
-              >
-                <div className={styles.mobileBack} onClick={close}>
-                  <ChevronLeftOutlined color='currentColor' />
-                  <span>{t(Strings.back)}</span>
-                </div>
-                <MemberInfo />
-              </Drawer>
-            </div>
-          </Provider>
-        ),
+        <Provider store={store}>
+          <div className={styles.memberInfoDrawer}>
+            <Drawer placement="right" height={'100%'} width={'100%'} visible closable={false}>
+              <div className={styles.mobileBack} onClick={close}>
+                <ChevronLeftOutlined color="currentColor" />
+                <span>{t(Strings.back)}</span>
+              </div>
+              <MemberInfo />
+            </Drawer>
+          </div>
+        </Provider>,
       );
     });
   }

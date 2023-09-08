@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
-import classNames from 'classnames';
-import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
-import enUS from 'antd/es/date-picker/locale/en_US';
-import zhCN from 'antd/es/date-picker/locale/zh_CN';
-import zhTW from 'antd/es/date-picker/locale/zh_TW';
-import frFR from 'antd/es/date-picker/locale/fr_FR';
 import deDE from 'antd/es/date-picker/locale/de_DE';
+import enUS from 'antd/es/date-picker/locale/en_US';
+import esES from 'antd/es/date-picker/locale/es_ES';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
 import itIT from 'antd/es/date-picker/locale/it_IT';
 import jaJP from 'antd/es/date-picker/locale/ja_JP';
 import koKR from 'antd/es/date-picker/locale/ko_KR';
 import ruRU from 'antd/es/date-picker/locale/ru_RU';
-import esES from 'antd/es/date-picker/locale/es_ES';
+import zhCN from 'antd/es/date-picker/locale/zh_CN';
+import zhTW from 'antd/es/date-picker/locale/zh_TW';
+import LocaleReceiver from 'antd/es/locale-provider/LocaleReceiver';
+import classNames from 'classnames';
+import * as React from 'react';
 import { getLanguage } from '@apitable/core';
 
 export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFormat?: string): any {
@@ -104,7 +104,8 @@ export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFor
     };
 
     getDefaultLocale = () => {
-      const locale = { 'zh-CN': zhCN,
+      const locale = {
+        'zh-CN': zhCN,
         'en-US': enUS,
         'zh-HK': zhTW,
         'fr-FR': frFR,
@@ -152,10 +153,7 @@ export default function wrapPicker(Picker: React.ComponentClass<any>, defaultFor
 
     override render() {
       return (
-        <LocaleReceiver
-          componentName="DatePicker"
-          defaultLocale={this.getDefaultLocale}
-        >
+        <LocaleReceiver componentName="DatePicker" defaultLocale={this.getDefaultLocale}>
           {this.renderPicker}
         </LocaleReceiver>
       );

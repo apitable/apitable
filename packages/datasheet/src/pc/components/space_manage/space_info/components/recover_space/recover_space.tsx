@@ -16,36 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, Strings, t, ThemeName } from '@apitable/core';
-import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Modal as ModalMobile } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, TextButton, useThemeColors } from '@apitable/components';
+import { Api, IReduxState, Strings, t, ThemeName } from '@apitable/core';
+import { UndoFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { DelSuccess } from '../del_success/del.success';
-import styles from './style.module.less';
-import { UndoFilled } from '@apitable/icons';
 import SpaceDeleteDark from 'static/icon/common/space_delete_img_dark.png';
 import SpaceDeleteLight from 'static/icon/common/space_delete_img_light.png';
+import { DelSuccess } from '../del_success/del.success';
+import styles from './style.module.less';
 
 export const RecoverSpace = () => {
   const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const [delSuccess, setDelSuccess] = useState(false);
   const colors = useThemeColors();
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const theme = useSelector(state => state.theme);
+  const theme = useSelector((state) => state.theme);
   const DeleteIcon = theme === ThemeName.Light ? SpaceDeleteLight : SpaceDeleteDark;
   const recoverSpaceConfirm = () => {
     if (!spaceId) return;
-    Api.recoverSpace(spaceId).then(res => {
+    Api.recoverSpace(spaceId).then((res) => {
       const { success } = res.data;
       if (success) {
         window.location.reload();
@@ -69,7 +69,6 @@ export const RecoverSpace = () => {
             key: t(Strings.confirm),
           },
         ],
-
       });
       return;
     }
@@ -81,7 +80,7 @@ export const RecoverSpace = () => {
     });
   };
   const delNowConfirm = () => {
-    Api.deleteSpaceNow().then(res => {
+    Api.deleteSpaceNow().then((res) => {
       const { success } = res.data;
       if (success) {
         setDelSuccess(true);
@@ -97,13 +96,13 @@ export const RecoverSpace = () => {
           {
             text: t(Strings.cancel),
             onClick: () => ModalMobile.clear(),
-            key:t(Strings.cancel),
+            key: t(Strings.cancel),
           },
           {
             text: t(Strings.confirm),
             onClick: delNowConfirm,
             style: { color: colors.errorColor },
-            key:t(Strings.confirm),
+            key: t(Strings.confirm),
           },
         ],
       });
@@ -131,10 +130,10 @@ export const RecoverSpace = () => {
             {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
           </div>
           <div className={styles.subTip}>{t(Strings.tip_del_success)}</div>
-          <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoFilled color='currentColor' />}>
+          <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<UndoFilled color="currentColor" />}>
             {t(Strings.restore_space)}
           </Button>
-          <TextButton color='danger' block onClick={delNow} size='large'>
+          <TextButton color="danger" block onClick={delNow} size="large">
             {t(Strings.delete_now)}
           </TextButton>
           {delSuccess && <DelSuccess tip={t(Strings.delete_workspace_succeed)} />}
@@ -146,13 +145,13 @@ export const RecoverSpace = () => {
   return (
     <div className={styles.recoverSpace}>
       <div className={styles.wrapper}>
-        <Button color='primary' block onClick={handleClick} size='large' prefixIcon={<UndoFilled color='currentColor' />}>
+        <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<UndoFilled color="currentColor" />}>
           {t(Strings.restore_space)}
         </Button>
         <div className={styles.tip}>
           {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
         </div>
-        <TextButton color='danger' block onClick={delNow} size='large'>
+        <TextButton color="danger" block onClick={delNow} size="large">
           {t(Strings.delete_now)}
         </TextButton>
       </div>

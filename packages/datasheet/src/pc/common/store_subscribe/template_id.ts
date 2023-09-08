@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
 import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
 
 let lastTemplateId: string | undefined;
 

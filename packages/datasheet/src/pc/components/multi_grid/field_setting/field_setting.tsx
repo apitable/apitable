@@ -16,14 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  CollaCommandName, DatasheetActions, Events, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getFieldClass, getNewId, IDPrefix, IField,
-  ISegment, IViewColumn, Player, Selectors, StoreActions, Strings, t, DatasheetApi,
-} from '@apitable/core';
-import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
+import * as React from 'react';
+import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName,
+  DatasheetActions,
+  Events,
+  ExecuteResult,
+  Field,
+  FieldType,
+  FieldTypeDescriptionMap,
+  getFieldClass,
+  getNewId,
+  IDPrefix,
+  IField,
+  ISegment,
+  IViewColumn,
+  Player,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  DatasheetApi,
+} from '@apitable/core';
+import { QuestionCircleOutlined, WarnCircleFilled } from '@apitable/icons';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
@@ -40,16 +61,12 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils';
-import * as React from 'react';
-import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import { FieldFormat } from '../format';
 import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
-import { QuestionCircleOutlined, WarnCircleFilled } from '@apitable/icons';
 
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
@@ -78,11 +95,11 @@ const MAX_HEIGHT = 640;
 /**
  * This component is reused by the Magic Form and Expand Modal, except for the DomGrid, which evokes it.
  */
-const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
+const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();
-  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useSelector(state => {
+  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useSelector((state) => {
     const columnCount = Selectors.getColumnCount(state)!;
     const datasheetId = propDatasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
@@ -101,7 +118,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
       viewId,
       linkId,
       datasheetId,
-      spaceId
+      spaceId,
     };
   }, shallowEqual);
 
@@ -269,7 +286,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
         ...pre,
         name: value,
       };
-      const hasTheSameName = Object.keys(fieldMap).some(fieldId => {
+      const hasTheSameName = Object.keys(fieldMap).some((fieldId) => {
         const item = fieldMap[fieldId];
         return item.name === value && pre.id !== item.id;
       });
@@ -287,7 +304,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     const currentFieldId = currentField.id;
     const recordList = Object.values(recordMap);
 
-    return recordList.some(item => {
+    return recordList.some((item) => {
       return item.data[currentFieldId];
     });
   };
@@ -305,10 +322,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     // If a mounted dom is specified, no prompt will be given
     if (ExecuteResult.Success === result.result && !targetDOM) {
       // cascader field linkedDatasheetId or linkedViewId changes need update cascader snapshot
-      if (newField.type === FieldType.Cascader &&
+      if (
+        newField.type === FieldType.Cascader &&
         (fieldInfoForState.property?.linkedDatasheetId !== newField.property.linkedDatasheetId ||
-          fieldInfoForState.property?.linkedViewId !== newField.property.linkedViewId
-        )
+          fieldInfoForState.property?.linkedViewId !== newField.property.linkedViewId)
       ) {
         setSubmitPending(true);
         DatasheetApi.updateCascaderSnapshot({
@@ -369,9 +386,9 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
         hideOperateBox();
         setTimeout(() => {
           scrollToItem &&
-          scrollToItem({
-            columnIndex: visibleColumnsCount,
-          });
+            scrollToItem({
+              columnIndex: visibleColumnsCount,
+            });
         }, 0);
       };
       // cascader field add need update cascader snapshot
@@ -408,11 +425,11 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
     if (checkResult.type === FieldType.Member) {
       const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, checkResult.id);
       const stdVals = cellValues
-        .map(cv => {
+        .map((cv) => {
           return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
         })
-        .map(item => item.data[0] && item.data[0].text)
-        .filter(item => item);
+        .map((item) => item.data[0] && item.data[0].text)
+        .filter((item) => item);
 
       await dispatch(StoreActions.loadLackUnitMap(stdVals.join(','), linkId) as any);
     }
@@ -430,7 +447,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
 
     if (typeof checkResult === 'string' || checkResult.errors) {
       setOptionErrMsg(checkResult);
-      const _checkResult = checkResult.errors ? Object.values(checkResult.errors)[0] as string : checkResult;
+      const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
       isModal && renderModal(_checkResult);
       return;
     }
@@ -528,7 +545,8 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
             datasheetId={propDatasheetId}
             optionErrMsg={optionErrMsg as object}
           />
-        </>)}
+        </>
+      )}
       {typeof optionErrMsg === 'string' && <section className={styles.error}>{optionErrMsg}</section>}
 
       {!isComputedField && (
@@ -550,7 +568,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
               }
             >
               <span className={styles.requiredTip}>
-                <QuestionCircleOutlined color='currentColor' />
+                <QuestionCircleOutlined color="currentColor" />
               </span>
             </Tooltip>
           </div>
@@ -569,7 +587,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
         <div
           className={styles.fieldOperateBox}
           style={positionStyle}
-          onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
+          onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
           tabIndex={-1}
           onKeyDown={stopPropagation}
           ref={containerRef}
@@ -579,16 +597,16 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
           </div>
           <div ref={scrollShadowRef} className={styles.scrollShadow} />
           <section className={styles.buttonWrapper}>
-            <TextButton size='small' onClick={hideOperateBox} style={{ color: colors.thirdLevelText }}>
+            <TextButton size="small" onClick={hideOperateBox} style={{ color: colors.thirdLevelText }}>
               {t(Strings.cancel)}
             </TextButton>
             <Button
-              size='small'
+              size="small"
               onClick={() => {
                 onSubmit();
               }}
               loading={submitPending}
-              color='primary'
+              color="primary"
             >
               {t(Strings.submit)}
             </Button>
@@ -600,10 +618,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = props => {
         <Popup
           open
           onClose={hideOperateBox}
-          height='90%'
+          height="90%"
           title={t(Strings.datasheet_choose_field_type)}
           footer={
-            <Button color='primary' size='large' block onClick={() => onSubmit()}>
+            <Button color="primary" size="large" block onClick={() => onSubmit()}>
               {t(Strings.confirm)}
             </Button>
           }

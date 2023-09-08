@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 import { useDispatch } from 'react-redux';
+import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 
-export const useEditDesc = ({ colIndex, datasheetId, fieldId }: { datasheetId: string, fieldId: string, colIndex?: number }) => {
+export const useEditDesc = ({ colIndex, datasheetId, fieldId }: { datasheetId: string; fieldId: string; colIndex?: number }) => {
   const dispatch = useDispatch();
 
   return (e: MouseEvent) => {

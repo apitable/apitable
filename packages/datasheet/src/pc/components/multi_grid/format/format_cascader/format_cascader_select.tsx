@@ -1,19 +1,19 @@
-import { Button, LinkButton, useThemeColors, Typography } from '@apitable/components';
-import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { SettingOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
+import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, LinkButton, useThemeColors, Typography } from '@apitable/components';
+import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { SettingOutlined } from '@apitable/icons';
+import { IFieldCascaderErrors } from '../../field_setting/check_factory';
+import commonStyles from '../styles.module.less';
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';
 import { CascaderDatasourceViewSelect } from './cascader_datasource_view_select';
 import { CascaderRulesModal } from './cascader_rules_modal/cascader_rules_modal';
 
-import commonStyles from '../styles.module.less';
 import styles from './styles.module.less';
-import * as React from 'react';
-import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 
 export interface IFormatCascaderProps {
   currentField: ICascaderField;
@@ -48,10 +48,7 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
     dispatch(StoreActions.fetchDatasheet(linkedDatasheetId) as any);
   });
 
-  const ruleBtnDisabled = !linkedDatasheetId ||
-    !linkedViewId ||
-    linkedDatasheetLoading === undefined ||
-    linkedDatasheetLoading;
+  const ruleBtnDisabled = !linkedDatasheetId || !linkedViewId || linkedDatasheetLoading === undefined || linkedDatasheetLoading;
 
   return (
     <div className={commonStyles.section} style={{ marginBottom: 8 }}>
@@ -63,16 +60,11 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
           </LinkButton>
         </div>
         <div className={styles.datasourceSelectRow}>
-          <CascaderDatasourceDatasheetSelect
-            currentField={currentField}
-            setCurrentField={setCurrentField}
-          />
+          <CascaderDatasourceDatasheetSelect currentField={currentField} setCurrentField={setCurrentField} />
           {optionErrMsg?.errors?.linkedDatasheetId && <section className={styles.error}>{optionErrMsg?.errors?.linkedDatasheetId}</section>}
         </div>
         <div className={commonStyles.section}>
-          <div className={commonStyles.sectionTitle}>
-            2.{t(Strings.cascader_select_view)}
-          </div>
+          <div className={commonStyles.sectionTitle}>2.{t(Strings.cascader_select_view)}</div>
           <CascaderDatasourceViewSelect
             currentField={currentField}
             linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
@@ -86,19 +78,10 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
         <div>
           {linkedFields?.length > 0 ? (
             <div className={styles.cascaderRulesShow}>
-              <Typography
-                variant="body3"
-                className={styles.rulesText}
-                ellipsis
-              >
-                {linkedFields.map(lf => lf.name).join('/')}
+              <Typography variant="body3" className={styles.rulesText} ellipsis>
+                {linkedFields.map((lf) => lf.name).join('/')}
               </Typography>
-              <LinkButton
-                className={styles.rulesButton}
-                disabled={ruleBtnDisabled}
-                onClick={() => setRulesModalVisible(true)}
-                underline={false}
-              >
+              <LinkButton className={styles.rulesButton} disabled={ruleBtnDisabled} onClick={() => setRulesModalVisible(true)} underline={false}>
                 <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
               </LinkButton>
             </div>

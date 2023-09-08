@@ -69,5 +69,5 @@ export default {
   copyFailed: t(Strings.copy_failed),
   delete: t(Strings.delete),
   visit: t(Strings.visit),
-  linkInputPlaceholder: t(Strings.link_input_placeholder)
+  linkInputPlaceholder: t(Strings.link_input_placeholder),
 };

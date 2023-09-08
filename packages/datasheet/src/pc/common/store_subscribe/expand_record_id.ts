@@ -37,7 +37,7 @@ store.subscribe(function routeRecordChange() {
     preRecordId && clearExpandModal();
     preRecordId = null;
     if (isSideRecordOpen) {
-      store.dispatch((StoreActions.toggleSideRecord(false))); // Close the side record card when the recordId does not exist for the route
+      store.dispatch(StoreActions.toggleSideRecord(false)); // Close the side record card when the recordId does not exist for the route
     }
 
     return;
@@ -51,7 +51,7 @@ store.subscribe(function routeRecordChange() {
   preRecordId = recordId;
 
   if (!isSideRecordOpen && state.recordVision === RecordVision.Side) {
-    store.dispatch((StoreActions.toggleSideRecord(true)));
+    store.dispatch(StoreActions.toggleSideRecord(true));
   }
 
   expandRecordRoute({ preventOpenNewModal: true });

@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@apitable/core';
 import { Popover } from 'antd';
+import classNames from 'classnames';
 import { find, isEqual, values } from 'lodash';
 import uniqBy from 'lodash/uniqBy';
-// eslint-disable-next-line no-restricted-imports
-import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-import { backCorrectAvatarName, backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
+import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
+import { backCorrectAvatarName, backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
 import styles from './style.module.less';
-import classNames from 'classnames';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 const MAX_SHOW_NUMBER = 3;
 
@@ -38,15 +38,17 @@ function sortByCreateTime(c1: ICollaborator, c2: ICollaborator) {
 }
 
 export function getCollaboratorAvatar(colla: ICollaborator) {
-  return isAlien(colla) ?
-    integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value) :
-    colla.avatar;
+  return isAlien(colla) ? integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value) : colla.avatar;
 }
 
-export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
-  resourceType: ResourceType, resourceId: string, style?: React.CSSProperties
-}>> = (props) => {
-  const collaborators = useSelector(state => {
+export const CollaboratorStatus: React.FC<
+  React.PropsWithChildren<{
+    resourceType: ResourceType;
+    resourceId: string;
+    style?: React.CSSProperties;
+  }>
+> = (props) => {
+  const collaborators = useSelector((state) => {
     let collaborators = Selectors.getResourceCollaborator(state, props.resourceId, props.resourceType);
 
     if (!collaborators) {
@@ -55,7 +57,6 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
 
     const anonymous: ICollaborator[] = [];
     collaborators = collaborators.reduce<ICollaborator[]>((collaborators, collaborator) => {
-
       if (!collaborator.userId) {
         anonymous.push(collaborator);
         return collaborators;
@@ -71,9 +72,9 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
   }, isEqual);
 
   const unitMap = useSelector(Selectors.getUnitMap);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const { embedId } = useSelector(state => state.pageParams);
-  const embedInfo = useSelector(state => state.embedInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const { embedId } = useSelector((state) => state.pageParams);
+  const embedInfo = useSelector((state) => state.embedInfo);
 
   const showSetting = embedId ? embedInfo.viewControl?.toolBar?.formSettingBtn : true;
 
@@ -82,17 +83,21 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
   const showStatusBarLine = !!(showShareBtn || showSetting);
 
   useEffect(() => {
-    window.parent.postMessage({
-      message: 'collaborators', data: {
-        roomId: props.resourceId,
-        collaborators: collaborators.map(item => {
-          return {
-            name: item.userName,
-            avatar: item.avatar
-          };
-        })
-      }
-    }, '*');
+    window.parent.postMessage(
+      {
+        message: 'collaborators',
+        data: {
+          roomId: props.resourceId,
+          collaborators: collaborators.map((item) => {
+            return {
+              name: item.userName,
+              avatar: item.avatar,
+            };
+          }),
+        },
+      },
+      '*',
+    );
   }, [collaborators, props.resourceId]);
 
   const showCollaborators = collaborators.slice(0, MAX_SHOW_NUMBER);
@@ -101,18 +106,20 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
 
   return (
     <div className={classNames(styles.statusbar, showStatusBarLine ? styles.statusbarLine : styles.statusbarMargin)} style={props.style}>
-      <div className={styles.collaboratorsAvatars} >
+      <div className={styles.collaboratorsAvatars}>
         {showCollaborators.reverse().map((collaborator) => {
           const unit = find(values(unitMap), { userId: collaborator.userId });
-          const title = unit ? (getSocialWecomUnitName?.({
-            name: unit.name,
-            isModified: unit.isMemberNameModified,
-            spaceInfo
-          }) || unit.name) : (getSocialWecomUnitName?.({
-            name: backCorrectName(collaborator),
-            isModified: false,
-            spaceInfo
-          }) || backCorrectName(collaborator));
+          const title = unit
+            ? getSocialWecomUnitName?.({
+              name: unit.name,
+              isModified: unit.isMemberNameModified,
+              spaceInfo,
+            }) || unit.name
+            : getSocialWecomUnitName?.({
+              name: backCorrectName(collaborator),
+              isModified: false,
+              spaceInfo,
+            }) || backCorrectName(collaborator);
           return (
             <UserCardTrigger
               userId={collaborator.userId}
@@ -127,7 +134,7 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
             >
               <Tooltip
                 title={title}
-                placement='bottom'
+                placement="bottom"
                 align={{
                   offset: [-3, 0],
                 }}
@@ -139,10 +146,12 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
                     size={AvatarSize.Size24}
                     title={backCorrectAvatarName(collaborator)}
                     avatarColor={collaborator.avatarColor}
-                    style={{
-                      marginLeft: -8,
-                      cursor: 'pointer',
-                    } as React.CSSProperties}
+                    style={
+                      {
+                        marginLeft: -8,
+                        cursor: 'pointer',
+                      } as React.CSSProperties
+                    }
                     id={collaborator.userId || collaborator.socketId}
                   />
                 </span>
@@ -153,10 +162,10 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
       </div>
       {isOverMax && (
         <Popover
-          trigger='click'
+          trigger="click"
           content={
             <div className={styles.memberListCard}>
-              {restCollaborators.map(c => (
+              {restCollaborators.map((c) => (
                 <UserCardTrigger
                   key={c.socketId}
                   userId={c.userId}
@@ -188,9 +197,7 @@ export const CollaboratorStatus: React.FC<React.PropsWithChildren<{
             points: ['tl', 'bl'],
           }}
         >
-          <span className={styles.moreMemberCount}>
-            +{restCollaborators.length}
-          </span>
+          <span className={styles.moreMemberCount}>+{restCollaborators.length}</span>
         </Popover>
       )}
     </div>

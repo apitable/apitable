@@ -16,26 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, getTextFieldType, ISegment, string2Segment, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
-import { stopPropagation } from 'pc/utils/dom';
 import RcTextArea from 'rc-textarea';
-
-import {
-  ChangeEvent,
-  forwardRef,
-  memo,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
-
+import { ChangeEvent, forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
+import { FieldType, getTextFieldType, ISegment, string2Segment, Strings, t } from '@apitable/core';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
+import { CellText } from 'pc/components/multi_grid/cell/cell_text';
+import { stopPropagation } from 'pc/utils/dom';
+
 import { IBaseEditorProps, IEditor } from '../interface';
 import styles from './style.module.less';
-import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 export interface ITextEditorProps extends IBaseEditorProps {
   placeholder?: string;
   style: React.CSSProperties;
@@ -59,17 +50,32 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const isInExpandRecord = ShortcutContext.context[ContextName.isRecordExpanding]();
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: (preventScroll?: boolean) => { focus(preventScroll); },
-    blur: () => { blur(); },
-    onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
-    onStartEdit: (value?: ISegment[] | null) => { onStartEdit(value); },
-    setValue: (value?: ISegment[] | null) => { handleSetValue(value ?? null); },
-    saveValue: () => { saveValue(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: (preventScroll?: boolean) => {
+        focus(preventScroll);
+      },
+      blur: () => {
+        blur();
+      },
+      onEndEdit: (cancel: boolean) => {
+        onEndEdit(cancel);
+      },
+      onStartEdit: (value?: ISegment[] | null) => {
+        onStartEdit(value);
+      },
+      setValue: (value?: ISegment[] | null) => {
+        handleSetValue(value ?? null);
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
 
   useEffect(() => {
-    if (!(rcTextAreaRef.current)) {
+    if (!rcTextAreaRef.current) {
       return;
     }
     textAreaRef.current = rcTextAreaRef.current.resizableTextArea.textArea;
@@ -91,7 +97,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
     enhanceEditorRef.current && enhanceEditorRef.current.focus({ preventScroll: preventScroll });
   };
 
-  const blur = () => {    
+  const blur = () => {
     textAreaRef.current && textAreaRef.current.blur();
     enhanceEditorRef.current && enhanceEditorRef.current.blur();
   };
@@ -159,7 +165,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
       setSelectionToEnd();
     }, 20);
   };
-  
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const wrapMetaCode = event.ctrlKey || event.altKey;
     const isWrapKeyCombination = wrapMetaCode && event.keyCode === 13;
@@ -170,49 +176,47 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
 
     // execCommand docRef: https://momane.com/use-document-execcommand-to-set-value
     document.execCommand('insertText', false, '\n');
-    
+
     textAreaRef.current?.blur();
     setTimeout(() => {
       textAreaRef.current?.focus();
     }, 0);
   };
- 
+
   const autoSize = isInExpandRecord ? { minRows } : { minRows: Math.round(height / TEXT_LINE_HEIGHT), maxRows: 7 };
 
   return (
-    <div
-      ref={wrapperRef}
-      className={styles.textEditor}
-      style={{ ...style }}
-      onWheel={stopPropagation}
-      onMouseMove={stopPropagation}
-    >
-      {
-        (isInExpandRecord && !editable) ? 
-          <CellText cellValue={cellValue} field={props.field} isActive />
-          : isEnhanceText || isSingleText ? <input
-            ref={enhanceEditorRef}
-            placeholder={placeholder}
-            value={value}
-            onChange={updateValue}
-            onBlur={() => { onBlur && onBlur(); }}
-            readOnly={!editable}
-            className="textEditorInput"
-          /> :
-            <RcTextArea
-              ref={rcTextAreaRef}
-              autoSize={autoSize}
-              placeholder={placeholder}
-              value={value}
-              onChange={updateValue}
-              readOnly={!editable}
-              disabled={disabled}
-              onKeyDown={onKeyDown}
-              onBlur={() => { onBlur && onBlur(); }}
-            /> 
-      }
-      {
-        needEditorTip && !isEnhanceText && !isInExpandRecord && !isSingleText && editing && editable &&
+    <div ref={wrapperRef} className={styles.textEditor} style={{ ...style }} onWheel={stopPropagation} onMouseMove={stopPropagation}>
+      {isInExpandRecord && !editable ? (
+        <CellText cellValue={cellValue} field={props.field} isActive />
+      ) : isEnhanceText || isSingleText ? (
+        <input
+          ref={enhanceEditorRef}
+          placeholder={placeholder}
+          value={value}
+          onChange={updateValue}
+          onBlur={() => {
+            onBlur && onBlur();
+          }}
+          readOnly={!editable}
+          className="textEditorInput"
+        />
+      ) : (
+        <RcTextArea
+          ref={rcTextAreaRef}
+          autoSize={autoSize}
+          placeholder={placeholder}
+          value={value}
+          onChange={updateValue}
+          readOnly={!editable}
+          disabled={disabled}
+          onKeyDown={onKeyDown}
+          onBlur={() => {
+            onBlur && onBlur();
+          }}
+        />
+      )}
+      {needEditorTip && !isEnhanceText && !isInExpandRecord && !isSingleText && editing && editable && (
         <div
           className={classNames({
             [styles.tip]: true,
@@ -224,7 +228,7 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
           {t(Strings.new_a_line)}
           <span>， {t(Strings.text_editor_tip_end)}</span>
         </div>
-      }
+      )}
     </div>
   );
 };

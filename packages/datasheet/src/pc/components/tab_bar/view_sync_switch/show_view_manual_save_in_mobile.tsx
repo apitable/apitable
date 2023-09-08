@@ -17,8 +17,8 @@
  */
 
 import { createRoot } from 'react-dom/client';
-import { store } from '../../../store';
 import { Provider } from 'react-redux';
+import { store } from '../../../store';
 import { MobilePopupContent } from './popup_content/mobile';
 
 const VIEW_MANUAL_SAVE_TIP = 'VIEW_MANUAL_SAVE_TIP';
@@ -31,10 +31,10 @@ export const showViewManualSaveInMobile = () => {
   const container = document.createElement('div');
   container.classList.add(VIEW_MANUAL_SAVE_TIP);
   document.body.appendChild(container);
-  const root= createRoot(container);
-  
+  const root = createRoot(container);
+
   const datasheetContainer = document.body.querySelector(`#${DOM_IDDATASHEET_VIEW_CONTAINER_ID}`) as HTMLElement;
-  
+
   if (datasheetContainer) {
     datasheetContainer.style.marginTop = '40px';
   }
@@ -46,9 +46,9 @@ export const showViewManualSaveInMobile = () => {
     container.parentElement?.removeChild(container);
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
       <MobilePopupContent onClose={modalClose} />
-    </Provider>
-  ));
+    </Provider>,
+  );
 };

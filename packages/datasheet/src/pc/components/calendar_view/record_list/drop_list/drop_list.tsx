@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { useDrop } from 'react-dnd';
+import { Strings, t } from '@apitable/core';
 import { RECORD } from '../../constants';
 import styles from './styles.module.less';
 
@@ -49,15 +49,10 @@ export const DropList = ({ children, update }: IDrop) => {
   );
   const active = isOver || isOverCurrent;
   return (
-    <div
-      ref={drop} 
-      className={styles.dropList}
-    >
+    <div ref={drop} className={styles.dropList}>
       {active && (
         <div className={styles.dropMask}>
-          <div className={styles.dropMaskText}>
-            {t(Strings.calendar_drag_clear_time)}
-          </div>
+          <div className={styles.dropMaskText}>{t(Strings.calendar_drag_clear_time)}</div>
         </div>
       )}
       {children}

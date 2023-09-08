@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMemo } from 'react';
+import { mutate } from 'swr';
 import { useTheme } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import { useMemo } from 'react';
-import { ITriggerType } from '../../interface';
-import { mutate } from 'swr';
 import { createTrigger } from '../../api';
 import { useDefaultTriggerFormData } from '../../hooks';
+import { ITriggerType } from '../../interface';
 import { Select } from '../select';
 
 interface IRobotTriggerCreateProps {
@@ -76,14 +76,8 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
 
   return (
     <div>
-      <div style={{ color: theme.color.fc3, fontSize: 12, paddingBottom: 8 }} >
-        {t(Strings.robot_no_step_config_1)}
-      </div>
-      <Select
-        options={options}
-        onChange={handleCreateFormChange}
-        placeholder={t(Strings.robot_select_option)}
-      />
+      <div style={{ color: theme.color.fc3, fontSize: 12, paddingBottom: 8 }}>{t(Strings.robot_no_step_config_1)}</div>
+      <Select options={options} onChange={handleCreateFormChange} placeholder={t(Strings.robot_select_option)} />
       {/* <Form schema={triggerCreateForm as any} children={<div />} onChange={handleCreateFormChange} /> */}
     </div>
   );

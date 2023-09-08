@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useCallback, useState } from 'react';
+import { mutate } from 'swr';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
 import { getEnvVariables } from 'pc/utils/env';
-import { useCallback, useState } from 'react';
-import { mutate } from 'swr';
 import { createTrigger, getRobotBaseInfo } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData, useRobot, useTriggerTypes } from '../../hooks';
@@ -37,15 +37,18 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
   const defaultFormData = useDefaultTriggerFormData();
   const { updateRobot } = useRobot(robotId);
 
-  const createRobotTrigger = useCallback(async(triggerTypeId: string) => {
-    const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
-    // When the record is created, the default value needs to be filled in.
-    const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
-    await createTrigger(robotId!, triggerTypeId, input);
-    mutate(`/automation/robots/${robotId}/trigger`);
-    const robotBaseInfo = await getRobotBaseInfo(robotId!);
-    updateRobot(robotBaseInfo);
-  }, [robotId, defaultFormData, triggerTypes, updateRobot]);
+  const createRobotTrigger = useCallback(
+    async(triggerTypeId: string) => {
+      const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
+      // When the record is created, the default value needs to be filled in.
+      const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
+      await createTrigger(robotId!, triggerTypeId, input);
+      mutate(`/automation/robots/${robotId}/trigger`);
+      const robotBaseInfo = await getRobotBaseInfo(robotId!);
+      updateRobot(robotBaseInfo);
+    },
+    [robotId, defaultFormData, triggerTypes, updateRobot],
+  );
 
   const handleClick = async() => {
     if (triggerTypeId) {
@@ -60,7 +63,7 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
     return null;
   }
 
-  const handleTriggerTypeIdChange = (option: { value: any; }) => {
+  const handleTriggerTypeIdChange = (option: { value: any }) => {
     const triggerTypeId = option.value;
     if (triggerTypeId) {
       setTriggerTypeId(triggerTypeId);
@@ -70,62 +73,47 @@ export const RobotCreateGuideStep2 = (props: IStepProps) => {
   // triggerTypes to Select options
   const options = getNodeTypeOptions(triggerTypes);
   return (
-    <Box
-      width='336px'
-      margin='24px 0px 118px 0px'
-    >
-      <Box
-        display='flex'
-        height='40px'
-        margin='0px 0px 40px 0px'
-      >
+    <Box width="336px" margin="24px 0px 118px 0px">
+      <Box display="flex" height="40px" margin="0px 0px 40px 0px">
         <Tooltip
           content={t(Strings.robot_create_wizard_step_2_desc)}
           color={theme.color.textStaticPrimary}
           visible={props.isActive}
           style={{
             backgroundColor: theme.color.primaryColor,
-            zIndex: 1000
+            zIndex: 1000,
           }}
-          placement='right-center'
+          placement="right-center"
         >
           <span>
             <Avatar
               icon={<img src={integrateCdnHost(getEnvVariables().CREATE_ROBOT_AVATAR!)} width={64} height={64} alt="robot" />}
-              size='l'
+              size="l"
               style={{
-                background: 'none'
+                background: 'none',
               }}
             />
           </span>
         </Tooltip>
       </Box>
-      <Box
-        height='120px'
-        width='100%'
-        display='flex'
-        flexDirection='column'
-        justifyContent='space-between'
-      >
-        {
-          !triggerTypesLoading && isActive && (
-            <Select
-              placeholder={t(Strings.robot_select_option)}
-              options={options}
-              value={triggerTypeId}
-              onSelected={handleTriggerTypeIdChange}
-              defaultVisible
-            />
-          )
-        }
+      <Box height="120px" width="100%" display="flex" flexDirection="column" justifyContent="space-between">
+        {!triggerTypesLoading && isActive && (
+          <Select
+            placeholder={t(Strings.robot_select_option)}
+            options={options}
+            value={triggerTypeId}
+            onSelected={handleTriggerTypeIdChange}
+            defaultVisible
+          />
+        )}
         <Button
           block
           loading={loading}
           disabled={loading || !triggerTypeId}
-          color='primary'
+          color="primary"
           onClick={handleClick}
           style={{
-            marginTop: 40
+            marginTop: 40,
           }}
         >
           {t(Strings.robot_create_wizard_next)}

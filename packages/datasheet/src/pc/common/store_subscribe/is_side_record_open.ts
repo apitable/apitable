@@ -25,7 +25,7 @@ let preIsSideRecordOpen = false;
 store.subscribe(() => {
   const state = store.getState();
   const isSideRecordOpen = state.space.isSideRecordOpen;
-  
+
   //  Opened the side record card
   if (isSideRecordOpen && !preIsSideRecordOpen) {
     // Determine if the left-hand directory tree should be closed

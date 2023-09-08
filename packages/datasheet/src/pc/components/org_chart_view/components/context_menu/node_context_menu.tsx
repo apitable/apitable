@@ -16,46 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC, useContext } from 'react';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import {
-  ArrowDownOutlined, ArrowUpOutlined,
-
+  ArrowDownOutlined,
+  ArrowUpOutlined,
   LinkOutlined,
-  CopyOutlined, DeleteOutlined,
-
-  ExpandOutlined, EyeCloseOutlined,
-
-  EyeOpenOutlined
+  CopyOutlined,
+  DeleteOutlined,
+  ExpandOutlined,
+  EyeCloseOutlined,
+  EyeOpenOutlined,
 } from '@apitable/icons';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
 import { flatContextData } from 'pc/utils';
-import { FC, useContext } from 'react';
 import { copyLink, copyRecord } from '../../../multi_grid/context_menu/record_menu';
-import {
-  ORG_NODE_MENU
-} from '../../constants';
+import { ORG_NODE_MENU } from '../../constants';
 import { FlowContext } from '../../context/flow_context';
 import { INode } from '../../interfaces';
 import { addRecord } from '../record_list';
 
 export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const {
-    linkField,
-    viewId,
-    nodeStateMap,
-    setNodeStateMap,
-    rowsCount,
-    fieldEditable,
-    onChange
-  } = useContext(FlowContext);
+  const { linkField, viewId, nodeStateMap, setNodeStateMap, rowsCount, fieldEditable, onChange } = useContext(FlowContext);
 
   const toggleNodeCollapse = (id: string) => {
-    setNodeStateMap(s => ({
+    setNodeStateMap((s) => ({
       ...s,
       [id]: {
         ...s?.[id],
@@ -76,7 +66,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
         t(Strings.notification_delete_record_by_count, {
           count: data.length,
         }),
-        NotifyKey.DeleteRecord
+        NotifyKey.DeleteRecord,
       );
     }
   };
@@ -86,166 +76,165 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <ContextMenu
       menuId={ORG_NODE_MENU}
-      overlay={flatContextData([
+      overlay={flatContextData(
         [
-          {
-            icon: <ArrowUpOutlined />,
-            text: t(Strings.org_chart_insert_into_parent),
-            onClick: async({ props: { node }}: any) => {
-              const parent = node?.data?.parents?.[0] as INode;
-              if (parent) {
-                const { id: preId } = parent;
-                const newRecordId = await addRecord(viewId, rowsCount);
-                onChange([
-                  {
-                    recordId: preId,
-                    fieldId: linkFieldId,
-                    value: parent.data.linkIds.filter(id => id !== node.id).concat(newRecordId!),
-                  },
-                  {
-                    recordId: newRecordId!,
-                    fieldId: linkFieldId,
-                    value: [node.id],
-                  }
-                ]);
-              }
-            },
-            hidden: ({ props: { node }}: any) => {
-              if (!fieldEditable || node.data.parents.length === 0) {
-                return true;
-              }
-              if (
-                linkField.property.limitSingleRecord
-                && node?.data?.parents[0]?.data.linkIds?.length
-              ) {
-                return true;
-              }
-              return false;
-            },
-          },
-          {
-            icon: <ArrowDownOutlined />,
-            text: t(Strings.org_chart_insert_into_child),
-            onClick: ({ props: { node }}: any) => {
-              const newRecordId = addRecord(viewId, rowsCount);
-              onChange([{
-                recordId: node.id,
-                fieldId: linkFieldId,
-                value: [...node.data.linkIds, newRecordId],
-              }]);
-              if (nodeStateMap?.[node.id]?.collapsed) {
-                toggleNodeCollapse(node.id);
-              }
-            },
-            hidden: ({ props: { node }}: any) => {
-              if (!fieldEditable) {
-                return true;
-              }
-              if (
-                linkField.property.limitSingleRecord
-                && node?.data?.linkIds?.length
-              ) {
-                return true;
-              }
-              return false;
-            },
-          },
-        ],
-        [
-          {
-            icon: <EyeCloseOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_collapse_node),
-            onClick: ({ props: { node }}: any) => {
-              toggleNodeCollapse(node.id);
-            },
-            hidden: ({ props: { node }}: any) => {
-              return Boolean(nodeStateMap?.[node.id]?.collapsed || node?.data.linkIds?.length === 0);
-            },
-          },
-          {
-            icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_expand_node),
-            onClick: ({ props: { node }}: any) => {
-              toggleNodeCollapse(node.id);
-            },
-            hidden: ({ props: { node }}: any) => {
-              return !nodeStateMap?.[node.id]?.collapsed;
-            },
-          },
-        ],
-        [
-          {
-            icon: <LinkOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_copy_record_url),
-            onClick: ({ props: { node }}: any) => {
-              copyLink(node.id);
-            },
-          },
-          {
-            icon: <CopyOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_create_a_node_copy),
-            onClick: async({ props: { node }}: any) => {
-              const result = await copyRecord(node.id);
-              if (result.result === ExecuteResult.Success) {
-                const newRecordId = result.data && result.data[0];
-                const parent = node?.data.parents?.[0];
+          [
+            {
+              icon: <ArrowUpOutlined />,
+              text: t(Strings.org_chart_insert_into_parent),
+              onClick: async({ props: { node }}: any) => {
+                const parent = node?.data?.parents?.[0] as INode;
                 if (parent) {
-                  const { data: { linkIds }, id: preId } = parent;
-                  const targetIndex = linkIds.indexOf(node.id);
-                  const newLinkIds = [...linkIds];
-                  newLinkIds.splice(targetIndex, 0, newRecordId);
+                  const { id: preId } = parent;
+                  const newRecordId = await addRecord(viewId, rowsCount);
                   onChange([
                     {
                       recordId: preId,
                       fieldId: linkFieldId,
-                      value: newLinkIds,
+                      value: parent.data.linkIds.filter((id) => id !== node.id).concat(newRecordId!),
                     },
                     {
-                      recordId: newRecordId,
+                      recordId: newRecordId!,
                       fieldId: linkFieldId,
-                      value: [],
-                    }
+                      value: [node.id],
+                    },
                   ]);
                 }
-              }
+              },
+              hidden: ({ props: { node }}: any) => {
+                if (!fieldEditable || node.data.parents.length === 0) {
+                  return true;
+                }
+                if (linkField.property.limitSingleRecord && node?.data?.parents[0]?.data.linkIds?.length) {
+                  return true;
+                }
+                return false;
+              },
             },
-            hidden: ({ props: { node }}: any) => {
-              if (!fieldEditable || node.data.parents.length === 0) {
-                return true;
-              }
-              if (
-                linkField.property.limitSingleRecord
-                && node?.data?.parents[0]?.data.linkIds?.length
-              ) {
-                return true;
-              }
-              return false;
+            {
+              icon: <ArrowDownOutlined />,
+              text: t(Strings.org_chart_insert_into_child),
+              onClick: ({ props: { node }}: any) => {
+                const newRecordId = addRecord(viewId, rowsCount);
+                onChange([
+                  {
+                    recordId: node.id,
+                    fieldId: linkFieldId,
+                    value: [...node.data.linkIds, newRecordId],
+                  },
+                ]);
+                if (nodeStateMap?.[node.id]?.collapsed) {
+                  toggleNodeCollapse(node.id);
+                }
+              },
+              hidden: ({ props: { node }}: any) => {
+                if (!fieldEditable) {
+                  return true;
+                }
+                if (linkField.property.limitSingleRecord && node?.data?.linkIds?.length) {
+                  return true;
+                }
+                return false;
+              },
             },
-          },
-          {
-            icon: <ExpandOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.org_chart_expand_record),
-            onClick: ({ props: { node }}: any) => {
-              expandRecordIdNavigate(node.id);
+          ],
+          [
+            {
+              icon: <EyeCloseOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.org_chart_collapse_node),
+              onClick: ({ props: { node }}: any) => {
+                toggleNodeCollapse(node.id);
+              },
+              hidden: ({ props: { node }}: any) => {
+                return Boolean(nodeStateMap?.[node.id]?.collapsed || node?.data.linkIds?.length === 0);
+              },
             },
-          },
+            {
+              icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.org_chart_expand_node),
+              onClick: ({ props: { node }}: any) => {
+                toggleNodeCollapse(node.id);
+              },
+              hidden: ({ props: { node }}: any) => {
+                return !nodeStateMap?.[node.id]?.collapsed;
+              },
+            },
+          ],
+          [
+            {
+              icon: <LinkOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.org_chart_copy_record_url),
+              onClick: ({ props: { node }}: any) => {
+                copyLink(node.id);
+              },
+            },
+            {
+              icon: <CopyOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.org_chart_create_a_node_copy),
+              onClick: async({ props: { node }}: any) => {
+                const result = await copyRecord(node.id);
+                if (result.result === ExecuteResult.Success) {
+                  const newRecordId = result.data && result.data[0];
+                  const parent = node?.data.parents?.[0];
+                  if (parent) {
+                    const {
+                      data: { linkIds },
+                      id: preId,
+                    } = parent;
+                    const targetIndex = linkIds.indexOf(node.id);
+                    const newLinkIds = [...linkIds];
+                    newLinkIds.splice(targetIndex, 0, newRecordId);
+                    onChange([
+                      {
+                        recordId: preId,
+                        fieldId: linkFieldId,
+                        value: newLinkIds,
+                      },
+                      {
+                        recordId: newRecordId,
+                        fieldId: linkFieldId,
+                        value: [],
+                      },
+                    ]);
+                  }
+                }
+              },
+              hidden: ({ props: { node }}: any) => {
+                if (!fieldEditable || node.data.parents.length === 0) {
+                  return true;
+                }
+                if (linkField.property.limitSingleRecord && node?.data?.parents[0]?.data.linkIds?.length) {
+                  return true;
+                }
+                return false;
+              },
+            },
+            {
+              icon: <ExpandOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.org_chart_expand_record),
+              onClick: ({ props: { node }}: any) => {
+                expandRecordIdNavigate(node.id);
+              },
+            },
+          ],
+          [
+            {
+              icon: <DeleteOutlined color={colors.thirdLevelText} />,
+              text: t(Strings.delete),
+              onClick: ({ props: { node }}: any) => {
+                handleDelete(node.id);
+              },
+              hidden: () => {
+                if (!fieldEditable) {
+                  return true;
+                }
+                return false;
+              },
+            },
+          ],
         ],
-        [
-          {
-            icon: <DeleteOutlined color={colors.thirdLevelText} />,
-            text: t(Strings.delete),
-            onClick: ({ props: { node }}: any) => {
-              handleDelete(node.id);
-            },
-            hidden: () => {
-              if (!fieldEditable) {
-                return true;
-              }
-              return false;
-            },
-          },
-        ],
-      ], true)}
+        true,
+      )}
     />
   );
 };

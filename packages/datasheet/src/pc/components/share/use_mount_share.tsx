@@ -1,24 +1,20 @@
-import { ConfigConstant, IShareInfo, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { INodeTree, IShareSpaceInfo } from './interface';
 import { useMount } from 'ahooks';
 import { useEffect, useState } from 'react';
+import { ConfigConstant, IShareInfo, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { useRequest, useSpaceRequest, useUserRequest } from '../../hooks';
 import { useAppDispatch } from '../../hooks/use_app_dispatch';
+import { deleteStorageByKey, getStorage, StorageName } from '../../utils/storage';
+import { Message } from '../common';
+import { INodeTree, IShareSpaceInfo } from './interface';
 // @ts-ignore
 import { isEnterprise } from 'enterprise';
-import { useRequest, useSpaceRequest, useUserRequest } from '../../hooks';
-import { Message } from '../common';
-import { deleteStorageByKey, getStorage, StorageName } from '../../utils/storage';
 
 export const useMountShare = (shareInfo: Required<IShareInfo> | undefined) => {
   const [nodeTree, setNodeTree] = useState<INodeTree>();
   const [shareClose, setShareClose] = useState(false);
   const [shareSpace, setShareSpace] = useState<IShareSpaceInfo | undefined>();
   const { getSpaceListReq } = useSpaceRequest();
-  const {
-    data: spaceList = [],
-    loading: spaceListLoading,
-    run: getSpaceList,
-  } = useRequest(getSpaceListReq, { manual: true });
+  const { data: spaceList = [], loading: spaceListLoading, run: getSpaceList } = useRequest(getSpaceListReq, { manual: true });
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
 

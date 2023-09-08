@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { ListOutlined } from '@apitable/icons';
-import { useRouter } from 'next/router';
 import { useSideBarVisible } from 'pc/hooks';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title }) => {
-  const { datasheetId } = useSelector(state => state.pageParams);
+  const { datasheetId } = useSelector((state) => state.pageParams);
   const colors = useThemeColors();
-  const currentView = useSelector(state => Selectors.getCurrentView(state))!;
+  const currentView = useSelector((state) => Selectors.getCurrentView(state))!;
   const { setSideBarVisible } = useSideBarVisible();
   const router = useRouter();
   const pathname = router.asPath;
@@ -41,7 +41,12 @@ export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = 
 
   return (
     <div className={styles.shareMobileBar}>
-      <div onClick={() => { setSideBarVisible && setSideBarVisible(true); }} className={styles.side}>
+      <div
+        onClick={() => {
+          setSideBarVisible && setSideBarVisible(true);
+        }}
+        className={styles.side}
+      >
         <ListOutlined size={24} color={colors.firstLevelText} />
       </div>
 
@@ -52,7 +57,7 @@ export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = 
           </div>
         )}
 
-        {matchedTemplateCentre && (!matchedWorkSpace) && (
+        {matchedTemplateCentre && !matchedWorkSpace && (
           <div className={styles.matchedOrganization}>
             <span>{t(Strings.nav_templates)}</span>
           </div>

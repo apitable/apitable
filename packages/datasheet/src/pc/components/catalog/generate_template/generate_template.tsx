@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import { Form, Input } from 'antd';
-import { BaseModal, Message, Modal } from 'pc/components/common';
-import { Router } from 'pc/components/route_manager/router';
-import { useRequest, useTemplateRequest } from 'pc/hooks';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@apitable/core';
+import { BaseModal, Message, Modal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useRequest, useTemplateRequest } from 'pc/hooks';
 import styles from './style.module.less';
 
 export interface IGenerateTemplateProps {
@@ -32,16 +32,13 @@ export interface IGenerateTemplateProps {
   onCancel: () => void;
 }
 
-export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps>> = ({
-  nodeId,
-  onCancel,
-}) => {
+export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps>> = ({ nodeId, onCancel }) => {
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
   nodeId = nodeId || activeNodeId;
   const [name, setName] = useState(treeNodesMap[nodeId!].nodeName);
   const [errorMsg, setErrorMsg] = useState('');
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();
   const { run: createTemplate, data: createTemplateData, loading } = useRequest(createTemplateReq, { manual: true });
   const { run: templateNameValidate } = useRequest(templateNameValidateReq, { manual: true });
@@ -56,13 +53,15 @@ export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps
           <>
             {t(Strings.template_created_successfully)}
             <i
-              onClick={() => Router.push(Navigation.TEMPLATE, {
-                params: {
-                  spaceId,
-                  categoryId: 'tpcprivate',
-                  templateId: createTemplateData.data,
-                },
-              })}
+              onClick={() =>
+                Router.push(Navigation.TEMPLATE, {
+                  params: {
+                    spaceId,
+                    categoryId: 'tpcprivate',
+                    templateId: createTemplateData.data,
+                  },
+                })
+              }
             >
               {t(Strings.click_to_view)}
             </i>
@@ -74,7 +73,7 @@ export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps
       if (createTemplateData.code === 430) {
         const modalConfig = {
           title: t(Strings.save_template_disabled),
-          content:  createTemplateData.message,
+          content: createTemplateData.message,
           onOk: () => {
             customModal.destroy();
           },
@@ -130,16 +129,8 @@ export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps
       <Form onFinish={handleOk}>
         <div className={styles.generateTemplateContent}>
           <div className={styles.tip}>{t(Strings.template_name)}</div>
-          <Input
-            className={errorMsg ? 'error' : ''}
-            value={name}
-            onChange={handleChange}
-            placeholder={t(Strings.enter_template_name)}
-            autoFocus
-          />
-          <div className={styles.errorMsg}>
-            {errorMsg}
-          </div>
+          <Input className={errorMsg ? 'error' : ''} value={name} onChange={handleChange} placeholder={t(Strings.enter_template_name)} autoFocus />
+          <div className={styles.errorMsg}>{errorMsg}</div>
         </div>
       </Form>
     </BaseModal>

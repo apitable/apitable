@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DispatchToStore, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { Remote, wrap } from 'comlink';
 import { Store } from 'redux';
+import { DispatchToStore, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { dispatch, remoteStoreWrap } from './store';
 
 /**
