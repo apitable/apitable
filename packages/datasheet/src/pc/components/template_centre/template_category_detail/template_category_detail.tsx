@@ -17,6 +17,7 @@
  */
 
 import { Col, Row } from 'antd';
+
 import parser from 'html-react-parser';
 import { isEmpty } from 'lodash';
 import Image from 'next/image';
@@ -35,6 +36,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { useGetSignatureAssertFunc } from '@apitable/widget-sdk';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
@@ -83,7 +85,9 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
   const { run: deleteTemplate } = useRequest(deleteTemplateReq, { manual: true });
   const { run: getTemplateList, data: templateData, loading } = useRequest<ITemplate[]>(getTemplateListReq, { manual: true });
   const env = getEnvVariables();
-  const { run: getTemplateCategories, data: templateCategories } = useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
+  const { run: getTemplateCategories, data: templateCategories } =
+    useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
+  const getAssertUrl = useGetSignatureAssertFunc();
 
   const themeName = useSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
@@ -161,112 +165,117 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
 
   return (
     <div className={styles.templateDetailWrapper}>
-      {isEmpty(templateList) ? (
-        <div className={styles.listEmpty}>
-          <Image src={templateEmptyPng} alt={t(Strings.template_no_template)} width={320} height={240} />
-          <div className={styles.text}>{parser(t(Strings.how_create_template))}</div>
-        </div>
-      ) : (
-        <Row className={styles.templateCategory}>
-          <Col span={24}>
-            <Row>
-              <Col className={styles.title}>
-                <div className={styles.categoryName}>{!isOfficial ? t(Strings.all) : currentCategory && currentCategory.categoryName}</div>
-                {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && !isWecomFunc?.() && (
-                  <Typography className={styles.notFoundTip} variant="body2" align="center">
-                    <span
-                      className={styles.text}
-                      onClick={() =>
-                        navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
-                          method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
-                        })
-                      }
-                    >
-                      {t(Strings.template_not_found)}
-                    </span>
-                  </Typography>
-                )}
+      {
+        (isEmpty(templateList)) ?
+          (
+            <div className={styles.listEmpty}>
+              <Image src={templateEmptyPng} alt={t(Strings.template_no_template)} width={320} height={240} />
+              <div className={styles.text}>{parser(t(Strings.how_create_template))}</div>
+            </div>
+          ) :
+          (
+            <Row className={styles.templateCategory}>
+              <Col span={24}>
+                <Row>
+                  <Col className={styles.title}>
+                    <div className={styles.categoryName}>
+                      {!isOfficial ? t(Strings.all) : currentCategory && currentCategory.categoryName}
+                    </div>
+                    {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && !isWecomFunc?.() &&
+                      <Typography className={styles.notFoundTip} variant="body2" align="center">
+                        <span
+                          className={styles.text}
+                          onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+                            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
+                          })}
+                        >
+                          {t(Strings.template_not_found)}
+                        </span>
+                      </Typography>
+                    }
+                  </Col>
+                </Row>
+                <>
+                  {Array.isArray(templateList) ? (
+                    <div className={styles.templateList}>
+                      {templateList.map(template => (
+                        <div className={styles.templateItemWrapper} key={template.templateId}>
+                          <TemplateItem
+                            type="card"
+                            nodeType={template.nodeType}
+                            templateId={template.templateId}
+                            img={imgUrl(getAssertUrl(template.cover || defaultBanner), 160)}
+                            name={template.templateName}
+                            description={template.description}
+                            tags={template.tags}
+                            isOfficial={isOfficial}
+                            creator={{ name: template.nickName, avatar: template.avatar, userId: template.uuid }}
+                            deleteTemplate={delTemplateConfirm}
+                            usingTemplate={setUsingTemplate}
+                            onClick={openTemplateDetail}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      {!isEmpty(templateList.albums) && (
+                        <>
+                          <h3>{t(Strings.album)}</h3>
+                          <div className={styles.templateList}>
+                            {templateList.albums.map(album => {
+                              return (
+                                <div className={styles.albumItemWrapper} key={album.albumId}>
+                                  <TemplateItem
+                                    bannerDesc={{
+                                      title: album.name,
+                                      desc: album.description,
+                                    }}
+                                    templateId={album.albumId}
+                                    height={200}
+                                    img={imgUrl(getAssertUrl(album.cover || defaultBanner), 200)}
+                                    onClick={openTemplateAlbumDetail}
+                                    isOfficial={isOfficial}
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
+                      {!isEmpty(templateList.templates) && (
+                        <>
+                          <h3>{t(Strings.template)}</h3>
+                          <div className={styles.templateList}>
+                            {templateList.templates.map(template => (
+                              <div className={styles.templateItemWrapper} key={template.templateId}>
+                                <TemplateItem
+                                  type="card"
+                                  nodeType={template.nodeType}
+                                  templateId={template.templateId}
+                                  img={imgUrl(getAssertUrl(template.cover || defaultBanner), 160)}
+                                  name={template.templateName}
+                                  description={template.description}
+                                  tags={template.tags}
+                                  isOfficial={isOfficial}
+                                  creator={{ name: template.nickName, avatar: template.avatar, userId: template.uuid }}
+                                  deleteTemplate={delTemplateConfirm}
+                                  usingTemplate={setUsingTemplate}
+                                  onClick={openTemplateDetail}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </>
+                  )
+                  }
+                </>
               </Col>
             </Row>
-            <>
-              {Array.isArray(templateList) ? (
-                <div className={styles.templateList}>
-                  {templateList.map((template) => (
-                    <div className={styles.templateItemWrapper} key={template.templateId}>
-                      <TemplateItem
-                        type="card"
-                        nodeType={template.nodeType}
-                        templateId={template.templateId}
-                        img={imgUrl(template.cover || defaultBanner, 160)}
-                        name={template.templateName}
-                        description={template.description}
-                        tags={template.tags}
-                        isOfficial={isOfficial}
-                        creator={{ name: template.nickName, avatar: template.avatar, userId: template.uuid }}
-                        deleteTemplate={delTemplateConfirm}
-                        usingTemplate={setUsingTemplate}
-                        onClick={openTemplateDetail}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <>
-                  {!isEmpty(templateList.albums) && (
-                    <>
-                      <h3>{t(Strings.album)}</h3>
-                      <div className={styles.templateList}>
-                        {templateList.albums.map((album) => {
-                          return (
-                            <div className={styles.albumItemWrapper} key={album.albumId}>
-                              <TemplateItem
-                                bannerDesc={{
-                                  title: album.name,
-                                  desc: album.description,
-                                }}
-                                templateId={album.albumId}
-                                height={200}
-                                img={imgUrl(album.cover || defaultBanner, 200)}
-                                onClick={openTemplateAlbumDetail}
-                                isOfficial={isOfficial}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </>
-                  )}
-                  {!isEmpty(templateList.templates) && (
-                    <>
-                      <h3>{t(Strings.template)}</h3>
-                      <div className={styles.templateList}>
-                        {templateList.templates.map((template) => (
-                          <div className={styles.templateItemWrapper} key={template.templateId}>
-                            <TemplateItem
-                              type="card"
-                              nodeType={template.nodeType}
-                              templateId={template.templateId}
-                              img={imgUrl(template.cover || defaultBanner, 160)}
-                              name={template.templateName}
-                              description={template.description}
-                              tags={template.tags}
-                              isOfficial={isOfficial}
-                              creator={{ name: template.nickName, avatar: template.avatar, userId: template.uuid }}
-                              deleteTemplate={delTemplateConfirm}
-                              usingTemplate={setUsingTemplate}
-                              onClick={openTemplateDetail}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          </Col>
-        </Row>
-      )}
+          )
+      }
     </div>
   );
 };

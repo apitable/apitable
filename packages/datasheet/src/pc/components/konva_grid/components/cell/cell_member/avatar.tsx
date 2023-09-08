@@ -18,6 +18,7 @@
 
 import dynamic from 'next/dynamic';
 import { FC, memo, useContext } from 'react';
+import { useGetSignatureAssertFunc } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { Icon, IconType, Image, Rect, Text } from 'pc/components/konva_components';
 import { KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
@@ -49,14 +50,31 @@ interface IAvatarProps {
 
 export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) => {
   const ratio = Math.max(window.devicePixelRatio, 2);
-  const { x = 0, y = 0, src, title, isGzip = true, id, bgColor, size = AvatarSize.Size32, type = AvatarType.Member, isDefaultIcon } = props;
+  const {
+    x = 0,
+    y = 0,
+    src: _src,
+    title,
+    isGzip = true,
+    id,
+    bgColor,
+    size = AvatarSize.Size32,
+    type = AvatarType.Member,
+    isDefaultIcon,
+  } = props;
   const { theme } = useContext(KonvaGridContext);
   const { cacheTheme } = useContext(KonvaGridViewContext);
   const colors = theme.color;
+
+  const getSignatureUrl = useGetSignatureAssertFunc();
+
   if (title == null || id == null) return null;
 
-  const avatarSrc =
-    isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${src}?imageView2/1/w/${size * ratio}/q/100!` : src || '';
+  const src = getSignatureUrl(_src || '');
+
+  const avatarSrc = isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ?
+    `${src}?imageView2/1/w/${size * ratio}/q/100!` :
+    (src || '');
   const firstWord = getFirstWordFromString(title.trim());
   const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
 

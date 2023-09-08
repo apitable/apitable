@@ -21,6 +21,7 @@ import GraphemeSplitter from 'grapheme-splitter';
 import { colors, ThemeName } from '@apitable/components';
 import { IHyperlinkSegment, ISegment, SegmentType } from '@apitable/core';
 import { UserGroupOutlined, WebOutlined } from '@apitable/icons';
+import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType, getAvatarRandomColor, getFirstWordFromString } from 'pc/components/common';
 import { autoSizerCanvas } from 'pc/components/konva_components';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
@@ -560,7 +561,7 @@ export class KonvaDrawer {
       x = 0,
       y = 0,
       id,
-      url,
+      url: _url,
       title,
       bgColor,
       isGzip = true,
@@ -572,8 +573,9 @@ export class KonvaDrawer {
 
     if (title == null || id == null) return null;
     const ratio = Math.max(window.devicePixelRatio, 2);
-    const avatarSrc =
-      isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` : url || '';
+    const url = assertSignatureManager.getAssertSignatureUrl(_url);
+    const avatarSrc = isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` :
+      (url || '');
     const avatarName = getFirstWordFromString(title);
     const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
     switch (type) {

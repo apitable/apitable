@@ -100,6 +100,17 @@ function getImageThumbSrcForQiniu(src: string, options: IImageThumbOption) {
     src[0] !== '/' && (src = '/' + src);
   }
 
+  if(src.includes('?')){
+    return [
+      src,
+      '&imageView2',
+      getFileMethod(options),
+      getFileSize(options),
+      getFileFormat(options),
+      getFileQuality(options),
+    ].join('');
+  }
+
   return [
     src,
     '?imageView2',
@@ -151,18 +162,23 @@ export function cellValueToImageSrc(
   options?: IImageSrcOption,
 ): string {
   if (!cellValue) return '';
+
   const { bucket, token, preview: previewToken, mimeType, name } = cellValue;
+
   if (!bucket) return '';
+
   const host = getHostOfAttachment(bucket);
+
   if (!host) return '';
+
   const { formatToJPG, isPreview } = options || {};
   const fileArgument = { name, type: mimeType };
-  const originSrc = urlcat(host, token);
+  const originSrc = integrateCdnHost(token);
   const defaultSrc = getImageThumbSrc(originSrc, options);
 
   if (isPdf(fileArgument)) {
     if (isPreview && options && Object.keys(options).length > 1) {
-      return getImageThumbSrc(urlcat(host, previewToken!), options);
+      return getImageThumbSrc(integrateCdnHost(previewToken!), options);
     }
     return originSrc;
   }

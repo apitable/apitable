@@ -18,21 +18,21 @@
 
 import classNames from 'classnames';
 import FileSaver from 'file-saver';
-import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Loading, useThemeColors } from '@apitable/components';
 import { DatasheetApi, IAttachmentValue, isImage, isPdf, isPrivateDeployment, Strings, t } from '@apitable/core';
 import {
+  AddCircleOutlined,
   CloseOutlined,
-  LinkOutlined,
   DeleteOutlined,
   DownloadOutlined,
   ExpandOutlined,
+  LinkOutlined,
+  NarrowOutlined,
   NewtabOutlined,
   RotateOutlined,
-  NarrowOutlined,
-  AddCircleOutlined,
   SubtractCircleOutlined,
 } from '@apitable/icons';
 import { Message } from 'pc/components/common';
@@ -48,11 +48,16 @@ interface IToolBar {
   transformInfo: ITransFormInfo;
   setTransformInfo: React.Dispatch<React.SetStateAction<ITransFormInfo>>;
   fileInfo: IAttachmentValue;
+
   onClose(): void;
+
   onDelete(): void;
+
   onZoom: (scale: number) => void;
   readonly?: boolean;
+
   onRotate(): void;
+
   previewEnable: boolean;
   isDocType: boolean;
   officePreviewUrl: string | null;
@@ -71,8 +76,10 @@ export const MULTIPLE = 1.5;
 
 export function directDownload(href: string, name: string) {
   const a = document.createElement('a');
+  const url = new URL(href);
+  url.searchParams.set('attname', name);
   a.download = name;
-  a.href = href;
+  a.href = url.href;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -171,12 +178,13 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = (props) => {
           },
           {
             component: (
-              <span
-                style={{
-                  opacity: scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1,
-                }}
-              >
-                <AddCircleOutlined size={16} color={colors.black[50]} />
+              <span style={{
+                opacity: scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1,
+              }}>
+                <AddCircleOutlined
+                  size={16}
+                  color={colors.black[50]}
+                />
               </span>
             ),
             tip: t(Strings.zoom_in),

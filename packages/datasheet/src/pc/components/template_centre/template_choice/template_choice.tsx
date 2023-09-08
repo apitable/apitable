@@ -18,6 +18,7 @@
 
 import { useRequest } from 'ahooks';
 import { Col, Row } from 'antd';
+
 import { take, takeRight } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -36,12 +37,13 @@ import {
   t,
   TEMPLATE_CENTER_ID,
 } from '@apitable/core';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { assertSignatureManager, useGetSignatureAssertFunc } from '@apitable/widget-sdk';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useTemplateRequest } from 'pc/hooks';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
@@ -55,6 +57,10 @@ export interface ITemplateChoiceProps {
 }
 
 export const imgUrl = (token: string, imageHeight: number) => {
+  const url = assertSignatureManager.getAssertSignatureUrl(token);
+  if (!url) {
+    return '';
+  }
   return getImageThumbSrc(token, { h: Math.ceil(imageHeight * 2), quality: 90 });
 };
 
@@ -98,6 +104,9 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
       },
     });
   };
+
+  const getAssertUrl = useGetSignatureAssertFunc();
+
   if (!_templateRecommendData) {
     console.log({ cc: _templateRecommendData });
     return null;
@@ -117,7 +126,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                   <TemplateItem
                     templateId={firstTop.templateId}
                     height={280}
-                    img={imgUrl(firstTop.image, 280)}
+                    img={imgUrl(getAssertUrl(firstTop.image), 280)}
                     onClick={openTemplateDetail}
                     bannerDesc={{
                       title: firstTop.title,
@@ -133,7 +142,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                         templateId={topItem.templateId}
                         key={topItem.templateId}
                         height={280}
-                        img={imgUrl(topItem.image, 280)}
+                        img={imgUrl(getAssertUrl(topItem.image), 280)}
                         onClick={openTemplateDetail}
                         bannerDesc={{
                           title: topItem.title,
@@ -152,7 +161,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                     <TemplateItem
                       height={160}
                       templateId={template.templateId}
-                      img={imgUrl(template.image, 160)}
+                      img={imgUrl(getAssertUrl(template.image), 160)}
                       onClick={openTemplateDetail}
                       bannerDesc={{
                         title: template.title,
@@ -183,7 +192,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                           }}
                           templateId={album.albumId}
                           height={200}
-                          img={imgUrl(album.cover || defaultBanner, 200)}
+                          img={imgUrl(getAssertUrl(album.cover || defaultBanner), 200)}
                           onClick={openTemplateAlbumDetail}
                           isOfficial
                         />
@@ -209,7 +218,7 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
                             templateId={template.templateId}
                             type="card"
                             nodeType={template.nodeType}
-                            img={imgUrl(template.cover || defaultBanner, 160)}
+                            img={imgUrl(getAssertUrl(template.cover || defaultBanner), 160)}
                             name={template.templateName}
                             description={template.description}
                             tags={template.tags}
@@ -228,14 +237,9 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
       </Row>
       {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
         <Typography className={styles.notFoundTip} variant="body2" align="center">
-          <span
-            className={styles.text}
-            onClick={() =>
-              navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
-                method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
-              })
-            }
-          >
+          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
+          })}>
             {t(Strings.template_not_found)}
           </span>
         </Typography>

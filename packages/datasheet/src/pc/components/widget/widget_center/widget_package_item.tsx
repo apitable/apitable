@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
@@ -40,7 +41,7 @@ type IWidgetPackageItemProps = IWidgetPackage & IWidgetPackageItemBase;
 
 const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const {
-    cover,
+    cover: _cover,
     name,
     releaseType,
     description,
@@ -64,7 +65,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const spacePermission = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
-
+  const cover = useGetSignatureAssertByToken(_cover);
   const toInstallWidget = async(widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     setInstalling(true);
@@ -142,7 +143,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
       <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
         <Button
           color="primary"
-          prefixIcon={<AddOutlined size={12} color={'white'} />}
+          prefixIcon={<AddOutlined size={12} color={colors.staticWhite0} />}
           onClick={onClickInstall}
           loading={installing}
           disabled={getDisabledStatus()}

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import accept from 'attr-accept';
 import mime from 'mime-types';
-import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
 import { byte2Mb } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
@@ -217,11 +217,19 @@ export const getCellValueThumbSrc = (file: IAttachmentValue, option: IImageSrcOp
 };
 
 export function getPreviewUrl(fileInfo: IAttachmentValue) {
+  if (fileInfo.token.includes('http')) {
+    return fileInfo.token;
+  }
   const host = getHostOfAttachment(fileInfo.bucket);
   return `${host}${fileInfo.token}`;
 }
 
 export function getDownloadSrc(fileInfo: IAttachmentValue) {
+  if (fileInfo.token.includes('http')) {
+    const url = new URL(fileInfo.token);
+    url.searchParams.set('attname', encodeURIComponent(fileInfo.name));
+    return url.href;
+  }
   const host = getHostOfAttachment(fileInfo.bucket);
   return `${host}${fileInfo.token}?attname=${encodeURIComponent(fileInfo.name)}`;
 }

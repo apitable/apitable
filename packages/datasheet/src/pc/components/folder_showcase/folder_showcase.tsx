@@ -42,8 +42,8 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { MoreOutlined, ShareOutlined, EditOutlined } from '@apitable/icons';
-import { uploadAttachToS3 } from '@apitable/widget-sdk';
+import { EditOutlined, MoreOutlined, ShareOutlined } from '@apitable/icons';
+import { uploadAttachToS3, useGetSignatureAssertFunc } from '@apitable/widget-sdk';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Share } from 'pc/components/catalog/share';
 import { ButtonPlus, ImageCropUpload, Message } from 'pc/components/common';
@@ -66,7 +66,7 @@ import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
 import styles from './style.module.less';
 // @ts-ignore
-import { WeixinShareWrapper, inSocialApp } from 'enterprise';
+import { inSocialApp, WeixinShareWrapper } from 'enterprise';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
@@ -244,6 +244,8 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
     }
   }, [childNodes]);
 
+  const getSignatureUrl = useGetSignatureAssertFunc();
+
   const changeBanner = (bannerId: string) => {
     if (!showcaseData || !folderId) {
       return;
@@ -379,7 +381,8 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
   }
 
   const { permissions, cover, role, nodeId, socialInfo } = showcaseData;
-  const bannerImgUrl = getImageThumbSrc(integrateCdnHost(cover || banners[0]), {
+  const url = getSignatureUrl(integrateCdnHost(cover || banners[0]));
+  const bannerImgUrl = getImageThumbSrc(url, {
     method: CutMethod.CUT,
     quality: 100,
     size: 470 * window.devicePixelRatio || 1,

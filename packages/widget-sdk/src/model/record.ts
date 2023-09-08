@@ -25,18 +25,14 @@ import { showField } from './field';
 
 /**
  * Datasheet row operations and information.
- * 
+ *
  * Get the rows record, you can use {@link useRecord} (querying single record data), {@link useRecords} (batch query of record data)
  */
 export class Record {
   /**
    * @hidden
    */
-  constructor(
-    public datasheetId: string,
-    private wCtx: IWidgetContext,
-    public recordId: string,
-  ) { }
+  constructor(public datasheetId: string, protected wCtx: IWidgetContext, public recordId: string) {}
 
   private getRecordData() {
     const state = this.wCtx.widgetStore.getState() as any as IReduxState;
@@ -56,7 +52,7 @@ export class Record {
    *
    * @param fieldId The field ID whose cell value you'd like to get.
    * @returns
-   * 
+   *
    * #### Example
    * ```js
    * const cellValue = myRecord.getCellValue(mySingleLineTextFieldId);
@@ -84,7 +80,7 @@ export class Record {
     if (!showField(getFieldTypeString(field.type) as any as FieldType)) {
       return null;
     }
-    
+
     // getCellValue determines the column permission. Return null if no permission
     if (this.getFieldRole(fieldId) === ConfigConstant.Role.None) {
       return null;
@@ -98,7 +94,7 @@ export class Record {
    * Gets the cell value of the given field of record, and convert to string type.
    *
    * @returns
-   * 
+   *
    * #### Example
    * ```js
    * const stringValue = myRecord.getCellValueString(myNumberFieldId);
@@ -115,13 +111,13 @@ export class Record {
   }
 
   /**
-   * 
-   * The URL address of the record, which you can access in your browser, 
+   *
+   * The URL address of the record, which you can access in your browser,
    * opens the Wiggle Table interface and locates the record
-   * 
-   * @param viewId 
+   *
+   * @param viewId
    * @returns
-   * 
+   *
    */
   url(viewId?: string) {
     const state = this.wCtx.widgetStore.getState() as any as IReduxState;
@@ -142,7 +138,7 @@ export class Record {
    * The primary cell value in this record, formatted as a string.
    *
    * @returns
-   * 
+   *
    * #### Example
    * ```js
    * console.log(myRecord.title);
@@ -160,7 +156,7 @@ export class Record {
   /**
    * The number of comments on this record.
    * @returns
-   * 
+   *
    */
   get commentCount() {
     const record = this.getRecordData()!;

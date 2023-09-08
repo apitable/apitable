@@ -18,12 +18,14 @@
 
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
+
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useSelector } from 'react-redux';
 import { stopPropagation, ThemeProvider } from '@apitable/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -100,11 +102,12 @@ const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = (
     [dispatch, previewFile],
   );
 
-  const cellValue = useMemo(() => {
+  const cellValueWithoutNull: typeof _cellValue = useMemo(() => {
     if (!_cellValue) return [];
     return handleNullArray(_cellValue.flat(1)) || [];
   }, [_cellValue]);
 
+  const cellValue = useGetSignatureAssertByToken(cellValueWithoutNull);
   const readonly = !editable;
 
   const onDelete = useCallback(() => {
@@ -217,11 +220,13 @@ export interface IExpandPreviewModalRef {
   update: (props: IExpandPreviewModalFuncProps) => IExpandPreviewModalRef;
 }
 
-let preCloseModalFn = () => {};
+let preCloseModalFn = () => {
+};
 
 export const expandPreviewModalClose = () => {
   preCloseModalFn();
-  preCloseModalFn = () => {};
+  preCloseModalFn = () => {
+  };
 };
 
 export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpandPreviewModalRef => {

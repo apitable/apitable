@@ -32,6 +32,7 @@ import {
   isImage,
   Selectors,
 } from '@apitable/core';
+import { useGetSignatureAssertFunc } from '@apitable/widget-sdk';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { useResponsive } from 'pc/hooks';
@@ -75,6 +76,8 @@ export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = (
     };
   }, shallowEqual);
 
+  const getSignatureUrl = useGetSignatureAssertFunc();
+
   const { screenIsAtMost } = useResponsive();
   if (!recordSnapshot) return null;
   const fieldMap = recordSnapshot.meta.fieldMap;
@@ -88,14 +91,19 @@ export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = (
       return item.type === FieldType.Attachment;
     })!;
 
-  let coverValue = compact(Selectors.getCellValue(store.getState(), recordSnapshot, recordId, coverField!.id));
-  if (coverField?.type === FieldType.LookUp && coverValue) {
-    if (Array.isArray(coverValue)) {
-      coverValue = (coverValue as ILookUpValue).flat() as IAttachmentValue[];
-    } else if (coverValue) {
-      coverValue = [coverValue];
+  let _coverValue = compact(Selectors.getCellValue(store.getState(), recordSnapshot, recordId, coverField!.id));
+  if (coverField?.type === FieldType.LookUp && _coverValue) {
+    if (Array.isArray(_coverValue)) {
+      _coverValue = (_coverValue as ILookUpValue).flat() as IAttachmentValue[];
+    } else if (_coverValue) {
+      _coverValue = [_coverValue];
     }
   }
+
+  const coverValue = _coverValue.map((value) => ({
+    ...value as IAttachmentValue,
+    token: getSignatureUrl((value as IAttachmentValue).token),
+  }));
 
   if (coverValue && coverValue.length && screenIsAtMost(ScreenSize.md)) {
     const field = fieldMap[coverFieldId!]!;

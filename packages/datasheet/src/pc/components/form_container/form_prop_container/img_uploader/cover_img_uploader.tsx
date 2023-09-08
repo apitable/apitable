@@ -23,6 +23,7 @@ import { useState } from 'react';
 import { IconButton } from '@apitable/components';
 import { CutMethod, getImageThumbSrc, integrateCdnHost, isGif, Settings, Strings, t } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ICropShape, IPreviewShape } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
@@ -52,7 +53,8 @@ export const CoverImgUploader: React.FC<React.PropsWithChildren<ICoverImgUploade
   const { nodeId, mode, coverUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
   const officialImgs = Settings.workbench_folder_default_cover_list.value.split(',');
-  const coverImgUrl = coverUrl || getImageThumbSrc(integrateCdnHost(officialImgs[0]), officialImgParams);
+  const _coverImgUrl = coverUrl || getImageThumbSrc(integrateCdnHost(officialImgs[0]), officialImgParams);
+  const coverImgUrl = useGetSignatureAssertByToken(_coverImgUrl);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 

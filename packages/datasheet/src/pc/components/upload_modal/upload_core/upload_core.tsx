@@ -22,7 +22,8 @@ import produce from 'immer';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import { IAttachmentValue, moveArrayElement, RowHeightLevel, IAttacheField } from '@apitable/core';
+import { IAttacheField, IAttachmentValue, moveArrayElement, RowHeightLevel } from '@apitable/core';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ItemTypes } from 'pc/components/gallery_view/constant';
 import { IDragItem } from 'pc/components/gallery_view/interface';
 import withScrolling from 'pc/components/react-dnd-scrolling';
@@ -242,24 +243,26 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     setCellValue(_cellValue);
   }, [_cellValue]);
 
+  const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
+
   const uploadCoreSize = useMemo(() => {
     if (propsSize) {
       return propsSize;
     }
-    const count = Number(cellValue?.length) + uploadList.length;
+    const count = Number(fileList?.length) + uploadList.length;
     return count > 0 ? UploadCoreSize.Normal : UploadCoreSize.Big;
-  }, [cellValue, uploadList, propsSize]);
+  }, [fileList, uploadList, propsSize]);
 
   useEffect(() => {
-    if (!cellValue || uploadList.length === 0) {
+    if (!fileList || uploadList.length === 0) {
       return;
     }
-    const cvIds = cellValue.map((item) => item.id);
-    setUploadList((state) => {
-      return state.filter((item) => !cvIds.includes(item.fileId));
+    const cvIds = fileList.map(item => item.id);
+    setUploadList(state => {
+      return state.filter(item => !cvIds.includes(item.fileId));
     });
     // eslint-disable-next-line
-  }, [cellValue]);
+  }, [fileList]);
 
   function deleteUploadItem(fileId: string) {
     setUploadList((state) => {
@@ -268,11 +271,11 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
   }
 
   const onSortEnd = () => {
-    onSave && onSave(cellValue);
+    onSave && onSave(fileList);
   };
 
-  const onMove = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
-    const produceCellValue = produce(cellValue, (draft) => {
+  const onMove = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
+    const produceCellValue = produce(fileList, draft => {
       moveArrayElement(draft, oldIndex, newIndex);
       return draft;
     });
@@ -285,7 +288,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
         <UploadTab
           recordId={recordId}
           fieldId={field.id}
-          cellValue={cellValue}
+          cellValue={fileList}
           uploadList={uploadList}
           setUploadList={setUploadList}
           className={classNames({
@@ -309,7 +312,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
         >
           <ScrollingComponent className={styles.scrollBox}>
             <SortableList
-              cellValue={cellValue}
+              cellValue={fileList}
               onSortEnd={onSortEnd}
               datasheetId={datasheetId}
               recordId={recordId}

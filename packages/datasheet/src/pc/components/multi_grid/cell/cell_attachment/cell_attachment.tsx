@@ -24,6 +24,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ButtonPlus } from 'pc/components/common';
 import { expandPreviewModal } from 'pc/components/preview_file';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
@@ -72,10 +73,13 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
   const { cellValue, isActive, className, toggleEdit, readonly, keyPrefix, recordId, field, onChange } = props;
   const colors = useThemeColors();
   const rowHeight = props.rowHeight ? props.rowHeight : RowHeight.Short;
-  const fileList: IAttachmentValue[] = cellValue as IAttachmentValue[];
   const uploadManager = resourceService.instance?.uploadManager;
   const [isDragEnter, setDragEnter] = useState(false);
-  const [uploadList, setUploadList] = useState<IUploadFileList>(uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : []);
+  const [uploadList, setUploadList] = useState<IUploadFileList>(
+    uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : [],
+  );
+
+  const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
 
   const { datasheetId, permissions } = useSelector(
     (state: IReduxState) => ({

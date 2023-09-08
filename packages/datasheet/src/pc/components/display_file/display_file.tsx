@@ -17,7 +17,6 @@
  */
 
 import classNames from 'classnames';
-import Image from 'next/image';
 import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { CollaCommandName, CutMethod, IAttachmentValue, IField, isGif } from '@apitable/core';
@@ -37,7 +36,9 @@ interface IDisplayFileProps {
   className?: string;
   imageStyle?: React.CSSProperties;
   cutImage?: boolean;
+
   setPreviewIndex?(index: number): void;
+
   datasheetId?: string;
   recordId: string;
   editable: boolean;
@@ -109,29 +110,25 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = (p
     >
       {showOriginImageThumbnail(curFile) ? (
         <div
-          className={classNames(_isGif && styles.gif, styles.imageWrapper)}
+          className={classNames(_isGif && styles.gif, styles.imageWrapper, 'tw-flex tw-items-center tw-overflow-hidden')}
           style={{
-            backgroundImage: `url(${imgSrc})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
             width: !width ? '100%' : width,
             height: !height ? '100%' : height,
             ...imageStyle,
           }}
         >
-          <Image src={imgSrc} layout={'fill'} objectFit={'cover'} alt="" />
+          <img src={imgSrc} alt="" style={{ width: '100%', height: 'fit-content' }} />
         </div>
       ) : (
-        <span
+        <img
+          src={imgSrc}
+          alt="attachment"
           style={{
             maxWidth: '100%',
             width: mobile ? undefined : 80,
           }}
           className={styles.imgWrapper}
-        >
-          <Image src={imgSrc} alt="attachment" layout={'fill'} objectFit={'contain'} />
-        </span>
+        />
       )}
     </div>
   );
