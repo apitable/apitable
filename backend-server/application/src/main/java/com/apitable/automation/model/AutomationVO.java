@@ -19,14 +19,12 @@
 package com.apitable.automation.model;
 
 import com.apitable.shared.support.serializer.IntegerToBooleanSerializer;
-import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.vo.NodeSimpleVO;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -62,11 +60,13 @@ public class AutomationVO {
     private UserSimpleVO updatedBy;
 
     @Schema(description = "updated time(millisecond)", type = "java.lang.Long", example = "1573561644000")
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
-    private LocalDateTime updatedAt;
+    private Long updatedAt;
 
     @Schema(description = "Automation props")
     private AutomationSimpleVO.AutomationPropertyVO props;
+
+    @Schema(description = "Recently Run Count for month")
+    private Long recentlyRunCount;
 
     @Schema(description = "Automation triggers list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)

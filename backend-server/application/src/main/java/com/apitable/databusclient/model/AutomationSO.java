@@ -14,9 +14,10 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
-import com.apitable.databusclient.model.AutomationActionIntroductionPO;
-import com.apitable.databusclient.model.AutomationRobotIntroductionPO;
-import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
+import com.apitable.databusclient.model.AutomationActionPO;
+import com.apitable.databusclient.model.AutomationRobotSO;
+import com.apitable.databusclient.model.AutomationTriggerPO;
+import com.apitable.databusclient.model.NodeSimplePO;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,32 +55,36 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * AutomationRobotIntroductionSO
+ * AutomationSO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
-public class AutomationRobotIntroductionSO {
+public class AutomationSO {
   public static final String SERIALIZED_NAME_ACTIONS = "actions";
   @SerializedName(SERIALIZED_NAME_ACTIONS)
-  private List<AutomationActionIntroductionPO> actions = new ArrayList<>();
+  private List<AutomationActionPO> actions = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_ROBOTS = "robots";
-  @SerializedName(SERIALIZED_NAME_ROBOTS)
-  private List<AutomationRobotIntroductionPO> robots = new ArrayList<>();
+  public static final String SERIALIZED_NAME_RELATED_RESOURCES = "relatedResources";
+  @SerializedName(SERIALIZED_NAME_RELATED_RESOURCES)
+  private List<NodeSimplePO> relatedResources;
+
+  public static final String SERIALIZED_NAME_ROBOT = "robot";
+  @SerializedName(SERIALIZED_NAME_ROBOT)
+  private AutomationRobotSO robot;
 
   public static final String SERIALIZED_NAME_TRIGGERS = "triggers";
   @SerializedName(SERIALIZED_NAME_TRIGGERS)
-  private List<AutomationTriggerIntroductionPO> triggers = new ArrayList<>();
+  private List<AutomationTriggerPO> triggers = new ArrayList<>();
 
-  public AutomationRobotIntroductionSO() {
+  public AutomationSO() {
   }
 
-  public AutomationRobotIntroductionSO actions(List<AutomationActionIntroductionPO> actions) {
+  public AutomationSO actions(List<AutomationActionPO> actions) {
     
     this.actions = actions;
     return this;
   }
 
-  public AutomationRobotIntroductionSO addActionsItem(AutomationActionIntroductionPO actionsItem) {
+  public AutomationSO addActionsItem(AutomationActionPO actionsItem) {
     if (this.actions == null) {
       this.actions = new ArrayList<>();
     }
@@ -91,52 +97,73 @@ public class AutomationRobotIntroductionSO {
    * @return actions
   **/
   @javax.annotation.Nonnull
-  public List<AutomationActionIntroductionPO> getActions() {
+  public List<AutomationActionPO> getActions() {
     return actions;
   }
 
 
-  public void setActions(List<AutomationActionIntroductionPO> actions) {
+  public void setActions(List<AutomationActionPO> actions) {
     this.actions = actions;
   }
 
 
-  public AutomationRobotIntroductionSO robots(List<AutomationRobotIntroductionPO> robots) {
+  public AutomationSO relatedResources(List<NodeSimplePO> relatedResources) {
     
-    this.robots = robots;
+    this.relatedResources = relatedResources;
     return this;
   }
 
-  public AutomationRobotIntroductionSO addRobotsItem(AutomationRobotIntroductionPO robotsItem) {
-    if (this.robots == null) {
-      this.robots = new ArrayList<>();
+  public AutomationSO addRelatedResourcesItem(NodeSimplePO relatedResourcesItem) {
+    if (this.relatedResources == null) {
+      this.relatedResources = new ArrayList<>();
     }
-    this.robots.add(robotsItem);
+    this.relatedResources.add(relatedResourcesItem);
     return this;
   }
 
    /**
-   * Get robots
-   * @return robots
+   * Get relatedResources
+   * @return relatedResources
+  **/
+  @javax.annotation.Nullable
+  public List<NodeSimplePO> getRelatedResources() {
+    return relatedResources;
+  }
+
+
+  public void setRelatedResources(List<NodeSimplePO> relatedResources) {
+    this.relatedResources = relatedResources;
+  }
+
+
+  public AutomationSO robot(AutomationRobotSO robot) {
+    
+    this.robot = robot;
+    return this;
+  }
+
+   /**
+   * Get robot
+   * @return robot
   **/
   @javax.annotation.Nonnull
-  public List<AutomationRobotIntroductionPO> getRobots() {
-    return robots;
+  public AutomationRobotSO getRobot() {
+    return robot;
   }
 
 
-  public void setRobots(List<AutomationRobotIntroductionPO> robots) {
-    this.robots = robots;
+  public void setRobot(AutomationRobotSO robot) {
+    this.robot = robot;
   }
 
 
-  public AutomationRobotIntroductionSO triggers(List<AutomationTriggerIntroductionPO> triggers) {
+  public AutomationSO triggers(List<AutomationTriggerPO> triggers) {
     
     this.triggers = triggers;
     return this;
   }
 
-  public AutomationRobotIntroductionSO addTriggersItem(AutomationTriggerIntroductionPO triggersItem) {
+  public AutomationSO addTriggersItem(AutomationTriggerPO triggersItem) {
     if (this.triggers == null) {
       this.triggers = new ArrayList<>();
     }
@@ -149,12 +176,12 @@ public class AutomationRobotIntroductionSO {
    * @return triggers
   **/
   @javax.annotation.Nonnull
-  public List<AutomationTriggerIntroductionPO> getTriggers() {
+  public List<AutomationTriggerPO> getTriggers() {
     return triggers;
   }
 
 
-  public void setTriggers(List<AutomationTriggerIntroductionPO> triggers) {
+  public void setTriggers(List<AutomationTriggerPO> triggers) {
     this.triggers = triggers;
   }
 
@@ -168,23 +195,36 @@ public class AutomationRobotIntroductionSO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AutomationRobotIntroductionSO automationRobotIntroductionSO = (AutomationRobotIntroductionSO) o;
-    return Objects.equals(this.actions, automationRobotIntroductionSO.actions) &&
-        Objects.equals(this.robots, automationRobotIntroductionSO.robots) &&
-        Objects.equals(this.triggers, automationRobotIntroductionSO.triggers);
+    AutomationSO automationSO = (AutomationSO) o;
+    return Objects.equals(this.actions, automationSO.actions) &&
+        Objects.equals(this.relatedResources, automationSO.relatedResources) &&
+        Objects.equals(this.robot, automationSO.robot) &&
+        Objects.equals(this.triggers, automationSO.triggers);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(actions, robots, triggers);
+    return Objects.hash(actions, relatedResources, robot, triggers);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AutomationRobotIntroductionSO {\n");
+    sb.append("class AutomationSO {\n");
     sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
-    sb.append("    robots: ").append(toIndentedString(robots)).append("\n");
+    sb.append("    relatedResources: ").append(toIndentedString(relatedResources)).append("\n");
+    sb.append("    robot: ").append(toIndentedString(robot)).append("\n");
     sb.append("    triggers: ").append(toIndentedString(triggers)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -209,13 +249,14 @@ public class AutomationRobotIntroductionSO {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("actions");
-    openapiFields.add("robots");
+    openapiFields.add("relatedResources");
+    openapiFields.add("robot");
     openapiFields.add("triggers");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("actions");
-    openapiRequiredFields.add("robots");
+    openapiRequiredFields.add("robot");
     openapiRequiredFields.add("triggers");
   }
 
@@ -223,25 +264,25 @@ public class AutomationRobotIntroductionSO {
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to AutomationRobotIntroductionSO
+  * @throws IOException if the JSON Element is invalid with respect to AutomationSO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!AutomationRobotIntroductionSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AutomationRobotIntroductionSO is not found in the empty JSON string", AutomationRobotIntroductionSO.openapiRequiredFields.toString()));
+        if (!AutomationSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AutomationSO is not found in the empty JSON string", AutomationSO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!AutomationRobotIntroductionSO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationRobotIntroductionSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!AutomationSO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AutomationRobotIntroductionSO.openapiRequiredFields) {
+      for (String requiredField : AutomationSO.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -255,18 +296,24 @@ public class AutomationRobotIntroductionSO {
       JsonArray jsonArrayactions = jsonObj.getAsJsonArray("actions");
       // validate the required field `actions` (array)
       for (int i = 0; i < jsonArrayactions.size(); i++) {
-        AutomationActionIntroductionPO.validateJsonElement(jsonArrayactions.get(i));
+        AutomationActionPO.validateJsonElement(jsonArrayactions.get(i));
       };
-      // ensure the json data is an array
-      if (!jsonObj.get("robots").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `robots` to be an array in the JSON string but got `%s`", jsonObj.get("robots").toString()));
-      }
+      if (jsonObj.get("relatedResources") != null && !jsonObj.get("relatedResources").isJsonNull()) {
+        JsonArray jsonArrayrelatedResources = jsonObj.getAsJsonArray("relatedResources");
+        if (jsonArrayrelatedResources != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("relatedResources").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `relatedResources` to be an array in the JSON string but got `%s`", jsonObj.get("relatedResources").toString()));
+          }
 
-      JsonArray jsonArrayrobots = jsonObj.getAsJsonArray("robots");
-      // validate the required field `robots` (array)
-      for (int i = 0; i < jsonArrayrobots.size(); i++) {
-        AutomationRobotIntroductionPO.validateJsonElement(jsonArrayrobots.get(i));
-      };
+          // validate the optional field `relatedResources` (array)
+          for (int i = 0; i < jsonArrayrelatedResources.size(); i++) {
+            NodeSimplePO.validateJsonElement(jsonArrayrelatedResources.get(i));
+          };
+        }
+      }
+      // validate the required field `robot`
+      AutomationRobotSO.validateJsonElement(jsonObj.get("robot"));
       // ensure the json data is an array
       if (!jsonObj.get("triggers").isJsonArray()) {
         throw new IllegalArgumentException(String.format("Expected the field `triggers` to be an array in the JSON string but got `%s`", jsonObj.get("triggers").toString()));
@@ -275,7 +322,7 @@ public class AutomationRobotIntroductionSO {
       JsonArray jsonArraytriggers = jsonObj.getAsJsonArray("triggers");
       // validate the required field `triggers` (array)
       for (int i = 0; i < jsonArraytriggers.size(); i++) {
-        AutomationTriggerIntroductionPO.validateJsonElement(jsonArraytriggers.get(i));
+        AutomationTriggerPO.validateJsonElement(jsonArraytriggers.get(i));
       };
   }
 
@@ -283,22 +330,22 @@ public class AutomationRobotIntroductionSO {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AutomationRobotIntroductionSO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AutomationRobotIntroductionSO' and its subtypes
+       if (!AutomationSO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'AutomationSO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AutomationRobotIntroductionSO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AutomationRobotIntroductionSO.class));
+       final TypeAdapter<AutomationSO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(AutomationSO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<AutomationRobotIntroductionSO>() {
+       return (TypeAdapter<T>) new TypeAdapter<AutomationSO>() {
            @Override
-           public void write(JsonWriter out, AutomationRobotIntroductionSO value) throws IOException {
+           public void write(JsonWriter out, AutomationSO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public AutomationRobotIntroductionSO read(JsonReader in) throws IOException {
+           public AutomationSO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -309,18 +356,18 @@ public class AutomationRobotIntroductionSO {
   }
 
  /**
-  * Create an instance of AutomationRobotIntroductionSO given an JSON string
+  * Create an instance of AutomationSO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of AutomationRobotIntroductionSO
-  * @throws IOException if the JSON string is invalid with respect to AutomationRobotIntroductionSO
+  * @return An instance of AutomationSO
+  * @throws IOException if the JSON string is invalid with respect to AutomationSO
   */
-  public static AutomationRobotIntroductionSO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AutomationRobotIntroductionSO.class);
+  public static AutomationSO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, AutomationSO.class);
   }
 
  /**
-  * Convert an instance of AutomationRobotIntroductionSO to an JSON string
+  * Convert an instance of AutomationSO to an JSON string
   *
   * @return JSON string
   */

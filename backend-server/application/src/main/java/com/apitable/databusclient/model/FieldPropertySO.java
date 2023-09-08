@@ -61,7 +61,7 @@ import com.apitable.databusclient.JSON;
 /**
  * FieldPropertySO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
 public class FieldPropertySO {
   public static final String SERIALIZED_NAME_AUTO_FILL = "autoFill";
   @SerializedName(SERIALIZED_NAME_AUTO_FILL)

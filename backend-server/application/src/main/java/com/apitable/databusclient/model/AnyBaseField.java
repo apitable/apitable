@@ -50,7 +50,7 @@ import com.google.gson.JsonParseException;
 
 import com.apitable.databusclient.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
 public class AnyBaseField extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(AnyBaseField.class.getName());
 

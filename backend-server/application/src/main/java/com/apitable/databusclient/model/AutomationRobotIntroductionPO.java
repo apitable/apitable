@@ -49,10 +49,10 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * AutomationRobotPO
+ * AutomationRobotIntroductionPO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
-public class AutomationRobotPO {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
+public class AutomationRobotIntroductionPO {
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
   private String description;
@@ -65,10 +65,6 @@ public class AutomationRobotPO {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name;
 
-  public static final String SERIALIZED_NAME_PROPS = "props";
-  @SerializedName(SERIALIZED_NAME_PROPS)
-  private String props;
-
   public static final String SERIALIZED_NAME_RESOURCE_ID = "resourceId";
   @SerializedName(SERIALIZED_NAME_RESOURCE_ID)
   private String resourceId;
@@ -77,18 +73,10 @@ public class AutomationRobotPO {
   @SerializedName(SERIALIZED_NAME_ROBOT_ID)
   private String robotId;
 
-  public static final String SERIALIZED_NAME_UPDATED_AT = "updatedAt";
-  @SerializedName(SERIALIZED_NAME_UPDATED_AT)
-  private String updatedAt;
-
-  public static final String SERIALIZED_NAME_UPDATED_BY = "updatedBy";
-  @SerializedName(SERIALIZED_NAME_UPDATED_BY)
-  private Long updatedBy;
-
-  public AutomationRobotPO() {
+  public AutomationRobotIntroductionPO() {
   }
 
-  public AutomationRobotPO description(String description) {
+  public AutomationRobotIntroductionPO description(String description) {
     
     this.description = description;
     return this;
@@ -109,7 +97,7 @@ public class AutomationRobotPO {
   }
 
 
-  public AutomationRobotPO isActive(Integer isActive) {
+  public AutomationRobotIntroductionPO isActive(Integer isActive) {
     
     this.isActive = isActive;
     return this;
@@ -131,7 +119,7 @@ public class AutomationRobotPO {
   }
 
 
-  public AutomationRobotPO name(String name) {
+  public AutomationRobotIntroductionPO name(String name) {
     
     this.name = name;
     return this;
@@ -152,28 +140,7 @@ public class AutomationRobotPO {
   }
 
 
-  public AutomationRobotPO props(String props) {
-    
-    this.props = props;
-    return this;
-  }
-
-   /**
-   * Get props
-   * @return props
-  **/
-  @javax.annotation.Nullable
-  public String getProps() {
-    return props;
-  }
-
-
-  public void setProps(String props) {
-    this.props = props;
-  }
-
-
-  public AutomationRobotPO resourceId(String resourceId) {
+  public AutomationRobotIntroductionPO resourceId(String resourceId) {
     
     this.resourceId = resourceId;
     return this;
@@ -194,7 +161,7 @@ public class AutomationRobotPO {
   }
 
 
-  public AutomationRobotPO robotId(String robotId) {
+  public AutomationRobotIntroductionPO robotId(String robotId) {
     
     this.robotId = robotId;
     return this;
@@ -215,49 +182,6 @@ public class AutomationRobotPO {
   }
 
 
-  public AutomationRobotPO updatedAt(String updatedAt) {
-    
-    this.updatedAt = updatedAt;
-    return this;
-  }
-
-   /**
-   * Get updatedAt
-   * @return updatedAt
-  **/
-  @javax.annotation.Nonnull
-  public String getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  public void setUpdatedAt(String updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-
-  public AutomationRobotPO updatedBy(Long updatedBy) {
-    
-    this.updatedBy = updatedBy;
-    return this;
-  }
-
-   /**
-   * Get updatedBy
-   * minimum: 0
-   * @return updatedBy
-  **/
-  @javax.annotation.Nonnull
-  public Long getUpdatedBy() {
-    return updatedBy;
-  }
-
-
-  public void setUpdatedBy(Long updatedBy) {
-    this.updatedBy = updatedBy;
-  }
-
-
 
   @Override
   public boolean equals(Object o) {
@@ -267,15 +191,12 @@ public class AutomationRobotPO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AutomationRobotPO automationRobotPO = (AutomationRobotPO) o;
-    return Objects.equals(this.description, automationRobotPO.description) &&
-        Objects.equals(this.isActive, automationRobotPO.isActive) &&
-        Objects.equals(this.name, automationRobotPO.name) &&
-        Objects.equals(this.props, automationRobotPO.props) &&
-        Objects.equals(this.resourceId, automationRobotPO.resourceId) &&
-        Objects.equals(this.robotId, automationRobotPO.robotId) &&
-        Objects.equals(this.updatedAt, automationRobotPO.updatedAt) &&
-        Objects.equals(this.updatedBy, automationRobotPO.updatedBy);
+    AutomationRobotIntroductionPO automationRobotIntroductionPO = (AutomationRobotIntroductionPO) o;
+    return Objects.equals(this.description, automationRobotIntroductionPO.description) &&
+        Objects.equals(this.isActive, automationRobotIntroductionPO.isActive) &&
+        Objects.equals(this.name, automationRobotIntroductionPO.name) &&
+        Objects.equals(this.resourceId, automationRobotIntroductionPO.resourceId) &&
+        Objects.equals(this.robotId, automationRobotIntroductionPO.robotId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -284,7 +205,7 @@ public class AutomationRobotPO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, isActive, name, props, resourceId, robotId, updatedAt, updatedBy);
+    return Objects.hash(description, isActive, name, resourceId, robotId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -297,15 +218,12 @@ public class AutomationRobotPO {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AutomationRobotPO {\n");
+    sb.append("class AutomationRobotIntroductionPO {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    props: ").append(toIndentedString(props)).append("\n");
     sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
     sb.append("    robotId: ").append(toIndentedString(robotId)).append("\n");
-    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    sb.append("    updatedBy: ").append(toIndentedString(updatedBy)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -331,11 +249,8 @@ public class AutomationRobotPO {
     openapiFields.add("description");
     openapiFields.add("isActive");
     openapiFields.add("name");
-    openapiFields.add("props");
     openapiFields.add("resourceId");
     openapiFields.add("robotId");
-    openapiFields.add("updatedAt");
-    openapiFields.add("updatedBy");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -343,33 +258,31 @@ public class AutomationRobotPO {
     openapiRequiredFields.add("name");
     openapiRequiredFields.add("resourceId");
     openapiRequiredFields.add("robotId");
-    openapiRequiredFields.add("updatedAt");
-    openapiRequiredFields.add("updatedBy");
   }
 
  /**
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to AutomationRobotPO
+  * @throws IOException if the JSON Element is invalid with respect to AutomationRobotIntroductionPO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!AutomationRobotPO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AutomationRobotPO is not found in the empty JSON string", AutomationRobotPO.openapiRequiredFields.toString()));
+        if (!AutomationRobotIntroductionPO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AutomationRobotIntroductionPO is not found in the empty JSON string", AutomationRobotIntroductionPO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!AutomationRobotPO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationRobotPO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!AutomationRobotIntroductionPO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationRobotIntroductionPO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AutomationRobotPO.openapiRequiredFields) {
+      for (String requiredField : AutomationRobotIntroductionPO.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -381,17 +294,11 @@ public class AutomationRobotPO {
       if (!jsonObj.get("name").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
-      if ((jsonObj.get("props") != null && !jsonObj.get("props").isJsonNull()) && !jsonObj.get("props").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `props` to be a primitive type in the JSON string but got `%s`", jsonObj.get("props").toString()));
-      }
       if (!jsonObj.get("resourceId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `resourceId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resourceId").toString()));
       }
       if (!jsonObj.get("robotId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `robotId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("robotId").toString()));
-      }
-      if (!jsonObj.get("updatedAt").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `updatedAt` to be a primitive type in the JSON string but got `%s`", jsonObj.get("updatedAt").toString()));
       }
   }
 
@@ -399,22 +306,22 @@ public class AutomationRobotPO {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AutomationRobotPO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AutomationRobotPO' and its subtypes
+       if (!AutomationRobotIntroductionPO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'AutomationRobotIntroductionPO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AutomationRobotPO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AutomationRobotPO.class));
+       final TypeAdapter<AutomationRobotIntroductionPO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(AutomationRobotIntroductionPO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<AutomationRobotPO>() {
+       return (TypeAdapter<T>) new TypeAdapter<AutomationRobotIntroductionPO>() {
            @Override
-           public void write(JsonWriter out, AutomationRobotPO value) throws IOException {
+           public void write(JsonWriter out, AutomationRobotIntroductionPO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public AutomationRobotPO read(JsonReader in) throws IOException {
+           public AutomationRobotIntroductionPO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -425,18 +332,18 @@ public class AutomationRobotPO {
   }
 
  /**
-  * Create an instance of AutomationRobotPO given an JSON string
+  * Create an instance of AutomationRobotIntroductionPO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of AutomationRobotPO
-  * @throws IOException if the JSON string is invalid with respect to AutomationRobotPO
+  * @return An instance of AutomationRobotIntroductionPO
+  * @throws IOException if the JSON string is invalid with respect to AutomationRobotIntroductionPO
   */
-  public static AutomationRobotPO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AutomationRobotPO.class);
+  public static AutomationRobotIntroductionPO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, AutomationRobotIntroductionPO.class);
   }
 
  /**
-  * Convert an instance of AutomationRobotPO to an JSON string
+  * Convert an instance of AutomationRobotIntroductionPO to an JSON string
   *
   * @return JSON string
   */

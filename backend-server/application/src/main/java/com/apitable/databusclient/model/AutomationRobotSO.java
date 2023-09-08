@@ -14,19 +14,13 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
-import com.apitable.databusclient.model.AutomationActionPO;
-import com.apitable.databusclient.model.AutomationRobotPO;
-import com.apitable.databusclient.model.AutomationTriggerPO;
-import com.apitable.databusclient.model.NodeSimplePO;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -57,132 +51,235 @@ import com.apitable.databusclient.JSON;
 /**
  * AutomationRobotSO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-06T19:03:51.398869+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
 public class AutomationRobotSO {
-  public static final String SERIALIZED_NAME_ACTIONS = "actions";
-  @SerializedName(SERIALIZED_NAME_ACTIONS)
-  private List<AutomationActionPO> actions = new ArrayList<>();
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  private String description;
 
-  public static final String SERIALIZED_NAME_RELATED_RESOURCES = "relatedResources";
-  @SerializedName(SERIALIZED_NAME_RELATED_RESOURCES)
-  private List<NodeSimplePO> relatedResources;
+  public static final String SERIALIZED_NAME_IS_ACTIVE = "isActive";
+  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
+  private Integer isActive;
 
-  public static final String SERIALIZED_NAME_ROBOT = "robot";
-  @SerializedName(SERIALIZED_NAME_ROBOT)
-  private AutomationRobotPO robot;
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  private String name;
 
-  public static final String SERIALIZED_NAME_TRIGGERS = "triggers";
-  @SerializedName(SERIALIZED_NAME_TRIGGERS)
-  private List<AutomationTriggerPO> triggers = new ArrayList<>();
+  public static final String SERIALIZED_NAME_PROPS = "props";
+  @SerializedName(SERIALIZED_NAME_PROPS)
+  private String props;
+
+  public static final String SERIALIZED_NAME_RECENTLY_RUN_COUNT = "recentlyRunCount";
+  @SerializedName(SERIALIZED_NAME_RECENTLY_RUN_COUNT)
+  private Long recentlyRunCount;
+
+  public static final String SERIALIZED_NAME_RESOURCE_ID = "resourceId";
+  @SerializedName(SERIALIZED_NAME_RESOURCE_ID)
+  private String resourceId;
+
+  public static final String SERIALIZED_NAME_ROBOT_ID = "robotId";
+  @SerializedName(SERIALIZED_NAME_ROBOT_ID)
+  private String robotId;
+
+  public static final String SERIALIZED_NAME_UPDATED_AT = "updatedAt";
+  @SerializedName(SERIALIZED_NAME_UPDATED_AT)
+  private Long updatedAt;
+
+  public static final String SERIALIZED_NAME_UPDATED_BY = "updatedBy";
+  @SerializedName(SERIALIZED_NAME_UPDATED_BY)
+  private Long updatedBy;
 
   public AutomationRobotSO() {
   }
 
-  public AutomationRobotSO actions(List<AutomationActionPO> actions) {
+  public AutomationRobotSO description(String description) {
     
-    this.actions = actions;
-    return this;
-  }
-
-  public AutomationRobotSO addActionsItem(AutomationActionPO actionsItem) {
-    if (this.actions == null) {
-      this.actions = new ArrayList<>();
-    }
-    this.actions.add(actionsItem);
+    this.description = description;
     return this;
   }
 
    /**
-   * Get actions
-   * @return actions
-  **/
-  @javax.annotation.Nonnull
-  public List<AutomationActionPO> getActions() {
-    return actions;
-  }
-
-
-  public void setActions(List<AutomationActionPO> actions) {
-    this.actions = actions;
-  }
-
-
-  public AutomationRobotSO relatedResources(List<NodeSimplePO> relatedResources) {
-    
-    this.relatedResources = relatedResources;
-    return this;
-  }
-
-  public AutomationRobotSO addRelatedResourcesItem(NodeSimplePO relatedResourcesItem) {
-    if (this.relatedResources == null) {
-      this.relatedResources = new ArrayList<>();
-    }
-    this.relatedResources.add(relatedResourcesItem);
-    return this;
-  }
-
-   /**
-   * Get relatedResources
-   * @return relatedResources
+   * Get description
+   * @return description
   **/
   @javax.annotation.Nullable
-  public List<NodeSimplePO> getRelatedResources() {
-    return relatedResources;
+  public String getDescription() {
+    return description;
   }
 
 
-  public void setRelatedResources(List<NodeSimplePO> relatedResources) {
-    this.relatedResources = relatedResources;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 
-  public AutomationRobotSO robot(AutomationRobotPO robot) {
+  public AutomationRobotSO isActive(Integer isActive) {
     
-    this.robot = robot;
+    this.isActive = isActive;
     return this;
   }
 
    /**
-   * Get robot
-   * @return robot
+   * Get isActive
+   * minimum: 0
+   * @return isActive
   **/
   @javax.annotation.Nonnull
-  public AutomationRobotPO getRobot() {
-    return robot;
+  public Integer getIsActive() {
+    return isActive;
   }
 
 
-  public void setRobot(AutomationRobotPO robot) {
-    this.robot = robot;
+  public void setIsActive(Integer isActive) {
+    this.isActive = isActive;
   }
 
 
-  public AutomationRobotSO triggers(List<AutomationTriggerPO> triggers) {
+  public AutomationRobotSO name(String name) {
     
-    this.triggers = triggers;
-    return this;
-  }
-
-  public AutomationRobotSO addTriggersItem(AutomationTriggerPO triggersItem) {
-    if (this.triggers == null) {
-      this.triggers = new ArrayList<>();
-    }
-    this.triggers.add(triggersItem);
+    this.name = name;
     return this;
   }
 
    /**
-   * Get triggers
-   * @return triggers
+   * Get name
+   * @return name
   **/
   @javax.annotation.Nonnull
-  public List<AutomationTriggerPO> getTriggers() {
-    return triggers;
+  public String getName() {
+    return name;
   }
 
 
-  public void setTriggers(List<AutomationTriggerPO> triggers) {
-    this.triggers = triggers;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
+  public AutomationRobotSO props(String props) {
+    
+    this.props = props;
+    return this;
+  }
+
+   /**
+   * Get props
+   * @return props
+  **/
+  @javax.annotation.Nullable
+  public String getProps() {
+    return props;
+  }
+
+
+  public void setProps(String props) {
+    this.props = props;
+  }
+
+
+  public AutomationRobotSO recentlyRunCount(Long recentlyRunCount) {
+    
+    this.recentlyRunCount = recentlyRunCount;
+    return this;
+  }
+
+   /**
+   * Get recentlyRunCount
+   * @return recentlyRunCount
+  **/
+  @javax.annotation.Nonnull
+  public Long getRecentlyRunCount() {
+    return recentlyRunCount;
+  }
+
+
+  public void setRecentlyRunCount(Long recentlyRunCount) {
+    this.recentlyRunCount = recentlyRunCount;
+  }
+
+
+  public AutomationRobotSO resourceId(String resourceId) {
+    
+    this.resourceId = resourceId;
+    return this;
+  }
+
+   /**
+   * Get resourceId
+   * @return resourceId
+  **/
+  @javax.annotation.Nonnull
+  public String getResourceId() {
+    return resourceId;
+  }
+
+
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
+  }
+
+
+  public AutomationRobotSO robotId(String robotId) {
+    
+    this.robotId = robotId;
+    return this;
+  }
+
+   /**
+   * Get robotId
+   * @return robotId
+  **/
+  @javax.annotation.Nonnull
+  public String getRobotId() {
+    return robotId;
+  }
+
+
+  public void setRobotId(String robotId) {
+    this.robotId = robotId;
+  }
+
+
+  public AutomationRobotSO updatedAt(Long updatedAt) {
+    
+    this.updatedAt = updatedAt;
+    return this;
+  }
+
+   /**
+   * Get updatedAt
+   * @return updatedAt
+  **/
+  @javax.annotation.Nullable
+  public Long getUpdatedAt() {
+    return updatedAt;
+  }
+
+
+  public void setUpdatedAt(Long updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+
+  public AutomationRobotSO updatedBy(Long updatedBy) {
+    
+    this.updatedBy = updatedBy;
+    return this;
+  }
+
+   /**
+   * Get updatedBy
+   * minimum: 0
+   * @return updatedBy
+  **/
+  @javax.annotation.Nullable
+  public Long getUpdatedBy() {
+    return updatedBy;
+  }
+
+
+  public void setUpdatedBy(Long updatedBy) {
+    this.updatedBy = updatedBy;
   }
 
 
@@ -196,10 +293,15 @@ public class AutomationRobotSO {
       return false;
     }
     AutomationRobotSO automationRobotSO = (AutomationRobotSO) o;
-    return Objects.equals(this.actions, automationRobotSO.actions) &&
-        Objects.equals(this.relatedResources, automationRobotSO.relatedResources) &&
-        Objects.equals(this.robot, automationRobotSO.robot) &&
-        Objects.equals(this.triggers, automationRobotSO.triggers);
+    return Objects.equals(this.description, automationRobotSO.description) &&
+        Objects.equals(this.isActive, automationRobotSO.isActive) &&
+        Objects.equals(this.name, automationRobotSO.name) &&
+        Objects.equals(this.props, automationRobotSO.props) &&
+        Objects.equals(this.recentlyRunCount, automationRobotSO.recentlyRunCount) &&
+        Objects.equals(this.resourceId, automationRobotSO.resourceId) &&
+        Objects.equals(this.robotId, automationRobotSO.robotId) &&
+        Objects.equals(this.updatedAt, automationRobotSO.updatedAt) &&
+        Objects.equals(this.updatedBy, automationRobotSO.updatedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -208,7 +310,7 @@ public class AutomationRobotSO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(actions, relatedResources, robot, triggers);
+    return Objects.hash(description, isActive, name, props, recentlyRunCount, resourceId, robotId, updatedAt, updatedBy);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -222,10 +324,15 @@ public class AutomationRobotSO {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AutomationRobotSO {\n");
-    sb.append("    actions: ").append(toIndentedString(actions)).append("\n");
-    sb.append("    relatedResources: ").append(toIndentedString(relatedResources)).append("\n");
-    sb.append("    robot: ").append(toIndentedString(robot)).append("\n");
-    sb.append("    triggers: ").append(toIndentedString(triggers)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    props: ").append(toIndentedString(props)).append("\n");
+    sb.append("    recentlyRunCount: ").append(toIndentedString(recentlyRunCount)).append("\n");
+    sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
+    sb.append("    robotId: ").append(toIndentedString(robotId)).append("\n");
+    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
+    sb.append("    updatedBy: ").append(toIndentedString(updatedBy)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -248,16 +355,23 @@ public class AutomationRobotSO {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("actions");
-    openapiFields.add("relatedResources");
-    openapiFields.add("robot");
-    openapiFields.add("triggers");
+    openapiFields.add("description");
+    openapiFields.add("isActive");
+    openapiFields.add("name");
+    openapiFields.add("props");
+    openapiFields.add("recentlyRunCount");
+    openapiFields.add("resourceId");
+    openapiFields.add("robotId");
+    openapiFields.add("updatedAt");
+    openapiFields.add("updatedBy");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("actions");
-    openapiRequiredFields.add("robot");
-    openapiRequiredFields.add("triggers");
+    openapiRequiredFields.add("isActive");
+    openapiRequiredFields.add("name");
+    openapiRequiredFields.add("recentlyRunCount");
+    openapiRequiredFields.add("resourceId");
+    openapiRequiredFields.add("robotId");
   }
 
  /**
@@ -288,42 +402,21 @@ public class AutomationRobotSO {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // ensure the json data is an array
-      if (!jsonObj.get("actions").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `actions` to be an array in the JSON string but got `%s`", jsonObj.get("actions").toString()));
+      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
-
-      JsonArray jsonArrayactions = jsonObj.getAsJsonArray("actions");
-      // validate the required field `actions` (array)
-      for (int i = 0; i < jsonArrayactions.size(); i++) {
-        AutomationActionPO.validateJsonElement(jsonArrayactions.get(i));
-      };
-      if (jsonObj.get("relatedResources") != null && !jsonObj.get("relatedResources").isJsonNull()) {
-        JsonArray jsonArrayrelatedResources = jsonObj.getAsJsonArray("relatedResources");
-        if (jsonArrayrelatedResources != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("relatedResources").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `relatedResources` to be an array in the JSON string but got `%s`", jsonObj.get("relatedResources").toString()));
-          }
-
-          // validate the optional field `relatedResources` (array)
-          for (int i = 0; i < jsonArrayrelatedResources.size(); i++) {
-            NodeSimplePO.validateJsonElement(jsonArrayrelatedResources.get(i));
-          };
-        }
+      if (!jsonObj.get("name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
-      // validate the required field `robot`
-      AutomationRobotPO.validateJsonElement(jsonObj.get("robot"));
-      // ensure the json data is an array
-      if (!jsonObj.get("triggers").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `triggers` to be an array in the JSON string but got `%s`", jsonObj.get("triggers").toString()));
+      if ((jsonObj.get("props") != null && !jsonObj.get("props").isJsonNull()) && !jsonObj.get("props").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `props` to be a primitive type in the JSON string but got `%s`", jsonObj.get("props").toString()));
       }
-
-      JsonArray jsonArraytriggers = jsonObj.getAsJsonArray("triggers");
-      // validate the required field `triggers` (array)
-      for (int i = 0; i < jsonArraytriggers.size(); i++) {
-        AutomationTriggerPO.validateJsonElement(jsonArraytriggers.get(i));
-      };
+      if (!jsonObj.get("resourceId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `resourceId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resourceId").toString()));
+      }
+      if (!jsonObj.get("robotId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `robotId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("robotId").toString()));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

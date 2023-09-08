@@ -28,7 +28,7 @@ import java.io.IOException;
 
 
 import com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO;
-import com.apitable.databusclient.model.ApiResponseAutomationRobotSO;
+import com.apitable.databusclient.model.ApiResponseAutomationSO;
 import com.apitable.databusclient.model.ApiResponseEmptySO;
 import com.apitable.databusclient.model.AutomationHistoryStatusRO;
 import com.apitable.databusclient.model.AutomationRobotUpdateRO;
@@ -640,7 +640,7 @@ public class AutomationDaoApiApi {
      * Get automation robot detail.
      * Get automation robot detail.
      * @param robotId Automation robot id (required)
-     * @return ApiResponseAutomationRobotSO
+     * @return ApiResponseAutomationSO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -648,8 +648,8 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponseAutomationRobotSO daoGetRobotByRobotId(String robotId) throws ApiException {
-        ApiResponse<ApiResponseAutomationRobotSO> localVarResp = daoGetRobotByRobotIdWithHttpInfo(robotId);
+    public ApiResponseAutomationSO daoGetRobotByRobotId(String robotId) throws ApiException {
+        ApiResponse<ApiResponseAutomationSO> localVarResp = daoGetRobotByRobotIdWithHttpInfo(robotId);
         return localVarResp.getData();
     }
 
@@ -657,7 +657,7 @@ public class AutomationDaoApiApi {
      * Get automation robot detail.
      * Get automation robot detail.
      * @param robotId Automation robot id (required)
-     * @return ApiResponse&lt;ApiResponseAutomationRobotSO&gt;
+     * @return ApiResponse&lt;ApiResponseAutomationSO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -665,9 +665,9 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ApiResponseAutomationRobotSO> daoGetRobotByRobotIdWithHttpInfo(String robotId) throws ApiException {
+    public ApiResponse<ApiResponseAutomationSO> daoGetRobotByRobotIdWithHttpInfo(String robotId) throws ApiException {
         okhttp3.Call localVarCall = daoGetRobotByRobotIdValidateBeforeCall(robotId, null);
-        Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotSO>(){}.getType();
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationSO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
@@ -684,10 +684,10 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> get automation detail </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call daoGetRobotByRobotIdAsync(String robotId, final ApiCallback<ApiResponseAutomationRobotSO> _callback) throws ApiException {
+    public okhttp3.Call daoGetRobotByRobotIdAsync(String robotId, final ApiCallback<ApiResponseAutomationSO> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = daoGetRobotByRobotIdValidateBeforeCall(robotId, _callback);
-        Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotSO>(){}.getType();
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationSO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

@@ -19,14 +19,11 @@
 package com.apitable.automation.model;
 
 import com.apitable.shared.support.serializer.IntegerToBooleanSerializer;
-import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.apitable.user.vo.UserSimpleVO;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -57,16 +54,6 @@ public class AutomationSimpleVO {
     @Schema(description = "Weather the robot is on use", type = "java.lang.Boolean", example = "true")
     @JsonSerialize(using = IntegerToBooleanSerializer.class)
     private Integer isActive;
-
-    @Schema(description = "updated by", type = "java.lang.Long", example = "1573561644000")
-    private UserSimpleVO updatedBy;
-
-    @Schema(description = "updated time(millisecond)", type = "java.lang.Long", example = "1573561644000")
-    @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
-    private LocalDateTime updatedAt;
-
-    @Schema(description = "Automation props")
-    private AutomationPropertyVO props;
 
     @Schema(description = "Automation triggers list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
