@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUnmount } from 'ahooks';
 import _pick from 'lodash/pick';
 import { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import * as React from 'react';
@@ -24,6 +25,7 @@ import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
 import validateFormData, { toErrorList } from '../validate';
 import { default as DefaultErrorList } from './common/ErrorList';
+import { useFormEdit } from '../../../form_edit';
 
 const defaultProps = {
   uiSchema: {},
@@ -85,8 +87,16 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     return data;
   };
 
+  const { setIsModified , setHasError} = useFormEdit();
+
+  useUnmount(()=> {
+    setIsModified(false);
+    setHasError(false);
+  });
+
   const onChange = (formData: any, newErrorSchema: any) => {
-    // console.log(formData, newErrorSchema, 'core');
+    setIsModified?.(true);
+
     if (isObject(formData) || Array.isArray(formData)) {
       const newState = getStateFromProps(props, formData, state);
       formData = newState.formData;
@@ -110,6 +120,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     if (mustValidate) {
       const schemaValidation = validate(newFormData);
       let errors = schemaValidation.errors;
+      setHasError(errors.length > 0);
       let errorSchema = schemaValidation.errorSchema;
       const schemaValidationErrors = errors;
       const schemaValidationErrorSchema = errorSchema;
@@ -154,7 +165,6 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     }
 
     let newFormData = state.formData;
-    console.log('submit', newFormData);
     if (props.omitExtraData === true) {
       const retrievedSchema = retrieveSchema(state.schema, state.schema, newFormData);
       const pathSchema = toPathSchema(retrievedSchema, '', state.schema, newFormData);
@@ -213,6 +223,8 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     if (props.onSubmit) {
       console.warn(newFormData);
       props.onSubmit({ ...state, formData: newFormData, status: 'submitted' }, event);
+
+      setIsModified?.(false);
     }
   };
 

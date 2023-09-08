@@ -16,117 +16,131 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useAtom } from 'jotai/index';
+import { useMemo } from 'react';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, Skeleton, useTheme } from '@apitable/components';
-import { Api, ConfigConstant, Selectors } from '@apitable/core';
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { stopPropagation } from 'pc/utils';
-import { getResourceRobots } from '../api';
-import { makeRobotCardInfo } from '../helper';
-import { useActionTypes, useAddNewRobot, useRobot, useRobotContext, useTriggerTypes } from '../hooks';
-import { RobotDetailForm } from '../robot_detail';
-import { RobotRunHistory } from '../robot_detail/robot_run_history';
+import { Box, Skeleton } from '@apitable/components';
+import { Api, ConfigConstant, Selectors, Strings, t } from '@apitable/core';
+import { automationStateAtom } from '../../automation/controller';
+import { getResourceAutomations } from '../api';
+import {
+  useActionTypes,
+  useAddNewRobot,
+  useTriggerTypes
+} from '../hooks';
 import { RobotListItemCard } from '../robot_list_item';
-import { AddRobotButton } from '../robot_panel/robot_list_head';
+import { useRobotController } from './controller';
+import { NewItem } from './new_item';
 import { RobotEmptyList } from './robot_empty_list';
+
+export const CONST_MAX_ROBOT_COUNT = 9;
+
+export const StyledBox = styled(Box)`
+  &:hover {
+    background-color: var(--bgControlsHover);
+    
+    border-color: var(--borderBrandActive);
+  }
+`;
+
+export const useRobotListState = () => {
+  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const { data: automationList, error, mutate: mutateRefresh }
+      = useSWR(`getResourceAutomations-${datasheetId}`, () => getResourceAutomations(datasheetId!));
+
+  const { data: formList } = useSWR(`${Api.getRelateNodeByDstId}_${datasheetId}`, () =>
+    Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM));
+
+  const getById = (robotId: string) => {
+    return automationList?.find(item => item.robotId === robotId);
+  };
+  return useMemo(() => (
+    {
+      state: {
+        formList: formList?.data?.data ?? [],
+        data: automationList,
+        error
+      },
+      api: {
+        getById,
+        refresh: () => {
+          mutateRefresh();
+        }
+      }
+    }
+  ), [error, formList?.data?.data, mutateRefresh, automationList]);
+
+};
 
 export const RobotList = () => {
   const permissions = useSelector(Selectors.getPermissions);
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const canManageRobot = permissions.manageable;
-  const { currentRobotId, isHistory, setCurrentRobotId, updateRobotList } = useRobot();
-  const thisResourceRobotUrl = `/automation/robots?resourceId=${datasheetId}`;
-  const { data: robots, error } = useSWR(thisResourceRobotUrl, getResourceRobots);
+
+  const { state: { data: robotList }} = useRobotListState();
+
+  const { state: { error }, api: { refresh }} = useRobotListState();
+
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
 
-  const [formList, setFormList] = useState<IFormNodeItem[]>([]);
-  const theme = useTheme();
-  const { state } = useRobotContext();
+  const { createNewRobot, updateRobotStatus } = useRobotController();
 
-  const { toggleNewRobotModal, canAddNewRobot } = useAddNewRobot();
-  const fetchForeignFormList = useMemo(() => {
-    return async() => {
-      const res = await Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM);
-      const formList = res.data.data;
-      setFormList(formList || []);
-    };
-  }, [datasheetId]);
-
-  useEffect(() => {
-    updateRobotList(robots);
-  }, [robots, updateRobotList]);
-
-  useEffect(() => {
-    fetchForeignFormList();
-  }, [fetchForeignFormList]);
+  const { canAddNewRobot } = useAddNewRobot();
 
   if (error) return null;
-
-  if (currentRobotId) {
-    if (isHistory) {
-      return <RobotRunHistory />;
-    }
-    return <RobotDetailForm index={(robots?.length || 0) + 1} datasheetId={datasheetId!} formList={formList} />;
-  }
   if (triggerTypesLoading || actionTypesLoading || triggerTypes.length === 0 || actionTypes.length === 0) {
-    return (
-      <Skeleton
-        count={3}
-        height="68px"
-        type="text"
-        circle={false}
-        style={{
-          marginBottom: 16,
-        }}
-      />
-    );
+    return <Skeleton
+      count={3}
+      height="68px"
+      type="text"
+      circle={false}
+      style={{
+        marginBottom: 16,
+      }}
+    />;
   }
 
-  if (state.robotList?.length === 0) {
+  if (robotList?.length === 0) {
     return <RobotEmptyList />;
   }
 
+  const robotLength = robotList?.length ??0;
   return (
-    <div style={{ width: '100%' }}>
-      {state.robotList?.map((robot, index) => {
-        // console.log(triggerTypes, actionTypes,robot);
-        const robotCardInfo = makeRobotCardInfo(robot, triggerTypes, actionTypes);
-        return (
-          <RobotListItemCard
-            index={index}
-            key={robot.robotId}
-            robotCardInfo={robotCardInfo}
-            onClick={() => {
-              setCurrentRobotId(robot.robotId);
-            }}
-            readonly={!canManageRobot}
-          />
-        );
-      })}
-      {!currentRobotId && (
-        <Box
-          border={`1px solid ${theme.color.fc5}`}
-          height={84}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          marginTop={16}
-          onClick={() => {
-            canAddNewRobot && toggleNewRobotModal();
-          }}
-          backgroundColor={`${theme.color.fc8}`}
-          style={{
-            cursor: canAddNewRobot ? 'pointer' : 'not-allowed',
-          }}
-        >
-          <Box display="flex" alignItems="center" justifyContent="center" onClick={stopPropagation}>
-            <AddRobotButton />
-          </Box>
-        </Box>
-      )}
+    <div style={{ width: '100%' }} >
+      {
+        robotList?.map((robot, index) => {
+          return (
+            <RobotListItemCard
+              index={index}
+              key={robot.robotId}
+              robotCardInfo={robot}
+              onClick={async() => {
+                await updateRobotStatus(robot.resourceId, robot.robotId);
+              }}
+              readonly={!canManageRobot}
+            />
+          );
+        })
+      }
+      <NewItem
+        height={64}
+        disabled={(!canAddNewRobot) || Boolean(robotLength > CONST_MAX_ROBOT_COUNT)}
+        onClick={async() => {
+          if(!canManageRobot) {
+            return;
+          }
+
+          await createNewRobot();
+          refresh();
+        }}
+      >
+        {
+          t(Strings.new_automation)
+        }
+      </NewItem>
     </div>
   );
 };

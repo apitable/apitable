@@ -18,31 +18,36 @@
 
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
-import { Box } from '@apitable/components';
+import { Box, IconButton } from '@apitable/components';
+import { ConnectFilled } from '@apitable/icons';
+import { StyledLinkIcon } from '../../../automation/icons';
 import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
 import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
+import { EditType } from '../trigger/robot_trigger';
+import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
-import { CreateNewAction, CONST_MAX_ACTION_COUNT } from './robot_action_create';
+import {
+  CONST_MAX_ACTION_COUNT,
+  CreateNewAction,
+  CreateNewActionLineButton,
+  CreateNewActionNode
+} from './robot_action_create';
 
 const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
-export const RobotActions = ({
-  robotId,
-  triggerTypes,
-  actionTypes,
-  trigger,
-  onScrollBottom,
-}: {
-  robotId: string;
-  trigger?: IRobotTrigger;
-  triggerTypes: ITriggerType[];
-  actionTypes: IActionType[];
-  onScrollBottom: () => void;
-}) => {
+export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom = () => {} }:
+  {
+    robotId: string;
+    trigger?: IRobotTrigger;
+    triggerTypes: ITriggerType[];
+    actionTypes: IActionType[];
+    onScrollBottom?: () => void;
+  }
+) => {
   const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
   const filterActionTypes = useMemo(() => {
@@ -57,21 +62,23 @@ export const RobotActions = ({
 
   const entryActionId = actions.find((item: any) => item.prevActionId === null)?.id;
   if (!entryActionId) {
-    return <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} />;
+    return (
+      <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} disabled={trigger==null}/>
+    );
   }
   const actionsById = actions.reduce((acc: any, item: any) => {
     acc[item.id] = item;
     return acc;
   }, {});
   // prev => next
-  Object.keys(actionsById).forEach((item) => {
+  Object.keys(actionsById).forEach(item => {
     const action = actionsById[item];
     if (action.prevActionId) {
       actionsById[action.prevActionId].nextActionId = action.id;
     }
   });
   const actionList: IRobotAction[] = [actionsById[entryActionId]];
-  Object.keys(actionsById).forEach((item) => {
+  Object.keys(actionsById).forEach(item => {
     const action = actionsById[item];
     if (action.nextActionId) {
       actionList.push(actionsById[action.nextActionId]);
@@ -90,23 +97,48 @@ export const RobotActions = ({
   // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
-    <Box width="100%" marginTop="24px">
-      {actionList.map((action, index) => (
-        <RobotAction
-          index={index}
-          key={index}
-          action={action}
-          actionTypes={actionTypes}
-          nodeOutputSchemaList={nodeOutputSchemaList}
-          robotId={robotId}
-        />
-      ))}
+    <Box
+      width='100%'
+    >
+      {
+        actionList.map((action, index) =>
+          (
+            <Box key={action.id}>
+              {
+                index > 0 && index < actionList.length && (
+                  <CreateNewActionLineButton
+                    disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                    robotId={robotId}
+                    actionTypes={filterActionTypes}
+                    prevActionId={actionList[index - 1].id}
+                  >
+                    <span>
+                      <LinkButton />
+                    </span>
+                  </CreateNewActionLineButton>
+                )
+              }
+              <RobotAction
+                editType={EditType.entry}
+                index={index}
+                key={index}
+                action={action}
+                actionTypes={actionTypes}
+                nodeOutputSchemaList={nodeOutputSchemaList}
+                robotId={robotId}
+              />
+            </Box>
+          )
+        )
+      }
+
       <CreateNewAction
         disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
         robotId={robotId}
         actionTypes={filterActionTypes}
         prevActionId={actionList[actionList.length - 1].id}
       />
-    </Box>
+
+    </Box >
   );
 };

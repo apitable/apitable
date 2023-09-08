@@ -35,6 +35,8 @@ const addressReg = /org\/(\w+)/;
 const widgetIdReg = /\/(wdt\w+)/;
 const aiIdReg = /\/(ai\w+)/;
 export const dashboardReg = /\/(dsb\w+)/;
+
+export const automationReg = /\/(aut\w+)/;
 export const resourceReg = /\/((dsb|dst)\w+)/;
 export const mirrorIdReg = /\/((mir)\w+)/;
 export const embedIdReg = /\/(emb\w{8,})/;
@@ -47,6 +49,8 @@ export const getRegResult = (path: string, reg: RegExp) => {
 export const getPageParams = (path: string) => {
   const datasheetId = getRegResult(path, datasheetIdReg);
   const viewId = getRegResult(path, viewIdReg);
+  const automationId = getRegResult(path, automationReg);
+
   const shareId = getRegResult(path, shareIdReg);
   const recordId = getRegResult(path, recordIdReg);
   const fieldId = getRegResult(path, fieldIdReg);
@@ -61,26 +65,14 @@ export const getPageParams = (path: string) => {
   const mirrorId = getRegResult(path, mirrorIdReg);
   const embedId = getRegResult(path, embedIdReg);
   const aiId = getRegResult(path, aiIdReg);
-  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId;
+  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId || automationId;
 
   return {
-    datasheetId,
-    viewId,
-    shareId,
-    recordId,
-    fieldId,
-    folderId,
-    formId,
-    templateId,
-    categoryId,
-    memberId,
-    widgetId,
-    dashboardId,
-    resourceId,
-    nodeId,
-    mirrorId,
-    embedId,
-    aiId,
+    datasheetId, viewId, shareId, recordId,
+    fieldId, folderId, formId, templateId, categoryId, memberId,
+    widgetId, dashboardId,
+    automationId,
+    resourceId, nodeId, mirrorId, embedId, aiId,
   };
 };
 

@@ -17,56 +17,66 @@
  */
 
 // import { Message } from '@apitable/components';
-import { useCallback } from 'react';
+import cx from 'classnames';
+import { useAtom } from 'jotai';
+import { FC, ReactNode, useCallback } from 'react';
+import * as React from 'react';
 import { shallowEqual } from 'react-redux';
+import styled from 'styled-components';
 import { mutate } from 'swr';
+import { Box, SearchSelect, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { Message, Modal } from 'pc/components/common';
+import { automationPanelAtom, PanelName } from '../../../automation/controller';
+import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useRobotTriggerType } from '../../hooks';
 import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
-import { NodeForm } from '../node_form';
-import { Select } from '../select';
+import { NodeForm, NodeFormInfo } from '../node_form';
+import { EditType } from '../trigger/robot_trigger';
 
-interface IRobotActionProps {
+export interface IRobotActionProps {
   index: number;
   actionTypes: IActionType[];
   action: IRobotAction;
   robotId: string;
+  editType?:EditType
   nodeOutputSchemaList: INodeOutputSchema[];
 }
 
 export const RobotAction = (props: IRobotActionProps) => {
-  const { actionTypes, action, robotId, nodeOutputSchemaList, index = 0 } = props;
-  const triggerType = useRobotTriggerType(robotId);
-  const actionType = actionTypes.find((item) => item.actionTypeId === action.typeId);
+  const { actionTypes, editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
+  const triggerType = useRobotTriggerType();
+  const actionType = actionTypes.find(item => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
-  const handleActionTypeChange = useCallback(
-    (actionTypeId: string) => {
-      if (actionTypeId === action?.typeId) {
-        return;
-      }
-      Modal.confirm({
-        title: t(Strings.robot_change_action_tip_title),
-        content: t(Strings.robot_change_action_tip_content),
-        cancelText: t(Strings.cancel),
-        okText: t(Strings.confirm),
-        onOk: () => {
-          changeActionTypeId(action?.id!, actionTypeId).then(() => {
-            mutate(`/automation/robots/${robotId}/actions`);
-          });
-        },
-        onCancel: () => {
-          return;
-        },
-        type: 'warning',
-      });
-    },
-    [action, robotId],
-  );
 
+  const [panelState] = useAtom(automationPanelAtom);
+
+  const handleActionTypeChange = useCallback((actionTypeId: string) => {
+    if (actionTypeId === action?.typeId) {
+      return;
+    }
+    Modal.confirm({
+      title: t(Strings.robot_change_action_tip_title),
+      content: t(Strings.robot_change_action_tip_content),
+      cancelText: t(Strings.cancel),
+      okText: t(Strings.confirm),
+      onOk: () => {
+        changeActionTypeId(action?.id!, actionTypeId).then(() => {
+          mutate(`/automation/robots/${robotId}/actions`);
+        });
+      },
+      onCancel: () => {
+        return;
+      },
+      type: 'warning',
+    });
+  }, [action, robotId]);
+
+  const [, setAutomationPanel] = useAtom(automationPanelAtom );
   if (!actionType) {
     return null;
   }
@@ -74,22 +84,20 @@ export const RobotAction = (props: IRobotActionProps) => {
   const handleActionFormSubmit = (props: any) => {
     const newFormData = props.formData;
     if (!shallowEqual(newFormData, propsFormData)) {
-      updateActionInput(action.id, newFormData)
-        .then(() => {
-          mutate(`/automation/robots/${robotId}/actions`);
-          Message.success({
-            content: t(Strings.robot_save_step_success),
-          });
-        })
-        .catch(() => {
-          Message.error({
-            content: '步骤保存失败',
-          });
+      updateActionInput(action.id, newFormData).then(() => {
+        mutate(`/automation/robots/${robotId}/actions`);
+        Message.success({
+          content: t(Strings.robot_save_step_success)
         });
+      }).catch(() => {
+        Message.error({
+          content: '步骤保存失败'
+        });
+      });
     }
   };
   // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
-  const currentActionIndex = nodeOutputSchemaList.findIndex((item) => item.id === action.id);
+  const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
@@ -112,30 +120,79 @@ export const RobotAction = (props: IRobotActionProps) => {
     return errors;
   };
 
-  return (
-    <NodeForm
-      nodeId={action.id}
-      type="action"
-      index={index}
-      key={action.id}
-      // noValidate
-      // noHtml5Validate
-      title={actionType.name}
-      validate={validate}
-      onSubmit={handleActionFormSubmit}
-      description={actionType.description}
-      formData={propsFormData}
-      serviceLogo={integrateCdnHost(actionType.service.logo)}
-      schema={schema}
-      uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
-      nodeOutputSchemaList={prevActionSchemaList}
-      widgets={{
+  const NodeFormItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
+
+  const isActive = panelState.dataId === action.id;
+  return <NodeFormItem
+    nodeId={action.id}
+    type='action'
+    index={index}
+    key={action.id}
+    // noValidate
+    // noHtml5Validate
+    title={actionType.name}
+    validate={validate}
+    onClick={() => {
+      setAutomationPanel({
+        panelName: PanelName.Action,
+        dataId: action.id,
+        // @ts-ignore
+        data: props
+      });
+    }}
+
+    onSubmit={handleActionFormSubmit}
+    description={actionType.description}
+    formData={propsFormData}
+    serviceLogo={integrateCdnHost(actionType.service.logo)}
+    schema={schema}
+    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
+    nodeOutputSchemaList={prevActionSchemaList}
+    widgets={
+      {
         TextWidget: (props: any) => {
-          return <MagicTextField {...props} nodeOutputSchemaList={prevActionSchemaList} triggerType={triggerType} />;
-        },
+          return <MagicTextField
+            {...props}
+            nodeOutputSchemaList={prevActionSchemaList}
+            triggerType={triggerType}
+          />;
+        }
+      }
+    }
+  >
+    <SearchSelect
+      options={{
+        placeholder: t(Strings.search_field),
+        noDataText: t(Strings.empty_data),
+        minWidth: '384px',
       }}
-    >
-      <Select options={actionTypeOptions} onChange={handleActionTypeChange} value={action.typeId} />
-    </NodeForm>
+      list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
+      <span>
+        <DropdownTrigger isActive={isActive}>
+          <>
+            {index + 1}. {String(actionType.name)}
+          </>
+        </DropdownTrigger>
+      </span>
+    </SearchSelect>
+  </NodeFormItem>;
+};
+
+const StyledSpan = styled(Box)`
+  align-items: center
+`;
+export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean}>= ({ children, isActive }) => {
+
+  const colors = useThemeColors();
+
+  return (
+    <StyledSpan display={'inline-flex'} alignItems={'center'} color={isActive ? colors.textBrandDefault:colors.textCommonPrimary }>
+      {children}
+
+      <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
+        <ChevronDownOutlined
+          color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
+      </Box>
+    </StyledSpan>
   );
 };

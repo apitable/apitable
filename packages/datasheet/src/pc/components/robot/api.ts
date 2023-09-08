@@ -18,7 +18,8 @@
 
 import axios from 'axios';
 import { mutate } from 'swr';
-import { IRobotBaseInfo, IRobotRunHistoryList, IRobotTrigger } from './interface';
+import { IAutomationDatum, IRobotBaseInfo, IRobotRunHistoryList, IRobotTrigger } from './interface';
+import { IAutomationRobotDetailItem } from './robot_context';
 
 export const nestReq = axios.create({
   baseURL: '/nest/v1/',
@@ -51,8 +52,33 @@ export const updateRobotDescription = async(robotId: string, description: string
   return res.data.success;
 };
 
-export const getResourceRobots = (url: string): Promise<IRobotBaseInfo[]> => {
-  return nestReq.get(url).then((res) => {
+export const updateRobotItem = async(resourceId: string, robotId: string, robot: Partial<IAutomationDatum>) => {
+  const res = await axios.patch(`/automation/${resourceId}/modify/${robotId}`, robot);
+  return res.data.success;
+};
+
+export const getResourceAutomations = (resourceId: string): Promise<IAutomationDatum[]> => {
+  return axios.get(`/automation/robots?resourceId=${resourceId}`).then(res => {
+    if (res.data.success) {
+      return res.data.data;
+    }
+    return [];
+  });
+};
+
+export const createAutomationRobot = (robot: {
+  resourceId: string;
+  name: string;
+}): Promise<IAutomationDatum> => {
+  return nestReq.post('/automation/robots', robot).then(res => {
+    if (res.data.success) {
+      return res.data.data;
+    }
+    return [];
+  });
+};
+export const getResourceAutomationDetail = (resourceId: string, robotId: string): Promise<IAutomationRobotDetailItem> => {
+  return axios.get(`/automation/${resourceId}/robots/${robotId}`).then(res => {
     if (res.data.success) {
       return res.data.data;
     }

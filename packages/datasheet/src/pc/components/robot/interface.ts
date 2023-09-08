@@ -15,6 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { IAutomationRobotDetailItem } from './robot_context';
+
+export interface IRobotHistoryTask {
+  status: number;
+  data: IRobotRunHistoryDetail
+}
 
 export interface IRobotRunHistoryDetail {
   executedNodeIds: string[];
@@ -36,14 +42,9 @@ export interface IUISchemaLayoutGroup {
 }
 
 export interface IRobotContext {
-  triggerTypes: ITriggerType[];
-  actionTypes: IActionType[];
   currentRobotId?: string;
-  isHistory?: boolean;
-  robotList: IRobotBaseInfo[];
-  isNewRobotModalOpen: boolean;
-  isEditingRobotName: boolean;
-  isEditingRobotDesc: boolean;
+  resourceId?: string;
+  robot?: IAutomationRobotDetailItem;
 }
 
 interface INodeBaseType {
@@ -100,13 +101,43 @@ export interface IRobot {
   isActive: boolean;
 }
 
+export interface IAutomationDatum {
+  resourceId: string;
+  robotId: string;
+  name: string;
+  description: string;
+  isActive: boolean;
+  updatedBy: number;
+  updatedAt: number;
+  props: Props;
+  triggers: Trigger[];
+  actions: Action[];
+}
+
+export interface Action {
+  actionId: string;
+  actionTypeId: string;
+  nextActionId: string;
+  prevActionId: string;
+}
+
+export interface Trigger {
+  triggerId: string;
+  triggerTypeId?: any;
+  prevTriggerId: string;
+}
+
+export interface Props {
+  failureNotifyEnable: boolean;
+}
+
 export interface IRobotBaseInfo extends IRobot {
-  nodes: any[];
+  nodes?: any[];
 }
 
 export interface IRobotNodeTypeInfo {
   nodeTypeId: string;
-  service: {
+  service?: {
     logo: string;
   };
   type: IRobotNodeType;
@@ -115,10 +146,6 @@ export interface IRobotNodeTypeInfo {
 export enum IRobotNodeType {
   Action = 'action',
   Trigger = 'trigger',
-}
-
-export interface IRobotCardInfo extends IRobot {
-  nodeTypeList: IRobotNodeTypeInfo[];
 }
 
 export interface IRobotRunHistoryItem {
@@ -298,4 +325,5 @@ export interface IRobotHeadAddBtn {
   toolTips?: any;
   useTextBtn?: boolean;
   btnStyle?: React.CSSProperties;
+  iconOnly?: boolean;
 }

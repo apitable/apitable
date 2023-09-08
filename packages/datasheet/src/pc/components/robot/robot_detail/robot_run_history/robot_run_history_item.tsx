@@ -26,7 +26,7 @@ import { IRobotRunHistoryItem } from '../../interface';
 import { RobotRunHistoryItemDetail } from './robot_run_history_item_detail';
 import styles from 'style.module.less';
 
-interface IRobotRunHistoryItemProps {
+export interface IRobotRunHistoryItemProps {
   item: IRobotRunHistoryItem;
 }
 

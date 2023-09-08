@@ -16,28 +16,82 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { cloneElement, FC, ReactElement, ReactNode } from 'react';
 import { mutate } from 'swr';
-import { Box, ContextMenu, TextButton, FloatUiTooltip as Tooltip, useContextMenu } from '@apitable/components';
+import {
+  Box,
+  ContextMenu,
+  useContextMenu,
+  SearchSelect,
+} from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { flatContextData } from 'pc/utils';
 import { createAction } from '../../api';
 import { IActionType } from '../../interface';
+import { NewItem } from '../../robot_list/new_item';
 
 export const CONST_MAX_ACTION_COUNT = 9;
 
-export const CreateNewAction = ({
-  robotId,
-  actionTypes,
-  prevActionId,
-  disabled,
-}: {
+export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled = false }: {
   robotId: string;
-  disabled?: boolean;
+  disabled?:boolean;
   actionTypes: IActionType[];
   prevActionId?: string;
 }) => {
-  const createNewAction = async(action: { actionTypeId: string; robotId: string; prevActionId?: string; input?: any }) => {
+
+  const createNewAction = async(action: {
+    actionTypeId: string;
+    robotId: string;
+    prevActionId?: string;
+    input?: any;
+  }) => {
+    const res = await createAction(action);
+    mutate(`/automation/robots/${robotId}/actions`);
+    return res.data;
+  };
+
+  return (
+    <SearchSelect
+      disabled={disabled}
+      options={{
+        placeholder: t(Strings.search_field),
+        noDataText: t(Strings.empty_data),
+        minWidth: '384px',
+      }}
+      list={actionTypes.map(item => ({
+        label: item.name,
+        value: item.actionTypeId,
+        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
+      }))} onChange={(item) => {
+        createNewAction({
+          robotId,
+          actionTypeId: String(item.value),
+          prevActionId
+        });
+      }}>
+
+      <NewItem disabled={disabled} >
+        {t(Strings.robot_new_action)}
+      </NewItem>
+    </SearchSelect>);
+};
+
+export const CreateNewActionNode : FC<{
+  robotId: string;
+  disabled?:boolean;
+  children: ReactElement;
+  actionTypes: IActionType[];
+  prevActionId?: string;
+}
+>= ({ robotId, actionTypes, children, prevActionId, disabled }) => {
+
+  const createNewAction = async(action: {
+    actionTypeId: string;
+    robotId: string;
+    prevActionId?: string;
+    input?: any;
+  }) => {
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
     return res.data;
@@ -46,45 +100,81 @@ export const CreateNewAction = ({
   const CONTEXT_MENU_ID_1 = 'CONTEXT_MENU_ID_1';
 
   const { show } = useContextMenu({
-    id: CONTEXT_MENU_ID_1,
+    id: CONTEXT_MENU_ID_1
   });
 
+  // if(children)
+  // @ts-ignore
   return (
-    <Box marginTop="16px" display="flex" alignItems="center" justifyContent="center">
-      <Tooltip
-        content={
-          disabled
-            ? t(Strings.automation_action_num_warning, {
-              value: CONST_MAX_ACTION_COUNT,
-            })
-            : t(Strings.robot_new_action_tooltip)
-        }
-      >
-        <Box>
-          <TextButton onClick={show} prefixIcon={<AddOutlined />} disabled={disabled}>
-            <span>{t(Strings.robot_new_action)}</span>
-          </TextButton>
-        </Box>
-      </Tooltip>
+    <Box display='flex' alignItems='center' justifyContent='center'>
+      {
+        cloneElement(children, {
+          onClick: show
+        })
+      }
       <ContextMenu
         menuId={CONTEXT_MENU_ID_1}
-        overlay={flatContextData(
-          [
+        overlay={
+          flatContextData([
             actionTypes.map((actionType) => ({
               text: actionType.name,
               icon: <img src={integrateCdnHost(actionType.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
               onClick: () => {
+
                 createNewAction({
                   robotId,
                   actionTypeId: actionType.actionTypeId,
-                  prevActionId,
+                  prevActionId
                 });
-              },
-            })),
-          ],
-          true,
-        )}
+              }
+            }))
+          ], true)
+        }
       />
     </Box>
   );
+};
+
+export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, disabled = false, children }: {
+  robotId: string;
+  children: ReactElement;
+  disabled?:boolean;
+  actionTypes: IActionType[];
+  prevActionId?: string;
+}) => {
+
+  const createNewAction = async(action: {
+    actionTypeId: string;
+    robotId: string;
+    prevActionId?: string;
+    input?: any;
+  }) => {
+    const res = await createAction(action);
+    mutate(`/automation/robots/${robotId}/actions`);
+    return res.data;
+  };
+
+  return (
+    <SearchSelect
+      disabled={disabled}
+      options={{
+        placeholder: t(Strings.search_field),
+        noDataText: t(Strings.empty_data),
+        minWidth: '384px',
+      }}
+      list={actionTypes.map(item => ({
+        label: item.name,
+        value: item.actionTypeId,
+        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
+      }))} onChange={(item) => {
+        createNewAction({
+          robotId,
+          actionTypeId: String(item.value),
+          prevActionId
+        });
+      }}>
+      {
+        children
+      }
+    </SearchSelect>);
 };
