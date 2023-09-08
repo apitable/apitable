@@ -268,6 +268,8 @@
   "ai_chat_unit": "ai助理",
   "ai_credit_cost_chart_tooltip": "当你在使用AI助理进行训练或者会话时会消耗算力点。比如，1次gpt-3.5-turbo模型下的会话会消耗1点算力点，训练数据集时每超过300,000个字符也会消耗1点算力点。",
   "ai_credit_usage_tooltip": "每次与AI助理的对话会消耗空间站的算力点，算力点与你空间站的席位数成正比。",
+  "ai_remain_credit_label": "剩余算力点：${credit}",
+  "ai_api_footer_desc": "Embed the chatBot into your website? Learn more",
   "alarm_no_member_field_tips": "请在表中先新建一列成员字段",
   "alarm_save_fail": "日期提醒配置不全，保存失败",
   "alarm_specifical_field_member": "提醒指定成员列的人",

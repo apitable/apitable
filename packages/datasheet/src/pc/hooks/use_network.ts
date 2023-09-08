@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { message } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { ResourceType, Selectors, Strings, t } from '@apitable/core';
@@ -59,6 +60,7 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
   useEffect(() => {
     return () => {
       hideMsgRef.current();
+      message.destroy();
     };
   }, []);
 
@@ -67,6 +69,7 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
       return;
     }
     hideMsgRef.current();
+    message.destroy();
     if (!connected) {
       if (!templateId) {
         hideMsgRef.current = Message.loading({ content: t(Strings.long_time_not_editor) });
