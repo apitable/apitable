@@ -105,6 +105,11 @@ build-local:
 _pre-check:
 	make _check-web
 
+_check-lint:
+	yarn install && yarn build:pre
+	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
+	yarn lint:datasheet
+
 _check-web:
 	yarn install && yarn build:pre
 	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root

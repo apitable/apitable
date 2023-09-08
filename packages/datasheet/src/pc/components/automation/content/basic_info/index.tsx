@@ -178,7 +178,7 @@ export const BaseInfo: FC =() => {
 
       {
         robot?.relatedResources?.map(item => (
-          <Box padding={'0 16px'}>
+          <Box padding={'0 16px'} key={item.nodeId}>
             <StyeldRelatedResouece
               padding={'12px 8px'}
               display={'flex'} alignItems={'center'} justifyContent={'space-between'}

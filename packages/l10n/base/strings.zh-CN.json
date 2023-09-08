@@ -5735,7 +5735,6 @@
   "add_a_trigger": "添加触发条件",
   "automation_add_a_action": "添加执行动作",
   "automation_refresh": "刷新",
-  "Start time": "结束时间",
   "automation_current_month_run_number": "本月运行次数",
   "automation_import_variables_from_pre_tep": "从前置步骤获取数据",
   "automation_run_history_item_brief_success": "${NUM} 个动作均已执行成功",
