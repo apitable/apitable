@@ -27,7 +27,7 @@ const formatStrategy = {
 
 const formatToday = (value: string) => {
   // format 23:00
-  return dayjs().hour(Number(value)).format('H:mm');
+  return `${value}h`;
 };
 
 const formatWeekday = (value: string) => {
@@ -37,7 +37,7 @@ const formatWeekday = (value: string) => {
 
 const formatMonth = (value: string) => {
   // format 1-31
-  return dayjs().date(Number(value)).format('MM-DD');
+  return dayjs().date(Number(value)).format('DD');
 };
 
 const formatYear = (value: string) => {
