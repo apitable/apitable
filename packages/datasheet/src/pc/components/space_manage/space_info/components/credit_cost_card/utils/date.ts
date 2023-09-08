@@ -27,7 +27,7 @@ const formatStrategy = {
 
 const formatToday = (value: string) => {
   // format 23:00
-  return `${value}h`;
+  return `${dayjs.unix(Number(value)).format('H')}h`;
 };
 
 const formatWeekday = (value: string) => {
