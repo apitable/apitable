@@ -1,5 +1,17 @@
 # APITable CHANGELOG
 
+## [v1.0.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.0.0-beta.1) (2023-09-11)
+
+
+### Features and enhancements
+
+* feat: changelog update @chalme 
+
+### What's more
+
+* chore: changelog for v1.0.0-beta ([#1278](https://github.com/apitable/apitable/pull/1278)) @chalme 
+* sync: hosted cloud ([#1301](https://github.com/apitable/apitable/pull/1301)) @shawndenggh 
+
 ## [v1.0.0-beta](https://github.com/apitable/apitable/releases/tag/v1.0.0-beta) (2023-09-05)
 
 
