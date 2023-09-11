@@ -64,8 +64,12 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
     private IMemberService iMemberService;
 
     @Override
+    public String getSpaceIdByControlId(String controlId) {
+        return controlMapper.selectSpaceIdByControlId(controlId);
+    }
+
+    @Override
     public ControlEntity getByControlId(String controlId) {
-        log.info("Query control permission unit information");
         return controlMapper.selectByControlId(controlId);
     }
 

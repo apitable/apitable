@@ -16,25 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.workspace.vo;
+package com.apitable.workspace.service;
 
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.apitable.control.infrastructure.ControlIdBuilder.ControlId;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.workspace.dto.ControlMemberDTO;
+import com.apitable.workspace.vo.ControlRoleMemberVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
 
-/**
- * <p>
- * Node Member View.
- * </p>
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Schema(description = "Node Member View")
-public class NodeRoleMemberVo extends ControlRoleMemberVo {
+public interface IControlMemberService {
 
-    @Schema(description = "Whether the member is the control owner")
-    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean isControlOwner;
+    <T extends ControlRoleMemberVo> PageInfo<T> getControlRoleMemberPageInfo(
+        Page<T> page, String spaceId, ControlId controlId, Class<T> tClass);
+
+    Map<Long, ControlMemberDTO> getMemberControlRoleMap(String spaceId,
+        ControlId controlId);
 }

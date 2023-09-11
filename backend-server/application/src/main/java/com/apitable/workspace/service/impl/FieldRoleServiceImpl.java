@@ -18,34 +18,20 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+ import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
-import javax.annotation.Resource;
-
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.control.entity.ControlEntity;
+import com.apitable.control.entity.ControlRoleEntity;
+import com.apitable.control.entity.ControlSettingEntity;
 import com.apitable.control.infrastructure.ControlIdBuilder;
 import com.apitable.control.infrastructure.ControlIdBuilder.ControlId;
 import com.apitable.control.infrastructure.ControlRoleDict;
@@ -58,6 +44,8 @@ import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
 import com.apitable.control.service.IControlSettingService;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
@@ -71,6 +59,7 @@ import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.RoleInfoVo;
 import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.organization.vo.UnitTeamVo;
+import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.workspace.dto.ControlRoleInfo;
 import com.apitable.workspace.dto.ControlRoleUnitDTO;
@@ -81,6 +70,7 @@ import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.ro.FieldControlProp;
+import com.apitable.workspace.service.IControlMemberService;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IFieldRoleService;
 import com.apitable.workspace.service.INodeRelService;
@@ -93,17 +83,30 @@ import com.apitable.workspace.vo.FieldPermissionView;
 import com.apitable.workspace.vo.FieldRole;
 import com.apitable.workspace.vo.FieldRoleMemberVo;
 import com.apitable.workspace.vo.FieldRoleSetting;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.apitable.workspace.vo.NodeRoleMemberVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.apitable.control.entity.ControlEntity;
-import com.apitable.control.entity.ControlRoleEntity;
-import com.apitable.control.entity.ControlSettingEntity;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -117,6 +120,9 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Resource
     private IControlRoleService iControlRoleService;
+
+    @Resource
+    private IControlMemberService iControlMemberService;
 
     @Resource
     private IDatasheetMetaService iDatasheetMetaService;
@@ -159,6 +165,14 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Resource
     private IRoleMemberService iRoleMemberService;
+
+    @Override
+    public boolean getFieldRoleEnabledStatus(String dstId, String fieldId) {
+        ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
+        AtomicReference<Boolean> assign = new AtomicReference<>(false);
+        iControlService.checkControlStatus(controlId.toString(), assign::set);
+        return assign.get();
+    }
 
     @Override
     public void checkFieldPermissionBeforeEnable(String dstId, String fieldId) {
@@ -204,6 +218,34 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     }
 
     @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public PageInfo<FieldRoleMemberVo> getFieldRoleMembersPageInfo(
+        Page<FieldRoleMemberVo> page, String datasheetId, String fieldId) {
+        boolean assignMode = this.getFieldRoleEnabledStatus(datasheetId, fieldId);
+        if (!assignMode) {
+            Page nodeRolePage = BeanUtil.copyProperties(page, Page.class);
+            PageInfo<NodeRoleMemberVo> nodeRolePageInfo =
+                iNodeRoleService.getNodeRoleMembersPageInfo(nodeRolePage, datasheetId);
+            List<FieldRoleMemberVo> records = new ArrayList<>();
+            for (NodeRoleMemberVo record : nodeRolePageInfo.getRecords()) {
+                FieldRoleMemberVo vo =
+                    BeanUtil.copyProperties(record, FieldRoleMemberVo.class);
+                String role = record.getRole().equals(Node.READER)
+                    ? Field.READER : Field.EDITOR;
+                vo.setRole(role);
+                records.add(vo);
+            }
+            PageInfo pageInfo = BeanUtil.copyProperties(nodeRolePageInfo, PageInfo.class);
+            pageInfo.setRecords(records);
+            return pageInfo;
+        }
+        String spaceId = iNodeService.getSpaceIdByNodeId(datasheetId);
+        ControlId controlId = ControlIdBuilder.fieldId(datasheetId, fieldId);
+        return iControlMemberService.getControlRoleMemberPageInfo(page, spaceId, controlId,
+            FieldRoleMemberVo.class);
+    }
+
+    @Override
     public FieldCollaboratorVO getFieldRoles(String datasheetId, String fieldId) {
         log.info("load field role information: {} {}", datasheetId, fieldId);
         ControlId controlId = ControlIdBuilder.fieldId(datasheetId, fieldId);
@@ -214,8 +256,6 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         if (BooleanUtil.isFalse(fieldCollaboratorVO.getEnabled())) {
             Map<Long, String> memberRoleMap = new LinkedHashMap<>(16);
             List<FieldRole> roles = getDefaultFieldRoles(spaceId, datasheetId, memberRoleMap);
-            List<FieldRoleMemberVo> members = getMembers(spaceId, memberRoleMap);
-            fieldCollaboratorVO.setMembers(members);
             fieldCollaboratorVO.setRoles(roles);
             return fieldCollaboratorVO;
         }
@@ -230,26 +270,24 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         if (owner != null) {
             managerMemberIds.add(owner);
         }
-        // record the corresponding roles of all members
-        Map<Long, String> memberRoleMap = new LinkedHashMap<>(16);
         Map<Long, FieldRole> unitIdToFieldRoleMap = new LinkedHashMap<>(16);
         List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(managerMemberIds);
         // handle member's team name, get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamNameMap = iTeamService.batchGetFullHierarchyTeamNames(managerMemberIds, spaceId);
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamNameMap =
+            iTeamService.batchGetFullHierarchyTeamNames(managerMemberIds, spaceId);
         for (UnitMemberVo member : unitMemberVos) {
-            boolean isOwner = member.getMemberId().equals(owner);
             // prevent owner from belonging to workbench administrator and repeatedly build fieldrole
-            if (isOwner && memberRoleMap.containsKey(owner)) {
+            if (unitIdToFieldRoleMap.containsKey(member.getUnitId())) {
                 continue;
             }
             boolean isAdmin = admins.contains(member.getMemberId());
+            boolean isOwner = member.getMemberId().equals(owner);
             FieldRole role = getFieldRole(isAdmin, member, isOwner);
             role.setUnitRefId(member.getMemberId());
             if (memberToTeamNameMap.containsKey(member.getMemberId())) {
                 role.setTeamData(memberToTeamNameMap.get(member.getMemberId()));
             }
             unitIdToFieldRoleMap.put(role.getUnitId(), role);
-            memberRoleMap.put(member.getMemberId(), Field.EDITOR);
         }
         // 2、The datasheet field specifies the organizational unit of the role.
         List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
@@ -260,7 +298,6 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             List<Long> teamIds = new ArrayList<>();
             List<Long> memberIds = new ArrayList<>();
             List<Long> roleIds = new ArrayList<>();
-            String roleCode = entry.getKey();
             for (ControlRoleUnitDTO control : entry.getValue()) {
                 if (unitIdToFieldRoleMap.containsKey(control.getUnitId())) {
                     unitIdToFieldRoleMap.get(control.getUnitId()).setPermissionExtend(false);
@@ -291,15 +328,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 // handle member's team name, get full hierarchy team name
                 Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 for (UnitMemberVo member : memberVos) {
-                    FieldRole role = unitIdToFieldRoleMap.get(member.getUnitId());
-                    role.setUnitName(member.getMemberName());
-                    role.setAvatar(member.getAvatar());
-                    role.setTeams(member.getTeams());
-                    role.setUnitRefId(member.getMemberId());
-                    if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
-                        role.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
-                    }
-                    memberRoleMap.putIfAbsent(member.getMemberId(), roleCode);
+                    appendMemberFieldRole(unitIdToFieldRoleMap, memberToTeamPathInfoMap, member);
                 }
             }
             if (!teamIds.isEmpty()) {
@@ -310,10 +339,6 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                     role.setMemberCount(team.getMemberCount());
                     role.setUnitRefId(team.getTeamId());
                 }
-                List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
-                for (Long teamMemberId : teamMemberIds) {
-                    memberRoleMap.putIfAbsent(teamMemberId, roleCode);
-                }
             }
             if (!roleIds.isEmpty()) {
                 List<RoleInfoVo> roleVos = iRoleService.getRoleVos(spaceId, roleIds);
@@ -323,24 +348,22 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                     role.setMemberCount(roleVo.getMemberCount());
                     role.setUnitRefId(roleVo.getRoleId());
                 }
-                List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(roleIds);
-                for (Long roleMemberId : roleMemberIds) {
-                    memberRoleMap.putIfAbsent(roleMemberId, roleCode);
-                }
             }
         }
         fieldCollaboratorVO.setRoles(ListUtil.toList(unitIdToFieldRoleMap.values()));
-        List<FieldRoleMemberVo> members = getFieldRoleMembers(memberRoleMap.keySet());
-        members.forEach(member -> {
-            member.setRole(memberRoleMap.get(member.getMemberId()));
-            member.setIsAdmin(admins.contains(member.getMemberId()));
-        });
-        fieldCollaboratorVO.setMembers(members);
         return fieldCollaboratorVO;
     }
 
-    private List<FieldRoleMemberVo> getFieldRoleMembers(Collection<Long> memberIds) {
-        return memberMapper.selectFieldRoleMemberByIds(memberIds);
+    private void appendMemberFieldRole(Map<Long, FieldRole> unitIdToFieldRoleMap,
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap, UnitMemberVo member) {
+        FieldRole role = unitIdToFieldRoleMap.get(member.getUnitId());
+        role.setUnitName(member.getMemberName());
+        role.setAvatar(member.getAvatar());
+        role.setTeams(member.getTeams());
+        role.setUnitRefId(member.getMemberId());
+        if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
+            role.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
+        }
     }
 
     @Override
@@ -648,14 +671,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 // handle member's team name, get full hierarchy team name
                 Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(unitRefIds, spcId);
                 memberVos.forEach(member -> {
-                    FieldRole fieldRole = unitIdToFieldRoleMap.get(member.getUnitId());
-                    fieldRole.setUnitName(member.getMemberName());
-                    fieldRole.setAvatar(member.getAvatar());
-                    fieldRole.setTeams(member.getTeams());
-                    fieldRole.setUnitRefId(member.getMemberId());
-                    if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
-                        fieldRole.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
-                    }
+                    appendMemberFieldRole(unitIdToFieldRoleMap, memberToTeamPathInfoMap, member);
                 });
             }
             else if (key == UnitType.TEAM) {
@@ -735,13 +751,4 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         });
     }
 
-    private List<FieldRoleMemberVo> getMembers(String spaceId, Map<Long, String> memberRoleMap) {
-        List<FieldRoleMemberVo> members = getFieldRoleMembers(memberRoleMap.keySet());
-        List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
-        members.forEach(member -> {
-            member.setRole(memberRoleMap.get(member.getMemberId()));
-            member.setIsAdmin(admins.contains(member.getMemberId()));
-        });
-        return members;
-    }
 }

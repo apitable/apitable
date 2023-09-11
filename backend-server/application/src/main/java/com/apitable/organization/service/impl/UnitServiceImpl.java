@@ -113,6 +113,11 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     private IUserService iUserService;
 
     @Override
+    public Long getUnitRefIdById(Long id) {
+        return baseMapper.selectRefIdById(id);
+    }
+
+    @Override
     public Long getUnitIdByRefId(Long refId) {
         return baseMapper.selectUnitIdByRefId(refId);
     }
