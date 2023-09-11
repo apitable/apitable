@@ -32,7 +32,7 @@ import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
   robotCardInfo: IAutomationDatum;
-  onClick: () => void;
+  onNavigate: () => void;
   readonly: boolean;
   index: number;
 }
@@ -49,7 +49,7 @@ interface INodeStep {
 }
 
 export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({
-  index, robotCardInfo, onClick, readonly
+  index, robotCardInfo, onNavigate, readonly
 }) => {
   const { name, robotId } = robotCardInfo;
 
@@ -116,7 +116,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
       <Box
         padding='8px 0'
         margin='0 8px'
-        onClick={onClick}
+        onClick={onNavigate}
       >
         <Box display='flex' justifyContent='space-between' marginTop='8px' alignItems='center'>
           <Box
@@ -170,7 +170,9 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
         </Box>
       </Box>
 
-      <Box display='flex' alignItems='center' margin={'0 8px'} >
+      <Box display='flex' alignItems='center' margin={'0 8px'}
+        onClick={onNavigate}
+      >
         <Box display='flex' alignItems='center' marginBottom={'16px'}>
           <Typography variant='h8' ellipsis>
             {name || t(Strings.robot_unnamed)}

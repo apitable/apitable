@@ -18,7 +18,7 @@
 
 import { Space } from 'antd';
 import { useAtom } from 'jotai';
-import React from 'react';
+import React, {memo} from 'react';
 import {
   Box,
   ContextMenu,
@@ -42,7 +42,7 @@ import AutomationHistoryPanel from './run_history/modal/modal';
 import styles from './style.module.less';
 
 const MenuID = 'MoreAction';
-export const AutomationPanel = () => {
+export const AutomationPanel = memo(() => {
 
   const { show } = useContextMenu({ id: MenuID });
 
@@ -165,4 +165,4 @@ export const AutomationPanel = () => {
       }
     </Box>
   );
-};
+});

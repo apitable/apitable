@@ -17,6 +17,6 @@
  */
 
 import { withTheme } from '../core';
-// import { withTheme } from '@rjsf/core';
+import { memo } from "react";
 import { theme } from './theme';
-export const MagicVariableForm = withTheme(theme as any);
+export const MagicVariableForm = memo(withTheme(theme as any));

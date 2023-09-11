@@ -20,7 +20,7 @@
 import cx from 'classnames';
 import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
-import { FC, ReactNode, useCallback } from 'react';
+import {FC, memo, ReactNode, useCallback} from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { mutate } from 'swr';
@@ -48,7 +48,7 @@ export interface IRobotActionProps {
   nodeOutputSchemaList: INodeOutputSchema[];
 }
 
-export const RobotAction = (props: IRobotActionProps) => {
+export const RobotAction = memo((props: IRobotActionProps) => {
   const { actionTypes, editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
   const triggerType = useRobotTriggerType();
   const actionType = actionTypes.find(item => item.actionTypeId === action.typeId);
@@ -197,7 +197,7 @@ export const RobotAction = (props: IRobotActionProps) => {
       }
     </>
   </NodeFormItem>;
-};
+});
 
 const StyledSpan = styled(Box)`
   align-items: center

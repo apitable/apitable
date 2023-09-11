@@ -1,11 +1,13 @@
-import { useFormEdit } from 'pc/components/robot/robot_detail/form_edit';
+import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal as ConfirmModal } from 'pc/components/common/modal/modal/modal';
+import { useFormEdit } from 'pc/components/robot/robot_detail/form_edit';
 import { useRobotListState } from '../../robot/robot_list';
+import { automationModifiedAtom } from '../controller';
 import { AutomationPanel } from '../index';
 import style from './styles.module.less';
 
@@ -21,9 +23,7 @@ const AutomationModal: React.FC<{
 
   const isClosedRef = React.useRef(false);
   const { api: { refresh }} = useRobotListState();
-  const {
-    isModified
-  } = useFormEdit();
+  const isModified = useAtomValue(automationModifiedAtom);
   const getCloseable = async(): Promise<boolean> => {
     if(isClosedRef.current) {
       return true;

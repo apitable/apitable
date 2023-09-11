@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled, { css } from 'styled-components';
 import { Box } from '@apitable/components';
 import { StyledAdd, StyledLinkIcon } from '../../../automation/icons';
@@ -20,8 +20,13 @@ const StyledBox = styled(Box)<{
       position: absolute;
       visibility: hidden;
     }
+    
+  ${props => props.disabled && css`
+    cursor: not-allowed;
+  `}
   
   ${props => !props.disabled && css`
+    
     &:hover {
       ${StyledAdd} {
         visibility: visible;
@@ -34,11 +39,13 @@ const StyledBox = styled(Box)<{
   `}
 `;
 
-export const LinkButton =() => {
+export const LinkButton : FC<{
+    disabled: boolean
+}>=({disabled}) => {
 
   return (
     <Box width={'100%'} display={'flex'} justifyContent={'center'} >
-      <StyledBox width={'18px'} height={'48px'}>
+      <StyledBox width={'18px'} height={'48px'} disabled={disabled}>
         <StyledLinkIcon/>
         <StyledAdd/>
       </StyledBox>

@@ -25,7 +25,8 @@ import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
 import validateFormData, { toErrorList } from '../validate';
 import { default as DefaultErrorList } from './common/ErrorList';
-import { useFormEdit } from '../../../form_edit';
+import { useSetAtom } from "jotai";
+import { automationModifiedAtom } from 'pc/components/automation/controller';
 
 const defaultProps = {
   uiSchema: {},
@@ -87,15 +88,14 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     return data;
   };
 
-  const { setIsModified , setHasError} = useFormEdit();
+  const setAutomationModified = useSetAtom(automationModifiedAtom)
 
   useUnmount(()=> {
-    setIsModified(false);
-    setHasError(false);
+    setAutomationModified(false);
   });
 
   const onChange = (formData: any, newErrorSchema: any) => {
-    setIsModified?.(true);
+    setAutomationModified(true)
 
     if (isObject(formData) || Array.isArray(formData)) {
       const newState = getStateFromProps(props, formData, state);
@@ -120,7 +120,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     if (mustValidate) {
       const schemaValidation = validate(newFormData);
       let errors = schemaValidation.errors;
-      setHasError(errors.length > 0);
+      // setHasError(errors.length > 0);
       let errorSchema = schemaValidation.errorSchema;
       const schemaValidationErrors = errors;
       const schemaValidationErrorSchema = errorSchema;
@@ -223,8 +223,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     if (props.onSubmit) {
       console.warn(newFormData);
       props.onSubmit({ ...state, formData: newFormData, status: 'submitted' }, event);
-
-      setIsModified?.(false);
+      setAutomationModified?.(false);
     }
   };
 

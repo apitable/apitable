@@ -139,7 +139,7 @@ export const RobotList = memo(() => {
               index={index}
               key={robot.robotId}
               robotCardInfo={robot}
-              onClick={async() => {
+              onNavigate={async() => {
                 await navigateAutomation(robot.resourceId, robot.robotId);
               }}
               readonly={!canManageRobot}

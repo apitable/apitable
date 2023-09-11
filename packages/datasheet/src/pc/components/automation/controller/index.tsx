@@ -2,6 +2,8 @@ import { atomWithImmer } from 'jotai-immer';
 import { INodeSchema, IRobotContext, IRobotTrigger } from '../../robot/interface';
 
 const showAtomDetailModalAtom = atomWithImmer<boolean>(false);
+const automationModifiedAtom = atomWithImmer<boolean>(false);
+
 const automationStateAtom = atomWithImmer<IRobotContext | undefined>(undefined);
 const automationTriggerAtom = atomWithImmer<IRobotTrigger | undefined>(undefined);
 const automationHistoryAtom = atomWithImmer<{
@@ -38,5 +40,6 @@ export {
   showAtomDetailModalAtom,
   automationHistoryAtom,
   automationPanelAtom,
-  automationTriggerAtom
+  automationTriggerAtom,
+    automationModifiedAtom
 };

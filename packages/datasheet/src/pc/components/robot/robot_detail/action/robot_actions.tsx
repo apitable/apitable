@@ -18,11 +18,13 @@
 
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
-import React, { useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import useSWR from 'swr';
-import { Box } from '@apitable/components';
+import { Box, FloatUiTooltip } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
 import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
+import { OrTooltip } from '../or_tooltip';
 import { EditType } from '../trigger/robot_trigger';
 import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
@@ -120,7 +122,18 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
                     prevActionId={actionList[index - 1].id}
                   >
                     <span>
-                      <LinkButton />
+                      <OrTooltip
+                        options={{
+                          offset: -10
+                        }}
+                        tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                        tooltip={t(Strings.automation_action_num_warning, {
+                          value: CONST_MAX_ACTION_COUNT,
+                        })} placement={'top'}>
+                        <LinkButton disabled={
+                          actionList?.length >= CONST_MAX_ACTION_COUNT
+                        }/>
+                      </OrTooltip>
                     </span>
                   </CreateNewActionLineButton>
                 )
@@ -139,12 +152,20 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
         )
       }
 
-      <CreateNewAction
-        disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
-        robotId={robotId}
-        actionTypes={filterActionTypes}
-        prevActionId={actionList[actionList.length - 1].id}
-      />
+      <OrTooltip
+        tooltipEnable={
+          actionList?.length >= CONST_MAX_ACTION_COUNT
+        }
+        tooltip={t(Strings.automation_action_num_warning, {
+          value: CONST_MAX_ACTION_COUNT,
+        })} placement={'top'}>
+        <CreateNewAction
+          disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+          robotId={robotId}
+          actionTypes={filterActionTypes}
+          prevActionId={actionList[actionList.length - 1].id}
+        />
+      </OrTooltip>
 
     </Box >
   );

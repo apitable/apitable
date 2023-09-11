@@ -53,7 +53,6 @@ export const AutomationPanelContent: FunctionComponent<{
     currentRobotId, robot,
   } = useRobot();
 
-  console.log('AutomationPanelContent render');
   const colors = useThemeColors();
 
   const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, currentRobotId!);

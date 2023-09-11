@@ -19,7 +19,7 @@
 import produce from 'immer';
 import { useAtom } from 'jotai';
 import { isEqual } from 'lodash';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, memo} from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import useSWR from 'swr';
@@ -65,7 +65,7 @@ export enum EditType {
   entry = 'entry',
   detail ='detail'
 }
-const RobotTriggerBase = (props: IRobotTriggerBase) => {
+const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   const { trigger, mutate, editType, triggerTypes, formList, datasheetId, datasheetName } = props;
   const formData = trigger.input;
   const triggerTypeId = trigger.triggerTypeId;
@@ -91,7 +91,6 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
             triggerTypeId,
           });
 
-          console.log('automationState XXXXXX' );
           if(!automationState?.resourceId) {
             return;
           }
@@ -110,7 +109,7 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       },
       type: 'warning',
     });
-  }, [trigger, mutate]);
+  }, [trigger, mutate, automationState?.resourceId, automationState?.currentRobotId, refresh]);
 
   const { schema, uiSchema = {}} = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
@@ -238,7 +237,7 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       </SearchSelect>
     </NodeItem>
   );
-};
+});
 
 // trigger component = select prototype dropdown box + input form form.
 export const RobotTrigger = ({ robotId, editType, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
