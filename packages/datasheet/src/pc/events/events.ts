@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
+import { Field, Selectors } from '@apitable/core';
 import { verificationPermission } from './notification_verification';
 export interface IReqMap {
   [id: string]: {
