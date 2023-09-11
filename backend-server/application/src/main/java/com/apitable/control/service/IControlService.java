@@ -32,6 +32,15 @@ import com.apitable.control.infrastructure.ControlType;
 public interface IControlService extends IService<ControlEntity> {
 
     /**
+     * Get space id.
+     *
+     * @param controlId Control Unit ID
+     * @return spaceId
+     * @author Chambers
+     */
+    String getSpaceIdByControlId(String controlId);
+
+    /**
      * Query control unit
      *
      * @param controlId Control unit ID

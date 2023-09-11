@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@apitable/core';
 import axios from 'axios';
+import SocketIO from 'socket.io-client';
+import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { canJumpWhenClickCard, getNoticeUrlParams, NotifyType, renderNoticeBody } from 'pc/components/notification/card/utils';
 import { navigationToConfigUrl, PublishController } from 'pc/components/notification/publish/controller';
@@ -27,7 +28,6 @@ import { joinPath } from 'pc/components/route_manager/helper';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
-import SocketIO from 'socket.io-client';
 import { getInitializationData } from './utils/env';
 
 const PublishNotifyList = [
@@ -55,7 +55,7 @@ export class NotificationStore {
       query: {
         userId: userId,
         version,
-        spaceId
+        spaceId,
       },
       transports: ['websocket'],
       secure: true,
@@ -92,16 +92,7 @@ export class NotificationStore {
             body: renderNoticeBody(data, { pureString: true }) as string,
           },
           onClick: () => {
-            const {
-              spaceId,
-              nodeId,
-              viewId,
-              recordId,
-              configPathname,
-              toastUrl,
-              notifyType,
-              notifyId
-            } = getNoticeUrlParams(data);
+            const { spaceId, nodeId, viewId, recordId, configPathname, toastUrl, notifyType, notifyId } = getNoticeUrlParams(data);
 
             let query: any;
             if (notifyType === NotifyType.Record) {
@@ -136,12 +127,8 @@ export class NotificationStore {
     });
 
     ws.on('NODE_CHANGE', (data: INodeChangeSocketData) => {
-      store.dispatch(
-        StoreActions.updateSocketData({ ...data, receiptTime: Date.now() })
-      );
-      store.dispatch(
-        StoreActions.getSpaceInfo(spaceId || '')
-      );
+      store.dispatch(StoreActions.updateSocketData({ ...data, receiptTime: Date.now() }));
+      store.dispatch(StoreActions.getSpaceInfo(spaceId || ''));
     });
     return ws;
   }
@@ -178,26 +165,26 @@ export const renderNoticeUi = (data: INoticeDetail) => {
   switch (data.templateId) {
     case NoticeTemplatesConstant.changed_ordinary_user: {
       inCurSpace &&
-      Modal.warning({
-        title: t(Strings.please_note),
-        content: t(Strings.permission_removed_in_curspace_tip),
-        okText: t(Strings.refresh),
-        onOk: () => {
-          Router.push(Navigation.HOME);
-        },
-      });
+        Modal.warning({
+          title: t(Strings.please_note),
+          content: t(Strings.permission_removed_in_curspace_tip),
+          okText: t(Strings.refresh),
+          onOk: () => {
+            Router.push(Navigation.HOME);
+          },
+        });
       break;
     }
     case NoticeTemplatesConstant.removed_from_space_touser: {
       inCurSpace &&
-      Modal.warning({
-        title: t(Strings.please_note),
-        content: t(Strings.deleted_in_curspace_tip),
-        okText: t(Strings.refresh),
-        onOk: () => {
-          Router.redirect(Navigation.WORKBENCH);
-        },
-      });
+        Modal.warning({
+          title: t(Strings.please_note),
+          content: t(Strings.deleted_in_curspace_tip),
+          okText: t(Strings.refresh),
+          onOk: () => {
+            Router.redirect(Navigation.WORKBENCH);
+          },
+        });
       break;
     }
     case NoticeTemplatesConstant.common_system_notify:

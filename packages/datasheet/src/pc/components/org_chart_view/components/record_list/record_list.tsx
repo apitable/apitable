@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isEmpty } from 'lodash';
 import { useState, Fragment, FC, useCallback, useContext } from 'react';
 import { Typography, Button, ListDeprecate, IconButton, useThemeColors } from '@apitable/components';
-import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import { DragItem } from './drag_item';
-import { DropWrapper } from '../drop_wrapper';
-import styles from './styles.module.less';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CollaCommandName, ExecuteResult, t, Strings, ISetRecordOptions, DATASHEET_ID } from '@apitable/core';
-import { resourceService } from 'pc/resource_service';
-import { FlowContext } from '../../context/flow_context';
-import { DragNodeType } from '../../constants';
-import { isEmpty } from 'lodash';
-import { INode, IDragItem, NodeHandleState, INodeStateMap } from '../../interfaces';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
+import { resourceService } from 'pc/resource_service';
+import { DragNodeType } from '../../constants';
+import { FlowContext } from '../../context/flow_context';
+import { INode, IDragItem, NodeHandleState, INodeStateMap } from '../../interfaces';
+import { DropWrapper } from '../drop_wrapper';
+import { DragItem } from './drag_item';
+import styles from './styles.module.less';
 
 interface IRecordList {
   nodes: INode[];
@@ -56,11 +56,7 @@ export const addRecord = (viewId: string, index: number, autoOpen = true) => {
 // TODO: Extracted as a public business component
 export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
   const colors = useThemeColors();
-  const {
-    nodes,
-    disabled,
-    onClose,
-  } = props;
+  const { nodes, disabled, onClose } = props;
 
   const { viewId, orgChartStyle, nodeStateMap, setNodeStateMap, rowsCount } = useContext(FlowContext);
 
@@ -95,7 +91,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
           sourceLinkData.push({
             recordId: sourceId,
             fieldId: linkFieldId,
-            value: linkIds.filter(id => id !== item.id),
+            value: linkIds.filter((id) => id !== item.id),
           });
           return sourceLinkData;
         }, [] as ISetRecordOptions[]);
@@ -113,7 +109,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
         { [item.id]: { handleState: NodeHandleState.Unhandled }},
       );
 
-      setNodeStateMap(s => ({
+      setNodeStateMap((s) => ({
         ...s,
         ...changedNodeState,
       }));
@@ -127,16 +123,16 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
   );
 
   const nodesToRender = nodes
-    .filter(n => {
+    .filter((n) => {
       if (nodeStateMap && nodeStateMap[n.id]?.handleState === NodeHandleState.Handling) {
         return false;
       }
       if (!isEmpty(keyword)) {
-        return n.data?.recordName.includes((keyword as unknown) as string);
+        return n.data?.recordName.includes(keyword as unknown as string);
       }
       return true;
     })
-    .map(node => <DragItem key={node.id} node={node} />);
+    .map((node) => <DragItem key={node.id} node={node} />);
 
   return (
     <div className={styles.recordList}>
@@ -154,11 +150,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
       >
         <div className={styles.header}>
           <Typography variant="h6">{t(Strings.org_chart_record_list)}</Typography>
-          <IconButton
-            onClick={onClose}
-            icon={CloseOutlined}
-            size="small"
-          />
+          <IconButton onClick={onClose} icon={CloseOutlined} size="small" />
         </div>
         <ListDeprecate
           className={styles.list}

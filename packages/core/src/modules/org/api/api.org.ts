@@ -23,6 +23,7 @@ import {
   IUpdateMemberInfo,
 } from '../../../exports/store';
 import { IAxiosResponse } from 'types';
+import urlcat from 'urlcat';
 
 const CancelToken = axios.CancelToken;
 /**
@@ -374,4 +375,17 @@ export function getCollaboratorListPage(pageObjectParams: string, nodeId: string
       nodeId
     }
   });
+}
+
+/**
+ * get field permissions page member list
+ */
+
+export function getFieldPermissionPageMemberList(dstId: string, fieldId: string, pageObjectParams: string) { 
+  return axios.get(urlcat(Url.GET_FIELD_PERMISSION_PAGE_MEMBER_LIST, { dstId, fieldId }), 
+    { 
+      params: { 
+        pageObjectParams
+      }
+    });
 }

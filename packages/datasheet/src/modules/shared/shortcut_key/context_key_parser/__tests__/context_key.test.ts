@@ -19,7 +19,7 @@
 import { ContextKeyEvaluate } from '../context_key';
 
 const testEvaluate = (tests: any[]) => {
-  tests.forEach(test => {
+  tests.forEach((test) => {
     const [expression, context, expectedResult] = test;
     for (const key in context) {
       const value = context[key];
@@ -31,7 +31,6 @@ const testEvaluate = (tests: any[]) => {
 };
 
 describe('ContextKeyEvaluate', () => {
-
   it('should evaluate boolean-only expressions', () => {
     const tests = [
       ['true', null, true],
@@ -109,9 +108,8 @@ describe('ContextKeyEvaluate', () => {
 
   it('should throw error', () => {
     const tests = ['a & b', 'a | b', 'a ^ b'];
-    tests.forEach(test => {
+    tests.forEach((test) => {
       expect(() => ContextKeyEvaluate(test, null)).toThrow('Invalid Boolean Expression');
     });
   });
-
 });

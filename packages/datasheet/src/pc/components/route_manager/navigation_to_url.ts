@@ -37,14 +37,13 @@ export const navigationToUrl = (
   const { clearQuery, method, spaceId, query, hash = '' } = option;
   if (spaceId) {
     const curSpaceId = store.getState().space.activeId;
-    spaceId !== curSpaceId &&
-    store.dispatch(StoreActions.setActiveSpaceId(spaceId));
+    spaceId !== curSpaceId && store.dispatch(StoreActions.setActiveSpaceId(spaceId));
   }
   const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
   const go = getHistoryMethod(method);
   const urlObj = new URL(url);
   const urlQuery = new URLSearchParams(urlObj.search);
-  // Since there is a written dead url in the configuration table (starting with vika.cn), 
+  // Since there is a written dead url in the configuration table (starting with vika.cn),
   // for multi-environment testing, it is necessary to open vika.cn
   const reg = new RegExp(`^(${window.location.origin}|(http|https)://vika.cn)|(http|https)://help.vika.cn`);
   let newQuery: IQuery = {};

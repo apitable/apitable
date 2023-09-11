@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import classNames from 'classnames';
+import RcTrigger from 'rc-trigger';
 import { useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
-import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
-import { OptionsEditor } from 'pc/components/editors/options_editor';
-import { IExpandFieldEditRef } from '../field_editor';
-import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { CollaCommandName, ICellValue, IMemberField, IUnitMap } from '@apitable/core';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
+import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
+import { OptionsEditor } from 'pc/components/editors/options_editor';
+import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
+import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
+import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { KeyCode, printableKey, stopPropagation } from 'pc/utils';
-import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
-import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
-import { useClickAway } from 'ahooks';
+import { IExpandFieldEditRef } from '../field_editor';
 import styles from '../style.module.less';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import classNames from 'classnames';
-import { useResponsive } from 'pc/hooks';
-import RcTrigger from 'rc-trigger';
 
 export interface IExpandSelectProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -100,28 +100,25 @@ export const ExpandSelect: React.FC<React.PropsWithChildren<IExpandSelectProps>>
     // eslint-disable-next-line
   }, [isFocus]);
 
-  useImperativeHandle(
-    selfRef,
-    (): IExpandFieldEditRef => {
-      const editor = editorRef.current;
-      const noop = () => {
-        return;
-      };
-      if (!editor) {
-        return {
-          focus: noop,
-          setValue: noop,
-          saveValue: noop,
-        };
-      }
-
+  useImperativeHandle(selfRef, (): IExpandFieldEditRef => {
+    const editor = editorRef.current;
+    const noop = () => {
+      return;
+    };
+    if (!editor) {
       return {
-        focus: editor.focus,
-        setValue: editor.setValue,
+        focus: noop,
+        setValue: noop,
         saveValue: noop,
       };
-    },
-  );
+    }
+
+    return {
+      focus: editor.focus,
+      setValue: editor.setValue,
+      saveValue: noop,
+    };
+  });
 
   function onChange(value: ICellValue) {
     if (_onChange) {

@@ -98,7 +98,7 @@ function getDataFromTable(table: HTMLTableElement): ITableData {
       if (tableRowsHeightList[row] == null) {
         tableRowsHeightList[row] = Number(tableCell.getAttribute('height')) || null;
       }
-      const tableCellData: ITableCellData = tableRowData[columnIndex] = getDataFromSpan(tableCell);
+      const tableCellData: ITableCellData = (tableRowData[columnIndex] = getDataFromSpan(tableCell));
 
       const { rowSpan, colSpan } = tableCell;
       tableCellData.rowSpan = rowSpan;
@@ -244,7 +244,7 @@ function getTextFromDOM(node: Node): string | ISegment[] {
         segments.push({ type: SegmentType.Text, text });
       }
     } else {
-      text.forEach(seg => {
+      text.forEach((seg) => {
         prev = segments[segments.length - 1];
         // Merge Text types
         if (prev && prev.type === SegmentType.Text && seg.type === SegmentType.Text) {

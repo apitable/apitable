@@ -17,6 +17,7 @@
  */
 
 import { colorVars } from '@apitable/components';
+import { ViewType } from '@apitable/core';
 import {
   ArchitectureMirrorOutlined,
   CalendarMirrorOutlined,
@@ -26,7 +27,6 @@ import {
   KanbanMirrorOutlined,
   MirrorOutlined,
 } from '@apitable/icons';
-import { ViewType } from '@apitable/core';
 
 export const gstMirrorIconByViewType = (viewType: ViewType, color: string = colorVars.thirdLevelText) => {
   switch (viewType) {

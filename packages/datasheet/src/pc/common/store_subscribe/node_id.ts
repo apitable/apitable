@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
 import { NotificationStore } from 'pc/notification_store';
+import { store } from 'pc/store';
 
 let preNodeId: string | undefined;
 

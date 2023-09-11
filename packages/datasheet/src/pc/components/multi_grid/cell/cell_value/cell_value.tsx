@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { CollaCommandName, FieldType, ICellValue, IField, Selectors } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
-import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';
 import { CellCreatedTime } from 'pc/components/multi_grid/cell/cell_created_time';
+import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';
 import { CellLink } from 'pc/components/multi_grid/cell/cell_link';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 import { resourceService } from 'pc/resource_service';
-import * as React from 'react';
+import { CellAutoNumber } from '../cell_auto_number';
 import { CellCheckbox } from '../cell_checkbox';
+import { CellCreatedBy } from '../cell_created_by';
 import { CellFormula } from '../cell_formula';
 import { CellLookUp } from '../cell_lookup';
-import { CellRating } from '../cell_rating';
 import { CellMember } from '../cell_member';
-import { CellCreatedBy } from '../cell_created_by';
-import { CellAutoNumber } from '../cell_auto_number';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames';
+import { CellRating } from '../cell_rating';
 
 export interface ICellValueComponent {
   field: IField;
@@ -52,25 +52,28 @@ export interface ICellValueComponent {
 /**
  * CellValue Component Writing Specification:
  * 1. Component parameters are only allowed in ICellValueComponent, no additional parameters are allowed, please initiate a discussion if needed.
- * 2. Sub-component parameters are only allowed to accept ICellComponentProps as parameters, additional parameters are generally not allowed, 
+ * 2. Sub-component parameters are only allowed to accept ICellComponentProps as parameters, additional parameters are generally not allowed,
  * please initiate a discussion if needed, for details on the use of specific parameters, please refer to the comments in their definitions.
  */
-const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = props => {
+const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (props) => {
   const { field, recordId, cellValue, className, isActive, datasheetId, readonly, rowHeightLevel, cellTextClassName, showAlarm } = props;
-  const cellEditable = useSelector(state => {
+  const cellEditable = useSelector((state) => {
     return Selectors.getPermissions(state, datasheetId, field.id).cellEditable;
   });
 
   function onChange(value: ICellValue) {
-    !readonly && resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.SetRecords,
-      datasheetId,
-      data: [{
-        recordId,
-        fieldId: field.id,
-        value,
-      }],
-    });
+    !readonly &&
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetRecords,
+        datasheetId,
+        data: [
+          {
+            recordId,
+            fieldId: field.id,
+            value,
+          },
+        ],
+      });
   }
 
   async function toggleEdit() {
@@ -78,8 +81,13 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = pr
   }
 
   const cellProps = {
-    field, cellValue, className, onChange, isActive,
-    toggleEdit, readonly: readonly || !cellEditable,
+    field,
+    cellValue,
+    className,
+    onChange,
+    isActive,
+    toggleEdit,
+    readonly: readonly || !cellEditable,
   };
 
   switch (field.type) {
@@ -92,12 +100,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = pr
     case FieldType.Phone:
     case FieldType.SingleText:
     case FieldType.Cascader:
-      return(
-        <CellText
-          {...cellProps}
-          rowHeightLevel={rowHeightLevel}
-          className={classNames(cellTextClassName, className)}
-        />);
+      return <CellText {...cellProps} rowHeightLevel={rowHeightLevel} className={classNames(cellTextClassName, className)} />;
     case FieldType.Rating:
       return <CellRating {...cellProps} field={field} />;
     case FieldType.Checkbox:
@@ -108,12 +111,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = pr
     case FieldType.LastModifiedTime:
       return <CellCreatedTime {...cellProps} field={field} />;
     case FieldType.Attachment:
-      return <CellAttachment
-        {...cellProps}
-        field={field}
-        rowHeight={Selectors.getRowHeightFromLevel(rowHeightLevel)}
-        recordId={recordId}
-      />;
+      return <CellAttachment {...cellProps} field={field} rowHeight={Selectors.getRowHeightFromLevel(rowHeightLevel)} recordId={recordId} />;
     case FieldType.SingleSelect:
     case FieldType.MultiSelect:
       return <CellOptions {...cellProps} rowHeightLevel={rowHeightLevel} />;

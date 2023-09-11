@@ -32,35 +32,35 @@ class LanguageUtil {
   }
 
   getScriptPartFromCode(code) {
-    if (!code || code.indexOf("-") < 0) {
+    if (!code || code.indexOf('-') < 0) {
       return null;
     }
 
-    const p = code.split("-");
+    const p = code.split('-');
     if (p.length === 2) {
       return null;
     }
     p.pop();
-    return this.formatLanguageCode(p.join("-"));
+    return this.formatLanguageCode(p.join('-'));
   }
 
   getLanguagePartFromCode(code) {
-    if (!code || code.indexOf("-") < 0) {
+    if (!code || code.indexOf('-') < 0) {
       return code;
     }
 
-    const p = code.split("-");
+    const p = code.split('-');
     return this.formatLanguageCode(p[0]);
   }
 
   formatLanguageCode(code) {
     // http://www.iana.org/assignments/language-tags/language-tags.xhtml
-    if (typeof code === "string" && code.indexOf("-") > -1) {
-      const specialCases = ["hans", "hant", "latn", "cyrl", "cans", "mong", "arab"];
-      let p = code.split("-");
+    if (typeof code === 'string' && code.indexOf('-') > -1) {
+      const specialCases = ['hans', 'hant', 'latn', 'cyrl', 'cans', 'mong', 'arab'];
+      let p = code.split('-');
 
       if (this.options.lowerCaseLng) {
-        p = p.map(part => part.toLowerCase());
+        p = p.map((part) => part.toLowerCase());
       } else if (p.length === 2) {
         p[0] = p[0].toLowerCase();
         p[1] = p[1].toUpperCase();
@@ -74,7 +74,6 @@ class LanguageUtil {
         if (specialCases.indexOf(p[1].toLowerCase()) > -1) {
           // p[1] = capitalize(p[1].toLowerCase());
 
-          
           p[1] = p[2];
           p.pop();
         }
@@ -89,17 +88,16 @@ class LanguageUtil {
         // if (specialCases.indexOf(p[2].toLowerCase()) > -1) {
         //   p[2] = capitalize(p[2].toLowerCase());
         // }
-
       }
 
-      return p.join("_");
+      return p.join('_');
     }
 
     return this.options.cleanCode || this.options.lowerCaseLng ? code.toLowerCase() : code;
   }
 
   isWhitelisted(code) {
-    if (this.options.load === "languageOnly" || this.options.nonExplicitWhitelist) {
+    if (this.options.load === 'languageOnly' || this.options.nonExplicitWhitelist) {
       code = this.getLanguagePartFromCode(code);
     }
     return !this.whitelist || !this.whitelist.length || this.whitelist.indexOf(code) > -1;
@@ -109,10 +107,10 @@ class LanguageUtil {
     if (!fallbacks) {
       return [];
     }
-    if (typeof fallbacks === "string") {
+    if (typeof fallbacks === 'string') {
       fallbacks = [fallbacks];
     }
-    if (Object.prototype.toString.apply(fallbacks) === "[object Array]") {
+    if (Object.prototype.toString.apply(fallbacks) === '[object Array]') {
       return fallbacks;
     }
 
@@ -136,13 +134,10 @@ class LanguageUtil {
   }
 
   toResolveHierarchy(code, fallbackCode) {
-    const fallbackCodes = this.getFallbackCodes(
-      fallbackCode || this.options.fallbackLng || [],
-      code,
-    );
+    const fallbackCodes = this.getFallbackCodes(fallbackCode || this.options.fallbackLng || [], code);
 
     const codes = [];
-    const addCode = c => {
+    const addCode = (c) => {
       if (!c) {
         return;
       }
@@ -155,21 +150,21 @@ class LanguageUtil {
       }
     };
 
-    if (typeof code === "string" && code.indexOf("-") > -1) {
-      if (this.options.load !== "languageOnly") {
+    if (typeof code === 'string' && code.indexOf('-') > -1) {
+      if (this.options.load !== 'languageOnly') {
         addCode(this.formatLanguageCode(code));
       }
-      if (this.options.load !== "languageOnly" && this.options.load !== "currentOnly") {
+      if (this.options.load !== 'languageOnly' && this.options.load !== 'currentOnly') {
         addCode(this.getScriptPartFromCode(code));
       }
-      if (this.options.load !== "currentOnly") {
+      if (this.options.load !== 'currentOnly') {
         addCode(this.getLanguagePartFromCode(code));
       }
-    } else if (typeof code === "string") {
+    } else if (typeof code === 'string') {
       addCode(this.formatLanguageCode(code));
     }
 
-    fallbackCodes.forEach(fc => {
+    fallbackCodes.forEach((fc) => {
       if (codes.indexOf(fc) < 0) {
         addCode(this.formatLanguageCode(fc));
       }

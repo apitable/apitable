@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, LinkButton, Box, useThemeColors, Pagination } from '@apitable/components';
 import { Table, ConfigProvider } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import styles from './style.module.less';
+import { Typography, LinkButton, Box, useThemeColors, Pagination } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { RoleContext } from '../context';
 import { IMemberItem } from '../interface';
+import styles from './style.module.less';
 import { UnitItem } from './unit_item';
 
 export interface IPageParams {
@@ -42,14 +42,16 @@ export const defaultPage: IPageInfo = {
   page: 1,
 };
 
-export const RoleTable: React.FC<React.PropsWithChildren<{
-  list: any[];
-  total: number;
-  onChangePage: (page: number, pageSize?: number) => void;
-  onRemove?: (unitIds: string[]) => void;
-  openAddMemberModal?: () => void;
-  onBatchSelectMember?: (unitIds: string[]) => void;
-}>> = props => {
+export const RoleTable: React.FC<
+  React.PropsWithChildren<{
+    list: any[];
+    total: number;
+    onChangePage: (page: number, pageSize?: number) => void;
+    onRemove?: (unitIds: string[]) => void;
+    openAddMemberModal?: () => void;
+    onBatchSelectMember?: (unitIds: string[]) => void;
+  }>
+> = (props) => {
   const colors = useThemeColors();
   const { list, total, onChangePage, onRemove, openAddMemberModal, onBatchSelectMember } = props;
   const { manageable } = useContext(RoleContext);
@@ -92,7 +94,7 @@ export const RoleTable: React.FC<React.PropsWithChildren<{
       title: t(Strings.role_member_table_header_team),
       align: 'left',
       width: 29.6,
-      render: (_, record) => <Typography variant='body3'>{record.teams || record.unitName}</Typography>,
+      render: (_, record) => <Typography variant="body3">{record.teams || record.unitName}</Typography>,
     },
   ];
 
@@ -114,7 +116,7 @@ export const RoleTable: React.FC<React.PropsWithChildren<{
     ? {
       columnWidth: 4.8,
       onChange: (_selectedRowKeys: React.Key[], selectedRow: IMemberItem[]) => {
-        onBatchSelectMember && onBatchSelectMember(selectedRow.map(v => v.unitRefId));
+        onBatchSelectMember && onBatchSelectMember(selectedRow.map((v) => v.unitRefId));
       },
     }
     : undefined;
@@ -129,7 +131,7 @@ export const RoleTable: React.FC<React.PropsWithChildren<{
             dataSource={list}
             columns={columns}
             pagination={false}
-            rowKey={record => String(record.unitId)}
+            rowKey={(record) => String(record.unitId)}
             rowSelection={rowSelection}
             scroll={{ y: scrollHeight }}
           />
@@ -154,7 +156,7 @@ export const RoleTable: React.FC<React.PropsWithChildren<{
   );
 };
 
-const Empty: React.FC<React.PropsWithChildren<{ wrapperHeight: number, addRole?: () => void }>> = props => {
+const Empty: React.FC<React.PropsWithChildren<{ wrapperHeight: number; addRole?: () => void }>> = (props) => {
   const { wrapperHeight, addRole } = props;
   const colors = useThemeColors();
   const { manageable } = useContext(RoleContext);
@@ -164,7 +166,8 @@ const Empty: React.FC<React.PropsWithChildren<{ wrapperHeight: number, addRole?:
       alignItems={'center'}
       justifyContent={'center'}
       marginTop={`${wrapperHeight / 2}px`}
-      style={{ transform: 'translateY(-50%)' }}>
+      style={{ transform: 'translateY(-50%)' }}
+    >
       <Typography color={colors.textCommonTertiary} variant="body2">
         {t(Strings.role_member_table_empty)}
       </Typography>
@@ -172,4 +175,3 @@ const Empty: React.FC<React.PropsWithChildren<{ wrapperHeight: number, addRole?:
     </Box>
   );
 };
-

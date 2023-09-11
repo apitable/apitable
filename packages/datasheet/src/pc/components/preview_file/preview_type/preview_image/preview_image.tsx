@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useRef } from 'react';
 import * as React from 'react';
-import { IPreviewTypeBase } from '../preview_type.interface';
-import { cellValueToImageSrc, isWebp } from '@apitable/core';
-import styles from './style.module.less';
-import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
-import { browser } from 'modules/shared/browser';
-import { NoSupport } from '../no_support';
-import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
-import { useEvents } from './hooks/use_events';
 import { stopPropagation } from '@apitable/components';
+import { cellValueToImageSrc, isWebp } from '@apitable/core';
+import { browser } from 'modules/shared/browser';
+import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
+import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
 import { MIN_SCALE } from '../../preview_main/constant';
-import classNames from 'classnames';
+import { NoSupport } from '../no_support';
+import { IPreviewTypeBase } from '../preview_type.interface';
+import { useEvents } from './hooks/use_events';
+import styles from './style.module.less';
 
-export const PreviewImage: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
+export const PreviewImage: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = (props) => {
   const { file, transformInfo, setTransformInfo, disabledDownload } = props;
   const { rotate, scale, translatePosition } = transformInfo;
 

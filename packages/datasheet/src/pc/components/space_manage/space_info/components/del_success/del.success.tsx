@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Navigation, Strings, t } from '@apitable/core';
-import { CheckCircleFilled, CloseOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Modal } from 'antd';
-import { Router } from 'pc/components/route_manager/router';
 import { FC, useState } from 'react';
+import { Navigation, Strings, t } from '@apitable/core';
+import { CheckCircleFilled, CloseOutlined } from '@apitable/icons';
+import { Router } from 'pc/components/route_manager/router';
 import styles from './style.module.less';
 
 interface IResModal {
@@ -58,7 +58,7 @@ export const DelSuccess: FC<React.PropsWithChildren<IResModal>> = ({ tip }) => {
       closeIcon={<CloseOutlined />}
     >
       <div className={styles.delSuccess}>
-        <CheckCircleFilled size={70} color='#52C41A' />
+        <CheckCircleFilled size={70} color="#52C41A" />
         <div className={styles.title}>{t(Strings.delete_succeed)}</div>
         <div className={styles.tip}>{tip}</div>
       </div>

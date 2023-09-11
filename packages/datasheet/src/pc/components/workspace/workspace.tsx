@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
-import { useMount } from 'ahooks';
-import classNames from 'classnames';
-// @ts-ignore
-import { showOrderModal } from 'enterprise';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
-import { useRouter } from 'next/router';
 import { TComponent } from 'pc/components/common/t_component';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
 import { Router } from 'pc/components/route_manager/router';
@@ -37,15 +38,14 @@ import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } f
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
-import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
 import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
+// @ts-ignore
+import { showOrderModal } from 'enterprise';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -112,7 +112,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
   const [panelVisible, setPanelVisible] = useState(false);
   const [newTdbId, setNewTdbId] = useState('');
-  const sideBarVisible = useSelector(state => state.space.sideBarVisible);
+  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
 
   useMount(() => {
     if (!query.get('choosePlan') || isMobile) return;
@@ -123,41 +123,45 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (!query.get('stripePaySuccess') || isMobile) return;
     showOrderModal({
       modalTitle: t(Strings.upgrade_success_model, { orderType: t(Strings.upgrade) }),
-      modalSubTitle: () => <>
-        <div className={styles.desc1} style={{ marginTop: 24, fontSize: 16 }}>
-          {
-            <TComponent
-              tkey={t(Strings.upgrade_success_1_desc)}
-              params={{
-                orderType: t(Strings.upgrade),
-                position:
-                  <LinkButton
-                    className={styles.linkButton}
-                    style={{
-                      display: 'inline-block',
-                    }}
-                    onClick={() => {
-                      if (isMobile) {
-                        return;
-                      }
-                      Router.redirect(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }, clearQuery: true });
-                    }}
-                  >
-                    {t(Strings.space_overview)}
-                  </LinkButton>,
-
-              }}
-            />
-          }
-        </div>
-      </>,
+      modalSubTitle: () => (
+        <>
+          <div className={styles.desc1} style={{ marginTop: 24, fontSize: 16 }}>
+            {
+              <TComponent
+                tkey={t(Strings.upgrade_success_1_desc)}
+                params={{
+                  orderType: t(Strings.upgrade),
+                  position: (
+                    <LinkButton
+                      className={styles.linkButton}
+                      style={{
+                        display: 'inline-block',
+                      }}
+                      onClick={() => {
+                        if (isMobile) {
+                          return;
+                        }
+                        Router.redirect(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'overview' }, clearQuery: true });
+                      }}
+                    >
+                      {t(Strings.space_overview)}
+                    </LinkButton>
+                  ),
+                }}
+              />
+            }
+          </div>
+        </>
+      ),
       qrCodeUrl: '',
-      illustrations: <img
-        width={'250px'}
-        src={theme.palette.type === 'light' ? UpgradeSucceedLight.src : UpgradeSucceedDark.src}
-        style={{ marginTop: 16 }}
-        alt="Upgrade Succeed"
-      />,
+      illustrations: (
+        <img
+          width={'250px'}
+          src={theme.palette.type === 'light' ? UpgradeSucceedLight.src : UpgradeSucceedDark.src}
+          style={{ marginTop: 16 }}
+          alt="Upgrade Succeed"
+        />
+      ),
       btnText: t(Strings.got_it),
     });
   });
@@ -283,7 +287,8 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     onSetPanelVisible: setPanelVisible,
     onSetSideBarVisibleByUser: handleSetSideBarByUser,
     onSetSideBarVisibleByOhter: handleSetSideBarByOther,
-    newTdbId, setNewTdbId,
+    newTdbId,
+    setNewTdbId,
   };
 
   return (

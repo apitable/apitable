@@ -639,6 +639,19 @@ export const useCatalogTreeRequest = () => {
     });
   };
 
+  const getFieldPermissionMemberListPage = (dstId: string, fieldId: string, pageNo: number) => {
+    const pageObjectParams = {
+      pageSize: ConfigConstant.MEMBER_LIST_PAGE_SIZE,
+    };
+    return Api.getFieldPermissionPageMemberList(dstId, fieldId, JSON.stringify({ ...pageObjectParams, pageNo })).then((res) => {
+      const { success, data, message } = res.data;
+      if (success) {
+        return data;
+      }
+      Message.error({ content: message });
+    });
+  };
+
   return {
     checkNodeNumberLimit,
     addNodeReq,
@@ -668,5 +681,6 @@ export const useCatalogTreeRequest = () => {
     updateNodeRecordHistoryReq,
     disableShareReq,
     getCollaboratorListPageReq,
+    getFieldPermissionMemberListPage
   };
 };

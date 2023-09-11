@@ -19,7 +19,12 @@ import { Selectors, IReduxState, StoreActions, FieldType } from '@apitable/core'
 import { store } from 'pc/store';
 
 export const getDatasheetOrLoad = (
-  state: IReduxState, foreignDatasheetId: string, dstId?: string, assignDstId?: boolean, forceFetch?: boolean, ignoreMirror?: boolean
+  state: IReduxState,
+  foreignDatasheetId: string,
+  dstId?: string,
+  assignDstId?: boolean,
+  forceFetch?: boolean,
+  ignoreMirror?: boolean,
 ) => {
   const { formId, mirrorId } = state.pageParams;
   const datasheetId = dstId || state.pageParams.datasheetId;
@@ -28,14 +33,13 @@ export const getDatasheetOrLoad = (
   const datasheetErrorCode = Selectors.getDatasheetErrorCode(state, foreignDatasheetId);
   const fieldMap = datasheet?.snapshot.meta?.fieldMap;
   // check if foreign datasheet has link relationship
-  const isforeignDatasheetIdRelated = fieldMap ? Object.values(fieldMap).some(field =>
-    field.type === FieldType.Link && field.property.foreignDatasheetId === foreignDatasheetId) : true;
+  const isforeignDatasheetIdRelated = fieldMap
+    ? Object.values(fieldMap).some((field) => field.type === FieldType.Link && field.property.foreignDatasheetId === foreignDatasheetId)
+    : true;
 
   if (
     isforeignDatasheetIdRelated &&
-    (forceFetch ||
-    (!datasheet && !datasheetLoading && !datasheetErrorCode) ||
-    (datasheet?.isPartOfData && !datasheetLoading && !datasheetErrorCode))
+    (forceFetch || (!datasheet && !datasheetLoading && !datasheetErrorCode) || (datasheet?.isPartOfData && !datasheetLoading && !datasheetErrorCode))
   ) {
     if (formId) {
       store.dispatch(StoreActions.fetchForeignDatasheet(formId, foreignDatasheetId, forceFetch));

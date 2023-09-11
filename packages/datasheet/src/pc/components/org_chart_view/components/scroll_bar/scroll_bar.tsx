@@ -16,28 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { FC, useRef } from 'react';
 import { ScrollBarType } from '../../interfaces';
 
 import styles from './styles.module.less';
 import { useScrollEvents } from './use_scroll_events';
 
-import classNames from 'classnames';
-
 export interface IScrollBarProps {
   type: ScrollBarType;
 }
 
-export const ScrollBar: FC<React.PropsWithChildren<IScrollBarProps>> = ({
-  type,
-}) => {
-
+export const ScrollBar: FC<React.PropsWithChildren<IScrollBarProps>> = ({ type }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    scrollHandler,
-    contentSize,
-  } = useScrollEvents(type, containerRef);
+  const { scrollHandler, contentSize } = useScrollEvents(type, containerRef);
 
   const isHorizontal = type === ScrollBarType.Horizontal;
   const scrollWrapperSize = 16;

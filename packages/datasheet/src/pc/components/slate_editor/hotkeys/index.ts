@@ -43,7 +43,7 @@ export const hotkeyHandle = (e: KeyboardEvent, editor: Editor & IVikaEditor) => 
   }
   for (const hotkey in hotkeys) {
     if (isHotkey(hotkey, e)) {
-      // action return value determines whether to block the default behavior, 
+      // action return value determines whether to block the default behavior,
       // the default is to block all, if not to block the need to display the return true
       const action = hotkeys[hotkey].action;
       if (!action(editor)) {

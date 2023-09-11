@@ -17,8 +17,8 @@
  */
 
 import { useMemo } from 'react';
-import { isTouchDevice } from 'pc/utils';
 import { useMobileScroller, useScroller, AreaType } from 'pc/components/gantt_view';
+import { isTouchDevice } from 'pc/utils';
 
 interface IUseGridScrollerProps {
   containerRef: React.RefObject<any>;

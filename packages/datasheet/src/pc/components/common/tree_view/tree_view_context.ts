@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant } from '@apitable/core';
 import * as React from 'react';
+import { ConfigConstant } from '@apitable/core';
 import { ExpandAction } from './tree_view';
 
 export interface ITreeViewContext {
@@ -40,7 +40,7 @@ export interface ITreeViewContext {
   focus: (e: React.MouseEvent, nodeId: string) => void;
   toggleExpansion: (nodeId: string) => void;
   selectNode: (e: React.MouseEvent, nodeId: string, multiple?: boolean) => boolean;
-  onDoubleClick?: (e: React.MouseEvent, data: { key: string, level: string }) => void;
+  onDoubleClick?: (e: React.MouseEvent, data: { key: string; level: string }) => void;
   dragStart: (treeNode: any) => void;
   dragOver: (treeNode: any) => void;
   drop: (treeNode: any) => void;

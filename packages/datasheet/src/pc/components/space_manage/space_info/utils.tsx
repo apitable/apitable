@@ -17,16 +17,22 @@
  */
 
 // FIXME:THEME
+import cx from 'classnames';
+import { useMemo } from 'react';
 import { colors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 // import { showSeatsUpgrading, showLevelCompare, showLevelRenewing } from 'pc/components/subscription';
 import {
-  BronzeDarkFilled, BronzeLightFilled, EnterpriseDarkFilled, EnterpriseLightFilled, GoldDarkFilled, GoldLightFilled, SilverDarkFilled,
-  SilverLightFilled
+  BronzeDarkFilled,
+  BronzeLightFilled,
+  EnterpriseDarkFilled,
+  EnterpriseLightFilled,
+  GoldDarkFilled,
+  GoldLightFilled,
+  SilverDarkFilled,
+  SilverLightFilled,
 } from '@apitable/icons';
-import cx from 'classnames';
 import { ThemeIcon } from 'pc/components/common/theme_icon/theme_icon';
-import { useMemo } from 'react';
 import BronzeCardBg from 'static/icon/space/bronze_card_bg.png';
 import BronzeCardSkin from 'static/icon/space/bronze_card_medal.png';
 import EnterpriseCardBg from 'static/icon/space/enterprise_card_bg.png';
@@ -78,7 +84,7 @@ const bronzeAndFree = {
         <span className={styles.text}>{text}</span>
       </span>
     );
-  }
+  },
 };
 
 const silverAndPlus = {
@@ -100,9 +106,11 @@ const silverAndPlus = {
     height: '82px',
   },
   logo: <ThemeIcon darkIcon={<SilverDarkFilled size={20} />} lightIcon={<SilverLightFilled size={20} />} />,
-  getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
-    <span className={styles.text}>{text}</span>
-  </span>,
+  getLabel: (text: string) => (
+    <span className={cx(styles.spaceLevelTag, styles.silverTag)}>
+      <span className={styles.text}>{text}</span>
+    </span>
+  ),
 };
 
 const goldenAndPro = {
@@ -124,9 +132,11 @@ const goldenAndPro = {
     height: '82px',
   },
   logo: <ThemeIcon darkIcon={<GoldDarkFilled size={20} />} lightIcon={<GoldLightFilled size={20} />} />,
-  getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
-    <span className={styles.text}>{text}</span>
-  </span>,
+  getLabel: (text: string) => (
+    <span className={cx(styles.spaceLevelTag, styles.goldTag)}>
+      <span className={styles.text}>{text}</span>
+    </span>
+  ),
 };
 const LevelConfigMap = {
   bronze: bronzeAndFree,
@@ -155,15 +165,17 @@ const LevelConfigMap = {
       height: '82px',
     },
     logo: <ThemeIcon darkIcon={<EnterpriseDarkFilled size={20} />} lightIcon={<EnterpriseLightFilled size={20} />} />,
-    getLabel: (text: string) => <span className={cx(styles.spaceLevelTag, styles.enterpriseTag)}>
-      <span className={styles.text}>{text}</span>
-    </span>,
+    getLabel: (text: string) => (
+      <span className={cx(styles.spaceLevelTag, styles.enterpriseTag)}>
+        <span className={styles.text}>{text}</span>
+      </span>
+    ),
   },
 };
 
 const getSpaceConfig = (
   spaceLevel: keyof typeof LevelConfigMap,
-  texts: { title: string, titleTip: string, tagText: string, buttonText: string },
+  texts: { title: string; titleTip: string; tagText: string; buttonText: string },
 ): ISpaceLevelInfoValue => {
   const config = LevelConfigMap[spaceLevel];
   const { title, titleTip, tagText, buttonText } = texts;
@@ -337,4 +349,3 @@ export const useLevelInfo = (level: ISpaceLevelType, expiration?: string | null)
     return info;
   }, [level, expiration]);
 };
-

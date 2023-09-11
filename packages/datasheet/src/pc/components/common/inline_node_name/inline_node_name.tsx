@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
-import classNames from 'classnames';
-import { getNodeTypeByNodeId } from 'pc/utils';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { getNodeTypeByNodeId } from 'pc/utils';
 import { Tooltip } from '../tooltip';
 import styles from './styles.module.less';
 
@@ -30,7 +30,7 @@ interface IInlineNodeNameProps {
   nodeNameStyle?: React.CSSProperties;
   nodeIcon: string | undefined;
   withIcon?: boolean;
-  withBrackets?: boolean; 
+  withBrackets?: boolean;
   withTip?: boolean;
   iconSize?: number;
   size?: number;
@@ -39,10 +39,20 @@ interface IInlineNodeNameProps {
   iconEditable?: boolean;
 }
 
-export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNameProps>> = props => {
+export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNameProps>> = (props) => {
   const {
-    nodeId, nodeName, nodeIcon, withIcon, iconSize = 18, size = 16, withBrackets, nodeNameStyle,
-    prefix = '', className, withTip, iconEditable,
+    nodeId,
+    nodeName,
+    nodeIcon,
+    withIcon,
+    iconSize = 18,
+    size = 16,
+    withBrackets,
+    nodeNameStyle,
+    prefix = '',
+    className,
+    withTip,
+    iconEditable,
   } = props;
   const [showTip, setShowTip] = useState(false);
 
@@ -52,27 +62,17 @@ export const InlineNodeName: React.FC<React.PropsWithChildren<IInlineNodeNamePro
     if (withTip) setShowTip(show);
   };
   return (
-    <Tooltip
-      title={nodeName}
-      placement="left"
-      open={showTip}
-      mouseEnterDelay={0.5}
-      onOpenChange={handleShowTipChange}
-    >
+    <Tooltip title={nodeName} placement="left" open={showTip} mouseEnterDelay={0.5} onOpenChange={handleShowTipChange}>
       <div className={classNames(styles.datasheetInfo, className, iconEditable && styles.iconEditable)}>
         {prefix}
         {withBrackets && '「'}
         {withIcon && (
-          <NodeIcon
-            nodeId={nodeId}
-            icon={nodeIcon}
-            type={getNodeTypeByNodeId(nodeId)}
-            size={nodeIcon ? iconSize : size}
-            editable={iconEditable}
-          />
+          <NodeIcon nodeId={nodeId} icon={nodeIcon} type={getNodeTypeByNodeId(nodeId)} size={nodeIcon ? iconSize : size} editable={iconEditable} />
         )}
         <Tooltip title={nodeName} textEllipsis>
-          <span className={styles.name} style={nodeNameStyle}>{nodeName}</span>
+          <span className={styles.name} style={nodeNameStyle}>
+            {nodeName}
+          </span>
         </Tooltip>
         {withBrackets && '」'}
       </div>

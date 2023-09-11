@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
-import styles from './style.module.less';
 import RightArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
-import classnames from 'classnames';
+import styles from './style.module.less';
 
 export interface IContextmenuItemProps {
   className?: string;
@@ -29,7 +29,7 @@ export interface IContextmenuItemProps {
   name: string;
   shortcutKey?: string;
   arrow?: boolean;
-  onClick?: ({ event }: { event: any, triggerEvent: any }) => void;
+  onClick?: ({ event }: { event: any; triggerEvent: any }) => void;
 }
 
 export const ContextmenuItem: FC<React.PropsWithChildren<IContextmenuItemProps>> = ({
@@ -42,8 +42,13 @@ export const ContextmenuItem: FC<React.PropsWithChildren<IContextmenuItemProps>>
   ...rest
 }) => {
   return (
-    <div className={classnames(styles.contextmenuItem, className)} onClick={(e) => {onClick?.({ event: e, triggerEvent: e });}}
-      {...rest}>
+    <div
+      className={classnames(styles.contextmenuItem, className)}
+      onClick={(e) => {
+        onClick?.({ event: e, triggerEvent: e });
+      }}
+      {...rest}
+    >
       {icon}
       <div className={styles.name}>{name}</div>
       <div className={styles.shortcutKey}>{shortcutKey}</div>

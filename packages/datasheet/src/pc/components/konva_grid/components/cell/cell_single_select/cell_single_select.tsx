@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import { FC, useContext, useState } from 'react';
 import { getNextShadeColor, ThemeName } from '@apitable/components';
 import { KONVA_DATASHEET_ID } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
-import { FC, useContext, useState } from 'react';
 import {
-  GRID_CELL_DELETE_ITEM_BUTTON_SIZE, GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET,
+  GRID_CELL_VALUE_PADDING,
+  GRID_OPTION_ITEM_PADDING,
 } from '../../../constant';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { IRenderContentBase, IRenderData } from '../interface';
@@ -35,19 +38,7 @@ const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 
 export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const {
-    x,
-    y,
-    recordId,
-    field,
-    rowHeight,
-    columnWidth,
-    renderData,
-    isActive,
-    editable,
-    onChange,
-    toggleEdit
-  } = props;
+  const { x, y, recordId, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { setCellDown, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { cacheTheme } = useContext(KonvaGridViewContext);
@@ -59,7 +50,7 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
   const [isHover, setHover] = useState(false);
   const [isCloseHover, setCloseHover] = useState(false);
@@ -70,8 +61,7 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
     if (renderContent == null) return null;
     const { x, y, width, height, text, style } = renderContent as IRenderContentBase;
     const { background, color } = style;
-    const iconColor = isLightTheme ?
-      (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg): colors.textStaticPrimary;
+    const iconColor = isLightTheme ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
 
     let iconBg = 'transparent';
     if (isCloseHover) {
@@ -82,27 +72,10 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
     }
 
     return (
-      <Group
-        x={x}
-        y={y}
-        listening={isActive}
-      >
-        <Rect
-          width={width}
-          height={height}
-          fill={background}
-          cornerRadius={16}
-          listening={false}
-        />
-        <Text
-          x={GRID_OPTION_ITEM_PADDING}
-          height={height}
-          text={text}
-          fill={color}
-          fontSize={12}
-        />
-        {
-          operatingEnable &&
+      <Group x={x} y={y} listening={isActive}>
+        <Rect width={width} height={height} fill={background} cornerRadius={16} listening={false} />
+        <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={text} fill={color} fontSize={12} />
+        {operatingEnable && (
           <Icon
             name={name}
             x={width - GRID_OPTION_ITEM_PADDING - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET}
@@ -133,7 +106,7 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
               setCloseHover(false);
             }}
           />
-        }
+        )}
       </Group>
     );
   };
@@ -148,9 +121,7 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
       recordId={recordId}
       renderData={{} as IRenderData}
     >
-      {
-        operatingEnable &&
-        renderContent == null &&
+      {operatingEnable && renderContent == null && (
         <Icon
           name={name}
           x={GRID_CELL_VALUE_PADDING}
@@ -165,11 +136,8 @@ export const CellSingleSelect: FC<React.PropsWithChildren<ICellProps>> = (props)
           onClick={toggleEdit}
           onTap={toggleEdit}
         />
-      }
-      {
-        isActive &&
-        renderSingleSelect()
-      }
+      )}
+      {isActive && renderSingleSelect()}
     </CellScrollContainer>
   );
 };

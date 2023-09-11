@@ -65,4 +65,3 @@ export const browserIsDesktop = async() => {
   const device = await import('current-device');
   return device.default.desktop();
 };
-

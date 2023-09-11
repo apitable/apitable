@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Editor, Range, Selection, Node, Element, Location } from 'slate';
-import { ReactEditor } from 'slate-react';
 import _isUrl from 'is-url';
 import { cloneDeep } from 'lodash';
+import { Editor, Range, Selection, Node, Element, Location } from 'slate';
+import { ReactEditor } from 'slate-react';
 import { ElementType, LIST_ITEM_TYPE_DICT, IS_WRAP } from '../constant';
-import { IElement, IImageElementData } from '../interface/element';
 import { IVikaEditor } from '../interface/editor';
+import { IElement, IImageElementData } from '../interface/element';
 
 const defaultPoint = {
   path: [0, 0],
@@ -47,7 +47,7 @@ export const getDefaultSelection = (firstChild: IElement) => {
     };
   }
   return defaultSelection;
-}; 
+};
 
 export const getValidSelection = (editor: Editor & IVikaEditor) => {
   // Special Note!
@@ -57,11 +57,14 @@ export const getValidSelection = (editor: Editor & IVikaEditor) => {
 };
 
 export const getCurrentElement = (editor: any, location?: Location) => {
-  const selection = location || getValidSelection(editor) as Selection;
-  const path = !selection ? 
-    [0, 0] : Range.isRange(selection) ?
-      [...selection.focus.path] : Array.isArray(selection) ?
-        [...selection, 0] : [...selection.path, 0];
+  const selection = location || (getValidSelection(editor) as Selection);
+  const path = !selection
+    ? [0, 0]
+    : Range.isRange(selection)
+      ? [...selection.focus.path]
+      : Array.isArray(selection)
+        ? [...selection, 0]
+        : [...selection.path, 0];
   // The last path is a leaf text node and needs to be removed
   path.pop();
   try {
@@ -74,7 +77,6 @@ export const getCurrentElement = (editor: any, location?: Location) => {
   } catch (error) {
     return editor as IElement;
   }
-  
 };
 
 export const getParentElement = (editor: ReactEditor, curElement: IElement) => {
@@ -103,13 +105,11 @@ export const getValidElementType = (editor: ReactEditor, curElement: IElement): 
 export const isBlockActive = (editor: Editor, blockType: ElementType) => {
   try {
     const [match] = Editor.nodes(editor, {
-      match: n =>
-        !Editor.isEditor(n) && Element.isElement(n) && (n as IElement).type === blockType,
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as IElement).type === blockType,
       at: getValidSelection(editor),
     });
-  
+
     return !!match;
-    
   } catch (error) {
     console.log(error);
     return false;
@@ -141,25 +141,21 @@ export const isImage = (str: string) => {
 };
 
 export interface ICalcPositionOption {
-  anchor: DOMRect,
-  popup: DOMRect,
-  offset?: { x: number, y: number }
-  align?: ['left' | 'center' | 'right', 'top' | 'middle' | 'bottom']
+  anchor: DOMRect;
+  popup: DOMRect;
+  offset?: { x: number; y: number };
+  align?: ['left' | 'center' | 'right', 'top' | 'middle' | 'bottom'];
 }
 
-export const getValidPopupPosition = ({
-  anchor,
-  popup,
-  offset = { x: 0, y: 0 },
-  align = ['right', 'top']
-}: ICalcPositionOption) => {
+export const getValidPopupPosition = ({ anchor, popup, offset = { x: 0, y: 0 }, align = ['right', 'top'] }: ICalcPositionOption) => {
   const [alh, alv] = align;
   const { top: at, left: al, height: ah, width: aw } = anchor;
   let { width: pw, height: ph } = popup;
   const { x: ox, y: oy } = offset;
   const wh = window.innerHeight;
   const ww = window.innerWidth;
-  let top = at + oy, left = al + ox;
+  let top = at + oy,
+      left = al + ox;
   if (alh === 'center') {
     pw /= 2;
     left = al - pw + aw / 2;
@@ -191,7 +187,7 @@ export const getImgData = (file: File, url?: string): IImageElementData => {
     name: file.name,
     url,
     type: file.type,
-    size: file.size
+    size: file.size,
   };
 };
 

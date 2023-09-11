@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, IUserInfo } from '@apitable/core';
 import { FC, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { IAttachmentValue, IUserInfo } from '@apitable/core';
 import { ITransFormInfo } from '../preview_file.interface';
 import { PreviewType } from '../preview_type';
 import { MAX_SCALE, MIN_SCALE } from './constant';
@@ -45,7 +45,7 @@ interface ITouchPosition {
   pageX: number;
 }
 
-export const Swiper: FC<React.PropsWithChildren<ISwiperProps>> = props => {
+export const Swiper: FC<React.PropsWithChildren<ISwiperProps>> = (props) => {
   const {
     transformInfo,
     activeIndex,
@@ -192,7 +192,7 @@ export const Swiper: FC<React.PropsWithChildren<ISwiperProps>> = props => {
             className={styles.swiperItem}
             draggable={false}
             {...mobileHandler}
-            onContextMenu={e => {
+            onContextMenu={(e) => {
               if (disabledDownload) {
                 e.preventDefault();
                 return false;

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Skeleton } from '@apitable/components';
-import styles from './style.module.less';
-import { FormContainer } from '../form_container';
 import { Dispatch, SetStateAction } from 'react';
+import { Skeleton } from '@apitable/components';
+import { FormContainer } from '../form_container';
+import styles from './style.module.less';
 
-export const ViewContainer = (props: { loading?: boolean; preFill: boolean, setPreFill: Dispatch<SetStateAction<boolean>>; }) => {
+export const ViewContainer = (props: { loading?: boolean; preFill: boolean; setPreFill: Dispatch<SetStateAction<boolean>> }) => {
   if (props.loading) {
     return (
       <div className={styles.skeletonWrapper}>
@@ -31,7 +31,5 @@ export const ViewContainer = (props: { loading?: boolean; preFill: boolean, setP
     );
   }
 
-  return (
-    <FormContainer preFill={props.preFill} setPreFill={props.setPreFill} />
-  );
+  return <FormContainer preFill={props.preFill} setPreFill={props.setPreFill} />;
 };

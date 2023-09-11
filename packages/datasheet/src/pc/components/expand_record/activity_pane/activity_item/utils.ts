@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IField, IMemberField, IMultiSelectField, ISelectField } from '@apitable/core';
 import { find, get, has, values } from 'lodash';
+import { IField, IMemberField, IMultiSelectField, ISelectField } from '@apitable/core';
 
 interface ISelectFieldParam {
   cacheFieldOptions: object;
@@ -32,7 +32,7 @@ export const supplySelectField = (props: ISelectFieldParam) => {
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as ISelectField[];
-  return find(fieldOptionsMap, fo => has(fo, 'property.options') && fo.property.options.some(op => oiOrOd === op.id)) || field;
+  return find(fieldOptionsMap, (fo) => has(fo, 'property.options') && fo.property.options.some((op) => oiOrOd === op.id)) || field;
 };
 
 interface IMultiSelectOrMemberFieldParam {
@@ -48,7 +48,7 @@ export const supplyMultiSelectField = (props: IMultiSelectOrMemberFieldParam) =>
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as IMultiSelectField[];
-  return find(fieldOptionsMap, fo => has(fo, 'property.options') && fo.property.options.some(op => oiOrOd[0] === op.id)) || field;
+  return find(fieldOptionsMap, (fo) => has(fo, 'property.options') && fo.property.options.some((op) => oiOrOd[0] === op.id)) || field;
 };
 
 // Completes a missing field in a member
@@ -58,9 +58,7 @@ export const supplyMemberField = (props: IMultiSelectOrMemberFieldParam) => {
     return field;
   }
   const fieldOptionsMap = values(cacheFieldOptions[fieldId]) as IMemberField[];
-  return find(fieldOptionsMap,
-    fo => (get(fo, 'property.unitIds', []) as string[]).some(unitId => oiOrOd[0] === unitId)
-  ) || field;
+  return find(fieldOptionsMap, (fo) => (get(fo, 'property.unitIds', []) as string[]).some((unitId) => oiOrOd[0] === unitId)) || field;
 };
 
 interface IExtraFieldParam {
@@ -79,16 +77,14 @@ export const supplyExtraField = (props: IExtraFieldParam) => {
   const revisionKeys = fieldOptionsMap && Object.keys(fieldOptionsMap);
   let idx = 0;
   // Find the Field that is closest to and greater than or equal to the current version (the field is lost in later versions of the od operation)
-  while(revisionKeys && idx < revisionKeys.length) {
+  while (revisionKeys && idx < revisionKeys.length) {
     const curKey = revisionKeys[idx].split('_')[1];
     if (
       Number(curKey) >= revision &&
-      (
-        has(fieldOptionsMap, `${revisionKeys[idx]}.property.icon`) ||
-        has(fieldOptionsMap, `${revisionKeys[idx]}.property.precision`) || 
+      (has(fieldOptionsMap, `${revisionKeys[idx]}.property.icon`) ||
+        has(fieldOptionsMap, `${revisionKeys[idx]}.property.precision`) ||
         has(fieldOptionsMap, `${revisionKeys[idx]}.property.dateFormat`) ||
-        has(fieldOptionsMap, `${revisionKeys[idx]}.property.foreignDatasheetId`) 
-      )
+        has(fieldOptionsMap, `${revisionKeys[idx]}.property.foreignDatasheetId`))
     ) {
       // oi The field of the cache od is not taken in case of equal versions
       if (isOi) {
@@ -105,4 +101,3 @@ export const supplyExtraField = (props: IExtraFieldParam) => {
   }
   return field;
 };
-

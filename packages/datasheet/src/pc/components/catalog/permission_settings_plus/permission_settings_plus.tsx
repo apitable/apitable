@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
-import { ConfigConstant, Strings, t } from '@apitable/core';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Permission } from './permission';
-import { PermissionDescModal } from 'pc/components/space_manage/workbench/permission_desc';
-import styles from './style.module.less';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { getNodeIcon } from '../tree/node_icon';
-import { PermissionModalHeader } from 'pc/components/field_permission/permission_modal_header';
-import { QuestionCircleOutlined } from '@apitable/icons';
-import { useThemeColors, Tooltip } from '@apitable/components';
 import classNames from 'classnames';
+import { FC, useState } from 'react';
+import { useThemeColors, Tooltip } from '@apitable/components';
+import { ConfigConstant, Strings, t } from '@apitable/core';
+import { QuestionCircleOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { PermissionModalHeader } from 'pc/components/field_permission/permission_modal_header';
+import { PermissionDescModal } from 'pc/components/space_manage/workbench/permission_desc';
+import { getNodeIcon } from '../tree/node_icon';
+import { Permission } from './permission';
+import styles from './style.module.less';
 
 export interface IPermissionSettingsProps {
   data: {
@@ -65,9 +65,9 @@ export const PermissionSettingsPlus: FC<React.PropsWithChildren<IPermissionSetti
         {visible && (
           <Popup
             className={styles.permissionDrawer}
-            height='90%'
+            height="90%"
             open={visible}
-            placement='bottom'
+            placement="bottom"
             title={
               <PermissionModalHeader
                 typeName={t(Strings.file)}

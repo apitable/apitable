@@ -16,31 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@apitable/core';
-import styles from './styles.module.less';
-import {
-  VariableSizeList as List,
-  VariableSizeGrid as Grid,
-  GridOnScrollProps,
-} from 'react-window';
-import {
-  Cell,
-  CellTitle,
-  CellHead,
-} from './cell';
-import { FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass } from 'pc/utils';
-import { expandRecordIdNavigate } from '../expand_record';
-import { AddRecord } from './add_record';
 import ReactDOM from 'react-dom';
-import { FieldSetting } from '../multi_grid/field_setting';
-import { store } from 'pc/store';
-import { FieldMenu } from './field_menu';
-import classNames from 'classnames';
+import { shallowEqual, useSelector } from 'react-redux';
+import { VariableSizeList as List, VariableSizeGrid as Grid, GridOnScrollProps } from 'react-window';
+import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
 import { useDispatch } from 'pc/hooks';
+import { store } from 'pc/store';
+import { FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass } from 'pc/utils';
+import { expandRecordIdNavigate } from '../expand_record';
+import { FieldSetting } from '../multi_grid/field_setting';
+import { AddRecord } from './add_record';
+import { Cell, CellTitle, CellHead } from './cell';
+import { FieldMenu } from './field_menu';
+import styles from './styles.module.less';
 const COLUMN_WIDTH = 134;
 const ROW_HEIGHT = 80 + 16 + 14;
 const FIXED_TITLE_HEIGHT = 32;
@@ -53,11 +45,7 @@ export interface IMobileGridProps {
   height: number;
 }
 
-export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = ({
-  width,
-  height,
-}) => {
-
+export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = ({ width, height }) => {
   const {
     visibleColumns,
     datasheetId,
@@ -107,7 +95,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
     const fieldTitle = getParentNodeByClass(element, styles.fieldTitleWrapper);
     const fieldElement = getParentNodeByClass(element, FIELD_HEAD_CLASS);
     const fieldId = getElementDataset(fieldElement, 'fieldId');
-    const fieldIndex = visibleColumns.findIndex(field => field.fieldId === fieldId);
+    const fieldIndex = visibleColumns.findIndex((field) => field.fieldId === fieldId);
 
     if (!fieldId || !manageable || !fieldElement) {
       return;
@@ -172,59 +160,60 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
     titleRef.current?.scrollTo(scrollTop);
   }, []);
 
-  const onHorizontalScroll = useCallback(({
-    scrollLeft,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested || !contentRef.current || scrollLeft < 0) {
-      return;
-    }
+  const onHorizontalScroll = useCallback(
+    ({ scrollLeft, scrollUpdateWasRequested }: GridOnScrollProps) => {
+      if (scrollUpdateWasRequested || !contentRef.current || scrollLeft < 0) {
+        return;
+      }
 
-    window.requestAnimationFrame(() => syncScroll(scrollLeft, contentRef.current!.scrollTop));
+      window.requestAnimationFrame(() => syncScroll(scrollLeft, contentRef.current!.scrollTop));
+    },
+    [syncScroll],
+  );
 
-  }, [syncScroll]);
-
-  const onVerticalScroll = useCallback((e: any) => {
-    const target = e.currentTarget as HTMLDivElement;
-    const scrollTop = target.scrollTop;
-    if (
-      scrollTop
-      // Jitter processing when rowing vertically to the bottom
-      && scrollTop <= GRID_INNER_DIV_HEIGHT - GRID_HEIGHT
-    ) {
-      syncScroll(gridOuterRef.current!.scrollLeft, scrollTop);
-    }
-  }, [GRID_HEIGHT, GRID_INNER_DIV_HEIGHT, syncScroll]);
+  const onVerticalScroll = useCallback(
+    (e: any) => {
+      const target = e.currentTarget as HTMLDivElement;
+      const scrollTop = target.scrollTop;
+      if (
+        scrollTop &&
+        // Jitter processing when rowing vertically to the bottom
+        scrollTop <= GRID_INNER_DIV_HEIGHT - GRID_HEIGHT
+      ) {
+        syncScroll(gridOuterRef.current!.scrollLeft, scrollTop);
+      }
+    },
+    [GRID_HEIGHT, GRID_INNER_DIV_HEIGHT, syncScroll],
+  );
 
   const isIOS = browser?.is('iOS');
 
-  const onAndroidScroll = useCallback(({
-    scrollLeft,
-    scrollTop,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested) {
-      return;
-    }
-    syncScroll(scrollLeft, scrollTop);
-  }, [syncScroll]);
+  const onAndroidScroll = useCallback(
+    ({ scrollLeft, scrollTop, scrollUpdateWasRequested }: GridOnScrollProps) => {
+      if (scrollUpdateWasRequested) {
+        return;
+      }
+      syncScroll(scrollLeft, scrollTop);
+    },
+    [syncScroll],
+  );
 
-  const getColumnWidth = useCallback((columnIndex?: number) => {
-    if (remainingColumns.length * COLUMN_WIDTH < width) {
-      return width / remainingColumns.length;
-    }
-    if (columnIndex === 0 || columnIndex === remainingColumns.length - 1) {
-      return COLUMN_WIDTH + 16;
-    }
-    return COLUMN_WIDTH;
-  }, [width, remainingColumns.length]);
+  const getColumnWidth = useCallback(
+    (columnIndex?: number) => {
+      if (remainingColumns.length * COLUMN_WIDTH < width) {
+        return width / remainingColumns.length;
+      }
+      if (columnIndex === 0 || columnIndex === remainingColumns.length - 1) {
+        return COLUMN_WIDTH + 16;
+      }
+      return COLUMN_WIDTH;
+    },
+    [width, remainingColumns.length],
+  );
 
   const onGridClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    const recordId = getElementDataset(getParentNodeByClass(target, [
-      styles.cellWrapper,
-      styles.firstColumnCell,
-    ]), 'recordId')!;
+    const recordId = getElementDataset(getParentNodeByClass(target, [styles.cellWrapper, styles.firstColumnCell]), 'recordId')!;
     recordId && expandRecordIdNavigate(recordId);
   };
 
@@ -259,35 +248,32 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
     headRef.current?.resetAfterIndex(0, true);
     gridRef.current?.resetAfterColumnIndex(0, true);
     titleRef.current?.resetAfterIndex(0, true);
-
   }, [syncScroll, viewId, searchKeyword]);
-  
+
   // Hidden columns are clicked into the middle of the view and highlighted
-  const activeCell = useSelector(state => Selectors.getActiveCell(state));
+  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
   useEffect(() => {
-    if(!activeCell) {
+    if (!activeCell) {
       return;
     }
     const activeSelectFieldId = activeCell?.fieldId;
     syncScroll(0, 0);
     contentRef.current?.scrollTo(0, 0);
-    const fieldIndex = visibleColumns.findIndex(field => field.fieldId === activeSelectFieldId);
+    const fieldIndex = visibleColumns.findIndex((field) => field.fieldId === activeSelectFieldId);
     gridRef.current?.scrollToItem({
       align: 'center',
-      columnIndex: fieldIndex - 1 
+      columnIndex: fieldIndex - 1,
     });
     headRef.current?.scrollToItem(fieldIndex - 1, 'center');
-
   }, [activeCell, syncScroll, visibleColumns]);
 
   const dispatch = useDispatch();
-  
+
   const click = (e: MouseEvent) => {
-   
     if (!e.target) {
       return;
     }
-    if(datasheetId) {
+    if (datasheetId) {
       dispatch(StoreActions.clearSelection(datasheetId));
     }
   };
@@ -304,14 +290,8 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
   const isOperateSetting = activeFieldOperateType === FieldOperateType.FieldSetting;
 
   return (
-    <div
-      className={styles.viewContainer}
-      style={{ height }}
-    >
-      <div
-        className={styles.fixedHead}
-        onClick={onHeaderClick}
-      >
+    <div className={styles.viewContainer} style={{ height }}>
+      <div className={styles.fixedHead} onClick={onHeaderClick}>
         <List
           height={FIXED_TITLE_HEIGHT}
           width={width}
@@ -355,48 +335,36 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
         >
           {CellTitle as any}
         </List>
-        {!hasHiddenAll &&
-        // Horizontal rolling containers
-        <Grid
-          className={classNames(styles.remainingColumnsGrid, GRID_CLASS)}
-          columnCount={remainingColumns.length}
-          columnWidth={getColumnWidth}
-          overscanColumnCount={0}
-          overscanRowCount={0}
-          rowCount={rows.length}
-          rowHeight={() => ROW_HEIGHT}
-          itemKey={generateItemKey()}
-          width={width}
-          height={GRID_HEIGHT}
-          
-          ref={gridRef}
-          outerRef={gridOuterRef}
-          onScroll={isIOS ? onHorizontalScroll : onAndroidScroll}
-          style={{
-            ...gridStyle,
-            height: isIOS ? GRID_INNER_DIV_HEIGHT : GRID_HEIGHT,
-          }}
-          itemData={itemData}
-          estimatedRowHeight={ROW_HEIGHT}
-        >
-          {Cell as any}
-        </Grid>
-        }
-        {
-          rowCreatable &&
-          ReactDOM.createPortal(
-            <AddRecord size="large" />,
-            document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!,
-          )
-        }
+        {!hasHiddenAll && (
+          // Horizontal rolling containers
+          <Grid
+            className={classNames(styles.remainingColumnsGrid, GRID_CLASS)}
+            columnCount={remainingColumns.length}
+            columnWidth={getColumnWidth}
+            overscanColumnCount={0}
+            overscanRowCount={0}
+            rowCount={rows.length}
+            rowHeight={() => ROW_HEIGHT}
+            itemKey={generateItemKey()}
+            width={width}
+            height={GRID_HEIGHT}
+            ref={gridRef}
+            outerRef={gridOuterRef}
+            onScroll={isIOS ? onHorizontalScroll : onAndroidScroll}
+            style={{
+              ...gridStyle,
+              height: isIOS ? GRID_INNER_DIV_HEIGHT : GRID_HEIGHT,
+            }}
+            itemData={itemData}
+            estimatedRowHeight={ROW_HEIGHT}
+          >
+            {Cell as any}
+          </Grid>
+        )}
+        {rowCreatable && ReactDOM.createPortal(<AddRecord size="large" />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
       </div>
 
-      {activeFieldId &&
-      <FieldMenu
-        fieldId={activeFieldId!}
-        onClose={() => setActiveFieldId(null)}
-      />
-      }
+      {activeFieldId && <FieldMenu fieldId={activeFieldId!} onClose={() => setActiveFieldId(null)} />}
 
       {isOperateSetting && <FieldSetting datasheetId={datasheetId} viewId={viewId} />}
     </div>

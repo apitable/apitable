@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import { StoreActions } from '@apitable/core';
+import { PrivateRoute } from 'pc/components/route_manager/private_route';
 // @ts-ignore
 import { SubScribeSystem } from 'enterprise';
-import { useRouter } from 'next/router';
-import { PrivateRoute } from 'pc/components/route_manager/private_route';
-import { useDispatch } from 'react-redux';
 
 const RedirectUpgradeSpaceId = ({ children }: { children: JSX.Element }) => {
   const dispatch = useDispatch();
@@ -34,6 +34,12 @@ const RedirectUpgradeSpaceId = ({ children }: { children: JSX.Element }) => {
 };
 
 const UpgradeRouter = () => {
-  return <RedirectUpgradeSpaceId><PrivateRoute><SubScribeSystem /></PrivateRoute></RedirectUpgradeSpaceId>;
+  return (
+    <RedirectUpgradeSpaceId>
+      <PrivateRoute>
+        <SubScribeSystem />
+      </PrivateRoute>
+    </RedirectUpgradeSpaceId>
+  );
 };
 export default UpgradeRouter;

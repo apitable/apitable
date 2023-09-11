@@ -16,33 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Image from 'next/image';
+import * as React from 'react';
+import { FC, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Typography, ThemeName } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { OnLoadParams, useStoreState } from '@apitable/react-flow';
-import Image from 'next/image';
-import * as React from 'react';
-import { FC, useContext } from 'react';
+import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark.png';
+import ArchitectureEmptyLight from 'static/icon/datasheet/architecture_empty_light.png';
 import { CARD_WIDTH } from '../../constants';
 import { FlowContext } from '../../context/flow_context';
 import { NodeHandleState } from '../../interfaces';
 import styles from './styles.module.less';
-import ArchitectureEmptyLight from 'static/icon/datasheet/architecture_empty_light.png';
-import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark.png';
-import { useSelector } from 'react-redux';
 interface IAddFirstNodeProps {
   mode: 'none' | 'add';
   onAdd: () => Promise<string>;
   reactFlowInstance: React.MutableRefObject<OnLoadParams<any> | undefined>;
 }
 
-export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = props => {
-
-  const {
-    mode,
-    onAdd,
-    reactFlowInstance,
-  } = props;
+export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = (props) => {
+  const { mode, onAdd, reactFlowInstance } = props;
 
   const {
     bodySize,
@@ -53,27 +48,23 @@ export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = pro
     orgChartViewStatus: { rightPanelVisible },
   } = useContext(FlowContext);
 
-  const [,,scale] = useStoreState(state => state.transform);
+  const [, , scale] = useStoreState((state) => state.transform);
 
   const addMode = mode === 'add';
   console.log('addMode', addMode);
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const architectureEmpty = themeName === ThemeName.Light ? ArchitectureEmptyLight : ArchitectureEmptyDark;
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.addFirstNode} >
+      <div className={styles.addFirstNode}>
         <div className={styles.imgWrapper}>
           <Image
             style={{
               width: 232,
-              margin: 'auto'
+              margin: 'auto',
             }}
-            src={
-              addMode
-                ? integrateCdnHost(Settings.view_architecture_empty_record_list_img.value)
-                : architectureEmpty
-            }
+            src={addMode ? integrateCdnHost(Settings.view_architecture_empty_record_list_img.value) : architectureEmpty}
             width={232}
             height={176}
             alt={''}
@@ -86,31 +77,29 @@ export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = pro
             marginBottom: 24,
           }}
         >
-          {
-            addMode
-              ? t(Strings.org_chart_please_click_button_to_create_a_node)
-              : (!rightPanelVisible
-                ? t(Strings.org_chart_please_drag_a_node_into_canvas_if_list_closed)
-                : t(Strings.org_chart_please_drag_a_node_into_canvas))
-          }
+          {addMode
+            ? t(Strings.org_chart_please_click_button_to_create_a_node)
+            : !rightPanelVisible
+              ? t(Strings.org_chart_please_drag_a_node_into_canvas_if_list_closed)
+              : t(Strings.org_chart_please_drag_a_node_into_canvas)}
         </Typography>
         {addMode && (
           <div
             style={{
               zIndex: 10,
-              width: 188
+              width: 188,
             }}
           >
             <Button
               prefixIcon={<AddOutlined />}
-              color='primary'
+              color="primary"
               onClick={async() => {
                 const id = await onAdd();
                 const position = reactFlowInstance.current!.project({
-                  x: bodySize.width / 2 - offsetLeft - CARD_WIDTH * scale / 2,
-                  y: bodySize.height / 2 - offsetTop - getCardHeight(id) * scale / 2,
+                  x: bodySize.width / 2 - offsetLeft - (CARD_WIDTH * scale) / 2,
+                  y: bodySize.height / 2 - offsetTop - (getCardHeight(id) * scale) / 2,
                 });
-                setNodeStateMap(s => ({
+                setNodeStateMap((s) => ({
                   ...s,
                   [id]: {
                     ...s?.[id],

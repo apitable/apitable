@@ -33,19 +33,11 @@ export function DefaultObjectFieldTemplate(props: IFieldProps) {
         />
       )}
       {props.description && (
-        <DescriptionField
-          id={`${props.idSchema.$id}__description`}
-          description={props.description}
-          formContext={props.formContext}
-        />
+        <DescriptionField id={`${props.idSchema.$id}__description`} description={props.description} formContext={props.formContext} />
       )}
       {props.properties.map((prop: any) => prop.content)}
       {canExpand(props.schema, props.uiSchema, props.formData) && (
-        <AddButton
-          className="object-property-expand"
-          onClick={props.onAddClick(props.schema)}
-          disabled={props.disabled || props.readonly}
-        />
+        <AddButton className="object-property-expand" onClick={props.onAddClick(props.schema)} disabled={props.disabled || props.readonly} />
       )}
     </fieldset>
   );

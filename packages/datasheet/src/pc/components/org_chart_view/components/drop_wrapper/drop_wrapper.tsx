@@ -34,21 +34,8 @@ interface IDrop {
   style?: React.CSSProperties;
 }
 
-export const DropWrapper: React.FC<React.PropsWithChildren<IDrop>> = ({ 
-  children, 
-  onDrop, 
-  onMouseOver,
-  mask, 
-  className, 
-  id,
-  accept, 
-  style 
-}) => {
-
-  const {
-    nodesMap,
-    horizontal,
-  } = useContext(FlowContext);
+export const DropWrapper: React.FC<React.PropsWithChildren<IDrop>> = ({ children, onDrop, onMouseOver, mask, className, id, accept, style }) => {
+  const { nodesMap, horizontal } = useContext(FlowContext);
 
   const [{ isOver, isOverCurrent }, drop] = useDrop(
     () => ({

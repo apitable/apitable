@@ -16,44 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Skeleton, IOption, Typography, LinkButton } from '@apitable/components';
 import cls from 'classnames';
-import { shallowEqual } from 'react-redux';
-import styles from './style.module.less';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { Skeleton, IOption, Typography, LinkButton } from '@apitable/components';
 import { Api, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
-import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
-import { getEnvVariables } from 'pc/utils/env';
-import { ChevronRightOutlined, QuestionCircleOutlined, UserAddOutlined } from '@apitable/icons';
-import { UnitPermissionSelect } from '../../field_permission/unit_permission_select';
+import { ChevronRightOutlined, QuestionCircleOutlined, UserAddOutlined, LinkOutlined } from '@apitable/icons';
 import { useCatalogTreeRequest, useRequest, NodeChangeInfoType } from 'pc/hooks';
 import { copy2clipBoard, permissionMenuData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
+import { UnitPermissionSelect } from '../../field_permission/unit_permission_select';
 import { expandInviteModal } from '../../invite';
+import { IMemberList } from '../permission_settings_plus/permission';
+import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
+import { IShareContentProps } from './interface';
+import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { IMemberList } from '../permission_settings_plus/permission';
-import { IShareContentProps } from './interface';
-import { LinkOutlined } from '@apitable/icons';
-import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
 
 export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const socketData = useSelector(state => state.catalogTree.socketData);
+  const socketData = useSelector((state) => state.catalogTree.socketData);
   const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
-  const {
-    run: getNodeRoleList,
-    data: roleList,
-    loading
-  } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
+  const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const [pageNo, setPageNo] = useState<number>(1);
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
 
-  const {
-    run: getCollaboratorReq,
-    data: collaboratorInfo
-  } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
-    manual: true
+  const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {
+    manual: true,
   });
 
   useEffect(() => {
@@ -74,18 +65,23 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
   }, [socketData, getNodeRoleList]);
 
   const dispatch = useDispatch();
-  const { spaceFeatures } = useSelector((state: IReduxState) => ({
-    spaceFeatures: state.space.spaceFeatures,
-    spaceInfo: state.space.curSpaceInfo!,
-  }), shallowEqual);
+  const { spaceFeatures } = useSelector(
+    (state: IReduxState) => ({
+      spaceFeatures: state.space.spaceFeatures,
+      spaceInfo: state.space.curSpaceInfo!,
+    }),
+    shallowEqual,
+  );
 
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
 
-  const adminAndOwnerUnitIds = roleList ? [
-    ...roleList.admins.map(v => v.unitId),
-    ...roleList.roleUnits.filter(v => v.role === 'manager').map(v => v.unitId),
-    roleList.owner?.unitId || '',
-  ] : [];
+  const adminAndOwnerUnitIds = roleList
+    ? [
+      ...roleList.admins.map((v) => v.unitId),
+      ...roleList.roleUnits.filter((v) => v.role === 'manager').map((v) => v.unitId),
+      roleList.owner?.unitId || '',
+    ]
+    : [];
 
   // Select member submission events
   const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
@@ -93,15 +89,12 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
       return;
     }
 
-    const result = triggerUsageAlert(
-      'nodePermissionNums',
-      { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert,
-    );
+    const result = triggerUsageAlert('nodePermissionNums', { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
     if (result) {
       return;
     }
 
-    const unitIds = unitInfos.map(item => item.unitId);
+    const unitIds = unitInfos.map((item) => item.unitId);
 
     const res = await disableRoleExtend();
     if (!res) {
@@ -140,42 +133,41 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
   if (loading) {
     return (
       <div className={styles.invite}>
-        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '58px' }} height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
+        <Skeleton count={1} style={{ marginTop: 0 }} width="25%" height="24px" />
+        <Skeleton count={1} style={{ marginTop: '58px' }} height="24px" />
+        <Skeleton count={1} style={{ marginTop: '16px' }} height="24px" />
       </div>
     );
   }
 
-  return <div className={styles.invite}>
-    <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
-      <span>{t(Strings.collaborate_and_share)}</span>
-      <Tooltip title={t(Strings.support)} trigger={'hover'}>
-        <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-          <QuestionCircleOutlined currentColor/>
-        </a>
-      </Tooltip>
-    </Typography>
-    {
-      getEnvVariables().FILE_PERMISSION_VISIBLE && <div className={styles.shareInvite}>
-        <UnitPermissionSelect
-          classNames={styles.permissionSelect}
-          permissionList={optionData}
-          onSubmit={onSubmit}
-          adminAndOwnerUnitIds={adminAndOwnerUnitIds}
-          showTeams
-          searchEmail
-        />
-      </div>
-    }
-    <div className={cls(styles.shareFloor, styles.collaborator)}>
-      <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
-        {roleList && (
-          <div className={styles.collaboratorIcon}>
-            {
-              memberList.slice(0, 5).map((v, i) => (
-                <div key={v.memberId} className={styles.collaboratorIconItem}
-                  style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
+  return (
+    <div className={styles.invite}>
+      <Typography variant="h7" className={cls(styles.shareFloor, styles.shareTitle)}>
+        <span>{t(Strings.collaborate_and_share)}</span>
+        <Tooltip title={t(Strings.support)} trigger={'hover'}>
+          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel="noopener noreferrer" target="_blank">
+            <QuestionCircleOutlined currentColor />
+          </a>
+        </Tooltip>
+      </Typography>
+      {getEnvVariables().FILE_PERMISSION_VISIBLE && (
+        <div className={styles.shareInvite}>
+          <UnitPermissionSelect
+            classNames={styles.permissionSelect}
+            permissionList={optionData}
+            onSubmit={onSubmit}
+            adminAndOwnerUnitIds={adminAndOwnerUnitIds}
+            showTeams
+            searchEmail
+          />
+        </div>
+      )}
+      <div className={cls(styles.shareFloor, styles.collaborator)}>
+        <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
+          {roleList && (
+            <div className={styles.collaboratorIcon}>
+              {memberList.slice(0, 5).map((v, i) => (
+                <div key={v.memberId} className={styles.collaboratorIconItem} style={{ marginLeft: i === 0 ? 0 : -16, zIndex: 5 - i }}>
                   <Tooltip title={v.memberName}>
                     <div>
                       <Avatar
@@ -188,50 +180,53 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
                     </div>
                   </Tooltip>
                 </div>
-              ))
-            }
-          </div>
+              ))}
+            </div>
+          )}
+          <Typography variant="body3" className={styles.collaboratorNumber}>
+            {t(Strings.collaborator_number, { number: collaboratorInfo?.total })}
+          </Typography>
+        </div>
+        {getEnvVariables().FILE_PERMISSION_VISIBLE && (
+          <Typography
+            variant="body3"
+            className={styles.collaboratorAuth}
+            onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
+          >
+            <span>{t(Strings.setting_permission)}</span>
+            <ChevronRightOutlined />
+          </Typography>
         )}
-        <Typography variant='body3' className={styles.collaboratorNumber}>
-          {t(Strings.collaborator_number, { number: collaboratorInfo?.total })}
-        </Typography>
       </div>
-      {
-        getEnvVariables().FILE_PERMISSION_VISIBLE && <Typography
-          variant='body3'
-          className={styles.collaboratorAuth}
-          onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
-        >
-          <span>{t(Strings.setting_permission)}</span>
-          <ChevronRightOutlined/>
-        </Typography>
-      }
-    </div>
-    <div className={styles.inviteMore}>
-      <LinkButton
-        className={styles.inviteMoreMethod}
-        underline={false}
-        onClick={() => copy2clipBoard(window.location.href)}
-        prefixIcon={<LinkOutlined currentColor/>}
-      >
-        {t(Strings.share_copy_url_link)}
-      </LinkButton>
-      {invitable && (
-
+      <div className={styles.inviteMore}>
         <LinkButton
           className={styles.inviteMoreMethod}
           underline={false}
-          onClick={() => expandInviteModal()}
-          prefixIcon={<UserAddOutlined currentColor/>}
+          onClick={() => copy2clipBoard(window.location.href)}
+          prefixIcon={<LinkOutlined currentColor />}
         >
-          {t(Strings.more_invite_ways)}
+          {t(Strings.share_copy_url_link)}
         </LinkButton>
+        {invitable && (
+          <LinkButton
+            className={styles.inviteMoreMethod}
+            underline={false}
+            onClick={() => expandInviteModal()}
+            prefixIcon={<UserAddOutlined currentColor />}
+          >
+            {t(Strings.more_invite_ways)}
+          </LinkButton>
+        )}
+      </div>
+      {detailModalVisible && (
+        <MembersDetail
+          data={collaboratorInfo}
+          memberList={memberList}
+          setPageNo={setPageNo}
+          pageNo={pageNo}
+          onCancel={() => setDetailModalVisible(false)}
+        />
       )}
     </div>
-    {detailModalVisible && <MembersDetail
-      data={collaboratorInfo}
-      memberList={memberList}
-      setPageNo={setPageNo}
-      pageNo={pageNo} onCancel={() => setDetailModalVisible(false)}/>}
-  </div>;
+  );
 };

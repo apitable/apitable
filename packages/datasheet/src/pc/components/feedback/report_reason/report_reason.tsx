@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
-import { Api, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { Radio } from 'antd';
 import Image from 'next/image';
+import { FC, useRef, useState } from 'react';
+import { Button } from '@apitable/components';
+import { Api, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useRequest } from 'pc/hooks';
-import { FC, useRef, useState } from 'react';
 import ReportImg from 'static/icon/workbench/workbench_img_report.png';
 import styles from './style.module.less';
 
@@ -41,14 +41,18 @@ interface IReportReasonProps {
 
 export const ReportReason: FC<React.PropsWithChildren<IReportReasonProps>> = ({ nodeId, onClose }) => {
   const [reason, setReason] = useState<string>('');
-  const { run: createReport, loading } = useRequest((nodeId, reason) => Api.createReport(nodeId, reason).then(res => {
-    const { success } = res.data;
-    if (success) {
-      Message.success({ content: t(Strings.report_success_tip) });
-    } else {
-      Message.error({ content: t(Strings.something_wrong) });
-    }
-  }), { manual: true });
+  const { run: createReport, loading } = useRequest(
+    (nodeId, reason) =>
+      Api.createReport(nodeId, reason).then((res) => {
+        const { success } = res.data;
+        if (success) {
+          Message.success({ content: t(Strings.report_success_tip) });
+        } else {
+          Message.error({ content: t(Strings.something_wrong) });
+        }
+      }),
+    { manual: true },
+  );
   const ref = useRef<HTMLDivElement>(null);
   useClickAway(() => {
     onClose();
@@ -74,16 +78,14 @@ export const ReportReason: FC<React.PropsWithChildren<IReportReasonProps>> = ({ 
       <div className={styles.reportReason}>
         <div className={styles.title}>{t(Strings.placeholder_select_report_reason)}</div>
         <Radio.Group onChange={onChange} value={reason}>
-          {reasonList.map(item => <Radio value={item} key={item}>{item}</Radio>)}
+          {reasonList.map((item) => (
+            <Radio value={item} key={item}>
+              {item}
+            </Radio>
+          ))}
         </Radio.Group>
         <div className={styles.buttonWrap}>
-          <Button
-            color="primary"
-            size="small"
-            onClick={() => onSubmit(reason)}
-            loading={loading}
-            disabled={!reason}
-          >
+          <Button color="primary" size="small" onClick={() => onSubmit(reason)} loading={loading} disabled={!reason}>
             {t(Strings.button_submit)}
           </Button>
         </div>

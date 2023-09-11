@@ -42,6 +42,15 @@ import java.util.List;
 public interface IUnitService extends IService<UnitEntity> {
 
     /**
+     * Get ref id.
+     *
+     * @param id table id
+     * @return refId
+     * @author Chambers
+     */
+    Long getUnitRefIdById(Long id);
+
+    /**
      * get unit primary id by ref id.
      *
      * @param refId unit's ref id

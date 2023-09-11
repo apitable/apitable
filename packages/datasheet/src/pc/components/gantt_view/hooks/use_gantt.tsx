@@ -16,9 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { 
-  GanttCoordinate, PointPosition, IScrollState, useTask, useStatus, useButton, useTimelineLayer,
-  useGanttAssocitionLine, useGanttDrawingLine, useTaskLineSetting
+import {
+  GanttCoordinate,
+  PointPosition,
+  IScrollState,
+  useTask,
+  useStatus,
+  useButton,
+  useTimelineLayer,
+  useGanttAssocitionLine,
+  useGanttDrawingLine,
+  useTaskLineSetting,
 } from 'pc/components/gantt_view';
 
 export interface IUseGanttProps {
@@ -33,45 +41,23 @@ export interface IUseGanttProps {
 }
 
 export const useGantt = (props: IUseGanttProps) => {
-  const {
-    instance,
-    scrollState,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-    rowStartIndex,
-    rowStopIndex,
-    gridWidth
-  } = props;
+  const { instance, scrollState, columnStartIndex, columnStopIndex, pointPosition, rowStartIndex, rowStopIndex, gridWidth } = props;
 
   const { containerWidth: ganttWidth } = instance;
 
   /**
    * Drawing timeline related background layers
    */
-  const {
-    timelineTexts,
-    timelineLines,
-    timelineHolidays,
-    timelineDividers,
-    headerBackground,
-    timelineHighlight,
-  } = useTimelineLayer({
+  const { timelineTexts, timelineLines, timelineHolidays, timelineDividers, headerBackground, timelineHighlight } = useTimelineLayer({
     instance,
     columnStartIndex,
-    columnStopIndex
+    columnStopIndex,
   });
 
   /**
    * Draw mouse row and column states and drag and drop highlighting related layers
    */
-  const {
-    hoverRow,
-    activeRow,
-    selectedRows,
-    dragSplitter,
-    dragRowHighlightLine,
-  } = useStatus({
+  const { hoverRow, activeRow, selectedRows, dragSplitter, dragRowHighlightLine } = useStatus({
     instance,
     rowStartIndex,
     rowStopIndex,
@@ -83,10 +69,7 @@ export const useGantt = (props: IUseGanttProps) => {
   /**
    * Drawing button-related layers
    */
-  const {
-    skipButtons,
-    backToNowButton
-  } = useButton({
+  const { skipButtons, backToNowButton } = useButton({
     instance,
     columnStartIndex,
     columnStopIndex,
@@ -96,53 +79,36 @@ export const useGantt = (props: IUseGanttProps) => {
   /**
    * Drawing task-related layers
    */
-  const {
-    tooltip,
-    taskList,
-    errTaskTips,
-    transformer,
-    taskGroupHeaders,
-    willAddTaskPoint,
-    willFillTaskPoint,
-    backToTaskButtons,
-    taskMap
-  } = useTask({
+  const { tooltip, taskList, errTaskTips, transformer, taskGroupHeaders, willAddTaskPoint, willFillTaskPoint, backToTaskButtons, taskMap } = useTask({
     instance,
     rowStartIndex,
     rowStopIndex,
     pointPosition,
     scrollState,
-    gridWidth
+    gridWidth,
   });
 
   /**
    * Drawing task-related link lines
    */
-  const { 
-    lineTooltip,
-    taskLineList
-  } = useGanttAssocitionLine({
+  const { lineTooltip, taskLineList } = useGanttAssocitionLine({
     instance,
     rowStartIndex,
     rowStopIndex,
     pointPosition,
-    scrollState
+    scrollState,
   });
 
-  const {
-    drawingLine
-  } = useGanttDrawingLine({
+  const { drawingLine } = useGanttDrawingLine({
     instance,
     taskMap,
     gridWidth,
     pointPosition,
-    scrollState
+    scrollState,
   });
 
-  const {
-    lineSettingModels
-  } = useTaskLineSetting({
-    scrollState
+  const { lineSettingModels } = useTaskLineSetting({
+    scrollState,
   });
 
   return {
@@ -170,6 +136,6 @@ export const useGantt = (props: IUseGanttProps) => {
     lineTooltip,
     taskLineList,
     drawingLine,
-    lineSettingModels
+    lineSettingModels,
   };
 };

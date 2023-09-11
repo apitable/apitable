@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { NotificationTypes } from 'shared/enums/request-types.enum';
@@ -35,7 +35,8 @@ export class NotificationService {
 
   broadcastNotify(message: INotificationRo, client: Socket): boolean {
     if (isNil(message.toUserId)) {
-      throw new ForbiddenException('Forbidden:403', 'User mismatch');
+      this.logger.error('NotNotify:UserMismatch');
+      return false;
     }
     try {
       client.in(SocketConstants.USER_SOCKET_ROOM + message.toUserId).emit(message.event, message);

@@ -75,7 +75,12 @@ describe('RobotTriggerServiceTest', () => {
     jest.spyOn(automationRobotRepository, 'getActiveRobotsByResourceIds').mockResolvedValue([{ resourceId: 'datasheetId', robotId: 'robotId' }]);
     jest
       .spyOn(automationTriggerRepository, 'getAllTriggersByRobotIds')
-      .mockResolvedValue([{ triggerId: 'triggerId', robotId: 'robotId', triggerTypeId: 'triggerTypeId' }] as AutomationTriggerEntity[]);
+      .mockResolvedValue([
+        { triggerId: 'triggerId', robotId: 'robotId', triggerTypeId: 'triggerTypeId', resourceId: 'datasheetId' }
+      ] as AutomationTriggerEntity[]);
+    jest
+      .spyOn(automationTriggerRepository , 'getRobotIdsByResourceIdsAndHasInput')
+      .mockResolvedValue(['robotId']);
     const triggersGroupByResourceId = await robotTriggerService.getTriggersGroupByResourceId(['datasheetId']);
     expect(triggersGroupByResourceId).toBeDefined();
     expect(Object.keys(triggersGroupByResourceId)).toEqual(['datasheetId']);
@@ -84,6 +89,9 @@ describe('RobotTriggerServiceTest', () => {
   it('given none trigger when get the map about triggers grouped by resource id then should be return empty object', async() => {
     jest.spyOn(automationRobotRepository, 'getActiveRobotsByResourceIds').mockResolvedValue([]);
     jest.spyOn(automationTriggerRepository, 'getAllTriggersByRobotIds').mockResolvedValue([]);
+    jest
+      .spyOn(automationTriggerRepository , 'getRobotIdsByResourceIdsAndHasInput')
+      .mockResolvedValue([]);
     const triggersGroupByResourceId = await robotTriggerService.getTriggersGroupByResourceId(['datasheetId']);
     expect(triggersGroupByResourceId).toBeDefined();
     expect(Object.keys(triggersGroupByResourceId).length).toEqual(0);

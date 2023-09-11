@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
 import { Field, Strings, t, Selectors, ICreatedTimeField, ILastModifiedTimeField } from '@apitable/core';
-import { store } from 'pc/store';
-import styles from './styles.module.less';
-import classNames from 'classnames';
-import { ICellComponentProps } from '../cell_value/interface';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { store } from 'pc/store';
+import { ICellComponentProps } from '../cell_value/interface';
+import styles from './styles.module.less';
 
 export interface ICellCreatedTimeProps extends ICellComponentProps {
   field: ICreatedTimeField | ILastModifiedTimeField;
   isFromExpand?: boolean;
 }
 
-export const CellCreatedTime: React.FC<React.PropsWithChildren<ICellCreatedTimeProps>> = props => {
+export const CellCreatedTime: React.FC<React.PropsWithChildren<ICellCreatedTimeProps>> = (props) => {
   const { field, isFromExpand, className, readonly, cellValue } = props;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule] = cellString ? cellString.split(' ') : [];
@@ -62,17 +62,13 @@ export const CellCreatedTime: React.FC<React.PropsWithChildren<ICellCreatedTimeP
 
   return (
     <>
-      {
-        (!isFromExpand && showTip && readonly) ? (
-          <Tooltip
-            title={t(Strings.uneditable_check_info)}
-            visible={showTip}
-            placement="top"
-          >
-            {renderElem()}
-          </Tooltip>
-        ) : renderElem()
-      }
+      {!isFromExpand && showTip && readonly ? (
+        <Tooltip title={t(Strings.uneditable_check_info)} visible={showTip} placement="top">
+          {renderElem()}
+        </Tooltip>
+      ) : (
+        renderElem()
+      )}
     </>
   );
 };

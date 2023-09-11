@@ -33,7 +33,7 @@ function withTheme(themeProps: IWithThemeProps) {
       ...directProps,
       fields,
       widgets,
-      ref
+      ref,
     });
   });
 }

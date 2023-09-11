@@ -1,0 +1,51 @@
+
+.checkedBackground {
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: var(--borderCommonDefault) !important;
+  background: var(--bgControlsElevateHigh) !important;
+}
+
+.unCheckedBackground {
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: var(--borderCommonDefault) !important;
+  background: var(--bgControlsElevateHigh) !important;
+}
+
+.checkedCircle {
+  background-color: var(--textSuccessDefault, #3CD6A3) !important;
+}
+
+.unCheckedCircle {
+  background-color: var(--textStaticTertiary, rgba(255, 255, 255, 0.60)) !important;
+}
+
+
+.tabPannel {
+  height: 100%;
+}
+
+.tabItem {
+  height: 100%;
+
+  :global {
+    .ant-tabs .ant-tabs-top {
+      height: 100%;
+    }
+    .ant-tabs-content-holder {
+      height: calc(100% - 46px);
+    }
+
+    .ant-tabs-content-top{
+      height: 100%;
+    }
+    .ant-tabs-tab-btn {
+
+      padding-left: 16px;
+    }
+    .ant-tabs-ink-bar {
+      visibility: hidden;
+    }
+  }
+}

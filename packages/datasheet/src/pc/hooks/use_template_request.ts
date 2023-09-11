@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import Router from 'next/router';
-import { Message } from 'pc/components/common/message/message';
 import { useDispatch } from 'react-redux';
+import { Api, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Message } from 'pc/components/common/message/message';
 
 export const useTemplateRequest = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export const useTemplateRequest = () => {
    * @param data
    */
   function createTemplateReq(nodeId: string, name: string, data?: boolean) {
-    return Api.createTemplate(nodeId, name, data).then(res => {
+    return Api.createTemplate(nodeId, name, data).then((res) => {
       const { success, message, data, code } = res.data;
       return { success, message, data, code };
     });
@@ -42,7 +42,7 @@ export const useTemplateRequest = () => {
    * @param categoryCode
    */
   function getTemplateCategoriesReq(categoryCode: string) {
-    return Api.getTemplateCategories(categoryCode).then(res => {
+    return Api.getTemplateCategories(categoryCode).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -58,7 +58,7 @@ export const useTemplateRequest = () => {
    * @param categoryCodes List of category ids to be sorted
    */
   function getTemplateCategoryReq(categoryCodes?: string) {
-    return Api.getTemplateCategory(categoryCodes).then(res => {
+    return Api.getTemplateCategory(categoryCodes).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         dispatch(StoreActions.updateTemplateCategory(data));
@@ -77,7 +77,7 @@ export const useTemplateRequest = () => {
    * @param templateIds List of stencil IDs
    */
   function getTemplateListReq(spaceId: string, categoryCode?: string, isPrivate?: boolean) {
-    return Api.getTemplateList(spaceId, categoryCode, isPrivate).then(res => {
+    return Api.getTemplateList(spaceId, categoryCode, isPrivate).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -94,7 +94,7 @@ export const useTemplateRequest = () => {
    * @param templateId
    */
   function deleteTemplateReq(templateId: string) {
-    return Api.deleteTemplate(templateId).then(res => {
+    return Api.deleteTemplate(templateId).then((res) => {
       const { success, code } = res.data;
       if (success) {
         Message.success({
@@ -107,10 +107,9 @@ export const useTemplateRequest = () => {
           Modal.error({
             title: t(Strings.template_has_been_deleted_title),
             content: t(Strings.template_has_been_deleted),
-            onOk: () => Router.back()
+            onOk: () => Router.back(),
           });
         });
-
       }
       return false;
     });
@@ -121,7 +120,7 @@ export const useTemplateRequest = () => {
    * @param templateId
    */
   function getTemplateDirectoryReq(templateId: string, isPrivate: boolean, categoryCode?: string) {
-    return Api.templateDirectory(templateId, isPrivate, categoryCode).then(res => {
+    return Api.templateDirectory(templateId, isPrivate, categoryCode).then((res) => {
       const { success, message, data } = res.data;
       if (success) {
         dispatch(StoreActions.updateTemplateDirectory(data));
@@ -137,7 +136,7 @@ export const useTemplateRequest = () => {
   // Use of templates
   function usingTemplateReq(templateId: string, parentId: string, data?: boolean) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return Api.useTemplate(templateId, parentId, data).then(res => {
+    return Api.useTemplate(templateId, parentId, data).then((res) => {
       const { success, data, code } = res.data;
       if (success) {
         Message.success({
@@ -150,7 +149,7 @@ export const useTemplateRequest = () => {
           Modal.error({
             title: t(Strings.template_has_been_deleted_title),
             content: t(Strings.template_has_been_deleted),
-            onOk: () => Router.back()
+            onOk: () => Router.back(),
           });
         });
       }
@@ -160,7 +159,7 @@ export const useTemplateRequest = () => {
 
   // Check if the template name already exists
   function templateNameValidateReq(name: string) {
-    return Api.templateNameValidate(name).then(res => {
+    return Api.templateNameValidate(name).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -173,7 +172,7 @@ export const useTemplateRequest = () => {
 
   // Get popular recommended content
   function templateRecommendReq() {
-    return Api.templateRecommend().then(res => {
+    return Api.templateRecommend().then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -187,7 +186,7 @@ export const useTemplateRequest = () => {
 
   // Fuzzy search templates
   function searchTemplateReq(keyword: string) {
-    return Api.searchTemplate(keyword).then(res => {
+    return Api.searchTemplate(keyword).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         return data;
@@ -200,8 +199,15 @@ export const useTemplateRequest = () => {
   }
 
   return {
-    createTemplateReq, getTemplateCategoriesReq,
-    getTemplateCategoryReq, getTemplateListReq, deleteTemplateReq, getTemplateDirectoryReq,
-    usingTemplateReq, templateNameValidateReq, templateRecommendReq, searchTemplateReq,
+    createTemplateReq,
+    getTemplateCategoriesReq,
+    getTemplateCategoryReq,
+    getTemplateListReq,
+    deleteTemplateReq,
+    getTemplateDirectoryReq,
+    usingTemplateReq,
+    templateNameValidateReq,
+    templateRecommendReq,
+    searchTemplateReq,
   };
 };

@@ -9,7 +9,7 @@ const WIDGET_RUN_TASK_MAX = 4;
 
 /**
  * Manage the rendering applet task queue and limit the number of simultaneous rendering widget.
- * Rendering an widget represents a complete process: load iframe -> connect -> init data 
+ * Rendering an widget represents a complete process: load iframe -> connect -> init data
  */
 class WidgetRenderTask {
   private widgetWaitTask: IWidgetTask[] = [];
@@ -43,8 +43,8 @@ class WidgetRenderTask {
 
   clearTask(widgetId?: string) {
     if (widgetId) {
-      this.widgetRunTask = this.widgetRunTask.filter(task => task.widgetId === widgetId);
-      this.widgetWaitTask = this.widgetWaitTask.filter(task => task.widgetId === widgetId);
+      this.widgetRunTask = this.widgetRunTask.filter((task) => task.widgetId === widgetId);
+      this.widgetWaitTask = this.widgetWaitTask.filter((task) => task.widgetId === widgetId);
       return;
     }
     this.widgetRunTask = [];

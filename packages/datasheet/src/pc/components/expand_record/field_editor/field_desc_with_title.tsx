@@ -18,23 +18,22 @@
 
 import { useMount } from 'ahooks';
 import { Tooltip } from 'antd';
-import { expandFieldDescEditor } from 'pc/components/multi_grid/field_desc';
-import { expandFieldDescEditorMobile } from 'pc/components/mobile_grid/field_desc_editor';
 
-import { usePlatform } from 'pc/hooks/use_platform';
 import { FC, useRef, useState } from 'react';
 import * as React from 'react';
 // @ts-ignore
 import Clamp from 'react-multiline-clamp';
-import { webkitLineClamp } from 'webkit-line-clamp';
 
+import { useLongPress } from 'use-long-press';
+import { webkitLineClamp } from 'webkit-line-clamp';
 import { LinkButton, Typography, lightColors } from '@apitable/components';
 import { IField, Strings, t } from '@apitable/core';
 
-import { useLongPress } from 'use-long-press';
-
-import styles from './style.module.less';
 import { EditOutlined } from '@apitable/icons';
+import { expandFieldDescEditorMobile } from 'pc/components/mobile_grid/field_desc_editor';
+import { expandFieldDescEditor } from 'pc/components/multi_grid/field_desc';
+import { usePlatform } from 'pc/hooks/use_platform';
+import styles from './style.module.less';
 
 interface IFieldDescWithTitleProps {
   datasheetId: string;
@@ -44,12 +43,7 @@ interface IFieldDescWithTitleProps {
 
 const DESC_MAX_LINES = 5;
 
-export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleProps>> = ({
-  datasheetId,
-  readOnly,
-  field,
-}) => {
-
+export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleProps>> = ({ datasheetId, readOnly, field }) => {
   const fieldDescRef = useRef<HTMLPreElement>(null);
 
   useMount(() => {
@@ -72,7 +66,7 @@ export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleP
       onVisibleChange={() => {
         setPressed(false);
       }}
-      title={(
+      title={
         <div
           className={styles.tooltipContent}
           onClick={() => {
@@ -81,14 +75,11 @@ export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleP
           }}
         >
           <EditOutlined color={lightColors.white} size={24} />
-          <Typography
-            variant='body4'
-            color={lightColors.white}
-          >
+          <Typography variant="body4" color={lightColors.white}>
             {t(Strings.edit)}
           </Typography>
         </div>
-      )}
+      }
       placement="top"
       autoAdjustOverflow
       visible={pressed && mobile}
@@ -100,20 +91,12 @@ export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleP
           withToggle
           withTooltip={false}
           showMoreElement={({ toggle }: { toggle: (e: React.MouseEvent) => void }) => (
-            <LinkButton
-              underline={false}
-              onClick={toggle}
-              className={styles.showMore}
-            >
+            <LinkButton underline={false} onClick={toggle} className={styles.showMore}>
               {t(Strings.see_more)}
             </LinkButton>
           )}
           showLessElement={({ toggle }: { toggle: (e: React.MouseEvent) => void }) => (
-            <LinkButton
-              underline={false}
-              onClick={toggle}
-              className={styles.showLess}
-            >
+            <LinkButton underline={false} onClick={toggle} className={styles.showLess}>
               {t(Strings.collapse)}
             </LinkButton>
           )}
@@ -130,12 +113,12 @@ export const FieldDescWithTitle: FC<React.PropsWithChildren<IFieldDescWithTitleP
                 fieldId: field.id,
                 readOnly,
                 datasheetId,
-                targetDOM: document.querySelector('.expandRecordModal') as HTMLElement || null,
+                targetDOM: (document.querySelector('.expandRecordModal') as HTMLElement) || null,
                 style: {
                   left: e.pageX,
                   top: e.pageY,
                   transform: 'translateX(-50%)',
-                }
+                },
               });
             }}
             {...bind}

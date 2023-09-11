@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
+import React, { FC, PropsWithChildren } from 'react';
+import { Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
-import React, { FC, PropsWithChildren } from 'react';
 import { Modal } from '../modal/modal';
 import styles from './style.module.less';
 
@@ -39,9 +39,8 @@ const config = {
   style: { minWidth: '400px' },
 };
 
-export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = props => {
-  const { title, className, subTitle, cancelText = t(Strings.cancel),
-    okText = t(Strings.submit), ...rest } = props;
+export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = (props) => {
+  const { title, className, subTitle, cancelText = t(Strings.cancel), okText = t(Strings.submit), ...rest } = props;
   return (
     <Modal
       {...config}
@@ -54,20 +53,15 @@ export const NormalModal: FC<PropsWithChildren<INormalModalProps>> = props => {
       footerBtnCls={styles.footer}
       {...rest}
     >
-      {
-        subTitle &&
-        <Tooltip
-          title={subTitle}
-          placement="bottomLeft"
-          textEllipsis
-        >
+      {subTitle && (
+        <Tooltip title={subTitle} placement="bottomLeft" textEllipsis>
           <div className={styles.subTitle}>{subTitle}</div>
         </Tooltip>
-      }
+      )}
       <div
-        className='normal-modal-content'
+        className="normal-modal-content"
         style={{
-          marginTop: subTitle ? '20px' : '28px'
+          marginTop: subTitle ? '20px' : '28px',
         }}
       >
         {props.children}

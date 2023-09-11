@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import classNames from 'classnames';
 import * as React from 'react';
-import styles from './style.module.less';
+import { useSelector } from 'react-redux';
+import { colorVars, Checkbox, Divider, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
 import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@apitable/core';
 import { IIconProps, RowhightExtremhighOutlined, RowhightHighOutlined, RowhightMediumOutlined, RowhightShortOutlined } from '@apitable/icons';
-import { IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
-import classNames from 'classnames';
-import { colorVars, Checkbox, Divider, useListenVisualHeight } from '@apitable/components';
-import { useSelector } from 'react-redux';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import styles from './style.module.less';
 
 export function getRowHeightIcon(level: RowHeightLevel, props: IIconProps) {
   switch (level) {
@@ -56,15 +55,13 @@ function short(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void,
         onClick={changeCommand}
       >
         <div className={styles.icon}>
-          {
-            isCurrent ? getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.primaryColor }) :
-              getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.thirdLevelText })
-          }
+          {isCurrent
+            ? getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.primaryColor })
+            : getRowHeightIcon(RowHeightLevel.Short, { color: colorVars.thirdLevelText })}
         </div>
         {t(Strings.row_height_short)}
       </div>
     </WrapperTooltip>
-
   );
 }
 
@@ -76,15 +73,13 @@ function medium(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void
         onClick={changeCommand}
       >
         <div className={styles.icon}>
-          {
-            isCurrent ? getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.primaryColor }) :
-              getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.thirdLevelText })
-          }
+          {isCurrent
+            ? getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.primaryColor })
+            : getRowHeightIcon(RowHeightLevel.Medium, { color: colorVars.thirdLevelText })}
         </div>
         {t(Strings.row_height_medium)}
       </div>
     </WrapperTooltip>
-
   );
 }
 
@@ -96,15 +91,13 @@ function tail(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => void, 
         onClick={changeCommand}
       >
         <div className={styles.icon}>
-          {
-            isCurrent ? getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.primaryColor }) :
-              getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.thirdLevelText })
-          }
+          {isCurrent
+            ? getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.primaryColor })
+            : getRowHeightIcon(RowHeightLevel.Tall, { color: colorVars.thirdLevelText })}
         </div>
         {t(Strings.row_height_tall)}
       </div>
     </WrapperTooltip>
-
   );
 }
 
@@ -116,15 +109,13 @@ function extraTall(isCurrent: boolean, changeCommand: (e: React.MouseEvent) => v
         onClick={changeCommand}
       >
         <div className={styles.icon}>
-          {
-            isCurrent ? getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.primaryColor }) :
-              getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.thirdLevelText })
-          }
+          {isCurrent
+            ? getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.primaryColor })
+            : getRowHeightIcon(RowHeightLevel.ExtraTall, { color: colorVars.thirdLevelText })}
         </div>
         {t(Strings.row_height_extra_tall)}
       </div>
     </WrapperTooltip>
-
   );
 }
 
@@ -137,7 +128,7 @@ interface IChangeRowHeight {
 
 export const ChangeRowHeight = (props: IChangeRowHeight) => {
   const { triggerInfo } = props;
-  const view = useSelector(state => Selectors.getCurrentView(state))!;
+  const view = useSelector((state) => Selectors.getCurrentView(state))!;
   const isViewLock = useShowViewLockModal();
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -148,42 +139,45 @@ export const ChangeRowHeight = (props: IChangeRowHeight) => {
     triggerInfo,
   });
 
-  const rowLevelList = Object.keys(RowHeightLevel).filter(x => {
+  const rowLevelList = Object.keys(RowHeightLevel).filter((x) => {
     // Gantt chart has only three heights.
     if (view.type === ViewType.Gantt && x === 'ExtraTall') {
       return false;
     }
     return isNaN(parseInt(x));
   });
-  const currentRowHeightLevel = (
-    view &&
-    (view.type === ViewType.Grid || view.type === ViewType.Gantt) &&
-    view.rowHeightLevel
-  ) ? view.rowHeightLevel : 1;
+  const currentRowHeightLevel =
+    view && (view.type === ViewType.Grid || view.type === ViewType.Gantt) && view.rowHeightLevel ? view.rowHeightLevel : 1;
   const autoHeadHeight = (view as IGridViewProperty).autoHeadHeight;
 
   function changeCommand(level: RowHeightLevel) {
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetRowHeight,
-        viewId: view.id,
-        level,
-      });
-    }, {
-      rowHeightLevel: level,
-    });
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetRowHeight,
+          viewId: view.id,
+          level,
+        });
+      },
+      {
+        rowHeightLevel: level,
+      },
+    );
   }
 
   const changeAutoHeadHeightCommand = (value: boolean) => {
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetAutoHeadHeight,
-        viewId: view.id,
-        isAuto: value,
-      });
-    }, {
-      autoHeadHeight: value,
-    });
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetAutoHeadHeight,
+          viewId: view.id,
+          isAuto: value,
+        });
+      },
+      {
+        autoHeadHeight: value,
+      },
+    );
   };
 
   function rowHeightLevelItem(level: RowHeightLevel) {
@@ -196,11 +190,7 @@ export const ChangeRowHeight = (props: IChangeRowHeight) => {
         return tail(currentRowHeightLevel === RowHeightLevel.Tall, changeCommand.bind(null, RowHeightLevel.Tall), isViewLock);
       case RowHeightLevel.ExtraTall:
       default: {
-        return extraTall(
-          currentRowHeightLevel === RowHeightLevel.ExtraTall,
-          changeCommand.bind(null, RowHeightLevel.ExtraTall),
-          isViewLock
-        );
+        return extraTall(currentRowHeightLevel === RowHeightLevel.ExtraTall, changeCommand.bind(null, RowHeightLevel.ExtraTall), isViewLock);
       }
     }
   }
@@ -208,17 +198,10 @@ export const ChangeRowHeight = (props: IChangeRowHeight) => {
   return (
     <div className={styles.container} style={style} ref={containerRef}>
       <div className={styles.section}>
-        <div className={styles.title}>
-          {t(Strings.field_name_setting)}
-        </div>
+        <div className={styles.title}>{t(Strings.field_name_setting)}</div>
         <div className={styles.autoHeight}>
           <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-            <Checkbox
-              checked={Boolean(autoHeadHeight)}
-              onChange={changeAutoHeadHeightCommand}
-              size={12}
-              disabled={isViewLock}
-            >
+            <Checkbox checked={Boolean(autoHeadHeight)} onChange={changeAutoHeadHeightCommand} size={12} disabled={isViewLock}>
               {t(Strings.wrap_text)}
             </Checkbox>
           </WrapperTooltip>
@@ -231,18 +214,10 @@ export const ChangeRowHeight = (props: IChangeRowHeight) => {
         }}
       />
       <div className={styles.section}>
-        <div className={styles.title}>
-          {t(Strings.row_height_setting)}
-        </div>
-        {
-          rowLevelList.map((item, index) => {
-            return (
-              <div key={index}>
-                {rowHeightLevelItem(RowHeightLevel[item])}
-              </div>
-            );
-          })
-        }
+        <div className={styles.title}>{t(Strings.row_height_setting)}</div>
+        {rowLevelList.map((item, index) => {
+          return <div key={index}>{rowHeightLevelItem(RowHeightLevel[item])}</div>;
+        })}
       </div>
     </div>
   );

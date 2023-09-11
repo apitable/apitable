@@ -18,8 +18,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { CheckboxFilled, UncheckedOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
+import { CheckboxFilled, UncheckedOutlined } from '@apitable/icons';
 
 import styles from './checkbox.module.less';
 
@@ -38,19 +38,22 @@ export const Checkbox = React.memo((props: ICheckboxProps) => {
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (disabled) {
-      return;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-    const next = !checked;
-    if (onChangeRef.current) {
-      onChangeRef.current(next);
-    } else {
-      setChecked(!checked);
-    }
-  }, [checked, disabled]);
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (disabled) {
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      const next = !checked;
+      if (onChangeRef.current) {
+        onChangeRef.current(next);
+      } else {
+        setChecked(!checked);
+      }
+    },
+    [checked, disabled],
+  );
 
   const handleMouseEnter = useCallback(() => {
     if (disabled) {
@@ -70,22 +73,19 @@ export const Checkbox = React.memo((props: ICheckboxProps) => {
     setChecked(propsChecked);
   }, [propsChecked]);
 
-  return <span
-    onMouseDown={handleMouseDown}
-    onMouseEnter={handleMouseEnter}
-    onMouseLeave={handleMouseLeave}
-    className={styles.wrap}
-    data-disabled={!!disabled}>
-    {
-      checked
-        ? <CheckboxFilled
-          size={size}
-          color={disabled ? colors.fourthLevelText : colors.textBrandDefault} />
-        : <UncheckedOutlined
-          size={size}
-          color={
-            disabled ? colors.fourthLevelText : hover ? colors.primaryColor : colors.black[400]
-          } />
-    }
-  </span>;
+  return (
+    <span
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={styles.wrap}
+      data-disabled={!!disabled}
+    >
+      {checked ? (
+        <CheckboxFilled size={size} color={disabled ? colors.fourthLevelText : colors.textBrandDefault} />
+      ) : (
+        <UncheckedOutlined size={size} color={disabled ? colors.fourthLevelText : hover ? colors.primaryColor : colors.black[400]} />
+      )}
+    </span>
+  );
 });

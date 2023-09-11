@@ -16,19 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { colorVars, IconButton, WrapperTooltip } from '@apitable/components';
-import {
-  ConfigConstant, FieldType, FilterConjunction as FilterConjunctionEnum, IFieldMap, IFilterInfo, ILookUpField, IViewColumn, Selectors, Strings, t,
-} from '@apitable/core';
-import { DeleteOutlined } from '@apitable/icons';
 import { Col, Row } from 'antd';
 import { isEqual } from 'lodash';
+import { FC, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { colorVars, IconButton, WrapperTooltip } from '@apitable/components';
+import {
+  ConfigConstant,
+  FieldType,
+  FilterConjunction as FilterConjunctionEnum,
+  IFieldMap,
+  IFilterInfo,
+  ILookUpField,
+  IViewColumn,
+  Selectors,
+  Strings,
+  t,
+} from '@apitable/core';
+import { DeleteOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
-import { FC, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
@@ -45,10 +54,10 @@ interface IConditionList {
   field?: ILookUpField;
 }
 
-const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
+const ConditionList: FC<React.PropsWithChildren<IConditionList>> = (props) => {
   const { filterInfo, fieldMap, changeFilter, deleteFilter, datasheetId, field } = props;
   const { conditions, conjunction = FilterConjunctionEnum.And } = filterInfo || {};
-  const columns = useSelector(state => {
+  const columns = useSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
@@ -60,7 +69,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
   useEffect(() => {
     if (field) {
       const newWarnTextObj = {};
-      columns.forEach(column => {
+      columns.forEach((column) => {
         const foreignFieldId = fieldMap[column.fieldId];
         if ([FieldType.LookUp, FieldType.Formula].includes(foreignFieldId.type)) {
           const warnText = checkComputeRef({
@@ -121,14 +130,13 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                   />
                 </div>
               </WrapperTooltip>
-
             </ComponentDisplay>
 
             <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
               <FilterConjunction conditionIndex={index} conjunction={conjunction} changeFilter={changeFilter} />
-              <Row align='middle' style={{ width: '100%' }} gutter={[0, 8]}>
+              <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
                 <Col span={22}>
-                  <Row align='middle' style={{ width: '100%' }} gutter={[0, 8]}>
+                  <Row align="middle" style={{ width: '100%' }} gutter={[0, 8]}>
                     <Col span={16}>
                       <FilterFieldList columns={columns} fieldMap={fieldMap} warnTextObj={warnTextObj} {...publicProps} />
                     </Col>
@@ -141,7 +149,7 @@ const ConditionList: FC<React.PropsWithChildren<IConditionList>> = props => {
                     </Col>
                   </Row>
                   {!isCryptoField && !fieldNotFound && (
-                    <Row align='middle' style={{ width: '100%' }}>
+                    <Row align="middle" style={{ width: '100%' }}>
                       <Col span={24} style={{ paddingLeft: 1 }}>
                         <FilterValue primaryField={field} field={conditionField} {...publicProps} />
                       </Col>

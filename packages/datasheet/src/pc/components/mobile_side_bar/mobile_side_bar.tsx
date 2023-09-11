@@ -20,17 +20,17 @@ import { useMount } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import { useQuery, useSideBarVisible } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useQuery, useSideBarVisible } from 'pc/hooks';
 import { CommonSide } from '../common_side';
 import { Navigation } from '../navigation';
 import styles from './style.module.less';
 
 export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const router = useRouter();
   const pathname = router.asPath;
 
@@ -47,9 +47,9 @@ export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const matchedNode = RegExp('/[fod|dst|fom|dsb|mir]').test(pathname);
 
   /**
-   * When cutting space to keep the sidebar normal pop-up, 
-   * but the switch operation currently needs to refresh the page, 
-   * can not get the state of the previous step, need to persist a flag, 
+   * When cutting space to keep the sidebar normal pop-up,
+   * but the switch operation currently needs to refresh the page,
+   * can not get the state of the previous step, need to persist a flag,
    * to get the user's intention to switch space
    */
   const hasToggleSpaceIntent = localStorage.getItem('toggleSpaceId');
@@ -58,10 +58,7 @@ export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const hasOtherRouteToSpaceIntent = !matchedNode && spaceId;
 
   useMount(() => {
-    if (
-      matchedNode ||
-      (hasOtherRouteToSpaceIntent && !hasToggleSpaceIntent)
-    ) {
+    if (matchedNode || (hasOtherRouteToSpaceIntent && !hasToggleSpaceIntent)) {
       setSideBarVisible(false);
       localStorage.removeItem('toggleSpaceId');
     }

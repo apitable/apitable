@@ -1,10 +1,10 @@
-import { useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
-import styles from './style.module.less';
+import React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { IShareInfo } from '@apitable/core';
 import { isIframe } from '../../utils/env';
 import { ApplicationJoinSpaceAlert } from './application_join_space_alert';
-import React from 'react';
-import { IShareInfo } from '@apitable/core';
+import styles from './style.module.less';
 
 interface IShareContentWrapperProps {
   isIframeShowShareMenu: boolean;
@@ -19,8 +19,15 @@ interface IShareContentWrapperProps {
 }
 
 export const ShareContentWrapper = ({
-  isIframeShowShareMenu, shareId, sideBarVisible, judgeAllowEdit,
-  children, shareSpaceId, applicationJoinAlertVisible, shareSpace, shareSpaceName,
+  isIframeShowShareMenu,
+  shareId,
+  sideBarVisible,
+  judgeAllowEdit,
+  children,
+  shareSpaceId,
+  applicationJoinAlertVisible,
+  shareSpace,
+  shareSpaceName,
 }: IShareContentWrapperProps) => {
   const colors = useThemeColors();
   return (
@@ -42,8 +49,7 @@ export const ShareContentWrapper = ({
         {children}
       </div>
       {applicationJoinAlertVisible && (
-        <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName}
-          defaultVisible={shareSpace.allowApply} />
+        <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
       )}
     </div>
   );

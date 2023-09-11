@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import RcTrigger from 'rc-trigger';
 import { memo, useState, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { TextButton, useThemeColors } from '@apitable/components';
 import { CollectType, Selectors, Strings, t, ILastModifiedByField, ILastModifiedTimeField } from '@apitable/core';
-import settingStyles from '../../field_setting/styles.module.less';
-import styles from './styles.module.less';
-import { AutoLayout } from '../../field_setting/auto_layout';
+import { EditOutlined } from '@apitable/icons';
+import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
-import { TextButton, useThemeColors } from '@apitable/components';
-import RcTrigger from 'rc-trigger';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
-import { useClickAway } from 'ahooks';
-import { EditOutlined } from '@apitable/icons';
+import { AutoLayout } from '../../field_setting/auto_layout';
+import settingStyles from '../../field_setting/styles.module.less';
+import styles from './styles.module.less';
 
 interface ICollectTypeSelectProps {
   field: ILastModifiedTimeField | ILastModifiedByField;
@@ -40,7 +40,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
   const colors = useThemeColors();
   const { onChange, field: currentField } = props;
   const { collectType, fieldIdCollection } = currentField.property;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const [visible, setVisible] = useState(false);
   const collectTypeOptions = useMemo(
     () => [
@@ -71,7 +71,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
           <AutoLayout boxWidth={280}>
             <div className={styles.viewSelectPanel}>
               <div className={styles.viewSelect}>
-                {collectTypeOptions.map(option => {
+                {collectTypeOptions.map((option) => {
                   return (
                     <div key={option.type} className={styles.viewSelectItem} onClick={() => onSelectItemClick(option.type)}>
                       {option.name}
@@ -97,7 +97,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
     );
   };
 
-  const optionData = collectTypeOptions.map(option => ({
+  const optionData = collectTypeOptions.map((option) => ({
     value: option.type,
     label: option.name,
   }));
@@ -123,7 +123,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
     return (
       <>
         <div className={styles.selectedFieldList}>
-          {fieldIdCollection.map(fieldId => (
+          {fieldIdCollection.map((fieldId) => (
             <SelectedFieldItem fieldId={fieldId} key={fieldId} />
           ))}
         </div>
@@ -138,7 +138,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
   };
 
   const displayName = useMemo(() => {
-    return collectTypeOptions.find(v => v.type === collectType)!.name;
+    return collectTypeOptions.find((v) => v.type === collectType)!.name;
   }, [collectTypeOptions, collectType]);
 
   const TriggerComponent = (

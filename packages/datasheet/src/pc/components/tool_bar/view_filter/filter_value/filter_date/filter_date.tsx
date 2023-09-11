@@ -42,9 +42,9 @@ import { LocalFormat } from './local_format';
 
 const { RangePicker } = DatePicker;
 
-export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = props => {
+export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = (props) => {
   const { changeFilter, condition, disabled = false, field, conditionIndex, onChange } = props;
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -164,7 +164,6 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
             />
           </div>
         </WrapperTooltip>
-
       );
     }
     if (condition.value[0] === FilterDuration.DateRange) {
@@ -175,8 +174,8 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <WrapperTooltip wrapper={isViewLockOriginal} tip={t(Strings.view_lock_setting_desc)}>
               <div ref={divRef}>
-                {
-                  showRangeCalendar && <RangePicker
+                {showRangeCalendar && (
+                  <RangePicker
                     onChange={(value) => {
                       rangePickerChange(value);
                     }}
@@ -189,12 +188,12 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
                     getPopupContainer={() => divRef.current!}
                     disabled={isViewLock}
                   />
-                }
+                )}
               </div>
             </WrapperTooltip>
           </ComponentDisplay>
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-            <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} disabled={isViewLock}/>
+            <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} disabled={isViewLock} />
           </ComponentDisplay>
         </>
       );
@@ -222,7 +221,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = p
   return (
     <div className={classNames(styles.filterDate, 'filterDate')} onClick={stopPropagation} ref={ref}>
       {operator !== FOperator.IsEmpty && operator !== FOperator.IsNotEmpty && (
-        <FilterDateDuration disabled={isViewLock} changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex}/>
+        <FilterDateDuration disabled={isViewLock} changeFilter={changeFilter} condition={condition} conditionIndex={conditionIndex} />
       )}
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>{dom}</ComponentDisplay>
 

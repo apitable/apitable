@@ -22,5 +22,5 @@ export enum ComputeServices {
   SearchResultArray = 'searchResultArray',
   LinearRows = 'linearRows',
   GroupBreakpoint = 'groupBreakpoint',
-  RecordMoveType = 'recordMoveType'
+  RecordMoveType = 'recordMoveType',
 }

@@ -17,12 +17,12 @@
  */
 
 import { FC } from 'react';
-import { BaseModal } from 'pc/components/common';
-import styles from './style.module.less';
-import { UnitItem } from '../unit_item';
 import { INodeRoleMap, t, Strings } from '@apitable/core';
+import { BaseModal } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { UnitItem } from '../unit_item';
+import styles from './style.module.less';
 
 export interface IMembersDetailProps {
   // data: INodeRoleMap;
@@ -39,8 +39,8 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
     return (
       <div className={styles.scrollWrapper}>
         <div className={styles.memberList}>
-          {data.members.map(member => {
-            const isAdmin = Boolean(data.admins.find(item => item.memberId === member.memberId));
+          {data.members.map((member) => {
+            const isAdmin = Boolean(data.admins.find((item) => item.memberId === member.memberId));
             const isPermissionOpener = data.owner?.memberId === member.memberId;
             return (
               <UnitItem

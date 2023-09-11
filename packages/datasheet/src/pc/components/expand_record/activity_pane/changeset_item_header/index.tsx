@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cls from 'classnames';
 import * as React from 'react';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { IField } from '@apitable/core';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { stopPropagation } from 'pc/utils';
 import EditorTitleContext from '../../editor_title_context';
 import styles from './style.module.less';
-import cls from 'classnames';
-import { stopPropagation } from 'pc/utils';
 
 export interface IChangesetItemHeader {
   field?: IField;
-  old?: boolean
+  old?: boolean;
   inline?: boolean;
   block?: boolean;
 }
@@ -48,12 +48,8 @@ const ChangesetItemHeader: React.FC<React.PropsWithChildren<IChangesetItemHeader
         }
       }}
     >
-      <div className={styles.iconType}>
-        {getFieldTypeIcon(field.type, 'currentcolor')}
-      </div>
-      <div className={cls(styles.text, { [styles.block]: block })}>
-        {field.name}
-      </div>
+      <div className={styles.iconType}>{getFieldTypeIcon(field.type, 'currentcolor')}</div>
+      <div className={cls(styles.text, { [styles.block]: block })}>{field.name}</div>
     </div>
   );
 };

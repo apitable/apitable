@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { memo, useEffect, useState } from 'react';
 import * as React from 'react';
 import SplitPane, { SplitPaneProps } from 'react-split-pane';
-import styles from './style.module.less';
-import classNames from 'classnames';
 import { EmitterEventName, SimpleEmitter } from 'modules/shared/simple_emitter';
+import styles from './style.module.less';
 
 const _SplitPane: any = SplitPane;
 
@@ -47,18 +47,18 @@ export const VikaSplitPanel: React.FC<React.PropsWithChildren<IVikaSplitPanelPro
     simpleEmitter.emit(EmitterEventName.PanelDragging, dragging);
   }, [dragging]);
 
-  return <_SplitPane
-    onDragStarted={onDragStart}
-    onDragFinished={onDragEnd}
-    resizerClassName={
-      classNames({
+  return (
+    <_SplitPane
+      onDragStarted={onDragStart}
+      onDragFinished={onDragEnd}
+      resizerClassName={classNames({
         [styles.resizeBarStyle]: true,
         [styles.isDragging]: dragging,
-      })
-    }
-    {...rest}
-  >
-    {panelLeft}
-    {panelRight}
-  </_SplitPane>;
+      })}
+      {...rest}
+    >
+      {panelLeft}
+      {panelRight}
+    </_SplitPane>
+  );
 });

@@ -21,12 +21,12 @@ import { useSelector } from 'react-redux';
 import { Selectors } from '@apitable/core';
 
 export const useGetViewByIdWithDefault = (datasheetId: string, viewId?: string) => {
-  const snapshot = useSelector(state => {
+  const snapshot = useSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId);
   });
-  const mirror = useSelector(state => Selectors.getMirror(state));
+  const mirror = useSelector((state) => Selectors.getMirror(state));
 
-  const fieldPermissionMap = useSelector(state => {
+  const fieldPermissionMap = useSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
 

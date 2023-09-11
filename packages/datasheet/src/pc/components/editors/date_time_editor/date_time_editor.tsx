@@ -16,13 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { usePrevious } from 'ahooks';
+import deDE from 'antd/es/date-picker/locale/de_DE';
+import enUS from 'antd/es/date-picker/locale/en_US';
+import esES from 'antd/es/date-picker/locale/es_ES';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import itIT from 'antd/es/date-picker/locale/it_IT';
+import jaJP from 'antd/es/date-picker/locale/ja_JP';
+import koKR from 'antd/es/date-picker/locale/ko_KR';
+import ruRU from 'antd/es/date-picker/locale/ru_RU';
+import zhCN from 'antd/es/date-picker/locale/zh_CN';
+import zhTW from 'antd/es/date-picker/locale/zh_TW';
+import classNames from 'classnames';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/zh-cn';
+import utc from 'dayjs/plugin/utc';
+import { isEqual } from 'lodash';
+import * as React from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Loading, lightColors } from '@apitable/components';
 import {
   DATASHEET_ID,
-  DateFormat, diffTimeZone,
+  DateFormat,
+  diffTimeZone,
   Field,
   getDay,
-  getLanguage, getTimeZone, getTimeZoneAbbrByUtc,
+  getLanguage,
+  getTimeZone,
+  getTimeZoneAbbrByUtc,
   getToday,
   IDateTimeField,
   IRecordAlarmClient,
@@ -36,32 +60,11 @@ import {
   WithOptional,
 } from '@apitable/core';
 import { NotificationOutlined } from '@apitable/icons';
-import { usePrevious } from 'ahooks';
-import enUS from 'antd/es/date-picker/locale/en_US';
-import zhCN from 'antd/es/date-picker/locale/zh_CN';
-import zhTW from 'antd/es/date-picker/locale/zh_TW';
-import frFR from 'antd/es/date-picker/locale/fr_FR';
-import deDE from 'antd/es/date-picker/locale/de_DE';
-import itIT from 'antd/es/date-picker/locale/it_IT';
-import jaJP from 'antd/es/date-picker/locale/ja_JP';
-import koKR from 'antd/es/date-picker/locale/ko_KR';
-import ruRU from 'antd/es/date-picker/locale/ru_RU';
-import esES from 'antd/es/date-picker/locale/es_ES';
-import classNames from 'classnames';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import { isEqual } from 'lodash';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { printableKey, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { forwardRef, useEffect, useState } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { isLegalDateKey } from '../../../utils/keycode';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { DatePickerMobile } from './mobile';
@@ -118,8 +121,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   override state: IDateTimeEditorState = {
     dateValue: '',
-    displayDateStr: this.props.dataValue ?
-      dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
+    displayDateStr: this.props.dataValue ? dayjs(this.props.dataValue).format(Field.bindModel(this.props.field).dateFormat) : '',
     timeValue: '',
     dateOpen: false,
     timeOpen: false,
@@ -178,7 +180,9 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     let curTimeValue = timeValue;
     if (date && !ignoreSetTime) {
       if (timeZone) {
-        curTimeValue = dayjs(date?.format('YYYY-MM-DD HH:mm')).tz(timeZone).format('HH:mm');
+        curTimeValue = dayjs(date?.format('YYYY-MM-DD HH:mm'))
+          .tz(timeZone)
+          .format('HH:mm');
       } else {
         curTimeValue = date.format('HH:mm');
       }
@@ -255,7 +259,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-
       const timestamp = this.format2StandardDate(dateValue);
       if (timestamp == null || notInTimestampRange(timestamp)) {
         return null;
@@ -372,7 +375,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   onTimeOpenChange = (open: boolean) => {
     if (this.state.timeOpen !== open) {
       open && this.setPopupPosition();
-      this.setState(pre => ({
+      this.setState((pre) => ({
         timeOpen: open,
         dateOpen: open ? false : pre.dateOpen,
       }));
@@ -475,10 +478,10 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         }}
         ref={this.setDivRef}
         onMouseMove={stopPropagation}
-        onClick={e => e.stopPropagation}
+        onClick={(e) => e.stopPropagation}
         onWheel={stopPropagation}
       >
-        <Tooltip open={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement='top'>
+        <Tooltip open={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement="top">
           <div className={style.dateWrapper}>
             <div
               className={classNames(style.dateContent, {
@@ -490,7 +493,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   ref={this.setDateEditorRef}
                   format={dateFormat}
                   locale={locale}
-                  prefixCls='cp-calendar'
+                  prefixCls="cp-calendar"
                   className={dateInputClassName}
                   placeholder={editable ? dateFormat.toLowerCase() : ''}
                   showDateInput={false}
@@ -509,7 +512,10 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && dateValue && (
+                    showAlarm &&
+                    getEnvVariables().RECORD_TASK_REMINDER_VISIBLE &&
+                    DateTimeAlarm &&
+                    dateValue && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}
@@ -532,7 +538,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
               </React.Suspense>
               {field.property.includeTime && (
                 <TimePicker
-                  prefixCls='cp-time-picker'
+                  prefixCls="cp-time-picker"
                   className={style.timeInput}
                   placeholder={editable ? timeFormat.toLowerCase() : ''}
                   getPopupContainer={this.getCalendarContainer}
@@ -549,9 +555,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   timeZone={timeZone}
                 />
               )}
-              {abbr && (
-                <span className={style.abbr}>({abbr})</span>
-              )}
+              {abbr && <span className={style.abbr}>({abbr})</span>}
             </div>
             {showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>

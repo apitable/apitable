@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import styles from './style.module.less';
 import { getEnvVariables } from '../../../../utils/env';
+import styles from './style.module.less';
 
-export const NavBar: React.FC<React.PropsWithChildren<{gap?: number}>> = (props) => {
+export const NavBar: React.FC<React.PropsWithChildren<{ gap?: number }>> = (props) => {
   const { gap = 32 } = props;
   const linkList = [
     {
       href: 'https://help.apitable.com',
       target: '_blank',
-      text: 'Help Center'
+      text: 'Help Center',
     },
     {
       href: 'https://apitable.com',
       target: '_blank',
-      text: 'About'
-    }
+      text: 'About',
+    },
   ];
 
   if (getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE) {
@@ -40,17 +40,19 @@ export const NavBar: React.FC<React.PropsWithChildren<{gap?: number}>> = (props)
 
   return (
     <div className={styles.navBarWrap}>
-      {
-        linkList.map((item, index) => {
-          const A = <a href={item.href} target={item.target}>
+      {linkList.map((item, index) => {
+        const A = (
+          <a href={item.href} target={item.target}>
             {item.text}
-          </a>;
-          return <>
+          </a>
+        );
+        return (
+          <>
             {A}
             {index + 1 < linkList.length && <div style={{ margin: `0 ${gap / 2}px` }}>|</div>}
-          </>;
-        })
-      }
+          </>
+        );
+      })}
     </div>
   );
 };

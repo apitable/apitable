@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Progress } from 'antd';
+import Image from 'next/image';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useThemeColors } from '@apitable/components';
 import { isImage, RowHeightLevel, Strings, t } from '@apitable/core';
 import { DeleteOutlined, ReloadOutlined } from '@apitable/icons';
-import { Progress } from 'antd';
-import Image from 'next/image';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { byte2Mb, NO_SUPPORT_IMG_MIME_TYPE, renderFileIconUrl, UploadManager, UploadStatus } from 'pc/utils';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { IUploadFileItemProps } from '../upload_core/upload_core.interface';
 import styles from './styles.module.less';
 
@@ -37,10 +37,21 @@ enum RetryIconSize {
   Default = 32,
 }
 
-export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>> = props => {
+export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>> = (props) => {
   const {
-    recordId, field, file, fileUrl, fileId, datasheetId, status,
-    isCell, cellHeight, deleteUploadItem, rowHeightLevel, onSave, getCellValueFn
+    recordId,
+    field,
+    file,
+    fileUrl,
+    fileId,
+    datasheetId,
+    status,
+    isCell,
+    cellHeight,
+    deleteUploadItem,
+    rowHeightLevel,
+    onSave,
+    getCellValueFn,
   } = props;
   const colors = useThemeColors();
   const [loaded, setLoaded] = useState(0);
@@ -50,7 +61,7 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
 
   const updateFileItem = () => {
     const list = uploadManager.get(UploadManager.getCellId(recordId, field.id));
-    const item = list.find(item => item.fileId === fileId);
+    const item = list.find((item) => item.fileId === fileId);
     if (!item) return;
     setUploadStatus(item.status);
     if (item.loaded) {
@@ -63,17 +74,15 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
       return;
     }
     const list = uploadManager.get(UploadManager.getCellId(recordId, field.id));
-    const item = list.find(item => item.fileId === fileId);
+    const item = list.find((item) => item.fileId === fileId);
     if (item) return;
     const cellId = UploadManager.getCellId(recordId, field.id);
     // send request.
     uploadManager.register(
       cellId,
-      uploadManager.generateSuccessFn(
-        recordId, field.id, { name: file.name, id: fileId }, datasheetId, getCellValueFn, onSave
-      ),
+      uploadManager.generateSuccessFn(recordId, field.id, { name: file.name, id: fileId }, datasheetId, getCellValueFn, onSave),
       UploadManager.generateFormData(file, datasheetId),
-      fileId
+      fileId,
     );
     uploadManager.bindFileStatus(cellId, fileId, updateFileItem);
     return () => {
@@ -98,35 +107,30 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
   function renderIcon() {
     const imgStyle = {
       maxWidth: '100%',
-      maxHeight: 'calc(100% - 8px)'
+      maxHeight: 'calc(100% - 8px)',
     };
 
     if (isCell) {
       return (
         <span style={imgStyle}>
           <Image
-            src={
-              isImage(file) && !NO_SUPPORT_IMG_MIME_TYPE.includes(file.type)
-                ? fileUrl
-                : renderFileIconUrl(file)
-            }
+            src={isImage(file) && !NO_SUPPORT_IMG_MIME_TYPE.includes(file.type) ? fileUrl : renderFileIconUrl(file)}
             height={mobile ? undefined : Number(cellHeight)}
-            alt=''
+            alt=""
           />
         </span>
       );
     }
-    return isImage(file) ?
-      (
-        <div
-          className={styles.img}
-          style={{
-            backgroundImage: `url(${fileUrl})`
-          }}
-        />
-      )
-      : <Image src={renderFileIconUrl(file)} width={90} height={100} style={imgStyle} alt='' />;
-
+    return isImage(file) ? (
+      <div
+        className={styles.img}
+        style={{
+          backgroundImage: `url(${fileUrl})`,
+        }}
+      />
+    ) : (
+      <Image src={renderFileIconUrl(file)} width={90} height={100} style={imgStyle} alt="" />
+    );
   }
 
   function retryUpload() {
@@ -156,75 +160,37 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
 
   return (
     <div className={styles.uploadItem}>
-      <div className={styles.placeholderFile}>
-        {renderIcon()}
-      </div>
-      {
-        !isCell && uploadStatus === UploadStatus.Fail &&
+      <div className={styles.placeholderFile}>{renderIcon()}</div>
+      {!isCell && uploadStatus === UploadStatus.Fail && (
         <div className={styles.iconDelete} onClick={deleteFileItem}>
           <DeleteOutlined color={colors.defaultBg} />
         </div>
-      }
-      {
-        !isCell && <div className={styles.fileName}>
-          {file.name}
-        </div>
-      }
+      )}
+      {!isCell && <div className={styles.fileName}>{file.name}</div>}
       <div
         className={styles.status}
         style={{
-          height: isCell ? cellHeight : ''
+          height: isCell ? cellHeight : '',
         }}
       >
-        {
-          (uploadStatus === UploadStatus.Pending || !uploadStatus) &&
-
+        {(uploadStatus === UploadStatus.Pending || !uploadStatus) && (
           <div className={styles.progress}>
-            <Progress
-              percent={Math.ceil((loaded / file.size) * 100)}
-              showInfo={false}
-              strokeColor={colors.successColor}
-            />
-            {
-              !isCell &&
-              <p>
-                {t(Strings.waiting_for_upload)}
-              </p>
-            }
+            <Progress percent={Math.ceil((loaded / file.size) * 100)} showInfo={false} strokeColor={colors.successColor} />
+            {!isCell && <p>{t(Strings.waiting_for_upload)}</p>}
           </div>
-        }
-        {
-          uploadStatus === UploadStatus.Loading &&
-          <div
-            className={styles.progress}
-
-          >
-            <Progress
-              percent={Math.ceil((loaded / file.size) * 100)}
-              showInfo={false}
-              strokeColor={colors.successColor}
-            />
-            {
-              !isCell &&
-              <p>
-                {
-                  `${byte2Mb(loaded)}M / ${byte2Mb(file.size)}M`
-                }
-              </p>
-            }
+        )}
+        {uploadStatus === UploadStatus.Loading && (
+          <div className={styles.progress}>
+            <Progress percent={Math.ceil((loaded / file.size) * 100)} showInfo={false} strokeColor={colors.successColor} />
+            {!isCell && <p>{`${byte2Mb(loaded)}M / ${byte2Mb(file.size)}M`}</p>}
           </div>
-        }
-        {
-          uploadStatus === UploadStatus.Fail &&
+        )}
+        {uploadStatus === UploadStatus.Fail && (
           <div onClick={retryUpload} className={styles.retryUpload}>
-            <ReloadOutlined
-              color={colors.defaultBg}
-              size={retryIconSize}
-            />
+            <ReloadOutlined color={colors.defaultBg} size={retryIconSize} />
           </div>
-        }
+        )}
       </div>
-
     </div>
   );
 };

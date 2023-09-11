@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IUnitValue } from '@apitable/core';
 import produce from 'immer';
 import uniqBy from 'lodash/uniqBy';
+import { Api, IUnitValue } from '@apitable/core';
 
 /**
  * @description Request a section of members' information in advance when entering a space or sharing page to provide a good experience for users
@@ -39,26 +39,21 @@ class MemberStash {
     if (this.stashMap.has(cacheId)) {
       return;
     }
-    if(this.isEmbedId(cacheId)) {
-      const res = await Api.loadOrSearchEmbed(
-        cacheId,
-        {
-          filterIds: '',
-          keyword: '',
-          linkId: cacheId,
-        }
-      );
+    if (this.isEmbedId(cacheId)) {
+      const res = await Api.loadOrSearchEmbed(cacheId, {
+        filterIds: '',
+        keyword: '',
+        linkId: cacheId,
+      });
 
       const { data } = res.data;
       this.stashMap.set(cacheId, data);
     } else {
-      const res = await Api.loadOrSearch(
-        {
-          filterIds: '',
-          keyword: '',
-          linkId: this.isShareId(cacheId) ? cacheId : undefined,
-        }
-      );
+      const res = await Api.loadOrSearch({
+        filterIds: '',
+        keyword: '',
+        linkId: this.isShareId(cacheId) ? cacheId : undefined,
+      });
 
       const { data } = res.data;
       this.stashMap.set(cacheId, data);
@@ -67,10 +62,12 @@ class MemberStash {
 
   public updateStash(member: IUnitValue) {
     const oldList = this.stashMap.get(this.currentCacheId) || [];
-    const newList = this.normalizeList(produce(oldList, draft => {
-      draft.unshift(member);
-      return draft;
-    }));
+    const newList = this.normalizeList(
+      produce(oldList, (draft) => {
+        draft.unshift(member);
+        return draft;
+      }),
+    );
     this.stashMap.set(this.currentCacheId, newList);
   }
 

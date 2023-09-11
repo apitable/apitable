@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Image from 'next/image';
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Button, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
-import { useContext } from 'react';
-import { RoleContext } from './context';
-import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import RoleEmptyDark from 'static/icon/common/role_empty_dark.png';
 import RoleEmptyLight from 'static/icon/common/role_empty_light.png';
+import { RoleContext } from './context';
 
-export const Empty: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = props => {
+export const Empty: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = (props) => {
   const colors = useThemeColors();
   const { manageable } = useContext(RoleContext);
-  const theme = useSelector(state => state.theme);
+  const theme = useSelector((state) => state.theme);
   const RoleEmpty = theme === ThemeName.Light ? RoleEmptyLight : RoleEmptyDark;
   return (
     <Box

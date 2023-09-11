@@ -16,20 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, useThemeColors } from '@apitable/components';
-import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, CopyOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
 import dd from 'dingtalk-jsapi';
-import {
-  clearWizardsData, getDingtalkConfig, getSocialWecomUnitName, inSocialApp, isEnterprise, isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled,
-  isSocialWecom, isWecomFunc
-  // @ts-ignore
-} from 'enterprise';
 import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
+import * as React from 'react';
+import { FC, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Button, useThemeColors } from '@apitable/components';
+import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
+import { ChevronRightOutlined, CopyOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, ImageCropUpload, Message, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -40,13 +38,23 @@ import { NotificationStore } from 'pc/notification_store';
 import { resourceService } from 'pc/resource_service';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import * as React from 'react';
-import { FC, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import Vikaji from 'static/icon/common/vikaji.png';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
+import {
+  clearWizardsData,
+  getDingtalkConfig,
+  getSocialWecomUnitName,
+  inSocialApp,
+  isEnterprise,
+  isSocialDingTalk,
+  isSocialFeiShu,
+  isSocialPlatformEnabled,
+  isSocialWecom,
+  isWecomFunc,
+  // @ts-ignore
+} from 'enterprise';
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,7 +72,7 @@ const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),
 };
 
-export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
+export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => {
   const colors = useThemeColors();
   const { ACCOUNT_LOGOUT_VISIBLE, USER_BIND_PHONE_VISIBLE, IS_SELFHOST, IS_APITABLE } = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
@@ -73,7 +81,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
       spaceId: state.space.activeId || '',
       spaceInfo: state.space.curSpaceInfo,
       unitMap: Selectors.getUnitMap(state),
-      themeName: state.theme
+      themeName: state.theme,
     }),
     shallowEqual,
   );
@@ -89,7 +97,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
   const renderLottie = () => {
     const el = document.querySelector('#' + NAV_ID.USER_MENU_INVITE_ICON)!;
     if (!isMobile && el && !el.hasChildNodes()) {
-      import('lottie-web/build/player/lottie_svg').then(module => {
+      import('lottie-web/build/player/lottie_svg').then((module) => {
         const lottie = module.default;
         lottieAnimate.current = lottie.loadAnimation({
           container: el,
@@ -203,10 +211,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
     }, 0);
   };
 
-  const PrivacyItem = ({ label, onClick }: {
-    label: string;
-    onClick: (e: React.MouseEvent) => void;
-  }) => (
+  const PrivacyItem = ({ label, onClick }: { label: string; onClick: (e: React.MouseEvent) => void }) => (
     <div className={classNames(styles.centerItem, styles.inviteItem, styles.linkItem)} onClick={onClick}>
       <span className={styles.label}>{label}</span>
       <div className={styles.valueWrapper}>
@@ -256,11 +261,12 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
   const { mobile: isMobile } = usePlatform();
   if (!userInfo) return null;
   const { avatar, avatarColor, nickName, memberId, memberName, spaceName, mobile, email, inviteCode, isMemberNameModified } = userInfo;
-  const realMemberName = getSocialWecomUnitName?.({
-    name: memberName,
-    isModified: isMemberNameModified,
-    spaceInfo,
-  }) || memberName;
+  const realMemberName =
+    getSocialWecomUnitName?.({
+      name: memberName,
+      isModified: isMemberNameModified,
+      spaceInfo,
+    }) || memberName;
   // Enterprise Micro Browser + Enterprise Micro Third Party Space Station + Unbound Mobile
   const hiddenMobileRes = isWecomFunc?.() && isWecomSpace && !mobile;
 
@@ -289,14 +295,13 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
             <EditOutlined color={colors.black[50]} />
           </div>
         </div>
-        {
-          uploadModal &&
+        {uploadModal && (
           <ImageCropUpload
             type={IUploadType.Avatar}
             avatarName={nickName}
             avatarColor={avatarColor}
             title={t(Strings.upload_avatar)}
-            confirm={data => uploadConfirm(data)}
+            confirm={(data) => uploadConfirm(data)}
             visible={uploadModal}
             officialImgs={defaultAvatars}
             initPreview={
@@ -314,7 +319,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
             customTips={customTips}
             previewShape={IPreviewShape.Circle}
           />
-        }
+        )}
         <div className={styles.topRight}>
           <div className={styles.name} onClick={editNameClick}>
             <Tooltip
@@ -331,13 +336,13 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
               </button>
             )}
             {inEditName && (
-              <Tooltip title={t(Strings.member_err)} placement='top' visible={nameLengthErr}>
+              <Tooltip title={t(Strings.member_err)} placement="top" visible={nameLengthErr}>
                 <Input
                   defaultValue={memberName}
                   className={classNames(styles.input, {
                     [styles.err]: nameLengthErr,
                   })}
-                  size='small'
+                  size="small"
                   autoFocus
                   onChange={inputChange}
                   onPressEnter={onPressEnter}
@@ -389,7 +394,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
               </div>
             </div>
           )}
-          {isMobile && items.filter(item => item.visible).map(item => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
+          {isMobile && items.filter((item) => item.visible).map((item) => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
           {!isMobile && !isMobileApp() && !isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && isEnterprise && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
@@ -409,7 +414,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>
-              <Image src={Vikaji} alt='vikaji' width={36} height={36} />
+              <Image src={Vikaji} alt="vikaji" width={36} height={36} />
             </div>
           </ComponentDisplay>
         )}
@@ -431,7 +436,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = props => {
       {!inSocialApp?.() && ACCOUNT_LOGOUT_VISIBLE && (
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.btnWrap}>
-            <Button variant='jelly' onClick={signOut} block size='large'>
+            <Button variant="jelly" onClick={signOut} block size="large">
               {t(Strings.logout)}
             </Button>
           </div>

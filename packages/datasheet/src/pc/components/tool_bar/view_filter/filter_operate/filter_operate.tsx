@@ -16,18 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import produce from 'immer';
+import * as React from 'react';
+import { useContext } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Select, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType, Field, FieldType, FilterDuration, FOperator, IField, IFieldMap, IFilterCondition, IFilterInfo, Strings, t,
+  BasicValueType,
+  Field,
+  FieldType,
+  FilterDuration,
+  FOperator,
+  IField,
+  IFieldMap,
+  IFilterCondition,
+  IFilterInfo,
+  Strings,
+  t,
 } from '@apitable/core';
-import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
-import * as React from 'react';
-import { useContext } from 'react';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
 
@@ -44,7 +54,7 @@ const checkNullOperator = (operator: FOperator) => {
   return operator === FOperator.IsNotEmpty || operator === FOperator.IsEmpty || operator === FOperator.IsRepeat;
 };
 
-export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps>> = props => {
+export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps>> = (props) => {
   const { conditionIndex, conditions, changeFilter, condition, field, fieldMap } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
@@ -78,7 +88,7 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
 
   function mapHandle(field: IField, item: FOperator) {
     if (item === FOperator.IsRepeat) {
-      const isRepeatCondition = conditions.find(item => item.operator === FOperator.IsRepeat);
+      const isRepeatCondition = conditions.find((item) => item.operator === FOperator.IsRepeat);
       return {
         label: Field.bindModel(field).showFOperatorDesc(item),
         value: item,
@@ -94,7 +104,7 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
 
   function onChange(value: FOperator) {
     changeFilter((filterInfo: IFilterInfo) => {
-      return produce(filterInfo, draft => {
+      return produce(filterInfo, (draft) => {
         const condition = draft.conditions[conditionIndex];
         draft.conditions[conditionIndex] = {
           ...condition,
@@ -112,7 +122,7 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
     return (
       <MobileSelect
         defaultValue={condition.operator}
-        optionData={Field.bindModel(field).acceptFilterOperators.map(fop => mapHandle(field, fop))}
+        optionData={Field.bindModel(field).acceptFilterOperators.map((fop) => mapHandle(field, fop))}
         onChange={onChange}
         title={t(Strings.please_choose)}
         disabled={isViewLock}
@@ -128,8 +138,8 @@ export const FilterOperate: React.FC<React.PropsWithChildren<IFilterOperateProps
   return (
     <Select
       value={condition.operator}
-      options={Field.bindModel(field).acceptFilterOperators.map(fop => mapHandle(field, fop))}
-      onSelected={option => onChange(option.value as FOperator)}
+      options={Field.bindModel(field).acceptFilterOperators.map((fop) => mapHandle(field, fop))}
+      onSelected={(option) => onChange(option.value as FOperator)}
       triggerCls={styles.con}
       openSearch={false}
       dropdownMatchSelectWidth={false}

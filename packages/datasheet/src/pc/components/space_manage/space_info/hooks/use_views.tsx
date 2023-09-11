@@ -17,11 +17,11 @@
  */
 
 import { useMemo } from 'react';
-import { GanttOutlined, CalendarOutlined, FormOutlined, MirrorOutlined } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
+import { GanttOutlined, CalendarOutlined, FormOutlined, MirrorOutlined } from '@apitable/icons';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
-import { Strings, t } from '@apitable/core';
 
 export const useView = ({ spaceInfo, subscription }: IHooksParams): IMultiLineItemProps[] => {
   const colors = useThemeColors();

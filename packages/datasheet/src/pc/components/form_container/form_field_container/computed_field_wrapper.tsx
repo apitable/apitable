@@ -17,16 +17,16 @@
  */
 
 import { Tooltip } from 'antd';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
 import { FC } from 'react';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
 
 interface IComputedFieldWrapperProps {
   title: string;
   className?: string;
 }
 
-export const ComputedFieldWrapper: FC<React.PropsWithChildren<IComputedFieldWrapperProps>> = props => {
+export const ComputedFieldWrapper: FC<React.PropsWithChildren<IComputedFieldWrapperProps>> = (props) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   return (

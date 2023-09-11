@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
-import { IFieldMap, IViewColumn, Selectors, StoreActions } from '@apitable/core';
 import { difference, isEqual } from 'lodash';
+import { IFieldMap, IViewColumn, Selectors, StoreActions } from '@apitable/core';
+import { store } from 'pc/store';
 
 let mirrorId: string | undefined;
 let fieldMap: IFieldMap | undefined;
@@ -62,23 +62,25 @@ store.subscribe(function TemplateChange() {
 
 function fillColumns(fieldMap: IFieldMap, columns: IViewColumn[], mirrorId: string) {
   const fieldMapKeys = Object.keys(fieldMap);
-  const columnsIds = (columns as IViewColumn[]).map(column => {return column.fieldId;});
+  const columnsIds = (columns as IViewColumn[]).map((column) => {
+    return column.fieldId;
+  });
   const deleteIds = difference(columnsIds, fieldMapKeys);
   const insertIds = difference(fieldMapKeys, columnsIds);
   let _columns = [...columns];
 
   if (deleteIds.length) {
     // Filtering deleted columns
-    _columns = _columns.filter(column => {
+    _columns = _columns.filter((column) => {
       return !deleteIds.includes(column.fieldId);
     });
   }
 
   if (insertIds.length) {
     // New column
-    insertIds.map(id => {
+    insertIds.map((id) => {
       _columns.push({
-        fieldId: id
+        fieldId: id,
       });
     });
   }

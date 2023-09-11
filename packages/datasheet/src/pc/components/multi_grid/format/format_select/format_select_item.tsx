@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
-import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
-import { DeleteOutlined, DragOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
-import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { useThemeColors } from '@apitable/components';
+import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
+import { DeleteOutlined, DragOutlined } from '@apitable/icons';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
+import { stopPropagation } from 'pc/utils';
 import styles from '../styles.module.less';
 
 export interface IFormatSelectItem {
@@ -38,7 +38,7 @@ export interface IFormatSelectItem {
   addNewItem: () => void;
 }
 
-export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectItem>> = props => {
+export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectItem>> = (props) => {
   const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const isTypingRef = useRef(false);
@@ -48,8 +48,8 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
     if (value.length > 100 && value.length > item.name.length) {
       return;
     }
-    setCurrentField(pre => {
-      return produce(pre, draft => {
+    setCurrentField((pre) => {
+      return produce(pre, (draft) => {
         draft.property.options[index].name = value;
         return draft;
       });
@@ -57,16 +57,16 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
   };
 
   const deleteItem = (index: number) => {
-    setCurrentField(pre => {
+    setCurrentField((pre) => {
       // When deleting a single multi-select option, the deleted option used in defaultValue is immediately cleared
       const curOption = currentField.property.options[index];
       let defaultValue = currentField.property.defaultValue;
-      if (Array.isArray(defaultValue) && defaultValue.some(dv => dv === curOption.id)) {
-        defaultValue = defaultValue.filter(dv => dv !== curOption.id);
+      if (Array.isArray(defaultValue) && defaultValue.some((dv) => dv === curOption.id)) {
+        defaultValue = defaultValue.filter((dv) => dv !== curOption.id);
       } else if (typeof defaultValue === 'string' && defaultValue === curOption.id) {
         defaultValue = undefined;
       }
-      const nextState = produce(pre, draft => {
+      const nextState = produce(pre, (draft) => {
         draft.property.options.splice(index, 1);
         draft.property.defaultValue = defaultValue;
         return draft;
@@ -82,40 +82,37 @@ export const FormatSelectItem: React.FC<React.PropsWithChildren<IFormatSelectIte
     addNewItem();
   };
 
-  return <Draggable key={item.id} draggableId={item.id} index={index}>
-    {(provided, snapshot) => (
-      <div
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        className={styles.selectionItem}
-      >
-        <div
-          className={classNames(styles.iconMove, {
-            [styles.dragging]: snapshot.isDragging,
-          })}
-          {...provided.dragHandleProps}
-        >
-          <DragOutlined size={16} color={colors.thirdLevelText} />
+  return (
+    <Draggable key={item.id} draggableId={item.id} index={index}>
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={styles.selectionItem}>
+          <div
+            className={classNames(styles.iconMove, {
+              [styles.dragging]: snapshot.isDragging,
+            })}
+            {...provided.dragHandleProps}
+          >
+            <DragOutlined size={16} color={colors.thirdLevelText} />
+          </div>
+          <div onClick={stopPropagation} ref={colorPickerRef}>
+            <ColorPicker onChange={onOptionChange} option={item} mask />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Input
+              size={'small'}
+              onChange={onChange.bind(null, index)}
+              value={item.name}
+              autoFocus={index === currentField.property.options.length - 1}
+              onPressEnter={pressEnter}
+              onCompositionStart={() => (isTypingRef.current = true)}
+              onCompositionEnd={() => (isTypingRef.current = false)}
+            />
+          </div>
+          <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>
+            <DeleteOutlined size={16} color={colors.fourthLevelText} />
+          </div>
         </div>
-        <div onClick={stopPropagation} ref={colorPickerRef}>
-          <ColorPicker onChange={onOptionChange} option={item} mask />
-        </div>
-        <div style={{ flex: 1 }}>
-          <Input
-            size={'small'}
-            onChange={onChange.bind(null, index)}
-            value={item.name}
-            autoFocus={index === currentField.property.options.length - 1}
-            onPressEnter={pressEnter}
-            onCompositionStart={() => isTypingRef.current = true}
-            onCompositionEnd={() => isTypingRef.current = false}
-          />
-        </div>
-        <div className={styles.iconDelete} onClick={deleteItem.bind(null, index)}>
-          <DeleteOutlined size={16} color={colors.fourthLevelText} />
-        </div>
-      </div>
-    )}
-  </Draggable>;
+      )}
+    </Draggable>
+  );
 };

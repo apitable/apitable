@@ -16,11 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  BasicValueType, CollaCommandName, DATASHEET_ID, ExecuteResult, Field, FieldOperateType, FilterConjunction, FilterDuration, getNewId, IDPrefix,
-  IFilterInfo, IGridViewColumn, ISortInfo, IViewProperty, Selectors, SetFieldFrom, StoreActions, Strings, t, ViewType,
-} from '@apitable/core';
 import { has } from 'lodash';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  BasicValueType,
+  CollaCommandName,
+  DATASHEET_ID,
+  ExecuteResult,
+  Field,
+  FieldOperateType,
+  FilterConjunction,
+  FilterDuration,
+  getNewId,
+  IDPrefix,
+  IFilterInfo,
+  IGridViewColumn,
+  ISortInfo,
+  IViewProperty,
+  Selectors,
+  SetFieldFrom,
+  StoreActions,
+  Strings,
+  t,
+  ViewType,
+} from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';
 import { useCacheScroll } from 'pc/context';
@@ -28,9 +49,6 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getFieldHeaderByFieldId } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import * as React from 'react';
-import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 function returnCurrentOffsetX(newOffsetX: number, lastOffsetX: number): number {
   if (newOffsetX === lastOffsetX) {
@@ -39,24 +57,16 @@ function returnCurrentOffsetX(newOffsetX: number, lastOffsetX: number): number {
     return newOffsetX! - lastOffsetX;
   }
   return -(lastOffsetX - newOffsetX!);
-
 }
 
 export const useFieldOperate = (modalWidth: number, datasheetId?: string, targetDOM?: HTMLElement | null) => {
-  const {
-    fieldRectLeft,
-    fieldRectBottom,
-    clickLogOffsetX,
-  } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const { fieldRectLeft, fieldRectBottom, clickLogOffsetX } = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
   const { scrollLeft = 0 } = useCacheScroll();
   const diffOffsetX = scrollLeft ? returnCurrentOffsetX(scrollLeft, clickLogOffsetX) : 0;
 
   const [multiGridLeft, multiGridRight] = useMemo(() => {
     if (targetDOM) {
-      return [
-        targetDOM!.getBoundingClientRect()['left'],
-        targetDOM!.getBoundingClientRect()['right'],
-      ];
+      return [targetDOM!.getBoundingClientRect()['left'], targetDOM!.getBoundingClientRect()['right']];
     }
 
     function getMultiGridPosition(id: string, direction: string) {
@@ -68,17 +78,14 @@ export const useFieldOperate = (modalWidth: number, datasheetId?: string, target
       return dom!.getBoundingClientRect()[direction];
     }
 
-    return [
-      getMultiGridPosition(DATASHEET_ID.DOM_CONTAINER, 'left'),
-      getMultiGridPosition(DATASHEET_ID.DOM_CONTAINER, 'right'),
-    ];
+    return [getMultiGridPosition(DATASHEET_ID.DOM_CONTAINER, 'left'), getMultiGridPosition(DATASHEET_ID.DOM_CONTAINER, 'right')];
   }, [targetDOM]);
 
   let left = fieldRectLeft - diffOffsetX;
 
   if (left < multiGridLeft) {
     left = multiGridLeft;
-  } else if ((left + modalWidth) > multiGridRight) {
+  } else if (left + modalWidth > multiGridRight) {
     left = multiGridRight - modalWidth;
   }
 
@@ -100,7 +107,7 @@ export const useHideField = (currentView: IViewProperty | undefined, hiddenProp 
     // When column display is turned on, the calendar view is limited to displaying up to 10 columns of fields
     if (isCalendar && !isHidden) {
       let noHiddenFieldLength = 0;
-      currentView.columns.forEach(column => {
+      currentView.columns.forEach((column) => {
         if (has(column, 'hidden') && !column.hidden) {
           noHiddenFieldLength++;
         }
@@ -110,45 +117,48 @@ export const useHideField = (currentView: IViewProperty | undefined, hiddenProp 
         return;
       }
     }
-    return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.ModifyViews,
-        data: [
-          {
-            viewId: currentView.id,
-            key: 'columns',
-            value: (currentView.columns as IGridViewColumn[]).map(item => {
-              if (fieldIds.includes(item.fieldId)) {
-                if (isGantt) return { ...item, [hiddenProp]: isHidden };
-                return { ...item, hidden: isHidden, [hiddenProp]: isHidden };
-              }
-              return item;
-            }),
-          },
-        ],
-        datasheetId
-      });
-      return result;
-    }, {
-      columns: (currentView.columns as IGridViewColumn[]).map(item => {
-        if (fieldIds.includes(item.fieldId)) {
-          if (isGantt) return { ...item, [hiddenProp]: isHidden };
-          return { ...item, hidden: isHidden, [hiddenProp]: isHidden };
-        }
-        return item;
-      })
-    }, () => {
-      return ExecuteResult.Success;
-    });
-
+    return executeCommandWithMirror(
+      () => {
+        const { result } = resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.ModifyViews,
+          data: [
+            {
+              viewId: currentView.id,
+              key: 'columns',
+              value: (currentView.columns as IGridViewColumn[]).map((item) => {
+                if (fieldIds.includes(item.fieldId)) {
+                  if (isGantt) return { ...item, [hiddenProp]: isHidden };
+                  return { ...item, hidden: isHidden, [hiddenProp]: isHidden };
+                }
+                return item;
+              }),
+            },
+          ],
+          datasheetId,
+        });
+        return result;
+      },
+      {
+        columns: (currentView.columns as IGridViewColumn[]).map((item) => {
+          if (fieldIds.includes(item.fieldId)) {
+            if (isGantt) return { ...item, [hiddenProp]: isHidden };
+            return { ...item, hidden: isHidden, [hiddenProp]: isHidden };
+          }
+          return item;
+        }),
+      },
+      () => {
+        return ExecuteResult.Success;
+      },
+    );
   };
   return hideField;
 };
 
 export const useFilterField = () => {
-  const currentView = useSelector(state => Selectors.getCurrentView(state));
-  const activeViewFilter: undefined | IFilterInfo = useSelector(state => Selectors.getFilterInfo(state));
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const currentView = useSelector((state) => Selectors.getCurrentView(state));
+  const activeViewFilter: undefined | IFilterInfo = useSelector((state) => Selectors.getFilterInfo(state));
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const filterField = (fieldId: string) => {
     if (!currentView) {
       return;
@@ -156,67 +166,78 @@ export const useFilterField = () => {
     const field = fieldMap[fieldId];
     const acceptFilterOperators = Field.bindModel(field).acceptFilterOperators;
     const newOperate = acceptFilterOperators[0];
-    const exitIds = activeViewFilter ? activeViewFilter.conditions.map(item => item.conditionId) : [];
+    const exitIds = activeViewFilter ? activeViewFilter.conditions.map((item) => item.conditionId) : [];
 
     const newFilterInfo = {
       conjunction: activeViewFilter ? activeViewFilter.conjunction : FilterConjunction.And,
-      conditions: [...(activeViewFilter ? activeViewFilter.conditions : []), {
-        conditionId: getNewId(IDPrefix.Condition, exitIds),
-        fieldId,
-        operator: newOperate,
-        fieldType: field.type as any,
-        value: Field.bindModel(field).valueType === BasicValueType.DateTime ?
-          [FilterDuration.ExactDate, null] : null,
-      }],
+      conditions: [
+        ...(activeViewFilter ? activeViewFilter.conditions : []),
+        {
+          conditionId: getNewId(IDPrefix.Condition, exitIds),
+          fieldId,
+          operator: newOperate,
+          fieldType: field.type as any,
+          value: Field.bindModel(field).valueType === BasicValueType.DateTime ? [FilterDuration.ExactDate, null] : null,
+        },
+      ],
     };
 
-    return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetViewFilter,
-        viewId: currentView.id,
-        data: newFilterInfo
-      });
-      return result;
-    }, {
-      filterInfo: newFilterInfo
-    });
+    return executeCommandWithMirror(
+      () => {
+        const { result } = resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetViewFilter,
+          viewId: currentView.id,
+          data: newFilterInfo,
+        });
+        return result;
+      },
+      {
+        filterInfo: newFilterInfo,
+      },
+    );
   };
   return filterField;
 };
 
 export const useGroupField = () => {
-  const currentView = useSelector(state => Selectors.getCurrentView(state));
-  const activeViewGroupInfo = useSelector(state => Selectors.getActiveViewGroupInfo(state)); // store Total stored data
+  const currentView = useSelector((state) => Selectors.getCurrentView(state));
+  const activeViewGroupInfo = useSelector((state) => Selectors.getActiveViewGroupInfo(state)); // store Total stored data
   const canGroup = activeViewGroupInfo.length < 3;
   const groupField = (fieldId: string) => {
     if (!currentView) {
       return;
     }
-    if (activeViewGroupInfo.find(item => item.fieldId === fieldId)) {
+    if (activeViewGroupInfo.find((item) => item.fieldId === fieldId)) {
       return ExecuteResult.Success;
     }
 
-    const groupInfo = [...activeViewGroupInfo, {
-      fieldId, desc: false,
-    }];
+    const groupInfo = [
+      ...activeViewGroupInfo,
+      {
+        fieldId,
+        desc: false,
+      },
+    ];
 
-    return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetGroup,
-        viewId: currentView.id,
-        data: groupInfo,
-      });
-      return result;
-    }, {
-      groupInfo
-    });
-
+    return executeCommandWithMirror(
+      () => {
+        const { result } = resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetGroup,
+          viewId: currentView.id,
+          data: groupInfo,
+        });
+        return result;
+      },
+      {
+        groupInfo,
+      },
+    );
   };
   return { canGroup, groupField };
 };
 
 export const useSortField = () => {
-  const currentView = useSelector(state => Selectors.getCurrentView(state));
+  const currentView = useSelector((state) => Selectors.getCurrentView(state));
 
   const sortField = (desc: boolean, fieldId: string) => {
     if (!currentView) {
@@ -230,10 +251,10 @@ export const useSortField = () => {
 
     if (currentView.sortInfo) {
       const rules = currentView.sortInfo.rules;
-      const sortFieldIndex = rules.findIndex(item => item.fieldId === fieldId);
+      const sortFieldIndex = rules.findIndex((item) => item.fieldId === fieldId);
       newSortInfo.keepSort = currentView.sortInfo.keepSort;
       if (sortFieldIndex > -1) {
-        newSortInfo.rules = rules.map(item => {
+        newSortInfo.rules = rules.map((item) => {
           if (item.fieldId === fieldId) {
             return {
               desc,
@@ -248,23 +269,26 @@ export const useSortField = () => {
     } else {
       newSortInfo.rules = [{ desc, fieldId }];
     }
-    return executeCommandWithMirror(() => {
-      const { result } = resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetSortInfo,
-        viewId: currentView.id,
-        data: newSortInfo || undefined,
-      });
-      return result;
-    }, {
-      sortInfo: newSortInfo || undefined
-    });
+    return executeCommandWithMirror(
+      () => {
+        const { result } = resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetSortInfo,
+          viewId: currentView.id,
+          data: newSortInfo || undefined,
+        });
+        return result;
+      },
+      {
+        sortInfo: newSortInfo || undefined,
+      },
+    );
   };
   return sortField;
 };
 
 export const useActiveFieldSetting = () => {
-  const permissions = useSelector(state => Selectors.getPermissions(state));
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state)!);
+  const permissions = useSelector((state) => Selectors.getPermissions(state));
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state)!);
   const { scrollLeft } = useCacheScroll();
 
   const activeFieldSetting = (fieldId: string, from?: SetFieldFrom): boolean => {

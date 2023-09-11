@@ -1,7 +1,7 @@
+import { Message } from '@apitable/components';
 import { ResourceType, Selectors, ViewPropertyFilter } from '@apitable/core';
 import { store } from 'pc/store';
 import { resourceService } from '../../../../resource_service';
-import { Message } from '@apitable/components';
 
 export const requestServerView = async(datasheetId: string, viewId: string, shareId?: string) => {
   const { success, data, message } = await ViewPropertyFilter.requestViewData(datasheetId!, viewId, shareId);
@@ -10,7 +10,7 @@ export const requestServerView = async(datasheetId: string, viewId: string, shar
     const revision = Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet);
 
     if (data['revision'] < revision!) {
-      // The database version is smaller than the local version, 
+      // The database version is smaller than the local version,
       // probably because the op is being processed at the same time as the request, so a new request is sent
       return await ViewPropertyFilter.requestViewData(datasheetId!, viewId, shareId);
     }

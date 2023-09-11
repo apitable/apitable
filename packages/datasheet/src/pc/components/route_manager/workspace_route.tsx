@@ -18,10 +18,12 @@
 
 import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import * as React from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+// @ts-ignore
+import { ChatPage } from 'enterprise';
+import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
@@ -29,12 +31,13 @@ import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
 import { Welcome } from '../workspace/welcome';
 // @ts-ignore
-import { ChatPage } from 'enterprise';
+import { useQuery } from '../../hooks';
+import { AutomationPanel } from '../automation';
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useSelector(state => Selectors.getNodeId(state));
   const activeNodeError = useSelector(state => state.catalogTree.activeNodeError);
-  const { datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state: IReduxState) => state.pageParams);
+  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId } = useSelector((state: IReduxState) => state.pageParams);
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
   useMount(() => {
@@ -46,12 +49,18 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
     const parentNode = treeNodesMap[folderId];
     let childNodes: any[] = [];
     if (parentNode && treeNodesMap[parentNode.nodeId].hasChildren && parentNode.children.length) {
-      childNodes = parentNode.children.map(nodeId => treeNodesMap[nodeId]);
+      childNodes = parentNode.children.map((nodeId) => treeNodesMap[nodeId]);
     }
     return childNodes;
   };
 
+
   const MainComponent = (): React.ReactElement => {
+    if(automationId) {
+      return (
+        <AutomationPanel/>
+      );
+    }
     if (activeNodeError) {
       return <NoPermission />;
     }

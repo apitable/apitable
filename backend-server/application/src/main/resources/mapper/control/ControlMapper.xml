@@ -20,19 +20,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.apitable.control.mapper.ControlMapper">
-    <select id="selectByControlId" resultType="com.apitable.control.entity.ControlEntity">
+    <select id="selectSpaceIdByControlId" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}control
+        WHERE control_id = #{controlId}
+          AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectByControlId"
+            resultType="com.apitable.control.entity.ControlEntity">
         SELECT *
         FROM ${tablePrefix}control
         WHERE control_id = #{controlId}
-        AND is_deleted = 0
+          AND is_deleted = 0
     </select>
 
-    <select id="selectByControlIds" resultType="com.apitable.control.entity.ControlEntity">
+    <select id="selectByControlIds"
+            resultType="com.apitable.control.entity.ControlEntity">
         SELECT *
         FROM ${tablePrefix}control
         WHERE control_id IN
-        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
-                 close=")">
+        <foreach item="item" index="index" collection="controlIds" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
@@ -42,23 +52,24 @@
         SELECT COUNT(*)
         FROM ${tablePrefix}control
         WHERE control_id = #{controlId}
-        AND is_deleted = 0
+          AND is_deleted = 0
     </select>
 
-    <select id="selectControlIdByControlIdPrefixAndType" resultType="java.lang.String">
+    <select id="selectControlIdByControlIdPrefixAndType"
+            resultType="java.lang.String">
         SELECT DISTINCT control_id
         FROM ${tablePrefix}control
         WHERE control_id LIKE CONCAT(#{prefix}, '%')
-        AND control_type = #{type}
-        AND is_deleted = 0
+          AND control_type = #{type}
+          AND is_deleted = 0
     </select>
 
     <select id="selectControlIdByControlIds" resultType="java.lang.String">
         SELECT control_id
         FROM ${tablePrefix}control
         WHERE control_id IN
-        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
-                 close=")">
+        <foreach item="item" index="index" collection="controlIds" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
@@ -84,7 +95,7 @@
         SELECT control_id, control_type
         FROM ${tablePrefix}control
         WHERE space_id = #{spaceId}
-        AND is_deleted = 0
+          AND is_deleted = 0
     </select>
 
     <insert id="insertBatch">
@@ -109,12 +120,14 @@
         </foreach>
     </delete>
 
-    <select id="selectDeletedByControlIdAndSpaceId" resultType="com.apitable.control.entity.ControlEntity">
-        SELECT * FROM ${tablePrefix}control
+    <select id="selectDeletedByControlIdAndSpaceId"
+            resultType="com.apitable.control.entity.ControlEntity">
+        SELECT *
+        FROM ${tablePrefix}control
         WHERE control_id = #{controlId}
-        AND space_id = #{spaceId}
-        AND control_type = #{controlType.val}
-        AND is_deleted = 1
+          AND space_id = #{spaceId}
+          AND control_type = #{controlType.val}
+          AND is_deleted = 1
     </select>
 
     <update id="updateIsDeletedByIds">

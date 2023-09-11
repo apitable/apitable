@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Selectors } from '@apitable/core';
-import { useState, useEffect } from 'react';
 import { isObject } from 'lodash';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Selectors } from '@apitable/core';
 // @ts-ignore
 import { WecomOpenDataType, isSocialWecom } from 'enterprise';
 
 interface IWxTitleMap {
-  userNames?: { name: string, unitId: string }[];
+  userNames?: { name: string; unitId: string }[];
 }
 
 // Enterprise Wecom members canvas name collection
 export const useWxTitleMap = (props: IWxTitleMap = {}) => {
   const { userNames } = props;
   const unitMap = useSelector(Selectors.getUnitMap);
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   // Enterprise Wecom member name collection
   const [unitTitleMap, setUnitTitleMap] = useState<object>({});
   const WWOpenData: {
@@ -44,7 +44,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
       // IOS system probability undefined
       if (WWOpenData.initCanvas) {
         WWOpenData.initCanvas();
-        const items = units.map(item => ({ type: WecomOpenDataType.UserName, id: item.name }));
+        const items = units.map((item) => ({ type: WecomOpenDataType.UserName, id: item.name }));
         const fetchData = async() => {
           const result: { items: { data: string }[] } = await new Promise((resolve, reject) => {
             WWOpenData.prefetch({ items }, (err: any, data: any) => {
@@ -63,7 +63,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
         fetchData();
       }
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [unitMap, WWOpenData, spaceInfo]);
   return {
     unitTitleMap,

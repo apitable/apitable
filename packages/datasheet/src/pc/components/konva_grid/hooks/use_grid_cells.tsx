@@ -16,14 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, compensator, ConfigConstant, Field, IField, KONVA_DATASHEET_ID, Range, RecordMoveType, Selectors, ViewType } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { useContext } from 'react';
+import { CellType, compensator, ConfigConstant, Field, IField, KONVA_DATASHEET_ID, Range, RecordMoveType, Selectors, ViewType } from '@apitable/core';
 import { AreaType, PointPosition } from 'pc/components/gantt_view';
 import {
-  cellHelper, getCellHorizontalPosition, GridCoordinate, IRenderProps, KonvaGridContext, KonvaGridViewContext
+  cellHelper,
+  getCellHorizontalPosition,
+  GridCoordinate,
+  IRenderProps,
+  KonvaGridContext,
+  KonvaGridViewContext,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
-import { useContext } from 'react';
 import { addRowLayout, blankRowLayout, groupTabLayout, recordRowLayout } from '../model';
 
 const Shape = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/shape'), { ssr: false });
@@ -46,14 +51,7 @@ export const getCellEditable = (field: IField, editable: boolean) => {
 };
 
 export const useCells = (props: IUseGridBaseProps) => {
-  const {
-    instance,
-    rowStartIndex,
-    rowStopIndex,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-  } = props;
+  const { instance, rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex, pointPosition } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const {
@@ -132,13 +130,13 @@ export const useCells = (props: IUseGridBaseProps) => {
               rowHeight: height,
               columnCount,
               groupCount,
-              viewType
+              viewType,
             });
             addRowLayout.render({
               row,
               rowCreatable,
               isHoverRow,
-              isHoverColumn
+              isHoverColumn,
             });
             break;
           }
@@ -153,7 +151,7 @@ export const useCells = (props: IUseGridBaseProps) => {
               rowHeight: height,
               columnCount,
               groupCount,
-              viewType
+              viewType,
             });
             blankRowLayout.render({ row, colors });
             break;
@@ -164,7 +162,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             const groupField = fieldMap[groupFieldId];
             const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, groupFieldId);
             const isCryptoField = fieldRole === ConfigConstant.Role.None;
-            const cellValue = (groupField == null || isCryptoField) ? null : Selectors.getCellValue(state, snapshot, recordId, groupField.id);
+            const cellValue = groupField == null || isCryptoField ? null : Selectors.getCellValue(state, snapshot, recordId, groupField.id);
             groupTabLayout.init({
               x,
               y,
@@ -174,7 +172,7 @@ export const useCells = (props: IUseGridBaseProps) => {
               rowHeight: height,
               columnCount,
               groupCount,
-              viewType
+              viewType,
             });
             groupTabLayout.render({
               row,
@@ -210,9 +208,9 @@ export const useCells = (props: IUseGridBaseProps) => {
             const isThisCellWillMove = recordMoveType && recordMoveType !== RecordMoveType.NotMove && isActiveRow;
             let background = colors.white;
             const isHoverRow = pointRowIndex === rowIndex && !isNoneArea;
-            const isCheckedRow = Boolean(recordRanges && recordRanges.findIndex(item => item === recordId) !== -1);
-            const isCellInFillSelection = fillHandleStatus?.fillRange &&
-              Range.bindModel(fillHandleStatus.fillRange).contains(state, { recordId, fieldId });
+            const isCheckedRow = Boolean(recordRanges && recordRanges.findIndex((item) => item === recordId) !== -1);
+            const isCellInFillSelection =
+              fillHandleStatus?.fillRange && Range.bindModel(fillHandleStatus.fillRange).contains(state, { recordId, fieldId });
             const isActive = activeCell?.recordId === recordId && activeCell?.fieldId === fieldId;
             const isDraggingRow = dragRecordId === recordId;
             const commentCount = Selectors.getRecord(state, recordId, datasheetId)?.commentCount || 0;
@@ -249,7 +247,7 @@ export const useCells = (props: IUseGridBaseProps) => {
               rowHeight,
               columnCount,
               groupCount,
-              viewType
+              viewType,
             });
             recordRowLayout.render({
               row,
@@ -261,13 +259,13 @@ export const useCells = (props: IUseGridBaseProps) => {
               isThisCellWillMove,
               commentCount,
               commentVisible,
-              colors
+              colors,
             });
             const { width, offset } = getCellHorizontalPosition({
               depth,
               columnIndex,
               columnWidth,
-              columnCount
+              columnCount,
             });
             const realX = x + offset - 0.5;
             const realY = y - 0.5;
@@ -288,7 +286,7 @@ export const useCells = (props: IUseGridBaseProps) => {
               viewType: ViewType.Grid,
               unitTitleMap,
               cacheTheme,
-              colors
+              colors,
             };
 
             cellHelper.initStyle(field, style);
@@ -309,13 +307,7 @@ export const useCells = (props: IUseGridBaseProps) => {
   };
 
   // Freeze column cells
-  const frozenCells = (
-    <Shape
-      listening={false}
-      perfectDrawEnabled={false}
-      sceneFunc={(ctx: any) => cellsDrawer(ctx, 0, frozenColumnCount - 1)}
-    />
-  );
+  const frozenCells = <Shape listening={false} perfectDrawEnabled={false} sceneFunc={(ctx: any) => cellsDrawer(ctx, 0, frozenColumnCount - 1)} />;
 
   // Other column cells
   const cells = (
@@ -328,6 +320,6 @@ export const useCells = (props: IUseGridBaseProps) => {
 
   return {
     cells,
-    frozenCells
+    frozenCells,
   };
 };

@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import * as React from 'react';
+import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Message } from '@apitable/components';
 import {
   CollaCommandName,
@@ -30,7 +34,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import classNames from 'classnames';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getDetailByTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -46,16 +49,13 @@ import {
 import { useDispatch, useMemorizePreviousValue } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { ButtonOperateType, checkPointInContainer, getParentNodeByClass, GHOST_RECORD_ID } from 'pc/utils';
+import { ButtonOperateType, checkPointInContainer, getParentNodeByClass, GHOST_RECORD_ID, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
-import * as React from 'react';
-import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import { isTouchDevice } from 'pc/utils';
-import { shallowEqual, useSelector } from 'react-redux';
 import { PureEditorContainer } from '../editors';
 import { IContainerEdit } from '../editors/interface';
 import { EXPAND_RECORD, expandRecordIdNavigate } from '../expand_record';
+import { MouseDownType } from '../multi_grid';
 import { ContextMenu } from '../multi_grid/context_menu';
 import { Drag } from '../multi_grid/drag';
 import { FieldDesc } from '../multi_grid/field_desc';
@@ -66,9 +66,8 @@ import { RecordWillMoveTips } from '../multi_grid/record_will_move_tips/record_w
 import { GroupMenu } from './components';
 import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
-import styles from './style.module.less';
 import { UrlActionContainer } from './components/url_action_container';
-import { MouseDownType } from '../multi_grid';
+import styles from './style.module.less';
 
 interface IDomGridBaseProps {
   datasheetId: string;
@@ -105,12 +104,8 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   const { x: pointX, y: pointY, rowIndex: pointRowIndex, columnIndex: pointColumnIndex, targetName, realTargetName } = pointPosition;
 
   const { scrollLeft, scrollTop, isScrolling } = scrollState;
-  const {
-    tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState,
-    setCellScrollState, scrollHandler, activeUrlAction
-  } = useContext(
-    KonvaGridContext,
-  );
+  const { tooltipInfo, scrollToItem, activeCellBound, setCellDown, cellScrollState, setCellScrollState, scrollHandler, activeUrlAction } =
+    useContext(KonvaGridContext);
   const { totalHeight: cellTotalHeight, isOverflow } = cellScrollState;
   const containerRef = useRef<IContainerEdit | null>(null);
   const {
@@ -130,7 +125,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     activeFieldId,
     activeFieldOperateType,
     gridViewDragState,
-  } = useSelector(state => {
+  } = useSelector((state) => {
     const { fieldId, operate } = Selectors.gridViewActiveFieldState(state);
     return {
       activeFieldId: fieldId,
@@ -195,10 +190,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   }, [containerWidth, instance, permissions.rowCreatable, recordId, pointRowIndex, targetName, isScrolling, linearRows]);
 
   const rectCalculator = useCallback(
-    ({
-      recordId,
-      fieldId
-    }: any) => {
+    ({ recordId, fieldId }: any) => {
       const state = store.getState();
       const activeCellUIIndex = Selectors.getCellUIIndex(state, {
         recordId,
@@ -646,9 +638,9 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
   };
 
   const onFrozenColumn = (fieldId: string) => {
-    const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+    const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
     if (columnIndex === -1) return;
-    const visibleColumnIndex = visibleColumns.findIndex(column => column.fieldId === fieldId);
+    const visibleColumnIndex = visibleColumns.findIndex((column) => column.fieldId === fieldId);
     const columnWidth = Selectors.getColumnWidth(visibleColumns[visibleColumnIndex]);
     const x = instance.getColumnOffset(visibleColumnIndex);
 

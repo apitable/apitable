@@ -40,7 +40,7 @@ export const FilePicker = forwardRef((props: IFilePickerProps, ref) => {
   useEffect(() => {
     const refType = typeof ref;
     if (!ref) {
-      return ;
+      return;
     }
     switch (refType) {
       case 'object':
@@ -58,35 +58,41 @@ export const FilePicker = forwardRef((props: IFilePickerProps, ref) => {
     return typeof accept === 'string' ? accept : '*';
   }, [accept]);
 
-  const checkFileType = useCallback((file: File) => {
-    let reg = accept;
-    let pass = true;
-    if (!accept || accept === '*') {
+  const checkFileType = useCallback(
+    (file: File) => {
+      let reg = accept;
+      let pass = true;
+      if (!accept || accept === '*') {
+        return pass;
+      }
+      if (typeof accept === 'string') {
+        reg = new RegExp(accept, 'i');
+        pass = reg.test(file.type);
+      } else {
+        pass = (reg as RegExp).test(file.name);
+      }
       return pass;
-    }
-    if (typeof accept === 'string') {
-      reg = new RegExp(accept, 'i');
-      pass = reg.test(file.type);
-    } else {
-      pass = (reg as RegExp).test(file.name);
-    }
-    return pass;
-  }, [accept]);
+    },
+    [accept],
+  );
 
-  const checkFileSize = useCallback((file: File) => {
-    if (!limitSize) {
-      return true;
-    }
-    // size Within the limits
-    if (Array.isArray(limitSize)) {
-      return file.size > limitSize[0] && file.size < limitSize[1];
-    }
-    // Limit the maximum value of size 
-    return file.size < limitSize;
-  }, [limitSize]);
+  const checkFileSize = useCallback(
+    (file: File) => {
+      if (!limitSize) {
+        return true;
+      }
+      // size Within the limits
+      if (Array.isArray(limitSize)) {
+        return file.size > limitSize[0] && file.size < limitSize[1];
+      }
+      // Limit the maximum value of size
+      return file.size < limitSize;
+    },
+    [limitSize],
+  );
 
   const addPreview = useCallback((file: File) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onabort = () => resolve(file);
       reader.onerror = () => resolve(file);
@@ -99,31 +105,32 @@ export const FilePicker = forwardRef((props: IFilePickerProps, ref) => {
     });
   }, []);
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    if (!target) {
-      return;
-    }
-    const file = (target as any).files[0];
-    if (!checkFileType(file)) {
-      onError && onError('format');
-      return;
-    }
-    if (!checkFileSize(file)) {
-      onError && onError('size');
-      return;
-    }
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const target = e.target;
+      if (!target) {
+        return;
+      }
+      const file = (target as any).files[0];
+      if (!checkFileType(file)) {
+        onError && onError('format');
+        return;
+      }
+      if (!checkFileSize(file)) {
+        onError && onError('size');
+        return;
+      }
 
-    if (needPreview) {
-      addPreview(file)
-        .then((result: any) => {
+      if (needPreview) {
+        addPreview(file).then((result: any) => {
           onChange && onChange(result);
         });
-    } else {
-      onChange && onChange(file as IPreviewFile);
-    }
-
-  }, [onError, onChange, checkFileType, checkFileSize, needPreview, addPreview]);
+      } else {
+        onChange && onChange(file as IPreviewFile);
+      }
+    },
+    [onError, onChange, checkFileType, checkFileSize, needPreview, addPreview],
+  );
 
   const trigger = useCallback(() => {
     if (disabled) {
@@ -146,8 +153,10 @@ export const FilePicker = forwardRef((props: IFilePickerProps, ref) => {
     return { ...children.props, onClick };
   }, [children, trigger]);
 
-  return (<>
-    <input ref={input} type="file" accept={inputAccept} contentEditable={false} disabled={disabled} hidden onChange={handleFileChange} />
-    {React.cloneElement(children, childProps)}
-  </>);
+  return (
+    <>
+      <input ref={input} type="file" accept={inputAccept} contentEditable={false} disabled={disabled} hidden onChange={handleFileChange} />
+      {React.cloneElement(children, childProps)}
+    </>
+  );
 });

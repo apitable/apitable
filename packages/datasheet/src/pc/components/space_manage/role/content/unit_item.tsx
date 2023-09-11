@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { Box, Typography, useThemeColors } from '@apitable/components';
 import { MemberType, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
 
-import classNames from 'classnames';
-import styles from './style.module.less';
 import { IMemberItem } from '../interface';
+import styles from './style.module.less';
 
 export const UnitItem: React.FC<React.PropsWithChildren<IMemberItem>> = (record) => {
   const colors = useThemeColors();

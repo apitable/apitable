@@ -17,14 +17,14 @@
  */
 
 import { useClickOutside } from '@huse/click-outside';
-import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
-import { store } from 'pc/store';
 import * as React from 'react';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { store } from 'pc/store';
 import { resourceService } from '../../../resource_service';
 import { useFieldOperate } from '../hooks';
 import styles from './styles.module.less';
@@ -48,7 +48,7 @@ export interface IFieldDescRef {
 
 export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IFieldDescProps> = (props, ref) => {
   const { fieldId, readOnly, style, datasheetId, targetDOM } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const field = fieldMap[fieldId];
   const positionStyle = useFieldOperate(FIELD_DESC_WIDTH, datasheetId, targetDOM);
   const [fieldDesc, setFieldDesc] = useState(field.desc ? field.desc : '');
@@ -58,13 +58,14 @@ export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IField
   const dispatch = useDispatch();
   const staticRef = useRef({ mouseDown: false });
 
-  useImperativeHandle(ref, (): IFieldDescRef => (
-    {
+  useImperativeHandle(
+    ref,
+    (): IFieldDescRef => ({
       save() {
         onBlur();
       },
-    }
-  ));
+    }),
+  );
 
   useClickOutside(baseRef, () => {
     onBlur();
@@ -118,33 +119,23 @@ export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IField
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >
-      <p className={styles.h3}>
-        {
-          t(Strings.field_desc)
-        }
-      </p>
+      <p className={styles.h3}>{t(Strings.field_desc)}</p>
       <TextArea
         autoSize={!overLimit}
-        className={
-          classNames({
-            [styles.textarea]: true,
-            error: overLimit,
-          })
-        }
-        placeholder={
-          t(Strings.editing_field_desc)
-        }
+        className={classNames({
+          [styles.textarea]: true,
+          error: overLimit,
+        })}
+        placeholder={t(Strings.editing_field_desc)}
         defaultValue={fieldDesc}
         onChange={inputText}
         disabled={readOnly}
       />
       <p
-        className={
-          classNames({
-            [styles.count]: true,
-            [styles.error]: overLimit,
-          })
-        }
+        className={classNames({
+          [styles.count]: true,
+          [styles.error]: overLimit,
+        })}
       >
         {textLen}/{FIELD_DESC_LENGTH}
       </p>
@@ -175,10 +166,7 @@ export const expandFieldDescEditor = (props: IFieldDescProps) => {
 
   root.render(
     <Provider store={store}>
-      <div
-        className={styles.mask}
-        onClick={onClose}
-      />
+      <div className={styles.mask} onClick={onClose} />
       <FieldDesc {...props} />
     </Provider>,
   );

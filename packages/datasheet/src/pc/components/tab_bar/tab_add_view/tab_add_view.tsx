@@ -16,13 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import { get } from 'lodash';
+import RcTrigger from 'rc-trigger';
+import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { IUseListenTriggerInfo } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, Events, ExecuteResult, getViewClass, IReduxState, IViewProperty, Player,
-  Selectors, Strings, t, ViewType,
+  CollaCommandName,
+  ConfigConstant,
+  DATASHEET_ID,
+  DatasheetActions,
+  Events,
+  ExecuteResult,
+  getViewClass,
+  IReduxState,
+  IViewProperty,
+  Player,
+  Selectors,
+  Strings,
+  t,
+  ViewType,
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { IUseListenTriggerInfo } from '@apitable/components';
-import classNames from 'classnames';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
@@ -31,14 +48,9 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useSearchPanel } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import RcTrigger from 'rc-trigger';
-import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
 import { ViewIntroduceList } from './view_introduce_list';
-import { get } from 'lodash';
 // const ReactIconAddTag = () => <IconAddTag width={16} height={16} />;
 
 interface ITabAddView {
@@ -51,7 +63,7 @@ interface ITabAddView {
 
 const OFFSET = [0, 8];
 
-export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props => {
+export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = (props) => {
   const { activityViewId, viewCount, switchView, setEditIndex, disabled = false } = props;
   const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
   // const [plusVisible, setPlusVisible] = useState(false);
@@ -59,32 +71,29 @@ export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props 
   const close = useCallback(
     (e: React.MouseEvent) => {
       ref.current && ref.current.close(e);
-    }, [ref],
+    },
+    [ref],
   );
-  const { info } = useSelector(state => state.user);
-  const embedId = useSelector(state => state.pageParams.embedId);
-  const isLogin = useSelector(state => state.user.isLogin);
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const { info } = useSelector((state) => state.user);
+  const embedId = useSelector((state) => state.pageParams.embedId);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
 
   const isOnlyView = embedId ? get(embedInfo, 'viewControl.viewId', false) : false;
 
   const isHideenAddView = embedId && (isOnlyView || !isLogin);
-  const {
-    panelVisible,
-    panelInfo,
-    onChange,
-    setPanelInfo,
-    setPanelVisible,
-  } = useSearchPanel();
+  const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
 
   const addView = (view: IViewProperty, startIndex: number, viewType: ViewType) => {
     const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddViews,
-      data: [{
-        view,
-        startIndex,
-      }],
+      data: [
+        {
+          view,
+          startIndex,
+        },
+      ],
     });
     /**
      * 5 - Add Grid view
@@ -145,24 +154,18 @@ export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props 
       <div
         id={DATASHEET_ID.ADD_VIEW_BTN}
         data-test-id={DATASHEET_ID.ADD_VIEW_BTN}
-        className={
-          classNames({
-            [styles.addViewButton]: true,
-            [styles.onlyOne]: viewCount === 1,
-            [styles.addBtnDisabled]: disabled,
-          })
-        }
+        className={classNames({
+          [styles.addViewButton]: true,
+          [styles.onlyOne]: viewCount === 1,
+          [styles.addBtnDisabled]: disabled,
+        })}
       >
         <ReactIconButton />
-        <span className={styles.tip}>
-          {viewCount === 1 ? t(Strings.create_view_first) : t(Strings.new_view)}
-        </span>
+        <span className={styles.tip}>{viewCount === 1 ? t(Strings.create_view_first) : t(Strings.new_view)}</span>
       </div>
     );
     if (!disabled) {
-      return (
-        <div className={styles.addViewBtnWrap}>{content}</div>
-      );
+      return <div className={styles.addViewBtnWrap}>{content}</div>;
     }
 
     return (
@@ -181,40 +184,34 @@ export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = props 
 
   return (
     <>
-      { !isHideenAddView && <RcTrigger
-        action={permissions.viewCreatable && !disabled ? ['click'] : ['']}
-        popup={
-          <ViewIntroduceList
-            addNewView={addNewView}
-            addNewNode={addNewNode}
-            triggerInfo={triggerInfo}
-          />
-        }
-        destroyPopupOnHide
-        popupAlign={{
-          points: ['tr', 'br'],
-          offset: OFFSET,
-          overflow: { adjustX: true, adjustY: false },
-        }}
-        popupStyle={{ width: 264 }}
-        ref={ref}
-        onPopupVisibleChange={onPopupVisibleChange}
-        maskClosable
-        mask
-      >
-        {renderBtn()}
-      </RcTrigger> }
-      {
-        panelVisible && (
-          <SearchPanel
-            folderId={panelInfo!.folderId}
-            secondConfirmType={SecondConfirmType.Form}
-            activeDatasheetId={panelInfo?.datasheetId || ''}
-            setSearchPanelVisible={setPanelVisible}
-            onChange={onChange}
-          />
-        )
-      }
+      {!isHideenAddView && (
+        <RcTrigger
+          action={permissions.viewCreatable && !disabled ? ['click'] : ['']}
+          popup={<ViewIntroduceList addNewView={addNewView} addNewNode={addNewNode} triggerInfo={triggerInfo} />}
+          destroyPopupOnHide
+          popupAlign={{
+            points: ['tr', 'br'],
+            offset: OFFSET,
+            overflow: { adjustX: true, adjustY: false },
+          }}
+          popupStyle={{ width: 264 }}
+          ref={ref}
+          onPopupVisibleChange={onPopupVisibleChange}
+          maskClosable
+          mask
+        >
+          {renderBtn()}
+        </RcTrigger>
+      )}
+      {panelVisible && (
+        <SearchPanel
+          folderId={panelInfo!.folderId}
+          secondConfirmType={SecondConfirmType.Form}
+          activeDatasheetId={panelInfo?.datasheetId || ''}
+          setSearchPanelVisible={setPanelVisible}
+          onChange={onChange}
+        />
+      )}
     </>
   );
 };

@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { InputProps } from 'antd/lib/input';
+import classnames from 'classnames';
+import * as React from 'react';
+import { FC, useRef } from 'react';
 import { TextInput } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
-import { InputProps } from 'antd/lib/input';
-import classnames from 'classnames';
 import { KeyCode } from 'pc/utils';
-import * as React from 'react';
-import { FC, useRef } from 'react';
 import styles from './style.module.less';
 
 interface ISearchInput extends InputProps {
-    keyword: string;
-    change: React.Dispatch<React.SetStateAction<string>>;
-    onClose?: () => void;
+  keyword: string;
+  change: React.Dispatch<React.SetStateAction<string>>;
+  onClose?: () => void;
 }
 
-export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
+export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = (props) => {
   const inputRef = useRef<any>(null);
   const { change, onClose, className, ...rest } = props;
 
@@ -65,7 +65,7 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
   return (
     <TextInput
       block
-      prefix={<SearchOutlined/>}
+      prefix={<SearchOutlined />}
       ref={inputRef}
       className={classnames(className, styles.searchInput)}
       value={props.keyword}
@@ -73,9 +73,14 @@ export const SearchInput: FC<React.PropsWithChildren<ISearchInput>> = props => {
       onClick={myStopPropagation}
       onChange={handleChange}
       onKeyDown={onKeyDown}
-      suffix={props.keyword &&
-              <span onClick={clearKeyword}><CloseCircleFilled className={styles.closeBtn}/></span>}
-      {...rest as any}
+      suffix={
+        props.keyword && (
+          <span onClick={clearKeyword}>
+            <CloseCircleFilled className={styles.closeBtn} />
+          </span>
+        )
+      }
+      {...(rest as any)}
     />
   );
 };

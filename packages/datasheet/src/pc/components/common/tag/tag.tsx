@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { lightColors } from '@apitable/components';
 import classnames from 'classnames';
 import React, { FC } from 'react';
+import { lightColors } from '@apitable/components';
 import styles from './style.module.less';
 
 enum TagMod {
@@ -34,7 +34,7 @@ export const TagColors = {
   templateVisitor: lightColors.rc07,
   anonymous: lightColors.rc07,
   foreigner: lightColors.rc01,
-  updater: lightColors.rc02
+  updater: lightColors.rc02,
 };
 
 export interface ITagProps {
@@ -45,33 +45,28 @@ export interface ITagProps {
   className?: string;
 }
 
-export const Tag: FC<React.PropsWithChildren<ITagProps>> = ({
-  color = '#000000',
-  mod = TagMod.FILL,
-  style,
-  className,
-  children,
-}) => {
-
+export const Tag: FC<React.PropsWithChildren<ITagProps>> = ({ color = '#000000', mod = TagMod.FILL, style, className, children }) => {
   const hexToRgba = (hex: string, opacity: number) => {
     // eslint-disable-next-line
-    return `rgba(${parseInt(`0x${hex.slice(1, 3)}`, 16)},${parseInt('0x' + hex.slice(3, 5), 16)},${parseInt('0x' + hex.slice(5, 7), 16)}, ${opacity})`;
+    return `rgba(${parseInt(`0x${hex.slice(1, 3)}`, 16)},${parseInt('0x' + hex.slice(3, 5), 16)},${parseInt(
+      '0x' + hex.slice(5, 7),
+      16,
+    )}, ${opacity})`;
   };
 
-  const tagStyle = mod === TagMod.FILL ?
-    {
-      background: hexToRgba(color, 0.2),
-      color,
-    } : {
-      border: `1px solid ${color}`,
-      color,
-    };
+  const tagStyle =
+    mod === TagMod.FILL
+      ? {
+        background: hexToRgba(color, 0.2),
+        color,
+      }
+      : {
+        border: `1px solid ${color}`,
+        color,
+      };
 
   return (
-    <span
-      className={classnames(styles.tag, mod === TagMod.FILL ? styles.fill : styles.stroke, className)}
-      style={{ ...style, ...tagStyle }}
-    >
+    <span className={classnames(styles.tag, mod === TagMod.FILL ? styles.fill : styles.stroke, className)} style={{ ...style, ...tagStyle }}>
       {children}
     </span>
   );

@@ -16,10 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Selectors } from '@apitable/core';
 import { useClickAway } from 'ahooks';
-import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
-import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -27,6 +24,9 @@ import { useSelector } from 'react-redux';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
+import { Selectors } from '@apitable/core';
+import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
+import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 import { MagicVariableElement } from '.';
 import { useAllFields } from '../../hooks';
 import { INodeOutputSchema, ITriggerType } from '../../interface';
@@ -58,7 +58,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
   const triggerRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
   const triggerId = originalNodeOutputSchemaList?.[0]?.id;
-  
+
   const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor), triggerId)), []);
 
   const slateValue = formData2SlateValue(props.value);
@@ -78,32 +78,38 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     }
   }, [isOpen, editor]);
 
-  const updateFormValue = useCallback((value: any) => {
-    // console.log('1.Form input SlateValue', value);
-    const { value: transformedValue } = transformSlateValue(value);
-    // console.log('2.Form input TransformSlateValue', transformedValue, isMagicVariable);
-    onChange && onChange(transformedValue);
-  }, [onChange]);
+  const updateFormValue = useCallback(
+    (value: any) => {
+      // console.log('1.Form input SlateValue', value);
+      const { value: transformedValue } = transformSlateValue(value);
+      // console.log('2.Form input TransformSlateValue', transformedValue, isMagicVariable);
+      onChange && onChange(transformedValue);
+    },
+    [onChange],
+  );
 
-  const handleKeyDown = useCallback((event: any) => {
-    inputRef.current && clearTimeout(inputRef.current);
-    if (event.key === '/') {
-      Transforms.insertText(editor, '/');
-      event.preventDefault();
-      inputRef.current = setTimeout(() => {
-        setOpen(true);
-      }, 300);
-      return true;
-    }
-    return false;
-  }, [setOpen, editor]);
+  const handleKeyDown = useCallback(
+    (event: any) => {
+      inputRef.current && clearTimeout(inputRef.current);
+      if (event.key === '/') {
+        Transforms.insertText(editor, '/');
+        event.preventDefault();
+        inputRef.current = setTimeout(() => {
+          setOpen(true);
+        }, 300);
+        return true;
+      }
+      return false;
+    },
+    [setOpen, editor],
+  );
 
   const handleEditorChange = (value: any) => {
     setValue(value);
   };
 
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const fieldPermissionMap = useSelector(state => {
+  const fieldPermissionMap = useSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
   const fields = useAllFields();
@@ -116,7 +122,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     }
     return nodeOutputSchema;
   });
-  
+
   const renderElement = (props: any) => {
     switch (props.element.type) {
       case 'magicVariable':
@@ -134,17 +140,17 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
   };
 
   return (
-    <Slate
-      editor={editor}
-      value={value as any}
-      onChange={handleEditorChange}
-    >
-      <div className={styles.magicVariableBox} ref={ref} onKeyDown={e => {
-        // Block avoiding form submissions
-        if (e.key === 'Enter' && isOpen) {
-          e.preventDefault();
-        }
-      }}>
+    <Slate editor={editor} value={value as any} onChange={handleEditorChange}>
+      <div
+        className={styles.magicVariableBox}
+        ref={ref}
+        onKeyDown={(e) => {
+          // Block avoiding form submissions
+          if (e.key === 'Enter' && isOpen) {
+            e.preventDefault();
+          }
+        }}
+      >
         {/* <span onClick={(e) => {
          e.preventDefault();
          setOpen(true);

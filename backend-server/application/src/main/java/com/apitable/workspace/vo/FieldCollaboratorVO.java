@@ -38,6 +38,7 @@ public class FieldCollaboratorVO {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean enabled;
 
+    @Deprecated
     @Schema(description = "Role Member List")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<FieldRoleMemberVo> members;

@@ -32,27 +32,27 @@ export function ErrorList(props: IErrorListProps) {
 
   return (
     <div style={{ marginTop: 4 }}>
-      {
-        onlyOneError ?
-          <Typography variant="body4" color={theme.color.fc10}>
-            {errors[0]}
-          </Typography>
-          : <ul style={{
-            color: theme.color.fc10
-          }}>
-            {errors
-              .filter(elem => !!elem)
-              .map((error, index) => {
-                return (
-                  <li key={index}>
-                    <Typography variant="body4">
-                      {error}
-                    </Typography>
-                  </li>
-                );
-              })}
-          </ul>
-      }
+      {onlyOneError ? (
+        <Typography variant="body4" color={theme.color.fc10}>
+          {errors[0]}
+        </Typography>
+      ) : (
+        <ul
+          style={{
+            color: theme.color.fc10,
+          }}
+        >
+          {errors
+            .filter((elem) => !!elem)
+            .map((error, index) => {
+              return (
+                <li key={index}>
+                  <Typography variant="body4">{error}</Typography>
+                </li>
+              );
+            })}
+        </ul>
+      )}
     </div>
   );
 }

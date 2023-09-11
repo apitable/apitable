@@ -16,19 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
-import {
-  ADDRESS_ID, Api, ConfigConstant, Events, IReduxState, isIdassPrivateDeployment, Navigation, Player, StoreActions, Strings, t, TrackEvents,
-} from '@apitable/core';
-import { AddOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
+import { usePostHog } from 'posthog-js/react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Button } from '@apitable/components';
+import {
+  ADDRESS_ID,
+  Api,
+  ConfigConstant,
+  Events,
+  IReduxState,
+  isIdassPrivateDeployment,
+  Navigation,
+  Player,
+  StoreActions,
+  Strings,
+  t,
+  TrackEvents,
+} from '@apitable/core';
+import { AddOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { SearchTeamAndMember } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-// @ts-ignore
-import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
 import { expandInviteModal } from 'pc/components/invite';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
@@ -36,12 +49,10 @@ import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import styles from './style.module.less';
-import { usePostHog } from 'posthog-js/react';
+// @ts-ignore
+import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
 
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useSelector(
@@ -62,7 +73,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const [inSearch, setInSearch] = useState<boolean>(false);
 
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
 
   useEffect(() => {
     if (spaceInfo && !isSocialPlatformEnabled?.(spaceInfo)) {
@@ -75,7 +86,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const teamClick = React.useCallback(
     (teamId: string) => {
-      Api.readTeam(teamId).then(res => {
+      Api.readTeam(teamId).then((res) => {
         const { success, data } = res.data;
         if (success) {
           dispatch(
@@ -117,18 +128,18 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
         <>
           {isSyncingMembers && (
             <Button
-              color='primary'
+              color="primary"
               prefixIcon={<AddOutlined />}
               id={ADDRESS_ID.INVITE_BTN}
               className={classNames({ [styles.inviteBtnMobile!]: isMobile })}
               onClick={() => {
                 expandUnitModal({
                   source: SelectUnitSource.SyncMember,
-                  onSubmit: values => {
+                  onSubmit: (values) => {
                     syncOrgMember?.({
                       values,
                       linkId: CUSTOM_SYNC_CONTACTS_LINKID,
-                      userInfo
+                      userInfo,
                     });
                   },
                   isSingleSelect: false,
@@ -175,7 +186,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
         <div className={styles.searchItem}>
           {t(Strings.contacts)}
           <span
-            onClick={e => {
+            onClick={(e) => {
               stopPropagation(e);
               setInSearch(true);
             }}
@@ -190,7 +201,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
             <Input
               className={styles.searchInput}
               prefix={<SearchOutlined />}
-              size='small'
+              size="small"
               placeholder={t(Strings.search)}
               onClick={() => setInSearch(true)}
             />
@@ -202,11 +213,11 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
         <div style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }} className={styles.filter}>
           {OperateButton}
           <div className={styles.menu}>
-            <AddressTreeMenu listData={teamList} onSelect={keys => teamClick(keys[0]!)} inSearch={inSearch} />
+            <AddressTreeMenu listData={teamList} onSelect={(keys) => teamClick(keys[0]!)} inSearch={inSearch} />
           </div>
         </div>
         {/* <ComponentDisplay minWidthCompatible={ScreenSize.md}> */}
-        {inSearch && <SearchTeamAndMember setInSearch={search => setInSearch(search)} teamClick={teamClick} memberClick={memberClick} />}
+        {inSearch && <SearchTeamAndMember setInSearch={(search) => setInSearch(search)} teamClick={teamClick} memberClick={memberClick} />}
         {/* </ComponentDisplay> */}
       </div>
     </div>

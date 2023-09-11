@@ -16,35 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography } from '@apitable/components';
-import { Api, ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { pickBy } from 'lodash';
 import Image from 'next/image';
-import { Message } from 'pc/components/common';
-import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
-// @ts-ignore
-import { isWecomFunc } from 'enterprise';
-import { WECOM_ROBOT_URL } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
-import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Button, Typography } from '@apitable/components';
+import { Api, ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
+import { Message } from 'pc/components/common';
+import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';
+import { WECOM_ROBOT_URL } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { useApplyOpenFunction } from './hooks';
 import { FunctionType } from './interface';
 import style from './style.module.less';
+// @ts-ignore
+import { isWecomFunc } from 'enterprise';
 
 interface IModalProps {
   onClose: () => void;
   status: boolean;
-  feature: ApiInterface.ILabsFeature
+  feature: ApiInterface.ILabsFeature;
 }
 
-export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
+export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const { onClose, feature, status } = props;
   const config = SystemConfig.test_function[feature.key];
   const loadingMessage = useRef<boolean>(false);
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const applyOpenFunction = useApplyOpenFunction();
 
   const btnClick = useMemo(() => {
@@ -58,7 +58,11 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
         if (isToOpen) {
           setStorage(StorageName.TestFunctions, { ...testFunctionsStorage, [feature.key]: t(Strings[config.feature_name]) });
         } else {
-          setStorage(StorageName.TestFunctions, pickBy(testFunctionsStorage, (_value, key) => key !== feature.key), StorageMethod.Set);
+          setStorage(
+            StorageName.TestFunctions,
+            pickBy(testFunctionsStorage, (_value, key) => key !== feature.key),
+            StorageMethod.Set,
+          );
         }
         Message.success({ content: isToOpen ? t(Strings.marketplace_app_enable_succeed) : t(Strings.marketplace_app_disable_succeed) });
         loadingMessage.current = true;
@@ -83,28 +87,18 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
           return;
         }
         Message.error({ content: message });
-      }
+      },
     };
   }, [config.feature_name, feature.key, feature.url, spaceId, status, applyOpenFunction]);
   const Title = (
     <div className={style.modalHeader}>
-      <img
-        width={40}
-        height={40}
-        src={integrateCdnHost(config.logo)}
-        style={{ marginRight: 8 }}
-        alt={''}
-      />
-      <Typography variant='h4'>{t(Strings[config.feature_name])}</Typography>
+      <img width={40} height={40} src={integrateCdnHost(config.logo)} style={{ marginRight: 8 }} alt={''} />
+      <Typography variant="h4">{t(Strings[config.feature_name])}</Typography>
     </div>
   );
   const Footer = (
-    <div
-      className={style.modalFooter}
-    >
-      <div className={style.notes}>
-        {t(Strings[config.note])}
-      </div>
+    <div className={style.modalFooter}>
+      <div className={style.notes}>{t(Strings[config.note])}</div>
       <div style={{ width: 216, alignSelf: 'center', paddingTop: 16 }}>
         <Button
           color={status ? 'danger' : 'primary'}
@@ -118,28 +112,18 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = props => {
     </div>
   );
   return (
-    <ModalOutsideOperate
-      modalClassName={style.modalWrapper}
-      modalWidth={640}
-      showOutsideOperate
-      onModalClose={onClose}
-    >
+    <ModalOutsideOperate modalClassName={style.modalWrapper} modalWidth={640} showOutsideOperate onModalClose={onClose}>
       <>
         {Title}
         <div className={style.modalContent}>
           <div className={style.description}>
-            <div
-              dangerouslySetInnerHTML={{ __html: t(Strings[config.modal.info]) }}
-            />
+            <div dangerouslySetInnerHTML={{ __html: t(Strings[config.modal.info]) }} />
           </div>
-          {config.modal?.info_image && <div className={style.modalImg}>
-            <Image
-              src={integrateCdnHost(getEnvVariables()[config.modal?.info_image])}
-              width='100%'
-              layout={'fill'}
-              alt=""
-            />
-          </div>}
+          {config.modal?.info_image && (
+            <div className={style.modalImg}>
+              <Image src={integrateCdnHost(getEnvVariables()[config.modal?.info_image])} width="100%" layout={'fill'} alt="" />
+            </div>
+          )}
         </div>
         {Footer}
       </>

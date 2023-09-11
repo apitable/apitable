@@ -1,14 +1,13 @@
-import { IChatBotService } from './interface';
-import { ResourceServiceEnhanced } from '../../resource_service/service';
 import { resourceService } from '../../resource_service';
+import { ResourceServiceEnhanced } from '../../resource_service/service';
+import { IChatBotService } from './interface';
 import { SocketService } from './socket_service';
 
 export class ChatBotService implements IChatBotService {
   constructor(
     private resourceService: ResourceServiceEnhanced,
     private socket: SocketService,
-  ) {
-  }
+  ) {}
 
   init() {
     this.resourceService.roomService.leaveRoom();
@@ -21,11 +20,7 @@ export class ChatBotService implements IChatBotService {
     // this.socket.receiveMessages();
   }
 
-  destroy() {
-  }
+  destroy() {}
 }
 
-export const chatBotService = new ChatBotService(
-  resourceService.instance,
-  new SocketService(),
-);
+export const chatBotService = new ChatBotService(resourceService.instance, new SocketService());

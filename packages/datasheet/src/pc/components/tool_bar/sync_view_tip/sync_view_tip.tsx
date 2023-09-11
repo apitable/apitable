@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 export const SyncViewTip: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties; content?: string }>> = ({ style, content }) => {
-  const mirrorId = useSelector(state => state.pageParams.mirrorId);
+  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
   const { editable } = useSelector(Selectors.getPermissions);
   const snapshot = useSelector(Selectors.getSnapshot)!;
   const isViewLock = useShowViewLockModal();
-  const isViewSync = useSelector(state => {
+  const isViewSync = useSelector((state) => {
     if (!state.labs.includes('view_manual_save')) {
       return true;
     }
@@ -37,15 +37,17 @@ export const SyncViewTip: React.FC<React.PropsWithChildren<{ style?: React.CSSPr
   });
   let _content = t(Strings.view_sync_property_tip_close_auto_save);
   if (isViewSync && !mirrorId && editable) {
-    _content = (content || t(Strings.view_sync_property_tip_open_auto_save));
+    _content = content || t(Strings.view_sync_property_tip_open_auto_save);
   }
   if (isViewSync && !mirrorId && isViewLock) {
     _content = t(Strings.view_lock_setting_desc);
   }
 
-  return <div className={styles.closeSyncViewTip} style={style}>
-    <Typography variant="body4" className={styles.text}>
-      {_content}
-    </Typography>
-  </div>;
+  return (
+    <div className={styles.closeSyncViewTip} style={style}>
+      <Typography variant="body4" className={styles.text}>
+        {_content}
+      </Typography>
+    </div>
+  );
 };

@@ -805,6 +805,7 @@ export interface IPageParams {
   // spaceId?: string;
   shareId?: string;
   datasheetId?: string;
+  automationId?: string;
   viewId?: string;
   recordId?: string;
   fieldId?: string;

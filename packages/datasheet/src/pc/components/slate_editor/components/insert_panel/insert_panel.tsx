@@ -20,24 +20,24 @@ import { useRef, useEffect, useState, useCallback, useContext, useMemo } from 'r
 import * as React from 'react';
 import { Transforms, Editor, Path, Element, Node } from 'slate';
 import { useSlate, ReactEditor } from 'slate-react';
-import { getValidPopupPosition } from '../../helpers/utils';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { Portal } from 'pc/components/portal';
+import { useResponsive } from 'pc/hooks';
+import { getElementDataset } from 'pc/utils';
+import { toggleBlock } from '../../commands';
 import { Z_INDEX, INSERT_PANEL_ELEMENT_FORMAT, INSERT_PANEL_MEDIA_ELEMENT, LIST_ITEM_TYPE_DICT, LIST_TYPE_DICT, ElementType } from '../../constant';
+import { EditorContext } from '../../context';
+import { GENERATOR } from '../../elements';
+import { getValidPopupPosition } from '../../helpers/utils';
+import { IVikaEditor, IEventBusEditor } from '../../interface/editor';
+import { IElement } from '../../interface/element';
+import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
 import { useListWithIcons } from '../use_list';
 // import { toggleBlock } from '../../commands';
-import { GENERATOR } from '../../elements';
 
-import { EditorContext } from '../../context';
 import { Menu, MenuType } from './menu';
 
 import styles from './style.module.less';
-import { IElement } from '../../interface/element';
-import { IVikaEditor, IEventBusEditor } from '../../interface/editor';
-import { BUILT_IN_EVENTS } from '../../plugins/withEventBus';
-import { toggleBlock } from '../../commands';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { getElementDataset } from 'pc/utils';
 
 const defaultSelected = '0-0';
 
@@ -73,7 +73,7 @@ export const InsertPanel = () => {
 
   const changeSelected = (isUp: boolean) => {
     const menusSize = menus.length;
-    const current = selected.split('-').map(i => +i);
+    const current = selected.split('-').map((i) => +i);
     const currentGroup = menus[current[0]];
     const currentGroupSize = currentGroup.size;
     let [nextGroup, nextMenuItem] = current;
@@ -127,7 +127,7 @@ export const InsertPanel = () => {
   const action = useCallback(
     (menuKey: string) => {
       hide();
-      const [groupIdx, itemIdx] = menuKey.split('-').map(i => +i);
+      const [groupIdx, itemIdx] = menuKey.split('-').map((i) => +i);
       const group = menus[groupIdx];
       if (!group) {
         return;
@@ -135,7 +135,7 @@ export const InsertPanel = () => {
       Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
       const item = group.list[itemIdx];
       const match = Editor.nodes(editor, {
-        match: n => Editor.isBlock(editor, n),
+        match: (n) => Editor.isBlock(editor, n),
         mode: 'lowest',
       });
       if (!match) {
@@ -152,13 +152,13 @@ export const InsertPanel = () => {
           toggleBlock(editor, item.value as ElementType);
           return;
         }
-        // If the inserted position is originally a list, is there a more efficient way to insert a paragraph element first, 
+        // If the inserted position is originally a list, is there a more efficient way to insert a paragraph element first,
         // then split the list and then set it to the element that should be inserted?
         Transforms.insertNodes(editor, curIsList ? GENERATOR.paragraph({}) : nextElement, { at: nextPath });
         Transforms.select(editor, nextPath);
         if (curIsList) {
           Transforms.unwrapNodes(editor, {
-            match: n => !Editor.isEditor(n) && Element.isElement(n) && LIST_TYPE_DICT[(n as IElement).type],
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && LIST_TYPE_DICT[(n as IElement).type],
             split: true,
           });
           Transforms.setNodes(editor, nextElement);

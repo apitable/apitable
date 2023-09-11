@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Tooltip } from 'antd';
+import * as React from 'react';
 import { lightColors } from '@apitable/components';
 import { DATASHEET_ID, ICollaborator, ICollaboratorCursor, stringHash2Number, Strings, t } from '@apitable/core';
-import { Tooltip } from 'antd';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { store } from 'pc/store';
-import * as React from 'react';
 import styles from './styles.module.less';
 
 export const getCollaboratorColor = (collaborator: ICollaboratorCursor): string => {
@@ -36,13 +36,10 @@ export const getCollaboratorColor = (collaborator: ICollaboratorCursor): string 
     lightColors.rc09,
     lightColors.rc10,
   ];
-  const hashColorIndex = stringHash2Number(
-    `${collaborator.userId}${collaborator.socketId}`,
-    colorsWheel.length,
-  );
+  const hashColorIndex = stringHash2Number(`${collaborator.userId}${collaborator.socketId}`, colorsWheel.length);
   return colorsWheel[hashColorIndex] as string;
 };
-export function isAlien(collaborator: ICollaboratorCursor | ICollaborator){
+export function isAlien(collaborator: ICollaboratorCursor | ICollaborator) {
   if (store.getState().pageParams.shareId) {
     return !collaborator.userName;
   }
@@ -59,32 +56,25 @@ export function backCorrectAvatarName(collaborator: ICollaboratorCursor | IColla
   return nickName || memberName || userName || t(Strings.alien);
 }
 
-export const CollaboratorMark: React.FC<React.PropsWithChildren<{
-  displayRowIndex: number, collaboratorCell: ICollaboratorCursor[]
-}>> = ({ displayRowIndex, collaboratorCell }) => {
+export const CollaboratorMark: React.FC<
+  React.PropsWithChildren<{
+    displayRowIndex: number;
+    collaboratorCell: ICollaboratorCursor[];
+  }>
+> = ({ displayRowIndex, collaboratorCell }) => {
   if (!collaboratorCell) return null;
   // 1, 2 rows of synergistic cell information will be obscured by the table header, displayed below the cell
-  const cellCollaboratorClassName = [1, 2].includes(displayRowIndex) ?
-    styles.cellCollaboratorAvatarsUnder : styles.cellCollaboratorAvatars;
+  const cellCollaboratorClassName = [1, 2].includes(displayRowIndex) ? styles.cellCollaboratorAvatarsUnder : styles.cellCollaboratorAvatars;
   return (
     <div className={cellCollaboratorClassName}>
-      {collaboratorCell.map(c => {
+      {collaboratorCell.map((c) => {
         const color = getCollaboratorColor(c);
         if (!c.userId) return <></>;
         return (
           <div key={c.userId} className={styles.avatar}>
-            <Tooltip
-              title={backCorrectName(c)}
-              placement={[0, 1].includes(displayRowIndex) ? 'bottom' : 'top'}
-            >
+            <Tooltip title={backCorrectName(c)} placement={[0, 1].includes(displayRowIndex) ? 'bottom' : 'top'}>
               <div>
-                <Avatar
-                  src={c.avatar}
-                  size={AvatarSize.Size24}
-                  id={c.userId}
-                  title={backCorrectName(c)}
-                  style={{ border: `1px solid ${color}` }}
-                />
+                <Avatar src={c.avatar} size={AvatarSize.Size24} id={c.userId} title={backCorrectName(c)} style={{ border: `1px solid ${color}` }} />
               </div>
             </Tooltip>
           </div>
@@ -94,15 +84,10 @@ export const CollaboratorMark: React.FC<React.PropsWithChildren<{
   );
 };
 
-export function renderFillHandle(
-  isLastSelectionCell: boolean | undefined,
-  actualColumnIndex: number,
-) {
+export function renderFillHandle(isLastSelectionCell: boolean | undefined, actualColumnIndex: number) {
   let addStyle: React.CSSProperties = {};
   if (actualColumnIndex === 0) {
     addStyle = { right: -1, borderBottom: `1px solid ${lightColors.primaryColor}`, bottom: -4 };
   }
-  return isLastSelectionCell &&
-    <div className={styles.fillHandleArea} id={DATASHEET_ID.FILL_HANDLE_AREA} style={{ ...addStyle }} />;
+  return isLastSelectionCell && <div className={styles.fillHandleArea} id={DATASHEET_ID.FILL_HANDLE_AREA} style={{ ...addStyle }} />;
 }
-

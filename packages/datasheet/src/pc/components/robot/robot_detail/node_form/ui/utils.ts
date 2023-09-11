@@ -24,14 +24,17 @@ import { IUiSchema } from '../core/interface';
 //   return ids.length - 1;
 // };
 
-export const getOptions = (key: string, uiSchema: IUiSchema): {
-  has: boolean,
-  value?: any,
+export const getOptions = (
+  key: string,
+  uiSchema: IUiSchema,
+): {
+  has: boolean;
+  value?: any;
 } => {
   if ('ui:options' in uiSchema && key in uiSchema['ui:options']!) {
     return {
       has: true,
-      value: uiSchema['ui:options']![key]
+      value: uiSchema['ui:options']![key],
     };
   }
   return {
@@ -42,7 +45,7 @@ export const getOptions = (key: string, uiSchema: IUiSchema): {
 export const literal2Operand = (literal: any): object => {
   return {
     type: 'Literal',
-    value: literal
+    value: literal,
   };
 };
 

@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import classNames from 'classnames';
 import { useImperativeHandle, useRef, useState, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ICellValue, Selectors } from '@apitable/core';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { useClickAway } from 'ahooks';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
+import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
+import { IExpandFieldEditRef } from 'pc/components/expand_record/field_editor';
 import { useResponsive } from 'pc/hooks';
 import { printableKey, KeyCode } from 'pc/utils';
 import { CellMember } from './cell_member';
-import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
-import { IExpandFieldEditRef } from 'pc/components/expand_record/field_editor';
-import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import styles from './style.module.less';
 
 export interface IMemberFieldEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -48,8 +48,8 @@ export const MemberFieldEditor: React.FC<React.PropsWithChildren<IMemberFieldEdi
   const [height, setHeight] = useState(0);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const unitMap = useSelector(state => Selectors.getUnitMap(state));
-  const { shareId } = useSelector(state => state.pageParams);
+  const unitMap = useSelector((state) => Selectors.getUnitMap(state));
+  const { shareId } = useSelector((state) => state.pageParams);
 
   const setEditing = (status: boolean) => {
     if (!editable) {
@@ -93,33 +93,30 @@ export const MemberFieldEditor: React.FC<React.PropsWithChildren<IMemberFieldEdi
     // eslint-disable-next-line
   }, [isFocus]);
 
-  useImperativeHandle(
-    ref,
-    (): IExpandFieldEditRef => {
-      const editor = editorRef.current;
-      if (!editor) {
-        return {
-          focus: () => {
-            return;
-          },
-          setValue: () => {
-            return;
-          },
-          saveValue: () => {
-            return;
-          },
-        };
-      }
-
+  useImperativeHandle(ref, (): IExpandFieldEditRef => {
+    const editor = editorRef.current;
+    if (!editor) {
       return {
-        focus: editor.focus,
-        setValue: editor.setValue,
+        focus: () => {
+          return;
+        },
+        setValue: () => {
+          return;
+        },
         saveValue: () => {
           return;
         },
       };
-    },
-  );
+    }
+
+    return {
+      focus: editor.focus,
+      setValue: editor.setValue,
+      saveValue: () => {
+        return;
+      },
+    };
+  });
 
   const setEditingByKeyDown = (event: React.KeyboardEvent) => {
     if (editing) {

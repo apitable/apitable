@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
-import { IRoleOption } from 'pc/components/catalog/permission_settings_plus/permission/unit_item/interface';
-import styles from './style.module.less';
-import classNames from 'classnames';
-import classnames from 'classnames';
-import { CheckOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
+import { CheckOutlined } from '@apitable/icons';
+import { IRoleOption } from 'pc/components/catalog/permission_settings_plus/permission/unit_item/interface';
 import { MobileSelect } from 'pc/components/common';
+import styles from './style.module.less';
 
 interface IPermissionSelectProps {
   role: string;
@@ -41,18 +40,12 @@ export const PermissionSelectMobile: React.FC<React.PropsWithChildren<IPermissio
   return (
     <MobileSelect
       title={title}
-      triggerComponent={
-        <div
-          className={styles.mobileRoleSelect}
-        >
-          {children}
-        </div>
-      }
+      triggerComponent={<div className={styles.mobileRoleSelect}>{children}</div>}
       renderList={({ setVisible }) => {
-        return <>
-          <div className={styles.mobileWrapper}>
-            {
-              roleOptions.map(item => (
+        return (
+          <>
+            <div className={styles.mobileWrapper}>
+              {roleOptions.map((item) => (
                 <div
                   className={classNames(styles.mobileOption)}
                   key={item.value}
@@ -64,14 +57,20 @@ export const PermissionSelectMobile: React.FC<React.PropsWithChildren<IPermissio
                   {item.label}
                   {item.value === role && <CheckOutlined color={colors.primaryColor} />}
                 </div>
-              ))
-            }
-          </div>
-          {
-            onRemove &&
-                <div className={classnames(styles.deleteItem, styles.group)} onClick={() => {onRemove(unitId);}}>{t(Strings.delete)}</div>
-          }
-        </>;
+              ))}
+            </div>
+            {onRemove && (
+              <div
+                className={classNames(styles.deleteItem, styles.group)}
+                onClick={() => {
+                  onRemove(unitId);
+                }}
+              >
+                {t(Strings.delete)}
+              </div>
+            )}
+          </>
+        );
       }}
     />
   );

@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
-import useRCNotification from 'rc-notification/lib/useNotification';
+import { ConfigConsumer, ConfigConsumerProps } from 'antd/lib/config-provider';
 import {
   NotificationInstance as RCNotificationInstance,
   NoticeContent as RCNoticeContent,
   HolderReadyCallback as RCHolderReadyCallback,
 } from 'rc-notification/lib/Notification';
-import { ConfigConsumer, ConfigConsumerProps } from 'antd/lib/config-provider';
+import useRCNotification from 'rc-notification/lib/useNotification';
+import * as React from 'react';
 import { INotificationInstance, IArgsProps } from '..';
 
 export default function createUseNotification(
-  getNotificationInstance: (
-    args: IArgsProps,
-    callback: (info: { prefixCls: string; instance: RCNotificationInstance }) => void,
-  ) => void,
+  getNotificationInstance: (args: IArgsProps, callback: (info: { prefixCls: string; instance: RCNotificationInstance }) => void) => void,
   getRCNoticeProps: (args: IArgsProps, prefixCls: string) => RCNoticeContent,
 ) {
   const useNotification = (): [INotificationInstance, React.ReactElement] => {
@@ -68,7 +65,7 @@ export default function createUseNotification(
 
     hookApiRef.current.open = notify;
 
-    ['success', 'info', 'warning', 'error'].forEach(type => {
+    ['success', 'info', 'warning', 'error'].forEach((type) => {
       hookApiRef.current[type] = (args: IArgsProps) =>
         hookApiRef.current.open({
           ...args,
@@ -78,14 +75,12 @@ export default function createUseNotification(
 
     return [
       hookApiRef.current,
-      (
-        <ConfigConsumer key="holder">
-          {(context: ConfigConsumerProps) => {
-            ({ getPrefixCls } = context);
-            return holder;
-          }}
-        </ConfigConsumer>
-      ),
+      <ConfigConsumer key="holder">
+        {(context: ConfigConsumerProps) => {
+          ({ getPrefixCls } = context);
+          return holder;
+        }}
+      </ConfigConsumer>,
     ];
   };
 

@@ -18,8 +18,8 @@
 
 import { range } from 'lodash';
 import { DateUnitType, Strings, t } from '@apitable/core';
-import { GanttCoordinate } from './gantt_coordinate';
 import { getEndDate, getStartDate, isLastDayOfMonth, isLastMonthOfYear } from '../utils';
+import { GanttCoordinate } from './gantt_coordinate';
 
 const WEEK_DAY_TEXT_MAP = {
   0: t(Strings.gantt_config_sunday_in_bar),
@@ -50,7 +50,7 @@ export const timelineCollection = {
           holidayOffsets: isWorkDay ? [] : [x],
         };
       });
-    }
+    },
   },
   [DateUnitType.Month]: {
     getTimelines: (instance: GanttCoordinate, columnStartIndex: number, columnStopIndex: number) => {
@@ -60,7 +60,7 @@ export const timelineCollection = {
         const date = instance.getDateFromStartDate(columnIndex);
         const isLastDay = isLastDayOfMonth(date);
         const isWorkDay = instance.isWorkDay(date);
-        
+
         return {
           textOfDay: WEEK_DAY_TEXT_MAP[date.day()],
           textOfDate: String(date.date()),
@@ -70,7 +70,7 @@ export const timelineCollection = {
           holidayOffsets: isWorkDay ? [] : [x],
         };
       });
-    }
+    },
   },
   [DateUnitType.Quarter]: {
     getTimelines: (instance: GanttCoordinate, columnStartIndex: number, columnStopIndex: number) => {
@@ -88,10 +88,12 @@ export const timelineCollection = {
         const holidayOffsets = Array.from({ length: 7 }, (_, index) => {
           const curIndex = startWeekDayIndex + index;
           return curIndex < 7 ? curIndex : curIndex - 7;
-        }).map((weekDayIndex, index) => {
-          if (workDays.has(weekDayIndex)) return;
-          return x + unitWidth * index;
-        }).filter(Boolean) as number[];
+        })
+          .map((weekDayIndex, index) => {
+            if (workDays.has(weekDayIndex)) return;
+            return x + unitWidth * index;
+          })
+          .filter(Boolean) as number[];
 
         return {
           textOfDay: null,
@@ -102,7 +104,7 @@ export const timelineCollection = {
           holidayOffsets,
         };
       });
-    }
+    },
   },
   [DateUnitType.Year]: {
     getTimelines: (instance: GanttCoordinate, columnStartIndex: number, columnStopIndex: number) => {
@@ -118,9 +120,9 @@ export const timelineCollection = {
           textOffset: x,
           lineOffset: x + columnWidth,
           dividerOffset: isLastMonth ? x + columnWidth : null,
-          holidayOffsets: []
+          holidayOffsets: [],
         };
       });
-    }
-  }
+    },
+  },
 };

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
-import { Events, ITemporaryView, IViewProperty, Player, Selectors, StoreActions, ViewPropertyFilter } from '@apitable/core';
-import { showViewManualSaveInMobile } from 'pc/components/tab_bar/view_sync_switch/show_view_manual_save_in_mobile';
-import { browser } from 'modules/shared/browser';
 import { has, isEqual } from 'lodash';
+import { Events, ITemporaryView, IViewProperty, Player, Selectors, StoreActions, ViewPropertyFilter } from '@apitable/core';
+import { browser } from 'modules/shared/browser';
+import { showViewManualSaveInMobile } from 'pc/components/tab_bar/view_sync_switch/show_view_manual_save_in_mobile';
+import { store } from 'pc/store';
 
 export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Partial<IViewProperty>, cb?: () => void) => {
   const state = store.getState();
@@ -39,7 +39,7 @@ export const executeCommandWithMirror = (commandFunc: Function, viewProperty: Pa
     if (browser?.is('mobile')) {
       showViewManualSaveInMobile();
     } else {
-      if(!embedId) {
+      if (!embedId) {
         Player.doTrigger(Events.view_notice_view_auto_false);
       }
     }

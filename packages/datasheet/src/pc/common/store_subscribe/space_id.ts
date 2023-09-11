@@ -47,4 +47,3 @@ store.subscribe(function spaceIdChange() {
   // Request subscription information
   updateSubscription?.(spaceId);
 });
-

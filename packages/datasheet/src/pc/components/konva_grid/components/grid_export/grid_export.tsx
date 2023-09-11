@@ -19,12 +19,19 @@
 import { useCreation } from 'ahooks';
 import { FC, useContext } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { 
-  IndicesMap, KonvaGridViewContext, KonvaGridStage, GridCoordinate, GRID_ADD_FIELD_BUTTON_WIDTH,
-  DEFAULT_POINT_POSITION, GRID_BOTTOM_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH
-} from 'pc/components/konva_grid';
-import { DEFAULT_SCROLL_STATE, getLinearRowHeight } from 'pc/components/gantt_view';
 import { CellType, IGridViewProperty, ILinearRow, IViewColumn, RowHeightLevel, Selectors, ViewType } from '@apitable/core';
+import { DEFAULT_SCROLL_STATE, getLinearRowHeight } from 'pc/components/gantt_view';
+import {
+  IndicesMap,
+  KonvaGridViewContext,
+  KonvaGridStage,
+  GridCoordinate,
+  GRID_ADD_FIELD_BUTTON_WIDTH,
+  DEFAULT_POINT_POSITION,
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_ROW_HEAD_WIDTH,
+  GRID_GROUP_ADD_FIELD_BUTTON_WIDTH,
+} from 'pc/components/konva_grid';
 
 export const getRowIndicesMap = (linearRows: ILinearRow[], rowHeight: number, viewType: ViewType = ViewType.Grid) => {
   const rowIndicesMap: IndicesMap = {};
@@ -51,12 +58,7 @@ interface IGridExportProps {
 
 export const GridExport: FC<React.PropsWithChildren<IGridExportProps>> = (props) => {
   const { fieldHeadHeight } = props;
-  const {
-    view,
-    rowHeight,
-    rowHeightLevel,
-    groupInfo
-  } = useSelector((state) => {
+  const { view, rowHeight, rowHeightLevel, groupInfo } = useSelector((state) => {
     const view = Selectors.getCurrentView(state)! as IGridViewProperty;
     const rowHeightLevel = view.rowHeightLevel || RowHeightLevel.Short;
     return {
@@ -66,10 +68,7 @@ export const GridExport: FC<React.PropsWithChildren<IGridExportProps>> = (props)
       groupInfo: Selectors.getActiveViewGroupInfo(state),
     };
   }, shallowEqual);
-  const { 
-    linearRows,
-    visibleColumns
-  } = useContext(KonvaGridViewContext);
+  const { linearRows, visibleColumns } = useContext(KonvaGridViewContext);
   const rowCount = linearRows.length;
   const { autoHeadHeight } = view;
 

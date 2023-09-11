@@ -17,19 +17,16 @@
  */
 
 import classNames from 'classnames';
+import * as React from 'react';
 import { LoadingOutlined } from '@apitable/icons';
 import { stylizeIcon } from 'pc/utils/dom';
-import * as React from 'react';
 import { IButtonBase } from './button_base.interface';
 import { ButtonPrefixCls } from './constants';
 
 const DEFAULT_ICON_SIZE = 16;
 
 export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props) => {
-  const {
-    size, loading, htmlType = 'button', className, shape,
-    block, border, icon, children, prefixCls, shadow, ...rest
-  } = props;
+  const { size, loading, htmlType = 'button', className, shape, block, border, icon, children, prefixCls, shadow, ...rest } = props;
   const hasIcon = loading || icon;
   const isOnlyIcon = !children && children !== 0 && hasIcon;
 
@@ -54,17 +51,11 @@ export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props
   });
   const propsNode = finalIcon ? (
     <>
-      <span className={`${classKey}-icon`}>
-        {finalIcon}
-      </span>
-      <span>
-        {children}
-      </span>
+      <span className={`${classKey}-icon`}>{finalIcon}</span>
+      <span>{children}</span>
     </>
   ) : (
-    <>
-      {children}
-    </>
+    <>{children}</>
   );
   const finalKidsNode = loading ? (
     <>
@@ -73,13 +64,11 @@ export const ButtonBase: React.FC<React.PropsWithChildren<IButtonBase>> = (props
       </span>
       {propsNode}
     </>
-  ) : <>{propsNode}</>;
+  ) : (
+    <>{propsNode}</>
+  );
   return (
-    <button
-      type={htmlType}
-      className={classes}
-      {...rest}
-    >
+    <button type={htmlType} className={classes} {...rest}>
       {finalKidsNode}
     </button>
   );

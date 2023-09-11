@@ -16,34 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import CorpCertifiedTag from 'pc/components/space_manage/space_info/components/basic_info/corp_certified_tag';
-import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { FC } from 'react';
-import styles from './style.module.less';
-// eslint-disable-next-line no-restricted-imports
-import { Avatar, Tooltip } from 'pc/components/common';
-import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
 import { shallowEqual, useSelector } from 'react-redux';
-import { t, Strings } from '@apitable/core';
 import { Typography, useThemeColors } from '@apitable/components';
-import { Message } from 'pc/components/common';
+import { t, Strings } from '@apitable/core';
+import { CopyOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Message, Avatar, Tooltip } from 'pc/components/common';
+import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
+import CorpCertifiedTag from 'pc/components/space_manage/space_info/components/basic_info/corp_certified_tag';
+import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
+import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
+import { copy2clipBoard } from 'pc/utils';
+import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise';
-import { CopyOutlined } from '@apitable/icons';
-import { copy2clipBoard } from 'pc/utils';
-import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
 
 export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
-  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useSelector(state => ({
-    spaceInfo: state.space.curSpaceInfo,
-    spaceId: state.space.activeId || '',
-    userInfo: state.user.info,
-    subscription: state.billing?.subscription,
-    spaceFeatures: state.space.spaceFeatures,
-  }), shallowEqual);
+  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useSelector(
+    (state) => ({
+      spaceInfo: state.space.curSpaceInfo,
+      spaceId: state.space.activeId || '',
+      userInfo: state.user.info,
+      subscription: state.billing?.subscription,
+      spaceFeatures: state.space.spaceFeatures,
+    }),
+    shallowEqual,
+  );
 
   const level = (subscription ? subscription.product.toLowerCase() : LevelType.Bronze) as ISpaceLevelType;
-  const { spaceLevelTag:{ label }} = SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
+  const {
+    spaceLevelTag: { label },
+  } = SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
 
   const basicCert = !!spaceFeatures && spaceFeatures.certification === 'basic';
   const isSocialEnabled = !!spaceInfo && isSocialPlatformEnabled?.(spaceInfo);
@@ -53,37 +57,24 @@ export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
   if (!spaceInfo || !userInfo) return null;
 
   const { ownerName, isOwnerNameModified } = spaceInfo;
-  const displayOwnerName = getSocialWecomUnitName?.({
-    name: ownerName,
-    isModified: isOwnerNameModified,
-    spaceInfo
-  }) || ownerName;
+  const displayOwnerName =
+    getSocialWecomUnitName?.({
+      name: ownerName,
+      isModified: isOwnerNameModified,
+      spaceInfo,
+    }) || ownerName;
 
   return (
     <div className={styles.spaceBaseInfoPopover}>
-      <Avatar
-        title={spaceInfo.spaceName}
-        size={AvatarSize.Size40}
-        id={userInfo.spaceId}
-        src={spaceInfo.spaceLogo}
-        type={AvatarType.Space}
-      />
-      <Tooltip
-        title={spaceInfo.spaceName}
-        placement='top'
-        textEllipsis
-      >
-        <div className={styles.spaceName}>{ spaceInfo.spaceName }</div>
+      <Avatar title={spaceInfo.spaceName} size={AvatarSize.Size40} id={userInfo.spaceId} src={spaceInfo.spaceLogo} type={AvatarType.Space} />
+      <Tooltip title={spaceInfo.spaceName} placement="top" textEllipsis>
+        <div className={styles.spaceName}>{spaceInfo.spaceName}</div>
       </Tooltip>
-      
+
       <div className={styles.metaInfo}>
         {label}
         <div style={{ display: userInfo.isAdmin ? undefined : 'none' }}>
-          <CorpCertifiedTag
-            certified={basicCert}
-            isSocialEnabled={isSocialEnabled}
-            spaceId={spaceId}
-          />
+          <CorpCertifiedTag certified={basicCert} isSocialEnabled={isSocialEnabled} spaceId={spaceId} />
         </div>
       </div>
 
@@ -91,11 +82,11 @@ export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
 
       <Typography variant="body3" className={styles.item}>
         <span className={styles.label}>{t(Strings.primary_admin)}：</span>
-        { displayOwnerName }
+        {displayOwnerName}
       </Typography>
       <Typography variant="body3" className={styles.item}>
         <span className={styles.label}>{t(Strings.space_id)}：</span>
-        { spaceId }
+        {spaceId}
         <span onClick={() => copy2clipBoard(spaceId, () => Message.success({ content: t(Strings.copy_success) }))}>
           <CopyOutlined size={16} color={colors.textCommonPrimary} className={styles.copy} />
         </span>

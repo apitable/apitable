@@ -16,37 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeName } from '@apitable/components';
-import { IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import SplitPane from 'react-split-pane';
+import { ThemeName } from '@apitable/components';
+import { IShareInfo, Navigation, StoreActions, Strings, t, integrateCdnHost } from '@apitable/core';
+import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message';
-// eslint-disable-next-line no-restricted-imports
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
 import { getPageParams, usePageParams, useSideBarVisible } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables, isIframe } from 'pc/utils/env';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import SplitPane from 'react-split-pane';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { FormPanel } from '../form_panel';
-import { ShareMenu } from '../share/share_menu';
-import { IShareSpaceInfo } from './interface';
-import { ShareFail } from './share_fail';
-import { ShareMobile } from './share_mobile/share_mobile';
-import styles from './style.module.less';
 import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
 import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
 import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
 import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
-import Image from 'next/image';
-import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
-import { useRouter } from 'next/router';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { FormPanel } from '../form_panel';
+import { ShareMenu } from '../share/share_menu';
+import { IShareSpaceInfo } from './interface';
 import { ShareContent } from './share_content';
 import { ShareContentWrapper } from './share_content_wrapper';
+import { ShareFail } from './share_fail';
+import { ShareMobile } from './share_mobile/share_mobile';
+import styles from './style.module.less';
 import { useMountShare } from './use_mount_share';
 
 const _SplitPane: any = SplitPane;
@@ -59,22 +58,13 @@ interface IShareProps {
 
 const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const { shareId, nodeId, formId } = useSelector(state => state.pageParams);
-  const userInfo = useSelector(state => state.user.info);
+  const { shareId, nodeId, formId } = useSelector((state) => state.pageParams);
+  const userInfo = useSelector((state) => state.user.info);
   const [visible, setVisible] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const themeName = useSelector(state => state.theme);
-  const {
-    nodeTree,
-    shareSpace,
-    shareClose,
-    spaceList,
-    spaceListLoading,
-    loading,
-    getSpaceList,
-    getLoginStatus,
-  } = useMountShare(shareInfo);
+  const themeName = useSelector((state) => state.theme);
+  const { nodeTree, shareSpace, shareClose, spaceList, spaceListLoading, loading, getSpaceList, getLoginStatus } = useMountShare(shareInfo);
 
   usePageParams();
 
@@ -87,9 +77,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
       return;
     }
 
-    const {
-      nodeId, viewId, recordId, widgetId
-    } = getPageParams(router.asPath);
+    const { nodeId, viewId, recordId, widgetId } = getPageParams(router.asPath);
 
     setTimeout(() => {
       /**
@@ -102,7 +90,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
           nodeId: nodeId || shareInfo.shareNodeTree.nodeId,
           viewId,
           recordId,
-          widgetId
+          widgetId,
         },
       });
     }, 0);
@@ -150,8 +138,8 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
               Router.push(Navigation.LOGIN, {
                 query: {
                   reference: window.location.href,
-                  spaceId: shareSpace ? shareSpace.spaceId : ''
-                }
+                  spaceId: shareSpace ? shareSpace.spaceId : '',
+                },
               });
             }}
           >
@@ -175,20 +163,19 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   const realSpaceId = userInfo?.spaceId;
 
   // Control the display of the application to join the space
-  const applicationJoinAlertVisible = (
+  const applicationJoinAlertVisible =
     allowApply &&
     !loading &&
     !spaceListLoading &&
-    (!realSpaceId || (spaceList.every(({ spaceId }: { spaceId: string }) => spaceId !== shareSpaceId))) &&
-    !isIframe()
-  );
+    (!realSpaceId || spaceList.every(({ spaceId }: { spaceId: string }) => spaceId !== shareSpaceId)) &&
+    !isIframe();
 
   const singleFormShare = formId && nodeTree?.nodeId === formId;
 
   const isIframeShowShareMenu = nodeTree?.children?.length === 0 && isIframe();
   const { IS_APITABLE, IS_AITABLE, LONG_DARK_LOGO, LONG_LIGHT_LOGO } = getEnvVariables();
-  const LightLogo = IS_AITABLE ? LONG_LIGHT_LOGO! : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
-  const DarkLogo = IS_AITABLE ? LONG_DARK_LOGO! : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
+  const LightLogo = IS_AITABLE ? integrateCdnHost(LONG_LIGHT_LOGO!) : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
+  const DarkLogo = IS_AITABLE ? integrateCdnHost(LONG_DARK_LOGO!) : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
   let localSize = null;
   try {
     localSize = localStorage.getItem('splitPos');
@@ -207,26 +194,28 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
     }
   }
 
-  const shareContent = <ShareContentWrapper
-    isIframeShowShareMenu={isIframeShowShareMenu}
-    shareId={shareId}
-    sideBarVisible={sideBarVisible}
-    judgeAllowEdit={judgeAllowEdit}
-    shareSpaceId={shareSpaceId}
-    applicationJoinAlertVisible={applicationJoinAlertVisible}
-    shareSpace={shareSpace}
-    shareSpaceName={shareSpaceName}
-  >
-    <ShareContent loading={loading} nodeTree={nodeTree} />
-  </ShareContentWrapper>;
+  const shareContent = (
+    <ShareContentWrapper
+      isIframeShowShareMenu={isIframeShowShareMenu}
+      shareId={shareId}
+      sideBarVisible={sideBarVisible}
+      judgeAllowEdit={judgeAllowEdit}
+      shareSpaceId={shareSpaceId}
+      applicationJoinAlertVisible={applicationJoinAlertVisible}
+      shareSpace={shareSpace}
+      shareSpaceName={shareSpaceName}
+    >
+      <ShareContent loading={loading} nodeTree={nodeTree} />
+    </ShareContentWrapper>
+  );
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
-        <meta property='og:title' content={shareInfo?.shareNodeTree?.nodeName || t(Strings.og_site_name_content)} />
-        <meta property='og:type' content='website' />
-        <meta property='og:url' content={window.location.href} />
-        <meta property='og:site_name' content={t(Strings.og_site_name_content)} />
-        <meta property='og:description' content={t(Strings.og_product_description_content)} />
+        <meta property="og:title" content={shareInfo?.shareNodeTree?.nodeName || t(Strings.og_site_name_content)} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content={t(Strings.og_site_name_content)} />
+        <meta property="og:description" content={t(Strings.og_product_description_content)} />
       </Head>
       <div
         className={classNames(styles.share, {
@@ -241,7 +230,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
             <FormPanel loading={loading} />
           ) : !isIframeShowShareMenu ? (
             <_SplitPane
-              split='vertical'
+              split="vertical"
               minSize={320}
               defaultSize={defaultSize}
               maxSize={640}
@@ -256,8 +245,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
             >
               <div className={styles.splitLeft}>
                 {sideBarVisible && (
-                  <ShareMenu shareSpace={shareSpace} shareNode={nodeTree} visible={visible} setVisible={setVisible}
-                    loading={loading} />
+                  <ShareMenu shareSpace={shareSpace} shareNode={nodeTree} visible={visible} setVisible={setVisible} loading={loading} />
                 )}
                 <Tooltip
                   title={!sideBarVisible ? t(Strings.expand_pane) : t(Strings.hide_pane)}
@@ -271,12 +259,20 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
               </div>
               {shareContent}
             </_SplitPane>
-          ) : shareContent}
+          ) : (
+            shareContent
+          )}
         </ComponentDisplay>
-        {isIframe() && !formId && <div className={styles.brandContainer}>
-          <Image src={themeName === ThemeName.Light ? LightLogo : DarkLogo} width={IS_APITABLE ? 111 : 75} height={20}
-            alt="" />
-        </div>}
+        {isIframe() && !formId && (
+          <div className={styles.brandContainer}>
+            <Image
+              src={themeName === ThemeName.Light ? LightLogo : DarkLogo}
+              width={IS_AITABLE ? 132 : IS_APITABLE ? 111 : 75}
+              height={IS_AITABLE ? 29 : 20}
+              alt=""
+            />
+          </div>
+        )}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <ShareMobile
             shareSpace={shareSpace}

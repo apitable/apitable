@@ -16,26 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, t, Strings } from '@apitable/core';
-import styles from './style.module.less';
-import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
-import classNames from 'classnames';
-import { CheckCircleFilled } from '@apitable/icons';
 import { useThemeColors } from '@apitable/components';
+import { Selectors, t, Strings } from '@apitable/core';
+import { CheckCircleFilled } from '@apitable/icons';
+import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { changeView } from 'pc/hooks';
+import styles from './style.module.less';
 
 interface IViewListBox {
   displayState: boolean;
   hideViewList: () => void;
 }
 
-export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = props => {
+export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = (props) => {
   const colors = useThemeColors();
   const { hideViewList, displayState } = props;
-  const snapshot = useSelector(state => Selectors.getSnapshot(state));
-  const activeViewId = useSelector(state => Selectors.getActiveViewId(state));
+  const snapshot = useSelector((state) => Selectors.getSnapshot(state));
+  const activeViewId = useSelector((state) => Selectors.getActiveViewId(state));
 
   const switchView = (id: string) => {
     if (activeViewId === id) {
@@ -55,8 +55,8 @@ export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = prop
         })}
       >
         <h2>{t(Strings.view_list)}</h2>
-        {
-          snapshot && snapshot.meta.views.map(item => {
+        {snapshot &&
+          snapshot.meta.views.map((item) => {
             return (
               <div
                 key={item.id}
@@ -67,14 +67,11 @@ export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = prop
                 })}
               >
                 <ViewIcon viewType={item.type} />
-                <span>
-                  {item.name}
-                </span>
+                <span>{item.name}</span>
                 {item.id === activeViewId && <CheckCircleFilled color={colors.primaryColor} />}
               </div>
             );
-          })
-        }
+          })}
       </div>
       <div className={classNames({ [styles.active]: displayState, [styles.mask]: true })} onClick={hideViewList} />
     </>

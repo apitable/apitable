@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
-import { AvatarType, InfoCard } from 'pc/components/common';
-import styles from './style.module.less';
 import { Dropdown } from 'antd';
-import { ConfigConstant, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
-import { IRoleOption, IUnitItemProps } from './interface';
-import { useThemeColors, Box, Tooltip, Typography, Space } from '@apitable/components';
+import { get } from 'lodash';
+import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors, Box, Tooltip, Typography, Space } from '@apitable/components';
+import { ConfigConstant, Strings, t } from '@apitable/core';
+import { ChevronDownOutlined, ChevronUpOutlined } from '@apitable/icons';
+import { AvatarType, InfoCard } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
+import { Menu, MenuItem } from '../menu';
+import { IRoleOption, IUnitItemProps } from './interface';
+import { PermissionSelectMobile } from './permission_select_mobile';
+import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
-import { Menu, MenuItem } from '../menu';
-import { ChevronDownOutlined, ChevronUpOutlined } from '@apitable/icons';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { PermissionSelectMobile } from './permission_select_mobile';
-import { useResponsive } from 'pc/hooks';
-import { get } from 'lodash';
 
 export const DEFAULT_ROLE: IRoleOption[] = [
   {
@@ -59,24 +59,37 @@ const triggerBase = {
     points: ['tl', 'bl'],
     offset: [0, 18],
     overflow: { adjustX: true, adjustY: true },
-  }
+  },
 };
 
-export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
+export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => {
   const colors = useThemeColors();
-  const { unit, role, identity, className, roleOptions = DEFAULT_ROLE, isAppointMode, 
-    disabled, onChange, onRemove, isDetail, teamData, memberId } = props;
+  const {
+    unit,
+    role,
+    identity,
+    className,
+    roleOptions = DEFAULT_ROLE,
+    isAppointMode,
+    disabled,
+    onChange,
+    onRemove,
+    isDetail,
+    teamData,
+    memberId,
+  } = props;
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
-  const curUnitId = useSelector(state => state.user.info?.unitId);
- 
-  const title = getSocialWecomUnitName?.({
-    name: unit.name,
-    isModified: unit.isMemberNameModified,
-    spaceInfo,
-  }) || unit.name;
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const curUnitId = useSelector((state) => state.user.info?.unitId);
+
+  const title =
+    getSocialWecomUnitName?.({
+      name: unit.name,
+      isModified: unit.isMemberNameModified,
+      spaceInfo,
+    }) || unit.name;
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -119,7 +132,7 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
     if (isOwner) {
       return unit.id === curUnitId ? t(Strings.node_permission_item_tips_file_you) : t(Strings.node_permission_item_tips_file_he);
     }
-    const label = roleOptions.find(v => v.value === role)?.label;
+    const label = roleOptions.find((v) => v.value === role)?.label;
     if (unit.id === curUnitId) {
       return t(Strings.node_permission_item_tips_other_you, { role: label });
     }
@@ -152,7 +165,7 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
       </div>
       <div className={classnames(styles.permission)}>
         <span className={classnames(styles.onlyShowPermission, disabled && styles.onlyShowPermissionDisabled)}>
-          {roleOptions.find(item => item.value === role)!.label}
+          {roleOptions.find((item) => item.value === role)!.label}
         </span>
         {!disabled && arrow}
       </div>
@@ -197,7 +210,7 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = props => {
           overlay={
             <div style={{ maxWidth: '240px' }}>
               <Menu>
-                {roleOptions.map(v => (
+                {roleOptions.map((v) => (
                   <MenuItem key={v.value} onClick={() => clickRole(unit.id, v.value)} active={role === v.value} item={v} />
                 ))}
                 <MenuItem

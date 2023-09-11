@@ -28,7 +28,7 @@ export const getPosition = (e: React.MouseEvent) => {
   if (rect.top < window.innerHeight / 2) {
     position.top = rect.top + rect.height + 8 + 'px';
   } else {
-    position.bottom = (window.innerHeight - rect.top) + 'px';
+    position.bottom = window.innerHeight - rect.top + 'px';
   }
   return position;
 };
@@ -44,9 +44,6 @@ export const formatString2Date = (value: string) => {
 export const isClickDragDropModal = (e: MouseEvent) => {
   const modalElement = document.querySelector('.dragDropModal');
   const moveElement = document.querySelector('.isMove');
-  if (
-    (modalElement && modalElement.contains(e.target as HTMLElement)) ||
-    (moveElement && moveElement.contains(e.target as HTMLElement))
-  ) return true;
+  if ((modalElement && modalElement.contains(e.target as HTMLElement)) || (moveElement && moveElement.contains(e.target as HTMLElement))) return true;
   return false;
 };

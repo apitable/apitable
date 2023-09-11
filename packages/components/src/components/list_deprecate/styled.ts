@@ -156,7 +156,7 @@ export const ResultSpan = styled.span.attrs(applyDefaultTheme)`
 
 export const StyledListWrapper = styled.div`
   max-height: 340px;
-  overflow-y: overlay;
+  overflow-y: auto;
   overflow-x: hidden;
   padding-left: 8px;
   padding-right: 8px;
@@ -184,7 +184,17 @@ export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disa
   height: 40px;
   padding: 0 8px;
 
-  ${props => !props.disabled&& css`
+  ${props => !props.disabled && props.active && css`
+    background: ${props.theme.color.bgBglessHover};
+  `
+}
+
+  ${props => !props.disabled && props.selected && css`
+    background: ${props.theme.color.bgBglessActive};
+  `
+}
+
+  ${props => !props.disabled && css`
     border-radius: 8px;
     &:hover {
       background: ${props.theme.color.bgBglessHover};

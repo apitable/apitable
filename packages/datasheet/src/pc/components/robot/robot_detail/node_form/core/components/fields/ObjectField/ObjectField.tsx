@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getObjectOperandProperty, isOperand, objectCombOperand } from '@apitable/core';
 import { useState } from 'react';
+import { getObjectOperandProperty, isOperand, objectCombOperand } from '@apitable/core';
 import { ADDITIONAL_PROPERTY_FLAG } from '../../../const';
 import { IFieldProps, IRegistry } from '../../../interface';
 import { getDefaultRegistry, orderProperties, retrieveSchema } from '../../../utils';
@@ -25,7 +25,6 @@ import { DefaultObjectFieldTemplate } from './DefaultObjectFieldTemplate';
 import { getDefaultValue } from './helper';
 
 const ObjectField = (props: IFieldProps) => {
-
   const [state, setState] = useState({
     wasPropertyKeyModified: false,
     additionalProperties: {},
@@ -33,9 +32,7 @@ const ObjectField = (props: IFieldProps) => {
 
   const isRequired = (name: string) => {
     const schema = props.schema;
-    return (
-      Array.isArray(schema.required) && schema.required.indexOf(name) !== -1
-    );
+    return Array.isArray(schema.required) && schema.required.indexOf(name) !== -1;
   };
 
   const onPropertyChange = (name: string, addedByAdditionalProperties = false) => {
@@ -54,8 +51,8 @@ const ObjectField = (props: IFieldProps) => {
         type: 'Expression',
         value: {
           operator: 'newObject',
-          operands: []
-        }
+          operands: [],
+        },
       };
       // console.log('onPropertyChange.props.formData', props.formData, name, value);
       const transObject = isOperand(props.formData) ? props.formData : emptyObject;
@@ -64,21 +61,17 @@ const ObjectField = (props: IFieldProps) => {
         type: 'Expression',
         value: {
           operator: 'newObject',
-          operands: objectCombOperand([
-            ...transObject.value.operands,
-            name,
-            value,
-          ])
-        }
+          operands: objectCombOperand([...transObject.value.operands, name, value]),
+        },
       };
       // console.log('onPropertyChange', _newFormData);
       props.onChange(
         _newFormData,
         errorSchema &&
-        props.errorSchema && {
+          props.errorSchema && {
           ...props.errorSchema,
           [name]: errorSchema,
-        }
+        },
       );
     };
   };
@@ -118,16 +111,16 @@ const ObjectField = (props: IFieldProps) => {
 
       setState({
         wasPropertyKeyModified: true,
-        additionalProperties: state.additionalProperties
+        additionalProperties: state.additionalProperties,
       });
 
       props.onChange(
         renamedObj,
         errorSchema &&
-        props.errorSchema && {
+          props.errorSchema && {
           ...props.errorSchema,
           [value]: errorSchema,
-        }
+        },
       );
     };
   };
@@ -138,16 +131,10 @@ const ObjectField = (props: IFieldProps) => {
 
     if (schema.additionalProperties.hasOwnProperty('$ref')) {
       const { registry = getDefaultRegistry() } = props;
-      const refSchema = retrieveSchema(
-        { $ref: schema.additionalProperties['$ref'] },
-        registry.rootSchema,
-        props.formData
-      );
+      const refSchema = retrieveSchema({ $ref: schema.additionalProperties['$ref'] }, registry.rootSchema, props.formData);
       type = refSchema.type;
     }
-    newFormData[
-      getAvailableKey('newKey', newFormData)
-    ] = getDefaultValue(type);
+    newFormData[getAvailableKey('newKey', newFormData)] = getDefaultValue(type);
     props.onChange(newFormData);
   };
 
@@ -190,11 +177,7 @@ const ObjectField = (props: IFieldProps) => {
     );
   }
 
-  const Template = (
-    uiSchema['ui:ObjectFieldTemplate']
-    || (registry as IRegistry).ObjectFieldTemplate
-    || DefaultObjectFieldTemplate
-  ) as any;
+  const Template = (uiSchema['ui:ObjectFieldTemplate'] || (registry as IRegistry).ObjectFieldTemplate || DefaultObjectFieldTemplate) as any;
 
   const templateProps = {
     title: uiSchema['ui:title'] || title,
@@ -204,9 +187,7 @@ const ObjectField = (props: IFieldProps) => {
     properties: orderedProperties.map((name: string) => {
       const propertySchema = schema.properties[name];
       const addedByAdditionalProperties = propertySchema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
-      const fieldUiSchema = addedByAdditionalProperties
-        ? uiSchema.additionalProperties
-        : uiSchema[name];
+      const fieldUiSchema = addedByAdditionalProperties ? uiSchema.additionalProperties : uiSchema[name];
       const hidden = fieldUiSchema && fieldUiSchema['ui:widget'] === 'hidden';
       const propertyFormData = getObjectOperandProperty(formData || {}, name, propertySchema);
       // console.log('propertyFormData', name, propertyFormData);
@@ -224,10 +205,7 @@ const ObjectField = (props: IFieldProps) => {
             formData={propertyFormData}
             wasPropertyKeyModified={state.wasPropertyKeyModified}
             onKeyChange={onKeyChange(name)}
-            onChange={onPropertyChange(
-              name,
-              addedByAdditionalProperties
-            )}
+            onChange={onPropertyChange(name, addedByAdditionalProperties)}
             onBlur={onBlur}
             onFocus={onFocus}
             registry={registry as any}

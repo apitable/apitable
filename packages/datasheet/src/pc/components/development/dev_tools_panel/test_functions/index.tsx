@@ -17,9 +17,9 @@
  */
 
 import { Checkbox } from 'antd';
-import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
-import { useEffect, useRef, useState } from 'react';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { useEffect, useRef, useState } from 'react';
+import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 // import styles from './style.module.less';
 
 const testFunctions = [
@@ -29,11 +29,10 @@ const testFunctions = [
 ];
 
 export const TestFunctions = () => {
-
   const [enableFuncs, setEnableFuncs] = useState(getStorage(StorageName.TestFunctions) || {});
   const hasChange = useRef(false);
 
-  const handleChange = (func: { key: string | number; name: string; }, e: CheckboxChangeEvent) => {
+  const handleChange = (func: { key: string | number; name: string }, e: CheckboxChangeEvent) => {
     const checked = e?.target?.checked;
     const next = { ...enableFuncs };
     if (checked) {
@@ -60,14 +59,20 @@ export const TestFunctions = () => {
   }, []);
 
   const child = testFunctions.map((item) => {
-    return <div key={item.key}>
-      <Checkbox checked={Boolean(enableFuncs[item.key])} onChange={handleChange.bind(null, item)}>{item.name}</Checkbox>
-    </div>;
+    return (
+      <div key={item.key}>
+        <Checkbox checked={Boolean(enableFuncs[item.key])} onChange={handleChange.bind(null, item)}>
+          {item.name}
+        </Checkbox>
+      </div>
+    );
   });
 
-  return <div>
-    <h3>体验功能列表</h3>
-    <p>说明：体验列表改变后，需要关闭开发者面板后才会生效。</p>
-    {child}
-  </div>;
+  return (
+    <div>
+      <h3>体验功能列表</h3>
+      <p>说明：体验列表改变后，需要关闭开发者面板后才会生效。</p>
+      {child}
+    </div>
+  );
 };

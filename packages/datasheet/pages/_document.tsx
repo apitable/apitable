@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { integrateCdnHost } from '@apitable/core';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
+import { integrateCdnHost } from '@apitable/core';
 import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 
@@ -45,38 +45,34 @@ class MyDocument extends Document<IClientInfo> {
     return (
       <Html>
         <Head>
-          <link rel='apple-touch-icon' href={integrateCdnHost(JSON.parse(envVars).LOGO)} />
-          <link rel='shortcut icon' href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
-          <meta property='og:image' content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
+          <link rel="apple-touch-icon" href={integrateCdnHost(JSON.parse(envVars).LOGO)} />
+          <link rel="shortcut icon" href={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
+          <meta property="og:image" content={integrateCdnHost(JSON.parse(envVars).FAVICON)} />
           {/* Do not send referrer in development mode to solve the problem of CDN Anti-Leech chain images not displaying. */}
-          { process.env.NODE_ENV === 'development' && <meta name="referrer" content="no-referrer" /> }
-          <link rel='manifest' href={'/file/manifest.json'} />
-          {
-            JSON.parse(envVars).EMBED_BAIDU_CATCH_SDK &&
-            <script src='https://rte-fe-static.bj.bcebos.com/rte-online/rte-fe-static/MultiSheetMonitor/index.js' />
-          }
-          <script src='/file/js/browser_check.2.js' async />
+          {process.env.NODE_ENV === 'development' && <meta name="referrer" content="no-referrer" />}
+          <link rel="manifest" href={'/file/manifest.json'} />
+          {JSON.parse(envVars).EMBED_BAIDU_CATCH_SDK && (
+            <script src="https://rte-fe-static.bj.bcebos.com/rte-online/rte-fe-static/MultiSheetMonitor/index.js" />
+          )}
+          <script src="/file/js/browser_check.2.js" async />
           {/* injection of custom configs of editions, e.g. APITable */}
-          <script src={`/custom/custom_config.js?version=${version}`} defer/>
-          {
-            JSON.parse(envVars).COOKIEBOT_ID &&
+          <script src={`/custom/custom_config.js?version=${version}`} defer />
+          {JSON.parse(envVars).COOKIEBOT_ID && (
             <script
-              id='Cookiebot'
-              src='https://consent.cookiebot.com/uc.js'
+              id="Cookiebot"
+              src="https://consent.cookiebot.com/uc.js"
               data-cbid={JSON.parse(envVars).COOKIEBOT_ID}
-              data-blockingmode='auto'
+              data-blockingmode="auto"
               async
             />
-          }
+          )}
         </Head>
         <body>
           <Main />
           <NextScript />
+          {!JSON.parse(envVars).IS_SELFHOST && <Script src="https://g.alicdn.com/AWSC/AWSC/awsc.js" strategy={'beforeInteractive'} />}
           {
-            !JSON.parse(envVars).IS_SELFHOST && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
-          }
-          {
-            <Script id='__initialization_data__' strategy={'beforeInteractive'}>
+            <Script id="__initialization_data__" strategy={'beforeInteractive'}>
               {`
             window.__initialization_data__ = {
                 env: '${env}',
@@ -96,4 +92,3 @@ class MyDocument extends Document<IClientInfo> {
 }
 
 export default MyDocument;
-

@@ -16,25 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SetStateAction } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 import * as React from 'react';
 import { FieldType, IDateTimeBaseField, IField } from '@apitable/core';
-import { FormatSelect } from './format_select/format_select';
-import { Dispatch } from 'react';
-import { FormateNumber } from './format_number';
-import { FormatDateTime } from './format_date_time';
-import { FormateLink } from './format_link/format_link';
-import { FormateRating } from './format_rating';
+import { IFieldCascaderErrors } from '../field_setting/check_factory';
+import { FormatCascader } from './format_cascader';
 import { FormateCheckbox } from './format_checkbox';
+import { FormatCreatedBy } from './format_created_by';
+import { FormatDateTime } from './format_date_time';
 import { FormatFormula } from './format_formula';
+import { FormatLastModifiedBy } from './format_last_modified_by';
+import { FormateLink } from './format_link/format_link';
 import { FormateLookUp } from './format_lookup';
 import { FormatMember } from './format_member';
+import { FormateNumber } from './format_number';
+import { FormateRating } from './format_rating';
+import { FormatSelect } from './format_select/format_select';
 import { FormatSingleText } from './format_single_text';
-import { FormatLastModifiedBy } from './format_last_modified_by';
-import { FormatCascader } from './format_cascader';
 import { FormatURL } from './format_url';
-import { IFieldCascaderErrors } from '../field_setting/check_factory';
-import { FormatCreatedBy } from './format_created_by';
 
 interface IFieldFormatProps {
   from?: string;
@@ -45,7 +44,7 @@ interface IFieldFormatProps {
   optionErrMsg?: object;
 }
 
-export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = props => {
+export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = (props) => {
   const { from, currentField, setCurrentField, hideOperateBox, datasheetId, optionErrMsg } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {

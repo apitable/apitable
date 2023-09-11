@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { store } from 'pc/store';
 import { DatasheetApi, StoreActions, Selectors, IJOTAction, OTActionName, ResourceType } from '@apitable/core';
-import { resourceService } from 'pc/resource_service';
 import { remoteActions2Operation } from '@apitable/widget-sdk';
+import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
 
 export async function loadRecords(datasheetId: string, recordIds: string[]) {
   const state = store.getState();
@@ -28,7 +28,7 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
 
   // Filter out those that are already loading
   // Loaded ones should also be filtered out
-  recordIds = recordIds.filter(recordId => {
+  recordIds = recordIds.filter((recordId) => {
     return !client?.loadingRecord?.[recordId] && !snapshot?.recordMap[recordId];
   });
 
@@ -48,14 +48,14 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
       console.warn('! ' + `records version: ${recordRevision} don't match datasheet version: ${revision}`);
     }
 
-    const loadedRecordIds = recordIds.filter(recordId => {
+    const loadedRecordIds = recordIds.filter((recordId) => {
       return recordMap[recordId];
     });
-    const failRecordIds = recordIds.filter(recordId => {
+    const failRecordIds = recordIds.filter((recordId) => {
       return !recordMap[recordId];
     });
 
-    const actions: IJOTAction[] = loadedRecordIds.map(recordId => {
+    const actions: IJOTAction[] = loadedRecordIds.map((recordId) => {
       const record = recordMap[recordId];
       return {
         n: OTActionName.ObjectInsert,
@@ -71,7 +71,7 @@ export async function loadRecords(datasheetId: string, recordIds: string[]) {
         resourceType: ResourceType.Datasheet,
         resourceId: datasheetId,
         operations: [remoteActions2Operation(actions)],
-      }
+      },
     ]);
     return;
   }

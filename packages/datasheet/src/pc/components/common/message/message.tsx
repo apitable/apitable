@@ -17,12 +17,13 @@
  */
 
 import { message } from 'antd';
-import { ConfigOptions, ArgsProps } from 'antd/lib/message';
-import { t, Strings } from '@apitable/core';
-import { WarnCircleFilled, CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@apitable/icons';
+import { ArgsProps, ConfigOptions } from 'antd/lib/message';
+import { Strings, t } from '@apitable/core';
+import { CheckCircleFilled, CloseCircleFilled, InfoCircleFilled, WarnCircleFilled } from '@apitable/icons';
 
 message.config({
   top: 80,
+  // maxCount: 1,
 });
 
 type IMessageProps = ConfigOptions & {
@@ -83,4 +84,3 @@ export const Message = {
   loading,
   destroy,
 };
-

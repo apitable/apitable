@@ -796,11 +796,6 @@
         </foreach>
         AND vom.is_deleted = 0
         GROUP BY vom.id
-        ORDER BY FIELD(vom.id,
-        <foreach item="item" index="index" collection="memberIds" separator=",">
-            #{item}
-        </foreach>
-        )
     </select>
 
     <select id="selectFieldRoleMemberByIds" resultType="com.apitable.workspace.vo.FieldRoleMemberVo">

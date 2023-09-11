@@ -17,32 +17,47 @@
  */
 
 // import { Message } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { Message, Modal } from 'pc/components/common';
-import { useCallback } from 'react';
+import cx from 'classnames';
+import { useAtom, useAtomValue } from 'jotai';
+import * as React from 'react';
+import {FC, memo, ReactNode, useCallback} from 'react';
 import { shallowEqual } from 'react-redux';
+import styled from 'styled-components';
 import { mutate } from 'swr';
+import { Box, SearchSelect, useThemeColors } from '@apitable/components';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { Message, Modal } from 'pc/components/common';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useRobotTriggerType } from '../../hooks';
 import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
+import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
-import { NodeForm } from '../node_form';
-import { Select } from '../select';
+import { NodeForm, NodeFormInfo } from '../node_form';
+import { EditType } from '../trigger/robot_trigger';
 
-interface IRobotActionProps {
+export interface IRobotActionProps {
   index: number;
   actionTypes: IActionType[];
   action: IRobotAction;
   robotId: string;
+  editType?:EditType
   nodeOutputSchemaList: INodeOutputSchema[];
 }
 
-export const RobotAction = (props: IRobotActionProps) => {
-  const { actionTypes, action, robotId, nodeOutputSchemaList, index = 0 } = props;
-  const triggerType = useRobotTriggerType(robotId);
+export const RobotAction = memo((props: IRobotActionProps) => {
+  const { actionTypes, editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
+  const triggerType = useRobotTriggerType();
   const actionType = actionTypes.find(item => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
+
+  const [panelState] = useAtom(automationPanelAtom);
+  const automationState= useAtomValue(automationStateAtom);
+
+  const { api: { refresh }} = useRobotListState();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
     if (actionTypeId === action?.typeId) {
       return;
@@ -53,8 +68,16 @@ export const RobotAction = (props: IRobotActionProps) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(() => {
-          mutate(`/automation/robots/${robotId}/actions`);
+        changeActionTypeId(action?.id!, actionTypeId).then(async() => {
+          await mutate(`/automation/robots/${robotId}/actions`);
+
+          if(!automationState?.resourceId) {
+            return;
+          }
+          await refresh({
+            resourceId: automationState?.resourceId!,
+            robotId: robotId,
+          });
         });
       },
       onCancel: () => {
@@ -62,8 +85,21 @@ export const RobotAction = (props: IRobotActionProps) => {
       },
       type: 'warning',
     });
-  }, [action, robotId]);
+  }, [action?.id, action?.typeId, automationState?.resourceId, refresh, robotId]);
 
+  const [, setAutomationPanel] = useAtom(automationPanelAtom );
+
+  const dataClick = useCallback(() => {
+    if(editType=== EditType.detail) {
+      return;
+    }
+    setAutomationPanel({
+      panelName: PanelName.Action,
+      dataId: action.id,
+      // @ts-ignore
+      data: props
+    });
+  }, [action.id, editType, props, setAutomationPanel]);
   if (!actionType) {
     return null;
   }
@@ -107,7 +143,10 @@ export const RobotAction = (props: IRobotActionProps) => {
     return errors;
   };
 
-  return <NodeForm
+  const NodeFormItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
+
+  const isActive = panelState.dataId === action.id;
+  return <NodeFormItem
     nodeId={action.id}
     type='action'
     index={index}
@@ -116,6 +155,7 @@ export const RobotAction = (props: IRobotActionProps) => {
     // noHtml5Validate
     title={actionType.name}
     validate={validate}
+    handleClick={editType=== EditType.entry ? dataClick: undefined}
     onSubmit={handleActionFormSubmit}
     description={actionType.description}
     formData={propsFormData}
@@ -135,6 +175,45 @@ export const RobotAction = (props: IRobotActionProps) => {
       }
     }
   >
-    <Select options={actionTypeOptions} onChange={handleActionTypeChange} value={action.typeId} />
-  </NodeForm>;
+    <>
+      {
+        editType === EditType.entry && (
+          <SearchSelect
+            options={{
+              placeholder: t(Strings.search_field),
+              noDataText: t(Strings.empty_data),
+              minWidth: '384px',
+            }}
+            list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
+            <span>
+              <DropdownTrigger isActive={isActive}>
+                <>
+                  {index + 1}. {String(actionType.name)}
+                </>
+              </DropdownTrigger>
+            </span>
+          </SearchSelect>
+        )
+      }
+    </>
+  </NodeFormItem>;
+});
+
+const StyledSpan = styled(Box)`
+  align-items: center
+`;
+export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean}>= ({ children, isActive }) => {
+
+  const colors = useThemeColors();
+
+  return (
+    <StyledSpan display={'inline-flex'} alignItems={'center'} color={isActive ? colors.textBrandDefault:colors.textCommonPrimary }>
+      {children}
+
+      <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
+        <ChevronDownOutlined
+          color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
+      </Box>
+    </StyledSpan>
+  );
 };

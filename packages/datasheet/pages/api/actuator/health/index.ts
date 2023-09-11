@@ -23,19 +23,16 @@ import { NextApiRequest, NextApiResponse } from 'next';
  * @param _req
  * @param res
  */
-export default function handler(
-  _req: NextApiRequest,
-  res: NextApiResponse<ActuatorHandler>
-) {
+export default function handler(_req: NextApiRequest, res: NextApiResponse<ActuatorHandler>) {
   return res.status(200).json(responseData);
 }
 
 type ActuatorHandler = {
-  env: string | undefined
-  version: string | undefined
+  env: string | undefined;
+  version: string | undefined;
 };
 
 const responseData = {
   env: process.env.ENV,
-  version: process.env.WEB_CLIENT_VERSION
+  version: process.env.WEB_CLIENT_VERSION,
 };

@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t, IField } from '@apitable/core';
 import classNames from 'classnames';
 import { produce } from 'immer';
+import * as React from 'react';
+import { SortableHandle } from 'react-sortable-hoc';
+import { useThemeColors } from '@apitable/components';
+import { ExecuteResult, ICollaCommandExecuteResult, IFieldProperty, ISelectFieldOption, Strings, t, IField } from '@apitable/core';
+import { DragOutlined } from '@apitable/icons';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { notifyWithUndo } from 'pc/components/common/notify';
-import { OptionTag } from './option_tag';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
+import { OptionTag } from './option_tag';
 import styles from './style.module.less';
-import { SortableHandle } from 'react-sortable-hoc';
-import { DragOutlined } from '@apitable/icons';
-import { useThemeColors } from '@apitable/components';
 
 interface IOptionItem {
   curOption: ISelectFieldOption;
@@ -42,12 +42,12 @@ interface IOptionItem {
   };
 }
 
-const OptionItemBase: React.FC<React.PropsWithChildren<IOptionItem>> = props => {
+const OptionItemBase: React.FC<React.PropsWithChildren<IOptionItem>> = (props) => {
   const { curOption, getRealIndexOfOptions, setCurrentField, dragOption, fieldEditable } = props;
   const colors = useThemeColors();
   const deleteItem = (optionId: string): ICollaCommandExecuteResult<{}> => {
     const trulyIndex = getRealIndexOfOptions && getRealIndexOfOptions(optionId);
-    return setCurrentField!(field => {
+    return setCurrentField!((field) => {
       return produce(field, (draft: IField) => {
         draft.property.options.splice(trulyIndex, 1);
         return draft;
@@ -56,7 +56,7 @@ const OptionItemBase: React.FC<React.PropsWithChildren<IOptionItem>> = props => 
   };
 
   const setOptionProperty = (optionIndex: number, propertyName: string, newValue: number | string): ICollaCommandExecuteResult<{}> => {
-    return setCurrentField!(field => {
+    return setCurrentField!((field) => {
       return produce(field, (draft: IField) => {
         draft.property.options[optionIndex][propertyName] = newValue;
         return draft;

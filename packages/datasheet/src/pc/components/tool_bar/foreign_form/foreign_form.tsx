@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
-import { Strings, t, Selectors, DATASHEET_ID, StoreActions } from '@apitable/core';
-import styles from './style.module.less';
 import classnames from 'classnames';
-import { useThemeColors } from '@apitable/components';
 import Trigger from 'rc-trigger';
+import { FC, useState, useEffect } from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Strings, t, Selectors, DATASHEET_ID, StoreActions } from '@apitable/core';
+import { FormOutlined } from '@apitable/icons';
+import { TComponent } from 'pc/components/common/t_component';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
-import { TComponent } from 'pc/components/common/t_component';
-import { useEffect } from 'react';
-import { FormOutlined } from '@apitable/icons';
+import styles from './style.module.less';
 
 interface IForeignFormProps {
   className: string;
@@ -39,15 +38,10 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const [formList, setFormList] = useState<IFormNodeItem[]>([]);
   const colors = useThemeColors();
-  const {
-    folderId,
-    datasheetId,
-    viewId,
-    viewName,
-  } = useSelector(state => {
+  const { folderId, datasheetId, viewId, viewName } = useSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveViewId(state)!;
@@ -60,7 +54,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
       viewName,
     };
   }, shallowEqual);
-  const creatable = useSelector(state => {
+  const creatable = useSelector((state) => {
     const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
     const { editable } = Selectors.getPermissions(state);
     return manageable && editable;
@@ -106,12 +100,10 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
           />
         }
         destroyPopupOnHide
-        popupAlign={
-          { points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}
-        }
+        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
         popupStyle={{ width: 400 }}
         popupVisible={panelVisible}
-        onPopupVisibleChange={visible => setPanelVisible(visible)}
+        onPopupVisibleChange={(visible) => setPanelVisible(visible)}
         zIndex={1000}
       >
         <ToolItem
@@ -119,18 +111,8 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
           className={classnames(className, styles.foreignForm, {
             [styles.active]: panelVisible,
           })}
-          text={
-            formList.length ?
-              <TComponent tkey={t(Strings.view_foreign_form_count)} params={{ count: formList.length }} /> :
-              t(Strings.view_form)
-          }
-          icon={
-            <FormOutlined
-              size={16}
-              color={panelVisible ? colors.primaryColor : colors.secondLevelText}
-              className={styles.toolIcon}
-            />
-          }
+          text={formList.length ? <TComponent tkey={t(Strings.view_foreign_form_count)} params={{ count: formList.length }} /> : t(Strings.view_form)}
+          icon={<FormOutlined size={16} color={panelVisible ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
           onClick={onClick}
           id={DATASHEET_ID.FORM_BTN}
         />

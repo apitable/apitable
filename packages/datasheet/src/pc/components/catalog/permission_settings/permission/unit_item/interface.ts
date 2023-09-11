@@ -55,7 +55,7 @@ export interface IUnitItemProps {
    * @description Whether to allow the unit to be removed from the permission list
    * @default true
    */
-  allowRemove?: boolean
+  allowRemove?: boolean;
 
   /**
    * @description Callback for removing a unit
@@ -84,7 +84,7 @@ export interface IRoleOption {
   // Is the current option unavailable
   disabled?: boolean;
   // Non-selectable prompts
-  disabledTip?: string
+  disabledTip?: string;
 }
 
 export interface IUnitInfo {
@@ -104,5 +104,5 @@ interface IUnitIdentity {
   // People who have opened specified permissions
   permissionOpener?: boolean;
   // Content in tooltip
-  permissionOpenerTip?: string
+  permissionOpenerTip?: string;
 }

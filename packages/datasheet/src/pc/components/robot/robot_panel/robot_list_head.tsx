@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import * as React from 'react';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 import { IRobotHeadAddBtn } from '../interface';
+import { useRobotListState } from '../robot_list';
+import { useRobotController } from '../robot_list/controller';
 
 export const Beta = () => {
   const theme = useTheme();
@@ -46,15 +48,18 @@ export const AddRobotButton = (props?: IRobotHeadAddBtn) => {
   const {
     canAddNewRobot,
     disableTip,
-    toggleNewRobotModal,
   } = useAddNewRobot();
   const isShowRobot = useShowRobot();
+
+  const { createNewRobot } = useRobotController();
 
   const WrapperTooltip: any = canAddNewRobot ? (props?.container || React.Fragment) : Tooltip;
   const WrapperTooltipProps = canAddNewRobot ? (props?.toolTips || {}) : { placement: 'bottom-center', content: disableTip };
   const boxStyle: React.CSSProperties = props && props.style ? props.style : {};
 
   const icon = <AddOutlined color={theme.color.fc1} />;
+
+  const iconOnly = props?.iconOnly === true;
 
   const child = (
     <Typography variant="body3" color={theme.color.fc1}>
@@ -71,11 +76,13 @@ export const AddRobotButton = (props?: IRobotHeadAddBtn) => {
       <TextButton
         size="small"
         disabled={!canAddNewRobot || !isShowRobot}
-        onClick={toggleNewRobotModal}
+        onClick={createNewRobot}
         prefixIcon={icon}
         style={props?.btnStyle}
       >
-        {child}
+        <>
+          { !iconOnly && child }
+        </>
       </TextButton>
     </Box>
   ) : (
@@ -86,10 +93,12 @@ export const AddRobotButton = (props?: IRobotHeadAddBtn) => {
       padding="5px 8px"
       opacity={canAddNewRobot ? 1 : 0.5}
       style={{ cursor: canAddNewRobot ? 'pointer' : 'not-allowed', ...boxStyle }}
-      onClick={() => canAddNewRobot && toggleNewRobotModal()}
+      onClick={() => canAddNewRobot && createNewRobot}
     >
       {icon}
-      {child}
+      <>
+        { !iconOnly && child }
+      </>
     </Box>
   );
 
@@ -105,11 +114,13 @@ export const RobotListHead = () => {
   return (
     <>
       <AddRobotButton
-        toolTips={{ placement: 'bottom-center', content: isShowRobot ? t(Strings.robot_panel_create_tab) : t(Strings.robot_disable_create_tooltip) }}
+        toolTips={{ placement: 'bottom-center', content: isShowRobot ? t(Strings.new_automation) : t(Strings.robot_disable_create_tooltip) }}
         container={Tooltip}
         useTextBtn
+        iconOnly
         btnStyle={{ paddingLeft: 8, paddingRight: 8 }}
       />
+
       <Box display="flex" alignItems="center">
         <Typography variant="h6">
           {t(Strings.robot_panel_title)}
@@ -123,7 +134,6 @@ export const RobotListHead = () => {
               }} />
           </Box>
         </Tooltip>
-        <Beta />
       </Box>
       <IconButton
         shape="square"

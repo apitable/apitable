@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeProvider } from '@apitable/components';
 import { Modal } from 'antd-mobile';
 import type { Action } from 'antd-mobile/es/components/modal';
 import * as React from 'react';
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ThemeProvider } from '@apitable/components';
 
 interface IPromptInnerProps {
   title: React.ReactNode;
@@ -39,7 +39,6 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
   placeholder,
   close,
 }) => {
-
   const [value, setValue] = useState(defaultValue);
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -52,9 +51,9 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
       <div className={`${prefixCls}-input`}>
         <label>
           <input
-            type='text'
+            type="text"
             defaultValue={defaultValue}
-            ref={input => input?.focus()}
+            ref={(input) => input?.focus()}
             onChange={onChange}
             placeholder={placeholder}
             style={{ border: 'none' }}
@@ -72,7 +71,7 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
     return callback(value);
   }
 
-  const actions = callbackOrActions.map(item => {
+  const actions = callbackOrActions.map((item) => {
     return {
       text: item.text,
       onClick: () => {
@@ -81,8 +80,8 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
     };
   });
 
-  const footer = actions.map(button => {
-    const originPress = button.onClick || (() => { });
+  const footer = actions.map((button) => {
+    const originPress = button.onClick || (() => {});
     button.onClick = () => {
       const res: any = originPress();
       if (res && res.then) {
@@ -90,7 +89,7 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
           .then(() => {
             close();
           })
-          .catch(() => { });
+          .catch(() => {});
       } else {
         close();
       }
@@ -110,10 +109,7 @@ const PromptInner: React.FC<React.PropsWithChildren<IPromptInnerProps & { close(
   );
 };
 
-export default function promptFunc(
-  props: IPromptInnerProps,
-) {
-
+export default function promptFunc(props: IPromptInnerProps) {
   const div = document.createElement('div');
   document.body.appendChild(div);
   const root = createRoot(div);
@@ -127,10 +123,7 @@ export default function promptFunc(
 
   root.render(
     <ThemeProvider>
-      <PromptInner
-        {...props}
-        close={close}
-      />
+      <PromptInner {...props} close={close} />
     </ThemeProvider>,
   );
 

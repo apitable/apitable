@@ -18,29 +18,30 @@
 
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import styles from './style.module.less';
-import { Strings, t, IReduxState, ConfigConstant } from '@apitable/core';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IconButton, Skeleton } from '@apitable/components';
-import { useNotificationCreate } from 'pc/hooks';
+import { Strings, t, IReduxState, ConfigConstant } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
+import { useNotificationCreate } from 'pc/hooks';
+import styles from './style.module.less';
 export const ChangeName = () => {
-  
-  const { spaceInfo, spaceResource, spaceId, userInfo } = useSelector((state: IReduxState) => ({
-    spaceInfo: state.space.curSpaceInfo,
-    spaceId: state.space.activeId,
-    spaceResource: state.spacePermissionManage.spaceResource,
-    userInfo: state.user.info,
-  }), shallowEqual);
+  const { spaceInfo, spaceResource, spaceId, userInfo } = useSelector(
+    (state: IReduxState) => ({
+      spaceInfo: state.space.curSpaceInfo,
+      spaceId: state.space.activeId,
+      spaceResource: state.spacePermissionManage.spaceResource,
+      userInfo: state.user.info,
+    }),
+    shallowEqual,
+  );
   const [changeNameModal, setChangeNameModal] = useState(false);
   const [inputText, setInputText] = useState('');
   const [inputNameErr, setInputNameErr] = useState('');
   const [changeNameBtnLoading, setChangeNameBtnLoading] = useState(false);
-  const { changeSpaceNameAndNotice } =
-    useNotificationCreate({ fromUserId: userInfo!.uuid, spaceId: userInfo!.spaceId });
-    
+  const { changeSpaceNameAndNotice } = useNotificationCreate({ fromUserId: userInfo!.uuid, spaceId: userInfo!.spaceId });
+
   const changeNameConfirm = () => {
     const text = inputText.trim();
     if (text.length < 2 || text.length > ConfigConstant.SPACE_NAME_LENGTH) {
@@ -68,35 +69,26 @@ export const ChangeName = () => {
   return (
     <>
       <div className={styles.changeName}>
-        {
-          spaceInfo ? 
-            <>
-              <Tooltip
-                title={spaceInfo.spaceName}
-                placement="bottomLeft"
-                textEllipsis
-              >
-                <span className={styles.spaceName}>{spaceInfo.spaceName}</span>
-              </Tooltip>
-              {
-                spaceResource && spaceResource.mainAdmin &&
-                <IconButton icon={EditOutlined} onClick={() => setChangeNameModal(true)}/>
-              }
-            </> : (
-              <>
-                <Skeleton width="38%" />
-                <Skeleton count={2} />
-                <Skeleton width="61%"/>
-              </>
-            )
-        }
+        {spaceInfo ? (
+          <>
+            <Tooltip title={spaceInfo.spaceName} placement="bottomLeft" textEllipsis>
+              <span className={styles.spaceName}>{spaceInfo.spaceName}</span>
+            </Tooltip>
+            {spaceResource && spaceResource.mainAdmin && <IconButton icon={EditOutlined} onClick={() => setChangeNameModal(true)} />}
+          </>
+        ) : (
+          <>
+            <Skeleton width="38%" />
+            <Skeleton count={2} />
+            <Skeleton width="61%" />
+          </>
+        )}
       </div>
-      {changeNameModal && spaceInfo &&
-      (
+      {changeNameModal && spaceInfo && (
         <NormalModal
           title={t(Strings.change) + t(Strings.space_name)}
           okButtonProps={{
-            disabled: (!inputText) || (inputText.trim() === spaceInfo.spaceName) || changeNameBtnLoading,
+            disabled: !inputText || inputText.trim() === spaceInfo.spaceName || changeNameBtnLoading,
             loading: changeNameBtnLoading,
           }}
           onCancel={cancelUpdateSpace}
@@ -115,8 +107,7 @@ export const ChangeName = () => {
             block
           />
         </NormalModal>
-      )
-      }
+      )}
     </>
   );
 };

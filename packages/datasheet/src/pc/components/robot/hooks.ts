@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import { Message } from '@apitable/components';
+import { useAtom } from 'jotai';
+import { useCallback, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 import {
   ConfigConstant,
   getLanguage,
@@ -29,13 +32,12 @@ import {
 } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import useSWR from 'swr';
-import { activeRobot, deActiveRobot, deleteRobotAction, nestReq, refreshRobotList } from './api';
-import { IActionType, INodeType, IRobotTrigger, ITriggerType } from './interface';
-import { RobotContext } from './robot_context';
+import { automationStateAtom } from '../automation/controller';
+import { activeRobot, deActiveRobot, deleteRobotAction, nestReq } from './api';
+import { IActionType, INodeType, ITriggerType } from './interface';
+import { IAutomationRobotDetailItem } from './robot_context';
 import { getFields } from './robot_detail/trigger/helper';
+import { useRobotListState } from './robot_list';
 
 export const useAllFields = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -54,19 +56,19 @@ export const useAllFields = () => {
 
 export const useAddNewRobot = () => {
   const permissions = useSelector(Selectors.getPermissions);
-  const { state, dispatch } = useRobotContext();
-  const canAddNewRobot = permissions.manageable && state.robotList && state.robotList.length < ConfigConstant.MAX_ROBOT_COUNT_PER_DST;
+  const { state: { data: robotList }} = useRobotListState();
+  const canAddNewRobot = permissions.manageable && robotList && robotList.length < ConfigConstant.MAX_ROBOT_COUNT_PER_DST;
   const disableTip = permissions.manageable ? t(Strings.robot_reach_count_limit) : t(Strings.robot_share_page_create_tip);
-  const toggleNewRobotModal = () => dispatch({ type: 'toggleNewRobotModal' });
   return {
     canAddNewRobot,
     disableTip,
-    toggleNewRobotModal
   };
 };
 
 export const useDeleteRobotAction = () => {
-  const { currentRobotId } = useRobot();
+
+  const [state] = useAtom(automationStateAtom);
+  const currentRobotId = state?.currentRobotId;
   return useCallback((actionId: string) => {
     if (currentRobotId) {
       return deleteRobotAction(actionId);
@@ -75,41 +77,45 @@ export const useDeleteRobotAction = () => {
   }, [currentRobotId]);
 };
 
-export const useToggleRobotActive = (robotId: string) => {
+export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
-  const { robot, updateRobot } = useRobot(robotId);
+
+  const { api: { getById, refresh }} = useRobotListState();
+
+  const robot = getById(robotId);
+
   const toggleRobotActive = useCallback(async() => {
-    const { isActive } = robot!;
-    if (isActive) {
+    if(!robot) {
+      return;
+    }
+    if (robot.isActive) {
       setLoading(true);
       const ok = await deActiveRobot(robotId);
+
       setLoading(false);
       if (ok) {
-        updateRobot?.({
-          ...robot,
-          isActive: false
-        });
+        refresh();
+
       }
     } else {
       setLoading(true);
       const ok = await activeRobot(robotId);
       setLoading(false);
       if (ok) {
-        updateRobot?.({
-          ...robot,
-          isActive: true
+
+        refresh();
+
+        Message.success({
+          content: t(Strings.automation_enabled)
         });
       } else {
-        updateRobot?.({
-          ...robot,
-          isActive: false
-        });
+
         Message.error({
           content: t(Strings.robot_enable_config_incomplete_error)
         });
       }
     }
-  }, [robot, robotId, updateRobot]);
+  }, [robot, robotId, refresh]);
 
   return {
     toggleRobotActive,
@@ -117,134 +123,59 @@ export const useToggleRobotActive = (robotId: string) => {
   };
 };
 
-export const useRobotContext = () => {
-  const context = useContext(RobotContext);
-  return context;
-};
-
-export const useRobotTriggerType = (robotId: string) => {
-  const { state } = useContext(RobotContext);
+export const useRobotTriggerType = () => {
   const { data: triggerTypes } = useTriggerTypes();
-  const robot = state.robotList.find(robot => robot.robotId === robotId);
-  const trigger = robot?.nodes[0] as IRobotTrigger;
-  if (trigger) {
-    return triggerTypes?.find(triggerType => triggerType.triggerTypeId === trigger.triggerTypeId);
+
+  const [state] = useAtom(automationStateAtom);
+  if(!state?.robot) {
+    return null;
   }
+  if(state?.robot) {
+    const data = state?.robot;
+    return data.triggers.map(action => triggerTypes?.find(trigger => trigger.triggerTypeId === action.triggerTypeId));
+  }
+
   return null;
 };
 
-export const useRobotActionTypes = (robotId: string) => {
-  const { state } = useContext(RobotContext);
+export const useRobotActionTypes = () => {
+  const [state] = useAtom(automationStateAtom);
   const { data: actionTypes } = useActionTypes();
-  const robot = state.robotList.find(robot => robot.robotId === robotId);
-  const actions = robot?.nodes.slice(1);
-  if (actions) {
-    return actions.map(action => actionTypes?.find(actionType => actionType.actionTypeId === action.actionTypeId));
+  if(!state?.robot) {
+    return null;
   }
-  return null;
+  const robot =state.robot;
+  return robot.actions.map(action => actionTypes?.find(actionType => actionType.actionTypeId === action.actionTypeId));
 };
 
-/**
- * Get the current robot by default, pass in robotId to get the specified robot
- * @param robotId
- */
-export const useRobot = (_robotId?: string) => {
-  const { state, dispatch } = useContext(RobotContext);
-  const robotId = _robotId || state.currentRobotId;
-  const setIsEditingRobotName = useCallback((isEditingRobotName: boolean) => {
-    dispatch({ type: 'setIsEditingRobotName', payload: isEditingRobotName });
-  }, [dispatch]);
-  const setIsEditingRobotDesc = useCallback((isEditingRobotDesc: boolean) => {
-    dispatch({ type: 'setIsEditingRobotDesc', payload: isEditingRobotDesc });
-  }, [dispatch]);
+export const useRobot = () => {
 
-  const setCurrentRobotId = useCallback((robotId?: string) => {
-    dispatch({
-      type: 'setCurrentRobotId',
-      payload: {
-        currentRobotId: robotId
+  const [state, setState] = useAtom(automationStateAtom);
+  const currentRobotId = state?.currentRobotId;
+
+  return {
+    resourceId: state?.resourceId,
+    currentRobotId,
+    robot: state?.robot,
+    reset: () => {
+      setState(state => ({
+        ...state,
+        robot: undefined,
+        currentRobotId: undefined,
+      }));
+    },
+    updateRobot: (data: Partial<IAutomationRobotDetailItem>) => {
+      if(!state?.robot) {
+        return;
       }
-    });
-  }, [dispatch]);
+      setState({ ...state,
+        robot: { ...state.robot,
+          ...data
+        }
+      });
 
-  const setIsHistory = useCallback((isHistory: boolean) => {
-    dispatch({
-      type: 'setIsHistory',
-      payload: {
-        isHistory
-      }
-    });
-  }, [dispatch]);
-
-  const updateRobot = useCallback((robot: any) => {
-    dispatch({
-      type: 'updateRobot',
-      payload: {
-        robot
-      }
-    });
-  }, [dispatch]);
-
-  const updateRobotList = useCallback((robotList: any) => {
-    dispatch({
-      type: 'updateRobotList',
-      payload: {
-        robotList: robotList || []
-      }
-    });
-  }, [dispatch]);
-
-  const createRobot = useCallback(async(robot: {
-    resourceId: string;
-    name?: string;
-    description?: string;
-  }) => {
-    const res = await nestReq.post('/automation/robots', robot);
-    if (res.data.success) {
-      refreshRobotList(robot.resourceId);
-      return res.data.data.robotId as string;
     }
-    return;
-  }, []);
-
-  return useMemo(() => {
-    const res = {
-      currentRobotId: state.currentRobotId,
-      isHistory: state.isHistory,
-      isEditingRobotName: state.isEditingRobotName,
-      isEditingRobotDesc: state.isEditingRobotDesc,
-      setCurrentRobotId,
-      robot: null,
-      updateRobot,
-      updateRobotList,
-      createRobot,
-      setIsHistory,
-      setIsEditingRobotName,
-      setIsEditingRobotDesc,
-    };
-    if (state.robotList.length === 0 || robotId == null) {
-      return res;
-    }
-    const robot = state.robotList.find(robot => robot.robotId === robotId);
-    return {
-      ...res,
-      robot,
-    };
-  }, [
-    state.currentRobotId,
-    state.isHistory,
-    state.robotList,
-    state.isEditingRobotDesc,
-    state.isEditingRobotName,
-    robotId,
-    setIsEditingRobotName,
-    setIsEditingRobotDesc,
-    setCurrentRobotId,
-    setIsHistory,
-    updateRobot,
-    updateRobotList,
-    createRobot,
-  ]);
+  };
 };
 
 const covertThemeIcon = (data: (ITriggerType | IActionType)[] | undefined, theme: ThemeName) => {
@@ -261,18 +192,7 @@ const covertThemeIcon = (data: (ITriggerType | IActionType)[] | undefined, theme
 
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
   const { data: triggerTypeData, error: triggerTypeError } = useSWR(`/automation/trigger-types?lang=${getLanguage()}`, nestReq);
-  const { dispatch } = useRobotContext();
   const themeName = useSelector(state => state.theme);
-  useEffect(() => {
-    if (triggerTypeData?.data.data) {
-      dispatch({
-        type: 'setTriggerTypes',
-        payload: {
-          triggerTypes: covertThemeIcon(triggerTypeData?.data.data, themeName) || [],
-        }
-      });
-    }
-  }, [triggerTypeData, dispatch, themeName]);
   if (!triggerTypeData || triggerTypeError) {
     return {
       loading: true,
@@ -287,16 +207,7 @@ export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } =>
 
 export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
   const { data: actionTypeData, error: actionTypeError } = useSWR(`/automation/action-types?lang=${getLanguage()}`, nestReq);
-  const { dispatch } = useRobotContext();
   const themeName = useSelector(state => state.theme);
-  useEffect(() => {
-    dispatch({
-      type: 'setActionTypes',
-      payload: {
-        actionTypes: covertThemeIcon(actionTypeData?.data.data, themeName) || [],
-      }
-    });
-  }, [actionTypeData?.data.data, dispatch, themeName]);
   if (!actionTypeData || actionTypeError) {
     return {
       loading: true,
@@ -310,19 +221,20 @@ export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
 };
 
 export const useNodeTypeByIds = () => {
-  const { state } = useRobotContext();
+  const { data: actionTypes } = useActionTypes();
+  const { data: triggerTypes } = useTriggerTypes();
   return useMemo(() => {
     const nodeTypeByIds: {
       [nodeTypeId: string]: INodeType;
     } = {};
-    state.triggerTypes.forEach(triggerType => {
+    triggerTypes.forEach(triggerType => {
       nodeTypeByIds[triggerType.triggerTypeId] = triggerType;
     });
-    state.actionTypes.forEach(actionType => {
+    actionTypes.forEach(actionType => {
       nodeTypeByIds[actionType.actionTypeId] = actionType;
     });
     return nodeTypeByIds;
-  }, [state.triggerTypes, state.actionTypes]);
+  }, [triggerTypes, actionTypes]);
 };
 
 // For triggers where there is only one option and a default value when the record is created,
@@ -346,13 +258,14 @@ export const useDefaultTriggerFormData = () => {
   return defaultFormData;
 };
 
-export const useDefaultRobotDesc = (robotId: string) => {
-  const robotTriggerType = useRobotTriggerType(robotId);
-  const robotActionTypes = useRobotActionTypes(robotId);
+export const useDefaultRobotDesc = () => {
+  const robotTriggerType = useRobotTriggerType();
+  const robotActionTypes = useRobotActionTypes();
   const comma = t(Strings.comma);
   if (robotTriggerType) {
-    return t(Strings.robot_auto_desc) +
-      robotTriggerType?.name + comma + robotActionTypes?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+    const triggerResult = robotTriggerType?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+    const actionResult = robotActionTypes?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+    return triggerResult + actionResult;
   }
   return '';
 };

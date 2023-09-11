@@ -19,30 +19,21 @@
 import { useContext, useState } from 'react';
 import * as React from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { useRequest } from 'pc/hooks';
-import {
-  CollaCommandName,
-  ExecuteResult,
-  Selectors,
-  StoreActions,
-  DatasheetApi,
-  Strings,
-  t,
-} from '@apitable/core';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
+import { CollaCommandName, ExecuteResult, Selectors, StoreActions, DatasheetApi, Strings, t } from '@apitable/core';
 import { AttentionOutlined, DeleteOutlined, InfoCircleOutlined, LinkOutlined, MoreStandOutlined } from '@apitable/icons';
 
-import { Popover } from 'pc/components/common/mobile/popover';
 import { Message } from 'pc/components/common';
+import { Popover } from 'pc/components/common/mobile/popover';
 import { notifyWithUndo } from 'pc/components/common/notify';
 
-import { resourceService } from 'pc/resource_service';
-
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import { useRequest } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
 import { copy2clipBoard } from 'pc/utils';
 
-import style from './style.module.less';
 import EditorTitleContext from '../editor_title_context';
+import style from './style.module.less';
 
 interface IMoreToolProps {
   recordId: string;
@@ -51,29 +42,21 @@ interface IMoreToolProps {
   datasheetId: string;
   mirrorId?: string;
 }
-export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props => {
+export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = (props) => {
   const colors = useThemeColors();
-  const {
-    recordId,
-    onClose,
-    datasheetId,
-    mirrorId,
-  } = props;
+  const { recordId, onClose, datasheetId, mirrorId } = props;
 
   const dispatch = useDispatch();
 
-  const { rowRemovable, subscriptions } = useSelector(state => {
+  const { rowRemovable, subscriptions } = useSelector((state) => {
     return {
       rowRemovable: Selectors.getPermissions(state).rowRemovable,
       subscriptions: state.subscriptions,
     };
   }, shallowEqual);
-  const { shareId, templateId, embedId } = useSelector(state => state.pageParams);
+  const { shareId, templateId, embedId } = useSelector((state) => state.pageParams);
 
-  const {
-    fieldDescCollapseStatusMap = {},
-    setFieldDescCollapseStatusMap,
-  } = useContext(EditorTitleContext);
+  const { fieldDescCollapseStatusMap = {}, setFieldDescCollapseStatusMap } = useContext(EditorTitleContext);
 
   const fieldDescCollapseStatus = fieldDescCollapseStatusMap[datasheetId];
   const closeAllFieldsDesc = Boolean(fieldDescCollapseStatus?.collapseAll);
@@ -87,9 +70,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       cmd: CollaCommandName.DeleteRecords,
       data: [recordId],
     });
-    if (
-      ExecuteResult.Success === result.result
-    ) {
+    if (ExecuteResult.Success === result.result) {
       notifyWithUndo(
         t(Strings.notification_delete_record_by_count, {
           count: 1,
@@ -113,7 +94,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
 
       if (data?.success) {
         Message.info({ content: t(Strings.cancel_watch_record_success) });
-        dispatch(StoreActions.setSubscriptionsAction(subscriptions.filter(id => id !== recordId)));
+        dispatch(StoreActions.setSubscriptionsAction(subscriptions.filter((id) => id !== recordId)));
         setVisible(false);
       } else {
         Message.error({ content: data.message });
@@ -135,12 +116,10 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
 
   const toggleFieldsDesc = () => {
     const fieldDescCollapseMap = fieldDescCollapseStatus?.fieldDescCollapseMap || {};
-    const nextFieldDescCollapseMap =
-      Object.keys(fieldDescCollapseMap)
-        .reduce((acc, cur) => {
-          acc[cur] = nextState;
-          return acc;
-        }, {});
+    const nextFieldDescCollapseMap = Object.keys(fieldDescCollapseMap).reduce((acc, cur) => {
+      acc[cur] = nextState;
+      return acc;
+    }, {});
 
     setFieldDescCollapseStatusMap({
       ...fieldDescCollapseStatusMap,
@@ -157,10 +136,10 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
     }
   };
 
-  const subOrUnsubText = React.useMemo(() => subscriptions.includes(recordId)
-    ? t(Strings.cancel_watch_record_mobile)
-    : t(Strings.record_watch_mobile)
-  , [recordId, subscriptions]);
+  const subOrUnsubText = React.useMemo(
+    () => (subscriptions.includes(recordId) ? t(Strings.cancel_watch_record_mobile) : t(Strings.record_watch_mobile)),
+    [recordId, subscriptions],
+  );
 
   const toolItemData = [
     {
@@ -186,26 +165,18 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
       name: t(Strings.delete_row),
       onClick: deleteRecord,
       visible: rowRemovable,
-    }
+    },
   ];
 
   const content = (
     <div className={style.content}>
-      {toolItemData.map(item => {
+      {toolItemData.map((item) => {
         if (!item.visible) {
           return null;
         }
         return (
-          <div
-            className={style.moreToolItem}
-            onClick={item.onClick}
-            key={item.name}
-          >
-            <LinkButton
-              underline={false}
-              className={style.moreToolBtn}
-              prefixIcon={item.icon}
-            >
+          <div className={style.moreToolItem} onClick={item.onClick} key={item.name}>
+            <LinkButton underline={false} className={style.moreToolBtn} prefixIcon={item.icon}>
               <span className={style.toolName}>{item.name}</span>
             </LinkButton>
           </div>
@@ -217,16 +188,8 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = props
   const [visible, setVisible] = useState(false);
 
   return (
-    <Popover
-      content={content}
-      popupVisible={visible}
-      onPopupVisibleChange={visible => setVisible(visible)}
-    >
-      <IconButton
-        icon={() => <MoreStandOutlined size={16} color={colors.black[50]} />}
-        shape="square"
-        className={style.trigger}
-      />
+    <Popover content={content} popupVisible={visible} onPopupVisibleChange={(visible) => setVisible(visible)}>
+      <IconButton icon={() => <MoreStandOutlined size={16} color={colors.black[50]} />} shape="square" className={style.trigger} />
     </Popover>
   );
 };

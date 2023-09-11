@@ -17,34 +17,34 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
-import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
-import { AutomationServiceRepository } from '../repositories/automation.service.repository';
-import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
-import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
+import { OFFICIAL_SERVICE_SLUG } from '../events/helpers/trigger.event.helper';
+import { AutomationRobotRepository } from '../repositories/automation.robot.repository';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
+import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
+import { AutomationTriggerTypeRepository } from '../repositories/automation.trigger.type.repository';
+import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 
 @Injectable()
 export class RobotTriggerService {
-
   constructor(
     @InjectLogger() private readonly logger: Logger,
     private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly automationServiceRepository: AutomationServiceRepository,
     private readonly automationRobotRepository: AutomationRobotRepository,
-  ) { }
+  ) {}
 
-  public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]>{
+  public async getTriggersByResourceAndEventType(resourceId: string, endpoint: string): Promise<ResourceRobotTriggerDto[]> {
     const triggerTypeServiceRelDtos = await this.automationTriggerTypeRepository.getTriggerTypeServiceRelByEndPoint(endpoint);
     for (const triggerTypeServiceRel of triggerTypeServiceRelDtos) {
       const officialServiceCount = await this.automationServiceRepository.countOfficialServiceByServiceId(triggerTypeServiceRel.serviceId);
       this.logger.info(
-        `get officialServiceCount: ${ officialServiceCount } serviceId: ${ triggerTypeServiceRel.serviceId } slug: ${ OFFICIAL_SERVICE_SLUG }`);
-      if(officialServiceCount > 0) {
+        `get officialServiceCount: ${officialServiceCount} serviceId: ${triggerTypeServiceRel.serviceId} slug: ${OFFICIAL_SERVICE_SLUG}`,
+      );
+      if (officialServiceCount > 0) {
         // get the special trigger type's robot's triggers.
         return await this._getResourceConditionalRobotTriggers(resourceId, triggerTypeServiceRel.triggerTypeId);
       }
@@ -53,16 +53,16 @@ export class RobotTriggerService {
   }
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
-    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
-    const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
-      robotIdToResourceId[item.robotId] = item.resourceId;
-      return robotIdToResourceId;
-    }, {} as {[key: string]: string});
-    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
+    const robotIds = await this.getAllRevolvedRobotIds(resourceIds);
+    if (!robotIds.size) {
+      return Promise.resolve({});
+    }
+    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Array.from(robotIds));
     return triggers.reduce((resourceIdToTriggers, item) => {
-      const resourceId = robotIdToResourceId[item.robotId]!;
-      resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
-      resourceIdToTriggers[resourceId]!.push(item);
+      if (item.resourceId) {
+        resourceIdToTriggers[item.resourceId!] = !resourceIdToTriggers[item.resourceId!] ? [] : resourceIdToTriggers[item.resourceId!]!;
+        resourceIdToTriggers[item.resourceId!]!.push(item);
+      }
       return resourceIdToTriggers;
     }, {} as IResourceTriggerGroupVo);
   }
@@ -77,5 +77,16 @@ export class RobotTriggerService {
       resourceRobotTriggers.push(...triggers);
     }
     return resourceRobotTriggers;
+  }
+
+  private async getAllRevolvedRobotIds(resourceIds: string[] = []) {
+    if (resourceIds.length === 0) {
+      return new Set<string>();
+    }
+    const robots = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const robotIds = new Set<string>(robots.map(robot => robot.robotId));
+    const triggerRobotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput(resourceIds);
+    triggerRobotIds.forEach(i => robotIds.add(i));
+    return robotIds;
   }
 }

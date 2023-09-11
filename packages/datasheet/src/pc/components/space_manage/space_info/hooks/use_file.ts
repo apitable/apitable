@@ -18,8 +18,8 @@
 
 import { useMemo } from 'react';
 import { decimalCeil } from '@apitable/core';
-import { getPercent } from '../utils';
 import { IHooksParams, IHooksResult } from '../interface';
+import { getPercent } from '../utils';
 
 export const useFile = ({ subscription, spaceInfo }: IHooksParams): IHooksResult => {
   const { used, total } = useMemo(() => {
@@ -43,7 +43,7 @@ export const useFile = ({ subscription, spaceInfo }: IHooksParams): IHooksResult
       remain,
       usedPercent,
       remainPercent,
-      remainText
+      remainText,
     };
   }, [used, total]);
 };

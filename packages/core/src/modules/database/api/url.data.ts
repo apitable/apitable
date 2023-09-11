@@ -33,6 +33,7 @@ export const FIELD_PERMISSION_UPDATE_SETTING = 'datasheet/:dstId/field/:fieldId/
 export const GET_FIELD_PERMISSION_MAP = 'datasheet/field/permission';
 export const BATCH_EDIT_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchEditRole';
 export const BATCH_DELETE_PERMISSION_ROLE = 'datasheet/:dstId/field/:fieldId/batchDeleteRole';
+export const GET_FIELD_PERMISSION_PAGE_MEMBER_LIST = '/datasheet/:dstId/field/:fieldId/collaborator/page';
 // =============== Column permissions related end =======================
 
 // ================ mirror related start =======================

@@ -18,44 +18,18 @@
 
 package com.apitable.workspace.vo;
 
-import com.apitable.shared.support.serializer.ImageSerializer;
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * Node Member View.
+ * Field Role Member View.
  * </p>
  */
 @Data
-@Schema(description = "Field Member View")
-public class FieldRoleMemberVo {
+@EqualsAndHashCode(callSuper = true)
+@Schema(description = "Field Role Member View")
+public class FieldRoleMemberVo extends ControlRoleMemberVo {
 
-    @Schema(description = "Member ID", type = "java.lang.String", example = "1")
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long memberId;
-
-    @Schema(description = "Member Name", example = "R&D Department ｜ Zhang San")
-    private String memberName;
-
-    @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @Schema(description = "Member avatar", example = "https://apitable.com/image.png")
-    private String avatar;
-
-    @Schema(description = "Member's Department", example = "Operation Department | Product "
-        + "Department | R&D Department")
-    @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    private String teams;
-
-    @Schema(description = "Role", example = "manager")
-    private String role;
-
-    @Schema(description = "When an organization unit is a member, indicate whether it is an "
-        + "administrator", example = "false")
-    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean isAdmin;
 }

@@ -51,8 +51,7 @@ public class NodeOpRo {
     @Size(max = 100, message = "The name length cannot exceed 100 bits")
     private String nodeName;
 
-    @Schema(description = "Type. 1: folder; 2: DataSheet; 3: Form; 4: Dashboard; 5: Mirror",
-        example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type. 1: folder; 2: DataSheet; 3: Form; 4: Dashboard; 5: Mirror, 10: Automation", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Type cannot be empty")
     @Min(value = 1, message = "Error in type")
     @Max(value = 10, message = "Error in type")

@@ -17,11 +17,11 @@
  */
 
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
 import { t, Strings, getUtcOptionList, Selectors } from '@apitable/core';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
 
 const options = getUtcOptionList();
 
@@ -30,15 +30,10 @@ export const TimezoneSetting: FC = () => {
 
   return (
     <div className={styles.timezoneSetting}>
-      <Typography variant="h7" className={styles.title}>{t(Strings.user_setting_time_zone_title)}</Typography>
-      <Select
-        options={options}
-        value={timeZone}
-        disabled
-        dropdownMatchSelectWidth
-        triggerStyle={{ width: 200 }}
-        placeholder={t(Strings.empty)}
-      />
-    </div >
+      <Typography variant="h7" className={styles.title}>
+        {t(Strings.user_setting_time_zone_title)}
+      </Typography>
+      <Select options={options} value={timeZone} disabled dropdownMatchSelectWidth triggerStyle={{ width: 200 }} placeholder={t(Strings.empty)} />
+    </div>
   );
 };

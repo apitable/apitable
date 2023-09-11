@@ -23,7 +23,7 @@ export const EMPTY_CONTENT = [
     type: 'paragraph',
     children: [
       {
-        text:''
+        text: '',
       },
     ],
   },
@@ -32,12 +32,12 @@ export const EMPTY_CONTENT = [
 export const draft2slate = (content: any) => {
   if (get(content, 'blocks')) {
     const { blocks, entityMap } = content;
-    const result: object[]= [];
+    const result: object[] = [];
     for (const block of blocks) {
       const { text, entityRanges } = block;
-      const res:{type: string; children: object[]} = {
+      const res: { type: string; children: object[] } = {
         type: 'paragraph',
-        children: []
+        children: [],
       };
       if (entityRanges && entityRanges.length) {
         let start = 0;
@@ -49,10 +49,10 @@ export const draft2slate = (content: any) => {
             data: entityMap[key].data.mention,
             type: 'mention',
             children: [{ text: '' }],
-          }); 
+          });
           start = offset + length;
         }
-        res.children.push({ text: text.slice(start) }); 
+        res.children.push({ text: text.slice(start) });
       } else {
         res.children.push({ text });
       }

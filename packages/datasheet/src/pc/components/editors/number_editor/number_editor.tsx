@@ -20,22 +20,23 @@ import { useDebounceFn } from 'ahooks';
 import { Input } from 'antd';
 import classnames from 'classnames';
 import isNumber from 'lodash/isNumber';
-import {
-  memo,
-  ChangeEvent,
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  useMemo,
-  useEffect,
-} from 'react';
+import { memo, ChangeEvent, useState, useRef, forwardRef, useImperativeHandle, useMemo, useEffect } from 'react';
 
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import {
-  FieldType, t, Strings, number2str, str2NumericStr, numberToShow,
-  str2Currency, str2number, times, divide, digitLength, numberThresholdValue,
+  FieldType,
+  t,
+  Strings,
+  number2str,
+  str2NumericStr,
+  numberToShow,
+  str2Currency,
+  str2number,
+  times,
+  divide,
+  digitLength,
+  numberThresholdValue,
 } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
@@ -54,32 +55,40 @@ export interface INumberEditorProps extends IBaseEditorProps {
 }
 
 const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorProps> = (props, ref) => {
-  const {
-    isFromFieldEditor, field, editing, commandFn, onSave, onBlur, isFromFormat, disabled = false, style: propStyle, height, onChange
-  } = props;
+  const { isFromFieldEditor, field, editing, commandFn, onSave, onBlur, isFromFormat, disabled = false, style: propStyle, height, onChange } = props;
   const colors = useThemeColors();
   const [value, setValue] = useState('');
   const [canInput, setCanInput] = useState<boolean>(true);
   const editorRef = useRef<HTMLInputElement>(null);
   const [showTip, setShowTip] = useState(false);
   const fieldType = field.type;
-  const { run: hideTipDebounce } = useDebounceFn(
-    () => setShowTip(false),
-    {
-      wait: 2000,
-    },
-  );
+  const { run: hideTipDebounce } = useDebounceFn(() => setShowTip(false), {
+    wait: 2000,
+  });
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: (preventScroll) => { focus(preventScroll); },
-    blur: () => { blur(); },
-    onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
-    onStartEdit: (value?: number | null) => { onStartEdit(value); },
-    setValue: (value?: number | null) => { 
-      setEditorValue( isNumber(value) ? value : null, true);
-    },
-    saveValue: () => { saveValue(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: (preventScroll) => {
+        focus(preventScroll);
+      },
+      blur: () => {
+        blur();
+      },
+      onEndEdit: (cancel: boolean) => {
+        onEndEdit(cancel);
+      },
+      onStartEdit: (value?: number | null) => {
+        onStartEdit(value);
+      },
+      setValue: (value?: number | null) => {
+        setEditorValue(isNumber(value) ? value : null, true);
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
 
   /**
    * Input state data
@@ -148,7 +157,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const printable = printableKey(event.nativeEvent);
-    // Currently checking, safari, Chrome in Windows, etc. 
+    // Currently checking, safari, Chrome in Windows, etc.
     // when calling the system's Chinese input method (e.g., mac's Chinese and Microsoft's own Chinese)
     // If the KeyCode is listened to via the KeyUp event, the correct value is returned. However, there are two problems with KeyUp.
     // 1. Frequent triggers can be missed
@@ -222,42 +231,32 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     <div
       className={style.numberEditor}
       style={{
-        boxShadow: (isFromFormat || isFromFieldEditor || commandFn) ? 'none' : `0px 0px 0px 2px ${colors.primaryColor}`,
+        boxShadow: isFromFormat || isFromFieldEditor || commandFn ? 'none' : `0px 0px 0px 2px ${colors.primaryColor}`,
         ...propStyle,
         height,
       }}
       onMouseMove={stopPropagation}
     >
       {/* Here the judgement logic is wrapped in an outer layer, otherwise it would cause a Tooltip positioning error */}
-      {!isFromFormat && <Tooltip
-        visible={showTip}
-        title={toolTip}
-        placement="top"
-      >
-        <div
-          style={{ width: '100%' }}
-        >
-          <input
-            className={classnames(style.numberInput, 'numberEditorInput', { [style.numberEditorDisabled]: disabled })}
-            style={{ textAlign: isFromFieldEditor ? 'left' : 'right' }}
-            ref={editorRef}
-            onBlur={onBlur}
-            {...commonProps}
-          />
-        </div>
-      </Tooltip>}
+      {!isFromFormat && (
+        <Tooltip visible={showTip} title={toolTip} placement="top">
+          <div style={{ width: '100%' }}>
+            <input
+              className={classnames(style.numberInput, 'numberEditorInput', { [style.numberEditorDisabled]: disabled })}
+              style={{ textAlign: isFromFieldEditor ? 'left' : 'right' }}
+              ref={editorRef}
+              onBlur={onBlur}
+              {...commonProps}
+            />
+          </div>
+        </Tooltip>
+      )}
 
-      {isFromFormat && <Tooltip
-        visible={showTip}
-        title={toolTip}
-        placement="top"
-      >
-        <Input
-          {...commonProps}
-          onBlur={onBlur}
-          placeholder={t(Strings.currency_field_configuration_default_placeholder)}
-        />
-      </Tooltip>}
+      {isFromFormat && (
+        <Tooltip visible={showTip} title={toolTip} placement="top">
+          <Input {...commonProps} onBlur={onBlur} placeholder={t(Strings.currency_field_configuration_default_placeholder)} />
+        </Tooltip>
+      )}
     </div>
   );
 };

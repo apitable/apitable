@@ -35,6 +35,8 @@ export const SearchSelect: FunctionComponent<{
     children: ReactElement
     onChange?: (value: IOption) => void;
     options?: {
+        noDataText?: string;
+        minWidth?: string;
         placeholder?: string
     }
 }> = ({ list, disabled = false,  onChange, options, children, value }) => {
@@ -73,9 +75,10 @@ export const SearchSelect: FunctionComponent<{
         ({ toggle })=> (
           <StyledListContainer
             width={'auto'}
-            minWidth={'auto'}
+            minWidth={options?.minWidth ?? 'auto'}
           >
             <ListDeprecate
+              noDataTip={options?.noDataText}
               onClick={(_e, index) => {
 
                 toggle();

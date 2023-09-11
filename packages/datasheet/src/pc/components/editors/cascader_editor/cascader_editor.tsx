@@ -1,12 +1,12 @@
-import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
-import { Cascader } from 'pc/components/cascader';
-import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode } from '@apitable/core';
-import { PopStructure } from '../pop_structure';
-import { IBaseEditorProps, IEditor } from '../interface';
-import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
-import styles from './styles.module.less';
 import classNames from 'classnames';
+import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
 import * as React from 'react';
+import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode } from '@apitable/core';
+import { Cascader } from 'pc/components/cascader';
+import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
+import { IBaseEditorProps, IEditor } from '../interface';
+import { PopStructure } from '../pop_structure';
+import styles from './styles.module.less';
 
 export interface ICascaderEditorProps extends IBaseEditorProps {
   style?: React.CSSProperties;
@@ -16,27 +16,22 @@ export interface ICascaderEditorProps extends IBaseEditorProps {
   showSearch?: boolean;
 }
 
-const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps> = ({
-  field,
-  style,
-  datasheetId,
-  height,
-  width,
-  editing,
-  toggleEditing,
-  onSave,
-  editable,
-  showSearch = true,
-}, ref) => {
+const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps> = (
+  { field, style, datasheetId, height, width, editing, toggleEditing, onSave, editable, showSearch = true },
+  ref,
+) => {
   const cascaderRef = useRef<any>(null);
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: () => cascaderRef.current && cascaderRef.current!.focus(),
-    onEndEdit: () => {},
-    onStartEdit: (value?: ISegment[] | null) => onStartEdit(value),
-    setValue: (value?: ISegment[] | null) => onStartEdit(value),
-    saveValue: () => {},
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => cascaderRef.current && cascaderRef.current!.focus(),
+      onEndEdit: () => {},
+      onStartEdit: (value?: ISegment[] | null) => onStartEdit(value),
+      setValue: (value?: ISegment[] | null) => onStartEdit(value),
+      saveValue: () => {},
+    }),
+  );
 
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
@@ -108,10 +103,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
             height: `${height}px`,
             lineHeight: `${height}px`,
           }}
-          displayRender={label => {
+          displayRender={(label) => {
             return field.property.showAll ? label.join('/') : label[label.length - 1];
           }}
-          value={cascaderValue.map(cv => cv.split(('/')))}
+          value={cascaderValue.map((cv) => cv.split('/'))}
         />
       </div>
     </PopStructure>

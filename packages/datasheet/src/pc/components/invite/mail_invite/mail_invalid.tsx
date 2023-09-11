@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { IReduxState } from '@apitable/core';
 import { UrlInvalid } from '../components/url_invalid';
 import { useInvitePageRefreshed } from '../use_invite';
 import { getInvalidReason } from '../utils';
@@ -34,9 +34,7 @@ const MailInvalid: FC<React.PropsWithChildren<unknown>> = () => {
 
   if (!inviteEmailInfo) return null;
   const { code, message } = inviteEmailInfo;
-  return (
-    <UrlInvalid reason={getInvalidReason(code, message)} />
-  );
+  return <UrlInvalid reason={getInvalidReason(code, message)} />;
 };
 
 export default MailInvalid;

@@ -16,22 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICheckboxField, IField, t, Strings } from '@apitable/core';
-import { Emoji } from 'pc/components/common';
-import { Button, useThemeColors } from '@apitable/components';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
+import { Button, useThemeColors } from '@apitable/components';
+import { ICheckboxField, IField, t, Strings } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { Emoji } from 'pc/components/common';
+import { EmojiPicker } from 'pc/components/common/emoji_picker';
 import { EMOJI_SIZE } from '../../catalog/tree/tree';
 import styles from './styles.module.less';
-import { EmojiPicker } from 'pc/components/common/emoji_picker';
-import { ChevronDownOutlined } from '@apitable/icons';
 interface IFormateCheckboxProps {
   currentField: ICheckboxField;
   setCurrentField: Dispatch<SetStateAction<IField>>;
 }
 
 export const FormateCheckbox: React.FC<React.PropsWithChildren<IFormateCheckboxProps>> = (props: IFormateCheckboxProps) => {
-
   const { currentField, setCurrentField } = props;
   const colors = useThemeColors();
   const onSelect = (emoji: any) => {
@@ -61,14 +60,12 @@ export const FormateCheckbox: React.FC<React.PropsWithChildren<IFormateCheckboxP
 
   return (
     <div className={styles.section}>
-      <div className={styles.sectionTitle} style={{ margin: 0 }}>{t(Strings.icon_setting)}</div>
+      <div className={styles.sectionTitle} style={{ margin: 0 }}>
+        {t(Strings.icon_setting)}
+      </div>
       <div className="flex item-center space-between">
-        <div style={{ width: '100%' }} >
-          <EmojiPicker
-            onSelect={onSelect}
-          >
-            {TriggerComponent}
-          </EmojiPicker>
+        <div style={{ width: '100%' }}>
+          <EmojiPicker onSelect={onSelect}>{TriggerComponent}</EmojiPicker>
         </div>
       </div>
     </div>

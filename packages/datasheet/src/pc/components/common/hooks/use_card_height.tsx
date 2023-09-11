@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IViewColumn, Selectors } from '@apitable/core';
 import { sum } from 'lodash';
+import { useSelector } from 'react-redux';
+import { IViewColumn, Selectors } from '@apitable/core';
 import { getFieldHeight, getVietualFieldHeight, hasCover } from 'pc/components/gallery_view/utils';
 import { store } from 'pc/store';
-import { useSelector } from 'react-redux';
 
 const FIRST_FIELD_HEIGHT = 16;
 const FIELD_PADDING_TOP = 4;
@@ -52,15 +52,24 @@ interface IUseCardHeightProps {
 }
 
 export const useCardHeight = (props: IUseCardHeightProps) => {
-  const { cardCoverHeight, showEmptyCover, coverFieldId, multiTextMaxLine = 4, showEmptyField,
-    isColNameVisible, isVirtual, titleHeight = 22, isGallery } = props;
+  const {
+    cardCoverHeight,
+    showEmptyCover,
+    coverFieldId,
+    multiTextMaxLine = 4,
+    showEmptyField,
+    isColNameVisible,
+    isVirtual,
+    titleHeight = 22,
+    isGallery,
+  } = props;
   const snapshot = useSelector(Selectors.getSnapshot)!;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
   let visibleColumns = useSelector(Selectors.getVisibleColumns);
   visibleColumns = props.visibleColumns || visibleColumns;
 
   /**
-   * @description Get the height of the card cover. Unlike albums, which all have the same cover height, 
+   * @description Get the height of the card cover. Unlike albums, which all have the same cover height,
    * kanban needs to be calculated to show or not show depending on the actual value.
    * recordId Active null is passed in to indicate that the record is irrelevant.
    * @param {string} recordId
@@ -96,7 +105,7 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
         const total = visibleColumns.reduce((pre: number, cur: IViewColumn, i) => {
           // Height of header on first line of card + spacing
           if (i === 0) {
-            return pre += (titleHeight + cartHeightPadding);
+            return (pre += titleHeight + cartHeightPadding);
           }
           const field = fieldMap && fieldMap[cur.fieldId];
           if (!field) {
@@ -111,7 +120,7 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
           }
           const fieldHeight = getVietualFieldHeight(field, maxLine, isMobile);
           const height = finalTitleHeight + fieldHeight + FIELD_CONTENT_SPACE;
-          return pre += height;
+          return (pre += height);
         }, 0);
 
         // Handling the inner margin of the last attribute of the Kanban view

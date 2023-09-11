@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeProvider } from '@apitable/components';
-import { Selectors } from '@apitable/core';
 import { Modal as AntdModal } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { ThemeProvider } from '@apitable/components';
+import { Selectors } from '@apitable/core';
 
 export const ModalWithTheme = (props: any) => {
   const cacheTheme = useSelector(Selectors.getTheme);

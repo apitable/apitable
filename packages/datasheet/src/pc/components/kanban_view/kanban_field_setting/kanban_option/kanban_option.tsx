@@ -16,11 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  Field, FieldType, getNewId, getUniqName, IDPrefix, IField, IFieldMap, ISingleSelectField, SingleSelectField, Strings, t
-} from '@apitable/core';
-import { TextInput, Button } from '@apitable/components';
 import * as React from 'react';
+import { TextInput, Button } from '@apitable/components';
+import {
+  Field,
+  FieldType,
+  getNewId,
+  getUniqName,
+  IDPrefix,
+  IField,
+  IFieldMap,
+  ISingleSelectField,
+  SingleSelectField,
+  Strings,
+  t,
+} from '@apitable/core';
 import { useCheckRepeatName } from '../../hooks/use_check_repeat_name';
 import styles from '../styles.module.less';
 
@@ -31,9 +41,12 @@ export interface IKanbanOptionProps {
   fieldMap: IFieldMap;
 }
 
-export const KanbanOption: React.FC<React.PropsWithChildren<IKanbanOptionProps>> = props => {
+export const KanbanOption: React.FC<React.PropsWithChildren<IKanbanOptionProps>> = (props) => {
   const { command, onClose, fieldMap } = props;
-  const defaultName = getUniqName(t(Strings.view_filed), Object.keys(fieldMap).map(id => fieldMap[id].name));
+  const defaultName = getUniqName(
+    t(Strings.view_filed),
+    Object.keys(fieldMap).map((id) => fieldMap[id].name),
+  );
   const { errTip, onChange, value } = useCheckRepeatName();
 
   function submit() {
@@ -45,27 +58,21 @@ export const KanbanOption: React.FC<React.PropsWithChildren<IKanbanOptionProps>>
       type: FieldType.SingleSelect,
       property: SingleSelectField.defaultProperty(),
     };
-    ((t(Strings.kanban_new_option_group))
-      .split(','))
-      .map(item => Field.bindModel(newField as ISingleSelectField).addOption(item));
+    t(Strings.kanban_new_option_group)
+      .split(',')
+      .map((item) => Field.bindModel(newField as ISingleSelectField).addOption(item));
     command(newField);
     onClose && onClose();
   }
 
-  return <>
-    <h3 className={styles.settingTitle}>
-      {t(Strings.kanban_new_option_field)}
-    </h3>
-    <TextInput defaultValue={defaultName} onChange={onChange} block />
-    {errTip && <p className={styles.error}>{errTip}</p>}
-    <Button
-      color="primary"
-      onClick={submit}
-      disabled={Boolean(errTip)}
-      className={styles.submitButton}
-      size="small"
-    >
-      {t(Strings.submit)}
-    </Button>
-  </>;
+  return (
+    <>
+      <h3 className={styles.settingTitle}>{t(Strings.kanban_new_option_field)}</h3>
+      <TextInput defaultValue={defaultName} onChange={onChange} block />
+      {errTip && <p className={styles.error}>{errTip}</p>}
+      <Button color="primary" onClick={submit} disabled={Boolean(errTip)} className={styles.submitButton} size="small">
+        {t(Strings.submit)}
+      </Button>
+    </>
+  );
 };

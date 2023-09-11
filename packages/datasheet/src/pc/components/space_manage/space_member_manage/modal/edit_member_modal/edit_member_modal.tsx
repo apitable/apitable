@@ -16,24 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
+import { useEffect, useState, FC, ChangeEvent } from 'react';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import { TextInput, Button, TextButton, colorVars } from '@apitable/components';
+import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
+import { AddOutlined, CloseCircleOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip } from 'pc/components/common';
 import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useEditMember } from 'pc/hooks';
+import { useEditMember, useMemberManage } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { useEffect, useState, FC, ChangeEvent } from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { isPrimaryOrOwnFunc } from '../../utils';
 import { ChangeMemberTeam } from '../change_member_team';
 import styles from './style.module.less';
-import { useMemberManage } from 'pc/hooks';
-import { isPrimaryOrOwnFunc } from '../../utils';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
 // @ts-ignore
 import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
-import { AddOutlined, CloseCircleOutlined } from '@apitable/icons';
 
 interface IModalProps {
   cancelModalVisible: () => void;
@@ -70,9 +69,8 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
     mobile: '',
     email: '',
   });
-  const {
-    memberName, email, memberId, avatar, teamData, nickName, mobile, isMemberNameModified, isNickNameModified, avatarColor,
-  } = memberInfoInSpace!;
+  const { memberName, email, memberId, avatar, teamData, nickName, mobile, isMemberNameModified, isNickNameModified, avatarColor } =
+    memberInfoInSpace!;
   const [formData, setFormData] = useState<IUpdateMemberInfo>();
   const [teamList, setTeamList] = useState<ITeamsInSpace[]>([]);
   const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);
@@ -87,7 +85,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
   }, [memberName, nickName, mobile, email]);
   useEffect(() => {
     if (teamData && teamData.length) {
-      const teams: ITeamsInSpace[] = teamData.map(item => {
+      const teams: ITeamsInSpace[] = teamData.map((item) => {
         return { teamId: item.teamId, teamName: item.fullHierarchyTeamName || '' };
       });
       setTeamList(teams);
@@ -102,7 +100,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
     if (formErr.memberName || formErr.nickName || formErr.email) {
       return;
     }
-    const formData = { spaceId, memberId, teamIds: teamList.map(item => item.teamId), memberName: form.memberName };
+    const formData = { spaceId, memberId, teamIds: teamList.map((item) => item.teamId), memberName: form.memberName };
     setFormData(formData as IUpdateMemberInfo);
     setStart(true);
   };
@@ -128,7 +126,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
     cancelModalVisible();
   };
   const removeTeam = (id: string) => {
-    const newArr = teamList.filter(item => item.teamId !== id);
+    const newArr = teamList.filter((item) => item.teamId !== id);
     setTeamList(newArr);
   };
   const removeFromSpace = () => {
@@ -145,7 +143,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
           memberIdArr: [memberId],
           isDeepDel: true,
           resFunc: () => {
-            const newSelect = selectMemberListInSpace.filter(item => item !== memberId);
+            const newSelect = selectMemberListInSpace.filter((item) => item !== memberId);
             removeCallback && removeCallback();
             dispatch(StoreActions.updateSelectMemberListInSpace(newSelect));
             cancelModalVisible();
@@ -160,7 +158,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
       return;
     }
     const tempList = teamList.length === 0 ? [{ teamId: ConfigConstant.ROOT_TEAM_ID, teamName: userInfo!.spaceName }] : teamList;
-    return tempList.map(item => {
+    return tempList.map((item) => {
       return (
         <span className={styles.teamWrapper} key={item.teamId}>
           <Tooltip title={item.teamName} textEllipsis showTipAnyway>
@@ -213,7 +211,7 @@ export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ canc
                 color: wecomMemberNameVisible ? 'transparent' : colorVars.fc1,
               }}
               value={form.memberName}
-              onChange={e => {
+              onChange={(e) => {
                 handleChange(e, 'memberName');
               }}
               onBlur={verifyMemberName}

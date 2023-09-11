@@ -29,7 +29,7 @@ const filterCustomHeader = (headers?: Record<string, string | string[] | undefin
   if (!headers) return {};
   const _headers = {};
   for (const k in headers) {
-    if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
+    if (!FILTER_HEADERS.map((item) => item.toUpperCase()).includes(k.toUpperCase())) {
       continue;
     }
     _headers[k] = headers[k];

@@ -16,11 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC, useContext, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
 // eslint-disable-next-line no-restricted-imports
 import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import {
-  BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
-  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, ISetCalendarStyle, IDPrefix, StoreActions, Strings, t,
+  BasicValueType,
+  CalendarColorType,
+  CalendarStyleKeyType,
+  CollaCommandName,
+  ConfigConstant,
+  DateTimeField,
+  ExecuteResult,
+  Field,
+  FieldType,
+  getNewId,
+  getUniqName,
+  ICalendarViewColumn,
+  ICalendarViewProperty,
+  ICalendarViewStyle,
+  ISetCalendarStyle,
+  IDPrefix,
+  StoreActions,
+  Strings,
+  t,
 } from '@apitable/core';
 import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -35,9 +55,6 @@ import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage';
-import { FC, useContext, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import { CalendarContext } from '../calendar_context';
 import styles from './styles.module.less';
 
@@ -53,17 +70,12 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   const { color } = colorOption;
   const { fieldMap, view, calendarViewStatus, permissions, isCryptoStartField, isCryptoEndField } = useContext(CalendarContext);
   const noRequiredField = !startFieldId && !endFieldId;
-  const exitFieldNames = Object.values(fieldMap).map(field => field.name);
+  const exitFieldNames = Object.values(fieldMap).map((field) => field.name);
   const isStartFieldDeleted = startFieldId && !isCryptoStartField && !fieldMap[startFieldId];
   const isEndFieldDeleted = endFieldId && !isCryptoEndField && !fieldMap[endFieldId];
   const columns = view.columns as ICalendarViewColumn[];
   const isViewLock = useShowViewLockModal();
-  const {
-    spaceId,
-    viewId,
-    datasheetId,
-    cacheTheme,
-  } = useSelector(state => {
+  const { spaceId, viewId, datasheetId, cacheTheme } = useSelector((state) => {
     const { datasheetId: dstId, viewId: vId } = state.pageParams;
     return {
       datasheetId: dstId,
@@ -74,23 +86,25 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   }, shallowEqual);
   const { CALENDAR_SETTING_HELP_URL } = getEnvVariables();
   const fieldOptions = useMemo(() => {
-    const options = columns.map(({ fieldId }) => {
-      const field = fieldMap[fieldId]!;
-      if ([Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime)) {
-        return {
-          label: field.name,
-          value: fieldId,
-          prefixIcon: getFieldTypeIcon(field.type),
-        };
-      }
-      return null;
-    }).filter(v => v) as IOption[];
+    const options = columns
+      .map(({ fieldId }) => {
+        const field = fieldMap[fieldId]!;
+        if ([Field.bindModel(field).basicValueType, Field.bindModel(field).innerBasicValueType].includes(BasicValueType.DateTime)) {
+          return {
+            label: field.name,
+            value: fieldId,
+            prefixIcon: getFieldTypeIcon(field.type),
+          };
+        }
+        return null;
+      })
+      .filter((v) => v) as IOption[];
     if (isCryptoStartField) {
       options.push({
         value: startFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
+        suffixIcon: <FieldPermissionLock fieldId={startFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
       });
     }
     if (isCryptoEndField) {
@@ -98,14 +112,14 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
         value: endFieldId,
         label: t(Strings.crypto_field),
         disabled: true,
-        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)}/>,
+        suffixIcon: <FieldPermissionLock fieldId={endFieldId} tooltip={t(Strings.field_permission_lock_tips)} />,
       });
     }
     options.push({
       label: t(Strings.calendar_add_date_time_field),
       value: 'add',
       disabled: !permissions.manageable,
-      prefixIcon: <AddOutlined color={colors.thirdLevelText}/>,
+      prefixIcon: <AddOutlined color={colors.thirdLevelText} />,
     });
     return options;
   }, [columns, endFieldId, fieldMap, isCryptoEndField, isCryptoStartField, permissions.manageable, startFieldId, colors]);
@@ -142,16 +156,18 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
     const newFieldName = styleKey === CalendarStyleKeyType.StartFieldId ? t(Strings.calendar_start_field_name) : t(Strings.calendar_end_field_name);
     const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
-      data: [{
-        data: {
-          id: newFieldId,
-          name: getUniqName(newFieldName, exitFieldNames),
-          type: FieldType.DateTime,
-          property: DateTimeField.defaultProperty(),
+      data: [
+        {
+          data: {
+            id: newFieldId,
+            name: getUniqName(newFieldName, exitFieldNames),
+            type: FieldType.DateTime,
+            property: DateTimeField.defaultProperty(),
+          },
+          viewId,
+          index: columns.length,
         },
-        viewId,
-        index: columns.length,
-      }],
+      ],
     });
     if (ExecuteResult.Success === result.result) {
       notify.open({
@@ -163,23 +179,26 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   };
 
   const handleStyleChange = (styleKey: CalendarStyleKeyType, styleValue: ISetCalendarStyle['styleValue']) => {
-    executeCommandWithMirror(() => {
-      const calendarStyle = {
-        styleKey,
-        styleValue,
-      } as ISetCalendarStyle;
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetCalendarStyle,
-        viewId: viewId!,
-        isClear: styleValue === UNUSED_END_DATE,
-        data: [calendarStyle]
-      });
-    }, {
-      style: {
-        ...(view as ICalendarViewProperty).style,
-        [styleKey]: styleValue
-      }
-    });
+    executeCommandWithMirror(
+      () => {
+        const calendarStyle = {
+          styleKey,
+          styleValue,
+        } as ISetCalendarStyle;
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetCalendarStyle,
+          viewId: viewId!,
+          isClear: styleValue === UNUSED_END_DATE,
+          data: [calendarStyle],
+        });
+      },
+      {
+        style: {
+          ...(view as ICalendarViewProperty).style,
+          [styleKey]: styleValue,
+        },
+      },
+    );
   };
 
   const onColorPick = (type: OptionSetting, _id: string, value: string | number) => {
@@ -200,46 +219,34 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
     <div className={styles.settingPanelContainer}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <Typography variant='h6'>
-            {t(Strings.calendar_setting)}
-          </Typography>
+          <Typography variant="h6">{t(Strings.calendar_setting)}</Typography>
           <Tooltip content={t(Strings.calendar_setting_help_tips)}>
-            <a
-              href={CALENDAR_SETTING_HELP_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-              className={styles.helpIcon}
-            >
+            <a href={CALENDAR_SETTING_HELP_URL} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
               <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <CloseOutlined
-          className={styles.closeIcon}
-          size={16}
-          color={black[500]}
-          onClick={onClose}
-        />
+        <CloseOutlined className={styles.closeIcon} size={16} color={black[500]} onClick={onClose} />
       </header>
-      {
-        getEnvVariables().CALENDAR_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
+      {getEnvVariables().CALENDAR_SETTING_GUIDE_VIDEO_VISIBLE && (
+        <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
             <ClassOutlined size={16} color={colors.primaryColor} />
-            <Typography variant='body3' color={colors.secondLevelText}>
+            <Typography variant="body3" color={colors.secondLevelText}>
               {t(Strings.calendar_play_guide_video_title)}
             </Typography>
           </span>
           <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
         </div>
-      }
+      )}
       <div className={styles.setting}>
-        <Typography className={styles.settingTitle} variant='h7'>
+        <Typography className={styles.settingTitle} variant="h7">
           {t(Strings.calendar_date_time_setting)}
         </Typography>
         <div className={styles.settingLayout}>
           {[
             [startFieldId, isStartFieldDeleted],
-            [endFieldId || UNUSED_END_DATE, isEndFieldDeleted]
+            [endFieldId || UNUSED_END_DATE, isEndFieldDeleted],
           ].map((fieldContent, fieldIdx) => {
             const [fieldId, isFieldDeleted] = fieldContent as [string, boolean];
             const isStart = fieldIdx === 0;
@@ -247,52 +254,47 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
               <div key={fieldIdx} className={styles.selectField}>
                 <Select
                   value={fieldId}
-                  onSelected={
-                    (option) => {
-                      const handleKey = isStart ? CalendarStyleKeyType.StartFieldId : CalendarStyleKeyType.EndFieldId;
-                      if (option.value === 'add') {
-                        handleAddField(handleKey);
-                      } else {
-                        handleStyleChange(handleKey, option.value as string);
-                      }
+                  onSelected={(option) => {
+                    const handleKey = isStart ? CalendarStyleKeyType.StartFieldId : CalendarStyleKeyType.EndFieldId;
+                    if (option.value === 'add') {
+                      handleAddField(handleKey);
+                    } else {
+                      handleStyleChange(handleKey, option.value as string);
                     }
-                  }
+                  }}
                   placeholder={isStart ? t(Strings.calendar_pick_start_time) : t(Strings.calendar_pick_end_time)}
                   dropdownMatchSelectWidth
                   triggerStyle={{
-                    border: isFieldDeleted ? `1px solid ${colors.rc08}` : 'none'
+                    border: isFieldDeleted ? `1px solid ${colors.rc08}` : 'none',
                   }}
                   disabled={isViewLock}
                   disabledTip={t(Strings.view_lock_setting_desc)}
                 >
-                  {
-                    (isStart ? fieldOptions.filter(f => f.value !== endFieldId) : [
+                  {(isStart
+                    ? fieldOptions.filter((f) => f.value !== endFieldId)
+                    : [
                       {
                         label: t(Strings.calendar_setting_clear_end_time),
                         value: UNUSED_END_DATE,
                         disabled: !permissions.editable || !endFieldId,
                       },
-                      ...fieldOptions.filter(f => f.value !== startFieldId),
-                    ]).map((option, index) => {
-                      return (
-                        <Select.Option
-                          key={option.value}
-                          value={option.value}
-                          disabled={option.disabled}
-                          currentIndex={index}
-                          prefixIcon={option.prefixIcon}
-                        >
-                          {option.label}
-                        </Select.Option>
-                      );
-                    })
-                  }
+                      ...fieldOptions.filter((f) => f.value !== startFieldId),
+                    ]
+                  ).map((option, index) => {
+                    return (
+                      <Select.Option
+                        key={option.value}
+                        value={option.value}
+                        disabled={option.disabled}
+                        currentIndex={index}
+                        prefixIcon={option.prefixIcon}
+                      >
+                        {option.label}
+                      </Select.Option>
+                    );
+                  })}
                 </Select>
-                {isFieldDeleted && (
-                  <span className={styles.errorText}>
-                    {t(Strings.calendar_setting_field_deleted)}
-                  </span>
-                )}
+                {isFieldDeleted && <span className={styles.errorText}>{t(Strings.calendar_setting_field_deleted)}</span>}
               </div>
             );
           })}
@@ -305,30 +307,32 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
           </div>
         )}
       </div>
-      {false && <div className={styles.color}>
-        <div className={styles.outer}>
-          <div
-            className={styles.inner}
-            style={{
-              backgroundColor: color === -1 ? colors.defaultBg : setColor(color, cacheTheme),
+      {false && (
+        <div className={styles.color}>
+          <div className={styles.outer}>
+            <div
+              className={styles.inner}
+              style={{
+                backgroundColor: color === -1 ? colors.defaultBg : setColor(color, cacheTheme),
+              }}
+            />
+          </div>
+          <ColorPicker
+            onChange={onColorPick}
+            option={{
+              id: '',
+              name: '',
+              color: colorOption.color,
             }}
+            mask
+            triggerComponent={
+              <Typography variant="body3" className={styles.more} component={'span'}>
+                {t(Strings.calendar_color_more)}
+              </Typography>
+            }
           />
         </div>
-        <ColorPicker
-          onChange={onColorPick}
-          option={{
-            id: '',
-            name: '',
-            color: colorOption.color,
-          }}
-          mask
-          triggerComponent={
-            <Typography variant='body3' className={styles.more} component={'span'}>
-              {t(Strings.calendar_color_more)}
-            </Typography>
-          }
-        />
-      </div>}
+      )}
     </div>
   );
 };

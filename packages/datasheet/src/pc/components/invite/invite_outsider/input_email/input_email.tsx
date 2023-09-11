@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line no-restricted-imports
 import * as React from 'react';
 import { forwardRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

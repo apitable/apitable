@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { data2Operand, EmptyNullOperand, getObjectOperandProperty, isArrayOperand, isObjectOperand, mergeOperand } from '@apitable/core';
 import { JSONSchema7 } from 'json-schema';
 // @ts-ignore
 import mergeAllOf from 'json-schema-merge-allof';
@@ -26,6 +25,7 @@ import _isEmpty from 'lodash/isEmpty';
 import union from 'lodash/union';
 import { createElement } from 'react';
 import * as ReactIs from 'react-is';
+import { data2Operand, EmptyNullOperand, getObjectOperandProperty, isArrayOperand, isObjectOperand, mergeOperand } from '@apitable/core';
 import fields from './components/fields';
 import widgets from './components/widgets';
 import { ADDITIONAL_PROPERTY_FLAG, widgetMap } from './const';
@@ -91,7 +91,7 @@ export function getSchemaType(schema: JSONSchema7): string {
     return 'object';
   }
   if (Array.isArray(type) && type.length === 2 && type.includes('null')) {
-    return type.find(type => type !== 'null')!;
+    return type.find((type) => type !== 'null')!;
   }
   return type as string;
 }
@@ -154,13 +154,7 @@ export function hasWidget(schema: JSONSchema7, widget: string, registeredWidgets
  * @param rawFormData
  * @param includeUndefinedValues
  */
-function computeDefaults(
-  _schema: any,
-  parentDefaults: { [x: string]: any; },
-  rootSchema: any,
-  rawFormData = {},
-  includeUndefinedValues = false,
-): any {
+function computeDefaults(_schema: any, parentDefaults: { [x: string]: any }, rootSchema: any, rawFormData = {}, includeUndefinedValues = false): any {
   let schema = isObject(_schema) ? _schema : {};
   const formData = rawFormData;
   // Compute the defaults recursively: give highest priority to deepest nodes.
@@ -308,7 +302,7 @@ export function mergeDefaultsWithFormData(defaults: any[], formData: any): any {
 export function getUiOptions(uiSchema: IUiSchema): IUiSchema['ui:options'] {
   // get all passed options from ui:widget, ui:options, and ui:<optionName>
   return Object.keys(uiSchema)
-    .filter(key => key.indexOf('ui:') === 0)
+    .filter((key) => key.indexOf('ui:') === 0)
     .reduce((options, key) => {
       const value = uiSchema[key];
       if (key === 'ui:widget' && isObject(value)) {
@@ -386,9 +380,9 @@ export function orderProperties(properties: any[], order?: any[]) {
       prev[curr] = true;
       return prev;
     }, {});
-  const errorPropList = (arr: any[]) => (arr.length > 1 ? `properties '${arr.join('\', \'')}'` : `property '${arr[0]}'`);
+  const errorPropList = (arr: any[]) => (arr.length > 1 ? `properties '${arr.join("', '")}'` : `property '${arr[0]}'`);
   const propertyHash = arrayToHash(properties);
-  const orderFiltered = order.filter(prop => prop === '*' || propertyHash[prop]);
+  const orderFiltered = order.filter((prop) => prop === '*' || propertyHash[prop]);
   const orderHash = arrayToHash(orderFiltered);
 
   const rest = properties.filter((prop: string) => !orderHash[prop]);
@@ -433,7 +427,7 @@ export function isSelect(_schema: JSONSchema7, rootSchema: IRegistry['definition
   if (Array.isArray(schema.enum)) {
     return true;
   } else if (Array.isArray(altSchemas)) {
-    return altSchemas.every(altSchemas => isConstant(altSchemas));
+    return altSchemas.every((altSchemas) => isConstant(altSchemas));
   }
   return false;
 }
@@ -457,7 +451,7 @@ export function isFilesArray(schema: any, uiSchema: any, rootSchema = {}) {
 }
 
 export function isFixedItems(schema: JSONSchema7) {
-  return Array.isArray(schema.items) && schema.items.length > 0 && schema.items.every(item => isObject(item as any));
+  return Array.isArray(schema.items) && schema.items.length > 0 && schema.items.every((item) => isObject(item as any));
 }
 
 export function allowAdditionalItems(schema: JSONSchema7) {
@@ -532,7 +526,7 @@ export function stubExistingAdditionalProperties(schema: any, rootSchema = {}, f
     properties: { ...schema.properties },
   };
 
-  Object.keys(formData).forEach(key => {
+  Object.keys(formData).forEach((key) => {
     if (schema.properties.hasOwnProperty(key)) {
       // No need to stub, our schema already has the property
       return;
@@ -621,7 +615,10 @@ function resolveDependencies(schema: JSONSchema7, rootSchema: any, formData: any
 }
 
 function processDependencies(
-  dependencies: { [x: string]: any; }, resolvedSchema: any, rootSchema: object | undefined, formData: object | undefined
+  dependencies: { [x: string]: any },
+  resolvedSchema: any,
+  rootSchema: object | undefined,
+  formData: object | undefined,
 ): any {
   // Process dependencies updating the local schema properties as appropriate.
   for (const dependencyKey in dependencies) {
@@ -653,7 +650,11 @@ function withDependentProperties(schema: any, additionallyRequired: any[]) {
 }
 
 function withDependentSchema(
-  schema: any, rootSchema: object | undefined, formData: object | undefined, dependencyKey: string, dependencyValue: JSONSchema7
+  schema: any,
+  rootSchema: object | undefined,
+  formData: object | undefined,
+  dependencyKey: string,
+  dependencyValue: JSONSchema7,
 ) {
   const { oneOf, ...dependentSchema } = retrieveSchema(dependencyValue, rootSchema, formData);
   schema = mergeSchemas(schema, dependentSchema);
@@ -664,7 +665,7 @@ function withDependentSchema(
     throw new Error(`invalid: it is some ${typeof oneOf} instead of an array`);
   }
   // Resolve $refs inside oneOf.
-  const resolvedOneOf = oneOf.map(subschema => (subschema.hasOwnProperty('$ref') ? resolveReference(subschema, rootSchema, formData) : subschema));
+  const resolvedOneOf = oneOf.map((subschema) => (subschema.hasOwnProperty('$ref') ? resolveReference(subschema, rootSchema, formData) : subschema));
   return withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, resolvedOneOf);
 }
 
@@ -782,9 +783,9 @@ export function deepEquals(a: any, b: any): any {
 
 export const getFieldNames = (pathSchema: IPathSchema, formData: any) => {
   const getAllPaths = (_obj: any, acc: any[] = [], paths = ['']) => {
-    Object.keys(_obj).forEach(key => {
+    Object.keys(_obj).forEach((key) => {
       if (typeof _obj[key] === 'object') {
-        const newPaths = paths.map(path => `${path}.${key}`);
+        const newPaths = paths.map((path) => `${path}.${key}`);
         // If an object is marked with additionalProperties, all its keys are valid
         if (_obj[key].__rjsf_additionalProperties && _obj[key].$name !== '') {
           acc.push(_obj[key].$name);
@@ -792,7 +793,7 @@ export const getFieldNames = (pathSchema: IPathSchema, formData: any) => {
           getAllPaths(_obj[key], acc, newPaths);
         }
       } else if (key === '$name' && _obj[key] !== '') {
-        paths.forEach(path => {
+        paths.forEach((path) => {
           path = path.replace(/^\./, '');
           const formValue = _get(formData, path);
           // adds path to fieldNames if it points to a value
@@ -965,7 +966,7 @@ export function dataURItoBlob(dataURI: string): { name: string; blob: Blob } {
   // Get mime-type from params
   const type = params[0].replace('data:', '');
   // Filter the name property from params
-  const properties = params.filter(param => {
+  const properties = params.filter((param) => {
     return param.split('=')[0] === 'name';
   });
   // Look for the name and use unknown if no name property.
@@ -1019,7 +1020,7 @@ export function getMatchingOption(formData: any, options: JSONSchema7[], rootSch
       // Create an "anyOf" schema that requires at least one of the keys in the
       // "properties" object
       const requiresAnyOf = {
-        anyOf: Object.keys(option.properties).map(key => ({
+        anyOf: Object.keys(option.properties).map((key) => ({
           required: [key],
         })),
       };

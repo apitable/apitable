@@ -51,16 +51,9 @@ export const SideBarContext = createContext<ISideBarContextProps>({
 });
 
 export const useSideBar = () => {
-  const sideBarVisible = useSelector(state => state.space.sideBarVisible);
-  const {
-    toggleType,
-    clickType,
-    onSetClickType,
-    onSetToggleType,
-    onSetPanelVisible,
-    onSetSideBarVisibleByOhter,
-    onSetSideBarVisibleByUser,
-  } = useContext(SideBarContext);
+  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
+  const { toggleType, clickType, onSetClickType, onSetToggleType, onSetPanelVisible, onSetSideBarVisibleByOhter, onSetSideBarVisibleByUser } =
+    useContext(SideBarContext);
 
   return {
     toggleType,

@@ -20,19 +20,19 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { Box, Switch, Typography, useTheme } from '@apitable/components';
+import { Box, Switch, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
 import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { useRobot, useToggleRobotActive } from '../hooks';
-import { IRobotCardInfo, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { useActionTypes, useRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
+import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
 import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
-  robotCardInfo: IRobotCardInfo;
-  onClick: () => void;
+  robotCardInfo: IAutomationDatum;
+  onNavigate: () => void;
   readonly: boolean;
   index: number;
 }
@@ -49,9 +49,30 @@ interface INodeStep {
 }
 
 export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({
-  index, robotCardInfo, onClick, readonly
+  index, robotCardInfo, onNavigate, readonly
 }) => {
-  const { name, nodeTypeList, robotId, isActive } = robotCardInfo;
+  const { name, robotId } = robotCardInfo;
+
+  const { data: triggerTypes } = useTriggerTypes();
+  const { data: actionTypes } = useActionTypes();
+
+  const nodeTypeList: IRobotNodeTypeInfo[] = [
+    ...robotCardInfo.triggers.map(trigger => {
+      const triggerType = triggerTypes.find(item => trigger.triggerTypeId === item.triggerTypeId);
+      return {
+        nodeTypeId: trigger.triggerId,
+        service: triggerType?.service!,
+        type: IRobotNodeType.Trigger
+      };}),
+    ...robotCardInfo.actions.map(action => {
+      const triggerType = actionTypes.find(trigger => trigger.actionTypeId === action.actionTypeId);
+      return {
+        nodeTypeId: action.actionId,
+        service: triggerType?.service!,
+        type: IRobotNodeType.Action
+      };
+    }),
+  ];
 
   const nodeSteps : INodeStep[]= useMemo(() => {
     const list : INodeStep[]= nodeTypeList.map(item => ({
@@ -59,7 +80,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
       item: item
     }));
     if(list.length > 5) {
-      const left = list.slice(0, 2); 
+      const left = list.slice(0, 2);
       const right = list.slice(list.length -2 );
       const t: INodeStep = {
         type: 'more',
@@ -76,34 +97,26 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
     opacity: 0.5,
   } : { cursor: 'pointer' };
 
-  const indexColorMap = {
-    0: theme.color.deepPurple,
-    1: theme.color.indigo,
-    2: theme.color.blue,
-    3: theme.color.teal,
-    4: theme.color.green,
-    5: theme.color.yellow,
-    6: theme.color.orange,
-    7: theme.color.pink,
-    8: theme.color.brown,
-    9: theme.color.purple,
-  };
-  const rightIndex = Math.min(index, 9);
-  const { robot } = useRobot(robotId);
-  const { loading, toggleRobotActive } = useToggleRobotActive(robotId);
+  const {
+    resourceId,
+    currentRobotId, robot,
+  } = useRobot();
+  const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
+
+  const colors = useThemeColors();
 
   return (
     <StyledBox
       border={`1px solid ${theme.color.fc5}`}
       borderRadius='4px'
       marginTop='16px'
-      background={theme.color.fc8}
+      background={colors.bgControlsDefault}
       style={readonlyStyle}
     >
       <Box
         padding='8px 0'
         margin='0 8px'
-        onClick={onClick}
+        onClick={onNavigate}
       >
         <Box display='flex' justifyContent='space-between' marginTop='8px' alignItems='center'>
           <Box
@@ -117,25 +130,24 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
                 return (
                   <>
                     <Box display='flex' marginRight='8px'>
-                      <MoreOutlined size={'12px'}/>
+                      <MoreOutlined size={'12px'} color={colors.textCommonTertiary} />
                     </Box>
 
                     <Box display='flex' marginRight='8px'>
-                      <ArrowRightOutlined size={'12px'} />
+                      <ArrowRightOutlined size={'12px'} color={colors.textCommonTertiary} />
                     </Box>
-                      
+
                   </>
                 );
               }
               const nodeType =item.item as IRobotNodeTypeInfo;
-
               return <React.Fragment key={index}>
                 <span className={styles.nodeLogo}>
                   <Image
                     key={`${nodeType.nodeTypeId}_${index}`}
                     src={integrateCdnHost(
                       (nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
-                        getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service.logo
+                        getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service?.logo ?? ''
                     )}
                     alt=''
                     width={24}
@@ -144,22 +156,23 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
                 </span>
 
                 {
-                  // spectator
                   !isLast && <Box display='flex' margin='0 8px'>
-                    <ArrowRightOutlined size={'12px'} />
+                    <ArrowRightOutlined size={'12px'} color={colors.textCommonTertiary} />
                   </Box>
                 }
               </React.Fragment>;
             })}
           </Box>
-          <Switch checked={robot!.isActive} size='default' disabled={readonly} loading={loading} onClick={(_value, e) => {
+          <Switch checked={robotCardInfo!.isActive} size='default' disabled={readonly} loading={loading} onClick={(_value, e) => {
             stopPropagation(e);
             toggleRobotActive();
           }} />
         </Box>
       </Box>
 
-      <Box display='flex' alignItems='center' margin={'0 8px'} >
+      <Box display='flex' alignItems='center' margin={'0 8px'}
+        onClick={onNavigate}
+      >
         <Box display='flex' alignItems='center' marginBottom={'16px'}>
           <Typography variant='h8' ellipsis>
             {name || t(Strings.robot_unnamed)}

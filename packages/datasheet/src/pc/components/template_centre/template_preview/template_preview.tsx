@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@apitable/core';
 import { useRequest } from 'ahooks';
+import * as React from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
-// @ts-ignore
-import { LoginModal } from 'enterprise';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Router } from 'pc/components/route_manager/router';
 import { useUserRequest } from 'pc/hooks';
 import { isRenderServer } from 'pc/utils';
-import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TemplateCategoryDetail } from '../template_category_detail';
 import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
+// @ts-ignore
+import { LoginModal } from 'enterprise';
 
 export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use
@@ -69,7 +69,7 @@ export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
         Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href }});
       }
     } else {
-      const userInfo = ((await getLoginStatus()) as any) as IUserInfo;
+      const userInfo = (await getLoginStatus()) as any as IUserInfo;
       if (!userInfo) {
         return;
       }
@@ -96,18 +96,20 @@ export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.templatePreview}>
-      {/**
-       * note: Here is prepared for SSR, that is, to facilitate the return of html template data for easy crawling, 
-       * the following content wrapped by ComponentDisplay, due to the need to determine the browser size.
-       * It will not run on the server side.
-       * The content rendered here will not be rendered on the page, so don't worry.
-       */
+      {
+        /**
+         * note: Here is prepared for SSR, that is, to facilitate the return of html template data for easy crawling,
+         * the following content wrapped by ComponentDisplay, due to the need to determine the browser size.
+         * It will not run on the server side.
+         * The content rendered here will not be rendered on the page, so don't worry.
+         */
         isRenderServer() && (
           <div style={{ display: 'none' }}>
             <CommonSide />
             {MainComponent()}
           </div>
-        )}
+        )
+      }
 
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <CommonSide />

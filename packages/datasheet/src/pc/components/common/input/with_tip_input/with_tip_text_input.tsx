@@ -24,20 +24,11 @@ export interface IWithTipTextInputProps extends ITextInputProps {
   helperText?: string;
 }
 
-export const WithTipTextInput: FC<React.PropsWithChildren<IWithTipTextInputProps>> = ({
-  className,
-  helperText,
-  ...rest
-}) => {
-
+export const WithTipTextInput: FC<React.PropsWithChildren<IWithTipTextInputProps>> = ({ className, helperText, ...rest }) => {
   return (
     <div className={className}>
       <TextInput {...rest} />
-      {Boolean(helperText) && (
-        <div className={styles.err}>
-          {helperText}
-        </div>
-      )}
+      {Boolean(helperText) && <div className={styles.err}>{helperText}</div>}
     </div>
   );
 };

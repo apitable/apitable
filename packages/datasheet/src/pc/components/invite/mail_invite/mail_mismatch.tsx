@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button } from '@apitable/components';
-import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { Wrapper } from 'pc/components/common';
-import { Router } from 'pc/components/route_manager/router';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Button } from '@apitable/components';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
+import { Wrapper } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 
@@ -46,12 +46,7 @@ const MailMismatch: FC<React.PropsWithChildren<unknown>> = () => {
     <Wrapper>
       <div className={classNames('invite-children-center', styles.mismatch)}>
         <h1>{parser(tipText)}</h1>
-        <Button
-          onClick={toLogin}
-          style={{ width: '240px', marginTop: '22px' }}
-          color='primary'
-          block
-        >
+        <Button onClick={toLogin} style={{ width: '240px', marginTop: '22px' }} color="primary" block>
           {t(Strings.back_to_space)}
         </Button>
       </div>

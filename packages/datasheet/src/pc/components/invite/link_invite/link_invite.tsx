@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, Navigation, StoreActions } from '@apitable/core';
 import { useMount } from 'ahooks';
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Api, Navigation, StoreActions } from '@apitable/core';
 import { Loading } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
-import { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { INVITE_CODE_LENGTH, INVITE_TOKEN_LENGTH } from '../constant';
 
 const removeChinese = (params: string | null, length: number) => {
@@ -39,7 +39,7 @@ const LinkInvite: FC<React.PropsWithChildren<unknown>> = () => {
 
   const [inviteLinkToken, setInviteLinkToken] = useState('');
   const { run: verifyLinkUrl } = useRequest((token, nodeId) => Api.linkValid(token, nodeId), {
-    onSuccess: res => {
+    onSuccess: (res) => {
       const { success, code, data } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
       dispatch(StoreActions.updateLinkToken(inviteLinkToken));

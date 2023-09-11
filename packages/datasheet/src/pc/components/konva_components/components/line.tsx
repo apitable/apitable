@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
 import { ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
 import { FC, memo } from 'react';
+import { useThemeColors } from '@apitable/components';
 
 const LineComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/line'), { ssr: false });
 

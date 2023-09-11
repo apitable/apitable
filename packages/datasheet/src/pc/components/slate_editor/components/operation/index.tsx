@@ -18,10 +18,10 @@
 
 import cx from 'classnames';
 import * as React from 'react';
+import { AddOutlined } from '@apitable/icons';
 import { IElement } from '../../interface/element';
 
 import styles from './operation.module.less';
-import { AddOutlined } from '@apitable/icons';
 
 export interface IOperationProps {
   element: IElement;
@@ -34,9 +34,11 @@ const Operation = ({ visible, style, className }: IOperationProps) => {
   if (!visible) {
     return null;
   }
-  return <span contentEditable={false} className={cx(styles.operation, className)} style={style}>
-    <AddOutlined />
-  </span>;
+  return (
+    <span contentEditable={false} className={cx(styles.operation, className)} style={style}>
+      <AddOutlined />
+    </span>
+  );
 };
 
 export default Operation;

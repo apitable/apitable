@@ -17,21 +17,21 @@
  */
 
 import * as React from 'react';
-import styles from './styles.module.less';
 import { useSelector } from 'react-redux';
 import { Selectors } from '@apitable/core';
+import { IDragOption } from '../drag/interface';
 import { MicroColumn } from '../micro_column/micro_column';
 import { MicroRow } from '../micro_row/micro_row';
-import { IDragOption } from '../drag/interface';
+import styles from './styles.module.less';
 
 interface IMicroComponent {
   dragOption: IDragOption;
 }
 
-export const MicroComponent: React.FC<React.PropsWithChildren<IMicroComponent>> = props => {
+export const MicroComponent: React.FC<React.PropsWithChildren<IMicroComponent>> = (props) => {
   const { dragOption } = props;
   const { dragOffsetY, dragOffsetX } = dragOption;
-  const { dragTarget } = useSelector(state => Selectors.getGridViewDragState(state));
+  const { dragTarget } = useSelector((state) => Selectors.getGridViewDragState(state));
   const microRowStyle: React.CSSProperties = {
     top: dragOffsetY + 5,
     left: dragOffsetX + 5,

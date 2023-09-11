@@ -18,29 +18,21 @@
 
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
-import {
-  IReduxState,
-  StoreActions,
-  IMemberInfoInSpace,
-  ConfigConstant,
-  t,
-  Strings,
-  isIdassPrivateDeployment
-} from '@apitable/core';
-import { Button, Alert } from '@apitable/components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { Button, Alert } from '@apitable/components';
+import { IReduxState, StoreActions, IMemberInfoInSpace, ConfigConstant, t, Strings, isIdassPrivateDeployment } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip, Modal } from 'pc/components/common';
-import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
-import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
 import { MemberTable } from '../member_table';
+import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
+import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise';
 interface ITeamInfo {
-  searchMemberRes: IMemberInfoInSpace[]
-  setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>
+  searchMemberRes: IMemberInfoInSpace[];
+  setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;
 }
 export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   const [pageNo, setPageNo] = useState(1);
@@ -48,31 +40,26 @@ export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);
   const [addMemberModalVisible, setAddMemberModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const {
-    teamListInSpace,
-    selectedTeamInfoInSpace,
-    selectMemberListInSpace,
-    selectedRows,
-    spaceResource,
-    user,
-    spaceInfo,
-  } = useSelector((state: IReduxState) => ({
-    selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
-    selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,
-    selectedRows: state.spaceMemberManage.selectedRows,
-    memberListInSpace: state.spaceMemberManage.memberListInSpace,
-    user: state.user.info,
-    spaceResource: state.spacePermissionManage.spaceResource,
-    spaceInfo: state.space.curSpaceInfo,
-    teamListInSpace: state.spaceMemberManage.teamListInSpace,
-  }), shallowEqual);
+  const { teamListInSpace, selectedTeamInfoInSpace, selectMemberListInSpace, selectedRows, spaceResource, user, spaceInfo } = useSelector(
+    (state: IReduxState) => ({
+      selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
+      selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,
+      selectedRows: state.spaceMemberManage.selectedRows,
+      memberListInSpace: state.spaceMemberManage.memberListInSpace,
+      user: state.user.info,
+      spaceResource: state.spacePermissionManage.spaceResource,
+      spaceInfo: state.space.curSpaceInfo,
+      teamListInSpace: state.spaceMemberManage.teamListInSpace,
+    }),
+    shallowEqual,
+  );
   const isBindSocial = spaceInfo && isSocialPlatformEnabled?.(spaceInfo) && !isSocialDingTalk?.(spaceInfo) && !isSocialWecom?.(spaceInfo);
   // const { teamId, teamTitle, memberCount } = selectedTeamInfoInSpace;
   const { removeMember } = useMemberManage();
   const firstTeamId = teamListInSpace?.[0]?.teamId || ConfigConstant.ROOT_TEAM_ID;
   const isRootTeam = selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === firstTeamId;
   const isPrimaryOrOwn = React.useCallback((info: IMemberInfoInSpace) => user && isPrimaryOrOwnFunc(info, user.memberId), [user]);
-  const isPrimaryOrOwnSelected = (memberArr: IMemberInfoInSpace[]) => memberArr.some(item => isPrimaryOrOwn(item));
+  const isPrimaryOrOwnSelected = (memberArr: IMemberInfoInSpace[]) => memberArr.some((item) => isPrimaryOrOwn(item));
   const contactSyncing = (isSocialDingTalk?.(spaceInfo) || isSocialWecom?.(spaceInfo)) && isContactSyncing?.(spaceInfo);
   // Replace the selected group and initialize the form pages
   useEffect(() => {
@@ -80,7 +67,7 @@ export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   }, [selectedTeamInfoInSpace]);
 
   const removeBaseFunc = (memberArr: IMemberInfoInSpace[]) => {
-    const memberIdArr = memberArr.map(item => item.memberId);
+    const memberIdArr = memberArr.map((item) => item.memberId);
     Modal.confirm({
       title: t(Strings.kindly_reminder),
       content: t(Strings.remove_from_team_confirm_tip),
@@ -117,7 +104,7 @@ export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   const updateSelectArr = (arr: string[]) => {
     setPageNo(1);
     if (arr.length === 1) {
-      const newSelect = selectMemberListInSpace.filter(item => item !== arr[0]);
+      const newSelect = selectMemberListInSpace.filter((item) => item !== arr[0]);
       dispatch(StoreActions.updateSelectMemberListInSpace(newSelect));
       return;
     }
@@ -138,86 +125,57 @@ export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   return (
     <>
       <div className={styles.teamInfo}>
-        {
-          selectedTeamInfoInSpace &&
-          (
-            <div className={styles.selectTeamInfo}>
-              <Tooltip
-                title={selectedTeamInfoInSpace.teamTitle}
-                placement="bottomLeft"
-                textEllipsis
-              >
-                <div className={styles.selectTeam}>{selectedTeamInfoInSpace.teamTitle}</div>
-              </Tooltip>
-              {
-                selectedTeamInfoInSpace &&
-                <span>（{selectedTeamInfoInSpace.memberCount}{t(Strings.person)}）</span>
-              }
-            </div>
-          )
-        }
-        {
-          contactSyncing &&
-          <Alert
-            type='default'
-            content={t(Strings.dingtalk_admin_contact_syncing_tips)}
-            style={{ marginTop: 24 }}
-          />
-        }
+        {selectedTeamInfoInSpace && (
+          <div className={styles.selectTeamInfo}>
+            <Tooltip title={selectedTeamInfoInSpace.teamTitle} placement="bottomLeft" textEllipsis>
+              <div className={styles.selectTeam}>{selectedTeamInfoInSpace.teamTitle}</div>
+            </Tooltip>
+            {selectedTeamInfoInSpace && (
+              <span>
+                （{selectedTeamInfoInSpace.memberCount}
+                {t(Strings.person)}）
+              </span>
+            )}
+          </div>
+        )}
+        {contactSyncing && <Alert type="default" content={t(Strings.dingtalk_admin_contact_syncing_tips)} style={{ marginTop: 24 }} />}
         <div className={styles.tableWrap}>
-          {
-            spaceResource &&
+          {spaceResource &&
             spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) &&
-            selectedTeamInfoInSpace && !isIdassPrivateDeployment() &&
-            (
-              <div className={styles.btnWTopTable}>
-                {
-                  !isRootTeamSelected && !isBindSocial &&
-                  (<Button onClick={addMemberClick}>{t(Strings.add_member)}</Button>)
-                }
+            selectedTeamInfoInSpace &&
+            !isIdassPrivateDeployment() && (
+            <div className={styles.btnWTopTable}>
+              {!isRootTeamSelected && !isBindSocial && <Button onClick={addMemberClick}>{t(Strings.add_member)}</Button>}
 
-                {
-                  isRootTeamSelected && !isBindSocial &&
-                  (
-                    <Button
-                      onClick={changeMemberTeamClick}
-                      disabled={(!selectMemberListInSpace.length)}
-                    >
-                      {t(Strings.distribute_a_team)}
-                    </Button>
-                  )
-                }
-                {
-                  !isRootTeamSelected && !isBindSocial &&
-                  <Button
-                    onClick={batchDelMemberBtn}
-                    variant="jelly"
-                    color="danger"
-                    disabled={(!selectMemberListInSpace.length)}
-                  >
-                    {t(Strings.batch_remove)}
-                  </Button>
-                }
-              </div>
-            )
-          }
+              {isRootTeamSelected && !isBindSocial && (
+                <Button onClick={changeMemberTeamClick} disabled={!selectMemberListInSpace.length}>
+                  {t(Strings.distribute_a_team)}
+                </Button>
+              )}
+              {!isRootTeamSelected && !isBindSocial && (
+                <Button onClick={batchDelMemberBtn} variant="jelly" color="danger" disabled={!selectMemberListInSpace.length}>
+                  {t(Strings.batch_remove)}
+                </Button>
+              )}
+            </div>
+          )}
           <MemberTable searchMemberRes={props.searchMemberRes} setSearchMemberRes={props.setSearchMemberRes} />
         </div>
       </div>
-      {
-        adjustMemberModalVisible &&
-        (
-          <EditMemberModal
-            cancelModalVisible={() => {setAdjustMemberModalVisible(false);}}
-            removeCallback={() => {setPageNo(1);}}
-            pageNo={pageNo}
-          />
-        )
-      }
-      {
-        (!addMemberModalVisible) && changeMemberTeamModalVisible &&
+      {adjustMemberModalVisible && (
+        <EditMemberModal
+          cancelModalVisible={() => {
+            setAdjustMemberModalVisible(false);
+          }}
+          removeCallback={() => {
+            setPageNo(1);
+          }}
+          pageNo={pageNo}
+        />
+      )}
+      {!addMemberModalVisible && changeMemberTeamModalVisible && (
         <ChangeMemberTeam onCancel={() => setChangeMemberTeamModalVisible(false)} inEditMember={false} />
-      }
+      )}
       {addMemberModalVisible && <AddMember onCancel={() => setAddMemberModalVisible(false)} />}
     </>
   );

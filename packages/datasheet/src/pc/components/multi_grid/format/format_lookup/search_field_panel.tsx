@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, Field, IField, ILinkField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { InlineNodeName } from 'pc/components/common/inline_node_name';
-import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
-import { TComponent } from 'pc/components/common/t_component';
-import { useSelectIndex } from 'pc/hooks';
-import { useThemeColors } from '@apitable/components';
 import { useMemo, useRef, useState } from 'react';
 import * as React from 'react';
-import { checkComputeRef } from '../../field_setting';
-import styles from './styles.module.less';
-import { store } from 'pc/store';
-import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+import { useThemeColors } from '@apitable/components';
+import { FieldType, Field, IField, ILinkField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
+import { WarnCircleFilled, DatasheetOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { InlineNodeName } from 'pc/components/common/inline_node_name';
+import { TComponent } from 'pc/components/common/t_component';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { HighlightWords } from 'pc/components/highlight_words';
-import { WarnCircleFilled, DatasheetOutlined } from '@apitable/icons';
+import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
+import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+import { useSelectIndex } from 'pc/hooks';
+import { store } from 'pc/store';
+import { checkComputeRef } from '../../field_setting';
+import styles from './styles.module.less';
 
 export enum ShowType {
   LinkField,
@@ -52,7 +52,7 @@ export interface IFieldSearchPanelProps {
   prefix?: React.ReactNode;
 }
 
-const NoLookupField = ({ showType, value }: { showType: ShowType, value: string }) => {
+const NoLookupField = ({ showType, value }: { showType: ShowType; value: string }) => {
   const colors = useThemeColors();
   return (
     <div
@@ -75,13 +75,10 @@ const NoLookupField = ({ showType, value }: { showType: ShowType, value: string 
   );
 };
 
-const WarnTip = ({ text } : { text: string }) => {
+const WarnTip = ({ text }: { text: string }) => {
   const colors = useThemeColors();
   return (
-    <Tooltip
-      title={text}
-      placement="top"
-    >
+    <Tooltip title={text} placement="top">
       <WarnCircleFilled color={colors.warningColor} size={15} className={styles.warningIcon} />
     </Tooltip>
   );
@@ -118,37 +115,35 @@ const FieldItem = (props: IFieldItem) => {
         style={{
           height: showType === ShowType.LinkField ? 56 : 42,
         }}
-        className={classNames({
-          [styles.activeField]: activeFieldId === field.id,
-          [styles.hover]: index === currentIndex,
-          active: index === currentIndex,
-          [styles.disabled]: !foreignDatasheetReadable || warnText,
-        }, styles.fieldItem)}
+        className={classNames(
+          {
+            [styles.activeField]: activeFieldId === field.id,
+            [styles.hover]: index === currentIndex,
+            active: index === currentIndex,
+            [styles.disabled]: !foreignDatasheetReadable || warnText,
+          },
+          styles.fieldItem,
+        )}
       >
-        <div className={styles.fieldIconAndTitle} style={{ opacity: (!foreignDatasheetReadable || warnText) ? 0.5 : 1 }}>
+        <div className={styles.fieldIconAndTitle} style={{ opacity: !foreignDatasheetReadable || warnText ? 0.5 : 1 }}>
           <div
             className={classNames({
               [styles.iconWithFieldNote]: showType === ShowType.LinkField,
               [styles.iconType]: showType !== ShowType.LinkField,
             })}
           >
-            {
-              <DatasheetOutlined color={colors.thirdLevelText} />
-            }
+            {<DatasheetOutlined color={colors.thirdLevelText} />}
           </div>
           <div className={styles.fieldName}>
-           
-            <HighlightWords keyword={keyword} 
-              words={Selectors.getDatasheet(store.getState(), (field as ILinkField).property.foreignDatasheetId)?.name!} >
-              {
-                showType === ShowType.LinkField && <div className={styles.fieldNote}>
-                  {renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}
-                </div>
-              }
+            <HighlightWords
+              keyword={keyword}
+              words={Selectors.getDatasheet(store.getState(), (field as ILinkField).property.foreignDatasheetId)?.name!}
+            >
+              {showType === ShowType.LinkField && (
+                <div className={styles.fieldNote}>{renderInlineNodeName((field as ILinkField).property.foreignDatasheetId)}</div>
+              )}
             </HighlightWords>
-            <div className={styles.fieldNameText}>
-              {field.name}
-            </div>
+            <div className={styles.fieldNameText}>{field.name}</div>
           </div>
         </div>
         {warnText && <WarnTip text={warnText} />}
@@ -177,7 +172,7 @@ const renderInlineNodeName = (datasheetId: string) => {
 export function FieldSearchPanel(props: IFieldSearchPanelProps) {
   const { fields, activeFieldId, onChange, setSearchPanelVisible, showType, errTip, field } = props;
   const [value, setValue] = useState('');
-  const showFields = fields.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+  const showFields = fields.filter((item) => item.name.toLowerCase().includes(value.toLowerCase()));
 
   const listContainerRef = useRef<any>(null);
   const handleFieldClick = (fieldId: string) => {
@@ -189,7 +184,7 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
     listLength: showFields.length,
     listContainerRef,
     activeItemClass: '.active',
-    onEnter: index => {
+    onEnter: (index) => {
       const field = showFields[index];
       field && handleFieldClick(field.id);
     },
@@ -216,37 +211,37 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
         />
       </div>
-      {
-        errTip ? <div className={styles.noLinkTableTips}>
-          {errTip}
-        </div> : <div className={styles.optList} ref={listContainerRef}>
-          {
-            isEmpty(showFields) ?
-              <NoLookupField showType={showType} value={value} /> :
-              showFields.map((sf, index) => {
-                // Determining whether a circular reference will result
-                // Simulation of the actual selected data structure to do the check
-                let warnText;
-                if (field && [FieldType.LookUp, FieldType.Formula].includes(sf.type)) {
-                  const newField = {
-                    ...field,
-                    property: {
-                      ...field.property,
-                      lookUpTargetFieldId: sf.id,
-                    },
-                  };
-                  warnText = checkComputeRef(newField);
-                  if (typeof warnText != 'string') {
-                    // Simulate the selection of actual data to check if the new field has problems
-                    if (Field.bindModel(newField).hasError) {
-                      warnText = t(Strings.field_configuration_err);
-                    } else {
-                      warnText = '';
-                    }
-
+      {errTip ? (
+        <div className={styles.noLinkTableTips}>{errTip}</div>
+      ) : (
+        <div className={styles.optList} ref={listContainerRef}>
+          {isEmpty(showFields) ? (
+            <NoLookupField showType={showType} value={value} />
+          ) : (
+            showFields.map((sf, index) => {
+              // Determining whether a circular reference will result
+              // Simulation of the actual selected data structure to do the check
+              let warnText;
+              if (field && [FieldType.LookUp, FieldType.Formula].includes(sf.type)) {
+                const newField = {
+                  ...field,
+                  property: {
+                    ...field.property,
+                    lookUpTargetFieldId: sf.id,
+                  },
+                };
+                warnText = checkComputeRef(newField);
+                if (typeof warnText != 'string') {
+                  // Simulate the selection of actual data to check if the new field has problems
+                  if (Field.bindModel(newField).hasError) {
+                    warnText = t(Strings.field_configuration_err);
+                  } else {
+                    warnText = '';
                   }
                 }
-                return <FieldItem
+              }
+              return (
+                <FieldItem
                   key={index}
                   keyword={value}
                   index={index}
@@ -257,12 +252,12 @@ export function FieldSearchPanel(props: IFieldSearchPanelProps) {
                   activeFieldId={activeFieldId}
                   currentIndex={currentIndex}
                   renderInlineNodeName={renderInlineNodeName}
-                />;
-              })
-          }
+                />
+              );
+            })
+          )}
         </div>
-      }
-
+      )}
     </div>
   );
 }

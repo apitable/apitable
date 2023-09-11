@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IRecord, IField, IMemberField, ISelectField } from '@apitable/core';
 import { DraggableProvided } from 'react-beautiful-dnd';
+import { IRecord, IField, IMemberField, ISelectField } from '@apitable/core';
 
 export interface IGroupHeaderProps {
   groupId: string;

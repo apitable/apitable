@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType } from '@apitable/core';
 import { colorVars } from '@apitable/components';
+import { FieldType } from '@apitable/core';
 import {
   AttachmentOutlined,
   AutonumberOutlined,
@@ -42,7 +42,7 @@ import {
   TelephoneOutlined,
   LookupOutlined,
   StarOutlined,
-  CascadeOutlined
+  CascadeOutlined,
 } from '@apitable/icons';
 
 const FieldIconMap = {

@@ -16,21 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
-import {
-  CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, ResourceType, Selectors, StoreActions, Strings, t,
-  WidgetApi, WidgetApiInterface,
-} from '@apitable/core';
-import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
-import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import filenamify from 'filenamify';
 import parser from 'html-react-parser';
 import { trim } from 'lodash';
+import Image from 'next/image';
+import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName,
+  ConfigConstant,
+  ExecuteResult,
+  integrateCdnHost,
+  ResourceType,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  WidgetApi,
+  WidgetApiInterface,
+} from '@apitable/core';
+import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { EmitterEventName } from 'modules/shared/simple_emitter';
-import Image from 'next/image';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -46,16 +59,12 @@ import { store } from 'pc/store';
 import { copy2clipBoard, getUrlWithHost } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
-import * as React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
+import styles from './styles.module.less';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise';
-import styles from './styles.module.less';
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -78,16 +87,13 @@ export const expandWidgetCreate = (props: IExpandWidgetCreate) => {
     closeWidgetCenter && closeModal?.();
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
       <ThemeProvider>
-        <WidgetCreateModal
-          closeModal={onModalClose}
-          installPosition={installPosition}
-        />
+        <WidgetCreateModal closeModal={onModalClose} installPosition={installPosition} />
       </ThemeProvider>
-    </Provider>
-  ));
+    </Provider>,
+  );
 };
 
 interface IWidgetCreateModalProps {
@@ -100,9 +106,9 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
   const [inputWidgetName, setInputWidgetName] = useState<string>();
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const [widgetCreating, setWidgetCreating] = useState(false);
-  const { dashboardId, datasheetId, mirrorId } = useSelector(state => state.pageParams);
+  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
   const { data: templateData, loading: templateDataLoading } = useRequest(WidgetApi.getTemplateList);
   const [templateWidgetList, setTemplateWidgetList] = useState<WidgetApiInterface.IWidgetTemplateItem[]>([]);
   const [selectTemplate, setSelectTemplate] = useState<WidgetApiInterface.IWidgetTemplateItem>();
@@ -121,10 +127,13 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
       return;
     }
     setWidgetCreating(true);
-    const res = await WidgetApi.createWidget(JSON.stringify({
-      'en-US': widgetName,
-      'zh-CN': widgetName,
-    }), spaceId!);
+    const res = await WidgetApi.createWidget(
+      JSON.stringify({
+        'en-US': widgetName,
+        'zh-CN': widgetName,
+      }),
+      spaceId!,
+    );
     const { data } = res.data;
     toInstallWidget(data.packageId);
   };
@@ -135,12 +144,16 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
     Message.success({
       content: t(Strings.create_widget_success),
     });
-    installPosition === InstallPosition.WidgetPanel ? await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet) :
-      await installToDashboard(widget, nodeId);
+    installPosition === InstallPosition.WidgetPanel
+      ? await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet)
+      : await installToDashboard(widget, nodeId);
     setWidgetCreating(false);
     dispatch(StoreActions.receiveInstallationWidget(widget.id, widget));
     expandWidgetCreateSteps({
-      widgetId: widget.id, widgetName: widgetName!, widgetPackageId, sourceCodeBundle: selectTemplate!.sourceCodeBundle,
+      widgetId: widget.id,
+      widgetName: widgetName!,
+      widgetPackageId,
+      sourceCodeBundle: selectTemplate!.sourceCodeBundle,
     });
     closeModal?.(true);
     installedWidgetHandle(widget.id, false);
@@ -148,9 +161,11 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
 
   const Title = () => (
     <div className={styles.modalHeader}>
-      <Typography variant={'h6'} component={'div'}>{t(Strings.create_widget)}</Typography>
-      <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-        <a href={getEnvVariables().WIDGET_CREATE_WIDGET_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+      <Typography variant={'h6'} component={'div'}>
+        {t(Strings.create_widget)}
+      </Typography>
+      <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement="top">
+        <a href={getEnvVariables().WIDGET_CREATE_WIDGET_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
           <QuestionCircleOutlined color={colors.fc3} />
         </a>
       </CommonTooltip>
@@ -158,15 +173,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
   );
   const isValid = widgetName && selectTemplate;
   return (
-    (<Modal
-      title={<Title />}
-      visible
-      centered
-      width={528}
-      onCancel={() => closeModal?.()}
-      className={styles.widgetCenterWrap}
-      footer={null}
-    >
+    <Modal title={<Title />} visible centered width={528} onCancel={() => closeModal?.()} className={styles.widgetCenterWrap} footer={null}>
       <div className={styles.createContainer}>
         <div className={styles.itemLabel}>
           <span>{t(Strings.widget_center_create_modal_widget_name)}</span>
@@ -175,7 +182,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
           ref={inputName}
           placeholder={t(Strings.widget_center_create_modal_widget_name_placeholder)}
           value={inputWidgetName}
-          onChange={e => {
+          onChange={(e) => {
             const value = e.target.value;
             setInputWidgetName(value);
             /**
@@ -190,11 +197,12 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
           <span>{t(Strings.widget_center_create_modal_widget_template)}</span>
         </div>
         <div className={styles.templateList}>
-          {templateWidgetList.map(item => (
-            <div className={classNames(
-              styles.templateItem,
-              selectTemplate?.widgetPackageId === item.widgetPackageId && styles.templateItemSelected,
-            )} key={item.widgetPackageId} onClick={() => setSelectTemplate(item)}>
+          {templateWidgetList.map((item) => (
+            <div
+              className={classNames(styles.templateItem, selectTemplate?.widgetPackageId === item.widgetPackageId && styles.templateItemSelected)}
+              key={item.widgetPackageId}
+              onClick={() => setSelectTemplate(item)}
+            >
               <div className={styles.checkbox} />
               <div className={styles.templateCover}>
                 <Image src={getUrlWithHost(item.extras?.templateCover)} alt={''} width={40} height={40} />
@@ -204,27 +212,28 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
                 <div className={styles.templateDesc}>{item.description}</div>
               </div>
               <div style={{ height: 40 }}>
-                {selectTemplate?.widgetPackageId === item.widgetPackageId && selectTemplate &&
+                {selectTemplate?.widgetPackageId === item.widgetPackageId && selectTemplate && (
                   <LinkButton
                     className={styles.lookSourceCodeBtn}
                     href={selectTemplate.extras?.widgetOpenSource}
                     color={colors.thirdLevelText}
-                    target='_blank'
+                    target="_blank"
                   >
                     {t(Strings.widget_center_create_modal_widget_template_link)}
-                  </LinkButton>}
+                  </LinkButton>
+                )}
               </div>
             </div>
           ))}
         </div>
         <div className={styles.buttonWrap}>
-          <Button color='primary' loading={widgetCreating} block disabled={!isValid} onClick={createWidget}>
+          <Button color="primary" loading={widgetCreating} block disabled={!isValid} onClick={createWidget}>
             {t(Strings.create_widget)}
           </Button>
         </div>
         {templateDataLoading && <Loading style={{ backgroundColor: colors.defaultBg }} />}
       </div>
-    </Modal>)
+    </Modal>
   );
 };
 
@@ -245,21 +254,20 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
     root.unmount();
     container.parentElement!.removeChild(container);
     widgetId && installedWidgetHandle(widgetId);
-    props.sourceCodeBundle && widgetId && setTimeout(() => {
-      TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.CREATE_WIDGET_GUIDE);
-    }, 0);
+    props.sourceCodeBundle &&
+      widgetId &&
+      setTimeout(() => {
+        TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.CREATE_WIDGET_GUIDE);
+      }, 0);
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
       <ThemeProvider>
-        <WidgetCreateModalStep
-          {...props}
-          closeModal={onModalClose}
-        />
+        <WidgetCreateModalStep {...props} closeModal={onModalClose} />
       </ThemeProvider>
-    </Provider>
-  ));
+    </Provider>,
+  );
 };
 
 const WidgetCretInvalidError = () => (
@@ -283,7 +291,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
   const [devUrl, setDevUrl] = useState<string>(devCodeUrl);
-  const userInfo = useSelector(state => state.user.info);
+  const userInfo = useSelector((state) => state.user.info);
   const [urlError, setUrlError] = useState<string>();
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
   const defaultTemplateUrl = integrateCdnHost(getEnvVariables().WIDGET_DEFAULT_TEMPLATE_URL!);
@@ -295,18 +303,26 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
     if (sourceCodeBundle) {
       setSourceCodeUrl(sourceCodeBundle);
     } else {
-      !sourceCodeUrl && getWidgetTemplate().then(({ data }) => {
-        setSourceCodeUrl(data?.data?.[0]?.sourceCodeBundle);
-      });
+      !sourceCodeUrl &&
+        getWidgetTemplate().then(({ data }) => {
+          setSourceCodeUrl(data?.data?.[0]?.sourceCodeBundle);
+        });
     }
   }, [getWidgetTemplate, sourceCodeBundle, sourceCodeUrl]);
 
-  const widgetCliCmd = (
-    config: { apiToken?: string, spaceId?: string, env: string, widgetName: string, widgetPackageId: string, templateUrl?: string },
-  ) => {
+  const widgetCliCmd = (config: {
+    apiToken?: string;
+    spaceId?: string;
+    env: string;
+    widgetName: string;
+    widgetPackageId: string;
+    templateUrl?: string;
+  }) => {
     const { apiToken, spaceId, env, widgetName, widgetPackageId, templateUrl = defaultTemplateUrl } = config;
     // eslint-disable-next-line max-len
-    return `widget-cli init ${apiToken && `-t ${apiToken} `}${spaceId && `-s ${spaceId}`} -h ${env} -c ${widgetName} -p ${widgetPackageId} -u ${templateUrl}`;
+    return `widget-cli init ${apiToken && `-t ${apiToken} `}${
+      spaceId && `-s ${spaceId}`
+    } -h ${env} -c ${widgetName} -p ${widgetPackageId} -u ${templateUrl}`;
   };
 
   useEffect(() => {
@@ -323,24 +339,30 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
         {
           label: t(Strings.widget_step_install_content_label2),
           type: 'info',
-          value: 'npm install -g @apitable/widget-cli'
+          value: 'npm install -g @apitable/widget-cli',
         },
       ],
-      helpLink: getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL
+      helpLink: getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL,
     },
     {
       title: t(Strings.widget_step_init_title),
       desc: t(Strings.widget_step_init_desc),
-      content: [{
-        label: t(Strings.widget_step_init_content_label), type: 'info',
-        value:
-          widgetCliCmd({
-            apiToken: userInfo?.apiKey, spaceId: userInfo?.spaceId, env: window.location.origin, widgetName, widgetPackageId,
+      content: [
+        {
+          label: t(Strings.widget_step_init_content_label),
+          type: 'info',
+          value: widgetCliCmd({
+            apiToken: userInfo?.apiKey,
+            spaceId: userInfo?.spaceId,
+            env: window.location.origin,
+            widgetName,
+            widgetPackageId,
             templateUrl: sourceCodeUrl ? addCurrentDomainIfNeeded(sourceCodeUrl) : sourceCodeUrl,
           }),
-        desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
-      }],
-      helpLink: getEnvVariables().WIDGET_DEVELOP_INIT_HELP_URL
+          desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
+        },
+      ],
+      helpLink: getEnvVariables().WIDGET_DEVELOP_INIT_HELP_URL,
     },
     {
       title: t(Strings.widget_step_start_title),
@@ -354,15 +376,20 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
           desc: t(Strings.widget_step_start_content_desc2),
         },
       ],
-      helpLink: getEnvVariables().WIDGET_DEVELOP_START_HELP_URL
+      helpLink: getEnvVariables().WIDGET_DEVELOP_START_HELP_URL,
     },
     {
       title: t(Strings.widget_step_dev_title),
       desc: t(Strings.widget_step_dev_desc),
-      content: [{
-        label: t(Strings.widget_step_dev_content_label), placeholder: t(Strings.widget_dev_url_input_placeholder), type: 'input', value: devUrl,
-      }],
-      helpLink: getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL
+      content: [
+        {
+          label: t(Strings.widget_step_dev_content_label),
+          placeholder: t(Strings.widget_dev_url_input_placeholder),
+          type: 'input',
+          value: devUrl,
+        },
+      ],
+      helpLink: getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL,
     },
   ];
   const steps = [
@@ -376,35 +403,38 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
     if (!devUrl) {
       return;
     }
-    loadWidgetCheck(devUrl, widgetPackageId).then(() => {
-      const result = resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetGlobalStorage,
-        key: `widget_loader_code_url_${widgetPackageId}`,
-        value: devUrl,
-        resourceType: ResourceType.Widget,
-        resourceId: widgetId,
-      });
-      if (result.result === ExecuteResult.Success) {
-        closeModal?.(widgetId);
-        clearWizardsData?.();
-        simpleEmitter.emit(EmitterEventName.ToggleWidgetDevMode, widgetId);
-      }
-    }).catch(error => {
-      switch (error) {
-        case WidgetLoadError.CretInvalid: {
-          setIsCretInvalid(true);
+    loadWidgetCheck(devUrl, widgetPackageId)
+      .then(() => {
+        const result = resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetGlobalStorage,
+          key: `widget_loader_code_url_${widgetPackageId}`,
+          value: devUrl,
+          resourceType: ResourceType.Widget,
+          resourceId: widgetId,
+        });
+        if (result.result === ExecuteResult.Success) {
+          closeModal?.(widgetId);
+          clearWizardsData?.();
+          simpleEmitter.emit(EmitterEventName.ToggleWidgetDevMode, widgetId);
         }
-          break;
-        case WidgetLoadError.PackageIdNotMatch:
-          setUrlError(t(Strings.widget_load_url_error_not_match, { widgetPackageId }));
-          break;
-        case WidgetLoadError.CliLowVersion:
-          setUrlError(t(Strings.widget_cli_upgrade_tip));
-          break;
-        default:
-          setUrlError(t(Strings.widget_connect_error));
-      }
-    });
+      })
+      .catch((error) => {
+        switch (error) {
+          case WidgetLoadError.CretInvalid:
+            {
+              setIsCretInvalid(true);
+            }
+            break;
+          case WidgetLoadError.PackageIdNotMatch:
+            setUrlError(t(Strings.widget_load_url_error_not_match, { widgetPackageId }));
+            break;
+          case WidgetLoadError.CliLowVersion:
+            setUrlError(t(Strings.widget_cli_upgrade_tip));
+            break;
+          default:
+            setUrlError(t(Strings.widget_connect_error));
+        }
+      });
   };
 
   const copyLinkHandler = (text: string, index: number) => {
@@ -432,69 +462,89 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
         closeModal?.();
         installedWidgetHandle(widgetId, Boolean(sourceCodeBundle));
       }}
-      modalClassName={styles.widgetCreateModalStep}>
-      <Steps steps={steps} current={current} onChange={(current) => {
-        setCurrent(current);
-      }} />
+      modalClassName={styles.widgetCreateModalStep}
+    >
+      <Steps
+        steps={steps}
+        current={current}
+        onChange={(current) => {
+          setCurrent(current);
+        }}
+      />
       <div className={styles.stepContentWrap}>
-        {config?.[current] &&
+        {config?.[current] && (
           <div className={styles.stepContent}>
             <Typography variant={'h6'} component={'div'} style={{ marginBottom: 8, display: 'flex', alignItems: 'center', marginRight: 4 }}>
               <span className={styles.stepContentTitleMain}>{config?.[current].title}</span>
-              <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-                <a href={config?.[current].helpLink} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+              <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement="top">
+                <a href={config?.[current].helpLink} target="_blank" className={styles.helpIcon} rel="noreferrer">
                   <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
                 </a>
               </CommonTooltip>
             </Typography>
             <div className={styles.stepContentDesc}>{config?.[current].desc}</div>
-            {
-              config?.[current].content.map((contentItem: any, index: number) => (
-                <div className={classNames(styles.contentItem, contentItem.value ?? styles.contentItemNoMargin)} key={index}>
-                  <div className={styles.contentItemLabel}>{contentItem.label}</div>
-                  {(contentItem.type === 'info' && contentItem.value || contentItem.type === 'input') && <div className={styles.contentItemValue}>
-                    {contentItem.type === 'info' ? <TextInput
-                      className={classNames(styles.contentItemValueInput, { [styles.highBorder]: isCopiedIndex === index })}
-                      value={contentItem?.value}
-                      disabled
-                    /> : <TextInput
-                      id={'WIDGET_CREATE_STEP_INPUT'}
-                      className={styles.contentItemValueInput}
-                      placeholder={contentItem?.placeholder}
-                      value={devUrl}
-                      onChange={(e) => {
-                        resetError();
-                        setDevUrl(e.target.value);
-                      }}
-                      error={Boolean(urlError)}
-                    />}
-                    {contentItem?.type === 'info' && <CommonTooltip title={t(Strings.copy_link)} placement='top'>
-                      <IconButton
-                        className={styles.copyBtn}
-                        onClick={() => contentItem.value && copyLinkHandler(contentItem.value, index)}
-                        shape='square'
-                        variant='background'
-                        size='large'
-                        icon={() => <CopyOutlined size={16} color={colors.secondLevelText} />}
+            {config?.[current].content.map((contentItem: any, index: number) => (
+              <div className={classNames(styles.contentItem, contentItem.value ?? styles.contentItemNoMargin)} key={index}>
+                <div className={styles.contentItemLabel}>{contentItem.label}</div>
+                {((contentItem.type === 'info' && contentItem.value) || contentItem.type === 'input') && (
+                  <div className={styles.contentItemValue}>
+                    {contentItem.type === 'info' ? (
+                      <TextInput
+                        className={classNames(styles.contentItemValueInput, { [styles.highBorder]: isCopiedIndex === index })}
+                        value={contentItem?.value}
+                        disabled
                       />
-                    </CommonTooltip>}
-                  </div>}
-                  {!isCretInvalid && urlError && <div className={styles.errorText}>{urlError}</div>}
-                  {isCretInvalid && <WidgetCretInvalidError />}
-                  {contentItem.desc && <div className={styles.contentItemDesc}>{contentItem.desc}</div>}
-                </div>
-              ))
-            }
+                    ) : (
+                      <TextInput
+                        id={'WIDGET_CREATE_STEP_INPUT'}
+                        className={styles.contentItemValueInput}
+                        placeholder={contentItem?.placeholder}
+                        value={devUrl}
+                        onChange={(e) => {
+                          resetError();
+                          setDevUrl(e.target.value);
+                        }}
+                        error={Boolean(urlError)}
+                      />
+                    )}
+                    {contentItem?.type === 'info' && (
+                      <CommonTooltip title={t(Strings.copy_link)} placement="top">
+                        <IconButton
+                          className={styles.copyBtn}
+                          onClick={() => contentItem.value && copyLinkHandler(contentItem.value, index)}
+                          shape="square"
+                          variant="background"
+                          size="large"
+                          icon={() => <CopyOutlined size={16} color={colors.secondLevelText} />}
+                        />
+                      </CommonTooltip>
+                    )}
+                  </div>
+                )}
+                {!isCretInvalid && urlError && <div className={styles.errorText}>{urlError}</div>}
+                {isCretInvalid && <WidgetCretInvalidError />}
+                {contentItem.desc && <div className={styles.contentItemDesc}>{contentItem.desc}</div>}
+              </div>
+            ))}
             <div className={styles.contentFooter}>
-              {current < steps.length - 1 && <Button color='primary' onClick={() => setCurrent(current + 1)}>{t(Strings.next_step)}</Button>}
-              {current === steps.length - 1 && <Button color='primary' disabled={!devUrl} onClick={startDev}>{t(Strings.widget_start_dev)}</Button>}
-              {current > 0 &&
+              {current < steps.length - 1 && (
+                <Button color="primary" onClick={() => setCurrent(current + 1)}>
+                  {t(Strings.next_step)}
+                </Button>
+              )}
+              {current === steps.length - 1 && (
+                <Button color="primary" disabled={!devUrl} onClick={startDev}>
+                  {t(Strings.widget_start_dev)}
+                </Button>
+              )}
+              {current > 0 && (
                 <LinkButton underline={false} color={colors.thirdLevelText} onClick={() => setCurrent(current - 1)}>
                   {t(Strings.last_step)}
-                </LinkButton>}
+                </LinkButton>
+              )}
             </div>
           </div>
-        }
+        )}
       </div>
     </ModalOutsideOperate>
   );
@@ -519,16 +569,13 @@ export const expandWidgetDevConfig = (props: IExpandWidgetDevConfigProps) => {
     onClose && onClose();
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
       <ThemeProvider>
-        <WidgetDevConfigModal
-          {...props}
-          onClose={onModalClose}
-        />
+        <WidgetDevConfigModal {...props} onClose={onModalClose} />
       </ThemeProvider>
-    </Provider>
-  ));
+    </Provider>,
+  );
 };
 
 const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevConfigProps>> = (props) => {
@@ -536,46 +583,50 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);
   const [error, setError] = useState<string>();
-  const widget = useSelector(state => Selectors.getWidget(state, widgetId))!;
+  const widget = useSelector((state) => Selectors.getWidget(state, widgetId))!;
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
 
   const startDev = () => {
     if (!devUrl) {
       return;
     }
-    loadWidgetCheck(devUrl, widgetPackageId).then(() => {
-      simpleEmitter.emit(EmitterEventName.ToggleWidgetDevMode, widgetId);
-      onConfirm && onConfirm(devUrl);
-      onClose && onClose();
-      widgetId && installedWidgetHandle(widgetId);
-    }).catch(error => {
-      switch (error) {
-        case WidgetLoadError.CretInvalid: {
-          setIsCretInvalid(true);
+    loadWidgetCheck(devUrl, widgetPackageId)
+      .then(() => {
+        simpleEmitter.emit(EmitterEventName.ToggleWidgetDevMode, widgetId);
+        onConfirm && onConfirm(devUrl);
+        onClose && onClose();
+        widgetId && installedWidgetHandle(widgetId);
+      })
+      .catch((error) => {
+        switch (error) {
+          case WidgetLoadError.CretInvalid:
+            {
+              setIsCretInvalid(true);
+            }
+            break;
+          case WidgetLoadError.PackageIdNotMatch:
+            setError(t(Strings.widget_load_url_error_not_match, { widgetPackageId }));
+            break;
+          case WidgetLoadError.CliLowVersion:
+            setError(t(Strings.widget_cli_upgrade_tip));
+            break;
+          default:
+            setError(t(Strings.widget_connect_error));
         }
-          break;
-        case WidgetLoadError.PackageIdNotMatch:
-          setError(t(Strings.widget_load_url_error_not_match, { widgetPackageId }));
-          break;
-        case WidgetLoadError.CliLowVersion:
-          setError(t(Strings.widget_cli_upgrade_tip));
-          break;
-        default:
-          setError(t(Strings.widget_connect_error));
-      }
-    });
+      });
   };
 
   return (
     <ModalOutsideOperate
       modalWidth={528}
       onModalClose={() => onClose?.()}
-      modalClassName={classNames(styles.widgetDevConfigModal, styles.modalBodyAutoHeight)}>
+      modalClassName={classNames(styles.widgetDevConfigModal, styles.modalBodyAutoHeight)}
+    >
       <div className={classNames(styles.widgetDevConfigModalWrap, styles.stepContentWrap)}>
         <Typography variant={'h6'} component={'div'} style={{ marginBottom: 8, display: 'flex', alignItems: 'center' }}>
           <span className={styles.stepContentTitleMain}>{t(Strings.preview_widget)}</span>
-          <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-            <a href={getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+          <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement="top">
+            <a href={getEnvVariables().WIDGET_DEVELOP_PREVIEW_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
               <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
             </a>
           </CommonTooltip>
@@ -608,13 +659,23 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
           {isCretInvalid && <WidgetCretInvalidError />}
         </div>
         <div className={classNames(styles.contentFooter, styles.configContentFooter)}>
-          <Button color='primary' onClick={startDev} disabled={!devUrl}>{t(Strings.widget_start_dev)}</Button>
-          <LinkButton underline={false} color={colors.thirdLevelText} prefixIcon={<BulbOutlined color={colors.thirdLevelText} />} onClick={() => {
-            expandWidgetCreateSteps({
-              widgetId: widget.id, widgetName: widget.widgetPackageName, widgetPackageId, devCodeUrl: devUrl,
-            });
-            onClose && onClose();
-          }}>
+          <Button color="primary" onClick={startDev} disabled={!devUrl}>
+            {t(Strings.widget_start_dev)}
+          </Button>
+          <LinkButton
+            underline={false}
+            color={colors.thirdLevelText}
+            prefixIcon={<BulbOutlined color={colors.thirdLevelText} />}
+            onClick={() => {
+              expandWidgetCreateSteps({
+                widgetId: widget.id,
+                widgetName: widget.widgetPackageName,
+                widgetPackageId,
+                devCodeUrl: devUrl,
+              });
+              onClose && onClose();
+            }}
+          >
             {t(Strings.widget_developer_novice_guide)}
           </LinkButton>
         </div>
@@ -634,17 +695,14 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
     TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.CREATE_WIDGET_GUIDE);
   };
 
-  root.render((
+  root.render(
     <ThemeProvider>
-      <ModalOutsideOperate
-        modalWidth={528}
-        onModalClose={onModalClose}
-        modalClassName={classNames(styles.widgetCreateModalStep)}>
+      <ModalOutsideOperate modalWidth={528} onModalClose={onModalClose} modalClassName={classNames(styles.widgetCreateModalStep)}>
         <div className={classNames(styles.widgetDevConfigModalWrap, styles.stepContentWrap)}>
           <Typography variant={'h6'} component={'div'} style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
             <span className={styles.stepContentTitleMain}>{t(Strings.widget_operate_publish_help)}</span>
-            <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-              <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+            <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement="top">
+              <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
                 <QuestionCircleOutlined size={16} color={colorVars.thirdLevelText} />
               </a>
             </CommonTooltip>
@@ -665,18 +723,14 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
           <div className={styles.contentItem}>
             <div className={styles.contentItemLabel}>{t(Strings.widget_publish_help_step2)}</div>
             <div className={styles.contentItemValue}>
-              <TextInput
-                className={styles.contentItemValueInput}
-                value={WIDGET_CMD.publish}
-                disabled
-              />
-              <CommonTooltip title={t(Strings.copy_link)} placement='top'>
+              <TextInput className={styles.contentItemValueInput} value={WIDGET_CMD.publish} disabled />
+              <CommonTooltip title={t(Strings.copy_link)} placement="top">
                 <IconButton
                   className={styles.copyBtn}
                   onClick={() => copy2clipBoard(WIDGET_CMD.publish)}
-                  shape='square'
-                  variant='background'
-                  size='large'
+                  shape="square"
+                  variant="background"
+                  size="large"
                   icon={() => <CopyOutlined size={16} color={colorVars.secondLevelText} />}
                 />
               </CommonTooltip>
@@ -684,10 +738,12 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
             <div className={styles.contentItemDesc}>{t(Strings.widget_publish_help_desc)}</div>
           </div>
           <div className={classNames(styles.contentFooter, styles.configContentFooter)}>
-            <Button color='primary' onClick={onModalClose}>{t(Strings.confirm)}</Button>
+            <Button color="primary" onClick={onModalClose}>
+              {t(Strings.confirm)}
+            </Button>
           </div>
         </div>
       </ModalOutsideOperate>
-    </ThemeProvider>
-  ));
+    </ThemeProvider>,
+  );
 };

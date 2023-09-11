@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount, useToggle } from 'ahooks';
+import { Switch } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { IEnablePermission } from 'pc/components/field_permission/interface';
-import styles from 'pc/components/field_permission/styles.module.less';
-import { Message, Popconfirm } from 'pc/components/common';
-import { Switch } from 'antd';
-import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
-import { useMount, useToggle } from 'ahooks';
-import { useRequest } from 'pc/hooks';
+import { useSelector } from 'react-redux';
+import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import {
   DatasheetApi,
   IFieldPermissionMember,
@@ -37,22 +34,24 @@ import {
   t,
   ConfigConstant,
 } from '@apitable/core';
-import { UnitItem } from 'pc/components/catalog/permission_settings/permission/unit_item';
-import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/components';
-import { useSelector } from 'react-redux';
-import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { ChevronRightOutlined, UserGroupFilled } from '@apitable/icons';
-import { useResponsive } from 'pc/hooks';
+import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
+import { UnitItem } from 'pc/components/catalog/permission_settings/permission/unit_item';
+import { Message, Popconfirm } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { IEnablePermission } from 'pc/components/field_permission/interface';
+import styles from 'pc/components/field_permission/styles.module.less';
+import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+import { useRequest, useResponsive } from 'pc/hooks';
 
-export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePermission>> = props => {
+export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePermission>> = (props) => {
   const colors = useThemeColors();
   const { permissionStatus, onClose, field } = props;
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
   const [memberList, setMemberList] = useState<IFieldPermissionMember[]>([]);
   const [setting, setSetting] = useState({ formSheetAccessible: false });
-  const datasheetId = useSelector(state => state.pageParams.datasheetId)!;
+  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const { screenIsAtLeast, screenIsAtMost } = useResponsive();
   const fieldPermission = useSelector(Selectors.getFieldPermissionMap)!;
@@ -78,7 +77,7 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
     if (!unitInfos.length || !permission) {
       return;
     }
-    const unitIds = unitInfos.map(item => {
+    const unitIds = unitInfos.map((item) => {
       return item.unitId;
     });
     const role = permission.value + '';
@@ -232,7 +231,7 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
         </span>
       )}
       <div className={styles.unitPermissionList}>
-        {roleList.map(item => {
+        {roleList.map((item) => {
           const roleOptions = [
             {
               value: ConfigConstant.permission.editor,
@@ -278,7 +277,7 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
         <MembersDetail
           data={{
             members: memberList,
-            admins: (memberList.filter(member => member.isAdmin) as any) as IMember[],
+            admins: memberList.filter((member) => member.isAdmin) as any as IMember[],
           }}
           onCancel={toggleIsMemberDetail}
         />

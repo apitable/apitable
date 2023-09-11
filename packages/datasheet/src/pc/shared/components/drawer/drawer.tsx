@@ -5,9 +5,6 @@ interface IDrawerProps extends DrawerProps {
   test?: string;
 }
 
-export const Drawer:React.FC<React.PropsWithChildren<IDrawerProps>> = ({ children,...restPoops }) => {
-  return <AntdDrawer {...restPoops}>
-    {children}
-  </AntdDrawer>;
+export const Drawer: React.FC<React.PropsWithChildren<IDrawerProps>> = ({ children, ...restPoops }) => {
+  return <AntdDrawer {...restPoops}>{children}</AntdDrawer>;
 };
-

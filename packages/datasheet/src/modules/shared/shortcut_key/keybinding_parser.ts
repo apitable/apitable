@@ -19,7 +19,6 @@
 import { Keybinding, SimpleKeybinding, KeyCodeUtils } from './key_codes';
 
 export class KeybindingParser {
-
   // input case: 'shift+alt+cmd+pagedown cmd+u'
   private static _readModifiers(input: string) {
     input = input.toLowerCase().trim();

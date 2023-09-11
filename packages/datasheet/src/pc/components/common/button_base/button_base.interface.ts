@@ -24,14 +24,12 @@ type IAnchorButtonProps = {
   href?: string;
   target?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
-} &
-  Omit<React.AnchorHTMLAttributes<any>, 'type' | 'onClick'>;
+} & Omit<React.AnchorHTMLAttributes<any>, 'type' | 'onClick'>;
 
 type INativeButtonProps = {
   htmlType?: 'submit' | 'button' | 'reset';
   onClick?: React.MouseEventHandler<HTMLElement>;
-} &
-  Omit<React.ButtonHTMLAttributes<any>, 'type' | 'onClick'>;
+} & Omit<React.ButtonHTMLAttributes<any>, 'type' | 'onClick'>;
 
 interface IButtonBaseProps {
   size?: ButtonSize;
@@ -41,9 +39,9 @@ interface IButtonBaseProps {
   block?: boolean;
   border?: boolean;
   reversal?: boolean;
-  shadow?: boolean,
-  className?: string,
-  prefixCls?: string,
+  shadow?: boolean;
+  className?: string;
+  prefixCls?: string;
 }
 
 export type IButtonBase = IButtonBaseProps & IAnchorButtonProps & INativeButtonProps;

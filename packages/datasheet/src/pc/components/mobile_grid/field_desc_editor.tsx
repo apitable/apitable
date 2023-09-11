@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
-import { CollaCommandName, Strings, t, IField } from '@apitable/core';
 import { Input } from 'antd';
 import { Modal } from 'antd-mobile';
 import type { Action } from 'antd-mobile/es/components/modal';
 import classNames from 'classnames';
-import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { useThemeColors } from '@apitable/components';
+import { CollaCommandName, Strings, t, IField } from '@apitable/core';
+import { resourceService } from 'pc/resource_service';
 import { Message } from '../common';
 import { FIELD_DESC_LENGTH } from '../multi_grid/field_desc';
 import styles from './styles.module.less';
 
 const { TextArea } = Input;
 
-const noop = () => { };
+const noop = () => {};
 
 interface IFieldDescEditor {
   field: IField;
@@ -45,27 +45,31 @@ const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
   const colors = useThemeColors();
   const textLenHasExceeded = value.length > FIELD_DESC_LENGTH;
 
-  const onOk = () => new Promise<void>((resolve, reject) => {
-    if (textLenHasExceeded) {
-      reject(t(Strings.field_desc_length_exceeded));
-    }
-    resourceService.instance!.commandManager.execute({
-      cmd: CollaCommandName.SetFieldAttr,
-      fieldId: field.id,
-      data: {
-        ...field,
-        desc: value,
-      },
+  const onOk = () =>
+    new Promise<void>((resolve, reject) => {
+      if (textLenHasExceeded) {
+        reject(t(Strings.field_desc_length_exceeded));
+      }
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetFieldAttr,
+        fieldId: field.id,
+        data: {
+          ...field,
+          desc: value,
+        },
+      });
+      resolve();
     });
-    resolve();
-  });
 
   const actions: Action[] = [
     {
       text: t(Strings.cancel),
       style: { userSelect: 'none', color: colors.staticDark0 },
       key: t(Strings.cancel),
-      onClick: () => new Promise((resolve) => {resolve();}),
+      onClick: () =>
+        new Promise((resolve) => {
+          resolve();
+        }),
     },
     {
       text: t(Strings.confirm),
@@ -82,7 +86,9 @@ const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
   const readOnlyFooter: Action[] = [
     {
       text: t(Strings.confirm),
-      onClick: () => {onClose();},
+      onClick: () => {
+        onClose();
+      },
       style: {
         color: colors.fc1,
       },
@@ -99,7 +105,7 @@ const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
           .then(() => {
             onClose();
           })
-          .catch(error => {
+          .catch((error) => {
             Message.error({ content: error });
           });
       } else {
@@ -128,7 +134,7 @@ const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
             rows={5}
             defaultValue={field.desc}
             readOnly={readOnly}
-            onChange={e => setValue(e.target.value)}
+            onChange={(e) => setValue(e.target.value)}
           />
           <p
             className={classNames(styles.count, {
@@ -154,11 +160,5 @@ export const expandFieldDescEditorMobile = ({ field, readOnly }: Omit<IFieldDesc
     }
   };
 
-  root.render(
-    <FieldDescEditor
-      field={field}
-      readOnly={readOnly}
-      onClose={onClose}
-    />,
-  );
+  root.render(<FieldDescEditor field={field} readOnly={readOnly} onClose={onClose} />);
 };

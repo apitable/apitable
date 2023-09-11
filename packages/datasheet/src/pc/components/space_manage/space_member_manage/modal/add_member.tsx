@@ -17,23 +17,22 @@
  */
 
 import { FC, useState, useEffect } from 'react';
-import { SelectUnitModal, SelectUnitSource }
-  from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
-import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } from '@apitable/core';
 import { useSelector, shallowEqual } from 'react-redux';
+import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } from '@apitable/core';
+import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { useMemberManage } from 'pc/hooks';
 
 interface IAddMember {
   onCancel: () => void;
 }
 export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel }) => {
-  const {
-    selectedTeamInfoInSpace,
-    spaceId,
-  } = useSelector((state: IReduxState) => ({
-    selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
-    spaceId: state.space.activeId || '',
-  }), shallowEqual);
+  const { selectedTeamInfoInSpace, spaceId } = useSelector(
+    (state: IReduxState) => ({
+      selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
+      spaceId: state.space.activeId || '',
+    }),
+    shallowEqual,
+  );
 
   const { teamAddMember } = useMemberManage();
   // The group already has members
@@ -43,11 +42,11 @@ export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel })
     if (!selectedTeamInfoInSpace) {
       return;
     }
-    Api.getTeamAndMemberWithoutSub(selectedTeamInfoInSpace.teamId).then(res => {
+    Api.getTeamAndMemberWithoutSub(selectedTeamInfoInSpace.teamId).then((res) => {
       const { success, data } = res.data;
       const arr: string[] = [selectedTeamInfoInSpace.teamId];
       if (success && data.length) {
-        data.forEach((item: { memberId: string; }) => {
+        data.forEach((item: { memberId: string }) => {
           arr.push(item.memberId);
         });
       }
@@ -56,7 +55,7 @@ export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel })
   }, [selectedTeamInfoInSpace, spaceId]);
   const onSubmit = (checkedList: UnitItem[]) => {
     const list: IAddIsActivedMemberInfo[] = [];
-    checkedList.forEach(item => {
+    checkedList.forEach((item) => {
       const isTeam = 'teamId' in item;
       const isMember = 'memberId' in item;
 
@@ -71,12 +70,6 @@ export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel })
     teamAddMember(teamId || '', list);
   };
   return (
-    <SelectUnitModal
-      source={SelectUnitSource.TeamAddMember}
-      disableIdList={existMemberArr}
-      onCancel={onCancel}
-      onSubmit={onSubmit}
-      maskClosable
-    />
+    <SelectUnitModal source={SelectUnitSource.TeamAddMember} disableIdList={existMemberArr} onCancel={onCancel} onSubmit={onSubmit} maskClosable />
   );
 };

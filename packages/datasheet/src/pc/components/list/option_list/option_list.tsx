@@ -16,23 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  ISelectFieldOption,
-  Selectors, Strings, t,
-} from '@apitable/core';
 import classNames from 'classnames';
-import { CommonList } from 'pc/components/list/common_list';
-import { SortableElement as sortableElement } from 'react-sortable-hoc';
-import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { SortableElement as sortableElement, SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { colorVars } from '@apitable/components';
+import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import { CommonList } from 'pc/components/list/common_list';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
-import { AddOutlined } from '@apitable/icons';
 
 const SortableContainer: any = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;
@@ -42,12 +38,21 @@ const SortableItem: any = sortableElement(({ children }: any) => <>{children}</>
 
 export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (props) => {
   const {
-    listData: optionList, existValues, onAddHandle, multiMode, onClickItem,
-    dragOption, setCurrentField, inputRef, monitorId, datasheetId, placeholder
+    listData: optionList,
+    existValues,
+    onAddHandle,
+    multiMode,
+    onClickItem,
+    dragOption,
+    setCurrentField,
+    inputRef,
+    monitorId,
+    datasheetId,
+    placeholder,
   } = props;
   const [keyword, setKeyword] = useState('');
-  const manageable = useSelector(state => Selectors.getPermissions(state, datasheetId).manageable);
-  const { formId } = useSelector(state => state.pageParams);
+  const manageable = useSelector((state) => Selectors.getPermissions(state, datasheetId).manageable);
+  const { formId } = useSelector((state) => state.pageParams);
   const showNotAllowAddTip = Boolean(!manageable && keyword.length); // Does it prompt the user not to add new options
   const optionByFilter = optionList.filter(filterOptions);
   const allowAddNewItem = Boolean(onAddHandle) && manageable;
@@ -58,16 +63,17 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
   }
 
   function _onAddHandle() {
-    onAddHandle && onAddHandle(keyword, () => {
-      setKeyword('');
-    });
+    onAddHandle &&
+      onAddHandle(keyword, () => {
+        setKeyword('');
+      });
   }
 
   function getExactMatchResult() {
     if (!keyword.length) {
       return;
     }
-    return optionList.filter(item => item.name === keyword)[0];
+    return optionList.filter((item) => item.name === keyword)[0];
   }
 
   // Toggles the selection status of the current option
@@ -78,7 +84,7 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
       value = multiMode ? [id] : id;
     } else if (multiMode) {
       if (existValues.includes(id)) {
-        value = (existValues as string[]).filter(item => item !== id);
+        value = (existValues as string[]).filter((item) => item !== id);
       } else {
         value = [...existValues, id];
       }
@@ -94,11 +100,14 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
   }
 
   // The swap in the filter condition should get the true index of the current option in the original array
-  const getActualIndexOfOptions = useCallback((optionId: string) => {
-    return optionList.findIndex(item => item.id === optionId);
-  }, [optionList]);
+  const getActualIndexOfOptions = useCallback(
+    (optionId: string) => {
+      return optionList.findIndex((item) => item.id === optionId);
+    },
+    [optionList],
+  );
 
-  const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
+  const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
     dragOption!.setDraggingId(undefined);
     let actualOldIndex = oldIndex;
     let actualNewIndex = newIndex;
@@ -110,7 +119,6 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
     }
 
     dragOption!.afterDrag(actualOldIndex, actualNewIndex);
-
   };
 
   const onKeyEnter = (clearKeyword: () => void) => {
@@ -128,13 +136,13 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
         key={option.id}
         currentIndex={index}
         id={option.id}
-        wrapperComponent={
-          (child) => {
-            return <SortableItem index={index} key={option.id}>
+        wrapperComponent={(child) => {
+          return (
+            <SortableItem index={index} key={option.id}>
               {child}
-            </SortableItem>;
-          }
-        }
+            </SortableItem>
+          );
+        }}
         className={styles.optionItemWrapper}
       >
         <OptionItem
@@ -155,14 +163,9 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
     }
     if (allowAddNewItem && keyword.length) {
       return (
-        <div
-          className={classNames(styles.addNewItem)}
-          onClick={_onAddHandle}
-        >
+        <div className={classNames(styles.addNewItem)} onClick={_onAddHandle}>
           <AddOutlined size={10} color={colorVars.thirdLevelText} />
-          <span>
-            {t(Strings.add)}
-          </span>
+          <span>{t(Strings.add)}</span>
           <span>「{keyword}」</span>
         </div>
       );
@@ -192,20 +195,20 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
       footerComponent={renderFooter}
       showInput
       inputRef={inputRef}
-      onSearchChange={(_e, keyword) => { setKeyword(keyword); }}
+      onSearchChange={(_e, keyword) => {
+        setKeyword(keyword);
+      }}
       monitorId={monitorId}
       onInputEnter={onKeyEnter}
       inputStyle={{ padding: 8 }}
       inputPlaceHolder={placeholder || (formId ? t(Strings.find) : t(Strings.search_or_add))}
-      getListContainer={children => (
+      getListContainer={(children) => (
         <SortableContainer distance={5} useDragHandle onSortEnd={onSortEnd}>
           {children}
         </SortableContainer>
       )}
     >
-      {
-        optionByFilter.map(createOptionItem)
-      }
+      {optionByFilter.map(createOptionItem)}
     </CommonList>
   );
 };

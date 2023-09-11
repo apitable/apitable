@@ -16,6 +16,9 @@ interface INewItemProps {
 
 export const StyledBox = styled(Box)<{disabled?: boolean}>`
   border-radius: 4px;
+  ${props => props.disabled && css`
+     background-color: var(--bgControlsDisabled);
+ `}
  ${props => !props.disabled && css`
    &:hover {
      background-color: var(--bgControlsHover);
@@ -30,7 +33,7 @@ const DEFAULT_ADD_ITEM_HEIGHT = 84;
 export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ className, onClick, height, children, disabled }, ref) => {
 
   const theme = useTheme();
-  
+
   return (
     <StyledBox
       ref={ref}
@@ -45,8 +48,9 @@ export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ clas
       onClick={(e) => {
         if(disabled) return;
         onClick?.(e);
+        stopPropagation(e);
       }}
-      backgroundColor={`${theme.color.fc8}`}
+      backgroundColor={`${theme.color.bgCommonHigh}`}
       style={{
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
@@ -55,10 +59,11 @@ export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ clas
         display="flex"
         alignItems="center"
         justifyContent="center"
-        onClick={stopPropagation}
       >
-        <AddOutlined color={theme.color.fc1} />
-        <Typography variant="body3" color={theme.color.textCommonTertiary} style={{ marginLeft: '4px' }}>
+        <AddOutlined color={disabled? theme.color.textCommonDisabled :theme.color.textCommonTertiary} />
+        <Typography variant="body3" color={
+          disabled? theme.color.textCommonDisabled:
+            theme.color.textCommonTertiary} style={{ marginLeft: '4px' }}>
           {children ?? t(Strings.new_something)}
         </Typography>
 

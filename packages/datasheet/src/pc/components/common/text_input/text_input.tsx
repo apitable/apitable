@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
 import { Input } from 'antd';
 import { InputProps } from 'antd/lib/input';
-import styles from './style.module.less';
 import classNames from 'classnames';
+import { FC } from 'react';
+import styles from './style.module.less';
 
 export interface ITextInputProps extends InputProps {
   err?: string;
 }
 
-export const TextInput: FC<React.PropsWithChildren<ITextInputProps>> = props => {
+export const TextInput: FC<React.PropsWithChildren<ITextInputProps>> = (props) => {
   const { err, width = 330, height = 50, ...rest } = props;
   return (
     <div
@@ -34,14 +34,8 @@ export const TextInput: FC<React.PropsWithChildren<ITextInputProps>> = props => 
         [styles.textInput]: true,
       })}
     >
-      <Input
-        {...rest}
-        className={err ? 'err' : ''}
-        style={{ height, width }}
-      />
-      <div className={styles.errmsg}>
-        {err}
-      </div>
+      <Input {...rest} className={err ? 'err' : ''} style={{ height, width }} />
+      <div className={styles.errmsg}>{err}</div>
     </div>
   );
 };

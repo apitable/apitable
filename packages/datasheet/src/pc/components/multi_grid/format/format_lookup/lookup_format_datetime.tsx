@@ -16,28 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  DateFormat,
-  getClientTimeZone,
-  getUtcOptionList,
-  IDateTimeFieldProperty,
-  IField,
-  Strings,
-  t,
-  TimeFormat,
-} from '@apitable/core';
+import { Switch } from 'antd';
 import classNames from 'classnames';
+import { omit } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import styles from '../styles.module.less';
-import { Switch } from 'antd';
-import settingStyles from '../../field_setting/styles.module.less';
-import { Divider } from 'pc/components/common/divider';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
 // eslint-disable-next-line no-restricted-imports
 import { Checkbox, colorVars, Select } from '@apitable/components';
-import { omit } from 'lodash';
+import { DateFormat, getClientTimeZone, getUtcOptionList, IDateTimeFieldProperty, IField, Strings, t, TimeFormat } from '@apitable/core';
+import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Divider } from 'pc/components/common/divider';
+import settingStyles from '../../field_setting/styles.module.less';
+import styles from '../styles.module.less';
 
 interface IFormatDateTime {
   currentField: IField;
@@ -84,7 +75,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
         ...props.currentField.property,
         formatting: {
           ...formatting,
-          timeZone: value
+          timeZone: value,
         },
       },
     });
@@ -111,7 +102,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
         ...props.currentField.property,
         formatting: {
           ...omitFormatting,
-          includeTime: checked
+          includeTime: checked,
         },
       },
     });
@@ -124,7 +115,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
         ...props.currentField.property,
         formatting: {
           ...formatting,
-          includeTimeZone: checked
+          includeTimeZone: checked,
         },
       },
     });
@@ -137,7 +128,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
         <Select
           triggerCls={styles.customSelect}
           value={dateFormat}
-          onSelected={option => {
+          onSelected={(option) => {
             handleDateFormatChange(option.value as DateFormat);
           }}
           dropdownMatchSelectWidth={false}
@@ -163,7 +154,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
               triggerCls={styles.customSelect}
               dropdownMatchSelectWidth={false}
               value={timeFormat}
-              onSelected={option => handleTimeFormatChange(option.value as TimeFormat)}
+              onSelected={(option) => handleTimeFormatChange(option.value as TimeFormat)}
               options={optionData4Time}
             />
             <Select
@@ -171,16 +162,19 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
               dropdownMatchSelectWidth={false}
               value={timeZone}
               onSelected={handleTimeZoneChange}
-              renderValue={option => {
+              renderValue={(option) => {
                 if (!option.value) {
                   return `${option.label} ${getClientTimeZone()}`;
                 }
                 return option.label;
               }}
-              options={[{
-                label: t(Strings.follow_system_time_zone),
-                value: '',
-              }, ...getUtcOptionList()]}
+              options={[
+                {
+                  label: t(Strings.follow_system_time_zone),
+                  value: '',
+                },
+                ...getUtcOptionList(),
+              ]}
               openSearch
               searchPlaceholder={t(Strings.search)}
               highlightStyle={{ backgroundColor: colorVars.primaryColor, color: colorVars.black[50] }}
@@ -195,11 +189,14 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
             <MobileSelect defaultValue={timeFormat} onChange={handleTimeFormatChange} optionData={optionData4Time} />
             <MobileSelect
               defaultValue={timeZone}
-              onChange={value => handleTimeZoneChange({ value })}
-              optionData={[{
-                label: t(Strings.follow_system_time_zone),
-                value: '',
-              }, ...getUtcOptionList()]}
+              onChange={(value) => handleTimeZoneChange({ value })}
+              optionData={[
+                {
+                  label: t(Strings.follow_system_time_zone),
+                  value: '',
+                },
+                ...getUtcOptionList(),
+              ]}
             />
             <div className={styles.showTimeZone}>
               <Checkbox checked={includeTimeZone} size={14} onChange={handleIncludeTimeZoneChange}>

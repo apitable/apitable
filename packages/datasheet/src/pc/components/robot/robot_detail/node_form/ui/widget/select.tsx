@@ -17,8 +17,7 @@
  */
 
 import { t, Strings } from '@apitable/core';
-// eslint-disable-next-line no-restricted-imports
-import { Select } from '@apitable/components';
+import { DropdownSelect as Select } from '@apitable/components';
 import { IWidgetProps } from '../../core/interface';
 import { literal2Operand, operand2Literal } from '../utils';
 

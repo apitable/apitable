@@ -16,22 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors } from '@apitable/components';
-import { DateRange, Strings, t } from '@apitable/core';
 import { DatePicker } from 'antd-mobile';
 import dayjs, { Dayjs } from 'dayjs';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { Typography, useThemeColors } from '@apitable/components';
+import { DateRange, Strings, t } from '@apitable/core';
 import { CustomChildren } from 'pc/components/editors/date_time_editor/mobile/picker_content';
 import style from 'pc/components/editors/date_time_editor/mobile/style.module.less';
 import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 import styles from '../style.module.less';
 
-export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDateProps & {
-  rangePickerChange: (date: (Dayjs | null)[] | null) => void;
-  dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null;
-  disabled?: boolean
-}>> = (props) => {
+export const DateRangePickerMobile: React.FC<
+  React.PropsWithChildren<
+    IFilterDateProps & {
+      rangePickerChange: (date: (Dayjs | null)[] | null) => void;
+      dataValue: number | [dayjs.Dayjs, dayjs.Dayjs] | null;
+      disabled?: boolean;
+    }
+  >
+> = (props) => {
   const colors = useThemeColors();
   const { rangePickerChange, dataValue, disabled } = props;
   const [startVisible, setStartVisible] = useState(false);
@@ -82,54 +86,47 @@ export const DateRangePickerMobile: React.FC<React.PropsWithChildren<IFilterDate
     }
   };
 
-  return <div className={styles.mobileRangePicker}>
-    <div>
-      <CustomChildren value={startDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setStartVisible(true)}>
-        {startDate ? dayjs(startDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
-      </CustomChildren>
-      <DatePicker
-        className={style.datePicker}
-        min={new Date(DateRange.MinTimeStamp)}
-        max={endDate || new Date(DateRange.MaxTimeStamp)}
-        precision={'day'}
-        value={startDate}
-        visible={startVisible}
-        onCancel={onClose}
-        onConfirm={(value: Date) => {
-          setStartVisible(false);
-          startDateChange(value);
-        }}
-        title={
-          <Typography style={{ color: colors.firstLevelText }}>
-            {t(Strings.select_start_date)}
-          </Typography>
-        }
-      />
+  return (
+    <div className={styles.mobileRangePicker}>
+      <div>
+        <CustomChildren value={startDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setStartVisible(true)}>
+          {startDate ? dayjs(startDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
+        </CustomChildren>
+        <DatePicker
+          className={style.datePicker}
+          min={new Date(DateRange.MinTimeStamp)}
+          max={endDate || new Date(DateRange.MaxTimeStamp)}
+          precision={'day'}
+          value={startDate}
+          visible={startVisible}
+          onCancel={onClose}
+          onConfirm={(value: Date) => {
+            setStartVisible(false);
+            startDateChange(value);
+          }}
+          title={<Typography style={{ color: colors.firstLevelText }}>{t(Strings.select_start_date)}</Typography>}
+        />
+      </div>
+      <div style={{ color: colors.thirdLevelText }}> -</div>
+      <div>
+        <CustomChildren value={endDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setEndVisible(true)}>
+          {endDate ? dayjs(endDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
+        </CustomChildren>
+        <DatePicker
+          className={style.datePicker}
+          min={startDate || new Date(DateRange.MinTimeStamp)}
+          max={new Date(DateRange.MaxTimeStamp)}
+          precision={'day'}
+          value={endDate}
+          visible={endVisible}
+          onCancel={onClose}
+          onConfirm={(value: Date) => {
+            setEndVisible(false);
+            endDateChange(value);
+          }}
+          title={<Typography style={{ color: colors.primaryColor }}>{t(Strings.select_end_date)}</Typography>}
+        />
+      </div>
     </div>
-    <div style={{ color: colors.thirdLevelText }}> -</div>
-    <div>
-      <CustomChildren value={endDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setEndVisible(true)}>
-        {endDate ? dayjs(endDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
-      </CustomChildren>
-      <DatePicker
-        className={style.datePicker}
-        min={startDate || new Date(DateRange.MinTimeStamp)}
-        max={new Date(DateRange.MaxTimeStamp)}
-        precision={'day'}
-        value={endDate}
-        visible={endVisible}
-        onCancel={onClose}
-        onConfirm={(value: Date) => {
-          setEndVisible(false);
-          endDateChange(value);
-        }}
-        title={
-          <Typography style={{ color: colors.primaryColor }}>
-            {t(Strings.select_end_date)}
-          </Typography>
-        }
-      />
-    </div>
-  </div>;
+  );
 };
-

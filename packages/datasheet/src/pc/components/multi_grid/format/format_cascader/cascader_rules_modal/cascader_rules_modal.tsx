@@ -1,21 +1,21 @@
+import classNames from 'classnames';
+import { compact, find, isEqual, pick, take } from 'lodash';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList as List } from 'react-window';
 // eslint-disable-next-line no-restricted-imports
 import { IconButton, IOption, LinkButton, Loading, Select, Typography, useThemeColors } from '@apitable/components';
 import { DatasheetApi, FieldType, ICascaderField, ICascaderNode, IField, ILinkedField, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronRightOutlined, DeleteOutlined, QuestionCircleOutlined, ReloadOutlined } from '@apitable/icons';
-import classNames from 'classnames';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import styles from './styles.module.less';
-import { compact, find, isEqual, pick, take } from 'lodash';
-import { ButtonOperateType } from 'pc/utils';
-import { FixedSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import { filterCommonGroup } from 'pc/components/multi_grid/type_select';
+import { ButtonOperateType } from 'pc/utils';
+import styles from './styles.module.less';
 
 interface ICascaderRulesModalProps {
   visible: boolean;
@@ -29,19 +29,15 @@ const isCascaderLinkedField = (fieldType: FieldType) => filterCommonGroup(fieldT
 const initLinkedFields = (linkedFields: ILinkedField[]): (ILinkedField | undefined)[] => (!linkedFields.length ? [undefined] : linkedFields);
 
 export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurrentField }: ICascaderRulesModalProps): JSX.Element => {
-  const {
-    linkedDatasheetId, linkedViewId,
-    linkedFields: currFieldLinkedFields,
-    fullLinkedFields: currFieldFullLinkedFields
-  } = currentField.property;
+  const { linkedDatasheetId, linkedViewId, linkedFields: currFieldLinkedFields, fullLinkedFields: currFieldFullLinkedFields } = currentField.property;
 
   const spaceId = useSelector(Selectors.activeSpaceId)!;
   const datasheetId = useSelector(Selectors.getDatasheet)?.id!;
   const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
-  const activeFieldState = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const columns = useSelector(state => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
+  const activeFieldState = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const columns = useSelector((state) => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
   const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
-  const primaryFullLinkedFields = columns.map(column => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
+  const primaryFullLinkedFields = columns.map((column) => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
 
   const colors = useThemeColors();
 
@@ -82,11 +78,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       return;
     }
 
-    if (previewNodesMatrix.length === 0 || (
-      previewNodesMatrix[0].length === 0
-    ) || (
-      previewNodesMatrix[0].every(pv => pv?.children?.length === 0)
-    )) {
+    if (previewNodesMatrix.length === 0 || previewNodesMatrix[0].length === 0 || previewNodesMatrix[0].every((pv) => pv?.children?.length === 0)) {
       Message.error({
         content: t(Strings.cascader_no_data_field_error),
       });
@@ -112,7 +104,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
       if (res.data.success) {
         const linkedFields = res.data.data?.linkedFields;
         if (linkedFields && linkedFields.length > 0) {
-          setFullLinkedFields(linkedFields.filter(lf => isCascaderLinkedField(lf.type)));
+          setFullLinkedFields(linkedFields.filter((lf) => isCascaderLinkedField(lf.type)));
           // set two initial fields for the first-time config
           if (isUpdateLinked && !currFieldLinkedFields?.length) {
             setLinkedFields(linkedFields.slice(0, 2));
@@ -150,7 +142,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     }
     const _previewNodesMatrix: ICascaderNode[][] = [];
     let child = treeSelects!;
-    for(let i = 0; i <= _selectedNodeIds.length; i++) {
+    for (let i = 0; i <= _selectedNodeIds.length; i++) {
       _previewNodesMatrix.push(child);
       const selectedNodeId = _selectedNodeIds[i];
       const selectdNodesMatrix = find(child, ({ linkedFieldId, linkedRecordId }) => `${linkedFieldId}-${linkedRecordId}` === selectedNodeId);
@@ -162,7 +154,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
 
   const onRefreshConfig = async() => {
     // the fields of primary linked datasheet hidden or update permissions should be filter
-    const filterLinkedFields = compact(linkedFields).filter(lf => primaryFullLinkedFields.some(plf => plf.id === lf.id));
+    const filterLinkedFields = compact(linkedFields).filter((lf) => primaryFullLinkedFields.some((plf) => plf.id === lf.id));
     if (!isEqual(filterLinkedFields, linkedFields)) {
       setLinkedFields(filterLinkedFields);
     }
@@ -236,7 +228,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           linkedDatasheetId: linkedDatasheetId,
           linkedViewId: linkedViewId,
         }).then(() => {
-          setFullLinkedFields(primaryFullLinkedFields.filter(lf => isCascaderLinkedField(lf.type)));
+          setFullLinkedFields(primaryFullLinkedFields.filter((lf) => isCascaderLinkedField(lf.type)));
           onRefreshConfig();
         });
       },
@@ -282,17 +274,16 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
                 value={linkedField?.id}
                 triggerCls={classNames([styles.select, linkedFields.length <= 2 && styles.fullWidth])}
                 options={fullLinkedFields
-                  .filter(fullLinkedField => {
+                  .filter((fullLinkedField) => {
                     if (fullLinkedField.id === linkedField?.id) {
                       return true;
                     }
-                    return !linkedFields.some(field => field?.id === fullLinkedField.id);
+                    return !linkedFields.some((field) => field?.id === fullLinkedField.id);
                   })
                   .map((fullLinkedField: ILinkedField) => ({
                     label: fullLinkedField.name,
                     value: fullLinkedField.id,
-                  }))
-                }
+                  }))}
               />
               {linkedFields.length > 2 && (
                 <IconButton
@@ -304,7 +295,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
               )}
             </div>
             <div className={styles.fieldPreview}>
-              <RenderPreview linkedField={linkedField} index={index}/>
+              <RenderPreview linkedField={linkedField} index={index} />
             </div>
           </div>
         ))}
@@ -319,8 +310,12 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     );
   };
 
-  const RenderPreview = ({ linkedField, index }: React.PropsWithChildren<{
-    linkedField: ILinkedField | undefined, index: number
+  const RenderPreview = ({
+    linkedField,
+    index,
+  }: React.PropsWithChildren<{
+    linkedField: ILinkedField | undefined;
+    index: number;
   }>) => {
     if (!linkedField) return null;
     const currentPreviewNodes = previewNodesMatrix[index];
@@ -337,22 +332,21 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
             itemKey={(idx: number) => `${currentPreviewNodes[idx].linkedFieldId}-${currentPreviewNodes[idx].linkedRecordId}`}
             itemData={currentPreviewNodes}
           >
-            {({ data, index: _index , style }) => {
+            {({ data, index: _index, style }) => {
               const _node = data[_index];
               const isLeaf = !_node?.children?.length;
               const currNodeId = `${_node.linkedFieldId}-${_node.linkedRecordId}`;
               const isSelect = selectedNodeIds.some((nodeId) => nodeId === currNodeId);
 
               return (
-                <div
-                  key={currNodeId}
-                  style={style}
-                >
+                <div key={currNodeId} style={style}>
                   <div
                     className={classNames([styles.previewOption, !isSelect && styles.previewOptionUnselected, isLeaf && styles.isLeaf])}
                     onClick={() => onPreviewCascaderSelect(_node, index, isLeaf)}
                   >
-                    <Typography component="span" variant="body3" ellipsis>{_node?.text}</Typography>
+                    <Typography component="span" variant="body3" ellipsis>
+                      {_node?.text}
+                    </Typography>
                     {isLeaf ? undefined : <ChevronRightOutlined />}
                   </div>
                 </div>
@@ -387,12 +381,11 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
           <Tooltip title={t(Strings.cascader_rules_help_tip)}>
             <a
               href={t(Strings.field_help_cascader)}
-              rel="noopener noreferrer" target="_blank"
+              rel="noopener noreferrer"
+              target="_blank"
               style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
             >
-              <QuestionCircleOutlined
-                color={colors.thirdLevelText}
-              />
+              <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </p>
@@ -414,7 +407,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
             {t(Strings.cascader_datasource_refresh)}
           </LinkButton>
         </div>
-        {visible && <RenderContent/>}
+        {visible && <RenderContent />}
       </div>
     </Modal>
   );

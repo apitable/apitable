@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ScreenWidth } from '@apitable/core';
 import { useSize } from 'ahooks';
+import { useEffect, useState } from 'react';
+import { ScreenWidth } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isRenderServer } from 'pc/utils';
-import { useEffect, useState } from 'react';
 
 export type Orientation = 'landscape' | 'portrait';
 

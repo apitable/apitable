@@ -18,8 +18,8 @@
 
 import axios from 'axios';
 import FileSaver from 'file-saver';
-import { getDownloadSrc } from 'pc/utils';
 import { IAttachmentValue, Strings, t } from '@apitable/core';
+import { getDownloadSrc } from 'pc/utils';
 
 export function getFile(url: string) {
   return new Promise<Blob>((resolve, reject) => {
@@ -68,7 +68,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
       // jszip is forcing UTC time as last modified date, in order to solve this problem, we need to handle it manually
       // Reference: https://github.com/Stuk/jszip/issues/369#issuecomment-388324954
       const currDate = new Date();
-      const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60 * 1000); 
+      const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60 * 1000);
 
       // Download the file, and save it as an ArrayBuffer object
       const fileName = generateFileName(file);
@@ -93,7 +93,7 @@ export const bulkDownload = async(files: IAttachmentValue[]) => {
           t(Strings.file_name_with_bulk_download, {
             fileName: files[0].name,
             count: files.length,
-          })
+          }),
         );
       });
   });

@@ -22,9 +22,9 @@ import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
 
 export interface ITextNode {
   type: string;
-  data?: { unitId?: string, name?: string, href?: string, raw?: string, isMemberNameModified?: boolean } | string;
+  data?: { unitId?: string; name?: string; href?: string; raw?: string; isMemberNameModified?: boolean } | string;
   text?: string;
-  children?: []
+  children?: [];
 }
 
 function urlDetect(text: string) {
@@ -41,11 +41,10 @@ function urlDetect(text: string) {
         try {
           const testURL = new URL(`http://${url[0]}`);
           res.push({ href: testURL.href, raw: url[0] });
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
-    return res.length ? res: '';
+    return res.length ? res : '';
   }
   return '';
 }
@@ -55,7 +54,7 @@ function replaceUrl(text: string) {
   if (urls) {
     let restText = text;
     const res: any = [];
-    for(let i = 0; i< urls.length; i++) {
+    for (let i = 0; i < urls.length; i++) {
       const url = urls[i];
       const urlIndex = restText.indexOf(url.raw);
       const textBefore = restText.substring(0, urlIndex);
@@ -68,17 +67,19 @@ function replaceUrl(text: string) {
     if (restText) {
       res.push(restText);
     }
-    return res.filter((t: string) => t!== '').map((t: string) => {
-      if (typeof t === 'string') {
-        return { text: t };
-      }
-      return t;
-    });
+    return res
+      .filter((t: string) => t !== '')
+      .map((t: string) => {
+        if (typeof t === 'string') {
+          return { text: t };
+        }
+        return t;
+      });
   }
   return [{ text }];
 }
 
-function transformNode2Link(node: ITextNode): ITextNode | ITextNode[]{
+function transformNode2Link(node: ITextNode): ITextNode | ITextNode[] {
   if (node.text) {
     return replaceUrl(node.text) as ITextNode[];
   }
@@ -160,11 +161,13 @@ export function serialize(nodes: ITextNode | ITextNode[], spaceInfo?: ISpaceBasi
     if (nodes?.type === 'mention') {
       if (typeof nodes?.data === 'object') {
         const isMemberNameModified = nodes?.data?.isMemberNameModified;
-        const title = spaceInfo ? (getSocialWecomUnitName?.({
-          name: nodes?.data?.name,
-          isModified: isMemberNameModified,
-          spaceInfo
-        }) || nodes?.data?.name) : nodes?.data?.name;
+        const title = spaceInfo
+          ? getSocialWecomUnitName?.({
+            name: nodes?.data?.name,
+            isModified: isMemberNameModified,
+            spaceInfo,
+          }) || nodes?.data?.name
+          : nodes?.data?.name;
         let memberName: string | JSX.Element = '';
         if (isRemind && spaceInfo && isSocialWecom?.(spaceInfo) && !isMemberNameModified) {
           memberName = ' @$userName=' + (nodes?.data?.name || '') + '$ ';
@@ -175,7 +178,7 @@ export function serialize(nodes: ITextNode | ITextNode[], spaceInfo?: ISpaceBasi
         }
         res.push(memberName);
       }
-    } else if (nodes?.type === 'link'){
+    } else if (nodes?.type === 'link') {
       if (typeof nodes?.data === 'object') {
         res.push(nodes?.data?.raw as string);
       }

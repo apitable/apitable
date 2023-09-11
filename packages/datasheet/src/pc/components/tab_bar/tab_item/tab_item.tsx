@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IViewProperty, ViewType } from '@apitable/core';
 import classNames from 'classnames';
-import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { FC, useEffect, useRef } from 'react';
 import * as React from 'react';
-import { ICustomViewProps } from '../tab/tab';
-import styles from './style.module.less';
-import { stopPropagation } from '../../../utils/dom';
+import { useThemeColors } from '@apitable/components';
+import { IViewProperty, ViewType } from '@apitable/core';
+import { MoreOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { useThemeColors } from '@apitable/components';
+import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
-import { MoreOutlined } from '@apitable/icons';
+import { stopPropagation } from '../../../utils/dom';
+import { ICustomViewProps } from '../tab/tab';
+import styles from './style.module.less';
 
 export interface ITabbarItemProps {
   currentViewId: string;
@@ -55,7 +55,7 @@ export interface ITabbarItemProps {
   showViewStatusIcon?: boolean;
 }
 
-export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
+export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = (props) => {
   const {
     editing,
     data,
@@ -77,7 +77,7 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
     displayIndex,
     hoverIndex,
     isLastDisplay,
-    showViewStatusIcon
+    showViewStatusIcon,
   } = props;
   const colors = useThemeColors();
   const { name, type } = data;
@@ -100,27 +100,30 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
     return <></>;
   }
 
-  const index = activeViewId ? viewList.findIndex(item => item.id === activeViewId) : undefined;
+  const index = activeViewId ? viewList.findIndex((item) => item.id === activeViewId) : undefined;
   let isPreActive = false;
   if (activeIndex != null && displayIndex != null) {
-    isPreActive = ((displayIndex === activeIndex - 1) || displayIndex === hoverIndex - 1) && !isLastDisplay;
+    isPreActive = (displayIndex === activeIndex - 1 || displayIndex === hoverIndex - 1) && !isLastDisplay;
   }
   const currentTabActive = activeViewId === currentViewId;
-  const itemClass = classNames({
-    [styles.tabbarItemWrapper]: true,
-    [styles.active]: currentTabActive,
-    [styles.err]: errMsg,
-    [styles.preActive]: isPreActive,
-    [styles.specialType]: [ViewType.OrgChart, ViewType.Kanban].includes(type),
-    [styles.tabbarEditting]: editing,
-  }, 'tab-view-item');
+  const itemClass = classNames(
+    {
+      [styles.tabbarItemWrapper]: true,
+      [styles.active]: currentTabActive,
+      [styles.err]: errMsg,
+      [styles.preActive]: isPreActive,
+      [styles.specialType]: [ViewType.OrgChart, ViewType.Kanban].includes(type),
+      [styles.tabbarEditting]: editing,
+    },
+    'tab-view-item',
+  );
 
   function showContextMenu(e: React.MouseEvent<HTMLElement>) {
     onSetContextMenuIndex && onSetContextMenuIndex(idx);
     onSetContextMenu(e, {
       props: {
         tabIndex: idx,
-      }
+      },
     });
   }
 
@@ -170,8 +173,8 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             onKeyDown={handleInputEnter}
-            onDoubleClick={e => e.stopPropagation()}
-            onClick={e => e.stopPropagation()}
+            onDoubleClick={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             onMouseDown={stopPropagation}
           />
         </Tooltip>
@@ -179,23 +182,18 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
         <div ref={nameRef} className={styles.sheetName} data-nid={currentViewId} data-index={idx}>
           <ViewIcon size={16} viewType={type} />
           <Tooltip title={name} textEllipsis>
-            <span
-              className={styles.name}
-              data-nid={currentViewId}
-              data-index={idx}
-              data-name={name}
-            >
+            <span className={styles.name} data-nid={currentViewId} data-index={idx} data-name={name}>
               {name}
             </span>
           </Tooltip>
         </div>
       )}
-      {!editing && editable &&
+      {!editing && editable && (
         <div ref={iconRef} className={styles.viewIconArea}>
           {showViewStatusIcon && <ViewLockIcon viewId={currentViewId} view={data} />}
           <div
             className={styles.closeBtn}
-            onClick={e => {
+            onClick={(e) => {
               stopPropagation(e);
               showContextMenu(e);
             }}
@@ -205,7 +203,7 @@ export const TabItem: FC<React.PropsWithChildren<ITabbarItemProps>> = props => {
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };

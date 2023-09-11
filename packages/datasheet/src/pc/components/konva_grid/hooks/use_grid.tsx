@@ -16,36 +16,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { blackBlue } from '@apitable/components';
-import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, PREVIEW_DATASHEET_ID, RollUpFuncType, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { blackBlue } from '@apitable/components';
+import {
+  CellType,
+  FieldType,
+  ILookUpField,
+  KONVA_DATASHEET_ID,
+  LOOKUP_VALUE_FUNC_SET,
+  PREVIEW_DATASHEET_ID,
+  RollUpFuncType,
+  Selectors,
+  Strings,
+  t,
+} from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon, Line, Rect } from 'pc/components/konva_components';
 import {
-  GRID_BOTTOM_STAT_HEIGHT, GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, ICellHeightProps, KonvaGridContext,
-  KonvaGridViewContext, useCellAlarm, useCellCollaborator, useCells, useDynamicCells, useHeads, useStats
+  GRID_BOTTOM_STAT_HEIGHT,
+  GRID_GROUP_OFFSET,
+  GRID_ICON_COMMON_SIZE,
+  GRID_ROW_HEAD_WIDTH,
+  GridCoordinate,
+  ICellHeightProps,
+  KonvaGridContext,
+  KonvaGridViewContext,
+  useCellAlarm,
+  useCellCollaborator,
+  useCells,
+  useDynamicCells,
+  useHeads,
+  useStats,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
 import { hexToRGB, rgbaToHex } from 'pc/utils';
-import * as React from 'react';
-import { useCallback, useContext, useMemo, useState } from 'react';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
-import { useSelector } from 'react-redux';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-const ORIGIN_HEIGHT_SET = new Set([
-  FieldType.Number,
-  FieldType.Percent,
-  FieldType.Currency,
-  FieldType.AutoNumber,
-]);
+const ORIGIN_HEIGHT_SET = new Set([FieldType.Number, FieldType.Percent, FieldType.Currency, FieldType.AutoNumber]);
 
-const LOOKUP_DEFAULT_HEIGHT_SET = new Set([
-  FieldType.Checkbox,
-  FieldType.Attachment,
-]);
+const LOOKUP_DEFAULT_HEIGHT_SET = new Set([FieldType.Checkbox, FieldType.Attachment]);
 
 const DEFAULT_HEIGHT_SET = new Set([
   ...LOOKUP_DEFAULT_HEIGHT_SET,
@@ -56,26 +71,19 @@ const DEFAULT_HEIGHT_SET = new Set([
 ]);
 
 export const getCellHeight = (props: ICellHeightProps) => {
-  const {
-    field,
-    realField,
-    rowHeight,
-    activeHeight,
-    isActive = false
-  } = props;
+  const { field, realField, rowHeight, activeHeight, isActive = false } = props;
 
   if (!field || !isActive) return rowHeight;
   const fieldType = field.type;
   const isLookUp = fieldType === FieldType.LookUp;
   if (ORIGIN_HEIGHT_SET.has(fieldType)) return rowHeight;
   if (
-    (
-      isLookUp &&
+    (isLookUp &&
       (!realField || LOOKUP_DEFAULT_HEIGHT_SET.has(realField.type)) &&
-      !LOOKUP_VALUE_FUNC_SET.has((field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES)
-    ) ||
+      !LOOKUP_VALUE_FUNC_SET.has((field as ILookUpField).property.rollUpType || RollUpFuncType.VALUES)) ||
     (!isLookUp && DEFAULT_HEIGHT_SET.has(fieldType))
-  ) return rowHeight;
+  )
+    return rowHeight;
   return activeHeight || rowHeight;
 };
 
@@ -93,44 +101,15 @@ export interface IUseGridProps {
 const AddOutlinedPath = AddOutlined.toString();
 
 export const useGrid = (props: IUseGridProps) => {
-  const {
-    instance,
-    rowStartIndex,
-    rowStopIndex,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-    scrollState,
-    isExporting
-  } = props;
+  const { instance, rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex, pointPosition, scrollState, isExporting } = props;
 
-  const {
-    groupInfo,
-    activeCell,
-    linearRows,
-    recordRanges,
-    visibleColumns,
-    sortInfo,
-    datasheetId,
-    mirrorId,
-    permissions,
-  } = useContext(KonvaGridViewContext);
-  const {
-    setTooltipInfo,
-    clearTooltipInfo,
-    theme,
-  } = useContext(KonvaGridContext);
+  const { groupInfo, activeCell, linearRows, recordRanges, visibleColumns, sortInfo, datasheetId, mirrorId, permissions } =
+    useContext(KonvaGridViewContext);
+  const { setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
 
-  const {
-    frozenColumnWidth, rowInitSize,
-    containerWidth, containerHeight,
-    rowCount, columnCount, frozenColumnCount,
-  } = instance;
-  const {
-    realAreaType,
-    rowIndex: pointRowIndex,
-  } = pointPosition;
+  const { frozenColumnWidth, rowInitSize, containerWidth, containerHeight, rowCount, columnCount, frozenColumnCount } = instance;
+  const { realAreaType, rowIndex: pointRowIndex } = pointPosition;
   const state = store.getState();
   const { fieldCreatable } = permissions;
   const isAllowDrag = !(!groupInfo?.length && sortInfo?.keepSort);
@@ -142,25 +121,19 @@ export const useGrid = (props: IUseGridProps) => {
   /**
    * Field header
    */
-  const {
-    frozenFieldHead,
-    fieldHeads,
-  } = useHeads({
+  const { frozenFieldHead, fieldHeads } = useHeads({
     instance,
     columnStartIndex,
     columnStopIndex,
     pointPosition,
     scrollState,
-    isExporting
+    isExporting,
   });
 
   /**
    * Static cells
    */
-  const {
-    frozenCells,
-    cells
-  } = useCells({
+  const { frozenCells, cells } = useCells({
     instance,
     rowStartIndex,
     rowStopIndex,
@@ -195,13 +168,7 @@ export const useGrid = (props: IUseGridProps) => {
   /**
    * Group tab and statistics column at the bottom of the group
    */
-  const {
-    groupStats,
-    frozenGroupStats,
-    bottomStats,
-    bottomFrozenStats,
-    bottomStatBackground
-  } = useStats({
+  const { groupStats, frozenGroupStats, bottomStats, bottomFrozenStats, bottomStatBackground } = useStats({
     instance,
     rowStartIndex,
     rowStopIndex,
@@ -228,12 +195,7 @@ export const useGrid = (props: IUseGridProps) => {
     pointPosition,
   });
 
-  const {
-    dateAlarms,
-    dateAddAlarm,
-    frozenDateAddAlarm,
-    frozenDateAlarms,
-  } = useCellAlarm({
+  const { dateAlarms, dateAddAlarm, frozenDateAddAlarm, frozenDateAlarms } = useCellAlarm({
     instance,
     scrollState,
     rowStartIndex,
@@ -250,11 +212,7 @@ export const useGrid = (props: IUseGridProps) => {
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
 
-    const {
-      recordId,
-      type,
-      depth
-    } = linearRows[rowIndex];
+    const { recordId, type, depth } = linearRows[rowIndex];
     if (type === CellType.Record) continue;
     const y = instance.getRowOffset(rowIndex);
     const curHeight = instance.getRowHeight(rowIndex);
@@ -269,7 +227,7 @@ export const useGrid = (props: IUseGridProps) => {
             width={containerWidth}
             height={curHeight - 1}
             fill={'transparent'}
-          />
+          />,
         );
         break;
       }
@@ -285,7 +243,7 @@ export const useGrid = (props: IUseGridProps) => {
             height={curHeight}
             depth={depth}
             recordId={recordId}
-          />
+          />,
         );
       }
     }
@@ -293,7 +251,7 @@ export const useGrid = (props: IUseGridProps) => {
 
   // Row head toolbar
   const hoverRowHeadOperation: React.ReactNode[] = [];
-  const datasheet = useSelector(state => Selectors.getDatasheet(state));
+  const datasheet = useSelector((state) => Selectors.getDatasheet(state));
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
     const row = linearRows[rowIndex];
@@ -302,7 +260,7 @@ export const useGrid = (props: IUseGridProps) => {
     if (type !== CellType.Record || recordId == null) continue;
     const isActive = activeCell?.recordId === recordId;
     const isChecked = Boolean(recordRanges?.includes(recordId!));
-    if ((!isActive && !isChecked) && realAreaType === AreaType.None) continue;
+    if (!isActive && !isChecked && realAreaType === AreaType.None) continue;
     const isHovered = recordId === pointRecordId && pointRowType === CellType.Record;
     const commentCount = Selectors.getRecord(state, recordId, datasheetId)?.commentCount || 0;
     const isPreview = datasheet?.id === PREVIEW_DATASHEET_ID;
@@ -318,16 +276,16 @@ export const useGrid = (props: IUseGridProps) => {
         isAllowDrag={isAllowDrag}
         isPreview={isPreview}
         recordId={recordId}
-      />
+      />,
     );
   }
 
   /**
    * Add column button
    */
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-  const { embedId } = useSelector(state => state.pageParams);
-  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId } = useSelector((state) => state.pageParams);
+  const isEmbedShow = embedId ? !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar : false;
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
     const { fieldId } = visibleColumns[columnStopIndex];
@@ -340,22 +298,12 @@ export const useGrid = (props: IUseGridProps) => {
     const creatable = !mirrorId && fieldCreatable;
     return (
       <Group x={x}>
-        {
-          !isExporting &&
-          <Rect
-            x={0.5}
-            y={0.5}
-            width={btnWidth + 1}
-            height={8}
-            fill={colors.lowestBg}
-            listening={false}
-          />
-        }
+        {!isExporting && <Rect x={0.5} y={0.5} width={btnWidth + 1} height={8} fill={colors.lowestBg} listening={false} />}
         <Rect
           name={generateTargetName({
             targetName: KONVA_DATASHEET_ID.GRID_FIELD_ADD_BUTTON,
             fieldId,
-            mouseStyle: 'pointer'
+            mouseStyle: 'pointer',
           })}
           x={0.5}
           y={0.5}
@@ -366,52 +314,55 @@ export const useGrid = (props: IUseGridProps) => {
           strokeWidth={1}
           listening={creatable}
         />
-        {
-          creatable &&
-          <Icon
-            x={offsetX}
-            y={offsetY}
-            data={AddOutlinedPath}
-            fill={colors.thirdLevelText}
-            listening={false}
-          />
-        }
+        {creatable && <Icon x={offsetX} y={offsetY} data={AddOutlinedPath} fill={colors.thirdLevelText} listening={false} />}
       </Group>
     );
     // eslint-disable-next-line
   }, [
-    columnStopIndex, columnLength, visibleColumns, instance,
-    groupInfo.length, rowInitSize, mirrorId, fieldCreatable,
-    colors.lowestBg, colors.sheetLineColor, colors.thirdLevelText, isExporting
+    columnStopIndex,
+    columnLength,
+    visibleColumns,
+    instance,
+    groupInfo.length,
+    rowInitSize,
+    mirrorId,
+    fieldCreatable,
+    colors.lowestBg,
+    colors.sheetLineColor,
+    colors.thirdLevelText,
+    isExporting,
   ]);
 
-  const getOpacityLines = useCallback((columnStartIndex: number, columnStopIndex: number) => {
-    const opacityLines: React.ReactNode[] = [];
+  const getOpacityLines = useCallback(
+    (columnStartIndex: number, columnStopIndex: number) => {
+      const opacityLines: React.ReactNode[] = [];
 
-    for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
-      if (columnIndex > columnCount - 1) break;
-      if (columnIndex < 0) continue;
+      for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
+        if (columnIndex > columnCount - 1) break;
+        if (columnIndex < 0) continue;
 
-      const x = instance.getColumnOffset(columnIndex);
-      const { fieldId } = visibleColumns[columnIndex];
-      const columnWidth = instance.getColumnWidth(columnIndex);
+        const x = instance.getColumnOffset(columnIndex);
+        const { fieldId } = visibleColumns[columnIndex];
+        const columnWidth = instance.getColumnWidth(columnIndex);
 
-      opacityLines.push(
-        <Rect
-          key={`opacity-line-${fieldId}`}
-          name={generateTargetName({
-            targetName: KONVA_DATASHEET_ID.GRID_FIELD_HEAD_OPACITY_LINE,
-            fieldId,
-          })}
-          x={x + columnWidth - 3}
-          width={6}
-          height={rowInitSize}
-          fill={'transparent'}
-        />
-      );
-    }
-    return opacityLines;
-  }, [columnCount, instance, visibleColumns, rowInitSize]);
+        opacityLines.push(
+          <Rect
+            key={`opacity-line-${fieldId}`}
+            name={generateTargetName({
+              targetName: KONVA_DATASHEET_ID.GRID_FIELD_HEAD_OPACITY_LINE,
+              fieldId,
+            })}
+            x={x + columnWidth - 3}
+            width={6}
+            height={rowInitSize}
+            fill={'transparent'}
+          />,
+        );
+      }
+      return opacityLines;
+    },
+    [columnCount, instance, visibleColumns, rowInitSize],
+  );
 
   /**
    * First column width draggable area
@@ -448,35 +399,19 @@ export const useGrid = (props: IUseGridProps) => {
     const commonProps = {
       x: GRID_ROW_HEAD_WIDTH + frozenColumnWidth + 0.5,
       stroke: hexToRGB(finalColor, 0.4),
-      strokeWidth: 1
+      strokeWidth: 1,
     };
-    const shadowProps = frozenShadowVisible ? {
-      shadowColor: rgbaToHex(finalColor, 0.6),
-      shadowBlur: 4,
-      shadowOffsetX: 2,
-      shadowForStrokeEnabled: true
-    } : {};
-    const top = (
-      <Line
-        points={[0, 0, 0, rowInitSize]}
-        {...commonProps}
-        {...shadowProps}
-      />
-    );
-    const middle = (
-      <Line
-        points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]}
-        {...commonProps}
-        {...shadowProps}
-      />
-    );
-    const bottom = (
-      <Line
-        points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]}
-        {...commonProps}
-        {...shadowProps}
-      />
-    );
+    const shadowProps = frozenShadowVisible
+      ? {
+        shadowColor: rgbaToHex(finalColor, 0.6),
+        shadowBlur: 4,
+        shadowOffsetX: 2,
+        shadowForStrokeEnabled: true,
+      }
+      : {};
+    const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
+    const middle = <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />;
+    const bottom = <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />;
     const generatePlaceholder = (y: number, height: number) => (
       <Rect
         name={KONVA_DATASHEET_ID.GRID_FROZEN_SHADOW_LINE}
@@ -515,8 +450,15 @@ export const useGrid = (props: IUseGridProps) => {
       bottomPlaceholder: generatePlaceholder(containerHeight - GRID_BOTTOM_STAT_HEIGHT, GRID_BOTTOM_STAT_HEIGHT),
     };
   }, [
-    containerHeight, frozenColumnWidth, frozenShadowVisible, remainWidth,
-    shadowHover, setTooltipInfo, clearTooltipInfo, frozenColumnCount, rowInitSize
+    containerHeight,
+    frozenColumnWidth,
+    frozenShadowVisible,
+    remainWidth,
+    shadowHover,
+    setTooltipInfo,
+    clearTooltipInfo,
+    frozenColumnCount,
+    rowInitSize,
   ]);
 
   return {
@@ -553,6 +495,6 @@ export const useGrid = (props: IUseGridProps) => {
     frozenActiveCollaboratorBorder,
     placeHolderCells,
     frozenPlaceHolderCells,
-    draggingOutline
+    draggingOutline,
   };
 };

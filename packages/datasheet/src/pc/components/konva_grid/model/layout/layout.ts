@@ -17,10 +17,10 @@
  */
 
 import { range } from 'lodash';
-import { ILinearRow, ViewType } from '@apitable/core';
 import { colors } from '@apitable/components';
-import { KonvaDrawer } from '../../utils/drawer';
+import { ILinearRow, ViewType } from '@apitable/core';
 import { GRID_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_OFFSET } from '../../constant';
+import { KonvaDrawer } from '../../utils/drawer';
 
 interface ILayout {
   x: number;
@@ -107,7 +107,7 @@ export class GridLayout extends KonvaDrawer {
       x,
       y,
       points: [width, 0, width, rowHeight],
-      stroke: colors.sheetLineColor
+      stroke: colors.sheetLineColor,
     });
   }
 
@@ -115,7 +115,7 @@ export class GridLayout extends KonvaDrawer {
    * Render row header indent area
    */
   protected renderIndentFront(depth: number) {
-    range(depth).forEach(i => {
+    range(depth).forEach((i) => {
       this.rect({
         x: i * GRID_GROUP_OFFSET,
         y: this.y - 0.5,
@@ -141,9 +141,9 @@ export class GridLayout extends KonvaDrawer {
     const rowHeight = this.rowHeight;
     const columnWidth = this.columnWidth;
     const tabSizeList = [40, GRID_GROUP_OFFSET, 0];
-    range(depth).forEach(i => {
+    range(depth).forEach((i) => {
       const isFirstGroup = i === 0;
-      const rectOffsetX = isFirstGroup ? 0 : - GRID_GROUP_OFFSET;
+      const rectOffsetX = isFirstGroup ? 0 : -GRID_GROUP_OFFSET;
       const lineOffsetX = isFirstGroup ? 40 : 0;
       this.rect({
         x: x + columnWidth + rectOffsetX + 0.5,

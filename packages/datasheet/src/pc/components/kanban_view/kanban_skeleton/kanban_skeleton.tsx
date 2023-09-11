@@ -31,25 +31,15 @@ export const KanbanSkeleton = () => {
 
   return (
     <div className={styles.container}>
-      {
-        list.map((v) => {
-          return (
-            <div key={v.rows} className={styles.board}>
-              <div
-                className={styles.colorLine}
-                style={{ background: v.color }}
-              />
-              <Skeleton disabledAnimation className={styles.tag} style={{ background: v.color }} />
-              <Skeleton
-                count={v.rows}
-                height="132px"
-                className={styles.card}
-                disabledAnimation
-              />
-            </div>
-          );
-        })
-      }
+      {list.map((v) => {
+        return (
+          <div key={v.rows} className={styles.board}>
+            <div className={styles.colorLine} style={{ background: v.color }} />
+            <Skeleton disabledAnimation className={styles.tag} style={{ background: v.color }} />
+            <Skeleton count={v.rows} height="132px" className={styles.card} disabledAnimation />
+          </div>
+        );
+      })}
     </div>
   );
 };

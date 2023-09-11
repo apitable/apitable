@@ -31,12 +31,7 @@ const deselectValue = (value: any, selected: any) => {
   return selected.filter((v: any) => v !== value);
 };
 
-export const CheckboxesWidget = ({
-  id,
-  options,
-  value,
-  onChange,
-}: WidgetProps) => {
+export const CheckboxesWidget = ({ id, options, value, onChange }: WidgetProps) => {
   const { enumOptions, enumDisabled } = options;
 
   const _onChange = (option: any, checked: boolean) => {
@@ -54,11 +49,7 @@ export const CheckboxesWidget = ({
         const itemDisabled = Boolean(enumDisabled && (enumDisabled as any).indexOf(option.value) !== -1);
         return (
           <div key={`${id}_${index}`} style={{ display: 'flex' }}>
-            <Checkbox
-              checked={checked}
-              disabled={itemDisabled}
-              onChange={(value) => _onChange(option, value)}
-            >
+            <Checkbox checked={checked} disabled={itemDisabled} onChange={(value) => _onChange(option, value)}>
               {option.label}
             </Checkbox>
           </div>

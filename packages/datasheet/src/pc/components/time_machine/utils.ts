@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dayjs from 'dayjs';
 import {
   IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction, CollaCommandName, Strings, OTActionName,
   RowHeightLevel, ViewType, FieldTypeDescriptionMap
@@ -56,14 +57,23 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
     } else if (item.n && item.n !== OTActionName.NumberAdd) {
       countMap[item.n] = (countMap[item.n] || 0) + 1;
     }
+    
   }
   for (const nValue in countMap) {
     const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
     actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
+    if(nValue===OTActionName.ObjectInsert){
+      actionCount=countMap[nValue];
+    }
   }
 
   //commandString
   switch (op.cmd) {
+    case CollaCommandName.AddRecords:
+      return commandTran(cmdStringKey, { count:actionCount });
+    case CollaCommandName.DeleteRecords:
+      const count=op.actions.filter(item =>item['od']?.recordMeta).length;
+      return commandTran(cmdStringKey, { count });
     case CollaCommandName.AddFields:
       op.actions.find(item => {
         if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {
@@ -83,11 +93,24 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['ld'].type]]];
       return commandTran(cmdStringKey, { type: commandTran(actionCount) });
 
+    case 'UNDO:SetDateTimeCellAlarm':
+    case CollaCommandName.SetDateTimeCellAlarm:
+      let status='';
+      op.actions.forEach(item=>{
+        item.n?status=item['oi']?'open':'cancel':status=item['oi']?'cancel':'open';
+        if(item['od']?.alarmAt||item['oi']?.alarmAt)actionCount=item['od']?.alarmAt||item['oi']?.alarmAt;
+      });
+      return commandTran(cmdStringKey, { date_time: dayjs(actionCount).format('YYYY-MM-DD HH:mm'), status:commandTran(status) });
+
     case CollaCommandName.SetViewFrozenColumnCount:
       return commandTran(cmdStringKey, { count: op.actions[0]['oi'] });
 
     case 'UNDO:SetViewFrozenColumnCount':
       return commandTran(cmdStringKey, { count: op.actions[0]['od'] });
+
+    case CollaCommandName.SetViewAutoSave:
+      op.actions.find(item=>{if(item.p.includes('autoSave'))actionCount=item['oi']?'open':'close';});
+      return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
 
     case CollaCommandName.SetAutoHeadHeight:
     case CollaCommandName.SetViewLockInfo:
@@ -103,11 +126,9 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       return commandTran(cmdStringKey, { record_count: newRecordCount.length });
 
     case CollaCommandName.MoveViews:
-    case CollaCommandName.AddRecords:
     case CollaCommandName.AddWidgetToPanel:
     case CollaCommandName.MoveWidget:
     case CollaCommandName.DeleteWidget:
-    case CollaCommandName.DeleteRecords:
       return commandTran(cmdStringKey);
 
     case CollaCommandName.ModifyWidgetPanelName:
@@ -120,7 +141,8 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
 
     default:
       const recordCount = op.actions.length > 1 ? op.actions.length : 1;
-      return commandTran(cmdStringKey, { record_count: recordCount }) + ' ' + actionCount;
+      return commandTran(cmdStringKey, { record_count: recordCount });
+      // return commandTran(cmdStringKey, { record_count: recordCount }) + ' ' + actionCount;
   }
 
 }).join('');

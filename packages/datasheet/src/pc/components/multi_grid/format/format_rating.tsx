@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, IField, IRatingField, Strings, t } from '@apitable/core';
 import { SelectValue } from 'antd/lib/select';
-// eslint-disable-next-line no-restricted-imports
-import { Select, Button, useThemeColors } from '@apitable/components';
+import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
+import { Select, Button, useThemeColors } from '@apitable/components';
+import { ConfigConstant, IField, IRatingField, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
-import { EmojiPicker } from 'pc/components/common/emoji_picker';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { EmojiPicker } from 'pc/components/common/emoji_picker';
 import { EMOJI_SIZE } from '../../catalog/tree/tree';
 import styles from './styles.module.less';
 
@@ -45,7 +45,7 @@ export const FormateRating: React.FC<React.PropsWithChildren<IFormateRatingProps
     });
   };
 
-  const options = [...Array(10).keys()].map(item => ({
+  const options = [...Array(10).keys()].map((item) => ({
     value: item + 1,
     label: `${item + 1}`,
   }));
@@ -91,7 +91,7 @@ export const FormateRating: React.FC<React.PropsWithChildren<IFormateRatingProps
           <MobileSelect
             defaultValue={props.currentField.property.max}
             optionData={options}
-            onChange={value => handleMaxChange({ value })}
+            onChange={(value) => handleMaxChange({ value })}
             style={{
               height: 40,
             }}

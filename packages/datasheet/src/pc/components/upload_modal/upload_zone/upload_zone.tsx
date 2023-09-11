@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { resourceService } from 'pc/resource_service';
-import { useResponsive } from 'pc/hooks';
-import { stopPropagation } from 'pc/utils';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useThemeColors } from '@apitable/components';
-import { ICommonTabRef } from '../upload_tab';
-import styles from './styles.module.less';
+import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { browser } from 'modules/shared/browser';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
+import { stopPropagation } from 'pc/utils';
+import { ICommonTabRef } from '../upload_tab';
+import styles from './styles.module.less';
 
 interface IUploadZonProps {
   onUpload(files: IUploadZoneItem[]): void;

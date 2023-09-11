@@ -18,21 +18,28 @@
 
 package com.apitable.control.mapper;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
 import com.apitable.control.entity.ControlEntity;
 import com.apitable.control.infrastructure.ControlType;
 import com.apitable.control.model.ControlTypeDTO;
 import com.apitable.control.model.ControlUnitDTO;
+import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Permission control table mapper.
  */
 public interface ControlMapper extends BaseMapper<ControlEntity> {
+
+    /**
+     * Query space id.
+     *
+     * @param controlId Control Unit ID
+     * @return spaceId
+     * @author Chambers
+     */
+    String selectSpaceIdByControlId(@Param("controlId") String controlId);
 
     /**
      * Query entity according to control ID

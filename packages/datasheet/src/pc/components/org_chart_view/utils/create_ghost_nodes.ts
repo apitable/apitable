@@ -19,19 +19,8 @@
 import { CARD_WIDTH, NodeType, GHOST_NODE_SIZE } from '../constants';
 import { IAdj, IEdge, INode, INodesMap } from '../interfaces';
 
-export function createGhostNodes(params: {
-  adj: IAdj;
-  nodesMap: INodesMap;
-  cardHeight: number;
-  horizontal: boolean;
-}) {
-
-  const {
-    adj,
-    nodesMap,
-    cardHeight,
-    horizontal,
-  } = params;
+export function createGhostNodes(params: { adj: IAdj; nodesMap: INodesMap; cardHeight: number; horizontal: boolean }) {
+  const { adj, nodesMap, cardHeight, horizontal } = params;
 
   const ghostWrapperSize = GHOST_NODE_SIZE;
 
@@ -42,7 +31,7 @@ export function createGhostNodes(params: {
           id: `none-${cur.id}`,
           position: {
             x: cur.position.x,
-            y: cur.position.y - (ghostWrapperSize),
+            y: cur.position.y - ghostWrapperSize,
           },
           style: {
             width: CARD_WIDTH,
@@ -76,9 +65,7 @@ export function createGhostNodes(params: {
             parents: cur.data.parents,
           },
           type: NodeType.GhostNode,
-
         } as INode;
-
       }
 
       return {
@@ -96,17 +83,15 @@ export function createGhostNodes(params: {
           recordName: `${cur.data.recordName}-${next.data.recordName}`,
           parents: nodesMap[cur.id].data.parents,
         },
-        type: NodeType.GhostNode
-
+        type: NodeType.GhostNode,
       } as INode;
     }
 
     if (index === 0 && cur === next) {
-
       return {
         id: `none-${cur.id}`,
         position: {
-          x: cur.position.x - (ghostWrapperSize),
+          x: cur.position.x - ghostWrapperSize,
           y: cur.position.y,
         },
         style: {
@@ -119,8 +104,7 @@ export function createGhostNodes(params: {
           recordName: `none-${cur.data.recordName}`,
           parents: cur.data.parents,
         },
-        type: NodeType.GhostNode
-
+        type: NodeType.GhostNode,
       } as INode;
     }
 
@@ -141,8 +125,7 @@ export function createGhostNodes(params: {
           recordName: `${cur.data.recordName}-none`,
           parents: cur.data.parents,
         },
-        type: NodeType.GhostNode
-
+        type: NodeType.GhostNode,
       } as INode;
     }
 
@@ -165,60 +148,61 @@ export function createGhostNodes(params: {
     } as INode;
   };
 
-  const {
-    ghostNodes,
-    ghostEdges,
-  } = Object.keys(adj).filter(id => adj[id].length >= 1).reduce((prev, id) => {
-    adj[id].forEach((linkId, index) => {
-      const cur = nodesMap[linkId];
-      const nextId = adj[id][index + 1];
-      const next = nodesMap[nextId];
-      const isLastCursor = index === adj[id].length - 1;
+  const { ghostNodes, ghostEdges } = Object.keys(adj)
+    .filter((id) => adj[id].length >= 1)
+    .reduce(
+      (prev, id) => {
+        adj[id].forEach((linkId, index) => {
+          const cur = nodesMap[linkId];
+          const nextId = adj[id][index + 1];
+          const next = nodesMap[nextId];
+          const isLastCursor = index === adj[id].length - 1;
 
-      if (!cur || cur?.isHidden || (!next && !isLastCursor)) {
-        return;
-      }
+          if (!cur || cur?.isHidden || (!next && !isLastCursor)) {
+            return;
+          }
 
-      if (isLastCursor) {
-        const lastGhostNode = createGhostNode(cur, next, horizontal, index, adj[id].length);
-        prev.ghostNodes.push(lastGhostNode);
-        prev.ghostEdges.push({
-          id: `${id}-${lastGhostNode.id}-ghost`,
-          source: id,
-          target: lastGhostNode.id,
-          type: NodeType.GhostEdge,
-        } as IEdge);
-        return;
-      }
+          if (isLastCursor) {
+            const lastGhostNode = createGhostNode(cur, next, horizontal, index, adj[id].length);
+            prev.ghostNodes.push(lastGhostNode);
+            prev.ghostEdges.push({
+              id: `${id}-${lastGhostNode.id}-ghost`,
+              source: id,
+              target: lastGhostNode.id,
+              type: NodeType.GhostEdge,
+            } as IEdge);
+            return;
+          }
 
-      const ghostNode = createGhostNode(cur, next, horizontal, index, adj[id].length);
+          const ghostNode = createGhostNode(cur, next, horizontal, index, adj[id].length);
 
-      const ghostEdge = {
-        id: `${id}-${ghostNode.id}-ghost`,
-        source: id,
-        target: ghostNode.id,
-        type: NodeType.GhostEdge,
-      } as IEdge;
-      prev.ghostEdges.push(ghostEdge);
-      prev.ghostNodes.push(ghostNode);
-    });
+          const ghostEdge = {
+            id: `${id}-${ghostNode.id}-ghost`,
+            source: id,
+            target: ghostNode.id,
+            type: NodeType.GhostEdge,
+          } as IEdge;
+          prev.ghostEdges.push(ghostEdge);
+          prev.ghostNodes.push(ghostNode);
+        });
 
-    const firstNode = nodesMap[adj[id][0]];
+        const firstNode = nodesMap[adj[id][0]];
 
-    if (firstNode && !firstNode.isHidden) {
-      const firstGhostNode = createGhostNode(firstNode, firstNode, horizontal, 0, 1);
-      prev.ghostNodes.push(firstGhostNode);
-      prev.ghostEdges.push({
-        id: `${id}-${firstNode.id}-ghost`,
-        source: id,
-        target: firstGhostNode.id,
-        type: NodeType.GhostEdge,
-      } as IEdge);
+        if (firstNode && !firstNode.isHidden) {
+          const firstGhostNode = createGhostNode(firstNode, firstNode, horizontal, 0, 1);
+          prev.ghostNodes.push(firstGhostNode);
+          prev.ghostEdges.push({
+            id: `${id}-${firstNode.id}-ghost`,
+            source: id,
+            target: firstGhostNode.id,
+            type: NodeType.GhostEdge,
+          } as IEdge);
+        }
 
-    }
-
-    return prev;
-  }, { ghostNodes: [] as INode[], ghostEdges: [] as IEdge[] });
+        return prev;
+      },
+      { ghostNodes: [] as INode[], ghostEdges: [] as IEdge[] },
+    );
 
   return {
     ghostNodes,

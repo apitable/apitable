@@ -1,11 +1,11 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { colorVars, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import UpgradeSpace from 'pc/components/space_manage/upgrade_space/upgrade_space';
 import { stopPropagation } from 'pc/utils';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 import styles from './style.module.less';
 
 export const expandUpgradeSpace = () => {
@@ -33,10 +33,8 @@ export const expandUpgradeSpace = () => {
         zIndex={1100}
       >
         <div className={styles.header}>
-          <Typography variant='h6'>
-            {t(Strings.upgrade)}
-          </Typography>
-          <CloseOutlined color={colorVars.fc3} size={16} onClick={onModalClose}/>
+          <Typography variant="h6">{t(Strings.upgrade)}</Typography>
+          <CloseOutlined color={colorVars.fc3} size={16} onClick={onModalClose} />
         </div>
         <UpgradeSpace />
       </Modal>

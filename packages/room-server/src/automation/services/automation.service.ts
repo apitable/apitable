@@ -24,9 +24,10 @@ import {
   IActionType,
   IRobot,
   IRobotTask,
-  validateMagicForm
+  NoticeTemplatesConstant,
+  validateMagicForm,
 } from '@apitable/core';
-import { AmqpConnection, Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -36,7 +37,13 @@ import { UnreachableCaseError } from 'shared/errors';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { IUserBaseInfo } from 'shared/interfaces';
-import { automationExchangeName, automationRunning, automationRunningQueueName } from 'shared/services/queue/queue.module';
+import {
+  automationExchangeName,
+  automationRunning,
+  automationRunningQueueName,
+  notificationQueueExchangeName,
+} from 'shared/services/queue/queue.module';
+import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
 import { In } from 'typeorm';
 import * as services from '../actions';
 import { customActionMap } from '../actions/decorators/automation.action.decorator';
@@ -70,8 +77,7 @@ export class AutomationService {
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
-    // @ts-ignore
-    private readonly amqpConnection: AmqpConnection
+    private readonly queueSenderService: QueueSenderBaseService,
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
@@ -83,72 +89,57 @@ export class AutomationService {
   async recoverRobots(robots: AutomationRobotEntity[], actions: AutomationActionEntity[], triggers: AutomationTriggerEntity[]) {
     const robotIdMap = new Map<string, string>();
     if (robots) {
-      robots.forEach(r => {
+      robots.forEach((r) => {
         r.id = IdWorker.nextId() + '';
         r.isActive = false;
         const oldId = r.robotId;
         const newId = 'arb' + generateRandomString(15);
         r.robotId = newId;
         robotIdMap.set(oldId, newId);
-      }
-      );
-      await this.automationRobotRepository
-        .createQueryBuilder()
-        .insert()
-        .values(robots)
-        .execute();
+      });
+      await this.automationRobotRepository.createQueryBuilder().insert().values(robots).execute();
     }
     if (actions) {
-      actions.forEach(r => {
+      actions.forEach((r) => {
         r.id = IdWorker.nextId() + '';
         r.actionId = 'aac' + generateRandomString(15);
         const oldId = r.robotId;
         r.robotId = robotIdMap.get(oldId) || oldId;
-      }
-      );
-      await this.automationActionRepository
-        .createQueryBuilder()
-        .insert()
-        .values(actions)
-        .execute();
+      });
+      await this.automationActionRepository.createQueryBuilder().insert().values(actions).execute();
     }
     if (triggers) {
-      triggers.forEach(r => {
+      triggers.forEach((r) => {
         r.id = IdWorker.nextId() + '';
         r.triggerId = 'att' + generateRandomString(15);
         const oldId = r.robotId;
         r.robotId = robotIdMap.get(oldId) || oldId;
-      }
-      );
-      await this.automationTriggerRepository
-        .createQueryBuilder()
-        .insert()
-        .values(triggers)
-        .execute();
+      });
+      await this.automationTriggerRepository.createQueryBuilder().insert().values(triggers).execute();
     }
   }
 
   async getRobotsByDstId(dstId: string) {
     return await this.automationRobotRepository.find({
       where: {
-        resourceId: dstId
-      }
+        resourceId: dstId,
+      },
     });
   }
 
   async getActionByRobotIds(robotIds: string[]) {
     return await this.automationActionRepository.find({
       where: {
-        robotId: In(robotIds)
-      }
+        robotId: In(robotIds),
+      },
     });
   }
 
   async getTriggersByRobotIds(robotIds: string[]) {
     return await this.automationTriggerRepository.find({
       where: {
-        robotId: In(robotIds)
-      }
+        robotId: In(robotIds),
+      },
     });
   }
 
@@ -164,24 +155,6 @@ export class AutomationService {
     return await this.robotService.getRobotById(robotId);
   }
 
-  /**
-   * create an execution record before the task is about to run
-   * @param robotId
-   * @param taskId
-   * @param spaceId
-   * @param data context
-   */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
-    const newRunHistory = this.automationRunHistoryRepository.create({
-      taskId,
-      robotId,
-      spaceId,
-      status: RunHistoryStatusEnum.RUNNING,
-      data
-    });
-    await this.automationRunHistoryRepository.insert(newRunHistory);
-  }
-
   async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
     const spaceId = await this.getSpaceIdByRobotId(robotTask.robotId);
     const context = this.robotRunner.initRuntimeContext(robotTask, robot);
@@ -190,7 +163,7 @@ export class AutomationService {
       robotId: robotTask.robotId,
       spaceId,
       status: robotTask.status,
-      data: context.context
+      data: context.context,
     });
     await this.automationRunHistoryRepository.insert(newRunHistory);
   }
@@ -208,6 +181,9 @@ export class AutomationService {
     } else {
       await this.automationRunHistoryRepository.update({ taskId }, { status });
     }
+    if (!success) {
+      await this.sendFailureMessage(taskId);
+    }
   }
 
   async getActionOutput(actionRuntimeInput: any, actionType: IActionType): Promise<IActionOutput> {
@@ -218,16 +194,13 @@ export class AutomationService {
       case 'http:': // some self-hosted service may use http
       case 'https:': {
         url.pathname = actionType.endpoint;
-        const resp = await fetch(
-          url.toString(),
-          {
-            method: 'POST',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify(actionRuntimeInput)
-          }
-        );
+        const resp = await fetch(url.toString(), {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(actionRuntimeInput),
+        });
         return await this.getOutputResult(resp);
       }
       case 'automation:': {
@@ -254,6 +227,135 @@ export class AutomationService {
       default:
         throw new UnreachableCaseError(actionType.baseUrl as never);
     }
+  }
+
+  async handleTask(robotId: string, trigger: { input: any; output: any }) {
+    const spaceId = await this.getSpaceIdByRobotId(robotId);
+    // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
+    // there limit by billing plan
+    // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
+    // if (spaceRobotRunTimes >= 100000) {
+    //   return;
+    // }
+    const taskId = IdWorker.nextId().toString(); // TODO: use uuid
+    // 1. create run history
+    await this.createRunHistory(robotId, taskId, spaceId);
+    try {
+      // 2. execute the robot
+      await this.robotRunner.run({
+        robotId,
+        triggerInput: trigger.input,
+        triggerOutput: trigger.output,
+        taskId,
+        status: RunHistoryStatusEnum.RUNNING,
+      });
+    } catch (error) {
+      // 3. update run history when failed
+      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
+      await this.updateTaskRunHistory(taskId, false, null);
+      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+    }
+  }
+
+  @RabbitSubscribe({
+    exchange: automationExchangeName,
+    routingKey: automationRunning,
+    queue: automationRunningQueueName,
+  })
+  async handleTaskByTaskIdAndTriggerId(message: { taskId: string; triggerId: string }) {
+    const { taskId, triggerId } = message;
+    this.logger.log('RobotRunning', { ...message });
+    try {
+      const task: IRobotTask | undefined = await this.automationRunHistoryRepository.selectContextByTaskIdAndTriggerId(taskId, triggerId);
+      if (RunHistoryStatusEnum.PENDING != task!.status) {
+        return new Nack();
+      }
+      // update status first to avoid run it again
+      await this.automationRunHistoryRepository.updateStatusByTaskId(taskId, RunHistoryStatusEnum.RUNNING);
+      // 2. execute the robot
+      await this.robotRunner.run(task!);
+    } catch (error) {
+      // 3. update run history when failed
+      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
+      await this.updateTaskRunHistory(taskId, false);
+      // await this.sendFailureMessage(robotId);
+
+      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+    }
+    // todo justify
+    return new Nack();
+  }
+
+  async activeRobot(robotId: string, user: IUserBaseInfo) {
+    const errorsByNodeId: any = {};
+    try {
+      const robot = await this.robotService.getRobotDetailById(robotId);
+      const actions = Object.values(robot.actionsById);
+      const { trigger, triggerType } = robot as any;
+      let isTriggerValid = true;
+      if (trigger && triggerType) {
+        const triggerInputSchema = triggerType.inputJSONSchema;
+        const triggerInput = trigger.input;
+        const { hasError, errors, validationError } = validateMagicForm((triggerInputSchema as any).schema, triggerInput);
+        if (hasError) {
+          isTriggerValid = false;
+          this.logger.debug(`trigger is valid: ${isTriggerValid}`);
+          errorsByNodeId[trigger.triggerId] = validationError ? [...errors, ...validationError] : errors;
+          return {
+            ok: false,
+            errorsByNodeId,
+          };
+        }
+      }
+      this.logger.debug(`trigger is valid: ${isTriggerValid}`);
+      const noErrors =
+        actions.length > 0 &&
+        actions.every((node: any) => {
+          const actionType = robot.actionTypesById[node.typeId]!;
+          // FIXME: type
+          const { hasError, errors, validationError } = validateMagicForm((actionType.inputJSONSchema as any).schema, node.input);
+          if (hasError) {
+            errorsByNodeId[node.id] = validationError ? [...errors, ...validationError] : errors;
+          }
+          return !hasError;
+        });
+      this.logger.debug(`no errors: ${noErrors},${actions}`);
+      if (isTriggerValid && noErrors) {
+        await this.automationRobotRepository.activeRobot(robotId, user.userId);
+        return {
+          ok: true,
+        };
+      }
+    } catch (error) {
+      this.logger.error('active robot error', error);
+      throw new ServerException(CommonException.ROBOT_FORM_CHECK_ERROR);
+    }
+    return {
+      ok: false,
+      errorsByNodeId,
+    };
+  }
+
+  async isResourcesHasRobots(resourceIds: string[]) {
+    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+  }
+
+  /**
+   * create an execution record before the task is about to run
+   * @param robotId
+   * @param taskId
+   * @param spaceId
+   * @param data context
+   */
+  private async createRunHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
+    const newRunHistory = this.automationRunHistoryRepository.create({
+      taskId,
+      robotId,
+      spaceId,
+      status: RunHistoryStatusEnum.RUNNING,
+      data,
+    });
+    await this.automationRunHistoryRepository.insert(newRunHistory);
   }
 
   /**
@@ -284,110 +386,31 @@ export class AutomationService {
     return rawResult.spaceId;
   }
 
-  async handleTask(robotId: string, trigger: { input: any; output: any }) {
-    const spaceId = await this.getSpaceIdByRobotId(robotId);
-    // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
-    // there limit by billing plan
-    // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
-    // if (spaceRobotRunTimes >= 100000) {
-    //   return;
-    // }
-    const taskId = IdWorker.nextId().toString();// TODO: use uuid
-    // 1. create run history
-    await this.createRunHistory(robotId, taskId, spaceId);
-    try {
-      // 2. execute the robot
-      await this.robotRunner.run({
-        robotId,
-        triggerInput: trigger.input,
-        triggerOutput: trigger.output,
-        taskId,
-        status: RunHistoryStatusEnum.RUNNING
-      });
-    } catch (error) {
-      // 3. update run history when failed
-      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
-      await this.updateTaskRunHistory(taskId, false, null);
-      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+  private async sendFailureMessage(taskId: string) {
+    const robotId = await this.automationRunHistoryRepository.selectRobotIdByTaskId(taskId);
+    if (!robotId) {
+      return;
     }
-  }
-
-  @RabbitSubscribe({
-    exchange: automationExchangeName,
-    routingKey: automationRunning,
-    queue: automationRunningQueueName,
-  })
-  async handleTaskByTaskIdAndTriggerId(message: { taskId: string, triggerId: string }) {
-    const { taskId, triggerId } = message;
-    this.logger.log('RobotRunning', { ...message });
-    try {
-      const task: IRobotTask | undefined = await this.automationRunHistoryRepository.selectContextByTaskIdAndTriggerId(taskId, triggerId);
-      if (RunHistoryStatusEnum.PENDING != task!.status) {
-        return new Nack();
-      }
-      // update status first to avoid run it again
-      await this.automationRunHistoryRepository.updateStatusByTaskId(taskId, RunHistoryStatusEnum.RUNNING);
-      // 2. execute the robot
-      await this.robotRunner.run(task!);
-    } catch (error) {
-      // 3. update run history when failed
-      // runtime error should not be saved to database, it should be logged. then we can find the error by taskId.
-      await this.updateTaskRunHistory(taskId, false);
-      this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
+    const robot = await this.automationRobotRepository.selectRobotSimpleInfoByRobotId(robotId);
+    if (!robot) {
+      return;
     }
-    // todo justify
-    return new Nack();
-  }
-
-  async activeRobot(robotId: string, user: IUserBaseInfo) {
-    const errorsByNodeId: any = {};
-    try {
-      const robot = await this.robotService.getRobotDetailById(robotId);
-      const actions = Object.values(robot.actionsById);
-      const { trigger, triggerType } = robot as any;
-      let isTriggerValid = true;
-      if (trigger && triggerType) {
-        const triggerInputSchema = triggerType.inputJSONSchema;
-        const triggerInput = trigger.input;
-        const { hasError, errors, validationError } = validateMagicForm((triggerInputSchema as any).schema, triggerInput);
-        if (hasError) {
-          isTriggerValid = false;
-          this.logger.debug(`trigger is valid: ${isTriggerValid}`);
-          errorsByNodeId[trigger.triggerId] = validationError ? [...errors, ...validationError] : errors;
-          return {
-            ok: false,
-            errorsByNodeId
-          };
-        }
-      }
-      this.logger.debug(`trigger is valid: ${isTriggerValid}`);
-      const noErrors = actions.length > 0 && actions.every(node => {
-        const actionType = robot.actionTypesById[node.typeId]!;
-        // FIXME: type
-        const { hasError, errors, validationError } = validateMagicForm((actionType.inputJSONSchema as any).schema, node.input);
-        if (hasError) {
-          errorsByNodeId[node.id] = validationError ? [...errors, ...validationError] : errors;
-        }
-        return !hasError;
-      });
-      this.logger.debug(`no errors: ${noErrors},${actions}`);
-      if (isTriggerValid && noErrors) {
-        await this.automationRobotRepository.activeRobot(robotId, user.userId);
-        return {
-          ok: true,
-        };
-      }
-    } catch (error) {
-      this.logger.error('active robot error', error);
-      throw new ServerException(CommonException.ROBOT_FORM_CHECK_ERROR);
-    }
-    return {
-      ok: false,
-      errorsByNodeId
+    const spaceId = (await this.nodeService.selectSpaceIdByNodeId(robot.resourceId))?.spaceId;
+    const message = {
+      nodeId: robot.resourceId,
+      spaceId: spaceId,
+      body: {
+        extras: {
+          automation: {
+            robotId,
+            automationName: robot.name,
+            endAt: Date.now(),
+          },
+        },
+      },
+      templateId: NoticeTemplatesConstant.workflow_execute_failed_notify,
+      toUserId: [robot.createdBy],
     };
-  }
-
-  async isResourcesHasRobots(resourceIds: string[]) {
-    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+    await this.queueSenderService.sendMessage(notificationQueueExchangeName, 'notification.message', message);
   }
 }

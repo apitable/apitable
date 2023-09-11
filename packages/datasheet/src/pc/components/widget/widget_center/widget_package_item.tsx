@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
-import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { getEnvVariables } from 'pc/utils/env';
-import { InstallPosition } from 'pc/components/widget/widget_center/enum';
-import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
-import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
 import * as React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
+import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
+import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
+import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
+import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
+import { getEnvVariables } from 'pc/utils/env';
 
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
@@ -40,16 +41,31 @@ type IWidgetPackageItemProps = IWidgetPackage & IWidgetPackageItemBase;
 
 const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const {
-    cover, name, releaseType, description, widgetPackageId, installPosition, onModalClose, authorIcon, authorName, icon, showMenu, status,
-    ownerUuid, ownerMemberId, extras, version, installEnv,
+    cover: _cover,
+    name,
+    releaseType,
+    description,
+    widgetPackageId,
+    installPosition,
+    onModalClose,
+    authorIcon,
+    authorName,
+    icon,
+    showMenu,
+    status,
+    ownerUuid,
+    ownerMemberId,
+    extras,
+    version,
+    installEnv,
   } = props;
   const colors = useThemeColors();
-  const isOwner = useSelector(state => state.user.info?.uuid === ownerUuid);
-  const { dashboardId, datasheetId, mirrorId } = useSelector(state => state.pageParams);
-  const spacePermission = useSelector(state => state.spacePermissionManage.spaceResource?.permissions || []);
+  const isOwner = useSelector((state) => state.user.info?.uuid === ownerUuid);
+  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const spacePermission = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
-
+  const cover = useGetSignatureAssertByToken(_cover);
   const toInstallWidget = async(widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     setInstalling(true);
@@ -78,11 +94,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         type: 'warning',
         title: t(Strings.widget_center_install_modal_title),
         width: 400,
-        content: (
-          <div className={styles.spaceWidgetInfoContent}>
-            {t(Strings.widget_center_install_modal_content)}
-          </div>
-        ),
+        content: <div className={styles.spaceWidgetInfoContent}>{t(Strings.widget_center_install_modal_content)}</div>,
         okText: t(Strings.confirm),
         cancelText: t(Strings.cancel),
         onOk: () => toInstallWidget(widgetPackageId),
@@ -127,19 +139,21 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   };
 
   const InstallButton = () => {
-    return <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
-      <Button
-        color='primary'
-        prefixIcon={<AddOutlined size={12} color={'white'} />}
-        onClick={onClickInstall}
-        loading={installing}
-        disabled={getDisabledStatus()}
-        size='small'
-        block
-      >
-        {t(Strings.install_widget)}
-      </Button>
-    </WrapperTooltip>;
+    return (
+      <WrapperTooltip style={{ width: '100%' }} wrapper={getDisabledStatus()} tip={t(Strings.no_permission_add_widget)}>
+        <Button
+          color="primary"
+          prefixIcon={<AddOutlined size={12} color={colors.staticWhite0} />}
+          onClick={onClickInstall}
+          loading={installing}
+          disabled={getDisabledStatus()}
+          size="small"
+          block
+        >
+          {t(Strings.install_widget)}
+        </Button>
+      </WrapperTooltip>
+    );
   };
 
   const isReview = releaseType === WidgetReleaseType.Preview;
@@ -147,50 +161,34 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const VikaWidgetPackageItem = () => (
     <div className={styles.widgetPackageItem}>
       <div className={styles.imgBox}>
-        <img
-          src={cover}
-          className={styles.headImg}
-          alt={''}
-          onClick={() => isReview && expandReviewInfo(props)}
-        />
+        <img src={cover} className={styles.headImg} alt={''} onClick={() => isReview && expandReviewInfo(props)} />
         <div className={styles.authorIconWrap}>
           <div className={styles.arcBoxLeft} />
           <div className={styles.avatarWrap}>
-            <Avatar
-              className={styles.avatar}
-              style={{ border: 0 }}
-              id={icon}
-              src={icon}
-              title={authorName}
-              size={AvatarSize.Size24}
-            />
+            <Avatar className={styles.avatar} style={{ border: 0 }} id={icon} src={icon} title={authorName} size={AvatarSize.Size24} />
           </div>
           <div className={styles.arcBoxRight} />
         </div>
-        {extras?.website && !getEnvVariables().IS_SELFHOST && <Tooltip content={t(Strings.widget_homepage_tooltip)} placement='top-center'>
-          <a href={extras?.website} target='_blank' className={styles.website} rel='noreferrer'>
-            <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant='background' />
-          </a>
-        </Tooltip>}
+        {extras?.website && !getEnvVariables().IS_SELFHOST && (
+          <Tooltip content={t(Strings.widget_homepage_tooltip)} placement="top-center">
+            <a href={extras?.website} target="_blank" className={styles.website} rel="noreferrer">
+              <IconButton className={styles.iconButton} icon={() => <LinkOutlined color={'#696969'} />} variant="background" />
+            </a>
+          </Tooltip>
+        )}
       </div>
       <div className={styles.itemContent}>
         <h3>{name}</h3>
-        <p>
-          {description}
-        </p>
-        {!getEnvVariables().IS_SELFHOST && <div className={styles.developerWrap}>
-          <span>{t(Strings.widget_center_publisher)}</span>
-          <div className={styles.avatarWrap}>
-            <Avatar
-              style={{ border: 0 }}
-              id={authorIcon}
-              src={authorIcon}
-              title={authorName}
-              size={AvatarSize.Size20}
-            />
+        <p>{description}</p>
+        {!getEnvVariables().IS_SELFHOST && (
+          <div className={styles.developerWrap}>
+            <span>{t(Strings.widget_center_publisher)}</span>
+            <div className={styles.avatarWrap}>
+              <Avatar style={{ border: 0 }} id={authorIcon} src={authorIcon} title={authorName} size={AvatarSize.Size20} />
+            </div>
+            <span>{authorName}</span>
           </div>
-          <span>{authorName}</span>
-        </div>}
+        )}
         {isReview && <div>{version}</div>}
         <InstallButton />
       </div>
@@ -202,22 +200,26 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     <div className={classNames(styles.widgetPackageItem, styles.widgetPackageItemSpace)}>
       <div className={styles.headerBox}>
         <span className={styles.widgetIcon}>
-          <Image layout={'fill'} src={icon} alt='' />
+          <Image layout={'fill'} src={icon} alt="" />
         </span>
         <h3>{name}</h3>
-        {(isOwner || spacePermission.includes(ConfigConstant.PermissionCode.MANAGE_WIDGET)) && <IconButton
-          className={styles.hoverShow}
-          icon={ReactMoreOutlined}
-          onClickCapture={(e) => showMenu && showMenu(e, {
-            widgetPackageId,
-            widgetPackageName: name,
-            authorName,
-            ownerMemberId,
-          })} />}
+        {(isOwner || spacePermission.includes(ConfigConstant.PermissionCode.MANAGE_WIDGET)) && (
+          <IconButton
+            className={styles.hoverShow}
+            icon={ReactMoreOutlined}
+            onClickCapture={(e) =>
+              showMenu &&
+              showMenu(e, {
+                widgetPackageId,
+                widgetPackageName: name,
+                authorName,
+                ownerMemberId,
+              })
+            }
+          />
+        )}
       </div>
-      <p className={styles.spaceWidgetDesc}>
-        {description}
-      </p>
+      <p className={styles.spaceWidgetDesc}>{description}</p>
       <div className={styles.developerWrap}>
         <span>{t(Strings.widget_center_publisher)}</span>
         <UserCardTrigger
@@ -230,13 +232,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
         >
           <div className={styles.triggerWrap}>
             <div className={styles.avatarWrap}>
-              <Avatar
-                style={{ border: 0 }}
-                id={ownerUuid}
-                src={authorIcon}
-                title={authorName}
-                size={AvatarSize.Size20}
-              />
+              <Avatar style={{ border: 0 }} id={ownerUuid} src={authorIcon} title={authorName} size={AvatarSize.Size20} />
             </div>
             <span>{authorName}</span>
           </div>
@@ -246,8 +242,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     </div>
   );
 
-  return releaseType === WidgetReleaseType.Global || isReview ?
-    <VikaWidgetPackageItem /> : <SpaceWidgetPackageItem />;
+  return releaseType === WidgetReleaseType.Global || isReview ? <VikaWidgetPackageItem /> : <SpaceWidgetPackageItem />;
 };
 
 export const WidgetPackageItem = React.memo(WidgetPackageItemBase);

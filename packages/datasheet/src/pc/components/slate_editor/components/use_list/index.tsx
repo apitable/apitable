@@ -18,8 +18,8 @@
 
 import { useContext } from 'react';
 import { EditorContext } from '../../context';
-import Icons from '../icons';
 import { hotkeyMap } from '../../hotkeys/map';
+import Icons from '../icons';
 
 import styles from './style.module.less';
 
@@ -61,9 +61,7 @@ export const useListWithIconAndHotkey = (list: Array<string>) => {
             </span>
             {label}
           </span>
-          <span className={styles.hotkey}>
-            {hotkeyMap[key] && hotkeyMap[key].platform}
-          </span>
+          <span className={styles.hotkey}>{hotkeyMap[key] && hotkeyMap[key].platform}</span>
         </span>
       ),
     };

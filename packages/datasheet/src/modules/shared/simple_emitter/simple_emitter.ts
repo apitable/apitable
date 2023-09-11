@@ -23,7 +23,7 @@ export enum EmitterEventName {
   // Widgets Developer Mode
   ToggleWidgetDevMode,
   // panel Is it on the move
-  PanelDragging
+  PanelDragging,
 }
 
 /**

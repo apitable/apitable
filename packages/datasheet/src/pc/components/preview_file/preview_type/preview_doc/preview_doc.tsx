@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, IUserInfo, Settings, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
-import { FileType, getDownloadSrc, stopPropagation } from 'pc/utils';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { IAttachmentValue, IUserInfo, Settings, Strings, t } from '@apitable/core';
+import { FileType, getDownloadSrc, stopPropagation } from 'pc/utils';
 import { NoSupport } from '../no_support';
 import { Loading } from './loading';
 import styles from './styles.module.less';
@@ -43,7 +43,7 @@ export const PreviewDoc: React.FC<React.PropsWithChildren<IPreviewDoc>> = ({
   spaceId,
   onClose,
   previewUrl,
-  disabledDownload
+  disabledDownload,
 }) => {
   const colors = useThemeColors();
   const isMainAdmin = userInfo?.isMainAdmin;
@@ -57,7 +57,7 @@ export const PreviewDoc: React.FC<React.PropsWithChildren<IPreviewDoc>> = ({
         type={FileType.Doc}
         icon={icon}
         isMainAdmin={isMainAdmin}
-        footer={(
+        footer={
           <a
             style={{
               color: colors.secondLevelText,
@@ -65,11 +65,12 @@ export const PreviewDoc: React.FC<React.PropsWithChildren<IPreviewDoc>> = ({
               fontSize: 12,
             }}
             href={Settings.integration_yozosoft_help_url.value}
-            target='_blank' rel="noreferrer"
+            target="_blank"
+            rel="noreferrer"
           >
             {t(Strings.preview_see_more)}
           </a>
-        )}
+        }
         spaceId={spaceId}
         onClose={onClose}
       />
@@ -97,4 +98,3 @@ export const PreviewDoc: React.FC<React.PropsWithChildren<IPreviewDoc>> = ({
     />
   );
 };
-

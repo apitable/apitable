@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface IButtonGroup { 
+export interface IButtonGroup {
   className?: string;
   style?: React.CSSProperties;
 }

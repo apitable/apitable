@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { Message } from 'pc/components/common/message/message';
 import React from 'react';
+import { Strings, t } from '@apitable/core';
+import { Message } from 'pc/components/common/message/message';
 import { CELL_CLASS, FIELD_HEAD_CLASS, GROUP_TITLE, OPERATE_BUTTON_CLASS, OPERATE_HEAD_CLASS } from './constant';
 
 interface IPoint {
@@ -52,33 +52,32 @@ export function checkPointInContainer(point: IPoint, container: DOMRect | Client
     shouldScroll: false,
     scrollDirection: '',
   };
-  if (innerLeftBoundary < point.x && point.x < innerRightBoundary
-    && innerTopBoundary < point.y && point.y < innerBottomBoundary) {
+  if (innerLeftBoundary < point.x && point.x < innerRightBoundary && innerTopBoundary < point.y && point.y < innerBottomBoundary) {
     return scrollParam;
   }
   // To the left
   if (container.left < point.x && point.x < innerLeftBoundary) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'left';
-    scrollParam.rowSpeed = Math.ceil(baseSpeed * (point.x - innerLeftBoundary) / spacing);
+    scrollParam.rowSpeed = Math.ceil((baseSpeed * (point.x - innerLeftBoundary)) / spacing);
   }
   // To the right
   if (innerRightBoundary < point.x && point.x < container.right) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'right';
-    scrollParam.rowSpeed = Math.ceil(baseSpeed * (point.x - innerRightBoundary) / spacing);
+    scrollParam.rowSpeed = Math.ceil((baseSpeed * (point.x - innerRightBoundary)) / spacing);
   }
   // To the top
   if (container.top < point.y && point.y < innerTopBoundary) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'top';
-    scrollParam.columnSpeed = Math.ceil(baseSpeed * (point.y - innerTopBoundary) / spacing);
+    scrollParam.columnSpeed = Math.ceil((baseSpeed * (point.y - innerTopBoundary)) / spacing);
   }
   // To the bottom
   if (innerBottomBoundary < point.y && point.y < container.bottom) {
     scrollParam.shouldScroll = true;
     scrollParam.scrollDirection = 'bottom';
-    scrollParam.columnSpeed = Math.ceil(baseSpeed * (point.y - innerBottomBoundary) / spacing);
+    scrollParam.columnSpeed = Math.ceil((baseSpeed * (point.y - innerBottomBoundary)) / spacing);
   }
   return scrollParam;
 }
@@ -94,10 +93,7 @@ function getParentNodeByOneClass(element: HTMLElement, className: string) {
  * @param {(string | string[])} className
  * @returns
  */
-export function getParentNodeByClass(
-  element: HTMLElement,
-  className: string | string[],
-): HTMLElement | null | undefined {
+export function getParentNodeByClass(element: HTMLElement, className: string | string[]): HTMLElement | null | undefined {
   if (!element || !className || !className.length) {
     return null;
   }
@@ -147,19 +143,13 @@ export function byte2Mb(byte: number | undefined) {
 
 // Calculate the corresponding rowIndex and columnIndex based on the recordId and fieldId bound to the clicked cell
 export const getClickCellId = (target: HTMLElement, includeGroupHead = false) => {
-  let recordId = getElementDataset(
-    getParentNodeByClass(target, [CELL_CLASS, OPERATE_HEAD_CLASS]), 'recordId',
-  );
+  let recordId = getElementDataset(getParentNodeByClass(target, [CELL_CLASS, OPERATE_HEAD_CLASS]), 'recordId');
 
   if (!recordId && includeGroupHead) {
-    recordId = getElementDataset(
-      getParentNodeByClass(target, [GROUP_TITLE]), 'groupHeadRecordId',
-    );
+    recordId = getElementDataset(getParentNodeByClass(target, [GROUP_TITLE]), 'groupHeadRecordId');
   }
 
-  const fieldId = getElementDataset(
-    getParentNodeByClass(target, [CELL_CLASS, FIELD_HEAD_CLASS]), 'fieldId',
-  );
+  const fieldId = getElementDataset(getParentNodeByClass(target, [CELL_CLASS, FIELD_HEAD_CLASS]), 'fieldId');
 
   return {
     fieldId,
@@ -169,8 +159,8 @@ export const getClickCellId = (target: HTMLElement, includeGroupHead = false) =>
 
 export const getGroupHeadRecordId = (e: React.MouseEvent | MouseEvent) => {
   const groupHeadRecordId = getElementDataset(
-    getParentNodeByClass(
-      e.target as HTMLElement, [OPERATE_HEAD_CLASS, CELL_CLASS, OPERATE_BUTTON_CLASS, GROUP_TITLE]), 'groupHeadRecordId',
+    getParentNodeByClass(e.target as HTMLElement, [OPERATE_HEAD_CLASS, CELL_CLASS, OPERATE_BUTTON_CLASS, GROUP_TITLE]),
+    'groupHeadRecordId',
   );
   return groupHeadRecordId;
 };
@@ -220,11 +210,14 @@ function copyLinkWithInput(content: string, successFn: () => void = copySuccess)
 
 export function copy2clipBoard(content: string, successFn: () => void = copySuccess) {
   if (navigator?.clipboard?.writeText) {
-    navigator.clipboard.writeText(content).then(() => {
-      successFn();
-    }, () => {
-      copyLinkWithInput(content, successFn);
-    });
+    navigator.clipboard.writeText(content).then(
+      () => {
+        successFn();
+      },
+      () => {
+        copyLinkWithInput(content, successFn);
+      },
+    );
   } else {
     copyLinkWithInput(content, successFn);
   }
@@ -252,23 +245,20 @@ export function getTextWidth(text: string, font: string): number {
  */
 export const stylizeIcon = (funcProps: ICloneIconFuncProps) => {
   const { icon, defaultSize, extraClassName } = funcProps;
-  const finalIcon = icon && (
-    React.isValidElement<{ className?: string, width?: number, height?: number, fill?: string, style?: React.CSSProperties }>(icon)
-      ? React.cloneElement(
-        icon,
-        {
-          width: icon.props.width || defaultSize,
-          height: icon.props.height || defaultSize,
-          fill: icon.props.fill || 'currentColor',
-          style: icon.props.style,
-          className: classNames({
-            [icon.props.className!]: icon.props.className,
-            [extraClassName!]: Boolean(extraClassName),
-          }),
-        },
-      )
-      : { icon }
-  );
+  const finalIcon =
+    icon &&
+    (React.isValidElement<{ className?: string; width?: number; height?: number; fill?: string; style?: React.CSSProperties }>(icon)
+      ? React.cloneElement(icon, {
+        width: icon.props.width || defaultSize,
+        height: icon.props.height || defaultSize,
+        fill: icon.props.fill || 'currentColor',
+        style: icon.props.style,
+        className: classNames({
+          [icon.props.className!]: icon.props.className,
+          [extraClassName!]: Boolean(extraClassName),
+        }),
+      })
+      : { icon });
   return finalIcon;
 };
 
@@ -295,16 +285,15 @@ export const isInContainer = (el: Element, container: any) => {
       top: 0,
       right: window.innerWidth,
       bottom: window.innerHeight,
-      left: 0
+      left: 0,
     };
   } else {
     containerRect = container.getBoundingClientRect();
   }
 
-  return elRect.top < containerRect.bottom &&
-    elRect.bottom > containerRect.top &&
-    elRect.right > containerRect.left &&
-    elRect.left < containerRect.right;
+  return (
+    elRect.top < containerRect.bottom && elRect.bottom > containerRect.top && elRect.right > containerRect.left && elRect.left < containerRect.right
+  );
 };
 
 export const getSearchParams = () => {
@@ -317,4 +306,3 @@ export const getSearchParams = () => {
 export const isRenderServer = () => {
   return process.env.SSR;
 };
-

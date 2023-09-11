@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ViewType } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { ViewType } from '@apitable/core';
 import { GanttOutlined, ArchitectureOutlined, GridOutlined, GalleryOutlined, KanbanOutlined, CalendarOutlined } from '@apitable/icons';
 
 const viewIconMap = {
@@ -37,7 +37,7 @@ interface IViewIcon {
   onClick?: (e: React.MouseEvent<SVGSVGElement>) => void;
 }
 
-export const ViewIcon: React.FC<React.PropsWithChildren<IViewIcon>> = props => {
+export const ViewIcon: React.FC<React.PropsWithChildren<IViewIcon>> = (props) => {
   const colors = useThemeColors();
   const { viewType, size = 15, color = colors.thirdLevelText, onClick } = props;
 
@@ -47,7 +47,6 @@ export const ViewIcon: React.FC<React.PropsWithChildren<IViewIcon>> = props => {
       color,
       onClick,
     });
-  } 
+  }
   return <></>;
-
 };

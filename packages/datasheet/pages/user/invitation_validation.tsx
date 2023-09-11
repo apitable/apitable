@@ -20,9 +20,14 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 // @ts-ignore
-const InvitationValidationWithNoSSR = dynamic(() => import('enterprise').then((components) => {
-  return components.InvitationValidation;
-}), { ssr: false });
+const InvitationValidationWithNoSSR = dynamic(
+  () =>
+    // @ts-ignore
+    import('enterprise').then((components) => {
+      return components.InvitationValidation;
+    }),
+  { ssr: false },
+);
 
 const App = () => {
   return InvitationValidationWithNoSSR && <InvitationValidationWithNoSSR />;

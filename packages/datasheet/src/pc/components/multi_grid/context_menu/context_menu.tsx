@@ -16,18 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DATASHEET_ID, Selectors, StoreActions } from '@apitable/core';
-import { store } from 'pc/store';
-import { CELL_CLASS, GHOST_RECORD_ID, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPERATE_HEAD_CLASS } from 'pc/utils';
-import { stopPropagation } from 'pc/utils/dom';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useContextMenu } from '@apitable/components';
+import { DATASHEET_ID, Selectors, StoreActions } from '@apitable/core';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { store } from 'pc/store';
+import {
+  CELL_CLASS,
+  GHOST_RECORD_ID,
+  FIELD_DOT,
+  FIELD_HEAD_CLASS,
+  getElementDataset,
+  getParentNodeByClass,
+  OPERATE_HEAD_CLASS,
+  isTouchDevice,
+} from 'pc/utils';
+import { stopPropagation } from 'pc/utils/dom';
 import { FieldMenu } from './field_menu';
 import { GRID_RECORD_MENU, RecordMenu } from './record_menu';
-import { useContextMenu } from '@apitable/components';
-import { isTouchDevice } from 'pc/utils';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
 
 type IdMap = {
   recordId?: string | null;
@@ -42,12 +50,12 @@ interface IContextFieldOwnProps {
   onFrozenColumn?: (fieldId: string) => void;
 }
 
-export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnProps>> = props => {
+export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnProps>> = (props) => {
   const { getIdMapByEvent, parentRef, editFieldSetting, editFieldDesc, onFrozenColumn } = props;
   const [fieldIdForMenu, setFieldIdForMenu] = useState('');
   const dispatch = useDispatch();
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
+  const recordRanges = useSelector((state) => Selectors.getSelectionRecordRanges(state));
 
   const { show: showField, hideAll } = useContextMenu({ id: DATASHEET_ID.FIELD_CONTEXT });
   const { show: showGrid } = useContextMenu({ id: GRID_RECORD_MENU });
@@ -81,7 +89,7 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
 
     if (fieldId) {
       const event = (e.type === 'touchend' ? (e as TouchEvent).changedTouches?.[0] : e) || e;
-      showField((event as any), {
+      showField(event as any, {
         id: DATASHEET_ID.FIELD_CONTEXT,
         props: {
           fieldId,
@@ -91,14 +99,11 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
     }
 
     if (recordId) {
-      if (
-        recordId === GHOST_RECORD_ID
-        && recordRanges == null
-      ) {
+      if (recordId === GHOST_RECORD_ID && recordRanges == null) {
         return;
       }
-      
-      showGrid((e as any), {
+
+      showGrid(e as any, {
         id: GRID_RECORD_MENU,
         props: {
           recordId,
@@ -111,10 +116,12 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
     const state = store.getState();
     const visibleColumns = Selectors.getVisibleColumns(state);
     const isSideRecordOpen = state.space.isSideRecordOpen;
-    store.dispatch(StoreActions.setActiveCell(datasheetId, {
-      recordId: recordId!,
-      fieldId: visibleColumns[0].fieldId,
-    }));
+    store.dispatch(
+      StoreActions.setActiveCell(datasheetId, {
+        recordId: recordId!,
+        fieldId: visibleColumns[0].fieldId,
+      }),
+    );
     if (isSideRecordOpen) {
       expandRecordIdNavigate(recordId);
     }
@@ -143,17 +150,8 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
   });
 
   return (
-    <div
-      onMouseDown={stopPropagation}
-      onWheel={stopPropagation}
-      onContextMenu={e => e.preventDefault()}
-    >
-      <FieldMenu
-        fieldId={fieldIdForMenu}
-        editFieldSetting={editFieldSetting}
-        editFieldDesc={editFieldDesc}
-        onFrozenColumn={onFrozenColumn}
-      />
+    <div onMouseDown={stopPropagation} onWheel={stopPropagation} onContextMenu={(e) => e.preventDefault()}>
+      <FieldMenu fieldId={fieldIdForMenu} editFieldSetting={editFieldSetting} editFieldDesc={editFieldDesc} onFrozenColumn={onFrozenColumn} />
       <RecordMenu />
     </div>
   );

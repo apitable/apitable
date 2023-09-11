@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Avatar, Button, Message, Typography } from '@apitable/components';
-import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import keyBy from 'lodash/keyBy';
-import styles from 'pc/components/view_lock/style.module.less';
-import { IViewLockProps } from 'pc/components/view_lock/interface';
-import { resourceService } from 'pc/resource_service';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Avatar, Button, Message, Typography } from '@apitable/components';
+import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { IViewLockProps } from 'pc/components/view_lock/interface';
+import styles from 'pc/components/view_lock/style.module.less';
+import { resourceService } from 'pc/resource_service';
 
 type IEnabledViewLockProps = {
   view: IViewProperty;
 } & Omit<IViewLockProps, 'viewId'>;
 
-export const EnabledViewLock: React.FC<React.PropsWithChildren<IEnabledViewLockProps>> = props => {
+export const EnabledViewLock: React.FC<React.PropsWithChildren<IEnabledViewLockProps>> = (props) => {
   const { view, onModalClose, unlockHandle } = props;
   const dispatch = useDispatch();
   const unitMap = useSelector(Selectors.getUnitMap)!;
@@ -39,7 +39,7 @@ export const EnabledViewLock: React.FC<React.PropsWithChildren<IEnabledViewLockP
     if (!view.lockInfo?.description) {
       return;
     }
-    Api.loadOrSearch({ unitIds: view.lockInfo.unitId }).then(res => {
+    Api.loadOrSearch({ unitIds: view.lockInfo.unitId }).then((res) => {
       const {
         data: { data: resData, success },
       } = res as any;

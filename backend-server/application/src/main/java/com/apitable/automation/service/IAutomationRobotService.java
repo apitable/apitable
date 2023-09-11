@@ -21,8 +21,9 @@ package com.apitable.automation.service;
 import com.apitable.automation.entity.AutomationRobotEntity;
 import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationRobotDto;
+import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationVO;
-import com.apitable.databusclient.ApiException;
+import com.apitable.automation.model.UpdateRobotRO;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,22 @@ public interface IAutomationRobotService {
      *
      * @param resourceId resource id
      */
-    List<AutomationVO> getRobotsByResourceId(String resourceId) throws ApiException;
+    List<AutomationSimpleVO> getRobotsByResourceId(String resourceId);
+
+    /**
+     * get automation detail.
+     *
+     * @param robotId robot id
+     */
+    AutomationVO getRobotByRobotId(String robotId);
 
     void checkAutomationReference(List<String> subNodeIds, List<String> resourceIds);
+
+    /**
+     * Update automation robot.
+     *
+     * @param robotId robot id
+     * @param data    ro data
+     */
+    boolean update(String robotId, UpdateRobotRO data);
 }

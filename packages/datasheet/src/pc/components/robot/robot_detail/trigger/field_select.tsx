@@ -20,22 +20,31 @@
 import { ITheme, Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
 import {
-  UserOutlined, AttachmentOutlined,
+  UserOutlined,
+  AttachmentOutlined,
   AutonumberOutlined,
-  CalendarOutlined, CheckboxOutlined,
+  CalendarOutlined,
+  CheckboxOutlined,
   UserAddOutlined,
   TimeOutlined,
   CurrencyUsdOutlined,
   EmailOutlined,
-  NumberOutlined, FormulaOutlined,
-  UserEditOutlined, HistoryFilled,
+  NumberOutlined,
+  FormulaOutlined,
+  UserEditOutlined,
+  HistoryFilled,
   LinktableOutlined,
   LongtextOutlined,
-  LookupOutlined, SelectMultipleOutlined, PercentOutlined,
+  LookupOutlined,
+  SelectMultipleOutlined,
+  PercentOutlined,
   TelephoneOutlined,
-  StarOutlined, SelectSingleOutlined, TextOutlined,
+  StarOutlined,
+  SelectSingleOutlined,
+  TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined,
+  LockFilled,
+  CascadeOutlined,
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -67,8 +76,7 @@ const FieldIconMap = {
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {
-
-  return fields.map(field => {
+  return fields.map((field) => {
     const res = {
       label: field.name,
       value: field.id,
@@ -85,28 +93,30 @@ const transformOptions = (fields: IField[], theme: ITheme) => {
 interface IFieldSelectProps {
   fields: IField[];
   value: string;
-  disabled?:boolean;
+  disabled?: boolean;
   onChange?: (value: any) => void;
 }
 export const FieldSelect = ({ disabled, fields, value, onChange }: IFieldSelectProps) => {
   const theme = useTheme();
   const options = transformOptions(fields, theme);
-  return <>
-    <Select
-      disabled={disabled}
-      options={options}
-      value={value}
-      onSelected={(option) => {
-        onChange && onChange(option.value);
-      }}
-      // FIXME：Adjusting maxHeight inside the dropdown list and limiting it outside will result in double scrollbars
-      // listStyle={{
-      //   maxHeight: 320,
-      //   overflow: 'scroll',
-      // }}
-      hideSelectedOption={!value}
-      dropdownMatchSelectWidth
-      openSearch={options.length > 7}
-    />
-  </>;
+  return (
+    <>
+      <Select
+        disabled={disabled}
+        options={options}
+        value={value}
+        onSelected={(option) => {
+          onChange && onChange(option.value);
+        }}
+        // FIXME：Adjusting maxHeight inside the dropdown list and limiting it outside will result in double scrollbars
+        // listStyle={{
+        //   maxHeight: 320,
+        //   overflow: 'scroll',
+        // }}
+        hideSelectedOption={!value}
+        dropdownMatchSelectWidth
+        openSearch={options.length > 7}
+      />
+    </>
+  );
 };

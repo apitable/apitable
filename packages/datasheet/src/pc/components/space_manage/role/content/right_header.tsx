@@ -16,21 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useContext } from 'react';
 import { Box, Button, Space, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { useContext } from 'react';
 import { RoleContext } from '../context';
 import styles from './style.module.less';
 
-export const RightHeader: React.FC<React.PropsWithChildren<{
-  count?: number;
-  roleName?: string;
-  buttonOpts?: {
-    disabledRemoveBtn?: boolean;
-  };
-  openAddMemberModal?: () => void;
-  onRemove?: () => void;
-}>> = props => {
+export const RightHeader: React.FC<
+  React.PropsWithChildren<{
+    count?: number;
+    roleName?: string;
+    buttonOpts?: {
+      disabledRemoveBtn?: boolean;
+    };
+    openAddMemberModal?: () => void;
+    onRemove?: () => void;
+  }>
+> = (props) => {
   const colors = useThemeColors();
   const { roleName, count, buttonOpts, openAddMemberModal, onRemove } = props;
   const { manageable } = useContext(RoleContext);

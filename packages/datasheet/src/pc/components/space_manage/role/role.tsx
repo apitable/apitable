@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Loading, Message } from '@apitable/components';
-import { ConfigConstant, Api } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { useRoleRequest } from 'pc/hooks/use_role';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Loading, Message } from '@apitable/components';
+import { ConfigConstant, Api } from '@apitable/core';
+import { useRoleRequest } from 'pc/hooks/use_role';
 import { Left } from './content/left';
 import { IRightRefs, Right } from './content/right';
 import { RoleContext } from './context';
@@ -33,7 +33,9 @@ const Role = () => {
   const [activeRoleId, setActiveRoleId] = useState<string>();
   const [activeRoleName, setActiveRoleName] = useState<string>();
   const rightRef = useRef<IRightRefs>(null);
-  const manageable = useSelector(state => state.spacePermissionManage.spaceResource?.permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE));
+  const manageable = useSelector(
+    (state) => state.spacePermissionManage.spaceResource?.permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
+  );
   const { run: refreshRoleList, data } = useRoleRequest();
   const { isOpen, roles: roleList } = data;
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
@@ -50,7 +52,7 @@ const Role = () => {
   }, [isOpen]);
 
   const beginUse = () => {
-    Api.initRoles().then(res => {
+    Api.initRoles().then((res) => {
       const { success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -61,7 +63,7 @@ const Role = () => {
   };
 
   if (firstLoading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (

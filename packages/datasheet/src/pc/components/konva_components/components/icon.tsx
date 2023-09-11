@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { UserGroupOutlined } from '@apitable/icons';
-import { useThemeColors } from '@apitable/components';
 import { ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
 import { FC, memo } from 'react';
+import { useThemeColors } from '@apitable/components';
+import { UserGroupOutlined } from '@apitable/icons';
 import { Rect } from './rect';
 
 const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/circle'), { ssr: false });
@@ -64,7 +64,7 @@ interface IIconProps extends ShapeConfig {
 
 export type Shape = 'square' | 'circle';
 
-export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string, background?: string; shape?: Shape; }>> = memo((props) => {
+export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string; background?: string; shape?: Shape }>> = memo((props) => {
   const colors = useThemeColors();
   const {
     name,
@@ -92,14 +92,8 @@ export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string, backgr
   } = props;
 
   return (
-    <Group
-      x={x}
-      y={y}
-      listening={listening}
-      {...rest}
-    >
-      {
-        shape === 'circle' &&
+    <Group x={x} y={y} listening={listening} {...rest}>
+      {shape === 'circle' && (
         <Circle
           x={(backgroundWidth || size) / 2}
           y={(backgroundWidth || size) / 2}
@@ -109,9 +103,8 @@ export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string, backgr
           opacity={opacity}
           perfectDrawEnabled={false}
         />
-      }
-      {
-        shape === 'square' &&
+      )}
+      {shape === 'square' && (
         <Rect
           name={name}
           width={backgroundWidth || size}
@@ -120,7 +113,7 @@ export const Icon: FC<React.PropsWithChildren<IIconProps & { id?: string, backgr
           cornerRadius={cornerRadius}
           opacity={opacity}
         />
-      }
+      )}
       <Path
         x={backgroundWidth && (backgroundWidth - size * (scaleX || 1)) / 2}
         y={backgroundHeight && (backgroundHeight - size * (scaleY || 1)) / 2}

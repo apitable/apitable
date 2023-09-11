@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { colorVars } from '@apitable/components';
 import { Field, IField } from '@apitable/core';
 import { WarnCircleFilled } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import * as React from 'react';
 import styles from '../styles.module.less';
 
 export function renderComputeFieldError(field: IField, errText: string, isMobile?: boolean, warnText?: string) {
@@ -31,11 +31,7 @@ export function renderComputeFieldError(field: IField, errText: string, isMobile
   const isError = Field.bindModel(field).hasError;
   if (isError || warnText) {
     return (
-      <Tooltip
-        title={isError ? errText : warnText}
-        placement={isMobile ? 'topLeft' : 'top'}
-        overlayClassName={styles.errorTip}
-      >
+      <Tooltip title={isError ? errText : warnText} placement={isMobile ? 'topLeft' : 'top'} overlayClassName={styles.errorTip}>
         <WarnCircleFilled color={colorVars.warningColor} size={15} className={styles.warningIcon} />
       </Tooltip>
     );

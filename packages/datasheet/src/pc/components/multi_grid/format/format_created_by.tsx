@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IField, ICreatedByField, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { IField, ICreatedByField, Strings, t } from '@apitable/core';
+import { QuestionCircleOutlined } from '@apitable/icons';
+import { getEnvVariables } from 'pc/utils/env';
+import { Message } from '../../common';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
-import { useSelector } from 'react-redux';
-import { Message } from '../../common';
-import { getEnvVariables } from 'pc/utils/env';
-import { QuestionCircleOutlined } from '@apitable/icons';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;
@@ -34,7 +34,6 @@ interface IFormatCreatedBy {
 }
 
 export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>> = (props: IFormatCreatedBy) => {
-
   const handleSubscription = (checked: boolean) => {
     const updateSubscription = () => {
       props.setCurrentField({
@@ -48,7 +47,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
     if (checked) {
       Message.info({
-        content: t(Strings.field_created_by_property_subscription_open_tip)
+        content: t(Strings.field_created_by_property_subscription_open_tip),
       });
       updateSubscription();
     } else {
@@ -58,7 +57,7 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
 
   const { subscription } = props.currentField.property;
 
-  const embedId = useSelector(state => state.pageParams.embedId);
+  const embedId = useSelector((state) => state.pageParams.embedId);
 
   const { RECORD_WATCHING_VISIBLE } = getEnvVariables();
 
@@ -66,28 +65,28 @@ export const FormatCreatedBy: React.FC<React.PropsWithChildren<IFormatCreatedBy>
     return null;
   }
 
-  return <div className={styles.section}>
-    <section className={settingStyles.section}>
-      {!embedId && <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
-        <div className={styles.subscription}>
-          {t(Strings.field_created_by_property_subscription)}
-          <a
-            href={t(Strings.field_help_created_by_property_subscription)}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: 'inline-block', cursor: 'pointer' }}
-          >
-            <span className={styles.requiredTip}>
-              <QuestionCircleOutlined color="currentColor"/>
-            </span>
-          </a>
-        </div>
-        <Switch
-          size="small"
-          checked={subscription}
-          onChange={handleSubscription}
-        />
-      </div>}
-    </section>
-  </div>;
+  return (
+    <div className={styles.section}>
+      <section className={settingStyles.section}>
+        {!embedId && (
+          <div className={classNames(settingStyles.sectionTitle, settingStyles.sub)}>
+            <div className={styles.subscription}>
+              {t(Strings.field_created_by_property_subscription)}
+              <a
+                href={t(Strings.field_help_created_by_property_subscription)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-block', cursor: 'pointer' }}
+              >
+                <span className={styles.requiredTip}>
+                  <QuestionCircleOutlined color="currentColor" />
+                </span>
+              </a>
+            </div>
+            <Switch size="small" checked={subscription} onChange={handleSubscription} />
+          </div>
+        )}
+      </section>
+    </div>
+  );
 };

@@ -54,9 +54,10 @@ class RemindAggregation {
         const cv = Selectors.getCellValue(state, snapshot, firstRecordId, firstFieldId);
         const primaryText = Field.bindModel(snapshot.meta.fieldMap[firstFieldId]).cellValueToString(cv);
 
-        const { fieldId: firstMemberFieldId }: any = Selectors.getViewById(snapshot, viewId)?.columns.find(({ fieldId }) => {
-          return fieldIds?.includes(fieldId);
-        }) || {};
+        const { fieldId: firstMemberFieldId }: any =
+          Selectors.getViewById(snapshot, viewId)?.columns.find(({ fieldId }) => {
+            return fieldIds?.includes(fieldId);
+          }) || {};
 
         const firstMemberFieldName = firstMemberFieldId && snapshot.meta.fieldMap[firstMemberFieldId]?.name;
 
@@ -65,15 +66,17 @@ class RemindAggregation {
             recordIds: recordIds,
             unitIds: [unitId],
             recordTitle: primaryText || '',
-            fieldName: firstMemberFieldName
+            fieldName: firstMemberFieldName,
           });
         } else {
-          reqMap[reqKey] = [{
-            recordIds: recordIds,
-            unitIds: [unitId],
-            recordTitle: primaryText || '',
-            fieldName: firstMemberFieldName
-          }];
+          reqMap[reqKey] = [
+            {
+              recordIds: recordIds,
+              unitIds: [unitId],
+              recordTitle: primaryText || '',
+              fieldName: firstMemberFieldName,
+            },
+          ];
         }
       }
       // Consume the message first, failure will not resend
@@ -82,7 +85,7 @@ class RemindAggregation {
         const [key, unitRecs] = item;
         const [isNotify, linkId, nodeId, viewId] = key.split('-');
         const mirrorId = state.pageParams.datasheetId === nodeId && state.pageParams.mirrorId;
-        if(isNotify === '1') {
+        if (isNotify === '1') {
           verificationPermission({
             isNotify: isNotify === '1',
             nodeId: mirrorId || nodeId,
@@ -100,7 +103,7 @@ class RemindAggregation {
    * @param {*} recordId
    * @memberof RemindAggregation
    */
-  addRemindUnit(id: string, remindUnit: { fieldId: string, recordId: string }) {
+  addRemindUnit(id: string, remindUnit: { fieldId: string; recordId: string }) {
     const aggrRemind = remindUnitRecordsMap.get(id);
     if (aggrRemind) {
       aggrRemind.fieldIds = Array.from(new Set([...aggrRemind.fieldIds, remindUnit.fieldId]));
@@ -108,7 +111,7 @@ class RemindAggregation {
     } else {
       remindUnitRecordsMap.set(id, {
         fieldIds: [remindUnit.fieldId],
-        recordIds: [remindUnit.recordId]
+        recordIds: [remindUnit.recordId],
       });
     }
   }

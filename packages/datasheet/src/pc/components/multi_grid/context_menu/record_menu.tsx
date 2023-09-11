@@ -16,18 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
-import {
-  CollaCommandName, DatasheetApi, ExecuteResult, ICollaCommandExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType
-} from '@apitable/core';
-import {
-  ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, LinkOutlined, CopyOutlined, DeleteOutlined,
-  DuplicateOutlined, ExpandOutlined,
-} from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { isInteger } from 'lodash';
 import difference from 'lodash/difference';
 import path from 'path-browserify';
+import * as React from 'react';
+import { KeyboardEvent, useRef, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName,
+  DatasheetApi,
+  ExecuteResult,
+  ICollaCommandExecuteResult,
+  Selectors,
+  StoreActions,
+  Strings,
+  t,
+  View,
+  ViewType,
+} from '@apitable/core';
+import {
+  ArrowDownOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  ArrowUpOutlined,
+  AttentionOutlined,
+  LinkOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  DuplicateOutlined,
+  ExpandOutlined,
+} from '@apitable/icons';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
@@ -42,10 +63,6 @@ import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
-import * as React from 'react';
-import { KeyboardEvent, useRef, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import { copy2clipBoard } from '../../../utils/dom';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
 
@@ -73,11 +90,11 @@ export function copyRecord(recordId: string): Promise<ICollaCommandExecuteResult
   });
 }
 
-export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = props => {
+export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (props) => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
-  const recordRanges = useSelector(state => Selectors.getSelectionRecordRanges(state));
-  const view = useSelector(state => Selectors.getCurrentView(state))!;
+  const recordRanges = useSelector((state) => Selectors.getSelectionRecordRanges(state));
+  const view = useSelector((state) => Selectors.getCurrentView(state))!;
   const isOrgChart = view.type === ViewType.OrgChart;
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
@@ -85,12 +102,12 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const { mirrorId, shareId, templateId, embedId } = useSelector(state => state.pageParams);
+  const { mirrorId, shareId, templateId, embedId } = useSelector((state) => state.pageParams);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const beforeInputRef = useRef<IInputEditor>(null);
   const afterInputRef = useRef<IInputEditor>(null);
   const selection = useSelector(Selectors.getSelectRanges);
-  const subscriptions = useSelector(state => state.subscriptions)!;
+  const subscriptions = useSelector((state) => state.subscriptions)!;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -122,7 +139,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
       // Handling the deletion of selections
       for (const v of selection) {
         const selectRecords = Selectors.getRangeRecords(store.getState(), v);
-        selectRecords && data.push(...selectRecords.map(r => r.recordId));
+        selectRecords && data.push(...selectRecords.map((r) => r.recordId));
       }
     } else {
       // Handling right-click menu deletion
@@ -169,42 +186,45 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
     });
   }
 
-  const getSubOrUnsubText = useCallback((recordId: string): string => {
-    // Compatibility of views for Calendar, Kanban, Gallery and OrgChart views
-    if (isCalendar || isKanban || isGallery || isOrgChart) {
-      return subscriptions.includes(recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
-    }
-
-    if (hasSelection) {
-      const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
-
-      if (!selectRecords) return t(Strings.record_watch_single);
-
-      if (selectRecords?.length > 1) {
-        const recordIds = selectRecords.map(el => el.recordId);
-        // Determine if the selected record is all in the subscription
-        return [...new Set([...subscriptions, ...recordIds])].length === subscriptions.length
-          ? t(Strings.cancel_watch_record_multiple, { count: recordIds.length })
-          : t(Strings.record_watch_multiple, { count: recordIds.length });
+  const getSubOrUnsubText = useCallback(
+    (recordId: string): string => {
+      // Compatibility of views for Calendar, Kanban, Gallery and OrgChart views
+      if (isCalendar || isKanban || isGallery || isOrgChart) {
+        return subscriptions.includes(recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
       }
 
-      return subscriptions.includes(selectRecords[0].recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
-    }
+      if (hasSelection) {
+        const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
 
-    if (recordRanges) {
-      if (recordRanges.length > 1) {
+        if (!selectRecords) return t(Strings.record_watch_single);
+
+        if (selectRecords?.length > 1) {
+          const recordIds = selectRecords.map((el) => el.recordId);
+          // Determine if the selected record is all in the subscription
+          return [...new Set([...subscriptions, ...recordIds])].length === subscriptions.length
+            ? t(Strings.cancel_watch_record_multiple, { count: recordIds.length })
+            : t(Strings.record_watch_multiple, { count: recordIds.length });
+        }
+
+        return subscriptions.includes(selectRecords[0].recordId) ? t(Strings.cancel_watch_record_single) : t(Strings.record_watch_single);
+      }
+
+      if (recordRanges) {
+        if (recordRanges.length > 1) {
+          return [...new Set([...subscriptions, ...recordRanges])].length === subscriptions.length
+            ? t(Strings.cancel_watch_record_multiple, { count: recordRanges.length })
+            : t(Strings.record_watch_multiple, { count: recordRanges.length });
+        }
+
         return [...new Set([...subscriptions, ...recordRanges])].length === subscriptions.length
-          ? t(Strings.cancel_watch_record_multiple, { count: recordRanges.length })
-          : t(Strings.record_watch_multiple, { count: recordRanges.length });
+          ? t(Strings.cancel_watch_record_single)
+          : t(Strings.record_watch_single);
       }
 
-      return [...new Set([...subscriptions, ...recordRanges])].length === subscriptions.length
-        ? t(Strings.cancel_watch_record_single)
-        : t(Strings.record_watch_single);
-    }
-
-    return t(Strings.record_watch_single);
-  }, [isCalendar, isKanban, isGallery, isOrgChart, subscriptions, selection, recordRanges, hasSelection]);
+      return t(Strings.record_watch_single);
+    },
+    [isCalendar, isKanban, isGallery, isOrgChart, subscriptions, selection, recordRanges, hasSelection],
+  );
 
   const onSubOrUnsub = (recordId: string) => {
     if (onlyOperateOneRecord) {
@@ -217,7 +237,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
 
       if (!selectRecords) return;
 
-      const recordIds = selectRecords.map(el => el.recordId);
+      const recordIds = selectRecords.map((el) => el.recordId);
       // Determine if the selected record is all in the subscription
       if ([...new Set([...subscriptions, ...recordIds])].length === subscriptions.length) {
         onUnsubscribe(recordIds);
@@ -356,7 +376,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
               initValue={1}
               text={t(Strings.menu_insert_record_above)}
               textKey={'lineCount'}
-              onChange={value => onInputChange(value, beforeInputRef)}
+              onChange={(value) => onInputChange(value, beforeInputRef)}
               onKeyDown={onInputKeyDown}
             />
           ),
@@ -377,7 +397,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = p
               initValue={1}
               text={t(Strings.menu_insert_record_below)}
               textKey={'lineCount'}
-              onChange={value => onInputChange(value, afterInputRef)}
+              onChange={(value) => onInputChange(value, afterInputRef)}
               onKeyDown={onInputKeyDown}
             />
           ),

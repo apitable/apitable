@@ -17,6 +17,10 @@
  */
 
 // TODO Reconstructing the address book
+import * as React from 'react';
+import { FC, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { UserAddOutlined } from '@apitable/icons';
@@ -27,10 +31,6 @@ import { expandInviteModal } from 'pc/components/invite';
 import { useSpaceInfo } from 'pc/hooks';
 import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { FC, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
 import { SelectUnitLeft } from './select_unit_left';
 import { SelectUnitPopup } from './select_unit_popup';
 import { SelectUnitRight } from './select_unit_right';
@@ -48,7 +48,7 @@ export enum SelectUnitSource {
 export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   isSingleSelect?: boolean;
   checkedList?: UnitItem[];
-  source?: SelectUnitSource; 
+  source?: SelectUnitSource;
   disableList?: string[];
   disableIdList?: string[];
   onSubmit: (checkedList: UnitItem[]) => void;
@@ -60,7 +60,7 @@ export interface ISelectUnitModalProps extends Omit<IModalProps, 'onCancel'> {
   showTab?: boolean; // show role and org tab
 }
 
-export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>> = props => {
+export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>> = (props) => {
   const {
     isSingleSelect,
     checkedList: propsCheckedList,
@@ -75,23 +75,23 @@ export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>>
     showTab,
     ...rest
   } = props;
-  
+
   const { spaceInfo } = useSpaceInfo(spaceId);
   const cacheTheme = useSelector(Selectors.getTheme);
-  
+
   const [checkedList, setCheckedList] = useState<UnitItem[]>(propsCheckedList ? propsCheckedList : []);
-  
+
   const [units, setUnits] = useState<IUnit | null>(null);
 
   const linkId = useSelector(Selectors.getLinkId);
-  const formId = useSelector(state => state.pageParams.formId);
+  const formId = useSelector((state) => state.pageParams.formId);
 
   const onCancel = () => {
     propsCancel('');
   };
 
   const cancelCheck = (unitId: string) => {
-    setCheckedList(checkedList.filter(item => item.unitId !== unitId));
+    setCheckedList(checkedList.filter((item) => item.unitId !== unitId));
   };
 
   const onOk = () => {
@@ -125,7 +125,7 @@ export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>>
           <TextButton size={'small'} onClick={onCancel}>
             {t(Strings.cancel)}
           </TextButton>
-          <Button color='primary' size='small' onClick={onOk} disabled={!allowEmtpyCheckedList && checkedList.length === 0}>
+          <Button color="primary" size="small" onClick={onOk} disabled={!allowEmtpyCheckedList && checkedList.length === 0}>
             {t(Strings.submit)}
           </Button>
         </div>

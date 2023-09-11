@@ -18,7 +18,8 @@
 
 import axios from 'axios';
 import { mutate } from 'swr';
-import { IRobotBaseInfo, IRobotRunHistoryList, IRobotTrigger } from './interface';
+import {IAutomationDatum, IRobotBaseInfo, IRobotHistoryTask, IRobotRunHistoryList, IRobotTrigger} from './interface';
+import { IAutomationRobotDetailItem } from './robot_context';
 
 export const nestReq = axios.create({
   baseURL: '/nest/v1/',
@@ -39,20 +40,45 @@ export const deleteRobotAction = async(actionId: string) => {
 
 export const updateRobotName = async(robotId: string, name: string) => {
   const res = await nestReq.patch(`/automation/robots/${robotId}`, {
-    name
+    name,
   });
   return res.data.success;
 };
 
 export const updateRobotDescription = async(robotId: string, description: string) => {
   const res = await nestReq.patch(`/automation/robots/${robotId}`, {
-    description
+    description,
   });
   return res.data.success;
 };
 
-export const getResourceRobots = (url: string): Promise<IRobotBaseInfo[]> => {
-  return nestReq.get(url).then(res => {
+export const updateRobotItem = async(resourceId: string, robotId: string, robot: Partial<IAutomationDatum>) => {
+  const res = await axios.patch(`/automation/${resourceId}/modify/${robotId}`, robot);
+  return res.data.success;
+};
+
+export const getResourceAutomations = (resourceId: string): Promise<IAutomationDatum[]> => {
+  return axios.get(`/automation/robots?resourceId=${resourceId}`).then(res => {
+    if (res.data.success) {
+      return res.data.data;
+    }
+    return [];
+  });
+};
+
+export const createAutomationRobot = (robot: {
+  resourceId: string;
+  name: string;
+}): Promise<IAutomationDatum> => {
+  return nestReq.post('/automation/robots', robot).then(res => {
+    if (res.data.success) {
+      return res.data.data;
+    }
+    return [];
+  });
+};
+export const getResourceAutomationDetail = (resourceId: string, robotId: string): Promise<IAutomationRobotDetailItem> => {
+  return axios.get(`/automation/${resourceId}/robots/${robotId}`).then(res => {
     if (res.data.success) {
       return res.data.data;
     }
@@ -62,7 +88,7 @@ export const getResourceRobots = (url: string): Promise<IRobotBaseInfo[]> => {
 
 export const activeRobot = (robotId: string): Promise<boolean> => {
   const url = `/automation/robots/${robotId}/active`;
-  return nestReq.post(url).then(res => {
+  return nestReq.post(url).then((res) => {
     if (res.data.success) {
       if (res.data.data.ok) {
         return true;
@@ -75,7 +101,7 @@ export const activeRobot = (robotId: string): Promise<boolean> => {
 
 export const deActiveRobot = (robotId: string): Promise<any> => {
   const url = `/automation/robots/${robotId}/deactive`;
-  return nestReq.post(url).then(res => {
+  return nestReq.post(url).then((res) => {
     if (res.data.success) {
       return true;
     }
@@ -83,7 +109,7 @@ export const deActiveRobot = (robotId: string): Promise<any> => {
   });
 };
 export const deleteRobot = (robotId: string) => {
-  return nestReq.delete(`/automation/robots/${robotId}`).then(res => {
+  return nestReq.delete(`/automation/robots/${robotId}`).then((res) => {
     if (res.data.success) {
       return true;
     }
@@ -106,42 +132,47 @@ export const createTrigger = (robotId: string, triggerTypeId: string, input?: an
 
 export const changeTriggerTypeId = (triggerId: string, triggerTypeId: string) => {
   return nestReq.patch(`/automation/triggers/${triggerId}`, {
-    triggerTypeId
+    triggerTypeId,
   });
 };
 
 export const updateTriggerInput = (triggerId: string, input: any) => {
   return nestReq.patch(`/automation/triggers/${triggerId}`, {
-    input
+    input,
   });
 };
 
-export const createAction = (data: {
-  robotId: string, actionTypeId: string, prevActionId?: string, input?: any
-}) => {
+export const createAction = (data: { robotId: string; actionTypeId: string; prevActionId?: string; input?: any }) => {
   return nestReq.post('/automation/actions', data);
 };
 
 export const changeActionTypeId = (actionId: string, actionTypeId: string) => {
   return nestReq.patch(`/automation/actions/${actionId}`, {
-    actionTypeId
+    actionTypeId,
   });
 };
 
 export const updateActionInput = (actionId: string, input: any) => {
   return nestReq.patch(`/automation/actions/${actionId}`, {
-    input
+    input,
   });
 };
 
 export const getRobotTrigger = (url: string): Promise<IRobotTrigger | undefined> => {
-  return nestReq.get(url).then(res => {
+  return nestReq.get(url).then((res) => {
     return res?.data.data;
   });
 };
 
 export const getRobotBaseInfo = (robotId: string): Promise<IRobotBaseInfo | undefined> => {
-  return nestReq.get(`/automation/robots/${robotId}/base-info`).then(res => {
+  return nestReq.get(`/automation/robots/${robotId}/base-info`).then((res) => {
     return res?.data.data[0];
+  });
+};
+
+export const getAutomationRunHistoryDetail = (taskId: string): Promise<IRobotHistoryTask | undefined> => {
+  return nestReq.get(`/automation/run-history/${taskId}`).then((res) => {
+    const taskDetail: undefined|IRobotHistoryTask = res?.data?.data;
+    return taskDetail;
   });
 };

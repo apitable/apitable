@@ -16,29 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable no-script-url */
-import { Typography, useThemeColors } from '@apitable/components';
-import { isPrivateDeployment, NAV_ID, StoreActions, Strings, t, Navigation } from '@apitable/core';
-import {
-  AdviseOutlined, CodeFilled, CommentOutlined, DownloadOutlined, KeyboardOutlined, QuestionCircleOutlined, RoadmapOutlined, TimeOutlined,
-  VikabyOutlined, WebOutlined, UserGroupOutlined
-} from '@apitable/icons';
 import classnames from 'classnames';
-// @ts-ignore
-import { inSocialApp, openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
+
+import RcTrigger from 'rc-trigger';
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Typography, useThemeColors } from '@apitable/components';
+import { isPrivateDeployment, NAV_ID, StoreActions, Strings, t } from '@apitable/core';
+import {
+  AdviseOutlined,
+  CodeFilled,
+  CommentOutlined,
+  DownloadOutlined,
+  KeyboardOutlined,
+  QuestionCircleOutlined,
+  RoadmapOutlined,
+  TimeOutlined,
+  WebOutlined,
+  UserGroupOutlined,
+} from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useResponsive } from 'pc/hooks';
-import { Router } from 'pc/components/route_manager/router';
 
 import { useContactUs } from 'pc/hooks/use_contact_us';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import RcTrigger from 'rc-trigger';
-import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
+// @ts-ignore
+import { inSocialApp } from 'enterprise';
 
 export interface IHelpProps {
   className?: string;
@@ -51,22 +58,10 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const spaceId = useSelector(state => state.space.activeId);
 
   const contactUs = useContactUs();
   const openShortcutKeyPanel = () => {
     dispatch(StoreActions.setShortcutKeyPanelVisible(true));
-  };
-
-  const vikabyHelperClick = () => {
-    const pathname = window.location.pathname;
-    sessionStorage.removeItem(VIKABY_POSITION_SESSION_KEY);
-    if (pathname.includes('workbench')) {
-      openVikaby({ visible: true, defaultExpandMenu: true });
-    } else {
-      localStorage.removeItem('vikaby_closed');
-      Router.push(Navigation.WORKBENCH, { params: { spaceId }});
-    }
   };
 
   const menuData = [
@@ -74,7 +69,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       icon: <WebOutlined />,
       text: t(Strings.official_website_without_abbr),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
-      hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL
+      hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL,
     },
     {
       icon: <QuestionCircleOutlined />,
@@ -85,7 +80,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       icon: <CodeFilled />,
       text: t(Strings.api_sdk),
       onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
-      hidden: !getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL
+      hidden: !getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL,
     },
     {
       icon: <DownloadOutlined />,
@@ -127,13 +122,6 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       hidden: isMobile,
     },
     {
-      icon: <VikabyOutlined color={colors.thirdLevelText} />,
-      text: t(Strings.assistant),
-      id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
-      onClick: vikabyHelperClick,
-      hidden: isMobile || isPrivateDeployment() || isMobileApp() || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE,
-    },
-    {
       icon: <UserGroupOutlined color={colors.thirdLevelText} />,
       text: t(Strings.help_partner_program),
       id: NAV_ID.USER_PARTNER_PROGRAM,
@@ -144,9 +132,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
 
   // Return menu data for mobile
   const getMobileMenuData = () => {
-    return [
-      menuData.filter(v => v),
-    ];
+    return [menuData.filter((v) => v)];
   };
 
   const HelpBtn = () => {
@@ -166,13 +152,13 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   const ContextmenuList: FC<React.PropsWithChildren<{ menuItems: any[] }>> = ({ menuItems }) => {
     return (
       <>
-        {menuItems.map(item => (
+        {menuItems.map((item) => (
           <ContextmenuItem
             key={item.text}
             className={styles.menuItem}
             {...item}
             name={item.text}
-            onClick={e => {
+            onClick={(e) => {
               setVisible(false);
               item.onClick && item.onClick(e);
             }}
@@ -193,7 +179,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
   const HelpMenu = () => {
     return (
       <div className={styles.helpMenu}>
-        <Typography className={styles.title} variant='h8' color={colors.fc1}>
+        <Typography className={styles.title} variant="h8" color={colors.fc1}>
           {t(Strings.help)}
         </Typography>
         <div className={styles.wrapper}>
@@ -214,7 +200,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <RcTrigger
-          action='click'
+          action="click"
           popup={<HelpMenu />}
           destroyPopupOnHide
           popupAlign={{
@@ -223,7 +209,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
           }}
           popupStyle={{ width: 'fit-content' }}
           popupVisible={visible}
-          onPopupVisibleChange={visible => setVisible(visible)}
+          onPopupVisibleChange={(visible) => setVisible(visible)}
           zIndex={1000}
         >
           <Tooltip title={t(Strings.help)} placement="right">
@@ -236,7 +222,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <HelpBtn />
-        <MobileContextMenu title={t(Strings.help)} data={getMobileMenuData()} height='auto' visible={visible} onClose={() => setVisible(false)} />
+        <MobileContextMenu title={t(Strings.help)} data={getMobileMenuData()} height="auto" visible={visible} onClose={() => setVisible(false)} />
       </ComponentDisplay>
     </>
   );

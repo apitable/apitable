@@ -17,9 +17,9 @@
  */
 
 import { Text } from 'slate';
+import { ElementType, MarkType, HIGHLIGHT_COLORS } from '../constant';
 import { EditorValue } from '../interface/editor';
 import { IElement, TText, IElementData, IImageElementData, ILinkElementData, IMentionElementData } from '../interface/element';
-import { ElementType, MarkType, HIGHLIGHT_COLORS } from '../constant';
 
 const INDENT_CLASS_PREFIX = 've_indent_';
 const ALIGN_CLASS_PREFIX = 've_align_';
@@ -82,9 +82,9 @@ const blockFactory = (tag: string, element: IElement) => {
 const stringifyVoidData = (data: IElementData) => {
   const str = JSON.stringify(data);
   if (String.prototype.replaceAll as any) {
-    return str.replaceAll('"', '\'');
+    return str.replaceAll('"', "'");
   }
-  return str.replace(/"/g, '\'');
+  return str.replace(/"/g, "'");
 };
 
 const elementMap = {
@@ -110,7 +110,7 @@ const elementMap = {
       imgAttr = `${imgAttr} name="${data.name}" alt="${data.name}"`;
     }
     if (data.width) {
-      imgAttr = `${imgAttr} width="${ typeof data.width === 'string' ? data.width : `${data.width}px` }"`;
+      imgAttr = `${imgAttr} width="${typeof data.width === 'string' ? data.width : `${data.width}px`}"`;
     }
     return `<p data-void="${ElementType.IMAGE}" data-void-data="${stringifyVoidData(data)}" ${wrapAttr}><img ${imgAttr} /></p>`;
   },
@@ -136,5 +136,7 @@ const elementStringify = (node: IElement) => {
 };
 
 export const html = (document: EditorValue) => {
-  return document.reduce((acc, element) => { return `${acc}${elementStringify(element)}`; }, '');
+  return document.reduce((acc, element) => {
+    return `${acc}${elementStringify(element)}`;
+  }, '');
 };

@@ -16,23 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFieldMap, ISnapshot, IViewRow, Selectors } from '@apitable/core';
-import { store } from 'pc/store';
-import {
-  getRenderData, IRenderData,
-} from '../utils';
-import { CARD_WIDTH, NodeType } from '../constants';
-import { getRecordName } from 'pc/components/expand_record';
-import styles from '../styles.module.less';
-import { IDegree, IEdge, IDegrees, IAdj, IGraphData, INode, INodeStateMap } from '../interfaces';
 import { useCreation } from 'ahooks';
+import { IFieldMap, ISnapshot, IViewRow, Selectors } from '@apitable/core';
 import { Edge } from '@apitable/react-flow';
+import { getRecordName } from 'pc/components/expand_record';
+import { store } from 'pc/store';
+import { CARD_WIDTH, NodeType } from '../constants';
+import { IDegree, IEdge, IDegrees, IAdj, IGraphData, INode, INodeStateMap } from '../interfaces';
+import styles from '../styles.module.less';
+import { getRenderData, IRenderData } from '../utils';
 
 export const useElements = (props: {
   fieldMap: IFieldMap;
   getCardHeight: (recordId: string | null) => number;
   nodeStateMap: INodeStateMap;
-  rows: IViewRow[],
+  rows: IViewRow[];
   datasheetId: string;
   linkFieldId: string;
   primaryFieldId: string;
@@ -41,20 +39,8 @@ export const useElements = (props: {
   fieldEditable: boolean;
   horizontal: boolean;
 }): IRenderData => {
-
-  const {
-    fieldMap,
-    getCardHeight,
-    nodeStateMap,
-    rows,
-    datasheetId,
-    linkFieldId,
-    primaryFieldId,
-    snapshot,
-    fieldVisible,
-    fieldEditable,
-    horizontal,
-  } = props;
+  const { fieldMap, getCardHeight, nodeStateMap, rows, datasheetId, linkFieldId, primaryFieldId, snapshot, fieldVisible, fieldEditable, horizontal } =
+    props;
 
   return useCreation(() => {
     const state = store.getState();
@@ -70,12 +56,7 @@ export const useElements = (props: {
         outDegree: 0,
       };
 
-      const linkIds = Selectors.getCellValue(
-        state,
-        snapshot,
-        row.recordId,
-        linkFieldId
-      ) || [];
+      const linkIds = Selectors.getCellValue(state, snapshot, row.recordId, linkFieldId) || [];
 
       adj[row.recordId] = linkIds;
     });
@@ -87,17 +68,9 @@ export const useElements = (props: {
         if (!Array.isArray(linkIds)) {
           linkIds = [];
         }
-        const firstCellValue = Selectors.getCellValue(
-          state,
-          snapshot,
-          row.recordId,
-          primaryFieldId
-        );
+        const firstCellValue = Selectors.getCellValue(state, snapshot, row.recordId, primaryFieldId);
 
-        const recordName = getRecordName(
-          firstCellValue,
-          fieldMap[primaryFieldId]
-        );
+        const recordName = getRecordName(firstCellValue, fieldMap[primaryFieldId]);
 
         const cardHeight = baseHeight + (nodeStateMap[row.recordId]?.collapsed ? 24 : 0);
         const node: INode = {
@@ -118,39 +91,41 @@ export const useElements = (props: {
         };
         graph.nodes.push(node);
         graph.edges?.push(
-          ...linkIds?.map((id) => {
-            degrees[row.recordId].degree++;
-            degrees[row.recordId].outDegree++;
-            degrees[id] && degrees[id].degree++;
-            degrees[id] && degrees[id].inDegree++;
+          ...(linkIds
+            ?.map((id) => {
+              degrees[row.recordId].degree++;
+              degrees[row.recordId].outDegree++;
+              degrees[id] && degrees[id].degree++;
+              degrees[id] && degrees[id].inDegree++;
 
-            // The information of degree should be read while counting, and if the node entry is greater than 1, then use the dashed line
-            if (degrees[id]?.inDegree > 1) {
-              otherEdges.push({
+              // The information of degree should be read while counting, and if the node entry is greater than 1, then use the dashed line
+              if (degrees[id]?.inDegree > 1) {
+                otherEdges.push({
+                  id: `${row.recordId}-${id}`,
+                  source: row.recordId,
+                  target: id,
+                  type: 'bezier',
+                  sourceHandle: row.recordId,
+                  targetHandle: id,
+                  className: styles.bezierEdge,
+                });
+                return null;
+              }
+
+              return {
                 id: `${row.recordId}-${id}`,
                 source: row.recordId,
                 target: id,
-                type: 'bezier',
                 sourceHandle: row.recordId,
                 targetHandle: id,
-                className: styles.bezierEdge,
-              });
-              return null;
-            }
-
-            return {
-              id: `${row.recordId}-${id}`,
-              source: row.recordId,
-              target: id,
-              sourceHandle: row.recordId,
-              targetHandle: id,
-              type: NodeType.CustomEdge,
-            };
-          }).filter(Boolean) as Edge<any>[]
+                type: NodeType.CustomEdge,
+              };
+            })
+            .filter(Boolean) as Edge<any>[]),
         );
         return graph;
       },
-      { nodes: [], edges: [] } as IGraphData
+      { nodes: [], edges: [] } as IGraphData,
     );
 
     const renderData = getRenderData({

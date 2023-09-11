@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { colorVars, useThemeColors } from '@apitable/components';
-import { ISelectFieldOption, Strings, t } from '@apitable/core';
-import { DeleteOutlined } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
-// @ts-ignore
-import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert, isEnterprise } from 'enterprise';
-import { useResponsive } from 'pc/hooks';
-import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useState } from 'react';
+import { colorVars, useThemeColors } from '@apitable/components';
+import { ISelectFieldOption, Strings, t } from '@apitable/core';
+import { DeleteOutlined } from '@apitable/icons';
+import { useResponsive } from 'pc/hooks';
+import { stopPropagation } from 'pc/utils';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert, isEnterprise } from 'enterprise';
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;
@@ -41,18 +41,19 @@ export interface IColorPickerPane {
   onClose: () => void;
 }
 
-export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>> = props => {
+export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>> = (props) => {
   const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();
 
   const renderMenu = (title: string, colorGroup: number[], showTag?: boolean, isBase?: boolean) => (
-    <div className={cls(styles.menu, { 
-      [styles.bg]: isEnterprise && showTag,
-      [styles.common]: !isEnterprise
-    })}>
-      {
-        isEnterprise &&
+    <div
+      className={cls(styles.menu, {
+        [styles.bg]: isEnterprise && showTag,
+        [styles.common]: !isEnterprise,
+      })}
+    >
+      {isEnterprise && (
         <div
           className={cls(styles.menuTitle, {
             [styles.base]: isBase,
@@ -68,7 +69,7 @@ export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>
           </div>
           {showTag && <SubscribeLabel grade={SubscribeGrade.Silver} />}
         </div>
-      }
+      )}
       <ColorGroup
         colorGroup={colorGroup}
         option={option}
@@ -127,12 +128,12 @@ export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>
             <Input
               size={isMobile ? 'large' : 'small'}
               onChange={onInput}
-              onPressEnter={e => {
+              onPressEnter={(e) => {
                 e.stopPropagation();
                 closeAndSave();
               }}
               defaultValue={option.name}
-              onMouseMove={e => stopPropagation((e as any) as React.MouseEvent)}
+              onMouseMove={(e) => stopPropagation(e as any as React.MouseEvent)}
               value={newName}
             />
             <div className={styles.deleteIconWrap}>

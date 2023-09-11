@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
-import { DeleteOutlined, LoadingOutlined } from '@apitable/icons';
 import { message, Spin } from 'antd';
-import { getElementDataset } from 'pc/utils';
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Range, Transforms } from 'slate';
 import { ReactEditor, useFocused, useReadOnly, useSlate } from 'slate-react';
+import { useThemeColors } from '@apitable/components';
+import { DeleteOutlined, LoadingOutlined } from '@apitable/icons';
+import { getElementDataset } from 'pc/utils';
 import * as API from '../../api';
 import { updateElementData, updateImage } from '../../commands';
 // import cx from 'classnames';
@@ -63,38 +63,44 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
   const isFocusedInSelf = focusedElement && element._id === focusedElement._id;
   const hasImg = !!url;
 
-  const handleFileChange = useCallback((_file: any) => {
-    const file = _file as IPreviewFile;
-    const successFunc = (url = file.preview) => {
-      const nextData = {
-        ...elementData,
-        ...getImgData(file, url),
+  const handleFileChange = useCallback(
+    (_file: any) => {
+      const file = _file as IPreviewFile;
+      const successFunc = (url = file.preview) => {
+        const nextData = {
+          ...elementData,
+          ...getImgData(file, url),
+        };
+        updateImage(editor, nextData);
       };
-      updateImage(editor, nextData);
-    };
-    const uploader = API.getApi(editor, API.ApiKeys.ImageUpload);
-    if (uploader) {
-      setUploading(true);
-      uploader(file)
-        .then((res: API.IImageResponse) => {
-          successFunc((res as API.IImageResponse).imgUrl);
-        })
-        .finally(() => {
-          setUploading(false);
-        });
+      const uploader = API.getApi(editor, API.ApiKeys.ImageUpload);
+      if (uploader) {
+        setUploading(true);
+        uploader(file)
+          .then((res: API.IImageResponse) => {
+            successFunc((res as API.IImageResponse).imgUrl);
+          })
+          .finally(() => {
+            setUploading(false);
+          });
 
-      return;
-    }
-    successFunc();
-  }, [editor, elementData]);
+        return;
+      }
+      successFunc();
+    },
+    [editor, elementData],
+  );
 
-  const handleImagePickerError = useCallback((type: any) => {
-    if (type === 'size') {
-      message.error(i18nText.imageSizeError);
-    } else {
-      message.error(i18nText.imageTypeError);
-    }
-  }, [i18nText]);
+  const handleImagePickerError = useCallback(
+    (type: any) => {
+      if (type === 'size') {
+        message.error(i18nText.imageSizeError);
+      } else {
+        message.error(i18nText.imageTypeError);
+      }
+    },
+    [i18nText],
+  );
 
   const moveHandleMouseDown = (e: React.MouseEvent) => {
     if (!imgRef.current || readOnly) {
@@ -108,25 +114,28 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     setMoveable(true);
   };
 
-  const handleEditorMouseMove = useCallback((point: IMousePosition) => {
-    if (!moveable) {
-      return;
-    }
-    let diffX = point.x - startStatus.current.point.x;
-    // Prevents small slips from causing jitter
-    if (Math.abs(diffX) > 5) {
-      setMoving(true);
-    }
-    if (startStatus.current.triggerHandle === 'left') {
-      diffX = -diffX;
-    }
-    let nextWidth = Math.max(Math.floor(startStatus.current.width + diffX), IMAGE_MIN_WIDTH);
-    const wrapWidth = imgWrapRef.current && imgWrapRef.current.offsetWidth;
-    if (wrapWidth) {
-      nextWidth = Math.min(nextWidth, wrapWidth);
-    }
-    setImgDisplayWidth(nextWidth);
-  }, [moveable]);
+  const handleEditorMouseMove = useCallback(
+    (point: IMousePosition) => {
+      if (!moveable) {
+        return;
+      }
+      let diffX = point.x - startStatus.current.point.x;
+      // Prevents small slips from causing jitter
+      if (Math.abs(diffX) > 5) {
+        setMoving(true);
+      }
+      if (startStatus.current.triggerHandle === 'left') {
+        diffX = -diffX;
+      }
+      let nextWidth = Math.max(Math.floor(startStatus.current.width + diffX), IMAGE_MIN_WIDTH);
+      const wrapWidth = imgWrapRef.current && imgWrapRef.current.offsetWidth;
+      if (wrapWidth) {
+        nextWidth = Math.min(nextWidth, wrapWidth);
+      }
+      setImgDisplayWidth(nextWidth);
+    },
+    [moveable],
+  );
 
   const handleEnd = useCallback(() => {
     setMoveable(false);
@@ -154,32 +163,38 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     e.stopPropagation();
   }, []);
 
-  const handleDeleteImg = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try {
-      const path = ReactEditor.findPath(editor, element);
-      Transforms.removeNodes(editor, { at: path });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [editor, element]);
+  const handleDeleteImg = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        Transforms.removeNodes(editor, { at: path });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [editor, element],
+  );
 
-  const handleChangeImgAlign = useCallback((e: React.MouseEvent<HTMLDListElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const target = e.currentTarget;
-    if (!target) {
-      return;
-    }
-    try {
-      const path = ReactEditor.findPath(editor, element);
-      const align = getElementDataset(target, 'align') as ALIGN;
-      updateElementData(editor, { align }, path);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [editor, element]);
+  const handleChangeImgAlign = useCallback(
+    (e: React.MouseEvent<HTMLDListElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const target = e.currentTarget;
+      if (!target) {
+        return;
+      }
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        const align = getElementDataset(target, 'align') as ALIGN;
+        updateElementData(editor, { align }, path);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [editor, element],
+  );
 
   useEffect(() => {
     editor.on(BUILT_IN_EVENTS.EDITOR_MOUSE_MOVE, handleEditorMouseMove);
@@ -209,62 +224,74 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
     // eslint-disable-next-line
   }, []);
 
-  const content = (
-    hasImg
-      ? <div className={styles.imageWrap} data-read-only={readOnly} onDragStart={handleDragStart} data-focused={isFocusedInSelf}>
-        <div className={styles.imageOperationMask}>
-          <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="tl" data-is-right="false" />
-          <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="tr" data-is-right="true" />
-          <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="bl" data-is-right="false" />
-          <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="br" data-is-right="true" />
-          {/* Inline Toolbar */}
-          <dl className={styles.embedToolbar}>
-            <dd data-active={originAlign === ALIGN.LEFT} data-align={ALIGN.LEFT} onMouseDown={handleChangeImgAlign}><Icons.alignLeft /></dd>
-            <dd data-active={originAlign === ALIGN.CENTER} data-align={ALIGN.CENTER} onMouseDown={handleChangeImgAlign}><Icons.alignCenter /></dd>
-            <dd data-active={originAlign === ALIGN.RIGHT} data-align={ALIGN.RIGHT} onMouseDown={handleChangeImgAlign}><Icons.alignRight /></dd>
-            <dd className={styles.divider} />
-            <dd onMouseDown={handleDeleteImg}><DeleteOutlined color={colors.secondLevelText} /></dd>
-          </dl>
-        </div>
-        <img
-          ref={imgRef}
-          onDragStart={handleDragStart}
-          src={url}
-          alt={name}
-          className={styles.img}
-          style={{
-            width: imgDisplayWidth || '100%'
-          }}
-        />
-
+  const content = hasImg ? (
+    <div className={styles.imageWrap} data-read-only={readOnly} onDragStart={handleDragStart} data-focused={isFocusedInSelf}>
+      <div className={styles.imageOperationMask}>
+        <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="tl" data-is-right="false" />
+        <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="tr" data-is-right="true" />
+        <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="bl" data-is-right="false" />
+        <i className={styles.moveHandle} onMouseDown={moveHandleMouseDown} data-placement="br" data-is-right="true" />
+        {/* Inline Toolbar */}
+        <dl className={styles.embedToolbar}>
+          <dd data-active={originAlign === ALIGN.LEFT} data-align={ALIGN.LEFT} onMouseDown={handleChangeImgAlign}>
+            <Icons.alignLeft />
+          </dd>
+          <dd data-active={originAlign === ALIGN.CENTER} data-align={ALIGN.CENTER} onMouseDown={handleChangeImgAlign}>
+            <Icons.alignCenter />
+          </dd>
+          <dd data-active={originAlign === ALIGN.RIGHT} data-align={ALIGN.RIGHT} onMouseDown={handleChangeImgAlign}>
+            <Icons.alignRight />
+          </dd>
+          <dd className={styles.divider} />
+          <dd onMouseDown={handleDeleteImg}>
+            <DeleteOutlined color={colors.secondLevelText} />
+          </dd>
+        </dl>
       </div>
-      : <FilePicker
-        onChange={handleFileChange}
-        onError={handleImagePickerError}
-        disabled={uploading}
-        needPreview
-        accept="image/*"
-        limitSize={1024 * 1024 * 2}>
-        <div className={styles.imgPicker} data-focused={isFocusedInSelf}>
-          {uploading && <div className={styles.loadingMask}>
+      <img
+        ref={imgRef}
+        onDragStart={handleDragStart}
+        src={url}
+        alt={name}
+        className={styles.img}
+        style={{
+          width: imgDisplayWidth || '100%',
+        }}
+      />
+    </div>
+  ) : (
+    <FilePicker
+      onChange={handleFileChange}
+      onError={handleImagePickerError}
+      disabled={uploading}
+      needPreview
+      accept="image/*"
+      limitSize={1024 * 1024 * 2}
+    >
+      <div className={styles.imgPicker} data-focused={isFocusedInSelf}>
+        {uploading && (
+          <div className={styles.loadingMask}>
             <Spin tip={i18nText.imageUploading} size="small" indicator={<LoadingOutlined className="circle-loading" />} />
-          </div>}
-          <Icons.image />
-          <span className={styles.imgPlaceholder}>{i18nText.addImage}</span>
-          <span onMouseDown={handleDeleteImg}>
-            <DeleteOutlined color={colors.secondLevelText} className={styles.deleteBtn} />
-          </span>
-        </div>
-      </FilePicker>
+          </div>
+        )}
+        <Icons.image />
+        <span className={styles.imgPlaceholder}>{i18nText.addImage}</span>
+        <span onMouseDown={handleDeleteImg}>
+          <DeleteOutlined color={colors.secondLevelText} className={styles.deleteBtn} />
+        </span>
+      </div>
+    </FilePicker>
   );
 
-  return <div ref={imgWrapRef} className={styles.imagePickerWrap} data-align={originAlign} onMouseDown={handleImgPickerWrapMouseDown}>
-    <div contentEditable={false} className={styles.imageContent}>
-      {content}
+  return (
+    <div ref={imgWrapRef} className={styles.imagePickerWrap} data-align={originAlign} onMouseDown={handleImgPickerWrapMouseDown}>
+      <div contentEditable={false} className={styles.imageContent}>
+        {content}
+      </div>
+      {/* Even elements of type void must require children */}
+      {children}
     </div>
-    {/* Even elements of type void must require children */}
-    {children}
-  </div>;
+  );
 });
 
 export default Image;

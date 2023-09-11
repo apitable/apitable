@@ -16,35 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  BasicValueType, Field, FieldType, ORIGIN_VALUES_FUNC_SET, LOOKUP_VALUE_FUNC_SET,
-  IAttachmentValue, ILinkIds, ILookUpField,
-  IMultiSelectedIds, ISegment, IUnitIds,
-  RollUpFuncType, Strings, t, Selectors, RowHeightLevel, ICellValue, handleNullArray,
-  IDateTimeField,
-} from '@apitable/core';
-import { store } from 'pc/store';
 import { Tooltip } from 'antd';
-import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import {
+  BasicValueType,
+  Field,
+  FieldType,
+  ORIGIN_VALUES_FUNC_SET,
+  LOOKUP_VALUE_FUNC_SET,
+  IAttachmentValue,
+  ILinkIds,
+  ILookUpField,
+  IMultiSelectedIds,
+  ISegment,
+  IUnitIds,
+  RollUpFuncType,
+  Strings,
+  t,
+  Selectors,
+  RowHeightLevel,
+  ICellValue,
+  handleNullArray,
+  IDateTimeField,
+} from '@apitable/core';
+import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
+import { store } from 'pc/store';
+import { CellCheckbox } from '../cell_checkbox';
+import { CellCreatedBy } from '../cell_created_by';
 import { CellDateTime } from '../cell_date_time';
 import { CellLink } from '../cell_link';
 import { CellMember } from '../cell_member';
-import { CellCreatedBy } from '../cell_created_by';
 import { CellOptions } from '../cell_options';
 import { CellText } from '../cell_text';
 import { ICellComponentProps } from '../cell_value/interface';
 import { CellMultiCheckbox } from './cell_multi_checkbox';
-import { CellCheckbox } from '../cell_checkbox';
 
 interface ICellLookUpProps extends ICellComponentProps {
   field: ILookUpField;
   recordId: string;
-  rowHeightLevel?: RowHeightLevel,
+  rowHeightLevel?: RowHeightLevel;
 }
 
-export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>> = props => {
+export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>> = (props) => {
   const { field, recordId, isActive, className, rowHeightLevel, cellValue: originalCellValue } = props;
   let cellValue = handleNullArray(originalCellValue);
   const realField = Field.bindModel(field).getLookUpEntityField();
@@ -58,30 +72,11 @@ export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>>
     switch (valueType) {
       case BasicValueType.String:
       case BasicValueType.Number:
-        return (
-          <CellText
-            className={className}
-            cellValue={cellValue as any}
-            rowHeightLevel={rowHeightLevel}
-            field={field}
-          />
-        );
+        return <CellText className={className} cellValue={cellValue as any} rowHeightLevel={rowHeightLevel} field={field} />;
       case BasicValueType.Boolean:
-        return (
-          <CellCheckbox
-            className={className}
-            cellValue={cellValue as any}
-            field={field}
-          />
-        );
+        return <CellCheckbox className={className} cellValue={cellValue as any} field={field} />;
       case BasicValueType.DateTime:
-        return (
-          <CellDateTime
-            className={className}
-            cellValue={cellValue as any}
-            field={realField as IDateTimeField}
-          />
-        );
+        return <CellDateTime className={className} cellValue={cellValue as any} field={realField as IDateTimeField} />;
       case BasicValueType.Array:
       default:
         break;
@@ -95,14 +90,7 @@ export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>>
   cellValue = cellValue?.flat(1) as ICellValue;
 
   if (LOOKUP_VALUE_FUNC_SET.has(rollUpType)) {
-    return (
-      <CellText
-        className={className}
-        cellValue={cellValue as any}
-        rowHeightLevel={rowHeightLevel}
-        field={field}
-      />
-    );
+    return <CellText className={className} cellValue={cellValue as any} rowHeightLevel={rowHeightLevel} field={field} />;
   }
 
   switch (realField.type) {
@@ -168,14 +156,7 @@ export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>>
         />
       );
     case FieldType.Checkbox:
-      return (
-        <CellMultiCheckbox
-          className={className}
-          cellValue={cellValue as ISegment[]}
-          field={field}
-          readonly
-        />
-      );
+      return <CellMultiCheckbox className={className} cellValue={cellValue as ISegment[]} field={field} readonly />;
     // Text comma segmentation
     case FieldType.DateTime:
     case FieldType.Number:
@@ -191,21 +172,14 @@ export const CellLookUpBase: React.FC<React.PropsWithChildren<ICellLookUpProps>>
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
     case FieldType.AutoNumber:
-      return (
-        <CellText
-          className={className}
-          cellValue={cellValue as any}
-          rowHeightLevel={rowHeightLevel}
-          field={field}
-        />
-      );
+      return <CellText className={className} cellValue={cellValue as any} rowHeightLevel={rowHeightLevel} field={field} />;
     case FieldType.NotSupport:
     default:
       return <></>;
   }
 };
 
-export const CellLookUp: React.FC<React.PropsWithChildren<ICellLookUpProps>> = props => {
+export const CellLookUp: React.FC<React.PropsWithChildren<ICellLookUpProps>> = (props) => {
   const [showTip, setShowTip] = useState(false);
   useEffect(() => {
     setShowTip(false);
@@ -222,21 +196,15 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellLookUpProps>> = p
 
   return (
     <div onDoubleClick={handleDbClick} style={{ width: '100%' }}>
-      {
-        showTip ? (
-          <Tooltip
-            title={t(Strings.lookup_check_info)}
-            visible={showTip}
-            placement="top"
-            autoAdjustOverflow
-          >
-            <div>
-              <CellLookUpBase {...props} />
-            </div>
-          </Tooltip>
-        ) :
-          <CellLookUpBase {...props} />
-      }
+      {showTip ? (
+        <Tooltip title={t(Strings.lookup_check_info)} visible={showTip} placement="top" autoAdjustOverflow>
+          <div>
+            <CellLookUpBase {...props} />
+          </div>
+        </Tooltip>
+      ) : (
+        <CellLookUpBase {...props} />
+      )}
     </div>
   );
 };

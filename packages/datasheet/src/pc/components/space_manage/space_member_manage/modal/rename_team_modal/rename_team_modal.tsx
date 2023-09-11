@@ -16,32 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, ConfigConstant, IReduxState, MAX_NAME_STRING_LENGTH, StoreActions, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
-import { NormalModal } from 'pc/components/common/modal/normal_modal';
-import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
-import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import * as React from 'react';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { Api, ConfigConstant, IReduxState, MAX_NAME_STRING_LENGTH, StoreActions, Strings, t } from '@apitable/core';
+import { Message } from 'pc/components/common';
+import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
+import { NormalModal } from 'pc/components/common/modal/normal_modal';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { verifyTeamName } from '../../utils';
 
 interface IModalProps {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-export const RenameTeamModal: FC<React.PropsWithChildren<IModalProps>> = props => {
+export const RenameTeamModal: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const dispatch = useAppDispatch();
   const [err, setErr] = useState('');
-  const {
-    spaceId,
-    user,
-    rightClickTeamInfoInSpace,
-  } = useSelector((state: IReduxState) => ({
-    spaceId: state.space.activeId || '',
-    rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,
-    user: state.user.info,
-  }), shallowEqual);
+  const { spaceId, user, rightClickTeamInfoInSpace } = useSelector(
+    (state: IReduxState) => ({
+      spaceId: state.space.activeId || '',
+      rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,
+      user: state.user.info,
+    }),
+    shallowEqual,
+  );
   const [inputContent, setInputContent] = useState(rightClickTeamInfoInSpace.teamTitle);
 
   const handleOk = () => {
@@ -51,14 +50,14 @@ export const RenameTeamModal: FC<React.PropsWithChildren<IModalProps>> = props =
     }
     const { teamId, parentId } = rightClickTeamInfoInSpace;
     const parent = parentId ? parentId : ConfigConstant.ROOT_TEAM_ID;
-    verifyTeamName(spaceId, parent, inputContent).then(res => {
+    verifyTeamName(spaceId, parent, inputContent).then((res) => {
       if (res) {
         setErr(t(Strings.team_is_exist_err));
       } else {
-        Api.updateTeamInfo(teamId, parent, inputContent).then(res => {
+        Api.updateTeamInfo(teamId, parent, inputContent).then((res) => {
           const { success } = res.data;
           if (success) {
-            if(parentId) {
+            if (parentId) {
               dispatch(StoreActions.getSubTeam(parentId));
             } else {
               dispatch(StoreActions.getTeamListData(user!));

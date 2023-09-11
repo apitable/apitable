@@ -16,34 +16,68 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useTheme } from '@apitable/components';
-import { t, Strings } from '@apitable/core';
+import { useAtomValue } from 'jotai';
 import { useMemo } from 'react';
-import { ITriggerType } from '../../interface';
+import * as React from 'react';
+import styled, { css } from 'styled-components';
 import { mutate } from 'swr';
+import {
+  applyDefaultTheme,
+  SearchSelect
+} from '@apitable/components';
+import { Strings, t } from '@apitable/core';
+import { automationStateAtom } from '../../../automation/controller';
 import { createTrigger } from '../../api';
 import { useDefaultTriggerFormData } from '../../hooks';
-import { Select } from '../select';
+import { ITriggerType } from '../../interface';
+import { useRobotListState } from '../../robot_list';
+import { NewItem } from '../../robot_list/new_item';
 
 interface IRobotTriggerCreateProps {
   robotId: string;
   triggerTypes: ITriggerType[];
 }
 
+export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width: string; minWidth: string }>`
+  width: ${(props) => props.width};
+  min-width: ${(props) => props.minWidth};
+  padding: 4px 0;
+  ${props => css`
+    background-color: ${props.theme.color.highestBg};
+    box-shadow: ${props.theme.color.shadowCommonHighest};
+  `}
+  border-radius: 4px;
+`;
+
 /**
  * Renders the form for creating a trigger when the robot is detected to have no trigger
  */
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
-  const theme = useTheme();
 
+  const { api: { refresh }} = useRobotListState();
+  const state = useAtomValue(automationStateAtom);
   const createRobotTrigger = useMemo(() => {
     return async(triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
       const triggerRes = await createTrigger(robotId, triggerTypeId, input);
-      mutate(`/automation/robots/${robotId}/trigger`);
+
+      await mutate(`/automation/robots/${robotId}/trigger`);
+
+      if(!state?.resourceId ) {
+        return;
+      }
+      if(!state?.currentRobotId ) {
+        return;
+      }
+      await refresh(
+        {
+          resourceId:state.resourceId,
+          robotId:  state.currentRobotId
+        });
+
       return triggerRes.data;
     };
   }, [robotId, defaultFormData, triggerTypes]);
@@ -52,17 +86,6 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
     return null;
   }
 
-  // const triggerCreateForm = {
-  //   type: 'object',
-  //   properties: {
-  //     triggerTypeId: {
-  //       type: 'string',
-  //       title: t(Strings.robot_no_step_config_1),
-  //       enum: triggerTypes.map(t => t.triggerTypeId),
-  //       enumNames: triggerTypes.map(t => t.name),
-  //     },
-  //   }
-  // };
   const handleCreateFormChange = (triggerTypeId: string) => {
     if (triggerTypeId) {
       createRobotTrigger(triggerTypeId);
@@ -75,16 +98,22 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   }));
 
   return (
-    <div>
-      <div style={{ color: theme.color.fc3, fontSize: 12, paddingBottom: 8 }} >
-        {t(Strings.robot_no_step_config_1)}
-      </div>
-      <Select
-        options={options}
-        onChange={handleCreateFormChange}
-        placeholder={t(Strings.robot_select_option)}
-      />
-      {/* <Form schema={triggerCreateForm as any} children={<div />} onChange={handleCreateFormChange} /> */}
-    </div>
+    <SearchSelect
+      options={{
+        placeholder: t(Strings.search_field),
+        noDataText: t(Strings.empty_data),
+      }}
+      list={options} onChange={(item) => {
+        // @ts-ignore
+        handleCreateFormChange(String(item.value));
+      }}>
+      <NewItem
+        disabled={false}
+      >
+        {
+          t(Strings.add_a_trigger)
+        }
+      </NewItem>
+    </SearchSelect>
   );
 };

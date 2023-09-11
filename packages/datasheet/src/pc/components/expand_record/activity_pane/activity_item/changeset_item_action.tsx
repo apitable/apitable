@@ -16,25 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
-import { ArrowRightOutlined } from '@apitable/icons';
 import cls from 'classnames';
 import { has, intersectionWith, isEqual, xorBy } from 'lodash';
+import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment } from '@apitable/core';
+import { ArrowRightOutlined } from '@apitable/icons';
 import { FieldTitle } from 'pc/components/expand_record/field_editor';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
 import EditorTitleContext from '../../editor_title_context';
 import ChangesetItemHeader from '../changeset_item_header';
 import styles from './style.module.less';
 import { supplyExtraField, supplyMemberField, supplyMultiSelectField, supplySelectField } from './utils';
 
 const TEXT_TYPES = [
-  FieldType.Text, FieldType.SingleText, FieldType.Number,
-  FieldType.DateTime, FieldType.CreatedTime, FieldType.LastModifiedBy,
-  FieldType.Email, FieldType.Currency, FieldType.URL, FieldType.Phone, FieldType.Percent
+  FieldType.Text,
+  FieldType.SingleText,
+  FieldType.Number,
+  FieldType.DateTime,
+  FieldType.CreatedTime,
+  FieldType.LastModifiedBy,
+  FieldType.Email,
+  FieldType.Currency,
+  FieldType.URL,
+  FieldType.Phone,
+  FieldType.Percent,
 ];
 
 interface IChangesetItemAction {
@@ -117,16 +125,16 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
         if (oi[0].type) {
           oiField = {
             ...oiField,
-            type: SegmentType.Email === oi[0].type ? FieldType.Email : FieldType.Text
+            type: SegmentType.Email === oi[0].type ? FieldType.Email : FieldType.Text,
           } as IField;
         } else if (oi[0].token) {
           oiField = {
-            type: FieldType.Attachment
+            type: FieldType.Attachment,
           } as IField;
         }
-        if(oi[0].type && oi[0].type === FieldType.Text) {
+        if (oi[0].type && oi[0].type === FieldType.Text) {
           const urlMatch = [...oi[0].text.matchAll(LINK_REG)];
-          if(urlMatch.length) {
+          if (urlMatch.length) {
             oi = string2Segment(oi[0].text);
           }
         }
@@ -135,11 +143,11 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
         if (od[0].type) {
           odField = {
             ...odField,
-            type: SegmentType.Email === od[0].type ? FieldType.Email : FieldType.Text
+            type: SegmentType.Email === od[0].type ? FieldType.Email : FieldType.Text,
           } as IField;
         } else {
           odField = {
-            type: FieldType.Attachment
+            type: FieldType.Attachment,
           } as IField;
         }
       }
@@ -155,12 +163,14 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
         const { p: nextP, od: preOd, oi: preOi } = (actions as any)[1] || {};
         nextTypeSwitch = nextP && nextP[0] === 'meta' && nextP[1] === 'fieldMap' && preOd && preOi && preOd.type !== preOi.type;
       }
-      const shouldDiff = Array.isArray(oi) && Array.isArray(od) &&
+      const shouldDiff =
+        Array.isArray(oi) &&
+        Array.isArray(od) &&
         (typeof oi[0] === 'object' ? has(oi, '0.id') : Boolean(oi[0])) &&
         (typeof od[0] === 'object' ? has(od, '0.id') : Boolean(od[0]));
       let diff = shouldDiff ? intersectionWith(oi, od, isEqual) : null;
       if (diff) {
-        const compare = (item: { id: any; }) => typeof item === 'object' ? item.id : item;
+        const compare = (item: { id: any }) => (typeof item === 'object' ? item.id : item);
         oi = xorBy(oi, diff, compare);
         od = xorBy(od, diff, compare);
         if (oi.length === 0) {
@@ -193,47 +203,35 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
               />
             </div>
           )}
-          {nextTypeSwitch && (
-            <FieldSwitchTitle od={(actions[1] as any).od} oi={(actions[1] as any).oi} />
-          )}
+          {nextTypeSwitch && <FieldSwitchTitle od={(actions[1] as any).od} oi={(actions[1] as any).oi} />}
           {diff != null && odField && (
-            <div className={cls(styles.diff, {
-              [styles.text]: odField && TEXT_TYPES.includes(odField.type),
-              [styles.attachment]: odField && [FieldType.Attachment].includes(odField.type)
-            })}>
-              <CellValue
-                recordId={recordId}
-                field={odField}
-                cellValue={diff}
-                readonly
-              />
+            <div
+              className={cls(styles.diff, {
+                [styles.text]: odField && TEXT_TYPES.includes(odField.type),
+                [styles.attachment]: odField && [FieldType.Attachment].includes(odField.type),
+              })}
+            >
+              <CellValue recordId={recordId} field={odField} cellValue={diff} readonly />
             </div>
           )}
           {od != null && odField && (
-            <div className={cls(styles.old, {
-              [styles.text]: odField && TEXT_TYPES.includes(odField.type),
-              [styles.attachment]: odField && [FieldType.Attachment].includes(odField.type)
-            })}>
-              <CellValue
-                recordId={recordId}
-                field={odField}
-                cellValue={od}
-                readonly
-              />
+            <div
+              className={cls(styles.old, {
+                [styles.text]: odField && TEXT_TYPES.includes(odField.type),
+                [styles.attachment]: odField && [FieldType.Attachment].includes(odField.type),
+              })}
+            >
+              <CellValue recordId={recordId} field={odField} cellValue={od} readonly />
             </div>
           )}
           {oi != null && oiField && (
-            <div className={cls(styles.new, {
-              [styles.text]: oiField && TEXT_TYPES.includes(oiField.type),
-              [styles.attachment]: oiField && [FieldType.Attachment].includes(oiField.type)
-            })}>
-              <CellValue
-                recordId={recordId}
-                field={oiField}
-                cellValue={oi}
-                readonly
-                isActive
-              />
+            <div
+              className={cls(styles.new, {
+                [styles.text]: oiField && TEXT_TYPES.includes(oiField.type),
+                [styles.attachment]: oiField && [FieldType.Attachment].includes(oiField.type),
+              })}
+            >
+              <CellValue recordId={recordId} field={oiField} cellValue={oi} readonly isActive />
             </div>
           )}
         </div>
@@ -257,4 +255,3 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
 };
 
 export const ChangesetItemAction = React.memo(ChangesetItemActionBase);
-

@@ -121,10 +121,10 @@ export interface ISplitterProps {
 }
 
 export interface ITargetNameDetail {
-  targetName: string | null,
-  fieldId?: string | null,
-  recordId?: string | null,
-  mouseStyle?: string | null
+  targetName: string | null;
+  fieldId?: string | null;
+  recordId?: string | null;
+  mouseStyle?: string | null;
 }
 
 export interface ITaskLineSetting {
@@ -140,7 +140,7 @@ export enum TaskPositionYType {
   Top = 'Top',
   Bottom = 'Bottom',
   Collapse = 'Collapse',
-  Viewable = 'Viewable'
+  Viewable = 'Viewable',
 }
 
 export interface IRowsCellValueMap {

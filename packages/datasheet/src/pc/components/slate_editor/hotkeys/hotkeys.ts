@@ -16,24 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Editor, Range, Point, Transforms, Node, Element } from 'slate';
-import { GENERATOR, generateId } from '../elements';
-import { MarkType, ElementType, LIST_ITEM_TYPE_DICT, LIST_TYPE_DICT, DISABLE_TOOLBAR_ELEMENT, ALIGN } from '../constant';
-import { IElement, IElementData } from '../interface/element';
-import { IEventBusEditor, IVikaEditor } from '../interface/editor';
-import { getCurrentElement, getMarkValue } from '../helpers/utils';
-import { BUILT_IN_EVENTS } from '../plugins/withEventBus';
 import { throttle, omit } from 'lodash';
+import { Editor, Range, Point, Transforms, Node, Element } from 'slate';
+import { toggleMark, toggleBlock, removeAllMarks, addElementsIndent, descElementIndent, setNodeWithNewId, updateElementData } from '../commands';
+import { MarkType, ElementType, LIST_ITEM_TYPE_DICT, LIST_TYPE_DICT, DISABLE_TOOLBAR_ELEMENT, ALIGN } from '../constant';
+import { GENERATOR, generateId } from '../elements';
+import { getCurrentElement, getMarkValue } from '../helpers/utils';
+import { IEventBusEditor, IVikaEditor } from '../interface/editor';
+import { IElement, IElementData } from '../interface/element';
+import { BUILT_IN_EVENTS } from '../plugins/withEventBus';
 
-import {
-  toggleMark,
-  toggleBlock,
-  removeAllMarks,
-  addElementsIndent,
-  descElementIndent,
-  setNodeWithNewId,
-  updateElementData
-} from '../commands';
 import { hotkeyMap } from './map';
 
 const HEADING_MAP = {
@@ -164,7 +156,7 @@ export const hotkeys = {
         const [focusPoint] = Range.edges(selection);
         const [match] = Editor.nodes(editor, {
           at: focusPoint,
-          match: n => Element.isElement(n) && Editor.isBlock(editor, n),
+          match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
           // reverse: true,
           mode: 'lowest',
         });
@@ -184,9 +176,7 @@ export const hotkeys = {
           const nextIsEnd = nextPoint && Point.equals(endPoint, nextPoint);
           const newNodeData = isListItem ? omit({ ...node.data }, 'checked') : {};
           if (isEnd || isStart) {
-            const newNode = isListItem
-              ? GENERATOR[node.type]({ data: newNodeData })
-              : GENERATOR.paragraph({ data: newNodeData });
+            const newNode = isListItem ? GENERATOR[node.type]({ data: newNodeData }) : GENERATOR.paragraph({ data: newNodeData });
             Transforms.insertNodes(editor, newNode);
           } else {
             splitNodes(newNodeData);
@@ -205,13 +195,13 @@ export const hotkeys = {
       const { selection } = editor;
       const unwrapNodes = () => {
         Transforms.unwrapNodes(editor, {
-          match: n => Element.isElement(n) && Editor.isBlock(editor, n) && LIST_TYPE_DICT[(n as IElement).type],
+          match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) && LIST_TYPE_DICT[(n as IElement).type],
           split: true,
         });
       };
       if (selection) {
         const match = Editor.nodes(editor, {
-          match: n => Element.isElement(n) && Editor.isBlock(editor, n),
+          match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
           mode: 'lowest',
         });
         if (match) {
@@ -321,7 +311,7 @@ export const hotkeys = {
             case ElementType.DIVIDER:
               Transforms.move(editor, { distance: 1, unit: 'line' });
               break;
-          
+
             default:
               break;
           }
@@ -354,44 +344,43 @@ export const hotkeys = {
   '/': {
     action(editor: Editor & IEventBusEditor & IVikaEditor) {
       const { selection, mode } = editor;
-      if (selection && Range.isCollapsed(selection) && mode === 'full' ) {
+      if (selection && Range.isCollapsed(selection) && mode === 'full') {
         const curElement = getCurrentElement(editor);
         if (!DISABLE_TOOLBAR_ELEMENT[curElement.type]) {
           editor.dispatch(BUILT_IN_EVENTS.TOGGLE_INSERT_PANEL, true);
         }
       }
       return true;
-    }
+    },
   },
   'mod+shift+l': {
     action(editor: Editor & IVikaEditor) {
       const { selection, mode } = editor;
-      if (selection && mode === 'full' ) {
+      if (selection && mode === 'full') {
         updateElementData(editor, { align: ALIGN.LEFT });
         return false;
       }
       return true;
-    }
+    },
   },
   'mod+shift+c': {
     action(editor: Editor & IVikaEditor) {
       const { selection, mode } = editor;
-      if (selection && mode === 'full' ) {
+      if (selection && mode === 'full') {
         updateElementData(editor, { align: ALIGN.CENTER });
         return false;
       }
       return true;
-    }
+    },
   },
   'mod+shift+r': {
     action(editor: Editor & IVikaEditor) {
       const { selection, mode } = editor;
-      if (selection && mode === 'full' ) {
+      if (selection && mode === 'full') {
         updateElementData(editor, { align: ALIGN.RIGHT });
         return false;
       }
       return true;
-    }
-  }
-
+    },
+  },
 };

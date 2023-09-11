@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { LinkButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { WarnCircleFilled } from '@apitable/icons';
-import * as React from 'react';
 import styles from './styles.module.less';
 
 interface IErrorWidget {
@@ -36,8 +36,10 @@ export const ErrorWidget = ({ title = t(Strings.widget_load_error_title), conten
       <span>{title}</span>
     </div>
     <div className={styles.content}>{content}</div>
-    {action && <LinkButton className={styles.actionBtn} onClick={() => action()}>
-      <span className={styles.linkText}>{actionText}</span>
-    </LinkButton>}
+    {action && (
+      <LinkButton className={styles.actionBtn} onClick={() => action()}>
+        <span className={styles.linkText}>{actionText}</span>
+      </LinkButton>
+    )}
   </div>
 );

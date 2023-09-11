@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IListBase } from '../list.interface';
 import { ISelectFieldOption, IFieldProperty, ICollaCommandExecuteResult } from '@apitable/core';
+import { IListBase } from '../list.interface';
 
 export interface IOptionListProps extends IListBase<string[], ISelectFieldOption[]> {
-
   /**
    * @description The data used for the drop-down list tree is the same data structure as the data stored in the column headers
    * @type {ISelectFieldOption[]}
@@ -28,7 +27,7 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
   listData: ISelectFieldOption[];
 
   /**
-   * @description The operation related to dragging, currently after the cell and expand the card has the function, 
+   * @description The operation related to dragging, currently after the cell and expand the card has the function,
    * you can basically use this to determine whether the cell
    * @type {({
    *     draggingId: string | undefined
@@ -37,15 +36,15 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
    *   })}
    */
   dragOption?: {
-    draggingId: string | undefined
-    setDraggingId: any
-    afterDrag (trulyOldIndex: any, trulyNewIndex: any): void
+    draggingId: string | undefined;
+    setDraggingId: any;
+    afterDrag(trulyOldIndex: any, trulyNewIndex: any): void;
   };
 
   /**
    * @description Set the properties of the column headers
    */
-  setCurrentField?: (getNewField: (newField: IFieldProperty) => IFieldProperty) => ICollaCommandExecuteResult<{}>
+  setCurrentField?: (getNewField: (newField: IFieldProperty) => IFieldProperty) => ICollaCommandExecuteResult<{}>;
 
   /**
    * @description Add a new option
@@ -58,8 +57,8 @@ export interface IOptionListProps extends IListBase<string[], ISelectFieldOption
    * @description Capture the internal Input instance of the component to facilitate triggering focus
    * @type {React.RefObject<HTMLInputElement>}
    */
-  inputRef: React.RefObject<HTMLInputElement>
+  inputRef: React.RefObject<HTMLInputElement>;
 
-  datasheetId?: string
+  datasheetId?: string;
   placeholder?: string;
 }

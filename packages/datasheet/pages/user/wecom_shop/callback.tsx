@@ -18,7 +18,7 @@
 
 import React from 'react';
 // @ts-ignore
-import { WecomShopCallback } from 'enterprise'
+import { WecomShopCallback } from 'enterprise';
 
 const App = () => {
   return <WecomShopCallback />;

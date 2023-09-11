@@ -16,29 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import { Message } from '@apitable/components';
-import { Message } from 'pc/components/common';
-import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
 import produce from 'immer';
+import { useAtom } from 'jotai';
 import { isEqual } from 'lodash';
-import { Modal } from 'pc/components/common';
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, memo} from 'react';
+import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { SearchSelect } from '@apitable/components';
+import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
+import { Message, Modal } from 'pc/components/common';
+import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
+import {
+  automationPanelAtom,
+  automationStateAtom,
+  automationTriggerAtom,
+  PanelName
+} from '../../../automation/controller';
 import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { IRobotTrigger, ITriggerType } from '../../interface';
-import { NodeForm } from '../node_form';
-import { Select } from '../select';
+import { DropdownTrigger } from '../action/robot_action';
+import { NodeForm, NodeFormInfo } from '../node_form';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
+import {useAtomValue} from "jotai";
+import {useRobotListState} from "../../robot_list";
 
 interface IRobotTriggerProps {
   robotId: string;
   triggerTypes: ITriggerType[];
+  editType?:EditType
   formList: IFormNodeItem[],
-  setTrigger: (trigger: IRobotTrigger) => void;
+  setTrigger?: (trigger: IRobotTrigger) => void;
 }
 
 interface IRobotTriggerBase {
@@ -48,13 +58,22 @@ interface IRobotTriggerBase {
   formList: IFormNodeItem[];
   datasheetId?: string;
   datasheetName?: string;
+  editType?:EditType
 }
 
-const RobotTriggerBase = (props: IRobotTriggerBase) => {
-  const { trigger, mutate, triggerTypes, formList, datasheetId, datasheetName } = props;
+export enum EditType {
+  entry = 'entry',
+  detail ='detail'
+}
+const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
+  const { trigger, mutate, editType, triggerTypes, formList, datasheetId, datasheetName } = props;
   const formData = trigger.input;
   const triggerTypeId = trigger.triggerTypeId;
   const triggerType = triggerTypes.find(t => t.triggerTypeId === trigger.triggerTypeId);
+
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
+
   const handleTriggerTypeChange = useCallback((triggerTypeId: string) => {
     if (triggerTypeId === trigger?.triggerTypeId) {
       return;
@@ -65,12 +84,24 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(() => {
-          mutate({
+        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(async() => {
+          await mutate({
             ...trigger!,
             input: null,
             triggerTypeId,
           });
+
+          if(!automationState?.resourceId) {
+            return;
+          }
+          if(!automationState?.currentRobotId) {
+            return;
+          }
+          await refresh({
+            resourceId: automationState?.resourceId!,
+            robotId: automationState?.currentRobotId!,
+          });
+
         });
       },
       onCancel: () => {
@@ -78,7 +109,7 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       },
       type: 'warning',
     });
-  }, [trigger, mutate]);
+  }, [trigger, mutate, automationState?.resourceId, automationState?.currentRobotId, refresh]);
 
   const { schema, uiSchema = {}} = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
@@ -152,14 +183,33 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
         });
       }).catch(() => {
         Message.error({
-          content: '步骤保存失败'
+          content: t(Strings.robot_save_step_failed),
         });
       });
     }
   }, [mutate, trigger]);
 
+  const [panelState, setAutomationPanel] = useAtom(automationPanelAtom );
+
+  const isActive = panelState.dataId ===trigger.triggerId;
+
+  const NodeItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
+  const handleClick= useCallback(() => {
+    setAutomationPanel({
+      panelName: PanelName.Trigger,
+      dataId: trigger.triggerId
+    });
+  }, [setAutomationPanel, trigger.triggerId]);
+
+  const memoedHandleClick = useMemo(() => {
+    return editType === EditType.entry ? handleClick : undefined;
+  }, [editType, handleClick]);
   return (
-    <NodeForm
+    <NodeItem
+      index={0}
+      handleClick={
+        memoedHandleClick
+      }
       nodeId={trigger.triggerId}
       schema={schema}
       formData={formData}
@@ -169,19 +219,36 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       description={triggerType?.description}
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
-      <Select options={triggerTypeOptions} onChange={handleTriggerTypeChange} value={triggerTypeId} />
-    </NodeForm>
+      <SearchSelect
+        options={{
+          placeholder: t(Strings.search_field),
+          minWidth: '384px',
+          noDataText: t(Strings.empty_data),
+        }}
+        list={triggerTypeOptions} onChange={(item ) => handleTriggerTypeChange(String(item.value))} value={triggerTypeId} >
+        <span>
+          <DropdownTrigger isActive={isActive}>
+            <>
+              {/*// TODO update sequence   */}
+              {1}. {triggerType?.name}
+            </>
+          </DropdownTrigger>
+        </span>
+      </SearchSelect>
+    </NodeItem>
   );
-};
+});
 
 // trigger component = select prototype dropdown box + input form form.
-export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
+export const RobotTrigger = ({ robotId, editType, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
+  const [, setTriggerState] = useAtom(automationTriggerAtom);
   const { data: trigger, error, mutate } = useSWR(`/automation/robots/${robotId}/trigger`, getRobotTrigger);
   useEffect(() => {
     if (trigger) {
-      setTrigger(trigger);
+      setTrigger?.(trigger);
+      setTriggerState(trigger);
     }
-  }, [trigger, setTrigger]);
+  }, [trigger, setTrigger, setTriggerState]);
 
   const {
     datasheetId,
@@ -203,13 +270,15 @@ export const RobotTrigger = ({ robotId, triggerTypes, formList, setTrigger }: IR
       <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
     );
   }
+
   // The default value of the rich input form, the trigger, is officially controllable.
-  return <RobotTriggerBase
+  return (<RobotTriggerBase
     trigger={trigger}
+    editType={editType}
     mutate={mutate}
     triggerTypes={triggerTypes}
     formList={formList}
     datasheetId={datasheetId}
     datasheetName={datasheetName}
-  />;
+  />);
 };

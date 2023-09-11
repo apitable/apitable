@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Skeleton } from '@apitable/components';
 import dynamic from 'next/dynamic';
+import { Skeleton } from '@apitable/components';
 import { PrivateRoute } from 'pc/components/route_manager/private_route';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 
@@ -27,15 +27,19 @@ const SpaceManage = dynamic(() => import('pc/components/space_manage/space_manag
     <div>
       <Skeleton count={1} width="38%" />
       <Skeleton count={2} />
-      <Skeleton count={1} width="61%"/>
+      <Skeleton count={1} width="61%" />
     </div>
   ),
 });
 
-const ManagementRouter = ({ children }: any)=>{
-  return <PrivateRoute><SideWrapper><SpaceManage>
-    {children}
-  </SpaceManage></SideWrapper></PrivateRoute>;
+const ManagementRouter = ({ children }: any) => {
+  return (
+    <PrivateRoute>
+      <SideWrapper>
+        <SpaceManage>{children}</SpaceManage>
+      </SideWrapper>
+    </PrivateRoute>
+  );
 };
 
 export default ManagementRouter;

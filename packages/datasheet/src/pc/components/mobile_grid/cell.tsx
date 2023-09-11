@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallowEqual, useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { GridChildComponentProps, ListChildComponentProps } from 'react-window';
-import { BasicValueType, Field, Selectors } from '@apitable/core';
-import { CellValue } from '../multi_grid/cell/cell_value';
-import { store } from 'pc/store';
-import styles from './styles.module.less';
-import { FieldTitle } from '../expand_record/field_editor/field_title';
 import { useThemeColors } from '@apitable/components';
-import { FIELD_HEAD_CLASS } from 'pc/utils';
-import classNames from 'classnames';
+import { BasicValueType, Field, Selectors } from '@apitable/core';
 import { MoreStandOutlined } from '@apitable/icons';
+import { store } from 'pc/store';
+import { FIELD_HEAD_CLASS } from 'pc/utils';
+import { FieldTitle } from '../expand_record/field_editor/field_title';
+import { CellValue } from '../multi_grid/cell/cell_value';
+import styles from './styles.module.less';
 
 enum CellType {
   HEAD,
@@ -42,32 +42,15 @@ interface ICellFuncOwnProps {
 
 type ChildProps = GridChildComponentProps & ListChildComponentProps;
 
-const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>> = props => {
+const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>> = (props) => {
   const colors = useThemeColors();
-  const {
-    columnIndex,
-    rowIndex,
-    index,
-    style,
-    type,
-    data,
-  } = props;
+  const { columnIndex, rowIndex, index, style, type, data } = props;
 
   const state = store.getState();
 
-  const {
-    datasheetId,
-    firstColumn,
-    remainingColumns,
-    fieldMap,
-    rows,
-    containerWidth,
-    manageable,
-    searchKeyword,
-    snapshot,
-  } = data;
-  
-  const activeCell = useSelector(state => Selectors.getActiveCell(state));
+  const { datasheetId, firstColumn, remainingColumns, fieldMap, rows, containerWidth, manageable, searchKeyword, snapshot } = data;
+
+  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
   const activeSelectFieldId = activeCell?.fieldId;
   const matched = (recordId: string, fieldId: string) => {
     if (!searchKeyword) {
@@ -94,32 +77,35 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
         data-column-index={index + 1}
       >
         <div className={classNames(styles.fieldTitleWrapper, hasFoundMark && styles.foundMarkMobileHeadCell)}>
-          <FieldTitle
-            fieldId={remainingColumns[index].fieldId}
-            datasheetId={datasheetId}
-            hideDesc
-          />
+          <FieldTitle fieldId={remainingColumns[index].fieldId} datasheetId={datasheetId} hideDesc />
         </div>
-        {manageable &&
+        {manageable && (
           <div className={styles.fieldMenuTrigger}>
             <MoreStandOutlined color={colors.thirdLevelText} />
           </div>
-        }
+        )}
       </div>
     );
   }
 
   const record = Selectors.getRecord(state, rows[type === CellType.TITLE ? index : rowIndex].recordId, datasheetId)!;
- 
+
   const field = fieldMap[type === CellType.TITLE ? firstColumn.fieldId : remainingColumns[columnIndex].fieldId];
-  const cellValue = record ? Selectors.getCellValue(state, {
-    meta: { fieldMap: { [field.id]: field }},
-    recordMap: { [record.id]: record },
-  }, record.id, field.id) : null;
+  const cellValue = record
+    ? Selectors.getCellValue(
+      state,
+      {
+        meta: { fieldMap: { [field.id]: field }},
+        recordMap: { [record.id]: record },
+      },
+      record.id,
+      field.id,
+    )
+    : null;
 
   const isEmptyCell = Boolean(cellValue);
 
-  if(!record) {
+  if (!record) {
     return null;
   }
 
@@ -127,29 +113,21 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
     const hasFoundMark = matched(record.id, field.id);
 
     return (
-      <div
-        className={styles.firstColumnCell}
-        style={style}
-        data-record-id={record.id}
-      >
+      <div className={styles.firstColumnCell} style={style} data-record-id={record.id}>
         <div
           className={classNames(styles.cellTitleContainer, {
-            [styles.hiddenAll]: remainingColumns.length === 0
+            [styles.hiddenAll]: remainingColumns.length === 0,
           })}
           style={{ width: containerWidth - 32 }}
         >
           <div className={classNames(styles.fieldTitleWrapper, styles.fieldTitleWithContent)}>
-            <FieldTitle
-              fieldId={field.id}
-              datasheetId={datasheetId}
-              hideDesc
-            />
+            <FieldTitle fieldId={field.id} datasheetId={datasheetId} hideDesc />
           </div>
-          {!isEmptyCell ?
+          {!isEmptyCell ? (
             <div className={styles.cellHolderWrapper}>
               <span className={styles.cellHolder} />
             </div>
-            :
+          ) : (
             <CellValue
               className={classNames(styles.cellValue, styles.titleCell, {
                 [styles.foundMarkCell]: hasFoundMark,
@@ -157,7 +135,8 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
               recordId={record.id}
               field={field}
               cellValue={cellValue}
-            />}
+            />
+          )}
         </div>
       </div>
     );
@@ -167,15 +146,10 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
   const isLastColumn = columnIndex === remainingColumns.length - 1;
 
   const isNumberField =
-    Field.bindModel(field).basicValueType === BasicValueType.Number ||
-    Field.bindModel(field).innerBasicValueType === BasicValueType.Number;
+    Field.bindModel(field).basicValueType === BasicValueType.Number || Field.bindModel(field).innerBasicValueType === BasicValueType.Number;
   const hasFoundMark = matched(record.id, field.id) || activeSelectFieldId === field.id;
 
-  const cellValueClass = classNames(
-    styles.cellValue,
-    isNumberField && styles.numberCell,
-    hasFoundMark && styles.foundMarkCell,
-  );
+  const cellValueClass = classNames(styles.cellValue, isNumberField && styles.numberCell, hasFoundMark && styles.foundMarkCell);
 
   return (
     <div
@@ -196,18 +170,13 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
           borderBottomRightRadius: isLastColumn ? 8 : 0,
         }}
       >
-        {!isEmptyCell ?
+        {!isEmptyCell ? (
           <div className={classNames(styles.cellHolderWrapper, isNumberField && styles.numberCellHolder)}>
             <span className={styles.cellHolder} />
           </div>
-          :
-          <CellValue
-            className={cellValueClass}
-            recordId={record.id}
-            field={field}
-            cellValue={cellValue}
-          />
-        }
+        ) : (
+          <CellValue className={cellValueClass} recordId={record.id} field={field} cellValue={cellValue} />
+        )}
       </div>
     </div>
   );
@@ -225,10 +194,7 @@ const CellFuncGrid = (props: PropsWithChildren<ChildProps>) => {
   return CellFunc({ ...props, type: CellType.GRID });
 };
 
-const areEqual = (
-  prevProps: Readonly<PropsWithChildren<ChildProps>>,
-  nextProps: Readonly<PropsWithChildren<ChildProps>>,
-) => {
+const areEqual = (prevProps: Readonly<PropsWithChildren<ChildProps>>, nextProps: Readonly<PropsWithChildren<ChildProps>>) => {
   const { style: prevStyle, data: prevData, ...prevRest } = prevProps;
   const { style: nextStyle, data: nextData, ...nextRest } = nextProps;
   return shallowEqual(prevStyle, nextStyle) && shallowEqual(prevData, nextData) && shallowEqual(prevRest, nextRest);

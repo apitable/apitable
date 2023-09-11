@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+import { Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
@@ -35,9 +35,7 @@ const CorpCertifiedTag = ({ certified, isSocialEnabled, spaceId }: Props) => {
     return null;
   }
 
-  return <>
-    {certified ? <CertifiedTag /> : <UncertifiedTag spaceId={spaceId} />}
-  </>;
+  return <>{certified ? <CertifiedTag /> : <UncertifiedTag spaceId={spaceId} />}</>;
 };
 
 const CertifiedTag = () => (
@@ -46,7 +44,7 @@ const CertifiedTag = () => (
   </span>
 );
 
-const UncertifiedTag = ({ spaceId }: {spaceId: string}) => {
+const UncertifiedTag = ({ spaceId }: { spaceId: string }) => {
   const formUrl = buildSpaceCertSheetUrl(spaceId);
 
   if (isMobileApp() || !getEnvVariables().SPACE_ENTERPRISE_CERTIFICATION_FORM_URL) {
@@ -55,8 +53,7 @@ const UncertifiedTag = ({ spaceId }: {spaceId: string}) => {
 
   return (
     <Tooltip title={t(Strings.space_corp_uncertified_tooltip)} placement="top">
-      <a className={classnames(styles.tag, styles.tagCorpUncertified)}
-        href={formUrl} target="_blank" rel="noopener noreferrer">
+      <a className={classnames(styles.tag, styles.tagCorpUncertified)} href={formUrl} target="_blank" rel="noopener noreferrer">
         <span className={styles.text}>{t(Strings.space_corp_uncertified)}</span>
       </a>
     </Tooltip>

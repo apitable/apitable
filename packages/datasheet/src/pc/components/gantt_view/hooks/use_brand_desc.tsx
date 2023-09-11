@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import { useContext, useMemo } from 'react';
 import { getThemeName, ThemeName } from '@apitable/components';
 import { getLanguage } from '@apitable/core';
-import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import { useContext, useMemo } from 'react';
 
 const BrandDesc = dynamic(() => import('pc/components/gantt_view/group/brand_desc'), { ssr: false });
 

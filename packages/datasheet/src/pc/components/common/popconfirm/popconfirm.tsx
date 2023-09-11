@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
 import { Popover, Space } from 'antd';
 import { PopoverProps } from 'antd/lib/popover';
 import classnames from 'classnames';
 import { FC, ReactNode } from 'react';
 import * as React from 'react';
+import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import { StatusIconFunc } from '../icon';
 import styles from './style.module.less';
 
@@ -52,8 +52,7 @@ export const Popconfirm: FC<React.PropsWithChildren<IPopconfirmProps>> = ({
   cancelText,
   ...rest
 }) => {
-
-  const finalIcon = icon ? icon : (type ? <StatusIconFunc type={type} /> : null);
+  const finalIcon = icon ? icon : type ? <StatusIconFunc type={type} /> : null;
   const okHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     onOk && onOk();
@@ -68,30 +67,27 @@ export const Popconfirm: FC<React.PropsWithChildren<IPopconfirmProps>> = ({
     <Popover
       title={null}
       overlayClassName={classnames(styles.container, overlayClassName)}
-      content={(
+      content={
         <>
           {finalIcon && <div className={styles.left}>{finalIcon}</div>}
           <div className={styles.right}>
             {title && <div className={styles.title}>{title as ReactNode}</div>}
-            <div className={classnames(styles.content, { [styles.indent]: icon, [styles.accent]: !title })}>
-              {content as ReactNode}
-            </div>
+            <div className={classnames(styles.content, { [styles.indent]: icon, [styles.accent]: !title })}>{content as ReactNode}</div>
             <Space className={styles.btnGroup}>
-              {onCancel &&
+              {onCancel && (
                 <TextButton size="small" onClick={cancelHandler} {...cancelButtonProps}>
                   {cancelText || t(Strings.cancel)}
                 </TextButton>
-              }
-              {onOk &&
+              )}
+              {onOk && (
                 <Button size="small" onClick={okHandler} {...finalOkBtnProps}>
                   {okText || t(Strings.confirm)}
                 </Button>
-              }
+              )}
             </Space>
           </div>
-
         </>
-      )}
+      }
       {...rest}
     >
       {children}

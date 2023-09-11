@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AppDispatch } from 'pc/store';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'pc/store';
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

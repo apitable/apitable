@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getCustomConfig, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
-// @ts-ignore
-import { isDingtalkSkuPage } from 'enterprise';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { getCustomConfig, Strings, t } from '@apitable/core';
 import { useQuery } from './';
+// @ts-ignore
+import { isDingtalkSkuPage } from 'enterprise';
 
 const contacts = /(\/)?org(\/)?/; // Directory
 const template = /(\/)?template(\/)?/; // Template Centre
@@ -31,7 +31,7 @@ const management = /(\/)?management(\/)?/; // Space Station Management
 export async function getEmojiNativeByName(emojiName: string) {
   if (!emojiName) return '';
   // @ts-ignore
-  const emojiIndex = await import('emoji-mart/dist/utils/emoji-index/emoji-index').then(module => module.default);
+  const emojiIndex = await import('emoji-mart/dist/utils/emoji-index/emoji-index').then((module) => module.default);
   const emojiData = emojiIndex.search(emojiName).find((o: any) => o.native && o.short_names[0] === emojiName);
   if (!emojiData) return '';
   return emojiData.native;
@@ -42,11 +42,11 @@ function combineEmojiAndName(emojiNative: string, name: string) {
 }
 
 export const useNavigatorName = () => {
-  const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = useSelector(state => {
+  const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = useSelector((state) => {
     const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = state.pageParams;
     return { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId };
   }, shallowEqual);
-  const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap)!;
+  const treeNodesMap = useSelector((state) => state.catalogTree.treeNodesMap)!;
   const router = useRouter();
   const nodeId = mirrorId || datasheetId || folderId || formId || dashboardId;
   const query = useQuery();
@@ -86,9 +86,8 @@ export const useNavigatorName = () => {
 
     const { name, nodeIcon } = getCurrentGUIInfo();
 
-    getEmojiNativeByName(nodeIcon).then(icon => {
+    getEmojiNativeByName(nodeIcon).then((icon) => {
       document.title = combineEmojiAndName(icon, name);
     });
-
   }, [treeNodesMap, nodeId, categoryId, router.asPath, isSkuPage, router.query]);
 };

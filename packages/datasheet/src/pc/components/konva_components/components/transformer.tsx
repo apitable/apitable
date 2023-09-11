@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
 import { Box } from 'konva/lib/shapes/Transformer';
 import dynamic from 'next/dynamic';
 import { FC, memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { useThemeColors } from '@apitable/components';
 
 const TransformerComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/transformer'), { ssr: false });
 
@@ -61,19 +61,22 @@ export const Transformer: FC<React.PropsWithChildren<ITransformerProps>> = memo(
     return canvas;
   }, [colors]);
 
-  const setAnchor = useCallback((type: PositionType) => {
-    const transformer = transformerRef.current;
-    const isLeft = type === PositionType.MiddleLeft;
-    const anchorClass = isLeft ? '.middle-left' : '.middle-right';
-    const transformerAnchor = transformer.find(anchorClass)[0];
+  const setAnchor = useCallback(
+    (type: PositionType) => {
+      const transformer = transformerRef.current;
+      const isLeft = type === PositionType.MiddleLeft;
+      const anchorClass = isLeft ? '.middle-left' : '.middle-right';
+      const transformerAnchor = transformer.find(anchorClass)[0];
 
-    transformerAnchor.fillPriority('pattern');
-    transformerAnchor.fillPatternImage(anchor);
-    transformerAnchor.strokeEnabled(false);
-  }, [anchor]);
+      transformerAnchor.fillPriority('pattern');
+      transformerAnchor.fillPatternImage(anchor);
+      transformerAnchor.strokeEnabled(false);
+    },
+    [anchor],
+  );
 
   useEffect(() => {
-    if(!transformerRef.current) {
+    if (!transformerRef.current) {
       return;
     }
     const stage = transformerRef.current.getStage();

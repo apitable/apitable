@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Space } from 'antd';
+import classnames from 'classnames';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { UserAdminFilled, UserAdminOutlined } from '@apitable/icons';
-import { Space } from 'antd';
-import classnames from 'classnames';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';
 // eslint-disable-next-line no-restricted-imports
 import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { IRoleOption, IUnitItemProps } from './interface';
 import styles from './style.module.less';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 const DEFAULT_ROLE: IRoleOption[] = [
   {
@@ -48,25 +48,22 @@ const DEFAULT_ROLE: IRoleOption[] = [
     value: ConfigConstant.RolePriority[2],
     label: t(Strings.can_read),
   },
-
 ];
 
 export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => {
   const colors = useThemeColors();
-  const {
-    unit, role, disabled, identity, className,
-    roleOptions = DEFAULT_ROLE, disabledTip
-  } = props;
+  const { unit, role, disabled, identity, className, roleOptions = DEFAULT_ROLE, disabledTip } = props;
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
 
-  const title = getSocialWecomUnitName?.({
-    name: unit.name,
-    isModified: unit.isMemberNameModified,
-    spaceInfo
-  }) || unit.name;
+  const title =
+    getSocialWecomUnitName?.({
+      name: unit.name,
+      isModified: unit.isMemberNameModified,
+      spaceInfo,
+    }) || unit.name;
 
   return (
     <div className={classnames(styles.unitItem, className)}>
@@ -74,24 +71,22 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => 
         <InfoCard
           title={title}
           token={
-            (
-              <Space align="center" size={4}>
-                {isAdmin &&
-                <Tooltip
-                  title={t(Strings.space_admin)}
-                >
-                  <div className={styles.role}><UserAdminFilled size={16} color={colors.primaryColor} /></div>
+            <Space align="center" size={4}>
+              {isAdmin && (
+                <Tooltip title={t(Strings.space_admin)}>
+                  <div className={styles.role}>
+                    <UserAdminFilled size={16} color={colors.primaryColor} />
+                  </div>
                 </Tooltip>
-                }
-                {isOwner &&
-                <Tooltip
-                  title={identity?.permissionOpenerTip || t(Strings.share_permisson_model_node_owner)}
-                >
-                  <div className={styles.role}><UserAdminOutlined size={16} color={colors.successColor} /></div>
+              )}
+              {isOwner && (
+                <Tooltip title={identity?.permissionOpenerTip || t(Strings.share_permisson_model_node_owner)}>
+                  <div className={styles.role}>
+                    <UserAdminOutlined size={16} color={colors.successColor} />
+                  </div>
                 </Tooltip>
-                }
-              </Space>
-            )
+              )}
+            </Space>
           }
           description={unit.info || ''}
           style={{ backgroundColor: 'transparent' }}
@@ -105,16 +100,13 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => 
         />
       </div>
       <div className={classnames(styles.permission)}>
-        {
-          disabled ? <WrapperTooltip wrapper={Boolean(disabledTip)} tip={disabledTip || ''}>
-            <span className={styles.onlyShowPermission}>
-              {roleOptions.find(item => item.value === role)!.label}
-            </span>
-          </WrapperTooltip> : <PermissionSelect
-            {...props}
-            roleOptions={roleOptions}
-          />
-        }
+        {disabled ? (
+          <WrapperTooltip wrapper={Boolean(disabledTip)} tip={disabledTip || ''}>
+            <span className={styles.onlyShowPermission}>{roleOptions.find((item) => item.value === role)!.label}</span>
+          </WrapperTooltip>
+        ) : (
+          <PermissionSelect {...props} roleOptions={roleOptions} />
+        )}
       </div>
     </div>
   );

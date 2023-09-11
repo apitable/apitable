@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { StoreActions } from '@apitable/core';
 
 const Page = () => {
   const router = useRouter();

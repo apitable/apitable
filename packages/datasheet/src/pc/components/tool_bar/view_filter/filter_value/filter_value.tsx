@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TextInput, WrapperTooltip } from '@apitable/components';
-import { assertNever, Field, FieldType, FOperator, IField, Strings, t } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import produce from 'immer';
 import { get, isEqual } from 'lodash';
-import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import * as React from 'react';
 import { useContext, useMemo, useState } from 'react';
+import { TextInput, WrapperTooltip } from '@apitable/components';
+import { assertNever, Field, FieldType, FOperator, IField, Strings, t } from '@apitable/core';
+import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { IFilterValueProps } from '../interface';
 import { FilterCascader } from './filter_cascader';
 import { FilterCheckbox } from './filter_checkbox';
@@ -35,29 +35,37 @@ import { FilterRating } from './filter_rating';
 import { EditorType, getFieldByBasicType, getFieldEditorType } from './helper';
 import styles from './style.module.less';
 
-export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = props => {
+export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> = (props) => {
   const { changeFilter, condition, conditionIndex, style = {}, hiddenClientOption, primaryField, disabled } = props;
   const [value, setValue] = useState(condition.value ? condition.value[0] : '');
   let field = props.field;
   const editorType = getFieldEditorType(field);
-  const linkedFieldId = field.type === FieldType.LookUp ? field.property.relatedLinkFieldId :
-    primaryField?.type === FieldType.LookUp ? primaryField.property.relatedLinkFieldId : '';
+  const linkedFieldId =
+    field.type === FieldType.LookUp
+      ? field.property.relatedLinkFieldId
+      : primaryField?.type === FieldType.LookUp
+        ? primaryField.property.relatedLinkFieldId
+        : '';
   const { isViewLock } = useContext(ViewFilterContext);
 
-  const { run: debounceInput } = useDebounceFn((inputValue: any) => {
-    changeFilter && changeFilter(value => {
-      return produce(value, draft => {
-        const condition = draft.conditions[conditionIndex] as any;
-        draft.conditions[conditionIndex] = {
-          ...condition,
-          // Type inconsistency (e.g. magic lookup switching type), change to fix.
-          fieldType: props.field.type,
-          value: inputValue ? [inputValue] : null
-        } as any;
-        return draft;
-      });
-    });
-  }, { wait: 500 });
+  const { run: debounceInput } = useDebounceFn(
+    (inputValue: any) => {
+      changeFilter &&
+        changeFilter((value) => {
+          return produce(value, (draft) => {
+            const condition = draft.conditions[conditionIndex] as any;
+            draft.conditions[conditionIndex] = {
+              ...condition,
+              // Type inconsistency (e.g. magic lookup switching type), change to fix.
+              fieldType: props.field.type,
+              value: inputValue ? [inputValue] : null,
+            } as any;
+            return draft;
+          });
+        });
+    },
+    { wait: 500 },
+  );
 
   useMemo(() => {
     setValue(condition.value ? condition.value[0] : '');
@@ -88,37 +96,31 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
 
   const submitFilterValue = (selectValue: any) => {
     // The filter component of the toolbar is go here.
-    changeFilter && changeFilter(value => {
-      // Check that if the selectValue is the same as the old value, do not update the store.
-      const noValueChange = isEqual(selectValue, get(value, `conditions.${conditionIndex}.value`));
-      if (noValueChange) return value;
-      return produce(value, draft => {
-        if (typeof selectValue !== 'boolean') {
-          selectValue = selectValue ? selectValue : null;
-        }
-        const condition = draft.conditions[conditionIndex];
-        draft.conditions[conditionIndex] = {
-          ...condition,
-          // Type inconsistency (e.g. magic lookup switching type), change to fix.
-          fieldType: props.field.type,
-          value: selectValue
-        } as any;
-        return draft;
+    changeFilter &&
+      changeFilter((value) => {
+        // Check that if the selectValue is the same as the old value, do not update the store.
+        const noValueChange = isEqual(selectValue, get(value, `conditions.${conditionIndex}.value`));
+        if (noValueChange) return value;
+        return produce(value, (draft) => {
+          if (typeof selectValue !== 'boolean') {
+            selectValue = selectValue ? selectValue : null;
+          }
+          const condition = draft.conditions[conditionIndex];
+          draft.conditions[conditionIndex] = {
+            ...condition,
+            // Type inconsistency (e.g. magic lookup switching type), change to fix.
+            fieldType: props.field.type,
+            value: selectValue,
+          } as any;
+          return draft;
+        });
       });
-    });
   };
 
   function Editor(editorType: EditorType) {
     switch (editorType) {
       case EditorType.Options:
-        return (
-          <FilterOptions
-            field={field}
-            condition={condition}
-            disabled={isViewLock || disabled}
-            onChange={submitFilterValue}
-          />
-        );
+        return <FilterOptions field={field} condition={condition} disabled={isViewLock || disabled} onChange={submitFilterValue} />;
       case EditorType.Text:
         if (field.type === FieldType.Cascader) {
           return (
@@ -127,7 +129,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
               field={field}
               linkedFieldId={linkedFieldId}
               onChange={(value) => {
-                setValue(value ? value.join('/') : '' );
+                setValue(value ? value.join('/') : '');
                 submitFilterValue(value ? [value.join('/')] : null);
               }}
               value={[value]}
@@ -135,17 +137,9 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           );
         }
         return (
-          (
-            <div className={styles.inputContainer}>
-              <TextInput
-                value={value}
-                className={styles.input}
-                onChange={inputChange}
-                suffix={''}
-                disabled={isViewLock || disabled}
-              />
-            </div>
-          )
+          <div className={styles.inputContainer}>
+            <TextInput value={value} className={styles.input} onChange={inputChange} suffix={''} disabled={isViewLock || disabled} />
+          </div>
         );
       case EditorType.DateTime:
         return (
@@ -159,23 +153,9 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
           />
         );
       case EditorType.Boolean:
-        return (
-          <FilterCheckbox
-            disabled={disabled}
-            field={field}
-            condition={condition}
-            onChange={submitFilterValue}
-          />
-        );
+        return <FilterCheckbox disabled={disabled} field={field} condition={condition} onChange={submitFilterValue} />;
       case EditorType.Rating:
-        return (
-          <FilterRating
-            field={field}
-            disabled={disabled}
-            condition={condition}
-            onChange={submitFilterValue}
-          />
-        );
+        return <FilterRating field={field} disabled={disabled} condition={condition} onChange={submitFilterValue} />;
       case EditorType.Member:
         return (
           <FilterMember
@@ -189,16 +169,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
       case EditorType.Number:
       case EditorType.Currency:
       case EditorType.Percent:
-        return (
-          (
-            <FilterNumber
-              disabled={disabled}
-              field={field}
-              condition={condition}
-              onChange={submitFilterValue}
-            />
-          )
-        );
+        return <FilterNumber disabled={disabled} field={field} condition={condition} onChange={submitFilterValue} />;
       case EditorType.None:
         return <div />;
       default:

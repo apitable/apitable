@@ -16,19 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Alert, Typography, useListenVisualHeight, useThemeColors, IUseListenTriggerInfo } from '@apitable/components';
-import {
-  ConfigConstant, DATASHEET_ID, FormView, getMaxViewCountPerSheet, getViewAnalyticsId, getViewClass, Selectors, Strings, t, ViewType
-} from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import Trigger from 'rc-trigger';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Alert, Typography, useListenVisualHeight, useThemeColors, IUseListenTriggerInfo } from '@apitable/components';
+import {
+  ConfigConstant,
+  DATASHEET_ID,
+  FormView,
+  getMaxViewCountPerSheet,
+  getViewAnalyticsId,
+  getViewClass,
+  Selectors,
+  Strings,
+  t,
+  ViewType,
+} from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import DefaultViewPng from 'static/icon/datasheet/view/datasheet_img_view@4x.png';
 import { NodeIcon } from './node_icon';
 import styles from './style.module.less';
@@ -38,27 +47,27 @@ const MAX_HEIGHT = 459;
 
 interface IViewIntroduceList {
   addNewView: (e: React.MouseEvent, viewType: ViewType) => void;
-  addNewNode: (e: React.MouseEvent, nodeType: ConfigConstant.NodeType) => void
+  addNewNode: (e: React.MouseEvent, nodeType: ConfigConstant.NodeType) => void;
   triggerInfo?: IUseListenTriggerInfo;
 }
 
-const ViewIntroduce: React.FC<React.PropsWithChildren<{ viewType: ViewType }>> = props => {
+const ViewIntroduce: React.FC<React.PropsWithChildren<{ viewType: ViewType }>> = (props) => {
   const { viewType: fieldType } = props;
   const info = getViewClass(fieldType).getViewIntroduce()!;
   if (!info) {
     return <></>;
   }
-  return <div className={styles.introduce}>
-    <h3>{info?.title}</h3>
-    <p>
-      {info.desc}
-    </p>
-    {
-      info.videoGuide ?
-        <video src={info.videoGuide} width={240} height={135} autoPlay loop /> :
+  return (
+    <div className={styles.introduce}>
+      <h3>{info?.title}</h3>
+      <p>{info.desc}</p>
+      {info.videoGuide ? (
+        <video src={info.videoGuide} width={240} height={135} autoPlay loop />
+      ) : (
         <Image src={DefaultViewPng} width={240} height={135} alt="" />
-    }
-  </div>;
+      )}
+    </div>
+  );
 };
 
 const NodeIntroduce: React.FC<React.PropsWithChildren<{ nodeType: ConfigConstant.NodeType }>> = () => {
@@ -68,17 +77,17 @@ const NodeIntroduce: React.FC<React.PropsWithChildren<{ nodeType: ConfigConstant
     return <></>;
   }
 
-  return <div className={styles.introduce}>
-    <h3>{info?.title}</h3>
-    <p>
-      {info.desc}
-    </p>
-    {
-      info.videoGuide ?
-        <video src={info.videoGuide!} width={240} height={135} autoPlay loop /> :
+  return (
+    <div className={styles.introduce}>
+      <h3>{info?.title}</h3>
+      <p>{info.desc}</p>
+      {info.videoGuide ? (
+        <video src={info.videoGuide!} width={240} height={135} autoPlay loop />
+      ) : (
         <Image src={DefaultViewPng} width={240} height={135} alt="" />
-    }
-  </div>;
+      )}
+    </div>
+  );
 };
 
 export const ViewIntroduceList = (props: IViewIntroduceList) => {
@@ -86,15 +95,15 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
   const { addNewView, addNewNode, triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewTypeList = [ViewType.Grid, ViewType.Gallery, ViewType.Kanban, ViewType.Gantt, ViewType.Calendar, ViewType.OrgChart];
-  const embedId = useSelector(state => state.pageParams.embedId);
+  const embedId = useSelector((state) => state.pageParams.embedId);
   const nodeTypeList = [ConfigConstant.NodeType.FORM];
-  const formCreatable = useSelector(state => {
+  const formCreatable = useSelector((state) => {
     const folderId = Selectors.getDatasheetParentId(state)!;
     const { editable } = Selectors.getPermissions(state);
     const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
     return manageable && editable;
   });
-  const isViewCountOverLimit = useSelector(state => {
+  const isViewCountOverLimit = useSelector((state) => {
     return Selectors.getViewsList(state).length >= getMaxViewCountPerSheet();
   });
   const { style, onListenResize } = useListenVisualHeight({
@@ -104,16 +113,14 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
     triggerInfo,
   });
 
-  const TriggerComponent = (props: { children?: any; popupComponent?: any; }) => {
+  const TriggerComponent = (props: { children?: any; popupComponent?: any }) => {
     const { popupComponent } = props;
     return (
       <Trigger
         action={['hover']}
         popup={popupComponent}
         destroyPopupOnHide
-        popupAlign={
-          { points: ['tl', 'tr'], offset: [18, 0], overflow: { adjustX: true, adjustY: true }}
-        }
+        popupAlign={{ points: ['tl', 'tr'], offset: [18, 0], overflow: { adjustX: true, adjustY: true }}}
         popupStyle={{
           width: 288,
           position: 'absolute',
@@ -136,75 +143,67 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
       <Typography style={{ marginBottom: isViewCountOverLimit ? 8 : 16, marginLeft: 8 }} variant={'body2'}>
         {t(Strings.new_view)}
       </Typography>
-      {
-        isViewCountOverLimit && <Alert
+      {isViewCountOverLimit && (
+        <Alert
           type={'error'}
           content={t(Strings.view_count_over_limit, { count: getMaxViewCountPerSheet() })}
           style={{ padding: 8, margin: 8, width: 'auto' }}
         />
-      }
-      {
-        viewTypeList.map((viewType, index) => {
-          return (
-            <TriggerComponent
-              key={index}
-              popupComponent={<ViewIntroduce viewType={viewType} />}
+      )}
+      {viewTypeList.map((viewType, index) => {
+        return (
+          <TriggerComponent key={index} popupComponent={<ViewIntroduce viewType={viewType} />}>
+            <section
+              className={classNames(styles.viewItem, {
+                [styles.disabled]: isViewCountOverLimit,
+              })}
+              onClick={(e) => {
+                if (isViewCountOverLimit) {
+                  return;
+                }
+                addNewView(e as any as React.MouseEvent, viewType);
+              }}
+              id={getViewAnalyticsId(viewType)}
+              data-test-id={getViewAnalyticsId(viewType)}
             >
+              <ViewIcon viewType={viewType} color={colors.primaryColor} size={16} />
+              <span>{getViewClass(viewType).getViewIntroduce()!.title}</span>
+              <AddOutlined color={colors.thirdLevelText} />
+            </section>
+          </TriggerComponent>
+        );
+      })}
+
+      <div className={styles.nodeTypeContainer}>
+        {nodeTypeList.map((nodeType, index) => {
+          if (nodeType === ConfigConstant.NodeType.FORM && !formCreatable) {
+            return <></>;
+          }
+          return (
+            <TriggerComponent key={index} popupComponent={<NodeIntroduce nodeType={nodeType} />}>
               <section
-                className={classNames(styles.viewItem, {
-                  [styles.disabled]: isViewCountOverLimit
-                })}
-                onClick={e => {
-                  if (isViewCountOverLimit) {
-                    return;
-                  }
-                  addNewView(e as any as React.MouseEvent, viewType);
-                }}
-                id={getViewAnalyticsId(viewType)}
-                data-test-id={getViewAnalyticsId(viewType)}
+                className={styles.viewItem}
+                id={DATASHEET_ID.VIEW_CREATOR_FORM}
+                onClick={(e) => addNewNode(e as any as React.MouseEvent, nodeType)}
               >
-                <ViewIcon viewType={viewType} color={colors.primaryColor} size={16} />
-                <span>{getViewClass(viewType).getViewIntroduce()!.title}</span>
+                <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16} />
+                <span>{FormView.getViewIntroduce()!.title}</span>
                 <AddOutlined color={colors.thirdLevelText} />
               </section>
             </TriggerComponent>
           );
-        })
-      }
-
-      <div className={styles.nodeTypeContainer}>
-        {
-          nodeTypeList.map((nodeType, index) => {
-            if (nodeType === ConfigConstant.NodeType.FORM && !formCreatable) {
-              return <></>;
-            }
-            return (
-              <TriggerComponent
-                key={index}
-                popupComponent={<NodeIntroduce nodeType={nodeType} />}
-              >
-                <section
-                  className={styles.viewItem}
-                  id={DATASHEET_ID.VIEW_CREATOR_FORM}
-                  onClick={e => addNewNode(e as any as React.MouseEvent, nodeType)}
-                >
-                  <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16} />
-                  <span>{FormView.getViewIntroduce()!.title}</span>
-                  <AddOutlined color={colors.thirdLevelText} />
-                </section>
-              </TriggerComponent>
-            );
-          })
-        }
+        })}
       </div>
 
-      { !embedId && <section
-        className={styles.addNewDatasheet}
-        onClick={() => ShortcutActionManager.trigger(ShortcutActionName.NewDatasheet)}
-        id={DATASHEET_ID.VIEW_CREATOR_TABLE}
-      >
-        {t(Strings.tab_add_view_datasheet)}
-      </section>}
+      {!embedId && (
+        <section
+          className={styles.addNewDatasheet}
+          onClick={() => ShortcutActionManager.trigger(ShortcutActionName.NewDatasheet)}
+          id={DATASHEET_ID.VIEW_CREATOR_TABLE}
+        >
+          {t(Strings.tab_add_view_datasheet)}
+        </section>
+      )}
     </div>
   );
 };

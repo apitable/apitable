@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useHover } from 'ahooks';
+import { useRef } from 'react';
 import { Box, Button, ListDeprecate, stopPropagation, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
-import { useHover } from 'ahooks';
-import { useRef } from 'react';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
 
 interface ISchemaPropertyListItemProps {
@@ -45,43 +45,41 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
     return theme.color.fc8;
   };
   return (
-    <Box
-      ref={ref}
-      key={item.key}
-      marginBottom="4px"
-    >
+    <Box ref={ref} key={item.key} marginBottom="4px">
       <ListDeprecate.Item
         key={item.key}
         id={item.key}
         currentIndex={0}
         style={{
           backgroundColor: getBgColor(),
-          borderRadius: '4px'
+          borderRadius: '4px',
         }}
         className={isActive ? 'active' : ''}
         onClick={(e) => {
           if (disabled) return;
           stopPropagation(e);
           handleItemClick(item);
-        }}>
+        }}
+      >
         <Box
           display="flex"
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between"
           width="100%"
-          style={disabled ? {
-            opacity: 0.5,
-            cursor: 'not-allowed',
-          } : {}}
+          style={
+            disabled
+              ? {
+                opacity: 0.5,
+                cursor: 'not-allowed',
+              }
+              : {}
+          }
         >
           {item.label}
-          <Box
-            display="flex"
-            alignItems="center"
-          >
-            {
-              item.canInsert && <Button
+          <Box display="flex" alignItems="center">
+            {item.canInsert && (
+              <Button
                 size="small"
                 color="primary"
                 style={{
@@ -96,10 +94,12 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
                   stopPropagation(e);
                   handleItemClick(item);
                 }}
-              >{t(Strings.robot_variables_insert_button)}</Button>
-            }
-            {
-              item.hasChildren && <Box
+              >
+                {t(Strings.robot_variables_insert_button)}
+              </Button>
+            )}
+            {item.hasChildren && (
+              <Box
                 marginLeft="16px"
                 display="flex"
                 alignItems="center"
@@ -111,7 +111,7 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
               >
                 <ChevronRightOutlined />
               </Box>
-            }
+            )}
           </Box>
         </Box>
       </ListDeprecate.Item>

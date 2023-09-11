@@ -1,14 +1,14 @@
-import ReactDOM from 'react-dom';
-import { Align } from 'react-window';
-import { shallowEqual, useSelector } from 'react-redux';
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { CloseOutlined } from '@apitable/icons';
+import ReactDOM from 'react-dom';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Align } from 'react-window';
 import { stopPropagation, useTheme } from '@apitable/components';
 import { IReduxState, IViewRow, Selectors, Strings, t } from '@apitable/core';
-import { SearchContent } from './search_content';
+import { CloseOutlined } from '@apitable/icons';
 import { KeyCode } from 'pc/utils';
-import { TComponent } from '../common/t_component';
 import { SearchControl } from '../common/search_control';
+import { TComponent } from '../common/t_component';
+import { SearchContent } from './search_content';
 import styles from './style.module.less';
 
 export interface IRecordPickerProps {
@@ -27,15 +27,14 @@ interface ISearchContentRefProps {
 export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = memo((props) => {
   const { datasheetId, onSave, onClose, children, isSingle } = props;
 
-  const { 
-    datasheet,
-    view,
-    fieldMap
-  } = useSelector((state: IReduxState) => ({
-    datasheet: Selectors.getDatasheet(state, datasheetId)!,
-    view: Selectors.getViewByIdWithDefault(state, datasheetId)!,
-    fieldMap: Selectors.getFieldMap(state, datasheetId)!
-  }), shallowEqual);
+  const { datasheet, view, fieldMap } = useSelector(
+    (state: IReduxState) => ({
+      datasheet: Selectors.getDatasheet(state, datasheetId)!,
+      view: Selectors.getViewByIdWithDefault(state, datasheetId)!,
+      fieldMap: Selectors.getFieldMap(state, datasheetId)!,
+    }),
+    shallowEqual,
+  );
   const { color } = useTheme();
   const editorRef = useRef(null);
   const searchContentRef = useRef<ISearchContentRefProps>(null);
@@ -56,13 +55,16 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
     setSearchValue('');
   }, []);
 
-  const saveValue = useCallback((recordIds: string[]) => {
-    setSelectedRecordIds(recordIds);
-    onSave?.(recordIds);
-    if (isSingle && recordIds.length) {
-      onClose?.();
-    }
-  }, [isSingle, onSave, onClose]);
+  const saveValue = useCallback(
+    (recordIds: string[]) => {
+      setSelectedRecordIds(recordIds);
+      onSave?.(recordIds);
+      if (isSingle && recordIds.length) {
+        onClose?.();
+      }
+    },
+    [isSingle, onSave, onClose],
+  );
 
   useEffect(() => {
     if (!searchValue) {
@@ -106,15 +108,8 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
   };
 
   const PortalChild = (
-    <div
-      className={styles.portalContent}
-      onKeyDown={onKeyDown}
-    >
-      <CloseOutlined
-        className={styles.closeIcon}
-        color={color.thirdLevelText}
-        onClick={() => onClose?.()}
-      />
+    <div className={styles.portalContent} onKeyDown={onKeyDown}>
+      <CloseOutlined className={styles.closeIcon} color={color.thirdLevelText} onClick={() => onClose?.()} />
       <h2 className={styles.portalTitleWrapper}>
         <span className={styles.portalTitle}>
           <TComponent
@@ -150,7 +145,7 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
     </div>
   );
 
-  return ReactDOM.createPortal((
+  return ReactDOM.createPortal(
     <div
       className={styles.portalContainer}
       tabIndex={-1}
@@ -160,7 +155,7 @@ export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = mem
       onMouseMove={stopPropagation}
     >
       {PortalChild}
-    </div>
-  ), document.body);
+    </div>,
+    document.body,
+  );
 });
-

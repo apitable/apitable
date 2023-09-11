@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Modal } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
-import { DisabledFieldPermission } from 'pc/components/field_permission/disabled_field_permission';
-import { EnableFieldPermission } from 'pc/components/field_permission/enable_field_permission';
 import { useSelector } from 'react-redux';
-import { Selectors, Strings, t } from '@apitable/core';
-import { Modal } from 'antd';
-import styles from 'pc/components/field_permission/styles.module.less';
 import { Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
+import { Selectors, Strings, t } from '@apitable/core';
+import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { DisabledFieldPermission } from 'pc/components/field_permission/disabled_field_permission';
+import { EnableFieldPermission } from 'pc/components/field_permission/enable_field_permission';
+import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
+import styles from 'pc/components/field_permission/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
-import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
 
-export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = props => {
+export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = (props) => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
   const theme = useSelector(Selectors.getTheme);
@@ -65,7 +65,7 @@ export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionP
         onModalClose={onModalClose}
         docIcon={
           <Tooltip content={t(Strings.field_permission_help_desc)}>
-            <a href={t(Strings.field_permission_help_url)} target='_blank' className={styles.helpIcon} rel="noreferrer">
+            <a href={t(Strings.field_permission_help_url)} target="_blank" className={styles.helpIcon} rel="noreferrer">
               <QuestionCircleOutlined color={colors.textCommonTertiary} className={styles.infoIcon} />
             </a>
           </Tooltip>

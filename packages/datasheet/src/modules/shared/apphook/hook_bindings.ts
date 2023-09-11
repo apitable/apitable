@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import {
   Events,
   generateFixInnerConsistencyChangesets,
@@ -29,12 +31,10 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import * as Sentry from '@sentry/nextjs';
 import { Modal } from 'pc/components/common';
 import { IModalReturn } from 'pc/components/common/modal/modal/modal.interface';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import posthog from 'posthog-js';
 import { IModalConfirmArgs } from './interface';
 
 let lastModalDestroy: IModalReturn | null = null;
@@ -85,7 +85,6 @@ const fixLinkConsistency = (error: ILinkConsistencyError, state: IReduxState) =>
 
 // Set user ID, logged in
 Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
-
   if (typeof window['posthog'] !== 'undefined') {
     posthog.identify(args.uuid);
   }
@@ -100,7 +99,7 @@ Player.bindTrigger(Events.app_set_user_id, (args: IUserInfo) => {
 });
 
 // Error reporting related
-Player.bindTrigger(Events.app_error_logger, args => {
+Player.bindTrigger(Events.app_error_logger, (args) => {
   const { error, metaData } = args;
   console.warn('! ' + 'app_error_logger', args);
   Sentry.captureException(error, {

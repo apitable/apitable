@@ -16,40 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { IFormProps, CollaCommandName, Selectors } from '@apitable/core';
-import styles from './style.module.less';
-import classNames from 'classnames';
-import { TitleEditor } from './title_editor';
+import { CollaCommandName, IFormProps, Selectors } from '@apitable/core';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
 import { DescEditor } from './desc_editor';
 import { CoverImgUploader, LogoImgUploader } from './img_uploader';
 import { IModeEnum } from './interface';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { resourceService } from 'pc/resource_service';
+import styles from './style.module.less';
+import { TitleEditor } from './title_editor';
 
 interface IFormPropContainerProps {
-    formId: string;
-    title: string;
-    editable: boolean;
-    formProps: IFormProps;
+  formId: string;
+  title: string;
+  editable: boolean;
+  formProps: IFormProps;
 }
 
 export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = props => {
   const { formId, editable, formProps } = props;
-  const { description, fullScreen, coverVisible, logoVisible, logoUrl, coverUrl } = formProps;
+  const { description, fullScreen, coverVisible, logoVisible, logoUrl: _logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { shareId } = useSelector(state => state.pageParams);
+  const { shareId } = useSelector((state) => state.pageParams);
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
   const title = useSelector(state => Selectors.getForm(state)!.name);
+  const logoUrl = useGetSignatureAssertByToken(_logoUrl || '');
   const updateProps = (partProps: Partial<IFormProps>) => {
-        resourceService.instance!.commandManager.execute({
-          cmd: CollaCommandName.UpdateFormProps,
-          formId,
-          partialProps: partProps,
-        });
+    resourceService.instance!.commandManager.execute({
+      cmd: CollaCommandName.UpdateFormProps,
+      formId,
+      partialProps: partProps,
+    });
   };
 
   const commonProps = {
@@ -70,7 +72,7 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
             [styles.coverImgUploaderMobile]: isMobile,
           })}
         >
-          <CoverImgUploader {...commonProps} coverUrl={coverUrl}/>
+          <CoverImgUploader {...commonProps} coverUrl={coverUrl} />
         </div>
       )}
       <div
@@ -84,11 +86,11 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
       >
         {logoVisible && (
           <div className={classNames(styles.logoImgUploader, isMobile && styles.logoImgUploaderMobile)}>
-            <LogoImgUploader {...commonProps} logoUrl={logoUrl}/>
+            <LogoImgUploader {...commonProps} logoUrl={logoUrl} />
           </div>
         )}
-        <TitleEditor {...commonProps} title={title}/>
-        <DescEditor {...commonProps} descData={description}/>
+        <TitleEditor {...commonProps} title={title} />
+        <DescEditor {...commonProps} descData={description} />
       </div>
     </div>
   );

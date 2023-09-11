@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { cellValueToImageSrc, Strings, t } from '@apitable/core';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import { cellValueToImageSrc, Strings, t } from '@apitable/core';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useResponsive } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { stopPropagation } from '../../../../utils/dom';
 import { IPreviewTypeBase } from '../preview_type.interface';
 import styles from './style.module.less';
-import { getEnvVariables } from 'pc/utils/env';
 
-const PreviewPdf: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
+const PreviewPdf: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = (props) => {
   const { file } = props;
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -41,18 +41,18 @@ const PreviewPdf: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props =>
 
   useEffect(() => {
     // The latest version 5.7.2 has solved the signature problem, but there are font loading problems, 5.4.0 is a more perfect version
-    // Future upgrades, you need to read the exact version number from pdfjs.version, 
+    // Future upgrades, you need to read the exact version number from pdfjs.version,
     // otherwise it may be inconsistent with the version of the react-pdf resulting in errors (such as white screen, etc.)
     pdfjs.GlobalWorkerOptions.workerSrc = (env.NEXT_PUBLIC_PUBLIC_URL || '') + '/file/pdf/pdf.worker.2.9.359.min.js';
   });
 
   function pre(e: React.MouseEvent) {
-    setPageNumber(state => (state <= 1 ? 1 : --state));
+    setPageNumber((state) => (state <= 1 ? 1 : --state));
     stopPropagation(e);
   }
 
   function next(e: React.MouseEvent) {
-    setPageNumber(state => (state >= numPages! ? numPages! : ++state));
+    setPageNumber((state) => (state >= numPages! ? numPages! : ++state));
     stopPropagation(e);
   }
 

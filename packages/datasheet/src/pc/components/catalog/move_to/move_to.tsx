@@ -16,34 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Message } from 'pc/components/common/message/message';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SelectFolder } from './select_folder';
-import { MobileFooter, MobileTitle, Title } from './title';
-import { Router } from 'pc/components/route_manager/router';
-
-import styles from './style.module.less';
+import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Message } from 'pc/components/common/message/message';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
+import { Router } from 'pc/components/route_manager/router';
+import { SelectFolder } from './select_folder';
+import styles from './style.module.less';
+import { MobileFooter, MobileTitle, Title } from './title';
 
-export const MoveTo: React.FC<React.PropsWithChildren<{
-  nodeIds: string[]
-  onClose?:() => void;
-}>> = (props) => {
+export const MoveTo: React.FC<
+  React.PropsWithChildren<{
+    nodeIds: string[];
+    onClose?: () => void;
+  }>
+> = (props) => {
   const { nodeIds, onClose } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [parentList, setParentList] = useState<IParent[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const { nodeName, parentId, nodePermitSet } = useSelector(state => {
+  const { nodeName, parentId, nodePermitSet } = useSelector((state) => {
     const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];
     return { nodeName, parentId, nodePermitSet };
   });
-  const currentNodeId = useSelector(state => state.pageParams.nodeId);
+  const currentNodeId = useSelector((state) => state.pageParams.nodeId);
 
   const dispatch = useDispatch();
 
@@ -52,7 +53,7 @@ export const MoveTo: React.FC<React.PropsWithChildren<{
   };
 
   const getParentList = (folderId: string) => {
-    Api.getParents(folderId).then(res => {
+    Api.getParents(folderId).then((res) => {
       const { data, success, message } = res.data;
       if (!success) {
         Message.error({ content: message });
@@ -69,9 +70,9 @@ export const MoveTo: React.FC<React.PropsWithChildren<{
     getParentList(selectedNodeId);
   }, [selectedNodeId]);
 
-  const main = <SelectFolder selectedFolderId={selectedNodeId} selectedFolderParentList={parentList} onChange={setSelectedNodeId}/>;
+  const main = <SelectFolder selectedFolderId={selectedNodeId} selectedFolderParentList={parentList} onChange={setSelectedNodeId} />;
 
-  const selectedNodeName = parentList.find(v => v.nodeId === selectedNodeId)?.nodeName;
+  const selectedNodeName = parentList.find((v) => v.nodeId === selectedNodeId)?.nodeName;
 
   const moveTo = () => {
     const nodeId = nodeIds[0];
@@ -86,7 +87,7 @@ export const MoveTo: React.FC<React.PropsWithChildren<{
 
     const move = () => {
       setConfirmLoading(true);
-      Api.nodeMove(nodeId, selectedNodeId).then(res => {
+      Api.nodeMove(nodeId, selectedNodeId).then((res) => {
         setConfirmLoading(false);
         const { data, success, message } = res.data;
         if (!success) {
@@ -134,16 +135,24 @@ export const MoveTo: React.FC<React.PropsWithChildren<{
   const moveSuccess = (nodeId: string) => {
     const isDifferent = currentNodeId !== nodeId;
     Message.success({
-      content: <>
-        {t(Strings.move_to_success)}
-        {isDifferent && <i onClick={() => Router.redirect(Navigation.WORKBENCH, {
-          params: {
-            nodeId: nodeId,
-          }})
-        }>
-          {t(Strings.to_view_dashboard)}
-        </i>}
-      </>,
+      content: (
+        <>
+          {t(Strings.move_to_success)}
+          {isDifferent && (
+            <i
+              onClick={() =>
+                Router.redirect(Navigation.WORKBENCH, {
+                  params: {
+                    nodeId: nodeId,
+                  },
+                })
+              }
+            >
+              {t(Strings.to_view_dashboard)}
+            </i>
+          )}
+        </>
+      ),
     });
   };
 
@@ -169,12 +178,14 @@ export const MoveTo: React.FC<React.PropsWithChildren<{
           height="90%"
           onClose={onClose}
           className={classNames(styles.moveTo, styles.moveToMobile)}
-          title={<MobileTitle
-            showBackIcon={parentList.length > 1}
-            nodeName={selectedNodeId ? selectedNodeName : t(Strings.move_to)}
-            onClick={backPreSelected}
-          />}
-          footer={selectedNodeId && <MobileFooter confirmLoading={confirmLoading} onCancel={onClose} onConfirm={moveTo}/>}
+          title={
+            <MobileTitle
+              showBackIcon={parentList.length > 1}
+              nodeName={selectedNodeId ? selectedNodeName : t(Strings.move_to)}
+              onClick={backPreSelected}
+            />
+          }
+          footer={selectedNodeId && <MobileFooter confirmLoading={confirmLoading} onCancel={onClose} onConfirm={moveTo} />}
         >
           {main}
         </Popup>

@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, IOption, useThemeColors } from '@apitable/components';
 import { FieldType, Strings, t, Selectors, IViewColumn } from '@apitable/core';
-import { useSelector } from 'react-redux';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import styles from './style.module.less';
-import { store } from 'pc/store';
 import { DatasheetOutlined } from '@apitable/icons';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { store } from 'pc/store';
+import styles from './style.module.less';
 
-interface ISearchSelectFieldProps { 
+interface ISearchSelectFieldProps {
   datasheetId: string | undefined;
   defaultFieldId: string;
   fieldType?: FieldType;
@@ -19,43 +19,44 @@ interface ISearchSelectFieldProps {
 export const SearchSelectField = (props: ISearchSelectFieldProps) => {
   const { datasheetId, fieldType = null, defaultFieldId, onChange, disabled = false } = props;
   const colors = useThemeColors();
-  const columns = useSelector(state => {
+  const columns = useSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
 
   const filter = (item: IViewColumn) => {
-    if(fieldType) {
+    if (fieldType) {
       const field = fieldMap[item.fieldId];
       return field.type === fieldType;
     }
     return true;
   };
-  
+
   const options: IOption[] = columns.filter(filter).map(({ fieldId }) => {
     const field = fieldMap[fieldId];
-  
+
     return {
-      label:  fieldType !== FieldType.Link ? field.name : Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.name!,
+      label: fieldType !== FieldType.Link ? field.name : Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.name!,
       value: field.id,
-      prefixIcon: fieldType !== FieldType.Link ? getFieldTypeIcon(field.type, colors.thirdLevelText) 
-        : <DatasheetOutlined color={colors.thirdLevelText} />,
+      prefixIcon:
+        fieldType !== FieldType.Link ? getFieldTypeIcon(field.type, colors.thirdLevelText) : <DatasheetOutlined color={colors.thirdLevelText} />,
       disabledTip: t(Strings.view_sort_and_group_disabled),
     };
   });
 
   function optionSelect(targetId: string) {
-   
     onChange(targetId);
-    
   }
 
-  const listStyle = fieldType === FieldType.Link ? {
-    display: 'none'
-  } : {};
+  const listStyle =
+    fieldType === FieldType.Link
+      ? {
+        display: 'none',
+      }
+      : {};
 
-  return ( 
+  return (
     <div>
       <Select
         placeholder={t(Strings.pick_one_option)}

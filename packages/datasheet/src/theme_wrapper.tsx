@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeName, ThemeProvider } from '@apitable/components';
-import { Selectors, StoreActions } from '@apitable/core';
 import { useKeyPress, useLocalStorageState } from 'ahooks';
-import { SystemTheme } from 'pc/common/theme';
-import { getEnvVariables } from 'pc/utils/env';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ThemeName, ThemeProvider } from '@apitable/components';
+import { Selectors, StoreActions } from '@apitable/core';
+import { SystemTheme } from 'pc/common/theme';
+import { getEnvVariables } from 'pc/utils/env';
 
 const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {
-    defaultValue: (getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName) || ThemeName.Light
+    defaultValue: (getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName) || ThemeName.Light,
   });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
@@ -76,9 +76,7 @@ const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
     theme === ThemeName.Light ? setTheme(ThemeName.Dark) : setTheme(ThemeName.Light);
   });
 
-  return <ThemeProvider theme={cacheTheme}>
-    {props.children}
-  </ThemeProvider>;
+  return <ThemeProvider theme={cacheTheme}>{props.children}</ThemeProvider>;
 };
 
 export default ThemeWrapper;

@@ -16,6 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { usePostHog } from 'posthog-js/react';
+import * as React from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { IconButton, LinkButton, Radio, RadioGroup, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -31,22 +35,13 @@ import {
   TrackEvents,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import {
-  AddOutlined,
-  DeleteOutlined,
-  FolderAddOutlined,
-  ImportOutlined,
-  PlanetOutlined,
-  SearchOutlined,
-  UserAddOutlined,
-} from '@apitable/icons';
+import { AddOutlined, DeleteOutlined, FolderAddOutlined, ImportOutlined, PlanetOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';
 import { NodeContextMenu } from 'pc/components/catalog/node_context_menu';
 import { PermissionSettingsPlus } from 'pc/components/catalog/permission_settings_plus';
-import { expandSearch } from 'pc/components/quick_search';
 import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -56,39 +51,25 @@ import { Tooltip } from 'pc/components/common/tooltip';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
 import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_bar/share_modal';
 import { expandInviteModal } from 'pc/components/invite/invite_outsider';
+import { expandSearch } from 'pc/components/quick_search';
 import { Router } from 'pc/components/route_manager/router';
 import { sendRemind } from 'pc/events/notification_verification';
-import {
-  IPanelInfo,
-  useCatalogTreeRequest,
-  useRequest,
-  useResponsive,
-  useSearchPanel,
-  useUserRequest,
-  useWorkbenchSideSync
-} from 'pc/hooks';
+import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest, useWorkbenchSideSync } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useCatalog } from 'pc/hooks/use_catalog';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Catalog } from '../../catalog';
 import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
-import { usePostHog } from 'posthog-js/react';
-import { useCatalog } from 'pc/hooks/use_catalog';
 
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
   const [activeKey, setActiveKey] = useState<string>('');
-  const {
-    panelVisible, panelInfo, onChange,
-    setPanelInfo, setPanelVisible,
-  } = useSearchPanel();
+  const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const { addTreeNode } = useCatalog();
   const {
     spaceId,
@@ -101,7 +82,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     importModalNodeId,
     loading,
     err,
-    moveToNodeIds
+    moveToNodeIds,
   } = useSelector((state: IReduxState) => {
     return {
       spaceId: state.space.activeId,
@@ -114,12 +95,12 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       importModalNodeId: state.catalogTree.importModalNodeId,
       loading: state.catalogTree.loading,
       err: state.catalogTree.err,
-      moveToNodeIds: state.catalogTree.moveToNodeIds
+      moveToNodeIds: state.catalogTree.moveToNodeIds,
     };
   }, shallowEqual);
 
   const isFormShare = /fom\w+/.test(shareModalNodeId);
-  const activedNodeId = useSelector(state => Selectors.getNodeId(state));
+  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
   const { getTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
   const { getPositionNodeReq } = useCatalogTreeRequest();
@@ -133,9 +114,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
   const posthog = usePostHog();
 
-  const userInfo = useSelector(state => state.user.info);
-  const spaceFeatures = useSelector(state => state.space.spaceFeatures);
-  const spacePermissions = useSelector(state => state.spacePermissionManage.spaceResource?.permissions);
+  const userInfo = useSelector((state) => state.user.info);
+  const spaceFeatures = useSelector((state) => state.space.spaceFeatures);
+  const spacePermissions = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions);
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
 
@@ -220,36 +201,39 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     updateActiveKey(key);
   };
 
-  const updateActiveKey=React.useCallback((key:string='get')=>{
-    const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
-    let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
-    if('get'===key){
-      // Compatible with older versions, which is array
-      if(typeof defaultActiveKey[0]==='string')defaultActiveKey=ConfigConstant.Modules.CATALOG;
-      if (Array.isArray(defaultActiveKey)) {
-        defaultActiveKey=defaultActiveKey.find((i: { spaceId: string }) =>i.spaceId===spaceId );
-        defaultActiveKey=defaultActiveKey?defaultActiveKey.activeKey:ConfigConstant.Modules.CATALOG;
-      }
-      return defaultActiveKey;
-    }
-    if(typeof defaultActiveKey[0]==='string')defaultActiveKey=[{ spaceId,activeKey:key }];
-    if(Array.isArray(defaultActiveKey)){
-      let noSpaceId=true;
-      for (const item of defaultActiveKey) {
-        if(item.spaceId===spaceId){
-          noSpaceId=false;
-          item.activeKey=key;
-          break;
+  const updateActiveKey = React.useCallback(
+    (key: string = 'get') => {
+      const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
+      let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
+      if ('get' === key) {
+        // Compatible with older versions, which is array
+        if (typeof defaultActiveKey[0] === 'string') defaultActiveKey = ConfigConstant.Modules.CATALOG;
+        if (Array.isArray(defaultActiveKey)) {
+          defaultActiveKey = defaultActiveKey.find((i: { spaceId: string }) => i.spaceId === spaceId);
+          defaultActiveKey = defaultActiveKey ? defaultActiveKey.activeKey : ConfigConstant.Modules.CATALOG;
         }
+        return defaultActiveKey;
       }
-      if(noSpaceId)defaultActiveKey.push({ spaceId,activeKey:key });
-      localStorage.setItem('vika_workbench_active_key', JSON.stringify(defaultActiveKey));
-    }
-  },[spaceId]);
+      if (typeof defaultActiveKey[0] === 'string') defaultActiveKey = [{ spaceId, activeKey: key }];
+      if (Array.isArray(defaultActiveKey)) {
+        let noSpaceId = true;
+        for (const item of defaultActiveKey) {
+          if (item.spaceId === spaceId) {
+            noSpaceId = false;
+            item.activeKey = key;
+            break;
+          }
+        }
+        if (noSpaceId) defaultActiveKey.push({ spaceId, activeKey: key });
+        localStorage.setItem('vika_workbench_active_key', JSON.stringify(defaultActiveKey));
+      }
+    },
+    [spaceId],
+  );
 
-  useEffect(()=>{
+  useEffect(() => {
     setActiveKey(updateActiveKey());
-  },[updateActiveKey]);
+  }, [updateActiveKey]);
 
   const jumpTrash = () => {
     Router.push(Navigation.TRASH, { params: { spaceId }});
@@ -304,7 +288,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     [rightClickInfo, openFavorite, onSetContextMenu],
   );
 
-  const permissionCommitRemindStatus = useSelector(state => state.catalogTree.permissionCommitRemindStatus);
+  const permissionCommitRemindStatus = useSelector((state) => state.catalogTree.permissionCommitRemindStatus);
 
   function onClosePermissionSettingModal() {
     dispatch(StoreActions.updatePermissionModalNodeId(''));
@@ -321,13 +305,13 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     <WorkbenchSideContext.Provider value={providerValue}>
       <div className={styles.workbenchSide}>
         <div className={styles.header}>
-          <SpaceInfo/>
+          <SpaceInfo />
           <div className={styles.search}>
             <IconButton
-              shape='square'
+              shape="square"
               className={styles.searchBtn}
               icon={SearchOutlined}
-              onClick={e => {
+              onClick={(e) => {
                 stopPropagation(e);
                 expandSearch();
               }}
@@ -343,24 +327,14 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         >
           <div className={styles.mainContainer} id={WORKBENCH_SIDE_ID.NODE_WRAPPER}>
             <div className={styles.btnGroup}>
-              <RadioGroup
-                name="workbench-btn-group"
-                isBtn
-                block
-                value={activeKey}
-                onChange={(_e, value) => changeHandler(value)}
-              >
-                <Radio value={ConfigConstant.Modules.CATALOG}>
-                  {t(Strings.catalog)}
-                </Radio>
-                <Radio value={ConfigConstant.Modules.FAVORITE}>
-                  {t(Strings.favorite)}
-                </Radio>
+              <RadioGroup name="workbench-btn-group" isBtn block value={activeKey} onChange={(_e, value) => changeHandler(value)}>
+                <Radio value={ConfigConstant.Modules.CATALOG}>{t(Strings.catalog)}</Radio>
+                <Radio value={ConfigConstant.Modules.FAVORITE}>{t(Strings.favorite)}</Radio>
               </RadioGroup>
             </div>
             {activeKey === ConfigConstant.Modules.FAVORITE ? (
               <div className={styles.scrollContainer}>
-                <Favorite/>
+                <Favorite />
               </div>
             ) : (
               <>
@@ -370,63 +344,56 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                       <LinkButton
                         underline={false}
                         component="div"
-                        prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12}/>}
+                        prefixIcon={<AddOutlined color={colors.textCommonSecondary} size={12} />}
                         color={colors.textCommonSecondary}
                         onClick={openDefaultMenu}
                         id={WORKBENCH_SIDE_ID.ADD_NODE_BTN}
                       >
-                        <Tooltip title={t(Strings.new_node_tooltip)}>
-                          {t(Strings.new_node_btn_title)}
-                        </Tooltip>
+                        <Tooltip title={t(Strings.new_node_tooltip)}>{t(Strings.new_node_btn_title)}</Tooltip>
                       </LinkButton>
                       <LinkButton
                         underline={false}
                         component="div"
-                        prefixIcon={<ImportOutlined color={colors.textCommonSecondary} size={12}/>}
+                        prefixIcon={<ImportOutlined color={colors.textCommonSecondary} size={12} />}
                         color={colors.textCommonSecondary}
                         onClick={() => {
                           dispatch(StoreActions.updateImportModalNodeId(rootId));
                         }}
                       >
-                        <Tooltip title={t(Strings.import_from_excel_tooltip)}>
-                          {t(Strings.import_file_btn_title)}
-                        </Tooltip>
+                        <Tooltip title={t(Strings.import_from_excel_tooltip)}>{t(Strings.import_file_btn_title)}</Tooltip>
                       </LinkButton>
                       <LinkButton
                         underline={false}
                         component="div"
-                        prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} size={12}/>}
+                        prefixIcon={<FolderAddOutlined color={colors.textCommonSecondary} size={12} />}
                         color={colors.textCommonSecondary}
                         onClick={() => {
                           addTreeNode(rootId, ConfigConstant.NodeType.FOLDER);
                         }}
                       >
-                        <Tooltip title={t(Strings.new_folder_tooltip)}>
-                          {t(Strings.folder)}
-                        </Tooltip>
+                        <Tooltip title={t(Strings.new_folder_tooltip)}>{t(Strings.folder)}</Tooltip>
                       </LinkButton>
                     </>
                   )}
                 </div>
                 <div className={styles.scrollContainer}>
-                  <Catalog/>
+                  <Catalog />
                 </div>
               </>
             )}
-
           </div>
         </div>
         <div className={styles.fixedGroup}>
           {!isMobile && (
             <Tooltip title={t(Strings.trash)}>
               <div className={styles.groupItem} onClick={jumpTrash} id={WORKBENCH_SIDE_ID.RECYCLE_BIN}>
-                <DeleteOutlined color={colors.rc04}/>
+                <DeleteOutlined color={colors.rc04} />
               </div>
             </Tooltip>
           )}
           <Tooltip title={t(Strings.workbench_side_space_template)}>
             <div className={styles.groupItem} onClick={jumpSpaceTemplate} id={WORKBENCH_SIDE_ID.TO_SPACE_TEMPLATE}>
-              <PlanetOutlined color={colors.rc02}/>
+              <PlanetOutlined color={colors.rc02} />
             </div>
           </Tooltip>
           {inviteStatus && !isIdassPrivateDeployment() && (
@@ -438,7 +405,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   expandInviteModal();
                 }}
               >
-                <UserAddOutlined color={colors.primaryColor}/>
+                <UserAddOutlined color={colors.primaryColor} />
               </div>
             </Tooltip>
           )}
@@ -453,11 +420,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           openCatalog={openCatalog}
         />
         {saveAsTemplateModalNodeId && (
-          <GenerateTemplate nodeId={saveAsTemplateModalNodeId}
-            onCancel={() => dispatch(StoreActions.updateSaveAsTemplateModalNodeId(''))}/>
+          <GenerateTemplate nodeId={saveAsTemplateModalNodeId} onCancel={() => dispatch(StoreActions.updateSaveAsTemplateModalNodeId(''))} />
         )}
-        {importModalNodeId && <ImportFile parentId={importModalNodeId}
-          onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))}/>}
+        {importModalNodeId && <ImportFile parentId={importModalNodeId} onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))} />}
         {panelVisible && (
           <SearchPanel
             folderId={panelInfo!.folderId}
@@ -474,8 +439,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
             onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))}
           />
         )}
-        {!isFormShare &&
-          <Share nodeId={shareModalNodeId} onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))}/>}
+        {!isFormShare && <Share nodeId={shareModalNodeId} onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))} />}
         <PermissionSettingsMain
           data={{
             nodeId: permissionModalNodeId,
@@ -486,14 +450,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           visible={Boolean(permissionModalNodeId)}
           onClose={onClosePermissionSettingModal}
         />
-        {
-          moveToNodeIds && moveToNodeIds.length > 0 && (
-            <MoveTo
-              nodeIds={moveToNodeIds}
-              onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))}
-            />
-          )
-        }
+        {moveToNodeIds && moveToNodeIds.length > 0 && (
+          <MoveTo nodeIds={moveToNodeIds} onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))} />
+        )}
       </div>
     </WorkbenchSideContext.Provider>
   );

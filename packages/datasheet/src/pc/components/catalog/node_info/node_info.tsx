@@ -16,34 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Skeleton } from '@apitable/components';
-import { Api, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { Avatar, AvatarSize } from 'pc/components/common/avatar';
-import { ScreenSize } from 'pc/components/common/component_display/enum';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-import { useRequest, useResponsive } from 'pc/hooks';
-import { store } from 'pc/store';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
+import { Skeleton } from '@apitable/components';
+import { Api, Strings, t } from '@apitable/core';
+import { Avatar, AvatarSize } from 'pc/components/common/avatar';
+import { ScreenSize } from 'pc/components/common/component_display/enum';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useRequest, useResponsive } from 'pc/hooks';
+import { store } from 'pc/store';
 import { getNodeIcon } from '../tree/node_icon';
 import styles from './styles.module.less';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 interface INodeInfoProps {
   nodeId: string;
   onClose?: () => void;
 }
 
-const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = props => {
+const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = (props) => {
   const { onClose, nodeId } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { data, loading } = useRequest(() => Api.getNodeInfoWindow(nodeId));
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const nodeInfo = data?.data?.data;
   const Title = () => {
     if (!nodeInfo) {
@@ -69,19 +69,19 @@ const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = props =
 
   const nameTitle =
     !loading && nodeInfo
-      ? (getSocialWecomUnitName?.({
+      ? getSocialWecomUnitName?.({
         name: nodeInfo.creator.memberName,
         isModified: nodeInfo.creator.isMemberNameModified,
         spaceInfo,
-      }) || nodeInfo.creator.memberName)
+      }) || nodeInfo.creator.memberName
       : '';
 
   const content =
     loading || !nodeInfo ? (
       <>
-        <Skeleton width='38%' />
+        <Skeleton width="38%" />
         <Skeleton count={2} />
-        <Skeleton width='61%' />
+        <Skeleton width="61%" />
       </>
     ) : (
       <ul className={styles.contentInfo}>

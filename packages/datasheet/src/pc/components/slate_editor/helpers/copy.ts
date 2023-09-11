@@ -20,10 +20,7 @@ export const copy = (text: string, editorData?: string) => {
   const handleCopy = (e: ClipboardEvent) => {
     e.clipboardData?.setData('text/plain', text);
     if (editorData) {
-      e.clipboardData?.setData(
-        'application/vika-editor-data',
-        window.btoa(encodeURIComponent(editorData))
-      );
+      e.clipboardData?.setData('application/vika-editor-data', window.btoa(encodeURIComponent(editorData)));
     }
     e.preventDefault();
   };

@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import { FC, useContext, useState } from 'react';
 import { getNextShadeColor } from '@apitable/components';
 import { KONVA_DATASHEET_ID, MemberType } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import dynamic from 'next/dynamic';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
@@ -33,7 +34,6 @@ import {
   KonvaGridContext,
 } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
-import { FC, useContext, useState } from 'react';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
@@ -42,7 +42,7 @@ import { Avatar } from './avatar';
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
-export const CellMember: FC<React.PropsWithChildren<ICellProps>> = props => {
+export const CellMember: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;

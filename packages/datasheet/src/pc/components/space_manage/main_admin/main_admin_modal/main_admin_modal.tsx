@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography } from '@apitable/components';
-import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { Steps } from 'antd';
 import classNames from 'classnames';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Router } from 'pc/components/route_manager/router';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Button, Typography } from '@apitable/components';
+import { IReduxState, Navigation, Strings, t } from '@apitable/core';
+import { CheckCircleFilled } from '@apitable/icons';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { Router } from 'pc/components/route_manager/router';
 import { SelectAdmin } from '../select_admin';
 import { VerifyAdmin } from '../verify_admin';
 import styles from './style.module.less';
-import { CheckCircleFilled } from '@apitable/icons';
 
 const { Step } = Steps;
 
@@ -41,13 +41,11 @@ export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cance
   const progressDot = (_dot: any, { status, index }: any) => {
     return (
       <span
-        className={
-          classNames({
-            [styles.finish]: status === 'finish',
-            [styles.process]: status === 'process',
-            [styles.wait]: status === 'wait'
-          })
-        }
+        className={classNames({
+          [styles.finish]: status === 'finish',
+          [styles.process]: status === 'process',
+          [styles.wait]: status === 'wait',
+        })}
       >
         {index + 1}
       </span>
@@ -73,14 +71,7 @@ export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cance
       <div className={styles.successStep}>
         <CheckCircleFilled className={styles.successIcon} />
         <div className={styles.successText}>{t(Strings.change_primary_admin_succeed)}</div>
-        <Button
-          style={{ marginTop: '30px' }}
-          htmlType='submit'
-          onClick={cancelModalAndInit}
-          size='large'
-          block
-          color='primary'
-        >
+        <Button style={{ marginTop: '30px' }} htmlType="submit" onClick={cancelModalAndInit} size="large" block color="primary">
           {t(Strings.back_to_workbench)}
         </Button>
         <span className={styles.informationText}>{t(Strings.space_manage_infomation_text)}</span>
@@ -90,16 +81,16 @@ export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cance
   const steps = [
     {
       title: t(Strings.space_manage_verify_primary_admin),
-      content: <VerifyAdmin setCurrent={setCurrent} />
+      content: <VerifyAdmin setCurrent={setCurrent} />,
     },
     {
       title: t(Strings.space_manage_choose_new_primary_admin),
-      content: <SelectAdmin setCurrent={setCurrent} />
+      content: <SelectAdmin setCurrent={setCurrent} />,
     },
     {
       title: t(Strings.finish),
-      content: successStep()
-    }
+      content: successStep(),
+    },
   ];
 
   return (
@@ -113,22 +104,19 @@ export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cance
       maskClosable
       onCancel={cancelModalAndInit}
     >
-      <Typography variant='h6'>{t(Strings.change_primary_admin)}</Typography>
+      <Typography variant="h6">{t(Strings.change_primary_admin)}</Typography>
       <div className={styles.stepWrapper}>
-        <Steps current={current} labelPlacement='vertical' progressDot={progressDot}>
-          {
-            steps.map(item => (
-              <Step key={item.title} title={item.title} />
-            ))
-          }
+        <Steps current={current} labelPlacement="vertical" progressDot={progressDot}>
+          {steps.map((item) => (
+            <Step key={item.title} title={item.title} />
+          ))}
         </Steps>
-        {
-          steps.map((item, index) => (
-            <div style={{ display: current === index ? 'block' : 'none' }} key={item.title}>{item.content}</div>
-          ))
-        }
+        {steps.map((item, index) => (
+          <div style={{ display: current === index ? 'block' : 'none' }} key={item.title}>
+            {item.content}
+          </div>
+        ))}
       </div>
-
     </Modal>
   );
 };

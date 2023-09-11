@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useDispatch } from 'react-redux';
 import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 import { ButtonOperateType } from 'pc/utils';
-import { useDispatch } from 'react-redux';
 
 export const useAppendField = (datasheetId: string) => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export const useAppendField = (datasheetId: string) => {
         clickLogOffsetX: 0,
         fieldIndex: realColIndex + 1,
         operate: FieldOperateType.FieldSetting,
-        hiddenColumn
+        hiddenColumn,
       }),
     );
   };
