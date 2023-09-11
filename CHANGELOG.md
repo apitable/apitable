@@ -1,6 +1,6 @@
 # APITable CHANGELOG
 
-## [v1.0.0-beta.1](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-09-11)
+## [v1.0.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.0.0-beta.1) (2023-09-11)
 
 
 ### Features and enhancements
