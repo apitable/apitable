@@ -40,9 +40,6 @@ public class ActionSimpleVO {
     @Schema(description = "Action type id", type = "java.lang.String", example = "***")
     private String actionTypeId;
 
-    @Schema(description = "Next action id", type = "java.lang.String", example = "***")
-    private  String nextActionId;
-
     @Schema(description = "Prev action id", type = "java.lang.String", example = "***")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String prevActionId;

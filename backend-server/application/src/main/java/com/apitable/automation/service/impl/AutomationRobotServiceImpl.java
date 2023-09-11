@@ -204,7 +204,6 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                         ActionSimpleVO action = new ActionSimpleVO();
                         action.setActionId(i.getActionId());
                         action.setPrevActionId(i.getPrevActionId());
-                        action.setNextActionId(i.getActionId());
                         action.setActionTypeId(i.getActionTypeId());
                         return action;
                     }).sorted(actionComparator).collect(Collectors.toList());
@@ -260,7 +259,6 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                 action.setInput(i.getInput());
                 action.setActionId(i.getActionId());
                 action.setPrevActionId(i.getPrevActionId());
-                action.setNextActionId(i.getActionId());
                 action.setActionTypeId(i.getActionTypeId());
                 return action;
             }).sorted(actionComparator).collect(Collectors.toList());

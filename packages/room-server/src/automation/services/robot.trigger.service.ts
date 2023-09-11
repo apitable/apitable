@@ -53,17 +53,16 @@ export class RobotTriggerService {
   }
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
-    // todo add triggers
-    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
-    const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
-      robotIdToResourceId[item.robotId] = item.resourceId;
-      return robotIdToResourceId;
-    }, {} as { [key: string]: string });
-    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
+    const robotIds = await this.getAllRevolvedRobotIds(resourceIds);
+    if (!robotIds.size) {
+      return Promise.resolve({});
+    }
+    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Array.from(robotIds));
     return triggers.reduce((resourceIdToTriggers, item) => {
-      const resourceId = robotIdToResourceId[item.robotId]!;
-      resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
-      resourceIdToTriggers[resourceId]!.push(item);
+      if (item.resourceId) {
+        resourceIdToTriggers[item.resourceId!] = !resourceIdToTriggers[item.resourceId!] ? [] : resourceIdToTriggers[item.resourceId!]!;
+        resourceIdToTriggers[item.resourceId!]!.push(item);
+      }
       return resourceIdToTriggers;
     }, {} as IResourceTriggerGroupVo);
   }
@@ -78,5 +77,16 @@ export class RobotTriggerService {
       resourceRobotTriggers.push(...triggers);
     }
     return resourceRobotTriggers;
+  }
+
+  private async getAllRevolvedRobotIds(resourceIds: string[] = []) {
+    if (resourceIds.length === 0) {
+      return new Set<string>();
+    }
+    const robots = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const robotIds = new Set<string>(robots.map(robot => robot.robotId));
+    const triggerRobotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput(resourceIds);
+    triggerRobotIds.forEach(i => robotIds.add(i));
+    return robotIds;
   }
 }

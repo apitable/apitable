@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { generateRandomString } from '@apitable/core';
 import { Body, Controller, Delete, Headers, Param, Patch, Post } from '@nestjs/common';
+import { isEmpty } from 'lodash';
 import { UserService } from 'user/services/user.service';
 import { AutomationActionRepository } from '../repositories/automation.action.repository';
 import { ActionCreateRo } from '../ros/action.create.ro';
@@ -35,7 +37,16 @@ export class RobotActionController {
   async createAction(@Body() action: ActionCreateRo, @Headers('cookie') cookie: string) {
     const user = await this.userService.getMe({ cookie });
     await this.automationActionService.checkCreateActionCount(action.robotId);
-    return this.automationActionRepository.createAction(action, user.userId);
+    const actionId =`aac${generateRandomString(15)}`;
+    if (!isEmpty(action.prevActionId)) {
+      const actions = await this.automationActionRepository.selectActionBaseInfosByRobotIds([action.robotId]);
+      const oldNextAction = actions.filter(i => i.prevActionId == action.prevActionId)[0];
+      if (oldNextAction) {
+        await this.automationActionRepository.updateRobotPrevActionIdByOldPrevActionId(user.userId, action.robotId,
+          actionId, oldNextAction.prevActionId!);
+      }
+    }
+    return await this.automationActionRepository.createAction(actionId, action, user.userId);
   }
 
   @Patch(['/:actionId'])
