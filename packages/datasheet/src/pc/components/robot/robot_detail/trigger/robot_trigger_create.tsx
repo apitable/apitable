@@ -28,10 +28,12 @@ import {
 import { Strings, t } from '@apitable/core';
 import { automationStateAtom } from '../../../automation/controller';
 import { createTrigger } from '../../api';
+import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData } from '../../hooks';
 import { ITriggerType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
+import itemStyle from './select_styles.module.less';
 
 interface IRobotTriggerCreateProps {
   robotId: string;
@@ -57,6 +59,11 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
 
   const { api: { refresh }} = useRobotListState();
   const state = useAtomValue(automationStateAtom);
+
+  const triggerTypeOptions = useMemo(() => {
+    return getNodeTypeOptions(triggerTypes);
+  }, [triggerTypes]);
+
   const createRobotTrigger = useMemo(() => {
     return async(triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
@@ -92,18 +99,17 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
     }
   };
 
-  const options = triggerTypes.map((v) => ({
-    label: v.name,
-    value: v.triggerTypeId,
-  }));
-
   return (
     <SearchSelect
+      clazz={{
+        item: itemStyle.item,
+        icon: itemStyle.icon
+      }}
       options={{
         placeholder: t(Strings.search_field),
         noDataText: t(Strings.empty_data),
       }}
-      list={options} onChange={(item) => {
+      list={triggerTypeOptions} onChange={(item) => {
         // @ts-ignore
         handleCreateFormChange(String(item.value));
       }}>

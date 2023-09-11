@@ -17,9 +17,9 @@
  */
 
 import produce from 'immer';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { isEqual } from 'lodash';
-import { useCallback, useEffect, useMemo, memo} from 'react';
+import { useCallback, useEffect, useMemo, memo } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import useSWR from 'swr';
@@ -36,12 +36,12 @@ import {
 import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { IRobotTrigger, ITriggerType } from '../../interface';
+import { useRobotListState } from '../../robot_list';
 import { DropdownTrigger } from '../action/robot_action';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
-import {useAtomValue} from "jotai";
-import {useRobotListState} from "../../robot_list";
+import itemStyle from './select_styles.module.less';
 
 interface IRobotTriggerProps {
   robotId: string;
@@ -220,6 +220,10 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
       <SearchSelect
+        clazz={{
+          item: itemStyle.item,
+          icon: itemStyle.icon
+        }}
         options={{
           placeholder: t(Strings.search_field),
           minWidth: '384px',

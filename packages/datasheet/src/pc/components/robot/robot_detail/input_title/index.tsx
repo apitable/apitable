@@ -5,6 +5,7 @@ import { Strings, t } from '@apitable/core';
 import { EditableText } from '../../../editable_text';
 import { updateRobotDescription, updateRobotName } from '../../api';
 import { useRobot } from '../../hooks';
+import {useCssColors} from "../trigger/use_css_colors";
 
 export const InputTitle: FC = () => {
   const {
@@ -39,7 +40,7 @@ export const EditableInputDescription: FC = () => {
   const {
     robot, updateRobot,
   } = useRobot();
-  const colors = useThemeColors();
+  const colors = useCssColors();
 
   if (!robot) {
     return null;
@@ -57,7 +58,7 @@ export const EditableInputDescription: FC = () => {
   return (
     <EditableText onChange={handleNameChange}
       variant={'body4'}
-      color={colors.textCommonPrimary}
+      color={colors.textCommonTertiary}
       placeholder={t(Strings.click_here_to_write_description)}
       value={robot.description} />
   );

@@ -81,7 +81,7 @@ export const useDeleteRobotAction = () => {
 export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
 
-  const { api: { getById, refresh }} = useRobotListState();
+  const { api: { getById, refreshItem }} = useRobotListState();
 
   const robot = getById(robotId);
 
@@ -95,8 +95,7 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
 
       setLoading(false);
       if (ok) {
-        refresh();
-
+        refreshItem();
       }
     } else {
       setLoading(true);
@@ -104,7 +103,7 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
       setLoading(false);
       if (ok) {
 
-        refresh();
+        refreshItem();
 
         Message.success({
           content: t(Strings.automation_enabled)
@@ -116,7 +115,7 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
         });
       }
     }
-  }, [robot, robotId, refresh]);
+  }, [robot, robotId, refreshItem]);
 
   return {
     toggleRobotActive,
@@ -265,12 +264,30 @@ export const useDefaultTriggerFormData = () => {
 
 export const useDefaultRobotDesc = () => {
   const robotTriggerType = useRobotTriggerType();
-  const robotActionTypes = useRobotActionTypes();
+  const robotActionTypesA = useRobotActionTypes();
+  const robotActionTypes= robotActionTypesA?.filter(Boolean);
   const comma = t(Strings.comma);
-  if (robotTriggerType) {
-    const triggerResult = robotTriggerType?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+
+  if(robotActionTypes?.length ===1 ) {
     const actionResult = robotActionTypes?.filter(Boolean).map(actionType => actionType!.name).join(comma);
-    return triggerResult + actionResult;
+    const triggerResult = robotTriggerType?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+    const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
+    return t(Strings.automation_description_one, {
+      triggerName: triggerResult,
+      lastAction: lastActionResult,
+    });
+  }
+
+  if (robotTriggerType && Array.isArray(robotActionTypes)) {
+    const triggerResult = robotTriggerType?.filter(Boolean).map(actionType => actionType!.name).join(comma);
+    const actionResult = robotActionTypes.slice(0, robotActionTypes.length - 1).map(actionType => actionType!.name).join(comma);
+    const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
+
+    return t(Strings.automation_description_more, {
+      triggerName: triggerResult,
+      actions:actionResult,
+      lastAction: lastActionResult,
+    });
   }
   return '';
 };

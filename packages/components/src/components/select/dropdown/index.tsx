@@ -53,7 +53,8 @@ const _renderValue = (option: IOption) => {
 
 const _GlobalStyle: any = GlobalStyle;
 
-export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
+export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
+}>> & {
     Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
 } = (props) => {
   const {
@@ -93,7 +94,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
   useEffect(() => {
     setKeyword('');
   }, [visible, value]);
- 
+
   const optionsFilter = (item: IOption | null) => {
     if (!item) {
       return false;
@@ -116,7 +117,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps>> & {
   const triggerRef: React.MutableRefObject<HTMLElement|null> = useRef<HTMLElement>(null);
 
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
-  
+
   useEffect(() => {
     if (triggerRef.current) {
       const size = triggerRef.current.getBoundingClientRect();
@@ -265,9 +266,10 @@ const Option = ListDeprecate.Item;
 
 DropdownSelect.Option = Option;
 
-export function OptionItem({ item,currentIndex, value , keyword,
-  onClick
-}: {item: IOption, currentIndex: number, value: any, keyword: string,onClick: () => void}) {
+export function OptionItem({ item,currentIndex, value , keyword, className,
+  onClick,
+                             iconClassName,
+}: {item: IOption, currentIndex: number, iconClassName?: string, className?: string, value: any, keyword: string,onClick: () => void}) {
 
   const {
     activeIndex,
@@ -301,11 +303,12 @@ export function OptionItem({ item,currentIndex, value , keyword,
     tabIndex={isActive ? 0 : -1}
     active={isActive}
     selected={isSelected}
+    className={className}
     id={item.value as string}
     {...item}
     {...itemProps}
   >
-    <SelectItem item={item} renderValue={_renderValue} isChecked={value === item?.value}>
+    <SelectItem iconClassName={iconClassName} item={item} renderValue={_renderValue} isChecked={value === item?.value}>
       {
         !keyword ? null : <Highlighter
           highlightClassName={hightLightCls.toString()}

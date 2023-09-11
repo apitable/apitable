@@ -41,6 +41,9 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: var(--bgControlsHover);
   }
+  &:active {
+    background-color: var(--bgControlsActive);
+  }
 `;
 
 interface INodeStep {
@@ -107,10 +110,10 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
 
   return (
     <StyledBox
-      border={`1px solid ${theme.color.fc5}`}
+      border={`1px solid ${theme.color.borderCommonDefault}`}
       borderRadius='4px'
       marginTop='16px'
-      background={colors.bgControlsDefault}
+      // background={colors.bgControlsDefault}
       style={readonlyStyle}
     >
       <Box

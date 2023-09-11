@@ -16,15 +16,17 @@ interface INewItemProps {
 
 export const StyledBox = styled(Box)<{disabled?: boolean}>`
   border-radius: 4px;
+  
   ${props => props.disabled && css`
      background-color: var(--bgControlsDisabled);
  `}
+  
  ${props => !props.disabled && css`
    &:hover {
      background-color: var(--bgControlsHover);
-
-     border-color: var(--borderBrandActive);
    }
+   &:active {
+     background-color: var(--bgControlsActive);
  `}
 `;
 
@@ -44,6 +46,7 @@ export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ clas
       className={className}
       alignItems="center"
       justifyContent="center"
+      disabled={disabled}
       marginTop={16}
       onClick={(e) => {
         if(disabled) return;
@@ -63,7 +66,7 @@ export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ clas
         <AddOutlined color={disabled? theme.color.textCommonDisabled :theme.color.textCommonTertiary} />
         <Typography variant="body3" color={
           disabled? theme.color.textCommonDisabled:
-            theme.color.textCommonTertiary} style={{ marginLeft: '4px' }}>
+            theme.color.textCommonTertiary} style={{ marginLeft: '8px' }}>
           {children ?? t(Strings.new_something)}
         </Typography>
 

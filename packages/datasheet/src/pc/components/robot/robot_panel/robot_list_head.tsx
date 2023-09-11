@@ -23,6 +23,7 @@ import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/ic
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 import { IRobotHeadAddBtn } from '../interface';
+import { OrTooltip } from '../robot_detail/or_tooltip';
 import { useRobotListState } from '../robot_list';
 import { useRobotController } from '../robot_list/controller';
 
@@ -43,69 +44,74 @@ export const Beta = () => {
   );
 };
 
-export const AddRobotButton = (props?: IRobotHeadAddBtn) => {
-  const theme = useTheme();
+export const AddRobotButton = () => {
+  // const theme = useTheme();
   const {
     canAddNewRobot,
     disableTip,
   } = useAddNewRobot();
-  const isShowRobot = useShowRobot();
+  // const isShowRobot = useShowRobot();
 
   const { createNewRobot } = useRobotController();
+  // const tooltip = disableTip;
 
-  const WrapperTooltip: any = canAddNewRobot ? (props?.container || React.Fragment) : Tooltip;
-  const WrapperTooltipProps = canAddNewRobot ? (props?.toolTips || {}) : { placement: 'bottom-center', content: disableTip };
-  const boxStyle: React.CSSProperties = props && props.style ? props.style : {};
+  // const WrapperTooltip: any = canAddNewRobot ? (props?.container || React.Fragment) : Tooltip;
+  // const WrapperTooltipProps = canAddNewRobot ? (props?.toolTips || {}) : { placement: 'bottom-center', content: disableTip };
+  // const boxStyle: React.CSSProperties = props && props.style ? props.style : {};
 
-  const icon = <AddOutlined color={theme.color.fc1} />;
+  // const icon = <AddOutlined color={theme.color.fc1} />;
 
-  const iconOnly = props?.iconOnly === true;
+  // const iconOnly = props?.iconOnly === true;
 
-  const child = (
-    <Typography variant="body3" color={theme.color.fc1}>
-      {t(Strings.robot_panel_create_tab)}
-    </Typography>
-  );
-
-  const content = (canAddNewRobot && props?.useTextBtn) ? (
-    <Box
-      display="flex"
-      alignItems="center"
-      style={boxStyle}
-    >
-      <TextButton
-        size="small"
-        disabled={!canAddNewRobot || !isShowRobot}
-        onClick={createNewRobot}
-        prefixIcon={icon}
-        style={props?.btnStyle}
-      >
-        <>
-          { !iconOnly && child }
-        </>
-      </TextButton>
-    </Box>
-  ) : (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      padding="5px 8px"
-      opacity={canAddNewRobot ? 1 : 0.5}
-      style={{ cursor: canAddNewRobot ? 'pointer' : 'not-allowed', ...boxStyle }}
-      onClick={() => canAddNewRobot && createNewRobot}
-    >
-      {icon}
-      <>
-        { !iconOnly && child }
-      </>
-    </Box>
-  );
+  // const child = (
+  //   <Typography variant="body3" color={theme.color.fc1}>
+  //     {t(Strings.robot_panel_create_tab)}
+  //   </Typography>
+  // );
+  //
+  // const content = (canAddNewRobot && props?.useTextBtn) ? (
+  //   <Box
+  //     display="flex"
+  //     alignItems="center"
+  //     style={boxStyle}
+  //   >
+  //     <TextButton
+  //       size="small"
+  //       disabled={!canAddNewRobot || !isShowRobot}
+  //       onClick={createNewRobot}
+  //       prefixIcon={icon}
+  //       style={props?.btnStyle}
+  //     >
+  //       <>
+  //         { !iconOnly && child }
+  //       </>
+  //     </TextButton>
+  //   </Box>
+  // ) : (
+  //   <Box
+  //     display="flex"
+  //     alignItems="center"
+  //     justifyContent="space-between"
+  //     padding="5px 8px"
+  //     opacity={canAddNewRobot ? 1 : 0.5}
+  //     style={{ cursor: canAddNewRobot ? 'pointer' : 'not-allowed', ...boxStyle }}
+  //     onClick={() => canAddNewRobot && createNewRobot}
+  //   >
+  //     {icon}
+  //     <>
+  //       { !iconOnly && child }
+  //     </>
+  //   </Box>
+  // );
 
   return (
-    <WrapperTooltip {...WrapperTooltipProps}>
-      {content}
-    </WrapperTooltip>
+    <OrTooltip tooltip={disableTip} tooltipEnable={!canAddNewRobot}>
+      <span>
+        <IconButton disabled={!canAddNewRobot}
+          onClick={canAddNewRobot ? createNewRobot: undefined}
+          icon={AddOutlined} />
+      </span>
+    </OrTooltip>
   );
 };
 
@@ -114,11 +120,6 @@ export const RobotListHead = () => {
   return (
     <>
       <AddRobotButton
-        toolTips={{ placement: 'bottom-center', content: isShowRobot ? t(Strings.new_automation) : t(Strings.robot_disable_create_tooltip) }}
-        container={Tooltip}
-        useTextBtn
-        iconOnly
-        btnStyle={{ paddingLeft: 8, paddingRight: 8 }}
       />
 
       <Box display="flex" alignItems="center">

@@ -5687,6 +5687,8 @@
   "action": "Action",
   "no_step_summary": "Triggers and actions have not been added",
   "robot_action_guide_then": "Then do these actions",
+  "automation_description_one": "When ${triggerName}, then ${lastAction}",
+  "automation_description_more": "When ${triggerName}, ${actions} and finally  ${lastAction}",
   "automation_default_tips": "Choose a trigger to start your automation",
   "robot_variables_select_step": "Pre-step",
   "new_automation": "New Automation",

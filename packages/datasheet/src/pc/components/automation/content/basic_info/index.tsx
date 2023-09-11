@@ -73,7 +73,7 @@ export const BaseInfo: FC =() => {
   return (
     <>
       <Box paddingX={'24px'} >
-        <Typography variant="h5" color={colors.textCommonPrimary} className={style.title}>
+        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
           {t(Strings.summarize)}
         </Typography>
       </Box>
@@ -93,16 +93,16 @@ export const BaseInfo: FC =() => {
       </Box>
 
       <Box paddingX={'24px'} >
-        <Typography variant="h5" color={colors.textCommonPrimary} className={style.title}>
+        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
           {t(Strings.automation_detail)}
         </Typography>
       </Box>
 
-      <StyledGrip padding={'12px 24px'} gridGap={'16px'} display={'flex'} flexDirection='column'>
+      <StyledGrip padding={'0 24px'} gridGap={'16px'} display={'flex'} flexDirection='column'>
 
         <Box display={'flex'} justifyContent={'space-between'}>
           <Box display={'inline-flex'}>
-            <PlayOutlined size={16} />
+            <PlayOutlined size={16} color={colors.textCommonTertiary} />
 
             <Box alignItems={'center'} marginLeft={'8px'}>
               <Typography variant="body4" color={colors.textCommonTertiary} >
@@ -121,7 +121,7 @@ export const BaseInfo: FC =() => {
 
         <Box display={'flex'} justifyContent={'space-between'}>
           <Box display={'inline-flex'}>
-            <UserEditOutlined size={16} />
+            <UserEditOutlined size={16} color={colors.textCommonTertiary} />
 
             <Box alignItems={'center'} marginLeft={'8px'}>
               <Typography variant="body4" color={colors.textCommonTertiary}>
@@ -152,7 +152,7 @@ export const BaseInfo: FC =() => {
 
         <Box display={'flex'} justifyContent={'space-between'}>
           <Box display={'inline-flex'}>
-            <TimeOutlined size={16} />
+            <TimeOutlined size={16} color={colors.textCommonTertiary} />
 
             <Box alignItems={'center'} marginLeft={'8px'}>
               <Typography variant="body4" color={colors.textCommonTertiary}>
@@ -174,7 +174,7 @@ export const BaseInfo: FC =() => {
       </StyledGrip>
 
       <Box paddingX={'24px'} >
-        <Typography variant="h5" color={colors.textCommonPrimary} className={style.title}>
+        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
           {
             t(Strings.related_files)
           }
@@ -225,7 +225,7 @@ export const BaseInfo: FC =() => {
       <Box justifyContent={'space-between'} alignItems={'center'} display={'flex'} paddingX={'24px'}>
 
         <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-          <Typography variant="h5" color={colors.textCommonPrimary} className={style.title}>
+          <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
             {
               t(Strings.robot_run_history_title)
             }

@@ -738,6 +738,8 @@
   "automation_add_a_action": "Add a Action",
   "automation_current_month_run_number": "Runs this month",
   "automation_default_tips": "Choose a trigger to start your automation",
+  "automation_description_more": "When ${triggerName}, ${actions} and finally  ${lastAction}",
+  "automation_description_one": "When ${triggerName}, then ${lastAction}",
   "automation_detail": "Details",
   "automation_disabled": "Automation is disabled",
   "automation_enabled": "Automation is enabled",

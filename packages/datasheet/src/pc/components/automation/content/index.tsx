@@ -17,7 +17,6 @@ import styles from './styles.module.less';
 
 export const ConstAutomationContentLeft = 'automation-content-left';
 
-const CONST_RIGHT_PANEL_WIDTH = '480px';
 
 const shareStyle: React.CSSProperties = {
   overflow: 'hidden',
@@ -107,6 +106,8 @@ export const AutomationPanelContent: FunctionComponent<{
                         )
                     }
                     size={'xl'} clazz={{
+                      checkedText: styles.checkedText,
+                      unCheckedText: styles.unCheckedText,
                       unCheckedCircle: styles.unCheckedCircle,
                       checkedCircle: styles.checkedCircle,
                       checkedBackground: styles.checkedBackground,

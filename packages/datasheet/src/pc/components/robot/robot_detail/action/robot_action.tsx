@@ -38,6 +38,7 @@ import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { EditType } from '../trigger/robot_trigger';
+import itemStyle from "../trigger/select_styles.module.less";
 
 export interface IRobotActionProps {
   index: number;
@@ -208,6 +209,10 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       {
         editType === EditType.entry && (
           <SearchSelect
+              clazz={{
+                item: itemStyle.item,
+                icon: itemStyle.icon
+              }}
             options={{
               placeholder: t(Strings.search_field),
               noDataText: t(Strings.empty_data),

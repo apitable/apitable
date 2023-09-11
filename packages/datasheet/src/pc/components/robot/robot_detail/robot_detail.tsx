@@ -50,7 +50,7 @@ export const RobotDetailForm = () => {
 
   return (
     <>
-      <Box paddingTop={'40px'} paddingBottom={'12px'}>
+      <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5">
           {
             t(Strings.when)
@@ -66,7 +66,7 @@ export const RobotDetailForm = () => {
         setTrigger={setTrigger}
       />
 
-      <Box paddingTop={'40px'} paddingBottom={'12px'}>
+      <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5">
           {t(Strings.then) } ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
         </Typography>

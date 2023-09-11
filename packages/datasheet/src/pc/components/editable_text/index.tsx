@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Box, ITypographyProps, TextInput, Typography } from '@apitable/components';
 import { EditOutlined } from '@apitable/icons';
+import {useCssColors} from "../robot/robot_detail/trigger/use_css_colors";
 
 const StyledOutlined = styled(EditOutlined)`
   margin-left: 4px;
@@ -28,6 +29,8 @@ export const EditableText: FC<{
 
   const [isEditing, setEditing] = useState(false);
 
+    const colors = useCssColors();
+
   if (isEditing) {
 
     return (<TextInput
@@ -50,7 +53,7 @@ export const EditableText: FC<{
         {value || placeholder}
       </Typography>
 
-      <StyledOutlined/>
+      <StyledOutlined color={colors.textCommonTertiary}/>
 
     </StyledBox>
   );

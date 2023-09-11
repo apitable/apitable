@@ -32,6 +32,7 @@ import { createAction } from '../../api';
 import { IActionType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
+import itemStyle from "../trigger/select_styles.module.less";
 
 export const CONST_MAX_ACTION_COUNT = 9;
 
@@ -65,6 +66,10 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
 
   return (
     <SearchSelect
+        clazz={{
+          item: itemStyle.item,
+          icon: itemStyle.icon
+        }}
       disabled={disabled}
       options={{
         placeholder: t(Strings.search_field),
@@ -191,6 +196,10 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
   return (
     <SearchSelect
       disabled={disabled}
+      clazz={{
+        item: itemStyle.item,
+        icon: itemStyle.icon
+      }}
       options={{
         placeholder: t(Strings.search_field),
         noDataText: t(Strings.empty_data),

@@ -30,7 +30,7 @@ import {
   FloatUiTooltip as Tooltip,
   Typography,
   useContextMenu,
-  useTheme
+  useTheme, useThemeColors
 } from '@apitable/components';
 import { IJsonSchema, Strings, t, validateMagicForm } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
@@ -43,6 +43,7 @@ import { INodeOutputSchema, INodeSchema, IRobotNodeType } from '../../interface'
 import { useRobotListState } from '../../robot_list';
 import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
+import {useCssColors} from "../trigger/use_css_colors";
 
 type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
   index: number
@@ -71,7 +72,6 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
       height={'100%'}
       display={'flex'}
       flexDirection={'column'}
-      paddingTop="16px"
     >
       <Box flex={'1 1 auto'} overflow={'auto'}>
         <Typography variant="h7" color={theme.color.fc1}>
@@ -106,6 +106,7 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
         >
           <Button
             variant="fill"
+            style={{ width: '128px' }}
             size="middle"
             onClick={() => {
               (ref.current as any)?.submit();
@@ -121,6 +122,7 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
   );
 });
 
+
 export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   const { title, serviceLogo, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
   const theme = useTheme();
@@ -130,6 +132,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
 
   const automationState= useAtomValue(automationStateAtom);
   const { api: { refresh }} = useRobotListState();
+  const colors = useCssColors();
 
   const handleDeleteRobotAction = () => {
     Modal.confirm({
@@ -187,7 +190,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       borderRadius="4px"
       ref={ref}
       width="100%"
-      padding="12px"
+      padding="16px"
       onClick={handleClick}
       backgroundColor={theme.color.fc8}
       id={`robot_node_${nodeId}`}
@@ -220,9 +223,11 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
           </span>
 
           <Box display={'flex'} flexDirection={'column'}>
-            <Typography variant="h7" ellipsis style={{
-              textTransform: 'capitalize'
-            }}>
+            <Typography variant="body4" ellipsis
+              color={colors.textCommonTertiary}
+              style={{
+                textTransform: 'capitalize'
+              }}>
               { type == IRobotNodeType.Trigger ? t(Strings.robot_trigger_guide): t(Strings.action)}
             </Typography>
 

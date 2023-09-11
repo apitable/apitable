@@ -70,6 +70,19 @@ export const useRobotListState = () => {
       },
       api: {
         getById,
+        refreshItem  : async(
+        ) => {
+          await mutateRefresh();
+          if (state?.resourceId && state?.currentRobotId) {
+            const itemDetail = await getResourceAutomationDetail(state?.resourceId, state?.currentRobotId);
+            const newState = {
+              robot: itemDetail,
+              currentRobotId: currentRobotId,
+              resourceId: state.resourceId,
+            };
+            setAutomationAtom(newState);
+          }
+        },
         refresh  : async(
           data?: {
               resourceId: string;
@@ -149,7 +162,7 @@ export const RobotList = memo(() => {
       }
       <NewItem
         height={64}
-        disabled={(!canAddNewRobot) || Boolean(robotLength > CONST_MAX_ROBOT_COUNT)}
+        disabled={(!canAddNewRobot) || Boolean(robotLength > ConfigConstant.MAX_ROBOT_COUNT_PER_DST)}
         onClick={async() => {
           if(!canManageRobot) {
             return;

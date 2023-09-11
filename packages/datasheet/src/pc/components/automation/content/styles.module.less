@@ -4,9 +4,11 @@
   border-style: solid !important;
   border-color: var(--borderCommonDefault) !important;
   background: var(--bgControlsElevateHigh) !important;
+  border-radius: 24px !important
 }
 
 .unCheckedBackground {
+  border-radius: 24px !important;
   border-width: 1px !important;
   border-style: solid !important;
   border-color: var(--borderCommonDefault) !important;
@@ -14,10 +16,28 @@
 }
 
 .checkedCircle {
+  right: 8px !important;
+  top: 8px !important;
+  height: 32px !important;
+  width: 32px !important;
   background-color: var(--textSuccessDefault, #3CD6A3) !important;
 }
 
+.checkedText {
+  color: var(--textCommonTertiary) !important;
+  margin-right: 16px !important;
+}
+
+.unCheckedText {
+  color: var(--textCommonTertiary) !important;
+  margin-left: 14px !important;
+}
+
 .unCheckedCircle {
+  left: 8px !important;
+  top: 8px !important;
+  height: 32px !important;
+  width: 32px !important;
   background-color: var(--textStaticTertiary, rgba(255, 255, 255, 0.60)) !important;
 }
 

@@ -18,7 +18,7 @@
 
 import { Button, IconButton } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
+import { AddOutlined, ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
 import { IArrayFieldTemplateProps } from '../../core/interface';
 import styles from './style.module.less';
 
@@ -58,8 +58,10 @@ export const ArrayFieldTemplate = (props: IArrayFieldTemplateProps) => {
       ))}
       {props.canAdd && (
         <div style={{ marginTop }}>
-          <Button onClick={props.onAddClick} size="small">
-            + {t(Strings.robot_action_send_web_request_add_header_button)}
+          <Button onClick={props.onAddClick} size="small"
+            prefixIcon={<AddOutlined size={'14px'} />}
+          >
+            {t(Strings.robot_action_send_web_request_add_header_button)}
           </Button>
         </div>
       )}
