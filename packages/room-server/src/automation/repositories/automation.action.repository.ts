@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { generateRandomString } from '@apitable/core';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { RobotActionBaseInfoDto, RobotActionInfoDto, RobotRelDto } from '../dtos/action.dto';
 import { AutomationActionEntity } from '../entities/automation.action.entity';
@@ -25,9 +24,9 @@ import { ActionCreateRo } from '../ros/action.create.ro';
 @EntityRepository(AutomationActionEntity)
 export class AutomationActionRepository extends Repository<AutomationActionEntity> {
 
-  createAction(action: ActionCreateRo, userId: string) {
+  createAction(actionId: string, action: ActionCreateRo, userId: string) {
     const newAction = this.create({
-      actionId: `aac${generateRandomString(15)}`,
+      actionId,
       actionTypeId: action.actionTypeId,
       robotId: action.robotId,
       input: action.input,

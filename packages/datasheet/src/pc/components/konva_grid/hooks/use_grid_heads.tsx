@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { useCallback, useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { indigo } from '@apitable/components';
 import { ConfigConstant, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
@@ -23,10 +26,7 @@ import { getFieldLock } from 'pc/components/field_permission';
 import { AreaType, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon, IconType, Line, Rect } from 'pc/components/konva_components';
 import { GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
-import * as React from 'react';
-import { useCallback, useContext, useMemo } from 'react';
 import { FieldHead } from '../components';
-import { useSelector } from 'react-redux';
 interface IUseHeadsProps {
   instance: GridCoordinate;
   columnStartIndex: number;
@@ -37,110 +37,91 @@ interface IUseHeadsProps {
 }
 
 export const useHeads = (props: IUseHeadsProps) => {
-  const {
-    instance,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-    isExporting = false
-  } = props;
+  const { instance, columnStartIndex, columnStopIndex, pointPosition, isExporting = false } = props;
 
-  const {
-    view,
-    mirrorId,
-    fieldMap,
-    visibleColumns,
-    sortInfo,
-    recordRanges,
-    permissions,
-    fieldRanges,
-    visibleRows,
-    filterInfo,
-    fieldPermissionMap,
-  } = useContext(KonvaGridViewContext);
+  const { view, mirrorId, fieldMap, visibleColumns, sortInfo, recordRanges, permissions, fieldRanges, visibleRows, filterInfo, fieldPermissionMap } =
+    useContext(KonvaGridViewContext);
   const { setTooltipInfo, clearTooltipInfo, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const viewType = view.type;
-  const {
-    columnIndex: pointColumnIndex,
-    targetName: pointTargetName,
-    realAreaType: pointAreaType
-  } = pointPosition;
+  const { columnIndex: pointColumnIndex, targetName: pointTargetName, realAreaType: pointAreaType } = pointPosition;
   const { columnCount, frozenColumnWidth, frozenColumnCount, rowInitSize: fieldHeadHeight, autoHeadHeight } = instance;
   const { editable } = permissions;
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
 
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
-  const { embedId } = useSelector(state => state.pageParams);
-  const isEmbedShow = embedId ? (!embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar) : false;
-  const getFieldHeadStatus = useCallback((fieldId: string, columnIndex: number) => {
-    const iconVisible = (pointAreaType === AreaType.Grid || [
-      KONVA_DATASHEET_ID.GRID_FIELD_HEAD_DESC,
-      KONVA_DATASHEET_ID.GRID_FIELD_HEAD,
-      KONVA_DATASHEET_ID.GRID_FIELD_HEAD_MORE,
-    ].includes(pointTargetName)) && pointFieldId === fieldId;
-    const isFilterField = filterInfo ? filterInfo.conditions.some(item => item.fieldId === fieldId) : false;
-    const isSortField = sortInfo?.keepSort ? sortInfo.rules.some(sort => sort.fieldId === fieldId) : false;
-    const isHighlight = isFilterField || isSortField;
-    const isSelected = Boolean(fieldRanges && fieldRanges.includes(fieldId));
-    let permissionInfo: any = null;
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId } = useSelector((state) => state.pageParams);
+  const isEmbedShow = embedId ? !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar : false;
+  const getFieldHeadStatus = useCallback(
+    (fieldId: string, columnIndex: number) => {
+      const iconVisible =
+        (pointAreaType === AreaType.Grid ||
+          [KONVA_DATASHEET_ID.GRID_FIELD_HEAD_DESC, KONVA_DATASHEET_ID.GRID_FIELD_HEAD, KONVA_DATASHEET_ID.GRID_FIELD_HEAD_MORE].includes(
+            pointTargetName,
+          )) &&
+        pointFieldId === fieldId;
+      const isFilterField = filterInfo ? filterInfo.conditions.some((item) => item.fieldId === fieldId) : false;
+      const isSortField = sortInfo?.keepSort ? sortInfo.rules.some((sort) => sort.fieldId === fieldId) : false;
+      const isHighlight = isFilterField || isSortField;
+      const isSelected = Boolean(fieldRanges && fieldRanges.includes(fieldId));
+      let permissionInfo: any = null;
 
-    if (columnIndex !== 0) {
-      const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
-      if (fieldPermissionMap && fieldRole) {
-        permissionInfo = getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole);
+      if (columnIndex !== 0) {
+        const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
+        if (fieldPermissionMap && fieldRole) {
+          permissionInfo = getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole);
+        }
       }
-    }
 
-    return {
-      iconVisible,
-      isHighlight,
-      isSelected,
-      permissionInfo
-    };
-  }, [filterInfo, sortInfo, fieldPermissionMap, fieldRanges, pointAreaType, pointFieldId, pointTargetName]);
-
-  const getColumnHead = useCallback((columnStartIndex: number, columnStopIndex: number, isFrozen = false) => {
-    const _fieldHeads: React.ReactNode[] = [];
-
-    for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
-      if (columnIndex > columnCount - 1) break;
-      if (columnIndex < 0) continue;
-      const { fieldId } = visibleColumns[columnIndex];
-      const field = fieldMap[fieldId];
-      if (field == null) continue;
-      const x = instance.getColumnOffset(columnIndex);
-      const columnWidth = instance.getColumnWidth(columnIndex);
-      const {
+      return {
         iconVisible,
         isHighlight,
         isSelected,
-        permissionInfo
-      } = getFieldHeadStatus(fieldId, columnIndex);
+        permissionInfo,
+      };
+    },
+    [filterInfo, sortInfo, fieldPermissionMap, fieldRanges, pointAreaType, pointFieldId, pointTargetName],
+  );
 
-      _fieldHeads.push(
-        <FieldHead
-          x={x}
-          y={0}
-          key={`field-head-${fieldId}`}
-          width={columnWidth}
-          height={fieldHeadHeight}
-          field={field}
-          iconVisible={iconVisible}
-          permissionInfo={permissionInfo}
-          isSelected={isSelected}
-          isHighlight={isHighlight}
-          editable={editable && !mirrorId}
-          columnIndex={columnIndex}
-          viewType={viewType}
-          stroke={columnIndex === 0 ? 'transparent' : undefined}
-          isFrozen={isFrozen}
-          autoHeadHeight={autoHeadHeight}
-        />
-      );
-    }
-    return _fieldHeads;
-  }, [columnCount, editable, fieldHeadHeight, fieldMap, getFieldHeadStatus, instance, mirrorId, viewType, visibleColumns, autoHeadHeight]);
+  const getColumnHead = useCallback(
+    (columnStartIndex: number, columnStopIndex: number, isFrozen = false) => {
+      const _fieldHeads: React.ReactNode[] = [];
+
+      for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
+        if (columnIndex > columnCount - 1) break;
+        if (columnIndex < 0) continue;
+        const { fieldId } = visibleColumns[columnIndex];
+        const field = fieldMap[fieldId];
+        if (field == null) continue;
+        const x = instance.getColumnOffset(columnIndex);
+        const columnWidth = instance.getColumnWidth(columnIndex);
+        const { iconVisible, isHighlight, isSelected, permissionInfo } = getFieldHeadStatus(fieldId, columnIndex);
+
+        _fieldHeads.push(
+          <FieldHead
+            x={x}
+            y={0}
+            key={`field-head-${fieldId}`}
+            width={columnWidth}
+            height={fieldHeadHeight}
+            field={field}
+            iconVisible={iconVisible}
+            permissionInfo={permissionInfo}
+            isSelected={isSelected}
+            isHighlight={isHighlight}
+            editable={editable && !mirrorId}
+            columnIndex={columnIndex}
+            viewType={viewType}
+            stroke={columnIndex === 0 ? 'transparent' : undefined}
+            isFrozen={isFrozen}
+            autoHeadHeight={autoHeadHeight}
+          />,
+        );
+      }
+      return _fieldHeads;
+    },
+    [columnCount, editable, fieldHeadHeight, fieldMap, getFieldHeadStatus, instance, mirrorId, viewType, visibleColumns, autoHeadHeight],
+  );
 
   /**
    * Drawing the first column header
@@ -178,8 +159,7 @@ export const useHeads = (props: IUseHeadsProps) => {
           cornerRadius={[isEmbedShow ? 0 : 8, 0, 0, 0]}
           listening={false}
         />
-        {
-          !isExporting &&
+        {!isExporting && (
           <Line
             x={GRID_ROW_HEAD_WIDTH + 0.5}
             y={0.5}
@@ -188,8 +168,8 @@ export const useHeads = (props: IUseHeadsProps) => {
             stroke={indigo[100]}
             fill={indigo[100]}
             listening
-            onMouseEnter={
-              () => setTooltipInfo({
+            onMouseEnter={() =>
+              setTooltipInfo({
                 title: <TComponent tkey={t(Strings.tip_primary_field_frozen)} params={{ tag: <br /> }} />,
                 visible: true,
                 width: 10,
@@ -202,14 +182,24 @@ export const useHeads = (props: IUseHeadsProps) => {
             }
             onMouseOut={clearTooltipInfo}
           />
-        }
+        )}
       </>
     );
     // eslint-disable-next-line
   }, [
-    recordRanges?.length, visibleRows.length, getColumnHead,
-    frozenColumnCount, fieldHeadHeight, colors.defaultBg, isExporting,
-    colors.primaryColor, colors.thirdLevelText, colors.sheetLineColor, frozenColumnWidth, clearTooltipInfo, setTooltipInfo
+    recordRanges?.length,
+    visibleRows.length,
+    getColumnHead,
+    frozenColumnCount,
+    fieldHeadHeight,
+    colors.defaultBg,
+    isExporting,
+    colors.primaryColor,
+    colors.thirdLevelText,
+    colors.sheetLineColor,
+    frozenColumnWidth,
+    clearTooltipInfo,
+    setTooltipInfo,
   ]);
 
   /**
@@ -221,6 +211,6 @@ export const useHeads = (props: IUseHeadsProps) => {
 
   return {
     fieldHeads,
-    frozenFieldHead
+    frozenFieldHead,
   };
 };

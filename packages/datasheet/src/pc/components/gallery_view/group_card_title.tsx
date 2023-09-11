@@ -18,13 +18,12 @@
 
 import { FC } from 'react';
 import * as React from 'react';
-import { Selectors, Strings, t, ConfigConstant } from '@apitable/core';
 import { useThemeColors } from '@apitable/components';
+import { Selectors, Strings, t, ConfigConstant } from '@apitable/core';
+import { FieldPermissionLock, getFieldLock } from 'pc/components/field_permission';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { store } from 'pc/store';
 import styles from './style.module.less';
-import { FieldPermissionLock } from 'pc/components/field_permission';
-import { getFieldLock } from 'pc/components/field_permission';
 interface IGroupCardTitleProps {
   recordId: string;
 }
@@ -46,13 +45,16 @@ export const GroupCardTitle: FC<React.PropsWithChildren<IGroupCardTitleProps>> =
       permissionInfo = getFieldLock(fieldPermissionMap[fieldId].manageable ? ConfigConstant.Role.Manager : fieldRole);
     }
     const commonStyle: React.CSSProperties = {
-      color: colors.thirdLevelText, flex: '1', whiteSpace: 'nowrap', marginLeft: '10px',
+      color: colors.thirdLevelText,
+      flex: '1',
+      whiteSpace: 'nowrap',
+      marginLeft: '10px',
     };
     if (isCryptoField) {
       return (
         <div style={{ ...commonStyle, display: 'flex' }}>
           {t(Strings.crypto_field)}
-          <FieldPermissionLock fieldId={fieldId} isLock tooltip={ permissionInfo?.[1] || '' }/>
+          <FieldPermissionLock fieldId={fieldId} isLock tooltip={permissionInfo?.[1] || ''} />
         </div>
       );
     }
@@ -62,21 +64,11 @@ export const GroupCardTitle: FC<React.PropsWithChildren<IGroupCardTitleProps>> =
     if (cellValue === null) {
       return <div style={commonStyle}>({t(Strings.content_is_empty)})</div>;
     }
-    
+
     return (
-      <CellValue
-        field={field}
-        recordId={recordId}
-        cellValue={cellValue}
-        datasheetId={datasheetId}
-        cellTextClassName={styles.galleryGroupTitle}
-      />
+      <CellValue field={field} recordId={recordId} cellValue={cellValue} datasheetId={datasheetId} cellTextClassName={styles.galleryGroupTitle} />
     );
   }
 
-  return (
-    <div className={styles.gallaryGroupTitlebox}>
-      {partOfCellValue(recordId)}
-    </div>
-  );
+  return <div className={styles.gallaryGroupTitlebox}>{partOfCellValue(recordId)}</div>;
 };

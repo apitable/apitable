@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 import { useDispatch } from 'react-redux';
+import { FieldOperateType, SetFieldFrom, StoreActions } from '@apitable/core';
 
-export const useEditField = ({ datasheetId, fieldId, colIndex }: { datasheetId: string, fieldId: string, colIndex?: number }) => {
+export const useEditField = ({ datasheetId, fieldId, colIndex }: { datasheetId: string; fieldId: string; colIndex?: number }) => {
   const dispatch = useDispatch();
   return (e: MouseEvent) => {
     if (typeof colIndex !== 'number') return;
@@ -28,7 +28,11 @@ export const useEditField = ({ datasheetId, fieldId, colIndex }: { datasheetId: 
     const fieldRectLeft = clientX - 340;
     const fieldRectBottom = window.innerHeight - clientY >= 360 ? clientY : clientY - 360;
     console.log({
-      clientX, clientY, fieldRectLeft, fieldRectBottom, target: e.target
+      clientX,
+      clientY,
+      fieldRectLeft,
+      fieldRectBottom,
+      target: e.target,
     });
     dispatch(
       StoreActions.setActiveFieldState(datasheetId, {

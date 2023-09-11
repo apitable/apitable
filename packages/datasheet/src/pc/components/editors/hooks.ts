@@ -18,7 +18,7 @@
 
 import { useMemo } from 'react';
 
-export function useCellEditorVisibleStyle(value: { editing: boolean, width?: number, height?: number }) {
+export function useCellEditorVisibleStyle(value: { editing: boolean; width?: number; height?: number }) {
   const { editing, width, height } = value;
   return useMemo(() => {
     if (editing) {
@@ -30,7 +30,7 @@ export function useCellEditorVisibleStyle(value: { editing: boolean, width?: num
       }
       return {};
     }
-  
+
     return {
       width: 0,
       height: 1,

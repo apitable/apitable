@@ -10,7 +10,7 @@ export const FORM_FIELD_TYPE = {
   number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
   bool: [FieldType.Checkbox],
   datetime: [FieldType.DateTime],
-  filter: [FieldType.Attachment, FieldType.Cascader]
+  filter: [FieldType.Attachment, FieldType.Cascader],
 };
 
 export const string2Query = () => {
@@ -30,13 +30,15 @@ export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPerm
         if (FORM_FIELD_TYPE.select.includes(field.type)) {
           // filter invalid item opt item
           if (value[0].startsWith('opt')) {
-            res[key] = compact((value as string[]).map(v => find(field.property.options, { id: v })?.id));
-          } else { // filter invalid item name item
-            res[key] = compact((value as string[]).map(v => find(field.property.options, { name: v })?.id));
+            res[key] = compact((value as string[]).map((v) => find(field.property.options, { id: v })?.id));
+          } else {
+            // filter invalid item name item
+            res[key] = compact((value as string[]).map((v) => find(field.property.options, { name: v })?.id));
           }
         } else if ([FieldType.SingleText, FieldType.Text].includes(field.type)) {
           res[key] = string2Segment(value as string);
-        } else if (FORM_FIELD_TYPE.number.includes(field.type)) { // only number type is valid
+        } else if (FORM_FIELD_TYPE.number.includes(field.type)) {
+          // only number type is valid
           const _value = Number(value);
           if (!isNaN(_value)) {
             res[key] = Number(value);
@@ -51,7 +53,8 @@ export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPerm
         } else if (FORM_FIELD_TYPE.datetime.includes(field.type)) {
           const _value = value as string;
           const isValidDate = dayjs(_value).isValid();
-          if (isValidDate) { // only valid date valid, exam: 2023-10-30 or 1692028800000
+          if (isValidDate) {
+            // only valid date valid, exam: 2023-10-30 or 1692028800000
             const isTimestamp = Field.bindModel(field).validateCellValue(_value);
             res[key] = isTimestamp.error ? dayjs(_value).tz(field.property.timeZone).valueOf() : value;
           }

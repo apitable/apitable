@@ -16,22 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Divider, Typography, useThemeColors } from '@apitable/components';
-import {
-  Field, IField, ISelectField, ISelectFieldProperty, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
-} from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import produce from 'immer';
 import { omit } from 'lodash';
-import { OptionSetting } from 'pc/components/common/color_picker';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
-import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { Divider, Typography, useThemeColors } from '@apitable/components';
+import {
+  Field,
+  IField,
+  ISelectField,
+  ISelectFieldProperty,
+  isSelectField,
+  moveArrayElement,
+  SelectField,
+  Selectors,
+  Strings,
+  t,
+  ThemeName,
+} from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import { OptionSetting } from 'pc/components/common/color_picker';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
+import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
@@ -62,19 +72,18 @@ interface ISortableContainerProps {
 }
 
 const SortableContainer: React.FC<React.PropsWithChildren<ISortableContainerProps>> = ({ onDragUpdate, onSortEnd, children }) => {
-  return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
-    <Droppable droppableId='droppable'>
-      {(provided) => (
-        <div
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-        >
-          {children}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
-  </DragDropContext>;
+  return (
+    <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
+      <Droppable droppableId="droppable">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {children}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
 };
 
 const FormatSelectBase = (props: IFormatSelect) => {
@@ -82,7 +91,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   const { currentField, setCurrentField, isMulti, datasheetId } = props;
   const { options, defaultValue } = currentField.property;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
   const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {
@@ -105,7 +114,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     }
     const oldIndex = result.source.index;
     const newIndex = result.destination.index;
-    const _currentField = produce(currentField, draft => {
+    const _currentField = produce(currentField, (draft) => {
       moveArrayElement(draft.property.options, oldIndex, newIndex);
       return draft;
     });
@@ -114,8 +123,8 @@ const FormatSelectBase = (props: IFormatSelect) => {
     });
   };
   const selectColor = (optionIndex: number, color: number) => {
-    setCurrentField(pre => {
-      return produce(pre, draft => {
+    setCurrentField((pre) => {
+      return produce(pre, (draft) => {
         draft.property.options[optionIndex].color = color;
         return draft;
       });
@@ -125,7 +134,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   // Here there is an unused parameter because of the generic property setting method defined in ColorPiker
   const onOptionChange = (_type: OptionSetting, id: string, value: number | string) => {
     selectColor(
-      options.findIndex(item => item.id === id),
+      options.findIndex((item) => item.id === id),
       value as number,
     );
   };
@@ -165,7 +174,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
       {options.length > 0 && (
         <div className={styles.section}>
           <Divider className={styles.divider} />
-          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant='body3'>
+          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant="body3">
             {t(Strings.default_value)}
           </Typography>
           <FilterGeneralSelect
@@ -174,7 +183,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
             searchPlaceholder={t(Strings.find)}
             field={currentField}
             isMulti={isMulti}
-            onChange={val => {
+            onChange={(val) => {
               const property: ISelectFieldProperty = val
                 ? {
                   ...currentField.property,
@@ -187,7 +196,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
               });
             }}
             cellValue={defaultValue}
-            listData={options.filter(option => Boolean(option.name.trim()))}
+            listData={options.filter((option) => Boolean(option.name.trim()))}
           />
         </div>
       )}
@@ -195,7 +204,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   );
 };
 
-export const FormatSelect: React.FC<React.PropsWithChildren<IFormatSelect>> = props => {
+export const FormatSelect: React.FC<React.PropsWithChildren<IFormatSelect>> = (props) => {
   return (
     <>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>

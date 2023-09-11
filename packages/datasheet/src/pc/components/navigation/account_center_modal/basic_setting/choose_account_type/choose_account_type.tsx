@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors } from '@apitable/components';
-import { hiddenMobile, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Radio, Space } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext } from 'react';
+import { Typography, useThemeColors } from '@apitable/components';
+import { hiddenMobile, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AccountType } from '../log_out/enum';
 import { StepContext } from '../log_out/step_context';
 import styles from './styles.module.less';
@@ -32,7 +32,7 @@ interface IChooseAccountTypeProps {
   setAccountType: React.Dispatch<React.SetStateAction<AccountType | undefined>>;
 }
 
-export const ChooseAccountType: FC<React.PropsWithChildren<IChooseAccountTypeProps>> = props => {
+export const ChooseAccountType: FC<React.PropsWithChildren<IChooseAccountTypeProps>> = (props) => {
   const { accountType, setAccountType } = props;
   const colors = useThemeColors();
 
@@ -72,13 +72,13 @@ export const ChooseAccountType: FC<React.PropsWithChildren<IChooseAccountTypePro
       </Typography>
 
       <Radio.Group
-        onChange={e => {
+        onChange={(e) => {
           setAccountType(e.target.value);
         }}
         value={accountType}
       >
         <Space direction="vertical" size={16}>
-          {radioData.map(item => {
+          {radioData.map((item) => {
             const checked = accountType === item.value;
             return (
               <Radio

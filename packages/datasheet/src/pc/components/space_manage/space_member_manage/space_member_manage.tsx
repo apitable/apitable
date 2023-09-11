@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
 import { FC, useState } from 'react';
+// import { useSelector, shallowEqual } from 'react-redux';
+import SplitPane from 'react-split-pane';
 import {
   // IReduxState,
   IMemberInfoInSpace,
-  Player, Events,
+  Player,
+  Events,
 } from '@apitable/core';
-// import { useSelector, shallowEqual } from 'react-redux';
-import { TeamTree } from './team_tree';
-import SplitPane from 'react-split-pane';
 // import { EditMemberModal, ChangeMemberTeam, AddMember } from './modal';
-import styles from './style.module.less';
 import { Loading } from './loading';
-import { useMount } from 'ahooks';
+import styles from './style.module.less';
 import { TeamInfo } from './team_info';
+import { TeamTree } from './team_tree';
 
 const _SplitPane: any = SplitPane;
 
@@ -43,23 +44,16 @@ export const SpaceMemberManage: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.memberManageWrapper}>
       {
-        (
-          <_SplitPane
-            minSize={199}
-            maxSize={800}
-            defaultSize={199}
-            className={styles.spaceMemberSplit}
-          >
-            <TeamTree
-              setSearchMemberRes={data => setSearchMemberRes(data)}
-              setRightLoading={setRightLoading}
-            />
-            {
-              rightLoading ? <div className={styles.loading}><Loading /></div> :
-                <TeamInfo searchMemberRes={searchMemberRes} setSearchMemberRes={setSearchMemberRes} />
-            }
-          </_SplitPane>
-        ) 
+        <_SplitPane minSize={199} maxSize={800} defaultSize={199} className={styles.spaceMemberSplit}>
+          <TeamTree setSearchMemberRes={(data) => setSearchMemberRes(data)} setRightLoading={setRightLoading} />
+          {rightLoading ? (
+            <div className={styles.loading}>
+              <Loading />
+            </div>
+          ) : (
+            <TeamInfo searchMemberRes={searchMemberRes} setSearchMemberRes={setSearchMemberRes} />
+          )}
+        </_SplitPane>
       }
     </div>
   );

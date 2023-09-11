@@ -18,12 +18,7 @@
 
 import { ILexer } from '../lexer/lexer';
 import { Token, TokenType } from '../lexer/token';
-import {
-  AstNode,
-  BinaryOperatorNode,
-  UnaryOperatorNode,
-  ValueOperandNode,
-} from './ast';
+import { AstNode, BinaryOperatorNode, UnaryOperatorNode, ValueOperandNode } from './ast';
 
 export class BooleanExprParser {
   readonly lexer: ILexer;
@@ -89,9 +84,7 @@ export class BooleanExprParser {
 
     let node: AstNode = this.factor();
 
-    while (this.currentToken &&
-      (this.currentToken.type === TokenType.And ||
-       this.currentToken.type === TokenType.Or)) {
+    while (this.currentToken && (this.currentToken.type === TokenType.And || this.currentToken.type === TokenType.Or)) {
       const token: Token = this.currentToken;
 
       if (token.type === TokenType.And) {

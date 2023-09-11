@@ -25,19 +25,24 @@ export const usePercent = (
   delay = 1000,
   options?: {
     immediate?: boolean;
-  }) => {
+  },
+) => {
   // Progress values
   const [percent, setPercent] = useState(startValue);
   // Whether to start the countdown
   const [isStart, setIsStart] = useState(false);
 
-  useInterval(() => {
-    if (percent === endValue) {
-      setIsStart(false);
-      return;
-    }
-    setPercent(percent + 1);
-  }, isStart ? delay : undefined, options);
+  useInterval(
+    () => {
+      if (percent === endValue) {
+        setIsStart(false);
+        return;
+      }
+      setPercent(percent + 1);
+    },
+    isStart ? delay : undefined,
+    options,
+  );
 
   return {
     percent,

@@ -16,24 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { memo, FC, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { NoPermission } from '../no_permission';
-import { ViewContainer } from './view_container';
-import classNames from 'classnames';
-import styles from './style.module.less';
-import { ServerError } from '../invalid_page/server_error';
-import { TabBar } from './form_tab';
 import { ShareContext } from 'pc/components/share/share';
+import { ServerError } from '../invalid_page/server_error';
+import { NoPermission } from '../no_permission';
+import { TabBar } from './form_tab';
+import styles from './style.module.less';
+import { ViewContainer } from './view_container';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise';
 
-const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props => {
-  const { shareId, templateId, embedId } = useSelector(state => state.pageParams);
-  const formErrCode = useSelector(state => Selectors.getFormErrorCode(state));
+const FormPanelBase: FC<React.PropsWithChildren<{ loading?: boolean }>> = (props) => {
+  const { shareId, templateId, embedId } = useSelector((state) => state.pageParams);
+  const formErrCode = useSelector((state) => Selectors.getFormErrorCode(state));
   const [preFill, setPreFill] = useState(false);
-  const loading = useSelector(state => {
+  const loading = useSelector((state) => {
     const form = Selectors.getForm(state);
     const formLoading = Selectors.getFormLoading(state);
     return Boolean(!form) || formLoading;
@@ -41,9 +41,12 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
 
   useEffect(() => {
     const load = () => {
-      window.parent.postMessage({
-        message: 'pageLoaded',
-      }, '*');
+      window.parent.postMessage(
+        {
+          message: 'pageLoaded',
+        },
+        '*',
+      );
     };
 
     window.addEventListener('load', load);
@@ -52,19 +55,18 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
     };
   }, []);
 
-  const isNoPermission = (
+  const isNoPermission =
     formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ||
     formErrCode === StatusCode.FORM_DATASHEET_NOT_EXIST ||
     formErrCode === StatusCode.NOT_PERMISSION ||
     formErrCode === StatusCode.NODE_NOT_EXIST ||
-    formErrCode === StatusCode.NODE_DELETED
-  );
+    formErrCode === StatusCode.NODE_DELETED;
   const { shareInfo } = useContext(ShareContext);
-  const userLoading = useSelector(state => state.user.loading);
+  const userLoading = useSelector((state) => state.user.loading);
 
   const noPermissionDesc = formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ? t(Strings.current_form_is_invalid) : '';
 
-  const embedInfo = useSelector(state => state.embedInfo);
+  const embedInfo = useSelector((state) => state.embedInfo);
 
   const showTabBar = embedId ? embedInfo.viewControl?.tabBar : true;
 
@@ -75,30 +77,20 @@ const FormPanelBase: FC<React.PropsWithChildren<{loading?: boolean}>> = props =>
         borderRadius: (shareId && shareInfo.isFolder) || templateId ? 8 : 0,
       }}
     >
-      {
-        !formErrCode ? (
-          <>
-            {
-              !shareId && showTabBar && <TabBar loading={loading} setPreFill={setPreFill} preFill={preFill} />
-            }
-            <ViewContainer loading={loading || (shareId && (!shareInfo || userLoading)) || props.loading} preFill={preFill} setPreFill={setPreFill} />
-          </>
-        ) : (isNoPermission ? <NoPermission desc={noPermissionDesc} /> : <ServerError />)
-      }
+      {!formErrCode ? (
+        <>
+          {!shareId && showTabBar && <TabBar loading={loading} setPreFill={setPreFill} preFill={preFill} />}
+          <ViewContainer loading={loading || (shareId && (!shareInfo || userLoading)) || props.loading} preFill={preFill} setPreFill={setPreFill} />
+        </>
+      ) : isNoPermission ? (
+        <NoPermission desc={noPermissionDesc} />
+      ) : (
+        <ServerError />
+      )}
     </div>
   );
 
-  return (
-    <>
-      {
-        WeixinShareWrapper ? (
-          <WeixinShareWrapper>
-            {childComponent}
-          </WeixinShareWrapper>
-        ) : childComponent
-      }
-    </>
-  );
+  return <>{WeixinShareWrapper ? <WeixinShareWrapper>{childComponent}</WeixinShareWrapper> : childComponent}</>;
 };
 
 export const FormPanel = memo(FormPanelBase);

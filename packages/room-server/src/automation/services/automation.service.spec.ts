@@ -22,6 +22,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
 import { NodeService } from 'node/services/node.service';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
 import { CommonException } from '../../shared/exception';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
@@ -64,11 +65,17 @@ describe('RobotActionTypeServiceTest', () => {
             getRobotById: jest.fn(),
           },
         },
+        {
+          provide: QueueSenderBaseService,
+          useValue: {
+            sendMessage: jest.fn(),
+          },
+        },
         AutomationRobotRepository,
         AutomationRunHistoryRepository,
         AutomationActionRepository,
         AutomationTriggerRepository,
-        AmqpConnection
+        AmqpConnection,
       ],
     }).compile();
     nodeService = moduleFixture.get<NodeService>(NodeService);

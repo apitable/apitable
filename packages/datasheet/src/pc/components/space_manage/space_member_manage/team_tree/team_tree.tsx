@@ -16,32 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Loading, Typography } from '@apitable/components';
-import {
-  Api, ConfigConstant, IMemberInfoInSpace, IReduxState, ISelectedTeamInfoInSpace, isIdassPrivateDeployment, ITeamTreeNode, StoreActions, Strings, t
-} from '@apitable/core';
-import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
+import type { DataNode } from 'antd/es/tree';
+import * as React from 'react';
+import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Button, Loading, Typography } from '@apitable/components';
+import {
+  Api,
+  ConfigConstant,
+  IMemberInfoInSpace,
+  IReduxState,
+  ISelectedTeamInfoInSpace,
+  isIdassPrivateDeployment,
+  ITeamTreeNode,
+  StoreActions,
+  Strings,
+  t,
+} from '@apitable/core';
+import { AddOutlined, DeleteOutlined, EditOutlined, MoreOutlined, SearchOutlined, TriangleRightFilled, UserGroupOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/common';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
-import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
-import { shallowEqual, useSelector } from 'react-redux';
 import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
-
-// @ts-ignore
-// eslint-disable-next-line max-len
-import { freshDingtalkOrg, freshWecomOrg, freshWoaContact, freshIdaasOrg, isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
-import styles from './style.module.less';
 import { socialPlatPreOperateCheck } from '../utils';
-import type { DataNode } from 'antd/es/tree';
+import styles from './style.module.less';
+import {
+  freshDingtalkOrg,
+  freshWecomOrg,
+  freshWoaContact,
+  freshIdaasOrg,
+  isSocialDingTalk,
+  isSocialPlatformEnabled,
+  isSocialWecom,
+  // @ts-ignore
+} from 'enterprise';
 
 const _ContextMenu: any = ContextMenu;
 const _MenuItem: any = MenuItem;
@@ -55,21 +70,18 @@ interface IModalProps {
 const { TreeNode, DirectoryTree } = Tree;
 const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
-export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
+export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const dispatch = useAppDispatch();
-  const {
-    teamListInSpace,
-    spaceId,
-    spaceResource,
-    user,
-    spaceInfo,
-  } = useSelector((state: IReduxState) => ({
-    teamListInSpace: state.addressList.teamList,
-    spaceId: state.space.activeId || '',
-    spaceResource: state.spacePermissionManage.spaceResource,
-    user: state.user.info,
-    spaceInfo: state.space.curSpaceInfo,
-  }), shallowEqual);
+  const { teamListInSpace, spaceId, spaceResource, user, spaceInfo } = useSelector(
+    (state: IReduxState) => ({
+      teamListInSpace: state.addressList.teamList,
+      spaceId: state.space.activeId || '',
+      spaceResource: state.spacePermissionManage.spaceResource,
+      user: state.user.info,
+      spaceInfo: state.space.curSpaceInfo,
+    }),
+    shallowEqual,
+  );
   const [renameDeptModalVisible, setRenameDeptModalVisible] = useState(false);
   const [createDeptModalVisible, setCreateDeptModalVisible] = useState(false);
   const isBindDingtalk = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.DINGTALK) && !isSocialDingTalk?.(spaceInfo);
@@ -87,10 +99,13 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     dispatch(StoreActions.getMemberListDataInSpace(1, ConfigConstant.ROOT_TEAM_ID));
   });
 
-  const changeSelectTeam = useCallback((teamId: string) => {
-    setSelectKey(teamId);
-    changeSelectTeamHook(teamId);
-  }, [changeSelectTeamHook]);
+  const changeSelectTeam = useCallback(
+    (teamId: string) => {
+      setSelectKey(teamId);
+      changeSelectTeamHook(teamId);
+    },
+    [changeSelectTeamHook],
+  );
   useEffect(() => {
     if (!spaceResource || isIdassPrivateDeployment()) {
       return;
@@ -127,26 +142,24 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
               <Tooltip title={item.teamName} placement="bottomLeft" textEllipsis>
                 <div>{item.teamName}</div>
               </Tooltip>
-              {
-                teamOperate && item.teamId === ConfigConstant.ROOT_TEAM_ID &&
-                  <span
-                    onClick={e => moreClick(e, nodeRef)}
-                    style={{ visibility: 'visible' }}
-                  >
-                    <AddOutlined />
-                  </span>
-              }
-              {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID &&
-                <span onClick={e => moreClick(e, nodeRef)}><MoreOutlined /></span>}
+              {teamOperate && item.teamId === ConfigConstant.ROOT_TEAM_ID && (
+                <span onClick={(e) => moreClick(e, nodeRef)} style={{ visibility: 'visible' }}>
+                  <AddOutlined />
+                </span>
+              )}
+              {teamOperate && item.teamId !== ConfigConstant.ROOT_TEAM_ID && (
+                <span onClick={(e) => moreClick(e, nodeRef)}>
+                  <MoreOutlined />
+                </span>
+              )}
             </_ContextMenuTrigger>
           }
           key={item.teamId}
           isLeaf={!item.hasChildren}
         >
-          { item.children && item.children.length > 0 && renderTreeNode(item.children)}
+          {item.children && item.children.length > 0 && renderTreeNode(item.children)}
         </TreeNode>
       );
-    
     });
   };
   const getRightClickDeptInfo = (data: ISelectedTeamInfoInSpace) => {
@@ -183,7 +196,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       getRightClickDeptInfo(data);
       if (data) {
         const clickTeam = data;
-        Api.readTeam(data.teamId).then(res => {
+        Api.readTeam(data.teamId).then((res) => {
           const { success, data } = res.data;
           if (success) {
             if (data.hasChildren || data.memberCount > 0) {
@@ -205,13 +218,12 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   const confirmDeleteTeam = (data: ISelectedTeamInfoInSpace) => {
     const confirmDelTeamOk = () => {
       if (user) {
-        Api.deleteTeam(data.teamId).then(res => {
+        Api.deleteTeam(data.teamId).then((res) => {
           const { success } = res.data;
           const parent = data.parentId ? data.parentId : ConfigConstant.ROOT_TEAM_ID;
           if (success) {
-            
             dispatch(StoreActions.getSubTeam(parent));
-            
+
             Message.success({ content: t(Strings.del_team_success) });
           } else {
             Message.error({ content: t(Strings.delete_team_fail) });
@@ -240,9 +252,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
     changeSelectTeam(teamId);
   };
   // Click on the "more" icon on the group directory
-  const moreClick = (
-    e: React.MouseEvent,
-    ref: React.RefObject<{ handleContextClick: (e: React.MouseEvent) => void; }>) => {
+  const moreClick = (e: React.MouseEvent, ref: React.RefObject<{ handleContextClick: (e: React.MouseEvent) => void }>) => {
     if (ref.current) {
       ref.current.handleContextClick(e);
     }
@@ -257,12 +267,12 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
   // Search state click staff
   const memberClick = (memberId: string) => {
     changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);
-    Api.getMemberInfo({ memberId }).then(res => {
+    Api.getMemberInfo({ memberId }).then((res) => {
       const { success, data } = res.data;
       if (success) {
         const tempData: any = { ...data };
         delete tempData.tags;
-        tempData.teams = data.teamData!.map(item => item.fullHierarchyTeamName).join(',');
+        tempData.teams = data.teamData!.map((item) => item.fullHierarchyTeamName).join(',');
         props.setSearchMemberRes([tempData]);
       }
     });
@@ -274,7 +284,7 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return (
         <Button
           color="primary"
-          prefixIcon={refreshBtnLoading ? <Loading /> :<UserGroupOutlined size={16} />}
+          prefixIcon={refreshBtnLoading ? <Loading /> : <UserGroupOutlined size={16} />}
           onClick={onClick}
           className={styles.inviteOutsiderBtn}
           disabled={refreshBtnLoading}
@@ -283,14 +293,15 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
         </Button>
       );
     };
-    if(isIdassPrivateDeployment()) {
+    if (isIdassPrivateDeployment()) {
       return getButton({
         onClick: () => {
           setRefreshBtnLoading(true);
-          spaceInfo && freshIdaasOrg?.().then(() => {
-            setRefreshBtnLoading(false);
-          });
-        }
+          spaceInfo &&
+            freshIdaasOrg?.().then(() => {
+              setRefreshBtnLoading(false);
+            });
+        },
       });
     }
     if (isBindDingtalk || isBindWecom || isBindWoa) {
@@ -302,10 +313,11 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
       return getButton({
         onClick: () => {
           setRefreshBtnLoading(true);
-          spaceInfo && refreshMethods[spaceInfo.social.platform]?.().then(() => {
-            setRefreshBtnLoading(false);
-          });
-        }
+          spaceInfo &&
+            refreshMethods[spaceInfo.social.platform]?.().then(() => {
+              setRefreshBtnLoading(false);
+            });
+        },
       });
     }
     if (spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER)) {
@@ -314,45 +326,59 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
           color="primary"
           prefixIcon={<UserGroupOutlined size={16} />}
           className={styles.inviteOutsiderBtn}
-          onClick={() => expandInviteModal({ resUpdate: () => {changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);} })}
+          onClick={() =>
+            expandInviteModal({
+              resUpdate: () => {
+                changeSelectTeam(ConfigConstant.ROOT_TEAM_ID);
+              },
+            })
+          }
         >
           {t(Strings.invite_member)}
         </Button>
       );
     }
     return null;
-
   }, [isBindDingtalk, refreshBtnLoading, changeSelectTeam, spaceResource, isBindWecom, isBindWoa, spaceInfo]);
 
-  const onExpand = (expandedKeys: DataNode['key'][], info: {
-    expanded: boolean;
-    node: DataNode;
-}) => {   
-    if(info.expanded && !info.node.children) {
+  const onExpand = (
+    expandedKeys: DataNode['key'][],
+    info: {
+      expanded: boolean;
+      node: DataNode;
+    },
+  ) => {
+    if (info.expanded && !info.node.children) {
       const teamId = expandedKeys[expandedKeys.length - 1];
-    
+
       dispatch(StoreActions.getSubTeam(teamId));
-    
-    } 
+    }
   };
 
   return (
     <div className={styles.addressTreeMenuWrapper}>
       <Typography ellipsis variant="body1" className={styles.searchTitle}>
         {t(Strings.members_setting)}
-        <div onClick={(e) => {
-          stopPropagation(e);
-          setInSearch(true);
-        }}><SearchOutlined /></div>
+        <div
+          onClick={(e) => {
+            stopPropagation(e);
+            setInSearch(true);
+          }}
+        >
+          <SearchOutlined />
+        </div>
       </Typography>
       <div className={styles.originContent} style={{ filter: inSearch ? ConfigConstant.GLASS_FILTER : 'none' }}>
         {operateButtonCom}
         <div className={styles.treeWrapper}>
-          {
-            teamListInSpace.length > 0 &&
+          {teamListInSpace.length > 0 && (
             <DirectoryTree
               onSelect={onSelect}
-              switcherIcon={<div><TriangleRightFilled size={12} /></div>}
+              switcherIcon={
+                <div>
+                  <TriangleRightFilled size={12} />
+                </div>
+              }
               selectedKeys={[selectKey]}
               showIcon={false}
               expandAction={false}
@@ -361,41 +387,36 @@ export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = props => {
             >
               {renderTreeNode(teamListInSpace)}
             </DirectoryTree>
-          }
+          )}
         </div>
       </div>
-      {
-        inSearch &&
-        <SearchTeamAndMember
-          setInSearch={search => setInSearch(search)}
-          teamClick={teamClick}
-          memberClick={memberClick}
-          top={'24px'}
-        />
-      }
-      {
-        renameDeptModalVisible &&
-        <RenameTeamModal
-          setModalVisible={visible => setRenameDeptModalVisible(visible)}
-        />
-      }
-      {
-        createDeptModalVisible &&
-        <CreateTeamModal
-          setModalVisible={visible => setCreateDeptModalVisible(visible)}
-        />
-      }
-      {
-        teamOperate && <>
+      {inSearch && <SearchTeamAndMember setInSearch={(search) => setInSearch(search)} teamClick={teamClick} memberClick={memberClick} top={'24px'} />}
+      {renameDeptModalVisible && <RenameTeamModal setModalVisible={(visible) => setRenameDeptModalVisible(visible)} />}
+      {createDeptModalVisible && <CreateTeamModal setModalVisible={(visible) => setCreateDeptModalVisible(visible)} />}
+      {teamOperate && (
+        <>
           <_ContextMenu id={TEAM_OPERATE}>
-            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
-            <_MenuItem onClick={handleRenameClick}><EditOutlined />{t(Strings.rename_team)}</_MenuItem>
-            <_MenuItem onClick={handleDeleteClick}><DeleteOutlined />{t(Strings.delete_team)}</_MenuItem>
+            <_MenuItem onClick={handleAddDeptClick}>
+              <AddOutlined />
+              {t(Strings.add_team)}
+            </_MenuItem>
+            <_MenuItem onClick={handleRenameClick}>
+              <EditOutlined />
+              {t(Strings.rename_team)}
+            </_MenuItem>
+            <_MenuItem onClick={handleDeleteClick}>
+              <DeleteOutlined />
+              {t(Strings.delete_team)}
+            </_MenuItem>
           </_ContextMenu>
           <_ContextMenu id={TEAM_ROOT_OPERATE}>
-            <_MenuItem onClick={handleAddDeptClick}><AddOutlined />{t(Strings.add_team)}</_MenuItem>
-          </_ContextMenu></>
-      }
+            <_MenuItem onClick={handleAddDeptClick}>
+              <AddOutlined />
+              {t(Strings.add_team)}
+            </_MenuItem>
+          </_ContextMenu>
+        </>
+      )}
     </div>
   );
 };

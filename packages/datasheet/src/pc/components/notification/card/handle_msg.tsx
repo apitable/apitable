@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useHover, useMount } from 'ahooks';
+import { AnimationItem } from 'lottie-web/index';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
 import { Button, IconButton, useThemeColors } from '@apitable/components';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { INoticeDetail, Strings, t } from '@apitable/core';
-import styles from './style.module.less';
-import AnimationJson from 'static/json/notification_motion_white(1).json';
-import { useHover, useMount } from 'ahooks';
-import { AnimationItem } from 'lottie-web/index';
-import { isAskForJoiningMsg, JoinMsgApplyStatus } from './utils';
 import { NotificationOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import AnimationJson from 'static/json/notification_motion_white(1).json';
+import styles from './style.module.less';
+import { isAskForJoiningMsg, JoinMsgApplyStatus } from './utils';
 
 interface ICard {
   data: INoticeDetail;
@@ -54,7 +54,7 @@ export const HandleMsg = (props: ICard) => {
   useMount(() => {
     const handle = document.getElementById(handleSvgId);
     if (handle) {
-      import('lottie-web/build/player/lottie_svg').then(module => {
+      import('lottie-web/build/player/lottie_svg').then((module) => {
         const lottie = module.default;
         lottieAnimate.current = lottie.loadAnimation({
           container: handle,

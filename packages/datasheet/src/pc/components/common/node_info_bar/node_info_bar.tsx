@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Typography } from '@apitable/components';
 import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
-import styles from './style.module.less';
-import { Tag, TagColors } from '../tag';
-import { getPermission, KeyCode } from 'pc/utils';
-import { NodeFavoriteStatus } from '../node_favorite_status';
-import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
-import { useCatalog } from 'pc/hooks/use_catalog';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ShareContext } from 'pc/components/share';
-import { Tooltip } from '../tooltip';
-import classNames from 'classnames';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
-import { Typography } from '@apitable/components';
+import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { useCatalog } from 'pc/hooks/use_catalog';
+import { getPermission, KeyCode } from 'pc/utils';
 import { isIframe } from 'pc/utils/env';
-import { useSelector } from 'react-redux';
+import { NodeFavoriteStatus } from '../node_favorite_status';
+import { Tag, TagColors } from '../tag';
+import { Tooltip } from '../tooltip';
+import styles from './style.module.less';
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
@@ -50,7 +50,7 @@ export interface INodeInfoBarProps {
     iconSize?: number;
   };
   style?: React.CSSProperties;
-  hiddenModule?: { icon?: boolean, permission?: boolean, favorite?: boolean };
+  hiddenModule?: { icon?: boolean; permission?: boolean; favorite?: boolean };
 }
 
 export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ data, hiddenModule, style }) => {
@@ -74,8 +74,8 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   const { renameNodeReq } = useCatalogTreeRequest();
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
-  const embedId = useSelector(state => state.pageParams.embedId);
-  const _showDescription= isDatasheet;
+  const embedId = useSelector((state) => state.pageParams.embedId);
+  const _showDescription = isDatasheet;
 
   useEffect(() => {
     setNewName(name);
@@ -154,53 +154,43 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   return (
     <div className={classNames(styles.nodeInfoBar, { [styles.multiLine]: _showDescription })} ref={nodeInfoBarRef}>
       <div className={classNames(styles.nameWrapper, { [styles.editing]: editing })}>
-        {!hiddenModule?.icon &&
+        {!hiddenModule?.icon && (
           <div className={classNames(styles.icon, { [styles.iconHover]: iconEditable })}>
-            <NodeIcon
-              nodeId={nodeId}
-              type={type}
-              icon={icon}
-              editable={iconEditable}
-              size={iconSize}
-              hasChildren
-            />
+            <NodeIcon nodeId={nodeId} type={type} icon={icon} editable={iconEditable} size={iconSize} hasChildren />
           </div>
-        }
-        {
-          editing ? (
-            <Tooltip title={errMsg} visible={Boolean(errMsg)}>
-              <input
-                id={FOLDER_SHOWCASE_ID.TITLE_INPUT}
-                className={styles.nameInput}
-                value={newName}
-                onChange={handleChange}
-                disabled={!nameEditable}
-                onKeyDown={handleKeyDown}
-                style={style}
-                onBlur={handleBlur}
-                autoFocus
-                spellCheck='false'
-              />
-            </Tooltip>
-          ) : (
-            <div id={FOLDER_SHOWCASE_ID.TITLE} className={styles.nameBox} onClick={() => nameEditable && setEditing(true)}>
-              <Typography variant="h7" className={styles.name} style={style} component="span" ellipsis>{newName}</Typography>
-            </div>
-          )
-        }
-        {!hiddenModule?.favorite && (!editing || (editing && _showDescription)) && !embedId &&
+        )}
+        {editing ? (
+          <Tooltip title={errMsg} visible={Boolean(errMsg)}>
+            <input
+              id={FOLDER_SHOWCASE_ID.TITLE_INPUT}
+              className={styles.nameInput}
+              value={newName}
+              onChange={handleChange}
+              disabled={!nameEditable}
+              onKeyDown={handleKeyDown}
+              style={style}
+              onBlur={handleBlur}
+              autoFocus
+              spellCheck="false"
+            />
+          </Tooltip>
+        ) : (
+          <div id={FOLDER_SHOWCASE_ID.TITLE} className={styles.nameBox} onClick={() => nameEditable && setEditing(true)}>
+            <Typography variant="h7" className={styles.name} style={style} component="span" ellipsis>
+              {newName}
+            </Typography>
+          </div>
+        )}
+        {!hiddenModule?.favorite && (!editing || (editing && _showDescription)) && !embedId && (
           <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
-        }
-        {!hiddenModule?.permission && (!editing || (editing && _showDescription)) && !isIframe() && !embedId &&
+        )}
+        {!hiddenModule?.permission && (!editing || (editing && _showDescription)) && !isIframe() && !embedId && (
           <Tooltip title={getPermissionTip()}>
-            <Tag
-              className={styles.tag}
-              color={TagColors[role]}
-            >
+            <Tag className={styles.tag} color={TagColors[role]}>
               {ConfigConstant.permissionText[getPermission(role, { shareInfo: shareInfo })]}
             </Tag>
           </Tooltip>
-        }
+        )}
       </div>
       <div className={styles.permissionWrapper}>
         {/* {!hiddenModule?.permission && (!editing || (editing && _showDescription)) &&
@@ -218,14 +208,7 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
         {/* {!hiddenModule?.favorite && (!editing || (editing && _showDescription)) &&
         <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         } */}
-        {_showDescription &&
-          <DescriptionModal
-            activeNodeId={nodeId}
-            datasheetName={newName || ''}
-            showIntroduction
-            showIcon={false}
-          />
-        }
+        {_showDescription && <DescriptionModal activeNodeId={nodeId} datasheetName={newName || ''} showIntroduction showIcon={false} />}
       </div>
     </div>
   );

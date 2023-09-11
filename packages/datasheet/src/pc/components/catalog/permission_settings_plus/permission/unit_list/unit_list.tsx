@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { FC } from 'react';
 import { IRoleUnit, IMember } from '@apitable/core';
 import { UnitItem } from '../unit_item';
-import styles from './style.module.less';
-import classNames from 'classnames';
 import { IRoleOption } from '../unit_item/interface';
+import styles from './style.module.less';
 
 export interface IUnitListProps {
   admins: IMember[];
@@ -47,87 +47,86 @@ export const UnitList: FC<React.PropsWithChildren<IUnitListProps>> = ({
 }) => {
   return (
     <div className={styles.unitList}>
-      {admins.map(admin => {
+      {admins.map((admin) => {
         const isPermissionOpener = Boolean(owner && owner.unitId === admin.unitId);
-        return <UnitItem
-          className={classNames({ [styles.unitItem]: isAppointMode && roleUnits.length && !readonly })}
-          key={admin.unitId}
-          unit={{
-            id: admin.unitId,
-            memberId: admin.memberId,
-            avatar: admin.avatar,
-            avatarColor: admin.avatarColor,
-            nickName: admin.nickName,
-            name: admin.memberName,
-            info: (admin.teamData && admin.teamData.length > 0 ) ? admin.teamData[0].fullHierarchyTeamName || '' : '',
-            isMemberNameModified: admin.isMemberNameModified,
-            isTeam: false,
-          }}
-          role={'manager'}
-          identity={{
-            admin: true,
-            permissionOpener: isPermissionOpener,
-          }}
-          roleOptions={roleOptions}
-          disabled
-          allowRemove={false}
-          isAppointMode={isAppointMode}
-        />;
-      })}
-      {
-        owner && admins.findIndex(admin => admin.unitId === owner.unitId) === -1 &&
-        (
+        return (
           <UnitItem
             className={classNames({ [styles.unitItem]: isAppointMode && roleUnits.length && !readonly })}
-            key={owner.unitId}
+            key={admin.unitId}
             unit={{
-              id: owner.unitId,
-              memberId: owner.memberId,
-              avatar: owner.avatar,
-              avatarColor: owner.avatarColor,
-              nickName: owner.nickName,
-              name: owner.memberName,
-              info: (owner.teamData && owner.teamData.length > 0 ) ? owner.teamData[0].fullHierarchyTeamName || '' : '',
-              isMemberNameModified: owner.isMemberNameModified,
+              id: admin.unitId,
+              memberId: admin.memberId,
+              avatar: admin.avatar,
+              avatarColor: admin.avatarColor,
+              nickName: admin.nickName,
+              name: admin.memberName,
+              info: admin.teamData && admin.teamData.length > 0 ? admin.teamData[0].fullHierarchyTeamName || '' : '',
+              isMemberNameModified: admin.isMemberNameModified,
               isTeam: false,
             }}
             role={'manager'}
             identity={{
-              permissionOpener: true,
+              admin: true,
+              permissionOpener: isPermissionOpener,
             }}
             roleOptions={roleOptions}
             disabled
             allowRemove={false}
             isAppointMode={isAppointMode}
           />
-        )
-      }
-      {roleUnits.map(unit => {
-        const teamInfo = (unit.teamData && unit.teamData.length > 0 ) ? unit.teamData[0].fullHierarchyTeamName || '' : '';
+        );
+      })}
+      {owner && admins.findIndex((admin) => admin.unitId === owner.unitId) === -1 && (
+        <UnitItem
+          className={classNames({ [styles.unitItem]: isAppointMode && roleUnits.length && !readonly })}
+          key={owner.unitId}
+          unit={{
+            id: owner.unitId,
+            memberId: owner.memberId,
+            avatar: owner.avatar,
+            avatarColor: owner.avatarColor,
+            nickName: owner.nickName,
+            name: owner.memberName,
+            info: owner.teamData && owner.teamData.length > 0 ? owner.teamData[0].fullHierarchyTeamName || '' : '',
+            isMemberNameModified: owner.isMemberNameModified,
+            isTeam: false,
+          }}
+          role={'manager'}
+          identity={{
+            permissionOpener: true,
+          }}
+          roleOptions={roleOptions}
+          disabled
+          allowRemove={false}
+          isAppointMode={isAppointMode}
+        />
+      )}
+      {roleUnits.map((unit) => {
+        const teamInfo = unit.teamData && unit.teamData.length > 0 ? unit.teamData[0].fullHierarchyTeamName || '' : '';
         return (
-          admins.findIndex(admins => admins.unitId === unit.unitId) === -1 &&
-        (
-          <UnitItem
-            key={unit.unitId}
-            unit={{
-              id: unit.unitId,
-              memberId: unit.unitRefId || '',
-              avatar: unit.avatar,
-              avatarColor: unit.avatarColor,
-              nickName: unit.nickName,
-              name: unit.unitName,
-              info: teamInfo,
-              isTeam: unit.unitType !== 3,
-            }}
-            role={unit.role}
-            disabled={readonly}
-            onChange={onChange}
-            onRemove={onDelete}
-            roleOptions={roleOptions}
-            isAppointMode={isAppointMode}
-          />
-        )
-        );})}
+          admins.findIndex((admins) => admins.unitId === unit.unitId) === -1 && (
+            <UnitItem
+              key={unit.unitId}
+              unit={{
+                id: unit.unitId,
+                memberId: unit.unitRefId || '',
+                avatar: unit.avatar,
+                avatarColor: unit.avatarColor,
+                nickName: unit.nickName,
+                name: unit.unitName,
+                info: teamInfo,
+                isTeam: unit.unitType !== 3,
+              }}
+              role={unit.role}
+              disabled={readonly}
+              onChange={onChange}
+              onRemove={onDelete}
+              roleOptions={roleOptions}
+              isAppointMode={isAppointMode}
+            />
+          )
+        );
+      })}
     </div>
   );
 };

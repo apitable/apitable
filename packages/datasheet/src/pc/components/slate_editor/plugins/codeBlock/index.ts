@@ -28,4 +28,3 @@ export const getTokenLength = (token: any): number => {
   }
   return token.content.reduce((l: number, t: any) => l + getTokenLength(t), 0);
 };
-

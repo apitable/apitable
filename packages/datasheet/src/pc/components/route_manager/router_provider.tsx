@@ -16,12 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { ConfigProvider, message } from 'antd';
 import axios from 'axios';
 import { releaseProxy } from 'comlink';
 import Image from 'next/image';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import { DndProvider } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import VersionUpdater from 'pc/components/version_updater';
@@ -36,10 +40,6 @@ import { getEnvVariables } from 'pc/utils/env';
 import { browserIsDesktop } from 'pc/utils/os';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { comlinkStore } from 'pc/worker';
-import * as React from 'react';
-import { useEffect, useRef } from 'react';
-import { DndProvider } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
@@ -48,12 +48,12 @@ message.config({
 });
 
 const RenderEmpty = () => {
-  const theme = useSelector(state => state.theme);
+  const theme = useSelector((state) => state.theme);
   const NoDataImg = theme === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
-  return(
-    <div className='emptyPlaceholder'>
-      <Image alt='no data' src={NoDataImg} className='img' width={200} height={150} />
-      <div className='title'>{t(Strings.no_data)}</div>
+  return (
+    <div className="emptyPlaceholder">
+      <Image alt="no data" src={NoDataImg} className="img" width={200} height={150} />
+      <div className="title">{t(Strings.no_data)}</div>
     </div>
   );
 };
@@ -93,7 +93,7 @@ const RouterProvider = ({ children }: any) => {
       if (!url || !isFeishu || element.tagName !== 'A' || !reg.test(url)) {
         return;
       }
-      const isIgnore = paths.some(item => url.includes(item));
+      const isIgnore = paths.some((item) => url.includes(item));
       if (isIgnore) {
         return;
       }
@@ -128,11 +128,11 @@ const RouterProvider = ({ children }: any) => {
 
   useEffect(() => {
     axios.interceptors.request.use(
-      config => {
+      (config) => {
         config.headers['X-XSRF-TOKEN'] = getCookie('XSRF-TOKEN');
         return config;
       },
-      error => {
+      (error) => {
         return Promise.reject(error);
       },
     );

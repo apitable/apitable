@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { colors, ThemeName } from '@apitable/components';
 import { ILinearRow, RowHeightLevel, Strings, t, IField } from '@apitable/core';
 import { LockOutlined } from '@apitable/icons';
-import { GridLayout } from './layout';
-import { colors, ThemeName } from '@apitable/components';
-import { cellHelper } from '../../utils';
-import { IRenderStyleProps } from '../../interface';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
+import { IRenderStyleProps } from '../../interface';
+import { cellHelper } from '../../utils';
+import { GridLayout } from './layout';
 
 interface ICell {
   row: ILinearRow;
@@ -45,19 +45,12 @@ export class GroupTabLayout extends GridLayout {
         x: this.x + this.columnWidth,
         y: this.y,
         points: [0, 0, width, 0],
-        stroke: colors.sheetLineColor
+        stroke: colors.sheetLineColor,
       });
     }
   }
 
-  private renderFirstCell({
-    row, 
-    cellValue, 
-    groupField, 
-    isCryptoField, 
-    unitTitleMap,
-    cacheTheme
-  }: ICell) {
+  private renderFirstCell({ row, cellValue, groupField, isCryptoField, unitTitleMap, cacheTheme }: ICell) {
     if (!this.isFirst) return;
     const { recordId, depth } = row;
     const y = this.y;
@@ -72,7 +65,7 @@ export class GroupTabLayout extends GridLayout {
       width: columnWidth - groupOffset + GRID_ROW_HEAD_WIDTH + 0.5,
       height: rowHeight,
       fill,
-      stroke: colors.sheetLineColor
+      stroke: colors.sheetLineColor,
     });
 
     if (isCryptoField) {
@@ -82,7 +75,7 @@ export class GroupTabLayout extends GridLayout {
         y: y + (rowHeight - 14) / 2,
         text: t(Strings.crypto_field),
         fillStyle: colors.thirdLevelText,
-        fontSize: 14
+        fontSize: 14,
       });
       return this.path({
         x: groupOffset + 120.5,
@@ -101,10 +94,10 @@ export class GroupTabLayout extends GridLayout {
         y: y + (rowHeight - 14) / 2,
         text: t(Strings.group_field_error_tips),
         fillStyle: colors.thirdLevelText,
-        fontSize: 14
+        fontSize: 14,
       });
     }
-    
+
     this.setStyle({ fontSize: 12 });
     this.text({
       x: groupOffset + 35,
@@ -131,7 +124,7 @@ export class GroupTabLayout extends GridLayout {
         style: { textAlign: 'left' } as IRenderStyleProps,
         rowHeightLevel: RowHeightLevel.Short,
         unitTitleMap,
-        cacheTheme
+        cacheTheme,
       };
       return cellHelper.renderCellValue(renderProps, this.ctx);
     }
@@ -157,7 +150,7 @@ export class GroupTabLayout extends GridLayout {
     const y = this.y;
     const rowHeight = this.rowHeight;
     const columnWidth = this.columnWidth;
-    const lastTabOffsetList = [40, 0, - GRID_GROUP_OFFSET];
+    const lastTabOffsetList = [40, 0, -GRID_GROUP_OFFSET];
     const width = columnWidth + lastTabOffsetList[depth];
     const fill = this.getGroupBackgroundByDepth(depth);
     this.rect({
@@ -188,7 +181,7 @@ export class GroupTabLayout extends GridLayout {
       y,
       width: columnWidth,
       height: rowHeight,
-      fill
+      fill,
     });
     this.line({
       x,
@@ -204,21 +197,14 @@ export class GroupTabLayout extends GridLayout {
     });
   }
 
-  render({
-    row, 
-    cellValue, 
-    groupField,
-    isCryptoField,
-    unitTitleMap,
-    cacheTheme,
-  }: ICell) {
+  render({ row, cellValue, groupField, isCryptoField, unitTitleMap, cacheTheme }: ICell) {
     this.renderFirstCell({
-      row, 
-      cellValue, 
-      groupField, 
+      row,
+      cellValue,
+      groupField,
       isCryptoField,
       unitTitleMap,
-      cacheTheme
+      cacheTheme,
     });
     this.renderLastCell(row);
     this.renderCommonCell(row);

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ILinearRowBlank } from '@apitable/core';
 import * as React from 'react';
+import { ILinearRowBlank } from '@apitable/core';
 import { GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
 import { getGroupColor } from '../utils';
 
@@ -30,14 +30,16 @@ interface ICellBlank {
   needOffsetBorderBottom?: boolean;
 }
 
-export const CellBlank: React.FC<React.PropsWithChildren<ICellBlank>> = props => {
+export const CellBlank: React.FC<React.PropsWithChildren<ICellBlank>> = (props) => {
   const { style, row, actualColumnIndex, groupLength, needOffsetBorderBottom } = props;
   return (
-    <div style={{
-      ...style,
-      background: getGroupColor(groupLength)(row.depth - 1),
-      marginLeft: actualColumnIndex === 0 && groupLength - 1 > 0 ? (groupLength - 1) * 16 : 0,
-      borderBottom: needOffsetBorderBottom ? GRAY_COLOR_BORDER : '',
-    }} />
+    <div
+      style={{
+        ...style,
+        background: getGroupColor(groupLength)(row.depth - 1),
+        marginLeft: actualColumnIndex === 0 && groupLength - 1 > 0 ? (groupLength - 1) * 16 : 0,
+        borderBottom: needOffsetBorderBottom ? GRAY_COLOR_BORDER : '',
+      }}
+    />
   );
 };

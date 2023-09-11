@@ -19,15 +19,15 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Group, ILinearRow, KONVA_DATASHEET_ID, Selectors, setComplement, StoreActions, Strings, t } from '@apitable/core';
 import { ContextMenu, useContextMenu } from '@apitable/components';
+import { Group, ILinearRow, KONVA_DATASHEET_ID, Selectors, setComplement, StoreActions, Strings, t } from '@apitable/core';
 import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
-import { setStorage, StorageName } from 'pc/utils/storage';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
+import { setStorage, StorageName } from 'pc/utils/storage';
 import { KonvaGridContext } from '../..';
 import { MouseDownType } from '../../../multi_grid';
 
@@ -40,19 +40,12 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { parentRef, getBoundary } = props;
-  const [row, setRow] = useState<{recordId: string; depth: number;} | null>(null);
+  const [row, setRow] = useState<{ recordId: string; depth: number } | null>(null);
   const [statText, setStatText] = React.useState<string>('');
   const dispatch = useDispatch();
 
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_GROUP_MENU });
-  const {
-    viewId,
-    datasheetId,
-    groupInfo,
-    isSearching,
-    groupCollapseIds,
-    groupBreakpoint
-  } = useSelector(state => {
+  const { viewId, datasheetId, groupInfo, isSearching, groupCollapseIds, groupBreakpoint } = useSelector((state) => {
     return {
       viewId: Selectors.getActiveViewId(state)!,
       groupCollapseIds: Selectors.getGroupingCollapseIds(state),
@@ -62,7 +55,7 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
       groupBreakpoint: Selectors.getGroupBreakpoint(state),
     };
   }, shallowEqual);
-  const groupingCollapseIdsMap = new Map<string, boolean>(groupCollapseIds?.map(v => [v, true]));
+  const groupingCollapseIdsMap = new Map<string, boolean>(groupCollapseIds?.map((v) => [v, true]));
 
   const changeGroupCollapseState = (newState: string[]) => {
     // Masking collapsing grouping operation when searching within a datasheet
@@ -70,9 +63,7 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
     dispatch(StoreActions.setGroupingCollapse(datasheetId, newState));
     // QuickAppend component display depends on hoverRecordId, which should be cleared in case of group collapse to avoid visual misleading
     dispatch(StoreActions.setHoverRecordId(datasheetId, null));
-    setStorage(StorageName.GroupCollapse,
-      { [`${datasheetId},${viewId}`]: newState },
-    );
+    setStorage(StorageName.GroupCollapse, { [`${datasheetId},${viewId}`]: newState });
   };
 
   function groupCommand(type: ExpandType) {
@@ -111,13 +102,13 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
     if (!groupInfo) return [];
     const allGroupTabIds = Array.from(groupSketch.getAllGroupTabIdsByRecomputed(state).keys());
     return allGroupTabIds;
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [groupSketch]);
 
   const childGroupTabKey = useMemo(() => {
     const state = store.getState();
     if (!row) return [];
-    const res = groupSketch.getChildBreakpointIds(state, row.recordId, row.depth).map(recordId => `${recordId}_${row.depth + 1}`);
+    const res = groupSketch.getChildBreakpointIds(state, row.recordId, row.depth).map((recordId) => `${recordId}_${row.depth + 1}`);
     res.push(`${row.recordId}_${row.depth}`);
     return res;
   }, [groupSketch, row]);
@@ -161,45 +152,43 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
     };
   });
 
-  const data = flatContextData([
+  const data = flatContextData(
     [
-      {
-        text: t(Strings.expand_subgroup),
-        icon: <TriangleDownFilled size={15} color={colors.thirdLevelText} />,
-        hidden: !childGroupTabKey.some(item => groupingCollapseIdsMap.has(item)),
-        onClick: () => groupCommand(ExpandType.Pull),
-      },
-      {
-        text: t(Strings.collapse_subgroup),
-        icon: <TriangleRightFilled size={15} color={colors.thirdLevelText} />,
-        hidden: !childGroupTabKey.some(item => !groupingCollapseIdsMap.has(item)),
-        onClick: () => groupCommand(ExpandType.Retract),
-      },
-      {
-        text: t(Strings.expand_all_group),
-        icon: <ConicalDownFilled size={15} color={colors.thirdLevelText} />,
-        hidden: !allGroupTabIds.some(item => groupingCollapseIdsMap.has(item)),
-        onClick: () => groupCommand(ExpandType.PullAll),
-      },
-      {
-        text: t(Strings.collapse_all_group),
-        icon: <ConicalRightFilled size={15} color={colors.thirdLevelText} />,
-        hidden: !setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length,
-        onClick: () => groupCommand(ExpandType.RetractAll),
-      },
-      {
-        icon: <CopyOutlined color={colors.thirdLevelText} />,
-        text: t(Strings.copy_link),
-        onClick: () => onCopy(),
-        disabled: !statText,
-      },
-    ]
-  ], true);
-
-  return (
-    <ContextMenu
-      menuId={KONVA_DATASHEET_ID.GRID_GROUP_MENU}
-      overlay={data}
-    />
+      [
+        {
+          text: t(Strings.expand_subgroup),
+          icon: <TriangleDownFilled size={15} color={colors.thirdLevelText} />,
+          hidden: !childGroupTabKey.some((item) => groupingCollapseIdsMap.has(item)),
+          onClick: () => groupCommand(ExpandType.Pull),
+        },
+        {
+          text: t(Strings.collapse_subgroup),
+          icon: <TriangleRightFilled size={15} color={colors.thirdLevelText} />,
+          hidden: !childGroupTabKey.some((item) => !groupingCollapseIdsMap.has(item)),
+          onClick: () => groupCommand(ExpandType.Retract),
+        },
+        {
+          text: t(Strings.expand_all_group),
+          icon: <ConicalDownFilled size={15} color={colors.thirdLevelText} />,
+          hidden: !allGroupTabIds.some((item) => groupingCollapseIdsMap.has(item)),
+          onClick: () => groupCommand(ExpandType.PullAll),
+        },
+        {
+          text: t(Strings.collapse_all_group),
+          icon: <ConicalRightFilled size={15} color={colors.thirdLevelText} />,
+          hidden: !setComplement(Array.from(groupingCollapseIdsMap.keys()), allGroupTabIds).length,
+          onClick: () => groupCommand(ExpandType.RetractAll),
+        },
+        {
+          icon: <CopyOutlined color={colors.thirdLevelText} />,
+          text: t(Strings.copy_link),
+          onClick: () => onCopy(),
+          disabled: !statText,
+        },
+      ],
+    ],
+    true,
   );
+
+  return <ContextMenu menuId={KONVA_DATASHEET_ID.GRID_GROUP_MENU} overlay={data} />;
 };

@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Events, IReduxState, Player } from '@apitable/core';
-
 import { useMount } from 'ahooks';
-import { Loading } from 'pc/components/common';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Events, IReduxState, Player } from '@apitable/core';
+import { Loading } from 'pc/components/common';
 import { RecoverSpace } from './components/recover_space/recover_space';
 import { SpaceInfo } from './space_info';
 
 const SpaceCockpit: FC<React.PropsWithChildren<unknown>> = () => {
-  const spaceInfo = useSelector((state: IReduxState) => (state.space.curSpaceInfo));
+  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
 
   useMount(() => {
     Player.doTrigger(Events.space_setting_overview_shown);
@@ -36,9 +35,7 @@ const SpaceCockpit: FC<React.PropsWithChildren<unknown>> = () => {
     return <Loading />;
   }
 
-  return (
-    spaceInfo.delTime ? <RecoverSpace /> : <SpaceInfo />
-  );
+  return spaceInfo.delTime ? <RecoverSpace /> : <SpaceInfo />;
 };
 
 export default SpaceCockpit;

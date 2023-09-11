@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import Fuse from 'fuse.js';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import {
   expressionTransform,
@@ -33,22 +38,17 @@ import {
   Token,
   TokenType,
 } from '@apitable/core';
-import classNames from 'classnames';
-import Fuse from 'fuse.js';
 import { Message } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelectIndex } from 'pc/hooks';
 import { store } from 'pc/store';
 import { KeyCode } from 'pc/utils';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { getFieldTypeIcon } from '../../field_setting';
 import { FormulaGuiding } from './formula_guiding';
 import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
 import { ValueTypeIcon } from './value_type_icon';
-import { getFieldTypeIcon } from '../../field_setting';
 
 const FORMULA_TEXTAREA_ELEMENT = 'FORMULA_TEXTAREA_ELEMENT';
 const FORMULA_COLORANT_ELEMENT = 'FORMULA_COLORANT_ELEMENT';
@@ -79,17 +79,17 @@ interface IFunctionItem {
 }
 
 const FunctionsArray = Array.from(Functions)
-  .map(item => item[1])
-  .filter(item => item.name !== 'ISERROR');
-export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = props => {
+  .map((item) => item[1])
+  .filter((item) => item.name !== 'ISERROR');
+export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = (props) => {
   const colors = useThemeColors();
   const { field, expression: initExpression, onClose, onSave, datasheetId } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const formulaInputEleRef = useRef<HTMLElement>();
   const formulaColorantEleRef = useRef<HTMLElement>();
-  const _columns = useSelector(state => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
-  const columns = _columns.filter(column => column.fieldId !== field.id); // Formula fields are not allowed to select themselves
+  const _columns = useSelector((state) => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
+  const columns = _columns.filter((column) => column.fieldId !== field.id); // Formula fields are not allowed to select themselves
   const [expError, setExpError] = useState<string>('');
   const [tokens, setTokens] = useState<Token[]>();
   const [activeToken, setActiveToken] = useState<Token>();
@@ -111,7 +111,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
         convertedFieldMap[fieldMap[key].name] = fieldMap[key];
       }
       lexer.matches.length &&
-      new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
+        new FormulaExprParser(lexer, { field: { ...field, id: field.name }, fieldMap: convertedFieldMap, state: store.getState() }).parse();
       setExpError('');
     } catch (e) {
       setExpError((e as any).message);
@@ -215,7 +215,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
     if (!tokens) {
       return;
     }
-    return tokens.find(token => token.index < index && token.index + token.value.length >= index);
+    return tokens.find((token) => token.index < index && token.index + token.value.length >= index);
   };
 
   const onSelectStart = () => {
@@ -254,7 +254,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
   };
 
   const filteredFields = useMemo(() => {
-    const fieldColumns = columns.map(column => fieldMap[column.fieldId]);
+    const fieldColumns = columns.map((column) => fieldMap[column.fieldId]);
     const fuse = new Fuse(fieldColumns, {
       findAllMatches: true,
       keys: ['name'],
@@ -293,14 +293,14 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
       }
     });
     let formatList: IFunctionItem[] = Object.values(FunctionsMap)
-      .filter(item => item.list.length)
+      .filter((item) => item.list.length)
       .sort((prev, next) => prev.sortIdx - next.sortIdx);
     formatList = formatList.map((item, index) => {
       if (index > 0) {
         const prevItem = formatList[index - 1];
         item.prevCount = prevItem.list.length + prevItem.prevCount;
       }
-      item.list.forEach(fn => finalFilteredList.push(fn));
+      item.list.forEach((fn) => finalFilteredList.push(fn));
       return item;
     });
     return { filteredList: finalFilteredList, formatList };
@@ -357,12 +357,12 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
       <div
         id={FORMULA_TEXTAREA_ELEMENT}
         spellCheck={false}
-        autoCorrect='off'
-        autoCapitalize='off'
+        autoCorrect="off"
+        autoCapitalize="off"
         className={'code ' + styles.formulaInput}
         placeholder={t(Strings.input_formula)}
         contentEditable
-        onKeyDown={e => onKeyDown(e, { type: suggestType, id: suggestId, name: suggestName })}
+        onKeyDown={(e) => onKeyDown(e, { type: suggestType, id: suggestId, name: suggestName })}
         onInput={onInputChange}
         onScroll={onScroll}
         onSelect={onSelectStart}
@@ -403,7 +403,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
           )}
           {filteredFunctions.filteredList.length > 0 && (
             <div className={styles.listGroup}>
-              {filteredFunctions.formatList.map(result => {
+              {filteredFunctions.formatList.map((result) => {
                 return (
                   <div key={result.title}>
                     <h3>{result.title}</h3>
@@ -439,14 +439,14 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = pr
       </div>
       <div className={styles.btnGroup}>
         <div className={styles.tips}>
-          <a href={t(Strings.formula_learn_more_url)} target='_blank' rel='noreferrer'>
+          <a href={t(Strings.formula_learn_more_url)} target="_blank" rel="noreferrer">
             {t(Strings.formula_learn_more)}
           </a>
         </div>
-        <TextButton style={{ color: colors.thirdLevelText }} onClick={onClose} size='small'>
+        <TextButton style={{ color: colors.thirdLevelText }} onClick={onClose} size="small">
           {t(Strings.cancel)}
         </TextButton>
-        <Button onClick={onConfirm} size='small' disabled={Boolean(expError)} color='primary'>
+        <Button onClick={onConfirm} size="small" disabled={Boolean(expError)} color="primary">
           {t(Strings.confirm)}
         </Button>
       </div>

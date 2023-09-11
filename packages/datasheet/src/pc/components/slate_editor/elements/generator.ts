@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getNewId, IDPrefix } from '@apitable/core';
 import cloneDeep from 'lodash/cloneDeep';
+import { getNewId, IDPrefix } from '@apitable/core';
 import { NodeType, ElementType, ALIGN } from '../constant';
 import { IElement, TText, IImageElementData } from '../interface/element';
 
@@ -43,7 +43,7 @@ type TFactoryParams = [partial: Partial<IElement>, children?: FactorChildType];
 
 export const generateId = () => getNewId(IDPrefix.Editor);
 
-export const uniqueElement = (nodes: any ): any => {
+export const uniqueElement = (nodes: any): any => {
   if (Array.isArray(nodes)) {
     return nodes.map(uniqueElement);
   }
@@ -57,12 +57,12 @@ export const uniqueElement = (nodes: any ): any => {
       nodes.children = uniqueElement(nodes.children);
     }
   }
-  
+
   return nodes;
 };
 
 const factory = (template: Omit<IElement, '_id'>, type: ElementType, partial: Partial<IElement>, children?: FactorChildType) => {
-  const newNode = { ...cloneDeep(template), ...partial, type , _id: generateId() };
+  const newNode = { ...cloneDeep(template), ...partial, type, _id: generateId() };
   if (children) {
     newNode.children = Array.isArray(children) ? children : [children];
   }
@@ -145,5 +145,5 @@ export const GENERATOR = {
   },
   [ElementType.DIVIDER]: (...params: TFactoryParams) => {
     return factory(TEMPLATE.voidBlock, ElementType.DIVIDER, ...params);
-  }
+  },
 };

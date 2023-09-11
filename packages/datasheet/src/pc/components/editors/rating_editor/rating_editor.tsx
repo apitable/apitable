@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, t, Strings } from '@apitable/core';
 import { forwardRef, memo, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { Message } from '@apitable/components';
-import { Rate } from 'pc/components/common/rate';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { isNumberKey, isTouchDevice } from 'pc/utils';
+import { ConfigConstant, t, Strings } from '@apitable/core';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
-import { IBaseEditorProps, IEditor } from '../interface';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Rate } from 'pc/components/common/rate';
+import { isNumberKey, isTouchDevice } from 'pc/utils';
 import { FocusHolder } from '../focus_holder';
-import style from './style.module.less';
+import { IBaseEditorProps, IEditor } from '../interface';
 import { RatingEditorMobile } from './rating_editor_mobile';
+import style from './style.module.less';
 
 export interface IRatingEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;
@@ -127,23 +127,16 @@ const RatingEditorBase: React.ForwardRefRenderFunction<IEditor, IRatingEditorPro
   );
 
   return (
-    <div
-      className={style.ratingEditor}
-      style={props.style}
-      onKeyDown={handleKeyDown}
-      onClick={focus}
-    >
+    <div className={style.ratingEditor} style={props.style} onKeyDown={handleKeyDown} onClick={focus}>
       <FocusHolder ref={editorRef} />
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Rate
           disabled={!editable}
           value={value}
-          character={
-            getNodeIcon(props.field.property.icon, ConfigConstant.NodeType.DATASHEET, {
-              size: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
-              emojiSize: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
-            })
-          }
+          character={getNodeIcon(props.field.property.icon, ConfigConstant.NodeType.DATASHEET, {
+            size: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
+            emojiSize: emojiSize || ConfigConstant.CELL_EMOJI_SIZE,
+          })}
           onChange={handleChange}
           max={props.field.property.max}
         />

@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { CheckOutlined } from '@apitable/icons';
-import * as React from 'react';
 
 interface ICheckProps {
   isChecked: boolean;
 }
 
-export const Check: React.FC<React.PropsWithChildren<ICheckProps>> = props => {
+export const Check: React.FC<React.PropsWithChildren<ICheckProps>> = (props) => {
   const colors = useThemeColors();
   const { isChecked } = props;
   if (isChecked) {

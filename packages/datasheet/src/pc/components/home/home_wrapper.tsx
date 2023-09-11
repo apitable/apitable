@@ -17,8 +17,8 @@
  */
 
 import { Typography, useThemeColors, Box, ThemeName, useTheme } from '@apitable/components';
-import { TwitterOutlined, LinkedinOutlined, EmailfeedbackOutlined } from '@apitable/icons';
 import { integrateCdnHost } from '@apitable/core';
+import { TwitterOutlined, LinkedinOutlined, EmailfeedbackOutlined } from '@apitable/icons';
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
 import { NavBar } from './components/nav_bar';

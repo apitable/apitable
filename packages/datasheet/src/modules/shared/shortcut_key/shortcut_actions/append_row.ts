@@ -167,7 +167,7 @@ export const getCellValuesForGroupRecord = (recordId?: string) => {
 export const findRowsIndexById = (recordId: string) => {
   const state = store.getState();
   const view = Selectors.getCurrentView(state)!;
-  return view.rows.findIndex(item => item.recordId === recordId);
+  return view.rows.findIndex((item) => item.recordId === recordId);
 };
 
 export const getRecordCellValue = (state: IReduxState, recordId: string) => {

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
+import { Typography, useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 
 interface IMenuItem {
@@ -31,7 +31,7 @@ interface IMenuItem {
   active?: boolean;
   option?: {
     labelColor?: string;
-  }
+  };
   onClick?: (value: any) => void;
 }
 export const MenuItem: React.FC<React.PropsWithChildren<IMenuItem>> = (props) => {
@@ -39,22 +39,24 @@ export const MenuItem: React.FC<React.PropsWithChildren<IMenuItem>> = (props) =>
   const { label, value, subLabel } = item;
   const colors = useThemeColors();
   return (
-    <div className={classNames(
-      className,
-      styles.permissionSettingMenuItem,
-      active && styles.permissionSettingMenuItemActive
-    )} onClick={() => onClick?.(value)}>
-      <Typography color={option?.labelColor || colors.textCommonPrimary} variant='body2'>{label}</Typography>
-      <Typography variant='body4' color={colors.textCommonTertiary}>{subLabel}</Typography>
+    <div
+      className={classNames(className, styles.permissionSettingMenuItem, active && styles.permissionSettingMenuItemActive)}
+      onClick={() => onClick?.(value)}
+    >
+      <Typography color={option?.labelColor || colors.textCommonPrimary} variant="body2">
+        {label}
+      </Typography>
+      <Typography variant="body4" color={colors.textCommonTertiary}>
+        {subLabel}
+      </Typography>
     </div>
   );
 };
 
-export const Menu = (props: {
-  children: ReactNode[];
-  onClick?: () => void;
-}) => {
+export const Menu = (props: { children: ReactNode[]; onClick?: () => void }) => {
   return (
-    <div className={styles.permissionSettingMenu} onClick={props.onClick}>{props.children}</div>
+    <div className={styles.permissionSettingMenu} onClick={props.onClick}>
+      {props.children}
+    </div>
   );
 };

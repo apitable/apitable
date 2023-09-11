@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue } from '@apitable/core';
 import classNames from 'classnames';
 import { FC, useEffect, useRef } from 'react';
+import { IAttachmentValue } from '@apitable/core';
 import styles from './style.module.less';
 
 interface IItemProps {
@@ -29,15 +29,8 @@ interface IItemProps {
   imgSrc: string;
 }
 
-export const Item: FC<React.PropsWithChildren<IItemProps>> = props => {
-
-  const {
-    index,
-    active,
-    setActiveIndex,
-    file,
-    imgSrc,
-  } = props;
+export const Item: FC<React.PropsWithChildren<IItemProps>> = (props) => {
+  const { index, active, setActiveIndex, file, imgSrc } = props;
 
   const activeEleRef = useRef<HTMLDivElement>(null);
 
@@ -50,22 +43,15 @@ export const Item: FC<React.PropsWithChildren<IItemProps>> = props => {
   return (
     <div
       tabIndex={-1}
-      className={
-        classNames({
-          [styles.active]: active,
-          [styles.item]: true,
-          [styles.imgWrapper]: true,
-        })
-      }
+      className={classNames({
+        [styles.active]: active,
+        [styles.item]: true,
+        [styles.imgWrapper]: true,
+      })}
       onClick={() => setActiveIndex(index)}
       ref={activeEleRef}
     >
-      <img
-        src={imgSrc}
-        alt={file.name}
-        width={40}
-        height={40}
-      />
+      <img src={imgSrc} alt={file.name} width={40} height={40} />
     </div>
   );
 };

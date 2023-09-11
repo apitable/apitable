@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Switch } from 'antd';
 import { useState, useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { BaseModal } from 'pc/components/common';
 import { Button, TextButton } from '@apitable/components';
 import { IDateTimeBaseField, Selectors, IViewColumn, Strings, t, ILastModifiedByField, FieldType } from '@apitable/core';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { Switch } from 'antd';
-import styles from './styles.module.less';
+import { BaseModal } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useResponsive } from 'pc/hooks';
+import styles from './styles.module.less';
 
 interface IFieldSelectModalProps {
   field: IDateTimeBaseField | ILastModifiedByField;
@@ -40,8 +40,8 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
   const { onCancel, onOk, field: currentField } = props;
   const currentFieldId = currentField.id;
   const fieldIdCollection = currentField.property.fieldIdCollection!;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const activeView = useSelector(state => Selectors.getCurrentView(state))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
   const columns: IViewColumn[] = activeView.columns;
   const [collection, setCollection] = useState([...fieldIdCollection]);
   const [query, setQuery] = useState('');
@@ -57,7 +57,7 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
       FieldType.LastModifiedBy,
       FieldType.AutoNumber,
     ]);
-    return columns.filter(column => {
+    return columns.filter((column) => {
       const columnFieldId = column.fieldId;
       const columnFieldType = fieldMap[columnFieldId].type;
       return columnFieldId !== currentFieldId && !computedFields.has(columnFieldType);
@@ -65,7 +65,7 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
   }, [columns, fieldMap, currentFieldId]);
 
   const searchedColumns = useMemo(() => {
-    return filteredColumns.filter(column => fieldMap[column.fieldId].name.includes(query));
+    return filteredColumns.filter((column) => fieldMap[column.fieldId].name.includes(query));
   }, [fieldMap, filteredColumns, query]);
 
   const onCancelHandler = () => {
@@ -77,12 +77,12 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
   };
 
   const onChange = (fieldId: string) => {
-    const newCollection = collection.includes(fieldId) ? collection.filter(id => id !== fieldId) : [...collection, fieldId];
+    const newCollection = collection.includes(fieldId) ? collection.filter((id) => id !== fieldId) : [...collection, fieldId];
     setCollection(newCollection);
   };
 
   const setAllFieldsHandler = () => {
-    const newCollection = filteredColumns.map(column => column.fieldId);
+    const newCollection = filteredColumns.map((column) => column.fieldId);
     setCollection(newCollection);
   };
 
@@ -143,12 +143,12 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
     <>
       <div className={styles.desc}>{modalDesc}</div>
       <div className={styles.searchField}>
-        <LineSearchInput placeholder={t(Strings.search_field)} onChange={e => setQuery(e.target.value)} value={query} />
+        <LineSearchInput placeholder={t(Strings.search_field)} onChange={(e) => setQuery(e.target.value)} value={query} />
       </div>
       <div className={styles.fieldListWrapper}>
         {searchedColumns.length ? (
           <div className={styles.fieldList}>
-            {searchedColumns.map(column => (
+            {searchedColumns.map((column) => (
               <SelectedFieldItem fieldId={column.fieldId} key={column.fieldId} />
             ))}
           </div>

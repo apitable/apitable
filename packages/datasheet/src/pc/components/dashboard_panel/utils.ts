@@ -1,8 +1,8 @@
-import { copyWidget, installToDashboard } from '../widget/widget_center/install_utils';
-import { StoreActions } from '@apitable/core';
 import { batchActions } from 'redux-batched-actions';
-import { installedWidgetHandle } from '../widget/widget_panel/widget_panel_header';
+import { StoreActions } from '@apitable/core';
 import { store } from '../../store';
+import { copyWidget, installToDashboard } from '../widget/widget_center/install_utils';
+import { installedWidgetHandle } from '../widget/widget_panel/widget_panel_header';
 
 export const createWidgetByExistWidgetId = (widgetId: string, dashboardId: string) => {
   return new Promise(async(resolve, reject) => {

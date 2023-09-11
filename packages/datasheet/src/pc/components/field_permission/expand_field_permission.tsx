@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { IField } from '@apitable/core';
 import { FieldPermissionPlus } from 'pc/components/field_permission/field_permission_plus';
 import { store } from 'pc/store';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
 
 export const expandFieldPermission = (field: IField) => {
   const container = document.createElement('div');
@@ -31,12 +31,9 @@ export const expandFieldPermission = (field: IField) => {
     container.parentElement!.removeChild(container);
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
-      <FieldPermissionPlus
-        field={field}
-        onModalClose={onModalClose}
-      />
-    </Provider>
-  ));
+      <FieldPermissionPlus field={field} onModalClose={onModalClose} />
+    </Provider>,
+  );
 };

@@ -18,8 +18,8 @@
 
 import { ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
-import { KonvaGridContext } from 'pc/components/konva_grid';
 import { FC, memo, useContext } from 'react';
+import { KonvaGridContext } from 'pc/components/konva_grid';
 
 const RectComponent = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/rect'), { ssr: false });
 

@@ -41,7 +41,7 @@ export const getRequestHeaders = (context: NextPageContext) => {
  * The lang value exists only as a request header parameter for the api and the front-end is not allowed to call
  */
 export const setClientCookie = (cookies: string[], ctx: NextPageContext) => {
-  cookies.map(item => {
+  cookies.map((item) => {
     let key: string = '';
     let value: string = '';
     const optional: Record<string, string | Date> = {};

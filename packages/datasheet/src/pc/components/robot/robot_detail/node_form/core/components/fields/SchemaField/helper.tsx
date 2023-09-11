@@ -17,14 +17,19 @@
  */
 
 import { JSONSchema7 } from 'json-schema';
+import * as React from 'react';
 import { COMPONENT_TYPES } from '../../../const';
 import { IdSchema, IUiSchema } from '../../../interface';
 import { getSchemaType } from '../../../utils';
-import * as React from 'react';
 
-export function getFieldComponent(schema: JSONSchema7, uiSchema: IUiSchema, idSchema: IdSchema, fields: {
-  [name: string]: React.ElementType
-}) {
+export function getFieldComponent(
+  schema: JSONSchema7,
+  uiSchema: IUiSchema,
+  idSchema: IdSchema,
+  fields: {
+    [name: string]: React.ElementType;
+  },
+) {
   const field = uiSchema['ui:field'];
   if (typeof field === 'function') {
     return field;
@@ -47,12 +52,6 @@ export function getFieldComponent(schema: JSONSchema7, uiSchema: IUiSchema, idSc
     : () => {
       const { UnsupportedField } = fields;
 
-      return (
-        <UnsupportedField
-          schema={schema}
-          idSchema={idSchema}
-          reason={`Unknown field type ${schema.type}`}
-        />
-      );
+      return <UnsupportedField schema={schema} idSchema={idSchema} reason={`Unknown field type ${schema.type}`} />;
     };
 }

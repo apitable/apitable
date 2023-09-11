@@ -18,14 +18,14 @@
 
 import { Element, Text } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
-import { ElementType, NodeType, ALIGN } from '../constant';
 import { IUnitValue } from '@apitable/core';
+import { ElementType, NodeType, ALIGN } from '../constant';
 
 export interface IElementData {
   className?: string;
   indent?: number;
   align?: ALIGN;
-  [key : string]: unknown;
+  [key: string]: unknown;
 }
 
 export interface ILinkElementData extends IElementData {
@@ -42,9 +42,8 @@ export interface IImageElementData extends IElementData {
   type?: string;
   width?: number;
 }
-export interface IMentionElementData extends IElementData, IUnitValue{
-}
-export interface ICodeBlockWrapElementData extends IElementData{
+export interface IMentionElementData extends IElementData, IUnitValue {}
+export interface ICodeBlockWrapElementData extends IElementData {
   lang?: string;
 }
 
@@ -56,7 +55,7 @@ export interface IElement<T = IElementData> extends Element {
   isVoid?: boolean;
 }
 
-export interface IElementRenderProps<E extends IElement, D = IElementData > extends RenderElementProps {
+export interface IElementRenderProps<E extends IElement, D = IElementData> extends RenderElementProps {
   element: E;
   data?: D;
 }

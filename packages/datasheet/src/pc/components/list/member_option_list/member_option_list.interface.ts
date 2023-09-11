@@ -40,7 +40,7 @@ export interface IMemberOptionListProps extends IListBase<IUnitIds | null, (IUni
 
   /**
    * @description Due to the component's generic language Member and CreateBy, the use of ids in these two places is inconsistent.
-   * It is necessary to specify which id is used as the primary key within the current component. 
+   * It is necessary to specify which id is used as the primary key within the current component.
    * You can also determine who is calling the current component based on this property
    * @type {('uuid' | 'unitId')}
    */

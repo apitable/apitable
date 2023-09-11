@@ -16,33 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { memo, PropsWithChildren } from 'react';
 import * as React from 'react';
-import { ListChildComponentProps } from 'react-window';
-import classNames from 'classnames';
-import style from './style.module.less';
-import { Selectors } from '@apitable/core';
-import { store } from 'pc/store';
-import { RecordCard } from 'pc/components/common';
 import { shallowEqual } from 'react-redux';
+import { ListChildComponentProps } from 'react-window';
+import { Selectors } from '@apitable/core';
+import { RecordCard } from 'pc/components/common';
+import { store } from 'pc/store';
+import style from './style.module.less';
 
-const RowFunc: React.FC<React.PropsWithChildren<ListChildComponentProps>> = props => {
+const RowFunc: React.FC<React.PropsWithChildren<ListChildComponentProps>> = (props) => {
+  const { index, data } = props;
 
-  const {
-    index,
-    data,
-  } = props;
-
-  const {
-    rows,
-    datasheetId,
-    selectable,
-    selectedSet,
-    fieldMap,
-    onClick,
-    view,
-    focusIndex,
-  } = data;
+  const { rows, datasheetId, selectable, selectedSet, fieldMap, onClick, view, focusIndex } = data;
 
   const row = rows[index];
   const record = Selectors.getRecord(store.getState(), row.recordId, datasheetId);
@@ -53,10 +40,7 @@ const RowFunc: React.FC<React.PropsWithChildren<ListChildComponentProps>> = prop
   }
 
   return (
-    <div
-      style={{ ...props.style }}
-      key={record.id}
-    >
+    <div style={{ ...props.style }} key={record.id}>
       <div
         className={classNames({
           [style.selectWrapper]: selectable,

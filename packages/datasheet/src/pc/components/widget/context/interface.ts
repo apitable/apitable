@@ -1,10 +1,10 @@
 export enum IWidgetRenderStatus {
   None = 'None',
   Loading = 'Loading',
-  Finish = 'Finish'
+  Finish = 'Finish',
 }
 
-type IWidgetRenderMap = {[widgetId: string]: IWidgetRenderStatus};
+type IWidgetRenderMap = { [widgetId: string]: IWidgetRenderStatus };
 
 export interface IWidgetContext {
   widgetRenderMap: IWidgetRenderMap;

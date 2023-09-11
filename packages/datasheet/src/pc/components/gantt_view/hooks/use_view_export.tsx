@@ -17,11 +17,11 @@
  */
 
 import { Modal } from 'antd';
-import { useEffect } from 'react';
 import FileSaver from 'file-saver';
-import { dispatch } from 'pc/worker/store';
+import { useEffect } from 'react';
 import { divide, StoreActions } from '@apitable/core';
 import { EXPORT_BRAND_DESC_HEIGHT, EXPORT_IMAGE_PADDING, MAX_EXPORT_IMAGE_AREA_SIZE } from 'pc/components/gantt_view';
+import { dispatch } from 'pc/worker/store';
 
 interface IUseViewExportProps {
   stageRef: any;
@@ -33,14 +33,7 @@ interface IUseViewExportProps {
 }
 
 export const useViewExport = (props: IUseViewExportProps) => {
-  const {
-    stageRef,
-    isExporting,
-    containerWidth,
-    containerHeight,
-    viewName,
-    datasheetId
-  } = props;
+  const { stageRef, isExporting, containerWidth, containerHeight, viewName, datasheetId } = props;
 
   useEffect(() => {
     if (!isExporting) return;
@@ -55,7 +48,7 @@ export const useViewExport = (props: IUseViewExportProps) => {
       }
       stageRef.current?.scale({
         x: scale,
-        y: scale
+        y: scale,
       });
       const dataUrl = stageRef.current?.toDataURL({
         width: realContainerWidth * scale,
@@ -66,7 +59,7 @@ export const useViewExport = (props: IUseViewExportProps) => {
       Modal.destroyAll();
       FileSaver.saveAs(dataUrl, `${viewName}.png`);
       window.requestAnimationFrame(() => dispatch(StoreActions.resetExportViewId(datasheetId)));
-    } catch(e) {
+    } catch (e) {
       Modal.destroyAll();
       window.requestAnimationFrame(() => dispatch(StoreActions.resetExportViewId(datasheetId)));
     }

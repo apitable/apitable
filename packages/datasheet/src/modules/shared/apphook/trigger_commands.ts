@@ -24,11 +24,19 @@
  * @Last Modified by: skyhuang
  * @Last Modified time: 2022-12-17 13:30:18
  */
-// @ts-ignore
-import { openVikaby, openGuideWizard, openGuideWizards, openGuideNextStep, skipCurrentWizard } from 'enterprise';
-// @ts-ignore
-import { skipAllWizards, clearGuideUis, clearGuideAllUi, setWizardCompleted } from 'enterprise';
 import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide, Api } from '@apitable/core';
+import {
+  openVikaby,
+  openGuideWizard,
+  openGuideWizards,
+  openGuideNextStep,
+  skipCurrentWizard,
+  skipAllWizards,
+  clearGuideUis,
+  clearGuideAllUi,
+  setWizardCompleted,
+  // @ts-ignore
+} from 'enterprise';
 
 interface IWizardsConfig {
   player: SystemConfigInterfacePlayer;
@@ -49,7 +57,7 @@ interface ISetWizardCompletedProps {
 }
 
 export const TriggerCommands: any = {
-  open_vikaby: (props: { defaultExpandMenu: true, visible: true }) => {
+  open_vikaby: (props: { defaultExpandMenu: true; visible: true }) => {
     openVikaby?.({ ...props });
   },
   open_guide_wizard: (wizardId: number) => {
@@ -108,7 +116,7 @@ export const getHrefFromConfigUrl = (url: string) => {
 // Execute a single action
 const startAction = (config: IWizardsConfig, actionId: string) => {
   const Actions = config.player.action;
-  const curAction = Actions.find(item => item.id === actionId);
+  const curAction = Actions.find((item) => item.id === actionId);
   if (!curAction) return;
   const commandStr = curAction.command;
   const commandArgsStr = curAction.commandArgs;
@@ -122,5 +130,5 @@ const startAction = (config: IWizardsConfig, actionId: string) => {
 };
 
 export const startActions = (config: IWizardsConfig, actionIds: string[]) => {
-  actionIds?.forEach(actionId => startAction(config, actionId));
+  actionIds?.forEach((actionId) => startAction(config, actionId));
 };

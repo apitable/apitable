@@ -17,22 +17,12 @@
  */
 
 import { ADDITIONAL_PROPERTY_FLAG } from '../../../const';
+import IconButton from '../../common/IconButton';
 import { Label } from './Label';
 import { LabelInput } from './LabelInput';
-import IconButton from '../../common/IconButton';
 
 export function WrapIfAdditional(props: any) {
-  const {
-    id,
-    classNames,
-    disabled,
-    label,
-    onKeyChange,
-    onDropPropertyClick,
-    readonly,
-    required,
-    schema,
-  } = props;
+  const { id, classNames, disabled, label, onKeyChange, onDropPropertyClick, readonly, required, schema } = props;
   const keyLabel = `${label} Key`; // i18n ?
   const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
 
@@ -46,17 +36,10 @@ export function WrapIfAdditional(props: any) {
         <div className="col-xs-5 form-additional">
           <div className="form-group">
             <Label label={keyLabel} required={required} id={`${id}-key`} />
-            <LabelInput
-              label={label}
-              required={required}
-              id={`${id}-key`}
-              onChange={onKeyChange}
-            />
+            <LabelInput label={label} required={required} id={`${id}-key`} onChange={onKeyChange} />
           </div>
         </div>
-        <div className="form-additional form-group col-xs-5">
-          {props.children}
-        </div>
+        <div className="form-additional form-group col-xs-5">{props.children}</div>
         <div className="col-xs-2">
           <IconButton
             type="danger"

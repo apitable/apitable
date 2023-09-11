@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
 import * as React from 'react';
 import { ChangeEvent, KeyboardEvent, ForwardRefRenderFunction, useImperativeHandle, useState, forwardRef, CSSProperties } from 'react';
 import { TextInput } from '@apitable/components';
 import { TComponent } from 'pc/components/common/t_component';
-import classnames from 'classnames';
 import styles from './styles.module.less';
 
 interface IInputMenuItemProps {
@@ -39,25 +39,20 @@ export interface IInputEditor {
 }
 
 const InputMenuItemBase: ForwardRefRenderFunction<IInputEditor, IInputMenuItemProps> = (props, ref) => {
-  const { 
-    text,
-    textKey,
-    initValue,
-    style, 
-    className, 
-    onChange: _onChange,
-    onKeyDown,
-  } = props;
+  const { text, textKey, initValue, style, className, onChange: _onChange, onKeyDown } = props;
   const [value, setValue] = useState(initValue == null ? '' : String(initValue));
 
-  useImperativeHandle(ref, (): IInputEditor => ({
-    getValue() {
-      return value;
-    },
-    setValue(value: string) {
-      setValue(value);
-    }
-  }));
+  useImperativeHandle(
+    ref,
+    (): IInputEditor => ({
+      getValue() {
+        return value;
+      },
+      setValue(value: string) {
+        setValue(value);
+      },
+    }),
+  );
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const curValue = e.target.value;
@@ -70,22 +65,22 @@ const InputMenuItemBase: ForwardRefRenderFunction<IInputEditor, IInputMenuItemPr
         tkey={text}
         params={{
           [textKey]: (
-            <TextInput 
+            <TextInput
               value={value}
               size={'small'}
-              style={{ 
+              style={{
                 textAlign: 'center',
-                ...style
+                ...style,
               }}
               className={classnames(styles.menuInput, className)}
               onChange={onChange}
               onKeyDown={onKeyDown}
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
               }}
             />
-          )
+          ),
         }}
       />
     </div>

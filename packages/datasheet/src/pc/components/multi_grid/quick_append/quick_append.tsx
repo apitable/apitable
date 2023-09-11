@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { AddOutlined } from '@apitable/icons';
 import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { stopPropagation } from 'pc/utils';
-import * as React from 'react';
 import styles from './styles.module.less';
 
 interface IQuickAppendProps {
@@ -29,14 +29,8 @@ interface IQuickAppendProps {
   hoverRecordId?: string;
 }
 
-export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> = React.memo(props => {
-
-  const {
-    top,
-    left,
-    length,
-    hoverRecordId,
-  } = props;
+export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> = React.memo((props) => {
+  const { top, left, length, hoverRecordId } = props;
 
   const addNewRecord = async() => {
     await appendRow({ recordId: hoverRecordId, direction: Direction.Up });
@@ -52,9 +46,7 @@ export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> =
       // This is to prevent constant state changes caused by multi_grid listening
       onMouseOver={stopPropagation}
     >
-      <div
-        className={styles.quickAppendToolsWrap}
-      >
+      <div className={styles.quickAppendToolsWrap}>
         <div className={styles.iconAddWrap}>
           <AddOutlined />
         </div>

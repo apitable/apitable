@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
-import { RenameInput } from 'pc/components/common/rename_input';
 import * as React from 'react';
-import styles from './style.module.less';
-import { CopyOutlined, DeleteOutlined, DragOutlined, EditOutlined } from '@apitable/icons';
 import { stopPropagation, useThemeColors } from '@apitable/components';
-import { useResponsive } from 'pc/hooks/use_responsive';
+import { Strings, t } from '@apitable/core';
+import { CopyOutlined, DeleteOutlined, DragOutlined, EditOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { RenameInput } from 'pc/components/common/rename_input';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import styles from './style.module.less';
 
 interface IOperateData {
   delete?: {
@@ -61,7 +61,7 @@ interface IOperateItemProps {
   suffixIcon?: JSX.Element;
 }
 
-export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> = props => {
+export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> = (props) => {
   const { editing, allowSort, prefixIcon, isActive, onItemClick, operateData, id, inputData, suffixIcon } = props;
   const colors = useThemeColors();
 
@@ -108,7 +108,7 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
       {operateData.duplicate && operateData.duplicate.show && (
         <div
           className={styles.iconRename}
-          onClick={e => {
+          onClick={(e) => {
             operateData.duplicate!.onClick(e, id);
           }}
           data-test-id={'copyViewIcon'}
@@ -125,7 +125,7 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
       {operateData.rename && operateData.rename.show && (
         <div
           className={styles.iconRename}
-          onClick={e => {
+          onClick={(e) => {
             operateData.rename!.onClick(e, id);
           }}
           data-test-id={'renameViewIcon'}
@@ -142,7 +142,7 @@ export const OperateItem: React.FC<React.PropsWithChildren<IOperateItemProps>> =
       {operateData.delete && operateData.delete.show && (
         <div
           className={styles.iconDelete}
-          onClick={e => {
+          onClick={(e) => {
             operateData.delete!.onClick(e, id);
           }}
           data-test-id={'deleteViewIcon'}

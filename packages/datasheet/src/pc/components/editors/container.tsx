@@ -20,17 +20,7 @@ import { useUnmount } from 'ahooks';
 import dayjs from 'dayjs';
 import { isEqual, noop, omit } from 'lodash';
 import * as React from 'react';
-import {
-  ClipboardEvent,
-  forwardRef,
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Message } from '@apitable/components';
 import {
@@ -43,7 +33,8 @@ import {
   FieldType,
   Group,
   ICell,
-  ICellValue, IDateTimeField,
+  ICellValue,
+  IDateTimeField,
   IField,
   IHyperlinkSegment,
   IRange,
@@ -67,10 +58,9 @@ import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_lin
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { IURLMeta, printableKey, recognizeURLAndSetTitle } from 'pc/utils';
+import { IURLMeta, printableKey, recognizeURLAndSetTitle, stopPropagation } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 
-import { stopPropagation } from '../../utils';
 import { expandRecordIdNavigate } from '../expand_record';
 import { IEditorContainerOwnProps } from './attach_event_hoc';
 import { AttachmentEditor } from './attachment_editor';
@@ -129,37 +119,36 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }),
   );
   const { record, field, selectionRange, selection, activeCell, scrollLeft, scrollTop, rectCalculator } = props;
-  const collaborators = useSelector(state => Selectors.collaboratorSelector(state));
-  const snapshot = useSelector(state => Selectors.getSnapshot(state)!);
-  const cellValue = useSelector(state => {
+  const collaborators = useSelector((state) => Selectors.collaboratorSelector(state));
+  const snapshot = useSelector((state) => Selectors.getSnapshot(state)!);
+  const cellValue = useSelector((state) => {
     if (field && !Field.bindModel(field).isComputed && record) {
       return Selectors.getCellValue(state, snapshot, record.id, field.id);
     }
     return null;
   });
-  const viewId = useSelector(state => Selectors.getActiveViewId(state))!;
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
+  const viewId = useSelector((state) => Selectors.getActiveViewId(state))!;
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const recordEditable = field ? Field.bindModel(field).recordEditable() : false;
-  const isRecordExpanded = useSelector(state => Boolean(state.pageParams.recordId));
-  const previewModalVisible = useSelector(state => state.space.previewModalVisible);
-  const allowCopyDataToExternal = useSelector(state => {
+  const isRecordExpanded = useSelector((state) => Boolean(state.pageParams.recordId));
+  const previewModalVisible = useSelector((state) => state.space.previewModalVisible);
+  const allowCopyDataToExternal = useSelector((state) => {
     const _allowCopyDataToExternal = state.space.spaceFeatures?.allowCopyDataToExternal || state.share.allowCopyDataToExternal;
     return Boolean(_allowCopyDataToExternal);
   });
-  const role = useSelector(state => Selectors.getDatasheet(state, datasheetId)!.role);
-  const {
-    groupInfo,
-    groupBreakpoint,
-    visibleRowsIndexMap
-  } = useSelector(state => ({
-    groupInfo: Selectors.getActiveViewGroupInfo(state),
-    groupBreakpoint: Selectors.getGroupBreakpoint(state),
-    visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state)
-  }), shallowEqual);
+  const role = useSelector((state) => Selectors.getDatasheet(state, datasheetId)!.role);
+  const { groupInfo, groupBreakpoint, visibleRowsIndexMap } = useSelector(
+    (state) => ({
+      groupInfo: Selectors.getActiveViewGroupInfo(state),
+      groupBreakpoint: Selectors.getGroupBreakpoint(state),
+      visibleRowsIndexMap: Selectors.getPureVisibleRowsIndexMap(state),
+    }),
+    shallowEqual,
+  );
 
-  const activeView = useSelector(state => Selectors.getCurrentView(state));
-  const visibleRows = useSelector(state => Selectors.getVisibleRows(state));
+  const activeView = useSelector((state) => Selectors.getCurrentView(state));
+  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
 
   // FIXME: Here we are still using the component's internal editing control state, using redux's isEditing state, the edit box will blink a little.
   const [editing, setEditing] = useState(false);
@@ -178,10 +167,14 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
    * you can tell if you are clicking on the same cell again and stop the editing state switching from being broken
    *
    */
-  const activeCellRef = useRef<ICell | null>((field && record) ? {
-    recordId: record.id,
-    fieldId: field.id,
-  } : null);
+  const activeCellRef = useRef<ICell | null>(
+    field && record
+      ? {
+        recordId: record.id,
+        fieldId: field.id,
+      }
+      : null,
+  );
   const dispatch = useDispatch();
   const [editPositionInfo, setEditPositionInfo] = useState<IEditorPosition>(() => ({
     x: 0,
@@ -273,15 +266,18 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     }
   };
 
-  const endEdit = useCallback((cancel = false) => {
-    if (!editing) {
-      return;
-    }
-    const editorRefCurrent = editorRef.current!;
-    editorRefCurrent.onEndEdit && editorRefCurrent.onEndEdit(cancel);
-    setEditing(false);
-    dispatch(StoreActions.setEditStatus(datasheetId, null));
-  }, [datasheetId, dispatch, editing]);
+  const endEdit = useCallback(
+    (cancel = false) => {
+      if (!editing) {
+        return;
+      }
+      const editorRefCurrent = editorRef.current!;
+      editorRefCurrent.onEndEdit && editorRefCurrent.onEndEdit(cancel);
+      setEditing(false);
+      dispatch(StoreActions.setEditStatus(datasheetId, null));
+    },
+    [datasheetId, dispatch, editing],
+  );
 
   // Exposing endEdit
   setEndEditCell(endEdit);
@@ -298,7 +294,6 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   };
 
   useEffect(() => {
-
     if (selection?.ranges || selection?.recordRanges) {
       focus();
     }
@@ -572,7 +567,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     if (depthBreakpoints.length && isCheckGroup) {
       const nextRowIndex = visibleRowsIndexMap.get(nextActiveCell.recordId);
       // No movement is allowed when the next cell is the starting position of the deepest level grouping
-      if (depthBreakpoints.findIndex(bp => bp === nextRowIndex) > -1) return;
+      if (depthBreakpoints.findIndex((bp) => bp === nextRowIndex) > -1) return;
     }
     const nextCellUIIndex = Selectors.getCellUIIndex(state, nextActiveCell);
     if (nextCellUIIndex) {
@@ -626,7 +621,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     const rect = rectCalculator ? rectCalculator(activeCell) : getCellRelativeRect(activeCell);
     if (rect) {
       const { x, y, width, height } = rect;
-      setEditPositionInfo(prev => ({
+      setEditPositionInfo((prev) => ({
         x: x || prev.x,
         y: y || prev.y,
         width: width || prev.width,
@@ -688,74 +683,73 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     [datasheetId, record, field],
   );
 
-  const onSaveForDateCell = useCallback((value: ICellValue, curAlarm: any) => {
-    if (!record || !field) {
-      return;
-    }
-    const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
+  const onSaveForDateCell = useCallback(
+    (value: ICellValue, curAlarm: any) => {
+      if (!record || !field) {
+        return;
+      }
+      const alarm = Selectors.getDateTimeCellAlarmForClient(snapshot, record.id, field.id);
 
-    let formatCurAlarm = curAlarm;
+      let formatCurAlarm = curAlarm;
 
-    if (curAlarm) {
-      const subtractMatch = curAlarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
-      if (!curAlarm?.subtract || (subtractMatch[2] !== 'm' && subtractMatch[2] !== 'h')) {
-        const noChange = curAlarm?.alarmAt && !curAlarm?.time;
-        if (!noChange && cellValue) {
-          const timeZone = (field as IDateTimeField).property.timeZone;
-          let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
-          if (subtractMatch) {
-            alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
+      if (curAlarm) {
+        const subtractMatch = curAlarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
+        if (!curAlarm?.subtract || (subtractMatch[2] !== 'm' && subtractMatch[2] !== 'h')) {
+          const noChange = curAlarm?.alarmAt && !curAlarm?.time;
+          if (!noChange && cellValue) {
+            const timeZone = (field as IDateTimeField).property.timeZone;
+            let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
+            if (subtractMatch) {
+              alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
+            }
+            const time = curAlarm?.time || (timeZone ? dayjs(curAlarm?.alarmAt).tz(timeZone) : dayjs(curAlarm?.alarmAt)).format('HH:mm');
+            alarmAt = dayjs.tz(`${alarmAt.format('YYYY-MM-DD')} ${time}`, timeZone);
+            formatCurAlarm = {
+              ...omit(formatCurAlarm, 'time'),
+              alarmAt: alarmAt.valueOf(),
+            };
           }
-          const time = curAlarm?.time || (timeZone ? dayjs(curAlarm?.alarmAt).tz(timeZone) : dayjs(curAlarm?.alarmAt)).format('HH:mm');
-          alarmAt = dayjs.tz(`${alarmAt.format('YYYY-MM-DD')} ${time}`, timeZone);
-          formatCurAlarm = {
-            ...omit(formatCurAlarm, 'time'),
-            alarmAt: alarmAt.valueOf()
-          };
         }
       }
-    }
 
-    if (
-      field.type === FieldType.DateTime && isEqual(cellValue, value) &&
-      !isEqual(alarm, formatCurAlarm) &&
-      convertAlarmStructure
-    ) {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetDateTimeCellAlarm,
-        recordId: record.id,
-        fieldId: field.id,
-        alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
-      });
-
-    } else {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetRecords,
-        datasheetId,
-        alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
-        data: [{
+      if (field.type === FieldType.DateTime && isEqual(cellValue, value) && !isEqual(alarm, formatCurAlarm) && convertAlarmStructure) {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetDateTimeCellAlarm,
           recordId: record.id,
           fieldId: field.id,
-          value,
-        }],
-      });
-    }
+          alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
+        });
+      } else {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetRecords,
+          datasheetId,
+          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
+          data: [
+            {
+              recordId: record.id,
+              fieldId: field.id,
+              value,
+            },
+          ],
+        });
+      }
 
-    if (activeView && activeView.type === ViewType.Gantt) {
-      const { linkFieldId, endFieldId } = activeView?.style;
-      if (!(linkFieldId && endFieldId === field.id)) return;
-      const sourceRecordData = {
-        recordId: record!.id,
-        endTime: value as number | null,
-      };
-      const commandDataArr = autoTaskScheduling(visibleRows, activeView.style, sourceRecordData);
-      resourceService.instance?.commandManager.execute({
-        cmd: CollaCommandName.SetRecords,
-        data: commandDataArr,
-      });
-    }
-
-  }, [datasheetId, field, record, cellValue, snapshot, activeView, visibleRows]);
+      if (activeView && activeView.type === ViewType.Gantt) {
+        const { linkFieldId, endFieldId } = activeView?.style;
+        if (!(linkFieldId && endFieldId === field.id)) return;
+        const sourceRecordData = {
+          recordId: record!.id,
+          endTime: value as number | null,
+        };
+        const commandDataArr = autoTaskScheduling(visibleRows, activeView.style, sourceRecordData);
+        resourceService.instance?.commandManager.execute({
+          cmd: CollaCommandName.SetRecords,
+          data: commandDataArr,
+        });
+      }
+    },
+    [datasheetId, field, record, cellValue, snapshot, activeView, visibleRows],
+  );
 
   useMemo(
     calcEditorRect,
@@ -799,15 +793,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       case FieldType.SingleText:
         return <TextEditor style={editorRect} ref={editorRef} {...commonProps} />;
       case FieldType.Cascader:
-        return (
-          <CascaderEditor
-            style={editorRect}
-            ref={editorRef}
-            {...commonProps}
-            field={field}
-            toggleEditing={toggleEditing}
-          />
-        );
+        return <CascaderEditor style={editorRect} ref={editorRef} {...commonProps} field={field} toggleEditing={toggleEditing} />;
       case FieldType.URL:
       case FieldType.Email:
       case FieldType.Phone:
@@ -829,7 +815,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         return (
           <DateTimeEditor
             style={editorRect}
-            ref={ele => (editorRef.current = ele)}
+            ref={(ele) => (editorRef.current = ele)}
             {...commonProps}
             recordId={record.id}
             field={field}
@@ -888,4 +874,3 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 };
 
 export const PureEditorContainer = React.memo(forwardRef(EditorContainerBase));
-

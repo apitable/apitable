@@ -1,7 +1,7 @@
+import classNames from 'classnames';
 import { Space, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { EnterOutlined, EscOutlined, UpAndDownOutlined } from '@apitable/icons';
-import classNames from 'classnames';
 import { browser } from 'modules/shared/browser';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
@@ -11,15 +11,25 @@ export const FooterTips: React.FC<{ shortcutEsc?: boolean }> = (props) => {
   const { shortcutEsc } = props;
   const colors = useThemeColors();
   const getFont = (str: string) => {
-    return <Typography variant={'body4'} color={colors.textCommonTertiary}>{str}</Typography>;
+    return (
+      <Typography variant={'body4'} color={colors.textCommonTertiary}>
+        {str}
+      </Typography>
+    );
   };
   if (shortcutEsc) {
     return (
       <div className={classNames(styles.footerTips, styles.footerTipsEsc)}>
         <Space size={8}>
-          {getShortcutKeyString(ShortcutActionName.SearchNode).split(browser?.is('Windows') ? ' + ' : ' ').map((v: string, key: number) => {
-            return <div className={styles.footerIconBox} key={key}>{getFont(v)}</div>;
-          })}
+          {getShortcutKeyString(ShortcutActionName.SearchNode)
+            .split(browser?.is('Windows') ? ' + ' : ' ')
+            .map((v: string, key: number) => {
+              return (
+                <div className={styles.footerIconBox} key={key}>
+                  {getFont(v)}
+                </div>
+              );
+            })}
         </Space>
       </div>
     );
@@ -29,19 +39,19 @@ export const FooterTips: React.FC<{ shortcutEsc?: boolean }> = (props) => {
       <Space size={16}>
         <Space size={8}>
           <div className={styles.footerIconBox}>
-            <UpAndDownOutlined size={12} color={colors.textCommonTertiary}/>
+            <UpAndDownOutlined size={12} color={colors.textCommonTertiary} />
           </div>
           {getFont(t(Strings.quick_search_shortcut_select))}
         </Space>
         <Space size={8}>
           <div className={styles.footerIconBox}>
-            <EnterOutlined size={12} color={colors.textCommonTertiary}/>
+            <EnterOutlined size={12} color={colors.textCommonTertiary} />
           </div>
           {getFont(t(Strings.quick_search_shortcut_open))}
         </Space>
         <Space size={8}>
           <div className={styles.footerIconBox}>
-            <EscOutlined size={12} color={colors.textCommonTertiary}/>
+            <EscOutlined size={12} color={colors.textCommonTertiary} />
           </div>
           {getFont(t(Strings.quick_search_shortcut_esc))}
         </Space>

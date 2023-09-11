@@ -16,30 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useLocalStorageState } from 'ahooks';
+import { FC } from 'react';
+import { useDispatch } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, ThemeName, Typography } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
-import { useLocalStorageState } from 'ahooks';
 import { SystemTheme } from 'pc/common/theme';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import styles from './style.module.less';
 
-const options = [{
-  label: t(Strings.default_theme),
-  value: ThemeName.Light
-}, {
-  label: t(Strings.dark_theme),
-  value: ThemeName.Dark
-}, {
-  label: t(Strings.system_theme),
-  value: 'system'
-}];
+const options = [
+  {
+    label: t(Strings.default_theme),
+    value: ThemeName.Light,
+  },
+  {
+    label: t(Strings.dark_theme),
+    value: ThemeName.Dark,
+  },
+  {
+    label: t(Strings.system_theme),
+    value: 'system',
+  },
+];
 
 export const ThemeSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {
-    defaultValue: getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName || ThemeName.Light
+    defaultValue: (getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName) || ThemeName.Light,
   });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
@@ -64,10 +68,12 @@ export const ThemeSetting: FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.themeSetting}>
-      <Typography variant='h7' className={styles.title}>{t(Strings.theme_setting)}</Typography>
+      <Typography variant="h7" className={styles.title}>
+        {t(Strings.theme_setting)}
+      </Typography>
       <Select
         options={options}
-        value={systemTheme === SystemTheme.Open ? 'system' : (theme || ThemeName.Light)}
+        value={systemTheme === SystemTheme.Open ? 'system' : theme || ThemeName.Light}
         onSelected={handleSelected}
         dropdownMatchSelectWidth
         triggerStyle={{ width: 200 }}

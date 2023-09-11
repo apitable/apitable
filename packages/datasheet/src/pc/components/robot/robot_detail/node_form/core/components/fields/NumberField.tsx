@@ -52,7 +52,7 @@ const trailingCharMatcher = /[0.]0*$/;
 
 export const NumberField = (props: IFieldProps) => {
   const [state, setState] = useState({
-    lastValue: props.value
+    lastValue: props.value,
   });
 
   const handleChange = (value: any) => {
@@ -68,9 +68,7 @@ export const NumberField = (props: IFieldProps) => {
     // <select>, due to an enum declaration etc) then, if the value ends in a
     // trailing decimal point or multiple zeroes, strip the trailing values
     const processed =
-      typeof value === 'string' && value.match(trailingCharMatcherWithPrefix)
-        ? asNumber(value.replace(trailingCharMatcher, ''))
-        : asNumber(value);
+      typeof value === 'string' && value.match(trailingCharMatcherWithPrefix) ? asNumber(value.replace(trailingCharMatcher, '')) : asNumber(value);
     props.onChange(processed);
   };
 
@@ -93,9 +91,7 @@ export const NumberField = (props: IFieldProps) => {
     }
   }
 
-  return (
-    <StringField {...restProps} formData={value} onChange={handleChange} />
-  );
+  return <StringField {...restProps} formData={value} onChange={handleChange} />;
 };
 
 export default NumberField;

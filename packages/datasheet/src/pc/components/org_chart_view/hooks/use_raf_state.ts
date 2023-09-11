@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUnmount } from 'ahooks';
 import { useCallback, useRef, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { useUnmount } from 'ahooks';
 
 function useRafState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>];
 function useRafState<S = undefined>(): [S | undefined, Dispatch<SetStateAction<S | undefined>>];

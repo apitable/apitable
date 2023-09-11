@@ -16,17 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useRef, useState } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
 import classNames from 'classnames';
-import { IModeEnum, IBasePropEditorProps } from '../interface';
-import { Strings, t } from '@apitable/core';
-import { useMemo } from 'react';
 import { get } from 'lodash';
+import { useMemo, useRef, useState } from 'react';
+import * as React from 'react';
+import { Strings, t } from '@apitable/core';
 import SlateEditor from 'pc/components/draft_editor/slate_editor';
-import { draft2slate } from 'pc/components/draft_editor/utils/draft_slate';
 import { serialize, transformNodes2Link, removeLinkNodes } from 'pc/components/draft_editor/utils';
+import { draft2slate } from 'pc/components/draft_editor/utils/draft_slate';
+import { IModeEnum, IBasePropEditorProps } from '../interface';
+import styles from './style.module.less';
 
 interface IDescEditorProps extends IBasePropEditorProps {
   descData: any | undefined;
@@ -47,7 +46,7 @@ export const DescEditor: React.FC<React.PropsWithChildren<IDescEditorProps>> = (
       if (content) {
         formatContent = draft2slate(content);
       }
-      if (formatContent.length >= 1 && serialize(formatContent).join('').length >= 1){
+      if (formatContent.length >= 1 && serialize(formatContent).join('').length >= 1) {
         return false;
       }
       return true;
@@ -85,9 +84,7 @@ export const DescEditor: React.FC<React.PropsWithChildren<IDescEditorProps>> = (
     >
       <SlateEditor
         syncContent={contentChangeHandler}
-        initialValue={mode === IModeEnum.Edit ?
-          removeLinkNodes(draft2slate(get(descData, 'content', descData))):
-          get(descData, 'content', descData)}
+        initialValue={mode === IModeEnum.Edit ? removeLinkNodes(draft2slate(get(descData, 'content', descData))) : get(descData, 'content', descData)}
         onBlur={onBlur}
         className={styles.editor}
         placeHolder={t(Strings.form_desc_placeholder)}

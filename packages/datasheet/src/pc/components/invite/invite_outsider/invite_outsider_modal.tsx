@@ -16,27 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeProvider } from '@apitable/components';
-import { ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
+import { FC, useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import { ThemeProvider } from '@apitable/components';
+import { ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
-// @ts-ignore
-import { checkSocialInvite } from 'enterprise';
 import { initNoTraceVerification, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
 import styles from './style.module.less';
+// @ts-ignore
+import { checkSocialInvite } from 'enterprise';
 
 const { TabPane } = Tabs;
 
@@ -46,15 +46,15 @@ interface IInviteOutsiderTabsProps {
   shareId?: string;
 }
 
-export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsProps>> = props => {
+export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsProps>> = (props) => {
   const { cancelModal, resUpdate, shareId } = props;
   const { emailInvitationDisable } = getCustomConfig();
   const { CONTACTS_MODAL_BULK_IMPORT_VISIBLE, CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE } = getEnvVariables();
   // Availability of invitees
   const [memberInvited, setMemberInvited] = useState(false);
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
-  const isAdmin = useSelector(state => state.user.info?.isAdmin);
-  const isOrgIsolated = useSelector(state => state.space.spaceFeatures?.orgIsolated);
+  const isAdmin = useSelector((state) => state.user.info?.isAdmin);
+  const isOrgIsolated = useSelector((state) => state.space.spaceFeatures?.orgIsolated);
   useMount(() => {
     Player.doTrigger(Events.invite_entrance_modal_shown);
   });
@@ -76,16 +76,17 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
   const isPC = screenIsAtLeast(ScreenSize.md);
 
   return (
-    <Tabs defaultActiveKey='inviteViaLink'
-      className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
-      <TabPane tab={t(Strings.link_invite)} key='inviteViaLink'>
+    <Tabs
+      defaultActiveKey="inviteViaLink"
+      className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}
+    >
+      <TabPane tab={t(Strings.link_invite)} key="inviteViaLink">
         <LinkInvite />
       </TabPane>
       {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
-          {
-            CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE &&
-            <TabPane tab={t(Strings.email_invite)} key='emailOfTab' style={{ height: '100%' }}>
+          {CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE && (
+            <TabPane tab={t(Strings.email_invite)} key="emailOfTab" style={{ height: '100%' }}>
               <InputEmail
                 cancel={cancelModal}
                 setMemberInvited={setMemberInvited}
@@ -94,10 +95,10 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
                 setSecondVerify={setSecondVerify}
               />
             </TabPane>
-          }
+          )}
 
           {isPC && !shareId && CONTACTS_MODAL_BULK_IMPORT_VISIBLE && (
-            <TabPane tab={t(Strings.batch_import)} key='fileOfTab'>
+            <TabPane tab={t(Strings.batch_import)} key="fileOfTab">
               <ImportFile
                 closeModal={cancelModal}
                 setMemberInvited={setMemberInvited}

@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
-import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { Tree } from 'antd';
 import classNames from 'classnames';
-import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
-import { Avatar, AvatarSize, Logo, Modal } from 'pc/components/common';
-import { Router } from 'pc/components/route_manager/router';
 import * as React from 'react';
 import { ReactText } from 'react';
 import { useSelector } from 'react-redux';
-import EditPngLight from 'static/icon/datasheet/share/share_space_edit_light.png';
-import EditPngDark from 'static/icon/datasheet/share/share_space_edit_dark.png';
+import { useThemeColors } from '@apitable/components';
+import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@apitable/core';
+import { TriangleDownFilled } from '@apitable/icons';
+import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
+import { Avatar, AvatarSize, Logo, Modal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { getEnvVariables } from 'pc/utils/env';
 import SavePng from 'static/icon/datasheet/share/datasheet_img_share_save.png';
+import EditPngDark from 'static/icon/datasheet/share/share_space_edit_dark.png';
+import EditPngLight from 'static/icon/datasheet/share/share_space_edit_light.png';
 import { INodeTree, IShareSpaceInfo } from '../interface';
 import { ShareSave } from '../share_save';
 import { OperationCard } from './operation_card';
 import styles from './style.module.less';
-import { getEnvVariables } from 'pc/utils/env';
-import { TriangleDownFilled } from '@apitable/icons';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -48,9 +48,9 @@ export interface IShareMenu {
 
 const NodeTree = (nodeTree: INodeTree | undefined) => {
   const colors = useThemeColors();
-  const activedNodeId = useSelector(state => Selectors.getNodeId(state))!;
-  const shareId = useSelector(state => state.pageParams.shareId);
-  
+  const activedNodeId = useSelector((state) => Selectors.getNodeId(state))!;
+  const shareId = useSelector((state) => state.pageParams.shareId);
+
   if (!nodeTree) {
     return <></>;
   }
@@ -67,7 +67,7 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
 
   const renderNode = (node: INodeTree[] | undefined) => {
     if (!node || !node.length) return <></>;
-    return node!.map(item => {
+    return node!.map((item) => {
       const icon = getNodeIcon(item.icon, item.type, {
         size: 16,
         emojiSize: 18,
@@ -116,11 +116,11 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
 };
 
 export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ shareSpace, shareNode, visible, setVisible, loading }) => {
-  const userInfo = useSelector(state => state.user.info);
-  const { formId, viewId } = useSelector(state => state.pageParams);
-  const activedNodeId = useSelector(state => Selectors.getNodeId(state));
+  const userInfo = useSelector((state) => state.user.info);
+  const { formId, viewId } = useSelector((state) => state.pageParams);
+  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
   const env = getEnvVariables();
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const EditPng = themeName === ThemeName.Light ? EditPngLight : EditPngDark;
   const saveToMySpace = () => {
     setVisible(true);
@@ -156,7 +156,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
   return (
     <div className={styles.shareMenu}>
       <div className={styles.logo} onClick={enterSpace}>
-        <Logo theme={ThemeName.Dark} size='large' />
+        <Logo theme={ThemeName.Dark} size="large" />
       </div>
       <div className={styles.shareInfo}>
         <div className={styles.avatar}>

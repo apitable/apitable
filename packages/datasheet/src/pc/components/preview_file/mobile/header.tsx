@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { CloseOutlined } from '@apitable/icons';
 import { MoreTool } from '../tool_bar/mobile/more_tool';
 import styles from './style.module.less';
-import { CloseOutlined } from '@apitable/icons';
 
 interface IHeader {
   fileName: string;
@@ -28,18 +28,11 @@ interface IHeader {
   downloadSrc: string;
   onDelete(): void;
   onClose(): void;
-  disabledDownload?: boolean
+  disabledDownload?: boolean;
 }
 
-export const Header: React.FC<React.PropsWithChildren<IHeader>> = props => {
-  const {
-    fileName,
-    readonly,
-    downloadSrc,
-    onDelete,
-    onClose,
-    disabledDownload
-  } = props;
+export const Header: React.FC<React.PropsWithChildren<IHeader>> = (props) => {
+  const { fileName, readonly, downloadSrc, onDelete, onClose, disabledDownload } = props;
   const colors = useThemeColors();
   return (
     <header className={styles.previewHeader}>
@@ -50,12 +43,7 @@ export const Header: React.FC<React.PropsWithChildren<IHeader>> = props => {
       </div>
       <span className={styles.fileName}>{fileName}</span>
       <div className={styles.headerRight}>
-        <MoreTool
-          readonly={readonly}
-          onDelete={onDelete}
-          downloadSrc={downloadSrc}
-          disabledDownload={disabledDownload}
-        />
+        <MoreTool readonly={readonly} onDelete={onDelete} downloadSrc={downloadSrc} disabledDownload={disabledDownload} />
       </div>
     </header>
   );

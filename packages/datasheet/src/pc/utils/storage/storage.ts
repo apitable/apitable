@@ -18,8 +18,8 @@
 
 import store from 'store2';
 import { ICalendarViewStatus, IGanttViewStatus, IOrgChartViewStatus, RecordVision } from '@apitable/core';
-import { IViewNodeStateMap } from 'pc/components/org_chart_view/interfaces';
 import { IFieldDescCollapseStatus } from 'pc/components/expand_record/field_editor';
+import { IViewNodeStateMap } from 'pc/components/org_chart_view/interfaces';
 
 // Read the documentation in the same level directory before use
 export enum StorageName {
@@ -43,7 +43,7 @@ export enum StorageName {
   SharedFormFieldContainer = 'SharedFormFieldContainer', // Form off-site caching
   SocialPlatformMap = 'SocialPlatformMap',
   PlayerTaskListDoneList = 'PlayerTaskListDoneList', // TaskList Module for User Guide
-  DingTalkVisitedFolders ='DingTalkVisitedFolders', // Folders created from Dingtalk templates
+  DingTalkVisitedFolders = 'DingTalkVisitedFolders', // Folders created from Dingtalk templates
   FieldDescCollapseStatus = 'FieldDescCollapseStatus', // Whether the field description is collapsed
   ApiDebugWarnConfirm = 'ApiDebugWarnConfirm', // Api panel jump debugging does not open token when warning whether to confirm reading
   Other = 'Other',
@@ -110,11 +110,7 @@ export enum StorageMethod {
   Set,
 }
 
-export const setStorage = <T extends StorageName = StorageName>(
-  key: T,
-  value: IStorage[T],
-  type: StorageMethod = StorageMethod.Add
-) => {
+export const setStorage = <T extends StorageName = StorageName>(key: T, value: IStorage[T], type: StorageMethod = StorageMethod.Add) => {
   try {
     if (type === StorageMethod.Set) {
       ds.set(key, value);
@@ -128,9 +124,7 @@ export const setStorage = <T extends StorageName = StorageName>(
   }
 };
 
-export const getStorage = <T extends StorageName = StorageName>(
-  key: T
-): IStorage[T] | null => {
+export const getStorage = <T extends StorageName = StorageName>(key: T): IStorage[T] | null => {
   return ds.get(key);
 };
 

@@ -16,20 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useContext, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useContext, useRef, useState } from 'react';
+import { Message } from '@apitable/components';
+import {
+  CollaCommandName,
+  Selectors,
+  KONVA_DATASHEET_ID,
+  ConfigConstant,
+  t,
+  Strings,
+  fastCloneDeep,
+  ExecuteResult,
+  ISetRecordOptions,
+} from '@apitable/core';
+import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
+import { onDragScrollSpacing, autoTaskScheduling } from 'pc/components/gantt_view/utils';
+import { detectCyclesStack, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { KonvaGridContext } from 'pc/components/konva_grid';
+import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
-import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, generateTargetName } from 'pc/components/gantt_view';
-import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, 
-  t, Strings, fastCloneDeep, ExecuteResult, ISetRecordOptions 
-} from '@apitable/core';
-import { Message } from '@apitable/components';
-import { detectCyclesStack, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
-import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';
-import { autoTaskScheduling } from '../utils';
 
 const Arrow = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/arrow'), { ssr: false });
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
@@ -46,17 +53,10 @@ interface IDrawingLineProps {
 export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   const { taskMap, gridWidth, pointPosition, instance, scrollState } = props;
   const { theme, scrollHandler } = useContext(KonvaGridContext);
- 
+
   const colors = theme.color;
-  const { 
-    setTargetTaskInfo, 
-    targetTaskInfo, 
-    ganttStyle, transformerId, 
-    isTaskLineDrawing, 
-    dragTaskId, 
-    isLocking, 
-    linkCycleEdges,
-  } = useContext(KonvaGanttViewContext);
+  const { setTargetTaskInfo, targetTaskInfo, ganttStyle, transformerId, isTaskLineDrawing, dragTaskId, isLocking, linkCycleEdges } =
+    useContext(KonvaGanttViewContext);
   const { snapshot, fieldPermissionMap, fieldMap, visibleRows } = useContext(KonvaGridViewContext);
   const { linkFieldId, startFieldId, endFieldId, autoTaskLayout = false } = ganttStyle;
   const state = store.getState();
@@ -112,7 +112,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
   // Calculate which task the current mouse position is in
   const includeTask = (targetX: number, targetY: number) => {
     let res = '';
-    Object.keys(taskMap).forEach(task => {
+    Object.keys(taskMap).forEach((task) => {
       if (task === 'taskListlength') {
         return;
       }
@@ -134,7 +134,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
     if (targetStartValue && sourceEndValue && targetStartValue <= sourceEndValue) {
       return true;
     }
-    
+
     const sourceAdjCopy = fastCloneDeep(sourceAdj);
     const nodeIdMapCopy = fastCloneDeep(nodeIdMap);
 
@@ -223,7 +223,7 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
         });
         return;
       }
-      if(cellValue.includes(sourceRecordId)) return;
+      if (cellValue.includes(sourceRecordId)) return;
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         data: [
@@ -234,25 +234,23 @@ export const useGanttDrawingLine = (props: IDrawingLineProps) => {
           },
         ],
       });
-      
+
       if (ExecuteResult.Success === result.result) {
-        
         const endTime = Selectors.getCellValue(state, snapshot, sourceRecordId, endFieldId);
-        if(!endTime || !autoTaskLayout) {
+        if (!endTime || !autoTaskLayout) {
           return;
         }
         const sourceRecordData = {
           recordId: sourceRecordId,
           endTime,
-          targetRecordId: targetTaskInfo.recordId
+          targetRecordId: targetTaskInfo.recordId,
         };
-      
-        const commandData : ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, sourceRecordData);
-          resourceService.instance!.commandManager.execute({
-            cmd: CollaCommandName.SetRecords,
-            data: commandData,
-          });
-       
+
+        const commandData: ISetRecordOptions[] = autoTaskScheduling(visibleRows, ganttStyle, sourceRecordData);
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetRecords,
+          data: commandData,
+        });
       }
     }
   };

@@ -17,18 +17,9 @@
  */
 
 import { useState } from 'react';
-import {
-  StoreActions,
-  Api,
-  ConfigConstant,
-  IMemberInfoInSpace,
-  IUpdateMemberInfo,
-  Strings,
-  t,
-  ISelectedTeamInfoInSpace,
-} from '@apitable/core';
-import { useDispatch } from './use_dispatch';
+import { StoreActions, Api, ConfigConstant, IMemberInfoInSpace, IUpdateMemberInfo, Strings, t, ISelectedTeamInfoInSpace } from '@apitable/core';
 import { Message } from 'pc/components/common';
+import { useDispatch } from './use_dispatch';
 
 // Get Member List
 export const useUpdateMemberListInSpace = () => {
@@ -39,17 +30,20 @@ export const useUpdateMemberListInSpace = () => {
   };
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const updateMemberListInSpace = (teamId: string, pageNo: number, isActive?: string ,teamInfo?: ISelectedTeamInfoInSpace | null) => {
+  const updateMemberListInSpace = (teamId: string, pageNo: number, isActive?: string, teamInfo?: ISelectedTeamInfoInSpace | null) => {
     setLoading(true);
-    Api.getMemberListInSpace(JSON.stringify({ ...pageObjectParams, pageNo }), teamId, isActive).then(res => {
+    Api.getMemberListInSpace(JSON.stringify({ ...pageObjectParams, pageNo }), teamId, isActive).then((res) => {
       const { success, data } = res.data;
       if (success) {
         const memberListInSpace: IMemberInfoInSpace[] = data.records;
         dispatch(StoreActions.updateMemberListInSpace(memberListInSpace));
-        teamInfo && dispatch(StoreActions.updateSelectedTeamInfoInSpace({
-          ...teamInfo,
-          memberCount: data.total,
-        }));
+        teamInfo &&
+          dispatch(
+            StoreActions.updateSelectedTeamInfoInSpace({
+              ...teamInfo,
+              memberCount: data.total,
+            }),
+          );
         setLoading(false);
       }
     });
@@ -63,9 +57,9 @@ export const useSelectTeamChange = () => {
   const { loading: getMemberListLoading, updateMemberListInSpace } = useUpdateMemberListInSpace();
   const changeSelectTeam = (teamId: string) => {
     setLoading(true);
-    Api.readTeam(teamId).then(res => {
+    Api.readTeam(teamId).then((res) => {
       const { success, data } = res.data;
-      if(!success) return;
+      if (!success) return;
       const selectTeamInfo = {
         teamTitle: data.teamName,
         memberCount: data.memberCount,
@@ -84,7 +78,7 @@ export const useAddressRequest = () => {
   const dispatch = useDispatch();
   // Administrators edit members' station nicknames
   const editMemberName = (data: IUpdateMemberInfo) => {
-    return Api.updateMember(data as IUpdateMemberInfo).then(res => {
+    return Api.updateMember(data as IUpdateMemberInfo).then((res) => {
       const { success } = res.data;
       if (success) {
         dispatch(StoreActions.updateMemberInfo({ memberName: data.memberName, isMemberNameModified: true }));
@@ -97,7 +91,7 @@ export const useAddressRequest = () => {
   };
   // Edit your station nickname in the address book page
   const editOwnMemberNameInAddress = (memberId: string, memberName: string) => {
-    return Api.updateOwnerMemberInfo(memberName).then(res => {
+    return Api.updateOwnerMemberInfo(memberName).then((res) => {
       const { success } = res.data;
       if (success) {
         Message.success({ content: t(Strings.message_member_name_modified_successfully) });

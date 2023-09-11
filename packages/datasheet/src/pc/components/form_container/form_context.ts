@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFormProps } from '@apitable/core';
 import { createContext } from 'react';
+import { IFormProps } from '@apitable/core';
 
 export interface IFormContext {
   formProps: IFormProps;

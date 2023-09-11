@@ -28,7 +28,9 @@ import com.apitable.organization.ro.UpdateMemberRo;
 import com.apitable.organization.vo.MemberBriefInfoVo;
 import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.UploadParseResultVO;
+import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -316,6 +318,15 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return MemberBriefInfo
      */
     List<MemberBriefInfoVo> getMemberBriefInfo(List<Long> memberIds);
+
+    /**
+     * Get node role member with sort.
+     *
+     * @param memberIds member ids
+     * @return List<NodeRoleMemberVo>
+     * @author Chambers
+     */
+    List<NodeRoleMemberVo> getNodeRoleMemberWithSort(Collection<Long> memberIds);
 
     /**
      * create members in batches.

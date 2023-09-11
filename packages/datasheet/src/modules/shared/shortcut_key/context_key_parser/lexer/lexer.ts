@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Token, TokenType } from './token';
 import { BOOLEAN_EXPR_GRAMMAR } from './grammar';
+import { Token, TokenType } from './token';
 
 export interface ILexer {
   expression: string;
@@ -66,7 +66,7 @@ export class BooleanExprLexer implements ILexer {
 
   private getMatches(): Token[] {
     const matched: string[] = this.expression.match(this.pattern()) || [];
-    const matches = matched.map(m => {
+    const matches = matched.map((m) => {
       const token = this.tokenize(m);
       return token;
     });
@@ -90,7 +90,7 @@ export class BooleanExprLexer implements ILexer {
 
   private pattern(): RegExp {
     const pattern: string = Object.keys(this.grammar)
-      .map(key => `(${this.grammar[key].source})`)
+      .map((key) => `(${this.grammar[key].source})`)
       .join('|');
 
     return new RegExp(pattern, 'g');

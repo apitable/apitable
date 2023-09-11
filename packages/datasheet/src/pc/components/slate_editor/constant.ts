@@ -37,7 +37,7 @@ export enum ElementType {
   LINK = 'link',
   MENTION = 'mention',
   DIVIDER = 'divider',
-  TABLE_CELL = 'tableCell'
+  TABLE_CELL = 'tableCell',
 }
 
 // Used to determine if it is a list type
@@ -72,13 +72,7 @@ export const BASIC_ELEMENT = [
 ];
 
 // Used for toolbar selection to switch the type of elements
-export const SELECT_ELEMENT = [
-  ...BASIC_ELEMENT,
-  ElementType.UNORDERED_LIST,
-  ElementType.ORDERED_LIST,
-  ElementType.TASK_LIST,
-  ElementType.QUOTE,
-];
+export const SELECT_ELEMENT = [...BASIC_ELEMENT, ElementType.UNORDERED_LIST, ElementType.ORDERED_LIST, ElementType.TASK_LIST, ElementType.QUOTE];
 
 // Types of elements for quick insertion
 export const INSERT_PANEL_ELEMENT_FORMAT = [
@@ -92,9 +86,7 @@ export const INSERT_PANEL_ELEMENT_FORMAT = [
   ElementType.TASK_LIST,
   ElementType.DIVIDER,
 ];
-export const INSERT_PANEL_MEDIA_ELEMENT = [
-  ElementType.IMAGE,
-];
+export const INSERT_PANEL_MEDIA_ELEMENT = [ElementType.IMAGE];
 
 export const DISABLE_TOOLBAR_ELEMENT = {
   [ElementType.CODE_BLOCK]: true,
@@ -112,20 +104,20 @@ export enum MarkType {
 
 export const HIGHLIGHT_COLORS = {
   select: ['#CEC5FF', '#9CB9FF', '#FFD88A', '#8BDDBE', '#9CE977', '#FFB2C0', '#FFB4AF'],
-  show: ['#EDEAFF', '#E0E9FF', '#FFF6E5', '#E2F6EF', '#E3F5DA', '#FFE8EC', '#FBECEB']
+  show: ['#EDEAFF', '#E0E9FF', '#FFF6E5', '#E2F6EF', '#E3F5DA', '#FFE8EC', '#FBECEB'],
 };
 
-export const MARK_LIST = Object.values(MarkType).filter(item => item !== MarkType.HIGHLIGHT);
+export const MARK_LIST = Object.values(MarkType).filter((item) => item !== MarkType.HIGHLIGHT);
 
 export enum NodeType {
   BLOCK = 'block',
-  INLINE = 'inline'
+  INLINE = 'inline',
 }
 
 export enum ALIGN {
   LEFT = 'alignLeft',
   CENTER = 'alignCenter',
-  RIGHT = 'alignRight'
+  RIGHT = 'alignRight',
 }
 
 export const ALIGN_LIST = Object.values(ALIGN);
@@ -137,7 +129,7 @@ export const MAX_INDENT = 10;
 export const Z_INDEX = {
   HOVERING_TOOLBAR: 1060,
   TOOLBAR_SELECT: 1061,
-  TOOLBAR_LINK_INPUT: 1061
+  TOOLBAR_LINK_INPUT: 1061,
 };
 
 export const IMAGE_MIN_WIDTH = 150;

@@ -17,11 +17,11 @@
  */
 
 import { useClickAway } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Popup } from 'pc/components/common/mobile/popup';
 import Trigger, { TriggerProps as RcTriggerProps } from 'rc-trigger';
 import * as React from 'react';
 import { memo, useRef } from 'react';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Popup } from 'pc/components/common/mobile/popup';
 
 interface ITriggerProps extends Partial<RcTriggerProps> {
   trigger: React.ReactNode;

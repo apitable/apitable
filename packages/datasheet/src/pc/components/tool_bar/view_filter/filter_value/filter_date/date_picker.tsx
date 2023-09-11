@@ -26,4 +26,3 @@ dayjs.extend(weekday);
 dayjs.extend(localeData);
 
 export const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig as any);
-

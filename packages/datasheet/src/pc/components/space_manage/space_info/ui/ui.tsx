@@ -16,19 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton, ThemeName, Typography, useThemeColors } from '@apitable/components';
-import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
-// eslint-disable-next-line no-restricted-imports
 import * as React from 'react';
 import { FC, useContext, useMemo } from 'react';
-import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
-import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
 import { useSelector } from 'react-redux';
-import { isMobileApp } from 'pc/utils/env';
+import { Button, Skeleton, ThemeName, Typography, useThemeColors } from '@apitable/components';
+import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { isMobileApp } from 'pc/utils/env';
+import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
+import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
 

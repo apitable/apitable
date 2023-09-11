@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IParent } from '@apitable/core';
 import { Breadcrumb } from 'antd';
+import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { IParent } from '@apitable/core';
+import { ChevronRightOutlined } from '@apitable/icons';
 import { HorizontalScroll } from 'pc/components/common';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
-import { useThemeColors } from '@apitable/components';
-import * as React from 'react';
-import { ChevronRightOutlined } from '@apitable/icons';
 
 interface IFolderBreadcrumbProps {
   parents: IParent[];
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void,
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void;
 }
 
 export const FolderBreadcrumb: React.FC<React.PropsWithChildren<IFolderBreadcrumbProps>> = (props) => {
@@ -35,21 +35,16 @@ export const FolderBreadcrumb: React.FC<React.PropsWithChildren<IFolderBreadcrum
   return (
     <div className={styles.breadCrumb}>
       <HorizontalScroll>
-        <Breadcrumb
-          separator={<ChevronRightOutlined size={10} color={colors.thirdLevelText} />}
-        >
-          {
-            parents.map(breadItem => (
-              <Breadcrumb.Item
-                key={breadItem.nodeId || breadItem.nodeName}
-                onClick={() => onNodeClick('Folder', breadItem.nodeId!)}
-                className={styles.folderBreadItem}
-              >
-                {breadItem.nodeName}
-              </Breadcrumb.Item>
-            ),
-            )
-          }
+        <Breadcrumb separator={<ChevronRightOutlined size={10} color={colors.thirdLevelText} />}>
+          {parents.map((breadItem) => (
+            <Breadcrumb.Item
+              key={breadItem.nodeId || breadItem.nodeName}
+              onClick={() => onNodeClick('Folder', breadItem.nodeId!)}
+              className={styles.folderBreadItem}
+            >
+              {breadItem.nodeName}
+            </Breadcrumb.Item>
+          ))}
         </Breadcrumb>
       </HorizontalScroll>
     </div>

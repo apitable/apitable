@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CommentBgFilled } from '@apitable/icons';
-import { ILinearRow, ILinearRowRecord, RowHeight } from '@apitable/core';
-import { GridLayout } from './layout';
-import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
-import { ILightOrDarkThemeColors } from '@apitable/components';
 import * as React from 'react';
+import { ILightOrDarkThemeColors } from '@apitable/components';
+import { ILinearRow, ILinearRowRecord, RowHeight } from '@apitable/core';
+import { CommentBgFilled } from '@apitable/icons';
+import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
+import { GridLayout } from './layout';
 
 interface IFirstCell {
   row: ILinearRow;
@@ -49,7 +49,7 @@ export class RecordRowLayout extends GridLayout {
     isThisCellWillMove,
     commentCount,
     commentVisible,
-    colors
+    colors,
   }: IFirstCell) {
     if (!this.isFirst) return;
 
@@ -66,7 +66,7 @@ export class RecordRowLayout extends GridLayout {
       width: GRID_ROW_HEAD_WIDTH + columnWidth - groupOffset + 0.5,
       height: rowHeight,
       fill: isDraggingRow ? colors.lowestBg : colors.white,
-      stroke: colors.sheetLineColor
+      stroke: colors.sheetLineColor,
     });
     this.rect({
       x: GRID_ROW_HEAD_WIDTH + groupOffset,
@@ -89,7 +89,7 @@ export class RecordRowLayout extends GridLayout {
         y: y + 0.5,
         width: GRID_ROW_HEAD_WIDTH,
         height: rowHeight - 1,
-        fill
+        fill,
       });
     }
     this.setStyle({ fontSize: 13 });
@@ -114,16 +114,12 @@ export class RecordRowLayout extends GridLayout {
         y: y + (RowHeight.Short - 14) / 2,
         text: String(commentCount),
         fillStyle: colors.teal[500],
-        textAlign: 'center'
+        textAlign: 'center',
       });
     }
   }
 
-  private renderLastCell({
-    row,
-    style,
-    colors,
-  }: Pick<IFirstCell, 'row' | 'style' | 'colors'>) {
+  private renderLastCell({ row, style, colors }: Pick<IFirstCell, 'row' | 'style' | 'colors'>) {
     if (!this.isLast) return;
     this.renderAddFieldBlank(row);
     if (this.isFirst) return;
@@ -132,13 +128,13 @@ export class RecordRowLayout extends GridLayout {
     const { fill, stroke } = style;
     const columnWidth = this.columnWidth;
     const width = depth === 3 ? columnWidth - GRID_GROUP_OFFSET : columnWidth;
-    this.rect({ 
-      x: this.x, 
+    this.rect({
+      x: this.x,
       y: this.y,
       width,
       height: this.rowHeight,
       fill: fill || colors.defaultBg,
-      stroke: stroke || colors.sheetLineColor
+      stroke: stroke || colors.sheetLineColor,
     });
     if (depth > 1) {
       this.renderIndentEnd(depth - 1);
@@ -149,29 +145,18 @@ export class RecordRowLayout extends GridLayout {
     if (this.isFirst || this.isLast) return;
 
     const { fill, stroke } = style;
-    this.rect({ 
-      x: this.x, 
+    this.rect({
+      x: this.x,
       y: this.y,
       width: this.columnWidth,
       height: this.rowHeight,
       fill: fill || colors.defaultBg,
-      stroke: stroke || colors.sheetLineColor
+      stroke: stroke || colors.sheetLineColor,
     });
   }
 
   render(props: IFirstCell) {
-    const { 
-      row, 
-      style,
-      isHoverRow,
-      isCheckedRow,
-      isActiveRow,
-      isDraggingRow,
-      isThisCellWillMove,
-      commentCount,
-      commentVisible,
-      colors,
-    } = props;
+    const { row, style, isHoverRow, isCheckedRow, isActiveRow, isDraggingRow, isThisCellWillMove, commentCount, commentVisible, colors } = props;
 
     this.renderFirstCell({
       row,

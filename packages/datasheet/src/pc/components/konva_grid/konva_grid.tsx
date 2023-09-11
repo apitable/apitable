@@ -17,9 +17,9 @@
  */
 
 import dynamic from 'next/dynamic';
+import { FC, memo, useContext } from 'react';
 import { Rect } from 'pc/components/konva_components';
 import { GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext, useGrid } from 'pc/components/konva_grid';
-import { FC, memo, useContext } from 'react';
 import { EXPORT_BRAND_DESC_HEIGHT, EXPORT_IMAGE_PADDING, useBrandDesc, useViewWatermark } from '../gantt_view';
 import { IScrollState, PointPosition } from '../gantt_view/interface';
 import { GRID_ADD_FIELD_BUTTON_WIDTH, GRID_GROUP_ADD_FIELD_BUTTON_WIDTH } from './constant';
@@ -40,17 +40,7 @@ export interface IKonvaGridProps {
 }
 
 export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((props) => {
-  const {
-    instance,
-    scrollState,
-    rowStartIndex,
-    rowStopIndex,
-    columnStartIndex,
-    columnStopIndex,
-    pointPosition,
-    offsetX = 0,
-    isExporting
-  } = props;
+  const { instance, scrollState, rowStartIndex, rowStopIndex, columnStartIndex, columnStopIndex, pointPosition, offsetX = 0, isExporting } = props;
 
   const {
     fieldHeads,
@@ -95,7 +85,7 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
     columnStopIndex,
     pointPosition,
     scrollState,
-    isExporting
+    isExporting,
   });
 
   const { theme } = useContext(KonvaGridContext);
@@ -109,41 +99,32 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
   const addFieldBtnWidth = groupInfo.length ? GRID_GROUP_ADD_FIELD_BUTTON_WIDTH : GRID_ADD_FIELD_BUTTON_WIDTH;
   const cellGroupClipWidth = Math.min(
     containerWidth - frozenAreaWidth,
-    addFieldBtnWidth + lastColumnOffset + lastColumnWidth - scrollLeft - frozenAreaWidth
+    addFieldBtnWidth + lastColumnOffset + lastColumnWidth - scrollLeft - frozenAreaWidth,
   );
 
   const watermarkText = useViewWatermark({
     containerWidth,
     containerHeight: containerHeight + 16,
-    isExporting
+    isExporting,
   });
 
   const brandDesc = useBrandDesc({
     containerWidth,
     containerHeight: containerHeight + 16,
-    isExporting
+    isExporting,
   });
 
   return (
     <Layer>
-      {
-        isExporting &&
+      {isExporting && (
         <Rect
           width={containerWidth + EXPORT_IMAGE_PADDING * 2}
           height={containerHeight + EXPORT_IMAGE_PADDING * 2 + EXPORT_BRAND_DESC_HEIGHT}
           fill={colors.fc6}
         />
-      }
-      <Group
-        x={isExporting ? EXPORT_IMAGE_PADDING : undefined}
-        y={isExporting ? EXPORT_IMAGE_PADDING : undefined}
-      >
-        <Group
-          clipX={offsetX}
-          clipY={0}
-          clipWidth={containerWidth - offsetX}
-          clipHeight={containerHeight}
-        >
+      )}
+      <Group x={isExporting ? EXPORT_IMAGE_PADDING : undefined} y={isExporting ? EXPORT_IMAGE_PADDING : undefined}>
+        <Group clipX={offsetX} clipY={0} clipWidth={containerWidth - offsetX} clipHeight={containerHeight}>
           <Group x={offsetX}>
             <Group offsetY={scrollTop}>
               {frozenCells}
@@ -156,27 +137,11 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
               {frozenDateAlarms}
               {frozenDateAddAlarm}
             </Group>
-            {
-              !isExporting &&
-              <Rect
-                width={8}
-                height={8}
-                fill={colors.lowestBg}
-                listening={false}
-              />
-            }
+            {!isExporting && <Rect width={8} height={8} fill={colors.lowestBg} listening={false} />}
             {frozenFieldHead}
             {frozenOpacityLines}
-            <Group
-              clipX={frozenAreaWidth + 1}
-              clipY={0}
-              clipWidth={cellGroupClipWidth}
-              clipHeight={containerHeight}
-            >
-              <Group
-                offsetX={scrollLeft}
-                offsetY={scrollTop}
-              >
+            <Group clipX={frozenAreaWidth + 1} clipY={0} clipWidth={cellGroupClipWidth} clipHeight={containerHeight}>
+              <Group offsetX={scrollLeft} offsetY={scrollTop}>
                 {cells}
                 {groupStats}
               </Group>
@@ -194,10 +159,7 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
               clipWidth={containerWidth - frozenAreaWidth}
               clipHeight={containerHeight - rowInitSize}
             >
-              <Group
-                offsetX={scrollLeft}
-                offsetY={scrollTop}
-              >
+              <Group offsetX={scrollLeft} offsetY={scrollTop}>
                 {placeHolderCells}
                 {collaboratorBorders}
                 {activedCell}
@@ -211,15 +173,8 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
               </Group>
             </Group>
             {frozenFieldSplitter.topPlaceholder}
-            <Group
-              clipX={0}
-              clipY={rowInitSize - 1}
-              clipWidth={frozenAreaWidth + 4}
-              clipHeight={containerHeight - rowInitSize}
-            >
-              <Group
-                offsetY={scrollTop}
-              >
+            <Group clipX={0} clipY={rowInitSize - 1} clipWidth={frozenAreaWidth + 4} clipHeight={containerHeight - rowInitSize}>
+              <Group offsetY={scrollTop}>
                 {frozenActiveCellBorder}
                 {frozenActiveCollaboratorBorder}
                 {frozenFillHandler}
@@ -229,18 +184,9 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
           </Group>
         </Group>
         {bottomStatBackground}
-        <Group
-          clipX={offsetX}
-          clipY={0}
-          clipWidth={containerWidth - offsetX}
-          clipHeight={containerHeight}
-        >
-          <Group
-            x={offsetX}
-          >
-            <Group offsetX={scrollLeft}>
-              {bottomStats}
-            </Group>
+        <Group clipX={offsetX} clipY={0} clipWidth={containerWidth - offsetX} clipHeight={containerHeight}>
+          <Group x={offsetX}>
+            <Group offsetX={scrollLeft}>{bottomStats}</Group>
             {bottomFrozenStats}
             {frozenFieldSplitter.bottom}
             {frozenFieldSplitter.bottomPlaceholder}
@@ -248,13 +194,12 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
         </Group>
       </Group>
 
-      {
-        isExporting &&
+      {isExporting && (
         <>
           {watermarkText}
           {brandDesc}
         </>
-      }
+      )}
     </Layer>
   );
 });

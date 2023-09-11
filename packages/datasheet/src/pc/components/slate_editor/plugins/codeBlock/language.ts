@@ -28,46 +28,46 @@ import 'prismjs/components/prism-python';
 export const languages = [
   {
     value: 'plaintext',
-    label: 'Plaintext'
+    label: 'Plaintext',
   },
   {
     value: 'css',
-    label: 'CSS'
+    label: 'CSS',
   },
   {
     value: 'html',
-    label: 'HTML'
+    label: 'HTML',
   },
   {
     value: 'javascript',
-    label: 'JavaScript'
+    label: 'JavaScript',
   },
   {
     value: 'java',
-    label: 'Java'
+    label: 'Java',
   },
   {
     value: 'sql',
-    label: 'SQL'
+    label: 'SQL',
   },
   {
     value: 'php',
-    label: 'PHP'
+    label: 'PHP',
   },
   {
     value: 'bash',
-    label: 'Bash'
+    label: 'Bash',
   },
   {
     value: 'yaml',
-    label: 'YAML'
+    label: 'YAML',
   },
   {
     value: 'go',
-    label: 'Go'
+    label: 'Go',
   },
   {
     value: 'python',
-    label: 'Python'
-  }
+    label: 'Python',
+  },
 ];

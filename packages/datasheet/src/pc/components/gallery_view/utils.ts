@@ -33,13 +33,13 @@ import {
 import { IGalleryGroupItem } from './interface';
 
 /**
- * Returns a list of fields that can be used as album covers, including the normal 
+ * Returns a list of fields that can be used as album covers, including the normal
  * attachment fields and the fields where the lookup entity field is an attachment
  * @param fieldMap fieldMap
  */
 export const getCoverFields = (fieldMap: IFieldMap) => {
   const coverFields: IField[] = [];
-  Object.values(fieldMap).forEach(field => {
+  Object.values(fieldMap).forEach((field) => {
     switch (field.type) {
       case FieldType.Attachment:
         coverFields.push(field);
@@ -51,7 +51,8 @@ export const getCoverFields = (fieldMap: IFieldMap) => {
           coverFields.push(field);
         }
         break;
-      default: return;
+      default:
+        return;
     }
   });
   return coverFields;
@@ -59,7 +60,7 @@ export const getCoverFields = (fieldMap: IFieldMap) => {
 
 export const hasCover = (fieldMap: IFieldMap, coverFieldId?: string) => {
   const coverFields = getCoverFields(fieldMap);
-  return coverFieldId && Boolean(coverFields.find(coverField => coverField.id === coverFieldId));
+  return coverFieldId && Boolean(coverFields.find((coverField) => coverField.id === coverFieldId));
 };
 
 export const getShowFieldType = (field: IField) => {
@@ -145,7 +146,6 @@ export const getGroupLinearRows = (
   showAddCard: boolean,
   columnCount: number,
 ): IGalleryGroupItem[] => {
-
   const res: IGalleryGroupItem[] = [];
   groupedRows.forEach((eachGroupRows) => {
     // This group is hidden and only the group header is rendered.
@@ -156,7 +156,7 @@ export const getGroupLinearRows = (
       type: GalleryGroupItemType.GroupTitle,
     });
     // Blank placeholder
-    [...Array((columnCount - 1))].forEach((_item, index) => {
+    [...Array(columnCount - 1)].forEach((_item, index) => {
       res.push({
         recordId: `${groupHeadRecordId}_${index}`,
         groupHeadRecordId,
@@ -166,10 +166,8 @@ export const getGroupLinearRows = (
     // If the card is not collapsed, it needs to be rendered normally.
     if (!groupingCollapseIds.includes(groupHeadRecordId)) {
       // Showing a few lines
-      const cardCount = (eachGroupRows.length + (showAddCard ? 1 : 0));
-      const rowCount = Math.ceil(
-        cardCount / columnCount
-      );
+      const cardCount = eachGroupRows.length + (showAddCard ? 1 : 0);
+      const rowCount = Math.ceil(cardCount / columnCount);
       const blankCardCount = rowCount * columnCount - cardCount;
       eachGroupRows.forEach((recordId) => {
         res.push({
@@ -236,7 +234,7 @@ export const getColumnWidthAndCount = (containerWith: number, isMobile: boolean,
   cardWidth = width / columnCount;
   return {
     cardWidth,
-    columnCount
+    columnCount,
   };
 };
 
@@ -264,13 +262,12 @@ export const getSearchItemIndex = (
   columnCount: number,
   isGrouped: boolean,
 ) => {
-  const searchRecordIndex = isGrouped ?
-    linearRows.findIndex(item => item.recordId === searchRecordId && item.type === GalleryGroupItemType.Card) :
-    _visibleRecords.findIndex(item => item.recordId === searchRecordId);
+  const searchRecordIndex = isGrouped
+    ? linearRows.findIndex((item) => item.recordId === searchRecordId && item.type === GalleryGroupItemType.Card)
+    : _visibleRecords.findIndex((item) => item.recordId === searchRecordId);
   const rowIndex = Math.floor(searchRecordIndex / columnCount);
   const columnIndex = searchRecordIndex % columnCount;
   return { rowIndex, columnIndex };
-  
 };
 
 // Determine if paddingTop should be added based on the previous type of the header

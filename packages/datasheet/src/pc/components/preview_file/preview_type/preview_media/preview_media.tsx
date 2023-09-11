@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { stopPropagation, showAlert } from '@apitable/components';
-import { cellValueToImageSrc, t, Strings, Api, isPrivateDeployment } from '@apitable/core';
 import { useMount, useUnmount } from 'ahooks';
-import { getAvInfoRequestUrl } from 'pc/utils';
 import { useRef } from 'react';
 import * as React from 'react';
 import Player from 'xgplayer';
+import { stopPropagation, showAlert } from '@apitable/components';
+import { cellValueToImageSrc, t, Strings, Api, isPrivateDeployment } from '@apitable/core';
+import { getAvInfoRequestUrl } from 'pc/utils';
 import { IPreviewTypeBase } from '../preview_type.interface';
 import { IAVInfo, IStream } from './av_info';
 
-const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props => {
+const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = (props) => {
   const { file } = props;
   const ref = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player>();
   const canAutoPlay = useRef<boolean>(true);
-  const alertRef = useRef<{ destroy: () => void; }>();
+  const alertRef = useRef<{ destroy: () => void }>();
 
   function closeAutoPlay() {
-    return canAutoPlay.current = false;
+    return (canAutoPlay.current = false);
   }
 
   const canplay = (mimeType: string, codecs: string[]) => {
@@ -49,7 +49,6 @@ const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props 
   };
 
   const createVideoContainer = async() => {
-
     playerRef.current = new Player({
       el: ref.current!,
       url: cellValueToImageSrc(file),
@@ -67,12 +66,10 @@ const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = props 
     if (!isPrivateDeployment()) {
       const res = await fetchAvInfo();
 
-      const codecs = (res.data as IAVInfo)
-        .streams
-        .reduce((prev: string[], cur: IStream) => {
-          prev.push(cur.codec_name);
-          return prev;
-        }, []);
+      const codecs = (res.data as IAVInfo).streams.reduce((prev: string[], cur: IStream) => {
+        prev.push(cur.codec_name);
+        return prev;
+      }, []);
 
       if (!canplay(file.mimeType, codecs)) {
         alertRef.current = showAlert({

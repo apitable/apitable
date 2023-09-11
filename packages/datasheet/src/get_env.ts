@@ -190,7 +190,7 @@ export const getEnvVars = () => {
     INVITE_USER_BY_AUTH0: process.env.INVITE_USER_BY_AUTH0 === 'true',
     ALARM_TIME_UTC_VISIBLE: process.env.ALARM_TIME_UTC_VISIBLE === 'true',
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
-    APITABLE_NAME: process.env.APITABLE_NAME,
+    DEFAULT_TITLE_NAME: process.env.DEFAULT_TITLE_NAME,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
     IS_AITABLE: process.env.IS_APITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
@@ -223,6 +223,7 @@ export const getEnvVars = () => {
     AI_ENTRANCE_VISIBLE: process.env.AI_ENTRANCE_VISIBLE === 'true',
     AI_OPEN_FORM: process.env.AI_OPEN_FORM,
     AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
+    OSS_SIGNATURE_ENABLED: process.env.OSS_SIGNATURE_ENABLED === 'true',
     AI_API_HELP_URL: process.env.AI_API_HELP_URL,
   };
 };

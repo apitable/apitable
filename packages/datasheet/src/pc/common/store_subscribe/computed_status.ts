@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { message } from 'antd';
 import { Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
-import { message } from 'antd';
 
 let hide: (() => void) | undefined;
 let lastStatus: boolean;
@@ -31,7 +31,7 @@ store.subscribe(function computedStatusChange() {
     return;
   }
   const preStatus = lastStatus;
-  const hasCalc = Object.values(computedStatus).some(v => v);
+  const hasCalc = Object.values(computedStatus).some((v) => v);
   lastStatus = hasCalc;
   if (timer && !hasCalc) {
     window.clearTimeout(timer);

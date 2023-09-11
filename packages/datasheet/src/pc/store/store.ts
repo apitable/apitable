@@ -17,10 +17,10 @@
  */
 
 import { composeWithDevTools } from '@redux-devtools/extension';
-import { IReduxState, Reducers } from '@apitable/core';
 import { applyMiddleware, createStore as _createStore } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import thunkMiddleware from 'redux-thunk';
+import { IReduxState, Reducers } from '@apitable/core';
 import { viewDerivationMiddleware } from './view_derivation_middleware';
 import { widgetSyncDataMiddleware } from './widget_sync_data_middleware';
 
@@ -44,4 +44,3 @@ export type AppDispatch = typeof store.dispatch;
     window.VkStore = store;
   }
 })();
-

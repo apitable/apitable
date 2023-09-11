@@ -24,41 +24,38 @@ import { RobotCreateRo } from '../ros/robot.create.ro';
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
-
   async getActiveRobotsByResourceIds(resourceIds: string[]): Promise<ResourceRobotDto[]> {
     return await this.find({
       where: {
         resourceId: In(resourceIds),
         isDeleted: false,
-        isActive: true
+        isActive: true,
       },
-      select: ['robotId', 'resourceId']
+      select: ['robotId', 'resourceId'],
     });
   }
 
   async isResourcesHasRobots(resourceIds: string[]) {
-    const robotCount = await this.count(
-      {
-        where: {
-          resourceId: In(resourceIds),
-          isDeleted: 0,
-          isActive: 1
-        },
+    const robotCount = await this.count({
+      where: {
+        resourceId: In(resourceIds),
+        isDeleted: 0,
+        isActive: 1,
       },
-    );
+    });
     return robotCount > 0;
   }
 
   getResourceIdByRobotId(robotId: string) {
-    return this.findOne({ robotId }, { select: ['resourceId'] }).then(res => res?.resourceId);
+    return this.findOne({ robotId }, { select: ['resourceId'] }).then((res) => res?.resourceId);
   }
 
   async getRobotCountByResourceId(resourceId: string) {
     return await this.count({
       where: {
         resourceId,
-        isDeleted: 0
-      }
+        isDeleted: 0,
+      },
     });
   }
 
@@ -67,24 +64,26 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       select: ['robotId'],
       where: {
         resourceId,
-        isDeleted: 0
-      }
+        isDeleted: 0,
+      },
     });
   }
 
   public async selectRobotBaseInfoDtoByRobotIds(robotIds: string[]): Promise<RobotBaseInfoDto[]> {
     return await this.find({
-      select: [
-        'name', 'description', 'isActive', 'robotId'
-      ],
+      select: ['name', 'description', 'isActive', 'robotId'],
       where: {
         robotId: In(robotIds),
-        isDeleted: 0
+        isDeleted: 0,
       },
       order: {
-        createdAt: 'ASC'
-      }
+        createdAt: 'ASC',
+      },
     });
+  }
+
+  public selectRobotSimpleInfoByRobotId(robotId: string): Promise<AutomationRobotEntity | undefined> {
+    return this.findOne({ select: ['robotId', 'name', 'resourceId', 'createdBy'], where: { robotId, isDeleted: 0 }});
   }
 
   createRobot(robot: RobotCreateRo, userId: string) {
@@ -101,27 +100,36 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   deleteRobot(robotId: string, userId: string) {
-    return this.update({ robotId }, {
-      isDeleted: true,
-      updatedBy: userId
-    });
+    return this.update(
+      { robotId },
+      {
+        isDeleted: true,
+        updatedBy: userId,
+      },
+    );
   }
 
   activeRobot(robotId: string, userId: string) {
-    return this.update({ robotId }, {
-      updatedBy: userId,
-      isActive: true
-    });
+    return this.update(
+      { robotId },
+      {
+        updatedBy: userId,
+        isActive: true,
+      },
+    );
   }
 
   deActiveRobot(robotId: string, userId: string) {
-    return this.update({ robotId }, {
-      updatedBy: userId,
-      isActive: false
-    });
+    return this.update(
+      { robotId },
+      {
+        updatedBy: userId,
+        isActive: false,
+      },
+    );
   }
 
-  updateRobot(robotId: string, robot: { name?: string, description?: string }, userId: string) {
+  updateRobot(robotId: string, robot: { name?: string; description?: string }, userId: string) {
     return this.update({ robotId }, { ...robot, updatedBy: userId });
   }
 
@@ -132,7 +140,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
         isActive: 1,
         isDeleted: 0,
         resourceId: resourceId,
-      }
+      },
     });
   }
 }

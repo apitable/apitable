@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
-import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, t, Strings } from '@apitable/core';
-import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
-import { store } from 'pc/store';
-import Image from 'next/image';
-import { DisplayFile } from 'pc/components/display_file';
-import styles from './style.module.less';
-import { useSelector } from 'react-redux';
-import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import classNames from 'classnames';
+import Image from 'next/image';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, t, Strings } from '@apitable/core';
+import { DisplayFile } from 'pc/components/display_file';
+import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
+import { store } from 'pc/store';
+import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
+import styles from './style.module.less';
 
 export interface IRecordCardProps {
   datasheetId: string;
@@ -17,7 +17,7 @@ export interface IRecordCardProps {
   onClick?: (recordId: string) => void;
 }
 
-export const RecordCard: React.FC<IRecordCardProps> = props => {
+export const RecordCard: React.FC<IRecordCardProps> = (props) => {
   const { datasheetId, row, columns, fieldMap, onClick } = props;
   const state = store.getState();
   const snapshot = useSelector(Selectors.getSnapshot)!;
@@ -25,7 +25,7 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
   const [frozenColumn, ...remainColumns] = columns;
   const primaryFieldId = frozenColumn.fieldId;
   const primaryField = fieldMap[primaryFieldId];
-  const attachmentColumn = remainColumns.find(column => {
+  const attachmentColumn = remainColumns.find((column) => {
     const field = fieldMap[column.fieldId];
     return field.type === FieldType.Attachment;
   });
@@ -34,10 +34,12 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
   const title = Field.bindModel(primaryField).cellValueToString(primaryCellValue);
 
   const normalColumns = useMemo(() => {
-    return remainColumns.filter(column => {
-      const field = fieldMap[column.fieldId];
-      return field.type !== FieldType.Attachment;
-    }).slice(0, normalColumnsCount);
+    return remainColumns
+      .filter((column) => {
+        const field = fieldMap[column.fieldId];
+        return field.type !== FieldType.Attachment;
+      })
+      .slice(0, normalColumnsCount);
   }, [normalColumnsCount, remainColumns, fieldMap]);
 
   const AttachmentPreview = (attachmentFieldId: string) => {
@@ -45,9 +47,9 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
     if (!cellValue) {
       return (
         <Image
-          style={{ 
-            objectFit: 'cover', 
-            borderRadius: 3 
+          style={{
+            objectFit: 'cover',
+            borderRadius: 3,
           }}
           src={EmptyImage}
           alt="NoImage"
@@ -73,53 +75,44 @@ export const RecordCard: React.FC<IRecordCardProps> = props => {
 
   return (
     <div className={styles.recordCardContainer}>
-      <div
-        className={styles.recordCardStyled}
-        onClick={() => onClick?.(recordId)}
-      >
-        {
-          recordId ? 
-            <>
-              <div className={styles.recordCardRow}>
-                <h3
-                  className={classNames(styles.recordCardTitle, !Boolean(title) && styles.recordCardTitleEmpty)}
-                >
-                  {title || t(Strings.record_unnamed)}
-                </h3>
-                <div className={styles.cellRow}>
-                  {
-                    normalColumns.map(column => {
-                      const fieldId = column.fieldId;
-                      const field = fieldMap[column.fieldId];
-                      const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
-                      return (
-                        <div className={styles.cardColumn} key={fieldId}>
-                          <div className={styles.cellTitle}>
-                            {field.name}
-                          </div>
-                          <div className={styles.cardCell}>
-                            {
-                              cellValue == null ?
-                                <div className={styles.cellHolder} /> :
-                                <CellValue
-                                  recordId={recordId}
-                                  field={field}
-                                  cellValue={cellValue}
-                                  datasheetId={datasheetId}
-                                  className={styles.cellValueComponent}
-                                />
-                            }
-                          </div>
-                        </div>
-                      );
-                    })
-                  }
-                </div>
+      <div className={styles.recordCardStyled} onClick={() => onClick?.(recordId)}>
+        {recordId ? (
+          <>
+            <div className={styles.recordCardRow}>
+              <h3 className={classNames(styles.recordCardTitle, !Boolean(title) && styles.recordCardTitleEmpty)}>
+                {title || t(Strings.record_unnamed)}
+              </h3>
+              <div className={styles.cellRow}>
+                {normalColumns.map((column) => {
+                  const fieldId = column.fieldId;
+                  const field = fieldMap[column.fieldId];
+                  const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
+                  return (
+                    <div className={styles.cardColumn} key={fieldId}>
+                      <div className={styles.cellTitle}>{field.name}</div>
+                      <div className={styles.cardCell}>
+                        {cellValue == null ? (
+                          <div className={styles.cellHolder} />
+                        ) : (
+                          <CellValue
+                            recordId={recordId}
+                            field={field}
+                            cellValue={cellValue}
+                            datasheetId={datasheetId}
+                            className={styles.cellValueComponent}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              {attachmentColumn && AttachmentPreview(attachmentColumn.fieldId)}
-            </> : 
-            t(Strings.loading)
-        }
+            </div>
+            {attachmentColumn && AttachmentPreview(attachmentColumn.fieldId)}
+          </>
+        ) : (
+          t(Strings.loading)
+        )}
       </div>
     </div>
   );

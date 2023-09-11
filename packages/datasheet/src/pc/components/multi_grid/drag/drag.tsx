@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useBoolean } from 'ahooks';
+import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
 import {
   ISetRecordOptions,
   ICellValue,
@@ -32,20 +37,15 @@ import {
   ISnapshot,
   IFieldPermissionMap,
 } from '@apitable/core';
-import { useBoolean } from 'ahooks';
+import { useCacheScroll } from 'pc/context';
 import { resourceService } from 'pc/resource_service';
 import { CELL_CLASS, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
+import { getMoveColumnsResult } from 'pc/utils/datasheet';
 import { getClickCellId, getGroupHeadRecordId } from 'pc/utils/dom';
-import { useEffect, useRef, useState } from 'react';
-import * as React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { getCellValuesForGroupRecord } from '../../../../modules/shared/shortcut_key/shortcut_actions/append_row';
 import { HoverLine } from '../hover_line/hover_line';
 import { MicroComponent } from '../micro_component';
-import { useCacheScroll } from 'pc/context';
-import { getMoveColumnsResult } from 'pc/utils/datasheet';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { IDragOption, IDragProps, IGlobalRef } from './interface';
 
 export const dependsGroup2ChangeData = (
@@ -84,7 +84,7 @@ export const dependsGroup2ChangeData = (
   return null;
 };
 
-export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
+export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
   const { gridRef, scrollWhenHitViewEdg, getFieldId, checkInGrid, checkIsOpacityLine, getClickCellId: _getClickCellId } = props;
   const {
     gridViewDragState,
@@ -124,7 +124,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
 
   const fieldIndexRanges = fieldRanges
     ? visibleColumns
-      .map(column => fieldIndexMap.get(column.fieldId)!)
+      .map((column) => fieldIndexMap.get(column.fieldId)!)
       .slice(fieldIndexMap.get(fieldRanges[0]), fieldIndexMap.get(fieldRanges[fieldRanges.length - 1])! + 1)
     : [];
 
@@ -158,7 +158,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
   }
 
   function setDragOptionFunc(option: Partial<IDragOption>) {
-    setDragOption(preState => ({ ...preState, ...option }));
+    setDragOption((preState) => ({ ...preState, ...option }));
   }
 
   const changeColumnWidth = (e: MouseEvent) => {
@@ -206,7 +206,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     dispatch(
       StoreActions.setDragTarget(datasheetId, {
         fieldId: fieldId,
-        columnIndex: visibleColumns.findIndex(col => col.fieldId === fieldId),
+        columnIndex: visibleColumns.findIndex((col) => col.fieldId === fieldId),
       }),
     );
   }
@@ -313,7 +313,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     const scrollLeftDiff = scrollValue.scrollLeft! - getGlobalRef().scrollLeft;
     const changeWidthSum = pageXDiff + scrollLeftDiff;
     const changeWidthFieldId = getGlobalRef().changeWidthFieldId;
-    const changeWidthColumn = visibleColumns.find(column => column.fieldId === changeWidthFieldId);
+    const changeWidthColumn = visibleColumns.find((column) => column.fieldId === changeWidthFieldId);
     const originWidth = Selectors.getColumnWidth(changeWidthColumn as IGridViewColumn);
     const finalWidth = Math.max(originWidth + changeWidthSum, MIN_COLUMN_WIDTH);
 
@@ -329,7 +329,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
         });
       },
       {
-        columns: visibleColumns.map(column => (column.fieldId === getGlobalRef().changeWidthFieldId ? { ...column, width: finalWidth } : column)),
+        columns: visibleColumns.map((column) => (column.fieldId === getGlobalRef().changeWidthFieldId ? { ...column, width: finalWidth } : column)),
       },
     );
     setGlobalRef({ current: null });
@@ -363,7 +363,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
       return;
     }
 
-    const prepareForMoveColumns = fieldRanges.map(fieldId => {
+    const prepareForMoveColumns = fieldRanges.map((fieldId) => {
       return {
         fieldId,
         overTargetId,
@@ -392,11 +392,11 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
   }
 
   /**
-   * @description There is a group and there is an auto sort, 
+   * @description There is a group and there is an auto sort,
    * drop the dragged record and then set the corresponding value according to the value of the group
-   * The logic here is not the same as drag sorting, 
+   * The logic here is not the same as drag sorting,
    * appendRows places the dragged record above or below the target record, but when there is an automatic sort,
-   * instead of sorting the record manually, set the value of the corresponding cell to the value of the group, 
+   * instead of sorting the record manually, set the value of the corresponding cell to the value of the group,
    * without changing the position of the record.
    */
   function setCellValueByKeepSort() {
@@ -453,7 +453,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     let data: Array<{ recordId: string; overTargetId: string; direction: DropDirectionType }>;
     if (new Set(selectRecordIds).has(dragTarget.recordId)) {
       // The record you are currently working on is already checked
-      data = selectRecordIds.map(recordId => {
+      data = selectRecordIds.map((recordId) => {
         return {
           recordId,
           overTargetId,
@@ -482,7 +482,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
       return;
     }
 
-    const isSameRecordIndex = data.findIndex(item => item.overTargetId === item.recordId);
+    const isSameRecordIndex = data.findIndex((item) => item.overTargetId === item.recordId);
     if (isSameRecordIndex !== -1 && data.length > 1) {
       data = data.map((item, index) => {
         if (index < isSameRecordIndex) {
@@ -498,7 +498,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = props => {
     const recordData = dependsGroup2ChangeData(data, overTargetId, { groupLevel, snapshot, view, fieldPermissionMap });
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.MoveRow,
-      data: data.filter(item => item.overTargetId !== item.recordId),
+      data: data.filter((item) => item.overTargetId !== item.recordId),
       viewId: view.id,
       recordData,
     });

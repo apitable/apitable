@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useLocalStorageState } from 'ahooks';
+import classNames from 'classnames';
+import { keyBy } from 'lodash';
+import { useEffect, useState } from 'react';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import { useSelector } from 'react-redux';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -35,11 +41,8 @@ import {
   DuplicateOutlined,
   EditOutlined,
   QuestionCircleOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from '@apitable/icons';
-import { useLocalStorageState } from 'ahooks';
-import classNames from 'classnames';
-import { keyBy } from 'lodash';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Modal } from 'pc/components/common';
@@ -49,17 +52,14 @@ import { expandWidgetRoute } from 'pc/components/widget/expand_widget';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { flatContextData } from 'pc/utils';
-import { useEffect, useState } from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useSelector } from 'react-redux';
 import { WidgetContextProvider } from '../../context';
+import { copyWidget, installToPanel } from '../../widget_center/install_utils';
 import { expandPublishHelp } from '../../widget_center/widget_create_modal';
+import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
 import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
-import styles from './style.module.less';
-import { copyWidget, installToPanel } from '../../widget_center/install_utils';
-import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
 import { installedWidgetHandle } from '../widget_panel_header';
+import styles from './style.module.less';
 
 const ResponsiveGridLayout: any = WidthProvider(Responsive);
 
@@ -67,21 +67,21 @@ export const WIDGET_MENU = 'WIDGET_MENU';
 
 export const WidgetList = () => {
   const colors = useThemeColors();
-  const { datasheetId, widgetId, mirrorId } = useSelector(state => state.pageParams);
+  const { datasheetId, widgetId, mirrorId } = useSelector((state) => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
-  const activeWidgetPanel = useSelector(state => {
+  const activeWidgetPanel = useSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType);
   })!;
   const widgetList = activeWidgetPanel.widgets;
-  const { editable, manageable } = useSelector(state => {
+  const { editable, manageable } = useSelector((state) => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
   const linkId = useSelector(Selectors.getLinkId);
   const hadWidgetExpanding = Boolean(widgetId);
   const [devWidgetId, setDevWidgetId] = useLocalStorageState<string>('devWidgetId');
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
-  const widgetMap = useSelector(state => state.widgetMap);
+  const widgetMap = useSelector((state) => state.widgetMap);
   const readonly = !editable;
   // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);
@@ -91,14 +91,14 @@ export const WidgetList = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   useEffect(() => {
-    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, widgetId => {
+    simpleEmitter.bind(EmitterEventName.ToggleWidgetDevMode, (widgetId) => {
       setDevWidgetId(widgetId);
     });
     return () => simpleEmitter.unbind(EmitterEventName.ToggleWidgetDevMode);
   }, [setDevWidgetId]);
 
   useEffect(() => {
-    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, panelDragging => {
+    panelSimpleEmitter.bind(EmitterEventName.PanelDragging, (panelDragging) => {
       setDragging(panelDragging);
     });
     return () => panelSimpleEmitter.unbind(EmitterEventName.PanelDragging);
@@ -115,7 +115,7 @@ export const WidgetList = () => {
     });
   };
 
-  const onResizeStop = (_layout: any, _oldItem: any, newItem: { i: string; h: number; }) => {
+  const onResizeStop = (_layout: any, _oldItem: any, newItem: { i: string; h: number }) => {
     setDragging(false);
     recordWidgetHeight(newItem.i, newItem.h);
   };
@@ -141,7 +141,7 @@ export const WidgetList = () => {
   const onDragStop = (layout: any) => {
     setDragging(false);
     const layoutMap = keyBy(layout, 'i');
-    const _layout = widgetList.map(item => {
+    const _layout = widgetList.map((item) => {
       const widgetPosition = layoutMap[item.id];
       return {
         id: widgetPosition.i,
@@ -178,10 +178,10 @@ export const WidgetList = () => {
         return;
       }
 
-      await installToPanel(widgets[0], nodeId!, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet,);
+      await installToPanel(widgets[0], nodeId!, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet);
     } catch (e: any) {
       Message.error({
-        content: (typeof e === 'string' ? e : e?.message) || t(Strings.copy_widget_fail)
+        content: (typeof e === 'string' ? e : e?.message) || t(Strings.copy_widget_fail),
       });
       return;
     }
@@ -189,14 +189,14 @@ export const WidgetList = () => {
     installedWidgetHandle(widgets[0].id);
 
     Message.success({
-      content: t(Strings.copy_widget_success)
+      content: t(Strings.copy_widget_success),
     });
   };
 
   const menuData = [
     [
       {
-        icon: <SettingOutlined color={colors.thirdLevelText}/>,
+        icon: <SettingOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_setting),
         hidden: readonly || hadWidgetExpanding,
         onClick: ({ props }: { props?: any }) => {
@@ -206,7 +206,7 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText}/>,
+        icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_enter_dev),
         hidden: readonly || isWidgetBan() || isWidgetDev() || isWidgetGlobal(),
         onClick: ({ props }: { props?: any }) => {
@@ -214,7 +214,7 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <CodeFilled color={colors.thirdLevelText}/>,
+        icon: <CodeFilled color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_exit_dev),
         hidden: readonly || isWidgetBan() || !isWidgetDev(),
         onClick: ({ props }: { props?: any }) => {
@@ -223,13 +223,13 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <EditOutlined color={colors.thirdLevelText}/>,
+        icon: <EditOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_rename),
         hidden: readonly || isWidgetBan(),
         onClick: renameWidget,
       },
       {
-        icon: <QuestionCircleOutlined color={colors.thirdLevelText}/>,
+        icon: <QuestionCircleOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_publish_help),
         hidden: readonly || !isWidgetDev(),
         onClick: () => {
@@ -237,7 +237,7 @@ export const WidgetList = () => {
         },
       },
       {
-        icon: <DuplicateOutlined color={colors.thirdLevelText}/>,
+        icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.copy_widget),
         onClick: ({ props }: { props?: any }) => {
           const { widgetId } = props;
@@ -246,7 +246,7 @@ export const WidgetList = () => {
         hidden: Boolean(linkId) || !isWidgetPublished() || isWidgetDev() || !manageable || reachLimitInstalledCount,
       },
       {
-        icon: <DashboardOutlined color={colors.thirdLevelText}/>,
+        icon: <DashboardOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_send_dashboard),
         onClick: ({ props }: { props?: any }) => {
           const { widgetId } = props;
@@ -257,7 +257,7 @@ export const WidgetList = () => {
     ],
     [
       {
-        icon: <DeleteOutlined color={colors.thirdLevelText}/>,
+        icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: t(Strings.widget_operate_delete),
         hidden: !manageable,
         onClick: deleteWidget,
@@ -277,7 +277,7 @@ export const WidgetList = () => {
             xxs: 1,
           }}
           layouts={{
-            lg: widgetList!.map(item => {
+            lg: widgetList!.map((item) => {
               return { w: 1, h: item.height, x: 0, y: item.y ?? 0, minH: 6.2, i: item.id };
             }),
           }}
@@ -321,8 +321,7 @@ export const WidgetList = () => {
             );
           })}
         </ResponsiveGridLayout>
-        <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)}
-          menuId={WIDGET_MENU}/>
+        <ContextMenu overlay={flatContextData(menuData, true)} onShown={({ props }) => setActiveMenuWidget(props?.widget)} menuId={WIDGET_MENU} />
       </div>
     </WidgetContextProvider>
   );

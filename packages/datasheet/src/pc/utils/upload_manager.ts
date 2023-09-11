@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
+import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@apitable/core';
+import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Message, Modal } from 'pc/components/common';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
+import { getEnvVariables } from './env';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { getEnvVariables } from './env';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;
@@ -114,20 +114,13 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  public register(
-    cellId: string,
-    successHandleFn: (res: IUploadResponse) => void,
-    fd: FormData,
-    fileId: string,
-  ) {
+  public register(cellId: string, successHandleFn: (res: IUploadResponse) => void, fd: FormData, fileId: string) {
     if (this.isExitCellId(cellId)) {
       this.uploadMap[cellId].waitQueue.push({
         successHandleFn,
         fileId,
         fd,
-        status: this.isRequestLimit(cellId)
-          ? UploadStatus.Loading
-          : UploadStatus.Pending,
+        status: this.isRequestLimit(cellId) ? UploadStatus.Loading : UploadStatus.Pending,
       });
     } else {
       this.uploadMap[cellId] = {
@@ -138,9 +131,7 @@ export class UploadManager {
             successHandleFn,
             fileId,
             fd,
-            status: this.isRequestLimit(cellId)
-              ? UploadStatus.Loading
-              : UploadStatus.Pending,
+            status: this.isRequestLimit(cellId) ? UploadStatus.Loading : UploadStatus.Pending,
           },
         ],
       };
@@ -223,35 +214,28 @@ export class UploadManager {
       if (shareId) {
         return resolve(null);
       }
-      Api.searchSpaceSize().then(res => {
+      Api.searchSpaceSize().then((res) => {
         const { usedCapacity } = res.data.data;
         const result = triggerUsageAlert?.(
-          'maxCapacitySizeInBytes', { usage: usedCapacity, alwaysAlert: true, reload: true }, SubscribeUsageTipType?.Alert,
+          'maxCapacitySizeInBytes',
+          { usage: usedCapacity, alwaysAlert: true, reload: true },
+          SubscribeUsageTipType?.Alert,
         );
         !result && resolve(null);
       });
     });
   }
 
-  private uploadFailHandle(
-    cellId: string,
-    uploadItem: IUploadMapItem,
-    options: IQueue,
-  ) {
+  private uploadFailHandle(cellId: string, uploadItem: IUploadMapItem, options: IQueue) {
     const failFileIndex = uploadItem.requestQueue.findIndex((item) => {
       return item.fileId === options.fileId;
     });
-    uploadItem.failQueue.push(
-      uploadItem.requestQueue.splice(failFileIndex, 1)[0],
-    );
+    uploadItem.failQueue.push(uploadItem.requestQueue.splice(failFileIndex, 1)[0]);
     uploadItem.failQueue.map((item) => {
       item.status = UploadStatus.Fail;
       return item;
     });
-    if (
-      this.fileStatusMap.has(cellId) &&
-      this.fileStatusMap.get(cellId)!.has(options.fileId)
-    ) {
+    if (this.fileStatusMap.has(cellId) && this.fileStatusMap.get(cellId)!.has(options.fileId)) {
       return this.fileStatusMap
         .get(cellId)!
         .get(options.fileId)!
@@ -267,15 +251,9 @@ export class UploadManager {
     if (!this.uploadMap[cellId]) {
       return [];
     }
-    const requestQueue = this.uploadMap[cellId].requestQueue
-      .filter(this.filterFile)
-      .map((item) => this.createStdValue(item));
-    const waitQueue = this.uploadMap[cellId].waitQueue
-      .filter(this.filterFile)
-      .map((item) => this.createStdValue(item));
-    const failQueue = this.uploadMap[cellId].failQueue
-      .filter(this.filterFile)
-      .map((item) => this.createStdValue(item));
+    const requestQueue = this.uploadMap[cellId].requestQueue.filter(this.filterFile).map((item) => this.createStdValue(item));
+    const waitQueue = this.uploadMap[cellId].waitQueue.filter(this.filterFile).map((item) => this.createStdValue(item));
+    const failQueue = this.uploadMap[cellId].failQueue.filter(this.filterFile).map((item) => this.createStdValue(item));
     return [...failQueue, ...waitQueue, ...requestQueue];
   }
 
@@ -294,9 +272,7 @@ export class UploadManager {
   }
 
   private deleteItem(cellId: string) {
-    this.uploadMap[cellId].requestQueue = this.uploadMap[
-      cellId
-    ].requestQueue.filter((item) => {
+    this.uploadMap[cellId].requestQueue = this.uploadMap[cellId].requestQueue.filter((item) => {
       return item.loaded !== item.total;
     });
   }
@@ -314,20 +290,11 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  public emitProgress(
-    cellId: string,
-    fileId: string,
-    loaded: number,
-    total: number,
-  ) {
+  public emitProgress(cellId: string, fileId: string, loaded: number, total: number) {
     if (!this.uploadMap[cellId]) {
       return;
     }
-    if (
-      this.uploadMap[cellId].requestQueue.length &&
-      this.fileStatusMap.has(cellId) &&
-      this.fileStatusMap.get(cellId)!.has(fileId)
-    ) {
+    if (this.uploadMap[cellId].requestQueue.length && this.fileStatusMap.has(cellId) && this.fileStatusMap.get(cellId)!.has(fileId)) {
       this.fileStatusMap
         .get(cellId)!
         .get(fileId)!
@@ -437,10 +404,7 @@ export class UploadManager {
     return fd;
   }
 
-  static generateNewFile(
-    res: IUploadResponse,
-    fileInfo: { name: string; id: string },
-  ) {
+  static generateNewFile(res: IUploadResponse, fileInfo: { name: string; id: string }) {
     const result: IAttachmentValue = {
       id: fileInfo.id,
       mimeType: res.mimeType,
@@ -480,12 +444,7 @@ export class UploadManager {
     return URL.createObjectURL(file);
   }
 
-  public buildStdUploadList(
-    fileList: File[],
-    recordId: string,
-    fieldId: string,
-    cellValue: IAttachmentValue[],
-  ) {
+  public buildStdUploadList(fileList: File[], recordId: string, fieldId: string, cellValue: IAttachmentValue[]) {
     const uploadList = this.get(UploadManager.getCellId(recordId, fieldId));
     const uploadListId = uploadList.map((item) => item.fileId);
     const exitIds = cellValue ? cellValue.map((item) => item.id) : [];
@@ -510,12 +469,7 @@ export class UploadManager {
     return byte2Mb(file.size)! >= 1024;
   }
 
-  private defaultSuccessFn(
-    datasheetId: string | undefined,
-    fieldId: string,
-    recordId: string,
-    cellValue: IAttachmentValue[],
-  ) {
+  private defaultSuccessFn(datasheetId: string | undefined, fieldId: string, recordId: string, cellValue: IAttachmentValue[]) {
     return this.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
       datasheetId,
@@ -529,19 +483,10 @@ export class UploadManager {
     });
   }
 
-  private defaultCellValue(
-    datasheetId: string | undefined,
-    recordId: string,
-    fieldId: string,
-  ) {
+  private defaultCellValue(datasheetId: string | undefined, recordId: string, fieldId: string) {
     const state = store.getState();
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-    return Selectors.getCellValue(
-      state,
-      snapshot,
-      recordId,
-      fieldId,
-    ) as IAttachmentValue[];
+    return Selectors.getCellValue(state, snapshot, recordId, fieldId) as IAttachmentValue[];
   }
 
   public generateSuccessFn(
@@ -549,11 +494,7 @@ export class UploadManager {
     fieldId: string,
     fileInfo: { name: string; id: string },
     datasheetId?: string,
-    getCellValueFn?: (
-      datasheetId: string | undefined,
-      recordId: string,
-      fieldId: string,
-    ) => IAttachmentValue[],
+    getCellValueFn?: (datasheetId: string | undefined, recordId: string, fieldId: string) => IAttachmentValue[],
     successFn?: (cellValue: IAttachmentValue[]) => void,
   ) {
     return (res: IUploadResponse) => {
@@ -566,12 +507,7 @@ export class UploadManager {
       }
       const _cellValue = cellValue ? [...cellValue, newFile] : [newFile];
       if (!successFn) {
-        return this.defaultSuccessFn(
-          datasheetId,
-          fieldId,
-          recordId,
-          _cellValue,
-        );
+        return this.defaultSuccessFn(datasheetId, fieldId, recordId, _cellValue);
       }
       return successFn(_cellValue);
     };

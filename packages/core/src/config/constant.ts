@@ -47,7 +47,8 @@ export enum NodeType {
   CANVAS = 7,
   WORD_DOC = 8,
   AI = 9,
-  VIEW = 10,
+  AUTOMATION = 10,
+  VIEW = 11,
   ASSET_FILE = 98,
   TRASH = 99,
 }

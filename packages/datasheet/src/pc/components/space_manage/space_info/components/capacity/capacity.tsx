@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useMemo } from 'react';
-import styles from './style.module.less';
 import { Progress } from 'antd';
+import classNames from 'classnames';
+import { FC, useMemo } from 'react';
+import { Typography, TextButton, useThemeColors, Skeleton } from '@apitable/components';
 import { byteMGArr, byteMG, normalByteMGArr, Strings, t } from '@apitable/core';
 import { CardTitle, InfoHighlightTitle } from '../../ui';
-import { Typography, TextButton, useThemeColors, Skeleton } from '@apitable/components';
 import { getPercent } from '../../utils';
-import classNames from 'classnames';
+import styles from './style.module.less';
 // import { showCapacityUpgrading } from 'pc/components/subscription';
 interface ICapacity {
   maxValue?: number;
@@ -40,9 +40,7 @@ export const Capacity: FC<React.PropsWithChildren<ICapacity>> = ({ maxValue, cur
 
   const validPercent = useMemo(() => {
     if (loading) return 0;
-    return (
-      (byteMGArr(curValue!)[2] as number) / (byteMGArr(maxValue!)[2] as number)
-    );
+    return (byteMGArr(curValue!)[2] as number) / (byteMGArr(maxValue!)[2] as number);
   }, [curValue, loading, maxValue]);
 
   const usedCapacity = useMemo(() => {
@@ -71,15 +69,12 @@ export const Capacity: FC<React.PropsWithChildren<ICapacity>> = ({ maxValue, cur
         <>
           <Skeleton width="38%" />
           <Skeleton count={2} />
-          <Skeleton width="61%"/>
+          <Skeleton width="61%" />
         </>
       ) : (
         <>
           <div>
-            <CardTitle
-              title={t(Strings.space_capacity)}
-              tipTitle={t(Strings.member_data_desc_of_appendix)}
-            />
+            <CardTitle title={t(Strings.space_capacity)} tipTitle={t(Strings.member_data_desc_of_appendix)} />
             <InfoHighlightTitle
               value={maxValueObj.value}
               unit={maxValueObj.unit}
@@ -106,9 +101,9 @@ export const Capacity: FC<React.PropsWithChildren<ICapacity>> = ({ maxValue, cur
               format={() => usedCapacity}
             />
           </div>
-          
+
           <div className={styles.capacityUpgrade}>
-            <TextButton onClick={() => { }}>{t(Strings.purchase_capacity)}</TextButton>
+            <TextButton onClick={() => {}}>{t(Strings.purchase_capacity)}</TextButton>
           </div>
         </>
       )}

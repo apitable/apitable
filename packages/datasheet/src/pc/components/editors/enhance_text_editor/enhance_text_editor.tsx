@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
-import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { LinkButton, useThemeColors } from '@apitable/components';
-import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
-import { IBaseEditorProps, IEditor } from '../interface';
-import style from './styles.module.less';
-import { stopPropagation } from 'pc/utils';
 import { find, omit } from 'lodash';
+import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { LinkButton, useThemeColors } from '@apitable/components';
+import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
+import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
-import { useSelector } from 'react-redux';
+import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
+import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
+import { stopPropagation } from 'pc/utils';
+import { IBaseEditorProps, IEditor } from '../interface';
+import style from './styles.module.less';
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
@@ -54,22 +54,37 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
   const [activeUrlAction, setActiveUrlAction] = useState(false);
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: (preventScroll) => { focus(preventScroll); },
-    blur: () => { blur(); },
-    onEndEdit: (cancel: boolean) => { onEndEdit(cancel); },
-    onStartEdit: (value?: ISegment[] | null) => {
-      onStartEdit(value);
-      cacheValueRef.current = value;
-    },
-    setValue: (value?: ISegment[] | null) => { onStartEdit(value); },
-    saveValue: () => { saveValue(); },
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: (preventScroll) => {
+        focus(preventScroll);
+      },
+      blur: () => {
+        blur();
+      },
+      onEndEdit: (cancel: boolean) => {
+        onEndEdit(cancel);
+      },
+      onStartEdit: (value?: ISegment[] | null) => {
+        onStartEdit(value);
+        cacheValueRef.current = value;
+      },
+      setValue: (value?: ISegment[] | null) => {
+        onStartEdit(value);
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
 
   const segment2String = (value: ISegment[] | null): string => {
-    if (!value) { return ''; }
+    if (!value) {
+      return '';
+    }
     if (typeof value === 'string') {
       return value;
     }
@@ -93,7 +108,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const getValidValue = (value: string) => {
     // Ensure no loss of mailbox formatted text data when converting single line text types to mailboxes
     let omitProps = {};
-    if (cacheValueRef.current && cacheValueRef.current.some(v => v.text === value)) {
+    if (cacheValueRef.current && cacheValueRef.current.some((v) => v.text === value)) {
       omitProps = omit(find(cacheValueRef.current, { text: value }), ['text']);
     }
     let restProps = {};
@@ -108,16 +123,16 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const updateValue = (event: ChangeEvent<HTMLInputElement>) => {
     if (props.editing) {
       const value = event.target.value;
-      if(field.type === FieldType.Phone) {
+      if (field.type === FieldType.Phone) {
         const newValue = value
-          .replace(/[^+0-9]/g, '') 
-          .replace(/^([+])/, '$1') 
-          .replace(/\+{2,}/g, '+') 
+          .replace(/[^+0-9]/g, '')
+          .replace(/^([+])/, '$1')
+          .replace(/\+{2,}/g, '+')
           .replace(/^([+][0-9]*){0,1}([0-9]*)/, '$1$2');
 
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));
-      } else if(field.type === FieldType.Email) {
+      } else if (field.type === FieldType.Email) {
         const newValue = value.replace(/\s/g, '');
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));
@@ -164,10 +179,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const _handleEnhanceTextClick = useEnhanceTextClick();
   if (!props.editable) {
     return (
-      <div
-        className={classNames(style.enhanceText, cellTextStyle.cellText)}
-        onClick={() => _handleEnhanceTextClick(field.type, value)}
-      >
+      <div className={classNames(style.enhanceText, cellTextStyle.cellText)} onClick={() => _handleEnhanceTextClick(field.type, value)}>
         <div tabIndex={-1} ref={editorRef} />
         {value}
       </div>
@@ -183,7 +195,9 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
             <EditOutlined color={colors.thirdLevelText} size={16} />
           </span>
         </Tooltip>
-      ) : <NewtabOutlined color={colors.thirdLevelText} />,
+      ) : (
+        <NewtabOutlined color={colors.thirdLevelText} />
+      ),
       [FieldType.Email]: <EmailOutlined color={colors.thirdLevelText} size={16} />,
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} size={16} />,
     };
@@ -210,23 +224,25 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const renderURL = () => {
     if (!showURLTitleFlag) return null;
 
-    const urlTitle = field.type === FieldType.URL ?
-      Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue as any);
+    const urlTitle =
+      field.type === FieldType.URL ? Field.bindModel(field).cellValueToTitle(cellValue) : Field.bindModel(field).cellValueToString(cellValue as any);
     if (!urlTitle) return null;
 
     return (
       <div className={style.content}>
-        {!focused && favicon && <img
-          onError={() => {
-            imageLoadErrorRef.current = true;
-          }}
-          onLoad={() => {
-            imageLoadErrorRef.current = false;
-          }}
-          style={{ width: imageLoadErrorRef.current ? 0 : '16px' }}
-          src={favicon}
-          alt=""
-        />}
+        {!focused && favicon && (
+          <img
+            onError={() => {
+              imageLoadErrorRef.current = true;
+            }}
+            onLoad={() => {
+              imageLoadErrorRef.current = false;
+            }}
+            style={{ width: imageLoadErrorRef.current ? 0 : '16px' }}
+            src={favicon}
+            alt=""
+          />
+        )}
         {!focused && favicon && imageLoadErrorRef.current && <WebOutlined size={18} color={colors.textCommonPrimary} />}
         <Tooltip title={value} placement="top">
           <LinkButton
@@ -248,13 +264,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   };
 
   return (
-    <div
-      ref={wrapperRef}
-      className={style.textEditor}
-      style={{ ...props.style }}
-      onMouseMove={stopPropagation}
-      onWheel={stopPropagation}
-    >
+    <div ref={wrapperRef} className={style.textEditor} style={{ ...props.style }} onMouseMove={stopPropagation} onWheel={stopPropagation}>
       <div className={style.enhanceTextEditor}>
         {renderURL()}
         <input
@@ -290,7 +300,6 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
         />
       )}
     </div>
-
   );
 };
 

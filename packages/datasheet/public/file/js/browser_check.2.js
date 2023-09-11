@@ -26,7 +26,7 @@ const isClient = typeof window === 'object';
 /**
  * Check if it is IE 11
  */
-(function() {
+(function () {
   if (isClient && (!!window['ActiveXObject'] || 'ActiveXObject' in window)) {
     window.location.pathname = '/not_support';
   }
@@ -36,13 +36,10 @@ const SPECIAL_UA = ['lark', 'wolai'];
 
 function isTouchDevice() {
   return (
-    !!(typeof window !== 'undefined' &&
-      ('ontouchstart' in window ||
-        (window.DocumentTouch &&
-          typeof document !== 'undefined' &&
-          document instanceof window.DocumentTouch))) ||
-    !!(typeof navigator !== 'undefined' &&
-      (navigator.maxTouchPoints || navigator['msMaxTouchPoints']))
+    !!(
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window || (window.DocumentTouch && typeof document !== 'undefined' && document instanceof window.DocumentTouch))
+    ) || !!(typeof navigator !== 'undefined' && (navigator.maxTouchPoints || navigator['msMaxTouchPoints']))
   );
 }
 
@@ -52,9 +49,10 @@ function versionCheck() {
   if (isTouchDevice()) {
     return;
   }
-  navigator['sayswho'] = (function() {
-    let ua = navigator.userAgent, tem,
-        M = ua.match(/(opera|chrome|safari|edge|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  navigator['sayswho'] = (function () {
+    let ua = navigator.userAgent,
+      tem,
+      M = ua.match(/(opera|chrome|safari|edge|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
     for (let i = 0; i < SPECIAL_UA.length; i++) {
       if (typeof ua.includes === 'function' && ua.includes(SPECIAL_UA[i])) {

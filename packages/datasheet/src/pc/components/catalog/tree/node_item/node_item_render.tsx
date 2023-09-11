@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useState } from 'react';
-import styles from './style.module.less';
-import { NodeIcon } from '../node_icon';
-import classnames from 'classnames';
+import { useMount } from 'ahooks';
 import { Space } from 'antd';
-import { EditingNode } from './editing_node';
+import classnames from 'classnames';
+import React, { useState } from 'react';
+import { FloatUiTooltip as Tooltip, Typography } from '@apitable/components';
 import { INodesMapItem } from '@apitable/core';
 import { AddOutlined, MoreStandOutlined, LockFilled, ShareFilled } from '@apitable/icons';
-import { useMount } from 'ahooks';
 import { browserIsDesktop } from 'pc/utils/os';
-import { FloatUiTooltip as Tooltip, Typography } from '@apitable/components';
+import { NodeIcon } from '../node_icon';
+import { EditingNode } from './editing_node';
+import styles from './style.module.less';
 
 export interface IItemRender {
   id: string;
@@ -43,28 +43,15 @@ export interface IItemRender {
 }
 
 export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props) => {
-
-  const {
-    id,
-    actived,
-    isMobile,
-    iconClassNames,
-    editing,
-    childCreatable,
-    onClickMore,
-    onNodeAdd,
-    expanded,
-    hasChildren,
-    node,
-  } = props;
+  const { id, actived, isMobile, iconClassNames, editing, childCreatable, onClickMore, onNodeAdd, expanded, hasChildren, node } = props;
 
   const iconProps = {
-    expanded, 
-    hasChildren, 
-    type: node.type, 
-    icon: node.icon, 
-    nodeId: node.nodeId, 
-    editable: node.permissions.iconEditable, 
+    expanded,
+    hasChildren,
+    type: node.type,
+    icon: node.icon,
+    nodeId: node.nodeId,
+    editable: node.permissions.iconEditable,
     actived,
   };
 
@@ -86,38 +73,38 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
         [styles.nodeMobileActive]: actived && isMobileDevice,
       })}
     >
-      <div
-        className={iconClassNames}
-        onClick={e => e.stopPropagation()}
-      >
+      <div className={iconClassNames} onClick={(e) => e.stopPropagation()}>
         <NodeIcon {...iconProps} />
       </div>
       <div className={styles.content}>
         {editing ? (
           <EditingNode node={node} />
         ) : (
-          <Tooltip
-            content={node.nodeName}
-          >
-            <Typography ellipsis variant="body3" className={styles.nodeName}>{node.nodeName}</Typography>
+          <Tooltip content={node.nodeName}>
+            <Typography ellipsis variant="body3" className={styles.nodeName}>
+              {node.nodeName}
+            </Typography>
           </Tooltip>
         )}
       </div>
-      {
-        !editing &&
+      {!editing && (
         <>
           <Space className={styles.state} align="center" size={node.nodePermitSet ? 8 : 0}>
             {node.nodeShared && <ShareFilled />}
             {node.nodePermitSet && <LockFilled />}
           </Space>
           <Space className={styles.operation} align="center">
-            {childCreatable && <span onClick={onNodeAdd} style={{ display: 'flex', alignItems: 'center' }}>
-              <AddOutlined color="currentColor" />
-            </span>}
-            <span onClick={onClickMore} style={{ display: 'flex', alignItems: 'center' }}><MoreStandOutlined /></span>
+            {childCreatable && (
+              <span onClick={onNodeAdd} style={{ display: 'flex', alignItems: 'center' }}>
+                <AddOutlined color="currentColor" />
+              </span>
+            )}
+            <span onClick={onClickMore} style={{ display: 'flex', alignItems: 'center' }}>
+              <MoreStandOutlined />
+            </span>
           </Space>
         </>
-      }
+      )}
     </div>
   );
 };

@@ -29,10 +29,10 @@ export interface ICommitDragDropState {
  * For react-window, the interface for items should be common. In the case of grouping, the type is just different.
  */
 export interface IGalleryGroupItem {
-  groupIndex?: number,
-  recordId: string,
+  groupIndex?: number;
+  recordId: string;
   groupHeadRecordId?: string;
-  type: GalleryGroupItemType,
+  type: GalleryGroupItemType;
 }
 
 export interface IDragItem {

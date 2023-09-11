@@ -18,6 +18,9 @@
 
 package com.apitable.workspace.controller;
 
+import static com.apitable.shared.constants.PageConstants.PAGE_DESC;
+import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
+import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.apitable.shared.listener.enums.FieldPermissionChangeEvent.FIELD_PERMISSION_CHANGE;
 import static com.apitable.shared.listener.enums.FieldPermissionChangeEvent.FIELD_PERMISSION_DISABLE;
 import static com.apitable.shared.listener.enums.FieldPermissionChangeEvent.FIELD_PERMISSION_ENABLE;
@@ -43,12 +46,15 @@ import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.listener.event.FieldPermissionEvent;
 import com.apitable.shared.listener.event.FieldPermissionEvent.Arg;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.shared.util.page.PageObjectParam;
 import com.apitable.shared.validator.NodeMatch;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
@@ -66,6 +72,8 @@ import com.apitable.workspace.service.INodeShareService;
 import com.apitable.workspace.vo.FieldCollaboratorVO;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.FieldPermissionView;
+import com.apitable.workspace.vo.FieldRoleMemberVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -182,6 +190,32 @@ public class FieldRoleController {
         SpringContextHolder.getApplicationContext()
             .publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
+    }
+
+    @GetResource(path = "/datasheet/{dstId}/field/{fieldId}/collaborator/page")
+    @Operation(summary = "Page Query the Field' Collaborator", description = PAGE_DESC)
+    @Parameters({
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
+        @Parameter(name = "dstId", description = "datasheet id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNs"),
+        @Parameter(name = "fieldId", description = "field id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fldRg1cGlAFWG"),
+        @Parameter(name = PAGE_PARAM, description = "page's parameter", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY,
+            example = PAGE_SIMPLE_EXAMPLE)
+    })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public ResponseData<PageInfo<FieldRoleMemberVo>> getCollaboratorPage(
+        @PathVariable("dstId") @NodeMatch String dstId, @PathVariable("fieldId") String fieldId,
+        @PageObjectParam Page page
+    ) {
+        Long memberId = LoginContext.me().getMemberId();
+        controlTemplate.checkNodePermission(memberId, dstId, NodePermission.READ_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_ACCESS_DENIED));
+        PageInfo pageInfo =
+            iFieldRoleService.getFieldRoleMembersPageInfo(page, dstId, fieldId);
+        return ResponseData.success(pageInfo);
     }
 
     /**

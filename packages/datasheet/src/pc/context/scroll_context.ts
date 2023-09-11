@@ -27,25 +27,27 @@ export interface IScrollOffset {
 
 export interface ICacheScroll {
   // Key = 'datasheetID,viewId'
-  [key: string]: IScrollOffset
+  [key: string]: IScrollOffset;
 }
 
 export interface IScrollContextProps {
   cacheScrollMap: RefObject<ICacheScroll>;
-  changeCacheScroll: (value: IScrollOffset, datasheetId?: string, viewId?: string) => void
+  changeCacheScroll: (value: IScrollOffset, datasheetId?: string, viewId?: string) => void;
 }
 
 export const ScrollContext = createContext<IScrollContextProps>({
   cacheScrollMap: { current: {}},
-  changeCacheScroll: () => {}
+  changeCacheScroll: () => {},
 } as IScrollContextProps);
 
 export const useCacheScroll = (): Required<IScrollOffset> & Pick<IScrollContextProps, 'changeCacheScroll'> => {
   const { cacheScrollMap, changeCacheScroll } = useContext(ScrollContext) || {};
-  const { datasheetId, viewId } = useSelector(state => state.pageParams);
+  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
   const defaultValue = { scrollLeft: 0, scrollTop: 0, changeCacheScroll };
-  return cacheScrollMap.current && cacheScrollMap.current[`${datasheetId},${viewId}`] ? {
-    ...defaultValue,
-    ...cacheScrollMap.current[`${datasheetId},${viewId}`]
-  } : defaultValue;
+  return cacheScrollMap.current && cacheScrollMap.current[`${datasheetId},${viewId}`]
+    ? {
+      ...defaultValue,
+      ...cacheScrollMap.current[`${datasheetId},${viewId}`],
+    }
+    : defaultValue;
 };

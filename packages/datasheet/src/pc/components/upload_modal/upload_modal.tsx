@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, IAttacheField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { useThemeColors } from '@apitable/components';
 import { useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { IAttachmentValue, IAttacheField, RowHeightLevel, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { BulkDownload } from '../preview_file/preview_main/bulk_download';
 import { Memory } from './memory';
 import styles from './styles.module.less';
 import { UploadCore } from './upload_core';
-import { CloseOutlined } from '@apitable/icons';
-import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 
 interface IUploadAttachment {
   datasheetId: string;
@@ -43,19 +43,10 @@ interface IUploadAttachment {
   editable?: boolean;
 }
 
-export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> = props => {
+export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> = (props) => {
   const colors = useThemeColors();
-  const {
-    recordId,
-    field,
-    datasheetId,
-    cellValue,
-    rowHeightLevel,
-    visible: _visible,
-    setVisible: _setVisible,
-    onSave,
-  } = props;
-  const isInWebsite = useSelector(state => state.space.activeId);
+  const { recordId, field, datasheetId, cellValue, rowHeightLevel, visible: _visible, setVisible: _setVisible, onSave } = props;
+  const isInWebsite = useSelector((state) => state.space.activeId);
   const [visible, setVisible] = useState(_visible ?? true);
   const allowedDownload = useAllowDownloadAttachment(field.id);
 
@@ -75,12 +66,8 @@ export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> =
         borderTop: cellValue?.length ? `1px solid ${colors.lineColor}` : `1px solid ${colors.defaultBg}`,
       }}
     >
-      {
-        isInWebsite && <Memory cellValue={cellValue} />
-      }
-      {cellValue?.length && allowedDownload &&
-        <BulkDownload files={cellValue} datasheetId={datasheetId} />
-      }
+      {isInWebsite && <Memory cellValue={cellValue} />}
+      {cellValue?.length && allowedDownload && <BulkDownload files={cellValue} datasheetId={datasheetId} />}
     </div>
   );
 

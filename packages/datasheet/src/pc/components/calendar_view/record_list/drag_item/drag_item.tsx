@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cls from 'classnames';
 import { memo, MouseEvent, useContext } from 'react';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { useContextMenu } from '@apitable/components';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
-import { RecordItem } from '../../record_item';
 import { CalendarContext } from '../../calendar_context';
 import { PRE_RECORD } from '../../constants';
-import cls from 'classnames';
+import { RecordItem } from '../../record_item';
 import styles from './styles.module.less';
 
 interface IDrag {
@@ -33,9 +33,8 @@ interface IDrag {
 }
 
 const DragItemBase = ({ id, disabled }: IDrag) => {
-  const {
-    fieldMap, calendarStyle, columns, currentSearchRecordId, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField,
-  } = useContext(CalendarContext);
+  const { fieldMap, calendarStyle, columns, currentSearchRecordId, isStartDateTimeField, isEndDateTimeField, draggable, isCryptoStartField } =
+    useContext(CalendarContext);
   const { startFieldId, endFieldId } = calendarStyle;
   const noRequiredField = (!startFieldId && !endFieldId) || (!isStartDateTimeField && !isEndDateTimeField);
   const isCurrentSearchCell = currentSearchRecordId === id;
@@ -49,11 +48,11 @@ const DragItemBase = ({ id, disabled }: IDrag) => {
     e.preventDefault();
     show(e, {
       props: {
-        recordId: id
-      }
+        recordId: id,
+      },
     });
   };
-  const [{ opacity }, drag] = useDrag(() => ({ 
+  const [{ opacity }, drag] = useDrag(() => ({
     type: PRE_RECORD,
     item: { id, type: PRE_RECORD },
     collect: (monitor: DragSourceMonitor) => ({
@@ -66,7 +65,7 @@ const DragItemBase = ({ id, disabled }: IDrag) => {
       ref={isDisabledDraggable ? undefined : drag}
       className={cls(styles.dragItem, {
         [styles.highlight]: isCurrentSearchCell,
-        [styles.draggable]: !isDisabledDraggable
+        [styles.draggable]: !isDisabledDraggable,
       })}
       style={{
         opacity,
@@ -74,7 +73,9 @@ const DragItemBase = ({ id, disabled }: IDrag) => {
       onClick={() => expandRecordIdNavigate(id)}
       onContextMenu={onContextMenu}
     >
-      {columns.map(column => <RecordItem key={column.fieldId} column={column} id={id} />)}
+      {columns.map((column) => (
+        <RecordItem key={column.fieldId} column={column} id={id} />
+      ))}
     </div>
   );
 };

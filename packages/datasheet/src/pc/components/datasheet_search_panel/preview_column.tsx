@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { IMeta, WidgetApi } from '@apitable/core';
 import { FormPreviewer, WidgetPreview } from 'pc/components/datasheet_search_panel/components';
 import { INodeInstalledWidget, SecondConfirmType } from './interface';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 
 interface IPriviewColumnProps {
   currentMeta: IMeta | null;
@@ -32,7 +32,7 @@ interface IPriviewColumnProps {
   onChange(result: { datasheetId?: string; mirrorId?: string; viewId?: string; widgetIds?: string[] }): void;
 }
 
-export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps>> = props => {
+export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps>> = (props) => {
   const { currentMeta, setLoading, currentViewId, currentDatasheetId, onChange, secondConfirmType } = props;
   const [installedWidgets, setInstalledWidgets] = useState<INodeInstalledWidget[] | null>(null);
 
@@ -51,7 +51,7 @@ export const PreviewColumn: React.FC<React.PropsWithChildren<IPriviewColumnProps
       return;
     }
     setLoading(true);
-    WidgetApi.getWidgetsInfoByNodeId(datasheetId).then(res => {
+    WidgetApi.getWidgetsInfoByNodeId(datasheetId).then((res) => {
       const { data, success } = res.data;
       if (success) {
         setLoading(false);

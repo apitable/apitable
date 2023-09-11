@@ -1,24 +1,29 @@
-import { Api, ConfigConstant, INodeMeta, IReduxState, StoreActions } from '@apitable/core';
-import { useDispatch } from 'pc/hooks/use_dispatch';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { Api, ConfigConstant, INodeMeta, IReduxState, StoreActions } from '@apitable/core';
+import { useDispatch } from 'pc/hooks/use_dispatch';
 
 export const useNotifyNOdeNameChange = () => {
   const dispatch = useDispatch();
-  const nodeId = useSelector(state => {
+  const nodeId = useSelector((state) => {
     return state.pageParams.nodeId;
   });
 
-  const { socketData, spaceId, treeNodesMap } =
-    useSelector((state: IReduxState) => ({
+  const { socketData, spaceId, treeNodesMap } = useSelector(
+    (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,
       spaceId: state.space.activeId,
-    }), shallowEqual);
+    }),
+    shallowEqual,
+  );
 
   // Updating data sources, e.g. directory tree count tables, form data sources
-  const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<Omit<INodeMeta, 'name'> &
-    { nodeName?: string, showRecordHistory?: ConfigConstant.ShowRecordHistory }>) => {
+  const updateNodeInfo = (
+    nodeId: string,
+    nodeType: ConfigConstant.NodeType,
+    data: Partial<Omit<INodeMeta, 'name'> & { nodeName?: string; showRecordHistory?: ConfigConstant.ShowRecordHistory }>,
+  ) => {
     dispatch(StoreActions.updateTreeNodesMap(nodeId, data));
     const { nodeName: name, ...info } = data;
     const nodeData = name ? { ...info, name } : info;
@@ -44,7 +49,7 @@ export const useNotifyNOdeNameChange = () => {
 
     if (!socketNodeId || socketNodeId !== nodeId) return;
 
-    Api.getNodeInfo(nodeId).then(res => {
+    Api.getNodeInfo(nodeId).then((res) => {
       const { data } = res.data;
       const nodeInfo = data[0];
 
@@ -52,12 +57,16 @@ export const useNotifyNOdeNameChange = () => {
 
       updateNodeInfo(nodeId, treeNodesMap[nodeId].type, nodeInfo);
 
-      window.parent.postMessage({
-        message: 'changeNodeName', data: {
-          roomId: nodeId,
-          nodeName: nodeInfo.nodeName
-        }
-      }, '*');
+      window.parent.postMessage(
+        {
+          message: 'changeNodeName',
+          data: {
+            roomId: nodeId,
+            nodeName: nodeInfo.nodeName,
+          },
+        },
+        '*',
+      );
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

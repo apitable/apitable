@@ -25,17 +25,17 @@ import { dashboardReg, mirrorIdReg } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 
 interface IFunctionParams {
-  path?: Navigation,
-  params?: IParams,
-  query?: IQuery,
-  method?: Method,
-  clearQuery?: boolean
+  path?: Navigation;
+  params?: IParams;
+  query?: IQuery;
+  method?: Method;
+  clearQuery?: boolean;
 }
 
 export type IFunctionResult = [string?, IQuery?, boolean?];
 
 export type IRouterStrategy = {
-  [k in Navigation]?: (info: IFunctionParams) => IFunctionResult
+  [k in Navigation]?: (info: IFunctionParams) => IFunctionResult;
 };
 
 export class RouterStrategy implements IRouterStrategy {
@@ -57,18 +57,9 @@ export class RouterStrategy implements IRouterStrategy {
     if (dashboardReg.test(`/${nodeId}`)) {
       path = joinPath([...commonParams, params!.widgetId]);
     } else if (mirrorIdReg.test(`/${nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params.datasheetId,
-        params.viewId,
-        params.recordId || params.widgetId,
-      ]);
+      path = joinPath([...commonParams, params.datasheetId, params.viewId, params.recordId || params.widgetId]);
     } else {
-      path = joinPath([
-        ...commonParams,
-        params.viewId,
-        params.recordId || params.widgetId,
-      ]);
+      path = joinPath([...commonParams, params.viewId, params.recordId || params.widgetId]);
     }
     return [path, query, clearQuery];
   };
@@ -91,88 +82,39 @@ export class RouterStrategy implements IRouterStrategy {
 
   static [Navigation.SHARE_SPACE] = ({ params, query, clearQuery }: IFunctionParams) => {
     let path;
-    const commonParams = [
-      '/share',
-      params?.shareId,
-      params?.nodeId,
-    ];
+    const commonParams = ['/share', params?.shareId, params?.nodeId];
     if (dashboardReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params!.widgetId,
-      ]);
+      path = joinPath([...commonParams, params!.widgetId]);
     } else if (mirrorIdReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params!.datasheetId,
-        params!.viewId,
-        params!.recordId,
-      ]);
+      path = joinPath([...commonParams, params!.datasheetId, params!.viewId, params!.recordId]);
     } else {
-      path = joinPath([
-        ...commonParams,
-        params?.viewId,
-        params?.recordId || params?.widgetId,
-      ]);
+      path = joinPath([...commonParams, params?.viewId, params?.recordId || params?.widgetId]);
     }
     return [path, query, clearQuery];
   };
 
   static [Navigation.EMBED_SPACE] = ({ params, query, clearQuery }: IFunctionParams) => {
     let path;
-    const commonParams = [
-      '/embed',
-      params?.embedId,
-      params?.nodeId,
-    ];
+    const commonParams = ['/embed', params?.embedId, params?.nodeId];
     if (dashboardReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params!.widgetId,
-      ]);
+      path = joinPath([...commonParams, params!.widgetId]);
     } else if (mirrorIdReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params!.datasheetId,
-        params!.viewId,
-        params!.recordId,
-      ]);
+      path = joinPath([...commonParams, params!.datasheetId, params!.viewId, params!.recordId]);
     } else {
-      path = joinPath([
-        ...commonParams,
-        params?.viewId,
-        params?.recordId || params?.widgetId,
-      ]);
+      path = joinPath([...commonParams, params?.viewId, params?.recordId || params?.widgetId]);
     }
     return [path, query, clearQuery];
   };
 
   static [Navigation.TEMPLATE] = ({ params, query, clearQuery }: IFunctionParams): IFunctionResult => {
     let path;
-    const commonParams = [
-      '/template',
-      params?.categoryId,
-      params?.templateId || params?.albumId,
-      params?.nodeId,
-    ];
+    const commonParams = ['/template', params?.categoryId, params?.templateId || params?.albumId, params?.nodeId];
     if (dashboardReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params?.widgetId,
-      ]);
+      path = joinPath([...commonParams, params?.widgetId]);
     } else if (mirrorIdReg.test(`/${params?.nodeId}`)) {
-      path = joinPath([
-        ...commonParams,
-        params!.datasheetId,
-        params!.viewId,
-        params!.recordId,
-      ]);
+      path = joinPath([...commonParams, params!.datasheetId, params!.viewId, params!.recordId]);
     } else {
-      path = joinPath([
-        ...commonParams,
-        params?.viewId,
-        params?.recordId || params?.widgetId,
-      ]);
+      path = joinPath([...commonParams, params?.viewId, params?.recordId || params?.widgetId]);
     }
     return [path, query, clearQuery];
   };

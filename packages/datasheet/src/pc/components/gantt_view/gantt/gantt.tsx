@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { FC, memo, useContext } from 'react';
+import { KONVA_DATASHEET_ID } from '@apitable/core';
 import { GanttCoordinate, IScrollState, PointPosition, useGantt } from 'pc/components/gantt_view';
 import { Line, Rect } from 'pc/components/konva_components';
 import { GRID_BOTTOM_STAT_HEIGHT, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, useGrid } from 'pc/components/konva_grid';
-import { FC, memo, useContext } from 'react';
 import { OperationBar } from '../components';
 import { EXPORT_BRAND_DESC_HEIGHT, EXPORT_IMAGE_PADDING } from '../constant';
 import { useBrandDesc, useViewWatermark } from '../hooks';
@@ -105,7 +105,7 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
     dateAlarms,
     collaboratorAvatars,
     bottomStats,
-    frozenFieldSplitter
+    frozenFieldSplitter,
   } = useGrid({
     instance: gridInstance,
     rowStartIndex,
@@ -114,7 +114,7 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
     columnStopIndex: gridColumnStopIndex,
     pointPosition,
     scrollState: gridScrollState,
-    isExporting
+    isExporting,
   });
 
   const {
@@ -142,7 +142,7 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
     lineTooltip,
     taskLineList,
     drawingLine,
-    lineSettingModels
+    lineSettingModels,
   } = useGantt({
     instance: ganttInstance,
     columnStartIndex,
@@ -157,119 +157,84 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
   const watermarkText = useViewWatermark({
     containerWidth,
     containerHeight,
-    isExporting
+    isExporting,
   });
 
   const brandDesc = useBrandDesc({
     containerWidth,
     containerHeight,
-    isExporting
+    isExporting,
   });
   return (
     <Layer>
-      {
-        isExporting &&
+      {isExporting && (
         <Rect
           width={containerWidth + EXPORT_IMAGE_PADDING * 2}
           height={containerHeight + EXPORT_IMAGE_PADDING * 2 + EXPORT_BRAND_DESC_HEIGHT}
           fill={colors.fc6}
         />
-      }
-      <Group
-        x={isExporting ? EXPORT_IMAGE_PADDING : undefined}
-        y={isExporting ? EXPORT_IMAGE_PADDING : undefined}
-      >
-        <Rect
-          width={containerWidth}
-          height={containerHeight}
-          fill={colors.white}
-          cornerRadius={[12, 0, 0, 0]}
-        />
-        {
-          !isMobile &&
-          <Group
-            clipX={0}
-            clipY={0}
-            clipWidth={containerWidth}
-            clipHeight={containerHeight}
-            listening={false}
-          >
+      )}
+      <Group x={isExporting ? EXPORT_IMAGE_PADDING : undefined} y={isExporting ? EXPORT_IMAGE_PADDING : undefined}>
+        <Rect width={containerWidth} height={containerHeight} fill={colors.white} cornerRadius={[12, 0, 0, 0]} />
+        {!isMobile && (
+          <Group clipX={0} clipY={0} clipWidth={containerWidth} clipHeight={containerHeight} listening={false}>
             <Group offsetY={scrollTop}>
               {hoverRow}
               {activeRow}
               {selectedRows}
             </Group>
           </Group>
-        }
+        )}
 
         {
           // No rendering when there is no width available in the Gantt chart graph area
-          ganttWidth > 0 &&
-          <>
-            <Group
-              x={gridWidth}
-              clipX={0}
-              clipY={0}
-              clipWidth={ganttWidth}
-              clipHeight={containerHeight}
-            >
-              {headerBackground}
+          ganttWidth > 0 && (
+            <>
+              <Group x={gridWidth} clipX={0} clipY={0} clipWidth={ganttWidth} clipHeight={containerHeight}>
+                {headerBackground}
 
-              <Group offsetX={ganttScrollLeft} listening={false}>
-                <OperationBar
-                  instance={ganttInstance}
-                  scrollLeft={ganttScrollLeft}
-                  columnStartIndex={columnStartIndex}
-                  columnStopIndex={columnStopIndex}
-                  ganttWidth={ganttWidth}
-                />
-                {timelineTexts}
-                {timelineDividers}
-                {timelineHolidays}
-                {timelineLines}
-                {timelineHighlight}
-              </Group>
-
-              {skipButtons}
-              {backToNowButton}
-            </Group>
-            <Group
-              x={gridWidth}
-              clipX={0}
-              clipY={rowInitSize}
-              clipWidth={ganttWidth}
-              clipHeight={containerHeight - rowInitSize}
-            >
-              <Group offsetX={ganttScrollLeft} offsetY={scrollTop}>
-                <Group>
-                  {taskLineList}
+                <Group offsetX={ganttScrollLeft} listening={false}>
+                  <OperationBar
+                    instance={ganttInstance}
+                    scrollLeft={ganttScrollLeft}
+                    columnStartIndex={columnStartIndex}
+                    columnStopIndex={columnStopIndex}
+                    ganttWidth={ganttWidth}
+                  />
+                  {timelineTexts}
+                  {timelineDividers}
+                  {timelineHolidays}
+                  {timelineLines}
+                  {timelineHighlight}
                 </Group>
-                {willFillTaskPoint}
-                {willAddTaskPoint}
-                {taskGroupHeaders}
-                <Group>{taskList}</Group>
-                {transformer}
-                {drawingLine}
-                {lineSettingModels}
+
+                {skipButtons}
+                {backToNowButton}
               </Group>
-              <Group offsetY={scrollTop}>
-                {backToTaskButtons}
-                {errTaskTips}
+              <Group x={gridWidth} clipX={0} clipY={rowInitSize} clipWidth={ganttWidth} clipHeight={containerHeight - rowInitSize}>
+                <Group offsetX={ganttScrollLeft} offsetY={scrollTop}>
+                  <Group>{taskLineList}</Group>
+                  {willFillTaskPoint}
+                  {willAddTaskPoint}
+                  {taskGroupHeaders}
+                  <Group>{taskList}</Group>
+                  {transformer}
+                  {drawingLine}
+                  {lineSettingModels}
+                </Group>
+                <Group offsetY={scrollTop}>
+                  {backToTaskButtons}
+                  {errTaskTips}
+                </Group>
               </Group>
-            </Group>
-          </>
+            </>
+          )
         }
 
         {/* Left taskbar area */}
-        {
-          gridVisible &&
+        {gridVisible && (
           <>
-            <Group
-              clipX={0}
-              clipY={0}
-              clipWidth={gridWidth + 1}
-              clipHeight={containerHeight}
-            >
+            <Group clipX={0} clipY={0} clipWidth={gridWidth + 1} clipHeight={containerHeight}>
               <Group offsetY={scrollTop}>
                 {frozenCells}
                 {otherRows}
@@ -281,27 +246,11 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
                 {frozenDateAlarms}
                 {dateAddAlarm}
               </Group>
-              {
-                !isExporting &&
-                <Rect
-                  width={8}
-                  height={8}
-                  fill={colors.lowestBg}
-                  listening={false}
-                />
-              }
+              {!isExporting && <Rect width={8} height={8} fill={colors.lowestBg} listening={false} />}
               {frozenFieldHead}
               {frozenOpacityLines}
-              <Group
-                clipX={frozenAreaWidth + 1}
-                clipY={0}
-                clipWidth={isExporting ? undefined : cellGroupClipWidth}
-                clipHeight={containerHeight}
-              >
-                <Group
-                  offsetX={gridScrollLeft}
-                  offsetY={scrollTop}
-                >
+              <Group clipX={frozenAreaWidth + 1} clipY={0} clipWidth={isExporting ? undefined : cellGroupClipWidth} clipHeight={containerHeight}>
+                <Group offsetX={gridScrollLeft} offsetY={scrollTop}>
                   {cells}
                   {groupStats}
                 </Group>
@@ -319,10 +268,7 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
               clipWidth={gridWidth - frozenAreaWidth + 2}
               clipHeight={containerHeight - rowInitSize}
             >
-              <Group
-                offsetX={gridScrollLeft}
-                offsetY={scrollTop}
-              >
+              <Group offsetX={gridScrollLeft} offsetY={scrollTop}>
                 {placeHolderCells}
                 {collaboratorBorders}
                 {activedCell}
@@ -334,41 +280,20 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
                 {collaboratorAvatars}
               </Group>
             </Group>
-            <Line
-              x={gridWidth + 0.5}
-              y={0}
-              points={[0, 0, 0, containerHeight]}
-              stroke={colors.sheetLineColor}
-            />
-            <Rect
-              name={KONVA_DATASHEET_ID.GANTT_SPLITTER}
-              x={gridWidth - 3}
-              width={6}
-              height={containerHeight}
-              fill={'transparent'}
-            />
+            <Line x={gridWidth + 0.5} y={0} points={[0, 0, 0, containerHeight]} stroke={colors.sheetLineColor} />
+            <Rect name={KONVA_DATASHEET_ID.GANTT_SPLITTER} x={gridWidth - 3} width={6} height={containerHeight} fill={'transparent'} />
             <Group
               clipX={frozenAreaWidth - 1}
               clipY={rowInitSize - 1}
               clipWidth={gridWidth - frozenAreaWidth + 5}
               clipHeight={containerHeight - rowInitSize}
             >
-              <Group
-                offsetX={gridScrollLeft}
-                offsetY={scrollTop}
-              >
+              <Group offsetX={gridScrollLeft} offsetY={scrollTop}>
                 {fillHandler}
               </Group>
             </Group>
-            <Group
-              clipX={0}
-              clipY={rowInitSize - 1}
-              clipWidth={frozenAreaWidth + 4}
-              clipHeight={containerHeight - rowInitSize}
-            >
-              <Group
-                offsetY={scrollTop}
-              >
+            <Group clipX={0} clipY={rowInitSize - 1} clipWidth={frozenAreaWidth + 4} clipHeight={containerHeight - rowInitSize}>
+              <Group offsetY={scrollTop}>
                 {frozenActiveCellBorder}
                 {frozenActiveCollaboratorBorder}
                 {frozenFillHandler}
@@ -376,24 +301,12 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
               </Group>
             </Group>
             {bottomStatBackground}
-            <Group
-              clipX={0}
-              clipY={0}
-              clipWidth={gridWidth}
-              clipHeight={containerHeight}
-            >
-              <Group offsetX={gridScrollLeft}>
-                {bottomStats}
-              </Group>
+            <Group clipX={0} clipY={0} clipWidth={gridWidth} clipHeight={containerHeight}>
+              <Group offsetX={gridScrollLeft}>{bottomStats}</Group>
               {bottomFrozenStats}
               {frozenFieldSplitter.bottom}
             </Group>
-            <Line
-              x={0.5}
-              y={containerHeight - GRID_BOTTOM_STAT_HEIGHT}
-              points={[0, 0, 0, GRID_BOTTOM_STAT_HEIGHT]}
-              stroke={colors.sheetLineColor}
-            />
+            <Line x={0.5} y={containerHeight - GRID_BOTTOM_STAT_HEIGHT} points={[0, 0, 0, GRID_BOTTOM_STAT_HEIGHT]} stroke={colors.sheetLineColor} />
             <Line
               x={gridWidth + 0.5}
               y={containerHeight - GRID_BOTTOM_STAT_HEIGHT}
@@ -401,40 +314,26 @@ const Gantt: FC<React.PropsWithChildren<IGanttProps>> = memo((props) => {
               stroke={colors.sheetLineColor}
             />
           </>
-        }
+        )}
 
-        {
-          !isMobile &&
+        {!isMobile && (
           <>
-            <Group
-              clipX={0}
-              clipY={0}
-              clipWidth={containerWidth}
-              clipHeight={containerHeight}
-              listening={false}
-            >
-              <Group offsetY={scrollTop}>
-                {dragRowHighlightLine}
-              </Group>
+            <Group clipX={0} clipY={0} clipWidth={containerWidth} clipHeight={containerHeight} listening={false}>
+              <Group offsetY={scrollTop}>{dragRowHighlightLine}</Group>
             </Group>
 
-            <Group listening={false}>
-              {tooltip}
-            </Group>
-            <Group listening={false}>
-              {lineTooltip}
-            </Group>
+            <Group listening={false}>{tooltip}</Group>
+            <Group listening={false}>{lineTooltip}</Group>
             {dragSplitter}
           </>
-        }
+        )}
 
-        {
-          isExporting &&
+        {isExporting && (
           <>
             {watermarkText}
             {brandDesc}
           </>
-        }
+        )}
       </Group>
     </Layer>
   );

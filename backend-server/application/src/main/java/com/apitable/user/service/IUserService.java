@@ -24,9 +24,11 @@ import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.UserOpRo;
 import com.apitable.user.vo.UserInfoVo;
+import com.apitable.user.vo.UserSimpleVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User table service class.
@@ -385,4 +387,12 @@ public interface IUserService extends IService<UserEntity> {
      * @return UserSensitiveDTO
      */
     List<UserSensitiveDTO> getUserSensitiveInfoByIds(List<Long> userIds);
+
+    /**
+     * get user simple info.
+     *
+     * @param userIds user id list
+     * @return a map with userId as key
+     */
+    Map<Long, UserSimpleVO> getUserSimpleInfoMap(List<Long> userIds);
 }

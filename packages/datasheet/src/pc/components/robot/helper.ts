@@ -40,9 +40,6 @@ import {
   INodeOutputSchema,
   INodeType,
   IRobotAction,
-  IRobotBaseInfo,
-  IRobotCardInfo,
-  IRobotNodeType,
   IRobotTrigger,
   ITriggerType,
 } from './interface';
@@ -104,37 +101,6 @@ export const getNodeOutputSchemaList = (props: {
   return schemaList;
 };
 
-export const makeRobotCardInfo = (robot: IRobotBaseInfo, triggerTypes: ITriggerType[], actionTypes: IActionType[]) => {
-  const robotCardInfo: IRobotCardInfo = {
-    robotId: robot.robotId,
-    name: robot.name,
-    description: robot.description,
-    isActive: robot.isActive,
-    nodeTypeList: []
-  };
-  robot.nodes.forEach((node, index) => {
-    if (index === 0) {
-      const triggerType = triggerTypes.find(triggerType => triggerType.triggerTypeId === node.triggerTypeId);
-      if (triggerType) {
-        robotCardInfo.nodeTypeList.push({
-          nodeTypeId: node.triggerTypeId,
-          service: triggerType.service,
-          type: IRobotNodeType.Trigger,
-        });
-      }
-    } else {
-      const actionType = actionTypes.find(actionType => actionType.actionTypeId === node.actionTypeId);
-      if (actionType) {
-        robotCardInfo.nodeTypeList.push({
-          nodeTypeId: node.actionTypeId,
-          service: actionType.service,
-          type: IRobotNodeType.Action,
-        });
-      }
-    }
-  });
-  return robotCardInfo;
-};
 
 export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermissionMap): IJsonSchema => {
   // Extract all fields from fields and convert to json schema

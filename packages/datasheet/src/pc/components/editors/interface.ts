@@ -23,7 +23,7 @@ export interface IEditor {
   blur?: () => void;
 
   onEndEdit(cancel: boolean): void;
- 
+
   onStartEdit(cellValue?: ICellValue): void;
 
   setValue(cellValue?: ICellValue): void;

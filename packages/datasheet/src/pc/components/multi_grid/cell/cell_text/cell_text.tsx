@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
 import {
   ArrayValueField,
   BasicValueType,
@@ -31,30 +34,26 @@ import {
   SegmentType,
   SymbolAlign,
 } from '@apitable/core';
-import classNames from 'classnames';
-import { useThemeColors } from '@apitable/components';
-import * as React from 'react';
+import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 import { ICellComponentProps } from '../cell_value/interface';
 import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
 import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
-import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 
 // Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = (text: string | null) => text && /.+@.+/.test(text);
 const isPhoneNumber = (text: string) => text && /^[0-9\-()（）#+]+$/.test(text);
 
 type ICellText = ICellComponentProps & {
-  cellValue: ICellValue | typeof FormulaBaseError
-  rowHeightLevel?: RowHeightLevel,
+  cellValue: ICellValue | typeof FormulaBaseError;
+  rowHeightLevel?: RowHeightLevel;
 };
 
-export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
+export const CellText: React.FC<React.PropsWithChildren<ICellText>> = (props) => {
   const colors = useThemeColors();
   const { className, field, cellValue, toggleEdit, isActive, rowHeightLevel } = props;
   const fieldType = field.type;
-  const text = cellValue != null &&
-    cellValue instanceof FormulaBaseError ? cellValue?.message : Field.bindModel(field).cellValueToString(cellValue);
+  const text = cellValue != null && cellValue instanceof FormulaBaseError ? cellValue?.message : Field.bindModel(field).cellValueToString(cellValue);
   const { isEnhanceText: _isEnhanceText } = getTextFieldType(fieldType);
   const isEnhanceText = _isEnhanceText || fieldType === FieldType.Formula;
   const _handleEnhanceTextClick = useEnhanceTextClick();
@@ -70,16 +69,14 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
       [FieldType.Phone]: <TelephoneOutlined color={colors.thirdLevelText} />,
     };
     return (
-      <span
-        className={style.urlIcon}
-        onClick={e => handleURLClick(e, type, text as string, isActive)}
-      >
+      <span className={style.urlIcon} onClick={(e) => handleURLClick(e, type, text as string, isActive)}>
         {typeIconMap[type]}
       </span>
     );
   };
   let showUnderline = Boolean(text);
-  const isNumberField = Field.bindModel(field).basicValueType === BasicValueType.Number ||
+  const isNumberField =
+    Field.bindModel(field).basicValueType === BasicValueType.Number ||
     (Field.bindModel(field) as ArrayValueField).innerBasicValueType === BasicValueType.Number;
   const isComputedField = Field.bindModel(field).isComputed;
   const isFormulaField = isFormula(fieldType);
@@ -112,49 +109,52 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
     return (
       <>
         {Field.bindModel(field).validate(cellValue) &&
-          (cellValue as ISegment[]).filter(segment => {
-            if (fieldType === FieldType.URL) {
-              // URL trim
-              return Boolean(segment.text?.trim().length);
-            }
-            return true;
-          }).map((segment, index) => {
-            switch (segment.type) {
-              case SegmentType.Text:
-                return <span
-                  key={`${segment.text}-${index}`}
-                  style={{ cursor: isEnhanceText && isActive && showUnderline ? 'pointer' : 'inherit' }}
-                  onMouseDown={e => handleEnhanceTextClick(e, fieldType, segment.text)}
-                >
-                  {segment.text}
-                </span>;
-              case SegmentType.Url:
-                return (
-                  <span
-                    className={classNames(style.url, { [style.activeUrl]: isActive })}
-                    key={`${segment.link}-${index}`}
-                    // The link will only jump if it is active. Here we use onMouseDown instead of onClick.
-                    // onMouseDown when the cell is not yet active. onClick when the cell is active anyway
-                    onMouseDown={e => handleURLClick(e, segment.type, segment.text, isActive)}
-                  >
-                    {segment?.title || segment.text}
-                  </span>
-                );
-              case SegmentType.Email:
-                return (
-                  <span
-                    className={classNames(style.url, { [style.activeUrl]: isActive })}
-                    key={`${segment.link}-${index}`}
-                    onMouseDown={e => handleURLClick(e, segment.type, segment.text, isActive)}
-                  >
-                    {segment.text}
-                  </span>
-                );
-              default:
-                return null;
-            }
-          })
-        }
+          (cellValue as ISegment[])
+            .filter((segment) => {
+              if (fieldType === FieldType.URL) {
+                // URL trim
+                return Boolean(segment.text?.trim().length);
+              }
+              return true;
+            })
+            .map((segment, index) => {
+              switch (segment.type) {
+                case SegmentType.Text:
+                  return (
+                    <span
+                      key={`${segment.text}-${index}`}
+                      style={{ cursor: isEnhanceText && isActive && showUnderline ? 'pointer' : 'inherit' }}
+                      onMouseDown={(e) => handleEnhanceTextClick(e, fieldType, segment.text)}
+                    >
+                      {segment.text}
+                    </span>
+                  );
+                case SegmentType.Url:
+                  return (
+                    <span
+                      className={classNames(style.url, { [style.activeUrl]: isActive })}
+                      key={`${segment.link}-${index}`}
+                      // The link will only jump if it is active. Here we use onMouseDown instead of onClick.
+                      // onMouseDown when the cell is not yet active. onClick when the cell is active anyway
+                      onMouseDown={(e) => handleURLClick(e, segment.type, segment.text, isActive)}
+                    >
+                      {segment?.title || segment.text}
+                    </span>
+                  );
+                case SegmentType.Email:
+                  return (
+                    <span
+                      className={classNames(style.url, { [style.activeUrl]: isActive })}
+                      key={`${segment.link}-${index}`}
+                      onMouseDown={(e) => handleURLClick(e, segment.type, segment.text, isActive)}
+                    >
+                      {segment.text}
+                    </span>
+                  );
+                default:
+                  return null;
+              }
+            })}
         {isEnhanceText && isActive && text && getEnhanceTypeIcon(fieldType)}
       </>
     );
@@ -166,10 +166,12 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
     }
     const currencyField = field as ICurrencyField;
     const pureNumText = text.replace(currencyField.property.symbol, '');
-    return <div className={style.currencyFieldWrap}>
-      <div className={style.currencyFieldSymbol}>{currencyField.property.symbol}</div>
-      <div className={style.currencyFieldText}>{pureNumText}</div>
-    </div>;
+    return (
+      <div className={style.currencyFieldWrap}>
+        <div className={style.currencyFieldSymbol}>{currencyField.property.symbol}</div>
+        <div className={style.currencyFieldText}>{pureNumText}</div>
+      </div>
+    );
   };
 
   return (
@@ -184,14 +186,15 @@ export const CellText: React.FC<React.PropsWithChildren<ICellText>> = props => {
       })}
       onDoubleClick={toggleEdit}
     >
-      {
-        (isFormulaField || isLookUpField) ? <UrlDiscern value={text} /> :
-          isCurrencyAndAlignLeft ?
-            renderCurrency() :
-            (isNumberField || isComputedField) ?
-              text :
-              renderTextBaseCellValue()
-      }
+      {isFormulaField || isLookUpField ? (
+        <UrlDiscern value={text} />
+      ) : isCurrencyAndAlignLeft ? (
+        renderCurrency()
+      ) : isNumberField || isComputedField ? (
+        text
+      ) : (
+        renderTextBaseCellValue()
+      )}
     </div>
   );
 };

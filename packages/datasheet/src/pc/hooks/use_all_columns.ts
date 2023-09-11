@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Role, Selectors } from '@apitable/core';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { Role, Selectors } from '@apitable/core';
 
 /**
- * 
- * @param dstId 
- * @param withNoPermissionField 
+ *
+ * @param dstId
+ * @param withNoPermissionField
  */
 export const useAllColumns = (dstId: string, withNoPermissionField?: boolean) => {
-  const snapshot = useSelector(state => {
+  const snapshot = useSelector((state) => {
     return Selectors.getSnapshot(state, dstId);
   });
-  const fieldPermissionMap = useSelector(state => {
+  const fieldPermissionMap = useSelector((state) => {
     return Selectors.getFieldPermissionMap(state, dstId);
   });
   const firstView = snapshot?.meta.views[0];
   return useMemo(() => {
-    return firstView?.columns.filter(col => {
+    return firstView?.columns.filter((col) => {
       if (withNoPermissionField) {
         return true;
       }

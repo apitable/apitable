@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DATASHEET_ID, DropDirectionType, Selectors } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
-import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { IElementRectProps, MoveType } from './interface';
+import { useThemeColors } from '@apitable/components';
+import { DATASHEET_ID, DropDirectionType, Selectors } from '@apitable/core';
+import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { IDragOption, IDragProps } from '../drag/interface';
+import { IElementRectProps, MoveType } from './interface';
 
 interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;
@@ -39,7 +39,7 @@ type IHoverLine = IHoverLineOwnProps & Pick<IDragProps, 'width' | 'height' | 'ro
 
 type IPosition = { x: number; y: number } | null;
 
-export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = props => {
+export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = (props) => {
   const {
     isChangeColumnsWidth,
     setDirection,
@@ -52,8 +52,8 @@ export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = props =>
     getElementRect,
   } = props;
   const colors = useThemeColors();
-  const dragTarget = useSelector(state => Selectors.getGridViewDragState(state).dragTarget);
-  const primaryFieldId = useSelector(state => {
+  const dragTarget = useSelector((state) => Selectors.getGridViewDragState(state).dragTarget);
+  const primaryFieldId = useSelector((state) => {
     const view = Selectors.getCurrentView(state)!;
     return view.columns[0].fieldId;
   });

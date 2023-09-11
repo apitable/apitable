@@ -16,43 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { KonvaEventObject } from 'konva/lib/Node';
+import dynamic from 'next/dynamic';
+import { FC, useContext, useState } from 'react';
 import { black, getNextShadeColor, Message } from '@apitable/components';
 import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import { KonvaEventObject } from 'konva/lib/Node';
-import dynamic from 'next/dynamic';
 import { expandRecordInCenter } from 'pc/components/expand_record';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
 import {
-  GRID_CELL_DELETE_ITEM_BUTTON_SIZE, GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING, KonvaGridContext
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET,
+  GRID_CELL_VALUE_PADDING,
+  GRID_OPTION_ITEM_PADDING,
+  KonvaGridContext,
 } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { store } from 'pc/store';
-import { FC, useContext, useState } from 'react';
+import { MouseDownType } from '../../../../multi_grid';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
-import { MouseDownType } from '../../../../multi_grid';
 
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const {
-    x,
-    y,
-    recordId,
-    cellValue,
-    field,
-    rowHeight,
-    columnWidth,
-    renderData,
-    isActive,
-    editable,
-    toggleEdit,
-    onChange,
-  } = props;
+  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, toggleEdit, onChange } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const state = store.getState();
@@ -65,18 +56,18 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
   const [isHover, setHover] = useState(false);
   const [closeIconHoverId, setCloseIconHoverId] = useState<null | string>(null);
   const [closeIconDownId, setCloseIconDownId] = useState<null | string>(null);
   const { renderContent } = renderData;
 
-  async function onClick(e: { evt: { button: MouseDownType; }; }) {
+  async function onClick(e: { evt: { button: MouseDownType } }) {
     if (e.evt.button === MouseDownType.Right) {
       return;
     }
-    operatingEnable && toggleEdit && await toggleEdit();
+    operatingEnable && toggleEdit && (await toggleEdit());
   }
 
   function deleteItem(e: KonvaEventObject<MouseEvent>, index?: number) {
@@ -123,7 +114,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
       activeRecordId: recordId,
       recordIds: (renderContent as IRenderContentBase[])!.map(({ id }) => id),
       viewId: getForeignViewId(),
-      datasheetId: foreignDatasheetId
+      datasheetId: foreignDatasheetId,
     });
   }
 
@@ -135,18 +126,8 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const addBtnVisible = !realField.property.limitSingleRecord || renderContent == null;
 
   return (
-    (<CellScrollContainer
-      x={x}
-      y={y}
-      columnWidth={columnWidth}
-      rowHeight={rowHeight}
-      fieldId={fieldId}
-      recordId={recordId}
-      renderData={renderData}
-    >
-      {
-        addBtnVisible &&
-        operatingEnable &&
+    <CellScrollContainer x={x} y={y} columnWidth={columnWidth} rowHeight={rowHeight} fieldId={fieldId} recordId={recordId} renderData={renderData}>
+      {addBtnVisible && operatingEnable && (
         <Icon
           name={name}
           x={GRID_CELL_VALUE_PADDING}
@@ -161,9 +142,8 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           onClick={onClick}
           onTap={onClick}
         />
-      }
-      {
-        isActive &&
+      )}
+      {isActive &&
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height, text, style, id } = item;
@@ -176,12 +156,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
             iconBg = getNextShadeColor(black[200], 2);
           }
           return (
-            <Group
-              x={x}
-              y={y}
-              listening={isActive}
-              key={index}
-            >
+            <Group x={x} y={y} listening={isActive} key={index}>
               <Rect
                 name={name}
                 width={width}
@@ -191,15 +166,8 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
                 onClick={() => expand(id)}
                 onTap={() => expand(id)}
               />
-              <Text
-                x={GRID_OPTION_ITEM_PADDING}
-                height={height}
-                text={renderText}
-                fill={style.color}
-                fontSize={12}
-              />
-              {
-                operatingEnable &&
+              <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={renderText} fill={style.color} fontSize={12} />
+              {operatingEnable && (
                 <Icon
                   name={name}
                   x={width - GRID_OPTION_ITEM_PADDING - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET}
@@ -230,11 +198,10 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
                     setCloseIconHoverId(null);
                   }}
                 />
-              }
+              )}
             </Group>
           );
-        })
-      }
-    </CellScrollContainer>)
+        })}
+    </CellScrollContainer>
   );
 };

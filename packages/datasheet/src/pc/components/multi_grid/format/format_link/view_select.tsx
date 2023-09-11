@@ -16,20 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, useRef } from 'react';
-import styles from './styles.module.less';
-import RcTrigger from 'rc-trigger';
-import { IViewProperty, t, Strings } from '@apitable/core';
-import classNames from 'classnames';
-import settingStyles from '../../field_setting/styles.module.less';
+import { useClickAway } from 'ahooks';
 import { Switch } from 'antd';
+import classNames from 'classnames';
+import RcTrigger from 'rc-trigger';
+import { memo, useRef, useState } from 'react';
+import { WrapperTooltip, useThemeColors } from '@apitable/components';
+import { IViewProperty, t, Strings } from '@apitable/core';
+import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
-import { useState } from 'react';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { MobileSelect } from 'pc/components/common';
-import { WrapperTooltip, useThemeColors } from '@apitable/components';
-import { useClickAway } from 'ahooks';
+import settingStyles from '../../field_setting/styles.module.less';
+import styles from './styles.module.less';
 
 interface IViewSelect {
   onChange: (viewId?: string) => void;
@@ -42,7 +41,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
   const colors = useThemeColors();
   const { onChange, viewId, foreignDatasheetReadable } = props;
   const views = props.views;
-  const selectedView = views.find(view => view.id === viewId);
+  const selectedView = views.find((view) => view.id === viewId);
   const view = selectedView ? selectedView : views[0];
   const [showViewPanel, setShowViewPanel] = useState(false);
   const viewSelectTriggerRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
   const PopContent = (
     <div className={styles.viewSelectPanel}>
       <div className={styles.viewSelect}>
-        {views.map(view => {
+        {views.map((view) => {
           // There is no view access to the link datasheet, only the assigned view can be seen in the view list, other views are not visible
           if (!foreignDatasheetReadable && viewId !== view.id) {
             return null;
@@ -96,7 +95,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
     </div>
   );
 
-  const optionData = views.map(view => {
+  const optionData = views.map((view) => {
     return {
       value: view.id,
       label: view.name,
@@ -113,7 +112,7 @@ export const ViewSelect = memo((props: IViewSelect) => {
             <Switch
               size="small"
               checked={Boolean(selectedView)}
-              onChange={checked => (checked ? onChange(view.id) : onChange(undefined))}
+              onChange={(checked) => (checked ? onChange(view.id) : onChange(undefined))}
               disabled={!foreignDatasheetReadable}
             />
           </span>

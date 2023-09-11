@@ -18,7 +18,9 @@
 
 import { SystemConfig, FieldType } from '@apitable/core';
 
-export const getFieldDocs = (fieldType: FieldType): {
+export const getFieldDocs = (
+  fieldType: FieldType,
+): {
   valueType?: string;
   defaultExampleId?: string;
   descriptionId?: string;

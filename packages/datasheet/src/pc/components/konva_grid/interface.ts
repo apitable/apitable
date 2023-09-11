@@ -69,7 +69,7 @@ export interface IRenderProps {
   realField?: IField;
   unitTitleMap?: object;
   cacheTheme: ThemeName;
-  currentResourceId?: string
+  currentResourceId?: string;
 }
 
 export interface IRenderStyleProps {
@@ -90,5 +90,5 @@ export interface ICellHeightProps {
 export enum FieldHeadIconType {
   Permission = 'Permission',
   Description = 'Description',
-  Error = 'Error'
+  Error = 'Error',
 }

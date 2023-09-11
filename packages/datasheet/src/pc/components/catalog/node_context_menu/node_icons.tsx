@@ -18,6 +18,7 @@
 
 import * as React from 'react';
 
+import { colorVars } from '@apitable/components';
 import {
   DashboardOutlined,
   SearchOutlined,
@@ -47,10 +48,10 @@ import {
   DatasheetOutlined,
   IIconProps, MirrorOutlined, InfoCircleOutlined,
   ChevronRightOutlined,
+  AutomationOutlined,
   FolderRightOutlined, RobotOutlined,
   RefreshOutlined
 } from '@apitable/icons';
-import { colorVars } from '@apitable/components';
 
 /**
  * Node icon type, external use of this enumeration as configuration
@@ -95,6 +96,7 @@ export enum NodeIcon {
     Mirror = 'Mirror',
     MoveTo = 'MoveTo',
     Ai = 'Ai',
+    AddAutomation = 'add_automation',
     CreateBackup = 'CreateBackup',
 }
 
@@ -113,6 +115,9 @@ export const nodeIconImportMap: {
   [NodeIcon.Export]: DownloadOutlined,
   [NodeIcon.ExportCsv]: FileAddOutlined,
   [NodeIcon.ExportXlsx]: FileAddOutlined,
+
+  // TODO Node Icon
+  [NodeIcon.AddAutomation]: AutomationOutlined,
   [NodeIcon.AddDatasheet]: FileAddOutlined,
   [NodeIcon.AddForm]: FormAddOutlined,
   [NodeIcon.Copy]: DuplicateOutlined,

@@ -15,6 +15,7 @@
     "start:i18n": "yarn workspace @apitable/i18n-lang start",
     "start:datasheet": "yarn workspace @apitable/datasheet dev",
     "check:datasheet": "yarn workspace @apitable/datasheet check",
+    "lint:datasheet": "yarn workspace @apitable/datasheet check:lint",
     "start:widget-sdk": "yarn workspace @apitable/widget-sdk start",
     "start:room-server": "yarn workspace @apitable/room-server start:dev",
     "start:socket-server": "yarn workspace @apitable/room-server start:socket:dev",
@@ -50,7 +51,9 @@
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
     "lint:fix": "eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif",
-    "lint:check": "eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx}"
+    "lint:check": "eslint --config .eslintrc --quiet --ext packages/*/src/**/*.{js,ts,tsx}",
+    "prettier:check": "prettier --check packages/*/src/**/*.{js,ts,tsx}",
+    "prettier:fix": "prettier --write packages/*/src/**/*.{js,ts,tsx} && eslint --config .eslintrc --fix --ext packages/*/src/**/*.{js,ts,tsx}"
   },
   "lint-staged": {
     "packages/datasheet/src/**/*.{css,less,scss}": "yarn stylelint:datasheet",

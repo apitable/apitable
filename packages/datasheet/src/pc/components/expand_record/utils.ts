@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, ICellValue, IField, Navigation, PREVIEW_DATASHEET_ID, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { debounce } from 'lodash';
+import { createRoot } from 'react-dom/client';
+import { Field, ICellValue, IField, Navigation, PREVIEW_DATASHEET_ID, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
-import { createRoot } from 'react-dom/client';
 
 export function getRecordName(title: ICellValue, field: IField) {
   if (!title) {
@@ -74,21 +74,24 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
   }, {});
   if (shareId) {
     const params = { nodeId: mirrorId || datasheetId, viewId, recordId, shareId, datasheetId };
-    isReplace ? Router.replace(Navigation.SHARE_SPACE, { params, clearQuery: true, query }) :
-      Router.push(Navigation.SHARE_SPACE, { params, clearQuery: true, query });
-
+    isReplace
+      ? Router.replace(Navigation.SHARE_SPACE, { params, clearQuery: true, query })
+      : Router.push(Navigation.SHARE_SPACE, { params, clearQuery: true, query });
   } else if (templateId) {
     const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, categoryId, templateId, datasheetId };
-    isReplace ? Router.replace(Navigation.TEMPLATE, { params, clearQuery: true, query }) :
-      Router.push(Navigation.TEMPLATE, { params, clearQuery: true, query });
+    isReplace
+      ? Router.replace(Navigation.TEMPLATE, { params, clearQuery: true, query })
+      : Router.push(Navigation.TEMPLATE, { params, clearQuery: true, query });
   } else if (embedId) {
     const params = { nodeId: mirrorId || datasheetId, viewId, recordId, embedId, datasheetId };
-    isReplace ? Router.replace(Navigation.EMBED_SPACE, { params, clearQuery: true, query }) :
-      Router.push(Navigation.EMBED_SPACE, { params, clearQuery: true, query });
+    isReplace
+      ? Router.replace(Navigation.EMBED_SPACE, { params, clearQuery: true, query })
+      : Router.push(Navigation.EMBED_SPACE, { params, clearQuery: true, query });
   } else {
     const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, datasheetId };
-    isReplace ? Router.replace(Navigation.WORKBENCH, { params, clearQuery: true, query }) :
-      Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query, options: { shallow: true }});
+    isReplace
+      ? Router.replace(Navigation.WORKBENCH, { params, clearQuery: true, query })
+      : Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query, options: { shallow: true }});
   }
 }, 300);
 export const recordModalCloseFns: Array<() => void | Promise<void>> = [];

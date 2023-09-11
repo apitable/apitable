@@ -32,26 +32,16 @@ export function DefaultFixedArrayFieldTemplate(props: any) {
       />
 
       {(props.uiSchema['ui:description'] || props.schema.description) && (
-        <div
-          className="field-description"
-          key={`field-description-${props.idSchema.$id}`}>
+        <div className="field-description" key={`field-description-${props.idSchema.$id}`}>
           {props.uiSchema['ui:description'] || props.schema.description}
         </div>
       )}
 
-      <div
-        className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
+      <div className="row array-item-list" key={`array-item-list-${props.idSchema.$id}`}>
         {props.items && props.items.map(DefaultArrayItem)}
       </div>
 
-      {props.canAdd && (
-        <AddButton
-          className="array-item-add"
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
+      {props.canAdd && <AddButton className="array-item-add" onClick={props.onAddClick} disabled={props.disabled || props.readonly} />}
     </fieldset>
   );
 }

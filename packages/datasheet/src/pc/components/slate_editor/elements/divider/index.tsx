@@ -18,14 +18,13 @@
 
 import * as React from 'react';
 import { useCallback, useMemo } from 'react';
-import { DeleteOutlined } from '@apitable/icons';
 import { Transforms } from 'slate';
 import { ReactEditor, useReadOnly, useSlate } from 'slate-react';
+import { DeleteOutlined } from '@apitable/icons';
 import { IElement, IElementRenderProps } from '../../interface/element';
 import styles from './divider.module.less';
 
 const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>) => {
-
   const readOnly = useReadOnly();
   const editor = useSlate() as ReactEditor;
 
@@ -39,20 +38,20 @@ const Divider = React.memo(({ children, element }: IElementRenderProps<IElement>
   }, [editor, element]);
 
   const DotList = useMemo(() => {
-    return Array(4).fill('').map((_item, idx) => <i key={idx} className={styles.dot} />);
+    return Array(4)
+      .fill('')
+      .map((_item, idx) => <i key={idx} className={styles.dot} />);
   }, []);
 
-  return <div className={styles.wrap}>
-    <div contentEditable={false} className={styles.divider}>
-      {
-        DotList
-      }
-      {
-        !readOnly && <DeleteOutlined className={styles.deleteBtn} onClick={handleDelete} />
-      }
+  return (
+    <div className={styles.wrap}>
+      <div contentEditable={false} className={styles.divider}>
+        {DotList}
+        {!readOnly && <DeleteOutlined className={styles.deleteBtn} onClick={handleDelete} />}
+      </div>
+      {children}
     </div>
-    {children}
-  </div>;
+  );
 });
 
 export default Divider;

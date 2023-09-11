@@ -18,22 +18,24 @@ export const PcCascader = (props: ICascader) => {
       disabled={disabled}
       bordered={false}
       className={classNames(styles.cascader, { [styles.cascaderDisbaled]: disabled })}
-      dropdownRender={menus => options.length > 0 ? menus : (
-        <div className={styles.emptyPlaceholder}>
-          {loading ? t(Strings.loading) : t(Strings.cascader_no_data_field_error)}
-        </div>
-      )}
-      expandIcon={<ChevronRightOutlined color={colorVars.secondLevelText} size={14}/>}
+      dropdownRender={(menus) =>
+        options.length > 0 ? (
+          menus
+        ) : (
+          <div className={styles.emptyPlaceholder}>{loading ? t(Strings.loading) : t(Strings.cascader_no_data_field_error)}</div>
+        )
+      }
+      expandIcon={<ChevronRightOutlined color={colorVars.secondLevelText} size={14} />}
       onChange={onChange}
       options={options}
-      placeholder={<AddOutlined color={colorVars.secondLevelText} size={16}/>}
-      clearIcon={<IconButton className={styles.closeBtn} icon={CloseOutlined}/>}
+      placeholder={<AddOutlined color={colorVars.secondLevelText} size={16} />}
+      clearIcon={<IconButton className={styles.closeBtn} icon={CloseOutlined} />}
       popupVisible={editing}
       popupClassName={classNames({
-        [styles.search]: Boolean(search)
+        [styles.search]: Boolean(search),
       })}
       searchValue={search}
-      onSearch={value => {
+      onSearch={(value) => {
         setSearch(value);
       }}
       ref={cascaderRef}

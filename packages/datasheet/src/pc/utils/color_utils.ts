@@ -16,20 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Color from 'color';
 import { rgba2hex, colors, convertHexToRGB } from '@apitable/components';
 import { ThemeName } from '@apitable/core';
-import Color from 'color';
 
 export function hexToRGB(hex: string, alpha = 1) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  if (
-    typeof alpha !== 'number' ||
-    (
-      alpha < 0 || alpha > 1
-    )
-  ) {
+  if (typeof alpha !== 'number' || alpha < 0 || alpha > 1) {
     return `rgba(${r},${g},${b},1)`;
   }
   const _alpha = Number.isInteger(alpha) ? alpha : alpha.toFixed(1);
@@ -90,14 +85,14 @@ export const rgbaToHex = (color: string, alpha: number) => {
 };
 
 const createRainbowColorArrByShade = (baseHueArr: any[], shade: number) => {
-  return baseHueArr.map(hue => hue[shade]);
+  return baseHueArr.map((hue) => hue[shade]);
 };
 
 const createRainbowColorArrByOpacity = (baseHueArr: any[], opacity: number) => {
   const yellowIndex = 5;
   return baseHueArr.map((hue, index) =>
     // Deal with yellow background and white font problem
-    convertHexToRGB(hue[400], index === yellowIndex && opacity === 1 ? 0.85 : opacity)
+    convertHexToRGB(hue[400], index === yellowIndex && opacity === 1 ? 0.85 : opacity),
   );
 };
 
@@ -115,17 +110,21 @@ export function createRainbowColorsArr(theme: ThemeName) {
   const { deepPurple, indigo, blue, teal, green, yellow, orange, tangerine, pink, red } = colors;
   const baseHueArr = [deepPurple, indigo, blue, teal, green, yellow, orange, tangerine, pink, red];
 
-  const baseColor = isLightTheme ? [100, 200].reduce((prev: string[], cur: number) => {
-    return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
-  }, []) : [0.2, 0.4].reduce((prev: string[], cur: number) => {
-    return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
-  }, []);
+  const baseColor = isLightTheme
+    ? [100, 200].reduce((prev: string[], cur: number) => {
+      return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
+    }, [])
+    : [0.2, 0.4].reduce((prev: string[], cur: number) => {
+      return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
+    }, []);
 
-  const vipColor = isLightTheme ? [300, 400, 500].reduce((prev: string[], cur: number) => {
-    return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
-  }, []) : [0.6, 0.8, 1].reduce((prev: string[], cur: number) => {
-    return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
-  }, []);
+  const vipColor = isLightTheme
+    ? [300, 400, 500].reduce((prev: string[], cur: number) => {
+      return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
+    }, [])
+    : [0.6, 0.8, 1].reduce((prev: string[], cur: number) => {
+      return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
+    }, []);
 
   // The main consideration here is that the base color and vip color may have to be used separately in the future
   return [baseColor, vipColor];

@@ -16,39 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Typography, ThemeName } from '@apitable/components';
-import {
-  CollaCommandName, DateTimeField, ExecuteResult, FieldType, GanttStyleKeyType, getNewIds, getUniqName, IDPrefix, Selectors, Strings, t
-} from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
+import { memo } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, Typography, ThemeName } from '@apitable/components';
+import {
+  CollaCommandName,
+  DateTimeField,
+  ExecuteResult,
+  FieldType,
+  GanttStyleKeyType,
+  getNewIds,
+  getUniqName,
+  IDPrefix,
+  Selectors,
+  Strings,
+  t,
+} from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { memo } from 'react';
-import { useSelector } from 'react-redux';
-import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
-import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import GanttCreationNoDate from 'static/icon/account/gantt_creation_nodate.png';
+import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
+import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
 import styles from './style.module.less';
-import { AddOutlined } from '@apitable/icons';
 
 export const CreateFieldModal = memo(() => {
-  const {
-    viewId,
-    columnCount,
-    exitFieldNames,
-    permissions,
-    ganttStyle
-  } = useSelector(state => {
+  const { viewId, columnCount, exitFieldNames, permissions, ganttStyle } = useSelector((state) => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       viewId: Selectors.getActiveViewId(state)!,
       ganttStyle: Selectors.getGanttStyle(state)!,
       columnCount: Selectors.getColumnCount(state)!,
-      exitFieldNames: Object.values(fieldMap).map(field => field.name),
+      exitFieldNames: Object.values(fieldMap).map((field) => field.name),
       permissions: Selectors.getPermissions(state),
     };
   });
@@ -62,7 +66,7 @@ export const CreateFieldModal = memo(() => {
       property: DateTimeField.defaultProperty(),
     };
   };
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const GanttCreationDate = themeName === ThemeName.Light ? GanttCreationDateLight : GanttCreationDateDark;
   const onClick = () => {
     // Fields can only be created with administrative privileges
@@ -72,15 +76,18 @@ export const CreateFieldModal = memo(() => {
     const [startFieldId, endFieldId] = getNewIds(IDPrefix.Field, 2);
     const result = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.AddFields,
-      data: [{
-        data: generateField(endFieldId, t(Strings.gantt_end_field_name)),
-        viewId,
-        index: columnCount,
-      }, {
-        data: generateField(startFieldId, t(Strings.gantt_start_field_name)),
-        viewId,
-        index: columnCount,
-      }],
+      data: [
+        {
+          data: generateField(endFieldId, t(Strings.gantt_end_field_name)),
+          viewId,
+          index: columnCount,
+        },
+        {
+          data: generateField(startFieldId, t(Strings.gantt_start_field_name)),
+          viewId,
+          index: columnCount,
+        },
+      ],
     });
 
     if (ExecuteResult.Success === result.result) {
@@ -89,26 +96,31 @@ export const CreateFieldModal = memo(() => {
         key: NotifyKey.AddField,
       });
 
-      executeCommandWithMirror(() => {
-        resourceService.instance!.commandManager.execute({
-          cmd: CollaCommandName.SetGanttStyle,
-          viewId: viewId!,
-          data: [{
-            styleKey: GanttStyleKeyType.StartFieldId,
-            styleValue: startFieldId,
-          }, {
-            styleKey: GanttStyleKeyType.EndFieldId,
-            styleValue: endFieldId,
-          }]
-        });
-      }, {
-        style: {
-          ...ganttStyle,
-          [GanttStyleKeyType.StartFieldId]: startFieldId,
-          [GanttStyleKeyType.EndFieldId]: endFieldId
-        }
-      });
-
+      executeCommandWithMirror(
+        () => {
+          resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetGanttStyle,
+            viewId: viewId!,
+            data: [
+              {
+                styleKey: GanttStyleKeyType.StartFieldId,
+                styleValue: startFieldId,
+              },
+              {
+                styleKey: GanttStyleKeyType.EndFieldId,
+                styleValue: endFieldId,
+              },
+            ],
+          });
+        },
+        {
+          style: {
+            ...ganttStyle,
+            [GanttStyleKeyType.StartFieldId]: startFieldId,
+            [GanttStyleKeyType.EndFieldId]: endFieldId,
+          },
+        },
+      );
     }
   };
 

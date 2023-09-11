@@ -16,29 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  CollaCommandName,
-  Field,
-  getFieldResultByStatType, getStatTypeList,
-  Group,
-  IGridViewColumn,
-  IGridViewProperty,
-  ILinearRowGroupTab, IRange, IReduxState, Selectors, StatType,
-  Strings, t,
-} from '@apitable/core';
 import classNames from 'classnames';
 import { intersection } from 'lodash';
-import { resourceService } from 'pc/resource_service';
-import { store } from 'pc/store';
-import { useThemeColors } from '@apitable/components';
-import { stopPropagation } from 'pc/utils';
 import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import styles from './styles.module.less';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { useThemeColors } from '@apitable/components';
+import {
+  CollaCommandName,
+  Field,
+  getFieldResultByStatType,
+  getStatTypeList,
+  Group,
+  IGridViewColumn,
+  IGridViewProperty,
+  ILinearRowGroupTab,
+  IRange,
+  IReduxState,
+  Selectors,
+  StatType,
+  Strings,
+  t,
+} from '@apitable/core';
 import { TriangleDownFilled } from '@apitable/icons';
+import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
+import { stopPropagation } from 'pc/utils';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import styles from './styles.module.less';
 
 interface IStatOption {
   fieldId: string;
@@ -78,7 +84,7 @@ export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   if (hasLargeSelection(range, selectRecordRanges)) {
     if (range) {
       const rangeFields = Selectors.getRangeFields(state, range, state.pageParams.datasheetId!);
-      const fieldInRange = Boolean(rangeFields && rangeFields.some(f => f.id === fieldId));
+      const fieldInRange = Boolean(rangeFields && rangeFields.some((f) => f.id === fieldId));
       if (!fieldInRange) {
         return null;
       }
@@ -87,48 +93,38 @@ export const getFieldStatType = (state: IReduxState, fieldId: string) => {
   return column.statType;
 };
 
-const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => {
+const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = (props) => {
   const colors = useThemeColors();
   const { className, row, fieldId } = props;
   const triggerRef = useRef<any>(null);
   const state = store.getState();
-  const {
-    field,
-    shouldUseSelectRecordAggregate,
-    viewId,
-    groupInfo,
-    statType,
-    selectRecordIds,
-    fieldIndex,
-    permission,
-    recordIds,
-    groupBreakpoint,
-  } = useSelector(state => {
-    const field = Selectors.getField(state, fieldId);
-    const view = Selectors.getCurrentView(state) as IGridViewProperty;
-    const selection = Selectors.getSelectRanges(state);
-    const selectRecordRanges = Selectors.getSelectionRecordRanges(state);
-    const statType = getFieldStatType(state, fieldId);
-    const fieldIndex = Selectors.getVisibleColumns(state)!.findIndex(f => f.fieldId === fieldId);
-    const groupInfo = Selectors.getActiveViewGroupInfo(state);
-    const shouldUseSelectRecordAggregate = hasLargeSelection(selection && selection[0], selectRecordRanges);
-    const selectRecordIds = Selectors.getSelectRecordIds(state);
-    const recordIds: string[] = Selectors.getVisibleRowIds(state);
-    const groupBreakpoint = Selectors.getGroupBreakpoint(state);
+  const { field, shouldUseSelectRecordAggregate, viewId, groupInfo, statType, selectRecordIds, fieldIndex, permission, recordIds, groupBreakpoint } =
+    useSelector((state) => {
+      const field = Selectors.getField(state, fieldId);
+      const view = Selectors.getCurrentView(state) as IGridViewProperty;
+      const selection = Selectors.getSelectRanges(state);
+      const selectRecordRanges = Selectors.getSelectionRecordRanges(state);
+      const statType = getFieldStatType(state, fieldId);
+      const fieldIndex = Selectors.getVisibleColumns(state)!.findIndex((f) => f.fieldId === fieldId);
+      const groupInfo = Selectors.getActiveViewGroupInfo(state);
+      const shouldUseSelectRecordAggregate = hasLargeSelection(selection && selection[0], selectRecordRanges);
+      const selectRecordIds = Selectors.getSelectRecordIds(state);
+      const recordIds: string[] = Selectors.getVisibleRowIds(state);
+      const groupBreakpoint = Selectors.getGroupBreakpoint(state);
 
-    return {
-      recordIds,
-      field,
-      selectRecordIds,
-      shouldUseSelectRecordAggregate,
-      groupInfo,
-      fieldIndex,
-      statType,
-      viewId: view.id,
-      permission: Selectors.getPermissions(state),
-      groupBreakpoint
-    };
-  }, shallowEqual);
+      return {
+        recordIds,
+        field,
+        selectRecordIds,
+        shouldUseSelectRecordAggregate,
+        groupInfo,
+        fieldIndex,
+        statType,
+        viewId: view.id,
+        permission: Selectors.getPermissions(state),
+        groupBreakpoint,
+      };
+    }, shallowEqual);
   const fieldStatTypeList = getStatTypeList(field, state);
 
   // TODO: Optimize the performance issues, add caching and execution conditions.
@@ -139,7 +135,7 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
     if (isGroupStat) {
       const groupSketch = new Group(groupInfo, groupBreakpoint);
       // The statistics column for the grouping, showing the records under the grouping
-      res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map(row => row.recordId);
+      res = groupSketch.getRecordsInGroupByDepth(state, row!.recordId, row!.depth).map((row) => row.recordId);
     }
     // Presence of constituency
     if (shouldUseSelectRecordAggregate) {
@@ -158,13 +154,7 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
     if (!statType) {
       return t(Strings.statistics);
     }
-    const count = getFieldResultByStatType(
-      statType!,
-      getStatRecordIds(),
-      field,
-      snapshot,
-      state,
-    );
+    const count = getFieldResultByStatType(statType!, getStatRecordIds(), field, snapshot, state);
     if (statType === StatType.CountAll) {
       return t(Strings.records_of_count, {
         count,
@@ -178,38 +168,42 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
     if (!statType && newStatType === StatType.None) {
       return triggerRef.current!.close(e);
     }
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetColumnsProperty,
-        viewId,
-        fieldId: field.id,
-        data: {
-          statType: newStatType,
-        },
-      });
-    }, {
-      columns: Selectors.getVisibleColumns(state).map(column => column.fieldId === field.id ? { ...column, statType: newStatType } : column)
-    });
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetColumnsProperty,
+          viewId,
+          fieldId: field.id,
+          data: {
+            statType: newStatType,
+          },
+        });
+      },
+      {
+        columns: Selectors.getVisibleColumns(state).map((column) => (column.fieldId === field.id ? { ...column, statType: newStatType } : column)),
+      },
+    );
 
     triggerRef.current!.close(e);
   }
 
   function statOptionList() {
     return (
-      <div
-        className={styles.statList}
-        onWheel={stopPropagation}
-        onMouseDown={stopPropagation}
-      >
-        {
-          fieldStatTypeList && fieldStatTypeList.map((item: StatType | never) => {
+      <div className={styles.statList} onWheel={stopPropagation} onMouseDown={stopPropagation}>
+        {fieldStatTypeList &&
+          fieldStatTypeList.map((item: StatType | never) => {
             return (
-              <div key={item} className={styles.statItem} onClick={e => { commandForStat(e, item); }}>
+              <div
+                key={item}
+                className={styles.statItem}
+                onClick={(e) => {
+                  commandForStat(e, item);
+                }}
+              >
                 {Field.bindModel(field).statType2text(item)}
               </div>
             );
-          })
-        }
+          })}
       </div>
     );
   }
@@ -219,9 +213,7 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
       action={permission.columnCountEditable ? ['click'] : ['']}
       popup={statOptionList()}
       destroyPopupOnHide
-      popupAlign={
-        { points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}
-      }
+      popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
       popupStyle={{
         width: '150px',
         zIndex: 2,
@@ -237,14 +229,9 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = props => 
           color: statType ? colors.thirdLevelText : '',
         }}
       >
-        <div style={{ marginRight: '4px' }}>
-          {statText}
-        </div>
+        <div style={{ marginRight: '4px' }}>{statText}</div>
         <div style={{ width: '8px', display: statType ? 'inline-block' : '' }}>
-          <TriangleDownFilled
-            size={8}
-            color={colors.fourthLevelText}
-          />
+          <TriangleDownFilled size={8} color={colors.fourthLevelText} />
         </div>
       </div>
     </Trigger>

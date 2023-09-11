@@ -16,8 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import {
+  FloatUiTooltip as Tooltip,
+} from '@apitable/components';
 import { QuestionCircleOutlined } from '@apitable/icons';
-import { Tooltip } from '@apitable/components';
 import styles from './style.module.less';
 
 export interface IHelp {

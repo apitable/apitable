@@ -16,31 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useToggle, useClickAway } from 'ahooks';
+import { Menu, Dropdown, Switch } from 'antd';
+import classNames from 'classnames';
 import { useContext } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import urlcat from 'urlcat';
-import { useToggle, useClickAway } from 'ahooks';
-import { useRequest } from 'pc/hooks';
-import { Menu, Dropdown, Switch } from 'antd';
+import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined } from '@apitable/icons';
-import { IconButton, useThemeColors } from '@apitable/components';
-
 import { Message } from 'pc/components/common';
-import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { notifyWithUndo } from 'pc/components/common/notify';
-
-import { useCatalogTreeRequest } from 'pc/hooks';
+import { NotifyKey } from 'pc/components/common/notify/notify.interface';
+import styles from 'pc/components/expand_record/style.module.less';
+import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
 
 import { resourceService } from 'pc/resource_service';
 
-import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import { copy2clipBoard } from 'pc/utils';
+import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 
-import styles from 'pc/components/expand_record/style.module.less';
 import EditorTitleContext from './editor_title_context';
-import classNames from 'classnames';
 
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;
@@ -55,26 +52,23 @@ const MORE_BTN_CLASS_NAME = 'expand-record-more-btn';
 export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRecordMoreOptionProps>> = (props) => {
   const { expandRecordId, modalClose, datasheetId, sourceViewId, fromCurrentDatasheet } = props;
   const colors = useThemeColors();
-  const rowRemovable = useSelector(state => Selectors.getPermissions(state, datasheetId).rowRemovable);
-  const viewId = useSelector(state => {
+  const rowRemovable = useSelector((state) => Selectors.getPermissions(state, datasheetId).rowRemovable);
+  const viewId = useSelector((state) => {
     return sourceViewId || Selectors.getCurrentView(state, datasheetId)!.id;
   });
-  const mirrorId = useSelector(state => state.pageParams.mirrorId);
-  const showRecordHistory = useSelector(state => Selectors.getRecordHistoryStatus(state, datasheetId))!;
+  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const showRecordHistory = useSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
 
-  const permissions = useSelector(state => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
-  const curMirrorId = useSelector(state => mirrorId || state.pageParams.mirrorId);
+  const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
+  const curMirrorId = useSelector((state) => mirrorId || state.pageParams.mirrorId);
   const showHistorySwitch = permissions.manageable && !curMirrorId;
 
-  const isEmbed = useSelector(state => Boolean(state.pageParams.embedId));
+  const isEmbed = useSelector((state) => Boolean(state.pageParams.embedId));
 
   const { updateNodeRecordHistoryReq } = useCatalogTreeRequest();
   const { run: updateNodeRecordHistory } = useRequest(updateNodeRecordHistoryReq, { manual: true });
 
-  const {
-    fieldDescCollapseStatusMap = {},
-    setFieldDescCollapseStatusMap,
-  } = useContext(EditorTitleContext);
+  const { fieldDescCollapseStatusMap = {}, setFieldDescCollapseStatusMap } = useContext(EditorTitleContext);
 
   const fieldDescCollapseStatus = fieldDescCollapseStatusMap![datasheetId];
   const closeAllFieldsDesc = Boolean(fieldDescCollapseStatus?.collapseAll);
@@ -102,9 +96,12 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     });
 
     if (ExecuteResult.Success === result) {
-      notifyWithUndo(t(Strings.notification_delete_record_by_count, {
-        count: 1,
-      }), NotifyKey.DeleteRecord);
+      notifyWithUndo(
+        t(Strings.notification_delete_record_by_count, {
+          count: 1,
+        }),
+        NotifyKey.DeleteRecord,
+      );
     }
 
     toggleMenu();
@@ -113,11 +110,16 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
 
   const copyLink = () => {
     let thisRecordURL = urlcat(window.location.origin, '/workbench/:datasheetId/:viewId/:expandRecordId', {
-      datasheetId, viewId, expandRecordId,
+      datasheetId,
+      viewId,
+      expandRecordId,
     });
     if (mirrorId && fromCurrentDatasheet) {
       thisRecordURL = urlcat(window.location.origin, '/workbench/:mirrorId/:datasheetId/:viewId/:expandRecordId', {
-        datasheetId, viewId, expandRecordId, mirrorId,
+        datasheetId,
+        viewId,
+        expandRecordId,
+        mirrorId,
       });
     }
 
@@ -133,7 +135,7 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     updateNodeRecordHistory(
       datasheetId,
       ConfigConstant.NodeType.DATASHEET,
-      showRecordHistory ? ConfigConstant.ShowRecordHistory.CLOSE : ConfigConstant.ShowRecordHistory.OPEN
+      showRecordHistory ? ConfigConstant.ShowRecordHistory.CLOSE : ConfigConstant.ShowRecordHistory.OPEN,
     ).then(() => {
       setSwitchLoading(false);
     });
@@ -142,12 +144,10 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
   const toggleFieldsDesc = () => {
     const nextState = !closeAllFieldsDesc;
     const fieldDescCollapseMap = fieldDescCollapseStatus?.fieldDescCollapseMap || {};
-    const nextFieldDescCollapseMap =
-      Object.keys(fieldDescCollapseMap)
-        .reduce((acc, cur) => {
-          acc[cur] = nextState;
-          return acc;
-        }, {});
+    const nextFieldDescCollapseMap = Object.keys(fieldDescCollapseMap).reduce((acc, cur) => {
+      acc[cur] = nextState;
+      return acc;
+    }, {});
 
     setFieldDescCollapseStatusMap({
       ...fieldDescCollapseStatusMap,
@@ -165,66 +165,59 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
   };
 
   const renderMenu = () => (
-    (
-      <Menu className={styles.moreOptionMenu}>
+    <Menu className={styles.moreOptionMenu}>
+      <Menu.Item
+        key="copy"
+        icon={<LinkOutlined color={colors.thirdLevelText} />}
+        className={styles.moreOptionMenuItemWrapper}
+        onClick={() => copyLink()}
+        hidden={isEmbed}
+      >
+        {t(Strings.copy_url_line)}
+      </Menu.Item>
+      {showHistorySwitch && (
         <Menu.Item
-          key="copy"
-          icon={<LinkOutlined color={colors.thirdLevelText} />}
+          key="show-history"
+          icon={<HistoryOutlined color={colors.thirdLevelText} />}
           className={styles.moreOptionMenuItemWrapper}
-          onClick={() => copyLink()}
-          hidden={isEmbed}
-        >
-          {t(Strings.copy_url_line)}
-        </Menu.Item>
-        {showHistorySwitch && (
-          <Menu.Item
-            key="show-history"
-            icon={<HistoryOutlined color={colors.thirdLevelText} />}
-            className={styles.moreOptionMenuItemWrapper}
-            onClick={() => handleHistorySwitch()}
-          >
-            <div className={styles.showHistoryMenuItem}>
-              <span className={styles.showHistoryMenuText}>
-                {t(Strings.show_record_history)}
-              </span>
-              <Switch loading={switchLoading} size="small" checked={showRecordHistory} />
-            </div>
-          </Menu.Item>
-        )}
-
-        <Menu.Item
-          key="expand-desc"
-          icon={<InfoCircleOutlined color={colors.thirdLevelText} />}
-          className={styles.moreOptionMenuItemWrapper}
-          onClick={() => toggleFieldsDesc()}
+          onClick={() => handleHistorySwitch()}
         >
           <div className={styles.showHistoryMenuItem}>
-            <span className={styles.showHistoryMenuText}>
-              {t(Strings.expand_all_field_desc)}
-            </span>
-            <Switch
-              size="small"
-              checked={!closeAllFieldsDesc}
-            />
+            <span className={styles.showHistoryMenuText}>{t(Strings.show_record_history)}</span>
+            <Switch loading={switchLoading} size="small" checked={showRecordHistory} />
           </div>
         </Menu.Item>
+      )}
 
-        {rowRemovable && <Menu.Divider />}
-        {rowRemovable && <Menu.Item
+      <Menu.Item
+        key="expand-desc"
+        icon={<InfoCircleOutlined color={colors.thirdLevelText} />}
+        className={styles.moreOptionMenuItemWrapper}
+        onClick={() => toggleFieldsDesc()}
+      >
+        <div className={styles.showHistoryMenuItem}>
+          <span className={styles.showHistoryMenuText}>{t(Strings.expand_all_field_desc)}</span>
+          <Switch size="small" checked={!closeAllFieldsDesc} />
+        </div>
+      </Menu.Item>
+
+      {rowRemovable && <Menu.Divider />}
+      {rowRemovable && (
+        <Menu.Item
           key="delete"
           icon={<DeleteOutlined color={colors.thirdLevelText} />}
           className={styles.moreOptionMenuItemWrapper}
           onClick={() => deleteRecord()}
         >
           {t(Strings.delete_row)}
-        </Menu.Item>}
-      </Menu>
-    )
+        </Menu.Item>
+      )}
+    </Menu>
   );
 
   /* TODO: ContextMenu does not support non-String types, you need to upgrade ContextMenu to not use antd */
   return (
-    <Dropdown overlay={renderMenu()} visible={menuVisible} className={styles.moreOptionMenuDropdown} >
+    <Dropdown overlay={renderMenu()} visible={menuVisible} className={styles.moreOptionMenuDropdown}>
       <IconButton
         data-test-id={EXPAND_RECORD_OPERATE_BUTTON}
         component="button"

@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Events, IMeta, Player, Strings, t } from '@apitable/core';
-import { useResponsive } from 'pc/hooks';
-import { stopPropagation } from 'pc/utils';
+import classNames from 'classnames';
 import * as React from 'react';
 import { useEffect, useMemo, useReducer } from 'react';
 import { Button } from '@apitable/components';
-import classNames from 'classnames';
+import { Events, IMeta, Player, Strings, t } from '@apitable/core';
+import { useResponsive } from 'pc/hooks';
+import { stopPropagation } from 'pc/utils';
 import { ScreenSize } from '../common/component_display/enum';
 import { Popup } from '../common/mobile/popup';
-import { PreviewColumn } from './preview_column';
-import styles from './style.module.less';
+import { SecondConfirmType } from './interface';
 import { PcWrapper } from './pc_wrapper';
-import { getModalTitle } from './utils';
+import { PreviewColumn } from './preview_column';
 import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
-import { SecondConfirmType } from './interface';
+import styles from './style.module.less';
+import { getModalTitle } from './utils';
 
 interface ISearchPanelProps {
   folderId: string;
@@ -41,10 +41,10 @@ interface ISearchPanelProps {
     datasheetId?: string;
     mirrorId?: string;
     viewId?: string;
-    widgetIds?: string[],
+    widgetIds?: string[];
     nodeName?: string;
     meta?: IMeta;
-    secondConfirmType?: SecondConfirmType
+    secondConfirmType?: SecondConfirmType;
   }) => void;
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType;
@@ -58,7 +58,7 @@ export interface ISearchChangeProps {
   widgetIds?: string[];
 }
 
-const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = props => {
+const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (props) => {
   const { activeDatasheetId = '', noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
   const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {
@@ -103,75 +103,84 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
   const viewDataLoaded = Boolean(state.currentMeta && state.currentViewId);
 
   const _SearchPanel = useMemo(() => {
-    return <SearchPanelMain
-      hidePanel={hidePanel}
-      noCheckPermission={noCheckPermission}
-      showMirrorNode={showMirrorNode}
-      localState={state}
-      localDispatch={updateState}
-      {...props}
-    />;
+    return (
+      <SearchPanelMain
+        hidePanel={hidePanel}
+        noCheckPermission={noCheckPermission}
+        showMirrorNode={showMirrorNode}
+        localState={state}
+        localDispatch={updateState}
+        {...props}
+      />
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    state, updateState, props.onChange, folderId, showMirrorNode,
-    secondConfirmType, noCheckPermission, secondConfirmType, hidePanel,
-  ]);
+  }, [state, updateState, props.onChange, folderId, showMirrorNode, secondConfirmType, noCheckPermission, secondConfirmType, hidePanel]);
 
   const SearchContainer = useMemo(() => {
-    return <div
-      className={classNames(styles.searchPanelContainer, {
-        [styles.secondConfirmTypeForWidget]: secondConfirmType === SecondConfirmType.Widget,
-        [styles.secondConfirmTypeForForm]: secondConfirmType === SecondConfirmType.Form,
-        [styles.secondConfirmTypeForChat]: secondConfirmType === SecondConfirmType.Chat,
-      })}
-    >
-      {isMobile ? (!viewDataLoaded ? _SearchPanel : null) : _SearchPanel}
-      {/* Preview section on the right side of the page. */}
-      <PreviewColumn
-        currentMeta={state.currentMeta}
-        setLoading={(value: boolean) => {
-          updateState({ loading: value });
-        }}
-        currentViewId={state.currentViewId}
-        currentDatasheetId={state.currentDatasheetId}
-        onChange={onChange}
-        secondConfirmType={secondConfirmType}
-      />
-      {
-        secondConfirmType === SecondConfirmType.Chat && <div className={styles.chatbotCreateButtonGroup}>
-          <Button color={'default'} onClick={hidePanel}>
-            {t(Strings.cancel)}
-          </Button>
-          <Button color={'primary'} loading={loading} disabled={!state.currentDatasheetId} onClick={async() => {
-            try {
-              setLoading(true);
-              await props.onChange({
-                datasheetId: state.currentDatasheetId,
-                nodeName: state.nodes.find(node => node.nodeId === state.currentDatasheetId)?.nodeName,
-                viewId: state.currentViewId,
-                meta: state.currentMeta || undefined,
-              });
-            } finally {
-              setLoading(false);
-            }
-          }}>
-            {t(Strings.confirm)}
-          </Button>
-        </div>
-      }
-    </div>;
-  }, [
-    _SearchPanel, isMobile, props.onChange, secondConfirmType,
-    state.currentDatasheetId, state.currentMeta, state.currentViewId, viewDataLoaded,
-  ]);
+    return (
+      <div
+        className={classNames(styles.searchPanelContainer, {
+          [styles.secondConfirmTypeForWidget]: secondConfirmType === SecondConfirmType.Widget,
+          [styles.secondConfirmTypeForForm]: secondConfirmType === SecondConfirmType.Form,
+          [styles.secondConfirmTypeForChat]: secondConfirmType === SecondConfirmType.Chat,
+        })}
+      >
+        {isMobile ? (!viewDataLoaded ? _SearchPanel : null) : _SearchPanel}
+        {/* Preview section on the right side of the page. */}
+        <PreviewColumn
+          currentMeta={state.currentMeta}
+          setLoading={(value: boolean) => {
+            updateState({ loading: value });
+          }}
+          currentViewId={state.currentViewId}
+          currentDatasheetId={state.currentDatasheetId}
+          onChange={onChange}
+          secondConfirmType={secondConfirmType}
+        />
+        {secondConfirmType === SecondConfirmType.Chat && (
+          <div className={styles.chatbotCreateButtonGroup}>
+            <Button color={'default'} onClick={hidePanel}>
+              {t(Strings.cancel)}
+            </Button>
+            <Button
+              color={'primary'}
+              loading={loading}
+              disabled={!state.currentDatasheetId}
+              onClick={async() => {
+                try {
+                  setLoading(true);
+                  await props.onChange({
+                    datasheetId: state.currentDatasheetId,
+                    nodeName: state.nodes.find((node) => node.nodeId === state.currentDatasheetId)?.nodeName,
+                    viewId: state.currentViewId,
+                    meta: state.currentMeta || undefined,
+                  });
+                } finally {
+                  setLoading(false);
+                }
+              }}
+            >
+              {t(Strings.confirm)}
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  }, [_SearchPanel, isMobile, props.onChange, secondConfirmType, state.currentDatasheetId, state.currentMeta, state.currentViewId, viewDataLoaded]);
 
   return (
     <>
-      {!isMobile ? <PcWrapper hidePanel={hidePanel}>
-        {SearchContainer}
-      </PcWrapper> : (
-        <Popup title={getModalTitle(secondConfirmType)} open height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel}
-          className={styles.portalContainerDrawer}>
+      {!isMobile ? (
+        <PcWrapper hidePanel={hidePanel}>{SearchContainer}</PcWrapper>
+      ) : (
+        <Popup
+          title={getModalTitle(secondConfirmType)}
+          open
+          height="90%"
+          bodyStyle={{ padding: 0 }}
+          onClose={hidePanel}
+          className={styles.portalContainerDrawer}
+        >
           {SearchContainer}
         </Popup>
       )}
@@ -180,4 +189,3 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = pr
 };
 
 export const SearchPanel = React.memo(SearchPanelBase);
-

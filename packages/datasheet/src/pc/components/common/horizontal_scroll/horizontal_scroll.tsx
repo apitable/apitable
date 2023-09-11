@@ -18,13 +18,13 @@
 
 import { FC, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { ConfigConstant } from '@apitable/core';
 import LeftScrollIcon from 'static/icon/workbench/workbench_tab_arrow_left.svg';
 import RightScrollIcon from 'static/icon/workbench/workbench_tab_arrow_right.svg';
-import { useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
-import { ConfigConstant } from '@apitable/core';
 
-export const HorizontalScroll: FC<React.PropsWithChildren<unknown>> = props => {
+export const HorizontalScroll: FC<React.PropsWithChildren<unknown>> = (props) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [scrollMax, setScrollMax] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -75,12 +75,7 @@ export const HorizontalScroll: FC<React.PropsWithChildren<unknown>> = props => {
   return (
     <div className={styles.breadCrumbWrapper}>
       <div className={styles.scrollWrapper} ref={wrapperRef}>
-        <div
-          className={styles.beadCrumb}
-          ref={breadCrumbRef}
-          style={{ left: scrollLeft }}
-          onWheel={handleWheel}
-        >
+        <div className={styles.beadCrumb} ref={breadCrumbRef} style={{ left: scrollLeft }} onWheel={handleWheel}>
           {props.children}
         </div>
       </div>

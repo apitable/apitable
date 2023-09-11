@@ -16,27 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
-import { confirm, danger, info, success, warning } from './modal.function';
-import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
-import { destroyFns } from './utils';
-import { ModalWithTheme } from './modal_with_theme';
-import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
-import { store } from 'pc/store';
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
+import { Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
+import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
+import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
+import { store } from 'pc/store';
+import { confirm, danger, info, success, warning } from './modal.function';
+import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
+import { ModalWithTheme } from './modal_with_theme';
 import styles from './style.module.less';
+import { destroyFns } from './utils';
 // @ts-ignore
 import { getBillingInfo, isSocialDingTalk } from 'enterprise';
-import { CloseOutlined } from '@apitable/icons';
 
 const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const {
-    footer, closeIcon, okText, okType, cancelText, okButtonProps, footerBtnCls,
-    cancelButtonProps, confirmLoading, onOk, onCancel, className, children, hiddenCancelBtn, ...rest
+    footer,
+    closeIcon,
+    okText,
+    okType,
+    cancelText,
+    okButtonProps,
+    footerBtnCls,
+    cancelButtonProps,
+    confirmLoading,
+    onOk,
+    onCancel,
+    className,
+    children,
+    hiddenCancelBtn,
+    ...rest
   } = props;
 
   // TODO: effect pc/components/editors/container.tsx short key bind
@@ -48,9 +61,13 @@ const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   // });
 
   const FooterBtnConfig = {
-    onOk, onCancel,
+    onOk,
+    onCancel,
     okButtonProps: { loading: confirmLoading, ...okButtonProps },
-    cancelButtonProps, okText, okType, cancelText,
+    cancelButtonProps,
+    okText,
+    okType,
+    cancelText,
     hiddenCancelBtn,
   };
 
@@ -70,12 +87,12 @@ const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
 };
 
 export type IModal = FC<React.PropsWithChildren<IModalProps>> & {
-  confirm: (props?: IModalFuncProps) => IModalReturn,
-  warning: (props?: IModalFuncProps) => IModalReturn,
-  danger: (props?: IModalFuncProps) => IModalReturn,
-  error: (props?: IModalFuncProps) => IModalReturn,
-  success: (props?: IModalFuncProps) => IModalReturn,
-  info: (props?: IModalFuncProps) => IModalReturn,
+  confirm: (props?: IModalFuncProps) => IModalReturn;
+  warning: (props?: IModalFuncProps) => IModalReturn;
+  danger: (props?: IModalFuncProps) => IModalReturn;
+  error: (props?: IModalFuncProps) => IModalReturn;
+  success: (props?: IModalFuncProps) => IModalReturn;
+  info: (props?: IModalFuncProps) => IModalReturn;
 };
 
 export const Modal = ModalBase as IModal & { destroyAll(): void };
@@ -119,7 +136,8 @@ export const BillingModal = (props?: IModalFuncProps) => {
   }
   if (subscription) {
     Modal.warning({
-      ...modalBase, content: parser(t(Strings.grades_restriction_prompt, { grade: subscription.productName })),
+      ...modalBase,
+      content: parser(t(Strings.grades_restriction_prompt, { grade: subscription.productName })),
     });
     return;
   }
@@ -128,10 +146,11 @@ export const BillingModal = (props?: IModalFuncProps) => {
       if (!billingInfoReq) {
         return;
       }
-      billingInfoReq && Modal.warning({
-        ...modalBase,
-        content: t(Strings.grades_restriction_prompt),
-      });
+      billingInfoReq &&
+        Modal.warning({
+          ...modalBase,
+          content: t(Strings.grades_restriction_prompt),
+        });
     });
   }
 };

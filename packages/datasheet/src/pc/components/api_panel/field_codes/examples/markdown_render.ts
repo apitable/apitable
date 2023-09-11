@@ -16,29 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// @ts-ignore
+import Clipboard from 'clipboard';
 import MarkdownIt from 'markdown-it';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-go';
-// @ts-ignore
-import Clipboard from 'clipboard';
 import { Strings, t } from '@apitable/core';
-import { copyOutlinedStr, debugOutlinedStr } from '../icons';
-import { DEBUG_BUTTON_CLASS_NAME } from '../doc_inner_html';
 import { getEnvVariables } from 'pc/utils/env';
+import { DEBUG_BUTTON_CLASS_NAME } from '../doc_inner_html';
+import { copyOutlinedStr, debugOutlinedStr } from '../icons';
 
 if (!process.env.SSR) {
   new Clipboard('.markdown-it-code-button-copy');
 }
-const {
-  APIFOX_DEBUG_PATCH_URL,
-  APIFOX_DEBUG_POST_URL,
-  APIFOX_DEBUG_DELETE_URL,
-  APIFOX_DEBUG_GET_URL,
-  APIFOX_DEBUG_UPLOAD_URL
-} = getEnvVariables();
+const { APIFOX_DEBUG_PATCH_URL, APIFOX_DEBUG_POST_URL, APIFOX_DEBUG_DELETE_URL, APIFOX_DEBUG_GET_URL, APIFOX_DEBUG_UPLOAD_URL } = getEnvVariables();
 
 const displayDebuggerButton = (str: string, lang: string) => {
   if (lang !== 'shell') {
@@ -70,8 +64,7 @@ const md = new MarkdownIt({
       const onlineDebugButton = `<button ${displayDebuggerButton(str, lang) ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
       >${debugOutlinedStr}${t(Strings.request_in_api_panel_curl)}</button>`;
       try {
-        return (
-          `<pre
+        return `<pre
             class="language-${lang}"
             style="position: relative; white-space: normal;"
           ><code style="white-space: pre-wrap;">${Prism.highlight(str, langObject, lang)}</code>
@@ -79,8 +72,7 @@ const md = new MarkdownIt({
               data-clipboard-text="${md.utils.escapeHtml(str)}"
               class="markdown-it-code-button-copy">${copyOutlinedStr}${t(Strings.copy_link)}</button>
               ${onlineDebugButton}
-          </pre>`
-        );
+          </pre>`;
       } catch (err) {
         console.warn('! ' + err);
       }
@@ -90,9 +82,11 @@ const md = new MarkdownIt({
 }) as any;
 
 // Remember old renderer, if overridden, or proxy to default renderer
-const defaultRender = md.renderer.rules.link_open || function render(tokens: any, idx: any, options: any, _env: any, self: any) {
-  return self.renderToken(tokens, idx, options);
-};
+const defaultRender =
+  md.renderer.rules.link_open ||
+  function render(tokens: any, idx: any, options: any, _env: any, self: any) {
+    return self.renderToken(tokens, idx, options);
+  };
 
 md.renderer.rules.link_open = (tokens: any[], idx: number, options: any, env: any, self: any) => {
   // If you are sure other plugins can't add `target` - drop check below
@@ -100,7 +94,7 @@ md.renderer.rules.link_open = (tokens: any[], idx: number, options: any, env: an
   if (aIndex < 0) {
     tokens[idx].attrPush(['target', '_blank']); // add new attribute
   } else {
-    tokens[idx].attrs[aIndex][1] = '_blank';// replace value of existing attr
+    tokens[idx].attrs[aIndex][1] = '_blank'; // replace value of existing attr
   }
   // pass token to default renderer.
   return defaultRender(tokens, idx, options, env, self);

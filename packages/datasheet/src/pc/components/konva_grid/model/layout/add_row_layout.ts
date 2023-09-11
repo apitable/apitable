@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { colors } from '@apitable/components';
 import { ILinearRow, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
-import { colors } from '@apitable/components';
+import { GridLayout } from './layout';
 
 const AddOutlinedPath = AddOutlined.toString();
 
 interface ICell {
   row: any;
-  isHoverColumn: boolean
+  isHoverColumn: boolean;
   width: number;
   isHoverRow: boolean;
   rowCreatable: boolean;
@@ -43,20 +43,16 @@ export class AddRowLayout extends GridLayout {
         x: this.x + this.columnWidth,
         y: this.y,
         points: [0, rowHeight, width, rowHeight],
-        stroke: colors.sheetLineColor
+        stroke: colors.sheetLineColor,
       });
     }
   }
 
-  private renderCell({
-    width,
-    isHoverRow,
-    rowCreatable
-  }: Pick<ICell, 'width' | 'isHoverRow' | 'rowCreatable'>) {
+  private renderCell({ width, isHoverRow, rowCreatable }: Pick<ICell, 'width' | 'isHoverRow' | 'rowCreatable'>) {
     const x = this.x;
     const y = this.y;
     const rowHeight = this.rowHeight;
-    const fill = (isHoverRow && rowCreatable) ? colors.rowSelectedBgSolid : colors.defaultBg;
+    const fill = isHoverRow && rowCreatable ? colors.rowSelectedBgSolid : colors.defaultBg;
     this.rect({
       x,
       y: y + 0.5,
@@ -72,12 +68,7 @@ export class AddRowLayout extends GridLayout {
     });
   }
 
-  private renderFirstCell({
-    row, 
-    isHoverRow,
-    isHoverColumn,
-    rowCreatable, 
-  }: Pick<ICell, 'row' | 'isHoverRow' | 'isHoverColumn' | 'rowCreatable'>) {
+  private renderFirstCell({ row, isHoverRow, isHoverColumn, rowCreatable }: Pick<ICell, 'row' | 'isHoverRow' | 'isHoverColumn' | 'rowCreatable'>) {
     if (!this.isFirst) return;
     const { depth } = row;
     const y = this.y;
@@ -85,13 +76,13 @@ export class AddRowLayout extends GridLayout {
     const columnWidth = this.columnWidth;
     if (depth) this.renderIndentFront(depth - 1);
     const frozenOffset = !depth ? 0.5 : (depth - 1) * GRID_GROUP_OFFSET + 0.5;
-    const fill = (isHoverRow && rowCreatable) ? colors.rowSelectedBgSolid : colors.defaultBg;
+    const fill = isHoverRow && rowCreatable ? colors.rowSelectedBgSolid : colors.defaultBg;
     this.rect({
       x: frozenOffset,
       y: y + 0.5,
       width: columnWidth + GRID_ROW_HEAD_WIDTH - frozenOffset + 1,
       height: rowHeight,
-      fill
+      fill,
     });
     this.line({
       x: frozenOffset,
@@ -109,9 +100,9 @@ export class AddRowLayout extends GridLayout {
         fill: colors.thirdLevelText,
       });
       if (isHoverColumn && isHoverRow) {
-        this.setStyle({ 
-          fontSize: 13, 
-          fontWeight: 'normal' 
+        this.setStyle({
+          fontSize: 13,
+          fontWeight: 'normal',
         });
         this.text({
           x: curX + 18,
@@ -124,11 +115,7 @@ export class AddRowLayout extends GridLayout {
     }
   }
 
-  private renderLastCell({
-    row,
-    rowCreatable,
-    isHoverRow
-  }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverRow'>) {
+  private renderLastCell({ row, rowCreatable, isHoverRow }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverRow'>) {
     if (!this.isLast) return;
     const { depth } = row;
     const x = this.x;
@@ -140,7 +127,7 @@ export class AddRowLayout extends GridLayout {
       this.renderCell({
         width,
         rowCreatable,
-        isHoverRow
+        isHoverRow,
       });
       if (depth === 3) {
         this.renderIndentEnd(depth);
@@ -157,24 +144,17 @@ export class AddRowLayout extends GridLayout {
     this.renderAddFieldBlank(row);
   }
 
-  private renderCommonCell({
-    rowCreatable,
-    isHoverRow
-  }: Pick<ICell, 'rowCreatable' | 'isHoverRow'>) {
+  private renderCommonCell({ rowCreatable, isHoverRow }: Pick<ICell, 'rowCreatable' | 'isHoverRow'>) {
     if (this.isFirst || this.isLast) return;
     this.renderCell({
       width: this.columnWidth,
       rowCreatable,
-      isHoverRow
+      isHoverRow,
     });
   }
 
   // Show "add row" prompt when hovering
-  private renderHoverTip({
-    rowCreatable,
-    isHoverColumn,
-    isHoverRow
-  }: Pick<ICell, 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
+  private renderHoverTip({ rowCreatable, isHoverColumn, isHoverRow }: Pick<ICell, 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
     if (this.isFirst || !rowCreatable || !isHoverColumn || !isHoverRow) return;
     const x = this.x;
     const y = this.y;
@@ -186,9 +166,9 @@ export class AddRowLayout extends GridLayout {
       size: 16,
       fill: colors.thirdLevelText,
     });
-    this.setStyle({ 
-      fontSize: 13, 
-      fontWeight: 'normal' 
+    this.setStyle({
+      fontSize: 13,
+      fontWeight: 'normal',
     });
     this.text({
       x: x + 26.5,
@@ -199,31 +179,26 @@ export class AddRowLayout extends GridLayout {
     });
   }
 
-  render({ 
-    row, 
-    rowCreatable,
-    isHoverRow,
-    isHoverColumn
-  }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
+  render({ row, rowCreatable, isHoverRow, isHoverColumn }: Pick<ICell, 'row' | 'rowCreatable' | 'isHoverColumn' | 'isHoverRow'>) {
     this.renderFirstCell({
-      row, 
-      rowCreatable, 
+      row,
+      rowCreatable,
       isHoverRow,
-      isHoverColumn
+      isHoverColumn,
     });
     this.renderCommonCell({
       rowCreatable,
-      isHoverRow
+      isHoverRow,
     });
     this.renderLastCell({
       row,
       rowCreatable,
-      isHoverRow
+      isHoverRow,
     });
     this.renderHoverTip({
-      rowCreatable, 
+      rowCreatable,
       isHoverRow,
-      isHoverColumn, 
+      isHoverColumn,
     });
   }
 }

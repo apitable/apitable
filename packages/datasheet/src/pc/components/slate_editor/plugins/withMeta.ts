@@ -41,7 +41,7 @@ export const withMeta = <T extends ReactEditor>(inEditor: T) => {
     });
   };
 
-  editor.setMeta = meta => {
+  editor.setMeta = (meta) => {
     editor.meta = meta;
     Promise.resolve(() => {
       onChange();

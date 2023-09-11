@@ -17,8 +17,8 @@
  */
 
 import { jsx } from 'slate-hyperscript';
-import { GENERATOR } from '../elements';
 import { MarkType } from '../constant';
+import { GENERATOR } from '../elements';
 
 const getNodeDataFromAttr = (el: HTMLElement) => {
   const className = el.getAttribute('class');
@@ -30,7 +30,7 @@ const getNodeDataFromAttr = (el: HTMLElement) => {
 
 const ELEMENT_TAGS = {
   A: (el: HTMLAnchorElement) => GENERATOR.link({ data: { link: el.getAttribute('href') }}, []),
-  BLOCKQUOTE: () => GENERATOR.quote({ }, []),
+  BLOCKQUOTE: () => GENERATOR.quote({}, []),
   H1: (el: HTMLElement) => GENERATOR.headingOne({ data: getNodeDataFromAttr(el) }, []),
   H2: (el: HTMLElement) => GENERATOR.headingTwo({ data: getNodeDataFromAttr(el) }, []),
   H3: (el: HTMLElement) => GENERATOR.headingThree({ data: getNodeDataFromAttr(el) }, []),
@@ -55,7 +55,7 @@ const TEXT_TAGS = {
   I: () => ({ [MarkType.ITALIC]: true }),
   S: () => ({ [MarkType.STRIKE_THROUGH]: true }),
   STRONG: () => ({ [MarkType.BOLD]: true }),
-  U: () => ({ [MarkType.UNDERLINE]: true })
+  U: () => ({ [MarkType.UNDERLINE]: true }),
 };
 
 const deserializeToJsx = (el: any): any => {
@@ -69,9 +69,9 @@ const deserializeToJsx = (el: any): any => {
 
   const { nodeName } = el;
   const parent = el;
-  
+
   const children = Array.from(parent.childNodes) as Array<any>;
-  
+
   let imgEleList: Array<any> = [];
   let validChild: Array<any> = [];
   children.forEach((childEle) => {

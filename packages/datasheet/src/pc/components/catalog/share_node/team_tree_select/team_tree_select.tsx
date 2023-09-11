@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
+import produce from 'immer';
+import RcTrigger from 'rc-trigger';
 import { FC, useState, useEffect } from 'react';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
 import { ConfigConstant, ITeamTreeNode, Strings, t } from '@apitable/core';
-import { useRequest } from 'pc/hooks';
-import produce from 'immer';
+import { CheckOutlined, ChevronDownOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { TreeView, TreeItem } from 'pc/components/common/tree_view';
+import { useRequest, useResponsive } from 'pc/hooks';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import styles from './style.module.less';
-import { TreeView, TreeItem } from 'pc/components/common/tree_view';
-import { useThemeColors } from '@apitable/components';
-import classnames from 'classnames';
-import RcTrigger from 'rc-trigger';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { CheckOutlined, ChevronDownOutlined } from '@apitable/icons';
 
 export interface ITeamTreeSelectProps {
   className?: string;
@@ -61,7 +60,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
       return;
     }
 
-    const nextTeamTree = produce(teamTree, draftTeamTree => {
+    const nextTeamTree = produce(teamTree, (draftTeamTree) => {
       const node = findNode(draftTeamTree, subTeams[0].parentId);
       if (!node) {
         return;
@@ -92,7 +91,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
   };
 
   const renderTreeNodes = (data: ITeamTreeNode[]) => {
-    return data.map(item => {
+    return data.map((item) => {
       const nodeLabel = (
         <div className={styles.nodeLabel}>
           <div className={styles.teamName}>{item.teamName}</div>
@@ -139,7 +138,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
         module={ConfigConstant.Modules.TEAM_TREE}
         expandedKeys={expandKeys}
         selectedKeys={checkedTeamId ? [checkedTeamId] : []}
-        onExpand={nodeIds => setExpandKeys(nodeIds)}
+        onExpand={(nodeIds) => setExpandKeys(nodeIds)}
         loadData={loadHandler}
         onSelect={selectNodeHandler}
       >
@@ -174,7 +173,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
           }}
           popupStyle={popupStyle}
           popupVisible={drawerVisible}
-          onPopupVisibleChange={visible => setDrawerVisible(visible)}
+          onPopupVisibleChange={(visible) => setDrawerVisible(visible)}
           zIndex={1000}
         >
           {renderSelectBtn()}
@@ -195,7 +194,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
             module={ConfigConstant.Modules.TEAM_TREE}
             expandedKeys={expandKeys}
             selectedKeys={checkedTeamId ? [checkedTeamId] : []}
-            onExpand={nodeIds => setExpandKeys(nodeIds)}
+            onExpand={(nodeIds) => setExpandKeys(nodeIds)}
             loadData={loadHandler}
             onSelect={selectNodeHandler}
           >

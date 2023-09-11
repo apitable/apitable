@@ -17,9 +17,9 @@
  */
 
 import { colorVars, Typography, useThemeColors } from '@apitable/components';
-import styles from './style.module.less';
-import { getEnvVariables } from '../../../../utils/env';
 import { GithubFilled } from '@apitable/icons';
+import { getEnvVariables } from '../../../../utils/env';
+import styles from './style.module.less';
 
 export const GithubButton = () => {
   const colors = useThemeColors();
@@ -28,10 +28,11 @@ export const GithubButton = () => {
   }
   return (
     <div className={styles.githubBtnBox}>
-      <a className={styles.githubBtn} href="https://github.com/apitable/apitable" target="_blank"
-        rel="noreferrer">
+      <a className={styles.githubBtn} href="https://github.com/apitable/apitable" target="_blank" rel="noreferrer">
         <GithubFilled color={colorVars.textCommonPrimary} size={24} />
-        <Typography variant='h7' color={colors.textCommonPrimary}>Star us on Github</Typography>
+        <Typography variant="h7" color={colors.textCommonPrimary}>
+          Star us on Github
+        </Typography>
       </a>
     </div>
   );

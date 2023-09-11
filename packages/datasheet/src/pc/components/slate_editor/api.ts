@@ -27,7 +27,7 @@ export interface IImageResponse {
 const Api = new WeakMap();
 
 export enum ApiKeys {
-  ImageUpload = 'imageUpload'
+  ImageUpload = 'imageUpload',
 }
 
 export const setApi = (editor: Editor, name: ApiKeys, api?: TApi) => {

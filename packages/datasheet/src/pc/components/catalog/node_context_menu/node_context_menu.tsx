@@ -29,6 +29,7 @@ import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useRootMa
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
 import { isMobileApp, getReleaseVersion } from 'pc/utils/env';
+import { CONST_ENABLE_AUTOMATION_NODE } from '../../automation/config';
 import { SecondConfirmType } from '../../datasheet_search_panel';
 import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
@@ -291,6 +292,11 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 openCatalog();
                 addTreeNode(targetId);
               }),
+              ...(CONST_ENABLE_AUTOMATION_NODE ?[
+                contextItemMap.get(ContextItemKey.AddAutomation)(() => {
+                  addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
+                }),
+              ]: []),
               contextItemMap.get(ContextItemKey.AddForm)(() => {
                 const result = triggerUsageAlert?.(
                   'maxFormViewsInSpace',

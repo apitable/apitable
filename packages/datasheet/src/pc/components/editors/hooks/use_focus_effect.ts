@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { usePlatform } from 'pc/hooks/use_platform';
 import { DependencyList, EffectCallback, useEffect } from 'react';
+import { usePlatform } from 'pc/hooks/use_platform';
 
 export const useFocusEffect = (focusFn: EffectCallback, deps: DependencyList = []) => {
   const { mobile } = usePlatform();
-  
-  useEffect(() => { 
+
+  useEffect(() => {
     if (mobile) {
       return;
     }
     focusFn();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, deps);
 };

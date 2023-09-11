@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DATASHEET_ID, RecordVision, Selectors } from '@apitable/core';
 import { useEventListener } from 'ahooks';
 import { Modal } from 'antd';
 import classNames from 'classnames';
+import React, { FC, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { DATASHEET_ID, RecordVision, Selectors } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { endEditCell } from 'pc/components/editors/end_edit_cell';
 import { useResponsive } from 'pc/hooks';
-import React, { FC, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Portal } from './portal';
 import styles from './style.module.less';
 
@@ -39,11 +39,11 @@ interface IExpandRecordModal {
   children: JSX.Element[];
 }
 
-const ExpandRecordModalBase: FC<React.PropsWithChildren<IExpandRecordModal>> = props => {
-  const recordVision = useSelector(state => state.recordVision);
-  useSelector(state => state.space.isSideRecordOpen);
-  const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
-  const isEditingCell = useSelector(state => Boolean(Selectors.getEditingCell(state)));
+const ExpandRecordModalBase: FC<React.PropsWithChildren<IExpandRecordModal>> = (props) => {
+  const recordVision = useSelector((state) => state.recordVision);
+  useSelector((state) => state.space.isSideRecordOpen);
+  const isRecordFullScreen = useSelector((state) => state.space.isRecordFullScreen);
+  const isEditingCell = useSelector((state) => Boolean(Selectors.getEditingCell(state)));
 
   const ref = useRef<HTMLDivElement>(null);
 

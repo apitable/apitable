@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Typography, useTheme } from '@apitable/components';
+import {Box, Typography, useTheme, useThemeColors} from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import * as React from 'react';
@@ -63,11 +63,12 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const formData = nodeDetail.input;
   const retrievedSchema = retrieveSchema(nodeSchema.schema as any, nodeSchema.schema, data2Operand(formData));
   const fields = useAllFields();
+  const colors = useThemeColors();
   if (!fieldPermissionMap || !fields) return null;
   const oldSchema = { schema: nodeType.outputJsonSchema };
   const outputSchema: any = enrichDatasheetTriggerOutputSchema(oldSchema as any, fields, fieldPermissionMap);
 
-  return <Box>
+  return <Box color={colors.bgCommonDefault}>
     <StyledTitle>
       {t(Strings.robot_run_history_input)}
     </StyledTitle>

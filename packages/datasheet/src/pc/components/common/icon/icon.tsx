@@ -30,7 +30,7 @@ enum StatusType {
 }
 
 interface IStatusIconFuncProps {
-  type: string,
+  type: string;
   size?: number;
   fillColor?: string;
 }

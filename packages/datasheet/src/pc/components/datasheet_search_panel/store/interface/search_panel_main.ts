@@ -7,7 +7,7 @@ export interface ISearchPanelMainState {
   searchValue: string;
   onlyShowEditableNode: boolean;
   nodes: ICommonNode[];
-  searchResult: { folders: INode[]; files: INode[] } | string
+  searchResult: { folders: INode[]; files: INode[] } | string;
   currentFolderId: string;
   currentMirrorId: string;
   folderLoaded: boolean;

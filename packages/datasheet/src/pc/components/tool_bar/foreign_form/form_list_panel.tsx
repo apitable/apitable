@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
+import Image from 'next/image';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Skeleton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t, ThemeName } from '@apitable/core';
 import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/icons';
-import classnames from 'classnames';
 
-import Image from 'next/image';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
-import { FC } from 'react';
-import styles from './style.module.less';
-import { useSelector } from 'react-redux';
 import FormEmptyDark from 'static/icon/common/form_empty_dark.png';
 import FormEmptyLight from 'static/icon/common/form_empty_light.png';
+import styles from './style.module.less';
+
 export interface IFormNodeItem {
   nodeId: string;
   nodeName: string;
@@ -49,20 +50,11 @@ interface IFormListPanelProps {
 }
 
 export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (props) => {
-  const {
-    spaceId,
-    folderId,
-    datasheetId,
-    viewId,
-    formList,
-    loading,
-    creatable,
-    viewName,
-  } = props;
+  const { spaceId, folderId, datasheetId, viewId, formList, loading, creatable, viewName } = props;
   const colors = useThemeColors();
   const { addTreeNode } = useCatalog();
   const isEmpty = !formList?.length;
-  const theme = useSelector(state => state.theme);
+  const theme = useSelector((state) => state.theme);
   const EmptyState = theme === ThemeName.Light ? FormEmptyLight : FormEmptyDark;
 
   const addForm = () => {
@@ -98,32 +90,19 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
           <span className={styles.emptyImg}>
             <Image src={EmptyState} alt={''} />
           </span>
-          <span className={styles.emptyText}>
-            {t(Strings.view_foreign_form_empty)}
-          </span>
+          <span className={styles.emptyText}>{t(Strings.view_foreign_form_empty)}</span>
         </div>
       );
     }
 
-    return (
-      formList.map(form => {
-        return (
-          <div
-            key={form.nodeId}
-            className={styles.formItem}
-            onClick={() => onJump(form.nodeId)}
-          >
-            <FormOutlined
-              size={16}
-              color={colors.thirdLevelText}
-            />
-            <span className={styles.formName}>
-              {form.nodeName}
-            </span>
-          </div>
-        );
-      })
-    );
+    return formList.map((form) => {
+      return (
+        <div key={form.nodeId} className={styles.formItem} onClick={() => onJump(form.nodeId)}>
+          <FormOutlined size={16} color={colors.thirdLevelText} />
+          <span className={styles.formName}>{form.nodeName}</span>
+        </div>
+      );
+    });
   };
 
   return (
@@ -131,46 +110,33 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
       <h4 className={styles.header}>
         {t(Strings.view_form)}
         <Tooltip title={t(Strings.form_tour_desc)}>
-          <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
+          <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target="_blank" rel="noreferrer">
             <QuestionCircleOutlined color={colors.fc3} />
           </a>
         </Tooltip>
       </h4>
       <div className={styles.content} style={{ paddingBottom: creatable ? 0 : '16px' }}>
-        {
-          loading ?
-            renderSkeleton() :
-            renderFormList()
-        }
+        {loading ? renderSkeleton() : renderFormList()}
       </div>
-      {
-        creatable && <div className={classnames(styles.footer, {
-          [styles.notEmpty]: !isEmpty,
-        })}>
+      {creatable && (
+        <div
+          className={classnames(styles.footer, {
+            [styles.notEmpty]: !isEmpty,
+          })}
+        >
           {isEmpty ? (
-            <Button
-              className={styles.addBtn}
-              block={!isEmpty}
-              color='primary'
-              size='middle'
-              onClick={addForm}
-            >
+            <Button className={styles.addBtn} block={!isEmpty} color="primary" size="middle" onClick={addForm}>
               {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </Button>
           ) : (
-            <TextButton
-              className={styles.addBtn}
-              block
-              style={{ height: '100%' }}
-              onClick={addForm}
-            >
+            <TextButton className={styles.addBtn} block style={{ height: '100%' }} onClick={addForm}>
               {!isEmpty && <AddOutlined size={16} color={colors.secondLevelText} className={styles.addIcon} />}
               {t(Strings.current_view_add_form)}
             </TextButton>
           )}
         </div>
-      }
+      )}
     </div>
   );
 };

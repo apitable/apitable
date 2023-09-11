@@ -23,24 +23,24 @@ import { IParams, IQuery, IOptions } from 'pc/components/route_manager/interface
 import { IFunctionResult, RouterStrategy } from 'pc/components/route_manager/router_strategy';
 
 export class Router {
-  static push(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean, options?: IOptions } = {}) {
+  static push(path: Navigation, info: { params?: IParams; query?: IQuery; clearQuery?: boolean; options?: IOptions } = {}) {
     navigatePath(path, { ...info, method: Method.Push });
   }
 
-  static redirect(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean } = {}) {
+  static redirect(path: Navigation, info: { params?: IParams; query?: IQuery; clearQuery?: boolean } = {}) {
     navigatePath(path, { ...info, method: Method.Redirect });
   }
 
-  static replace(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean } = {}) {
+  static replace(path: Navigation, info: { params?: IParams; query?: IQuery; clearQuery?: boolean } = {}) {
     navigatePath(path, { ...info, method: Method.Replace });
   }
 
-  static newTab(path: Navigation, info: { params?: IParams, query?: IQuery, clearQuery?: boolean } = {}) {
+  static newTab(path: Navigation, info: { params?: IParams; query?: IQuery; clearQuery?: boolean } = {}) {
     navigatePath(path, { ...info, method: Method.NewTab });
   }
 }
 
-async function navigatePath(path: Navigation, info: { params?: IParams, query?: IQuery, method?: Method, clearQuery?: boolean, options?: IOptions }) {
+async function navigatePath(path: Navigation, info: { params?: IParams; query?: IQuery; method?: Method; clearQuery?: boolean; options?: IOptions }) {
   const { params, method, options } = info;
   const spaceId = params?.spaceId;
   // Will default to new tab open by url jumping

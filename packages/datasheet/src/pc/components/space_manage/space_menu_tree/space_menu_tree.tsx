@@ -16,26 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography } from '@apitable/components';
-import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
-import { 
-  LogOutlined, ShieldCheckOutlined, RocketOutlined, TestOutlined, ManageApplicationOutlined, 
-  TriangleRightFilled, DashboardOutlined, DepartmentOutlined, WorkbenchOutlined, BankOutlined
-} from '@apitable/icons';
 import { Tree } from 'antd';
-// @ts-ignore
-import { isEnterprise, Log, Marketing } from 'enterprise';
 import { compact } from 'lodash';
 import { useRouter } from 'next/router';
+import * as React from 'react';
+import { ReactText, useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Typography } from '@apitable/components';
+import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
+import {
+  LogOutlined,
+  ShieldCheckOutlined,
+  RocketOutlined,
+  TestOutlined,
+  ManageApplicationOutlined,
+  TriangleRightFilled,
+  DashboardOutlined,
+  DepartmentOutlined,
+  WorkbenchOutlined,
+  BankOutlined,
+} from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import * as React from 'react';
-import { ReactText, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import styles from './style.module.less';
+// @ts-ignore
+import { isEnterprise, Log, Marketing } from 'enterprise';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -45,7 +53,7 @@ const DEFAULT_PATH_KEY = SPACE_INFO_KEY;
 const getPathKey = (menuTree: ISpaceNavInfo[], pathname: string): string[] => {
   const pathList = pathname.split('/');
   const pathKey = pathList[pathList.length - 1];
-  if (menuTree.find(item => item.key === pathKey || (item.children && item.children.find(item => item.key === pathKey)))) {
+  if (menuTree.find((item) => item.key === pathKey || (item.children && item.children.find((item) => item.key === pathKey)))) {
     return [pathKey];
   }
   return [DEFAULT_PATH_KEY];
@@ -60,94 +68,95 @@ interface ISpaceNavInfo {
   children?: ISpaceNavInfo[];
 }
 
-export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], marketplaceDisable?: boolean, isSelfVika?: boolean) => compact([
-  {
-    title: t(Strings.space_info),
-    key: SPACE_INFO_KEY,
-    icon: <DashboardOutlined />,
-    valid: true,
-    routeAddress: '/overview',
-  },
-  Log && {
-    title: t(Strings.space_log_title),
-    key: 'log',
-    icon: <LogOutlined />,
-    valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
-    routeAddress: '/log',
-  },
-  {
-    title: t(Strings.view_permission_description),
-    key: 'workbench',
-    icon: <WorkbenchOutlined />,
-    valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.WORKBENCH)) && getEnvVariables().SPACE_PERMISSION_OVERVIEW_VISIBLE,
-    routeAddress: '/workbench',
-  },
-  {
-    title: t(Strings.upgrade_space),
-    key: 'upgrade',
-    icon: <RocketOutlined />,
-    valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST),
-    routeAddress: '/upgrade',
-  },
-  {
-    title: t(Strings.billing_info_billing),
-    key: 'billing',
-    icon: <BankOutlined />,
-    valid: getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE,
-    routeAddress: '/billing',
-  },
-  {
-    title: t(Strings.organization_and_role),
-    key: 'addressManage',
-    icon: <DepartmentOutlined />,
-    valid:
-      isMainAdmin ||
-      permissions.includes(ConfigConstant.PermissionCode.TEAM) ||
-      permissions.includes(ConfigConstant.PermissionCode.MEMBER) ||
-      permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
-    children: [
-      {
-        routeAddress: '/managemember',
-        title: t(Strings.members_setting),
-        key: 'managemember',
-        valid: true,
-      },
-      {
-        routeAddress: '/role',
-        title: t(Strings.tab_role),
-        key: 'role',
-        valid: permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE) && getEnvVariables().SPACE_ROLE_VISIBLE,
-      },
-      {
-        title: t(Strings.share_permisson_model_space_admin),
-        key: 'manager',
-        valid: isMainAdmin,
-        routeAddress: '/manager',
-      },
-    ],
-  },
-  {
-    title: t(Strings.permission_and_security),
-    key: 'security',
-    icon: <ShieldCheckOutlined />,
-    valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.SECURITY)) && getEnvVariables().SPACE_SECURITY_PAGE_VISIBLE,
-    routeAddress: '/security',
-  },
-  {
-    title: t(Strings.space_manage_menu_social),
-    key: 'marketing',
-    icon: <ManageApplicationOutlined />,
-    valid: isMainAdmin && !marketplaceDisable && !isMobileApp() && Boolean(Marketing),
-    routeAddress: '/marketing',
-  },
-  {
-    title: t(Strings.admin_test_function),
-    key: 'test-function',
-    icon: <TestOutlined />,
-    routeAddress: '/test-function',
-    valid: getEnvVariables().SPACE_EXPERIMENTAL_FEATURES_VISIBLE,
-  },
-]);
+export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], marketplaceDisable?: boolean, isSelfVika?: boolean) =>
+  compact([
+    {
+      title: t(Strings.space_info),
+      key: SPACE_INFO_KEY,
+      icon: <DashboardOutlined />,
+      valid: true,
+      routeAddress: '/overview',
+    },
+    Log && {
+      title: t(Strings.space_log_title),
+      key: 'log',
+      icon: <LogOutlined />,
+      valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
+      routeAddress: '/log',
+    },
+    {
+      title: t(Strings.view_permission_description),
+      key: 'workbench',
+      icon: <WorkbenchOutlined />,
+      valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.WORKBENCH)) && getEnvVariables().SPACE_PERMISSION_OVERVIEW_VISIBLE,
+      routeAddress: '/workbench',
+    },
+    {
+      title: t(Strings.upgrade_space),
+      key: 'upgrade',
+      icon: <RocketOutlined />,
+      valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST),
+      routeAddress: '/upgrade',
+    },
+    {
+      title: t(Strings.billing_info_billing),
+      key: 'billing',
+      icon: <BankOutlined />,
+      valid: getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE,
+      routeAddress: '/billing',
+    },
+    {
+      title: t(Strings.organization_and_role),
+      key: 'addressManage',
+      icon: <DepartmentOutlined />,
+      valid:
+        isMainAdmin ||
+        permissions.includes(ConfigConstant.PermissionCode.TEAM) ||
+        permissions.includes(ConfigConstant.PermissionCode.MEMBER) ||
+        permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
+      children: [
+        {
+          routeAddress: '/managemember',
+          title: t(Strings.members_setting),
+          key: 'managemember',
+          valid: true,
+        },
+        {
+          routeAddress: '/role',
+          title: t(Strings.tab_role),
+          key: 'role',
+          valid: permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE) && getEnvVariables().SPACE_ROLE_VISIBLE,
+        },
+        {
+          title: t(Strings.share_permisson_model_space_admin),
+          key: 'manager',
+          valid: isMainAdmin,
+          routeAddress: '/manager',
+        },
+      ],
+    },
+    {
+      title: t(Strings.permission_and_security),
+      key: 'security',
+      icon: <ShieldCheckOutlined />,
+      valid: (isMainAdmin || permissions.includes(ConfigConstant.PermissionCode.SECURITY)) && getEnvVariables().SPACE_SECURITY_PAGE_VISIBLE,
+      routeAddress: '/security',
+    },
+    {
+      title: t(Strings.space_manage_menu_social),
+      key: 'marketing',
+      icon: <ManageApplicationOutlined />,
+      valid: isMainAdmin && !marketplaceDisable && !isMobileApp() && Boolean(Marketing),
+      routeAddress: '/marketing',
+    },
+    {
+      title: t(Strings.admin_test_function),
+      key: 'test-function',
+      icon: <TestOutlined />,
+      routeAddress: '/test-function',
+      valid: getEnvVariables().SPACE_EXPERIMENTAL_FEATURES_VISIBLE,
+    },
+  ]);
 
 export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { spaceId, spaceResource, userInfo, appType } = useSelector(
@@ -192,7 +201,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (!spaceResource || !data || !data.length) {
       return null;
     }
-    return data.map(item => {
+    return data.map((item) => {
       if (!isEnterprise && ['upgrade', 'security'].includes(item.key)) {
         return [];
       }
@@ -216,7 +225,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.spaceMenuTree}>
       <OrganizationHead />
-      <Typography variant='h8' className={styles.spaceSubTitle}>
+      <Typography variant="h8" className={styles.spaceSubTitle}>
         {t(Strings.space_setting)}
       </Typography>
       {spaceResource && menuTree.length > 0 && (

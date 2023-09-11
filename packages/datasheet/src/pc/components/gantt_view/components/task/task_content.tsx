@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { FC, useContext } from 'react';
+import { FieldType, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { getRecordName } from 'pc/components/expand_record';
 import { GanttCoordinate } from 'pc/components/gantt_view';
 import { cellHelper, konvaDrawer, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
-import { FC, useContext } from 'react';
 import { KonvaGanttViewContext } from '../../context';
 
 const Shape = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/shape'), { ssr: false });
@@ -37,18 +37,14 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
   const { recordId, instance, color, bgColor } = props;
   const { rowHeight, rowHeightLevel } = instance;
   const { unitTitleMap, cacheTheme } = useContext(KonvaGridViewContext);
-  const {
-    snapshot,
-    fieldMap,
-    visibleColumns
-  } = useContext(KonvaGridViewContext);
+  const { snapshot, fieldMap, visibleColumns } = useContext(KonvaGridViewContext);
   const { ganttVisibleColumns } = useContext(KonvaGanttViewContext);
   const firstFieldId = visibleColumns[0].fieldId;
   const state = store.getState();
 
   const cellsDrawer = (ctx: any) => {
     let curOffset = 10;
-    for (let i = 0; i < ganttVisibleColumns.length; i ++) {
+    for (let i = 0; i < ganttVisibleColumns.length; i++) {
       const { fieldId } = ganttVisibleColumns[i];
       const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       const field = fieldMap[fieldId];
@@ -60,7 +56,7 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
         konvaDrawer.initCtx(ctx);
         konvaDrawer.setStyle({
           fontSize: 13,
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         });
         konvaDrawer.text({
           x: curOffset,
@@ -88,9 +84,9 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
           bgColor,
         },
         viewType: ViewType.Gantt,
-        callback: ({ width }: { width: number }) => curOffset += width,
+        callback: ({ width }: { width: number }) => (curOffset += width),
         unitTitleMap,
-        cacheTheme
+        cacheTheme,
       };
       cellHelper.initCtx(ctx);
       cellHelper.initStyle(field, { fontWeight: 'normal' });
@@ -98,13 +94,7 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
     }
   };
 
-  return (
-    <Shape
-      listening={false}
-      perfectDrawEnabled={false}
-      sceneFunc={cellsDrawer}
-    />
-  );
+  return <Shape listening={false} perfectDrawEnabled={false} sceneFunc={cellsDrawer} />;
 };
 
 export default TaskContent;

@@ -1,14 +1,14 @@
+import { useBoolean } from 'ahooks';
+import { Form } from 'antd';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
 import { Strings, t, isEmail, IReduxState, Api } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
-import { useBoolean } from 'ahooks';
-import { Form } from 'antd';
 import { WithTipWrapper, Message } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
-import { useEffect, useState } from 'react';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
 interface ILoginErrorMsg {
   username?: string;
   password?: string;
@@ -37,7 +37,7 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
   const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [emailDisable, setEmailDisable] = useState<boolean>(false);
   useEffect(() => {
-    if(inviteEmailInfo) {
+    if (inviteEmailInfo) {
       setUsername(inviteEmailInfo.data.inviteEmail);
       setEmailDisable(true);
     }
@@ -63,22 +63,22 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
         return false;
       }
 
-      if(!data.confirmPassword) {
+      if (!data.confirmPassword) {
         errorMsg.confirmPassword = t(Strings.placeholder_input_password);
         return false;
       }
 
-      if(!regex.test(data.password)) {
+      if (!regex.test(data.password)) {
         errorMsg.password = t(Strings.placeholder_set_password);
         return false;
       }
 
-      if(data.password.length !== data.confirmPassword.length) {
+      if (data.password.length !== data.confirmPassword.length) {
         errorMsg.confirmPassword = t(Strings.password_not_identical_err);
         return false;
       }
 
-      if(data.password !== data.confirmPassword) {
+      if (data.password !== data.confirmPassword) {
         errorMsg.confirmPassword = t(Strings.password_not_identical_err);
         return false;
       }
@@ -105,7 +105,7 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
     return verifyUsername && verifyPassword;
   };
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value.replace(/\s/g, ''));
     setEmail(e.target.value.replace(/\s/g, ''));
   };
@@ -119,15 +119,14 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
     if (success) {
       Api.submitQuestionnaire({
         nickName: username,
-        env: 'apitable-ce'
+        env: 'apitable-ce',
       });
       return;
-    } 
+    }
     Message.error({ content: message });
-
   };
 
-  return(
+  return (
     <div className={styles.loginWrap}>
       <Form onFinish={handleSubmit}>
         <div className={styles.inputWrap}>
@@ -156,7 +155,7 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
               type={isVisible ? 'text' : 'password'}
               value={password}
               className={styles.input}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               prefix={<LockFilled color={colors.textCommonPrimary} />}
               suffix={
                 <div className={styles.suffixIcon} onClick={() => toggle()} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
@@ -178,13 +177,15 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
               type={isVisibleConfirm ? 'text' : 'password'}
               value={confirmPassword}
               className={styles.input}
-              onChange={e => setConfirmPassword(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               prefix={<LockFilled color={colors.textCommonPrimary} />}
               suffix={
-                <div className={styles.suffixIcon} onClick={() => toggleConfirm()} 
-                  style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  {isVisibleConfirm ? 
-                    <EyeOpenOutlined color={colors.textCommonTertiary} /> : <EyeCloseOutlined color={colors.textCommonTertiary} />}
+                <div
+                  className={styles.suffixIcon}
+                  onClick={() => toggleConfirm()}
+                  style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                >
+                  {isVisibleConfirm ? <EyeOpenOutlined color={colors.textCommonTertiary} /> : <EyeCloseOutlined color={colors.textCommonTertiary} />}
                 </div>
               }
               placeholder={t(Strings.confirmation_password_reminder)}
@@ -199,11 +200,10 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
       </Button>
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_sign_up_text)}</p>
-        <LinkButton underline={false} component='button' 
-          onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>{t(Strings.apitable_sign_in)}
+        <LinkButton underline={false} component="button" onClick={() => switchClick(ActionType.SignIn)} style={{ paddingRight: 0 }}>
+          {t(Strings.apitable_sign_in)}
         </LinkButton>
       </div>
-      
     </div>
   );
 };

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC } from 'react';
 import { colorVars } from '@apitable/components';
 import { ConfigConstant } from '@apitable/core';
 import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
@@ -23,7 +24,6 @@ import { Emoji } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { emojiUrl, nodeConfigData } from 'pc/utils';
-import { FC } from 'react';
 import { EmojiPopover } from '../../emoji_popover';
 import styles from './style.module.less';
 
@@ -61,7 +61,7 @@ export const NodeIcon: FC<React.PropsWithChildren<INodeIconProps>> = ({
 /**
  * Get the icon of the node by specifying the parameters
  * @param icon emoji
- * @param type 
+ * @param type
  * @param options Other parameters (size: size of the default node icon, emojiSize: size of the emoji, expanded:
  *  whether it is open, hasChildren: whether there are child nodes)
  */
@@ -102,7 +102,7 @@ export const getNodeIcon = (
       <Emoji emoji={icon} size={emojiSize} set="apple" />
     );
   }
-  const nodeConfig = nodeConfigData.find(item => item.type === type);
+  const nodeConfig = nodeConfigData.find((item) => item.type === type);
   if (!nodeConfig) return;
   let iconName = nodeConfig.icon;
   if (hasChildren && nodeConfig?.notEmptyIcon) {

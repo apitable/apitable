@@ -24,7 +24,7 @@ export const EXPAND_WIDGET = 'EXPAND_WIDGET';
 
 export enum IWidgetFullScreenType {
   Full = '1',
-  Normal = '0'
+  Normal = '0',
 }
 
 export const closeWidgetRoute = (widgetId: string, widgetFullScreen?: IWidgetFullScreenType) => {
@@ -38,8 +38,7 @@ export const closeWidgetRoute = (widgetId: string, widgetFullScreen?: IWidgetFul
 export const expandWidgetRoute = (widgetId: string, isReplace?: boolean, widgetFullScreen?: IWidgetFullScreenType) => {
   const state = store.getState();
   const spaceId = state.space.activeId;
-  const { datasheetId, dashboardId, viewId, shareId, templateId, categoryId, mirrorId, embedId } =
-    { ...state.pageParams };
+  const { datasheetId, dashboardId, viewId, shareId, templateId, categoryId, mirrorId, embedId } = { ...state.pageParams };
 
   const nodeId = dashboardId || mirrorId || datasheetId;
   const query = { widgetFullScreen };

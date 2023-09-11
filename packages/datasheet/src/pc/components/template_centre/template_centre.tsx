@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
-import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
-// @ts-ignore
-import { WecomContactWrapper, isDingtalkSkuPage } from 'enterprise';
+import cls from 'classnames';
+import { usePostHog } from 'posthog-js/react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
+import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
+import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileSideBar } from '../mobile_side_bar';
 import styles from './style.module.less';
-import cls from 'classnames';
-import { usePostHog } from 'posthog-js/react';
+// @ts-ignore
+import { WecomContactWrapper, isDingtalkSkuPage } from 'enterprise';
 
-const TemplateCentre: FC<React.PropsWithChildren<unknown>> = props => {
+const TemplateCentre: FC<React.PropsWithChildren<unknown>> = (props) => {
   const { getLoginStatusReq } = useUserRequest();
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
@@ -68,17 +68,7 @@ const TemplateCentre: FC<React.PropsWithChildren<unknown>> = props => {
     </>
   );
 
-  return (
-    <>
-      {
-        WecomContactWrapper ?
-          <WecomContactWrapper>
-            {childComponent}
-          </WecomContactWrapper> :
-          childComponent
-      }
-    </>
-  );
+  return <>{WecomContactWrapper ? <WecomContactWrapper>{childComponent}</WecomContactWrapper> : childComponent}</>;
 };
 
 export default TemplateCentre;

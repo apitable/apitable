@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import { Popover } from 'antd';
 import { FC, PropsWithChildren, useRef, useState } from 'react';
 import * as React from 'react';
+import { Strings, t } from '@apitable/core';
 import { Picker } from 'pc/components/common';
-import { Popover } from 'antd';
-import styles from './style.module.less';
+import { useResponsive } from 'pc/hooks';
 import { ComponentDisplay, ScreenSize } from '../component_display';
 import { Popup } from '../mobile/popup';
-import { Strings, t } from '@apitable/core';
-import { useClickAway } from 'ahooks';
-import { useResponsive } from 'pc/hooks';
+import styles from './style.module.less';
 
 export interface IEmojiPopoverProps {
   onSelect(emoji: string): void;
 }
 
-export const EmojiPickerBase: FC<React.PropsWithChildren<PropsWithChildren<IEmojiPopoverProps>>> = props => {
+export const EmojiPickerBase: FC<React.PropsWithChildren<PropsWithChildren<IEmojiPopoverProps>>> = (props) => {
   const { children, onSelect } = props;
   const ref = useRef<HTMLDivElement | null>(null);
   const { screenIsAtMost } = useResponsive();
@@ -53,7 +53,7 @@ export const EmojiPickerBase: FC<React.PropsWithChildren<PropsWithChildren<IEmoj
     return (
       <div ref={ref}>
         <Picker
-          onSelect={(emoji: { id: string; }) => {
+          onSelect={(emoji: { id: string }) => {
             onSelect(emoji.id);
             setVisible(false);
           }}
@@ -74,7 +74,7 @@ export const EmojiPickerBase: FC<React.PropsWithChildren<PropsWithChildren<IEmoj
           arrowPointAtCenter={false}
           mouseEnterDelay={0}
           mouseLeaveDelay={0}
-          onVisibleChange={visible => setVisible(visible)}
+          onVisibleChange={(visible) => setVisible(visible)}
           destroyTooltipOnHide={{ keepParent: false }}
           placement="bottom"
         >

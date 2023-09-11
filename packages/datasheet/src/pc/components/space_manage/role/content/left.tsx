@@ -16,28 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, StatusCode, Strings, t } from '@apitable/core';
-import { Button, ContextMenu, Message } from '@apitable/components';
-import { AddOutlined, DeleteOutlined, EditOutlined } from '@apitable/icons';
-import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';
-import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useContext, useEffect, useMemo, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Button, ContextMenu, Message } from '@apitable/components';
+import { Api, StatusCode, Strings, t } from '@apitable/core';
+import { AddOutlined, DeleteOutlined, EditOutlined } from '@apitable/icons';
+import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 
+import { flatContextData } from 'pc/utils';
 import { RoleContext } from '../context';
 import { IRoleItem } from '../interface';
 import { expandEditRoleModal } from './edit_role_modal';
 import { RoleItem, ROLE_MENU_EDIT_ID } from './role_item';
 
 import styles from './style.module.less';
-import { flatContextData } from 'pc/utils';
 
 export const addRole = (roleName: string, cb: () => void) => {
   if (!roleName) {
     return;
   }
-  Api.createRole(roleName).then(res => {
+  Api.createRole(roleName).then((res) => {
     const { data } = res;
     if (!data.success) {
       Message.error({ content: data.message });
@@ -48,12 +48,14 @@ export const addRole = (roleName: string, cb: () => void) => {
   });
 };
 
-export const Left: React.FC<React.PropsWithChildren<{
-  roleList: IRoleItem[];
-  refreshRoleList: () => void;
-  activeRoleId?: string;
-  setActiveRoleId: (roleId: string) => void;
-}>> = props => {
+export const Left: React.FC<
+  React.PropsWithChildren<{
+    roleList: IRoleItem[];
+    refreshRoleList: () => void;
+    activeRoleId?: string;
+    setActiveRoleId: (roleId: string) => void;
+  }>
+> = (props) => {
   const { roleList, refreshRoleList, activeRoleId, setActiveRoleId } = props;
   const { manageable, setActiveRoleName, refreshMemberList } = useContext(RoleContext);
   const [search, setSearch] = useState<string>('');
@@ -62,11 +64,11 @@ export const Left: React.FC<React.PropsWithChildren<{
     if (!search) {
       return [];
     }
-    return roleList.filter(v => v.roleName.includes(search));
+    return roleList.filter((v) => v.roleName.includes(search));
   }, [roleList, search]);
 
   useEffect(() => {
-    const role = roleList.find(v => v.roleId === activeRoleId);
+    const role = roleList.find((v) => v.roleId === activeRoleId);
     if (!role) {
       // delete role trigger refresh role list
       setActiveRoleId(roleList[0]?.roleId);
@@ -80,7 +82,7 @@ export const Left: React.FC<React.PropsWithChildren<{
     if (!roleName) {
       return;
     }
-    Api.updateOrgRole(roleId, roleName).then(res => {
+    Api.updateOrgRole(roleId, roleName).then((res) => {
       const { data } = res;
       if (!data.success) {
         Message.error({ content: data.message });
@@ -93,7 +95,7 @@ export const Left: React.FC<React.PropsWithChildren<{
 
   const deleteRole = (role: IRoleItem) => {
     const { roleId } = role;
-    Api.deleteOrgRole(roleId).then(res => {
+    Api.deleteOrgRole(roleId).then((res) => {
       const { data } = res;
       // has member error code check
       if (!data.success && data.code === StatusCode.DELETE_ROLE_EXIST_MEMBER) {
@@ -114,35 +116,35 @@ export const Left: React.FC<React.PropsWithChildren<{
     });
   };
 
-  const roleNameArray = roleList.map(v => v.roleName);
+  const roleNameArray = roleList.map((v) => v.roleName);
 
   const menuData = [
     [
       {
-        icon: <EditOutlined/>,
+        icon: <EditOutlined />,
         text: t(Strings.role_context_item_rename),
         onClick: ({ onEdit, roleName, role }: any) => {
           expandEditRoleModal({
             value: roleName,
             title: t(Strings.rename_role_title),
-            onChange: value => onEdit?.(role, value),
+            onChange: (value) => onEdit?.(role, value),
             existed: roleNameArray,
           });
         },
       },
       {
-        icon: <DeleteOutlined/>,
+        icon: <DeleteOutlined />,
         text: t(Strings.role_context_item_delete),
         onClick: ({ onDelete, role }: any) => {
           onDelete?.(role);
         },
-      }
-    ]
+      },
+    ],
   ];
 
   return (
     <div className={styles.leftWrap}>
-      <SearchInput size='small' keyword={search} change={setSearch}/>
+      <SearchInput size="small" keyword={search} change={setSearch} />
       {search ? (
         <RoleListSearchContent activeRoleId={activeRoleId} list={searchResultList} onClick={setActiveRoleId} />
       ) : (
@@ -168,7 +170,7 @@ export const Left: React.FC<React.PropsWithChildren<{
           )}
           <div className={styles.leftList}>
             <Scrollbars style={{ width: '100%', height: '100%' }}>
-              {roleList.map(roleItem => (
+              {roleList.map((roleItem) => (
                 <RoleItem
                   key={roleItem.roleId}
                   role={roleItem}
@@ -187,11 +189,13 @@ export const Left: React.FC<React.PropsWithChildren<{
   );
 };
 
-const RoleListSearchContent: React.FC<React.PropsWithChildren<{
-  list: IRoleItem[];
-  activeRoleId?: string;
-  onClick?: (roleId: string) => void;
-}>> = props => {
+const RoleListSearchContent: React.FC<
+  React.PropsWithChildren<{
+    list: IRoleItem[];
+    activeRoleId?: string;
+    onClick?: (roleId: string) => void;
+  }>
+> = (props) => {
   const { activeRoleId, list, onClick } = props;
   if (list.length === 0) {
     return <SearchEmpty />;

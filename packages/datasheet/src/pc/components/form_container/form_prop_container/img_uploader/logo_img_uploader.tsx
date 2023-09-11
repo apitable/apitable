@@ -16,34 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classnames from 'classnames';
+import Image from 'next/image';
+import * as React from 'react';
+import { useState } from 'react';
 import { useThemeColors } from '@apitable/components';
 import { isGif, Strings, t } from '@apitable/core';
 import { AddOutlined, EditOutlined } from '@apitable/icons';
-import classnames from 'classnames';
-import Image from 'next/image';
-import { ICropShape } from 'pc/components/common';
+import { ICropShape, ButtonPlus } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { getCellValueThumbSrc } from 'pc/utils';
-import * as React from 'react';
-import { useState } from 'react';
-import { ButtonPlus } from '../../../common';
 import { IBasePropEditorProps, IModeEnum } from '../interface';
+import { UploadContainerShape, UploadContainerSize } from './enum';
 import { ImgBaseUploader } from './img_base_uploader';
 import styles from './style.module.less';
-import { UploadContainerShape, UploadContainerSize } from './enum';
 
 interface ILogoImgUploaderProps extends IBasePropEditorProps {
-    logoUrl?: string;
-    size?: UploadContainerSize
-    shape?: UploadContainerShape
+  logoUrl?: string;
+  size?: UploadContainerSize;
+  shape?: UploadContainerShape;
 }
 
 const customTips = {
   cropDesc: t(Strings.custom_upload_tip),
 };
 
-export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderProps>> = props => {
+export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderProps>> = (props) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -53,7 +52,7 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
     logoUrl,
     updateProps,
     size = isMobile ? UploadContainerSize.MobileNormal : UploadContainerSize.Normal,
-    shape = UploadContainerShape.Square
+    shape = UploadContainerShape.Square,
   } = props;
   const [isModalShow, setModalShow] = useState(false);
   const logoSize = isMobile ? 80 : 120;
@@ -89,23 +88,17 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
             onChange={onChange}
             fileLimit={2}
           >
-            <div
-              className={styles.logoImg}
-              onClick={() => setModalShow(true)}
-
-            >
+            <div className={styles.logoImg} onClick={() => setModalShow(true)}>
               {!logoUrl && (
-                <div
-                  className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
-                  <AddOutlined size={logoAddIconSize} color={colors.fourthLevelText}/>
+                <div className={classnames(styles.logoPlaceHolder, isMobile && styles.placeholderMobile)}>
+                  <AddOutlined size={logoAddIconSize} color={colors.fourthLevelText} />
                   <span>{t(Strings.add_form_logo)}</span>
                 </div>
               )}
-              {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'}/>}
+              {logoUrl && <Image src={logoUrl} alt="cover" layout={'fill'} />}
               {logoUrl && (
                 <div className={classnames(styles.editBtn, isMobile && styles.editBtnMobile)}>
-                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)}
-                    icon={<EditOutlined/>}/>
+                  <ButtonPlus.Icon size="small" onClick={() => setModalShow(true)} icon={<EditOutlined />} />
                 </div>
               )}
             </div>
@@ -115,7 +108,7 @@ export const LogoImgUploader: React.FC<React.PropsWithChildren<ILogoImgUploaderP
         logoUrl && (
           <div className={logoWrapClassName}>
             <div className={styles.logoImg}>
-              <Image src={logoUrl} alt="cover" layout={'fill'}/>
+              <Image src={logoUrl} alt="cover" layout={'fill'} />
             </div>
           </div>
         )

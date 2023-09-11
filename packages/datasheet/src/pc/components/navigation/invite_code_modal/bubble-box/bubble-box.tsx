@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { FC } from 'react';
+import { Strings, t } from '@apitable/core';
 import GoldImg from 'static/icon/workbench/workbench_account_gold_icon.png';
 import styles from './style.module.less';
 

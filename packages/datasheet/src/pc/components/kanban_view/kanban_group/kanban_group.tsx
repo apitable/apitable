@@ -16,26 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@apitable/core';
-import { VariableSizeList } from 'react-window';
 import classNames from 'classnames';
-import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { sum } from 'lodash';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as React from 'react';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { VariableSizeList } from 'react-window';
+import { Button, useThemeColors } from '@apitable/components';
+import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { useResponsive } from 'pc/hooks';
+import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { GroupHeader } from '../group_header';
 import { useCommand } from '../hooks/use_command';
 import { Card, Row } from './rows';
-import styles from './styles.module.less';
-import { sum } from 'lodash';
-import { useResponsive } from 'pc/hooks';
-import { ScreenSize } from 'pc/components/common/component_display';
 import { MARGIN_DISTANCE } from './rows/rows';
-import { Button, useThemeColors } from '@apitable/components';
-import { AddOutlined } from '@apitable/icons';
-import { getIsColNameVisible } from 'pc/utils/datasheet';
+import styles from './styles.module.less';
 interface IKanbanGroupProps {
   groupId: string;
   height: number;
@@ -68,9 +68,9 @@ export enum InsertPlace {
 
 export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: InsertPlace) {
   const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
-  const field = useSelector(state => Selectors.getField(state, kanbanFieldId));
+  const field = useSelector((state) => Selectors.getField(state, kanbanFieldId));
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const recordIndex = useSelector(state => {
+  const recordIndex = useSelector((state) => {
     const rowIndexMap = Selectors.getRowsIndexMap(state);
     const records = kanbanGroupMap[groupId] || [];
     const targetRecord = insertPlace === InsertPlace.Bottom ? records.length && records[records.length - 1] : records[0];
@@ -98,15 +98,15 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
   return addNewRecord;
 }
 
-export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> = props => {
+export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> = (props) => {
   const colors = useThemeColors();
   const { provided, groupId, height, setCollapse, isDragging, kanbanFieldId, dragId } = props;
   const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const activeView = useSelector(state => Selectors.getCurrentView(state))!;
+  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
   const rows = useMemo(() => kanbanGroupMap[groupId] || [], [groupId, kanbanGroupMap]);
   const rowsCount = rows.length;
   const listRef = useRef<VariableSizeList>(null);
-  const coverFieldId = useSelector(state => {
+  const coverFieldId = useSelector((state) => {
     const activeView = Selectors.getCurrentView(state) as IKanbanViewProperty;
     return activeView.style.coverFieldId;
   });
@@ -123,13 +123,13 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     isColNameVisible,
     isVirtual: true,
   });
-  const fieldRole = useSelector(state => {
+  const fieldRole = useSelector((state) => {
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return Selectors.getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
   });
-  const _rowCreatable = useSelector(state => Selectors.getPermissions(state).rowCreatable);
+  const _rowCreatable = useSelector((state) => Selectors.getPermissions(state).rowCreatable);
   const rowCreatable = _rowCreatable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);
-  const keepSort = useSelector(state => {
+  const keepSort = useSelector((state) => {
     const sortInfo = Selectors.getActiveViewSortInfo(state);
     return sortInfo && sortInfo.keepSort;
   });
@@ -144,7 +144,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     if (!searchRecordId) {
       return;
     }
-    const searchRecordIndex = rows.map(item => item.id).indexOf(searchRecordId);
+    const searchRecordIndex = rows.map((item) => item.id).indexOf(searchRecordId);
     if (searchRecordIndex < 0) {
       return;
     }
@@ -243,23 +243,22 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
           >
             {(provided, snapshot) => {
               /**
-               * For the dragging of Kanban cards, no additional consideration is needed if the dragging is within the current group. 
-               * If you are dragging from group A to group B, you need to consider for example that there are two cards in group B. 
-               * In order to leave space for the placeHolderCard (i.e., the blank space added for sorting animation, 
-               * the height is equal to the height of the card being dragged), 
-               * the number of cards in group B should be 2+1 (i.e., the itemCount mentioned below) and 
-               * the height of group B should be 2 * cardHeight + 1 * cardHeight (i.e., the height of the card being dragged). 
+               * For the dragging of Kanban cards, no additional consideration is needed if the dragging is within the current group.
+               * If you are dragging from group A to group B, you need to consider for example that there are two cards in group B.
+               * In order to leave space for the placeHolderCard (i.e., the blank space added for sorting animation,
+               * the height is equal to the height of the card being dragged),
+               * the number of cards in group B should be 2+1 (i.e., the itemCount mentioned below) and
+               * the height of group B should be 2 * cardHeight + 1 * cardHeight (i.e., the height of the card being dragged).
                * The height of group B should be 2 * cardHeight + 1 * placeHolderCardHeight (i.e., the extraHeight mentioned below)
                */
-              const recordIds = rows.map(item => item.id);
+              const recordIds = rows.map((item) => item.id);
               const dragInDiffGroup =
                 snapshot.isUsingPlaceholder && !recordIds.includes((snapshot.draggingFromThisWith || snapshot.draggingOverWith)!);
               const itemCount = dragInDiffGroup && !keepSort ? rowsCount + 1 : rowsCount;
               const extraHeight = dragInDiffGroup ? getCardHeight(snapshot.draggingOverWith || '', isMobile) : 0;
 
               const virtualHeightInner =
-                getFixedListHeight(sum(recordIds.map(recordId => getCardHeight(recordId, isMobile) + CARD_MARGIN)), extraHeight) -
-                CARD_MARGIN;
+                getFixedListHeight(sum(recordIds.map((recordId) => getCardHeight(recordId, isMobile) + CARD_MARGIN)), extraHeight) - CARD_MARGIN;
 
               const _maxVirtualHeight = height - (isMobile ? SMALL_SCREEN_PADDING : TOTAL_PC_OATHER_PADDING);
               const maxVirtualHeight = !rowCreatable ? _maxVirtualHeight + ADD_BUTTON_HEIGHT : _maxVirtualHeight;
@@ -277,7 +276,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
                     key={virtualHeight}
                     height={virtualHeight}
                     itemCount={itemCount}
-                    itemSize={rowIndex => cardHeight(rowIndex, MARGIN_DISTANCE)}
+                    itemSize={(rowIndex) => cardHeight(rowIndex, MARGIN_DISTANCE)}
                     width={BOARD_WIDTH + SCROLL_WIDTH}
                     itemData={{ rows, cardHeight: getCardHeight, groupId, keepSort, dragInDiffGroup }}
                     ref={listRef}

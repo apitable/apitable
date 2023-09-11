@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useRef, useEffect } from 'react';
-import AutoSaveJson from 'static/json/autosave.json';
 import lottie from 'lottie-web/build/player/lottie_svg';
+import { useRef, useEffect } from 'react';
 import { Events, Player } from '@apitable/core';
+import AutoSaveJson from 'static/json/autosave.json';
 
 const AUTO_SAVE_SVG_ID = 'AUTO_SAVE_SVG_ID';
 export const AutoSaveLottie = () => {
@@ -34,7 +34,7 @@ export const AutoSaveLottie = () => {
       renderer: 'svg',
       loop: false,
       autoplay: true,
-      animationData: AutoSaveJson
+      animationData: AutoSaveJson,
     });
     Player.doTrigger(Events.view_notice_auto_save_true);
   }, [ref]);

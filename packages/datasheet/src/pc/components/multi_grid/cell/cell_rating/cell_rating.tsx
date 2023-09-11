@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Rate } from 'pc/components/common/rate';
 import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
+import { ConfigConstant, IRatingField } from '@apitable/core';
+import { Emoji } from 'pc/components/common/emoji';
+import { Rate } from 'pc/components/common/rate';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './style.module.less';
-import { Emoji } from 'pc/components/common/emoji';
-import { ConfigConstant, IRatingField } from '@apitable/core';
 
 interface ICellRating extends ICellComponentProps {
   field: IRatingField;
 }
 
-export const CellRating: React.FC<React.PropsWithChildren<ICellRating>> = props => {
+export const CellRating: React.FC<React.PropsWithChildren<ICellRating>> = (props) => {
   const { className, field, cellValue, isActive, onChange, readonly } = props;
   // Activate the scoring cell for the first time, without updating the value. (Anti-touch)
   const [lock, setLock] = useState(true);
@@ -37,24 +37,24 @@ export const CellRating: React.FC<React.PropsWithChildren<ICellRating>> = props 
     !lock && isActive && onChange && onChange(value);
   };
   return (
-    <div
-      onClickCapture={() => setLock(false)}
-      className={classNames(className, styles.ratingCell, 'ratingCell', { [styles.activeCell]: isActive })}
-    >
-      {
-        isActive && !readonly ? <Rate
+    <div onClickCapture={() => setLock(false)} className={classNames(className, styles.ratingCell, 'ratingCell', { [styles.activeCell]: isActive })}>
+      {isActive && !readonly ? (
+        <Rate
           value={cellValue as number}
           character={<Emoji emoji={field.property.icon} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />}
           max={field.property.max}
           onChange={handleChange}
-        /> :
-          Boolean(cellValue) && <Rate
+        />
+      ) : (
+        Boolean(cellValue) && (
+          <Rate
             value={cellValue as number}
             character={<Emoji emoji={field.property.icon} set="apple" size={ConfigConstant.CELL_EMOJI_SIZE} />}
             max={field.property.max}
             disabled
           />
-      }
+        )
+      )}
     </div>
   );
 };

@@ -16,15 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box, Button, IconButton, Typography, useTheme } from '@apitable/components';
-import {
-  ConfigConstant, EmptyNullOperand, IExpression, ILiteralOperand, OperandTypeEnums, OperatorEnums, Selectors, Strings, t
-} from '@apitable/core';
-import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import produce from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Box, Button, IconButton, Typography, useTheme } from '@apitable/components';
+import {
+  ConfigConstant,
+  EmptyNullOperand,
+  IExpression,
+  ILiteralOperand,
+  OperandTypeEnums,
+  OperatorEnums,
+  Selectors,
+  Strings,
+  t,
+} from '@apitable/core';
+import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import { useAllColumns } from 'pc/hooks';
 import { Select } from '../select';
 import { FieldInput } from './field_input';
@@ -33,10 +41,12 @@ import { addNewFilter as _addNewFilter, FilterTypeEnums, getBooleanOptionName, g
 import styles from './styles.module.less';
 
 const transformNullFilter = (filter?: IExpression | null) => {
-  return filter == null || isEqual(filter, EmptyNullOperand) ? {
-    operator: OperatorEnums.And,
-    operands: [],
-  } : filter;
+  return filter == null || isEqual(filter, EmptyNullOperand)
+    ? {
+      operator: OperatorEnums.And,
+      operands: [],
+    }
+    : filter;
 };
 
 interface IRecordMatchesConditionsFilterProps {
@@ -45,22 +55,20 @@ interface IRecordMatchesConditionsFilterProps {
   hasParent?: boolean;
   path?: string;
   onChange?: (filter: ILiteralOperand) => void;
-  readonly ?: boolean;
+  readonly?: boolean;
   depth?: number;
 }
 
 const WarningTip = (props: any) => {
   const theme = useTheme();
-  return <Box
-    display="flex"
-    alignItems="center"
-    gridColumn="property-start / value-end"
-  >
-    <WarnCircleFilled color={theme.color.fc10}/>
-    <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
-      {props.children}
-    </Typography>
-  </Box>;
+  return (
+    <Box display="flex" alignItems="center" gridColumn="property-start / value-end">
+      <WarnCircleFilled color={theme.color.fc10} />
+      <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
+        {props.children}
+      </Typography>
+    </Box>
+  );
 };
 /**
  * This is a recursively rendered component with up to 3 levels of nesting. Renders S-expressions as nested grouped conditional filters.
@@ -78,22 +86,25 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
-  const updateFilter = useCallback((filter: any) => {
-    setFilter(filter);
-    // The updated value of the child component is passed to the parent component. 
-    // The parent component knows the specific path of the child component and only needs to pass the value.
-    if (onChange) {
-      // root update, you need to serialize the values a bit.
-      if (isRoot) {
-        onChange({
-          type: OperandTypeEnums.Literal,
-          value: filter.operands?.length === 0 ? null : filter,
-        });
-      } else {
-        onChange(filter);
+  const updateFilter = useCallback(
+    (filter: any) => {
+      setFilter(filter);
+      // The updated value of the child component is passed to the parent component.
+      // The parent component knows the specific path of the child component and only needs to pass the value.
+      if (onChange) {
+        // root update, you need to serialize the values a bit.
+        if (isRoot) {
+          onChange({
+            type: OperandTypeEnums.Literal,
+            value: filter.operands?.length === 0 ? null : filter,
+          });
+        } else {
+          onChange(filter);
+        }
       }
-    }
-  }, [onChange, isRoot]);
+    },
+    [onChange, isRoot],
+  );
 
   useEffect(() => {
     setFilter(transformNullFilter(props.filter));
@@ -129,10 +140,10 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   };
 
   const columns = useAllColumns(datasheetId);
-  const snapshot = useSelector(state => {
+  const snapshot = useSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId)!;
   });
-  const fieldPermissionMap = useSelector(state => {
+  const fieldPermissionMap = useSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
 
@@ -141,11 +152,14 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
 
   const fields = getFields(columns!, fieldMap);
   const primaryFieldId = fields[0].id;
-  const addNewFilter = useCallback((type: FilterTypeEnums) => {
-    const newFilter = _addNewFilter(filter, type, primaryFieldId);
-    // console.log('newFilter', newFilter);
-    updateFilter(newFilter);
-  }, [filter, updateFilter, primaryFieldId]);
+  const addNewFilter = useCallback(
+    (type: FilterTypeEnums) => {
+      const newFilter = _addNewFilter(filter, type, primaryFieldId);
+      // console.log('newFilter', newFilter);
+      updateFilter(newFilter);
+    },
+    [filter, updateFilter, primaryFieldId],
+  );
 
   const boolOperatorOptions = [
     { value: 'and', label: getBooleanOptionName('and') },
@@ -157,19 +171,19 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     const isDeletedField = field == null;
 
     if (isDeletedField) {
-      return <>
-        <WarningTip>
-          {t(Strings.robot_trigger_record_matches_condition_invalid_field)}
-        </WarningTip>
-      </>;
+      return (
+        <>
+          <WarningTip>{t(Strings.robot_trigger_record_matches_condition_invalid_field)}</WarningTip>
+        </>
+      );
     }
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId) === ConfigConstant.Role.None;
     if (isCryptoField) {
-      return <>
-        <WarningTip>
-          {t(Strings.robot_trigger_record_matches_condition_cannot_access_field)}
-        </WarningTip>
-      </>;
+      return (
+        <>
+          <WarningTip>{t(Strings.robot_trigger_record_matches_condition_cannot_access_field)}</WarningTip>
+        </>
+      );
     }
     const operatorOptions = getOperatorOptions(field);
 
@@ -177,28 +191,18 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     const fop = op2fop(filter.operator as OperatorEnums);
     return (
       <>
-        <FieldSelect
-          fields={fields}
-          disabled={readonly}
-          value={filter.operands[0].value}
-          onChange={(value) => handleFilterChange (value)}
-        />
-        <Select
-          options={operatorOptions}
-          disabled={readonly}
-          value={filter.operator}
-          onChange={(value) => handleChange('operator', value)}
-        />
+        <FieldSelect fields={fields} disabled={readonly} value={filter.operands[0].value} onChange={(value) => handleFilterChange(value)} />
+        <Select options={operatorOptions} disabled={readonly} value={filter.operator} onChange={(value) => handleChange('operator', value)} />
         <div>
-          {
-            showFieldInput && <FieldInput
+          {showFieldInput && (
+            <FieldInput
               field={field}
               disabled={readonly}
               fop={fop}
               value={filter.operands[1].value}
               onChange={(value) => handleChange('operands[1].value', value)}
             />
-          }
+          )}
         </div>
       </>
     );
@@ -211,57 +215,61 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     <Wrapper {...WrapperProps}>
       <div className={styles.groupWrapperWithAdd}>
         <div className={styles.groupWrapper}>
-          {
-            filter?.operands?.map((item, index) => {
-              const path = `operands[${index}].value`;
-              return (
-                <Fragment key={path}>
-                  {
-                    index == 0 ? <Typography variant="body3" style={{ paddingLeft: 4 }}>
-                      {t(Strings.robot_trigger_match_condition_when)}
-                    </Typography> : (
-                      index === 1 ? <Select
-                        disabled={readonly}
-                        options={boolOperatorOptions}
-                        value={filter.operator}
-                        onChange={(value) => handleChange('operator', value)}
-                      /> :
-                        <Typography variant="body3" style={{ paddingLeft: 4 }}> {getBooleanOptionName(filter.operator)}</Typography>)
-                  }
-                  <RecordMatchesConditionsFilter
-                    path={path}
-                    filter={item.value}
-                    readonly={readonly}
-                    datasheetId={datasheetId}
-                    hasParent
-                    depth={depth + 1}
-                    onChange={(value) => {
-                      handleChange(path, value);
+          {filter?.operands?.map((item, index) => {
+            const path = `operands[${index}].value`;
+            return (
+              <Fragment key={path}>
+                {index == 0 ? (
+                  <Typography variant="body3" style={{ paddingLeft: 4 }}>
+                    {t(Strings.robot_trigger_match_condition_when)}
+                  </Typography>
+                ) : index === 1 ? (
+                  <Select
+                    disabled={readonly}
+                    options={boolOperatorOptions}
+                    value={filter.operator}
+                    onChange={(value) => handleChange('operator', value)}
+                  />
+                ) : (
+                  <Typography variant="body3" style={{ paddingLeft: 4 }}>
+                    {' '}
+                    {getBooleanOptionName(filter.operator)}
+                  </Typography>
+                )}
+                <RecordMatchesConditionsFilter
+                  path={path}
+                  filter={item.value}
+                  readonly={readonly}
+                  datasheetId={datasheetId}
+                  hasParent
+                  depth={depth + 1}
+                  onChange={(value) => {
+                    handleChange(path, value);
+                  }}
+                />
+                {readonly ? (
+                  <Box width={'4px'} height={'100%'} />
+                ) : (
+                  <IconButton
+                    disabled={readonly}
+                    shape="square"
+                    icon={DeleteOutlined}
+                    onClick={() => {
+                      if (readonly) {
+                        return;
+                      }
+                      deleteOperandByIndex(index);
                     }}
                   />
-                  {
-                    readonly ? <Box width={'4px'} height={'100%'} /> : (
-                      <IconButton
-                        disabled={readonly}
-                        shape="square"
-                        icon={DeleteOutlined} onClick={() => {
-                          if(readonly) {
-                            return;
-                          }
-                          deleteOperandByIndex(index);
-                        }} />
-                    )
-                  }
-                </Fragment>
-              );
-            })
-          }
+                )}
+              </Fragment>
+            );
+          })}
         </div>
-        {
-          !readonly && (
-            <div className={styles.addFilterWrapper}>
-              {/* Here we need to change a component */}
-              {/* <DoubleSelect
+        {!readonly && (
+          <div className={styles.addFilterWrapper}>
+            {/* Here we need to change a component */}
+            {/* <DoubleSelect
            value={''}
            options={addFilterOptions}
            triggerStyle={{ width: 180 }}
@@ -271,20 +279,19 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
            addNewFilter(option.value as FilterTypeEnums);
            }}
            /> */}
-              <Button
-                prefixIcon={<AddOutlined />}
-                variant="fill"
-                onClick={() => {
-                  // console.log('addNewFilter', FilterTypeEnums.Filter);
-                  addNewFilter(FilterTypeEnums.Filter);
-                }}
-              >
-                {t(Strings.robot_trigger_add_match_condition_button)}
-              </Button>
-              {/* <span onClick={() => addNewFilter(FilterTypeEnums.Filter)}> ++++</span> */}
-            </div>
-          )
-        }
+            <Button
+              prefixIcon={<AddOutlined />}
+              variant="fill"
+              onClick={() => {
+                // console.log('addNewFilter', FilterTypeEnums.Filter);
+                addNewFilter(FilterTypeEnums.Filter);
+              }}
+            >
+              {t(Strings.robot_trigger_add_match_condition_button)}
+            </Button>
+            {/* <span onClick={() => addNewFilter(FilterTypeEnums.Filter)}> ++++</span> */}
+          </div>
+        )}
       </div>
     </Wrapper>
   );

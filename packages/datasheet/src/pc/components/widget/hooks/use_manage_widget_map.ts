@@ -16,31 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { usePrevious } from 'ahooks';
 import { difference } from 'lodash';
+import { useEffect, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
-import { useEffect, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 export const useManageWidgetMap = () => {
   const dispatch = useAppDispatch();
-  const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
+  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
-  const activeWidgetPanel = useSelector(state => Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType));
+  const activeWidgetPanel = useSelector((state) => Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType));
 
   const activeWidgetInPanelIds = useMemo(() => {
     if (!activeWidgetPanel) {
       return [];
     }
     // Here the array needs to be sorted to avoid the effects of drag-and-drop sorting.
-    return activeWidgetPanel.widgets.map(item => {
-      return item.id;
-    }).sort();
+    return activeWidgetPanel.widgets
+      .map((item) => {
+        return item.id;
+      })
+      .sort();
   }, [activeWidgetPanel]);
 
   const previousActiveWidgetInPanelIds = usePrevious(activeWidgetInPanelIds);
@@ -59,16 +61,18 @@ export const useManageWidgetMap = () => {
       dispatch(StoreActions.resetWidget(reduceDiff));
     }
   }, [previousActiveWidgetInPanelIds, activeWidgetInPanelIds, dispatch, datasheetId]);
-
 };
 
 export const useMountWidgetPanelShortKeys = () => {
   const dispatch = useDispatch();
-  const spaceId = useSelector(state => state.space.activeId);
-  const { datasheetId, mirrorId } = useSelector(state => ({
-    datasheetId: state.pageParams.datasheetId,
-    mirrorId: state.pageParams.mirrorId,
-  }), shallowEqual);
+  const spaceId = useSelector((state) => state.space.activeId);
+  const { datasheetId, mirrorId } = useSelector(
+    (state) => ({
+      datasheetId: state.pageParams.datasheetId,
+      mirrorId: state.pageParams.mirrorId,
+    }),
+    shallowEqual,
+  );
 
   useEffect(() => {
     const toggleWidgetPanel = () => {
@@ -80,7 +84,7 @@ export const useMountWidgetPanelShortKeys = () => {
       const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
       const spaceId = state.space.activeId;
       const resourceId = mirrorId || datasheetId || '';
-      const { width, opening, activePanelId } = Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || {} as IWidgetPanelStatus;
+      const { width, opening, activePanelId } = Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
       setStorage(StorageName.WidgetPanelStatusMap, {
         [`${spaceId},${resourceId}`]: {
           width,

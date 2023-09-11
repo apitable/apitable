@@ -25,9 +25,9 @@ interface I18nProps {
   };
 }
 
-export const TComponent: React.FC<React.PropsWithChildren<I18nProps>> = props => {
+export const TComponent: React.FC<React.PropsWithChildren<I18nProps>> = (props) => {
   const { tkey, params } = props;
-  const text= tkey;
+  const text = tkey;
 
   const keys = Object.keys(params);
   if (keys.length === 0) return <>{tkey}</>;
@@ -41,10 +41,12 @@ export const TComponent: React.FC<React.PropsWithChildren<I18nProps>> = props =>
       {segments.map((segment: string, index: number) => {
         const isPureString = !segment.includes('${');
         const showComponent = index !== segments.length - 1;
-        return <React.Fragment key={index}>
-          {isPureString ? segment : React.createElement(TComponent, { tkey: segment, params })}
-          {showComponent && component}
-        </React.Fragment>;
+        return (
+          <React.Fragment key={index}>
+            {isPureString ? segment : React.createElement(TComponent, { tkey: segment, params })}
+            {showComponent && component}
+          </React.Fragment>
+        );
       })}
     </>
   );

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Coordinate } from './coordinate';
 import { ItemType, IGridCoordinate } from '../../interface';
+import { Coordinate } from './coordinate';
 
 /**
  * Used to build the Canvas Grid base coordinate system
@@ -45,10 +45,10 @@ export class GridCoordinate extends Coordinate {
   public getCellRect(rowIndex: number, columnIndex: number) {
     const { size: height, offset: y } = this.getCellMetaData(rowIndex, ItemType.Row);
     const { size: width, offset: x } = this.getCellMetaData(columnIndex, ItemType.Column);
-    return { 
-      x, 
-      y, 
-      width, 
+    return {
+      x,
+      y,
+      width,
       height,
     };
   }

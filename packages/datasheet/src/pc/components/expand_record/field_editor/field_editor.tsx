@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
+import * as React from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -26,9 +29,6 @@ import { useFocusEffect } from 'pc/components/editors/hooks/use_focus_effect';
 import { IEditor } from 'pc/components/editors/interface';
 import { useResponsive } from 'pc/hooks';
 import { isTouchDevice } from 'pc/utils';
-import * as React from 'react';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import { FieldBlock, ICommonProps } from './field_block';
 import { FieldTitle } from './field_title';
 import styles from './style.module.less';
@@ -52,7 +52,7 @@ export type IExpandFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValu
 const FieldEditorBase = (props: IFieldEditorProps) => {
   const { fieldId, datasheetId, mirrorId, expandRecordId, isFocus, setFocus, showAlarm, allowToInsertField, colIndex } = props;
   const [hover, setHover] = useState(false);
-  const { snapshot, cellValue, cellEditable, fieldRole } = useSelector(state => {
+  const { snapshot, cellValue, cellEditable, fieldRole } = useSelector((state) => {
     const innerSnapshot = Selectors.getSnapshot(state, datasheetId)!;
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return {
@@ -66,7 +66,7 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
   const recordMap = snapshot.recordMap;
-  const editorRef = (useRef<(IExpandFieldEditRef & HTMLDivElement) | null>(null) as any) as React.MutableRefObject<IEditor>;
+  const editorRef = useRef<(IExpandFieldEditRef & HTMLDivElement) | null>(null) as any as React.MutableRefObject<IEditor>;
   const [showTip, setShowTip] = useState(false);
   const timeoutRef = useRef<number>();
   const editable = cellEditable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);

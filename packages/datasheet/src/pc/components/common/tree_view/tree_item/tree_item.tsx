@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant } from '@apitable/core';
 import { Spin } from 'antd';
 import classnames from 'classnames';
 import * as React from 'react';
 import { FC, useContext, useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop, XYCoord } from 'react-dnd';
-import TreeViewContext from '../tree_view_context';
+import { ConfigConstant } from '@apitable/core';
 import './style.module.less';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from '../../component_display';
+import TreeViewContext from '../tree_view_context';
 
 export interface ITreeItemProps {
   label: React.ReactNode | string;
@@ -52,9 +52,27 @@ const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
   draggable = true,
 }) => {
   const {
-    module, icons, indent, expandAction, multiple, draggable: treeDraggable, dragNodeId, highlightNodeId,
-    loadingNodeId, renderTreeItem, isExpanded, isSelected, isFocused, focus, toggleExpansion, onRightClick, selectNode,
-    dragOver, drop, dragStart, onDoubleClick,
+    module,
+    icons,
+    indent,
+    expandAction,
+    multiple,
+    draggable: treeDraggable,
+    dragNodeId,
+    highlightNodeId,
+    loadingNodeId,
+    renderTreeItem,
+    isExpanded,
+    isSelected,
+    isFocused,
+    focus,
+    toggleExpansion,
+    onRightClick,
+    selectNode,
+    dragOver,
+    drop,
+    dragStart,
+    onDoubleClick,
   } = useContext(TreeViewContext);
   const nodeRef = useRef<any>(null);
 
@@ -88,7 +106,7 @@ const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
     drop() {
       drop({ dragNodeId, dropNodeId: hoverNodeId, dropPosition });
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   });
@@ -99,9 +117,9 @@ const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
     const gapHeight = 12;
     const pageY = clientOffset.y;
     let newDropPosition = 0;
-    if (pageY >= (offsetTop + (offsetHeight + 2) - gapHeight) && pageY <= (offsetTop + (offsetHeight + 2))) {
+    if (pageY >= offsetTop + (offsetHeight + 2) - gapHeight && pageY <= offsetTop + (offsetHeight + 2)) {
       newDropPosition = 1;
-    } else if (pageY <= (offsetTop + gapHeight) && pageY >= offsetTop - 4) {
+    } else if (pageY <= offsetTop + gapHeight && pageY >= offsetTop - 4) {
       newDropPosition = -1;
     }
     return newDropPosition;
@@ -178,45 +196,46 @@ const TreeItemBase: FC<React.PropsWithChildren<ITreeItemProps>> = ({
     return React.Children.map(children, (item, index) => renderTreeItem(item, index, pos));
   };
 
-  const depth = pos ? (pos.split('-').length - 1) : 0;
+  const depth = pos ? pos.split('-').length - 1 : 0;
 
   drag(dndDrop(dragRef));
 
   return (
     <li className="treeItemRoot" tabIndex={-1}>
       <div
-        className={classnames('treeItem', {
-          expanded,
-          selected,
-          focused,
-          draggable: draggable && treeDraggable,
-          dragging: dragNodeId,
-          disabled: !selectable,
-          dragNodeHighlight: isDragging,
-          parentHighlight: highlightNodeId === nodeId,
-          dragOverGapTop: isOver && dropPosition === -1,
-          dragOver: isOver && data.type == ConfigConstant.NodeType.FOLDER && dropPosition === 0,
-          dragOverGapBottom: isOver && dropPosition === 1,
-        }, className)}
+        className={classnames(
+          'treeItem',
+          {
+            expanded,
+            selected,
+            focused,
+            draggable: draggable && treeDraggable,
+            dragging: dragNodeId,
+            disabled: !selectable,
+            dragNodeHighlight: isDragging,
+            parentHighlight: highlightNodeId === nodeId,
+            dragOverGapTop: isOver && dropPosition === -1,
+            dragOver: isOver && data.type == ConfigConstant.NodeType.FOLDER && dropPosition === 0,
+            dragOverGapBottom: isOver && dropPosition === 1,
+          },
+          className,
+        )}
         ref={dragRef}
         onClick={clickHandler}
         onDoubleClick={doubleClickHandler}
         onContextMenu={rightClickHandle}
         draggable={draggable && treeDraggable}
-        style={{ paddingLeft: (depth - 1) === 0 ? 8 : (depth - 1) * indent }}
+        style={{ paddingLeft: depth - 1 === 0 ? 8 : (depth - 1) * indent }}
         data-test-id={'treeNodeItem'}
       >
         <div className={'iconContainer'}>
-          {!isLeaf &&
+          {!isLeaf && (
             <div className={'icon'} onClick={clickSwitcherHandler}>
               {loading ? <Spin size="small" className="spin" /> : icons.switcherIcon}
             </div>
-          }
+          )}
         </div>
-        <div
-          className={'label'}
-          ref={nodeRef}
-        >
+        <div className={'label'} ref={nodeRef}>
           {label}
         </div>
       </div>

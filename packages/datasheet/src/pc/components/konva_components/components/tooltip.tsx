@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
 import { ShapeConfig } from 'konva/lib/Shape';
 import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { useThemeColors } from '@apitable/components';
 import { Text } from './text';
 
 const Label = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/label'), { ssr: false });
@@ -46,10 +46,7 @@ export const ToolTip: FC<React.PropsWithChildren<IToolTipProps>> = (props) => {
   } = props;
 
   return (
-    <Label
-      x={x}
-      y={y}
-    >
+    <Label x={x} y={y}>
       <Tag
         fill={background}
         listening={false}
@@ -59,11 +56,7 @@ export const ToolTip: FC<React.PropsWithChildren<IToolTipProps>> = (props) => {
         pointerWidth={pointerWidth}
         pointerHeight={pointerHeight}
       />
-      <Text
-        text={text}
-        fill={fill}
-        padding={padding}
-      />
+      <Text text={text} fill={fill} padding={padding} />
     </Label>
   );
 };

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Fragment, useState, ReactNode, useEffect } from 'react';
-import styles from './style.module.less';
 import classNames from 'classnames';
-import { Tooltip } from '../tooltip';
+import { Fragment, useState, ReactNode, useEffect } from 'react';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from '../component_display';
+import { Tooltip } from '../tooltip';
+import styles from './style.module.less';
 
 export interface IRateProps {
   value: number | null;
@@ -72,7 +72,7 @@ export function Rate(props: IRateProps) {
   const transMax = disabled ? transValue + 1 : max + 1;
   return (
     <div className={styles.rate} onMouseOut={() => setPendingValue(value)}>
-      {[...Array(transMax).keys()].splice(1).map(item => {
+      {[...Array(transMax).keys()].splice(1).map((item) => {
         let willChecked = false;
         const checked = item <= transValue;
         const unChecked = item <= max && item > transValue;

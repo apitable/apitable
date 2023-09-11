@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { FC, useContext } from 'react';
 import * as React from 'react';
-import { stopPropagation } from 'pc/utils';
 import { useThemeColors } from '@apitable/components';
-import styles from './styles.module.less';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
-import classNames from 'classnames';
+import { stopPropagation } from 'pc/utils';
+import styles from './styles.module.less';
 
 interface IQuickAddProps {
   entered?: boolean;
@@ -32,29 +32,13 @@ interface IQuickAddProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export const QuickAdd: FC<React.PropsWithChildren<IQuickAddProps>> = ({
-  entered,
-  id,
-  style,
-  onClick,
-}) => {
+export const QuickAdd: FC<React.PropsWithChildren<IQuickAddProps>> = ({ entered, id, style, onClick }) => {
   const colors = useThemeColors();
 
-  const {
-    quickAddRecId,
-    horizontal,
-    fieldEditable,
-  } = useContext(FlowContext);
+  const { quickAddRecId, horizontal, fieldEditable } = useContext(FlowContext);
 
   const IconAdd = () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={styles.addIcon}
-    >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.addIcon}>
       <path
         d="M14.25 8C14.25 11.4518 11.4518 14.25 8 14.25C4.54822 14.25 1.75 
                 11.4518 1.75 8C1.75 4.54822 4.54822 1.75 8 1.75C11.4518 1.75 14.25 4.54822 14.25 8Z"
@@ -69,7 +53,7 @@ export const QuickAdd: FC<React.PropsWithChildren<IQuickAddProps>> = ({
 
   return (
     <div
-      onContextMenu={e => {
+      onContextMenu={(e) => {
         e.preventDefault();
         stopPropagation(e);
       }}

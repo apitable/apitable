@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FieldType, FOperator, integrateCdnHost, IUnitValue, MemberType, OtherTypeUnitId, Settings, Strings, t } from '@apitable/core';
 import { memberStash } from 'modules/space/member_stash/member_stash';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
-import * as React from 'react';
-import { useContext, useEffect, useMemo, useState } from 'react';
 import { IFilterMemberProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
@@ -30,8 +30,8 @@ interface IExFilterMemberProps extends IFilterMemberProps {
   hiddenClientOption?: boolean;
 }
 
-export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps>> = props => {
-  const { field, disabled=false, condition, onChange, hiddenClientOption } = props;
+export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps>> = (props) => {
+  const { field, disabled = false, condition, onChange, hiddenClientOption } = props;
   const [isMulti, setIsMulti] = useState(false);
   const fieldType = condition.fieldType;
   const filterValue = condition.value || [];
@@ -39,10 +39,9 @@ export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps
   const { isViewLock } = useContext(ViewFilterContext);
   const disabledFlag = disabled || isViewLock;
   const unitList = useMemo(() => {
-
     let tempUnitList: IUnitValue[] = [...new Set(stashList)];
     if (field.type !== FieldType.Member) {
-      tempUnitList = tempUnitList.filter(unitValue => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
+      tempUnitList = tempUnitList.filter((unitValue) => unitValue.type === MemberType.Member && Boolean(unitValue.userId));
     }
 
     const operator = condition.operator;
@@ -85,20 +84,11 @@ export const FilterMember: React.FC<React.PropsWithChildren<IExFilterMemberProps
 
   useEffect(() => {
     const operator = condition.operator;
-    const _isMulti = field.property?.isMulti ||
-      operator === FOperator.Contains ||
-      operator === FOperator.DoesNotContain;
+    const _isMulti = field.property?.isMulti || operator === FOperator.Contains || operator === FOperator.DoesNotContain;
     setIsMulti(_isMulti);
   }, [condition.operator, fieldType, field]);
 
   return (
-    <FilterGeneralSelect
-      field={field}
-      isMulti={isMulti}
-      onChange={onChange}
-      cellValue={filterValue}
-      listData={unitList}
-      isViewLock={disabledFlag}
-    />
+    <FilterGeneralSelect field={field} isMulti={isMulti} onChange={onChange} cellValue={filterValue} listData={unitList} isViewLock={disabledFlag} />
   );
 };

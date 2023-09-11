@@ -18,13 +18,7 @@
 
 import { JSONSchema7 } from 'json-schema';
 import { useState } from 'react';
-import {
-  getDefaultFormState,
-  getMatchingOption, getUiOptions,
-  getWidget,
-  guessType,
-  retrieveSchema,
-} from '../../utils';
+import { getDefaultFormState, getMatchingOption, getUiOptions, getWidget, guessType, retrieveSchema } from '../../utils';
 
 const AnyOfField = (props: any) => {
   const _getMatchingOption = (formData: any, options: JSONSchema7[]) => {
@@ -67,19 +61,12 @@ const AnyOfField = (props: any) => {
     const selectedOption = parseInt(option, 10);
     const { formData, onChange, options, registry } = props;
     const { rootSchema } = registry;
-    const newOption = retrieveSchema(
-      options[selectedOption],
-      rootSchema,
-      formData
-    );
+    const newOption = retrieveSchema(options[selectedOption], rootSchema, formData);
 
     // If the new option is of type object and the current data is an object,
     // discard properties added using the old option.
     let newFormData: {} | undefined = undefined;
-    if (
-      guessType(formData) === 'object' &&
-      (newOption.type === 'object' || newOption.properties)
-    ) {
+    if (guessType(formData) === 'object' && (newOption.type === 'object' || newOption.properties)) {
       newFormData = Object.assign({}, formData);
 
       const optionsToDiscard = options.slice();
@@ -97,28 +84,14 @@ const AnyOfField = (props: any) => {
       }
     }
     // Call getDefaultFormState to make sure defaults are populated on change.
-    onChange(
-      getDefaultFormState(options[selectedOption], newFormData, rootSchema)
-    );
+    onChange(getDefaultFormState(options[selectedOption], newFormData, rootSchema));
 
     setState({
       selectedOption: parseInt(option, 10),
     });
   };
 
-  const {
-    baseType,
-    disabled,
-    errorSchema,
-    idPrefix,
-    idSchema,
-    onBlur,
-    onChange,
-    onFocus,
-    registry,
-    uiSchema,
-    schema,
-  } = props;
+  const { baseType, disabled, errorSchema, idPrefix, idSchema, onBlur, onChange, onFocus, registry, uiSchema, schema } = props;
 
   const _SchemaField = registry.fields.SchemaField;
   const { widgets } = registry;
@@ -132,9 +105,7 @@ const AnyOfField = (props: any) => {
   if (option) {
     // If the subschema doesn't declare a type, infer the type from the
     // parent schema
-    optionSchema = option.type
-      ? option
-      : Object.assign({}, option, { type: baseType });
+    optionSchema = option.type ? option : Object.assign({}, option, { type: baseType });
   }
 
   const enumOptions = options.map((option: any, index: number) => ({
@@ -146,8 +117,7 @@ const AnyOfField = (props: any) => {
     <div className="panel panel-default panel-body">
       <div className="form-group">
         <Widget
-          id={`${idSchema.$id}${schema.oneOf ? '__oneof_select' : '__anyof_select'
-          }`}
+          id={`${idSchema.$id}${schema.oneOf ? '__oneof_select' : '__anyof_select'}`}
           schema={{ type: 'number', default: 0 }}
           onChange={onOptionChange}
           onBlur={onBlur}

@@ -16,18 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ILinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@apitable/core';
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import * as React from 'react';
+import { ILinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@apitable/core';
 import { INodesMap, INode, INodeStateMap, IPre, IGhostNodesRef, IBounds } from '../interfaces';
 
 export interface IFlowContext {
   nodesMap: INodesMap;
   pre: IPre;
   nodeStateMap: INodeStateMap;
-  setNodeStateMap: (
-    value: INodeStateMap | IFuncUpdater<INodeStateMap> | undefined
-  ) => void;
+  setNodeStateMap: (value: INodeStateMap | IFuncUpdater<INodeStateMap> | undefined) => void;
   orgChartStyle: IOrgChartViewStyle;
   orgChartViewStatus: IOrgChartViewStatus;
   unhandledNodes: INode[];

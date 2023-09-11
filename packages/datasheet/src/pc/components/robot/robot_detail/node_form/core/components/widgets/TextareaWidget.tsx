@@ -17,19 +17,7 @@
  */
 
 function TextareaWidget(props: any) {
-  const {
-    id,
-    options,
-    placeholder,
-    value,
-    required,
-    disabled,
-    readonly,
-    autofocus,
-    onChange,
-    onBlur,
-    onFocus,
-  } = props;
+  const { id, options, placeholder, value, required, disabled, readonly, autofocus, onChange, onBlur, onFocus } = props;
   const _onChange = ({ target: { value }}: any) => {
     return onChange(value === '' ? options.emptyValue : value);
   };
@@ -44,8 +32,8 @@ function TextareaWidget(props: any) {
       readOnly={readonly}
       autoFocus={autofocus}
       rows={options.rows}
-      onBlur={onBlur && (event => onBlur(id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(id, event.target.value))}
+      onBlur={onBlur && ((event) => onBlur(id, event.target.value))}
+      onFocus={onFocus && ((event) => onFocus(id, event.target.value))}
       onChange={_onChange}
     />
   );

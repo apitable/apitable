@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, IconButton } from '@apitable/components';
-import { IUserInfo, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
-import { Message } from 'pc/components/common';
 import QRCode from 'qrcode';
 import { FC } from 'react';
-import { Avatar, AvatarSize } from '../../../common';
-import styles from './style.module.less';
+import { Button, IconButton } from '@apitable/components';
+import { IUserInfo, Strings, t } from '@apitable/core';
 import { DownloadOutlined, CloseOutlined } from '@apitable/icons';
+import { Message, Avatar, AvatarSize } from 'pc/components/common';
+import styles from './style.module.less';
 export interface IShareQrCodeProps {
   url: string;
   user?: IUserInfo | null;
@@ -34,56 +33,60 @@ export interface IShareQrCodeProps {
 }
 
 export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ url, user, nodeName, onClose }) => {
-
   useMount(() => {
-    QRCode.toCanvas(url,{
-      errorCorrectionLevel: 'H',
-      margin: 0,
-      width: 176,
-
-    },
-    (err, canvas) => {
-      if (err) {
-        Message.error({ content: 'generation QrCode failed' });
-        return;
-      }
-      const container = document.getElementById('shareQrCode');
-      container?.appendChild(canvas);
-    });
+    QRCode.toCanvas(
+      url,
+      {
+        errorCorrectionLevel: 'H',
+        margin: 0,
+        width: 176,
+      },
+      (err, canvas) => {
+        if (err) {
+          Message.error({ content: 'generation QrCode failed' });
+          return;
+        }
+        const container = document.getElementById('shareQrCode');
+        container?.appendChild(canvas);
+      },
+    );
   });
 
   const downloadImage = () => {
     const downloadNode = document.getElementById('downloadContainer');
-    if (!downloadNode) { return; }
-    domtoimage.toPng(downloadNode, {
-      width: 288,
-      height: 372,
-      style: {
-        marginLeft: '40px',
-      },
-      filter: node => {
-        if (node instanceof Element && (node.id === 'closeBtn' || node.id === 'downloadBtn')) {
-          return false;
-        }
-        return true;
-      },
-    }).then(dataUrl => {
-      const link = document.createElement('a');
-      link.download = `${nodeName}.png`;
-      link.href = dataUrl;
-      link.click();
-    }).catch(() => {
-      Message.error({ content: 'generation image failed' });
-    });
+    if (!downloadNode) {
+      return;
+    }
+    domtoimage
+      .toPng(downloadNode, {
+        width: 288,
+        height: 372,
+        style: {
+          marginLeft: '40px',
+        },
+        filter: (node) => {
+          if (node instanceof Element && (node.id === 'closeBtn' || node.id === 'downloadBtn')) {
+            return false;
+          }
+          return true;
+        },
+      })
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = `${nodeName}.png`;
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch(() => {
+        Message.error({ content: 'generation image failed' });
+      });
   };
 
   return (
     <div className={styles.downloadContainer}>
       <div className={styles.contentContainer}>
         <div className={styles.mainContainer} id="downloadContainer">
-          {onClose && (
-            <IconButton id="closeBtn" icon={() => <CloseOutlined />} className={styles.closeBtn} onClick={onClose} />
-          )}
+          {onClose && <IconButton id="closeBtn" icon={() => <CloseOutlined />} className={styles.closeBtn} onClick={onClose} />}
           <div className={styles.user}>
             {user && (
               <>
@@ -95,9 +98,7 @@ export const ShareQrCode: FC<React.PropsWithChildren<IShareQrCodeProps>> = ({ ur
                   size={AvatarSize.Size24}
                   style={{ marginRight: 8 }}
                 />
-                <span className={styles.nickName}>
-                  { user.memberName }
-                </span>
+                <span className={styles.nickName}>{user.memberName}</span>
                 {t(Strings.who_shares)}
               </>
             )}

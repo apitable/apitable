@@ -22,7 +22,6 @@ import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.shared.util.page.PageInfo;
 import com.apitable.workspace.dto.ControlRoleInfo;
 import com.apitable.workspace.dto.SimpleNodeInfo;
-import com.apitable.workspace.enums.NodePermissionEnum;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleUnit;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -139,7 +138,6 @@ public interface INodeRoleService {
      */
     List<NodeRoleMemberVo> getNodeRoleMembers(String spaceId, String nodeId);
 
-
     /**
      * GetNodeRoleMembersPage.
      *
@@ -154,13 +152,12 @@ public interface INodeRoleService {
      * GetNodeRoleMembersPageInfo.
      *
      * @param page      page param
-     * @param spaceId   space id
      * @param nodeId    node id
      * @return PageInfo<NodeRoleMemberVo>
      * @author Chambers
      */
     PageInfo<NodeRoleMemberVo> getNodeRoleMembersPageInfo(Page<NodeRoleMemberVo> page,
-        String spaceId, String nodeId);
+        String nodeId);
 
     /**
      * Gets the node with the most recently specified permission

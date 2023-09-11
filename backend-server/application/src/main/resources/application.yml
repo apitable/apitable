@@ -196,4 +196,4 @@ system:
 
 databus:
   client:
-    host: ${DATABUS_SERVER_HOST:http://127.0.0.1:8625}
+    host: ${DATABUS_SERVER_BASE_URL:http://127.0.0.1:8625}

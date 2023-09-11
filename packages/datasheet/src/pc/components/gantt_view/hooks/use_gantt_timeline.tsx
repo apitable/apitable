@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import { useContext, useMemo } from 'react';
+import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
 import { GANTT_MONTH_TIMELINE_HEIGHT, GANTT_TAB_BAR_HEIGHT, GANTT_TIMELINE_HEIGHT, GanttCoordinate } from 'pc/components/gantt_view';
 import { Line, Rect, Text } from 'pc/components/konva_components';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import { useContext, useMemo } from 'react';
 import { timelineCollection } from '../model/timeline';
 
 const Circle = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/circle'), { ssr: false });
@@ -34,21 +34,9 @@ interface IUseTimelineLayerProps {
 }
 
 export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
-  const {
-    instance,
-    columnStartIndex,
-    columnStopIndex,
-  } = props;
+  const { instance, columnStartIndex, columnStopIndex } = props;
 
-  const {
-    unitWidth,
-    todayIndex,
-    columnWidth,
-    rowInitSize,
-    dateUnitType,
-    containerWidth,
-    containerHeight
-  } = instance;
+  const { unitWidth, todayIndex, columnWidth, rowInitSize, dateUnitType, containerWidth, containerHeight } = instance;
 
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
@@ -87,8 +75,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
             fill={isToday ? colors.rc08 : colors.secondLevelText}
             align="center"
           />
-          {
-            isMonthly &&
+          {isMonthly && (
             <Text
               key={`timeline-day-${index}`}
               x={textOffset + 0.5}
@@ -100,8 +87,8 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
               fill={isToday ? colors.rc08 : colors.thirdLevelText}
               align="center"
             />
-          }
-        </>
+          )}
+        </>,
       );
 
       /**
@@ -114,7 +101,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
           y={timelineLineOffsetY}
           points={[0, 0, 0, containerHeight - timelineLineOffsetY]}
           stroke={colors.lineColor}
-        />
+        />,
       );
 
       /**
@@ -130,7 +117,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
             x={dividerOffset + 0.5}
             points={[0, 0, 0, isQuarter ? GANTT_TAB_BAR_HEIGHT : rowInitSize]}
             stroke={colors.lineColor}
-          />
+          />,
         );
       }
 
@@ -148,7 +135,7 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
             fill={colors.lowestBg}
             opacity={0.6}
             listening={false}
-          />
+          />,
         );
       });
     }
@@ -160,8 +147,20 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
       timelineHolidays,
     };
   }, [
-    dateUnitType, instance, columnStartIndex, columnStopIndex, rowInitSize, todayIndex, columnWidth,
-    colors.rc08, colors.secondLevelText, colors.thirdLevelText, colors.lineColor, colors.lowestBg, containerHeight, unitWidth
+    dateUnitType,
+    instance,
+    columnStartIndex,
+    columnStopIndex,
+    rowInitSize,
+    todayIndex,
+    columnWidth,
+    colors.rc08,
+    colors.secondLevelText,
+    colors.thirdLevelText,
+    colors.lineColor,
+    colors.lowestBg,
+    containerHeight,
+    unitWidth,
   ]);
 
   const headerBackground = useMemo(() => {
@@ -178,16 +177,8 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
           strokeWidth={1}
           listening={false}
         />
-        <Line
-          y={GANTT_TAB_BAR_HEIGHT + 0.5}
-          points={[0, 0, containerWidth, 0]}
-          stroke={colors.lineColor}
-        />
-        <Line
-          y={rowInitSize + 0.5}
-          points={[0, 0, containerWidth, 0]}
-          stroke={colors.lineColor}
-        />
+        <Line y={GANTT_TAB_BAR_HEIGHT + 0.5} points={[0, 0, containerWidth, 0]} stroke={colors.lineColor} />
+        <Line y={rowInitSize + 0.5} points={[0, 0, containerWidth, 0]} stroke={colors.lineColor} />
       </Group>
     );
   }, [colors.lineColor, colors.sheetLineColor, colors.white, containerWidth, rowInitSize]);
@@ -201,27 +192,19 @@ export const useTimelineLayer = (props: IUseTimelineLayerProps) => {
     const x = instance.getUnitStartOffset(nowTime)!;
 
     return (
-      <Group
-        x={x}
-        y={rowInitSize}
-      >
-        <Circle
-          x={unitWidth / 2 + 0.5}
-          radius={2}
-          fill={colors.rc08}
-        />
-        <Line
-          x={unitWidth / 2 + 0.5}
-          points={[0, 0, 0, containerHeight - rowInitSize]}
-          stroke={colors.rc08}
-        />
+      <Group x={x} y={rowInitSize}>
+        <Circle x={unitWidth / 2 + 0.5} radius={2} fill={colors.rc08} />
+        <Line x={unitWidth / 2 + 0.5} points={[0, 0, 0, containerHeight - rowInitSize]} stroke={colors.rc08} />
       </Group>
     );
   }, [todayIndex, instance, rowInitSize, unitWidth, colors.rc08, containerHeight]);
 
-  return useMemo(() => ({
-    ...timelineMap,
-    headerBackground,
-    timelineHighlight,
-  }), [headerBackground, timelineHighlight, timelineMap]);
+  return useMemo(
+    () => ({
+      ...timelineMap,
+      headerBackground,
+      timelineHighlight,
+    }),
+    [headerBackground, timelineHighlight, timelineMap],
+  );
 };

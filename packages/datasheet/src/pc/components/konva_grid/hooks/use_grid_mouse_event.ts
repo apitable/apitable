@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUpdateEffect } from 'ahooks';
+import { KonvaEventObject } from 'konva/lib/Node';
+import { isEqual } from 'lodash';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { batchActions } from 'redux-batched-actions';
 import { Message } from '@apitable/components';
 import {
   CellType,
@@ -32,9 +37,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { useUpdateEffect } from 'ahooks';
-import { KonvaEventObject } from 'konva/lib/Node';
-import { isEqual } from 'lodash';
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -57,22 +59,15 @@ import {
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { createdBySubscritionMessage } from 'pc/utils/created_by_subscrition_message';
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { batchActions } from 'redux-batched-actions';
 import { MouseDownType } from '../../multi_grid';
 
 const openDialog = (groupTab: any, tabCanvasX: number, tabCanvasY: number, data: any, groupField: ILinkField) => {
   const { width, height, canvasX, canvasY } = groupTab;
-  if (
-    tabCanvasX >= canvasX &&
-    tabCanvasX <= canvasX + width &&
-    tabCanvasY >= canvasY &&
-    tabCanvasY <= canvasY + height
-  ) {
+  if (tabCanvasX >= canvasX && tabCanvasX <= canvasX + width && tabCanvasY >= canvasY && tabCanvasY <= canvasY + height) {
     expandRecord({
       activeRecordId: groupTab.id,
       recordIds: Array.isArray(data) ? data.map((v) => v.id) : [data.id],
-      datasheetId: groupField.property.foreignDatasheetId
+      datasheetId: groupField.property.foreignDatasheetId,
     });
     return true;
   }
@@ -92,17 +87,7 @@ interface IUseGridMouseEventProps {
 }
 
 export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
-  const {
-    instance,
-    pointPosition,
-    rowStartIndex,
-    rowStopIndex,
-    offsetX = 0,
-    getMousePosition,
-    columnStartIndex,
-    columnStopIndex,
-    scrollTop,
-  } = props;
+  const { instance, pointPosition, rowStartIndex, rowStopIndex, offsetX = 0, getMousePosition, columnStartIndex, columnStopIndex, scrollTop } = props;
   const {
     snapshot,
     fieldPermissionMap,
@@ -129,18 +114,11 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     visibleRecordIds,
     visibleRowsIndexMap,
     gridViewDragState,
-    cacheTheme
+    cacheTheme,
   } = useContext(KonvaGridViewContext);
-  const {
-    onEditorPosition, scrollToItem, setMouseStyle, isCellDown, setCellDown, scrollHandler,
-    canAppendRow, onSetCanAppendRow,
-  } = useContext(KonvaGridContext);
-  const {
-    handleForHeader,
-    handleForCell,
-    handleForFillBar,
-    handleForOtherArea,
-  } = useAttachEvent({
+  const { onEditorPosition, scrollToItem, setMouseStyle, isCellDown, setCellDown, scrollHandler, canAppendRow, onSetCanAppendRow } =
+    useContext(KonvaGridContext);
+  const { handleForHeader, handleForCell, handleForFillBar, handleForOtherArea } = useAttachEvent({
     datasheetId,
     fieldRanges,
     fieldIndexMap,
@@ -150,15 +128,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     activeCell,
     onViewMouseDown: onEditorPosition,
   });
-  const {
-    x: pointX,
-    y: pointY,
-    targetName,
-    realTargetName,
-    realAreaType,
-    rowIndex: pointRowIndex,
-    columnIndex: pointColumnIndex,
-  } = pointPosition;
+  const { x: pointX, y: pointY, targetName, realTargetName, realAreaType, rowIndex: pointRowIndex, columnIndex: pointColumnIndex } = pointPosition;
   const isAllowDrag = !(!groupInfo.length && sortInfo?.keepSort);
   const pointRecordId = linearRows[pointRowIndex]?.recordId;
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
@@ -169,14 +139,14 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
 
   // Hide column jump to highlight selected columns
   useUpdateEffect(() => {
-    if(!activeCell) {
+    if (!activeCell) {
       return;
     }
     const activeUICell = Selectors.getCellUIIndex(state, activeCell)!;
-    activeUICell && setTimeout(() => {
-      scrollToItem(activeUICell);
-    }, 100);
-
+    activeUICell &&
+      setTimeout(() => {
+        scrollToItem(activeUICell);
+      }, 100);
   }, [activeCell]);
 
   // Search
@@ -198,10 +168,12 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (activeCell && activeCell.recordId && activeCell.recordId === routeRecordId) return;
     if (!rowsIndexMap.has(`${CellType.Record}_${routeRecordId}`)) return;
     const fieldId = view!.columns[0].fieldId;
-    dispatch(StoreActions.setActiveCell(datasheetId, {
-      recordId: routeRecordId,
-      fieldId,
-    }));
+    dispatch(
+      StoreActions.setActiveCell(datasheetId, {
+        recordId: routeRecordId,
+        fieldId,
+      }),
+    );
     const expandRecordUICell = Selectors.getCellUIIndex(state, { recordId: routeRecordId, fieldId })!;
     if (expandRecordUICell && (expandRecordUICell.rowIndex < rowStartIndex || expandRecordUICell.rowIndex > rowStopIndex)) {
       scrollToItem(expandRecordUICell);
@@ -215,16 +187,13 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (!editingCell || !Object.keys(editingCell).length) return;
 
     const { fieldId, recordId } = editingCell;
-    const isEditColumnExit = visibleColumns.some(item => item.fieldId === fieldId);
+    const isEditColumnExit = visibleColumns.some((item) => item.fieldId === fieldId);
     const isEditRecordExit = rowsIndexMap.has(`${CellType.Record}_${recordId}`);
 
     if (!isEditColumnExit || !isEditRecordExit) {
       Message.warning({ content: t(Strings.cell_not_exist_content) });
       onEditorPosition();
-      dispatch(batchActions([
-        StoreActions.clearSelection(datasheetId),
-        StoreActions.setEditStatus(datasheetId, null),
-      ]));
+      dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.setEditStatus(datasheetId, null)]));
     }
   }, [visibleColumns, rowsIndexMap, dispatch, datasheetId, onEditorPosition]);
 
@@ -235,9 +204,10 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (selection && selection.fieldRanges) return;
     const state = store.getState();
     const activeUICell = Selectors.getCellUIIndex(state, activeCell)!;
-    activeUICell && setTimeout(() => {
-      scrollToItem(activeUICell);
-    }, 0);
+    activeUICell &&
+      setTimeout(() => {
+        scrollToItem(activeUICell);
+      }, 0);
   }, [isSearching]);
 
   /**
@@ -247,10 +217,13 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (rowIndex === -1 && columnIndex === -1) return;
     mouseEvent.preventDefault();
     const { recordId: targetRecordId, fieldId: targetFieldId } = getDetailByTargetName(targetName);
-    const currentActiveCell = (targetRecordId && targetFieldId) ? {
-      recordId: targetRecordId,
-      fieldId: targetFieldId,
-    } : null;
+    const currentActiveCell =
+      targetRecordId && targetFieldId
+        ? {
+          recordId: targetRecordId,
+          fieldId: targetFieldId,
+        }
+        : null;
     if (currentActiveCell) {
       setCellDown(true);
       // Prevent multiple activation of cell events
@@ -265,7 +238,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   const addRow = async(recordId: string, areaType: AreaType) => {
     if (areaType === AreaType.None || !permissions.rowCreatable) return;
     const rowCount = visibleRows.length;
-    const finalRecordId = groupInfo.length ? recordId : (rowCount > 0 ? visibleRows[rowCount - 1].recordId : '');
+    const finalRecordId = groupInfo.length ? recordId : rowCount > 0 ? visibleRows[rowCount - 1].recordId : '';
     await appendRow({ recordId: finalRecordId });
     createdBySubscritionMessage(fieldMap);
   };
@@ -293,7 +266,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
    * Select all operation
    */
   const selectAll = () => {
-    const recordIds = recordRanges?.length === visibleRows.length ? [] : visibleRows.map(r => r.recordId);
+    const recordIds = recordRanges?.length === visibleRows.length ? [] : visibleRows.map((r) => r.recordId);
     return dispatch(StoreActions.setRecordRange(datasheetId, recordIds));
   };
 
@@ -304,10 +277,12 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (mouseEvent.button === MouseDownType.Right) return;
     if (!permissions.rowSortable || !isAllowDrag || pointRowIndex === -1) return;
     setMouseStyle('move');
-    store.dispatch(batchActions([
-      StoreActions.clearSelectionButKeepCheckedRecord(datasheetId),
-      StoreActions.setDragTarget(datasheetId, { recordId: pointRecordId }),
-    ]));
+    store.dispatch(
+      batchActions([
+        StoreActions.clearSelectionButKeepCheckedRecord(datasheetId),
+        StoreActions.setDragTarget(datasheetId, { recordId: pointRecordId }),
+      ]),
+    );
   };
 
   /**
@@ -320,19 +295,19 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     const toRightSpacing = containerWidth ? containerWidth - pointX - offsetX : Infinity;
     if (toBottomSpacing < GRID_DEFAULT_VERTICAL_SPACING) {
       scrollHandler.scrollByValue({
-        rowSpeed: (GRID_DEFAULT_VERTICAL_SPACING - toBottomSpacing) * GRID_SCROLL_BASE_SPEED / GRID_DEFAULT_VERTICAL_SPACING,
+        rowSpeed: ((GRID_DEFAULT_VERTICAL_SPACING - toBottomSpacing) * GRID_SCROLL_BASE_SPEED) / GRID_DEFAULT_VERTICAL_SPACING,
       });
     } else if (toTopSpacing < GRID_DEFAULT_VERTICAL_SPACING) {
       scrollHandler.scrollByValue({
-        rowSpeed: -(GRID_DEFAULT_VERTICAL_SPACING - toTopSpacing) * GRID_SCROLL_BASE_SPEED / GRID_DEFAULT_VERTICAL_SPACING,
+        rowSpeed: (-(GRID_DEFAULT_VERTICAL_SPACING - toTopSpacing) * GRID_SCROLL_BASE_SPEED) / GRID_DEFAULT_VERTICAL_SPACING,
       });
     } else if (toRightSpacing < GRID_DEFAULT_HORIZONTAL_SPACING) {
       scrollHandler.scrollByValue({
-        columnSpeed: (GRID_DEFAULT_HORIZONTAL_SPACING - toRightSpacing) * GRID_SCROLL_BASE_SPEED / GRID_DEFAULT_HORIZONTAL_SPACING,
+        columnSpeed: ((GRID_DEFAULT_HORIZONTAL_SPACING - toRightSpacing) * GRID_SCROLL_BASE_SPEED) / GRID_DEFAULT_HORIZONTAL_SPACING,
       });
     } else if (toLeftSpacing < GRID_DEFAULT_HORIZONTAL_SPACING && toLeftSpacing > 0) {
       scrollHandler.scrollByValue({
-        columnSpeed: -(GRID_DEFAULT_HORIZONTAL_SPACING - toLeftSpacing) * GRID_SCROLL_BASE_SPEED / GRID_DEFAULT_HORIZONTAL_SPACING,
+        columnSpeed: (-(GRID_DEFAULT_HORIZONTAL_SPACING - toLeftSpacing) * GRID_SCROLL_BASE_SPEED) / GRID_DEFAULT_HORIZONTAL_SPACING,
       });
     } else {
       scrollHandler.stopScroll();
@@ -394,28 +369,32 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
     if (activeCell) {
       const { recordId: activeRecordId, fieldId: activeFieldId } = activeCell;
       const { recordId: targetRecordId, fieldId: targetFieldId } = getDetailByTargetName(realTargetName);
-      if ((activeRecordId === targetRecordId && activeFieldId === targetFieldId)) return;
+      if (activeRecordId === targetRecordId && activeFieldId === targetFieldId) return;
       // Drag-and-drop selection operation
       if (isCellDown) {
         scrollByPosition();
-        return dispatch(StoreActions.setSelection({
-          start: activeCell,
-          end: {
-            recordId: pointRecordId,
-            fieldId: pointFieldId,
-          },
-        }));
+        return dispatch(
+          StoreActions.setSelection({
+            start: activeCell,
+            end: {
+              recordId: pointRecordId,
+              fieldId: pointFieldId,
+            },
+          }),
+        );
       }
       // Drag-and-drop handle operation
       if (fillHandleStatus?.isActive && isFillStart) {
         scrollByPosition();
-        return dispatch(StoreActions.setFillHandleStatus({
-          isActive: true,
-          hoverCell: {
-            recordId: pointRecordId,
-            fieldId: pointFieldId,
-          },
-        }));
+        return dispatch(
+          StoreActions.setFillHandleStatus({
+            isActive: true,
+            hoverCell: {
+              recordId: pointRecordId,
+              fieldId: pointFieldId,
+            },
+          }),
+        );
       }
     }
   };
@@ -515,7 +494,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
                   rowHeightLevel: RowHeightLevel.Short,
                   style: { textAlign: 'left' } as IRenderStyleProps,
                   viewType: 1,
-                  cacheTheme
+                  cacheTheme,
                 };
                 const data = cellHelper.renderCellValue(renderProps) as Array<any>;
                 if (data) {

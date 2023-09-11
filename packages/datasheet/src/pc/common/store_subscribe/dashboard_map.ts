@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { difference } from 'lodash';
 import { ResourceType } from '@apitable/core';
 import { eqSet } from '@apitable/widget-sdk';
-import { difference } from 'lodash';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 
@@ -32,7 +32,7 @@ store.subscribe(() => {
     return;
   }
   const previousDashboardIds = dashboardIds;
-  dashboardIds = new Set(Object.keys(dashboardMap).filter(item => Boolean(dashboardMap[item].dashboard)));
+  dashboardIds = new Set(Object.keys(dashboardMap).filter((item) => Boolean(dashboardMap[item].dashboard)));
 
   if (eqSet(dashboardIds, previousDashboardIds)) {
     return;

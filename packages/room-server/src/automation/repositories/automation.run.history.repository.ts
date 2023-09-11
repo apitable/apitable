@@ -23,19 +23,18 @@ import { AutomationRunHistoryEntity } from '../entities/automation.run.history.e
 
 @EntityRepository(AutomationRunHistoryEntity)
 export class AutomationRunHistoryRepository extends Repository<AutomationRunHistoryEntity> {
-
   getRunHistoryByRobotId(robotId: string, skip = 0, take = 10) {
     return this.find({
       select: ['taskId', 'robotId', 'createdAt', 'status'],
       where: {
         robotId,
-        status: In([RunHistoryStatusEnum.RUNNING, RunHistoryStatusEnum.SUCCESS, RunHistoryStatusEnum.FAILED])
+        status: In([RunHistoryStatusEnum.RUNNING, RunHistoryStatusEnum.SUCCESS, RunHistoryStatusEnum.FAILED]),
       },
       order: {
         createdAt: 'DESC',
       },
       skip,
-      take
+      take,
     });
   }
 
@@ -52,16 +51,20 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
       .select('robot_id', 'robotId')
       .addSelect('task_id', 'taskId')
       .addSelect('status', 'status')
-      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.input\'))', 'triggerInput')
-      .addSelect('JSON_EXTRACT(rhs.data, CONCAT(\'$.\', :triggerId, \'.output\'))', 'triggerOutput')
+      .addSelect("JSON_EXTRACT(rhs.data, CONCAT('$.', :triggerId, '.input'))", 'triggerInput')
+      .addSelect("JSON_EXTRACT(rhs.data, CONCAT('$.', :triggerId, '.output'))", 'triggerOutput')
       .where('rhs.task_id = :taskId', { taskId })
       .setParameter('triggerId', triggerId)
       .getRawOne<IRobotTask>();
   }
 
-  updateStatusByTaskId(taskId: string, status: RunHistoryStatusEnum): Promise<number | undefined> {
-    return this.update({ taskId }, { status }).then(r => {
-      return r.affected;
-    });
+  async updateStatusByTaskId(taskId: string, status: RunHistoryStatusEnum): Promise<number | undefined> {
+    const r = await this.update({ taskId }, { status });
+    return r.affected;
+  }
+
+  async selectRobotIdByTaskId(taskId: string): Promise<string | undefined> {
+    const result = await this.findOne({ select: ['robotId'], where: { taskId }});
+    return result?.robotId;
   }
 }

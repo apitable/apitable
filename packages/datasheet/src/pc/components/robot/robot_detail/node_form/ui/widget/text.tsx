@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IWidgetProps } from '../../core/interface';
-import { TextInput } from '@apitable/components';
-import styles from './style.module.less';
-import cls from 'classnames';
 import { useControllableValue } from 'ahooks';
+import cls from 'classnames';
+import { TextInput } from '@apitable/components';
+import { IWidgetProps } from '../../core/interface';
+import styles from './style.module.less';
 
 export const TextWidget = (props: IWidgetProps) => {
   // TODO: useControllableValue This hook to see if it can be changed to anti-shake
-  const [state, setState] = useControllableValue<{ type: string, value: string }>(props, {
+  const [state, setState] = useControllableValue<{ type: string; value: string }>(props, {
     defaultValue: {
       type: 'Literal',
-      value: ''
+      value: '',
     },
   });
   const { rawErrors, error } = props;
@@ -37,15 +37,15 @@ export const TextWidget = (props: IWidgetProps) => {
     <>
       <TextInput
         value={state?.value || ''}
-        onChange={e => setState({
-          type: 'Literal',
-          value: e.target.value
-        })}
+        onChange={(e) =>
+          setState({
+            type: 'Literal',
+            value: e.target.value,
+          })
+        }
         block
       />
-      {helperTextVisible &&
-        <div className={cls(styles.helperText, { [styles.error]: error })}>{helperText}</div>
-      }
+      {helperTextVisible && <div className={cls(styles.helperText, { [styles.error]: error })}>{helperText}</div>}
     </>
   );
 };

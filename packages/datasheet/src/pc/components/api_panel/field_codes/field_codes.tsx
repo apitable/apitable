@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, FieldType, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { getFieldDocs } from '../field_docs/api_panel_config';
-import styles from './styles.module.less';
-import { store } from 'pc/store';
-import githubIcon from 'static/icon/common/github_octopus.png';
-import { Loading } from 'pc/components/common';
 import { LinkButton } from '@apitable/components';
-import dynamic from 'next/dynamic';
-import { CodeLanguage, CodeType } from './enum';
+import { Field, FieldType, Selectors, Strings, t } from '@apitable/core';
+import { Loading } from 'pc/components/common';
+import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
+import githubIcon from 'static/icon/common/github_octopus.png';
+import { getFieldDocs } from '../field_docs/api_panel_config';
+import { CodeLanguage, CodeType } from './enum';
+import styles from './styles.module.less';
 
 const DocInnerHtml = dynamic(() => import('./doc_inner_html'), {
   ssr: false,
@@ -71,18 +71,18 @@ const API_BASE = 'https://api.vika.cn';
 const MORE_SDK_URL = getEnvVariables().API_PANEL_MORE_URL;
 const VARIABLE_REG = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
 
-export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props => {
+export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = (props) => {
   const { codeType, byFieldId, token, language, setLanguage, showApiToken } = props;
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
   const viewId = useSelector(Selectors.getActiveViewId)!;
   const columns = useSelector(Selectors.getVisibleColumns)!;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const rows = useSelector(state => Selectors.getVisibleRows(state))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const rows = useSelector((state) => Selectors.getVisibleRows(state))!;
   const snapshot = useSelector(Selectors.getSnapshot)!;
   // const uploadTip = codeType === CodeType.Upload ? t(Strings.api_upload_tip) : null;
 
   const getAttachmentFieldName = () => {
-    const attachmentColumn = columns.find(field => fieldMap[field.fieldId].type === FieldType.Attachment);
+    const attachmentColumn = columns.find((field) => fieldMap[field.fieldId].type === FieldType.Attachment);
     if (attachmentColumn) {
       const attachmentField = fieldMap[attachmentColumn.fieldId];
       return byFieldId ? attachmentField.id : attachmentField.name;
@@ -91,7 +91,9 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
   };
 
   const getInvalidFieldNames = () => {
-    const invalidFieldNames = columns.filter(field => !VARIABLE_REG.test(fieldMap[field.fieldId].name)).map(field => fieldMap[field.fieldId].name);
+    const invalidFieldNames = columns
+      .filter((field) => !VARIABLE_REG.test(fieldMap[field.fieldId].name))
+      .map((field) => fieldMap[field.fieldId].name);
     return invalidFieldNames;
   };
   const hasInvalidFieldNames = () => {
@@ -101,9 +103,9 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
   const getExampleRecords = (type: RecordType): Partial<IRecord>[] => {
     return rows
       .slice(0, 10)
-      .map(row => {
+      .map((row) => {
         const fields = {};
-        columns.forEach(column => {
+        columns.forEach((column) => {
           const field = fieldMap[column.fieldId];
           const cellValue = Selectors.getCellValue(store.getState(), snapshot, row.recordId, field.id);
           const apiValue = Field.bindModel(field).cellValueToApiStandardValue(cellValue);
@@ -131,14 +133,14 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
           fields,
         };
       })
-      .filter(record => Object.keys(record.fields).length)
+      .filter((record) => Object.keys(record.fields).length)
       .slice(0, 2);
   };
 
   const exampleResponseRecords = getExampleRecords(RecordType.Response) as IRecord[];
   const exampleAddRecords = getExampleRecords(RecordType.Add) as IRecord[];
   const exampleUpdateRecords = getExampleRecords(RecordType.Update);
-  const exampleDeleteRecords = exampleResponseRecords.map(r => r.recordId);
+  const exampleDeleteRecords = exampleResponseRecords.map((r) => r.recordId);
 
   const getExampleRecordKV = (isWriteMode?: boolean) => {
     const exampleRecords = isWriteMode ? exampleAddRecords : exampleResponseRecords;
@@ -172,7 +174,7 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
         return JSON.stringify(exampleAddRecords[0]?.fields, null, 2);
       case 'bulk_add':
         return JSON.stringify(
-          exampleAddRecords.map(record => record.fields),
+          exampleAddRecords.map((record) => record.fields),
           null,
           2,
         );
@@ -255,7 +257,7 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
           method: 'DELETE',
           recordIds: JSON.stringify(exampleDeleteRecords, null, 2),
           response: true,
-          deleteParams: exampleDeleteRecords.map(recordId => `recordIds=${recordId}`).join('&'),
+          deleteParams: exampleDeleteRecords.map((recordId) => `recordIds=${recordId}`).join('&'),
           exampleRecords: exampleDeleteRecords,
         };
       }
@@ -313,7 +315,6 @@ export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = props =>
             More
           </LinkButton>
         )}
-
       </div>
       <DocInnerHtml showApiToken={showApiToken} exampleConfig={exampleConfig} language={language} />
     </div>

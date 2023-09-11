@@ -16,26 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@apitable/core';
-import { ChevronDownOutlined } from '@apitable/icons';
-import { TextButton, useContextMenu } from '@apitable/components';
 import cls from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { ToolHandleType } from 'pc/components/tool_bar/interface';
-import { resourceService } from 'pc/resource_service';
-import { changeView } from 'pc/hooks';
-import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { TextButton, useContextMenu } from '@apitable/components';
+import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip } from 'pc/components/common';
+import { Collapse, ICollapseFunc } from 'pc/components/common/collapse';
+import { ToolHandleType } from 'pc/components/tool_bar/interface';
+import { changeView } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
+import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { Display } from '../../../tool_bar/display/display';
 import { TabItem } from '../../tab_item';
 import { ContextMenu } from '../conetxt_menu';
 import styles from './style.module.less';
-import { Display } from '../../../tool_bar/display/display';
-import { Collapse, ICollapseFunc } from 'pc/components/common/collapse';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
 // import ReactDOM from 'react-dom';
 
 interface IViewBarProps {
@@ -55,13 +55,13 @@ const VIEW_PADDING_WIDTH = 20;
 const MIN_VIEW_WIDTH = VIEW_SYNC_ICON_FIXED_WIDTH + VIEW_ICON_WIDTH + VIEW_PADDING_WIDTH;
 const EDITING_WIDTH = 160;
 
-export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props => {
+export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = (props) => {
   const { views, editIndex, setEditIndex, switchView, extra, className } = props;
   const [viewList, setViewList] = useState(views);
-  const datasheetLoading = useSelector(state => Selectors.getDatasheetLoading(state));
+  const datasheetLoading = useSelector((state) => Selectors.getDatasheetLoading(state));
   const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
-  const { datasheetId: activeNodeId, viewId: activeViewId, embedId } = useSelector(state => state.pageParams);
-  const folderId = useSelector(state => Selectors.getDatasheetParentId(state));
+  const { datasheetId: activeNodeId, viewId: activeViewId, embedId } = useSelector((state) => state.pageParams);
+  const folderId = useSelector((state) => Selectors.getDatasheetParentId(state));
   const [iconHighlight, setIconHighlight] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [contextMenuIndex, setContextMenuIndex] = useState(-1);
@@ -70,13 +70,13 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
   // const spaceManualSaveViewIsOpen = useSelector(state => {
   //   return state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
   // });
-  const operateViewIds = useSelector(state => {
+  const operateViewIds = useSelector((state) => {
     return Selectors.getDatasheetClient(state)?.operateViewIds;
   });
 
   const { contextMenu, onSetContextMenu } = useContextMenu();
 
-  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
 
   const handleInputBlur = (e: React.FocusEvent) => {
     if (!errMsg) {
@@ -93,8 +93,8 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
       return;
     }
     let newViews;
-    if(embedId && embedInfo.viewControl?.viewId) {
-      newViews = views.filter(view => view.id === embedInfo.viewControl?.viewId);
+    if (embedId && embedInfo.viewControl?.viewId) {
+      newViews = views.filter((view) => view.id === embedInfo.viewControl?.viewId);
     } else {
       newViews = views;
     }
@@ -107,17 +107,17 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
 
   const handleInputChange = (e: React.ChangeEvent) => {
     const inputValue = (e.target as HTMLInputElement).value.trim();
-    const isExitSameName = viewList.findIndex(
-      item => item.name === inputValue && item.id !== viewList[editIndex!].id,
-    );
+    const isExitSameName = viewList.findIndex((item) => item.name === inputValue && item.id !== viewList[editIndex!].id);
     if (isExitSameName !== -1) {
       setErrMsg(t(Strings.name_repeat));
       return;
     }
     if (inputValue.length < 1 || inputValue.length > Number(getEnvVariables().VIEW_NAME_MAX_COUNT)) {
-      setErrMsg(t(Strings.view_name_length_err, {
-        maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT
-      }));
+      setErrMsg(
+        t(Strings.view_name_length_err, {
+          maxCount: getEnvVariables().VIEW_NAME_MAX_COUNT,
+        }),
+      );
       return;
     }
     setErrMsg('');
@@ -172,7 +172,7 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
     if (!activeViewId) {
       return;
     }
-    const nextViewPos = viewList.findIndex(item => item.id === activeViewId) + 1;
+    const nextViewPos = viewList.findIndex((item) => item.id === activeViewId) + 1;
     if (nextViewPos >= viewList.length) {
       return;
     }
@@ -184,7 +184,7 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
     if (!activeViewId) {
       return;
     }
-    const prevViewPos = viewList.findIndex(item => item.id === activeViewId) - 1;
+    const prevViewPos = viewList.findIndex((item) => item.id === activeViewId) - 1;
     if (prevViewPos < 0) {
       return;
     }
@@ -205,7 +205,7 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
   };
 
   const modifyView = (isEditingId: string, isEditingValue: string) => {
-    if (isEditingValue === viewList.filter(item => item.id === isEditingId)[0].name) {
+    if (isEditingValue === viewList.filter((item) => item.id === isEditingId)[0].name) {
       return;
     }
     resourceService.instance!.commandManager.execute({
@@ -225,7 +225,7 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
       return;
     }
     const viewId = viewList.filter((_v, i) => i === from)[0].id;
-    setViewList(pre => {
+    setViewList((pre) => {
       const list = pre.slice(0);
       moveArrayElement(list, from, to);
       return list;
@@ -261,18 +261,18 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
         onVisibleChange={(visible) => setIconHighlight(visible)}
         disableAutoActiveItem
       >
-        {
-          isPcDevice() ? (
-            <Tooltip showTipAnyway offset={[0, 7]} title={t(Strings.view_list)}>
-              {btn}
-            </Tooltip>
-          ) : btn
-        }
+        {isPcDevice() ? (
+          <Tooltip showTipAnyway offset={[0, 7]} title={t(Strings.view_list)}>
+            {btn}
+          </Tooltip>
+        ) : (
+          btn
+        )}
       </Display>
     );
   };
 
-  const activeView = viewList.filter(item => item !== null).filter((v) => v.id === activeViewId)[0];
+  const activeView = viewList.filter((item) => item !== null).filter((v) => v.id === activeViewId)[0];
 
   // If the space station is not globally enabled for non-cooperative experiments,
   // the view tab bar does not need to display icons and no adjustment is needed in terms of width
@@ -307,34 +307,35 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
 
   return (
     <>
-      {
-        viewList.length > 0 && !datasheetLoading && (
-          <div className={cls(styles.scrollBox, className, 'scrollBox')}>
-            <Collapse
-              disabledPopup
-              unSortable={!permissions.viewMovable}
-              id="view-bar"
-              mode={{ fontSize: 13, labelMaxWidth: 156 }}
-              activeKey={activeViewId}
-              collapseItemClassName={styles.viewBarItem}
-              align="flex-start"
-              wrapClassName={styles.viewBar}
-              ref={collapseRef}
-              onSort={handleSortView}
-              extra={extra}
-              onItemClick={handleItemClick}
-              trigger={renderTriggerDefault()}
-              stopCalculate={{ width: MIN_VIEW_WIDTH }}
-              triggerClassName={{
-                normal: cls(styles.trigger, {
-                  [styles.triggerLastChild]: !extra,
-                  [styles.specialType]: activeView && [ViewType.OrgChart, ViewType.Kanban].includes(activeView.type),
-                }),
-              }}
-              extraClassName={styles.extra}
-              data={viewList.filter(item => item !== null).map((v, index) => {
+      {viewList.length > 0 && !datasheetLoading && (
+        <div className={cls(styles.scrollBox, className, 'scrollBox')}>
+          <Collapse
+            disabledPopup
+            unSortable={!permissions.viewMovable}
+            id="view-bar"
+            mode={{ fontSize: 13, labelMaxWidth: 156 }}
+            activeKey={activeViewId}
+            collapseItemClassName={styles.viewBarItem}
+            align="flex-start"
+            wrapClassName={styles.viewBar}
+            ref={collapseRef}
+            onSort={handleSortView}
+            extra={extra}
+            onItemClick={handleItemClick}
+            trigger={renderTriggerDefault()}
+            stopCalculate={{ width: MIN_VIEW_WIDTH }}
+            triggerClassName={{
+              normal: cls(styles.trigger, {
+                [styles.triggerLastChild]: !extra,
+                [styles.specialType]: activeView && [ViewType.OrgChart, ViewType.Kanban].includes(activeView.type),
+              }),
+            }}
+            extraClassName={styles.extra}
+            data={viewList
+              .filter((item) => item !== null)
+              .map((v, index) => {
                 const showSyncIcon = getShowViewStatus(v);
-                const fixedWidth = permissions.editable ? !showSyncIcon ? DEFAULT_FIXED_WIDTH : VIEW_SYNC_ICON_FIXED_WIDTH : 0;
+                const fixedWidth = permissions.editable ? (!showSyncIcon ? DEFAULT_FIXED_WIDTH : VIEW_SYNC_ICON_FIXED_WIDTH) : 0;
                 const editing = index === editIndex;
                 return {
                   key: v.id,
@@ -365,23 +366,20 @@ export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = props =
                   ),
                 };
               })}
-            />
-          </div>
-        )
-      }
-      {
-        permissions.editable && (
-          <ContextMenu
-            activeViewId={contextMenuId}
-            activeNodeId={activeNodeId}
-            folderId={folderId}
-            permissions={permissions}
-            viewList={viewList}
-            setEditIndex={setEditIndex}
-            contextMenu={contextMenu}
           />
-        )
-      }
+        </div>
+      )}
+      {permissions.editable && (
+        <ContextMenu
+          activeViewId={contextMenuId}
+          activeNodeId={activeNodeId}
+          folderId={folderId}
+          permissions={permissions}
+          viewList={viewList}
+          setEditIndex={setEditIndex}
+          contextMenu={contextMenu}
+        />
+      )}
     </>
   );
 };

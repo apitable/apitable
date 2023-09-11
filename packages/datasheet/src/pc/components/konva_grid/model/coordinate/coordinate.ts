@@ -17,13 +17,7 @@
  */
 
 import { RowHeightLevel } from '@apitable/core';
-import {
-  ItemType,
-  IndicesMap,
-  ICoordinate,
-  CellMetaData,
-  CellMetaDataMap, 
-} from '../../interface';
+import { ItemType, IndicesMap, ICoordinate, CellMetaData, CellMetaDataMap } from '../../interface';
 
 /**
  * Used to build the Canvas base coordinate system on which subsequent drawing work is based
@@ -54,11 +48,16 @@ export class Coordinate {
   public rowHeightLevel: RowHeightLevel;
 
   constructor({
-    rowHeight, columnWidth,
-    rowCount, columnCount, 
-    containerWidth, containerHeight, 
-    rowInitSize = 0, columnInitSize = 0,
-    rowIndicesMap = {}, columnIndicesMap = {},
+    rowHeight,
+    columnWidth,
+    rowCount,
+    columnCount,
+    containerWidth,
+    containerHeight,
+    rowInitSize = 0,
+    columnInitSize = 0,
+    rowIndicesMap = {},
+    columnIndicesMap = {},
     rowHeightLevel = RowHeightLevel.Short,
   }: ICoordinate) {
     this._rowHeight = rowHeight;
@@ -169,15 +168,12 @@ export class Coordinate {
   private _findNearestCellIndex(index: number, offset: number, itemType: ItemType) {
     const itemCount = itemType === ItemType.Column ? this.columnCount : this.rowCount;
     let interval = 1;
-    
-    while (
-      index < itemCount &&
-      this.getCellMetaData(index, itemType).offset < offset
-    ) {
+
+    while (index < itemCount && this.getCellMetaData(index, itemType).offset < offset) {
       index += interval;
       interval *= 2;
     }
-  
+
     return this._findNearestCellIndexByBinary(offset, Math.floor(index / 2), Math.min(index, itemCount - 1), itemType);
   }
 
@@ -189,7 +185,7 @@ export class Coordinate {
     while (low <= high) {
       const middle = low + Math.floor((high - low) / 2);
       const currentOffset = this.getCellMetaData(middle, itemType).offset;
-  
+
       if (currentOffset === offset) {
         return middle;
       } else if (currentOffset < offset) {
@@ -215,7 +211,7 @@ export class Coordinate {
       lastIndex = this.lastRowIndex;
     }
     const lastMeasuredItemOffset = lastIndex > 0 ? itemMetadataMap[lastIndex].offset : 0;
-    
+
     if (lastMeasuredItemOffset >= offset) {
       return this._findNearestCellIndexByBinary(offset, 0, lastIndex, itemType);
     }
@@ -237,9 +233,9 @@ export class Coordinate {
     const maxOffset = scrollTop + this.containerHeight;
     let offset = itemMetadata.offset + itemMetadata.size;
     let stopIndex = startIndex;
-  
+
     while (stopIndex < this.rowCount - 1 && offset < maxOffset) {
-      stopIndex ++;
+      stopIndex++;
       offset += this.getCellMetaData(stopIndex, ItemType.Row).size;
     }
     return stopIndex;
@@ -260,9 +256,9 @@ export class Coordinate {
     const maxOffset = scrollLeft + this.containerWidth;
     let offset = itemMetadata.offset + itemMetadata.size;
     let stopIndex = startIndex;
-  
+
     while (stopIndex < this.columnCount - 1 && offset < maxOffset) {
-      stopIndex ++;
+      stopIndex++;
       offset += this.getCellMetaData(stopIndex, ItemType.Column).size;
     }
     return stopIndex;

@@ -16,20 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC } from 'react';
 import { Form } from 'antd';
-import styles from './style.module.less';
-import {
-  hiddenMobile,
-  ConfigConstant,
-  Strings,
-  t,
-} from '@apitable/core';
+import { FC } from 'react';
+import { hiddenMobile, ConfigConstant, Strings, t } from '@apitable/core';
 
-import {
-  WithTipWrapper,
-  IdentifyingCodeInput,
-} from 'pc/components/common';
+import { WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
+import styles from './style.module.less';
 
 export interface IVerifyProps {
   onVerify: () => void;
@@ -46,22 +38,12 @@ export interface IVerifyProps {
   mode?: ConfigConstant.LoginMode;
 }
 
-export const Verify: FC<React.PropsWithChildren<IVerifyProps>> = ({
-  onVerify,
-  onInputChange,
-  errMsg,
-  setErrMsg,
-  data,
-  smsType,
-  emailType,
-  mode,
-}) => {
-
+export const Verify: FC<React.PropsWithChildren<IVerifyProps>> = ({ onVerify, onInputChange, errMsg, setErrMsg, data, smsType, emailType, mode }) => {
   const isMobileType = emailType === undefined;
 
   return (
     <div>
-      <Form onFinish={onVerify} key='verify'>
+      <Form onFinish={onVerify} key="verify">
         <div className={styles.tip}>
           {t(Strings.send_verification_code_to, {
             mobile: `${isMobileType ? data.areaCode : ''} ${isMobileType ? hiddenMobile(data.mobile!) : data.email}`,

@@ -22,6 +22,9 @@
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/nextjs';
 import { Integrations } from '@sentry/tracing';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { Store } from 'redux';
 import {
   Api,
   getLanguage,
@@ -34,22 +37,20 @@ import {
   StoreActions,
   Strings,
   t,
-  Url, WasmApi
+  Url,
+  WasmApi,
 } from '@apitable/core';
-import axios from 'axios';
-import dayjs from 'dayjs';
+import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getEnvVariables, getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 import '../../modules/shared/apphook/hook_bindings';
+import { APITable } from '../../modules/shared/apitable_lib';
 import { initCronjobs } from './cronjob';
 import './store_subscribe';
-import { APITable } from '../../modules/shared/apitable_lib';
-import { Store } from 'redux';
 // @ts-ignore
 import { isSocialUrlIgnored } from 'enterprise';
-import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
 
 declare let window: any;
 if (!process.env.SSR && window !== undefined) {
@@ -65,18 +66,10 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
     return true;
   }
 
-  const ignoreData = [
-    Url.USER_ME,
-    Url.KEEP_TAB_BAR,
-    Url.JOIN_VIA_LINK,
-    Url.LINK_VALID,
-  ];
+  const ignoreData = [Url.USER_ME, Url.KEEP_TAB_BAR, Url.JOIN_VIA_LINK, Url.LINK_VALID];
 
   for (const url of ignoreData) {
-    if (
-      curUrl.includes(url) ||
-      curUrl.includes('dataPack')
-    ) {
+    if (curUrl.includes(url) || curUrl.includes('dataPack')) {
       return true;
     }
   }
@@ -84,36 +77,29 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
   return false;
 }
 
-export function handleResponse<T>(response: {
-  data: IAxiosResponse<T>['data']
-}, headers: any|undefined, url: string|undefined) {
-  const {
-    success,
-    code,
-    data,
-    message = 'Error',
-  } = response.data;
-  
+export function handleResponse<T>(
+  response: {
+    data: IAxiosResponse<T>['data'];
+  },
+  headers: any | undefined,
+  url: string | undefined,
+) {
+  const { success, code, data, message = 'Error' } = response.data;
+
   const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
-  if (
-    success && data && url?.startsWith('/nest/v1/') &&
-      !IGNORE_PATH_REG.test(location.pathname)
-  ) {
+  if (success && data && url?.startsWith('/nest/v1/') && !IGNORE_PATH_REG.test(location.pathname)) {
     const state = store.getState();
     const activeSpaceId = Selectors.activeSpaceId(state);
     // @ts-ignore
     const spaceId = data.datasheet?.spaceId || data.mirror?.spaceId || data.dashboard?.spaceId || data.form?.spaceId;
-    if (spaceId && (spaceId !== activeSpaceId)) {
+    if (spaceId && spaceId !== activeSpaceId) {
       axios.defaults.headers.common['X-Space-Id'] = spaceId;
       // @ts-ignore
       store.dispatch(StoreActions.getUserMe({ spaceId }));
     }
   }
 
-  if (
-    !success
-      && String(code).startsWith('5')
-  ) {
+  if (!success && String(code).startsWith('5')) {
     Sentry.captureMessage(message, {
       extra: {
         headers: headers,
@@ -132,8 +118,9 @@ export function handleResponse<T>(response: {
           okText: t(Strings.login_status_expired_button),
           onOk: () => {
             const IS_EMBED_LINK_REG = /^\/embed/;
-            const reference = !IS_EMBED_LINK_REG.test(location.pathname) ?
-              (new URLSearchParams(window.location.search)).get('reference')?.toString() : window.location.href;
+            const reference = !IS_EMBED_LINK_REG.test(location.pathname)
+              ? new URLSearchParams(window.location.search).get('reference')?.toString()
+              : window.location.href;
             store.dispatch(StoreActions.setUserMe(null));
             store.dispatch(StoreActions.setIsLogin(false));
             Router.redirect(Navigation.LOGIN, { query: { reference }});
@@ -208,14 +195,16 @@ export function handleResponse<T>(response: {
 
 function initAxios(store: Store<IReduxState>) {
   axios.defaults.paramsSerializer = (params) => {
-    return Object.keys(params).filter(it => {
-      return params.hasOwnProperty(it);
-    }).reduce((pre, curr) => {
-      if (params[curr] === null || typeof params[curr] === 'undefined') {
-        return pre;
-      }
-      return (pre ? pre + '&' : '') + curr + '=' + encodeURIComponent(params[curr]);
-    }, '');
+    return Object.keys(params)
+      .filter((it) => {
+        return params.hasOwnProperty(it);
+      })
+      .reduce((pre, curr) => {
+        if (params[curr] === null || typeof params[curr] === 'undefined') {
+          return pre;
+        }
+        return (pre ? pre + '&' : '') + curr + '=' + encodeURIComponent(params[curr]);
+      }, '');
   };
 
   axios.interceptors.request.use((config) => {
@@ -229,7 +218,7 @@ function initAxios(store: Store<IReduxState>) {
     return config;
   });
 
-  axios.interceptors.response.use(response => {
+  axios.interceptors.response.use((response) => {
     return handleResponse(response.data, response, response.config.url);
   });
 
@@ -240,7 +229,6 @@ function initAxios(store: Store<IReduxState>) {
       axios.defaults.headers.common['X-Space-Id'] = spaceId;
     }
   }
-
 }
 
 function initBugTracker() {
@@ -265,8 +253,7 @@ function initBugTracker() {
       // new Sentry.Integrations.TryCatch({
       //   requestAnimationFrame: false,
       // })
-    ]
-    ,
+    ],
     environment: getInitializationData().env,
     release: getReleaseVersion(),
     normalizeDepth: 5,
@@ -280,7 +267,7 @@ function initBugTracker() {
     autoSessionTracking: false,
     ignoreErrors: [
       // It was found that all hovers where tooltip appears send a request to sentry and the exception status is this
-      'ResizeObserver loop limit exceeded'
+      'ResizeObserver loop limit exceeded',
     ],
   });
 }
@@ -304,8 +291,8 @@ export function redirectIfUserApplyLogout() {
 export function initializer(comlink: any) {
   initAxios(comlink.store);
 
-  if (getBrowserDatabusApiEnabled()){
-    WasmApi.initializeDatabusWasm().then(r => {});
+  if (getBrowserDatabusApiEnabled()) {
+    WasmApi.initializeDatabusWasm().then((r) => {});
   } else {
     console.log('web assembly is not supported');
   }
@@ -331,7 +318,7 @@ export function initializer(comlink: any) {
  * @returns
  */
 function checkFps(fn: (arg0: WheelEvent) => void, id: string, totalCount: number, dps: any) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const element = document.getElementById(id)!;
 
     function simulatScroll() {
@@ -376,7 +363,7 @@ function checkFps(fn: (arg0: WheelEvent) => void, id: string, totalCount: number
       const timer = setInterval(() => {
         count++;
         const timeEscape = (Date.now() - time) / 1000;
-        const fps = (frame / timeEscape);
+        const fps = frame / timeEscape;
         result.fps.push(fps);
         if (count >= totalCount) {
           // Remove the first and last seconds

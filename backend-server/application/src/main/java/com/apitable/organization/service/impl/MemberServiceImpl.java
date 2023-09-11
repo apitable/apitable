@@ -104,10 +104,12 @@ import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -411,6 +413,21 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
                 return item;
             }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NodeRoleMemberVo> getNodeRoleMemberWithSort(Collection<Long> memberIds) {
+        if (CollUtil.isEmpty(memberIds)) {
+            return Collections.emptyList();
+        }
+        List<NodeRoleMemberVo> results = new ArrayList<>(memberIds.size());
+        for (List<Long> ids : CollUtil.split(memberIds, 1000)) {
+            List<NodeRoleMemberVo> vos = memberMapper.selectNodeRoleMemberByIds(ids);
+            // Switch to memory custom sorting
+            CollectionUtil.customSequenceSort(vos, NodeRoleMemberVo::getMemberId, ids);
+            results.addAll(vos);
+        }
+        return results;
     }
 
     @Override

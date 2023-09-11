@@ -2,21 +2,21 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { DatasheetApi, ICascaderField, ICascaderNode, ILinkField, ILinkedField, Selectors } from '@apitable/core';
-import styles from './style.module.less';
-import { Cascader } from '../../../cascader';
 import { ICascaderOption, mapTreeNodesRecursively } from '../../../../utils';
+import { Cascader } from '../../../cascader';
+import styles from './style.module.less';
 
 interface IFilterCascader {
   field: ICascaderField;
   onChange: (val: any) => void;
   value: string[];
-  disabled ?: boolean;
+  disabled?: boolean;
   linkedFieldId?: string;
 }
 
 export const FilterCascader = (props: IFilterCascader) => {
-  const datasheetId = useSelector(state => Selectors.getActiveDatasheetId(state))!;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, datasheetId));
+  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId));
   const { field, disabled, onChange, value, linkedFieldId } = props;
   const linkedDatasheetId = linkedFieldId ? (fieldMap?.[linkedFieldId] as ILinkField)?.property.foreignDatasheetId : '';
   const [options, setOptions] = useState<ICascaderOption[]>([]);
@@ -48,7 +48,7 @@ export const FilterCascader = (props: IFilterCascader) => {
         loading={loading}
         disabled={disabled}
         onChange={(val) => {
-          if(disabled) {
+          if (disabled) {
             return;
           }
           onChange(val);
@@ -58,10 +58,10 @@ export const FilterCascader = (props: IFilterCascader) => {
           height: '40px',
           lineHeight: '40px',
         }}
-        displayRender={label => {
+        displayRender={(label) => {
           return field.property.showAll ? label.join('/') : label[label.length - 1];
         }}
-        value={value?.map(cv => cv.split(('/')))}
+        value={value?.map((cv) => cv.split('/'))}
       />
     </div>
   );

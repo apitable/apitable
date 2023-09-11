@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useUpdateEffect } from 'ahooks';
+import { useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
 import { Strings, t } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
-import { useEffect, useMemo, useState } from 'react';
-import * as React from 'react';
 import { PageTurn, PageTurnMobile } from 'pc/components/expand_record/page_turn';
-import { useUpdateEffect } from 'ahooks';
 import EditorTitleContext from '../editor_title_context';
 
 interface IRecordPageTurnProps {
@@ -33,13 +33,13 @@ interface IRecordPageTurnProps {
   isMobile?: boolean;
 }
 
-export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnProps>> = props => {
+export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnProps>> = (props) => {
   const { activeRecordId, recordIds, switchRecord, isMobile } = props;
   const { updateFocusFieldId } = React.useContext(EditorTitleContext);
   const [expandRecordIndex, setExpandRecordIndex] = useState(-1);
 
   const curRecordIndex = useMemo(() => {
-    return recordIds.findIndex(recordId => recordId === activeRecordId);
+    return recordIds.findIndex((recordId) => recordId === activeRecordId);
   }, [activeRecordId, recordIds]);
 
   const firstRecordId = recordIds[0];
@@ -80,14 +80,22 @@ export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnPro
   }
 
   function allowClick(type: 'pre' | 'next') {
-    if (lastRecordId === firstRecordId) { return false; }
-    if (type === 'pre' && activeRecordId === firstRecordId) { return false; }
-    if (type === 'next' && activeRecordId === lastRecordId) { return false; }
+    if (lastRecordId === firstRecordId) {
+      return false;
+    }
+    if (type === 'pre' && activeRecordId === firstRecordId) {
+      return false;
+    }
+    if (type === 'next' && activeRecordId === lastRecordId) {
+      return false;
+    }
     return true;
   }
 
   function nextRecord() {
-    if (!allowClick('next')) { return; }
+    if (!allowClick('next')) {
+      return;
+    }
     updateFocusFieldId(null);
     const newExpandRecordIndex = curRecordIndex + 1;
     setExpandRecordIndex(newExpandRecordIndex);
@@ -97,7 +105,9 @@ export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnPro
   }
 
   function preRecord() {
-    if (!allowClick('pre')) { return; }
+    if (!allowClick('pre')) {
+      return;
+    }
     updateFocusFieldId(null);
     const newExpandRecordIndex = curRecordIndex - 1;
     setExpandRecordIndex(newExpandRecordIndex);
@@ -107,14 +117,7 @@ export const RecordPageTurn: React.FC<React.PropsWithChildren<IRecordPageTurnPro
   }
 
   if (isMobile) {
-    return (
-      <PageTurnMobile
-        onClickPre={preRecord}
-        onClickNext={nextRecord}
-        disablePre={allowClick('pre')}
-        disableNext={allowClick('next')}
-      />
-    );
+    return <PageTurnMobile onClickPre={preRecord} onClickNext={nextRecord} disablePre={allowClick('pre')} disableNext={allowClick('next')} />;
   }
 
   return (

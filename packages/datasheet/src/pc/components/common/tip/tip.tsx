@@ -16,14 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
-import * as React from 'react';
 import { Popover } from 'antd';
-import styles from './style.module.less';
 import { PopoverProps } from 'antd/lib/popover';
-import { useRef } from 'react';
-import { useEffect } from 'react';
 import classNames from 'classnames';
+import { FC, useState, useRef, useEffect } from 'react';
+import * as React from 'react';
+import styles from './style.module.less';
 
 interface IPopoverProps extends PopoverProps {
   oneline?: boolean;
@@ -32,9 +30,8 @@ interface IPopoverProps extends PopoverProps {
   noCheckDisplay?: boolean;
 }
 
-export const Tip: FC<React.PropsWithChildren<IPopoverProps>> = props => {
-  const { oneline = false, needArrow = false, visible,
-    placement = 'bottom', noCheckDisplay, ...rest } = props;
+export const Tip: FC<React.PropsWithChildren<IPopoverProps>> = (props) => {
+  const { oneline = false, needArrow = false, visible, placement = 'bottom', noCheckDisplay, ...rest } = props;
   const myrefs = useRef<HTMLElement>();
   const isSvg = typeof (props.children as React.ReactElement).type === 'function';
   const [show, setShow] = useState(false);
@@ -82,22 +79,13 @@ export const Tip: FC<React.PropsWithChildren<IPopoverProps>> = props => {
   };
   if (isSvg) {
     const _popoverConfig = typeof props.visible === 'boolean' ? { ...popoverConfig, visible } : popoverConfig;
-    return (
-      <Popover
-        {..._popoverConfig}
-      >
-        {props.children}
-      </Popover >
-    );
+    return <Popover {..._popoverConfig}>{props.children}</Popover>;
   }
 
   const curProps = !show ? { visible: false } : {};
   return (
-    <Popover
-      {...curProps}
-      {...popoverConfig}
-    >
+    <Popover {...curProps} {...popoverConfig}>
       {child}
-    </Popover >
+    </Popover>
   );
 };

@@ -18,15 +18,26 @@
 
 package com.apitable.workspace.service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.workspace.ro.FieldControlProp;
 import com.apitable.workspace.vo.FieldCollaboratorVO;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.FieldPermissionView;
-import com.apitable.workspace.ro.FieldControlProp;
+import com.apitable.workspace.vo.FieldRoleMemberVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
+import java.util.Map;
 
 public interface IFieldRoleService {
+
+    /**
+     * Gets whether the field permission mode is the specified mode
+     *
+     * @param dstId datasheet id
+     * @param fieldId field id
+     * @return true | false
+     */
+    boolean getFieldRoleEnabledStatus(String dstId, String fieldId);
 
     /**
      * pre check of operation column permissions
@@ -43,6 +54,18 @@ public interface IFieldRoleService {
      * @param memberId member id
      */
     void checkFieldHasOperation(String controlId, Long memberId);
+
+    /**
+     * GetFieldRoleMembersPageInfo.
+     *
+     * @param page          page param
+     * @param datasheetId   datasheet id
+     * @param fieldId       file id
+     * @return PageInfo<NodeRoleMemberVo>
+     * @author Chambers
+     */
+    PageInfo<FieldRoleMemberVo> getFieldRoleMembersPageInfo(Page<FieldRoleMemberVo> page,
+        String datasheetId, String fieldId);
 
     /**
      * get field role：

@@ -1228,7 +1228,8 @@
       "is_notification": true,
       "mail_template_subject": "automationError",
       "notifications_type": "space",
-      "to_tag": "member",
+      "is_component": true,
+      "to_tag": "users",
       "url": "/workbench"
     }
   },

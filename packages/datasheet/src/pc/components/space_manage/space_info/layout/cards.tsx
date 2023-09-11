@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Strings, t } from '@apitable/core';
-// @ts-ignore
-import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
 import { useMemo } from 'react';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { Strings, t } from '@apitable/core';
 import { CreditCostCard } from 'pc/components/space_manage/space_info/components/credit_cost_card/credit_cost_card';
 import { useCredit } from 'pc/components/space_manage/space_info/hooks/use_credit';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { CapacityWithRewardCard, Card, Info, LevelCard, MultiLineCard } from '../components';
 import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
 import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
@@ -30,6 +28,8 @@ import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView 
 import { ILayoutProps } from '../interface';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
+// @ts-ignore
+import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
 
 interface ICardProps {
   minHeight?: string | number;

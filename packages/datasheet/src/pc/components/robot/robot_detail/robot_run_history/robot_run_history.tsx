@@ -16,37 +16,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { nanoid } from 'nanoid';
+import Image from 'next/image';
+import { useCallback, useState } from 'react';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
+import { useSelector } from 'react-redux';
+import useSWRInfinite from 'swr/infinite';
 import { Box, Loading, Skeleton, Typography, useTheme } from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
-import useInfiniteScroll from 'react-infinite-scroll-hook';
-import useSWRInfinite from 'swr/infinite';
+import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
 import { getRobotRunHistoryList } from '../../api';
 import { useRobot } from '../../hooks';
 import { RobotRunHistoryItem } from './robot_run_history_item';
-import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
-import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
-import Image from 'next/image';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
 
-const PAGE_SIZE = 20;
+export const PAGE_SIZE = 20;
 
-export const RobotRunHistory = () => {
+export const useGetTaskHistory = () => {
   const { currentRobotId } = useRobot();
-  const { data, error, size, setSize } = useSWRInfinite(
-    index => `/automation/run-history?size=${PAGE_SIZE}&page=${index + 1}&robotId=${currentRobotId}`,
+  const [key, setKey] = useState(() => nanoid());
+  const { data, isLoading, isValidating, error, size, setSize, mutate } = useSWRInfinite(
+    index => `/automation/run-history?size=${PAGE_SIZE}&page=${index + 1}&robotId=${currentRobotId}&key=${key}`,
     getRobotRunHistoryList
   );
-  const themeName = useSelector(state => state.theme);
-  const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
+
+  const reset = useCallback(() => {
+    setKey(nanoid());
+    mutate();
+  }, [mutate]);
+
   const items = data ? data.flat() : [];
   const isLoadingInitialData = !data && !error;
   const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
-    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+      isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
   // const isRefreshing = isValidating && data && data.length === size;
   const canLoadMore = !isReachingEnd && !isLoadingMore;
+  return {
+    canLoadMore,
+    items,
+    isEmpty,
+    size,
+    error,
+    isLoadingData: isLoading,
+    isLoading: isValidating,
+    isLoadingMore,
+    isLoadingInitialData,
+    isReachingEnd,
+    reset,
+    setSize
+  };
+};
+
+export const RobotRunHistory = () => {
+  const themeName = useSelector(state => state.theme);
+  const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
+  const {
+    canLoadMore,
+    items,
+    isEmpty,
+    size,
+    isLoadingInitialData,
+    error,
+    isLoadingMore,
+    isReachingEnd,
+    setSize
+  } = useGetTaskHistory();
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: isLoadingInitialData,
@@ -71,7 +108,7 @@ export const RobotRunHistory = () => {
         </Typography>
       </Box>
       {
-        (error || !data) && <Skeleton
+        (error || !items.length) && <Skeleton
           count={3}
           height="52px"
           type="text"
@@ -112,7 +149,9 @@ export const RobotRunHistory = () => {
                     variant="body4"
                     color={theme.color.fc2}
                   >
-                    正在加载更多…
+                    {
+                      t(Strings.loading)
+                    }
                   </Typography>
                 </Box>
             }

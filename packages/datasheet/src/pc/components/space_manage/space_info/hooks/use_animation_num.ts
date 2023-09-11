@@ -32,7 +32,7 @@ const start = 0;
 const end = 1;
 
 export const useAnimationNum = ({ value = 0, duration = 1000, easing = 'linear', isFloat, format }: IAnimationNum) => {
-  const [progress, setProgress]= useState(start);
+  const [progress, setProgress] = useState(start);
   const playing = useRef(-1);
   const startTime = useRef(Date.now());
   const numValue = useRef(0);
@@ -70,7 +70,7 @@ export const useAnimationNum = ({ value = 0, duration = 1000, easing = 'linear',
       unit.current = null;
     }
     play();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [value]);
 
   let curNum: number | string = isFloat ? normalDecimal(numValue.current * progress) : Math.floor(numValue.current * progress);
@@ -79,5 +79,4 @@ export const useAnimationNum = ({ value = 0, duration = 1000, easing = 'linear',
   }
 
   return unit.current ? `${curNum.toLocaleString()}${unit.current}` : curNum;
-
 };

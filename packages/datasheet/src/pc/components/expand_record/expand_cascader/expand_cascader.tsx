@@ -1,6 +1,6 @@
 import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
-import { Cascader } from 'pc/components/cascader';
 import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICellValue, ICascaderNode } from '@apitable/core';
+import { Cascader } from 'pc/components/cascader';
 import { IEditor, IBaseEditorProps } from 'pc/components/editors/interface';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
@@ -14,22 +14,19 @@ interface IExpandCascaderProps extends IBaseEditorProps {
   className?: string;
 }
 
-const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps> = ({
-  field,
-  datasheetId,
-  editing,
-  onSave,
-}, ref) => {
-
+const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps> = ({ field, datasheetId, editing, onSave }, ref) => {
   const cascaderRef = useRef<any>(null);
 
-  useImperativeHandle(ref, (): IEditor => ({
-    focus: () => cascaderRef.current && cascaderRef.current!.focus(),
-    onEndEdit: () => {},
-    onStartEdit: (value?: ISegment[] | null) => onStartEdit(value),
-    setValue: (value?: ISegment[] | null) => onStartEdit(value),
-    saveValue: () => {},
-  }));
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => cascaderRef.current && cascaderRef.current!.focus(),
+      onEndEdit: () => {},
+      onStartEdit: (value?: ISegment[] | null) => onStartEdit(value),
+      setValue: (value?: ISegment[] | null) => onStartEdit(value),
+      saveValue: () => {},
+    }),
+  );
 
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
@@ -80,13 +77,13 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
         options={options}
         style={{
           height: '32px',
-          lineHeight: '32px'
+          lineHeight: '32px',
         }}
         cascaderRef={cascaderRef}
-        displayRender={label => {
+        displayRender={(label) => {
           return field.property.showAll ? label.join('/') : label[label.length - 1];
         }}
-        value={cascaderValue.map(cv => cv.split(('/')))}
+        value={cascaderValue.map((cv) => cv.split('/'))}
       />
     </div>
   );

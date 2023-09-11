@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import produce from 'immer';
 import { Box } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import produce from 'immer';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 // import webhookOutputJsonSchema from '../node_form/data/webhook_output.json';
 import { StyledTitle } from './common';
@@ -26,34 +26,29 @@ import { ErrorStacks } from './error_stacks';
 import { FormDataRender } from './form_data_render';
 
 interface IRobotRunHistoryActionDetail {
-  nodeType: INodeType
+  nodeType: INodeType;
   nodeDetail: IRobotRunHistoryDetail['nodeByIds'][string];
 }
 
 const webhookJsonSchema = {
   schema: {
     type: 'object',
-    required: [
-      'status'
-    ],
+    required: ['status'],
     properties: {
       status: {
         title: t(Strings.robot_run_history_status_code),
-        type: 'number'
+        type: 'number',
       },
       json: {
         title: t(Strings.robot_run_history_returned_data),
-        type: 'object'
-      }
+        type: 'object',
+      },
     },
-    additionalProperties: false
+    additionalProperties: false,
   },
   uiSchema: {
-    'ui:order': [
-      'status',
-      'json'
-    ]
-  }
+    'ui:order': ['status', 'json'],
+  },
 };
 
 const mailJsonSchema = {
@@ -62,26 +57,24 @@ const mailJsonSchema = {
     properties: {
       message: {
         type: 'string',
-        title: 'message'
-      }
+        title: 'message',
+      },
     },
     additionalProperties: false,
   },
   uiSchema: {
-    'ui:order': [
-      'message',
-    ]
-  }
+    'ui:order': ['message'],
+  },
 };
 
 export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail) => {
   const { nodeDetail } = props;
 
   // TODO: Remove
-  const nodeType = produce(props.nodeType, nodeType => {
+  const nodeType = produce(props.nodeType, (nodeType) => {
     if (nodeType.endpoint === 'sendRequest') {
       nodeType.outputJsonSchema = { ...webhookJsonSchema };
-    } else if(nodeType.endpoint === 'sendMail') {
+    } else if (nodeType.endpoint === 'sendMail') {
       nodeType.outputJsonSchema = { ...mailJsonSchema };
     } else {
       nodeType.outputJsonSchema = undefined;
@@ -90,17 +83,16 @@ export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail)
   });
 
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
-  return <Box>
-    <StyledTitle>
-      {t(Strings.robot_run_history_input)}
-    </StyledTitle>
-    <FormDataRender nodeSchema={nodeType.inputJsonSchema} formData={nodeDetail.input} />
-    <StyledTitle hasError={hasError}>
-      {hasError ? t(Strings.robot_run_history_error) : t(Strings.robot_run_history_output)}
-    </StyledTitle>
-    {
-      hasError ? <ErrorStacks errorStacks={nodeDetail.errorStacks} />
-        : <FormDataRender nodeSchema={nodeType.outputJsonSchema} formData={nodeDetail.output.data} />
-    }
-  </Box>;
+  return (
+    <Box>
+      <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
+      <FormDataRender nodeSchema={nodeType.inputJsonSchema} formData={nodeDetail.input} />
+      <StyledTitle hasError={hasError}>{hasError ? t(Strings.robot_run_history_error) : t(Strings.robot_run_history_output)}</StyledTitle>
+      {hasError ? (
+        <ErrorStacks errorStacks={nodeDetail.errorStacks} />
+      ) : (
+        <FormDataRender nodeSchema={nodeType.outputJsonSchema} formData={nodeDetail.output.data} />
+      )}
+    </Box>
+  );
 };

@@ -41,7 +41,10 @@ function BaseInput(props: IBaseInputProps & any) {
     options,
     schema,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    uiSchema, formContext, registry, rawErrors,
+    uiSchema,
+    formContext,
+    registry,
+    rawErrors,
     ...inputProps
   } = props;
 
@@ -98,18 +101,12 @@ function BaseInput(props: IBaseInputProps & any) {
       {...inputProps}
       list={schema.examples ? `examples_${inputProps.id}` : null}
       onChange={_onChange}
-      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
+      onBlur={onBlur && ((event) => onBlur(inputProps.id, event.target.value))}
+      onFocus={onFocus && ((event) => onFocus(inputProps.id, event.target.value))}
     />,
     schema.examples ? (
-      <datalist
-        key={`datalist_${inputProps.id}`}
-        id={`examples_${inputProps.id}`}>
-        {[
-          ...new Set(
-            schema.examples.concat(schema.default ? [schema.default] : [])
-          ),
-        ].map((example: any) => (
+      <datalist key={`datalist_${inputProps.id}`} id={`examples_${inputProps.id}`}>
+        {[...new Set(schema.examples.concat(schema.default ? [schema.default] : []))].map((example: any) => (
           <option key={example} value={example} />
         ))}
       </datalist>

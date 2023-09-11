@@ -17,14 +17,14 @@
  */
 
 import { useContext } from 'react';
-import { KonvaGanttViewContext } from 'pc/components/gantt_view/context';
+import { fastCloneDeep } from '@apitable/core';
 import { GanttCoordinate, GANTT_TASK_GAP_SIZE, IScrollState } from 'pc/components/gantt_view';
 import { TaskLine } from 'pc/components/gantt_view/components/task/task_lines';
-import { PointPosition, TaskPositionYType } from '../interface';
-import { KonvaGridContext } from 'pc/components/konva_grid';
-import { useTooltip } from './use_gantt_tooltip';
+import { KonvaGanttViewContext } from 'pc/components/gantt_view/context';
 import { getTaskLineName } from 'pc/components/gantt_view/utils';
-import { fastCloneDeep } from '@apitable/core';
+import { KonvaGridContext } from 'pc/components/konva_grid';
+import { PointPosition, TaskPositionYType } from '../interface';
+import { useTooltip } from './use_gantt_tooltip';
 
 interface IAssociaLinePorps {
   instance: GanttCoordinate;

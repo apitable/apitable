@@ -1,18 +1,22 @@
-import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import * as React from 'react';
 import { ConfigConstant, ViewType } from '@apitable/core';
+import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 
 export const insertViewNode = ({
-  currentMeta, folderLoaded, nodes, currentDatasheetId, localDispatch,
+  currentMeta,
+  folderLoaded,
+  nodes,
+  currentDatasheetId,
+  localDispatch,
 }: Pick<ISearchPanelState, 'currentMeta' | 'folderLoaded' | 'nodes' | 'currentDatasheetId'> & {
-  localDispatch: React.Dispatch<Partial<ISearchPanelState>>
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
 }) => {
   if (!currentMeta) return;
   if (!folderLoaded) return;
 
   const views = currentMeta.views;
   const viewNodes = views
-    .filter(view => {
+    .filter((view) => {
       return view.type === ViewType.Grid;
     })
     .map(({ id, name, type, columns }) => ({
@@ -22,8 +26,8 @@ export const insertViewNode = ({
       viewType: type,
       columns,
     }));
-  const tempNodes = nodes.filter(node => node.type !== ConfigConstant.NodeType.VIEW);
-  const index = tempNodes.findIndex(node => node.nodeId === currentDatasheetId);
+  const tempNodes = nodes.filter((node) => node.type !== ConfigConstant.NodeType.VIEW);
+  const index = tempNodes.findIndex((node) => node.nodeId === currentDatasheetId);
   tempNodes.splice(index + 1, 0, ...viewNodes);
   localDispatch({ nodes: tempNodes });
   if (viewNodes.length) {

@@ -1,20 +1,19 @@
-import styles from '../style.module.less';
+import cls from 'classnames';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
-import { cancelModification, modifyViewProperty } from '../request_view_property_change';
-import { FC } from 'react';
-import cls from 'classnames';
-import { useSelector } from 'react-redux';
 import { InfoCircleOutlined } from '@apitable/icons';
+import { cancelModification, modifyViewProperty } from '../request_view_property_change';
+import styles from '../style.module.less';
 
 interface IProps {
-    onClose: () => void
+  onClose: () => void;
 }
 
 export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
-
-  const { datasheetId, viewId } = useSelector(state => state.pageParams);
-  const currentView = useSelector(state => Selectors.getCurrentView(state, datasheetId));
+  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
+  const currentView = useSelector((state) => Selectors.getCurrentView(state, datasheetId));
   const isViewLock = Boolean(currentView?.lockInfo);
 
   const viewPropertyProps = {
@@ -28,15 +27,17 @@ export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
   return (
     <div className={styles.mobileTip}>
       <span className={styles.infoIcon}>
-        <InfoCircleOutlined color={'var(--textBrandDefault)'}/>
+        <InfoCircleOutlined color={'var(--textBrandDefault)'} />
       </span>
-      <Typography variant={'body2'}>
-        {t(Strings.view_changed)}
-      </Typography>
+      <Typography variant={'body2'}>{t(Strings.view_changed)}</Typography>
 
       <div className={styles.buttons}>
-        <Button variant={'jelly'} onClick={() => cancelModification(viewPropertyProps)} size={'small'}
-          className={cls(styles.confirmBtn, styles.cancelBtn)}>
+        <Button
+          variant={'jelly'}
+          onClick={() => cancelModification(viewPropertyProps)}
+          size={'small'}
+          className={cls(styles.confirmBtn, styles.cancelBtn)}
+        >
           {t(Strings.discard_changes)}
         </Button>
 
@@ -44,7 +45,6 @@ export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
           {t(Strings.save_view_configuration)}
         </Button>
       </div>
-
     </div>
   );
 };

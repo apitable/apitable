@@ -16,26 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  BasicValueType, Field,
-  FormulaBaseError, IFormulaField,
-  RowHeightLevel, Strings, t,
-} from '@apitable/core';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { BasicValueType, Field, FormulaBaseError, IFormulaField, RowHeightLevel, Strings, t } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip } from 'pc/components/common';
 import { CellCheckbox } from '../cell_checkbox';
 import { CellText } from '../cell_text';
 import { ICellComponentProps } from '../cell_value/interface';
 
 interface ICellFormula extends ICellComponentProps {
   field: IFormulaField;
-  recordId: string,
-  rowHeightLevel?: RowHeightLevel,
+  recordId: string;
+  rowHeightLevel?: RowHeightLevel;
 }
 
-export const CellFormula: React.FC<React.PropsWithChildren<ICellFormula>> = props => {
+export const CellFormula: React.FC<React.PropsWithChildren<ICellFormula>> = (props) => {
   const { cellValue, field } = props;
   const isCheckbox = Field.bindModel(field).basicValueType === BasicValueType.Boolean;
   const [showTip, setShowTip] = useState(false);
@@ -56,20 +52,14 @@ export const CellFormula: React.FC<React.PropsWithChildren<ICellFormula>> = prop
     return <CellText {...props} cellValue={cellValue as any} />;
   };
   return (
-    <div onDoubleClickCapture={handleDbClick} style={{ width: '100%' }} >
-      {
-        showTip ?
-          <Tooltip
-            title={t(Strings.formula_check_info)}
-            visible={showTip}
-            placement="top"
-            autoAdjustOverflow
-            showTipAnyway
-          >
-            {renderCell()}
-          </Tooltip> :
-          renderCell()
-      }
+    <div onDoubleClickCapture={handleDbClick} style={{ width: '100%' }}>
+      {showTip ? (
+        <Tooltip title={t(Strings.formula_check_info)} visible={showTip} placement="top" autoAdjustOverflow showTipAnyway>
+          {renderCell()}
+        </Tooltip>
+      ) : (
+        renderCell()
+      )}
     </div>
   );
 };

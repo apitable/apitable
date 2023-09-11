@@ -16,27 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
-import { ChevronDownOutlined } from '@apitable/icons';
 import { Checkbox, TreeSelect } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { BaseModal } from 'pc/components/common';
-import { Router } from 'pc/components/route_manager/router';
-import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
-import { dispatch } from 'pc/worker/store';
+import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './style.module.less';
-import { usePostHog } from 'posthog-js/react';
+import { Api, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { BaseModal } from 'pc/components/common';
+import { Router } from 'pc/components/route_manager/router';
+import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
 import { transformNodeTreeData, ISelectTreeNode } from 'pc/utils';
+import { dispatch } from 'pc/worker/store';
+import styles from './style.module.less';
 
 export interface IUsingTemplateModalProps {
   onCancel: React.Dispatch<React.SetStateAction<string>>;
   templateId: string;
 }
 
-export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalProps>> = props => {
+export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalProps>> = (props) => {
   const { onCancel, templateId } = props;
   const [treeData, setTreeData] = useState<ISelectTreeNode[]>([]);
   const [nodeId, setNodeId] = useState('');
@@ -75,12 +75,12 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
 
   const onLoadData = (treeNode: any) => {
     const { id } = treeNode.props;
-    if (treeData.findIndex(item => item.pId === id) !== -1) {
-      return new Promise<void>(resolve => {
+    if (treeData.findIndex((item) => item.pId === id) !== -1) {
+      return new Promise<void>((resolve) => {
         resolve();
       });
     }
-    return new Promise<void>(async resolve => {
+    return new Promise<void>(async(resolve) => {
       const { data: result } = await Api.getChildNodeList(id);
       const { data } = result;
       setTreeData([...treeData, ...transformNodeTreeData(data)]);
@@ -111,8 +111,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
       <div className={styles.usingTemplateWrapper}>
         <div className={styles.tip}>{t(Strings.template_centre_using_template_tip)}</div>
         <div className={styles.selectWrapper}>
-          {
-            treeData.length !== 0 && nodeId &&
+          {treeData.length !== 0 && nodeId && (
             <TreeSelect
               treeDataSimpleMode
               style={{ width: '100%' }}
@@ -124,7 +123,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
               loadData={onLoadData}
               treeDefaultExpandedKeys={[NodeTreeData.nodeId]}
             />
-          }
+          )}
         </div>
         {disabled && <div className={styles.permissionTip}>{t(Strings.template_centre_using_template_permission_tip)}</div>}
         <Checkbox className={styles.checkbox} onChange={checkboxChange} defaultChecked={isContainData}>

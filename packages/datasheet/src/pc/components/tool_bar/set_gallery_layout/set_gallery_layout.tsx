@@ -16,24 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 // import * as React from 'react';
-import { useEffect, useRef } from 'react';
-import {
-  CollaCommandName, ViewType, Selectors,
-  GalleryStyleKeyType, IGalleryViewProperty, LayoutType, Strings, t, ISetGalleryStyle,
-} from '@apitable/core';
-import styles from './style.module.less';
-import { stopPropagation } from 'pc/utils';
 import { Slider, Switch } from 'antd';
-import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
-import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
+import {
+  CollaCommandName,
+  ViewType,
+  Selectors,
+  GalleryStyleKeyType,
+  IGalleryViewProperty,
+  LayoutType,
+  Strings,
+  t,
+  ISetGalleryStyle,
+} from '@apitable/core';
+import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
-import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
+import { stopPropagation } from 'pc/utils';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
+import styles from './style.module.less';
 
 const MAX_COLUMN_COUNT = 6;
 const MIN_COLUMN_COUNT = 1;
@@ -43,7 +50,7 @@ const MAX_HEIGHT = 340;
 export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo }) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
-  const activeView = useSelector(state => Selectors.getCurrentView(state))! as IGalleryViewProperty;
+  const activeView = useSelector((state) => Selectors.getCurrentView(state))! as IGalleryViewProperty;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,
@@ -54,19 +61,22 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
   const isViewLock = useShowViewLockModal();
 
   const setGalleryStyle = (opt: Omit<ISetGalleryStyle, 'viewId' | 'cmd'>) => {
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetGalleryStyle,
-        viewId: activeView.id,
-        styleKey: opt.styleKey as any,
-        styleValue: opt.styleValue
-      });
-    }, {
-      style: {
-        ...activeView.style,
-        [opt.styleKey]: opt.styleValue
-      }
-    });
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetGalleryStyle,
+          viewId: activeView.id,
+          styleKey: opt.styleKey as any,
+          styleValue: opt.styleValue,
+        });
+      },
+      {
+        style: {
+          ...activeView.style,
+          [opt.styleKey]: opt.styleValue,
+        },
+      },
+    );
   };
 
   const layoutType = activeView && (activeView as IGalleryViewProperty).style.layoutType;
@@ -104,106 +114,96 @@ export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo })
 
   return (
     <>
-      {
-        (!activeView || activeView.type !== ViewType.Gallery) ? <></> :
-          <div
-            ref={containerRef}
-            className={styles.layoutCard}
-            onClick={stopPropagation}
-            style={{ paddingBottom: activeView.style.isAutoLayout ? 16 : 10, ...style }}
-          >
-            <span className={styles.title}>{t(Strings.select_layout)}</span>
-            <div className={styles.layoutIconWrapper}>
-              <div className={styles.iconAndDesc}>
-                <GalleryOutlined
-                  size={28}
-                  color={layoutColor}
-                />
-                <span
-                  className={styles.title}
-                  style={{ color: layoutColor }}
-                >
-                  {t(Strings.tile)}
-                </span>
-              </div>
-
-              <div className={styles.iconAndDesc}>
-                <Tooltip title={t(Strings.this_feature_is_not_yet_available)} placement='top'>
-                  <span style={{ cursor: 'not-allowed' }}>
-                    <ListOutlined
-                      size={28}
-                      color={listLayoutColor}
-                    />
-                  </span>
-                </Tooltip>
-                <span
-                  className={styles.title}
-                  style={{ color: listLayoutColor }}
-                >
-                  {t(Strings.list)}
-                </span>
-              </div>
-
+      {!activeView || activeView.type !== ViewType.Gallery ? (
+        <></>
+      ) : (
+        <div
+          ref={containerRef}
+          className={styles.layoutCard}
+          onClick={stopPropagation}
+          style={{ paddingBottom: activeView.style.isAutoLayout ? 16 : 10, ...style }}
+        >
+          <span className={styles.title}>{t(Strings.select_layout)}</span>
+          <div className={styles.layoutIconWrapper}>
+            <div className={styles.iconAndDesc}>
+              <GalleryOutlined size={28} color={layoutColor} />
+              <span className={styles.title} style={{ color: layoutColor }}>
+                {t(Strings.tile)}
+              </span>
             </div>
-            <div className={styles.layoutSize}>
-              <span className={styles.title}>{t(Strings.gallery_arrange_mode)}</span>
-              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-                <div className={styles.layoutSizeWrapper}>
-                  <Switch
-                    checked={activeView.style.isAutoLayout}
-                    size='small'
-                    onChange={(value: boolean) => setGalleryStyle({
+
+            <div className={styles.iconAndDesc}>
+              <Tooltip title={t(Strings.this_feature_is_not_yet_available)} placement="top">
+                <span style={{ cursor: 'not-allowed' }}>
+                  <ListOutlined size={28} color={listLayoutColor} />
+                </span>
+              </Tooltip>
+              <span className={styles.title} style={{ color: listLayoutColor }}>
+                {t(Strings.list)}
+              </span>
+            </div>
+          </div>
+          <div className={styles.layoutSize}>
+            <span className={styles.title}>{t(Strings.gallery_arrange_mode)}</span>
+            <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+              <div className={styles.layoutSizeWrapper}>
+                <Switch
+                  checked={activeView.style.isAutoLayout}
+                  size="small"
+                  onChange={(value: boolean) =>
+                    setGalleryStyle({
                       styleKey: GalleryStyleKeyType.IsAutoLayout,
                       styleValue: value,
-                    })}
-                    disabled={isViewLock}
+                    })
+                  }
+                  disabled={isViewLock}
+                />
+                <span className={styles.title}>{t(Strings.auto)}</span>
+              </div>
+            </WrapperTooltip>
+          </div>
+          {!activeView.style.isAutoLayout && (
+            <div className={styles.setSliderCount}>
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <span>
+                  <ReduceIcon
+                    fill={!isViewLock && activeView.style.cardCount > 1 ? colors.primaryColor : colors.thirdLevelText}
+                    width={16}
+                    height={16}
+                    onClick={reduceCardCount}
+                    className={styles.reduceCardCountIcon}
                   />
-                  <span className={styles.title}>{t(Strings.auto)}</span>
-                </div>
+                </span>
               </WrapperTooltip>
-            </div>
-            {
-              !activeView.style.isAutoLayout &&
-              <div className={styles.setSliderCount}>
-                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-                  <span>
-                    <ReduceIcon
-                      fill={(!isViewLock && activeView.style.cardCount > 1) ? colors.primaryColor : colors.thirdLevelText}
-                      width={16}
-                      height={16}
-                      onClick={reduceCardCount}
-                      className={styles.reduceCardCountIcon}
-                    />
-                  </span>
-                </WrapperTooltip>
 
-                <div style={{ width: '100%' }}>
-                  <Slider
-                    max={MAX_COLUMN_COUNT}
-                    min={MIN_COLUMN_COUNT}
-                    value={activeView.style.cardCount}
-                    disabled={isViewLock}
-                    onChange={value => setGalleryStyle({
+              <div style={{ width: '100%' }}>
+                <Slider
+                  max={MAX_COLUMN_COUNT}
+                  min={MIN_COLUMN_COUNT}
+                  value={activeView.style.cardCount}
+                  disabled={isViewLock}
+                  onChange={(value) =>
+                    setGalleryStyle({
                       styleKey: GalleryStyleKeyType.CardCount,
                       styleValue: value as number,
-                    })}
-                  />
-                </div>
-                <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
-                  <span>
-                    <AddOutlined
-                      color={(!isViewLock && activeView.style.cardCount < 6) ? colors.primaryColor : colors.thirdLevelText}
-                      size={16}
-                      onClick={addCardCount}
-                      className={styles.addCardCountIcon}
-                    />
-                  </span>
-                </WrapperTooltip>
-
+                    })
+                  }
+                />
               </div>
-            }
-          </div>
-      }
+              <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
+                <span>
+                  <AddOutlined
+                    color={!isViewLock && activeView.style.cardCount < 6 ? colors.primaryColor : colors.thirdLevelText}
+                    size={16}
+                    onClick={addCardCount}
+                    className={styles.addCardCountIcon}
+                  />
+                </span>
+              </WrapperTooltip>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useRef, useEffect, useState } from 'react';
-import { BaseModal } from 'pc/components/common';
-import styles from './style.module.less';
-import { UnitItem } from '../unit_item';
-import { t, Strings } from '@apitable/core';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Popup } from 'pc/components/common/mobile/popup';
+import { useThrottleFn } from 'ahooks';
 import { List } from 'antd';
 import VirtualList from 'rc-virtual-list';
-import { useThrottleFn } from 'ahooks';
+import { FC, useRef, useEffect, useState } from 'react';
+import { t, Strings } from '@apitable/core';
+import { BaseModal } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { Popup } from 'pc/components/common/mobile/popup';
 import { IMemberList } from '../permission';
+import { UnitItem } from '../unit_item';
+import styles from './style.module.less';
 
 export interface ICollaboratorInfo {
   total: number;
@@ -44,15 +44,14 @@ export interface IMembersDetailProps {
 }
 
 export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = ({ data, onCancel, pageNo, setPageNo, memberList }) => {
-
   const wrapref = useRef<HTMLDivElement>(null);
 
   const [listHeight, setListHeight] = useState<number>(556);
 
   useEffect(() => {
-    if(wrapref.current) {
+    if (wrapref.current) {
       const parentElement = wrapref.current;
-      const observer = new ResizeObserver(entries => {
+      const observer = new ResizeObserver((entries) => {
         const { height } = entries[0].contentRect;
         setListHeight(height);
       });
@@ -64,14 +63,13 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
       };
     }
     return () => {};
-
   }, []);
 
   const close = () => {
     onCancel();
   };
 
-  const handleScroll = () => { 
+  const handleScroll = () => {
     setPageNo(pageNo + 1);
   };
 
@@ -87,9 +85,7 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
     return (
       <div className={styles.scrollWrapper} ref={wrapref}>
         <div className={styles.memberList}>
-          <List
-            itemLayout='horizontal'
-          >
+          <List itemLayout="horizontal">
             <VirtualList
               data={memberList}
               itemKey="memberId"
@@ -98,38 +94,35 @@ export const MembersDetail: FC<React.PropsWithChildren<IMembersDetailProps>> = (
               onScroll={onScroll}
               className={styles.memberListWrapper}
             >
-              {
-                item => {
-                  const { memberId, avatar, avatarColor, nickName, memberName, teams, role, isWorkbenchAdmin, isControlOwner } = item;
-                  return (
-                    <List.Item>
-                      <UnitItem
-                        key={memberId}
-                        unit={{
-                          id: memberId,
-                          memberId: memberId,
-                          avatar,
-                          avatarColor,
-                          nickName,
-                          name: memberName,
-                          info: teams,
-                          isMemberNameModified: (item as any).isMemberNameModified,
-                          isTeam: false,
-                        }}
-                        identity={{
-                          admin: isWorkbenchAdmin,
-                          permissionOpener: isControlOwner,
-                        }}
-                        disabled
-                        role={role}
-                        isAppointMode={data.extend}
-                        isDetail
-                      />
-                    </List.Item>
-                    
-                  );
-                }
-              }
+              {(item) => {
+                const { memberId, avatar, avatarColor, nickName, memberName, teams, role, isWorkbenchAdmin, isControlOwner } = item;
+                return (
+                  <List.Item>
+                    <UnitItem
+                      key={memberId}
+                      unit={{
+                        id: memberId,
+                        memberId: memberId,
+                        avatar,
+                        avatarColor,
+                        nickName,
+                        name: memberName,
+                        info: teams,
+                        isMemberNameModified: (item as any).isMemberNameModified,
+                        isTeam: false,
+                      }}
+                      identity={{
+                        admin: isWorkbenchAdmin,
+                        permissionOpener: isControlOwner,
+                      }}
+                      disabled
+                      role={role}
+                      isAppointMode={data.extend}
+                      isDetail
+                    />
+                  </List.Item>
+                );
+              }}
             </VirtualList>
           </List>
         </div>

@@ -16,24 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import cls from 'classnames';
 import { memo, useContext, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Typography, IconButton } from '@apitable/components';
 import { Selectors, t, Strings } from '@apitable/core';
 import { ExpandOutlined } from '@apitable/icons';
-import { Typography, IconButton } from '@apitable/components';
-import { useSelector } from 'react-redux';
-import { FieldEditor } from 'pc/components/expand_record/field_editor';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
-import { useClickAway } from 'ahooks';
-import styles from './styles.module.less';
+import { FieldEditor } from 'pc/components/expand_record/field_editor';
 import { CalendarContext } from '../calendar_context';
-import cls from 'classnames';
+import styles from './styles.module.less';
 
 const DragDropModalBase = ({ recordId, style }: { recordId?: string; style: object }) => {
-  const {
-    calendarStyle,
-    snapshot,
-    datasheetId
-  } = useSelector(state => {
+  const { calendarStyle, snapshot, datasheetId } = useSelector((state) => {
     const dstId = Selectors.getActiveDatasheetId(state)!;
     return {
       datasheetId: dstId,
@@ -46,16 +42,20 @@ const DragDropModalBase = ({ recordId, style }: { recordId?: string; style: obje
   const [focusFieldId, setFocusFieldId] = useState<string | null>(firstFieldId);
 
   const clickWithinField = useRef<boolean>(Boolean(focusFieldId));
-  
+
   const modalRef = useRef(null);
   const { setRecordModal, isStartDateTimeField, isEndDateTimeField } = useContext(CalendarContext);
 
   const titleFieldRef = useRef(null);
   const dateFieldRef = useRef(null);
 
-  useClickAway(() => {
-    setRecordModal(undefined);
-  }, modalRef, 'click');
+  useClickAway(
+    () => {
+      setRecordModal(undefined);
+    },
+    modalRef,
+    'click',
+  );
 
   useClickAway(() => {
     clickWithinField.current = false;
@@ -66,13 +66,11 @@ const DragDropModalBase = ({ recordId, style }: { recordId?: string; style: obje
   return (
     <div className={cls('dragDropModal', styles.dragDropModal)} ref={modalRef} style={style}>
       <header>
-        <Typography variant="h7">
-          {t(Strings.set_record)}
-        </Typography>
+        <Typography variant="h7">{t(Strings.set_record)}</Typography>
         <IconButton icon={ExpandOutlined} onClick={() => expandRecordIdNavigate(recordId)} />
       </header>
       <div className={styles.content}>
-        <div ref={titleFieldRef} onMouseDown={() => clickWithinField.current = true}>
+        <div ref={titleFieldRef} onMouseDown={() => (clickWithinField.current = true)}>
           <FieldEditor
             datasheetId={datasheetId}
             fieldId={firstFieldId}
@@ -82,18 +80,12 @@ const DragDropModalBase = ({ recordId, style }: { recordId?: string; style: obje
           />
         </div>
         <div className={styles.date} ref={dateFieldRef}>
-          {[isStartDateTimeField ? startFieldId: null, isEndDateTimeField ? endFieldId : null].map((fieldId, idx) => {
+          {[isStartDateTimeField ? startFieldId : null, isEndDateTimeField ? endFieldId : null].map((fieldId, idx) => {
             if (!fieldId) return <div key={idx} className={styles.dateItem} />;
             const isFocus = focusFieldId === fieldId;
             return (
-              <div key={idx} className={styles.dateItem} onMouseDown={() => clickWithinField.current = true}>
-                <FieldEditor
-                  datasheetId={datasheetId}
-                  fieldId={fieldId}
-                  expandRecordId={recordId}
-                  isFocus={isFocus}
-                  setFocus={setFocusFieldId}
-                />
+              <div key={idx} className={styles.dateItem} onMouseDown={() => (clickWithinField.current = true)}>
+                <FieldEditor datasheetId={datasheetId} fieldId={fieldId} expandRecordId={recordId} isFocus={isFocus} setFocus={setFocusFieldId} />
               </div>
             );
           })}

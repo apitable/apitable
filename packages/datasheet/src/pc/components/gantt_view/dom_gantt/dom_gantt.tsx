@@ -17,19 +17,19 @@
  */
 
 import { FC, useContext } from 'react';
+import { isMobile as isTouchDevice } from 'react-device-detect';
+import { useDispatch, useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select } from '@apitable/components';
-import { useDispatch, useSelector } from 'react-redux';
 import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@apitable/core';
 import { Collapse3OpenOutlined, Collapse3Outlined } from '@apitable/icons';
-import { ButtonPlus } from 'pc/components/common';
-import { useResponsive } from 'pc/hooks';
-import styles from './style.module.less';
-import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
-import { isMobile as isTouchDevice } from 'react-device-detect';
-import { ScreenSize } from 'pc/components/common/component_display';
 import { getStyleConfig } from 'pc/common/style_config';
+import { ButtonPlus } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { KonvaGridContext } from 'pc/components/konva_grid';
+import { useResponsive } from 'pc/hooks';
+import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
+import styles from './style.module.less';
 
 interface IDomGanttBaseProps {
   containerWidth: number;
@@ -58,12 +58,12 @@ const unitOptions = [
   },
 ];
 
-export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = props => {
+export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = (props) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { containerWidth, gridWidth, gridVisible, dateUnitType } = props;
-  const { datasheetId, viewId } = useSelector(state => state.pageParams);
-  const spaceId = useSelector(state => state.space.activeId);
+  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
+  const spaceId = useSelector((state) => state.space.activeId);
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -81,7 +81,7 @@ export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = props =
     });
   };
 
-  const onSelected = (option: { value: any; }) => {
+  const onSelected = (option: { value: any }) => {
     const dateUnitType = option.value;
     onGanttStatusChange('dateUnitType', option.value);
     dispatch(StoreActions.setGanttDateUnitType(dateUnitType, datasheetId!));
@@ -111,7 +111,7 @@ export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = props =
             listStyle={{
               textAlign: 'center',
             }}
-            renderValue={option => (isMobile || isTouchDevice ? option.label : t(Strings.gantt_by_unit_type, { unitType: option.label }))}
+            renderValue={(option) => (isMobile || isTouchDevice ? option.label : t(Strings.gantt_by_unit_type, { unitType: option.label }))}
           />
         )}
         {!isMobile && (

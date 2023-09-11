@@ -16,38 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useDebounceFn } from 'ahooks';
+import clx from 'classnames';
+import isEqual from 'lodash/isEqual';
 import { useCallback, useMemo, useState, FC, useEffect, useRef } from 'react';
 import * as React from 'react';
-import { Editable, withReact, Slate, ReactEditor } from 'slate-react';
 import { createEditor, Editor, Transforms, Text, Node, Descendant } from 'slate';
 import { withHistory, HistoryEditor } from 'slate-history';
-import isEqual from 'lodash/isEqual';
-import clx from 'classnames';
-import { isMac, isWxWork } from 'pc/utils/os';
+import { Editable, withReact, Slate, ReactEditor } from 'slate-react';
 import { IS_QQBROWSER } from 'pc/utils/env';
+import { isMac, isWxWork } from 'pc/utils/os';
 
-import { useDebounceFn } from 'ahooks';
-
-import { EditorContext } from './context';
-
-import { LeafRender, ElementRender, GENERATOR } from './elements';
-import { Toolbar } from './components/toolbar';
+import * as API from './api';
 import { HoveringToolbar } from './components/hovering_toolbar';
 import { InsertPanel } from './components/insert_panel';
 import { MentionPanel } from './components/mention_panel';
-import { hotkeyHandle } from './hotkeys';
-import { getValidSelection } from './helpers/utils';
+import { Toolbar } from './components/toolbar';
+import { EditorContext } from './context';
+
+import { LeafRender, ElementRender, GENERATOR } from './elements';
 import { IS_FIREFOX } from './helpers/browser';
-import * as API from './api';
+import { getValidSelection } from './helpers/utils';
+import { hotkeyHandle } from './hotkeys';
 
 import { ISlateEditorProps, EditorValue, IEditorData } from './interface/editor';
-import { withVika } from './plugins/withVika';
+import { normalize } from './normalize';
 import { withEventBus, BUILT_IN_EVENTS } from './plugins/withEventBus';
 import { withMeta } from './plugins/withMeta';
+import { withVika } from './plugins/withVika';
 // Temporarily hide the code highlighting feature
 // import { getDecorate } from './plugins/codeBlock';
 import i18nText from './strings';
-import { normalize } from './normalize';
 
 import styles from './styles/editor.module.less';
 
@@ -69,12 +68,9 @@ export const fixImeInputBug = (e: React.CompositionEvent, editor: ReactEditor): 
   return false;
 };
 
-const defaultValue = [
-  GENERATOR.paragraph({}),
-] as unknown as EditorValue;
+const defaultValue = [GENERATOR.paragraph({})] as unknown as EditorValue;
 
-const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props) => {
-
+const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = (props) => {
   const {
     onChange: propsOnChange,
     height: propsEditorHeight,
@@ -159,17 +155,26 @@ const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props)
     Transforms.select(editor, selection);
   }, [editor]);
 
-  const handleEditorMouseMove = useCallback((e: React.MouseEvent) => {
-    editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_MOVE, { x: e.pageX, y: e.pageY });
-  }, [editor]);
+  const handleEditorMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_MOVE, { x: e.pageX, y: e.pageY });
+    },
+    [editor],
+  );
 
-  const handleEditorMouseLeave = useCallback((e: React.MouseEvent) => {
-    editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_LEAVE, { x: e.pageX, y: e.pageY });
-  }, [editor]);
+  const handleEditorMouseLeave = useCallback(
+    (e: React.MouseEvent) => {
+      editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_LEAVE, { x: e.pageX, y: e.pageY });
+    },
+    [editor],
+  );
 
-  const handleEditorMouseUp = useCallback((e: React.MouseEvent) => {
-    editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_UP, { x: e.pageX, y: e.pageY });
-  }, [editor]);
+  const handleEditorMouseUp = useCallback(
+    (e: React.MouseEvent) => {
+      editor.dispatch(BUILT_IN_EVENTS.EDITOR_MOUSE_UP, { x: e.pageX, y: e.pageY });
+    },
+    [editor],
+  );
 
   const handleScroll = useCallback(() => {
     editor.dispatch(BUILT_IN_EVENTS.EDITOR_SCROLL);
@@ -180,9 +185,12 @@ const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props)
     (editor as unknown as HistoryEditor).history.undos.length = 0;
   }, [editor]);
 
-  const { run: forcedNormalizeNode, cancel: cancelForcedNormalizeNode } = useDebounceFn(() => {
-    Editor.normalize(editor, { force: true });
-  }, { wait: 300 });
+  const { run: forcedNormalizeNode, cancel: cancelForcedNormalizeNode } = useDebounceFn(
+    () => {
+      Editor.normalize(editor, { force: true });
+    },
+    { wait: 300 },
+  );
 
   useEffect(() => {
     if (!propsValue) {
@@ -229,15 +237,14 @@ const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props)
     <EditorContext.Provider value={{ i18nText, operationAble, placeholder, mode }}>
       <div className={styles.editorWrap} data-section-spacing={sectionSpacing} onClick={handleWrapClick}>
         <Slate editor={editor} value={value} onChange={handleChange}>
-          {
-            headerToolbarEnabled && <div className={styles.header}> <Toolbar /> </div>
-          }
-          {
-            hoveringToolbarEnabled && <HoveringToolbar />
-          }
-          {
-            useMention && <MentionPanel />
-          }
+          {headerToolbarEnabled && (
+            <div className={styles.header}>
+              {' '}
+              <Toolbar />{' '}
+            </div>
+          )}
+          {hoveringToolbarEnabled && <HoveringToolbar />}
+          {useMention && <MentionPanel />}
           <InsertPanel />
           <Editable
             {...otherProps}
@@ -250,27 +257,45 @@ const SlateEditorBase: FC<React.PropsWithChildren<ISlateEditorProps>> = ((props)
             onMouseLeave={handleEditorMouseLeave}
             onMouseUp={handleEditorMouseUp}
             onScroll={handleScroll}
-            renderElement={useCallback((props: any) => <ElementRender {...props} />, [])}
-            renderLeaf={useCallback((props: any) => <LeafRender {...props} />, [])}
-            onKeyDown={useCallback((e: any) => { hotkeyHandle(e, editor); }, [editor])}
+            renderElement={useCallback(
+              (props: any) => (
+                <ElementRender {...props} />
+              ),
+              [],
+            )}
+            renderLeaf={useCallback(
+              (props: any) => (
+                <LeafRender {...props} />
+              ),
+              [],
+            )}
+            onKeyDown={useCallback(
+              (e: any) => {
+                hotkeyHandle(e, editor);
+              },
+              [editor],
+            )}
             onCompositionStart={useCallback(() => {
               editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_START);
             }, [editor])}
             onCompositionUpdate={useCallback(() => {
               editor.isComposing = true;
             }, [editor])}
-            onCompositionEnd={useCallback((e: React.CompositionEvent) => {
-              const text = e.data;
-              imeInputText.current = text;
-              editor.isComposing = false;
-              editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_END, text);
-              return fixImeInputBug(e, editor);
-            }, [editor])}
+            onCompositionEnd={useCallback(
+              (e: React.CompositionEvent) => {
+                const text = e.data;
+                imeInputText.current = text;
+                editor.isComposing = false;
+                editor.dispatch(BUILT_IN_EVENTS.IME_INPUT_END, text);
+                return fixImeInputBug(e, editor);
+              },
+              [editor],
+            )}
           />
         </Slate>
       </div>
     </EditorContext.Provider>
   );
-});
+};
 
 export const SlateEditor = React.memo(SlateEditorBase);

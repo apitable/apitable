@@ -16,29 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  CollaCommandName,
-  ExecuteResult,
-  getUniqName,
-  IViewProperty,
-  Selectors,
-  Strings,
-  t,
-  DatasheetActions, StoreActions,
-} from '@apitable/core';
-import { notify } from 'pc/components/common/notify';
-import { resourceService } from 'pc/resource_service';
-import { changeView, useDispatch } from 'pc/hooks';
-import { store } from 'pc/store';
 import { useSelector } from 'react-redux';
+import { CollaCommandName, ExecuteResult, getUniqName, IViewProperty, Selectors, Strings, t, DatasheetActions, StoreActions } from '@apitable/core';
+import { notify } from 'pc/components/common/notify';
+import { changeView, useDispatch } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
+import { store } from 'pc/store';
 
 export const useViewAction = () => {
-  const views = useSelector(state => {
+  const views = useSelector((state) => {
     const snapshot = Selectors.getSnapshot(state)!;
     return snapshot.meta.views;
   });
-  const datasheetId = useSelector(state => state.pageParams.datasheetId);
-  const closeSyncViewIds = useSelector(state => {
+  const datasheetId = useSelector((state) => state.pageParams.datasheetId);
+  const closeSyncViewIds = useSelector((state) => {
     return Selectors.getCloseSyncViewIds(state, datasheetId!);
   });
   const dispatch = useDispatch();
@@ -60,9 +51,11 @@ export const useViewAction = () => {
     deleteView: (viewId: string) => {
       const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.DeleteViews,
-        data: [{
-          viewId,
-        }],
+        data: [
+          {
+            viewId,
+          },
+        ],
       });
       if (ExecuteResult.Success === result) {
         closeSyncViewIds?.includes(viewId) && dispatch(StoreActions.setCloseSyncViewId(viewId, datasheetId!));
@@ -75,10 +68,12 @@ export const useViewAction = () => {
     addView: (view: IViewProperty, index?: number) => {
       const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddViews,
-        data: [{
-          view,
-          startIndex: index || views.length,
-        }],
+        data: [
+          {
+            view,
+            startIndex: index || views.length,
+          },
+        ],
       });
       if (ExecuteResult.Success === result) {
         notify.open({
@@ -88,23 +83,25 @@ export const useViewAction = () => {
     },
 
     duplicateView: (viewId: string) => {
-      const index = views.findIndex(view => view.id === viewId);
+      const index = views.findIndex((view) => view.id === viewId);
       const view = views[index]!;
       const snapshot = Selectors.getSnapshot(store.getState());
       const { id: newId } = DatasheetActions.deriveDefaultViewProperty(snapshot!, view.type, view.id);
       const { result } = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddViews,
-        data: [{
-          startIndex: index + 1,
-          view: {
-            ...view,
-            id: newId,
-            name: getUniqName(
-              view.name + t(Strings.copy),
-              views.map(v => v.name),
-            ),
+        data: [
+          {
+            startIndex: index + 1,
+            view: {
+              ...view,
+              id: newId,
+              name: getUniqName(
+                view.name + t(Strings.copy),
+                views.map((v) => v.name),
+              ),
+            },
           },
-        }],
+        ],
       });
       if (ExecuteResult.Success === result) {
         changeView(newId);

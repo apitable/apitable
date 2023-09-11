@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickAway } from 'ahooks';
+import omit from 'lodash/omit';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
 import {
   DATASHEET_ID,
   Field,
@@ -27,25 +33,20 @@ import {
   Strings,
   t,
   DatasheetActions,
+  IField,
+  ISnapshot,
+  Selectors,
 } from '@apitable/core';
+import { QuestionCircleOutlined, ChevronRightOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { useThemeColors } from '@apitable/components';
-import { useCallback, useEffect, useState, useRef } from 'react';
-import * as React from 'react';
-import styles from '../styles.module.less';
-import settingStyles from '../../field_setting/styles.module.less';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { AutoLayout } from '../auto_layout';
-import { TypeSelect } from '../../type_select';
-import { IField, ISnapshot, Selectors } from '@apitable/core';
-import { useSelector } from 'react-redux';
-import { store } from 'pc/store';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { useClickAway } from 'ahooks';
-import omit from 'lodash/omit';
-import { QuestionCircleOutlined, ChevronRightOutlined } from '@apitable/icons';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { store } from 'pc/store';
+import { TypeSelect } from '../../type_select';
+import { AutoLayout } from '../auto_layout';
+import styles from '../styles.module.less';
 
 interface IFieldTypeSelectProps {
   currentField: IField;
@@ -62,11 +63,11 @@ function isSelectField(field: IField) {
   return Field.bindModel(field) instanceof SelectField;
 }
 
-export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectProps>> = props => {
+export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectProps>> = (props) => {
   const { setCurrentField, currentField, activeFieldId, activeFieldIndex, snapshot, datasheetId, isMobile, showAdvancedFields } = props;
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
-  const field = useSelector(state => Selectors.getField(state, activeFieldId, snapshot.datasheetId));
+  const field = useSelector((state) => Selectors.getField(state, activeFieldId, snapshot.datasheetId));
   const typeSelectTriggerRef = useRef<HTMLDivElement>(null);
   const typeSelectPanelRef = useRef<HTMLDivElement>(null);
   useClickAway(() => {
@@ -102,7 +103,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         if (isOtherField2SelectField) {
           // Convert from non-selectField to selectField ,need to support preview
           const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, pre.id);
-          const stdVals = cellValues.map(cv => {
+          const stdVals = cellValues.map((cv) => {
             return Field.bindModel(field).cellValueToStdValue(cv as ISegment[]);
           });
           property = Field.bindModel({ ...pre, type, property } as IField).enrichProperty(stdVals);
@@ -140,10 +141,10 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
       <div className={styles.sectionTitle}>
         {t(Strings.field_type)}
         <Tooltip title={t(Strings.click_to_view_instructions)} trigger={'hover'}>
-          <a 
-            href={getFieldHelpLink()} 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href={getFieldHelpLink()}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ display: 'inline-block', cursor: 'pointer', verticalAlign: '-0.25em', marginLeft: 8 }}
           >
             <QuestionCircleOutlined size={16} color={colors.thirdLevelText} />
@@ -151,7 +152,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         </Tooltip>
       </div>
       <div className={styles.sectionInfo} onClick={onClick} id={DATASHEET_ID.GRID_CUR_COLUMN_TYPE} ref={typeSelectTriggerRef}>
-        <div className={settingStyles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
+        <div className={styles.iconType}>{getFieldTypeIcon(currentField.type)}</div>
         <div className={styles.text}>{FieldTypeDescriptionMap[currentField.type].title}</div>
         <div className={styles.arrow}>
           <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
@@ -174,13 +175,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {visible && (
-              <Popup
-                title={t(Strings.select_one_field)}
-                open={visible}
-                onClose={() => setVisible(false)}
-                height="90%"
-                bodyStyle={{ padding: 0 }}
-              >
+              <Popup title={t(Strings.select_one_field)} open={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

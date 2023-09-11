@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUnitValue, IUserValue, MemberType, t, Strings } from '@apitable/core';
 import classNames from 'classnames';
-import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './styles.module.less';
 import { getThemeColors } from '@apitable/components';
+import { IUnitValue, IUserValue, MemberType, t, Strings } from '@apitable/core';
 import { UserOutlined } from '@apitable/icons';
+import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
+import styles from './styles.module.less';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;
@@ -36,21 +36,24 @@ interface IMemberItemProps {
 
 export function isUnitLeave(unit: IUnitValue | IUserValue) {
   if (!unit) return true;
-  if (unit.isDeleted) { return true; }
+  if (unit.isDeleted) {
+    return true;
+  }
   return unit.type === MemberType.Member && !unit.isActive;
 }
 
-export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = props => {
+export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = (props) => {
   const { unitInfo, children, style, selected, showTeams } = props;
   const { unitId, avatar, avatarColor, nickName, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const colors = getThemeColors();
 
-  const title = getSocialWecomUnitName?.({
-    name,
-    isModified: isMemberNameModified,
-    spaceInfo
-  }) || name;
+  const title =
+    getSocialWecomUnitName?.({
+      name,
+      isModified: isMemberNameModified,
+      spaceInfo,
+    }) || name;
 
   if (showTeams) {
     return (
@@ -66,9 +69,7 @@ export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = p
         />
         <div className={styles.memberWithTeamsDesc}>
           <div className={styles.unitNameWrap}>
-            <span className={classNames('unitName', styles.unitName)}>
-              {title}
-            </span>
+            <span className={classNames('unitName', styles.unitName)}>{title}</span>
             {!isActive && <div className={styles.unInvited}>{t(Strings.pending_invite)}</div>}
           </div>
           {team && <div className={styles.teams}>{team}</div>}

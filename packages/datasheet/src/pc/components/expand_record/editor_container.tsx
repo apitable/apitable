@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import React, { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t, ViewType, IViewColumn } from '@apitable/core';
 import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
-import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
-import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
 
@@ -40,16 +40,7 @@ interface IFieldEditorContainer {
 }
 
 const FieldEditorContainer = (props: IFieldEditorContainer) => {
-  const {
-    fields,
-    visible = true,
-    focusFieldId,
-    clickWithinField,
-    datasheetId,
-    expandRecordId,
-    setFocusFieldId,
-    mirrorId
-  } = props;
+  const { fields, visible = true, focusFieldId, clickWithinField, datasheetId, expandRecordId, setFocusFieldId, mirrorId } = props;
   if (!fields) {
     return null;
   }
@@ -62,7 +53,9 @@ const FieldEditorContainer = (props: IFieldEditorContainer) => {
             style={{ display: visible ? 'block' : 'none' }}
             key={item.fieldId}
             className={classNames(styles.fieldWrapper, 'fieldWrapper')}
-            onMouseDown={() => { clickWithinField.current = true; }}
+            onMouseDown={() => {
+              clickWithinField.current = true;
+            }}
           >
             <FieldEditor
               datasheetId={datasheetId}
@@ -96,14 +89,23 @@ interface IEditorContainerProp {
   modalClose: () => void;
 }
 
-export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerProp>> = props => {
+export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerProp>> = (props) => {
   const {
-    datasheetId, mirrorId, viewId, focusFieldId, setFocusFieldId, modalClose, expandRecordId, clickWithinField, showHiddenField, setShowHiddenField,
-    disappearHiddenField
+    datasheetId,
+    mirrorId,
+    viewId,
+    focusFieldId,
+    setFocusFieldId,
+    modalClose,
+    expandRecordId,
+    clickWithinField,
+    showHiddenField,
+    setShowHiddenField,
+    disappearHiddenField,
   } = props;
   const view = useGetViewByIdWithDefault(datasheetId, viewId)!;
   const colors = useThemeColors();
-  const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
+  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
 
   const getHiddenProps = () => {
     switch (view.type) {
@@ -122,15 +124,15 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
 
   const shownFields = useMemo(() => {
     const frozenField = view.columns[0];
-    const remainShownFields = view.columns.slice(1).filter(field => !field[hiddenProp]);
+    const remainShownFields = view.columns.slice(1).filter((field) => !field[hiddenProp]);
     return [frozenField, ...remainShownFields];
   }, [hiddenProp, view.columns]);
-  const hiddenFields = useMemo(() => view.columns.slice(1).filter(field => field[hiddenProp]), [hiddenProp, view.columns]);
+  const hiddenFields = useMemo(() => view.columns.slice(1).filter((field) => field[hiddenProp]), [hiddenProp, view.columns]);
 
   const visibleColumns = shownFields.concat(hiddenFields);
 
   function tab() {
-    let index = visibleColumns.findIndex((column => column.fieldId === focusFieldId)) + 1;
+    let index = visibleColumns.findIndex((column) => column.fieldId === focusFieldId) + 1;
 
     if (index >= visibleColumns.length) {
       index = 0;
@@ -144,7 +146,7 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
   }
 
   function shiftTab() {
-    let index = visibleColumns.findIndex((column => column.fieldId === focusFieldId)) - 1;
+    let index = visibleColumns.findIndex((column) => column.fieldId === focusFieldId) - 1;
 
     if (index < 0) {
       index = visibleColumns.length - 1;
@@ -182,7 +184,7 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
     if (status) {
       list.push(key);
     } else {
-      list = list.filter(item => item !== key);
+      list = list.filter((item) => item !== key);
     }
     setStorage(StorageName.ShowHiddenFieldInExpand, list, StorageMethod.Set);
     setShowHiddenField(status);
@@ -190,12 +192,11 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
 
   const HiddenFieldContent: React.ReactElement = (
     <>
-      {
-        !disappearHiddenField && <div
-          className={
-            classNames(styles.hiddenFieldsHeader, {
-              [styles.expanded]: showHiddenField,
-            })}
+      {!disappearHiddenField && (
+        <div
+          className={classNames(styles.hiddenFieldsHeader, {
+            [styles.expanded]: showHiddenField,
+          })}
         >
           <TextButton
             className={styles.btnExpand}
@@ -205,10 +206,11 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
             color="primary"
           >
             <div className={styles.dropdown}>
-              {showHiddenField
-                ? <TriangleDownFilled size={12} color={colors.primaryColor} />
-                : <TriangleRightFilled size={12} color={colors.thirdLevelText} />
-              }
+              {showHiddenField ? (
+                <TriangleDownFilled size={12} color={colors.primaryColor} />
+              ) : (
+                <TriangleRightFilled size={12} color={colors.thirdLevelText} />
+              )}
               <h5 className={styles.typography}>
                 {!showHiddenField
                   ? t(Strings.show_hidden_fields_by_count, {
@@ -216,17 +218,15 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
                   })
                   : t(Strings.folds_hidden_fields_by_count, {
                     count: hiddenFields.length,
-                  })
-                }
+                  })}
               </h5>
             </div>
           </TextButton>
         </div>
-      }
+      )}
 
       <div className={styles.hiddenFieldsContent}>
-        {
-          showHiddenField &&
+        {showHiddenField && (
           <FieldEditorContainer
             mirrorId={mirrorId}
             fields={hiddenFields}
@@ -237,7 +237,7 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
             expandRecordId={expandRecordId}
             setFocusFieldId={setFocusFieldId}
           />
-        }
+        )}
       </div>
     </>
   );

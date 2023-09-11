@@ -89,20 +89,16 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
       const line = lines[i]!;
       const lineWidth = context?.measureText(line).width ?? 0;
       width = Math.max(width, lineWidth);
-      lineCount = maxWidth != null ? (Math.ceil(lineWidth / maxWidth) || 1) : 1;
+      lineCount = maxWidth != null ? Math.ceil(lineWidth / maxWidth) || 1 : 1;
       height += o.lineHeight * lineCount;
     }
-    if (
-      maxWidth == null || 
-      maxLineCount === 1 || 
-      (maxLineCount && lineCount <= maxLineCount)
-    ) {
+    if (maxWidth == null || maxLineCount === 1 || (maxLineCount && lineCount <= maxLineCount)) {
       return {
         width: Math.ceil(width),
         height: Math.ceil(height),
         text,
         isOverflow: Boolean(maxLineCount && lineCount > maxLineCount),
-        lastLineWidth: Math.ceil(width)
+        lastLineWidth: Math.ceil(width),
       };
     }
 
@@ -118,8 +114,8 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
       const singleText = arrText[n]!;
       const composeText = showText + singleText;
       // If you don't pass the maxLineCount, you keep changing lines
-      isLimitRow = maxLineCount ? rowCount === (maxLineCount - 1) : false;
-      const measureText = isLimitRow ? (composeText + '…') : composeText;
+      isLimitRow = maxLineCount ? rowCount === maxLineCount - 1 : false;
+      const measureText = isLimitRow ? composeText + '…' : composeText;
       totalText += singleText;
       const textWidth = context?.measureText(measureText).width ?? 0;
       const isLineBreak = ['\n', '\r'].includes(singleText);
@@ -139,10 +135,10 @@ export const AutoSizerCanvas = (defaults: IAutoSizer = {}) => {
     }
     return {
       width: Math.ceil(width),
-      height: Math.ceil((maxLineCount == null || rowCount < maxLineCount) ? (textHeight + lineHeight) : textHeight),
+      height: Math.ceil(maxLineCount == null || rowCount < maxLineCount ? textHeight + lineHeight : textHeight),
       text: totalText,
       isOverflow: isLimitRow,
-      lastLineWidth: context?.measureText(showText).width ?? 0
+      lastLineWidth: context?.measureText(showText).width ?? 0,
     };
   };
 

@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, KONVA_DATASHEET_ID } from '@apitable/core';
 import dynamic from 'next/dynamic';
+import * as React from 'react';
+import { ReactNode, useContext, useMemo } from 'react';
+import { CellType, KONVA_DATASHEET_ID } from '@apitable/core';
 import { AreaType, GANTT_HEADER_HEIGHT, GanttCoordinate, IScrollState, KonvaGanttViewContext, PointPosition } from 'pc/components/gantt_view';
 import { Line, Rect } from 'pc/components/konva_components';
 import { KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
-import * as React from 'react';
-import { ReactNode, useContext, useMemo } from 'react';
 
 const Status = dynamic(() => import('pc/components/gantt_view/group/status'), { ssr: false });
 
@@ -47,36 +47,15 @@ interface IUseStatusProps {
 }
 
 export const useStatus = (props: IUseStatusProps) => {
-  const {
-    instance,
-    scrollState,
-    pointPosition,
-    containerWidth,
-    rowStartIndex,
-    rowStopIndex,
-  } = props;
+  const { instance, scrollState, pointPosition, containerWidth, rowStartIndex, rowStopIndex } = props;
 
   const { scrollTop } = scrollState;
   const { rowHeight, containerHeight } = instance;
-  const {
-    realAreaType,
-    rowIndex,
-    offsetTop,
-    targetName
-  } = pointPosition;
+  const { realAreaType, rowIndex, offsetTop, targetName } = pointPosition;
 
   // Context
-  const {
-    dragTaskId,
-    dragSplitterInfo
-  } = useContext(KonvaGanttViewContext);
-  const {
-    linearRows,
-    recordRanges,
-    rowsIndexMap,
-    activeCell,
-    visibleRows,
-  } = useContext(KonvaGridViewContext);
+  const { dragTaskId, dragSplitterInfo } = useContext(KonvaGanttViewContext);
+  const { linearRows, recordRanges, rowsIndexMap, activeCell, visibleRows } = useContext(KonvaGridViewContext);
   const { isMobile: _isMobile, isTouchDevice, theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const isMobile = _isMobile || isTouchDevice;
@@ -89,13 +68,7 @@ export const useStatus = (props: IUseStatusProps) => {
     const y = (offsetTop - prevY) * 2 > rowHeight ? nextY : prevY;
     if (y - scrollTop < GANTT_HEADER_HEIGHT) return null;
 
-    return (
-      <Line
-        y={y + 0.5}
-        points={[0, 0, containerWidth, 0]}
-        stroke={theme.color.primaryColor}
-      />
-    );
+    return <Line y={y + 0.5} points={[0, 0, containerWidth, 0]} stroke={theme.color.primaryColor} />;
   }, [containerWidth, dragTaskId, instance, linearRows, offsetTop, rowHeight, rowIndex, scrollTop, theme.color.primaryColor]);
 
   // Drawing the highlighted line in Hover state
@@ -105,14 +78,7 @@ export const useStatus = (props: IUseStatusProps) => {
     if (isNoneArea || !isRecordType || NOT_HOVER_TARGET_NAMES.has(targetName)) return;
     const y = instance.getRowOffset(rowIndex);
 
-    return (
-      <Rect
-        y={y + 0.5}
-        width={containerWidth}
-        height={rowHeight - 0.5}
-        fill={colors.rowSelectedBg}
-      />
-    );
+    return <Rect y={y + 0.5} width={containerWidth} height={rowHeight - 0.5} fill={colors.rowSelectedBg} />;
   }, [realAreaType, containerWidth, instance, linearRows, rowHeight, rowIndex, targetName, colors.rowSelectedBg]);
 
   // Highlighting rows in Active state
@@ -123,14 +89,7 @@ export const useStatus = (props: IUseStatusProps) => {
     const rowIndex = rowsIndexMap.get(`${CellType.Record}_${recordId}`);
     if (rowIndex == null) return null;
     const y = instance.getRowOffset(rowIndex);
-    return (
-      <Rect
-        y={y + 0.5}
-        width={containerWidth}
-        height={rowHeight - 1}
-        fill={colors.rowSelectedBg}
-      />
-    );
+    return <Rect y={y + 0.5} width={containerWidth} height={rowHeight - 1} fill={colors.rowSelectedBg} />;
   }, [activeCell, containerWidth, instance, isMobile, rowHeight, rowsIndexMap, colors.rowSelectedBg]);
 
   /**
@@ -149,13 +108,7 @@ export const useStatus = (props: IUseStatusProps) => {
         if (record.type === CellType.Record) {
           const y = instance.getRowOffset(i);
           selectedRows.push(
-            <Rect
-              key={`selected-record-${record.recordId}`}
-              y={y}
-              width={containerWidth}
-              height={rowHeight}
-              fill={theme.color.cellSelectedColor}
-            />
+            <Rect key={`selected-record-${record.recordId}`} y={y} width={containerWidth} height={rowHeight} fill={theme.color.cellSelectedColor} />,
           );
         }
       }
@@ -167,33 +120,28 @@ export const useStatus = (props: IUseStatusProps) => {
         const y = instance.getRowOffset(rowIndex);
 
         selectedRows.push(
-          <Rect
-            key={`selected-record-${recordId}`}
-            y={y}
-            width={containerWidth}
-            height={rowHeight}
-            fill={theme.color.cellSelectedColor}
-          />
+          <Rect key={`selected-record-${recordId}`} y={y} width={containerWidth} height={rowHeight} fill={theme.color.cellSelectedColor} />,
         );
       }
     }
     return selectedRows;
   }, [
-    containerWidth, instance, linearRows, recordRanges, rowHeight, rowStartIndex, rowStopIndex,
-    rowsIndexMap, theme.color.cellSelectedColor, visibleRows.length
+    containerWidth,
+    instance,
+    linearRows,
+    recordRanges,
+    rowHeight,
+    rowStartIndex,
+    rowStopIndex,
+    rowsIndexMap,
+    theme.color.cellSelectedColor,
+    visibleRows.length,
   ]);
 
   let dragSplitter: ReactNode = null;
   if (dragSplitterInfo.visible) {
     const { x } = dragSplitterInfo;
-    dragSplitter = (
-      <Status
-        x={x}
-        KONVA_DATASHEET_ID={KONVA_DATASHEET_ID}
-        containerHeight={containerHeight}
-        theme={theme}
-      />
-    );
+    dragSplitter = <Status x={x} KONVA_DATASHEET_ID={KONVA_DATASHEET_ID} containerHeight={containerHeight} theme={theme} />;
   }
 
   return {

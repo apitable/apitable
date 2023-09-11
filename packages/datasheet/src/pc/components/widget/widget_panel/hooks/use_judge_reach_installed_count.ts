@@ -1,8 +1,8 @@
-import { ConfigConstant, ResourceType, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
+import { ConfigConstant, ResourceType, Selectors } from '@apitable/core';
 
 export const useJudgeReachInstalledCount = () => {
-  const activeWidgetPanel = useSelector(state => {
+  const activeWidgetPanel = useSelector((state) => {
     const { datasheetId, mirrorId } = state.pageParams;
     const resourceId = mirrorId || datasheetId;
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;

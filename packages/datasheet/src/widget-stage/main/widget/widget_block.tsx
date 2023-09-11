@@ -16,31 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useThemeMode } from '@apitable/components';
 import {
-  widgetMessage, initWidgetMessage, WidgetProvider, getWidgetStore, getLanguage, initWidgetStore,
-  RuntimeEnv, MouseListenerType, IWidgetConfigIframePartial, MessageType
+  widgetMessage,
+  initWidgetMessage,
+  WidgetProvider,
+  getWidgetStore,
+  getLanguage,
+  initWidgetStore,
+  RuntimeEnv,
+  MouseListenerType,
+  IWidgetConfigIframePartial,
+  MessageType,
 } from '@apitable/widget-sdk';
-import { useMount } from 'ahooks';
 import { WidgetLoading } from 'pc/components/widget/widget_panel/widget_item/widget_loading';
-import React, { useCallback, useEffect, useState } from 'react';
 import { WidgetLoader } from './widget_loader';
- 
+
 const query = new URLSearchParams(window.location.search);
 const widgetId = query.get('widgetId');
- 
+
 declare const window: any;
 // __initialization_data__
 window.__initialization_data__ = window.__initialization_data__ || {};
 window.__initialization_data__.lang = query.get('lang');
 widgetId && initWidgetMessage(widgetId);
- 
+
 const isSocialWecom = query.get('isSocialWecom');
 window['_isSocialWecom'] = isSocialWecom;
 window['_widget_iframe'] = true;
- 
+
 const widgetRuntimeEnv = query.get('runtimeEnv') as RuntimeEnv;
- 
+
 export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>> = ({ widgetId }) => {
   const [isDevMode, setIsDevMode] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -49,17 +57,17 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
   const [init, setInit] = useState<boolean>();
   const theme = useThemeMode();
   const [widgetStore, setWidgetStore] = useState<any>(getWidgetStore(widgetId));
- 
+
   useMount(() => {
     widgetMessage.connectWidget(() => {
       setConnected(true);
       console.log('%s connected', widgetId);
     });
   });
- 
+
   useEffect(() => {
     if (widgetId && connected) {
-      widgetMessage.onInitWidget(data => {
+      widgetMessage.onInitWidget((data) => {
         const { widgetConfig, ...widgetState } = data;
         // redux
         const store = initWidgetStore(widgetState, widgetId);
@@ -73,7 +81,7 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       });
     }
   }, [connected, widgetId, setInit]);
- 
+
   useEffect(() => {
     if (connected && widgetMessage && widgetStore) {
       // TODO Handling updates action.
@@ -85,7 +93,7 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_ACTION);
     };
   }, [connected, widgetStore]);
- 
+
   useEffect(() => {
     if (connected && widgetMessage && widgetStore) {
       widgetMessage.onSyncRecordPickerResult();
@@ -94,11 +102,11 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_RECORD_PICKER_RESULT);
     };
   }, [connected, widgetStore]);
- 
+
   useEffect(() => {
     if (widgetMessage && widgetStore && connected) {
       /** update widget config */
-      widgetMessage.onSyncWidgetConfig(data => {
+      widgetMessage.onSyncWidgetConfig((data) => {
         setIsFullscreen(data.isFullscreen);
         setIsShowingSettings(data.isShowingSettings);
         setIsDevMode(Boolean(data.isDevMode));
@@ -108,18 +116,18 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       widgetMessage.removeListenEvent(MessageType.MAIN_SYNC_WIDGET_CONFIG);
     };
   }, [setIsFullscreen, setIsShowingSettings, connected, widgetStore]);
- 
+
   const updateConfig = useCallback((config: IWidgetConfigIframePartial) => {
     widgetMessage.syncWidgetConfig(config);
   }, []);
- 
+
   const toggleSetting = useCallback(() => {
     const config = {
-      isShowingSettings: !isShowingSettings
+      isShowingSettings: !isShowingSettings,
     };
     updateConfig(config);
   }, [isShowingSettings, updateConfig]);
- 
+
   const toggleFullscreen = useCallback(() => {
     const config = {
       isFullscreen: !isFullscreen,
@@ -130,16 +138,16 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
   const expandRecord = useCallback((props: any) => {
     widgetMessage.expandRecord(props);
   }, []);
- 
+
   const expandDevConfig = () => {
     widgetMessage.expandDevConfig();
   };
- 
+
   useEffect(() => {
     if (!connected) {
       return;
     }
-    const fn = (e: { type: MouseListenerType; }) => {
+    const fn = (e: { type: MouseListenerType }) => {
       if (!e?.type) {
         return;
       }
@@ -152,18 +160,18 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       window.document.removeEventListener(MouseListenerType.LEAVE, fn);
     };
   }, [connected]);
- 
+
   if (!widgetId) {
     return <>Error: no widgetId</>;
   }
   if (!connected) {
-    return <WidgetLoading/>;
+    return <WidgetLoading />;
   }
- 
+
   if (!init) {
-    return <WidgetLoading/>;
+    return <WidgetLoading />;
   }
- 
+
   return (
     <WidgetProvider
       id={widgetId}
@@ -177,7 +185,7 @@ export const WidgetBlock: React.FC<React.PropsWithChildren<{ widgetId: string }>
       toggleFullscreen={toggleFullscreen}
       expandRecord={expandRecord}
     >
-      <WidgetLoader expandDevConfig={expandDevConfig} isDevMode={isDevMode}/>
+      <WidgetLoader expandDevConfig={expandDevConfig} isDevMode={isDevMode} />
     </WidgetProvider>
   );
 };

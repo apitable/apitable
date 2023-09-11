@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
-import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-import styles from './style.module.less';
 import { useState } from 'react';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { Popup } from 'pc/components/common/mobile/popup';
-import { renderComputeFieldError } from 'pc/components/multi_grid/header';
+import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
+import { ChevronDownOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import { ChevronDownOutlined } from '@apitable/icons';
+import { Popup } from 'pc/components/common/mobile/popup';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { renderComputeFieldError } from 'pc/components/multi_grid/header';
+import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import styles from './style.module.less';
 
 interface IViewFieldOptionsMobile {
   onChange: (targetId: string) => void;
@@ -41,17 +41,11 @@ interface IViewFieldOptionsMobile {
   fieldNotFound?: boolean;
 }
 
-export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewFieldOptionsMobile>> = props => {
-  const {
-    existFieldIds,
-    onChange,
-    defaultFieldId,
-    isCryptoField,
-    fieldNotFound
-  } = props;
+export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewFieldOptionsMobile>> = (props) => {
+  const { existFieldIds, onChange, defaultFieldId, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
-  const currentViewAllField = useSelector(state => Selectors.getCurrentView(state))!.columns;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const currentViewAllField = useSelector((state) => Selectors.getCurrentView(state))!.columns;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const isViewLock = useShowViewLockModal();
 
   function predicate(item: IViewColumn) {
@@ -81,72 +75,57 @@ export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewField
 
   return (
     <>
-      <div
-        className={classNames(styles.addSortRules, { [styles.disabled]: isViewLock })}
-        onClick={() => !isViewLock && setOptionsVisible(true)}
-      >
+      <div className={classNames(styles.addSortRules, { [styles.disabled]: isViewLock })} onClick={() => !isViewLock && setOptionsVisible(true)}>
         <span>{getDefaultLabel()}</span>
-        <ChevronDownOutlined
-          className={styles.arrow}
-          size={16}
-          color={colors.thirdLevelText}
-        />
+        <ChevronDownOutlined className={styles.arrow} size={16} color={colors.thirdLevelText} />
       </div>
-      <Popup
-        open={optionsVisible}
-        title={t(Strings.title_select_sorting_fields)}
-        height='50%'
-        onClose={onClose}
-        className={styles.optionsListMenu}
-      >
+      <Popup open={optionsVisible} title={t(Strings.title_select_sorting_fields)} height="50%" onClose={onClose} className={styles.optionsListMenu}>
         <div className={styles.optionsListWrapper}>
-          {filteredOptions.length ? filteredOptions.map(item => {
-            const field = fieldMap[item.fieldId];
-            const disabled = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError;
+          {filteredOptions.length
+            ? filteredOptions.map((item) => {
+              const field = fieldMap[item.fieldId];
+              const disabled = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError;
 
-            const Inner = (
-              <div
-                className={styles.optionItem}
-                key={field.id}
-                onClick={() => {
-                  if (disabled) {
-                    return;
-                  }
-                  onChange(field.id);
-                  setOptionsVisible(false);
-                }}
-              >
-                <div className={styles.fieldItem}>
-                  {
-                    getFieldTypeIcon(field.type, disabled ? colors.fourthLevelText : colors.thirdLevelText)
-                  }
-                  <span
-                    className={styles.fieldName}
-                    style={{
-                      color: disabled ? colors.fourthLevelText : 'inherit',
-                    }}
-                  >
-                    {field.name}
-                  </span>
+              const Inner = (
+                <div
+                  className={styles.optionItem}
+                  key={field.id}
+                  onClick={() => {
+                    if (disabled) {
+                      return;
+                    }
+                    onChange(field.id);
+                    setOptionsVisible(false);
+                  }}
+                >
+                  <div className={styles.fieldItem}>
+                    {getFieldTypeIcon(field.type, disabled ? colors.fourthLevelText : colors.thirdLevelText)}
+                    <span
+                      className={styles.fieldName}
+                      style={{
+                        color: disabled ? colors.fourthLevelText : 'inherit',
+                      }}
+                    >
+                      {field.name}
+                    </span>
+                  </div>
+                  {renderComputeFieldError(field, t(Strings.error_configuration_and_invalid_filter_option), true)}
                 </div>
-                {renderComputeFieldError(field, t(Strings.error_configuration_and_invalid_filter_option), true)}
-              </div>
-            );
+              );
 
-            return (
-              <>
-                {disabled ?
-                  <Tooltip
-                    title={t(Strings.view_sort_and_group_disabled)}
-                    showTipAnyway
-                  >
-                    {Inner}
-                  </Tooltip> :
-                  Inner
-                }
-              </>
-            );
-          }) : t(Strings.no_option)}
+              return (
+                <>
+                  {disabled ? (
+                    <Tooltip title={t(Strings.view_sort_and_group_disabled)} showTipAnyway>
+                      {Inner}
+                    </Tooltip>
+                  ) : (
+                    Inner
+                  )}
+                </>
+              );
+            })
+            : t(Strings.no_option)}
         </div>
       </Popup>
     </>

@@ -17,6 +17,6 @@
  */
 
 // prefixCls
-export enum ButtonPrefixCls{
+export enum ButtonPrefixCls {
   Btn = 'btn',
 }

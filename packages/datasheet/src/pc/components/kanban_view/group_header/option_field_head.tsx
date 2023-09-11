@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useThemeColors } from '@apitable/components';
 import { useClickAway } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import produce from 'immer';
-import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { useThemeColors } from '@apitable/components';
+import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
+import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { IHeadOptionProps } from './interface';
 import styles from './styles.module.less';
 
-export const OptionFieldHead: React.FC<React.PropsWithChildren<IHeadOptionProps>> = props => {
+export const OptionFieldHead: React.FC<React.PropsWithChildren<IHeadOptionProps>> = (props) => {
   const colors = useThemeColors();
   const { cellValue, field, editing, setEditing, onCommand, isAdd, readOnly } = props;
   const [fieldClone, setFieldClone] = useState(field);
@@ -38,14 +38,14 @@ export const OptionFieldHead: React.FC<React.PropsWithChildren<IHeadOptionProps>
     setFieldClone(field);
   }, [field]);
 
-  const optionItem = fieldClone.property.options.find(item => item.id === cellValue)!;
+  const optionItem = fieldClone.property.options.find((item) => item.id === cellValue)!;
 
   function onOptionChange(type: OptionSetting, id: string, value: string | number) {
     if (type !== OptionSetting.SETCOLOR) {
       return;
     }
-    const newField = produce(fieldClone, draft => {
-      draft.property.options.map(item => {
+    const newField = produce(fieldClone, (draft) => {
+      draft.property.options.map((item) => {
         if (id === item.id) {
           item.color = value as number;
         }
@@ -73,8 +73,8 @@ export const OptionFieldHead: React.FC<React.PropsWithChildren<IHeadOptionProps>
       return;
     }
     const optionId = cellValue;
-    const newField = produce(fieldClone, draft => {
-      draft.property.options = draft.property.options.map(item => {
+    const newField = produce(fieldClone, (draft) => {
+      draft.property.options = draft.property.options.map((item) => {
         if (item.id !== optionId) return item;
         item.name = value;
         return item;

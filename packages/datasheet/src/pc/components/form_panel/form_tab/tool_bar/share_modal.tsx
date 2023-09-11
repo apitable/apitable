@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, Skeleton } from '@apitable/components';
-import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CloseOutlined } from '@apitable/icons';
 import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Button, Skeleton } from '@apitable/components';
+import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { CloseOutlined } from '@apitable/icons';
 import { DisabledShareFile } from 'pc/components/catalog/share_node/disabled_share_file/disabled_share_file';
 import { ShareLink } from 'pc/components/catalog/share_node/share/share_link';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -32,8 +34,6 @@ import { Popconfirm } from 'pc/components/common/popconfirm';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useResponsive } from 'pc/hooks';
-import React, { useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import HeaderCover from 'static/icon/datasheet/share/datasheet_img_share.png';
 import styles from './style.module.less';
 
@@ -43,7 +43,7 @@ interface IShareModalProps {
   onClose: () => void;
 }
 
-export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = props => {
+export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = (props) => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [confirmPopVisible, setConfirmPopVisible] = useState(false);
   const { formId, visible, onClose } = props;
@@ -57,15 +57,15 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const fileSharable = useSelector(state => state.space.spaceFeatures?.fileSharable);
+  const fileSharable = useSelector((state) => state.space.spaceFeatures?.fileSharable);
   // Update Properties
-  const updateProps = (partProps: { fillAnonymous?: any; submitLimit?: any; }) => {
-    const finalFormProps = produce(formProps, draft => {
+  const updateProps = (partProps: { fillAnonymous?: any; submitLimit?: any }) => {
+    const finalFormProps = produce(formProps, (draft) => {
       draft = Object.assign(draft, partProps);
       return draft;
     });
 
-    FormApi.updateFormProps(formId, finalFormProps).then(res => {
+    FormApi.updateFormProps(formId, finalFormProps).then((res) => {
       const { success } = res.data;
       if (success) {
         setFormProps(finalFormProps);
@@ -78,7 +78,7 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
   // Get sharing settings
   const getShareSettings = () => {
     setLoadingShow(true);
-    Api.getShareSettings(formId).then(res => {
+    Api.getShareSettings(formId).then((res) => {
       const { data, success } = res.data;
       if (success) {
         setShareSettings(data);
@@ -95,7 +95,7 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
 
   // Get formProps
   const getFormProps = () => {
-    FormApi.fetchFormProps(formId).then(res => {
+    FormApi.fetchFormProps(formId).then((res) => {
       const { data, success } = res.data;
       if (success) {
         setFormProps(data);
@@ -115,7 +115,7 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
   // Open and share
   const updateShareSettings = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
     setSwitchLoading(true);
-    Api.updateShare(formId, permission).then(res => {
+    Api.updateShare(formId, permission).then((res) => {
       const { success } = res.data;
       if (success) {
         setSwitchLoading(false);
@@ -130,7 +130,7 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = p
 
   // Close Share
   const closeShare = () => {
-    Api.disableShare(formId).then(res => {
+    Api.disableShare(formId).then((res) => {
       const { success } = res.data;
       if (success) {
         getShareSettings();

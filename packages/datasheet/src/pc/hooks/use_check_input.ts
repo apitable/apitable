@@ -20,18 +20,18 @@ import { useState } from 'react';
 
 interface ICheckInputOption {
   checkLength?: ICheckLength;
-  checkRepeat?: any
+  checkRepeat?: any;
 }
 
 interface ICheckLength {
   max: number;
   min: number;
   tip: string;
-  trim?: boolean
+  trim?: boolean;
 }
 
 interface ICheckRepeat {
-  existValue: string[]
+  existValue: string[];
   tip: string;
 }
 
@@ -43,9 +43,7 @@ export const useCheckInput = (options: ICheckInputOption) => {
       if (option.trim) {
         value = value.trim();
       }
-      if (
-        value.length >= option.max || value.length <= option.min
-      ) {
+      if (value.length >= option.max || value.length <= option.min) {
         setErrTip(option.tip);
         return false;
       }
@@ -67,7 +65,9 @@ export const useCheckInput = (options: ICheckInputOption) => {
     setErrTip('');
     for (const [k, v] of Object.entries(options)) {
       const pass = strategy[k](v, value);
-      if (!pass) { return; }
+      if (!pass) {
+        return;
+      }
     }
   };
 

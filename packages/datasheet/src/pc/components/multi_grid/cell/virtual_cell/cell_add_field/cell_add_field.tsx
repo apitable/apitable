@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CellType, IGroupInfo, ILinearRow, IPermissions } from '@apitable/core';
 import classNames from 'classnames';
 import * as React from 'react';
+import { CellType, IGroupInfo, ILinearRow, IPermissions } from '@apitable/core';
 import { GRAY_COLOR_BORDER, groupColor } from '../cell_group_tab/cell_group_tab';
 
 interface ICellAddField {
@@ -48,7 +48,7 @@ export function getAddFieldWidth(fieldEditable: boolean, groupInfo: IGroupInfo) 
   return AddFieldWidth.Editable;
 }
 
-export const CellAddField: React.FC<React.PropsWithChildren<ICellAddField>> = props => {
+export const CellAddField: React.FC<React.PropsWithChildren<ICellAddField>> = (props) => {
   const { rowIndex, rows, style, className, isEmptyRows, groupInfo, permissions } = props;
   const width = getAddFieldWidth(permissions.fieldCreatable, groupInfo);
   const row = rows[rowIndex];
@@ -66,14 +66,9 @@ export const CellAddField: React.FC<React.PropsWithChildren<ICellAddField>> = pr
         width,
         borderBottom: showBorderBottom ? GRAY_COLOR_BORDER : 'none',
         borderTop: row.type === CellType.GroupTab && row.depth === 0 ? GRAY_COLOR_BORDER : 'none',
-        borderRight: (row.type === CellType.Blank && row.depth === 0) ? 'none' : '',
+        borderRight: row.type === CellType.Blank && row.depth === 0 ? 'none' : '',
       }}
-      className={
-        classNames(
-          className,
-          !isEmptyRows && groupInfo.length ? groupColor(groupInfo.length)[0] : '',
-        )
-      }
+      className={classNames(className, !isEmptyRows && groupInfo.length ? groupColor(groupInfo.length)[0] : '')}
     />
   );
 };

@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api, PREVIEW_DATASHEET_ID, StoreActions } from '@apitable/core';
+import { pick } from 'lodash';
 import Router from 'next/router';
+import browserPath from 'path-browserify';
+import urlcat from 'urlcat';
+import { Api, PREVIEW_DATASHEET_ID, StoreActions } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { IOptions, IQuery } from 'pc/components/route_manager/interface';
 import { store } from 'pc/store';
-import browserPath from 'path-browserify';
-import urlcat from 'urlcat';
-import { pick } from 'lodash';
 
 export function joinPath(pathParams: (string | undefined)[]) {
   const params: string[] = [];
@@ -43,21 +43,20 @@ export function joinPath(pathParams: (string | undefined)[]) {
   return browserPath.join(...params);
 }
 
-const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, clearQuery?: boolean,) => {
-  const currentSearch = new URLSearchParams(
-    clearQuery ? '' : window.location.search,
-  );
+const wrapper = (cb: (path: string) => void) => (path: string, query?: IQuery, clearQuery?: boolean) => {
+  const currentSearch = new URLSearchParams(clearQuery ? '' : window.location.search);
 
-  query && Object.keys(query).forEach((key) => {
-    const queryValue = query[key];
-    if (queryValue == null) {
-      return currentSearch.delete(key);
-    }
-    if (currentSearch.has(key)) {
-      return currentSearch.set(key, queryValue);
-    }
-    return currentSearch.append(key, queryValue);
-  });
+  query &&
+    Object.keys(query).forEach((key) => {
+      const queryValue = query[key];
+      if (queryValue == null) {
+        return currentSearch.delete(key);
+      }
+      if (currentSearch.has(key)) {
+        return currentSearch.set(key, queryValue);
+      }
+      return currentSearch.append(key, queryValue);
+    });
 
   const state = store.getState();
 
@@ -98,11 +97,7 @@ export function getNodeId() {
   const state = store.getState();
   const activeNodeId = state.user.info ? state.user.info.activeViewId : null;
   const treeNodesMap = state.catalogTree.treeNodesMap;
-  if (
-    !Object.keys(treeNodesMap).length ||
-    !activeNodeId ||
-    !treeNodesMap[activeNodeId]
-  ) {
+  if (!Object.keys(treeNodesMap).length || !activeNodeId || !treeNodesMap[activeNodeId]) {
     return undefined;
   }
   return treeNodesMap[activeNodeId!].nodeId;
@@ -121,11 +116,11 @@ export const toggleSpace = async(spaceId?: string | null) => {
   store.dispatch(StoreActions.setActiveSpaceId(spaceId));
 
   /**
-   * Originally, I wanted to get userInfo information from _app by gettingInitProps to update data, 
-   * but after testing, in the current version of next (12.3), except for the first page load, 
-   * _app's props will receive userInfo information and switch the route by router.push. 
-   * However, in the current version of next (12.3), except for the first load of the page, 
-   * the props of _app will receive the userInfo information, and the route switch by router.push, the props of _app is undefined, 
+   * Originally, I wanted to get userInfo information from _app by gettingInitProps to update data,
+   * but after testing, in the current version of next (12.3), except for the first page load,
+   * _app's props will receive userInfo information and switch the route by router.push.
+   * However, in the current version of next (12.3), except for the first load of the page,
+   * the props of _app will receive the userInfo information, and the route switch by router.push, the props of _app is undefined,
    * so the userInfo information can't be updated in time, but the information can be updated normally by using router.redirect,
    * so it was decided that when using router.push, if the spaceId parameter is present, it will be manually refreshed
    */

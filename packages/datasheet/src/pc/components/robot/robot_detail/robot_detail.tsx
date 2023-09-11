@@ -16,68 +16,68 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Box } from '@apitable/components';
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { useState, useRef } from 'react';
+import axios from 'axios';
+import { useMemo, useState } from 'react';
+import useSWR from 'swr';
+import { Box, Typography } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';
 import { IRobotTrigger } from '../interface';
-import { RobotActions } from './action/robot_actions';
-import { RobotBaseInfo } from './robot_base_info';
-import { RobotTrigger } from './trigger/robot_trigger';
+import { useRobotListState } from '../robot_list';
+import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
+import { getActionList, RobotActions } from './action/robot_actions';
+import { EditType, RobotTrigger } from './trigger/robot_trigger';
 
-interface IRobotDetailProps {
-  index: number,
-  datasheetId: string,
-  formList: IFormNodeItem[],
-}
-export const RobotDetailForm = ({ formList }: IRobotDetailProps) => {
+const req = axios.create({
+  baseURL: '/nest/v1/',
+});
+
+export const RobotDetailForm = () => {
   const [trigger, setTrigger] = useState<IRobotTrigger>();
-  const ref = useRef<HTMLDivElement | null>(null);
   const { loading, data: actionTypes } = useActionTypes();
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
   const { robot } = useRobot();
 
-  if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot) {
+  const { state: { formList }} = useRobotListState();
+
+  const { data, error } = useSWR(`/automation/robots/${robot?.robotId}/actions`, req);
+  const actions = data?.data?.data;
+  const actionList = useMemo(() => getActionList(actions), [actions]);
+
+  if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot || error) {
     return null;
   }
 
-  const scrollBottom = () => {
-    const scrollBox = ref.current;
-    if (!scrollBox) {
-      return;
-    }
-    const { scrollHeight, offsetHeight } = scrollBox;
-    if (scrollHeight > offsetHeight) {
-      scrollBox.scrollTop = scrollHeight - offsetHeight;
-    }
-  };
-
-  // const nodeList = (robot.nodes || []).map((node, index) => {
-  //   if (index === 0) {
-  //     return node.triggerId;
-  //   }
-  //   return node.actionId;
-  // });
-  // console.log(nodeList);
   return (
-    <Box
-      ref={ref}
-    >
-      <RobotBaseInfo />
+    <>
+      <Box paddingTop={'40px'} paddingBottom={'12px'}>
+        <Typography variant="h5">
+          {
+            t(Strings.when)
+          }
+        </Typography>
+      </Box>
+
       <RobotTrigger
+        editType={EditType.entry}
         robotId={robot.robotId}
         triggerTypes={triggerTypes}
         formList={formList}
         setTrigger={setTrigger}
       />
+
+      <Box paddingTop={'40px'} paddingBottom={'12px'}>
+        <Typography variant="h5">
+          {t(Strings.then) } ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
+        </Typography>
+      </Box>
+
       <RobotActions
         robotId={robot.robotId}
         trigger={trigger}
         triggerTypes={triggerTypes}
         actionTypes={actionTypes}
-        onScrollBottom={scrollBottom}
       />
-      {/* <NodeConnectionLine nodeList={nodeList} /> */}
-    </Box >
+    </>
   );
 };

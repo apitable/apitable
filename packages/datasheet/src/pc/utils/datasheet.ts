@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTActionName, Selectors } from '@apitable/core';
 import produce from 'immer';
+import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTActionName, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 
 /** Get the isColNameVisible value, compatible with the previously created view isColNameVisible is undefined
@@ -77,7 +77,7 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
 
     const buildAction = (fieldId: string, target: number) => {
       if (temporaryView) {
-        const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+        const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
         return {
           n: OTActionName.ListMove,
           p: ['columns', columnIndex],
@@ -89,7 +89,7 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
         return null;
       }
 
-      const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+      const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
       if (columnIndex < 0 || columnIndex === target) {
         return null;
       }
@@ -123,19 +123,18 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
 
   const getColumns = () => {
     if (temporaryView) {
-      const _temporaryView = produce(temporaryView, draft => {
+      const _temporaryView = produce(temporaryView, (draft) => {
         jot.apply(draft, actions);
         return draft;
       });
       return _temporaryView.columns;
     }
-    const _snapshot = produce(snapshot, draft => {
+    const _snapshot = produce(snapshot, (draft) => {
       jot.apply(draft, actions);
       return draft;
     });
-    return _snapshot.meta.views.find(view => view.id === viewId)!.columns;
+    return _snapshot.meta.views.find((view) => view.id === viewId)!.columns;
   };
 
   return getColumns();
-
 };

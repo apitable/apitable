@@ -279,9 +279,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                     spaceInfo
                   }) || memberInfo?.memberName) : '';
                   const ops = item.operations.filter(op => !op.cmd.startsWith('System'));
+                  if(!ops.length)return;
                   return (
                     <section className={styles.listItem} key={item.messageId} data-active={index === curPreview}
-                      onClick={() => onPreviewClick(index)}>
+                      onClick={()=>{console.log('ops', ops); }}
+                    >
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <Avatar
                           id={item.userId || ''}

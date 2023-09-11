@@ -20,17 +20,7 @@ import { Label } from './Label';
 import { WrapIfAdditional } from './WrapIfAdditional';
 
 export function DefaultTemplate(props: any) {
-  const {
-    id,
-    label,
-    children,
-    errors,
-    help,
-    description,
-    hidden,
-    required,
-    displayLabel,
-  } = props;
+  const { id, label, children, errors, help, description, hidden, required, displayLabel } = props;
   if (hidden) {
     return <div className="hidden">{children}</div>;
   }

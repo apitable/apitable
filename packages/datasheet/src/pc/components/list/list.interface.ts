@@ -22,14 +22,14 @@ export interface IListBase<T, L> {
    * For cell, it is cellValue
    * For filter, this is filterValue
    * @type {(IUnitIds | null)}
-  */
+   */
   existValues: T;
 
   /**
    * @description Click callbacks for each option in the dropdown box
    * @param {T} value
    */
-  onClickItem (value: T): void;
+  onClickItem(value: T): void;
 
   /**
    * @description Mark whether the current mode is single-select or multi-select
@@ -50,5 +50,4 @@ export interface IListBase<T, L> {
   monitorId?: string;
 
   className?: string;
-
 }

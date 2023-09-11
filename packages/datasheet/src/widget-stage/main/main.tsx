@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { GlobalContextProvider } from '@apitable/widget-sdk';
 import classnames from 'classnames';
 import React from 'react';
+import { GlobalContextProvider } from '@apitable/widget-sdk';
 import styles from './style.module.less';
 import { WidgetBlock } from './widget/widget_block';
 import WidgetAlone from './widget_alone';
@@ -32,8 +32,13 @@ export const Main: React.FC<React.PropsWithChildren<unknown>> = () => {
   }
   return (
     <div className={classnames(styles.main, 'main')}>
-      { !isAlone ? <WidgetBlock widgetId={widgetId!} /> :
-        <GlobalContextProvider><WidgetAlone /></GlobalContextProvider>}
+      {!isAlone ? (
+        <WidgetBlock widgetId={widgetId!} />
+      ) : (
+        <GlobalContextProvider>
+          <WidgetAlone />
+        </GlobalContextProvider>
+      )}
     </div>
   );
 };

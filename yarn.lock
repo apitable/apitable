@@ -441,6 +441,7 @@ __metadata:
     case-sensitive-paths-webpack-plugin: 2.2.0
     classnames: 2.2.6
     comlink: ^4.3.1
+    constate: ^3.3.2
     cookies-next: ^2.1.1
     current-device: ^0.10.2
     customize-cra: ^1.0.0
@@ -474,6 +475,8 @@ __metadata:
     is-url: ^1.2.4
     is-wsl: 1.1.0
     joi: ^17.9.2
+    jotai: ^2.4.1
+    jotai-immer: ^0.2.0
     jszip: ^3.7.0
     konva: ^8.3.13
     less: 4.1.3
@@ -9628,90 +9631,91 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-darwin-arm64@npm:1.3.78"
+"@swc/core-darwin-arm64@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-darwin-arm64@npm:1.3.80"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-darwin-x64@npm:1.3.78"
+"@swc/core-darwin-x64@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-darwin-x64@npm:1.3.80"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.78"
+"@swc/core-linux-arm-gnueabihf@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.80"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.78"
+"@swc/core-linux-arm64-gnu@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.80"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-linux-arm64-musl@npm:1.3.78"
+"@swc/core-linux-arm64-musl@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-linux-arm64-musl@npm:1.3.80"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.78"
+"@swc/core-linux-x64-gnu@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-linux-x64-gnu@npm:1.3.80"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.78"
+"@swc/core-linux-x64-musl@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-linux-x64-musl@npm:1.3.80"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.78"
+"@swc/core-win32-arm64-msvc@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.80"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.78"
+"@swc/core-win32-ia32-msvc@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.80"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.78"
+"@swc/core-win32-x64-msvc@npm:1.3.80":
+  version: 1.3.80
+  resolution: "@swc/core-win32-x64-msvc@npm:1.3.80"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@swc/core@npm:^1.3.78":
-  version: 1.3.78
-  resolution: "@swc/core@npm:1.3.78"
+  version: 1.3.80
+  resolution: "@swc/core@npm:1.3.80"
   dependencies:
-    "@swc/core-darwin-arm64": 1.3.78
-    "@swc/core-darwin-x64": 1.3.78
-    "@swc/core-linux-arm-gnueabihf": 1.3.78
-    "@swc/core-linux-arm64-gnu": 1.3.78
-    "@swc/core-linux-arm64-musl": 1.3.78
-    "@swc/core-linux-x64-gnu": 1.3.78
-    "@swc/core-linux-x64-musl": 1.3.78
-    "@swc/core-win32-arm64-msvc": 1.3.78
-    "@swc/core-win32-ia32-msvc": 1.3.78
-    "@swc/core-win32-x64-msvc": 1.3.78
+    "@swc/core-darwin-arm64": 1.3.80
+    "@swc/core-darwin-x64": 1.3.80
+    "@swc/core-linux-arm-gnueabihf": 1.3.80
+    "@swc/core-linux-arm64-gnu": 1.3.80
+    "@swc/core-linux-arm64-musl": 1.3.80
+    "@swc/core-linux-x64-gnu": 1.3.80
+    "@swc/core-linux-x64-musl": 1.3.80
+    "@swc/core-win32-arm64-msvc": 1.3.80
+    "@swc/core-win32-ia32-msvc": 1.3.80
+    "@swc/core-win32-x64-msvc": 1.3.80
+    "@swc/types": ^0.1.3
   peerDependencies:
     "@swc/helpers": ^0.5.0
   dependenciesMeta:
@@ -9738,7 +9742,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: b7494c4ca9a2e968cd00430c9dbb5cc4f0c3dd3baaf66d129185c5a8816caf6424a2da8e0f181ed94e7c0c39f76046ee995d6c5ec08198d5f5d6f60735ffb1ab
+  checksum: c23af8e43fe001fd211a36954372877515267ab4d019e63896160adc76d9271ce0301d9610d0220ccc4bf8c97c757fffa83d9ef358d5f1810d2ee4482eb3d2a9
   languageName: node
   linkType: hard
 
@@ -9760,6 +9764,13 @@ __metadata:
   peerDependencies:
     "@swc/core": "*"
   checksum: 9eaad322310f34e81f67d41411a7d60663341af1bd9fb65456faa914c936d849d6f643fa3b942a187d52e71e62c33097098c639d25c2047fa874f49bf51cec76
+  languageName: node
+  linkType: hard
+
+"@swc/types@npm:^0.1.3":
+  version: 0.1.4
+  resolution: "@swc/types@npm:0.1.4"
+  checksum: 9b09de7dca8e4b19bfb43f9e332c771855158cb761d26000807fe858447ecbc5342a6c257b26d9aa5497f7138fc58913693e2bee222e5042e0e8f57c2979ae66
   languageName: node
   linkType: hard
 
@@ -17054,6 +17065,15 @@ __metadata:
   version: 1.0.0
   resolution: "constants-browserify@npm:1.0.0"
   checksum: f7ac8c6d0b6e4e0c77340a1d47a3574e25abd580bfd99ad707b26ff7618596cf1a5e5ce9caf44715e9e01d4a5d12cb3b4edaf1176f34c19adb2874815a56e64f
+  languageName: node
+  linkType: hard
+
+"constate@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "constate@npm:3.3.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 1bc1c49aacf37221bc8ed65ec18ea3501dd7f9ec43df347643e50a365123ed6cbc40e4f53dbfb3ba4e1d50619da712d330e2bee732f702919fd13d4b2edac63a
   languageName: node
   linkType: hard
 
@@ -27670,6 +27690,32 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jotai-immer@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "jotai-immer@npm:0.2.0"
+  peerDependencies:
+    immer: "*"
+    jotai: ">=1.11.0"
+    react: ">=17.0.0"
+  checksum: 6860557e0e1550e5c7393b46632ecd90a803774c9b88f69a52b38bf14061ebc0a1de0c8484edd6b956d85de603dca5d06b50ed164bc12a83514c0bcf5d394a5c
+  languageName: node
+  linkType: hard
+
+"jotai@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "jotai@npm:2.4.1"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: e77b17c47f7b9846cee7af0689f2c67dce20d99f1d22ade1f8255d297d60843c38b062c2ab7f48b609db4b821b29a629f726b6fa47bc63fc13fd90ef59197378
+  languageName: node
+  linkType: hard
+
 "js-base64@npm:^2.4.3":
   version: 2.5.2
   resolution: "js-base64@npm:2.5.2"
@@ -36868,8 +36914,8 @@ fsevents@^1.2.7:
   linkType: hard
 
 "recharts@npm:^2.7.3":
-  version: 2.7.3
-  resolution: "recharts@npm:2.7.3"
+  version: 2.8.0
+  resolution: "recharts@npm:2.8.0"
   dependencies:
     classnames: ^2.2.5
     eventemitter3: ^4.0.1
@@ -36884,7 +36930,7 @@ fsevents@^1.2.7:
     prop-types: ^15.6.0
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 0d106906a80907eb16f9a4c0a9b9d941627d933b8ab3ad3981451023cdd6c88672c39b59bf54493461605d2532e55d806202fa4713106fab5e3595009db00d93
+  checksum: 4638bd5c6c2af8f5c79de5e13cce0e38f06e0bbb0a3c4df27a9b12632fd72c0a0604c8246f55e830f323dfa84a3da7cb2634c2243bb9c775d899fd71f9d4c87a
   languageName: node
   linkType: hard
 

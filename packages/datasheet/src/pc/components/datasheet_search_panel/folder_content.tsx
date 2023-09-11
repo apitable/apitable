@@ -16,17 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import Image from 'next/image';
-import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';
-import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import * as React from 'react';
-import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
-import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
-import { ScrollBar } from 'pc/components/scroll_bar';
 import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
+import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
+import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';
+import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
+import { ScrollBar } from 'pc/components/scroll_bar';
+import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
+import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
 export interface IViewNode {
   nodeId: string;
@@ -39,27 +39,36 @@ export interface IViewNode {
 export type ICommonNode = INode | IViewNode;
 
 interface IFolderContentProps {
-  nodes: ICommonNode[],
-  currentViewId: string,
-  currentMirrorId: string,
-  currentDatasheetId: string,
-  loading: boolean,
-  onlyShowEditableNode: boolean,
-  isSelectView: boolean
-  showMirrorNode?: boolean
-  noCheckPermission?: boolean,
+  nodes: ICommonNode[];
+  currentViewId: string;
+  currentMirrorId: string;
+  currentDatasheetId: string;
+  loading: boolean;
+  onlyShowEditableNode: boolean;
+  isSelectView: boolean;
+  showMirrorNode?: boolean;
+  noCheckPermission?: boolean;
 
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void,
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void;
 
-  hideViewNode?: boolean
+  hideViewNode?: boolean;
 }
 
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
   const {
-    nodes, onNodeClick, currentViewId, currentMirrorId, loading, onlyShowEditableNode,
-    noCheckPermission, currentDatasheetId, isSelectView, showMirrorNode, hideViewNode,
+    nodes,
+    onNodeClick,
+    currentViewId,
+    currentMirrorId,
+    loading,
+    onlyShowEditableNode,
+    noCheckPermission,
+    currentDatasheetId,
+    isSelectView,
+    showMirrorNode,
+    hideViewNode,
   } = props;
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
   const _checkNodeDisable = (node: INode) => {
@@ -70,31 +79,22 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
   return (
     <div className={styles.folderContent}>
       <ScrollBar>
-        {nodes.map(node => {
+        {nodes.map((node) => {
           if (node.type === ConfigConstant.NodeType.FOLDER) {
             return (
-              <Folder
-                key={node.nodeId}
-                id={node.nodeId}
-                onClick={id => onNodeClick('Folder', id)}
-              >
+              <Folder key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Folder', id)}>
                 {node.nodeName}
               </Folder>
             );
           }
 
-          if (
-            node.type === ConfigConstant.NodeType.DATASHEET &&
-            (!onlyShowEditableNode || !_checkNodeDisable(node as INode))
-          ) {
+          if (node.type === ConfigConstant.NodeType.DATASHEET && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
             return (
               <File
                 key={node.nodeId}
                 id={node.nodeId}
-                active={
-                  !isSelectView && currentDatasheetId === node.nodeId
-                }
-                onClick={id => onNodeClick('Datasheet', id)}
+                active={!isSelectView && currentDatasheetId === node.nodeId}
+                onClick={(id) => onNodeClick('Datasheet', id)}
                 disable={_checkNodeDisable(node as INode)}
               >
                 {node.nodeName}
@@ -102,19 +102,14 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
             );
           }
 
-          if (
-            node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode &&
-            (!onlyShowEditableNode || !_checkNodeDisable(node as INode))
-          ) {
+          if (node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
             // TODO
             return (
               <File
                 key={node.nodeId}
                 id={node.nodeId}
-                active={
-                  !isSelectView && currentMirrorId === node.nodeId
-                }
-                onClick={id => onNodeClick('Mirror', id)}
+                active={!isSelectView && currentMirrorId === node.nodeId}
+                onClick={(id) => onNodeClick('Mirror', id)}
                 disable={_checkNodeDisable(node as INode)}
                 isMirror
               >
@@ -130,7 +125,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 id={node.nodeId}
                 active={currentViewId === node.nodeId}
                 viewType={(node as IViewNode).viewType}
-                onClick={id => onNodeClick('View', id)}
+                onClick={(id) => onNodeClick('View', id)}
               >
                 {node.nodeName}
               </View>
@@ -138,16 +133,14 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
           }
           return null;
         })}
-        {
-          !loading && !nodes.length && (
-            <div className={styles.emptyFolder}>
-              <div className={styles.emptyImg}>
-                <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} width={200} height={150} />
-              </div>
-              <p>{t(Strings.folder_content_empty)}</p>
+        {!loading && !nodes.length && (
+          <div className={styles.emptyFolder}>
+            <div className={styles.emptyImg}>
+              <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} width={200} height={150} />
             </div>
-          )
-        }
+            <p>{t(Strings.folder_content_empty)}</p>
+          </div>
+        )}
       </ScrollBar>
     </div>
   );

@@ -17,12 +17,9 @@
  */
 
 import { CellType, defaultGanttViewStatus, IGanttViewStatus, ViewType } from '@apitable/core';
-import { ITargetNameDetail, TimeoutID, AreaType, IScrollHandler, IScrollState } from '../interface';
-import {
-  GANTT_HEADER_HEIGHT,
-  GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions,
-} from 'pc/components/gantt_view';
+import { GANTT_HEADER_HEIGHT, GANTT_HORIZONTAL_DEFAULT_SPACING, GANTT_VERTICAL_DEFAULT_SPACING, IScrollOptions } from 'pc/components/gantt_view';
 import { getStorage, StorageName } from 'pc/utils/storage';
+import { ITargetNameDetail, TimeoutID, AreaType, IScrollHandler, IScrollState } from '../interface';
 import { GanttCoordinate } from '../model';
 
 export const cancelTimeout = (timeoutID: TimeoutID) => {
@@ -66,12 +63,7 @@ export const getLinearRowHeight = (cellType: CellType, rowHeight: number, viewTy
 /**
  * Generate the targetName of the graph based on the incoming information
  */
-export const generateTargetName = ({
-  targetName,
-  fieldId,
-  recordId,
-  mouseStyle,
-}: ITargetNameDetail) => {
+export const generateTargetName = ({ targetName, fieldId, recordId, mouseStyle }: ITargetNameDetail) => {
   const flag = '$';
   return `${targetName}-${fieldId || flag}-${recordId || flag}-${mouseStyle || flag}`;
 };
@@ -108,7 +100,7 @@ export const getGanttGroupId = (recordId: string, depth: number) => {
 
 export const getSpeed = (spacing: number) => {
   const baseSpeed = 3;
-  return Math.ceil((GANTT_HORIZONTAL_DEFAULT_SPACING - spacing) * baseSpeed / GANTT_HORIZONTAL_DEFAULT_SPACING);
+  return Math.ceil(((GANTT_HORIZONTAL_DEFAULT_SPACING - spacing) * baseSpeed) / GANTT_HORIZONTAL_DEFAULT_SPACING);
 };
 
 export const onDragScrollSpacing = (
@@ -120,16 +112,13 @@ export const onDragScrollSpacing = (
   noScrollSet: () => void,
   horizontalScrollCb: Function | undefined,
   verticalScrollCb: Function | undefined,
-  allScrollCb: Function | undefined
+  allScrollCb: Function | undefined,
 ) => {
   const { containerWidth: ganttWidth, containerHeight: ganttHeight } = instance;
   const { scrollTop } = scrollState;
-  const {
-    x: pointX,
-    y: pointY,
-  } = pointPosition;
+  const { x: pointX, y: pointY } = pointPosition;
   const leftSpacing = pointX - gridWidth;
-  const rightSpacing = ganttWidth + gridWidth - pointX ;
+  const rightSpacing = ganttWidth + gridWidth - pointX;
   const topSpacing = pointY - GANTT_HEADER_HEIGHT;
   const bottomSpacing = ganttHeight - pointY;
   const needScrollToLeft = leftSpacing < GANTT_HORIZONTAL_DEFAULT_SPACING;
@@ -170,7 +159,7 @@ export const getGanttViewStatusWithDefault = ({
   datasheetId,
   viewId,
   mirrorId,
-  isViewLock
+  isViewLock,
 }: {
   spaceId: string;
   datasheetId: string;

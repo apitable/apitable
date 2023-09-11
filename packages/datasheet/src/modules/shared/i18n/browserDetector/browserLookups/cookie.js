@@ -18,25 +18,25 @@
 
 /* eslint-disable */
 let cookie = {
-  create: function(name, value, minutes, domain) {
+  create: function (name, value, minutes, domain) {
     let expires;
     if (minutes) {
       let date = new Date();
-      date.setTime(date.getTime() + (minutes * 60 * 1000));
-      expires = "; expires=" + date.toGMTString();
+      date.setTime(date.getTime() + minutes * 60 * 1000);
+      expires = '; expires=' + date.toGMTString();
     } else {
-      expires = "";
+      expires = '';
     }
-    domain = domain ? "domain=" + domain + ";" : "";
-    document.cookie = name + "=" + value + expires + ";" + domain + "path=/";
+    domain = domain ? 'domain=' + domain + ';' : '';
+    document.cookie = name + '=' + value + expires + ';' + domain + 'path=/';
   },
 
-  read: function(name) {
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(";");
+  read: function (name) {
+    let nameEQ = name + '=';
+    let ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0) === " ") {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1, c.length);
       }
       if (c.indexOf(nameEQ) === 0) {
@@ -46,27 +46,29 @@ let cookie = {
     return null;
   },
 
-  remove: function(name) {
-    this.create(name, "", -1);
+  remove: function (name) {
+    this.create(name, '', -1);
   },
 };
 
 export default {
-  name: "cookie",
+  name: 'cookie',
 
   lookup(options) {
     let found;
 
-    if (options.lookupCookie && typeof document !== "undefined") {
+    if (options.lookupCookie && typeof document !== 'undefined') {
       var c = cookie.read(options.lookupCookie);
-      if (c) { found = c; }
+      if (c) {
+        found = c;
+      }
     }
 
     return found;
   },
 
   cacheUserLanguage(lng, options) {
-    if (options.lookupCookie && typeof document !== "undefined") {
+    if (options.lookupCookie && typeof document !== 'undefined') {
       cookie.create(options.lookupCookie, lng, options.cookieMinutes, options.cookieDomain);
     }
   },

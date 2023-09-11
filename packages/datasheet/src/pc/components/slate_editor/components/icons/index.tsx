@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC } from 'react';
+import { colorVars } from '@apitable/components';
 import {
   Headline1Filled,
   Headline2Filled,
@@ -42,17 +44,17 @@ import {
   CheckOutlined,
   IIconProps,
 } from '@apitable/icons';
-import { colorVars } from '@apitable/components';
 
 import { ElementType, MarkType, ALIGN } from '../../constant';
 
 import styles from './style.module.less';
-import { FC } from 'react';
 
 const HeadingIcon = ({ depth = 1 }) => {
-  return <i className={styles.iconWrap}>
-    H<sub>{depth}</sub>
-  </i>;
+  return (
+    <i className={styles.iconWrap}>
+      H<sub>{depth}</sub>
+    </i>
+  );
 };
 
 const IconFactor = (Icon: FC<React.PropsWithChildren<IIconProps>>) => {
@@ -91,5 +93,5 @@ export default {
   [ALIGN.RIGHT]: IconFactor(TextRightFilled),
   visit: IconFactor(GotoOutlined),
   unlink: IconFactor(LinkDisconnectOutlined),
-  ok: IconFactor(CheckOutlined)
+  ok: IconFactor(CheckOutlined),
 };

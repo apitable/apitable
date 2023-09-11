@@ -22,8 +22,23 @@ import {
   IKanbanViewProperty, IViewProperty, LayoutType, Player, ResourceType, RowHeightLevel, Selectors, StoreActions, Strings, t, UN_GROUP, ViewType,
 } from '@apitable/core';
 import {
-  AddCircleOutlined, ApiOutlined, ChevronDownOutlined, EyeOpenOutlined, FilterOutlined, GalleryOutlined, GroupOutlined, HistoryFilled, ListOutlined,
-  RankOutlined, RobotOutlined, SettingFilled, SettingOutlined, ShareOutlined, StyleOutlined, WidgetOutlined,
+  AddCircleOutlined,
+  ApiOutlined,
+  AutomationOutlined,
+  ChevronDownOutlined,
+  EyeOpenOutlined,
+  FilterOutlined,
+  GalleryOutlined,
+  GroupOutlined,
+  HistoryFilled,
+  ListOutlined,
+  RankOutlined,
+  RobotOutlined,
+  SettingFilled,
+  SettingOutlined,
+  ShareOutlined,
+  StyleOutlined,
+  WidgetOutlined,
 } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
@@ -47,6 +62,7 @@ import { Collapse, ICollapseFunc } from '../common/collapse';
 import { ScreenSize } from '../common/component_display';
 import { expandRecordIdNavigate } from '../expand_record';
 import { showKanbanSetting } from '../kanban_view';
+import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 import { getRowHeightIcon } from './change_row_height';
 import { Display } from './display/display';
 import { Find } from './find';
@@ -56,7 +72,6 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
-import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -452,8 +467,8 @@ const ToolbarBase = () => {
       component: (
         <ToolItem
           key='robot'
-          icon={<RobotOutlined size={16} />}
-          text={t(Strings.robot_feature_entry)}
+          icon={<AutomationOutlined size={16} />}
+          text={t(Strings.automation)}
           onClick={() => handleToggleRightBar(ShortcutActionName.ToggleRobotPanel)}
           className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isRobotPanelOpen })}
           id={DATASHEET_ID.ROBOT_BTN}
@@ -481,16 +496,16 @@ const ToolbarBase = () => {
       show: !mirrorId && !shareId && !templateId && embedSetting.historyBtn && getEnvVariables().TIME_MACHINE_VISIBLE
     },
   ];
-
+  const iframeShowTool = shareId ? !isIframe() : true;
   return (
     <div className={classNames(styles.toolbar, { [styles.toolbarVisible]: !!size })} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
-      {!isMobile && embedSetting.basicTools && !isIframe() && <Undo className={styles.toolbarLeft} />}
+      {!isMobile && embedSetting.basicTools && iframeShowTool && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>
         {isGalleryView && embedSetting.basicTools &&
           !isMobile &&
           GalleryLayoutNode(activeView! as IGalleryViewProperty, showIconBarLabel, !visualizationEditable || disabledWithMirror)}
-        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && embedSetting.basicTools && !isIframe() && (
+        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && embedSetting.basicTools && iframeShowTool && (
           <ToolItem
             showLabel={showIconBarLabel}
             disabled={!permissions.rowCreatable}

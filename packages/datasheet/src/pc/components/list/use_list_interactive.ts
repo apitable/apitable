@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUseSelectProps } from '../../hooks/use_select_index';
 import { useSelectIndex } from 'pc/hooks';
+import { IUseSelectProps } from '../../hooks/use_select_index';
 interface IUseListInteractive {
   activeItemClass: string;
 }

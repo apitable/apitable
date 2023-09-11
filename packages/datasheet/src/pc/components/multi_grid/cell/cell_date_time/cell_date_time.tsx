@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
-import { NotificationOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
-import { resourceService } from 'pc/resource_service';
-import { useThemeColors } from '@apitable/components';
-import { getEnvVariables } from 'pc/utils/env';
 import { useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
+import { NotificationOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip } from 'pc/components/common';
+import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './styles.module.less';
 // @ts-ignore
@@ -37,10 +37,10 @@ interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
 }
 
-export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = props => {
+export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = (props) => {
   const colors = useThemeColors();
   const { className, field, recordId, cellValue, toggleEdit, showAlarm } = props;
-  const { snapshot, user, dstId } = useSelector(state => {
+  const { snapshot, user, dstId } = useSelector((state) => {
     return {
       snapshot: Selectors.getSnapshot(state)!,
       user: state.user.info,
@@ -67,12 +67,12 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
   return (
     <div
       className={classNames('dateTime', styles.dateTime, className, {
-        [styles.hoverAlarm]: showAlarm && !alarm && date
+        [styles.hoverAlarm]: showAlarm && !alarm && date,
       })}
       onDoubleClick={toggleEdit}
     >
       {cellValue != null && (
-        <div className='dateTimeValue'>
+        <div className="dateTimeValue">
           <div className={classNames(styles.date, !time && styles.single, 'cellDateTimeDate')}>{date}</div>
           {time && <div className={classNames(styles.time, 'time')}>{time}</div>}
           {timeRule && <div className={classNames(styles.time, 'time')}>{timeRule}</div>}
@@ -80,37 +80,36 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = pr
         </div>
       )}
       {showAlarm && Boolean(alarm) && date && Boolean(snapshot) && RECORD_TASK_REMINDER_VISIBLE && (
-        <Tooltip
-          title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
-        >
+        <Tooltip title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}>
           <span className={styles.alarm} onClick={toggleEdit}>
             <NotificationOutlined color={colors.deepPurple[500]} size={16} />
-            <span className={styles.alarmTime}>
-              {alarmRealTime}
-            </span>
+            <span className={styles.alarmTime}>{alarmRealTime}</span>
           </span>
         </Tooltip>
       )}
       {showAlarm && !alarm && date && RECORD_TASK_REMINDER_VISIBLE && Boolean(snapshot) && (
-        <Tooltip
-          title={t(Strings.task_reminder_hover_cell_tooltip)}
-        >
-          <span className={classNames(styles.quickAlarm)} onMouseDown={async() => {
-            toggleEdit && await toggleEdit();
-            resourceService.instance!.commandManager.execute({
-              cmd: CollaCommandName.SetDateTimeCellAlarm,
-              recordId: recordId!,
-              fieldId: field.id,
-              alarm: {
-                subtract: '',
-                alarmAt: cellValue as string,
-                alarmUsers: [{
-                  type: AlarmUsersType.Member,
-                  data: user?.unitId!
-                }],
-              },
-            });
-          }}>
+        <Tooltip title={t(Strings.task_reminder_hover_cell_tooltip)}>
+          <span
+            className={classNames(styles.quickAlarm)}
+            onMouseDown={async() => {
+              toggleEdit && (await toggleEdit());
+              resourceService.instance!.commandManager.execute({
+                cmd: CollaCommandName.SetDateTimeCellAlarm,
+                recordId: recordId!,
+                fieldId: field.id,
+                alarm: {
+                  subtract: '',
+                  alarmAt: cellValue as string,
+                  alarmUsers: [
+                    {
+                      type: AlarmUsersType.Member,
+                      data: user?.unitId!,
+                    },
+                  ],
+                },
+              });
+            }}
+          >
             <NotificationOutlined color={colors.fc3} size={16} />
           </span>
         </Tooltip>

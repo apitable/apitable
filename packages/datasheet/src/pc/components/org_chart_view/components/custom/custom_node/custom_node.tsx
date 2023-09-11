@@ -16,38 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
+import classNames from 'classnames';
 import { FC, memo, useCallback, useContext, useRef } from 'react';
-import { NodeProps, Handle, Position } from '@apitable/react-flow';
 import { DragLayerMonitor, DropTargetMonitor, useDragLayer, useDrop } from 'react-dnd';
 import { ISetRecordOptions, Strings, t } from '@apitable/core';
+import { NodeProps, Handle, Position } from '@apitable/react-flow';
 import { notify } from 'pc/components/common/notify';
-import { IDragItem, INodeData } from 'pc/components/org_chart_view/interfaces';
 import { DragNodeType } from 'pc/components/org_chart_view/constants';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
-import { CustomNodeBase } from './custom_node_base';
-import { useMount } from 'ahooks';
+import { IDragItem, INodeData } from 'pc/components/org_chart_view/interfaces';
 import styles from '../styles.module.less';
-import classNames from 'classnames';
+import { CustomNodeBase } from './custom_node_base';
 
 export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = memo((props) => {
   const { id, data, sourcePosition, targetPosition } = props;
 
   const { linkIds, parents } = data;
 
-  const {
-    nodeStateMap,
-    setNodeStateMap,
-    orgChartStyle,
-    nodesMap,
-    linkField,
-    onChange,
-    overGhostRef,
-    horizontal,
-  } = useContext(FlowContext);
+  const { nodeStateMap, setNodeStateMap, orgChartStyle, nodesMap, linkField, onChange, overGhostRef, horizontal } = useContext(FlowContext);
 
-  const {
-    linkFieldId,
-  } = orgChartStyle;
+  const { linkFieldId } = orgChartStyle;
 
   const canDropFn = useCallback(
     (dragItem: IDragItem) => {
@@ -66,12 +55,12 @@ export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = mem
       };
 
       return (
-        !(linkField && linkField.property.limitSingleRecord && nodesMap[id].data.linkIds.length > 0)
-        && !dragItem.data.parents?.some((parent) => parent.id === id)
-        && !foundInChildren(dragItem)
+        !(linkField && linkField.property.limitSingleRecord && nodesMap[id].data.linkIds.length > 0) &&
+        !dragItem.data.parents?.some((parent) => parent.id === id) &&
+        !foundInChildren(dragItem)
       );
     },
-    [id, nodesMap, linkField]
+    [id, nodesMap, linkField],
   );
 
   const innerRef = useRef<HTMLDivElement>(null);
@@ -92,10 +81,7 @@ export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = mem
       drop: (dragItem: IDragItem, monitor: DropTargetMonitor) => {
         const didDrop = monitor.didDrop();
 
-        if (
-          didDrop
-          || dragItem.id === id
-        ) {
+        if (didDrop || dragItem.id === id) {
           return;
         }
 
@@ -126,9 +112,7 @@ export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = mem
           const sourceLinkData = dragItem.data.parents?.reduce((sourceLinkData, parent) => {
             const {
               id: sourceId,
-              data: {
-                linkIds,
-              }
+              data: { linkIds },
             } = parent;
 
             sourceLinkData.push({
@@ -144,23 +128,17 @@ export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = mem
       },
       hover: () => {
         if (overGhostRef.current) {
-          const {
-            id = '',
-            hiddenLastNode,
-            setEdgeVisibleFuncsMap,
-          } = overGhostRef.current;
+          const { id = '', hiddenLastNode, setEdgeVisibleFuncsMap } = overGhostRef.current;
           hiddenLastNode?.();
           setEdgeVisibleFuncsMap?.[id]?.(false);
           overGhostRef.current.id = undefined;
         }
       },
     }),
-    [data]
+    [data],
   );
 
-  const {
-    isDragging,
-  } = useDragLayer((monitor: DragLayerMonitor) => ({
+  const { isDragging } = useDragLayer((monitor: DragLayerMonitor) => ({
     isDragging: monitor.isDragging(),
   }));
 
@@ -173,12 +151,7 @@ export const CustomNode: FC<React.PropsWithChildren<NodeProps<INodeData>>> = mem
   return (
     <>
       <div ref={innerRef}>
-        <CustomNodeBase
-          id={id}
-          data={data}
-          isOver={Boolean(isOver || isOverCurrent)}
-          isDragging={isDragging}
-        />
+        <CustomNodeBase id={id} data={data} isOver={Boolean(isOver || isOverCurrent)} isDragging={isDragging} />
       </div>
       {horizontal && (
         <Handle

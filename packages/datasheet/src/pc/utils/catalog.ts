@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Workbook } from 'exceljs';
+import React from 'react';
 import {
   ConfigConstant,
   Field,
@@ -34,18 +36,16 @@ import {
   UnitItem,
   ViewDerivateBase,
 } from '@apitable/core';
-import { Workbook } from 'exceljs';
-// @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-import React from 'react';
 import { browser } from 'modules/shared/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
-// @ts-ignore
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
+import { CONST_ENABLE_AUTOMATION_NODE, orDisabled } from '../components/automation/config';
 import { runInTimeSlicing } from './utils';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise';
 
 export const nodeConfigData = [
   {
@@ -80,6 +80,17 @@ export const nodeConfigData = [
     icon: NodeIcon.Ai,
     name: 'chatbot',
   },
+  ...orDisabled(
+    [
+      {
+        type: ConfigConstant.NodeType.AUTOMATION,
+        icon: NodeIcon.AddAutomation,
+        name: t(Strings.automation),
+      },
+    ],
+
+    CONST_ENABLE_AUTOMATION_NODE
+  )
 ];
 
 // Check if the url belongs to this site
@@ -138,11 +149,13 @@ export const generateUserInfo = (
   }
   if ('memberId' in item) {
     const title = spaceInfo
-      ? (getSocialWecomUnitName?.({
+      ? getSocialWecomUnitName?.({
         name: item.originName || item.memberName,
         isModified: item.isMemberNameModified,
         spaceInfo,
-      }) || item.originName || item.memberName)
+      }) ||
+        item.originName ||
+        item.memberName
       : item.memberName;
 
     return {
@@ -202,9 +215,15 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
   );
 };
 
-export const exportDatasheetBase = async(datasheetId: string, exportType: string, option: {
-  view?: IViewProperty; mirrorId?: string, ignorePermission?: boolean
-} = {}) => {
+export const exportDatasheetBase = async(
+  datasheetId: string,
+  exportType: string,
+  option: {
+    view?: IViewProperty;
+    mirrorId?: string;
+    ignorePermission?: boolean;
+  } = {},
+) => {
   Message.info({
     content: t(Strings.start_download_loading),
   });
@@ -230,13 +249,13 @@ export const exportDatasheetBase = async(datasheetId: string, exportType: string
   }
   const { rows, cols } = getRowsAndCols(state, datasheet, view);
   // Filter out fields without permissions
-  const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
+  const visibleCols = cols.filter((col) => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
 
   const Excel = await import('exceljs');
   const list: string[][] = [];
-  const runTask = runInTimeSlicing(function*() {
+  const runTask = runInTimeSlicing(function* () {
     for (const row of rows) {
-      const item = visibleCols.map(col => {
+      const item = visibleCols.map((col) => {
         const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
         const propsField = fieldMap[col.fieldId]!;
         return Field.bindModel(propsField).cellValueToString(cellValue) || '';
@@ -284,7 +303,7 @@ export const exportDatasheet = (datasheetId: string, exportType: string, option:
 };
 
 export const exportExcelBase = (workbook: Workbook, fileName: string, extraFunc?: () => void) => {
-  workbook.xlsx.writeBuffer().then(buffer => {
+  workbook.xlsx.writeBuffer().then((buffer) => {
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
@@ -304,7 +323,7 @@ const exportExcel = (workbook: Workbook, fileName: string, isView?: boolean) => 
 };
 
 const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) => {
-  await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then(buffer => {
+  await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then((buffer) => {
     const blob = new Blob(['\uFEFF' + buffer], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
@@ -317,7 +336,7 @@ const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) 
 };
 
 const getColumnHeader = (datasheet: IDatasheetState, cols: IViewColumn[]) => {
-  return cols.map(col => ({
+  return cols.map((col) => ({
     header: datasheet.snapshot.meta.fieldMap[col.fieldId]!.name,
   }));
 };
@@ -331,7 +350,7 @@ const getRowsAndCols = (state: IReduxState, datasheet: IDatasheetState, view?: I
   let cols;
   if (view) {
     rows = new ViewDerivateBase(state, datasheet.id).getViewDerivation(view).visibleRows;
-    cols = view.columns.filter(item => !item.hidden);
+    cols = view.columns.filter((item) => !item.hidden);
   } else {
     rows = datasheet.snapshot.meta.views[0]!.rows;
     cols = datasheet.snapshot.meta.views[0]!.columns;

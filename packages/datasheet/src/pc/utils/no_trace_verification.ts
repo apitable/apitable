@@ -16,18 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as React from 'react';
 import { Modal } from '@apitable/components';
 import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
-import * as React from 'react';
 
 /**
  * Initialization without trace verification
  * @param callback The callback to be executed which receives the validation string
  * @param renderTo Specify where the slider validation renders
  */
-export const initNoTraceVerification = (successCallback: React.Dispatch<React.SetStateAction<string | null>>,
-  renderTo: string = ConfigConstant.CaptchaIds.DEFAULT) => {
+export const initNoTraceVerification = (
+  successCallback: React.Dispatch<React.SetStateAction<string | null>>,
+  renderTo: string = ConfigConstant.CaptchaIds.DEFAULT,
+) => {
   if (process.env.SSR) return;
   const env = getEnvVariables();
   if (isPrivateDeployment() || env.IS_SELFHOST) {
@@ -35,7 +37,9 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
   }
   if (!window['AWSC']) {
     // return;
-    setTimeout(() => {initNoTraceVerification(successCallback);}, 1000);
+    setTimeout(() => {
+      initNoTraceVerification(successCallback);
+    }, 1000);
     console.error('Man-machine verification code load failure');
     throw new Error('Man-machine verification code load failure');
   }

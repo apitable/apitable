@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getEnvVariables } from 'pc/utils/env';
+import { useToggle } from 'ahooks';
+import { Input } from 'antd';
+import classNames from 'classnames';
 import { FC, useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@apitable/core';
-import styles from './style.module.less';
-import classNames from 'classnames';
+import { EditOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
-import { useAddressRequest } from 'pc/hooks';
-import { Input } from 'antd';
-import { useToggle } from 'ahooks';
 import { Identity } from 'pc/components/space_manage/identity';
+import { useAddressRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
+import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
-import { EditOutlined } from '@apitable/icons';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';
@@ -40,13 +40,16 @@ export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
 };
 
 export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
-  const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useSelector((state: IReduxState) => ({
-    memberInfo: state.addressList.memberInfo,
-    selectedMemberInfo: state.addressList.selectedTeamInfo,
-    user: state.user.info,
-    spaceResource: state.spacePermissionManage.spaceResource,
-    spaceInfo: state.space.curSpaceInfo,
-  }), shallowEqual);
+  const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useSelector(
+    (state: IReduxState) => ({
+      memberInfo: state.addressList.memberInfo,
+      selectedMemberInfo: state.addressList.selectedTeamInfo,
+      user: state.user.info,
+      spaceResource: state.spacePermissionManage.spaceResource,
+      spaceInfo: state.space.curSpaceInfo,
+    }),
+    shallowEqual,
+  );
   const [inEditName, setInEditName] = useState(false);
   const [nameLengthErr, setNameLengthErr] = useState(false);
   const [editIcon, { set: setEditIcon }] = useToggle(false);
@@ -67,7 +70,7 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
     if (memberInfo.memberId === user!.memberId) {
       editOwnMemberNameInAddress(memberInfo.memberId, e.target.value);
     } else {
-      const teamIds = memberInfo.teamData ? memberInfo.teamData.map(item => item.teamId) : [];
+      const teamIds = memberInfo.teamData ? memberInfo.teamData.map((item) => item.teamId) : [];
       editMemberName({ memberId: memberInfo.memberId, memberName: e.target.value, teamIds });
     }
   };
@@ -83,8 +86,7 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
     if (!user) {
       return;
     }
-    const hasPerm = user.isAdmin && !user.isMainAdmin && spaceResource &&
-      spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER);
+    const hasPerm = user.isAdmin && !user.isMainAdmin && spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER);
 
     const isBindSocial = spaceInfo && isSocialPlatformEnabled?.(spaceInfo) && !isSocialFeiShu?.(spaceInfo);
     if (!isBindSocial && (memberInfo.memberId === user.memberId || user.isMainAdmin || hasPerm)) {
@@ -99,34 +101,28 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
     isMainAdmin: memberInfo.isSubAdmin,
     isAdmin: memberInfo.isPrimary,
   });
-  
+
   const { avatar, avatarColor, nickName, memberId, memberName, mobile, email, isMemberNameModified, teamData } = memberInfo;
-  const displayMemberName = getSocialWecomUnitName?.({
-    name: memberName,
-    isModified: isMemberNameModified,
-    spaceInfo
-  }) || memberName;
-  
+  const displayMemberName =
+    getSocialWecomUnitName?.({
+      name: memberName,
+      isModified: isMemberNameModified,
+      spaceInfo,
+    }) || memberName;
+
   return (
     <div className={styles.memberInfoWrapper}>
       <div className={styles.portrait}>
-        <Avatar
-          src={avatar}
-          avatarColor={avatarColor}
-          id={memberId}
-          title={nickName || memberName || t(Strings.unnamed)}
-          size={AvatarSize.Size80}
-        />
+        <Avatar src={avatar} avatarColor={avatarColor} id={memberId} title={nickName || memberName || t(Strings.unnamed)} size={AvatarSize.Size80} />
       </div>
       <div className={styles.nameAndTag}>
         <div className={styles.nameName}>
           {displayMemberName}
-          {
-            identity &&
+          {identity && (
             <div className={styles.identityWrap}>
               <Identity type={identity} className={styles.identity} />
             </div>
-          }
+          )}
         </div>
       </div>
       <div className={styles.infoItem}>
@@ -134,55 +130,49 @@ export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
         <span className={styles.infoDetail}>
           <div className={styles.nameItemContent}>
             <span>{displayMemberName}</span>
-            {
-              editIcon && !isIdassPrivateDeployment() &&
+            {editIcon && !isIdassPrivateDeployment() && (
               <ButtonPlus.Icon onClick={editNameClick} className={styles.editIcon}>
-                <EditOutlined size={12} color='currentColor' />
+                <EditOutlined size={12} color="currentColor" />
               </ButtonPlus.Icon>
-            }
+            )}
           </div>
-          {inEditName &&
-            <Tooltip title={t(Strings.member_err)} placement='top' visible={nameLengthErr}>
+          {inEditName && (
+            <Tooltip title={t(Strings.member_err)} placement="top" visible={nameLengthErr}>
               <Input
                 defaultValue={memberName}
                 className={classNames(styles.input, { [styles.err]: nameLengthErr })}
-                size='small'
+                size="small"
                 autoFocus
                 onChange={inputChange}
                 onPressEnter={onPressEnter}
                 onBlur={onPressEnter}
               />
             </Tooltip>
-          }
+          )}
         </span>
       </div>
       <div className={styles.infoItem}>
         <span className={styles.infoTitle}>{t(Strings.team)}</span>
         <div className={styles.infoDetail}>
-          {
-            teamData?.map(team => {
-              return(<p className={classNames(styles.teamInfo)} key={team.teamId}>
+          {teamData?.map((team) => {
+            return (
+              <p className={classNames(styles.teamInfo)} key={team.teamId}>
                 {team.fullHierarchyTeamName || selectedMemberInfo.teamTitle}
-              </p>);
-            })
-          
-          }
+              </p>
+            );
+          })}
         </div>
       </div>
-      {
-        env.USER_BIND_PHONE_VISIBLE && <div className={styles.infoItem}>
+      {env.USER_BIND_PHONE_VISIBLE && (
+        <div className={styles.infoItem}>
           <span className={styles.infoTitle}>{t(Strings.phone_number)}</span>
-          <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !mobile })}>
-            {mobile || '-'}
-          </span>
+          <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !mobile })}>{mobile || '-'}</span>
         </div>
-      }
+      )}
 
       <div className={styles.infoItem}>
         <span className={styles.infoTitle}>{t(Strings.email)}</span>
-        <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !email })}>
-          {email || '-'}
-        </span>
+        <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !email })}>{email || '-'}</span>
       </div>
     </div>
   );

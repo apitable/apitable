@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useState, FC } from 'react';
+import { Row, Col } from 'antd';
+import classNames from 'classnames';
+import { useState, FC, useEffect } from 'react';
+import { Button, TextButton, Pagination } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
-import { Button, TextButton, Pagination } from '@apitable/components';
-import { Row, Col } from 'antd';
+import { exportExcelBase } from 'pc/utils';
 import { IErrorInfo } from '../interface';
 import styles from './style.module.less';
-import { useEffect } from 'react';
-import classNames from 'classnames';
-import { exportExcelBase } from 'pc/utils';
 
 interface IRecordsProps {
   records: IErrorInfo[];
@@ -35,7 +34,7 @@ interface IRecordsProps {
   title: string;
   subTitle: string;
   visible: boolean;
- }
+}
 
 const PAGE_SIZE = 12;
 const HeaderConfig = [
@@ -47,11 +46,11 @@ const HeaderConfig = [
 export const Records: FC<React.PropsWithChildren<IRecordsProps>> = ({ records, title, subTitle, showDetail = false, close, init, visible }) => {
   const [pageNo, setPageNo] = useState(1);
   const [curRecords, setCurRecords] = useState<IErrorInfo[]>([]);
-  useEffect(()=>{
+  useEffect(() => {
     const startIndex = (pageNo - 1) * PAGE_SIZE;
-    const cur= records.slice(startIndex, startIndex + PAGE_SIZE);
+    const cur = records.slice(startIndex, startIndex + PAGE_SIZE);
     setCurRecords(cur);
-  },[pageNo, records]);
+  }, [pageNo, records]);
 
   const continueInvite = () => {
     init();
@@ -59,7 +58,7 @@ export const Records: FC<React.PropsWithChildren<IRecordsProps>> = ({ records, t
   };
   const ColConfig = {
     span: showDetail ? 6 : 8,
-  }; 
+  };
   const downloadFail = async() => {
     const Excel = await import('exceljs');
     const workbook = new Excel.Workbook();
@@ -70,67 +69,59 @@ export const Records: FC<React.PropsWithChildren<IRecordsProps>> = ({ records, t
     exportExcelBase(workbook, fileName);
   };
   return (
-    <Modal
-      visible={visible}
-      footer={null}
-      centered
-      title={title}
-      className={styles.records}
-      width={640}
-      destroyOnClose
-      onCancel={close}
-    >
+    <Modal visible={visible} footer={null} centered title={title} className={styles.records} width={640} destroyOnClose onCancel={close}>
       <div className={styles.subTitle}>{subTitle}</div>
       <Row className={styles.recordsTitle}>
-        {
-          HeaderConfig.map((item, index) => {
-            if(index === 0) (<Col {...ColConfig}><div className={styles.firstCol} style={{ paddingLeft: '16px' }}>{item.header}</div></Col>);
-            if (index === HeaderConfig.length - 1){
-              return showDetail ? (<Col {...ColConfig}>{item.header}</Col>) : null;
-            }
-            return <Col key={index} {...ColConfig}>{item.header}</Col>;
-          })
-        }
+        {HeaderConfig.map((item, index) => {
+          if (index === 0)
+            <Col {...ColConfig}>
+              <div className={styles.firstCol} style={{ paddingLeft: '16px' }}>
+                {item.header}
+              </div>
+            </Col>;
+          if (index === HeaderConfig.length - 1) {
+            return showDetail ? <Col {...ColConfig}>{item.header}</Col> : null;
+          }
+          return (
+            <Col key={index} {...ColConfig}>
+              {item.header}
+            </Col>
+          );
+        })}
       </Row>
       <div className={styles.recordsWrap}>
-        {
-          curRecords.map((item, index) => (
-            <Row key={index} className={styles.records}>
-              <Col {...ColConfig}><div className={classNames(styles.colContent, styles.firstCol)}>{item.name}</div></Col>
-              <Col {...ColConfig}><div className={styles.colContent}>{item.team}</div></Col>
-              <Col {...ColConfig}><div className={styles.colContent}>{item.email}</div></Col>
-              {showDetail && <Col {...ColConfig}><div className={styles.colContent}>{item.message}</div></Col>}
-            </Row>
-          ))
-        }
+        {curRecords.map((item, index) => (
+          <Row key={index} className={styles.records}>
+            <Col {...ColConfig}>
+              <div className={classNames(styles.colContent, styles.firstCol)}>{item.name}</div>
+            </Col>
+            <Col {...ColConfig}>
+              <div className={styles.colContent}>{item.team}</div>
+            </Col>
+            <Col {...ColConfig}>
+              <div className={styles.colContent}>{item.email}</div>
+            </Col>
+            {showDetail && (
+              <Col {...ColConfig}>
+                <div className={styles.colContent}>{item.message}</div>
+              </Col>
+            )}
+          </Row>
+        ))}
       </div>
       <div className={styles.pagination}>
-        <Pagination
-          current={pageNo}
-          total={records.length}
-          pageSize={PAGE_SIZE}
-          onChange={pageNo => setPageNo(pageNo)}
-        />
+        <Pagination current={pageNo} total={records.length} pageSize={PAGE_SIZE} onChange={(pageNo) => setPageNo(pageNo)} />
       </div>
-      {
-        showDetail &&
+      {showDetail && (
         <div className={styles.btnWrap}>
-          <TextButton
-            style={{ marginRight: '10px' }}
-            size="small"
-            onClick={downloadFail}
-          >
+          <TextButton style={{ marginRight: '10px' }} size="small" onClick={downloadFail}>
             {t(Strings.failed_list_file_download)}
           </TextButton>
-          <Button
-            color="primary"
-            size="small"
-            onClick={continueInvite}
-          >
+          <Button color="primary" size="small" onClick={continueInvite}>
             {t(Strings.invite_outsider_keep_on)}
           </Button>
         </div>
-      }
+      )}
     </Modal>
   );
 };

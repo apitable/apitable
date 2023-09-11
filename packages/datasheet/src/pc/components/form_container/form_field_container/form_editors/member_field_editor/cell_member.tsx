@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { difference, keyBy } from 'lodash';
 import { useEffect, useMemo } from 'react';
 import * as React from 'react';
-import { IUnitIds, MemberField, IUnitMap, IUserMap, Selectors, Api, StoreActions } from '@apitable/core';
-import styles from './style.module.less';
-import optionalStyle from 'pc/components/multi_grid/cell/optional_cell_container/style.module.less';
 import { useThemeColors } from '@apitable/components';
-import { stopPropagation } from 'pc/utils';
+import { IUnitIds, MemberField, IUnitMap, IUserMap, Selectors, Api, StoreActions } from '@apitable/core';
+import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
+import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { ICellComponentProps } from 'pc/components/multi_grid/cell/cell_value/interface';
 import { OptionalCellContainer } from 'pc/components/multi_grid/cell/optional_cell_container/optional_cell_container';
-import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
-import { difference, keyBy } from 'lodash';
+import optionalStyle from 'pc/components/multi_grid/cell/optional_cell_container/style.module.less';
 import { store } from 'pc/store';
-import { AddOutlined, CloseOutlined } from '@apitable/icons';
+import { stopPropagation } from 'pc/utils';
 import { MouseDownType } from '../../../../multi_grid';
+import styles from './style.module.less';
 
 interface ICellMemberProps {
   keyPrefix?: string;
@@ -39,19 +39,8 @@ interface ICellMemberProps {
   deletable?: boolean;
 }
 
-export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & ICellMemberProps>> = props => {
-  const {
-    cellValue: cellValueIncludeOldData,
-    field,
-    unitMap,
-    isActive,
-    onChange,
-    toggleEdit,
-    readonly,
-    className,
-    deletable = true,
-    style,
-  } = props;
+export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & ICellMemberProps>> = (props) => {
+  const { cellValue: cellValueIncludeOldData, field, unitMap, isActive, onChange, toggleEdit, readonly, className, deletable = true, style } = props;
   const colors = useThemeColors();
   const isMulti = field.property.isMulti;
   const cellValue = useMemo(() => {
@@ -68,8 +57,10 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & 
     if (!missInfoUnitIds.length) return;
     const { shareId, templateId } = state.pageParams;
     const linkId = shareId || templateId;
-    Api.loadOrSearch({ unitIds: missInfoUnitIds.join(','), linkId }).then(res => {
-      const { data: { data: resData, success }} = res;
+    Api.loadOrSearch({ unitIds: missInfoUnitIds.join(','), linkId }).then((res) => {
+      const {
+        data: { data: resData, success },
+      } = res;
       if (!resData.length || !success) return;
       store.dispatch(StoreActions.updateUnitMap(keyBy(resData, 'unitId')));
     });
@@ -82,10 +73,10 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & 
 
   async function onMouseDown(e: React.MouseEvent<HTMLDivElement>) {
     if (e.button === MouseDownType.Right) return;
-    isActive && !readonly && toggleEdit && await toggleEdit();
+    isActive && !readonly && toggleEdit && (await toggleEdit());
   }
 
-  const showAddIcon = (isActive && !readonly) && (isMulti || (!isMulti && (!cellValue || cellValue.length === 0)));
+  const showAddIcon = isActive && !readonly && (isMulti || (!isMulti && (!cellValue || cellValue.length === 0)));
 
   const showDeleteButton = () => {
     if (!deletable) return false;
@@ -93,39 +84,28 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellComponentProps & 
   };
 
   return (
-    <OptionalCellContainer
-      onMouseDown={onMouseDown}
-      className={className}
-      style={style}
-      displayMinWidth={Boolean(isActive && !readonly && isMulti)}
-    >
-      {
-        showAddIcon &&
-        <ButtonPlus.Icon
-          size={'x-small'}
-          className={optionalStyle.iconAdd}
-          icon={<AddOutlined size={14} color={colors.fourthLevelText} />}
-        />
-      }
-      {
-        cellValue ? (cellValue as IUnitIds).map((item, index) => {
+    <OptionalCellContainer onMouseDown={onMouseDown} className={className} style={style} displayMinWidth={Boolean(isActive && !readonly && isMulti)}>
+      {showAddIcon && (
+        <ButtonPlus.Icon size={'x-small'} className={optionalStyle.iconAdd} icon={<AddOutlined size={14} color={colors.fourthLevelText} />} />
+      )}
+      {cellValue ? (
+        (cellValue as IUnitIds).map((item, index) => {
           if (!unitMap || !unitMap[item]) return <></>;
           return (
             <MemberItem unitInfo={unitMap[item]} key={index}>
-              {
-                showDeleteButton() ?
-                  <div
-                    className={styles.iconDelete}
-                    onClick={e => deleteItem(e, index)}
-                    onMouseDown={stopPropagation}
-                  >
-                    <CloseOutlined size={8} color={colors.secondLevelText} />
-                  </div> : <></>
-              }
+              {showDeleteButton() ? (
+                <div className={styles.iconDelete} onClick={(e) => deleteItem(e, index)} onMouseDown={stopPropagation}>
+                  <CloseOutlined size={8} color={colors.secondLevelText} />
+                </div>
+              ) : (
+                <></>
+              )}
             </MemberItem>
           );
-        }) : <></>
-      }
+        })
+      ) : (
+        <></>
+      )}
     </OptionalCellContainer>
   );
 };

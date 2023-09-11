@@ -16,26 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import RcTrigger, { TriggerProps } from 'rc-trigger';
 import { useState } from 'react';
 import * as React from 'react';
-import RcTrigger, { TriggerProps } from 'rc-trigger';
 import ArrowIcon from 'static/icon/common/mobile/tooltips_arrow.svg';
 import style from './style.module.less';
 
 type ITriggerProps = Omit<TriggerProps, 'popup'> & { content: TriggerProps['popup'] };
 
-export const Popover: React.FC<React.PropsWithChildren<ITriggerProps>> = props => {
-  const {
-    content,
-    ...rest
-  } = props;
+export const Popover: React.FC<React.PropsWithChildren<ITriggerProps>> = (props) => {
+  const { content, ...rest } = props;
 
   const [visible, setVisible] = useState(false);
 
   return (
     <RcTrigger
       popupVisible={visible}
-      onPopupVisibleChange={visible => setVisible(visible)}
+      onPopupVisibleChange={(visible) => setVisible(visible)}
       destroyPopupOnHide
       action={['click']}
       popupStyle={{
@@ -48,10 +45,7 @@ export const Popover: React.FC<React.PropsWithChildren<ITriggerProps>> = props =
         offset: [6, 8],
       }}
       popup={
-        <div
-          className={style.toolsWrapper}
-          onClick={() => setVisible(false)}
-        >
+        <div className={style.toolsWrapper} onClick={() => setVisible(false)}>
           <div className={style.arrowWrapper}>
             <ArrowIcon fill={'#262838'} width={20} height={12} />
           </div>
@@ -64,4 +58,3 @@ export const Popover: React.FC<React.PropsWithChildren<ITriggerProps>> = props =
     </RcTrigger>
   );
 };
-

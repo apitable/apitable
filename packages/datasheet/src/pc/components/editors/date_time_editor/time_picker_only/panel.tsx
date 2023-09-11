@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as React from 'react';
 import classNames from 'classnames';
+import * as React from 'react';
 
 const scrollTo = (element: HTMLUListElement, to: number, duration: number) => {
-  const requestAnimationFrame = window.requestAnimationFrame ||
+  const requestAnimationFrame =
+    window.requestAnimationFrame ||
     function requestAnimationFrameTimeout() {
       return setTimeout(arguments[0], 10);
     };
@@ -30,7 +31,7 @@ const scrollTo = (element: HTMLUListElement, to: number, duration: number) => {
     return;
   }
   const difference = to - element.scrollTop;
-  const perTick = difference / duration * 10;
+  const perTick = (difference / duration) * 10;
 
   requestAnimationFrame(() => {
     element.scrollTop = element.scrollTop + perTick;
@@ -130,11 +131,7 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
   };
 
   getTimeSelect(value: string) {
-    const {
-      prefixCls,
-      hourStep,
-      minuteStep,
-    } = this.props;
+    const { prefixCls, hourStep, minuteStep } = this.props;
     const hourOptions = generateOptions(24, hourStep);
     const minuteOptions = generateOptions(60, minuteStep);
 
@@ -166,7 +163,7 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
       }
     }
 
-    const divArr: { value: string, selected: boolean }[] = [];
+    const divArr: { value: string; selected: boolean }[] = [];
     hourOptions.forEach((hourOption) => {
       minuteOptions.forEach((minuteOption) => {
         const hour = formatOption(hourOption);
@@ -187,11 +184,7 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
         [`${prefixCls}-select-option-selected`]: item.selected,
       });
       return (
-        <li
-          className={cls}
-          key={index}
-          onClick={() => this.onSelect(item.value)}
-        >
+        <li className={cls} key={index} onClick={() => this.onSelect(item.value)}>
           {item.value}
         </li>
       );
@@ -205,12 +198,8 @@ export class Panel extends React.PureComponent<IPanelProps, IPanelState> {
   }
 
   override render() {
-    const {
-      prefixCls,
-    } = this.props;
-    const {
-      value,
-    } = this.state;
+    const { prefixCls } = this.props;
+    const { value } = this.state;
 
     return (
       <div className={classNames({ [`${prefixCls}-inner`]: true })} ref={this.panelRef}>

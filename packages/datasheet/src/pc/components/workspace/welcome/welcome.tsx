@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { get } from 'lodash';
+import Image from 'next/image';
+import { FC, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Button, TextButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
-// @ts-ignore
-import { showModal, isDingtalkFunc, isSocialPlatformEnabled } from 'enterprise';
-import { get } from 'lodash';
-import Image from 'next/image';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import WelcomeIconLight from 'static/icon/datasheet/workbench_empty_light.png';
 import WelcomeIconDark from 'static/icon/datasheet/workbench_empty_dark.png';
+import WelcomeIconLight from 'static/icon/datasheet/workbench_empty_light.png';
 import { CreateDataSheetModal } from './create_datasheet_modal';
 import styles from './style.module.less';
+// @ts-ignore
+import { showModal, isDingtalkFunc, isSocialPlatformEnabled } from 'enterprise';
 
 const openUrl = (url: string) => {
   if (url.includes('http')) {
@@ -54,7 +54,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
-  const spaceId = useSelector(state => state.space.activeId);
+  const spaceId = useSelector((state) => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [downModuleId, setDownModuleId] = useState('');
@@ -69,7 +69,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
 
   const plm = isBindDingTalk ? '?plm=dingtalk' : isBindWecom ? '?plm=wecom' : isBindFeishu ? '?plm=feishu' : '';
   const data = (env.WELCOME_CONFIG ? Object.values(JSON.parse(env.WELCOME_CONFIG)) : []) as Record<string, any>[];
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const WelcomeIcon = themeName === ThemeName.Light ? WelcomeIconLight : WelcomeIconDark;
   if (!treeNodesMap[rootId] || !spaceId) {
     return <></>;
@@ -86,7 +86,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div className={styles.guide}>
-              <Typography variant='h1' color={colors.fc1}>
+              <Typography variant="h1" color={colors.fc1}>
                 {t(Strings.welcome_title)}
               </Typography>
               <div className={styles.scrollWrapper}>
@@ -96,59 +96,65 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                       <div className={styles.guideItem} key={index}>
                         {!isMobile && (
                           <div className={styles.titleWrapper}>
-                            <Typography className={styles.title} variant='body1' color={colors.fc2}>
+                            <Typography className={styles.title} variant="body1" color={colors.fc2}>
                               {t(Strings[item.moduleTitleKey])}
                             </Typography>
-                            {item.moreOperation && <div className={styles.rightBtn}>
-                              <TextButton
-                                className={styles.moreTemplateBtn}
-                                onClick={() => navigationToUrl(openUrl(`${item.moreOperation.linkUrl}`), { 
-                                  method: isDingtalkFunc?.() ? Method.Push : Method.NewTab 
-                                })}
-                              >
-                                <Typography variant='body4' color={colors.fc3}>
-                                  {t(Strings[item.moreOperation.textKay])}
-                                </Typography>
-                                <ChevronRightOutlined size={12} color={colors.fc3} />
-                              </TextButton>
-                            </div>}
+                            {item.moreOperation && (
+                              <div className={styles.rightBtn}>
+                                <TextButton
+                                  className={styles.moreTemplateBtn}
+                                  onClick={() =>
+                                    navigationToUrl(openUrl(`${item.moreOperation.linkUrl}`), {
+                                      method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
+                                    })
+                                  }
+                                >
+                                  <Typography variant="body4" color={colors.fc3}>
+                                    {t(Strings[item.moreOperation.textKay])}
+                                  </Typography>
+                                  <ChevronRightOutlined size={12} color={colors.fc3} />
+                                </TextButton>
+                              </div>
+                            )}
                           </div>
                         )}
                         <div className={styles.moduleContainer}>
                           {(item.cards as any).map((card: any) => {
-                            return <div
-                              key={card.id}
-                              className={styles.moduleItem}
-                              style={{
-                                backgroundColor: downModuleId === card.id ? get(colors, card.activeBackgroundColor) :
-                                  get(colors, card.backgroundColor)
-                              }}
-                              onClick={() => {
-                                if (card.video) {
-                                  showModal(card.video);
-                                  return;
-                                }
-                                navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
-                                  method: isDingtalkFunc?.() ? Method.Push : (card.linkNewTab === 'true' ? Method.NewTab : Method.Push)
-                                });
-                              }}
-                              onMouseDown={() => setDownModuleId(card.id)}
-                              onMouseUp={() => setDownModuleId('')}
-                              onTouchStart={() => setDownModuleId(card.id)}
-                              onTouchEnd={() => setDownModuleId('')}
-                            >
-                              {card.Video && (
-                                <div className={styles.videoBtn}>
-                                  <PlayFilled size={20} />
-                                </div>
-                              )}
-                              <span className={styles.moduleImg}>
-                                <Image src={integrateCdnHost(card.img)} alt={card.text} width={34} height={34} />
-                              </span>
-                              <Typography variant='body3' className={styles.moduleName} color={get(colors, card.color)}>
-                                {t(Strings[card.textKey])}
-                              </Typography>
-                            </div>;
+                            return (
+                              <div
+                                key={card.id}
+                                className={styles.moduleItem}
+                                style={{
+                                  backgroundColor:
+                                    downModuleId === card.id ? get(colors, card.activeBackgroundColor) : get(colors, card.backgroundColor),
+                                }}
+                                onClick={() => {
+                                  if (card.video) {
+                                    showModal(card.video);
+                                    return;
+                                  }
+                                  navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
+                                    method: isDingtalkFunc?.() ? Method.Push : card.linkNewTab === 'true' ? Method.NewTab : Method.Push,
+                                  });
+                                }}
+                                onMouseDown={() => setDownModuleId(card.id)}
+                                onMouseUp={() => setDownModuleId('')}
+                                onTouchStart={() => setDownModuleId(card.id)}
+                                onTouchEnd={() => setDownModuleId('')}
+                              >
+                                {card.Video && (
+                                  <div className={styles.videoBtn}>
+                                    <PlayFilled size={20} />
+                                  </div>
+                                )}
+                                <span className={styles.moduleImg}>
+                                  <Image src={integrateCdnHost(card.img)} alt={card.text} width={34} height={34} />
+                                </span>
+                                <Typography variant="body3" className={styles.moduleName} color={get(colors, card.color)}>
+                                  {t(Strings[card.textKey])}
+                                </Typography>
+                              </div>
+                            );
                           })}
                         </div>
                       </div>
@@ -161,18 +167,17 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.mobileGuide}>
               <div>
-                <Typography variant='h2' color={colors.fc1}>
+                <Typography variant="h2" color={colors.fc1}>
                   {t(Strings.welcome_title)}
                 </Typography>
                 <div className={styles.container}>
-                  {data.map(item =>
+                  {data.map((item) =>
                     (item.cards as any).map((card: any) => (
                       <div
                         key={card.id}
                         className={styles.moduleItem}
                         style={{
-                          backgroundColor: downModuleId === card.id ? get(colors, card.activeBackgroundColor) :
-                            get(colors, card.backgroundColor)
+                          backgroundColor: downModuleId === card.id ? get(colors, card.activeBackgroundColor) : get(colors, card.backgroundColor),
                         }}
                         onClick={() => {
                           if (card.video) {
@@ -180,7 +185,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                             return;
                           }
                           navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
-                            method: isDingtalkFunc?.() ? Method.Push : (card.linkNewTab === 'true' ? Method.NewTab : Method.Push)
+                            method: isDingtalkFunc?.() ? Method.Push : card.linkNewTab === 'true' ? Method.NewTab : Method.Push,
                           });
                         }}
                         onTouchStart={() => setDownModuleId(card.id)}
@@ -196,7 +201,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
                         <div className={styles.moduleImg}>
                           <Image src={integrateCdnHost(card.img)} alt={card.name} width={34} height={34} />
                         </div>
-                        <Typography variant='body3' className={styles.moduleName} color={get(colors, card.color)}>
+                        <Typography variant="body3" className={styles.moduleName} color={get(colors, card.color)}>
                           {t(Strings[card.textKey])}
                         </Typography>
                       </div>
@@ -214,7 +219,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
             {treeNodesMap[rootId].permissions.childCreatable ? (
               <>
                 <div className={styles.tip}>{t(Strings.welcome_workspace_tip1)}</div>
-                <Button style={{ width: 200 }} color='primary' size='large' onClick={() => setShow(true)}>
+                <Button style={{ width: 200 }} color="primary" size="large" onClick={() => setShow(true)}>
                   {t(Strings.create)}
                 </Button>
               </>

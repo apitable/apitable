@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
+import React, { FC } from 'react';
 import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import classNames from 'classnames';
 import { MODAL_FOOTER_BTN_CONFIRM } from 'pc/utils/test_id_constant';
-import React, { FC } from 'react';
 import styles from './style.module.less';
 
 interface IFooterBtnInModalProps {
@@ -37,18 +37,27 @@ interface IFooterBtnInModalProps {
 
 export const FooterBtnInModal: FC<React.PropsWithChildren<IFooterBtnInModalProps>> = (props) => {
   const {
-    onOk, onCancel, okButtonProps, cancelButtonProps, okText = t(Strings.confirm),
-    okType = 'primary', cancelText = t(Strings.cancel), className, hiddenCancelBtn
+    onOk,
+    onCancel,
+    okButtonProps,
+    cancelButtonProps,
+    okText = t(Strings.confirm),
+    okType = 'primary',
+    cancelText = t(Strings.cancel),
+    className,
+    hiddenCancelBtn,
   } = props;
 
   return (
     <div className={classNames(styles.modalFooterBtnWrapper, className)}>
-      {
-        !hiddenCancelBtn &&
-        <TextButton className="cancelBtn" size="small" onClick={onCancel} {...cancelButtonProps}>{cancelText}</TextButton>
-      }
-      <Button data-test-id={MODAL_FOOTER_BTN_CONFIRM} color={okType} size="small" onClick={onOk} {...okButtonProps}>{okText}</Button>
+      {!hiddenCancelBtn && (
+        <TextButton className="cancelBtn" size="small" onClick={onCancel} {...cancelButtonProps}>
+          {cancelText}
+        </TextButton>
+      )}
+      <Button data-test-id={MODAL_FOOTER_BTN_CONFIRM} color={okType} size="small" onClick={onOk} {...okButtonProps}>
+        {okText}
+      </Button>
     </div>
   );
 };
-

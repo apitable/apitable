@@ -55,5 +55,4 @@
 //   // });
 // });
 
-export const t = () => { };
-
+export const t = () => {};

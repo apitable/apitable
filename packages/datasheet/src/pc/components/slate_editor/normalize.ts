@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isObject } from 'lodash';
+import { ElementType, LIST_TYPE_DICT, LIST_ITEM_TYPE_DICT } from './constant';
+import { GENERATOR } from './elements/generator';
 import { EditorValue } from './interface/editor';
 import { TText } from './interface/element';
-import { GENERATOR } from './elements/generator';
-import { ElementType, LIST_TYPE_DICT, LIST_ITEM_TYPE_DICT } from './constant';
-import { isObject } from 'lodash';
 
 export const normalize = (document: EditorValue) => {
   if (!document || !document.length) {
@@ -35,7 +35,7 @@ export const normalize = (document: EditorValue) => {
     // Older versions of data have parsing errors
     const maybeIsText = ele as unknown as TText;
     if ((ele as unknown as TText).text != null) {
-      const text = (!maybeIsText.text || maybeIsText.text === 'undefined') ? '' : maybeIsText.text;
+      const text = !maybeIsText.text || maybeIsText.text === 'undefined' ? '' : maybeIsText.text;
       return GENERATOR[ElementType.PARAGRAPH]({}, [{ text }]);
     }
 

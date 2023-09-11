@@ -24,13 +24,15 @@ const WorkbenchtWithNoSSR = dynamic(() => import('pc/components/space_manage/wor
 const ManageAuthWithNoSSR = dynamic(() => import('pc/components/space_manage/manage_auth'), { ssr: false });
 
 const App = () => {
-  return <>
-    <DynamicComponentWithNoSSR>
-      <ManageAuthWithNoSSR>
-        <WorkbenchtWithNoSSR />
-      </ManageAuthWithNoSSR>
-    </DynamicComponentWithNoSSR>
-  </>;
+  return (
+    <>
+      <DynamicComponentWithNoSSR>
+        <ManageAuthWithNoSSR>
+          <WorkbenchtWithNoSSR />
+        </ManageAuthWithNoSSR>
+      </DynamicComponentWithNoSSR>
+    </>
+  );
 };
 
 export default App;

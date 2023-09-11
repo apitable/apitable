@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createRoot } from 'react-dom/client';
 import { ErrorBoundary } from '@sentry/nextjs';
+import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
-import { Api, Selectors } from '@apitable/core';
 import { ThemeProvider } from '@apitable/components';
+import { Api, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
-import { SearchBase } from './search_base';
-import { ModalWrapper } from './modal_wrapper';
 import { EXPAND_SEARCH } from './const';
+import { ModalWrapper } from './modal_wrapper';
+import { SearchBase } from './search_base';
 
 export function clearExpandModal() {
   const container = document.querySelectorAll(`.${EXPAND_SEARCH}`);
@@ -38,11 +38,7 @@ export function clearExpandModal() {
 
 const WrapperWithTheme: React.FC<React.PropsWithChildren> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
-  return (
-    <ThemeProvider theme={cacheTheme}>
-      {props.children}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={cacheTheme}>{props.children}</ThemeProvider>;
 };
 
 export const expandSearch = () => {
@@ -70,15 +66,14 @@ export const expandSearch = () => {
               clearExpandModal();
               setTimeout(() => Api.keepTabbar({}), 500);
             }}
-            beforeCapture={scope => {
+            beforeCapture={(scope) => {
               scope.setTag('catcher', 'expandSearchCrash');
             }}
           >
-            <SearchBase closeSearch={onCancel}/>
+            <SearchBase closeSearch={onCancel} />
           </ErrorBoundary>
         </ModalWrapper>
       </WrapperWithTheme>
     </Provider>,
   );
 };
-

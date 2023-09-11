@@ -1,11 +1,10 @@
+import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { GridOutlined } from '@apitable/icons';
-import { useSelector } from 'react-redux';
 
 import { IFormatCascaderProps } from '../format_cascader_select';
-
 import styles from './styles.module.less';
 
 export const CascaderDatasourceViewSelect = ({

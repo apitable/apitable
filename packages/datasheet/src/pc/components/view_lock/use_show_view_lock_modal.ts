@@ -20,11 +20,11 @@ import { useSelector } from 'react-redux';
 import { IViewProperty, Selectors } from '@apitable/core';
 
 export const useShowViewLockModal = () => {
-  const spaceManualSaveViewIsOpen = useSelector(state => {
+  const spaceManualSaveViewIsOpen = useSelector((state) => {
     return state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave) || Boolean(state.embedInfo?.viewManualSave);
   });
-  const activeView: IViewProperty = useSelector(state => Selectors.getCurrentView(state))!;
-  const hasMirrorId = useSelector(state => Boolean(state.pageParams.mirrorId));
+  const activeView: IViewProperty = useSelector((state) => Selectors.getCurrentView(state))!;
+  const hasMirrorId = useSelector((state) => Boolean(state.pageParams.mirrorId));
 
   if (hasMirrorId) {
     return false;

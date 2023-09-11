@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import styles from './style.module.less';
 import { Typography, useThemeColors } from '@apitable/components';
-import { SearchOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
+import { SearchOutlined } from '@apitable/icons';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from '../common/component_display';
+import styles from './style.module.less';
 
 interface IModalWrapper {
   onCancel: () => void;
@@ -16,7 +16,9 @@ const Title = () => {
   return (
     <div className={styles.modalHeader}>
       <SearchOutlined className={styles.titleSearchIcon} color={colors.textCommonPrimary} />
-      <Typography variant='h6' color={colors.textCommonPrimary}>{t(Strings.quick_search_title)}</Typography>
+      <Typography variant="h6" color={colors.textCommonPrimary}>
+        {t(Strings.quick_search_title)}
+      </Typography>
     </div>
   );
 };

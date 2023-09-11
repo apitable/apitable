@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { useUnmount } from 'ahooks';
 import classNames from 'classnames';
-// eslint-disable-next-line no-restricted-imports
-import { Modal, Tooltip } from 'pc/components/common';
-import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';
-import { resourceService } from 'pc/resource_service';
+import { FC } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useThemeColors } from '@apitable/components';
+import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { AddOutlined, QuestionCircleOutlined, WidgetOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Modal, Tooltip } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';
+import { useResponsive } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
 import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
 import styles from './style.module.less';
-import { useUnmount } from 'ahooks';
-import { AddOutlined, QuestionCircleOutlined, WidgetOutlined } from '@apitable/icons';
-import { useThemeColors } from '@apitable/components';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
-import { FC } from 'react';
 import { WrapperTooltip } from './wrapper_tooltip';
 
 export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelIndex: number) => void }>> = ({ onClickItem }) => {
@@ -41,18 +41,18 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
 
   const colors = useThemeColors();
   const dispatch = useDispatch();
-  const { datasheetId, mirrorId } = useSelector(state => state.pageParams);
-  const { manageable, editable } = useSelector(state => {
+  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { manageable, editable } = useSelector((state) => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
 
   const resourceId = mirrorId || datasheetId!;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
 
-  const widgetPanels = useSelector(state => {
+  const widgetPanels = useSelector((state) => {
     return Selectors.getResourceWidgetPanels(state, resourceId, resourceType);
   })!;
-  const activeWidgetPanel = useSelector(state => {
+  const activeWidgetPanel = useSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId, resourceType);
   })!;
 
@@ -66,10 +66,14 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
     });
   };
 
-  const { errMsg, editingId: editPanelId, setEditingId: setEditPanelId, onChange, onKeyPressEnter, setEditingValue } = useVerifyOperateItemTitle(
-    widgetPanels,
-    modifyWidgetName,
-  );
+  const {
+    errMsg,
+    editingId: editPanelId,
+    setEditingId: setEditPanelId,
+    onChange,
+    onKeyPressEnter,
+    setEditingValue,
+  } = useVerifyOperateItemTitle(widgetPanels, modifyWidgetName);
 
   useUnmount(() => {
     onKeyPressEnter();
@@ -135,7 +139,7 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
    */
   const confirmDelete = (panelId: string) => {
     if (panelId === activeWidgetPanel.id) {
-      if (widgetPanels.findIndex(item => item.id === panelId) === 0) {
+      if (widgetPanels.findIndex((item) => item.id === panelId) === 0) {
         if (widgetPanels.length === 1) {
           switchActivePanel('');
         } else {
@@ -173,11 +177,11 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
         <div className={styles.panelList}>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId={'1'} direction="vertical">
-              {provided => {
+              {(provided) => {
                 return (
                   <div
                     className={styles.droppable}
-                    ref={element => {
+                    ref={(element) => {
                       provided.innerRef(element);
                     }}
                     {...provided.droppableProps}
@@ -226,7 +230,7 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
                       }
                       return (
                         <Draggable draggableId={item.id + index} index={index} key={index} isDragDisabled={!editable}>
-                          {providedChild => (
+                          {(providedChild) => (
                             <div ref={providedChild.innerRef} {...providedChild.draggableProps} {...providedChild.dragHandleProps}>
                               {itemBox}
                             </div>

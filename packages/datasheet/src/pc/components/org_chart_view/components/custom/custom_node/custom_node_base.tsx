@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, memo, useContext, useEffect, useState } from 'react';
-import { CARD_WIDTH, COVER_HEIGHT, DragNodeType, RANKSEP, SHOW_EPMTY_COVER, SHOW_EPMTY_FIELD } from '../../../constants';
-import { DragSourceMonitor, useDrag } from 'react-dnd';
-import styles from '../styles.module.less';
-import { getEmptyImage } from 'react-dnd-html5-backend';
 import classNames from 'classnames';
+import { FC, memo, useContext, useEffect, useState } from 'react';
+import { DragSourceMonitor, useDrag } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import { RecordCard } from '../../../../record_card';
+import { CARD_WIDTH, COVER_HEIGHT, DragNodeType, RANKSEP, SHOW_EPMTY_COVER, SHOW_EPMTY_FIELD } from '../../../constants';
 import { FlowContext } from '../../../context/flow_context';
 import { INode, INodeData } from '../../../interfaces';
+import { addRecord } from '../../record_list';
+import styles from '../styles.module.less';
 import { Bottom } from './bottom';
 import { QuickAdd } from './quick_add';
-import { addRecord } from '../../record_list';
 
 interface ICustomNodeBase {
   id: string;
@@ -37,11 +37,7 @@ interface ICustomNodeBase {
 }
 
 export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo((props) => {
-  const {
-    id,
-    data,
-    isOver,
-  } = props;
+  const { id, data, isOver } = props;
 
   const { linkIds, height } = data;
 
@@ -59,7 +55,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
     viewId,
     rowsCount,
     horizontal,
-    datasheetId
+    datasheetId,
   } = useContext(FlowContext);
 
   const [childId] = linkIds;
@@ -67,32 +63,21 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
   const childNode = (childId && nodesMap[childId]) as INode;
 
   const getQuickAddSize = () => {
-
     const valid = Boolean(curNode && childNode && curNode.position && childNode.position);
-    
+
     if (horizontal) {
       return {
-        width: valid
-          ? childNode.position.x - curNode.position.x - CARD_WIDTH
-          : RANKSEP,
+        width: valid ? childNode.position.x - curNode.position.x - CARD_WIDTH : RANKSEP,
         height,
       };
     }
     return {
       width: CARD_WIDTH,
-      height: (
-        valid
-          ? childNode.position.y - curNode.position.y - height
-          : RANKSEP
-      ) - 2,
+      height: (valid ? childNode.position.y - curNode.position.y - height : RANKSEP) - 2,
     };
   };
 
-  const {
-    coverFieldId,
-    isCoverFit,
-    isColNameVisible,
-  } = orgChartStyle;
+  const { coverFieldId, isCoverFit, isColNameVisible } = orgChartStyle;
 
   const [{ isDragging }, dragRef, preview] = useDrag(
     () => ({
@@ -104,21 +89,19 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
         id,
         data,
         type: DragNodeType.RENDER_NODE,
-      }
+      },
     }),
-    [data]
+    [data],
   );
 
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, [preview]);
 
-  const {
-    linkFieldId,
-  } = orgChartStyle;
+  const { linkFieldId } = orgChartStyle;
 
   const toggleNodeCollapse = (id: string) => {
-    setNodeStateMap(s => ({
+    setNodeStateMap((s) => ({
       ...s,
       [id]: {
         ...s?.[id],
@@ -131,11 +114,13 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
 
   const handleQuickAddClick = async() => {
     const newRecordId = await addRecord(viewId, rowsCount, false);
-    onChange([{
-      recordId: id,
-      fieldId: linkFieldId,
-      value: [...linkIds, newRecordId!],
-    }]);
+    onChange([
+      {
+        recordId: id,
+        fieldId: linkFieldId,
+        value: [...linkIds, newRecordId!],
+      },
+    ]);
     if (nodeStateMap?.[id]?.collapsed) {
       toggleNodeCollapse(id);
     }
@@ -180,12 +165,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
         />
       </div>
 
-      {collapseVisible && (
-        <Bottom
-          id={id}
-          linkIds={linkIds}
-        />
-      )}
+      {collapseVisible && <Bottom id={id} linkIds={linkIds} />}
       {!collapseVisible && !isDragging && (
         <QuickAdd
           entered={entered}

@@ -16,10 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeProvider } from '@apitable/components';
-import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ConfigProvider, Table, Tabs } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import React, { FC, useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from '@apitable/components';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { UserCardTrigger } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -28,9 +31,6 @@ import { antdConfig } from 'pc/components/route_manager/router_provider';
 import { useRequest } from 'pc/hooks';
 import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
 import { store } from 'pc/store';
-import React, { FC, useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
 import styles from './style.module.less';
 
 const { TabPane } = Tabs;
@@ -130,7 +130,7 @@ export const CapacityRewardModal: FC<React.PropsWithChildren<ICapacityRewardModa
 
   useEffect(() => {
     const isExpire = currTab === CapacityType.Expired;
-    getCapacityList(isExpire, pageNo).then(res => {
+    getCapacityList(isExpire, pageNo).then((res) => {
       setList(res.records);
       setTotal(res.total);
     });
@@ -168,7 +168,7 @@ export const CapacityRewardModal: FC<React.PropsWithChildren<ICapacityRewardModa
     >
       <div className={styles.content}>
         <Tabs
-          onChange={type => {
+          onChange={(type) => {
             setCurrTab(type as CapacityType);
             setPageNo(1);
           }}
@@ -201,7 +201,6 @@ export const expandCapacityRewardModal = () => {
   }
 
   const render = () => {
-
     root.render(
       <ConfigProvider {...antdConfig}>
         <Provider store={store}>

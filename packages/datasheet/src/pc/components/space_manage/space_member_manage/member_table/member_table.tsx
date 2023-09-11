@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployment, StoreActions, Strings, t } from '@apitable/core';
-import { lightColors, List, Pagination } from '@apitable/components';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-// eslint-disable-next-line no-restricted-imports
-import { Modal, Tooltip } from 'pc/components/common';
-// @ts-ignore
-import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
-import { useMemberManage, useUpdateMemberListInSpace } from 'pc/hooks';
-import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
-import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, ReactText, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { lightColors, List, Pagination } from '@apitable/components';
+import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployment, StoreActions, Strings, t } from '@apitable/core';
+import { CheckOutlined, FilterOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Modal, Tooltip } from 'pc/components/common';
+import { useMemberManage, useUpdateMemberListInSpace } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getEnvVariables } from 'pc/utils/env';
 import { EditMemberModal } from '../modal';
 import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
-import { CheckOutlined, FilterOutlined } from '@apitable/icons';
+// @ts-ignore
+import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
 
 interface IMemberTable {
   searchMemberRes: IMemberInfoInSpace[];
@@ -46,24 +46,19 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
   const dispatch = useAppDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [scrollHeight, setScrollHeight] = useState(0);
-  const {
-    selectedTeamInfoInSpace,
-    selectMemberListInSpace,
-    memberListInSpace,
-    selectedRows,
-    user,
-    spaceResource,
-    spaceInfo,
-  } = useSelector((state: IReduxState) => ({
-    spaceId: state.space.activeId || '',
-    selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
-    selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,
-    selectedRows: state.spaceMemberManage.selectedRows,
-    memberListInSpace: state.spaceMemberManage.memberListInSpace,
-    user: state.user.info,
-    spaceResource: state.spacePermissionManage.spaceResource,
-    spaceInfo: state.space.curSpaceInfo,
-  }), shallowEqual);
+  const { selectedTeamInfoInSpace, selectMemberListInSpace, memberListInSpace, selectedRows, user, spaceResource, spaceInfo } = useSelector(
+    (state: IReduxState) => ({
+      spaceId: state.space.activeId || '',
+      selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
+      selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,
+      selectedRows: state.spaceMemberManage.selectedRows,
+      memberListInSpace: state.spaceMemberManage.memberListInSpace,
+      user: state.user.info,
+      spaceResource: state.spacePermissionManage.spaceResource,
+      spaceInfo: state.space.curSpaceInfo,
+    }),
+    shallowEqual,
+  );
   const { updateMemberListInSpace } = useUpdateMemberListInSpace();
   const { removeMember } = useMemberManage();
   const [adjustMemberModalVisible, setAdjustMemberModalVisible] = useState(false);
@@ -100,13 +95,19 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
     };
   }, [updateScroll]);
 
-  const hideDelBtn = React.useCallback((record: IMemberInfoInSpace) => {
-    return isSocialFeiShu?.(spaceInfo) || (isRootTeam && isPrimaryOrOwn(record)) ||
-      (selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === ConfigConstant.ROOT_TEAM_ID);
-  }, [isPrimaryOrOwn, isRootTeam, selectedTeamInfoInSpace, spaceInfo]);
+  const hideDelBtn = React.useCallback(
+    (record: IMemberInfoInSpace) => {
+      return (
+        isSocialFeiShu?.(spaceInfo) ||
+        (isRootTeam && isPrimaryOrOwn(record)) ||
+        (selectedTeamInfoInSpace && selectedTeamInfoInSpace.teamId === ConfigConstant.ROOT_TEAM_ID)
+      );
+    },
+    [isPrimaryOrOwn, isRootTeam, selectedTeamInfoInSpace, spaceInfo],
+  );
 
   const changePageNo = (pageNo: number) => {
-    const isActive = selectOuter ? selectEnter ? undefined : '0' : '1';
+    const isActive = selectOuter ? (selectEnter ? undefined : '0') : '1';
     updateMemberListInSpace(selectedTeamInfoInSpace!.teamId, pageNo, isActive, selectedTeamInfoInSpace);
     setPageNo(pageNo);
   };
@@ -119,7 +120,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
     removeBaseFunc([record]);
   };
   const removeBaseFunc = (memberArr: IMemberInfoInSpace[]) => {
-    const memberIdArr = memberArr.map(item => item.memberId);
+    const memberIdArr = memberArr.map((item) => item.memberId);
     Modal.confirm({
       title: t(Strings.kindly_reminder),
       content: t(Strings.remove_from_team_confirm_tip),
@@ -138,7 +139,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
   const updateSelectArr = (arr: string[]) => {
     setPageNo(1);
     if (arr.length === 1) {
-      const newSelect = selectMemberListInSpace.filter(item => item !== arr[0]);
+      const newSelect = selectMemberListInSpace.filter((item) => item !== arr[0]);
       dispatch(StoreActions.updateSelectMemberListInSpace(newSelect));
       return;
     }
@@ -156,35 +157,38 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
       render: (value, record) => nameColRender(value, record, spaceInfo),
       filterDropdown: () => (
         <List
-          data={[{
-            title: t(Strings.joined_members),
-            onClick: () => {
-              setSelectEnter(!selectEnter);
-              const isActive = selectOuter ? (!selectEnter ? undefined : '0') : (!selectEnter ? '1' : '-1');
-              if (isActive === '-1') {
-                setEmptyData(true);
-              } else {
-                setEmptyData(false);
-                updateMemberListInSpace(selectedTeamInfoInSpace!.teamId, 1, isActive, selectedTeamInfoInSpace);
-                setPageNo(1);
-              }
+          data={[
+            {
+              title: t(Strings.joined_members),
+              onClick: () => {
+                setSelectEnter(!selectEnter);
+                const isActive = selectOuter ? (!selectEnter ? undefined : '0') : !selectEnter ? '1' : '-1';
+                if (isActive === '-1') {
+                  setEmptyData(true);
+                } else {
+                  setEmptyData(false);
+                  updateMemberListInSpace(selectedTeamInfoInSpace!.teamId, 1, isActive, selectedTeamInfoInSpace);
+                  setPageNo(1);
+                }
+              },
+              isSelected: selectEnter,
             },
-            isSelected: selectEnter,
-          }, {
-            title: t(Strings.not_joined_members),
-            onClick: () => {
-              setSelectOuter(!selectOuter);
-              const isActive = selectEnter ? (!selectOuter ? undefined : '1') : (!selectOuter ? '0' : '-1');
-              if (isActive === '-1') {
-                setEmptyData(true);
-              } else {
-                setEmptyData(false);
-                updateMemberListInSpace(selectedTeamInfoInSpace!.teamId, 1, isActive, selectedTeamInfoInSpace);
-                setPageNo(1);
-              }
+            {
+              title: t(Strings.not_joined_members),
+              onClick: () => {
+                setSelectOuter(!selectOuter);
+                const isActive = selectEnter ? (!selectOuter ? undefined : '1') : !selectOuter ? '0' : '-1';
+                if (isActive === '-1') {
+                  setEmptyData(true);
+                } else {
+                  setEmptyData(false);
+                  updateMemberListInSpace(selectedTeamInfoInSpace!.teamId, 1, isActive, selectedTeamInfoInSpace);
+                  setPageNo(1);
+                }
+              },
+              isSelected: selectOuter,
             },
-            isSelected: selectOuter,
-          }]}
+          ]}
           renderItem={(item: any, index) => (
             <div onClick={item.onClick} className={styles.listItem} key={index}>
               {item.title}
@@ -193,18 +197,23 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
           )}
         />
       ),
-      filterIcon: <FilterOutlined />
+      filterIcon: <FilterOutlined />,
     },
     {
       title: t(Strings.team),
       dataIndex: 'teamData',
       key: 'teamData',
       align: 'center',
-      render: value => {
+      render: (value) => {
         const text = value ? value.map((team: any) => team.fullHierarchyTeamName).join(' & ') : [];
-        const tipsTitle = value ? (value.map((team: any, index: number) => <div key={index} className={styles.teamItem}>
-          <p>-</p><p>{team.fullHierarchyTeamName}</p>
-        </div>)) : '';
+        const tipsTitle = value
+          ? value.map((team: any, index: number) => (
+            <div key={index} className={styles.teamItem}>
+              <p>-</p>
+              <p>{team.fullHierarchyTeamName}</p>
+            </div>
+          ))
+          : '';
         return (
           <Tooltip title={tipsTitle} rowsNumber={2} textEllipsis overflowWidth={200} showTipAnyway>
             <span className={styles.tipText}>{text || selectedTeamInfoInSpace!.teamTitle}</span>
@@ -225,13 +234,14 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
       key: 'operate',
       align: 'center',
       // width: isRootTeam ? 70 : 100,
-      render: (_value, record) =>
+      render: (_value, record) => (
         <OperateCol
           prevBtnClick={() => editMemberBtn(record)}
           hideNextBtn={Boolean(hideDelBtn(record))}
           nextBtnClick={() => singleDelMemberBtn(record)}
           disabledNextBtn={Boolean(isRootTeam)}
-        />,
+        />
+      ),
     },
   ];
 
@@ -256,31 +266,31 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
   };
 
   const tableProps = {
-    columns: spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial
-      ? columns : columns.filter((_item, index) => index !== columns.length - 1),
+    columns:
+      spaceResource && spaceResource.permissions.includes(ConfigConstant.PermissionCode.MEMBER) && !isBindSocial
+        ? columns
+        : columns.filter((_item, index) => index !== columns.length - 1),
     dataSource: isEmptyData ? [] : props.searchMemberRes.length > 0 ? props.searchMemberRes : memberListInSpace,
-    rowSelection: isBindSocial ? undefined : {
-      selectedRowKeys: selectMemberListInSpace,
-      selectedRows,
-      onChange: onSelectMemberChange,
-      columnWidth: 40,
-    },
+    rowSelection: isBindSocial
+      ? undefined
+      : {
+        selectedRowKeys: selectMemberListInSpace,
+        selectedRows,
+        onChange: onSelectMemberChange,
+        columnWidth: 40,
+      },
     rowKey: (record: any) => String(record.orderNo),
   };
 
-  const showPagination = Boolean(selectedTeamInfoInSpace && selectedTeamInfoInSpace.memberCount &&
-    selectedTeamInfoInSpace.memberCount > ConfigConstant.MEMBER_LIST_PAGE_SIZE);
+  const showPagination = Boolean(
+    selectedTeamInfoInSpace && selectedTeamInfoInSpace.memberCount && selectedTeamInfoInSpace.memberCount > ConfigConstant.MEMBER_LIST_PAGE_SIZE,
+  );
   return (
     <>
       <div className={styles.memberTable} ref={tableRef}>
-        <Table
-          {...tableProps}
-          pagination={false}
-          rowKey={record => String(record.memberId)}
-          scroll={{ y: scrollHeight }}
-        />
+        <Table {...tableProps} pagination={false} rowKey={(record) => String(record.memberId)} scroll={{ y: scrollHeight }} />
       </div>
-      {showPagination &&
+      {showPagination && (
         <Pagination
           current={pageNo}
           total={selectedTeamInfoInSpace?.memberCount || 0}
@@ -288,20 +298,19 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
           onChange={changePageNo}
           className={styles.pagination}
         />
-      }
-      {
-        adjustMemberModalVisible &&
-        (
-          <EditMemberModal
-            cancelModalVisible={() => {setAdjustMemberModalVisible(false);}}
-            removeCallback={() => {
-              setPageNo(1);
-              props.setSearchMemberRes([]);
-            }}
-            pageNo={pageNo}
-          />
-        )
-      }
+      )}
+      {adjustMemberModalVisible && (
+        <EditMemberModal
+          cancelModalVisible={() => {
+            setAdjustMemberModalVisible(false);
+          }}
+          removeCallback={() => {
+            setPageNo(1);
+            props.setSearchMemberRes([]);
+          }}
+          pageNo={pageNo}
+        />
+      )}
     </>
   );
 };

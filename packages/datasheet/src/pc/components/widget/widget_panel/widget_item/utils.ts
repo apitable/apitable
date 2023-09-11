@@ -21,12 +21,7 @@ const syncDatasheet = (widgetId: string, datasheetId: string, messageId?: string
   }
 };
 
-export const patchDatasheet = ({ 
-  datasheetId, 
-  widgetId, 
-  messageId,
-  overWrite,
-}: IPatchDatasheetProps) => {
+export const patchDatasheet = ({ datasheetId, widgetId, messageId, overWrite }: IPatchDatasheetProps) => {
   if (!datasheetId) {
     return;
   }
@@ -39,10 +34,18 @@ export const patchDatasheet = ({
   }
   const key = datasheetId;
   FetchStatus.set(key, true);
-  store.dispatch(StoreActions.fetchDatasheet(datasheetId, () => {
-    FetchStatus.delete(key);
-    syncDatasheet(widgetId, datasheetId, messageId);
-  }, overWrite, undefined, () => {
-    FetchStatus.delete(key);
-  }));
+  store.dispatch(
+    StoreActions.fetchDatasheet(
+      datasheetId,
+      () => {
+        FetchStatus.delete(key);
+        syncDatasheet(widgetId, datasheetId, messageId);
+      },
+      overWrite,
+      undefined,
+      () => {
+        FetchStatus.delete(key);
+      },
+    ),
+  );
 };

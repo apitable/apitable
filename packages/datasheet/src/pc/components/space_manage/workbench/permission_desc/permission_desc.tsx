@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
+import { Collapse, Row, Col } from 'antd';
+import classNames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
-import { Collapse, Row, Col } from 'antd';
+import { colorVars } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import { hexToRGB } from 'pc/utils';
-import classNames from 'classnames';
-import styles from './style.module.less';
+import { CheckOutlined, QuestionCircleOutlined, TriangleRightFilled } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { colorVars } from '@apitable/components';
-import { CheckOutlined, QuestionCircleOutlined, TriangleRightFilled } from '@apitable/icons';
+import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
+import { hexToRGB } from 'pc/utils';
+import styles from './style.module.less';
 
 const { Panel } = Collapse;
 
@@ -56,12 +56,16 @@ export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> =
     if (!arr.length) {
       return;
     }
-    return arr.map(item => {
+    return arr.map((item) => {
       const baseStyle = {
         background: hexToRGB(item.color || colorVars.rowSelectedBg, item.color ? 0.1 : 0.6),
         color: item.color || colorVars.secondLevelText,
       };
-      return (<div className={styles.titleTag} style={baseStyle} key={item.text}>{item.text}</div>);
+      return (
+        <div className={styles.titleTag} style={baseStyle} key={item.text}>
+          {item.text}
+        </div>
+      );
     });
   };
   const renderCollapse = () => {
@@ -78,21 +82,29 @@ export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> =
     return config.map((per: any) => {
       const { title, detail, key } = per;
       return (
-        <Panel header={<div className={styles.panelHeader}><TriangleRightFilled />{title}</div>} key={key}>
-          {
-            detail.map((item: any) => (
-              <Row className={styles.perItem} key={item.title}>
-                <Col span={7} className={styles.perItemLeft}>{item.title}</Col>
-                <Col span={17} className={classNames(styles.tagTitleRight, styles.perItemRight)}>
-                  <CheckOutlined color={item.permissions.includes(0) ? colorArr[0] : colorVars.lineColor} />
-                  <CheckOutlined color={item.permissions.includes(1) ? colorArr[1] : colorVars.lineColor} />
-                  <CheckOutlined color={item.permissions.includes(2) ? colorArr[2] : colorVars.lineColor} />
-                  <CheckOutlined color={item.permissions.includes(3) ? colorArr[0] : colorVars.lineColor} />
-                  <CheckOutlined color={item.permissions.includes(4) ? colorArr[3] : colorVars.lineColor} />
-                </Col>
-              </Row>
-            ))
+        <Panel
+          header={
+            <div className={styles.panelHeader}>
+              <TriangleRightFilled />
+              {title}
+            </div>
           }
+          key={key}
+        >
+          {detail.map((item: any) => (
+            <Row className={styles.perItem} key={item.title}>
+              <Col span={7} className={styles.perItemLeft}>
+                {item.title}
+              </Col>
+              <Col span={17} className={classNames(styles.tagTitleRight, styles.perItemRight)}>
+                <CheckOutlined color={item.permissions.includes(0) ? colorArr[0] : colorVars.lineColor} />
+                <CheckOutlined color={item.permissions.includes(1) ? colorArr[1] : colorVars.lineColor} />
+                <CheckOutlined color={item.permissions.includes(2) ? colorArr[2] : colorVars.lineColor} />
+                <CheckOutlined color={item.permissions.includes(3) ? colorArr[0] : colorVars.lineColor} />
+                <CheckOutlined color={item.permissions.includes(4) ? colorArr[3] : colorVars.lineColor} />
+              </Col>
+            </Row>
+          ))}
         </Panel>
       );
     });
@@ -100,17 +112,13 @@ export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> =
   return (
     <div className={styles.permissionDesc} style={style}>
       <Row>
-        <Col span={7}>
-          {renderTag([{ text: t(Strings.function) }])}
+        <Col span={7}>{renderTag([{ text: t(Strings.function) }])}</Col>
+        <Col span={17} className={styles.tagTitleRight}>
+          {renderTag(tagTitles)}
         </Col>
-        <Col span={17} className={styles.tagTitleRight}>{renderTag(tagTitles)}</Col>
       </Row>
       <div className={styles.collapse}>
-        <Collapse
-          ghost
-          bordered={false}
-          defaultActiveKey={[0, 1]}
-        >
+        <Collapse ghost bordered={false} defaultActiveKey={[0, 1]}>
           {renderCollapse()}
         </Collapse>
       </div>
@@ -118,7 +126,7 @@ export const PermissionDesc: FC<React.PropsWithChildren<IPermissionDescProps>> =
   );
 };
 
-export const PermissionDescModal: FC<React.PropsWithChildren<IModalProps>> = props => {
+export const PermissionDescModal: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   return (
     <Modal
       title={

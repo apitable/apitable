@@ -40,8 +40,8 @@ export interface IMobileContextMenuProps {
    * @description hidden or disabled may be functions, where some parameters can be customized
    */
   params?: {
-    [key: string]: any
-  }
+    [key: string]: any;
+  };
 
   /**
    * @description Display height

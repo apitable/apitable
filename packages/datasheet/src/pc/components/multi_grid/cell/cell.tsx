@@ -16,17 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  CellType, IGridViewColumn, IGridViewProperty,
-  ILinearRowRecord,
-  ILinearRow,
-  RecordMoveType, Selectors, Strings, t,
-} from '@apitable/core';
-import { GridChildComponentProps } from 'react-window';
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { GridChildComponentProps } from 'react-window';
+import { CellType, IGridViewColumn, IGridViewProperty, ILinearRowRecord, ILinearRow, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { GRID_VIEW_BLANK_HEIGHT } from '../constant';
 import { CellValueContainer } from './cell_value_container';
 import styles from './styles.module.less';
@@ -43,7 +38,7 @@ interface IData {
   columns: IGridViewColumn[];
   // rows: IRowsForGroup;
   recordMoveType: RecordMoveType;
-  rows: ILinearRow[]
+  rows: ILinearRow[];
 }
 
 export interface ICellFuncOwnProps {
@@ -54,146 +49,140 @@ export interface ICellFuncOwnProps {
   rightRegion: boolean;
 }
 
-const CellFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & ICellFuncOwnProps>> =
-  ({ rowIndex, data, columnIndex, style: _style, rightRegion }) => {
-    const {
-      isGroupEmptyContent, datasheetId, rowHeightLevel,
-      columns, recordMoveType, rows,
-    } = data as IData;
+const CellFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & ICellFuncOwnProps>> = ({
+  rowIndex,
+  data,
+  columnIndex,
+  style: _style,
+  rightRegion,
+}) => {
+  const { isGroupEmptyContent, datasheetId, rowHeightLevel, columns, recordMoveType, rows } = data as IData;
 
-    const style = {
-      ..._style,
-      // Uniformly add animations to all cells
-      transition: 'top 0.2s ease-in-out 0.2s',
-    };
-    const {
-      permissions,
-      groupInfo,
-      columnsLength,
-      actualColumnIndex,
-    } = useSelector(state => {
-      const view = Selectors.getCurrentView(state) as IGridViewProperty;
-      return {
-        permissions: Selectors.getPermissions(state),
-        groupInfo: Selectors.getActiveViewGroupInfo(state),
-        columnsLength: Selectors.getVisibleColumns(state).length,
-        actualColumnIndex: rightRegion ? columnIndex + view.frozenColumnCount : columnIndex,
-      };
-    }, shallowEqual);
-
-    const preRow = rows[rowIndex - 1] as ILinearRowRecord;
-    const row = rows[rowIndex];
-    const nextRow = rows[rowIndex + 1];
-    const isNextRowBlank = (nextRow && nextRow.type === CellType.Blank) || !nextRow;
-    const needOffsetBorderBottom = row && row.type === CellType.Blank && isNextRowBlank;
-    let gridCellWrapper = classNames(styles.gridCellWrapper);
-    gridCellWrapper = classNames(gridCellWrapper, styles.cellLevelTop1);
-    const debugging = localStorage.getItem('render_debugging');
-
-    // Horizontal standing blank processing
-    if (!row) {
-      // Spacing at the bottom of the grid
-      return (
-        <div style={{ ...style, height: GRID_VIEW_BLANK_HEIGHT }} />
-      );
-    }
-
-    // Add column processing for vertical stations
-    if (actualColumnIndex === columnsLength) {
-      return (
-        <CellAddField
-          groupInfo={groupInfo}
-          permissions={permissions}
-          rowIndex={rowIndex}
-          actualColumnIndex={actualColumnIndex}
-          rows={rows}
-          style={style}
-          className={gridCellWrapper}
-          isEmptyRows={isGroupEmptyContent}
-        />
-      );
-    }
-
-    const renderCell = () => {
-      switch (row.type) {
-        case CellType.Blank:
-          return (
-            <CellBlank
-              groupLength={groupInfo.length}
-              row={row}
-              actualColumnIndex={actualColumnIndex}
-              style={style}
-              columnsLength={columnsLength}
-              needOffsetBorderBottom={needOffsetBorderBottom}
-            />
-
-          );
-        case CellType.GroupTab:
-          return (
-            <CellGroupTab
-              columnsLength={columnsLength}
-              actualColumnIndex={actualColumnIndex}
-              row={row}
-              style={style}
-              groupInfo={groupInfo}
-              isSort={!rightRegion}
-            />
-
-          );
-        case CellType.Add:
-          return (
-            <CellAddRecord
-              groupInfo={groupInfo}
-              permissions={permissions}
-              actualColumnIndex={actualColumnIndex}
-              row={row}
-              preRow={preRow}
-              style={style}
-              className={gridCellWrapper}
-              columnsLength={columnsLength}
-              rightRegion={rightRegion}
-              isEmptyRows={isGroupEmptyContent}
-            />
-          );
-        case CellType.Record:
-          return (
-            <>
-              {debugging ? <div style={style}>{t(Strings.debug_cell_text_1)}</div> :
-                <CellValueContainer
-                  datasheetId={datasheetId}
-                  rowHeightLevel={rowHeightLevel}
-                  columns={columns}
-                  style={style}
-                  groupInfo={groupInfo}
-                  gridCellWrapper={gridCellWrapper}
-                  actualColumnIndex={actualColumnIndex}
-                  row={row}
-                  recordMoveType={recordMoveType}
-                />}
-            </>
-          );
-        default:
-          return null;
-      }
-    };
-    return (
-      <CellGroupOffset
-        groupLength={groupInfo.length}
-        columnsLength={columnsLength}
-        actualColumnIndex={actualColumnIndex}
-        isEmptyRows={isGroupEmptyContent || (row.type === CellType.Blank && row.depth === 0)}
-        style={style}
-        isGroupTab
-        needOffsetBorderBottom={needOffsetBorderBottom}
-        row={row}
-        nextRow={nextRow}
-      >
-        {
-          renderCell()
-        }
-      </CellGroupOffset>
-    );
+  const style = {
+    ..._style,
+    // Uniformly add animations to all cells
+    transition: 'top 0.2s ease-in-out 0.2s',
   };
+  const { permissions, groupInfo, columnsLength, actualColumnIndex } = useSelector((state) => {
+    const view = Selectors.getCurrentView(state) as IGridViewProperty;
+    return {
+      permissions: Selectors.getPermissions(state),
+      groupInfo: Selectors.getActiveViewGroupInfo(state),
+      columnsLength: Selectors.getVisibleColumns(state).length,
+      actualColumnIndex: rightRegion ? columnIndex + view.frozenColumnCount : columnIndex,
+    };
+  }, shallowEqual);
+
+  const preRow = rows[rowIndex - 1] as ILinearRowRecord;
+  const row = rows[rowIndex];
+  const nextRow = rows[rowIndex + 1];
+  const isNextRowBlank = (nextRow && nextRow.type === CellType.Blank) || !nextRow;
+  const needOffsetBorderBottom = row && row.type === CellType.Blank && isNextRowBlank;
+  let gridCellWrapper = classNames(styles.gridCellWrapper);
+  gridCellWrapper = classNames(gridCellWrapper, styles.cellLevelTop1);
+  const debugging = localStorage.getItem('render_debugging');
+
+  // Horizontal standing blank processing
+  if (!row) {
+    // Spacing at the bottom of the grid
+    return <div style={{ ...style, height: GRID_VIEW_BLANK_HEIGHT }} />;
+  }
+
+  // Add column processing for vertical stations
+  if (actualColumnIndex === columnsLength) {
+    return (
+      <CellAddField
+        groupInfo={groupInfo}
+        permissions={permissions}
+        rowIndex={rowIndex}
+        actualColumnIndex={actualColumnIndex}
+        rows={rows}
+        style={style}
+        className={gridCellWrapper}
+        isEmptyRows={isGroupEmptyContent}
+      />
+    );
+  }
+
+  const renderCell = () => {
+    switch (row.type) {
+      case CellType.Blank:
+        return (
+          <CellBlank
+            groupLength={groupInfo.length}
+            row={row}
+            actualColumnIndex={actualColumnIndex}
+            style={style}
+            columnsLength={columnsLength}
+            needOffsetBorderBottom={needOffsetBorderBottom}
+          />
+        );
+      case CellType.GroupTab:
+        return (
+          <CellGroupTab
+            columnsLength={columnsLength}
+            actualColumnIndex={actualColumnIndex}
+            row={row}
+            style={style}
+            groupInfo={groupInfo}
+            isSort={!rightRegion}
+          />
+        );
+      case CellType.Add:
+        return (
+          <CellAddRecord
+            groupInfo={groupInfo}
+            permissions={permissions}
+            actualColumnIndex={actualColumnIndex}
+            row={row}
+            preRow={preRow}
+            style={style}
+            className={gridCellWrapper}
+            columnsLength={columnsLength}
+            rightRegion={rightRegion}
+            isEmptyRows={isGroupEmptyContent}
+          />
+        );
+      case CellType.Record:
+        return (
+          <>
+            {debugging ? (
+              <div style={style}>{t(Strings.debug_cell_text_1)}</div>
+            ) : (
+              <CellValueContainer
+                datasheetId={datasheetId}
+                rowHeightLevel={rowHeightLevel}
+                columns={columns}
+                style={style}
+                groupInfo={groupInfo}
+                gridCellWrapper={gridCellWrapper}
+                actualColumnIndex={actualColumnIndex}
+                row={row}
+                recordMoveType={recordMoveType}
+              />
+            )}
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+  return (
+    <CellGroupOffset
+      groupLength={groupInfo.length}
+      columnsLength={columnsLength}
+      actualColumnIndex={actualColumnIndex}
+      isEmptyRows={isGroupEmptyContent || (row.type === CellType.Blank && row.depth === 0)}
+      style={style}
+      isGroupTab
+      needOffsetBorderBottom={needOffsetBorderBottom}
+      row={row}
+      nextRow={nextRow}
+    >
+      {renderCell()}
+    </CellGroupOffset>
+  );
+};
 
 const CellFuncRight = (props: PropsWithChildren<GridChildComponentProps>) => {
   return CellFunc({ ...props, rightRegion: true });

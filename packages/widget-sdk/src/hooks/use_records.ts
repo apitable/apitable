@@ -18,24 +18,25 @@
 
 import { useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { IWidgetContext, IRecordQuery } from 'interface';
-import { Record } from '../model/record';
+import { IRecordQuery, IWidgetContext } from 'interface';
 import { WidgetContext } from '../context';
 import { useMeta } from './use_meta';
 import { Datasheet } from 'model';
 import { getSnapshot, getWidgetDatasheet } from 'store';
 import { IReduxState, parseInnerFilter, Selectors, validateOpenFilter, ViewFilterDerivate } from '@apitable/core';
 import { useReferenceCount } from 'view_computed';
+import { DynamicRecord } from 'model/dynamic_record';
+import { useGetSignatureAssertFunc } from 'helper/assert_signature_manager';
 
 /**
- * Gets all the records under a given view in the datasheet. 
+ * Gets all the records under a given view in the datasheet.
  * Rerendering is triggered when the value of record, view configuration, field configuration changes.
  * Get all the records may cause lag due to a sharp increase in computation, so please use caution and test well.
 
  * @param viewId The ID for the view, pass undefined to return an empty array.
  * @param query query configuration parameters.
  * @returns
- * 
+ *
  * ### Example
  * ```js
  * import { useRecords, useActiveViewId } from '@apitable/widget-sdk';
@@ -50,17 +51,17 @@ import { useReferenceCount } from 'view_computed';
  * }
  * ```
  */
-export function useRecords(viewId: string | undefined, query?: IRecordQuery): Record[];
+export function useRecords(viewId: string | undefined, query?: IRecordQuery): DynamicRecord[];
 
 /**
- * 
+ *
  * ## Support for loading the corresponding datasheet data records.
- * 
+ *
  * @param datasheet Datasheet instance, by {@link useDatasheet} get.
  * @param viewId View ID, passing in undefined returns an empty array.
  * @param query query configuration parameters.
  * @returns
- * 
+ *
  * ### Example
  * ```js
  * import { useRecords, useViewsMeta, useDatasheet } from '@apitable/widget-sdk';
@@ -78,7 +79,7 @@ export function useRecords(viewId: string | undefined, query?: IRecordQuery): Re
  * }
  * ```
  */
-export function useRecords(datasheet: Datasheet | undefined, viewId: string | undefined, query?: IRecordQuery): Record[];
+export function useRecords(datasheet: Datasheet | undefined, viewId: string | undefined, query?: IRecordQuery): DynamicRecord[];
 
 /**
  * @internal
@@ -86,14 +87,14 @@ export function useRecords(datasheet: Datasheet | undefined, viewId: string | un
 export function useRecords(param1: Datasheet | string | undefined, param2?: IRecordQuery | string, param3?: IRecordQuery) {
   const context = useContext<IWidgetContext>(WidgetContext);
   const isDatasheet = param1 instanceof Datasheet;
-  const viewId = isDatasheet ? param2 as string : param1 as string;
-  const query = isDatasheet ? param3 as IRecordQuery : param2 as IRecordQuery;
+  const viewId = isDatasheet ? (param2 as string) : (param1 as string);
+  const query = isDatasheet ? (param3 as IRecordQuery) : (param2 as IRecordQuery);
   const { datasheetId: metaDatasheetId } = useMeta();
   const snapshot = useSelector(getSnapshot);
   const datasheetId = isDatasheet ? (param1 as Datasheet).datasheetId : metaDatasheetId;
   useReferenceCount(datasheetId, viewId);
-
-  const visibleRows = useSelector(state => {
+  const getSignatureUrl = useGetSignatureAssertFunc();
+  const visibleRows = useSelector((state) => {
     const snapshot = getWidgetDatasheet(state, datasheetId)?.snapshot;
     if (!datasheetId || !snapshot || !viewId) {
       return null;
@@ -109,7 +110,7 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
         return [];
       }
       const idSet = new Set(query.ids);
-      _visibleRows = _visibleRows.filter(row => idSet.has(row.recordId));
+      _visibleRows = _visibleRows.filter((row) => idSet.has(row.recordId));
     }
     // secondary filter
     if (query?.filter) {
@@ -123,7 +124,7 @@ export function useRecords(param1: Datasheet | string | undefined, param2?: IRec
       const viewFilterDerivate = new ViewFilterDerivate(state, datasheetId);
       _visibleRows = viewFilterDerivate.getFilterRowsBase({ filterInfo, rows: _visibleRows, recordMap: snapshot.recordMap });
     }
-    return _visibleRows.map(row => new Record(datasheetId, context, row.recordId));
+    return _visibleRows.map((row) => new DynamicRecord(datasheetId, context, row.recordId, getSignatureUrl));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datasheetId, visibleRows, query, context, snapshot]);
 }

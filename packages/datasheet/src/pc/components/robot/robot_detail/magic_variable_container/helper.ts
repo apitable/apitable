@@ -64,12 +64,7 @@ export interface ISchemaPropertyListItem {
 
 export type ISchemaPropertyListItemClickFunc = (listItem: ISchemaPropertyListItem, goIntoChildren?: boolean) => void;
 
-const getPropertyItem = (props: {
-  expression: IExpression,
-  propertySchema: any,
-  key: string,
-  isJSONField: boolean
-}) => {
+const getPropertyItem = (props: { expression: IExpression; propertySchema: any; key: string; isJSONField: boolean }) => {
   const { expression, propertySchema, key, isJSONField } = props;
   // The base type can be inserted directly
   let canInsert = ['string', 'number', 'boolean'].includes(propertySchema.type!.toString());
@@ -103,26 +98,22 @@ const getPropertyItem = (props: {
   };
 };
 
-const getObjectSchemaPropertyList = (props: {
-  expression: any, schema: IJsonSchema, isJSONField: boolean
-}) => {
+const getObjectSchemaPropertyList = (props: { expression: any; schema: IJsonSchema; isJSONField: boolean }) => {
   const { schema, expression, isJSONField } = props;
   if (!schema.properties) return [];
   const propertiesKeys = Object.keys(schema.properties);
   return propertiesKeys.map((key) => {
     const propertySchema = schema.properties![key];
     return getPropertyItem({
-      expression, propertySchema, key, isJSONField,
+      expression,
+      propertySchema,
+      key,
+      isJSONField,
     });
   });
 };
 
-const getArraySchemaPropertyList = (props: {
-  expression: any,
-  schema: IJsonSchema,
-  shouldFlatten?: boolean
-  isJSONField: boolean
-}) => {
+const getArraySchemaPropertyList = (props: { expression: any; schema: IJsonSchema; shouldFlatten?: boolean; isJSONField: boolean }) => {
   const { schema, shouldFlatten, isJSONField } = props;
   let expression = props.expression;
   const itemSchema = schema.items as IJsonSchema;
@@ -160,15 +151,24 @@ const getArraySchemaPropertyList = (props: {
   if (hasChildren) {
     if (itemSchema.type === 'object') {
       // TODO: Here it can be optimized that property fetching for array objects can be expressed in a separate expression.
-      res.push(...getObjectSchemaPropertyList({
-        expression, schema: itemSchema, isJSONField,
-      }));
+      res.push(
+        ...getObjectSchemaPropertyList({
+          expression,
+          schema: itemSchema,
+          isJSONField,
+        }),
+      );
     }
     if (itemSchema.type === 'array') {
       // Arrays over arrays first flatten
-      res.push(...getArraySchemaPropertyList({
-        expression, schema: itemSchema, shouldFlatten: true, isJSONField,
-      }));
+      res.push(
+        ...getArraySchemaPropertyList({
+          expression,
+          schema: itemSchema,
+          shouldFlatten: true,
+          isJSONField,
+        }),
+      );
     }
   }
   if (!shouldFlatten) {
@@ -188,15 +188,17 @@ const getSchemaPropertyList = (props: {
   if (!schema) {
     // There is no schema but there is expression, which represents a prototype operation on the base type.
     if (isJSONField && expression) {
-      return [{
-        key: key!,
-        label: functionNameMap[expression.operator],
-        schema: schema,
-        disabled: false,
-        expression: expression,
-        hasChildren: false,
-        canInsert: true,
-      }];
+      return [
+        {
+          key: key!,
+          label: functionNameMap[expression.operator],
+          schema: schema,
+          disabled: false,
+          expression: expression,
+          hasChildren: false,
+          canInsert: true,
+        },
+      ];
     }
     return [];
   }
@@ -219,15 +221,17 @@ const getSchemaPropertyList = (props: {
         ],
       };
       // Base type direct insertion
-      return [{
-        key: key!,
-        label: schema.title,
-        schema: schema,
-        disabled: schema['disabled'],
-        expression: _expression,
-        hasChildren: false,
-        canInsert: true,
-      }];
+      return [
+        {
+          key: key!,
+          label: schema.title,
+          schema: schema,
+          disabled: schema['disabled'],
+          expression: _expression,
+          hasChildren: false,
+          canInsert: true,
+        },
+      ];
     case 'array':
       return getArraySchemaPropertyList({ expression, schema, isJSONField });
     // return [...arrayMeta, ...getSchemaPropertyList({ schema: itemSchema, expression })];
@@ -294,10 +298,7 @@ export const getCurrentVariableList = (props: {
   });
 };
 
-export const getGroupedVariableList = (props: {
-  variableList: ISchemaPropertyListItem[];
-  schemaExpressionList: ISchemaAndExpressionItem[];
-}) => {
+export const getGroupedVariableList = (props: { variableList: ISchemaPropertyListItem[]; schemaExpressionList: ISchemaAndExpressionItem[] }) => {
   const { schemaExpressionList, variableList } = props;
   const listItemMap: { [key: string]: ISchemaPropertyListItem } = variableList.reduce((map, item) => {
     map[item.key] = item;
@@ -312,13 +313,16 @@ export const getGroupedVariableList = (props: {
   // When layout exists, it needs to be reordered. And it cannot affect the up/down/left/right shortcut keys.
   // Because useSelectIndex depends on the list order, the grouped order must be handled outside
   // When layout exists, the list is reordered
-  return layout.map(eachGroup => eachGroup.items).flat().reduce((resList, item) => {
-    const listItem = listItemMap[item];
-    if (listItem) {
-      resList.push(listItem);
-    }
-    return resList;
-  }, [] as any[]);
+  return layout
+    .map((eachGroup) => eachGroup.items)
+    .flat()
+    .reduce((resList, item) => {
+      const listItem = listItemMap[item];
+      if (listItem) {
+        resList.push(listItem);
+      }
+      return resList;
+    }, [] as any[]);
 };
 
 export type IExpressionChainNode = {
@@ -363,11 +367,14 @@ export const getExpressionChainList = (expression: IExpression): IExpressionChai
     case 'capitalize':
     case 'trim':
     case 'flatten':
-      exprChainList.push({
-        type: 'function',
-        name: functionNameMap[expression.operator],
-        value: expression.operator,
-      }, ...getExpressionChainList(expression.operands[0].value as IExpression));
+      exprChainList.push(
+        {
+          type: 'function',
+          name: functionNameMap[expression.operator],
+          value: expression.operator,
+        },
+        ...getExpressionChainList(expression.operands[0].value as IExpression),
+      );
       break;
   }
   return exprChainList;
@@ -417,9 +424,7 @@ export const formData2SlateValue = (value: any) => {
   return [
     {
       type: 'paragraph',
-      children: [
-        { text: initTextValue },
-      ],
+      children: [{ text: initTextValue }],
     },
   ];
 };
@@ -463,7 +468,9 @@ export const transformParagraphToExpression = (paragraph: any) => {
   return res;
 };
 
-export const transformSlateValue = (paragraphs: any): {
+export const transformSlateValue = (
+  paragraphs: any,
+): {
   isMagicVariable: boolean;
   value: any;
 } => {
@@ -498,18 +505,20 @@ export const transformSlateValue = (paragraphs: any): {
 };
 
 export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
-  return produce(nodeItem, draft => {
+  return produce(nodeItem, (draft) => {
     // @ts-ignore
-    if(nodeItem.type === 'magicVariable'){
+    if (nodeItem.type === 'magicVariable') {
       // @ts-ignore
-      nodeItem.children = [{
-        text: ''
-      }];
+      nodeItem.children = [
+        {
+          text: '',
+        },
+      ];
       // @ts-ignore
       const firstOperand = nodeItem.data.operands[0];
       // @ts-ignore
       const firstOperandType = nodeItem.data.operands[0]?.type;
-      if(firstOperandType === 'Expression') {
+      if (firstOperandType === 'Expression') {
         const firstInnerOperand = firstOperand['value']?.operands[0];
         firstInnerOperand.value = triggerId;
       }
@@ -520,11 +529,11 @@ export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
 export const withMagicVariable = (editor: any, triggerId?: string) => {
   const { isInline, isVoid, onChange } = editor;
 
-  editor.isInline = (element: { type: string; }) => {
+  editor.isInline = (element: { type: string }) => {
     return element.type === 'magicVariable' ? true : isInline(element);
   };
 
-  editor.isVoid = (element: { type: string; }) => {
+  editor.isVoid = (element: { type: string }) => {
     return element.type === 'magicVariable' ? true : isVoid(element);
   };
 
@@ -537,7 +546,7 @@ export const withMagicVariable = (editor: any, triggerId?: string) => {
     }
     onChange(...params);
   };
-  
+
   // // @ts-ignore
   // editor.insertData = data => {
   //   const html = data.getData('text/html');
@@ -585,7 +594,7 @@ export const enrichDatasheetTriggerOutputSchema = (
   fields: IField[],
   fieldPermissionMap: IFieldPermissionMap,
 ) => {
-  return produce(nodeOutputSchema, nodeOutputSchema => {
+  return produce(nodeOutputSchema, (nodeOutputSchema) => {
     const enrichedFieldsSchema = fields2Schema(fields, fieldPermissionMap);
     // trigger must have outputJsonSchema
     nodeOutputSchema.schema!.properties = {
@@ -600,12 +609,7 @@ export const enrichDatasheetTriggerOutputSchema = (
         },
         {
           title: t(Strings.robot_variables_select_basics),
-          items: [
-            'recordId',
-            'recordUrl',
-            'datasheetId',
-            'datasheetName',
-          ],
+          items: ['recordId', 'recordUrl', 'datasheetId', 'datasheetName'],
         },
       ],
     };

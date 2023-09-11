@@ -34,7 +34,7 @@ export const useEnhanceTextClick = () => {
       case FieldType.URL:
       default:
         try {
-        // Verifying Address Legitimacy with URL Constructors
+          // Verifying Address Legitimacy with URL Constructors
           const testURL = new URL(text);
           if (testURL.protocol && !/^javascript:/i.test(testURL.protocol)) {
             url = testURL.href;

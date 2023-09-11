@@ -16,33 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useContextMenu } from '@apitable/components';
-import { useUpdateEffect } from 'ahooks';
+import { useUpdateEffect, usePrevious } from 'ahooks';
 import { FC, useContext, useRef } from 'react';
 import * as React from 'react';
-import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@apitable/react-flow';
-import { DragLayer, CustomEdge, BezierEdge, CustomNode } from './components/custom';
-import { DEFAULT_ZOOM, MAX_ZOOM, MIN_ZOOM, ORG_NODE_MENU, ORG_EDGE_MENU, DragNodeType, NodeType } from './constants';
-import { ConfigConstant, Selectors } from '@apitable/core';
-import { FlowContext } from './context/flow_context';
-import { DropWrapper } from './components/drop_wrapper';
-import styles from './styles.module.less';
 import { DropTargetMonitor } from 'react-dnd';
-import { Controls } from './components/controls';
-import { useSelector } from 'react-redux';
-import { IDragItem, NodeHandleState, ScrollBarType } from './interfaces';
-import { AddFirstNode } from './components/add_first_node';
-import { addRecord } from './components/record_list';
-import { usePrevious } from 'ahooks';
-import { GhostNode } from './components/custom/custom_node/ghost_node';
-import { GhostEdge } from './components/custom/ghost_edge';
-import { isWindowsOS } from 'pc/utils/os';
-import { KeyCode } from 'pc/utils';
 import ReactDOM from 'react-dom';
-import { Modal } from './components/modal';
+import { useSelector } from 'react-redux';
+import { useContextMenu } from '@apitable/components';
+import { ConfigConstant, Selectors } from '@apitable/core';
+import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { store } from 'pc/store';
+import { KeyCode } from 'pc/utils';
+import { isWindowsOS } from 'pc/utils/os';
+import { AddFirstNode } from './components/add_first_node';
+import { Controls } from './components/controls';
+import { DragLayer, CustomEdge, BezierEdge, CustomNode } from './components/custom';
+import { GhostNode } from './components/custom/custom_node/ghost_node';
+import { GhostEdge } from './components/custom/ghost_edge';
+import { DropWrapper } from './components/drop_wrapper';
+import { Modal } from './components/modal';
+import { addRecord } from './components/record_list';
 import { ScrollBar } from './components/scroll_bar';
+import { DEFAULT_ZOOM, MAX_ZOOM, MIN_ZOOM, ORG_NODE_MENU, ORG_EDGE_MENU, DragNodeType, NodeType } from './constants';
+import { FlowContext } from './context/flow_context';
+import { IDragItem, NodeHandleState, ScrollBarType } from './interfaces';
+import styles from './styles.module.less';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
 
@@ -74,13 +73,13 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
 
   const { zoomIn, zoomOut, zoomTo, fitView, setCenter } = useZoomPanHelper();
 
-  const nodes = useStoreState(state => state.nodes);
-  const [, , scale] = useStoreState(state => state.transform);
+  const nodes = useStoreState((state) => state.nodes);
+  const [, , scale] = useStoreState((state) => state.transform);
 
   const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
 
   const focusNode = (id: string) => {
-    const node = nodes.find(n => n.id === id);
+    const node = nodes.find((n) => n.id === id);
     if (node) {
       const x = node.__rf.position.x + node.__rf.width / 2;
       const y = node.__rf.position.y + node.__rf.height / 2;
@@ -118,7 +117,7 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
       x: clientOffset.x - reactFlowBounds.left,
       y: clientOffset.y - reactFlowBounds.top,
     });
-    setNodeStateMap(s => ({
+    setNodeStateMap((s) => ({
       ...s,
       [item.id]: {
         ...s?.[item.id],

@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Tooltip, useThemeColors } from '@apitable/components';
-import { IRoleOption, IUnitInfo } from 'pc/components/catalog/permission_settings/permission/unit_item/interface';
-import styles from './style.module.less';
-import classNames from 'classnames';
-import classnames from 'classnames';
-import { CheckOutlined, ChevronDownOutlined, WarnFilled } from '@apitable/icons';
 import { ConfigConstant, Strings, t } from '@apitable/core';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { CheckOutlined, ChevronDownOutlined, WarnFilled } from '@apitable/icons';
+import { IRoleOption, IUnitInfo } from 'pc/components/catalog/permission_settings/permission/unit_item/interface';
 import { MobileSelect } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header/wrapper_tooltip';
+import styles from './style.module.less';
 
 const Option = Select.Option!;
 
@@ -41,7 +40,7 @@ interface IPermissionSelectProps {
   roleInvalid?: boolean;
 }
 
-export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelectProps>> = props => {
+export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelectProps>> = (props) => {
   const { roleOptions, role, onChange, unit, allowRemove = true, onRemove, roleInvalid } = props;
   const colors = useThemeColors();
   return (
@@ -109,7 +108,7 @@ export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelec
               return (
                 <>
                   <div className={styles.mobileWrapper}>
-                    {roleOptions.map(item => (
+                    {roleOptions.map((item) => (
                       <div
                         className={classNames(styles.mobileOption)}
                         key={item.value}
@@ -125,7 +124,7 @@ export const PermissionSelect: React.FC<React.PropsWithChildren<IPermissionSelec
                   </div>
                   {onRemove && (
                     <div
-                      className={classnames(styles.deleteItem, styles.group)}
+                      className={classNames(styles.deleteItem, styles.group)}
                       onClick={() => {
                         onRemove(unit.id);
                       }}

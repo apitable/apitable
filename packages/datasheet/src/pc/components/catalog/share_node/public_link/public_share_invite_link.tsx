@@ -16,26 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useRequest } from 'ahooks';
+import { Tooltip } from 'antd';
+import { FC, useState, useCallback } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Skeleton, IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { CodeOutlined, LinkOutlined, QrcodeOutlined, NewtabOutlined, CheckOutlined, ChevronDownOutlined, QuestionCircleOutlined } from '@apitable/icons';
-import { useRequest } from 'ahooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { Tooltip } from 'antd';
+import {
+  CodeOutlined,
+  LinkOutlined,
+  QrcodeOutlined,
+  NewtabOutlined,
+  CheckOutlined,
+  ChevronDownOutlined,
+  QuestionCircleOutlined,
+} from '@apitable/icons';
 import { Message, MobileSelect, Popconfirm } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
-import { getEnvVariables } from 'pc/utils/env';
-import { FC, useState, useCallback } from 'react';
-import { copy2clipBoard } from 'pc/utils';
 import { Router } from 'pc/components/route_manager/router';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { copy2clipBoard } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
+import { ShareQrCode } from '../share_qr_code';
+import styles from './style.module.less';
 // @ts-ignore
 import { WidgetEmbed } from 'enterprise';
-import { ShareQrCode } from '../share_qr_code';
-import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
-import styles from './style.module.less';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -55,13 +63,15 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   }, []);
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
-  const { run: getShareSettings, data: shareSettings } =
-    useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures } = useSelector((state: IReduxState) => ({
-    treeNodesMap: state.catalogTree.treeNodesMap,
-    userInfo: state.user.info,
-    spaceFeatures: state.space.spaceFeatures,
-  }), shallowEqual);
+  const { run: getShareSettings, data: shareSettings } = useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
+  const { userInfo, treeNodesMap, spaceFeatures } = useSelector(
+    (state: IReduxState) => ({
+      treeNodesMap: state.catalogTree.treeNodesMap,
+      userInfo: state.user.info,
+      spaceFeatures: state.space.spaceFeatures,
+    }),
+    shallowEqual,
+  );
 
   const isShareMirror = nodeId.startsWith('mir');
   const shareHost = `${window.location.protocol}//${window.location.host}/share/`;
@@ -78,53 +88,56 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   /**
    * Set sharing permissions
    */
-  const handleUpdateShare = (permission: { onlyRead?: boolean, canBeEdited?: boolean, canBeStored?: boolean }) => {
-    const onOk = () => Api.updateShare(nodeId, permission).then(res => {
-      const { success } = res.data;
-      if (success) {
-        getShareSettings();
-        handleUpdateShareStatus(true);
-        Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
-      } else {
-        Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
-      }
-    });
+  const handleUpdateShare = (permission: { onlyRead?: boolean; canBeEdited?: boolean; canBeStored?: boolean }) => {
+    const onOk = () =>
+      Api.updateShare(nodeId, permission).then((res) => {
+        const { success } = res.data;
+        if (success) {
+          getShareSettings();
+          handleUpdateShareStatus(true);
+          Message.success({ content: t(Strings.share_settings_tip, { status: t(Strings.success) }) });
+        } else {
+          Message.error({ content: t(Strings.share_settings_tip, { status: t(Strings.fail) }) });
+        }
+      });
     if (shareSettings?.linkNodes.length) {
       Modal.confirm({
         type: 'warning',
         title: t(Strings.share_and_permission_popconfirm_title),
-        content: <>
-          {shareSettings.containMemberFld &&
+        content: (
+          <>
+            {shareSettings.containMemberFld && (
+              <div className={styles.tipItem}>
+                <div className={styles.tipContent1}>
+                  <TComponent
+                    tkey={t(Strings.share_edit_exist_member_tip)}
+                    params={{
+                      content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             <div className={styles.tipItem}>
-              <div className={styles.tipContent1}>
+              <div className={styles.tipContent2}>
                 <TComponent
-                  tkey={t(Strings.share_edit_exist_member_tip)}
+                  tkey={t(Strings.share_exist_something_tip)}
                   params={{
-                    content: <span className={styles.bold}>{t(Strings.member_type_field)}</span>
+                    content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>,
                   }}
                 />
               </div>
             </div>
-          }
-          <div className={styles.tipItem}>
-            <div className={styles.tipContent2}>
-              <TComponent
-                tkey={t(Strings.share_exist_something_tip)}
-                params={{
-                  content: <span className={styles.bold}>{t(Strings.link_other_datasheet)}</span>
-                }}
-              />
+            <div className={styles.linkNodes}>
+              {shareSettings.linkNodes.map((item, index) => (
+                <div key={item + index} className={styles.linkNode}>
+                  <div className={styles.linkNodeName}>{item}</div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className={styles.linkNodes}>
-            {shareSettings.linkNodes.map((item, index) => (
-              <div key={item + index} className={styles.linkNode}>
-                <div className={styles.linkNodeName}>{item}</div>
-              </div>
-            ))}
-          </div>
-        </>,
-        onOk
+          </>
+        ),
+        onOk,
       });
       return;
     }
@@ -139,16 +152,17 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     if (!shareSettings) {
       return;
     }
-    const onOk = () => Api.disableShare(shareSettings.nodeId).then(res => {
-      const { success } = res.data;
-      if (success) {
-        getShareSettings();
-        handleUpdateShareStatus(false);
-        Message.success({ content: t(Strings.close_share_tip, { status: t(Strings.success) }) });
-      } else {
-        Message.error({ content: t(Strings.close_share_tip, { status: t(Strings.fail) }) });
-      }
-    });
+    const onOk = () =>
+      Api.disableShare(shareSettings.nodeId).then((res) => {
+        const { success } = res.data;
+        if (success) {
+          getShareSettings();
+          handleUpdateShareStatus(false);
+          Message.success({ content: t(Strings.close_share_tip, { status: t(Strings.success) }) });
+        } else {
+          Message.error({ content: t(Strings.close_share_tip, { status: t(Strings.fail) }) });
+        }
+      });
     setDeleting(false);
     onOk();
   };
@@ -175,27 +189,29 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     handleUpdateShare({ [option.value]: true });
   };
 
-  const Permission: IDoubleOptions[] = [{
-    value: 'onlyRead',
-    label: t(Strings.can_view),
-    subLabel: t(Strings.share_only_desc),
-  }, {
-    value: 'canBeEdited',
-    label: t(Strings.can_edit),
-    subLabel: t(Strings.share_and_editable_desc),
-  }, {
-    value: 'canBeStored',
-    label: t(Strings.can_duplicate),
-    subLabel: t(Strings.share_and_save_desc),
-    disabled: Boolean(isShareMirror)
-  }];
+  const Permission: IDoubleOptions[] = [
+    {
+      value: 'onlyRead',
+      label: t(Strings.can_view),
+      subLabel: t(Strings.share_only_desc),
+    },
+    {
+      value: 'canBeEdited',
+      label: t(Strings.can_edit),
+      subLabel: t(Strings.share_and_editable_desc),
+    },
+    {
+      value: 'canBeStored',
+      label: t(Strings.can_duplicate),
+      subLabel: t(Strings.share_and_save_desc),
+      disabled: Boolean(isShareMirror),
+    },
+  ];
 
   let value = '';
   if (shareSettings) {
     const { canBeEdited, onlyRead } = shareSettings.props;
-    value = onlyRead ? 'onlyRead' :
-      canBeEdited ? 'canBeEdited' :
-        'canBeStored';
+    value = onlyRead ? 'onlyRead' : canBeEdited ? 'canBeEdited' : 'canBeStored';
   }
 
   const copyLinkHandler = () => {
@@ -226,15 +242,16 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
             setDeleting(false);
           }}
           onOk={handleCloseShare}
-          type='danger'
+          type="danger"
         >
-          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle}/>
+          <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         </Popconfirm>
-        <Typography variant='h7'
-          className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
+        <Typography variant="h7" className={styles.shareToggleContent}>
+          {t(Strings.publish_share_link_with_anyone)}
+        </Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
-          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
-            <QuestionCircleOutlined currentColor/>
+          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel="noopener noreferrer" target="_blank">
+            <QuestionCircleOutlined currentColor />
           </a>
         </Tooltip>
       </div>
@@ -244,9 +261,9 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   if (!shareSettings) {
     return (
       <div className={styles.publish}>
-        <Skeleton count={1} style={{ marginTop: 0 }} width='25%' height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '58px' }} height='24px'/>
-        <Skeleton count={1} style={{ marginTop: '16px' }} height='24px'/>
+        <Skeleton count={1} style={{ marginTop: 0 }} width="25%" height="24px" />
+        <Skeleton count={1} style={{ marginTop: '58px' }} height="24px" />
+        <Skeleton count={1} style={{ marginTop: '16px' }} height="24px" />
       </div>
     );
   }
@@ -264,17 +281,14 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     return (
       <div className={styles.shareTips}>
         <div className={styles.title}>
-          <Typography align='center' style={{ marginBottom: 8 }} variant='h6'>{t(Strings.share_tips_title)}</Typography>
-          <Typography align='left' variant='body3'>
-            { t(isAI ? Strings.share_tips_ai : Strings.share_tips) }
+          <Typography align="center" style={{ marginBottom: 8 }} variant="h6">
+            {t(Strings.share_tips_title)}
+          </Typography>
+          <Typography align="left" variant="body3">
+            {t(isAI ? Strings.share_tips_ai : Strings.share_tips)}
           </Typography>
         </div>
-        <Button
-          loading={shareStatus}
-          style={{ width: 160 }}
-          className={styles.shareOpenButton}
-          color='primary'
-          onClick={() => handleToggle(true)}>
+        <Button loading={shareStatus} style={{ width: 160 }} className={styles.shareOpenButton} color="primary" onClick={() => handleToggle(true)}>
           {t(Strings.publish)}
         </Button>
       </div>
@@ -283,71 +297,62 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
 
   return (
     <div className={styles.publish}>
-      { renderShareSwitchButton() }
+      {renderShareSwitchButton()}
       <div className={styles.sharePerson}>
-        <Typography className={styles.sharePersonContent} variant='body2'>
+        <Typography className={styles.sharePersonContent} variant="body2">
           {t(isAI ? Strings.get_ai_link_person_on_internet : Strings.get_link_person_on_internet)}
         </Typography>
-        {!isAI && (<>
-          {isMobile ? (
-            <MobileSelect
-              triggerComponent={
-                <div className={styles.mobileRoleSelect}>
-                  {Permission.filter(item => item.value === value)[0].label}
-                  {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText}/>}
-                </div>
-              }
-              renderList={({ setVisible }) => {
-                return (
-                  <div className={styles.mobileWrapper}>
-                    {Permission.map((item) => (
-                      <div
-                        className={styles.mobileOption}
-                        key={item.value}
-                        onClick={() => {
-                          handleShareAuthClick(item);
-                          setVisible(false);
-                        }}
-                      >
-                        <div>
-                          <Typography variant={'body2'}>{item.label}</Typography>
-                          <Typography variant={'body4'}>{item.subLabel}</Typography>
-                        </div>
-                        {item.value === value && <CheckOutlined color={colors.primaryColor}/>}
-                      </div>
-                    ))}
+        {!isAI && (
+          <>
+            {isMobile ? (
+              <MobileSelect
+                triggerComponent={
+                  <div className={styles.mobileRoleSelect}>
+                    {Permission.filter((item) => item.value === value)[0].label}
+                    {<ChevronDownOutlined className={styles.arrowIcon} size={16} color={colors.fourthLevelText} />}
                   </div>
-                );
-              }}
-            />
-          ) : (
-            <DoubleSelect
-              value={value}
-              disabled={false}
-              onSelected={(op) => handleShareAuthClick(op)}
-              triggerCls={styles.doubleSelect}
-              options={Permission}
-            />
-          )}
-        </>)}
+                }
+                renderList={({ setVisible }) => {
+                  return (
+                    <div className={styles.mobileWrapper}>
+                      {Permission.map((item) => (
+                        <div
+                          className={styles.mobileOption}
+                          key={item.value}
+                          onClick={() => {
+                            handleShareAuthClick(item);
+                            setVisible(false);
+                          }}
+                        >
+                          <div>
+                            <Typography variant={'body2'}>{item.label}</Typography>
+                            <Typography variant={'body4'}>{item.subLabel}</Typography>
+                          </div>
+                          {item.value === value && <CheckOutlined color={colors.primaryColor} />}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                }}
+              />
+            ) : (
+              <DoubleSelect
+                value={value}
+                disabled={false}
+                onSelected={(op) => handleShareAuthClick(op)}
+                triggerCls={styles.doubleSelect}
+                options={Permission}
+              />
+            )}
+          </>
+        )}
       </div>
       <div className={styles.shareLink}>
         <div className={styles.inputContainer}>
-          <input
-            type='text'
-            className={styles.link}
-            value={shareHost + shareSettings.shareId}
-            id={shareSettings.shareId}
-            readOnly
-          />
+          <input type="text" className={styles.link} value={shareHost + shareSettings.shareId} id={shareSettings.shareId} readOnly />
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <Tooltip title={t(Strings.preview)} placement='top'>
-              <IconButton
-                icon={NewtabOutlined}
-                onClick={previewHandler}
-                variant="background"
-                className={styles.inputButton}
-              />
+            <Tooltip title={t(Strings.preview)} placement="top">
+              <IconButton icon={NewtabOutlined} onClick={previewHandler} variant="background" className={styles.inputButton} />
             </Tooltip>
           </ComponentDisplay>
         </div>
@@ -357,7 +362,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
           className={styles.inviteMoreMethod}
           underline={false}
           onClick={() => copyLinkHandler()}
-          prefixIcon={<LinkOutlined currentColor/>}
+          prefixIcon={<LinkOutlined currentColor />}
         >
           {t(Strings.share_copy_url_link)}
         </LinkButton>
@@ -366,7 +371,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
             className={styles.inviteMoreMethod}
             underline={false}
             onClick={() => setWidgetEmbedVisible(true)}
-            prefixIcon={<CodeOutlined currentColor/>}
+            prefixIcon={<CodeOutlined currentColor />}
           >
             Embed
           </LinkButton>
@@ -378,31 +383,17 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
             placement="left"
             showArrow={false}
             overlayInnerStyle={{ padding: 0, backgroundColor: 'transparent' }}
-            overlay={(
-              <ShareQrCode
-                url={`${shareHost}${shareSettings.shareId}`}
-                user={userInfo}
-                nodeName={treeNodesMap[shareSettings.nodeId]?.nodeName}
-              />
-            )}
+            overlay={
+              <ShareQrCode url={`${shareHost}${shareSettings.shareId}`} user={userInfo} nodeName={treeNodesMap[shareSettings.nodeId]?.nodeName} />
+            }
           >
-            <LinkButton
-              className={styles.inviteMoreMethod}
-              underline={false}
-              prefixIcon={<QrcodeOutlined currentColor/>}
-            >
+            <LinkButton className={styles.inviteMoreMethod} underline={false} prefixIcon={<QrcodeOutlined currentColor />}>
               {t(Strings.share_qr_code_tips)}
             </LinkButton>
           </Tooltip>
-
         </ComponentDisplay>
-        {WidgetEmbed && <WidgetEmbed
-          visible={WidgetEmbedVisible}
-          hide={hideShareCodeModal}
-          shareId={shareSettings.shareId}
-        />}
+        {WidgetEmbed && <WidgetEmbed visible={WidgetEmbedVisible} hide={hideShareCodeModal} shareId={shareSettings.shareId} />}
       </div>
     </div>
   );
-
 };

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ILinearRow } from '@apitable/core';
-import { GridLayout } from './layout';
 import { colors } from '@apitable/components';
+import { ILinearRow } from '@apitable/core';
 import { GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH } from '../../constant';
+import { GridLayout } from './layout';
 
 export class BlankRowLayout extends GridLayout {
   override renderAddFieldBlank(row: ILinearRow) {
@@ -32,12 +32,12 @@ export class BlankRowLayout extends GridLayout {
         x: this.x + this.columnWidth,
         y: this.y,
         points: [0, rowHeight, width, rowHeight],
-        stroke: colors.sheetLineColor
+        stroke: colors.sheetLineColor,
       });
     }
   }
 
-  private renderFirstCell(row: ILinearRow, colors: { lowestBg: string; sheetLineColor: string; }) {
+  private renderFirstCell(row: ILinearRow, colors: { lowestBg: string; sheetLineColor: string }) {
     if (!this.isFirst) return;
 
     const { depth } = row;
@@ -51,7 +51,7 @@ export class BlankRowLayout extends GridLayout {
         y: y + 0.5,
         width: columnWidth + GRID_ROW_HEAD_WIDTH + 0.5,
         height: rowHeight,
-        fill: colors.lowestBg
+        fill: colors.lowestBg,
       });
     }
     this.renderIndentFront(depth);
@@ -60,7 +60,7 @@ export class BlankRowLayout extends GridLayout {
       y: y + 0.5,
       width: columnWidth + GRID_ROW_HEAD_WIDTH + 0.5,
       height: rowHeight,
-      fill: this.getGroupBackgroundByDepth(depth - 1)
+      fill: this.getGroupBackgroundByDepth(depth - 1),
     });
     this.line({
       x: x + 0.5,
@@ -89,7 +89,7 @@ export class BlankRowLayout extends GridLayout {
       y: y + 0.5,
       width: width + 0.5,
       height: rowHeight,
-      fill: this.getGroupBackgroundByDepth(depth - 1)
+      fill: this.getGroupBackgroundByDepth(depth - 1),
     });
     this.line({
       x: x + 0.5,
@@ -120,7 +120,7 @@ export class BlankRowLayout extends GridLayout {
       y: y + 0.5,
       width: columnWidth + 0.5,
       height: rowHeight,
-      fill: this.getGroupBackgroundByDepth(depth - 1)
+      fill: this.getGroupBackgroundByDepth(depth - 1),
     });
     this.line({
       x: x + 0.5,
@@ -130,7 +130,7 @@ export class BlankRowLayout extends GridLayout {
     });
   }
 
-  render({ row, colors }: { row: ILinearRow, colors: { lowestBg: string; sheetLineColor: string; } }) {
+  render({ row, colors }: { row: ILinearRow; colors: { lowestBg: string; sheetLineColor: string } }) {
     this.renderFirstCell(row, colors);
     this.renderCommonCell(row);
     this.renderLastCell(row);

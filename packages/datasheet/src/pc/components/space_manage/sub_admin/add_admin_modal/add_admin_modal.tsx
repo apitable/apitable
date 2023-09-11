@@ -16,20 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { FC, useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { Button, TextButton } from '@apitable/components';
 import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditSubAdmin, useNotificationCreate } from 'pc/hooks';
 import { generateUserInfo } from 'pc/utils';
-import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
 import { PermissionCard } from '../permission_card';
 import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
-import { AddOutlined } from '@apitable/icons';
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),
@@ -58,7 +58,7 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
     }),
     shallowEqual,
   );
-  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
   const [selectMemberModal, setSelectMemberModal] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState<UnitItem[]>([]);
   const [resourceCodes, setResourceCodes] = useState<string[]>([]);
@@ -74,7 +74,7 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
   useEffect(() => {
     if (source !== ModalType.Add && editOrReadSubMainInfo) {
       setSelectMemberId(editOrReadSubMainInfo.memberId);
-      Api.subAdminPermission(editOrReadSubMainInfo.memberId).then(res => {
+      Api.subAdminPermission(editOrReadSubMainInfo.memberId).then((res) => {
         const { success, data } = res.data;
         if (success) {
           setResourceCodes(data.resources);
@@ -85,7 +85,7 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
 
   const modalConfirm = () => {
     if (source === ModalType.Add) {
-      const memberIds = selectedMembers.map(item => (item as IMember).memberId);
+      const memberIds = selectedMembers.map((item) => (item as IMember).memberId);
       const result = triggerUsageAlert(
         'maxAdminNums',
         { usage: memberIds.length + existSubAdminNum, alwaysAlert: true },
@@ -110,7 +110,7 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
       tempSelects.push(value);
     }
     if (!checked && tempSelects.includes(value)) {
-      tempSelects = tempSelects.filter(item => item !== value);
+      tempSelects = tempSelects.filter((item) => item !== value);
     }
     setResourceCodes(tempSelects);
   };
@@ -125,12 +125,12 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
     setSelectMemberModal(false);
   };
   const delSelected = (id: string) => {
-    const newSelected = selectedMembers.filter(item => item.unitId !== id);
+    const newSelected = selectedMembers.filter((item) => item.unitId !== id);
     setSelectedMembers(newSelected);
   };
   const getDisableIdList = () => {
     if (subAdminList.length > 0) {
-      const subMainListId = subAdminList.map(item => item.memberId);
+      const subMainListId = subAdminList.map((item) => item.memberId);
       subMainListId.push(userInfo!.memberId);
       return subMainListId;
     }
@@ -138,11 +138,11 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
   };
   const title =
     source !== ModalType.Add && editOrReadSubMainInfo
-      ? (getSocialWecomUnitName?.({
+      ? getSocialWecomUnitName?.({
         name: editOrReadSubMainInfo?.memberName,
         isModified: editOrReadSubMainInfo?.isMemberNameModified,
         spaceInfo,
-      }) || editOrReadSubMainInfo?.memberName)
+      }) || editOrReadSubMainInfo?.memberName
       : '';
   return (
     <>
@@ -169,20 +169,23 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
           />
         ) : (
           <>
-            <Button size='small' onClick={() => setSelectMemberModal(true)} prefixIcon={
-              <AddOutlined size={12} color='currentColor' className={styles.addBtnIcon} />
-            }>
+            <Button
+              size="small"
+              onClick={() => setSelectMemberModal(true)}
+              prefixIcon={<AddOutlined size={12} color="currentColor" className={styles.addBtnIcon} />}
+            >
               {t(Strings.add_member)}
             </Button>
             <div className={styles.selectedWrapper}>
               {selectedMembers.length > 0 &&
-                selectedMembers.map(item => {
+                selectedMembers.map((item) => {
                   const userInfo = generateUserInfo(item);
-                  const title = getSocialWecomUnitName({
-                    name: (item as IMember)?.originName,
-                    isModified: (item as IMember)?.isMemberNameModified,
-                    spaceInfo,
-                  }) || (item as IMember)?.originName;
+                  const title =
+                    getSocialWecomUnitName({
+                      name: (item as IMember)?.originName,
+                      isModified: (item as IMember)?.isMemberNameModified,
+                      spaceInfo,
+                    }) || (item as IMember)?.originName;
                   return (
                     <UnitTag
                       key={item.unitId}
@@ -205,15 +208,15 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
         <PermissionCard onChange={permissionChange} defaultChecked={resourceCodes} checked={resourceCodes} inRead={source === ModalType.Read} />
         {source !== ModalType.Read && (
           <div className={styles.btnWrapper}>
-            <TextButton onClick={handCancel} size='small'>
+            <TextButton onClick={handCancel} size="small">
               {t(Strings.cancel)}
             </TextButton>
             <Button
               onClick={modalConfirm}
-              color='primary'
+              color="primary"
               className={styles.confirmBtn}
               disabled={resourceCodes.length === 0 || (selectedMembers.length === 0 && source === ModalType.Add) || submitBtnLoading}
-              size='small'
+              size="small"
               loading={submitBtnLoading}
             >
               {t(Strings.submit)}

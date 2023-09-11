@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ContextmenuItem } from 'pc/components/common';
+import { useClickAway } from 'ahooks';
 import { useRef, useState, useImperativeHandle } from 'react';
 import * as React from 'react';
+import { ContextmenuItem } from 'pc/components/common';
 import styles from './style.module.less';
-import { useClickAway } from 'ahooks';
 
 export interface IContextMenuItem {
   className?: string;
@@ -35,7 +35,7 @@ export interface IContextMenuProps {
 }
 
 export interface IContextMenuMethods {
-  show(e: React.MouseEvent, props?: any): void
+  show(e: React.MouseEvent, props?: any): void;
 }
 
 const ContextMenuBase: React.ForwardRefRenderFunction<{}, IContextMenuProps> = (props, ref) => {
@@ -49,7 +49,7 @@ const ContextMenuBase: React.ForwardRefRenderFunction<{}, IContextMenuProps> = (
       currentProps.current = props;
       setPos({ top: e.clientY + 10, left: e.clientX + 10 });
       setVisible(true);
-    }
+    },
   }));
 
   useClickAway(() => {
@@ -58,18 +58,32 @@ const ContextMenuBase: React.ForwardRefRenderFunction<{}, IContextMenuProps> = (
 
   return (
     <>
-      { visible && <div style={{
-        left: pos.left,
-        top: pos.top
-      }} className={styles.widgetContextMenu} ref={currentRef}>
-        {
-          visible && menuData.map((menu, index) => !menu.hidden &&
-          <ContextmenuItem className={styles.contextMenuItem} key={index} {...menu} onClick={() => {
-            setVisible(false);
-            menu.onClick && menu.onClick(currentProps.current);
-          }}/>)
-        }
-      </div> }
+      {visible && (
+        <div
+          style={{
+            left: pos.left,
+            top: pos.top,
+          }}
+          className={styles.widgetContextMenu}
+          ref={currentRef}
+        >
+          {visible &&
+            menuData.map(
+              (menu, index) =>
+                !menu.hidden && (
+                  <ContextmenuItem
+                    className={styles.contextMenuItem}
+                    key={index}
+                    {...menu}
+                    onClick={() => {
+                      setVisible(false);
+                      menu.onClick && menu.onClick(currentProps.current);
+                    }}
+                  />
+                ),
+            )}
+        </div>
+      )}
     </>
   );
 };

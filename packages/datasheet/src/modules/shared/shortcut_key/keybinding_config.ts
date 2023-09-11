@@ -74,7 +74,6 @@ export interface IKeyBinding {
    * @memberof IKeyBinding
    */
   name?: string[];
-
 }
 
 export function getKeyForOS(keyBinding: IKeyBinding) {
@@ -84,7 +83,8 @@ export function getKeyForOS(keyBinding: IKeyBinding) {
 
 // Macifying the display of shortcut keys
 export function formatMacShortcutKey(shortcutKey: string): string {
-  return shortcutKey.replace(/\+/g, ' ')
+  return shortcutKey
+    .replace(/\+/g, ' ')
     .replace(/cmd/gi, '⌘')
     .replace(/option/gi, '⌥')
     .replace(/ctrl/gi, '⌃')
@@ -95,29 +95,33 @@ export function formatMacShortcutKey(shortcutKey: string): string {
     .replace(/right/gi, '→')
     .replace(/delete/gi, '⌫')
     .split(' ')
-    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
-    .join(' ').trim();
+    .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1))
+    .join(' ')
+    .trim();
 }
 
 // Winify the display of shortcut keys
 export function formatWinShortcutKey(shortcutKey: string): string {
-  return shortcutKey.replace(/(up$|^up)/gi, '↑')
+  return shortcutKey
+    .replace(/(up$|^up)/gi, '↑')
     .replace(/(down$|^down)/gi, '↓')
     .replace(/left/gi, '←')
     .replace(/right/gi, '→')
     .split('+')
-    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
+    .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1))
     .join(' + ');
 }
 
 export function getShortcutKeyString(actionName: ShortcutActionName | ShortcutKey): string {
   let shortcutKey;
   if (typeof actionName === 'string') {
-    shortcutKey = SystemConfig.shortcut_keys.find(item => item.command === actionName);
+    shortcutKey = SystemConfig.shortcut_keys.find((item) => item.command === actionName);
   } else {
     shortcutKey = actionName;
   }
-  if (!shortcutKey) { return ''; }
+  if (!shortcutKey) {
+    return '';
+  }
   const { winKey, key } = shortcutKey;
   if (browser?.is('Windows')) {
     const keyVal = winKey || key;

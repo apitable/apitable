@@ -16,33 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import dynamic from 'next/dynamic';
+import { FC, useContext, useState } from 'react';
 import { colors, getNextShadeColor } from '@apitable/components';
 import { IField, KONVA_DATASHEET_ID, ThemeName } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';
 import {
-  GRID_CELL_DELETE_ITEM_BUTTON_SIZE, GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING, KonvaGridContext,
-  KonvaGridViewContext
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE,
+  GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET,
+  GRID_CELL_VALUE_PADDING,
+  GRID_OPTION_ITEM_PADDING,
+  KonvaGridContext,
+  KonvaGridViewContext,
 } from 'pc/components/konva_grid';
 import { setColor } from 'pc/components/multi_grid/format';
 import { COLOR_INDEX_THRESHOLD } from 'pc/utils';
-import { FC, useContext, useState } from 'react';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
-  const item = field.property.options.find((item: { id: string; }) => item.id === id);
+  const item = field.property.options.find((item: { id: string }) => item.id === id);
   if (!item) return '';
   if (key === 'color') return setColor(item[key], theme);
   return item[key]?.replace(/\r|\n/g, ' ');
 }
 
 export function getOptionNameColor(id: string, field: IField) {
-  const item = field.property.options.find((item: { id: string; }) => item.id === id);
+  const item = field.property.options.find((item: { id: string }) => item.id === id);
   if (item == null) return colors.firstLevelText;
   return item.color >= COLOR_INDEX_THRESHOLD ? colors.defaultBg : colors.firstLevelText;
 }
@@ -51,20 +55,7 @@ const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 
 export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const {
-    x,
-    y,
-    recordId,
-    cellValue,
-    field,
-    rowHeight,
-    columnWidth,
-    renderData,
-    isActive,
-    editable,
-    onChange,
-    toggleEdit
-  } = props;
+  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, onChange, toggleEdit } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { cacheTheme } = useContext(KonvaGridViewContext);
@@ -76,7 +67,7 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
     targetName: KONVA_DATASHEET_ID.GRID_CELL,
     fieldId,
     recordId,
-    mouseStyle: 'pointer'
+    mouseStyle: 'pointer',
   });
   const [isAddIconHover, setAddIconHover] = useState(false);
   const [closeIconHoverId, setCloseIconHoverId] = useState<null | string>(null);
@@ -92,18 +83,8 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
   }
 
   return (
-    <CellScrollContainer
-      x={x}
-      y={y}
-      columnWidth={columnWidth}
-      rowHeight={rowHeight}
-      fieldId={fieldId}
-      recordId={recordId}
-      renderData={renderData}
-    >
-      {
-        isActive &&
-        operatingEnable &&
+    <CellScrollContainer x={x} y={y} columnWidth={columnWidth} rowHeight={rowHeight} fieldId={fieldId} recordId={recordId} renderData={renderData}>
+      {isActive && operatingEnable && (
         <Icon
           name={name}
           x={GRID_CELL_VALUE_PADDING}
@@ -118,15 +99,13 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
           onClick={toggleEdit}
           onTap={toggleEdit}
         />
-      }
-      {
-        isActive &&
+      )}
+      {isActive &&
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height, text, style } = item;
           const { background, color } = style;
-          const iconColor = isLightTheme ?
-            (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
+          const iconColor = isLightTheme ? (color === colors.firstLevelText ? colors.secondLevelText : colors.defaultBg) : colors.textStaticPrimary;
           let iconBg = 'transparent';
           if (closeIconHoverId === cellValue![index]) {
             iconBg = getNextShadeColor(background!, 1);
@@ -136,28 +115,10 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
           }
 
           return (
-            <Group
-              x={x}
-              y={y}
-              listening={isActive}
-              key={index}
-            >
-              <Rect
-                width={width}
-                height={height}
-                fill={background}
-                cornerRadius={16}
-                listening={false}
-              />
-              <Text
-                x={GRID_OPTION_ITEM_PADDING}
-                height={height}
-                text={text}
-                fill={color}
-                fontSize={12}
-              />
-              {
-                operatingEnable &&
+            <Group x={x} y={y} listening={isActive} key={index}>
+              <Rect width={width} height={height} fill={background} cornerRadius={16} listening={false} />
+              <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={text} fill={color} fontSize={12} />
+              {operatingEnable && (
                 <Icon
                   name={name}
                   x={width - GRID_OPTION_ITEM_PADDING - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET}
@@ -188,11 +149,10 @@ export const CellMultiSelect: FC<React.PropsWithChildren<ICellProps>> = (props) 
                     setCloseIconHoverId(null);
                   }}
                 />
-              }
+              )}
             </Group>
           );
-        })
-      }
+        })}
     </CellScrollContainer>
   );
 };

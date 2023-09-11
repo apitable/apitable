@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ThemeProvider } from '@apitable/components';
-import { Selectors } from '@apitable/core';
 import { useMount, useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
-import { PopupContent } from './popup_content/pc';
-import { store } from 'pc/store';
 import * as React from 'react';
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, useSelector } from 'react-redux';
+import { ThemeProvider } from '@apitable/components';
+import { Selectors } from '@apitable/core';
+import { store } from 'pc/store';
+import { PopupContent } from './popup_content/pc';
 import styles from './style.module.less';
 
 const VIEW_MANUAL_SAVE_ALERT = 'VIEW_MANUAL_SAVE_ALERT';
@@ -43,11 +43,11 @@ export const ShowViewManualSaveAlert = () => {
     container.parentElement?.removeChild(container);
   };
 
-  root.render((
+  root.render(
     <Provider store={store}>
       <ViewManualSaveAlertContentWithTheme modalClose={modalClose} />
-    </Provider>
-  ));
+    </Provider>,
+  );
 };
 
 interface IShowViewManualSaveInPcContentProps {
@@ -65,8 +65,8 @@ const ViewManualSaveAlertContentWithTheme: React.FC<React.PropsWithChildren<ISho
 
 const ViewManualSaveAlertContent: React.FC<React.PropsWithChildren<IShowViewManualSaveInPcContentProps>> = (props) => {
   const { modalClose } = props;
-  const { datasheetId, viewId } = useSelector(state => state.pageParams);
-  const currentView = useSelector(state => Selectors.getCurrentView(state, datasheetId));
+  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
+  const currentView = useSelector((state) => Selectors.getCurrentView(state, datasheetId));
   const [show, setShow] = useState(false);
   const isViewLock = Boolean(currentView?.lockInfo);
 
@@ -81,14 +81,16 @@ const ViewManualSaveAlertContent: React.FC<React.PropsWithChildren<IShowViewManu
     modalClose();
   }, [datasheetId, viewId]);
 
-  return <div className={classnames(styles.viewSyncAlert, show && styles.show)}>
-    <PopupContent
-      autoSave={Boolean(currentView?.autoSave)}
-      datasheetId={datasheetId!}
-      viewId={viewId!}
-      onClose={modalClose}
-      contentRef={null}
-      isViewLock={isViewLock}
-    />
-  </div>;
+  return (
+    <div className={classnames(styles.viewSyncAlert, show && styles.show)}>
+      <PopupContent
+        autoSave={Boolean(currentView?.autoSave)}
+        datasheetId={datasheetId!}
+        viewId={viewId!}
+        onClose={modalClose}
+        contentRef={null}
+        isViewLock={isViewLock}
+      />
+    </div>
+  );
 };

@@ -16,35 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line no-restricted-imports
-import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
-import {
-  BasicValueType, DateTimeField, Field, FieldType, Functions, IField,
-  IFilterInfo, ILookUpField, ILookUpProperty, LookUpField,
-  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysMapType, Strings, t, LookUpLimitType, ILookUpSortInfo
-} from '@apitable/core';
-import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
-// eslint-disable-next-line no-restricted-imports
-import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { InlineNodeName } from 'pc/components/common/inline_node_name';
-import { FilterModal } from 'pc/components/multi_grid/format/format_lookup/filter_modal/filter_modal';
-import { TComponent } from 'pc/components/common/t_component';
-import { store } from 'pc/store';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isNumber } from 'util';
+// eslint-disable-next-line no-restricted-imports
+import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
+import {
+  BasicValueType,
+  DateTimeField,
+  Field,
+  FieldType,
+  Functions,
+  IField,
+  IFilterInfo,
+  ILookUpField,
+  ILookUpProperty,
+  LookUpField,
+  NOT_FORMAT_FUNC_SET,
+  RollUpFuncType,
+  Selectors,
+  StringKeysMapType,
+  Strings,
+  t,
+  LookUpLimitType,
+  ILookUpSortInfo,
+} from '@apitable/core';
+import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
+// eslint-disable-next-line no-restricted-imports
+import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { InlineNodeName } from 'pc/components/common/inline_node_name';
+import { TComponent } from 'pc/components/common/t_component';
+import { FilterModal } from 'pc/components/multi_grid/format/format_lookup/filter_modal/filter_modal';
+import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
+import { store } from 'pc/store';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
+import { MyTrigger } from '../trigger';
 import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
-import lookupStyles from './styles.module.less';
 import { SearchSelectField } from './search_select_field';
-import { MyTrigger } from '../trigger';
-import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
+import lookupStyles from './styles.module.less';
 
 const Option = Select.Option;
 
@@ -112,22 +127,22 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
 export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps>> = memo((props: IFormateLookUpProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, datasheetId } = props;
-  const activeDstId = useSelector(state => datasheetId || Selectors.getActiveDatasheetId(state))!;
+  const activeDstId = useSelector((state) => datasheetId || Selectors.getActiveDatasheetId(state))!;
   const { relatedLinkFieldId, lookUpTargetFieldId, rollUpType, filterInfo, openFilter = false, sortInfo, lookUpLimit } = currentField.property;
   const relatedLinkField = Field.bindModel(currentField).getRelatedLinkField();
   const { error: isFilterError, typeSwitch: isFilterTypeSwitch } = Field.bindModel(currentField).checkFilterInfo();
 
   const [filterModal, setFilterModal] = useState(false);
   const foreignDatasheetFieldMap = useSelector(
-    state => relatedLinkField && Selectors.getFieldMap(state, relatedLinkField.property.foreignDatasheetId),
+    (state) => relatedLinkField && Selectors.getFieldMap(state, relatedLinkField.property.foreignDatasheetId),
   );
   const [showDatasheetPanel, setShowDatasheetPanel] = useState(false);
   const linkFields = Field.bindModel(currentField).getLinkFields();
 
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, activeDstId));
-  const hasLinkField = Object.values(fieldMap!).some(field => field.type === FieldType.Link) || false;
+  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, activeDstId));
+  const hasLinkField = Object.values(fieldMap!).some((field) => field.type === FieldType.Link) || false;
 
-  const foreignDatasheetReadable = useSelector(state => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
+  const foreignDatasheetReadable = useSelector((state) => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
 
   const lookUpField = foreignDatasheetFieldMap && foreignDatasheetFieldMap[lookUpTargetFieldId];
 
@@ -163,7 +178,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
 
   const getRollUpFunctions = () => {
     return Object.values(RollUpFuncType)
-      .filter(item => !isNumber(item))
+      .filter((item) => !isNumber(item))
       .map((func: RollUpFuncType) => {
         if (func === RollUpFuncType.VALUES) {
           const funcName = RollUpFuncNameMap[func];
@@ -186,11 +201,11 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
         }
         return false;
       })
-      .filter(i => Boolean(i)) as IRollUpFunction[];
+      .filter((i) => Boolean(i)) as IRollUpFunction[];
   };
 
   const setFieldProperty = (propertyKey: keyof ILookUpProperty) => (value: any, newFilterInfo?: any) => {
-    if (currentField.property[propertyKey] !== value || newFilterInfo ) {
+    if (currentField.property[propertyKey] !== value || newFilterInfo) {
       const updateField = (newProperty: Partial<ILookUpProperty> = {}) => {
         const newField = {
           ...currentField,
@@ -227,7 +242,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           cancelText: t(Strings.give_up_edit),
           onOk: () => updateField({ filterInfo: undefined, sortInfo: undefined }),
         });
-      } else if(propertyKey === 'sortInfo' && openFilter) {
+      } else if (propertyKey === 'sortInfo' && openFilter) {
         updateField({
           filterInfo: newFilterInfo && newFilterInfo.conditions.length > 0 ? newFilterInfo : undefined,
           sortInfo: value.rules.length > 0 ? value : undefined,
@@ -300,11 +315,9 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
             <WarnCircleOutlined color={colors.textCommonQuaternary} size={16} className={settingStyles.warningIcon} />
             <span>{t(Strings.lookup_field_err)}</span>
           </div>
-        )
-
-        }
+        )}
       </section>
-      {(hasLinkField &&
+      {hasLinkField && (
         <section className={classNames(settingStyles.section)} style={{ marginBottom: 0, marginTop: 16 }}>
           <div className={classNames(settingStyles.sectionTitle, settingStyles.flex)} style={{ marginBottom: 4 }}>
             <TComponent
@@ -323,7 +336,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           <div className={classNames(settingStyles.sectionTitle, styles.enhance)}>
             {t(Strings.rollup_filter_sort)}
             <Switch
-              size='small'
+              size="small"
               onChange={() => {
                 const isForeignDstReadable = handleForeignDstReadable();
                 isForeignDstReadable && setFieldProperty('openFilter')(!openFilter);
@@ -332,78 +345,87 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               disabled={!Boolean(lookUpTargetFieldId)}
             />
           </div>
-          {openFilter && lookUpTargetFieldId &&
-          (!isFilterError ? (
-            <div
-              className={classNames(styles.sectionInfo)}
-              style={{ marginBottom: 16 }}
-              onClick={() => {
-                const isForeignDstReadable = handleForeignDstReadable();
-                isForeignDstReadable && setFilterModal(true);
-              }}
-            >
-              {isFilterTypeSwitch && (
-                <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement='top'>
-                  <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
-                </Tooltip>
-              )}
-              <div className={classNames(settingStyles.text, styles.selectText, {
-                [styles.filterSelected]: (filterInfo?.conditions && filterInfo?.conditions?.length > 0) ||
-                (sortInfo?.rules && sortInfo?.rules.length > 0)
-              }
-              )}>
-                <span>
-                  {(!filterInfo?.conditions.length && !sortInfo?.rules.length)
-                    ? t(Strings.lookup_filter_sort_description)
-                    : t(Strings.rollup_conditions_num, {
-                      FILTER_NUM: filterInfo?.conditions.length || 0,
-                      ORDER_BY_NUM: sortInfo?.rules.length || 0
-                    })}
-                </span>
-              </div>
-              <div className={settingStyles.arrow}>
-                <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
-              </div>
-            </div>
-          ) : (
-            <div className={settingStyles.sectionClear}>
-              <div>
-                <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
-                {t(Strings.filter_delete_tip)}
-              </div>
-              <TextButton color='danger' size='small' onClick={() => setFieldProperty('filterInfo')(undefined)}>
-                {t(Strings.clear)}
-              </TextButton>
-            </div>
-          ))}
-          {relatedLinkFieldId && relatedLinkField && lookUpTargetFieldId &&
-          <div className={classNames(settingStyles.limitSelect, styles.borderTop)}>
-            <div className={settingStyles.sectionTitle}>{t(Strings.rollup_limit)}</div>
-            <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-              <Select
-                value={lookUpLimit || LookUpLimitType.ALL}
-                onSelected={({ value }) => {
-                  setFieldProperty('lookUpLimit')(value);
+          {openFilter &&
+            lookUpTargetFieldId &&
+            (!isFilterError ? (
+              <div
+                className={classNames(styles.sectionInfo)}
+                style={{ marginBottom: 16 }}
+                onClick={() => {
+                  const isForeignDstReadable = handleForeignDstReadable();
+                  isForeignDstReadable && setFilterModal(true);
                 }}
               >
-                <Option value={LookUpLimitType.FIRST} key={LookUpLimitType.FIRST} currentIndex={0}>{t(Strings.rollup_limit_option_2)}</Option>
-                <Option value={LookUpLimitType.ALL} key={LookUpLimitType.ALL} currentIndex={1}>{t(Strings.rollup_limit_option_1)}</Option>
-              </Select>
-            </ComponentDisplay>
-            <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-              <RadioGroup
-                name="btn-group-with-default"
-                isBtn value={lookUpLimit || LookUpLimitType.ALL}
-                block
-                onChange={(_e, value) => {
-                  setFieldProperty('lookUpLimit')(value);
-                }}>
-                <Radio value={LookUpLimitType.FIRST}>{t(Strings.rollup_limit_option_2)}</Radio>
-                <Radio value={LookUpLimitType.ALL}>{t(Strings.rollup_limit_option_1)}</Radio>
-              </RadioGroup>
-            </ComponentDisplay>
-          </div> }
-          {filterModal && relatedLinkField &&
+                {isFilterTypeSwitch && (
+                  <Tooltip title={t(Strings.loopkup_filter_pane_tip)} placement="top">
+                    <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
+                  </Tooltip>
+                )}
+                <div
+                  className={classNames(settingStyles.text, styles.selectText, {
+                    [styles.filterSelected]:
+                      (filterInfo?.conditions && filterInfo?.conditions?.length > 0) || (sortInfo?.rules && sortInfo?.rules.length > 0),
+                  })}
+                >
+                  <span>
+                    {!filterInfo?.conditions.length && !sortInfo?.rules.length
+                      ? t(Strings.lookup_filter_sort_description)
+                      : t(Strings.rollup_conditions_num, {
+                        FILTER_NUM: filterInfo?.conditions.length || 0,
+                        ORDER_BY_NUM: sortInfo?.rules.length || 0,
+                      })}
+                  </span>
+                </div>
+                <div className={settingStyles.arrow}>
+                  <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
+                </div>
+              </div>
+            ) : (
+              <div className={settingStyles.sectionClear}>
+                <div>
+                  <WarnCircleFilled color={colors.warningColor} size={16} className={settingStyles.warningIcon} />
+                  {t(Strings.filter_delete_tip)}
+                </div>
+                <TextButton color="danger" size="small" onClick={() => setFieldProperty('filterInfo')(undefined)}>
+                  {t(Strings.clear)}
+                </TextButton>
+              </div>
+            ))}
+          {relatedLinkFieldId && relatedLinkField && lookUpTargetFieldId && (
+            <div className={classNames(settingStyles.limitSelect, styles.borderTop)}>
+              <div className={settingStyles.sectionTitle}>{t(Strings.rollup_limit)}</div>
+              <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+                <Select
+                  value={lookUpLimit || LookUpLimitType.ALL}
+                  onSelected={({ value }) => {
+                    setFieldProperty('lookUpLimit')(value);
+                  }}
+                >
+                  <Option value={LookUpLimitType.FIRST} key={LookUpLimitType.FIRST} currentIndex={0}>
+                    {t(Strings.rollup_limit_option_2)}
+                  </Option>
+                  <Option value={LookUpLimitType.ALL} key={LookUpLimitType.ALL} currentIndex={1}>
+                    {t(Strings.rollup_limit_option_1)}
+                  </Option>
+                </Select>
+              </ComponentDisplay>
+              <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
+                <RadioGroup
+                  name="btn-group-with-default"
+                  isBtn
+                  value={lookUpLimit || LookUpLimitType.ALL}
+                  block
+                  onChange={(_e, value) => {
+                    setFieldProperty('lookUpLimit')(value);
+                  }}
+                >
+                  <Radio value={LookUpLimitType.FIRST}>{t(Strings.rollup_limit_option_2)}</Radio>
+                  <Radio value={LookUpLimitType.ALL}>{t(Strings.rollup_limit_option_1)}</Radio>
+                </RadioGroup>
+              </ComponentDisplay>
+            </div>
+          )}
+          {filterModal && relatedLinkField && (
             <FilterModal
               filterModalVisible={filterModal}
               field={currentField}
@@ -415,7 +437,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                 setFieldProperty('sortInfo')(sortInfo, filterInfo);
               }}
             />
-          }
+          )}
         </section>
       )}
       {Boolean(relatedLinkFieldId && lookUpTargetFieldId) && (
@@ -433,7 +455,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
                   <Option value={func.value} key={func.value} currentIndex={index}>
                     <Tooltip
                       mouseEnterDelay={0.5}
-                      placement='left'
+                      placement="left"
                       title={
                         <div>
                           <div className={lookupStyles.funcLabelName}>
@@ -458,7 +480,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <MobileSelect
               defaultValue={rollUpType || RollUpFuncType.VALUES}
-              optionData={getRollUpFunctions().map(func => {
+              optionData={getRollUpFunctions().map((func) => {
                 return {
                   label: (
                     <>

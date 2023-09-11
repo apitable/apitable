@@ -23,7 +23,7 @@ import { IconButton } from 'components/icon_button';
 import { TextButton } from 'components/text_button';
 import { Typography } from 'components/typography';
 import { getScrollbarWidth, hasScrollbar, stopPropagation } from 'helper';
-import React, { useEffect, useState } from 'react';
+import React, { isValidElement, useEffect, useState } from 'react';
 import { Button } from '../../button';
 import { IModalProps } from '../interface';
 import { CloseIconBox, ModalContent, ModalContentWrapper, ModalHeader, ModalMask, ModalWrapper } from '../styled';
@@ -47,6 +47,7 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
 
   const {
     className,
+    contentClassName,
     title,
     footer,
     visible,
@@ -62,6 +63,7 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
     bodyStyle,
     destroyOnClose = true,
     okButtonProps,
+    isCloseable,
     cancelButtonProps,
   } = props;
 
@@ -81,11 +83,22 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
     document.body.style.width = width;
   };
 
-  const handleCancel = () => {
-    setBodyStyle(initialBodyStyle.width, initialBodyStyle.overflow);
-    onCancel();
-    if (!destroyOnClose) {
-      setDisplayNone(true);
+  const handleCancel = async() => {
+    if(isCloseable == null) {
+      setBodyStyle(initialBodyStyle.width, initialBodyStyle.overflow);
+      onCancel();
+      if (!destroyOnClose) {
+        setDisplayNone(true);
+      }
+      return;
+    }
+    const res = await isCloseable();
+    if(res) {
+      setBodyStyle(initialBodyStyle.width, initialBodyStyle.overflow);
+      onCancel();
+      if (!destroyOnClose) {
+        setDisplayNone(true);
+      }
     }
   };
 
@@ -174,6 +187,7 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
         />
         <ModalWrapper
           centered={centered}
+
           zIndex={zIndex}
           onClick={() => {
             if (maskClosable) {
@@ -196,14 +210,23 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
           >
             {modalRender(
               <ModalContent
+                className={contentClassName}
                 onClick={stopPropagation}
               >
                 {closable && DefaultCloseIcon}
 
-                {title &&
+                {title && typeof title ==='string' &&
                   <ModalHeader>
                     <Typography variant='h6'>{title}</Typography>
                   </ModalHeader>
+                }
+
+                {title && isValidElement(title) &&
+                    <>
+                      {
+                        title
+                      }
+                    </>
                 }
 
                 <Box padding={'0 24px'} style={bodyStyle}>

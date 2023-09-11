@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import lottie from 'lottie-web/build/player/lottie_svg';
 import { useRef, useEffect } from 'react';
 import SyncJson from 'static/json/sync.json';
-import lottie from 'lottie-web/build/player/lottie_svg';
 
 const MANUAL_SAVE_SVG_ID = 'MANUAL_SAVE_SVG_ID';
 export const ManualSaveLottie = () => {
@@ -33,7 +33,7 @@ export const ManualSaveLottie = () => {
       renderer: 'svg',
       loop: false,
       autoplay: true,
-      animationData: SyncJson
+      animationData: SyncJson,
     });
   }, [ref]);
 

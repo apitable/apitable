@@ -16,21 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { colors, IconButton } from '@apitable/components';
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
-import React, { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 interface IIconButtonProps {
-  active: boolean,
-  tooltipText: string,
-  onClick: () => void,
-  icon: React.FC<React.PropsWithChildren<IIconProps>>
+  active: boolean;
+  tooltipText: string;
+  onClick: () => void;
+  icon: React.FC<React.PropsWithChildren<IIconProps>>;
 }
 
 const OptionButton = ({ active, onClick, tooltipText, icon: Icon }: IIconButtonProps): JSX.Element => {
@@ -48,9 +48,9 @@ const OptionButton = ({ active, onClick, tooltipText, icon: Icon }: IIconButtonP
 };
 
 const ExpandRecordVisionOptionBase: FC<React.PropsWithChildren<unknown>> = () => {
-  const recordVision = useSelector(state => state.recordVision);
+  const recordVision = useSelector((state) => state.recordVision);
   const dispatch = useDispatch();
-  const isRecordFullScreen = useSelector(state => state.space.isRecordFullScreen);
+  const isRecordFullScreen = useSelector((state) => state.space.isRecordFullScreen);
 
   return (
     <div className={styles.visionOptionWrap}>

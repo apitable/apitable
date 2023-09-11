@@ -1,4 +1,4 @@
 export enum InstallPosition {
   WidgetPanel,
-  Dashboard
+  Dashboard,
 }

@@ -16,20 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@apitable/core';
+import { Divider } from 'antd';
 import classNames from 'classnames';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Align } from 'react-window';
+import { useThemeColors, Skeleton } from '@apitable/components';
+import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@apitable/core';
+import { CloseCircleOutlined, NarrowOutlined } from '@apitable/icons';
 import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
-import { useThemeColors, Skeleton } from '@apitable/components';
 import { stopPropagation, KeyCode } from 'pc/utils';
 
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
 import { SearchControl } from '../../common/search_control/search_control';
 import { TComponent } from '../../common/t_component/t_component';
 import { FocusHolder } from '../focus_holder';
@@ -37,9 +39,6 @@ import { useCellEditorVisibleStyle } from '../hooks';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { SearchContent } from './search_content';
 import style from './style.module.less';
-import { Align } from 'react-window';
-import { Divider } from 'antd';
-import { CloseCircleOutlined, NarrowOutlined } from '@apitable/icons';
 
 export enum LinkEditorModalLayout {
   Center = 'Center',
@@ -108,7 +107,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [focusIndex, setFocusIndex] = useState(-1);
 
-  const { foreignDatasheetId, foreignDatasheetName } = useSelector(state => {
+  const { foreignDatasheetId, foreignDatasheetName } = useSelector((state) => {
     const foreignDatasheet = Selectors.getDatasheet(state, field.property.foreignDatasheetId);
     return { foreignDatasheetId: foreignDatasheet?.id, foreignDatasheetName: foreignDatasheet?.name };
   }, shallowEqual);
@@ -153,12 +152,11 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
       if ((field as ILinkField).property.limitSingleRecord) {
         _toggleEditing && _toggleEditing();
       }
-      
     },
     // eslint-disable-next-line
     [field, datasheetId, recordId, editing],
   );
- 
+
   const onEndEdit = () => {
     // const rows = searchContentRef.current && searchContentRef.current.getFilteredRows();
     // console.log('onSearchSubmit', rows);
@@ -294,16 +292,13 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     <div
       style={{
         ...offsetStyle,
-        zIndex: document.querySelector('.centerExpandRecord') ? undefined : 1001, 
+        zIndex: document.querySelector('.centerExpandRecord') ? undefined : 1001,
       }}
-      onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
+      onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
       onWheel={stopPropagation}
       onClick={onClickPortalContainer}
       onMouseMove={stopPropagation}
-      className={classNames(
-        style.linkEditorPortalContainer,
-        { [ConfigConstant.GIRD_CELL_EDITOR]: props.gridCellEditor },
-      )}
+      className={classNames(style.linkEditorPortalContainer, { [ConfigConstant.GIRD_CELL_EDITOR]: props.gridCellEditor })}
       tabIndex={-1}
     >
       {PortalChild}

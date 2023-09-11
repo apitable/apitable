@@ -16,24 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Tooltip } from 'antd';
+import * as React from 'react';
+import { useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IconButton, IOption, Select, Switch, Typography, useThemeColors } from '@apitable/components';
 import {
-  CollaCommandName, ConfigConstant, FieldType, ILinkField, IOrgChartViewProperty, OrgChartStyleKeyType, Selectors, Strings, t,
+  CollaCommandName,
+  ConfigConstant,
+  FieldType,
+  ILinkField,
+  IOrgChartViewProperty,
+  OrgChartStyleKeyType,
+  Selectors,
+  Strings,
+  t,
 } from '@apitable/core';
-import {
-  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined,
-} from '@apitable/icons';
-import { Tooltip } from 'antd';
+import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import * as React from 'react';
-import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { FlowContext } from '../../context/flow_context';
 import styles from './style.module.less';
 
@@ -42,8 +48,7 @@ interface IOrgChartSettingPanelProps {
   onAddField: () => void;
 }
 
-export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSettingPanelProps>> = props => {
-
+export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSettingPanelProps>> = (props) => {
   const { onClose, onAddField } = props;
 
   const {
@@ -71,7 +76,8 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
       });
     }
 
-    activeView.columns.filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
+    activeView.columns
+      .filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
       .forEach((column) => {
         options.push({
           value: column.fieldId,
@@ -96,19 +102,22 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
   };
 
   const handleChange = (key: OrgChartStyleKeyType, value: string | boolean) => {
-    executeCommandWithMirror(() => {
-      resourceService.instance!.commandManager.execute({
-        cmd: CollaCommandName.SetOrgChartStyle,
-        viewId: activeView.id!,
-        styleKey: key as any,
-        styleValue: value as any,
-      });
-    }, {
-      style: {
-        ...activeView.style,
-        [key]: value,
-      }
-    });
+    executeCommandWithMirror(
+      () => {
+        resourceService.instance!.commandManager.execute({
+          cmd: CollaCommandName.SetOrgChartStyle,
+          viewId: activeView.id!,
+          styleKey: key as any,
+          styleValue: value as any,
+        });
+      },
+      {
+        style: {
+          ...activeView.style,
+          [key]: value,
+        },
+      },
+    );
   };
 
   const handleSelect = (option: IOption) => {
@@ -127,39 +136,28 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
     <div className={styles.settingPanelContainer}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <Typography variant='h6'>
-            {t(Strings.org_chart_setting)}
-          </Typography>
+          <Typography variant="h6">{t(Strings.org_chart_setting)}</Typography>
           <Tooltip title={t(Strings.calendar_setting_help_tips)}>
-            <a
-              href={getEnvVariables().ARCHITECTURE_SETTING_HELP_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-              className={styles.helpIcon}
-            >
+            <a href={getEnvVariables().ARCHITECTURE_SETTING_HELP_URL} target="_blank" rel="noopener noreferrer" className={styles.helpIcon}>
               <QuestionCircleOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>
         </div>
-        <IconButton
-          onClick={onClose}
-          icon={CloseOutlined}
-          size='small'
-        />
+        <IconButton onClick={onClose} icon={CloseOutlined} size="small" />
       </header>
-      {
-        getEnvVariables().ARCHITECTURE_SETTING_GUIDE_VIDEO_VISIBLE && <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
+      {getEnvVariables().ARCHITECTURE_SETTING_GUIDE_VIDEO_VISIBLE && (
+        <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
           <span className={styles.left}>
             <ClassOutlined size={16} color={colors.primaryColor} />
-            <Typography variant='body3' color={colors.secondLevelText}>
+            <Typography variant="body3" color={colors.secondLevelText}>
               {t(Strings.org_chart_play_guide_video_title)}
             </Typography>
           </span>
           <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
         </div>
-      }
+      )}
       <div className={styles.setting}>
-        <Typography className={styles.settingTitle} variant='h7'>
+        <Typography className={styles.settingTitle} variant="h7">
           {t(Strings.org_chart_choose_a_link_field)}
         </Typography>
         <div className={styles.settingLayout}>
@@ -171,7 +169,7 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
               dropdownMatchSelectWidth
               placeholder={t(Strings.org_chart_pick_link_field)}
               triggerStyle={{
-                border: (isFieldDeleted || isFieldInvalid) ? `1px solid ${colors.rc08}` : 'none'
+                border: isFieldDeleted || isFieldInvalid ? `1px solid ${colors.rc08}` : 'none',
               }}
               disabled={isViewLock}
               disabledTip={t(Strings.view_lock_setting_desc)}
@@ -187,7 +185,7 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
 
         <Typography
           className={styles.settingTitle}
-          variant='h7'
+          variant="h7"
           style={{
             marginTop: 16,
           }}
@@ -196,20 +194,15 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
         </Typography>
         <div className={styles.settingLayout}>
           <div className={styles.selectField} style={{ display: 'flex', alignItems: 'center' }}>
-            {
-              isViewLock ? <Tooltip title={t(Strings.view_lock_setting_desc)}>
+            {isViewLock ? (
+              <Tooltip title={t(Strings.view_lock_setting_desc)}>
                 <span>
-                  <Switch
-                    onChange={handleSwitch}
-                    checked={horizontal}
-                    disabled={isViewLock}
-                  />
+                  <Switch onChange={handleSwitch} checked={horizontal} disabled={isViewLock} />
                 </span>
-              </Tooltip> : <Switch
-                onChange={handleSwitch}
-                checked={horizontal}
-              />
-            }
+              </Tooltip>
+            ) : (
+              <Switch onChange={handleSwitch} checked={horizontal} />
+            )}
             <span style={{ marginLeft: 8 }}>{t(Strings.org_chart_layout_horizontal)}</span>
           </div>
         </div>

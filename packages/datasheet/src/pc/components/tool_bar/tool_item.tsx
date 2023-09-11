@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, TextButton } from '@apitable/components';
 import classNames from 'classnames';
-import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
-import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { ReactNode } from 'react';
+import { Button, TextButton } from '@apitable/components';
+import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from '../common/component_display';
 import styles from './style.module.less';
 
@@ -43,7 +43,7 @@ type IToolItemProps = {
 // The number of text positions in the toolItem will also affect the width here.
 // const SHOW_TOOL_TEXT_WIDTH = 999;
 
-export const ToolItem: React.FC<React.PropsWithChildren<IToolItemProps>> = props => {
+export const ToolItem: React.FC<React.PropsWithChildren<IToolItemProps>> = (props) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { isActive, className, showLabel = true, disabled, onClick, icon, text, id, isHide } = props;

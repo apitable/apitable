@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
 import { Field, Strings, t, Selectors, RowHeightLevel, IAutoNumberField } from '@apitable/core';
+// eslint-disable-next-line no-restricted-imports
+import { Tooltip } from 'pc/components/common';
 import { store } from 'pc/store';
 import { ICellComponentProps } from '../cell_value/interface';
 import style from './style.module.less';
-import classNames from 'classnames';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
 
 export interface ICellAutoNumberProps extends ICellComponentProps {
   field: IAutoNumberField;
@@ -32,7 +32,7 @@ export interface ICellAutoNumberProps extends ICellComponentProps {
   rowHeightLevel?: RowHeightLevel;
 }
 
-export const CellAutoNumber: React.FC<React.PropsWithChildren<ICellAutoNumberProps>> = props => {
+export const CellAutoNumber: React.FC<React.PropsWithChildren<ICellAutoNumberProps>> = (props) => {
   const { field, cellValue, isFromExpand, className, readonly, rowHeightLevel } = props;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [showTip, setShowTip] = useState(false);
@@ -48,14 +48,8 @@ export const CellAutoNumber: React.FC<React.PropsWithChildren<ICellAutoNumberPro
 
   const renderElem = () => {
     return (
-      <div
-        onDoubleClick={handleDbClick}
-        className={style.autoNumberWrapper}
-      >
-        <span
-          className={classNames('cellAutoNumber', style.cellAutoNumber, className)}
-          style={{ textAlign: rowHeightLevel ? 'right' : 'left' }}
-        >
+      <div onDoubleClick={handleDbClick} className={style.autoNumberWrapper}>
+        <span className={classNames('cellAutoNumber', style.cellAutoNumber, className)} style={{ textAlign: rowHeightLevel ? 'right' : 'left' }}>
           {cellString}
         </span>
       </div>
@@ -64,19 +58,13 @@ export const CellAutoNumber: React.FC<React.PropsWithChildren<ICellAutoNumberPro
 
   return (
     <>
-      {
-        (!isFromExpand && showTip && readonly) ? (
-          <Tooltip
-            title={t(Strings.uneditable_check_info)}
-            visible={showTip}
-            placement="top"
-            showTipAnyway
-          >
-            {renderElem()}
-          </Tooltip>
-        ) :
-          renderElem()
-      }
+      {!isFromExpand && showTip && readonly ? (
+        <Tooltip title={t(Strings.uneditable_check_info)} visible={showTip} placement="top" showTipAnyway>
+          {renderElem()}
+        </Tooltip>
+      ) : (
+        renderElem()
+      )}
     </>
   );
 };

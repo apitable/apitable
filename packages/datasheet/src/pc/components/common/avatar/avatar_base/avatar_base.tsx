@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import classNames from 'classnames';
 import * as React from 'react';
 import { AvatarSize } from '../avatar';
-import classNames from 'classnames';
 import styles from '../style.module.less';
 
 export interface IAvatarBaseProps {

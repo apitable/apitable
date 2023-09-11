@@ -16,23 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useCallback, useContext, useState } from 'react';
-import * as React from 'react';
 import { Input, Tooltip } from 'antd';
-import { useSlate, useReadOnly, ReactEditor } from 'slate-react';
-import { Transforms, Element, Range } from 'slate';
 import RcTrigger from 'rc-trigger';
-import { IElementRenderProps, ILinkElementData, IElement } from '../../interface/element';
-import { EditorContext } from '../../context';
-import { ElementType, Z_INDEX } from '../../constant';
+import * as React from 'react';
+import { useCallback, useContext, useState } from 'react';
+import { Transforms, Element, Range } from 'slate';
+import { useSlate, useReadOnly, ReactEditor } from 'slate-react';
 import { restoreEditorSelection } from '../../commands';
 import Icons from '../../components/icons';
+import { ElementType, Z_INDEX } from '../../constant';
+import { EditorContext } from '../../context';
 import { getValidSelection, getValidUrl } from '../../helpers/utils';
+import { IElementRenderProps, ILinkElementData, IElement } from '../../interface/element';
 
 import styles from './link.module.less';
 
-const Link = React.memo(({ element, children, attributes }: IElementRenderProps< IElement<ILinkElementData> >) => {
-
+const Link = React.memo(({ element, children, attributes }: IElementRenderProps<IElement<ILinkElementData>>) => {
   const link = element?.data?.link ?? '/';
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState(link);
@@ -52,19 +51,22 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     }
   };
 
-  const handleUnlink = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setVisible(false);
-    try {
-      const path = ReactEditor.findPath(editor, element);
-      ReactEditor.focus(editor);
-      Transforms.select(editor, getValidSelection(editor));
-      Transforms.unwrapNodes(editor, { at: path, match: (n) => Element.isElement(n) && (n as IElement).type === ElementType.LINK });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [editor, element]);
+  const handleUnlink = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setVisible(false);
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        ReactEditor.focus(editor);
+        Transforms.select(editor, getValidSelection(editor));
+        Transforms.unwrapNodes(editor, { at: path, match: (n) => Element.isElement(n) && (n as IElement).type === ElementType.LINK });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [editor, element],
+  );
 
   const submit = (linkValue: string, autoClose = false) => {
     const path = ReactEditor.findPath(editor, element);
@@ -89,7 +91,9 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     }
   };
 
-  const handleVisit = useCallback(() => { window.open(link, '_blank'); }, [link]);
+  const handleVisit = useCallback(() => {
+    window.open(link, '_blank');
+  }, [link]);
 
   const handleMouseDown = useCallback(() => {
     setPress(true);
@@ -104,14 +108,14 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
   };
 
   const handleMove = () => {
-    if (readOnly) return ; 
+    if (readOnly) return;
     if (press && visible) {
       setVisible(false);
     }
   };
 
   const handleEnd = () => {
-    if (readOnly) return ; 
+    if (readOnly) return;
     setPress(false);
   };
 
@@ -141,7 +145,7 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
          * At this point the node unwrap operation will cause the path of the node to change
          * The pre-saved path of lastSelection conflicts with the path of the node after unwrap.
          * Finding a node based on lastSelection's path will find a non-existent node and cause Slate to throw an error
-        */}
+         */}
         <i className={styles.divider} />
         {/* <Tooltip overlayClassName="editor-tooltip" title={i18nText.ok}>
           <a className={styles.linkOptBtn} onMouseDown={handleOk}>
@@ -162,34 +166,36 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     </div>
   );
 
-  return <RcTrigger
-    popup={popupPanel}
-    action={['click']}
-    destroyPopupOnHide
-    popupAlign={{
-      points: ['bc', 'tc'],
-      offset: [0, -10],
-      overflow: { adjustX: true, adjustY: true },
-    }}
-    popupStyle={{ width: 300 }}
-    popupVisible={!readOnly && visible}
-    onPopupVisibleChange={handleVisibleChange}
-    zIndex={Z_INDEX.TOOLBAR_LINK_INPUT}
-  >
-    <a
-      {...attributes}
-      href={link}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMove}
-      onMouseLeave={handleEnd}
-      onMouseUp={handleEnd}
-      className={styles.link}
-      target="_blank"
-      rel="noopener noreferrer"
+  return (
+    <RcTrigger
+      popup={popupPanel}
+      action={['click']}
+      destroyPopupOnHide
+      popupAlign={{
+        points: ['bc', 'tc'],
+        offset: [0, -10],
+        overflow: { adjustX: true, adjustY: true },
+      }}
+      popupStyle={{ width: 300 }}
+      popupVisible={!readOnly && visible}
+      onPopupVisibleChange={handleVisibleChange}
+      zIndex={Z_INDEX.TOOLBAR_LINK_INPUT}
     >
-      {children}
-    </a>
-  </RcTrigger>;
+      <a
+        {...attributes}
+        href={link}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMove}
+        onMouseLeave={handleEnd}
+        onMouseUp={handleEnd}
+        className={styles.link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    </RcTrigger>
+  );
 });
 
 export default Link;

@@ -41,15 +41,9 @@ export const CheckboxWidget = (props: IWidgetProps) => {
 
   return (
     <div className={`checkbox ${disabled || readonly ? 'disabled' : ''}`} id={id}>
-      {schema.description && (
-        <DescriptionField description={schema.description} />
-      )}
+      {schema.description && <DescriptionField description={schema.description} />}
       <label>
-        <Checkbox
-          checked={typeof value === 'undefined' ? false : value}
-          disabled={disabled || readonly}
-          onChange={(value) => onChange(value)}
-        >
+        <Checkbox checked={typeof value === 'undefined' ? false : value} disabled={disabled || readonly} onChange={(value) => onChange(value)}>
           {label}
         </Checkbox>
         {/* <input

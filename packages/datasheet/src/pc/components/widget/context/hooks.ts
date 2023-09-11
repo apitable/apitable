@@ -1,8 +1,8 @@
-import { WidgetContext } from './widget_context';
-import { useContext } from 'react';
-import { widgetRenderTask } from './widget_render_task';
-import { IWidgetRenderStatus, WidgetActionType } from './interface';
 import { useMount } from 'ahooks';
+import { useContext } from 'react';
+import { IWidgetRenderStatus, WidgetActionType } from './interface';
+import { WidgetContext } from './widget_context';
+import { widgetRenderTask } from './widget_render_task';
 
 export const useWidgetContext = () => {
   const context = useContext(WidgetContext);

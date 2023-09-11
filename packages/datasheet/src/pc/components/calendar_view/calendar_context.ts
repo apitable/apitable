@@ -16,11 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ITask } from '@apitable/components';
-import { 
-  IFieldMap, ICalendarViewColumn, ISnapshot, ICalendarViewStyle, 
-  IViewProperty, ICalendarViewStatus, IPermissions, ICell } from '@apitable/core';
 import { createContext } from 'react';
+import { ITask } from '@apitable/components';
+import {
+  IFieldMap,
+  ICalendarViewColumn,
+  ISnapshot,
+  ICalendarViewStyle,
+  IViewProperty,
+  ICalendarViewStatus,
+  IPermissions,
+  ICell,
+} from '@apitable/core';
 
 export type IPosition = {
   left?: string;
@@ -52,7 +59,7 @@ export interface ICalendarContext {
   draggable: boolean;
   isCryptoStartField: boolean;
   isCryptoEndField: boolean;
-  keyword: string,
+  keyword: string;
   setKeyword: (word: string) => void;
   onCloseGrid: () => void;
   // Caching methods

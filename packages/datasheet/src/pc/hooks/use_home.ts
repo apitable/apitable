@@ -17,8 +17,8 @@
  */
 
 import { useRouter } from 'next/router';
-import { IQuery } from 'pc/components/route_manager/interface';
 import { useEffect, useState } from 'react';
+import { IQuery } from 'pc/components/route_manager/interface';
 
 export function useQuery() {
   if (process.env.SSR) {

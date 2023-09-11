@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import RcTrigger from 'rc-trigger';
+import { FC, useState } from 'react';
 import { Strings, t } from '@apitable/core';
 import { AdviseOutlined, AlarmOutlined, QuestionCircleOutlined, QuestionOutlined } from '@apitable/icons';
 import { ButtonPlus, ContextmenuItem, MobileContextMenu, Modal } from 'pc/components/common';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
-import RcTrigger from 'rc-trigger';
-import { FC, useState } from 'react';
 import JoinCommunityIcon from 'static/icon/common/group.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { ReportReason } from './report_reason';
@@ -49,7 +49,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
       {
         icon: <QuestionCircleOutlined />,
         text: t(Strings.help_center),
-        onClick: () => navigationToUrl(`${window.location.origin}/help`),
+        onClick: () => navigationToUrl(t(Strings.help_help_center_url)),
       },
       {
         icon: <AlarmOutlined />,
@@ -59,7 +59,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
       {
         icon: <JoinCommunityIcon />,
         text: t(Strings.join_the_community),
-        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : `${window.location.origin}/chatgroup/`),
+        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().USER_FEEDBACK_FORM_URL),
       },
     ],
   ];
@@ -89,7 +89,7 @@ export const ReportWeb: FC<React.PropsWithChildren<IReportWeb>> = ({ nodeId }) =
           }}
           popupStyle={{ width: '240px' }}
           popupVisible={menuVisible}
-          onPopupVisibleChange={visible => setMenuVisible(visible)}
+          onPopupVisibleChange={(visible) => setMenuVisible(visible)}
           zIndex={1000}
         >
           <ButtonPlus.Font onClick={() => setMenuVisible(true)} className={styles.feedbackBtn} icon={<QuestionOutlined />} size="small" shadow />
