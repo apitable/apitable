@@ -125,10 +125,12 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       const newRecordCount = op.actions.filter(item => item['od'] instanceof Object && !Array.isArray(item['od']));
       return commandTran(cmdStringKey, { record_count: newRecordCount.length });
 
-    case CollaCommandName.MoveViews:
     case CollaCommandName.AddWidgetToPanel:
-    case CollaCommandName.MoveWidget:
     case CollaCommandName.DeleteWidget:
+    case CollaCommandName.MoveViews:
+    case CollaCommandName.MoveWidget:
+    case CollaCommandName.ManualSaveView:
+    case CollaCommandName.SetGalleryStyle:
       return commandTran(cmdStringKey);
 
     case CollaCommandName.ModifyWidgetPanelName:
