@@ -16,33 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isNumber } from 'util';
 // eslint-disable-next-line no-restricted-imports
-import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
+import { Select, TextButton, useThemeColors, RadioGroup, Radio, Switch } from '@apitable/components';
 import {
-  BasicValueType,
-  DateTimeField,
-  Field,
-  FieldType,
-  Functions,
-  IField,
-  IFilterInfo,
-  ILookUpField,
-  ILookUpProperty,
-  LookUpField,
-  NOT_FORMAT_FUNC_SET,
-  RollUpFuncType,
-  Selectors,
-  StringKeysMapType,
-  Strings,
-  t,
-  LookUpLimitType,
-  ILookUpSortInfo,
+  BasicValueType, DateTimeField, Field, FieldType, Functions, IField,
+  IFilterInfo, ILookUpField, ILookUpProperty, LookUpField,
+  NOT_FORMAT_FUNC_SET, RollUpFuncType, Selectors, StringKeysMapType, Strings, t, LookUpLimitType, ILookUpSortInfo
 } from '@apitable/core';
 import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -53,13 +37,13 @@ import { TComponent } from 'pc/components/common/t_component';
 import { FilterModal } from 'pc/components/multi_grid/format/format_lookup/filter_modal/filter_modal';
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 import { store } from 'pc/store';
-import settingStyles from '../../field_setting/styles.module.less';
-import styles from '../styles.module.less';
-import { MyTrigger } from '../trigger';
 import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import { SearchSelectField } from './search_select_field';
 import lookupStyles from './styles.module.less';
+import settingStyles from '../../field_setting/styles.module.less';
+import styles from '../styles.module.less';
+import { MyTrigger } from '../trigger';
 
 const Option = Select.Option;
 

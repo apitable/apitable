@@ -17,11 +17,10 @@
  */
 
 import { useMount, useToggle } from 'ahooks';
-import { Switch } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, IOption, Skeleton } from '@apitable/components';
+import { Box, IOption, Skeleton, Switch } from '@apitable/components';
 import {
   ConfigConstant,
   DatasheetApi,

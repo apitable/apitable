@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
@@ -29,6 +29,7 @@ import {
   IUseListenTriggerInfo,
   // eslint-disable-next-line no-restricted-imports
   Select,
+  Switch,
   Typography,
   useListenVisualHeight,
   useThemeColors,
@@ -68,8 +69,8 @@ import { resourceService } from 'pc/resource_service';
 import { stopPropagation } from 'pc/utils';
 import { getIsColNameVisible, getMoveColumnsResult } from 'pc/utils/datasheet';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { SyncViewTip } from '../sync_view_tip';
 import styles from './style.module.less';
+import { SyncViewTip } from '../sync_view_tip';
 
 interface IHiddenFieldProps {
   type?: HideFieldType;

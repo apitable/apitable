@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { TextInput, Button } from '@apitable/components';
+import { TextInput, Button, Switch } from '@apitable/components';
 import { FieldType, getNewId, getUniqName, IDPrefix, MemberField, Strings, t } from '@apitable/core';
 import { useCheckRepeatName } from '../../hooks/use_check_repeat_name';
 import { IKanbanOptionProps } from '../kanban_option/kanban_option';

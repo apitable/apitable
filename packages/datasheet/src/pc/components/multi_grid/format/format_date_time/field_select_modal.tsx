@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import { useState, useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Button, TextButton } from '@apitable/components';
+import { Button, TextButton, Switch } from '@apitable/components';
 import { IDateTimeBaseField, Selectors, IViewColumn, Strings, t, ILastModifiedByField, FieldType } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
