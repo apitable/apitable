@@ -54,7 +54,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
   const { name, robotId } = robotCardInfo;
 
   const { data: triggerTypes } = useTriggerTypes();
-  const { data: actionTypes } = useActionTypes();
+  const { originData: actionTypes } = useActionTypes();
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
     ...robotCardInfo.triggers.map(trigger => {

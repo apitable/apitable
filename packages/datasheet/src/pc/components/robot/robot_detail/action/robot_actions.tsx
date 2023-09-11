@@ -18,12 +18,12 @@
 
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
-import { Box, FloatUiTooltip } from '@apitable/components';
+import { Box } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
-import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
+import { getNodeOutputSchemaList } from '../../helper';
+import { IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
 import { OrTooltip } from '../or_tooltip';
 import { EditType } from '../trigger/robot_trigger';
 import { LinkButton } from './link';
@@ -33,6 +33,7 @@ import {
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
+import {useActionTypes} from "../../hooks";
 
 const req = axios.create({
   baseURL: '/nest/v1/',
@@ -64,20 +65,18 @@ export const getActionList = (actions?: []): IRobotAction[] => {
   });
   return actionList;
 };
-export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom = () => {} }:
+export const RobotActions = ({ robotId, triggerTypes, trigger, onScrollBottom = () => {} }:
   {
     robotId: string;
     trigger?: IRobotTrigger;
     triggerTypes: ITriggerType[];
-    actionTypes: IActionType[];
+    // actionTypes: IActionType[];
     onScrollBottom?: () => void;
   }
 ) => {
-  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
-  const filterActionTypes = useMemo(() => {
-    return getFilterActionTypes(actionTypes);
-  }, [actionTypes]);
+  const { data: actionTypes } = useActionTypes();
+  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
   const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
   const actions = data?.data?.data;
@@ -90,7 +89,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
   }
   if (!entryActionId) {
     return (
-      <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} disabled={trigger==null}/>
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null}/>
     );
   }
 
@@ -118,7 +117,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
                   <CreateNewActionLineButton
                     disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
                     robotId={robotId}
-                    actionTypes={filterActionTypes}
+                    actionTypes={actionTypes}
                     prevActionId={actionList[index - 1].id}
                   >
                     <span>
@@ -143,7 +142,6 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
                 index={index + 1}
                 key={index}
                 action={action}
-                actionTypes={actionTypes}
                 nodeOutputSchemaList={nodeOutputSchemaList}
                 robotId={robotId}
               />
@@ -162,7 +160,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
         <CreateNewAction
           disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
           robotId={robotId}
-          actionTypes={filterActionTypes}
+          actionTypes={actionTypes}
           prevActionId={actionList[actionList.length - 1].id}
         />
       </OrTooltip>

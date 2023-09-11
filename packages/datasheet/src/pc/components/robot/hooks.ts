@@ -34,6 +34,7 @@ import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
 import { automationStateAtom } from '../automation/controller';
 import { activeRobot, deActiveRobot, deleteRobotAction, nestReq } from './api';
+import { getFilterActionTypes } from './helper';
 import { IActionType, INodeType, ITriggerType } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 import { getFields } from './robot_detail/trigger/helper';
@@ -205,18 +206,22 @@ export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } =>
   };
 };
 
-export const useActionTypes = (): { loading: boolean; data: IActionType[] } => {
+export const useActionTypes = (): { loading: boolean;originData : IActionType[], data: IActionType[] } => {
   const { data: actionTypeData, error: actionTypeError } = useSWR(`/automation/action-types?lang=${getLanguage()}`, nestReq);
   const themeName = useSelector(state => state.theme);
+
   if (!actionTypeData || actionTypeError) {
     return {
       loading: true,
-      data: actionTypeData?.data.data
+      data: getFilterActionTypes(actionTypeData?.data.data),
+      originData: actionTypeData?.data.data,
     };
   }
+  const themedList = covertThemeIcon(actionTypeData?.data.data, themeName);
   return {
     loading: false,
-    data: covertThemeIcon(actionTypeData?.data.data, themeName)
+    originData: themedList,
+    data: getFilterActionTypes(themedList),
   };
 };
 

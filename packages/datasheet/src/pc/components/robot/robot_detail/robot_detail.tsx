@@ -76,7 +76,6 @@ export const RobotDetailForm = () => {
         robotId={robot.robotId}
         trigger={trigger}
         triggerTypes={triggerTypes}
-        actionTypes={actionTypes}
       />
     </>
   );

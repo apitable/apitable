@@ -78,6 +78,7 @@ export interface IRobotAction {
   id: string;
   prevActionId: string;
   typeId: string;
+  actionTypeId: string;
   input: any;
 }
 
