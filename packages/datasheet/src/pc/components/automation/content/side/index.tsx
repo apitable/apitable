@@ -6,12 +6,14 @@ import { useRobot, useTriggerTypes } from '../../../robot/hooks';
 import { EditType, RobotTrigger } from '../../../robot/robot_detail/trigger/robot_trigger';
 import { automationPanelAtom, PanelName } from '../../controller';
 import { BaseInfo } from '../basic_info';
+import { useRobotListState } from "../../../robot/robot_list";
 
 export const Side = () => {
 
   const { robot } = useRobot();
 
   const [panel] = useAtom(automationPanelAtom);
+  const { state: { formList }} = useRobotListState();
 
   const { data: triggerTypes } = useTriggerTypes();
 
@@ -43,7 +45,7 @@ export const Side = () => {
             editType={EditType.detail}
             robotId={robot.robotId}
             triggerTypes={triggerTypes}
-            formList={[]}
+            formList={formList}
           />
         </Box>
       );

@@ -65,6 +65,7 @@ export const BaseInfo: FC =() => {
 
   const defaultDesp = useDefaultRobotDesc();
 
+
   const colors = useThemeColors();
   if(!robot) {
     return null;
@@ -79,13 +80,13 @@ export const BaseInfo: FC =() => {
 
       <Box paddingBottom={'12px'} paddingX={'24px'} >
         {
-          Boolean(robot?.triggers) ? (
+          (robot?.triggers?.length > 0 && robot?.actions?.length > 0) ? (
             <Typography variant="body4" color={colors.textCommonTertiary}>
               {defaultDesp}
             </Typography>
           ): (
             <Typography variant="body4" color={colors.textCommonTertiary}>
-              {t(Strings.automation_no_step_yet)}
+              {t(Strings.no_step_summary)}
             </Typography>
           )
         }
@@ -130,8 +131,12 @@ export const BaseInfo: FC =() => {
           </Box>
 
           <Box display={'flex'} alignItems={'center'}>
-            <Avatar size={'xxs'} src={robot?.updatedBy?.avatar}
-            />
+            {
+              robot?.updatedBy?.avatar && (
+                <Avatar size={'xxs'} src={robot?.updatedBy?.avatar}
+                />
+              )
+            }
             <Box display='flex' alignItems={'center'} marginLeft={
               '8px'
             }>

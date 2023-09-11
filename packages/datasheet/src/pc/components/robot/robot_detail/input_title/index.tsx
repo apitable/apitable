@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { EditableText } from '../../../editable_text';
 import { updateRobotDescription, updateRobotName } from '../../api';
@@ -9,6 +10,7 @@ export const InputTitle: FC = () => {
   const {
     robot, updateRobot,
   } = useRobot();
+  const colors = useThemeColors();
 
   if (!robot) {
     return null;
@@ -27,6 +29,7 @@ export const InputTitle: FC = () => {
 
   return (
     <EditableText onChange={handleNameChange}
+      color={colors.textCommonPrimary}
       placeholder={t(Strings.robot_unnamed)}
       value={robot.name} />
   );
@@ -36,6 +39,7 @@ export const EditableInputDescription: FC = () => {
   const {
     robot, updateRobot,
   } = useRobot();
+  const colors = useThemeColors();
 
   if (!robot) {
     return null;
@@ -53,6 +57,7 @@ export const EditableInputDescription: FC = () => {
   return (
     <EditableText onChange={handleNameChange}
       variant={'body4'}
+      color={colors.textCommonPrimary}
       placeholder={t(Strings.click_here_to_write_description)}
       value={robot.description} />
   );

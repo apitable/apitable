@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtomValue } from 'jotai';
 import { useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
@@ -25,9 +26,11 @@ import {
   SearchSelect
 } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { automationStateAtom } from '../../../automation/controller';
 import { createTrigger } from '../../api';
 import { useDefaultTriggerFormData } from '../../hooks';
 import { ITriggerType } from '../../interface';
+import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
 
 interface IRobotTriggerCreateProps {
@@ -52,13 +55,29 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width:
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
 
+  const { api: { refresh }} = useRobotListState();
+  const state = useAtomValue(automationStateAtom);
   const createRobotTrigger = useMemo(() => {
     return async(triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
       const triggerRes = await createTrigger(robotId, triggerTypeId, input);
-      mutate(`/automation/robots/${robotId}/trigger`);
+
+      await mutate(`/automation/robots/${robotId}/trigger`);
+
+      if(!state?.resourceId ) {
+        return;
+      }
+      if(!state?.currentRobotId ) {
+        return;
+      }
+      await refresh(
+        {
+          resourceId:state.resourceId,
+          robotId:  state.currentRobotId
+        });
+
       return triggerRes.data;
     };
   }, [robotId, defaultFormData, triggerTypes]);

@@ -19,11 +19,11 @@ import {
   PlayOutlined,
   WarnCircleOutlined
 } from '@apitable/icons';
-import { flatContextData } from '../../../../utils';
 import { IRobotRunHistoryItem } from '../../../robot/interface';
 import { automationHistoryAtom } from '../../controller';
 import styles from './styles.module.less';
 import { handleDownload } from './util';
+import {getAutomationRunHistoryDetail} from "../../../robot/api";
 
 export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
@@ -104,6 +104,7 @@ export const TaskItem: FC<{item: IRobotRunHistoryItem,
             options={
               {
                 placement: 'bottom-end',
+                stopPropagation: true,
               }
             } trigger={
               <span>
@@ -126,10 +127,10 @@ export const TaskItem: FC<{item: IRobotRunHistoryItem,
                     backgroundColor={'var(--bgCommonHighest, #333)'}>
                     <StyledMenu padding={'8px'} display={'inline-flex'}
                       alignItems={'center'}
-                      onClick={(e)=> {
+                      onClick={async ()=> {
                         toggle();
-                        handleDownload(item, `robot_${item.robotId}_${item.taskId}.json`);
-                        stopPropagation(e);
+                        const result = await getAutomationRunHistoryDetail(item.taskId);
+                        handleDownload(result ?? {}, `robot_${item.robotId}_${item.taskId}.json`);
                       }}
                     >
                       <IconButton
@@ -152,6 +153,7 @@ export const TaskItem: FC<{item: IRobotRunHistoryItem,
 
         {
           !isSummary && (
+          //TODO  wait for backend api
             <Typography variant="body4" color={colors.textCommonTertiary}>
               {item.status === 1 &&
                     t(Strings.automation_run_history_item_brief_success, {
@@ -159,7 +161,6 @@ export const TaskItem: FC<{item: IRobotRunHistoryItem,
                     })
               }
               {item.status === 2 && t(Strings.automation_run_history_item_brief_fail, {
-                // TODO  add action name
                 ACTION_NAME: '发送网络请求'
               })
               }

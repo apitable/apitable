@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtom } from 'jotai/index';
-import { useMemo } from 'react';
+import { useAtom } from 'jotai';
+import { memo, useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -25,10 +25,10 @@ import useSWR from 'swr';
 import { Box, Skeleton } from '@apitable/components';
 import { Api, ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { automationStateAtom } from '../../automation/controller';
-import { getResourceAutomations } from '../api';
+import { getResourceAutomationDetail, getResourceAutomations } from '../api';
 import {
   useActionTypes,
-  useAddNewRobot,
+  useAddNewRobot, useRobot,
   useTriggerTypes
 } from '../hooks';
 import { RobotListItemCard } from '../robot_list_item';
@@ -54,6 +54,10 @@ export const useRobotListState = () => {
   const { data: formList } = useSWR(`${Api.getRelateNodeByDstId}_${datasheetId}`, () =>
     Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM));
 
+  const [state, setAutomationAtom] = useAtom(automationStateAtom );
+
+  const currentRobotId = state?.currentRobotId;
+
   const getById = (robotId: string) => {
     return automationList?.find(item => item.robotId === robotId);
   };
@@ -66,16 +70,33 @@ export const useRobotListState = () => {
       },
       api: {
         getById,
-        refresh: () => {
-          mutateRefresh();
+        refresh  : async(
+          data?: {
+              resourceId: string;
+              robotId: string;
+            }
+        ) => {
+          await mutateRefresh();
+          if(!state?.resourceId || !state?.currentRobotId) {
+            return;
+          }
+          if(data?.resourceId && data?.robotId) {
+            const itemDetail = await getResourceAutomationDetail(data?.resourceId, data?.robotId);
+            const newState = {
+              robot: itemDetail,
+              currentRobotId:  currentRobotId,
+              resourceId:state.resourceId,
+            };
+            setAutomationAtom(newState);
+          }
         }
       }
     }
-  ), [error, formList?.data?.data, mutateRefresh, automationList]);
+  ), [formList?.data?.data, automationList, error, getById, state?.resourceId, state?.currentRobotId, currentRobotId, setAutomationAtom, mutateRefresh]);
 
 };
 
-export const RobotList = () => {
+export const RobotList = memo(() => {
   const permissions = useSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
@@ -86,10 +107,11 @@ export const RobotList = () => {
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
 
-  const { createNewRobot, updateRobotStatus } = useRobotController();
+  const { createNewRobot, navigateAutomation } = useRobotController();
 
   const { canAddNewRobot } = useAddNewRobot();
 
+  const robot = useRobot();
   if (error) return null;
   if (triggerTypesLoading || actionTypesLoading || triggerTypes.length === 0 || actionTypes.length === 0) {
     return <Skeleton
@@ -118,7 +140,7 @@ export const RobotList = () => {
               key={robot.robotId}
               robotCardInfo={robot}
               onClick={async() => {
-                await updateRobotStatus(robot.resourceId, robot.robotId);
+                await navigateAutomation(robot.resourceId, robot.robotId);
               }}
               readonly={!canManageRobot}
             />
@@ -134,7 +156,7 @@ export const RobotList = () => {
           }
 
           await createNewRobot();
-          refresh();
+          await refresh();
         }}
       >
         {
@@ -143,4 +165,4 @@ export const RobotList = () => {
       </NewItem>
     </div>
   );
-};
+});

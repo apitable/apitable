@@ -26,7 +26,7 @@ import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { useActionTypes, useToggleRobotActive, useTriggerTypes } from '../hooks';
+import { useActionTypes, useRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
 import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
 import styles from './styles.module.less';
 
@@ -97,7 +97,11 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
     opacity: 0.5,
   } : { cursor: 'pointer' };
 
-  const { loading, toggleRobotActive } = useToggleRobotActive(robotId);
+  const {
+    resourceId,
+    currentRobotId, robot,
+  } = useRobot();
+  const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
 
   const colors = useThemeColors();
 

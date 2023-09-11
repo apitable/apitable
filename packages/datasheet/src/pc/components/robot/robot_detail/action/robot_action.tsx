@@ -18,9 +18,9 @@
 
 // import { Message } from '@apitable/components';
 import cx from 'classnames';
-import { useAtom } from 'jotai';
-import { FC, ReactNode, useCallback } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
+import { FC, ReactNode, useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { mutate } from 'swr';
@@ -28,12 +28,13 @@ import { Box, SearchSelect, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Message, Modal } from 'pc/components/common';
-import { automationPanelAtom, PanelName } from '../../../automation/controller';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useRobotTriggerType } from '../../hooks';
 import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
+import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { EditType } from '../trigger/robot_trigger';
@@ -54,7 +55,9 @@ export const RobotAction = (props: IRobotActionProps) => {
   const propsFormData = action.input;
 
   const [panelState] = useAtom(automationPanelAtom);
+  const automationState= useAtomValue(automationStateAtom);
 
+  const { api: { refresh }} = useRobotListState();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
     if (actionTypeId === action?.typeId) {
       return;
@@ -65,8 +68,16 @@ export const RobotAction = (props: IRobotActionProps) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(() => {
-          mutate(`/automation/robots/${robotId}/actions`);
+        changeActionTypeId(action?.id!, actionTypeId).then(async() => {
+          await mutate(`/automation/robots/${robotId}/actions`);
+
+          if(!automationState?.resourceId) {
+            return;
+          }
+          await refresh({
+            resourceId: automationState?.resourceId!,
+            robotId: robotId,
+          });
         });
       },
       onCancel: () => {
@@ -74,9 +85,21 @@ export const RobotAction = (props: IRobotActionProps) => {
       },
       type: 'warning',
     });
-  }, [action, robotId]);
+  }, [action?.id, action?.typeId, automationState?.resourceId, refresh, robotId]);
 
   const [, setAutomationPanel] = useAtom(automationPanelAtom );
+
+  const dataClick = useCallback(() => {
+    if(editType=== EditType.detail) {
+      return;
+    }
+    setAutomationPanel({
+      panelName: PanelName.Action,
+      dataId: action.id,
+      // @ts-ignore
+      data: props
+    });
+  }, [action.id, editType, props, setAutomationPanel]);
   if (!actionType) {
     return null;
   }
@@ -132,15 +155,7 @@ export const RobotAction = (props: IRobotActionProps) => {
     // noHtml5Validate
     title={actionType.name}
     validate={validate}
-    onClick={() => {
-      setAutomationPanel({
-        panelName: PanelName.Action,
-        dataId: action.id,
-        // @ts-ignore
-        data: props
-      });
-    }}
-
+    handleClick={editType=== EditType.entry ? dataClick: undefined}
     onSubmit={handleActionFormSubmit}
     description={actionType.description}
     formData={propsFormData}
@@ -160,21 +175,27 @@ export const RobotAction = (props: IRobotActionProps) => {
       }
     }
   >
-    <SearchSelect
-      options={{
-        placeholder: t(Strings.search_field),
-        noDataText: t(Strings.empty_data),
-        minWidth: '384px',
-      }}
-      list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
-      <span>
-        <DropdownTrigger isActive={isActive}>
-          <>
-            {index + 1}. {String(actionType.name)}
-          </>
-        </DropdownTrigger>
-      </span>
-    </SearchSelect>
+    <>
+      {
+        editType === EditType.entry && (
+          <SearchSelect
+            options={{
+              placeholder: t(Strings.search_field),
+              noDataText: t(Strings.empty_data),
+              minWidth: '384px',
+            }}
+            list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
+            <span>
+              <DropdownTrigger isActive={isActive}>
+                <>
+                  {index + 1}. {String(actionType.name)}
+                </>
+              </DropdownTrigger>
+            </span>
+          </SearchSelect>
+        )
+      }
+    </>
   </NodeFormItem>;
 };
 

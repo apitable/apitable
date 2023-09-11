@@ -77,7 +77,7 @@ export const useDeleteRobotAction = () => {
   }, [currentRobotId]);
 };
 
-export const useToggleRobotActive = (robotId: string) => {
+export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
 
   const { api: { getById, refresh }} = useRobotListState();
@@ -91,13 +91,11 @@ export const useToggleRobotActive = (robotId: string) => {
     if (robot.isActive) {
       setLoading(true);
       const ok = await deActiveRobot(robotId);
+
       setLoading(false);
       if (ok) {
         refresh();
 
-        Message.success({
-          content: t(Strings.automation_disabled)
-        });
       }
     } else {
       setLoading(true);
@@ -156,8 +154,16 @@ export const useRobot = () => {
   const currentRobotId = state?.currentRobotId;
 
   return {
+    resourceId: state?.resourceId,
     currentRobotId,
     robot: state?.robot,
+    reset: () => {
+      setState(state => ({
+        ...state,
+        robot: undefined,
+        currentRobotId: undefined,
+      }));
+    },
     updateRobot: (data: Partial<IAutomationRobotDetailItem>) => {
       if(!state?.robot) {
         return;

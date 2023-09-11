@@ -18,7 +18,7 @@
 
 import axios from 'axios';
 import { mutate } from 'swr';
-import { IAutomationDatum, IRobotBaseInfo, IRobotRunHistoryList, IRobotTrigger } from './interface';
+import {IAutomationDatum, IRobotBaseInfo, IRobotHistoryTask, IRobotRunHistoryList, IRobotTrigger} from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 
 export const nestReq = axios.create({
@@ -167,5 +167,12 @@ export const getRobotTrigger = (url: string): Promise<IRobotTrigger | undefined>
 export const getRobotBaseInfo = (robotId: string): Promise<IRobotBaseInfo | undefined> => {
   return nestReq.get(`/automation/robots/${robotId}/base-info`).then((res) => {
     return res?.data.data[0];
+  });
+};
+
+export const getAutomationRunHistoryDetail = (taskId: string): Promise<IRobotHistoryTask | undefined> => {
+  return nestReq.get(`/automation/run-history/${taskId}`).then((res) => {
+    const taskDetail: undefined|IRobotHistoryTask = res?.data?.data;
+    return taskDetail;
   });
 };

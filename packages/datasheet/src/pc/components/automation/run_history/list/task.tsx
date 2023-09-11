@@ -16,7 +16,7 @@ export const TaskList: FC<{list: IRobotRunHistoryItem[],
       {
         list.map(item => {
           return(
-            <TaskItem item={item} 
+            <TaskItem item={item}
               isSummary={isSummary}
               key={item.taskId}
               onClick={() => {
@@ -25,7 +25,7 @@ export const TaskList: FC<{list: IRobotRunHistoryItem[],
                     ...state,
                     dialogVisible: true,
                     taskId: item.taskId
-                  };
+                  }
                 });
               }}
             />

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import produce from 'immer';
 import { useAtom } from 'jotai';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -27,6 +28,7 @@ import {
   showAtomDetailModalAtom
 } from '../../automation/controller';
 import { createAutomationRobot, getResourceAutomationDetail } from '../api';
+import { useRobot } from '../hooks';
 
 export const CONST_MAX_ROBOT_COUNT = 9;
 
@@ -41,8 +43,11 @@ export const StyledBox = styled(Box)`
 export const useRobotController = () => {
   const [, setShowAtom] = useAtom(showAtomDetailModalAtom);
   const [, setAutomationAtom] = useAtom(automationStateAtom );
+
+  // TODO add as Node
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const [, setPanel] = useAtom(automationPanelAtom);
+  const { reset } =useRobot();
 
   const navigateAutomation = async(resourceId: string, robotId: string) => {
     const itemDetail = await getResourceAutomationDetail(resourceId, robotId);
@@ -51,23 +56,25 @@ export const useRobotController = () => {
       currentRobotId:  robotId,
       resourceId,
     };
-    setAutomationAtom(newState);
-    setShowAtom(true);
-    setPanel(p => ({ ...p,
+    await setAutomationAtom(newState);
+    await setShowAtom(true);
+    await setPanel(p => ({ ...p,
       panelName: PanelName.BasicInfo
     }));
   };
 
-  const createNewRobot = async() => {
+  const createNewRobot = async () => {
+
+    reset();
+
     const newRobotId = await createAutomationRobot({
       resourceId: datasheetId!,
       name: ''
     });
-
     await navigateAutomation(
       newRobotId.resourceId,
       newRobotId.robotId,
     );
   };
-  return { createNewRobot, updateRobotStatus: navigateAutomation };
+  return { createNewRobot, navigateAutomation };
 };

@@ -69,12 +69,13 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
         background={theme.color.fc5}
         margin="0px 16px"
       />
-      <Box padding="16px" >
+      <Box padding="0px 16px 0px 0" >
         {
           nodeTypes.map((nodeType, index) => {
             const nodeDetail = taskDetail.nodeByIds[taskDetail.executedNodeIds[index]];
             const isTrigger = index === 0;
             return <RobotRunHistoryNodeWrapper
+                isLast={index === nodeTypes.length - 1}
               status={data?.status}
               key={index} index={index} nodeType={nodeType} nodeDetail={nodeDetail}>
               {

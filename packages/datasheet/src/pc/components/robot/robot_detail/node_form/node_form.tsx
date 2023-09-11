@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useHover } from 'ahooks';
-import { useAtom } from 'jotai';
+import { useHover, usePrevious } from 'ahooks';
+import { useAtom, useAtomValue } from 'jotai';
+import { JSONSchema7 } from 'json-schema';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { memo, ReactElement, useEffect, useRef } from 'react';
 import { mutate } from 'swr';
 import {
   Box,
@@ -31,28 +32,40 @@ import {
   useContextMenu,
   useTheme
 } from '@apitable/components';
-import { Strings, t, validateMagicForm } from '@apitable/core';
+import { IJsonSchema, Strings, t, validateMagicForm } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { automationPanelAtom } from '../../../automation/controller';
-import { getNodeTypeOptions } from '../../helper';
+import { automationPanelAtom, automationStateAtom } from '../../../automation/controller';
 import { useDeleteRobotAction, useRobot, useTriggerTypes } from '../../hooks';
-import { IRobotNodeType } from '../../interface';
-import { useFormEdit } from '../form_edit';
+import { INodeOutputSchema, INodeSchema, IRobotNodeType } from '../../interface';
+import { useRobotListState } from '../../robot_list';
+import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
+
+type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
+  index: number
+  schema: IJsonSchema
+  description?: string;
+  serviceLogo?: string
+  nodeOutputSchemaList?: INodeOutputSchema[];
+  nodeId: string;
+  title?: string;
+  type?: 'trigger' | 'action';
+  children?: ReactElement,
+  handleClick?: () => void;
+};
 
 // FIXME: form type
 // Trigger and Action's From form, wrapped in a layer here.
-export const NodeForm = (props: any) => {
+export const NodeForm = memo((props: INodeFormProps<any>) => {
   const ref = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { description, title, type = 'trigger', children, ...restProps } = props;
+  const { description, title, type = 'trigger', children, handleClick, ...restProps } = props;
 
-  const { hasError } =useFormEdit();
   const theme = useTheme();
-
+  // FIXME
   return (
     <Box
       height={'100%'}
@@ -93,7 +106,6 @@ export const NodeForm = (props: any) => {
         >
           <Button
             variant="fill"
-            disabled={hasError}
             size="middle"
             onClick={() => {
               (ref.current as any)?.submit();
@@ -107,18 +119,17 @@ export const NodeForm = (props: any) => {
       </Box>
     </Box>
   );
-};
+});
 
-export const NodeFormInfo = (props: any) => {
-  const { title, serviceLogo, type = 'trigger', nodeId, children, onClick, index = 0, ...restProps } = props;
+export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
+  const { title, serviceLogo, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
   const theme = useTheme();
-  const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
-
-  const options = getNodeTypeOptions(triggerTypes);
-  console.log('options', options);
-  const { hasError } = validateMagicForm(restProps.schema, restProps.formData);
+  const { hasError } = validateMagicForm(restProps.schema as JSONSchema7, restProps.formData);
   const deleteRobotAction = useDeleteRobotAction();
   const { currentRobotId } = useRobot();
+
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
 
   const handleDeleteRobotAction = () => {
     Modal.confirm({
@@ -128,7 +139,18 @@ export const NodeFormInfo = (props: any) => {
       okText: t(Strings.confirm),
       onOk: async() => {
         const deleteOk = await deleteRobotAction(nodeId);
-        deleteOk && mutate(`/automation/robots/${currentRobotId}/actions`);
+        if(deleteOk) {
+
+          console.log('automationStateautomationStateautomationStateautomationState', automationState);
+          if(!automationState?.resourceId) {
+            return;
+          }
+          await refresh({
+            resourceId: automationState?.resourceId!,
+            robotId: automationState?.currentRobotId!,
+          });
+          await mutate(`/automation/robots/${currentRobotId}/actions`);
+        }
       },
       onCancel: () => {
         return;
@@ -166,9 +188,7 @@ export const NodeFormInfo = (props: any) => {
       ref={ref}
       width="100%"
       padding="12px"
-      onClick={() => {
-        onClick?.();
-      }}
+      onClick={handleClick}
       backgroundColor={theme.color.fc8}
       id={`robot_node_${nodeId}`}
     >
@@ -203,7 +223,7 @@ export const NodeFormInfo = (props: any) => {
             <Typography variant="h7" ellipsis style={{
               textTransform: 'capitalize'
             }}>
-              {type}
+              { type == IRobotNodeType.Trigger ? t(Strings.robot_trigger_guide): t(Strings.action)}
             </Typography>
 
             <Box display={'flex'} flexDirection={'row'}>
@@ -245,4 +265,4 @@ export const NodeFormInfo = (props: any) => {
       </Box>
     </Box>
   );
-};
+});

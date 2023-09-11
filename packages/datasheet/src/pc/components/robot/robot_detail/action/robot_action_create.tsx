@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtomValue } from 'jotai';
 import { cloneElement, FC, ReactElement, ReactNode } from 'react';
 import { mutate } from 'swr';
 import {
@@ -25,10 +26,11 @@ import {
   SearchSelect,
 } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@apitable/icons';
 import { flatContextData } from 'pc/utils';
+import { automationStateAtom } from '../../../automation/controller';
 import { createAction } from '../../api';
 import { IActionType } from '../../interface';
+import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
 
 export const CONST_MAX_ACTION_COUNT = 9;
@@ -40,6 +42,8 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
   prevActionId?: string;
 }) => {
 
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
   const createNewAction = async(action: {
     actionTypeId: string;
     robotId: string;
@@ -48,6 +52,14 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
   }) => {
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
+
+    if(!automationState?.resourceId) {
+      return;
+    }
+    await refresh({
+      resourceId: automationState?.resourceId!,
+      robotId: robotId,
+    });
     return res.data;
   };
 
@@ -86,6 +98,8 @@ export const CreateNewActionNode : FC<{
 }
 >= ({ robotId, actionTypes, children, prevActionId, disabled }) => {
 
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
   const createNewAction = async(action: {
     actionTypeId: string;
     robotId: string;
@@ -93,7 +107,15 @@ export const CreateNewActionNode : FC<{
     input?: any;
   }) => {
     const res = await createAction(action);
-    mutate(`/automation/robots/${robotId}/actions`);
+    await mutate(`/automation/robots/${robotId}/actions`);
+
+    if(automationState?.resourceId) {
+      return;
+    }
+    await refresh({
+      resourceId: automationState?.resourceId!,
+      robotId: robotId,
+    });
     return res.data;
   };
 
@@ -143,14 +165,26 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
   prevActionId?: string;
 }) => {
 
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
+
   const createNewAction = async(action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;
     input?: any;
   }) => {
+
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
+
+    if(automationState?.resourceId) {
+      return;
+    }
+    await refresh({
+      resourceId: automationState?.resourceId!,
+      robotId: robotId,
+    });
     return res.data;
   };
 

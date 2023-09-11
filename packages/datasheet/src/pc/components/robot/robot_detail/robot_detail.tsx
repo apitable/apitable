@@ -17,7 +17,7 @@
  */
 
 import axios from 'axios';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Box, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
@@ -25,7 +25,7 @@ import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';
 import { IRobotTrigger } from '../interface';
 import { useRobotListState } from '../robot_list';
 import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
-import { RobotActions } from './action/robot_actions';
+import { getActionList, RobotActions } from './action/robot_actions';
 import { EditType, RobotTrigger } from './trigger/robot_trigger';
 
 const req = axios.create({
@@ -42,6 +42,7 @@ export const RobotDetailForm = () => {
 
   const { data, error } = useSWR(`/automation/robots/${robot?.robotId}/actions`, req);
   const actions = data?.data?.data;
+  const actionList = useMemo(() => getActionList(actions), [actions]);
 
   if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot || error) {
     return null;
@@ -67,7 +68,7 @@ export const RobotDetailForm = () => {
 
       <Box paddingTop={'40px'} paddingBottom={'12px'}>
         <Typography variant="h5">
-          {t(Strings.then) } ( {actions?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
+          {t(Strings.then) } ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
         </Typography>
       </Box>
 

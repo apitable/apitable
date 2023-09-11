@@ -27,7 +27,12 @@ import { SearchSelect } from '@apitable/components';
 import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
 import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { automationPanelAtom, automationTriggerAtom, PanelName } from '../../../automation/controller';
+import {
+  automationPanelAtom,
+  automationStateAtom,
+  automationTriggerAtom,
+  PanelName
+} from '../../../automation/controller';
 import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { IRobotTrigger, ITriggerType } from '../../interface';
@@ -35,6 +40,8 @@ import { DropdownTrigger } from '../action/robot_action';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
+import {useAtomValue} from "jotai";
+import {useRobotListState} from "../../robot_list";
 
 interface IRobotTriggerProps {
   robotId: string;
@@ -64,6 +71,9 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
   const triggerTypeId = trigger.triggerTypeId;
   const triggerType = triggerTypes.find(t => t.triggerTypeId === trigger.triggerTypeId);
 
+  const automationState= useAtomValue(automationStateAtom);
+  const { api: { refresh }} = useRobotListState();
+
   const handleTriggerTypeChange = useCallback((triggerTypeId: string) => {
     if (triggerTypeId === trigger?.triggerTypeId) {
       return;
@@ -74,12 +84,25 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(() => {
-          mutate({
+        changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(async() => {
+          await mutate({
             ...trigger!,
             input: null,
             triggerTypeId,
           });
+
+          console.log('automationState XXXXXX' );
+          if(!automationState?.resourceId) {
+            return;
+          }
+          if(!automationState?.currentRobotId) {
+            return;
+          }
+          await refresh({
+            resourceId: automationState?.resourceId!,
+            robotId: automationState?.currentRobotId!,
+          });
+
         });
       },
       onCancel: () => {
@@ -172,14 +195,22 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
   const isActive = panelState.dataId ===trigger.triggerId;
 
   const NodeItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
+  const handleClick= useCallback(() => {
+    setAutomationPanel({
+      panelName: PanelName.Trigger,
+      dataId: trigger.triggerId
+    });
+  }, [setAutomationPanel, trigger.triggerId]);
+
+  const memoedHandleClick = useMemo(() => {
+    return editType === EditType.entry ? handleClick : undefined;
+  }, [editType, handleClick]);
   return (
     <NodeItem
-      onClick={() => {
-        setAutomationPanel({
-          panelName: PanelName.Trigger,
-          dataId: trigger.triggerId
-        });
-      }}
+      index={0}
+      handleClick={
+        memoedHandleClick
+      }
       nodeId={trigger.triggerId}
       schema={schema}
       formData={formData}
@@ -199,8 +230,8 @@ const RobotTriggerBase = (props: IRobotTriggerBase) => {
         <span>
           <DropdownTrigger isActive={isActive}>
             <>
-              {/*// TODO update triggerType  */}
-              {1}. {String(triggerType?.name)}
+              {/*// TODO update sequence   */}
+              {1}. {triggerType?.name}
             </>
           </DropdownTrigger>
         </span>

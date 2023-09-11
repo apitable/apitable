@@ -20,9 +20,7 @@ import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
 import React, { useMemo } from 'react';
 import useSWR from 'swr';
-import { Box, IconButton } from '@apitable/components';
-import { ConnectFilled } from '@apitable/icons';
-import { StyledLinkIcon } from '../../../automation/icons';
+import { Box } from '@apitable/components';
 import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
 import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
 import { EditType } from '../trigger/robot_trigger';
@@ -32,41 +30,19 @@ import {
   CONST_MAX_ACTION_COUNT,
   CreateNewAction,
   CreateNewActionLineButton,
-  CreateNewActionNode
 } from './robot_action_create';
 
 const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
-export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom = () => {} }:
-  {
-    robotId: string;
-    trigger?: IRobotTrigger;
-    triggerTypes: ITriggerType[];
-    actionTypes: IActionType[];
-    onScrollBottom?: () => void;
+export const getActionList = (actions?: []): IRobotAction[] => {
+  if(!actions || actions.length === 0) {
+    return [];
   }
-) => {
-  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
-
-  const filterActionTypes = useMemo(() => {
-    return getFilterActionTypes(actionTypes);
-  }, [actionTypes]);
-
-  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
-  if (!data || error) {
-    return null;
-  }
-  const actions = data.data.data;
-
-  const entryActionId = actions.find((item: any) => item.prevActionId === null)?.id;
-  if (!entryActionId) {
-    return (
-      <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} disabled={trigger==null}/>
-    );
-  }
-  const actionsById = actions.reduce((acc: any, item: any) => {
+  // @ts-ignore
+  const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
+  const actionsById = actions?.reduce((acc: any, item: any) => {
     acc[item.id] = item;
     return acc;
   }, {});
@@ -84,6 +60,37 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
       actionList.push(actionsById[action.nextActionId]);
     }
   });
+  return actionList;
+};
+export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom = () => {} }:
+  {
+    robotId: string;
+    trigger?: IRobotTrigger;
+    triggerTypes: ITriggerType[];
+    actionTypes: IActionType[];
+    onScrollBottom?: () => void;
+  }
+) => {
+  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
+
+  const filterActionTypes = useMemo(() => {
+    return getFilterActionTypes(actionTypes);
+  }, [actionTypes]);
+
+  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
+  const actions = data?.data?.data;
+
+  const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
+
+  const actionList = useMemo(() => getActionList(actions), [actions]);
+  if (!data || error) {
+    return null;
+  }
+  if (!entryActionId) {
+    return (
+      <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} disabled={trigger==null}/>
+    );
+  }
 
   run();
 
@@ -120,7 +127,7 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
               }
               <RobotAction
                 editType={EditType.entry}
-                index={index}
+                index={index + 1}
                 key={index}
                 action={action}
                 actionTypes={actionTypes}

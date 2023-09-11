@@ -18,6 +18,7 @@ import { automationHistoryAtom } from '../../controller';
 import { CONST_DATETIME_FORMAT } from '../list';
 import { TaskList } from '../list/task';
 import { handleDownload } from '../list/util';
+import { getAutomationRunHistoryDetail } from "../../../robot/api";
 
 const CONST_STATUS_SUCCESS = 1;
 const CONST_STATUS_FAIL = 2;
@@ -113,9 +114,11 @@ export const RunHistoryDetail = () => {
         <LinkButton component="button" underline={false} prefixIcon={<DownloadOutlined
           color={colors.textCommonTertiary}
           size={12} />}
-        onClick={() => {
-          if(!dataItem) return;
-          handleDownload(dataItem, `robot_${currentHistoryState.taskId}.json`);
+        onClick={async () => {
+          if(!currentHistoryState?.taskId) return;
+
+          const result = await getAutomationRunHistoryDetail(currentHistoryState.taskId);
+          handleDownload(result ?? {}, `automation_${currentHistoryState.taskId}.json`);
         }}
         >{
             <Typography variant="body3" color={colors.textCommonPrimary}>

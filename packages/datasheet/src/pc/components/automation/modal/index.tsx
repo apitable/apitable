@@ -1,20 +1,15 @@
-
+import { useFormEdit } from 'pc/components/robot/robot_detail/form_edit';
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { mutate } from 'swr';
 import { Modal } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal as ConfirmModal } from 'pc/components/common/modal/modal/modal';
-import { changeActionTypeId } from '../../robot/api';
 import { useRobotListState } from '../../robot/robot_list';
 import { AutomationPanel } from '../index';
-import style from '../run_history/modal/styles.module.less';
-import { useFormEdit } from 'pc/components/robot/robot_detail/form_edit';
+import style from './styles.module.less';
 
 const StyledModal = styled(Modal)`
-  background: var(--bg-common-lower, #0D0D0D);
-  border: 1px solid var(--border-common-default);
   position: fixed;
   height: 100%;
   right: 0;
@@ -24,14 +19,13 @@ const AutomationModal: React.FC<{
     onClose: () => void
 }> = ({ onClose }) => {
 
-  const [isClosed, setIsClosed] = useState(false);
-
+  const isClosedRef = React.useRef(false);
   const { api: { refresh }} = useRobotListState();
   const {
     isModified
   } = useFormEdit();
   const getCloseable = async(): Promise<boolean> => {
-    if(isClosed) {
+    if(isClosedRef.current) {
       return true;
     }
     if (!isModified) {
@@ -44,6 +38,7 @@ const AutomationModal: React.FC<{
         cancelText: t(Strings.cancel),
         okText: t(Strings.confirm),
         onOk: () => {
+          isClosedRef.current = true;
           resolve(true);
         },
         onCancel: () => {
@@ -62,7 +57,7 @@ const AutomationModal: React.FC<{
       isCloseable={
         getCloseable
       }
-      width={1332}
+      width={1264}
       destroyOnClose
       bodyStyle={{
         padding: '0 0',

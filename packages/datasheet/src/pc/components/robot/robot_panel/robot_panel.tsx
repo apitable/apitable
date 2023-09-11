@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtom } from 'jotai';
+import { useAtom, Provider as JotaiProvider } from 'jotai';
 import dynamic from 'next/dynamic';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { Box, useTheme, ThemeProvider } from '@apitable/components';
@@ -28,12 +28,26 @@ import { FormEditProvider } from '../robot_detail/form_edit';
 import { RobotList } from '../robot_list';
 import { RobotListHead } from './robot_list_head';
 
-const RobotBase = () => {
+const AutomationModal = () => {
 
   const [showModal, setModal] = useAtom(showAtomDetailModalAtom);
   const AutomationModal = dynamic(() => import('../../automation/modal'), {
     ssr: false,
   });
+
+  return (
+    <>
+      {
+        showModal && <AutomationModal onClose={() => {
+          setModal(false);
+        }}/>
+      }
+    </>
+  );
+};
+
+const RobotBase = () => {
+
   const cacheTheme = useSelector(Selectors.getTheme);
 
   const theme = useTheme();
@@ -46,11 +60,7 @@ const RobotBase = () => {
             revalidateOnFocus: false,
           }}
         >
-          {
-            showModal && <AutomationModal onClose={() => {
-              setModal(false);
-            }}/>
-          }
+          <AutomationModal />
           <Box
             height="50px"
             display="flex"

@@ -39,6 +39,7 @@ export interface IDropdownProps {
       offset?: number;
       autoWidth?: boolean;
       selectedIndex?:number;
+      stopPropagation?: boolean;
     },
     setTriggerRef?: (ref: HTMLElement|null) => void;
     middleware?: Array<Middleware>,
@@ -63,7 +64,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
   const arrowEnabled = options.arrow?? true;
   const disabled = options.disabled?? false;
   const [isOpen, setOpenValue] = useState(false);
-  
+
   const setOpen = useCallback((isOpenState: boolean) => {
     if(disabled) {
       return;
@@ -105,7 +106,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
-  
+
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
     dismiss,
@@ -124,7 +125,9 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
       <>
         {
           // @ts-ignore
-          cloneElement(triggerEl, { ref: setRef, ...getReferenceProps() })
+          cloneElement(triggerEl, { ref: setRef, ...getReferenceProps(options?.stopPropagation ? {
+            onClick: e => e.stopPropagation()
+          }: {}) })
         }
         {isOpen && (
           <FloatingPortal>

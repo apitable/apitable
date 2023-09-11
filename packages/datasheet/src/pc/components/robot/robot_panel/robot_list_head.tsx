@@ -23,6 +23,7 @@ import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/ic
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 import { IRobotHeadAddBtn } from '../interface';
+import { useRobotListState } from '../robot_list';
 import { useRobotController } from '../robot_list/controller';
 
 export const Beta = () => {
