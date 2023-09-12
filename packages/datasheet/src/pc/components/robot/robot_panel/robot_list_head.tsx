@@ -98,7 +98,7 @@ export const AddRobotButton = () => {
   return (
     <OrTooltip tooltip={disableTip} tooltipEnable={!canAddNewRobot}>
       <span>
-        <IconButton disabled={!canAddNewRobot} onClick={canAddNewRobot ? createNewRobot : undefined} icon={AddOutlined} />
+        <IconButton shape={'square'} disabled={!canAddNewRobot} onClick={canAddNewRobot ? createNewRobot : undefined} icon={AddOutlined} />
       </span>
     </OrTooltip>
   );

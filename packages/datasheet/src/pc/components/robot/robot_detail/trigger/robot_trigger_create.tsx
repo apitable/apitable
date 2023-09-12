@@ -23,7 +23,7 @@ import styled, { css } from 'styled-components';
 import { mutate } from 'swr';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { automationStateAtom } from '../../../automation/controller';
+import {automationPanelAtom, automationStateAtom, PanelName} from '../../../automation/controller';
 import { createTrigger } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData } from '../../hooks';
@@ -31,6 +31,7 @@ import { ITriggerType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
+import {useAtom} from "jotai/index";
 
 interface IRobotTriggerCreateProps {
   robotId: string;
@@ -58,6 +59,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
     api: { refresh },
   } = useRobotListState();
   const state = useAtomValue(automationStateAtom);
+  const [, setAutomationPanel] = useAtom(automationPanelAtom );
 
   const triggerTypeOptions = useMemo(() => {
     return getNodeTypeOptions(triggerTypes);
@@ -83,9 +85,14 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
         robotId: state.currentRobotId,
       });
 
+      setAutomationPanel({
+        panelName: PanelName.Trigger,
+        dataId: triggerRes.data.data.triggerId
+      });
+
       return triggerRes.data;
     };
-  }, [robotId, defaultFormData, triggerTypes]);
+  }, [setAutomationPanel, triggerTypes, defaultFormData, robotId, state?.resourceId, state?.currentRobotId, refresh]);
 
   if (!triggerTypes) {
     return null;

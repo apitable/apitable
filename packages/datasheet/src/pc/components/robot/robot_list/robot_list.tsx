@@ -22,11 +22,16 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, Skeleton } from '@apitable/components';
+import { Box, FloatUiTooltip, Skeleton } from '@apitable/components';
 import { Api, ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { automationStateAtom } from '../../automation/controller';
 import { getResourceAutomationDetail, getResourceAutomations } from '../api';
-import { useActionTypes, useAddNewRobot, useRobot, useTriggerTypes } from '../hooks';
+import {
+  useActionTypes,
+  useAddNewRobot, useRobot,
+  useTriggerTypes
+} from '../hooks';
+import { OrTooltip } from '../robot_detail/or_tooltip';
 import { RobotListItemCard } from '../robot_list_item';
 import { useRobotController } from './controller';
 import { NewItem } from './new_item';
@@ -37,40 +42,37 @@ export const CONST_MAX_ROBOT_COUNT = 9;
 export const StyledBox = styled(Box)`
   &:hover {
     background-color: var(--bgControlsHover);
-
+    
     border-color: var(--borderBrandActive);
   }
 `;
 
 export const useRobotListState = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const {
-    data: automationList,
-    error,
-    mutate: mutateRefresh,
-  } = useSWR(`getResourceAutomations-${datasheetId}`, () => getResourceAutomations(datasheetId!));
+  const { data: automationList, error, mutate: mutateRefresh }
+      = useSWR(`getResourceAutomations-${datasheetId}`, () => getResourceAutomations(datasheetId!));
 
   const { data: formList } = useSWR(`${Api.getRelateNodeByDstId}_${datasheetId}`, () =>
-    Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM),
-  );
+    Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM));
 
-  const [state, setAutomationAtom] = useAtom(automationStateAtom);
+  const [state, setAutomationAtom] = useAtom(automationStateAtom );
 
   const currentRobotId = state?.currentRobotId;
 
   const getById = (robotId: string) => {
-    return automationList?.find((item) => item.robotId === robotId);
+    return automationList?.find(item => item.robotId === robotId);
   };
-  return useMemo(
-    () => ({
+  return useMemo(() => (
+    {
       state: {
         formList: formList?.data?.data ?? [],
         data: automationList,
-        error,
+        error
       },
       api: {
         getById,
-        refreshItem: async() => {
+        refreshItem  : async(
+        ) => {
           await mutateRefresh();
           if (state?.resourceId && state?.currentRobotId) {
             const itemDetail = await getResourceAutomationDetail(state?.resourceId, state?.currentRobotId);
@@ -82,107 +84,104 @@ export const useRobotListState = () => {
             setAutomationAtom(newState);
           }
         },
-        refresh: async(data?: { resourceId: string; robotId: string }) => {
+        refresh  : async(
+          data?: {
+              resourceId: string;
+              robotId: string;
+            }
+        ) => {
           await mutateRefresh();
-          if (!state?.resourceId || !state?.currentRobotId) {
+          if(!state?.resourceId || !state?.currentRobotId) {
             return;
           }
-          if (data?.resourceId && data?.robotId) {
+          if(data?.resourceId && data?.robotId) {
             const itemDetail = await getResourceAutomationDetail(data?.resourceId, data?.robotId);
             const newState = {
               robot: itemDetail,
-              currentRobotId: currentRobotId,
-              resourceId: state.resourceId,
+              currentRobotId:  currentRobotId,
+              resourceId:state.resourceId,
             };
             setAutomationAtom(newState);
           }
-        },
-      },
-    }),
-    [
-      formList?.data?.data,
-      automationList,
-      error,
-      getById,
-      state?.resourceId,
-      state?.currentRobotId,
-      currentRobotId,
-      setAutomationAtom,
-      mutateRefresh,
-    ],
-  );
+        }
+      }
+    }
+  ), [formList?.data?.data, automationList, error, getById, state?.resourceId, state?.currentRobotId, currentRobotId, setAutomationAtom, mutateRefresh]);
+
 };
 
 export const RobotList = memo(() => {
   const permissions = useSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
-  const {
-    state: { data: robotList },
-  } = useRobotListState();
+  const { state: { data: robotList }} = useRobotListState();
 
-  const {
-    state: { error },
-    api: { refresh },
-  } = useRobotListState();
+  const { state: { error }, api: { refresh }} = useRobotListState();
 
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
 
   const { createNewRobot, navigateAutomation } = useRobotController();
 
-  const { canAddNewRobot } = useAddNewRobot();
+  const {
+    canAddNewRobot,
+    disableTip,
+  } = useAddNewRobot();
 
-  const robot = useRobot();
+  // const robot = useRobot();
   if (error) return null;
   if (triggerTypesLoading || actionTypesLoading || triggerTypes.length === 0 || actionTypes.length === 0) {
-    return (
-      <Skeleton
-        count={3}
-        height="68px"
-        type="text"
-        circle={false}
-        style={{
-          marginBottom: 16,
-        }}
-      />
-    );
+    return <Skeleton
+      count={3}
+      height="68px"
+      type="text"
+      circle={false}
+      style={{
+        marginBottom: 16,
+      }}
+    />;
   }
 
   if (robotList?.length === 0) {
     return <RobotEmptyList />;
   }
 
-  const robotLength = robotList?.length ?? 0;
+  const robotLength = robotList?.length ??0;
   return (
-    <div style={{ width: '100%' }}>
-      {robotList?.map((robot, index) => {
-        return (
-          <RobotListItemCard
-            index={index}
-            key={robot.robotId}
-            robotCardInfo={robot}
-            onNavigate={async() => {
-              await navigateAutomation(robot.resourceId, robot.robotId);
-            }}
-            readonly={!canManageRobot}
-          />
-        );
-      })}
-      <NewItem
-        height={64}
-        disabled={!canAddNewRobot || Boolean(robotLength > ConfigConstant.MAX_ROBOT_COUNT_PER_DST)}
-        onClick={async() => {
-          if (!canManageRobot) {
-            return;
-          }
+    <div style={{ width: '100%' }} >
+      {
+        robotList?.map((robot, index) => {
+          return (
+            <RobotListItemCard
+              index={index}
+              key={robot.robotId}
+              robotCardInfo={robot}
+              onNavigate={async() => {
+                await navigateAutomation(robot.resourceId, robot.robotId);
+              }}
+              readonly={!canManageRobot}
+            />
+          );
+        })
+      }
+      <OrTooltip tooltip={disableTip} tooltipEnable={robotLength >= ConfigConstant.MAX_ROBOT_COUNT_PER_DST} >
+        <NewItem
+          height={64}
+          disabled={(!canAddNewRobot) || Boolean(robotLength >= ConfigConstant.MAX_ROBOT_COUNT_PER_DST)}
+          onClick={async() => {
+            if(!canManageRobot) {
+              return;
+            }
 
-          await createNewRobot();
-          await refresh();
-        }}
-      >
-        {t(Strings.new_automation)}
-      </NewItem>
+            await createNewRobot();
+            await refresh();
+          }}
+        >
+          {
+            t(Strings.new_automation)
+          }
+        </NewItem>
+      </OrTooltip>
     </div>
   );
 });

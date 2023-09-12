@@ -29,14 +29,18 @@ import { OrTooltip } from '../or_tooltip';
 import { EditType } from '../trigger/robot_trigger';
 import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
-import { CONST_MAX_ACTION_COUNT, CreateNewAction, CreateNewActionLineButton } from './robot_action_create';
+import {
+  CONST_MAX_ACTION_COUNT,
+  CreateNewAction,
+  CreateNewActionLineButton,
+} from './robot_action_create';
 
 const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
 export const getActionList = (actions?: []): IRobotAction[] => {
-  if (!actions || actions.length === 0) {
+  if(!actions || actions.length === 0) {
     return [];
   }
   // @ts-ignore
@@ -46,14 +50,14 @@ export const getActionList = (actions?: []): IRobotAction[] => {
     return acc;
   }, {});
   // prev => next
-  Object.keys(actionsById).forEach((item) => {
+  Object.keys(actionsById).forEach(item => {
     const action = actionsById[item];
     if (action.prevActionId) {
       actionsById[action.prevActionId].nextActionId = action.id;
     }
   });
   const actionList: IRobotAction[] = [actionsById[entryActionId]];
-  Object.keys(actionsById).forEach((item) => {
+  Object.keys(actionsById).forEach(item => {
     const action = actionsById[item];
     if (action.nextActionId) {
       actionList.push(actionsById[action.nextActionId]);
@@ -61,18 +65,16 @@ export const getActionList = (actions?: []): IRobotAction[] => {
   });
   return actionList;
 };
-export const RobotActions = ({
-  robotId,
-  triggerTypes,
-  trigger,
-  onScrollBottom = () => {},
-}: {
-  robotId: string;
-  trigger?: IRobotTrigger;
-  triggerTypes: ITriggerType[];
-  // actionTypes: IActionType[];
-  onScrollBottom?: () => void;
-}) => {
+export const RobotActions = ({ robotId, triggerTypes, trigger, onScrollBottom = () => {} }:
+  {
+    robotId: string;
+    trigger?: IRobotTrigger;
+    triggerTypes: ITriggerType[];
+    // actionTypes: IActionType[];
+    onScrollBottom?: () => void;
+  }
+) => {
+
   const { data: actionTypes } = useActionTypes();
   const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
@@ -82,14 +84,6 @@ export const RobotActions = ({
   const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
-  if (!data || error) {
-    return null;
-  }
-  if (!entryActionId) {
-    return <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger == null} />;
-  }
-
-  run();
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -98,60 +92,82 @@ export const RobotActions = ({
     trigger,
   });
 
+  if (!data || error) {
+    return null;
+  }
+  if (!entryActionId) {
+    return (
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null} nodeOutputSchemaList={nodeOutputSchemaList}/>
+    );
+  }
+
+  run();
+
   // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
-    <Box width="100%">
-      {actionList.map((action, index) => (
-        <Box key={action.id}>
-          {index > 0 && index < actionList.length && (
-            <CreateNewActionLineButton
-              disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
-              robotId={robotId}
-              actionTypes={actionTypes}
-              prevActionId={actionList[index - 1].id}
-            >
-              <span>
-                <OrTooltip
-                  options={{
-                    offset: -10,
-                  }}
-                  tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
-                  tooltip={t(Strings.automation_action_num_warning, {
-                    value: CONST_MAX_ACTION_COUNT,
-                  })}
-                  placement={'top'}
-                >
-                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT} />
-                </OrTooltip>
-              </span>
-            </CreateNewActionLineButton>
-          )}
-          <RobotAction
-            editType={EditType.entry}
-            index={index + 1}
-            key={index}
-            action={action}
-            nodeOutputSchemaList={nodeOutputSchemaList}
-            robotId={robotId}
-          />
-        </Box>
-      ))}
+    <Box
+      width='100%'
+    >
+      {
+        actionList.map((action, index) =>
+          (
+            <Box key={action.id}>
+              {
+                index > 0 && index < actionList.length && (
+                  <CreateNewActionLineButton
+                    disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                    robotId={robotId}
+                    actionTypes={actionTypes}
+                    nodeOutputSchemaList={nodeOutputSchemaList}
+                    prevActionId={actionList[index - 1].id}
+                  >
+                    <span>
+                      <OrTooltip
+                        options={{
+                          offset: -10
+                        }}
+                        tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                        tooltip={t(Strings.automation_action_num_warning, {
+                          value: CONST_MAX_ACTION_COUNT,
+                        })} placement={'top'}>
+                        <LinkButton disabled={
+                          actionList?.length >= CONST_MAX_ACTION_COUNT
+                        }/>
+                      </OrTooltip>
+                    </span>
+                  </CreateNewActionLineButton>
+                )
+              }
+              <RobotAction
+                editType={EditType.entry}
+                index={index + 1}
+                key={index}
+                action={action}
+                nodeOutputSchemaList={nodeOutputSchemaList}
+                robotId={robotId}
+              />
+            </Box>
+          )
+        )
+      }
 
       <OrTooltip
-        tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
+        tooltipEnable={
+          actionList?.length >= CONST_MAX_ACTION_COUNT
+        }
         tooltip={t(Strings.automation_action_num_warning, {
           value: CONST_MAX_ACTION_COUNT,
-        })}
-        placement={'top'}
-      >
+        })} placement={'top'}>
         <CreateNewAction
+          nodeOutputSchemaList={nodeOutputSchemaList}
           disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
           robotId={robotId}
           actionTypes={actionTypes}
           prevActionId={actionList[actionList.length - 1].id}
         />
       </OrTooltip>
-    </Box>
+
+    </Box >
   );
 };
