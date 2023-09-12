@@ -27,7 +27,8 @@ import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { useActionTypes, useRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
-import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { IAutomationDatum, IRobotAction, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { getActionList } from '../robot_detail/action/robot_actions';
 import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
@@ -57,6 +58,23 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
   const { data: triggerTypes } = useTriggerTypes();
   const { originData: actionTypes } = useActionTypes();
 
+  // @ts-ignore
+  const list = getActionList((robotCardInfo.actions ?? []).map( action => ({
+    ...action,
+    id: action.actionId,
+  })))
+    .map((action) => {
+      console.log('action, ', action)
+      const triggerType = actionTypes
+        .find((trigger) => trigger.actionTypeId === action.actionTypeId);
+      return {
+        // @ts-ignore
+        nodeTypeId: action.actionId,
+        service: triggerType?.service!,
+        type: IRobotNodeType.Action,
+      };
+    });
+
   const nodeTypeList: IRobotNodeTypeInfo[] = [
     ...robotCardInfo.triggers.map((trigger) => {
       const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
@@ -66,14 +84,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
         type: IRobotNodeType.Trigger,
       };
     }),
-    ...robotCardInfo.actions.map((action) => {
-      const triggerType = actionTypes.find((trigger) => trigger.actionTypeId === action.actionTypeId);
-      return {
-        nodeTypeId: action.actionId,
-        service: triggerType?.service!,
-        type: IRobotNodeType.Action,
-      };
-    }),
+    ...list
   ];
 
   const nodeSteps: INodeStep[] = useMemo(() => {

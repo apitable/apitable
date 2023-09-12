@@ -84,7 +84,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
         <Box display={'flex'} height={'24px'}>
           <span className={cls(styles.arrowIcon)}>
             <IconButton shape={'square'}
-              icon={showDetail ? ChevronRightOutlined: ChevronDownOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
+              icon={showDetail ? ChevronDownOutlined: ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
           </span>
           <Box marginX={'8px'} display="flex" alignItems="center">
             <ItemStatus status={status} />

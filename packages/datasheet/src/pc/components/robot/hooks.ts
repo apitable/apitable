@@ -27,10 +27,11 @@ import { useAllColumns } from 'pc/hooks';
 import { automationStateAtom } from '../automation/controller';
 import { activeRobot, deActiveRobot, deleteRobotAction, nestReq } from './api';
 import { getFilterActionTypes } from './helper';
-import { IActionType, INodeType, ITriggerType } from './interface';
+import {IActionType, INodeType, IRobotAction, ITriggerType} from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 import { getFields } from './robot_detail/trigger/helper';
 import { useRobotListState } from './robot_list';
+import {getActionList} from "./robot_detail/action/robot_actions";
 
 export const useAllFields = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -141,7 +142,11 @@ export const useRobotActionTypes = () => {
     return null;
   }
   const robot = state.robot;
-  return robot.actions.map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
+  // @ts-ignore
+  return getActionList(robot.actions.map(item => ({
+    ...item,
+    id: item.actionId
+  }))).map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
 };
 
 export const useRobot = () => {

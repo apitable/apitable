@@ -75,11 +75,11 @@ const AutomationModal: React.FC<{
       }}
       visible
       title={null}
-      onCancel={async() => {
-      }}
+      onCancel={
+        handleCloseClick
+      }
     >
-      <AutomationPanel onClose={handleCloseClick}
-      />
+      <AutomationPanel onClose={handleCloseClick} />
     </StyledModal>
   );
 };

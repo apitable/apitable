@@ -39,32 +39,32 @@ const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
+
 export const getActionList = (actions?: []): IRobotAction[] => {
-  if(!actions || actions.length === 0) {
+  if (!actions || actions.length === 0) {
     return [];
   }
-  // @ts-ignore
-  const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
-  const actionsById = actions?.reduce((acc: any, item: any) => {
-    acc[item.id] = item;
-    return acc;
-  }, {});
-  // prev => next
-  Object.keys(actionsById).forEach(item => {
-    const action = actionsById[item];
-    if (action.prevActionId) {
-      actionsById[action.prevActionId].nextActionId = action.id;
+
+  const preActionIdMap:Record<string, IRobotAction> = actions.map((action: IRobotAction) => ({
+    [action.prevActionId]:  action,
+  })).reduce((acc: any, item: any) => ({ ...acc, ...item }), {});
+
+  const headOpt: IRobotAction|undefined = actions.find((item: IRobotAction) => item.prevActionId == null);
+  if(!headOpt) {
+    return [];
+  }
+  const head : IRobotAction= headOpt!;
+  const findNextAction = (count: number, current : string, resultList: IRobotAction[]): IRobotAction[] => {
+    if(count === 0 ) {
+      return resultList;
     }
-  });
-  const actionList: IRobotAction[] = [actionsById[entryActionId]];
-  Object.keys(actionsById).forEach(item => {
-    const action = actionsById[item];
-    if (action.nextActionId) {
-      actionList.push(actionsById[action.nextActionId]);
-    }
-  });
-  return actionList;
+    const action = preActionIdMap[current];
+    return findNextAction(count -1, action.id, resultList.concat(action!));
+  };
+
+  return findNextAction(actions.length - 1, head.id, [head]);
 };
+
 export const RobotActions = ({
   robotId,
   triggerTypes,
@@ -85,6 +85,10 @@ export const RobotActions = ({
   const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
+
+  console.log(`actionList  actionList ${actionList.map(r => r.id).join(",")}`);
+  // @ts-ignore
+  console.log(`actionList  actionList ${actionList.map(r => r.actionId).join(",")}`);
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -114,7 +118,6 @@ export const RobotActions = ({
             <CreateNewActionLineButton
               disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
               robotId={robotId}
-              key={index}
               actionTypes={actionTypes}
               nodeOutputSchemaList={nodeOutputSchemaList}
               prevActionId={actionList[index - 1].id}
@@ -138,7 +141,6 @@ export const RobotActions = ({
           <RobotAction
             editType={EditType.entry}
             index={index + 1}
-            key={index}
             action={action}
             nodeOutputSchemaList={nodeOutputSchemaList}
             robotId={robotId}
