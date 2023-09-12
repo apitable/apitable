@@ -346,6 +346,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public List<String> getSpaceIdByUserIdIgnoreDeleted(Long userId) {
+        return baseMapper.selectSpaceIdByUserIdIgnoreDeleted(userId);
+    }
+
+    @Override
     public List<String> getSpaceIdWithoutNameModifiedByUserId(Long userId) {
         List<MemberEntity> memberEntities = getByUserId(userId);
         return memberEntities.stream()

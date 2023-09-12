@@ -66,4 +66,8 @@ public interface EntitlementServiceFacade {
     default void rewardGiftCapacity(String spaceId, EntitlementRemark remark) {
         // Nothing to do default
     }
+
+    default void cancelSubscription(String spaceId) {
+        // Nothing to do default
+    }
 }

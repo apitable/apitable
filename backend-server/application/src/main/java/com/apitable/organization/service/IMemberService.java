@@ -256,6 +256,14 @@ public interface IMemberService extends IService<MemberEntity> {
     List<String> getSpaceIdByUserId(Long userId);
 
     /**
+     * get all user's spaces' id.
+     *
+     * @param userId user id
+     * @return space id
+     */
+    List<String> getSpaceIdByUserIdIgnoreDeleted(Long userId);
+
+    /**
      * get all id of user's spaces which user never modify his member's nickname.
      *
      * @param userId user id

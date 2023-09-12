@@ -853,6 +853,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<MemberEntity> selectByUserId(@Param("userId") Long userId);
 
     /**
+     * query user's space id ignore deleted.
+     *
+     * @param userId user id
+     * @return list of space id
+     */
+    List<String> selectSpaceIdByUserIdIgnoreDeleted(@Param("userId") Long userId);
+
+    /**
      * query by space id list.
      *
      * @param spaceIds space id

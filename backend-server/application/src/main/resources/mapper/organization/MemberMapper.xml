@@ -978,6 +978,10 @@
          SELECT * FROM ${tablePrefix}unit_member WHERE user_id = #{userId} AND is_deleted = 0
     </select>
 
+    <select id="selectSpaceIdByUserIdIgnoreDeleted" resultType="java.lang.String">
+        SELECT DISTINCT space_id FROM ${tablePrefix}unit_member WHERE user_id = #{userId}
+    </select>
+
     <select id="selectMembersBySpaceIds" resultType="com.apitable.organization.dto.SpaceMemberDTO">
         SELECT
             vum.user_id,
