@@ -23,9 +23,9 @@ import { useSelector } from 'react-redux';
 import { Switch } from '@apitable/components';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
-import style from './style.module.less';
 import { stopPropagation } from '../../../utils/dom';
 import { ScreenSize } from '../component_display';
+import style from './style.module.less';
 
 interface ISearchControlProps {
   onValueChange?: (searchValue: string) => void;

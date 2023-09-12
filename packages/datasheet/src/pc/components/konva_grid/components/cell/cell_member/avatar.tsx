@@ -50,18 +50,7 @@ interface IAvatarProps {
 
 export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) => {
   const ratio = Math.max(window.devicePixelRatio, 2);
-  const {
-    x = 0,
-    y = 0,
-    src: _src,
-    title,
-    isGzip = true,
-    id,
-    bgColor,
-    size = AvatarSize.Size32,
-    type = AvatarType.Member,
-    isDefaultIcon,
-  } = props;
+  const { x = 0, y = 0, src: _src, title, isGzip = true, id, bgColor, size = AvatarSize.Size32, type = AvatarType.Member, isDefaultIcon } = props;
   const { theme } = useContext(KonvaGridContext);
   const { cacheTheme } = useContext(KonvaGridViewContext);
   const colors = theme.color;
@@ -72,9 +61,8 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = memo((props) =>
 
   const src = getSignatureUrl(_src || '');
 
-  const avatarSrc = isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ?
-    `${src}?imageView2/1/w/${size * ratio}/q/100!` :
-    (src || '');
+  const avatarSrc =
+    isGzip && src && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${src}?imageView2/1/w/${size * ratio}/q/100!` : src || '';
   const firstWord = getFirstWordFromString(title.trim());
   const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
 

@@ -681,6 +681,6 @@ export const useCatalogTreeRequest = () => {
     updateNodeRecordHistoryReq,
     disableShareReq,
     getCollaboratorListPageReq,
-    getFieldPermissionMemberListPage
+    getFieldPermissionMemberListPage,
   };
 };

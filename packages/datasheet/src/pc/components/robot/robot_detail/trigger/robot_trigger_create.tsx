@@ -21,10 +21,7 @@ import { useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { mutate } from 'swr';
-import {
-  applyDefaultTheme,
-  SearchSelect
-} from '@apitable/components';
+import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { automationStateAtom } from '../../../automation/controller';
 import { createTrigger } from '../../api';
@@ -40,11 +37,11 @@ interface IRobotTriggerCreateProps {
   triggerTypes: ITriggerType[];
 }
 
-export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width: string; minWidth: string }>`
+export const StyledListContainer = styled.div.attrs(applyDefaultTheme)<{ width: string; minWidth: string }>`
   width: ${(props) => props.width};
   min-width: ${(props) => props.minWidth};
   padding: 4px 0;
-  ${props => css`
+  ${(props) => css`
     background-color: ${props.theme.color.highestBg};
     box-shadow: ${props.theme.color.shadowCommonHighest};
   `}
@@ -57,7 +54,9 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme) <{ width:
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
 
-  const { api: { refresh }} = useRobotListState();
+  const {
+    api: { refresh },
+  } = useRobotListState();
   const state = useAtomValue(automationStateAtom);
 
   const triggerTypeOptions = useMemo(() => {
@@ -73,17 +72,16 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
 
       await mutate(`/automation/robots/${robotId}/trigger`);
 
-      if(!state?.resourceId ) {
+      if (!state?.resourceId) {
         return;
       }
-      if(!state?.currentRobotId ) {
+      if (!state?.currentRobotId) {
         return;
       }
-      await refresh(
-        {
-          resourceId:state.resourceId,
-          robotId:  state.currentRobotId
-        });
+      await refresh({
+        resourceId: state.resourceId,
+        robotId: state.currentRobotId,
+      });
 
       return triggerRes.data;
     };
@@ -103,23 +101,19 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
     <SearchSelect
       clazz={{
         item: itemStyle.item,
-        icon: itemStyle.icon
+        icon: itemStyle.icon,
       }}
       options={{
         placeholder: t(Strings.search_field),
         noDataText: t(Strings.empty_data),
       }}
-      list={triggerTypeOptions} onChange={(item) => {
+      list={triggerTypeOptions}
+      onChange={(item) => {
         // @ts-ignore
         handleCreateFormChange(String(item.value));
-      }}>
-      <NewItem
-        disabled={false}
-      >
-        {
-          t(Strings.add_a_trigger)
-        }
-      </NewItem>
+      }}
+    >
+      <NewItem disabled={false}>{t(Strings.add_a_trigger)}</NewItem>
     </SearchSelect>
   );
 };

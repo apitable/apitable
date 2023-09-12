@@ -68,11 +68,24 @@ export const getPageParams = (path: string) => {
   const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId || automationId;
 
   return {
-    datasheetId, viewId, shareId, recordId,
-    fieldId, folderId, formId, templateId, categoryId, memberId,
-    widgetId, dashboardId,
+    datasheetId,
+    viewId,
+    shareId,
+    recordId,
+    fieldId,
+    folderId,
+    formId,
+    templateId,
+    categoryId,
+    memberId,
+    widgetId,
+    dashboardId,
     automationId,
-    resourceId, nodeId, mirrorId, embedId, aiId,
+    resourceId,
+    nodeId,
+    mirrorId,
+    embedId,
+    aiId,
   };
 };
 

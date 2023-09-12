@@ -22,8 +22,15 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip, Switch } from '@apitable/components';
 import {
-  CollaCommandName, ViewType, Selectors,
-  GalleryStyleKeyType, IGalleryViewProperty, LayoutType, Strings, t, ISetGalleryStyle,
+  CollaCommandName,
+  ViewType,
+  Selectors,
+  GalleryStyleKeyType,
+  IGalleryViewProperty,
+  LayoutType,
+  Strings,
+  t,
+  ISetGalleryStyle,
 } from '@apitable/core';
 import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports

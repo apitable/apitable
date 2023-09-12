@@ -22,10 +22,8 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
-import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { merge } from 'lodash';
-import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -53,6 +51,8 @@ import {
 } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
+import ErrorPage from 'error_page';
+import { init as initPlayer } from 'modules/shared/player/init';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common';
@@ -106,7 +106,7 @@ export interface IUserInfoError {
   message: string;
 }
 
-const initWorker = async () => {
+const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -216,7 +216,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, [loading]);
 
   useEffect(() => {
-    const getUser = async () => {
+    const getUser = async() => {
       const pathUrl = window.location.pathname;
       const query = new URLSearchParams(window.location.search);
       const spaceId = query.get('spaceId') || getRegResult(pathUrl, spaceIdReg) || '';
@@ -319,10 +319,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    (function () {
+    (function() {
       const _Worker = window.Worker;
       if (typeof _Worker === 'function') {
-        window.Worker = function (url: string, opts: any) {
+        window.Worker = function(url: string, opts: any) {
           if (url.startsWith('//')) {
             url = `${window.location.protocol}${url}`;
           } else if (url.startsWith('/')) {

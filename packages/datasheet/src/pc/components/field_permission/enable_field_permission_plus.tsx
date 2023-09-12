@@ -17,21 +17,11 @@
  */
 
 import { useMount, useToggle } from 'ahooks';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, IOption, Skeleton, Switch } from '@apitable/components';
-import {
-  ConfigConstant,
-  DatasheetApi,
-  IFieldPermissionRole,
-  IUnitValue,
-  MemberType,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-} from '@apitable/core';
+import { ConfigConstant, DatasheetApi, IFieldPermissionRole, IUnitValue, MemberType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { MembersDetail } from 'pc/components/catalog/permission_settings_plus/permission/members_detail';
 import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
 import { Message } from 'pc/components/common/message/message';
@@ -50,7 +40,7 @@ const defaultSetting = { formSheetAccessible: false };
 export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnablePermissionPlus>> = (props) => {
   const { field } = props;
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
- 
+
   const [setting, setSetting] = useState<{ formSheetAccessible: boolean }>();
   const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
@@ -64,10 +54,11 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   const [pageNo, setPageNo] = useState<number>(1);
   const { getFieldPermissionMemberListPage } = useCatalogTreeRequest();
   const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest(
-    (pageNo) => getFieldPermissionMemberListPage(datasheetId, field.id, pageNo), 
+    (pageNo) => getFieldPermissionMemberListPage(datasheetId, field.id, pageNo),
     {
-      manual: true
-    });
+      manual: true,
+    },
+  );
 
   const { run } = useRequest(DatasheetApi.fetchFieldPermissionRoleList, {
     manual: true,
@@ -98,7 +89,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   }, [pageNo, getCollaboratorReq]);
 
   useEffect(() => {
-    if(collaboratorInfo) {
+    if (collaboratorInfo) {
       setMemberList([...memberList, ...collaboratorInfo.records]);
     }
     // eslint-disable-next-line
@@ -383,13 +374,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
         </div>
       )}
       {isMemberDetail && (
-        <MembersDetail
-          data={collaboratorInfo}
-          memberList={memberList}
-          setPageNo={setPageNo}
-          pageNo={pageNo}
-          onCancel={toggleIsMemberDetail}
-        />
+        <MembersDetail data={collaboratorInfo} memberList={memberList} setPageNo={setPageNo} pageNo={pageNo} onCancel={toggleIsMemberDetail} />
       )}
     </div>
   );

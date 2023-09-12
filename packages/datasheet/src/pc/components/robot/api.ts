@@ -18,7 +18,7 @@
 
 import axios from 'axios';
 import { mutate } from 'swr';
-import {IAutomationDatum, IRobotBaseInfo, IRobotHistoryTask, IRobotRunHistoryList, IRobotTrigger} from './interface';
+import { IAutomationDatum, IRobotBaseInfo, IRobotHistoryTask, IRobotRunHistoryList, IRobotTrigger } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 
 export const nestReq = axios.create({
@@ -58,7 +58,7 @@ export const updateRobotItem = async(resourceId: string, robotId: string, robot:
 };
 
 export const getResourceAutomations = (resourceId: string): Promise<IAutomationDatum[]> => {
-  return axios.get(`/automation/robots?resourceId=${resourceId}`).then(res => {
+  return axios.get(`/automation/robots?resourceId=${resourceId}`).then((res) => {
     if (res.data.success) {
       return res.data.data;
     }
@@ -66,11 +66,8 @@ export const getResourceAutomations = (resourceId: string): Promise<IAutomationD
   });
 };
 
-export const createAutomationRobot = (robot: {
-  resourceId: string;
-  name: string;
-}): Promise<IAutomationDatum> => {
-  return nestReq.post('/automation/robots', robot).then(res => {
+export const createAutomationRobot = (robot: { resourceId: string; name: string }): Promise<IAutomationDatum> => {
+  return nestReq.post('/automation/robots', robot).then((res) => {
     if (res.data.success) {
       return res.data.data;
     }
@@ -78,7 +75,7 @@ export const createAutomationRobot = (robot: {
   });
 };
 export const getResourceAutomationDetail = (resourceId: string, robotId: string): Promise<IAutomationRobotDetailItem> => {
-  return axios.get(`/automation/${resourceId}/robots/${robotId}`).then(res => {
+  return axios.get(`/automation/${resourceId}/robots/${robotId}`).then((res) => {
     if (res.data.success) {
       return res.data.data;
     }
@@ -172,7 +169,7 @@ export const getRobotBaseInfo = (robotId: string): Promise<IRobotBaseInfo | unde
 
 export const getAutomationRunHistoryDetail = (taskId: string): Promise<IRobotHistoryTask | undefined> => {
   return nestReq.get(`/automation/run-history/${taskId}`).then((res) => {
-    const taskDetail: undefined|IRobotHistoryTask = res?.data?.data;
+    const taskDetail: undefined | IRobotHistoryTask = res?.data?.data;
     return taskDetail;
   });
 };

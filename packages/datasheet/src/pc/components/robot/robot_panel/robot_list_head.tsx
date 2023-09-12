@@ -30,13 +30,7 @@ import { useRobotController } from '../robot_list/controller';
 export const Beta = () => {
   const theme = useTheme();
   return (
-    <Box
-      display="flex"
-      background={theme.color.primaryLight}
-      borderRadius="2px"
-      padding="1px 4px"
-      marginLeft="8px"
-    >
+    <Box display="flex" background={theme.color.primaryLight} borderRadius="2px" padding="1px 4px" marginLeft="8px">
       <Typography variant="h9" color={theme.color.primaryColor}>
         BETA
       </Typography>
@@ -46,10 +40,7 @@ export const Beta = () => {
 
 export const AddRobotButton = () => {
   // const theme = useTheme();
-  const {
-    canAddNewRobot,
-    disableTip,
-  } = useAddNewRobot();
+  const { canAddNewRobot, disableTip } = useAddNewRobot();
   // const isShowRobot = useShowRobot();
 
   const { createNewRobot } = useRobotController();
@@ -107,9 +98,7 @@ export const AddRobotButton = () => {
   return (
     <OrTooltip tooltip={disableTip} tooltipEnable={!canAddNewRobot}>
       <span>
-        <IconButton disabled={!canAddNewRobot}
-          onClick={canAddNewRobot ? createNewRobot: undefined}
-          icon={AddOutlined} />
+        <IconButton disabled={!canAddNewRobot} onClick={canAddNewRobot ? createNewRobot : undefined} icon={AddOutlined} />
       </span>
     </OrTooltip>
   );
@@ -119,28 +108,23 @@ export const RobotListHead = () => {
   const isShowRobot = useShowRobot();
   return (
     <>
-      <AddRobotButton
-      />
+      <AddRobotButton />
 
       <Box display="flex" alignItems="center">
-        <Typography variant="h6">
-          {t(Strings.robot_panel_title)}
-        </Typography>
+        <Typography variant="h6">{t(Strings.robot_panel_title)}</Typography>
         <Tooltip content={t(Strings.robot_panel_help_tooltip)} placement="top-center">
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
-              icon={QuestionCircleOutlined} onClick={() => {
+              icon={QuestionCircleOutlined}
+              onClick={() => {
                 window.open(t(Strings.robot_help_url));
-              }} />
+              }}
+            />
           </Box>
         </Tooltip>
       </Box>
-      <IconButton
-        shape="square"
-        onClick={() => ShortcutActionManager.trigger(ShortcutActionName.ToggleRobotPanel)}
-        icon={CloseOutlined}
-      />
+      <IconButton shape="square" onClick={() => ShortcutActionManager.trigger(ShortcutActionName.ToggleRobotPanel)} icon={CloseOutlined} />
     </>
   );
 };

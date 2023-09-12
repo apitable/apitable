@@ -47,8 +47,8 @@ import { CellOptions, inquiryValueByKey } from 'pc/components/multi_grid/cell/ce
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
 
-import styles from './styles.module.less';
 import { SyncViewTip } from '../sync_view_tip';
+import styles from './styles.module.less';
 
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;

@@ -27,7 +27,7 @@ import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
 
 interface IRobotRunHistoryItemDetailProps {
-  taskId: string
+  taskId: string;
 }
 
 export const useRunTaskDetail = (taskId: string) => {
@@ -37,7 +37,7 @@ export const useRunTaskDetail = (taskId: string) => {
   const taskDetail: IRobotHistoryTask = data?.data?.data;
   return {
     data: taskDetail,
-    error
+    error,
   };
 };
 export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps) => {
@@ -50,41 +50,48 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
     return null;
   }
   if (!taskDetail) {
-    return <Box padding="16px">
-      <Typography variant="body3">{t(Strings.robot_run_history_fail_unknown_error)} (taskId: {taskId})</Typography>
-    </Box>;
+    return (
+      <Box padding="16px">
+        <Typography variant="body3">
+          {t(Strings.robot_run_history_fail_unknown_error)} (taskId: {taskId})
+        </Typography>
+      </Box>
+    );
   }
   // Older versions of data are not supported for display.
   if (!taskDetail.nodeByIds) {
-    return <Box padding="16px">
-      <Typography variant="body3">{t(Strings.robot_run_history_old_version_tip)}</Typography>
-    </Box>;
+    return (
+      <Box padding="16px">
+        <Typography variant="body3">{t(Strings.robot_run_history_old_version_tip)}</Typography>
+      </Box>
+    );
   }
 
-  const nodeTypes = taskDetail.executedNodeIds.map(nodeId => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]);
+  const nodeTypes = taskDetail.executedNodeIds.map((nodeId) => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]);
   return (
     <Box flex={'1'} overflowY={'auto'}>
-      <Box
-        height='1px'
-        background={theme.color.fc5}
-        margin="0px 16px"
-      />
-      <Box padding="0px 16px 0px 0" >
-        {
-          nodeTypes.map((nodeType, index) => {
-            const nodeDetail = taskDetail.nodeByIds[taskDetail.executedNodeIds[index]];
-            const isTrigger = index === 0;
-            return <RobotRunHistoryNodeWrapper
-                isLast={index === nodeTypes.length - 1}
+      <Box height="1px" background={theme.color.fc5} margin="0px 16px" />
+      <Box padding="0px 16px 0px 0">
+        {nodeTypes.map((nodeType, index) => {
+          const nodeDetail = taskDetail.nodeByIds[taskDetail.executedNodeIds[index]];
+          const isTrigger = index === 0;
+          return (
+            <RobotRunHistoryNodeWrapper
+              isLast={index === nodeTypes.length - 1}
               status={data?.status}
-              key={index} index={index} nodeType={nodeType} nodeDetail={nodeDetail}>
-              {
-                isTrigger ? <RobotRunHistoryTriggerDetail nodeType={nodeType} nodeDetail={nodeDetail} /> :
-                  <RobotRunHistoryActionDetail nodeType={nodeType} nodeDetail={nodeDetail} />
-              }
-            </RobotRunHistoryNodeWrapper>;
-          })
-        }
+              key={index}
+              index={index}
+              nodeType={nodeType}
+              nodeDetail={nodeDetail}
+            >
+              {isTrigger ? (
+                <RobotRunHistoryTriggerDetail nodeType={nodeType} nodeDetail={nodeDetail} />
+              ) : (
+                <RobotRunHistoryActionDetail nodeType={nodeType} nodeDetail={nodeDetail} />
+              )}
+            </RobotRunHistoryNodeWrapper>
+          );
+        })}
       </Box>
     </Box>
   );

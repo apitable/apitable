@@ -89,8 +89,8 @@ export const nodeConfigData = [
       },
     ],
 
-    CONST_ENABLE_AUTOMATION_NODE
-  )
+    CONST_ENABLE_AUTOMATION_NODE,
+  ),
 ];
 
 // Check if the url belongs to this site

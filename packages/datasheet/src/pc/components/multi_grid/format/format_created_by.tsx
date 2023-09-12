@@ -24,9 +24,9 @@ import { Switch } from '@apitable/components';
 import { IField, ICreatedByField, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { getEnvVariables } from 'pc/utils/env';
-import styles from './styles.module.less';
 import { Message } from '../../common';
 import settingStyles from '../field_setting/styles.module.less';
+import styles from './styles.module.less';
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;

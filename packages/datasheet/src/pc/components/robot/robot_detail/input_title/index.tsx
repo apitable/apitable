@@ -5,12 +5,10 @@ import { Strings, t } from '@apitable/core';
 import { EditableText } from '../../../editable_text';
 import { updateRobotDescription, updateRobotName } from '../../api';
 import { useRobot } from '../../hooks';
-import {useCssColors} from "../trigger/use_css_colors";
+import { useCssColors } from '../trigger/use_css_colors';
 
 export const InputTitle: FC = () => {
-  const {
-    robot, updateRobot,
-  } = useRobot();
+  const { robot, updateRobot } = useRobot();
   const colors = useThemeColors();
 
   if (!robot) {
@@ -22,24 +20,17 @@ export const InputTitle: FC = () => {
       if (ok) {
         updateRobot({
           ...robot,
-          name
+          name,
         });
       }
     }
   };
 
-  return (
-    <EditableText onChange={handleNameChange}
-      color={colors.textCommonPrimary}
-      placeholder={t(Strings.robot_unnamed)}
-      value={robot.name} />
-  );
+  return <EditableText onChange={handleNameChange} color={colors.textCommonPrimary} placeholder={t(Strings.robot_unnamed)} value={robot.name} />;
 };
 
 export const EditableInputDescription: FC = () => {
-  const {
-    robot, updateRobot,
-  } = useRobot();
+  const { robot, updateRobot } = useRobot();
   const colors = useCssColors();
 
   if (!robot) {
@@ -56,10 +47,12 @@ export const EditableInputDescription: FC = () => {
   };
 
   return (
-    <EditableText onChange={handleNameChange}
+    <EditableText
+      onChange={handleNameChange}
       variant={'body4'}
       color={colors.textCommonTertiary}
       placeholder={t(Strings.click_here_to_write_description)}
-      value={robot.description} />
+      value={robot.description}
+    />
   );
 };

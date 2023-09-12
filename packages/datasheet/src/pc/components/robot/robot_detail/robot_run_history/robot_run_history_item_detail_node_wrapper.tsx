@@ -53,76 +53,52 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
   const theme = useTheme();
   const [showDetail, setShowDetail] = useState(false);
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
-  return (<Box
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    minHeight={'42px'}
-    overflow="hidden"
-    style={{ cursor: 'pointer' }}
-    onClick={() => setShowDetail(!showDetail)}
-  >
+  return (
     <Box
       display="flex"
-      position="relative"
-      alignItems="flex-start"
+      alignItems="center"
+      justifyContent="space-between"
+      minHeight={'42px'}
+      overflow="hidden"
+      style={{ cursor: 'pointer' }}
+      onClick={() => setShowDetail(!showDetail)}
     >
-      <Box display={'flex'}
-        height={'24px'}
-      >
-        <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
-          <IconButton
-            icon={ChevronRightOutlined}
-            className={styles.dropIcon}
-            onClick={() => setShowDetail(!showDetail)} />
-        </span>
-        <Box marginX={'8px'}
-          display="flex"
-          alignItems="center">
-          <ItemStatus status={status} />
-        </Box>
-      </Box>
-
-      {
-        !isLast && (
-              <VerticalLine />
-          )
-      }
-
-      <Box flexDirection={'column'} >
-        <Box flexDirection={'row'} alignItems={'center'} display={'flex'}>
-          <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={24} height={24} />
-          <Typography variant="h7" color={theme.color.fc1} style={{ marginLeft: 8 }}>
-            {nodeType.name}
-          </Typography>
-          {
-            hasError && <Box
-              marginLeft="4px"
-              display="flex"
-              alignItems="center"
-            >
-              <Tooltip content={t(Strings.robot_run_history_fail_tooltip)}>
-                <Box
-                  as="span"
-                  marginLeft="4px"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <WarnCircleFilled />
-                </Box>
-              </Tooltip>
-            </Box>
-          }
-        </Box>
-
-        {
-          showDetail && <Box padding={'16px 16px'}
-            marginLeft={'48px'}
-            marginTop="16px" backgroundColor={colors.bgCommonDefault}>
-            {children}
+      <Box display="flex" position="relative" alignItems="flex-start">
+        <Box display={'flex'} height={'24px'}>
+          <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
+            <IconButton icon={ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
+          </span>
+          <Box marginX={'8px'} display="flex" alignItems="center">
+            <ItemStatus status={status} />
           </Box>
-        }
+        </Box>
+
+        {!isLast && <VerticalLine />}
+
+        <Box flexDirection={'column'}>
+          <Box flexDirection={'row'} alignItems={'center'} display={'flex'}>
+            <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={24} height={24} />
+            <Typography variant="h7" color={theme.color.fc1} style={{ marginLeft: 8 }}>
+              {nodeType.name}
+            </Typography>
+            {hasError && (
+              <Box marginLeft="4px" display="flex" alignItems="center">
+                <Tooltip content={t(Strings.robot_run_history_fail_tooltip)}>
+                  <Box as="span" marginLeft="4px" display="flex" alignItems="center">
+                    <WarnCircleFilled />
+                  </Box>
+                </Tooltip>
+              </Box>
+            )}
+          </Box>
+
+          {showDetail && (
+            <Box padding={'16px 16px'} marginLeft={'48px'} marginTop="16px" backgroundColor={colors.bgCommonDefault}>
+              {children}
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
-  </Box>);
+  );
 };

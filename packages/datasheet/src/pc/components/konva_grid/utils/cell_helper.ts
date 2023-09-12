@@ -295,19 +295,7 @@ export class CellHelper extends KonvaDrawer {
   }
 
   private renderCellMultiSelect(renderProps: IRenderProps, ctx?: any) {
-    const {
-      x,
-      y,
-      field,
-      cellValue,
-      rowHeight,
-      rowHeightLevel,
-      columnWidth,
-      isActive,
-      editable,
-      callback,
-      cacheTheme,
-    } = renderProps;
+    const { x, y, field, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, editable, callback, cacheTheme } = renderProps;
     if (!(cellValue as IMultiSelectedIds)?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
     const isOperating = editable && isActive;
     let currentX = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
@@ -409,19 +397,7 @@ export class CellHelper extends KonvaDrawer {
   }
 
   private renderCellText(renderProps: IRenderProps, ctx?: any) {
-    const {
-      x,
-      y,
-      cellValue,
-      field,
-      columnWidth,
-      rowHeightLevel,
-      isActive,
-      style,
-      callback,
-      viewType = ViewType.Grid,
-      realField,
-    } = renderProps;
+    const { x, y, cellValue, field, columnWidth, rowHeightLevel, isActive, style, callback, viewType = ViewType.Grid, realField } = renderProps;
 
     const generateRenderText = (): string | null => {
       if (cellValue != null && cellValue instanceof FormulaBaseError) return cellValue?.message;
@@ -759,10 +735,13 @@ export class CellHelper extends KonvaDrawer {
         }
 
         // The icons in the cell are scaled
-        imgUrl = getCellValueThumbSrc({ ...file, token, preview }, {
-          h: height * (window.devicePixelRatio || 1),
-          formatToJPG: isGif({ name: file.name, type: file.mimeType }),
-        });
+        imgUrl = getCellValueThumbSrc(
+          { ...file, token, preview },
+          {
+            h: height * (window.devicePixelRatio || 1),
+            formatToJPG: isGif({ name: file.name, type: file.mimeType }),
+          },
+        );
       }
       const name = imgUrl;
       const img = imageCache.getImage(name);
@@ -1013,19 +992,7 @@ export class CellHelper extends KonvaDrawer {
      * currentDatasheetId is the id of the table (or mirror) that is acting as a springboard at this time
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
-    const {
-      x,
-      y,
-      field,
-      cellValue,
-      rowHeight,
-      columnWidth,
-      rowHeightLevel,
-      isActive,
-      editable,
-      callback,
-      currentResourceId,
-    } = renderProps;
+    const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
     const linkRecordIds = cellValue ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : null;
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
@@ -1227,13 +1194,12 @@ export class CellHelper extends KonvaDrawer {
 
       const realCellValue = cellValue?.flat(1) as ICellValue;
       const realRenderProps = { ...renderProps, cellValue: realCellValue, editable: false };
-      const realFieldRenderProps =
-        {
-          ...realRenderProps,
-          cellValue: realCellValue,
-          field: realField,
-          currentResourceId: entityFieldInfo?.datasheetId,
-        };
+      const realFieldRenderProps = {
+        ...realRenderProps,
+        cellValue: realCellValue,
+        field: realField,
+        currentResourceId: entityFieldInfo?.datasheetId,
+      };
 
       // Non-plain text fields are displayed as is
       switch (realField.type) {

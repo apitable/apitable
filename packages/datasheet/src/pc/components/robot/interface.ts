@@ -19,7 +19,7 @@ import { IAutomationRobotDetailItem } from './robot_context';
 
 export interface IRobotHistoryTask {
   status: number;
-  data: IRobotRunHistoryDetail
+  data: IRobotRunHistoryDetail;
 }
 
 export interface IRobotRunHistoryDetail {

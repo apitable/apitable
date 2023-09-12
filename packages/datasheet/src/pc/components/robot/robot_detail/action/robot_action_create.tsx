@@ -19,12 +19,7 @@
 import { useAtomValue } from 'jotai';
 import { cloneElement, FC, ReactElement, ReactNode } from 'react';
 import { mutate } from 'swr';
-import {
-  Box,
-  ContextMenu,
-  useContextMenu,
-  SearchSelect,
-} from '@apitable/components';
+import { Box, ContextMenu, useContextMenu, SearchSelect } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { flatContextData } from 'pc/utils';
 import { automationStateAtom } from '../../../automation/controller';
@@ -32,29 +27,30 @@ import { createAction } from '../../api';
 import { IActionType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
-import itemStyle from "../trigger/select_styles.module.less";
+import itemStyle from '../trigger/select_styles.module.less';
 
 export const CONST_MAX_ACTION_COUNT = 9;
 
-export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled = false }: {
+export const CreateNewAction = ({
+  robotId,
+  actionTypes,
+  prevActionId,
+  disabled = false,
+}: {
   robotId: string;
-  disabled?:boolean;
+  disabled?: boolean;
   actionTypes: IActionType[];
   prevActionId?: string;
 }) => {
-
-  const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh }} = useRobotListState();
-  const createNewAction = async(action: {
-    actionTypeId: string;
-    robotId: string;
-    prevActionId?: string;
-    input?: any;
-  }) => {
+  const automationState = useAtomValue(automationStateAtom);
+  const {
+    api: { refresh },
+  } = useRobotListState();
+  const createNewAction = async(action: { actionTypeId: string; robotId: string; prevActionId?: string; input?: any }) => {
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
 
-    if(!automationState?.resourceId) {
+    if (!automationState?.resourceId) {
       return;
     }
     await refresh({
@@ -66,55 +62,50 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
 
   return (
     <SearchSelect
-        clazz={{
-          item: itemStyle.item,
-          icon: itemStyle.icon
-        }}
+      clazz={{
+        item: itemStyle.item,
+        icon: itemStyle.icon,
+      }}
       disabled={disabled}
       options={{
         placeholder: t(Strings.search_field),
         noDataText: t(Strings.empty_data),
         minWidth: '384px',
       }}
-      list={actionTypes.map(item => ({
+      list={actionTypes.map((item) => ({
         label: item.name,
         value: item.actionTypeId,
-        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
-      }))} onChange={(item) => {
+        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
+      }))}
+      onChange={(item) => {
         createNewAction({
           robotId,
           actionTypeId: String(item.value),
-          prevActionId
+          prevActionId,
         });
-      }}>
-
-      <NewItem disabled={disabled} >
-        {t(Strings.robot_new_action)}
-      </NewItem>
-    </SearchSelect>);
+      }}
+    >
+      <NewItem disabled={disabled}>{t(Strings.robot_new_action)}</NewItem>
+    </SearchSelect>
+  );
 };
 
-export const CreateNewActionNode : FC<{
+export const CreateNewActionNode: FC<{
   robotId: string;
-  disabled?:boolean;
+  disabled?: boolean;
   children: ReactElement;
   actionTypes: IActionType[];
   prevActionId?: string;
-}
->= ({ robotId, actionTypes, children, prevActionId, disabled }) => {
-
-  const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh }} = useRobotListState();
-  const createNewAction = async(action: {
-    actionTypeId: string;
-    robotId: string;
-    prevActionId?: string;
-    input?: any;
-  }) => {
+}> = ({ robotId, actionTypes, children, prevActionId, disabled }) => {
+  const automationState = useAtomValue(automationStateAtom);
+  const {
+    api: { refresh },
+  } = useRobotListState();
+  const createNewAction = async(action: { actionTypeId: string; robotId: string; prevActionId?: string; input?: any }) => {
     const res = await createAction(action);
     await mutate(`/automation/robots/${robotId}/actions`);
 
-    if(automationState?.resourceId) {
+    if (automationState?.resourceId) {
       return;
     }
     await refresh({
@@ -127,63 +118,62 @@ export const CreateNewActionNode : FC<{
   const CONTEXT_MENU_ID_1 = 'CONTEXT_MENU_ID_1';
 
   const { show } = useContextMenu({
-    id: CONTEXT_MENU_ID_1
+    id: CONTEXT_MENU_ID_1,
   });
 
   // if(children)
   // @ts-ignore
   return (
-    <Box display='flex' alignItems='center' justifyContent='center'>
-      {
-        cloneElement(children, {
-          onClick: show
-        })
-      }
+    <Box display="flex" alignItems="center" justifyContent="center">
+      {cloneElement(children, {
+        onClick: show,
+      })}
       <ContextMenu
         menuId={CONTEXT_MENU_ID_1}
-        overlay={
-          flatContextData([
+        overlay={flatContextData(
+          [
             actionTypes.map((actionType) => ({
               text: actionType.name,
               icon: <img src={integrateCdnHost(actionType.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
               onClick: () => {
-
                 createNewAction({
                   robotId,
                   actionTypeId: actionType.actionTypeId,
-                  prevActionId
+                  prevActionId,
                 });
-              }
-            }))
-          ], true)
-        }
+              },
+            })),
+          ],
+          true,
+        )}
       />
     </Box>
   );
 };
 
-export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, disabled = false, children }: {
+export const CreateNewActionLineButton = ({
+  robotId,
+  actionTypes,
+  prevActionId,
+  disabled = false,
+  children,
+}: {
   robotId: string;
   children: ReactElement;
-  disabled?:boolean;
+  disabled?: boolean;
   actionTypes: IActionType[];
   prevActionId?: string;
 }) => {
+  const automationState = useAtomValue(automationStateAtom);
+  const {
+    api: { refresh },
+  } = useRobotListState();
 
-  const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh }} = useRobotListState();
-
-  const createNewAction = async(action: {
-    actionTypeId: string;
-    robotId: string;
-    prevActionId?: string;
-    input?: any;
-  }) => {
-
+  const createNewAction = async(action: { actionTypeId: string; robotId: string; prevActionId?: string; input?: any }) => {
     const res = await createAction(action);
     mutate(`/automation/robots/${robotId}/actions`);
 
-    if(automationState?.resourceId) {
+    if (automationState?.resourceId) {
       return;
     }
     await refresh({
@@ -198,26 +188,27 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
       disabled={disabled}
       clazz={{
         item: itemStyle.item,
-        icon: itemStyle.icon
+        icon: itemStyle.icon,
       }}
       options={{
         placeholder: t(Strings.search_field),
         noDataText: t(Strings.empty_data),
         minWidth: '384px',
       }}
-      list={actionTypes.map(item => ({
+      list={actionTypes.map((item) => ({
         label: item.name,
         value: item.actionTypeId,
-        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
-      }))} onChange={(item) => {
+        prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />,
+      }))}
+      onChange={(item) => {
         createNewAction({
           robotId,
           actionTypeId: String(item.value),
-          prevActionId
+          prevActionId,
         });
-      }}>
-      {
-        children
-      }
-    </SearchSelect>);
+      }}
+    >
+      {children}
+    </SearchSelect>
+  );
 };

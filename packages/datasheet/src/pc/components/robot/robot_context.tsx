@@ -16,46 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 export interface UpdatedBy {
-  uuid: string
-  nickName: string
-  avatar: string
+  uuid: string;
+  nickName: string;
+  avatar: string;
 }
 
 export interface IAutomationRobotDetailItem {
-  robotId: string
-  name: string
-  description: string
-  isActive: boolean
+  robotId: string;
+  name: string;
+  description: string;
+  isActive: boolean;
   recentlyRunCount?: number;
-  updatedBy: UpdatedBy
-  updatedAt: string
-  props: Props
-  triggers: Trigger[]
-  actions: Action[]
-  relatedResources: RelatedResource[]
+  updatedBy: UpdatedBy;
+  updatedAt: string;
+  props: Props;
+  triggers: Trigger[];
+  actions: Action[];
+  relatedResources: RelatedResource[];
 }
 
 export interface Props {
-  failureNotifyEnable: boolean
+  failureNotifyEnable: boolean;
 }
 
 export interface Trigger {
-  triggerId: string
-  triggerTypeId: string
-  prevTriggerId: string
-  input: string
+  triggerId: string;
+  triggerTypeId: string;
+  prevTriggerId: string;
+  input: string;
 }
 
 export interface Action {
-  actionId: string
-  actionTypeId: string
-  nextActionId: string
-  prevActionId: string
-  input: string
+  actionId: string;
+  actionTypeId: string;
+  nextActionId: string;
+  prevActionId: string;
+  input: string;
 }
 
 export interface RelatedResource {
-  nodeId: string
-  nodeName: string
-  icon: string
+  nodeId: string;
+  nodeName: string;
+  icon: string;
 }

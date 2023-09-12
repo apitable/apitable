@@ -69,8 +69,8 @@ import { resourceService } from 'pc/resource_service';
 import { stopPropagation } from 'pc/utils';
 import { getIsColNameVisible, getMoveColumnsResult } from 'pc/utils/datasheet';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import styles from './style.module.less';
 import { SyncViewTip } from '../sync_view_tip';
+import styles from './style.module.less';
 
 interface IHiddenFieldProps {
   type?: HideFieldType;

@@ -40,10 +40,10 @@ import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { MobileSelect, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { CollectTypeSelect } from './collect_type_select';
-import { FieldSelectModal } from './field_select_modal';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
+import { CollectTypeSelect } from './collect_type_select';
+import { FieldSelectModal } from './field_select_modal';
 
 interface IFormatDateTime {
   currentField: IDateTimeBaseField;

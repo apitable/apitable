@@ -17,12 +17,22 @@
  */
 
 import { useToggle } from 'ahooks';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, IOption, Skeleton } from '@apitable/components';
-import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, 
-  IReduxState, IUnitValue, StoreActions, Strings, t, IRoleMember } from '@apitable/core';
+import {
+  Api,
+  ConfigConstant,
+  INodePermissionData,
+  INodeRoleMap,
+  IReduxState,
+  IUnitValue,
+  StoreActions,
+  Strings,
+  t,
+  IRoleMember,
+} from '@apitable/core';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';

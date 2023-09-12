@@ -7,13 +7,12 @@ import { HistoryModalContent } from './index';
 import style from './styles.module.less';
 
 const StyledModal = styled(Modal)`
-  background: var(--bg-common-lower, #0D0D0D);
+  background: var(--bg-common-lower, #0d0d0d);
   border: 1px solid var(--border-common-default);
 `;
 const AutomationHistoryPanel: React.FC<{
-    onClose: () => void
+  onClose: () => void;
 }> = ({ onClose }) => {
-
   const colors = useThemeColors();
   return (
     <StyledModal
@@ -25,11 +24,15 @@ const AutomationHistoryPanel: React.FC<{
       bodyStyle={{
         padding: '0 0',
         paddingLeft: '0 !important',
-        paddingRight: '0 !important'
+        paddingRight: '0 !important',
       }}
       visible
       title={
-        <Box height={'52px'} display={'flex'} alignItems={'center'} marginLeft={'16px'}
+        <Box
+          height={'52px'}
+          display={'flex'}
+          alignItems={'center'}
+          marginLeft={'16px'}
           paddingRight={'16px'}
           justifyContent={'space-between'}
           borderBottom={'1px solid var(--borderCommonDefault)'}
@@ -39,12 +42,8 @@ const AutomationHistoryPanel: React.FC<{
             {t(Strings.robot_run_history_title)}
           </Typography>
 
-          <IconButton
-            shape="square"
-            onClick={onClose}
-            icon={CloseOutlined}
-          />
-        </Box >
+          <IconButton shape="square" onClick={onClose} icon={CloseOutlined} />
+        </Box>
       }
       onCancel={() => onClose()}
     >

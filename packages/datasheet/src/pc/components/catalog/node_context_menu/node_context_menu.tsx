@@ -292,11 +292,13 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 openCatalog();
                 addTreeNode(targetId);
               }),
-              ...(CONST_ENABLE_AUTOMATION_NODE ?[
-                contextItemMap.get(ContextItemKey.AddAutomation)(() => {
-                  addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
-                }),
-              ]: []),
+              ...(CONST_ENABLE_AUTOMATION_NODE
+                ? [
+                  contextItemMap.get(ContextItemKey.AddAutomation)(() => {
+                    addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
+                  }),
+                ]
+                : []),
               contextItemMap.get(ContextItemKey.AddForm)(() => {
                 const result = triggerUsageAlert?.(
                   'maxFormViewsInSpace',

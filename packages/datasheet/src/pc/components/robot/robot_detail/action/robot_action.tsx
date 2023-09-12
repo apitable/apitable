@@ -38,13 +38,13 @@ import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { EditType } from '../trigger/robot_trigger';
-import itemStyle from "../trigger/select_styles.module.less";
+import itemStyle from '../trigger/select_styles.module.less';
 
 export interface IRobotActionProps {
   index: number;
   action: IRobotAction;
   robotId: string;
-  editType?:EditType
+  editType?: EditType;
   nodeOutputSchemaList: INodeOutputSchema[];
 }
 
@@ -52,53 +52,52 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const { editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
   const triggerType = useRobotTriggerType();
   const { originData: actionTypes } = useActionTypes();
-  const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
+  const actionType = actionTypes?.find((item) => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
 
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
 
-  const [automationState, setAutomationAtom] = useAtom(automationStateAtom );
+  const [automationState, setAutomationAtom] = useAtom(automationStateAtom);
 
-  const { api: { refresh }} = useRobotListState();
-  const handleActionTypeChange = useCallback((actionTypeId: string) => {
-    if (actionTypeId === action?.typeId) {
-      return;
-    }
-    Modal.confirm({
-      title: t(Strings.robot_change_action_tip_title),
-      content: t(Strings.robot_change_action_tip_content),
-      cancelText: t(Strings.cancel),
-      okText: t(Strings.confirm),
-      onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(async() => {
-          await mutate(`/automation/robots/${robotId}/actions`);
+  const {
+    api: { refresh },
+  } = useRobotListState();
+  const handleActionTypeChange = useCallback(
+    (actionTypeId: string) => {
+      if (actionTypeId === action?.typeId) {
+        return;
+      }
+      Modal.confirm({
+        title: t(Strings.robot_change_action_tip_title),
+        content: t(Strings.robot_change_action_tip_content),
+        cancelText: t(Strings.cancel),
+        okText: t(Strings.confirm),
+        onOk: () => {
+          changeActionTypeId(action?.id!, actionTypeId).then(async() => {
+            await mutate(`/automation/robots/${robotId}/actions`);
 
-          if(!automationState?.resourceId) {
-            return;
-          }
-          await refresh({
-            resourceId: automationState?.resourceId!,
-            robotId: robotId,
-          });
+            if (!automationState?.resourceId) {
+              return;
+            }
+            await refresh({
+              resourceId: automationState?.resourceId!,
+              robotId: robotId,
+            });
 
-          const itemDetail = await getResourceAutomationDetail(
-              automationState?.resourceId!,
-              robotId
-          );
+            const itemDetail = await getResourceAutomationDetail(automationState?.resourceId!, robotId);
 
-          const newState = {
-            robot: itemDetail,
-            currentRobotId:  robotId,
-            resourceId:automationState.resourceId,
-          };
-          setAutomationAtom(newState);
+            const newState = {
+              robot: itemDetail,
+              currentRobotId: robotId,
+              resourceId: automationState.resourceId,
+            };
+            setAutomationAtom(newState);
 
-          const data = itemDetail.actions.find(item => item.actionId===action.id)
-          if(!data) {
-            return;
-          }
-          setAutomationPanel(
-            {
+            const data = itemDetail.actions.find((item) => item.actionId === action.id);
+            if (!data) {
+              return;
+            }
+            setAutomationPanel({
               panelName: PanelName.Action,
               dataId: action.id,
               data: {
@@ -106,28 +105,29 @@ export const RobotAction = memo((props: IRobotActionProps) => {
                 robotId: robotId!,
                 editType: EditType.detail,
                 nodeOutputSchemaList: nodeOutputSchemaList,
-                action:  {...data, typeId: data.actionTypeId},
-              }
-            }
-          );
-        });
-      },
-      onCancel: () => {
-        return;
-      },
-      type: 'warning',
-    });
-  }, [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationPanel]);
+                action: { ...data, typeId: data.actionTypeId },
+              },
+            });
+          });
+        },
+        onCancel: () => {
+          return;
+        },
+        type: 'warning',
+      });
+    },
+    [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationPanel],
+  );
 
   const dataClick = useCallback(() => {
-    if(editType=== EditType.detail) {
+    if (editType === EditType.detail) {
       return;
     }
     setAutomationPanel({
       panelName: PanelName.Action,
       dataId: action.id,
       // @ts-ignore
-      data: props
+      data: props,
     });
   }, [action.id, editType, props, setAutomationPanel]);
   if (!actionType) {
@@ -137,20 +137,22 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const handleActionFormSubmit = (props: any) => {
     const newFormData = props.formData;
     if (!shallowEqual(newFormData, propsFormData)) {
-      updateActionInput(action.id, newFormData).then(() => {
-        mutate(`/automation/robots/${robotId}/actions`);
-        Message.success({
-          content: t(Strings.robot_save_step_success)
+      updateActionInput(action.id, newFormData)
+        .then(() => {
+          mutate(`/automation/robots/${robotId}/actions`);
+          Message.success({
+            content: t(Strings.robot_save_step_success),
+          });
+        })
+        .catch(() => {
+          Message.error({
+            content: '步骤保存失败',
+          });
         });
-      }).catch(() => {
-        Message.error({
-          content: '步骤保存失败'
-        });
-      });
     }
   };
   // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
-  const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
+  const currentActionIndex = nodeOutputSchemaList.findIndex((item) => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
@@ -176,49 +178,46 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const NodeFormItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
 
   const isActive = panelState.dataId === action.id;
-  return <NodeFormItem
-    nodeId={action.id}
-    type='action'
-    index={index}
-    key={action.id}
-    // noValidate
-    // noHtml5Validate
-    title={actionType.name}
-    validate={validate}
-    handleClick={editType=== EditType.entry ? dataClick: undefined}
-    onSubmit={handleActionFormSubmit}
-    description={actionType.description}
-    formData={propsFormData}
-    serviceLogo={integrateCdnHost(actionType.service.logo)}
-    schema={schema}
-    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
-    nodeOutputSchemaList={prevActionSchemaList}
-    widgets={
-      {
+  return (
+    <NodeFormItem
+      nodeId={action.id}
+      type="action"
+      index={index}
+      key={action.id}
+      // noValidate
+      // noHtml5Validate
+      title={actionType.name}
+      validate={validate}
+      handleClick={editType === EditType.entry ? dataClick : undefined}
+      onSubmit={handleActionFormSubmit}
+      description={actionType.description}
+      formData={propsFormData}
+      serviceLogo={integrateCdnHost(actionType.service.logo)}
+      schema={schema}
+      uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
+      nodeOutputSchemaList={prevActionSchemaList}
+      widgets={{
         TextWidget: (props: any) => {
-          return <MagicTextField
-            {...props}
-            nodeOutputSchemaList={prevActionSchemaList}
-            triggerType={triggerType}
-          />;
-        }
-      }
-    }
-  >
-    <>
-      {
-        editType === EditType.entry && (
+          return <MagicTextField {...props} nodeOutputSchemaList={prevActionSchemaList} triggerType={triggerType} />;
+        },
+      }}
+    >
+      <>
+        {editType === EditType.entry && (
           <SearchSelect
-              clazz={{
-                item: itemStyle.item,
-                icon: itemStyle.icon
-              }}
+            clazz={{
+              item: itemStyle.item,
+              icon: itemStyle.icon,
+            }}
             options={{
               placeholder: t(Strings.search_field),
               noDataText: t(Strings.empty_data),
               minWidth: '384px',
             }}
-            list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
+            list={actionTypeOptions}
+            onChange={(item) => handleActionTypeChange(String(item.value))}
+            value={action.typeId}
+          >
             <span>
               <DropdownTrigger isActive={isActive}>
                 <>
@@ -227,26 +226,24 @@ export const RobotAction = memo((props: IRobotActionProps) => {
               </DropdownTrigger>
             </span>
           </SearchSelect>
-        )
-      }
-    </>
-  </NodeFormItem>;
+        )}
+      </>
+    </NodeFormItem>
+  );
 });
 
 const StyledSpan = styled(Box)`
-  align-items: center
+  align-items: center;
 `;
-export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean}>= ({ children, isActive }) => {
-
+export const DropdownTrigger: FC<{ children: ReactNode; isActive: boolean }> = ({ children, isActive }) => {
   const colors = useThemeColors();
 
   return (
-    <StyledSpan display={'inline-flex'} alignItems={'center'} color={isActive ? colors.textBrandDefault:colors.textCommonPrimary }>
+    <StyledSpan display={'inline-flex'} alignItems={'center'} color={isActive ? colors.textBrandDefault : colors.textCommonPrimary}>
       {children}
 
       <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
-        <ChevronDownOutlined
-          color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
+        <ChevronDownOutlined color={colors.thirdLevelText} className={cx(styles.triggerIcon)} />
       </Box>
     </StyledSpan>
   );

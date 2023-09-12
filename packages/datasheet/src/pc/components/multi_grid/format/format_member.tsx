@@ -25,8 +25,8 @@ import { IField, IMemberField, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
-import styles from './styles.module.less';
 import settingStyles from '../field_setting/styles.module.less';
+import styles from './styles.module.less';
 interface IFormatmember {
   currentField: IMemberField;
   setCurrentField: Dispatch<SetStateAction<IField>>;

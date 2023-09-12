@@ -18,20 +18,21 @@ const StyledModal = styled(Modal)`
   top: 0;
 `;
 const AutomationModal: React.FC<{
-    onClose: () => void
+  onClose: () => void;
 }> = ({ onClose }) => {
-
   const isClosedRef = React.useRef(false);
-  const { api: { refresh }} = useRobotListState();
+  const {
+    api: { refresh },
+  } = useRobotListState();
   const isModified = useAtomValue(automationModifiedAtom);
   const getCloseable = async(): Promise<boolean> => {
-    if(isClosedRef.current) {
+    if (isClosedRef.current) {
       return true;
     }
     if (!isModified) {
       return true;
     }
-    const confirmPromise = await new Promise<boolean>(resolve => {
+    const confirmPromise = await new Promise<boolean>((resolve) => {
       ConfirmModal.confirm({
         title: t(Strings.automation_not_save_warning_title),
         content: t(Strings.automation_not_save_warning_description),
@@ -54,24 +55,20 @@ const AutomationModal: React.FC<{
       contentClassName={style.modalContent}
       closable={false}
       footer={null}
-      isCloseable={
-        getCloseable
-      }
+      isCloseable={getCloseable}
       width={1264}
       destroyOnClose
       bodyStyle={{
         padding: '0 0',
         height: '100%',
         paddingLeft: '0 !important',
-        paddingRight: '0 !important'
+        paddingRight: '0 !important',
       }}
       visible
-      title={
-        null
-      }
+      title={null}
       onCancel={async() => {
         const isClosable = await getCloseable();
-        if(isClosable) {
+        if (isClosable) {
           await refresh();
           onClose();
         }

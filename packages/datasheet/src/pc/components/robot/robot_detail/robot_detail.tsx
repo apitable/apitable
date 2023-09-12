@@ -38,7 +38,9 @@ export const RobotDetailForm = () => {
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
   const { robot } = useRobot();
 
-  const { state: { formList }} = useRobotListState();
+  const {
+    state: { formList },
+  } = useRobotListState();
 
   const { data, error } = useSWR(`/automation/robots/${robot?.robotId}/actions`, req);
   const actions = data?.data?.data;
@@ -51,32 +53,18 @@ export const RobotDetailForm = () => {
   return (
     <>
       <Box paddingTop={'40px'} paddingBottom={'16px'}>
-        <Typography variant="h5">
-          {
-            t(Strings.when)
-          }
-        </Typography>
+        <Typography variant="h5">{t(Strings.when)}</Typography>
       </Box>
 
-      <RobotTrigger
-        editType={EditType.entry}
-        robotId={robot.robotId}
-        triggerTypes={triggerTypes}
-        formList={formList}
-        setTrigger={setTrigger}
-      />
+      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} setTrigger={setTrigger} />
 
       <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5">
-          {t(Strings.then) } ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
+          {t(Strings.then)} ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
         </Typography>
       </Box>
 
-      <RobotActions
-        robotId={robot.robotId}
-        trigger={trigger}
-        triggerTypes={triggerTypes}
-      />
+      <RobotActions robotId={robot.robotId} trigger={trigger} triggerTypes={triggerTypes} />
     </>
   );
 };

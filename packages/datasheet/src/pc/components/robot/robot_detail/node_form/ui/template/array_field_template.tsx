@@ -58,9 +58,7 @@ export const ArrayFieldTemplate = (props: IArrayFieldTemplateProps) => {
       ))}
       {props.canAdd && (
         <div style={{ marginTop }}>
-          <Button onClick={props.onAddClick} size="small"
-            prefixIcon={<AddOutlined size={'14px'} />}
-          >
+          <Button onClick={props.onAddClick} size="small" prefixIcon={<AddOutlined size={'14px'} />}>
             {t(Strings.robot_action_send_web_request_add_header_button)}
           </Button>
         </div>
