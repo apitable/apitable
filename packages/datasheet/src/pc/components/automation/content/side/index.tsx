@@ -12,6 +12,7 @@ export const Side = () => {
   const { robot } = useRobot();
 
   const [panel] = useAtom(automationPanelAtom);
+
   const {
     state: { formList },
   } = useRobotListState();

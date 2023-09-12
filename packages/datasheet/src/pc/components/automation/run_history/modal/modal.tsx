@@ -38,7 +38,7 @@ const AutomationHistoryPanel: React.FC<{
           borderBottom={'1px solid var(--borderCommonDefault)'}
           backgroundColor={colors.bgCommonDefault}
         >
-          <Typography variant="h5" color={colors.textCommonPrimary}>
+          <Typography variant="h6" color={colors.textCommonPrimary}>
             {t(Strings.robot_run_history_title)}
           </Typography>
 

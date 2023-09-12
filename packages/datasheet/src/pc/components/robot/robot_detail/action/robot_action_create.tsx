@@ -74,7 +74,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
         robotId: action.robotId,
         editType: EditType.detail,
         nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...data, typeId: data.actionTypeId },
+        action:  { ...data, id: data.actionId, typeId: data.actionTypeId },
       }
     }
     );
@@ -153,7 +153,7 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
         robotId: action.robotId,
         editType: EditType.detail,
         nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...data, typeId: data.actionTypeId },
+        action:  { ...data, id: data.actionId, typeId: data.actionTypeId },
       }
     }
     );

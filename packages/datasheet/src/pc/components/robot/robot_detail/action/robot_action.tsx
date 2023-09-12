@@ -106,18 +106,18 @@ export const RobotAction = memo((props: IRobotActionProps) => {
                 robotId: robotId!,
                 editType: EditType.detail,
                 nodeOutputSchemaList: nodeOutputSchemaList,
-                action: { ...data, typeId: data.actionTypeId },
+                action: { ...data, id: data.actionId, typeId: data.actionTypeId },
               },
             });
-          });
-        },
-        onCancel: () => {
-          return;
-        },
-        type: 'warning',
-      });
-    },
-    [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel],
+        });
+      },
+      onCancel: () => {
+        return;
+      },
+      type: 'warning',
+    });
+  },
+  [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel],
   );
 
   const dataClick = useCallback(() => {

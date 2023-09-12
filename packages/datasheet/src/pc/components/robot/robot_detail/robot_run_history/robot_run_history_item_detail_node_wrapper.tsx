@@ -44,8 +44,9 @@ interface IRobotRunHistoryNodeDetail {
 }
 
 const VerticalLine = styled(Box)`
-  border-left: 1px solid var(--borderCommonDefault);
-  border-style: solid;
+  border-left-style: solid;
+  border-left-color: var(--borderCommonDefault);
+  border-left-width: 1px;
   position: absolute;
   margin-right: 8px;
   left: 39px;
@@ -53,10 +54,19 @@ const VerticalLine = styled(Box)`
   height: 2000px;
 `;
 
+const VerticalLine2 = styled(Box)`
+  border-left-style: solid;
+  border-left-color: var(--borderCommonDefault);
+  border-left-width: 1px;
+  position: absolute;
+  margin-right: 8px;
+  left: 39px;
+  top: -2000px;
+  height: 2000px;
+`;
+
 export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobotRunHistoryNodeDetail>) => {
   const { nodeType, index, isLast, status, children, nodeDetail } = props;
-  const isTrigger = index === 0;
-  const theme = useTheme();
   const colors = useCssColors();
   const [showDetail, setShowDetail] = useState(false);
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
@@ -80,6 +90,12 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
             <ItemStatus status={status} />
           </Box>
         </Box>
+
+        {
+          index === 0 && (
+            <VerticalLine2/>
+          )
+        }
 
         {!isLast && <VerticalLine />}
 
