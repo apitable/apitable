@@ -741,6 +741,7 @@ export type StringKeysMapType = {
   'automation_default_tips': 'automation_default_tips',
   'automation_description_more': 'automation_description_more',
   'automation_description_one': 'automation_description_one',
+  'automation_description_trigger': 'automation_description_trigger',
   'automation_detail': 'automation_detail',
   'automation_disabled': 'automation_disabled',
   'automation_enabled': 'automation_enabled',

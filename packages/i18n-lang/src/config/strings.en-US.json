@@ -740,6 +740,7 @@
   "automation_default_tips": "Choose a trigger to start your automation",
   "automation_description_more": "When ${triggerName}, ${actions} and finally  ${lastAction}",
   "automation_description_one": "When ${triggerName}, then ${lastAction}",
+  "automation_description_trigger": "When ${triggerName}",
   "automation_detail": "Details",
   "automation_disabled": "Automation is disabled",
   "automation_enabled": "Automation is enabled",

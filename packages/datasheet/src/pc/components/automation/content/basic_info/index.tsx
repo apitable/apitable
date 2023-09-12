@@ -65,7 +65,7 @@ export const BaseInfo: FC = () => {
       </Box>
 
       <Box paddingBottom={'12px'} paddingX={'24px'}>
-        {robot?.triggers?.length > 0 && robot?.actions?.length > 0 ? (
+        {robot?.triggers?.length > 0 ? (
           <Typography variant="body4" color={colors.textCommonTertiary}>
             {defaultDesp}
           </Typography>

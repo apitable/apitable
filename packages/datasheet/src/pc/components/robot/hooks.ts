@@ -17,6 +17,7 @@
  */
 
 import { useAtom } from 'jotai';
+import { isNil } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
@@ -258,11 +259,18 @@ export const useDefaultRobotDesc = () => {
   const robotActionTypes = robotActionTypesA?.filter(Boolean);
   const comma = t(Strings.comma);
 
+  const triggerResult = robotTriggerType
+    ?.filter(Boolean)
+    .map((actionType) => actionType!.name)
+    .join(comma);
+
+  if(robotTriggerType != null && (isNil(robotActionTypes) || robotActionTypes?.length === 0)){
+    return t(Strings.automation_description_trigger, {
+      triggerName: triggerResult,
+    });
+  }
+
   if (robotActionTypes?.length === 1) {
-    const actionResult = robotActionTypes
-      ?.filter(Boolean)
-      .map((actionType) => actionType!.name)
-      .join(comma);
     const triggerResult = robotTriggerType
       ?.filter(Boolean)
       .map((actionType) => actionType!.name)

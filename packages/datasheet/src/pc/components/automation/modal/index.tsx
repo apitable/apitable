@@ -1,5 +1,6 @@
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
+import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Modal } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
@@ -12,7 +13,7 @@ import style from './styles.module.less';
 const StyledModal = styled(Modal)`
   position: fixed;
   height: 100%;
-  minWidth: 832px;
+  min-width: 832px;
   right: 0;
   top: 0;
 `;
@@ -49,6 +50,15 @@ const AutomationModal: React.FC<{
     });
     return confirmPromise;
   };
+
+  const handleCloseClick = useCallback(async() => {
+    const isClosable = await getCloseable();
+    if (isClosable) {
+      await refresh();
+      onClose();
+    }
+  }, [getCloseable, onClose, refresh]);
+
   return (
     <StyledModal
       contentClassName={style.modalContent}
@@ -66,14 +76,10 @@ const AutomationModal: React.FC<{
       visible
       title={null}
       onCancel={async() => {
-        const isClosable = await getCloseable();
-        if (isClosable) {
-          await refresh();
-          onClose();
-        }
       }}
     >
-      <AutomationPanel />
+      <AutomationPanel onClose={handleCloseClick}
+      />
     </StyledModal>
   );
 };

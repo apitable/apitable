@@ -18,7 +18,7 @@
 
 import { Space } from 'antd';
 import { useAtom } from 'jotai';
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import {
   Box,
   ContextMenu,
@@ -44,7 +44,7 @@ import AutomationHistoryPanel from './run_history/modal/modal';
 import styles from './style.module.less';
 
 const MenuID = 'MoreAction';
-export const AutomationPanel = memo(() => {
+export const AutomationPanel: FC<{onClose ?:() => void}> = memo(({ onClose }) => {
   const { show } = useContextMenu({ id: MenuID });
 
   const { currentRobotId, reset } = useRobot();
@@ -133,7 +133,7 @@ export const AutomationPanel = memo(() => {
                 component="button"
                 shape="square"
                 icon={() => <CloseOutlined size={16} color={colorVars.fc3} />}
-                onClick={() => setShowModal(false)}
+                onClick={onClose}
                 style={{ marginLeft: 8 }}
               />
             </Box>

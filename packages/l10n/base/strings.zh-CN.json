@@ -743,6 +743,7 @@
   "automation_default_tips": "请选择一个触发条件来配置自动化",
   "automation_description_more": "当${triggerName}，${actions}，最后${lastAction}",
   "automation_description_one": "当${triggerName}，${lastAction}",
+  "automation_description_trigger": "当${triggerName}",
   "automation_detail": "详情",
   "automation_disabled": "自动化已停用",
   "automation_enabled": "自动化已开启",

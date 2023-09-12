@@ -109,7 +109,7 @@ export const RobotActions = ({
   return (
     <Box width="100%">
       {actionList.map((action, index) => (
-        <Box key={`${index}_${actionList[index - 1]?.id}_${action.id}`}>
+        <Box key={`${index}_${actionList[index - 1]?.prevActionId}_${action.id}`}>
           {index > 0 && index < actionList.length && (
             <CreateNewActionLineButton
               disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
