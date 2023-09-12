@@ -18,6 +18,9 @@
 
 package com.apitable.shared.util;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.apitable.core.exception.BusinessException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -26,11 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-import javax.validation.constraints.NotNull;
-
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Dispatcher;
@@ -41,17 +39,18 @@ import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.apitable.core.exception.BusinessException;
-
 import org.springframework.http.HttpHeaders;
 
+/**
+ * url request util.
+ */
 public class UrlRequestUtil {
 
     private static final Logger log = LoggerFactory.getLogger(UrlRequestUtil.class);
@@ -65,24 +64,28 @@ public class UrlRequestUtil {
         Dispatcher dispatcher = HTTP_CLIENT.dispatcher();
         dispatcher.setMaxRequests(32);
         DEFAULT_HEADERS = new Headers.Builder()
-                .add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
-                .build();
+            .add("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
+            .build();
     }
 
+    /**
+     * get site url title.
+     *
+     * @param url url
+     * @return optional
+     */
     public static Optional<String> getHtmlTitle(URL url) {
         try {
             Request request = new Request.Builder().url(url).headers(DEFAULT_HEADERS).build();
             Call call = HTTP_CLIENT.newCall(request);
             Response response = call.execute();
             return getTitle(response);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             log.info("url:[{}] is not http or https.", url.toString());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.info("fetch url:[{}] progress have io error, [{}]", url, e.getMessage());
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             // example：like github.com, Failed to connect to github.com/xx.xx.xx.xx:443 Operation timed out (Connection timed out)
             log.info("url [{}] fetch failure，[{}]", url.toString(), e.getMessage());
         }
@@ -98,13 +101,16 @@ public class UrlRequestUtil {
         ResponseBody responseBody = response.body();
         // 1. determine if the resource type is text
         if (StrUtil.containsAnyIgnoreCase(contentType,
-                org.springframework.http.MediaType.TEXT_HTML_VALUE)
-                && ObjectUtil.isNotNull(responseBody)) {
+            org.springframework.http.MediaType.TEXT_HTML_VALUE)
+            && ObjectUtil.isNotNull(responseBody)) {
             // 2. parse to get the url title
             MediaType mediaType = responseBody.contentType();
-            Charset charset = ObjectUtil.isNotNull(mediaType) ?
-                    mediaType.charset(StandardCharsets.UTF_8)
-                    : StandardCharsets.UTF_8;
+            Charset charset = ObjectUtil.isNotNull(mediaType)
+                ? mediaType.charset(StandardCharsets.UTF_8)
+                : StandardCharsets.UTF_8;
+            if (charset == null) {
+                charset = StandardCharsets.UTF_8;
+            }
             // read up to 32 kb bytes at a time
             int bytesSize = 1024 * 32;
             // Network transfers are chunked and require multiple reads
@@ -118,11 +124,9 @@ public class UrlRequestUtil {
                     count++;
                     readLength += stream.read(bytes, readLength, bytesSize - readLength);
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 log.error("response body read io exception");
-            }
-            finally {
+            } finally {
                 responseBody.close();
             }
             String html = new String(bytes, 0, readLength, charset);
@@ -139,6 +143,13 @@ public class UrlRequestUtil {
         return Optional.empty();
     }
 
+    /**
+     * get site url title.
+     *
+     * @param url   url
+     * @param calls calls
+     * @return CompletableFuture
+     */
     public static CompletableFuture<String> getTitle(String url, List<Call> calls) {
         CompletableFuture<String> completableFuture = new CompletableFuture<>();
         Request request = new Builder().url(url).build();
@@ -151,7 +162,7 @@ public class UrlRequestUtil {
     private static Optional<String> getMetaTitle(Document document) {
         Elements metas = document.getElementsByTag("meta");
         for (Element meta :
-                metas) {
+            metas) {
             String key = meta.attr("property");
             key = StrUtil.isBlank(key) ? meta.attr("name") : key;
             String value = meta.attr("content");
@@ -189,9 +200,9 @@ public class UrlRequestUtil {
                     future.complete(title.get());
                     return;
                 }
-            }
-            catch (Throwable e) {
-                log.info("url [{}] fetch failure，[{}]", response.request().toString(), e.getMessage());
+            } catch (Throwable e) {
+                log.info("url [{}] fetch failure，[{}]", response.request().toString(),
+                    e.getMessage());
             }
             future.completeExceptionally(new BusinessException("fetch title failure"));
         }

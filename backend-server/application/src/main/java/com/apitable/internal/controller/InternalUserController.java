@@ -102,8 +102,8 @@ public class InternalUserController {
         false, requiredLogin = false)
     @Operation(summary = "get cooling off users", description = "get cooling off users")
     public ResponseData<List<UserInPausedDto>> getPausedUsers() {
-        List<UserInPausedDto> pausedUserDtos = userService.getPausedUserDtos(null);
-        return ResponseData.success(pausedUserDtos);
+        List<UserInPausedDto> pausedUsers = userService.getPausedUserDtos(null);
+        return ResponseData.success(pausedUsers);
     }
 
     /**
@@ -113,7 +113,7 @@ public class InternalUserController {
         "/getUserHistories", requiredPermission = false, requiredLogin = false)
     @Operation(summary = "get the cooling-off period user operation record", description = "get "
         + "the cooling-off period user operation record")
-    public ResponseData<List<PausedUserHistoryDto>> getUserHistoryDtos(
+    public ResponseData<List<PausedUserHistoryDto>> getUserHistories(
         @RequestBody PausedUserHistoryRo userHistoryRo) {
         LocalDateTime now = ClockManager.me().getLocalDateTimeNow();
         LocalDateTime createdBefore = now.minusDays(30 + userHistoryRo.getLimitDays());
