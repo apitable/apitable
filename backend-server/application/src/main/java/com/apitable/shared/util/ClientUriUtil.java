@@ -80,21 +80,24 @@ public class ClientUriUtil {
         if (StrUtil.containsIgnoreCase(uri, uriCase)) {
             return true;
         }
-        return StrUtil.containsIgnoreCase(uri, tpcCase) && !StrUtil.containsIgnoreCase(uri, spaceCase) && StrUtil.containsIgnoreCase(uri, tplCase);
+        return StrUtil.containsIgnoreCase(uri, tpcCase) &&
+            !StrUtil.containsIgnoreCase(uri, spaceCase) && StrUtil.containsIgnoreCase(uri, tplCase);
     }
 
     /**
      * Get various IDs with prefix from uri, case-insensitive<br>
-     *
+     * <p>
      * getIdFromUri(uri, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum());
      *
-     * @param uri uri address
+     * @param uri    uri address
      * @param prefix prefix
      * @return null|string
      */
     public static String getIdFromUri(String uri, String prefix) {
         String uriSeparator = "/";
-        String[] path = StrUtil.split(StrUtil.removePrefix(StrUtil.removeSuffix(uri, uriSeparator), uriSeparator), uriSeparator);
+        String[] path = StrUtil.split(
+            StrUtil.removePrefix(StrUtil.removeSuffix(uri, uriSeparator), uriSeparator),
+            uriSeparator);
         for (String s : path) {
             // There is a shr keyword in the route to describe the shared node, find the node description and name
             if (StrUtil.containsIgnoreCase(s, prefix)) {
@@ -106,43 +109,47 @@ public class ClientUriUtil {
 
     /**
      * whether the address is the workbench node address
+     *
      * @param uri uri address
      * @return true | false
      */
     public static boolean isMatchWorkbenchPath(URI uri) {
         return StrUtil.startWithIgnoreCase(uri.getPath(),
-                UrlRulePrefixEnum.WORKBENCH_URL_PFE_SUFFIX.getValue());
+            UrlRulePrefixEnum.WORKBENCH_URL_PFE_SUFFIX.getValue());
     }
 
     /**
      * Whether the address is a shared node address
+     *
      * @param uri uri address
      * @return true | false
      */
     public static boolean isMatchSharePath(URI uri) {
         return StrUtil.startWithIgnoreCase(uri.getPath(),
-                UrlRulePrefixEnum.SHARE_URL_PFE_SUFFIX.getValue());
+            UrlRulePrefixEnum.SHARE_URL_PFE_SUFFIX.getValue());
     }
 
     /**
      * Get sharing information according to the sharing address
+     *
      * @param uri uri
      * @return node id optional
      */
     public static Optional<String> getShareIdByPath(URI uri) {
         String pathAboutSharedInfo = uri.getPath()
-                .substring(UrlRulePrefixEnum.SHARE_URL_PFE_SUFFIX.getValue().length());
+            .substring(UrlRulePrefixEnum.SHARE_URL_PFE_SUFFIX.getValue().length());
         return getIdByPath(pathAboutSharedInfo);
     }
 
     /**
      * Get the node id information according to the workbench node address
+     *
      * @param uri uri
      * @return node id optional
      */
     public static Optional<String> getNodeIdByPath(URI uri) {
         String pathAboutNodeInfo = uri.getPath()
-                .substring(UrlRulePrefixEnum.WORKBENCH_URL_PFE_SUFFIX.getValue().length());
+            .substring(UrlRulePrefixEnum.WORKBENCH_URL_PFE_SUFFIX.getValue().length());
         return getIdByPath(pathAboutNodeInfo);
     }
 
@@ -151,19 +158,24 @@ public class ClientUriUtil {
         String pathAboutNodeId;
         if (StrUtil.startWith(pathAboutNodeInfo, StrUtil.SLASH)) {
             pathAboutNodeId = pathAboutNodeInfo.substring(StrUtil.SLASH.length());
-        }
-        else {
+        } else {
             pathAboutNodeId = pathAboutNodeInfo;
         }
         String[] split = StrUtil.split(pathAboutNodeId, StrUtil.SLASH);
         if (ArrayUtil.isNotEmpty(split)
-                && StrUtil.isNotBlank(split[0])) {
+            && StrUtil.isNotBlank(split[0])) {
             return Optional.of(split[0]);
         }
         return Optional.empty();
     }
 
-    public static Optional<URL> checkUrl(String url)  {
+    /**
+     * check url exist.
+     *
+     * @param url url
+     * @return url optional
+     */
+    public static Optional<URL> checkUrl(String url) {
         try {
             String normalizeUrl = URLUtil.normalize(url);
             return Optional.of(new URL(normalizeUrl));
@@ -181,8 +193,7 @@ public class ClientUriUtil {
                 return Optional.of(new URI(trimmedUrl));
             }
             return Optional.of(new URI(url));
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             logger.error("[{}] parsing failed [{}]", url, e.getMessage());
         }
         return Optional.empty();
