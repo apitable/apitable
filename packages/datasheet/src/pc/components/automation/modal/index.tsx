@@ -1,11 +1,9 @@
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
-import { useState } from 'react';
 import styled from 'styled-components';
 import { Modal } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal as ConfirmModal } from 'pc/components/common/modal/modal/modal';
-import { useFormEdit } from 'pc/components/robot/robot_detail/form_edit';
 import { useRobotListState } from '../../robot/robot_list';
 import { automationModifiedAtom } from '../controller';
 import { AutomationPanel } from '../index';
@@ -14,6 +12,7 @@ import style from './styles.module.less';
 const StyledModal = styled(Modal)`
   position: fixed;
   height: 100%;
+  minWidth: 832px;
   right: 0;
   top: 0;
 `;
@@ -56,7 +55,7 @@ const AutomationModal: React.FC<{
       closable={false}
       footer={null}
       isCloseable={getCloseable}
-      width={1264}
+      width={'90vw'}
       destroyOnClose
       bodyStyle={{
         padding: '0 0',

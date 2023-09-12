@@ -5,17 +5,22 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import {
   Box,
-  ContextMenu,
   Dropdown,
   IconButton,
   IOverLayProps,
   stopPropagation,
   Typography,
-  useContextMenu,
   useThemeColors,
 } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CheckCircleOutlined, DownloadOutlined, MoreStandOutlined, PlayOutlined, WarnCircleOutlined } from '@apitable/icons';
+import {
+  CheckCircleOutlined, CheckFilled,
+  DownloadOutlined,
+  MoreStandOutlined,
+  PlayFilled,
+  PlayOutlined,
+  WarnCircleOutlined, WarnFilled
+} from '@apitable/icons';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
 import { IRobotRunHistoryItem } from '../../../robot/interface';
 import { automationHistoryAtom } from '../../controller';
@@ -35,12 +40,28 @@ export const ItemStatus = ({ status }: { status: number }) => {
   );
 };
 
+export const RunItemStatus = ({ status }: { status: number }) => {
+  const colors = useThemeColors();
+  return (
+    <>
+      {status === 3 && <PlayFilled color={colors.textBrandDefault} size={16} />}
+      {status === 1 && <CheckFilled color={colors.textSuccessDefault} size={16} />}
+      {status === 2 && <WarnFilled color={colors.textWarnDefault} size={16} />}
+    </>
+  );
+};
+
 const StyledMenu = styled(Box)`
   &:hover {
     background: var(--bgBglessHover, rgba(255, 255, 255, 0.08));
   }
   cursor: pointer;
 `;
+
+const MoreButton = styled.span`
+  visibility: hidden;
+`;
+
 const StyledTaskItem = styled(Box)<{ isActive: boolean }>`
   border-radius: 4px;
   cursor: pointer;
@@ -48,19 +69,38 @@ const StyledTaskItem = styled(Box)<{ isActive: boolean }>`
   ${(props) =>
     props.isActive &&
     css`
-      background: var(--bgBglessHover, rgba(255, 255, 255, 0.08));
+      background: var(--bgBrandLightDefault, rgba(255, 255, 255, 0.08));
+
+      .${MoreButton} {
+        visibility: visible !important;
+      }
+      
+      ${MoreButton} {
+        visibility: visible !important;
+      }
     `}
+  
+  .${MoreButton} {
+    visibility: hidden;
+  }
 
   &:hover {
     background: var(--bgBglessHover, rgba(255, 255, 255, 0.08));
+    
+    .${MoreButton} {
+      visibility: visible;
+    }
+    
+    ${MoreButton} {
+      visibility: visible;
+    }
   }
 `;
 
-export const TaskItem: FC<{ item: IRobotRunHistoryItem; onClick?: () => void; isSummary?: boolean }> = ({ item, onClick }) => {
+export const TaskItem: FC<{ activeId?: string, item: IRobotRunHistoryItem; onClick?: () => void; isSummary?: boolean }> = ({ item, activeId, onClick }) => {
   const colors = useThemeColors();
   const isSummary = true;
-  const [historyAtom] = useAtom(automationHistoryAtom);
-  const isActive = item.taskId === historyAtom.taskId;
+  const isActive = item.taskId === activeId;
 
   return (
     <StyledTaskItem display={'flex'} flexDirection={'row'} padding={'8px'} isActive={isActive} onClick={onClick}>
@@ -79,13 +119,14 @@ export const TaskItem: FC<{ item: IRobotRunHistoryItem; onClick?: () => void; is
               overlay: styles.overlayStyle,
             }}
             options={{
+              arrow: false,
               placement: 'bottom-end',
               stopPropagation: true,
             }}
             trigger={
-              <span>
+              <MoreButton>
                 <IconButton shape="square" icon={MoreStandOutlined} />
-              </span>
+              </MoreButton>
             }
           >
             {({ toggle }: IOverLayProps) => {
@@ -109,7 +150,7 @@ export const TaskItem: FC<{ item: IRobotRunHistoryItem; onClick?: () => void; is
                         handleDownload(result ?? {}, `robot_${item.robotId}_${item.taskId}.json`);
                       }}
                     >
-                      <IconButton icon={() => <DownloadOutlined />} />
+                      <IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />
 
                       <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
                         {t(Strings.download)}

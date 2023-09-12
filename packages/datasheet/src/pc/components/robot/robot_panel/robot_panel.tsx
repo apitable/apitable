@@ -73,7 +73,7 @@ const RobotBase = () => {
           >
             <RobotListHead />
           </Box>
-          <Box overflow="auto" padding="16px 8px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
+          <Box overflow="auto" padding="0 8px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
             <RobotList />
           </Box>
         </SWRConfig>

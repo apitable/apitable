@@ -65,16 +65,17 @@ export const getActionList = (actions?: []): IRobotAction[] => {
   });
   return actionList;
 };
-export const RobotActions = ({ robotId, triggerTypes, trigger, onScrollBottom = () => {} }:
-  {
-    robotId: string;
-    trigger?: IRobotTrigger;
-    triggerTypes: ITriggerType[];
-    // actionTypes: IActionType[];
-    onScrollBottom?: () => void;
-  }
-) => {
-
+export const RobotActions = ({
+  robotId,
+  triggerTypes,
+  trigger,
+  onScrollBottom = () => {},
+}: {
+  robotId: string;
+  trigger?: IRobotTrigger;
+  triggerTypes: ITriggerType[];
+  onScrollBottom?: () => void;
+}) => {
   const { data: actionTypes } = useActionTypes();
   const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
@@ -106,51 +107,44 @@ export const RobotActions = ({ robotId, triggerTypes, trigger, onScrollBottom = 
   // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
-    <Box
-      width='100%'
-    >
-      {
-        actionList.map((action, index) =>
-          (
-            <Box key={action.id}>
-              {
-                index > 0 && index < actionList.length && (
-                  <CreateNewActionLineButton
-                    disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
-                    robotId={robotId}
-                    actionTypes={actionTypes}
-                    nodeOutputSchemaList={nodeOutputSchemaList}
-                    prevActionId={actionList[index - 1].id}
-                  >
-                    <span>
-                      <OrTooltip
-                        options={{
-                          offset: -10
-                        }}
-                        tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
-                        tooltip={t(Strings.automation_action_num_warning, {
-                          value: CONST_MAX_ACTION_COUNT,
-                        })} placement={'top'}>
-                        <LinkButton disabled={
-                          actionList?.length >= CONST_MAX_ACTION_COUNT
-                        }/>
-                      </OrTooltip>
-                    </span>
-                  </CreateNewActionLineButton>
-                )
-              }
-              <RobotAction
-                editType={EditType.entry}
-                index={index + 1}
-                key={index}
-                action={action}
-                nodeOutputSchemaList={nodeOutputSchemaList}
-                robotId={robotId}
-              />
-            </Box>
-          )
-        )
-      }
+    <Box width="100%">
+      {actionList.map((action, index) => (
+        <Box key={`${index}_${actionList[index - 1]?.id}_${action.id}`}>
+          {index > 0 && index < actionList.length && (
+            <CreateNewActionLineButton
+              disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+              robotId={robotId}
+              key={index}
+              actionTypes={actionTypes}
+              nodeOutputSchemaList={nodeOutputSchemaList}
+              prevActionId={actionList[index - 1].id}
+            >
+              <span>
+                <OrTooltip
+                  options={{
+                    offset: -10,
+                  }}
+                  tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                  tooltip={t(Strings.automation_action_num_warning, {
+                    value: CONST_MAX_ACTION_COUNT,
+                  })}
+                  placement={'top'}
+                >
+                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT} />
+                </OrTooltip>
+              </span>
+            </CreateNewActionLineButton>
+          )}
+          <RobotAction
+            editType={EditType.entry}
+            index={index + 1}
+            key={index}
+            action={action}
+            nodeOutputSchemaList={nodeOutputSchemaList}
+            robotId={robotId}
+          />
+        </Box>
+      ))}
 
       <OrTooltip
         tooltipEnable={

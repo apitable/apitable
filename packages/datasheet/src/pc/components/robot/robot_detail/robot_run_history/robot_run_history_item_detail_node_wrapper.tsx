@@ -23,9 +23,16 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Box, IconButton, Tooltip, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { WarnCircleFilled, ChevronRightOutlined, CheckCircleFilled } from '@apitable/icons';
+import {
+  WarnCircleFilled,
+  ChevronRightOutlined,
+  CheckCircleFilled,
+  ChevronDoubleDownOutlined,
+  ChevronDownOutlined
+} from '@apitable/icons';
 import { ItemStatus } from '../../../automation/run_history/list';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
+import { useCssColors } from '../trigger/use_css_colors';
 import styles from 'style.module.less';
 
 interface IRobotRunHistoryNodeDetail {
@@ -49,8 +56,8 @@ const VerticalLine = styled(Box)`
 export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobotRunHistoryNodeDetail>) => {
   const { nodeType, index, isLast, status, children, nodeDetail } = props;
   const isTrigger = index === 0;
-  const colors = useThemeColors();
   const theme = useTheme();
+  const colors = useCssColors();
   const [showDetail, setShowDetail] = useState(false);
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
   return (
@@ -65,8 +72,9 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
     >
       <Box display="flex" position="relative" alignItems="flex-start">
         <Box display={'flex'} height={'24px'}>
-          <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
-            <IconButton icon={ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
+          <span className={cls(styles.arrowIcon)}>
+            <IconButton shape={'square'}
+              icon={showDetail ? ChevronRightOutlined: ChevronDownOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
           </span>
           <Box marginX={'8px'} display="flex" alignItems="center">
             <ItemStatus status={status} />
@@ -77,8 +85,8 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
 
         <Box flexDirection={'column'}>
           <Box flexDirection={'row'} alignItems={'center'} display={'flex'}>
-            <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={24} height={24} />
-            <Typography variant="h7" color={theme.color.fc1} style={{ marginLeft: 8 }}>
+            <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={32} height={32} />
+            <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginLeft: 8 }}>
               {nodeType.name}
             </Typography>
             {hasError && (

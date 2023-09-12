@@ -16,31 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useHover, usePrevious } from 'ahooks';
+import { useHover } from 'ahooks';
 import { useAtom, useAtomValue } from 'jotai';
 import { JSONSchema7 } from 'json-schema';
 import Image from 'next/image';
-import { memo, ReactElement, useEffect, useRef } from 'react';
+import { memo, ReactElement, useRef } from 'react';
 import { mutate } from 'swr';
 import {
   Box,
   Button,
   ContextMenu,
-  IconButton,
   FloatUiTooltip as Tooltip,
+  IconButton,
   Typography,
   useContextMenu,
   useTheme,
-  useThemeColors,
 } from '@apitable/components';
 import { IJsonSchema, Strings, t, validateMagicForm } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { automationPanelAtom, automationStateAtom } from '../../../automation/controller';
-import { useDeleteRobotAction, useRobot, useTriggerTypes } from '../../hooks';
-import { INodeOutputSchema, INodeSchema, IRobotNodeType } from '../../interface';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import { useDeleteRobotAction, useRobot } from '../../hooks';
+import { INodeOutputSchema, IRobotNodeType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { useCssColors } from '../trigger/use_css_colors';
 import { IFormProps } from './core/interface';
@@ -109,6 +108,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   const { hasError } = validateMagicForm(restProps.schema as JSONSchema7, restProps.formData);
   const deleteRobotAction = useDeleteRobotAction();
   const { currentRobotId } = useRobot();
+  const [, setAutomationPanel] = useAtom(automationPanelAtom);
 
   const automationState = useAtomValue(automationStateAtom);
   const {
@@ -125,7 +125,6 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       onOk: async() => {
         const deleteOk = await deleteRobotAction(nodeId);
         if (deleteOk) {
-          console.log('automationStateautomationStateautomationStateautomationState', automationState);
           if (!automationState?.resourceId) {
             return;
           }
@@ -134,6 +133,9 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
             robotId: automationState?.currentRobotId!,
           });
           await mutate(`/automation/robots/${currentRobotId}/actions`);
+          setAutomationPanel((draft) => {
+            draft.panelName = PanelName.BasicInfo;
+          });
         }
       },
       onCancel: () => {
@@ -144,7 +146,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   };
 
   const [panelState] = useAtom(automationPanelAtom);
-  const isActive = panelState.dataId === nodeId;
+  const isActive = panelState.dataId === nodeId && panelState?.panelName !== PanelName.BasicInfo;
   const menuId = `robot_${type}_${nodeId}`;
   const menuData = [
     [
@@ -218,10 +220,8 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
             </Box>
           </Box>
         </Box>
-        {type === 'action' && isHovering && (
-          <>
-            <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
-          </>
+        {type === 'action' && (isHovering || isActive) && (
+          <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
         )}
         <ContextMenu overlay={flatContextData(menuData, true)} menuId={menuId} />
       </Box>

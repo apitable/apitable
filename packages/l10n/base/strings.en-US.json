@@ -5692,7 +5692,7 @@
   "automation_default_tips": "Choose a trigger to start your automation",
   "robot_variables_select_step": "Pre-step",
   "new_automation": "New Automation",
-  "robot_no_step_config_1": "Add a Trigger",
+  "robot_no_step_config_1": "Add a trigger",
   "robot_create_wizard_step_3": "Add an Action",
   "click_here_to_write_description": "Click here to write description",
   "automation_run_fail": "failed",

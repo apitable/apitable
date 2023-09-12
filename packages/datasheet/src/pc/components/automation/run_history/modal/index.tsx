@@ -4,7 +4,16 @@ import Image from 'next/image';
 import React, { useEffect, useMemo } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { useSelector } from 'react-redux';
-import { Box, IconButton, LinkButton, Loading, Typography, useTheme, useThemeColors } from '@apitable/components';
+import {
+  Box,
+  IconButton,
+  LinkButton,
+  Loading,
+  TextButton,
+  Typography,
+  useTheme,
+  useThemeColors
+} from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
 import { DownloadOutlined, LoadingOutlined, RefreshOutlined } from '@apitable/icons';
 import { RobotRunHistoryItemDetail, useRunTaskDetail } from 'pc/components/robot/robot_detail/robot_run_history/robot_run_history_item_detail';
@@ -12,6 +21,7 @@ import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
+import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
 import { automationHistoryAtom } from '../../controller';
 import { CONST_DATETIME_FORMAT } from '../list';
 import { TaskList } from '../list/task';
@@ -71,20 +81,20 @@ export const RunHistoryDetail = () => {
           {t(Strings.robot_run_history_title)}
         </Typography>
 
-        <Typography variant="body3" color={colors.textCommonTertiary}>
-          {t(Strings.automation_run_history_item_description, {
-            RESULT: resultText,
-            NUM: getTime.start?.diff(getTime.end, 'second'),
-            START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
-            END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
-          })}
-        </Typography>
+        <Box marginTop={'4px'}>
+          <Typography variant="body3" color={colors.textCommonTertiary} >
+            {t(Strings.automation_run_history_item_description, {
+              RESULT: resultText,
+              NUM: getTime.start?.diff(getTime.end, 'second'),
+              START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
+              END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
+            })}
+          </Typography>
+        </Box>
       </Box>
 
       <Box display={'inline-flex'}>
-        <LinkButton
-          component="button"
-          underline={false}
+        <TextButton
           prefixIcon={
             isLoadingData ? (
               <LoadingOutlined color={colors.textCommonTertiary} size={12} />
@@ -99,11 +109,9 @@ export const RunHistoryDetail = () => {
           <Typography variant="body3" color={colors.textCommonPrimary}>
             {t(Strings.automation_refresh)}
           </Typography>
-        </LinkButton>
+        </TextButton>
 
-        <LinkButton
-          component="button"
-          underline={false}
+        <TextButton
           prefixIcon={<DownloadOutlined color={colors.textCommonTertiary} size={12} />}
           onClick={async() => {
             if (!currentHistoryState?.taskId) return;
@@ -117,7 +125,7 @@ export const RunHistoryDetail = () => {
               {t(Strings.download_log)}
             </Typography>
           }
-        </LinkButton>
+        </TextButton>
       </Box>
     </Box>
   );
@@ -138,7 +146,7 @@ export const HistoryModalContent = () => {
   const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
 
   const [currentHistoryState, setCurrentHistoryState] = useAtom(automationHistoryAtom);
-  const colors = useThemeColors();
+  const colors = useCssColors();
   const theme = useTheme();
 
   useEffect(() => {
@@ -158,12 +166,13 @@ export const HistoryModalContent = () => {
   return (
     <Box height={'500px'} display={'flex'} flexDirection={'row'} ref={rootRef}>
       <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
-        <TaskList list={items} isSummary />
+
+        <TaskList list={items} isSummary activeId={currentHistoryState.taskId}/>
 
         {isEmpty && <Image src={EmptyResultImage} alt="" />}
         {isEmpty ? (
           <Box display="flex" justifyContent="center">
-            <Typography variant="body2" color={theme.color.fc2}>
+            <Typography variant="body2" color={colors.textCommonTertiary}>
               {t(Strings.robot_run_history_no_data)}
             </Typography>
           </Box>
@@ -178,7 +187,7 @@ export const HistoryModalContent = () => {
               </Box>
             )}
             {isReachingEnd && (
-              <Typography component="span" variant="body4" color={theme.color.fc2}>
+              <Typography component="span" variant="body4" color={colors.textCommonTertiary}>
                 {t(Strings.robot_run_history_bottom_tip)}
               </Typography>
             )}

@@ -13,6 +13,7 @@ import { automationHistoryAtom, automationStateAtom } from '../../controller';
 
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
+import {useCssColors} from "../../../robot/robot_detail/trigger/use_css_colors";
 const StyledGrip = styled(Box)`
   gap: 16px;
 `;
@@ -51,7 +52,7 @@ export const BaseInfo: FC = () => {
 
   const defaultDesp = useDefaultRobotDesc();
 
-  const colors = useThemeColors();
+  const colors = useCssColors();
   if (!robot) {
     return null;
   }
@@ -154,7 +155,7 @@ export const BaseInfo: FC = () => {
             }}
           >
             <Box display={'inline-flex'} alignItems={'center'}>
-              <DatasheetOutlined size={16} />
+              <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
 
               <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
                 <Typography variant="body4" color={colors.textCommonPrimary}>
@@ -163,7 +164,7 @@ export const BaseInfo: FC = () => {
               </Box>
             </Box>
 
-            <GotoOutlined />
+            <GotoOutlined color={colors.textCommonTertiary} />
           </StyeldRelatedResouece>
         </Box>
       ))}
@@ -185,7 +186,7 @@ export const BaseInfo: FC = () => {
 
         {items.length > 0 && (
           <LinkButton
-            suffixIcon={<ChevronRightOutlined size={16} />}
+            suffixIcon={<ChevronRightOutlined size={16} color={colors.textCommonTertiary} />}
             underline={false}
             onClick={() => {
               setHistoryDialog((d) => ({
@@ -194,7 +195,7 @@ export const BaseInfo: FC = () => {
               }));
             }}
           >
-            <Typography variant={'body3'}>{t(Strings.automation_more)}</Typography>
+            <Typography variant={'body3'} color={colors.textCommonTertiary}>{t(Strings.automation_more)}</Typography>
           </LinkButton>
         )}
       </Box>
@@ -222,7 +223,7 @@ export const BaseInfo: FC = () => {
       </Box>
 
       <Box paddingX={'24px'}>
-        <TaskList list={items.slice(0, 10)} isSummary={false} />
+        <TaskList list={items.slice(0, 10)} isSummary={false} activeId={undefined}/>
       </Box>
     </>
   );

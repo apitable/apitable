@@ -215,19 +215,18 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
               >
                 {closable && DefaultCloseIcon}
 
-                {title && typeof title ==='string' &&
-                  <ModalHeader>
-                    <Typography variant='h6'>{title}</Typography>
-                  </ModalHeader>
-                }
-
-                {title && isValidElement(title) &&
-                    <>
-                      {
-                        title
-                      }
-                    </>
-                }
+                {title && (
+                  <>
+                    {
+                      isValidElement(title) ? title :
+                        (
+                          <ModalHeader>
+                            <Typography variant='h6'>{title}</Typography>
+                          </ModalHeader>
+                        )
+                    }
+                  </>
+                )}
 
                 <Box padding={'0 24px'} style={bodyStyle}>
                   {props.children}
