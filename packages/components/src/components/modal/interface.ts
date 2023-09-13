@@ -34,6 +34,7 @@ export interface IModalProps {
    * Modal title
    */
   title?: React.ReactNode | string;
+  renderTitle?: React.ReactNode | string;
 
   /**
    * Whether show close button or not

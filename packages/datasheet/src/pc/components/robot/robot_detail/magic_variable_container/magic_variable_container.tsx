@@ -23,6 +23,7 @@ import { SearchOutlined } from '@apitable/icons';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
 import { SchemaPropertyList } from './magic_variable_list';
+import {useCssColors} from "../trigger/use_css_colors";
 
 interface ISchemaMapProps {
   nodeOutputSchemaList: INodeOutputSchema[];
@@ -40,6 +41,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   const listContainerRef = useRef<any>();
   const [searchValue, setSearchValue] = useState<string>('');
 
+  const colors = useCssColors();
   // Dynamic list of parameters produced according to schema
   let variableList: ISchemaPropertyListItem[] = getCurrentVariableList({
     schemaExpressionList,
@@ -161,7 +163,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     },
   });
   return (
-    <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${theme.color.fc5}`} ref={ref as any} padding="8px 16px">
+    <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
       <TextInput
         type="text"
         ref={searchRef}
@@ -171,7 +173,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
         onChange={(e) => setSearchValue(e.target.value)}
         value={searchValue}
         placeholder={t(Strings.search)}
-        prefix={<SearchOutlined />}
+        prefix={<SearchOutlined color={colors.textCommonPrimary} />}
       />
       <Box margin="8px 0px">
         <Typography variant="body4" style={{ marginLeft: 8 }}>
@@ -181,7 +183,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
           })}
         </Typography>
       </Box>
-      <Box ref={listContainerRef} maxHeight="300px" overflow="scroll">
+      <Box ref={listContainerRef} maxHeight="300px" overflow="auto">
         <SchemaPropertyList list={variableList} layout={layout} activeIndex={activeIndex} handleItemClick={handleItemClick} />
       </Box>
     </Box>

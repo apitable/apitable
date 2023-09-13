@@ -75,21 +75,33 @@ export const RunHistoryDetail = () => {
   if (!currentHistoryState) return null;
 
   return (
-    <Box flex={'0 0 54px'} display={'flex'} alignItems={'flex-start'} flexDirection={'row'} justifyContent={'space-between'}>
+    <Box flex={'0 0 54px'} display={'flex'}
+      marginBottom={'16px'}
+      alignItems={'flex-start'} flexDirection={'row'} justifyContent={'space-between'}>
       <Box display={'flex'} flexDirection={'column'} alignItems={'start'}>
         <Typography variant="h5" color={colors.textCommonPrimary}>
           {t(Strings.robot_run_history_title)}
         </Typography>
 
         <Box marginTop={'4px'}>
-          <Typography variant="body3" color={colors.textCommonTertiary} >
-            {t(Strings.automation_run_history_item_description, {
-              RESULT: resultText,
-              NUM: getTime.end?.diff(getTime.start, 'second'),
-              START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
-              END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
-            })}
-          </Typography>
+          {
+            dataItem == null ? (
+              <Typography variant="body3" color={colors.textCommonTertiary} >
+                {
+                  t(Strings.error)
+                }
+              </Typography>
+            ): (
+              <Typography variant="body3" color={colors.textCommonTertiary} >
+                {t(Strings.automation_run_history_item_description, {
+                  RESULT: resultText,
+                  NUM: getTime.end?.diff(getTime.start, 'second'),
+                  START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
+                  END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
+                })}
+              </Typography>
+            )
+          }
         </Box>
       </Box>
 
@@ -164,7 +176,7 @@ export const HistoryModalContent = () => {
   }, [setCurrentHistoryState, currentHistoryState, items]);
 
   return (
-    <Box height={'calc(70vh - 58px)'}
+    <Box height={'calc(80vh - 58px)'}
       display={'flex'} flexDirection={'row'} ref={rootRef}>
       <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
 

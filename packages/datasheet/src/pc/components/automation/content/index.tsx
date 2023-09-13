@@ -96,6 +96,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                         <Switch
                           text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
                           size={'xl'}
+                          loadingIcon={<></>}
                           clazz={{
                             checkedText: styles.checkedText,
                             unCheckedText: styles.unCheckedText,

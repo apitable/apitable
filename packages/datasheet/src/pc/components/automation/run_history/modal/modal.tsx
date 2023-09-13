@@ -7,8 +7,9 @@ import { HistoryModalContent } from './index';
 import style from './styles.module.less';
 
 const StyledModal = styled(Modal)`
-  background: var(--bg-common-lower, #0d0d0d);
-  border: 1px solid var(--border-common-default);
+  background: var(--bgCommonLower, #0d0d0d);
+  border: 1px solid var(--borderCommonDefault);
+  overflow: hidden;
 `;
 const AutomationHistoryPanel: React.FC<{
   onClose: () => void;
@@ -28,7 +29,7 @@ const AutomationHistoryPanel: React.FC<{
         paddingRight: '0 !important',
       }}
       visible
-      title={
+      renderTitle={
         <Box
           height={'52px'}
           display={'flex'}

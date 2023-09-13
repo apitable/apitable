@@ -40,10 +40,10 @@ interface IRobotListItemCardProps {
 
 const StyledBox = styled(Box)`
   &:hover {
-    background-color: var(--bgControlsHover);
+    background-color: var(--bgControlsActive);
   }
   &:active {
-    background-color: var(--bgControlsActive);
+    background-color: var(--bgControlsHover);
   }
 `;
 
@@ -64,7 +64,6 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
     id: action.actionId,
   })))
     .map((action) => {
-      console.log('action, ', action)
       const triggerType = actionTypes
         .find((trigger) => trigger.actionTypeId === action.actionTypeId);
       return {

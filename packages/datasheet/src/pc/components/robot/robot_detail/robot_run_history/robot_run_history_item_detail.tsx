@@ -25,6 +25,7 @@ import { IRobotHistoryTask } from '../../interface';
 import { RobotRunHistoryActionDetail } from './robot_run_history_item_detail_action';
 import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node_wrapper';
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
+import {useCssColors} from "../trigger/use_css_colors";
 
 interface IRobotRunHistoryItemDetailProps {
   taskId: string;
@@ -44,15 +45,12 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
   const { taskId } = props;
   const { data, error } = useRunTaskDetail(taskId);
   const taskDetail = data?.data;
+  const colors= useCssColors();
   const nodeTypeByIds = useNodeTypeByIds();
-  const theme = useTheme();
   if (error || !taskDetail) {
-    return null;
-  }
-  if (!taskDetail) {
     return (
-      <Box padding="16px">
-        <Typography variant="body3">
+      <Box padding="16px" backgroundColor={colors.bgCommonDefault}>
+        <Typography variant="h8" color={colors.textDangerDefault}>
           {t(Strings.robot_run_history_fail_unknown_error)} (taskId: {taskId})
         </Typography>
       </Box>
@@ -70,7 +68,6 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
   const nodeTypes = taskDetail.executedNodeIds.map((nodeId) => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]);
   return (
     <Box flex={'1'} overflowY={'auto'}>
-      <Box height="1px" background={theme.color.fc5} margin="0px 16px" />
       <Box padding="0px 16px 0px 0">
         {nodeTypes.map((nodeType, index) => {
           const nodeDetail = taskDetail.nodeByIds[taskDetail.executedNodeIds[index]];

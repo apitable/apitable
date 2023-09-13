@@ -9,11 +9,11 @@ import { ChevronRightOutlined, DatasheetOutlined, GotoOutlined, PlayOutlined, Ti
 import { updateRobotItem } from '../../../robot/api';
 import { useDefaultRobotDesc, useRobot } from '../../../robot/hooks';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
+import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
 import { automationHistoryAtom, automationStateAtom } from '../../controller';
 
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
-import {useCssColors} from "../../../robot/robot_detail/trigger/use_css_colors";
 const StyledGrip = styled(Box)`
   gap: 16px;
 `;
@@ -58,167 +58,181 @@ export const BaseInfo: FC = () => {
   }
   return (
     <>
-      <Box paddingX={'24px'} paddingTop={'4px'}>
-        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
-          {t(Strings.summarize)}
-        </Typography>
-      </Box>
+      <Box display={'flex'} flexDirection={'column'} gridGap={'8px'}>
 
-      <Box paddingBottom={'12px'} paddingX={'24px'}>
-        {robot?.triggers?.length > 0 ? (
-          <Typography variant="body4" color={colors.textCommonTertiary}>
-            {defaultDesp}
-          </Typography>
-        ) : (
-          <Typography variant="body4" color={colors.textCommonTertiary}>
-            {t(Strings.no_step_summary)}
-          </Typography>
-        )}
-      </Box>
-
-      <Box paddingX={'24px'}>
-        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
-          {t(Strings.automation_detail)}
-        </Typography>
-      </Box>
-
-      <StyledGrip padding={'0 24px'} gridGap={'16px'} display={'flex'} flexDirection="column">
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Box display={'inline-flex'}>
-            <PlayOutlined size={16} color={colors.textCommonTertiary} />
-
-            <Box alignItems={'center'} marginLeft={'8px'}>
-              <Typography variant="body4" color={colors.textCommonTertiary}>
-                {t(Strings.automation_runs_this_month)}
-              </Typography>
-            </Box>
+        <Box>
+          <Box paddingX={'24px'} paddingTop={'4px'}>
+            <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
+              {t(Strings.summarize)}
+            </Typography>
           </Box>
 
-          <Typography variant="body4" color={colors.textCommonPrimary}>
-            {robot?.recentlyRunCount ?? 0}
-          </Typography>
+          <Box paddingX={'24px'}>
+            {robot?.triggers?.length > 0 ? (
+              <Typography variant="body4" color={colors.textCommonTertiary}>
+                {defaultDesp}
+              </Typography>
+            ) : (
+              <Typography variant="body4" color={colors.textCommonTertiary}>
+                {t(Strings.no_step_summary)}
+              </Typography>
+            )}
+          </Box>
         </Box>
 
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Box display={'inline-flex'}>
-            <UserEditOutlined size={16} color={colors.textCommonTertiary} />
-
-            <Box alignItems={'center'} marginLeft={'8px'}>
-              <Typography variant="body4" color={colors.textCommonTertiary}>
-                {t(Strings.automation_last_edited_by)}
-              </Typography>
-            </Box>
+        <Box>
+          <Box paddingX={'24px'}>
+            <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
+              {t(Strings.automation_detail)}
+            </Typography>
           </Box>
 
-          <Box display={'flex'} alignItems={'center'}>
-            {robot?.updatedBy?.avatar && <Avatar size={'xxs'} src={robot?.updatedBy?.avatar} />}
-            <Box display="flex" alignItems={'center'} marginLeft={'8px'}>
+          <StyledGrip padding={'0 24px'} gridGap={'16px'} display={'flex'} flexDirection="column">
+            <Box display={'flex'} justifyContent={'space-between'}>
+              <Box display={'inline-flex'}>
+                <PlayOutlined size={16} color={colors.textCommonTertiary} />
+
+                <Box alignItems={'center'} marginLeft={'8px'}>
+                  <Typography variant="body4" color={colors.textCommonTertiary}>
+                    {t(Strings.automation_runs_this_month)}
+                  </Typography>
+                </Box>
+              </Box>
+
               <Typography variant="body4" color={colors.textCommonPrimary}>
-                {robot?.updatedBy.nickName}
+                {robot?.recentlyRunCount ?? 0}
               </Typography>
             </Box>
-          </Box>
-        </Box>
 
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <Box display={'inline-flex'}>
-            <TimeOutlined size={16} color={colors.textCommonTertiary} />
+            <Box display={'flex'} justifyContent={'space-between'}>
+              <Box display={'inline-flex'}>
+                <UserEditOutlined size={16} color={colors.textCommonTertiary} />
 
-            <Box alignItems={'center'} marginLeft={'8px'}>
-              <Typography variant="body4" color={colors.textCommonTertiary}>
-                {t(Strings.field_title_last_modified_time)}
-              </Typography>
-            </Box>
-          </Box>
+                <Box alignItems={'center'} marginLeft={'8px'}>
+                  <Typography variant="body4" color={colors.textCommonTertiary}>
+                    {t(Strings.automation_last_edited_by)}
+                  </Typography>
+                </Box>
+              </Box>
 
-          <Typography variant="body4" color={colors.textCommonPrimary}>
-            {dayjs(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
-          </Typography>
-        </Box>
-      </StyledGrip>
-
-      <Box paddingX={'24px'}>
-        <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
-          {t(Strings.related_files)}
-        </Typography>
-      </Box>
-
-      {robot?.relatedResources?.map((item) => (
-        <Box padding={'0 16px'} key={item.nodeId}>
-          <StyeldRelatedResouece
-            padding={'12px 8px'}
-            display={'flex'}
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            onClick={() => {
-              window.open(`/workbench/${item.nodeId}`);
-            }}
-          >
-            <Box display={'inline-flex'} alignItems={'center'}>
-              <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
-
-              <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
-                <Typography variant="body4" color={colors.textCommonPrimary}>
-                  {item.nodeName}
-                </Typography>
+              <Box display={'flex'} alignItems={'center'}>
+                {robot?.updatedBy?.avatar && <Avatar size={'xxs'} src={robot?.updatedBy?.avatar} />}
+                <Box display="flex" alignItems={'center'} marginLeft={'8px'}>
+                  <Typography variant="body4" color={colors.textCommonPrimary}>
+                    {robot?.updatedBy.nickName}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
 
-            <GotoOutlined color={colors.textCommonTertiary} />
-          </StyeldRelatedResouece>
-        </Box>
-      ))}
+            <Box display={'flex'} justifyContent={'space-between'}>
+              <Box display={'inline-flex'}>
+                <TimeOutlined size={16} color={colors.textCommonTertiary} />
 
-      {robot?.relatedResources?.length === 0 && (
-        <Box paddingX={'24px'}>
-          <Typography variant="body4" color={colors.textCommonTertiary}>
-            {t(Strings.automation_please_set_a_trigger_first)}
-          </Typography>
-        </Box>
-      )}
+                <Box alignItems={'center'} marginLeft={'8px'}>
+                  <Typography variant="body4" color={colors.textCommonTertiary}>
+                    {t(Strings.field_title_last_modified_time)}
+                  </Typography>
+                </Box>
+              </Box>
 
-      <Box justifyContent={'space-between'} alignItems={'center'} display={'flex'} paddingX={'24px'}>
-        <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-          <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
-            {t(Strings.robot_run_history_title)}
-          </Typography>
+              <Typography variant="body4" color={colors.textCommonPrimary}>
+                {dayjs(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
+              </Typography>
+            </Box>
+          </StyledGrip>
         </Box>
 
-        {items.length > 0 && (
-          <LinkButton
-            suffixIcon={<ChevronRightOutlined size={16} color={colors.textCommonTertiary} />}
-            underline={false}
-            onClick={() => {
-              setHistoryDialog((d) => ({
-                ...d,
-                dialogVisible: true,
-              }));
-            }}
-          >
-            <Typography variant={'body3'} color={colors.textCommonTertiary}>{t(Strings.automation_more)}</Typography>
-          </LinkButton>
-        )}
-      </Box>
+        <Box>
+          <Box paddingX={'24px'}>
+            <Typography variant="h7"
+              style={{ marginBottom: '0 !important', marginTop: '12px' }}
+              color={colors.textCommonPrimary}>
+              {t(Strings.related_files)}
+            </Typography>
+          </Box>
 
-      <Box display={'flex'} alignItems={'center'} flexDirection={'row'} paddingBottom={'5px'} paddingX={'24px'}>
-        <Typography variant={'body4'} color={colors.textCommonTertiary}>
-          {t(Strings.notify_creator_when_there_is_an_error_occurred)}
-        </Typography>
+          {robot?.relatedResources?.map((item) => (
+            <Box padding={'0 16px'} key={item.nodeId}>
+              <StyeldRelatedResouece
+                padding={'12px 8px'}
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                onClick={() => {
+                  window.open(`/workbench/${item.nodeId}`);
+                }}
+              >
+                <Box display={'inline-flex'} alignItems={'center'}>
+                  <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
 
-        <Box display={'flex'} alignItems={'center'} marginLeft={'8px'}>
-          <Switch
-            size="default"
-            checked={robot.props.failureNotifyEnable}
-            onChange={async(v) => {
-              updateRobot({
-                props: {
-                  ...robot.props,
-                  failureNotifyEnable: v,
-                },
-              });
-              await handleChangeRobot(v);
-            }}
-          />
+                  <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
+                    <Typography variant="body4" color={colors.textCommonPrimary}>
+                      {item.nodeName}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <GotoOutlined color={colors.textCommonTertiary} />
+              </StyeldRelatedResouece>
+            </Box>
+          ))}
+
+          {robot?.relatedResources?.length === 0 && (
+            <Box paddingX={'24px'}>
+              <Typography variant="body4" color={colors.textCommonTertiary}>
+                {t(Strings.automation_please_set_a_trigger_first)}
+              </Typography>
+            </Box>
+          )}
+
+        </Box>
+
+        <Box>
+          <Box justifyContent={'space-between'} alignItems={'center'} display={'flex'} paddingX={'24px'}>
+            <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+              <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginBottom: '12px' }}>
+                {t(Strings.robot_run_history_title)}
+              </Typography>
+            </Box>
+
+            {items.length > 0 && (
+              <LinkButton
+                suffixIcon={<ChevronRightOutlined size={16} color={colors.textCommonTertiary} />}
+                underline={false}
+                onClick={() => {
+                  setHistoryDialog((d) => ({
+                    ...d,
+                    dialogVisible: true,
+                  }));
+                }}
+              >
+                <Typography variant={'body3'} color={colors.textCommonTertiary}>{t(Strings.automation_more)}</Typography>
+              </LinkButton>
+            )}
+          </Box>
+
+          <Box display={'flex'} alignItems={'center'} flexDirection={'row'} paddingBottom={'5px'} paddingX={'24px'}>
+            <Typography variant={'body4'} color={colors.textCommonTertiary}>
+              {t(Strings.notify_creator_when_there_is_an_error_occurred)}
+            </Typography>
+
+            <Box display={'flex'} alignItems={'center'} marginLeft={'8px'}>
+              <Switch
+                size="default"
+                checked={robot.props.failureNotifyEnable}
+                onChange={async(v) => {
+                  updateRobot({
+                    props: {
+                      ...robot.props,
+                      failureNotifyEnable: v,
+                    },
+                  });
+                  await handleChangeRobot(v);
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
 
