@@ -20,6 +20,7 @@ import { ConfigConstant } from '@apitable/core';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
+import { I18nService } from 'nestjs-i18n';
 import { NodeService } from 'node/services/node.service';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
@@ -69,6 +70,12 @@ describe('RobotActionTypeServiceTest', () => {
           provide: QueueSenderBaseService,
           useValue: {
             sendMessage: jest.fn(),
+          },
+        },
+        {
+          provide: I18nService,
+          useValue: {
+            translate: jest.fn(),
           },
         },
         AutomationRobotRepository,

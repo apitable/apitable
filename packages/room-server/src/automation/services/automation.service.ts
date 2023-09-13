@@ -24,11 +24,12 @@ import {
   IActionType,
   IRobot,
   IRobotTask,
-  NoticeTemplatesConstant,
+  NoticeTemplatesConstant, Strings,
   validateMagicForm,
 } from '@apitable/core';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
 import { InjectLogger } from 'shared/common';
@@ -78,6 +79,7 @@ export class AutomationService {
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
     private readonly queueSenderService: QueueSenderBaseService,
+    private readonly i18n: I18nService
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
@@ -401,11 +403,9 @@ export class AutomationService {
       spaceId: spaceId,
       body: {
         extras: {
-          automation: {
-            robotId,
-            automationName: robot.name,
-            endAt: Date.now(),
-          },
+          robotId,
+          automationName: robot.name || await this.i18n.translate(Strings.robot_unnamed),
+          endAt: Date.now(),
         },
       },
       templateId: NoticeTemplatesConstant.workflow_execute_failed_notify,
