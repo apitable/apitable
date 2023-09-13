@@ -24,6 +24,7 @@ import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_RECORD
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ADD_SUB_ADMIN;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ASSIGN_GROUP;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_ASSIGN_ROLE;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_AUTOMATION_ERROR;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_CAPACITY_FULL;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_CHANGE_ADMIN;
 import static com.apitable.shared.constants.MailPropConstants.SUBJECT_DATASHEET_REMIND;
@@ -615,6 +616,9 @@ public class NotifyMailFactory {
                     htmlTemplateName = "subscribed-admin-limit-html.btl";
                     textTemplateName = "subscribed-admin-limit-text.btl";
                     break;
+                case SUBJECT_AUTOMATION_ERROR:
+                    htmlTemplateName = "automation-fail-html.btl";
+                    textTemplateName = "automation-fail-text.btl";
                 default:
                     break;
             }

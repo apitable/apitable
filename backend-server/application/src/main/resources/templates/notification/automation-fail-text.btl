@@ -1,4 +1,4 @@
-{{AUTOMATION_NAME}} failed to execute at {{FINISH_TIME}}. For more information, please check the run history
+{{AUTOMATION_NAME}} failed to execute at {{END_AT}}. For more information, please check the run history
 
 Check{{URL}}
 
