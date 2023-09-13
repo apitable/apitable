@@ -25,8 +25,8 @@ import { StoreActions, Api, ConfigConstant, Strings, t } from '@apitable/core';
 import { Message, NormalModal, WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
 import { useSetState } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
-import { Verify } from '../modify_mobile_modal/verify';
 import styles from './style.module.less';
+import { Verify } from '../modify_mobile_modal/verify';
 // @ts-ignore
 import { addWizardNumberAndApiRun } from 'enterprise';
 
@@ -69,6 +69,7 @@ export const ModifyEmailModal: FC<React.PropsWithChildren<IModifyEmailModalProps
   };
 
   const handleEmailCheck = () => {
+    setIdentifyingCode('');
     if (newEmail === '') {
       setErrMsg({ accountErrMsg: t(Strings.error_email_empty) });
       return;
