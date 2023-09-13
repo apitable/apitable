@@ -153,10 +153,18 @@ export const getOperationInfo = (ops: IOperation[]) =>
           actionCount = op.actions[0]['ld'].name;
           return commandTran(cmdStringKey) + ': ' + actionCount;
 
+        case CollaCommandName.PasteSetRecords:
+          const alarmCount = op.actions.some((item) => item.p.includes('alarm')) ? 2: 0;
+          const pasteRecordCount = op.actions.length > 1 ? (op.actions.length - alarmCount): 1;
+          return commandTran(cmdStringKey, { record_count: pasteRecordCount });
+
         default:
-          const recordCount = op.actions.length > 1 ? op.actions.length : 1;
+          let metaCount = 0;
+          for(const item of op.actions) {
+            if (item.p.includes('meta')) metaCount++;
+          }
+          const recordCount = op.actions.length > 1 ? (op.actions.length - metaCount) : 1;
           return commandTran(cmdStringKey, { record_count: recordCount });
-        // return commandTran(cmdStringKey, { record_count: recordCount }) + ' ' + actionCount;
       }
     })
     .join('');

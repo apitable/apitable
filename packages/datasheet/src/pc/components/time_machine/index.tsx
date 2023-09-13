@@ -105,7 +105,9 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         const csl = res.data.data.reverse();
         console.log('Load changesetList: ', csl);
         const nextCsl = changesetList.concat(csl);
-        setChangesetList(nextCsl);
+        setChangesetList(nextCsl.filter(item =>
+          item.operations.filter((op) => !op.cmd.startsWith('System')).length > 0
+        ));
       })
       .finally(() => {
         setFetching(false);
@@ -317,11 +319,10 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                     }) || memberInfo?.memberName
                     : '';
                   const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
-                  if (!ops.length) return;
                   return (
                     <section
                       className={styles.listItem}
-                      key={item.messageId}
+                      key={`${item.messageId}-${item.revision}`}
                       data-active={index === curPreview}
                       onClick={() => {
                         console.log('ops', ops);
