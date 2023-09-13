@@ -47,7 +47,7 @@ public class FieldServiceImplTest extends AbstractIntegrationTest {
     @Test
     void testFetchOffSiteUrls() {
         List<String> urls = new ArrayList<>();
-        urls.add("https://apitable.cn");
+        urls.add("https://aitable.ai");
         urls.add("www.baidu.com");
         urls.add("https://www.bilibili.com/");
         UrlAwareContentsVo urlAwareContents = iFieldService.getUrlAwareContents(urls, null);
