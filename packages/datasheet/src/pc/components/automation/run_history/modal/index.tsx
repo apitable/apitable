@@ -64,7 +64,7 @@ export const RunHistoryDetail = () => {
 
   const resultText = useMemo(() => {
     if (data?.status === CONST_STATUS_SUCCESS) {
-      return t(Strings.success);
+      return t(Strings.automation_success);
     }
     if (data?.status === CONST_STATUS_FAIL) {
       return t(Strings.automation_run_fail);

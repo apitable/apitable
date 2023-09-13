@@ -763,6 +763,7 @@
   "automation_run_history_item_description": "执行${RESULT}，${NUM}秒(${START_TIME} ~ ${END_TIME})",
   "automation_runs_this_month": "本月运行次数",
   "automation_stay_tuned": "敬请期待",
+  "automation_success": "成功",
   "autonumber_check_info": "自增ID的字段应在字段的下拉菜单中配置",
   "avatar_modified_successfully": "头像修改成功",
   "azerbaijan": "阿塞拜疆",

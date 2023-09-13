@@ -19,6 +19,7 @@
   "account_manager_invalid_tip": "空间站绑定了飞书企业",
   "account_nickname": "帐号昵称：",
   "account_password_incorrect": "帐号或密码错误",
+  "automation_success": "成功",
   "account_wallet": "账户钱包",
   "action": "动作",
   "action_execute_error": "执行失败\n错误信息：\n${value}\n\n了解详细信息可以参考：https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
