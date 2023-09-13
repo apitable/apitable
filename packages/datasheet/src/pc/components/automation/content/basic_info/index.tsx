@@ -222,7 +222,7 @@ export const BaseInfo: FC = () => {
         </Box>
       </Box>
 
-      <Box paddingX={'24px'}>
+      <Box paddingX={'16px'}>
         <TaskList list={items.slice(0, 10)} isSummary={false} activeId={undefined}/>
       </Box>
     </>

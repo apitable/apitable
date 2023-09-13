@@ -39,7 +39,6 @@ const req = axios.create({
   baseURL: '/nest/v1/',
 });
 
-
 export const getActionList = (actions?: []): IRobotAction[] => {
   if (!actions || actions.length === 0) {
     return [];
@@ -59,7 +58,11 @@ export const getActionList = (actions?: []): IRobotAction[] => {
       return resultList;
     }
     const action = preActionIdMap[current];
-    return findNextAction(count -1, action.id, resultList.concat(action!));
+
+    if(action) {
+      return findNextAction(count -1, action.id, resultList.concat(action!));
+    }
+    return resultList;
   };
 
   return findNextAction(actions.length - 1, head.id, [head]);
@@ -85,7 +88,6 @@ export const RobotActions = ({
   const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
-
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -157,7 +159,7 @@ export const RobotActions = ({
           disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
           robotId={robotId}
           actionTypes={actionTypes}
-          prevActionId={actionList[actionList.length - 1].id}
+          prevActionId={actionList[actionList.length - 1]?.id}
         />
       </OrTooltip>
 
