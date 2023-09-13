@@ -31,7 +31,7 @@
 }
 
 .unCheckedCircle {
-  right: inherit;
+  right: inherit !important;
   left: 8px !important;
   top: 8px !important;
   height: 32px !important;
@@ -40,7 +40,7 @@
 }
 
 .checkedCircle {
-  left: inherit;
+  left: inherit !important;
   right: 8px !important;
   top: 8px !important;
   height: 32px !important;
@@ -50,6 +50,7 @@
 
 .tabPannel {
   height: 100%;
+
   :global {
     .ant-tabs-nav {
       margin-bottom: 0 !important;
@@ -62,23 +63,26 @@
 
   :global {
     .ant-tabs-nav {
-        margin-bottom: 0 !important;
+      margin-bottom: 0 !important;
     }
 
     .ant-tabs .ant-tabs-top {
       height: 100%;
     }
+
     .ant-tabs-content-holder {
       height: calc(100% - 30px);
     }
 
-    .ant-tabs-content-top{
+    .ant-tabs-content-top {
       height: 100%;
     }
+
     .ant-tabs-tab-btn {
 
       padding-left: 16px;
     }
+
     .ant-tabs-ink-bar {
       visibility: hidden;
     }
