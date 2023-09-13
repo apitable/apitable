@@ -761,6 +761,7 @@ export type StringKeysMapType = {
   'automation_run_history_item_description': 'automation_run_history_item_description',
   'automation_runs_this_month': 'automation_runs_this_month',
   'automation_stay_tuned': 'automation_stay_tuned',
+  'automation_success': 'automation_success',
   'autonumber_check_info': 'autonumber_check_info',
   'avatar_modified_successfully': 'avatar_modified_successfully',
   'azerbaijan': 'azerbaijan',

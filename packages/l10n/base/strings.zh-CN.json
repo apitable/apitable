@@ -5153,7 +5153,7 @@
   "timemachine_undo_paste_set_record":"撤销: 粘贴 ${record_count} 条数据",
   "timemachine_undo_modify_view":"撤销了设置视图",
   "timemachine_undo_set_alarm": "撤消：${status} ${date_time} 的提醒",
-  "timemachine_undo_set_column_property": "撤消字段属性设置",
+  "timemachine_undo_set_column_property": "撤消列配置",
   "timemachine_undo_set_group":"撤销了设置分组",
   "timemachine_undo_set_row_height":"撤销了设置行高",
   "timemachine_undo_set_sort_info":"撤销了设置排序",
