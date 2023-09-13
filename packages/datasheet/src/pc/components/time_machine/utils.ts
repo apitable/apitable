@@ -17,6 +17,7 @@
  */
 
 import dayjs from 'dayjs';
+import { pick } from 'lodash';
 import {
   IOperation,
   IJOTAction,
@@ -30,6 +31,7 @@ import {
   ViewType,
   FieldTypeDescriptionMap,
 } from '@apitable/core';
+import { ALL_ALARM_SUBTRACT } from 'pc/utils/constant';
 import { commandTran, StringsCommandName } from './interface';
 
 export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
@@ -54,117 +56,122 @@ export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
   return [...ids];
 };
 
-export const getOperationInfo = (ops: IOperation[]) =>
-  ops
-    .map((op) => {
-      const cmdStringKey: string = StringsCommandName[op.cmd] || op.cmd;
-      const countMap = {};
-      let actionCount = '';
+export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
+  const cmdStringKey: string = StringsCommandName[op.cmd] || op.cmd;
+  const countMap = {};
+  let actionCount = '';
 
-      for (const item of op.actions) {
-        if (item.n === OTActionName.ListMove) {
-          countMap[item.n] = countMap[item.n] || [];
-          countMap[item.n].push(item.lm + 1);
-        } else if (item.n && item.n !== OTActionName.NumberAdd) {
-          countMap[item.n] = (countMap[item.n] || 0) + 1;
+  for (const item of op.actions) {
+    if (item.n === OTActionName.ListMove) {
+      countMap[item.n] = countMap[item.n] || [];
+      countMap[item.n].push(item.lm + 1);
+    } else if (item.n && item.n !== OTActionName.NumberAdd) {
+      countMap[item.n] = (countMap[item.n] || 0) + 1;
+    }
+  }
+  for (const nValue in countMap) {
+    const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
+    actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
+    if (nValue === OTActionName.ObjectInsert) {
+      actionCount = countMap[nValue];
+    }
+  }
+
+  //commandString
+  switch (op.cmd) {
+    case CollaCommandName.AddRecords:
+      return commandTran(cmdStringKey, { count: actionCount });
+    case CollaCommandName.DeleteRecords:
+      const count = op.actions.filter((item) => item['od']?.recordMeta).length;
+      return commandTran(cmdStringKey, { count });
+    case CollaCommandName.AddFields:
+      op.actions.find((item) => {
+        if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {
+          actionCount = item['oi'].type;
         }
-      }
-      for (const nValue in countMap) {
-        const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
-        actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
-        if (nValue === OTActionName.ObjectInsert) {
-          actionCount = countMap[nValue];
+      });
+      return commandTran(cmdStringKey, { name: FieldTypeDescriptionMap[actionCount]?.title });
+
+    case CollaCommandName.AddWidgetPanel:
+      return commandTran(cmdStringKey, { name: op.actions[0]['li'].name });
+
+    case CollaCommandName.AddViews:
+      actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['li'].type]]];
+      return commandTran(cmdStringKey, { name: commandTran(actionCount) });
+
+    case CollaCommandName.DeleteViews:
+      actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['ld'].type]]];
+      return commandTran(cmdStringKey, { type: commandTran(actionCount) });
+
+    case 'UNDO:SetDateTimeCellAlarm':
+    case CollaCommandName.SetDateTimeCellAlarm:
+      let status = 'cancel';
+      op.actions.forEach((item) => {
+        status=item.n?(item['oi']?'open':'cancel'):(item['oi']?'cancel':'open');
+        if((item['oi']||item['od']).time)return actionCount=(item['oi']||item['od']).time;
+        if (item['od']?.alarmAt || item['oi']?.alarmAt){
+          actionCount = dayjs((item['oi']?.alarmAt || item['od']?.alarmAt)).format('YYYY-MM-DD HH:mm');
         }
+        if((item['oi']||item['od'])?.subtract){
+          actionCount=(item['oi']||item['od'])?.subtract;
+          actionCount=pick(ALL_ALARM_SUBTRACT, actionCount)[actionCount];
+        }
+      });
+      return commandTran(cmdStringKey, { date_time: actionCount, status: commandTran(status) });
+
+    case CollaCommandName.SetViewFrozenColumnCount:
+      return commandTran(cmdStringKey, { count: op.actions[0]['oi'] });
+
+    case 'UNDO:SetViewFrozenColumnCount':
+      return commandTran(cmdStringKey, { count: op.actions[0]['od'] });
+
+    case CollaCommandName.SetViewAutoSave:
+      op.actions.find((item) => {
+        if (item.p.includes('autoSave')) actionCount = item['oi'] ? 'open' : 'close';
+      });
+      return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
+
+    case CollaCommandName.SetAutoHeadHeight:
+    case CollaCommandName.SetViewLockInfo:
+      actionCount = op.actions[0]['oi'] ? 'open' : 'close';
+      return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
+
+    case CollaCommandName.SetRowHeight:
+      actionCount = StringsCommandName[RowHeightLevel[op.actions[0]['oi']]];
+      return commandTran(cmdStringKey) + ': ' + commandTran(actionCount);
+
+    case CollaCommandName.DeleteField:
+      const newRecordCount = op.actions.filter((item) => item['od'] instanceof Object && !Array.isArray(item['od']));
+      return commandTran(cmdStringKey, { record_count: newRecordCount.length });
+
+    case CollaCommandName.AddWidgetToPanel:
+    case CollaCommandName.DeleteWidget:
+    case CollaCommandName.MoveViews:
+    case CollaCommandName.MoveWidget:
+    case CollaCommandName.ManualSaveView:
+    case CollaCommandName.SetGalleryStyle:
+      return commandTran(cmdStringKey);
+
+    case CollaCommandName.ModifyWidgetPanelName:
+      actionCount = op.actions[0]['oi'];
+      return commandTran(cmdStringKey) + ': ' + actionCount;
+
+    case CollaCommandName.DeleteWidgetPanel:
+      actionCount = op.actions[0]['ld'].name;
+      return commandTran(cmdStringKey) + ': ' + actionCount;
+
+    case CollaCommandName.PasteSetRecords:
+      const alarmCount = op.actions.some((item) => item.p.includes('alarm')) ? 2: 0;
+      const pasteRecordCount = op.actions.length > 1 ? (op.actions.length - alarmCount): 1;
+      return commandTran(cmdStringKey, { record_count: pasteRecordCount });
+
+    default:
+      let metaCount = 0;
+      for(const item of op.actions) {
+        if (item.p.includes('meta')) metaCount++;
       }
-
-      //commandString
-      switch (op.cmd) {
-        case CollaCommandName.AddRecords:
-          return commandTran(cmdStringKey, { count: actionCount });
-        case CollaCommandName.DeleteRecords:
-          const count = op.actions.filter((item) => item['od']?.recordMeta).length;
-          return commandTran(cmdStringKey, { count });
-        case CollaCommandName.AddFields:
-          op.actions.find((item) => {
-            if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {
-              actionCount = item['oi'].type;
-            }
-          });
-          return commandTran(cmdStringKey, { name: FieldTypeDescriptionMap[actionCount]?.title });
-
-        case CollaCommandName.AddWidgetPanel:
-          return commandTran(cmdStringKey, { name: op.actions[0]['li'].name });
-
-        case CollaCommandName.AddViews:
-          actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['li'].type]]];
-          return commandTran(cmdStringKey, { name: commandTran(actionCount) });
-
-        case CollaCommandName.DeleteViews:
-          actionCount = StringsCommandName[ViewType[ViewType[op.actions[0]['ld'].type]]];
-          return commandTran(cmdStringKey, { type: commandTran(actionCount) });
-
-        case 'UNDO:SetDateTimeCellAlarm':
-        case CollaCommandName.SetDateTimeCellAlarm:
-          let status = '';
-          op.actions.forEach((item) => {
-            item.n ? (status = item['oi'] ? 'open' : 'cancel') : (status = item['oi'] ? 'cancel' : 'open');
-            if (item['od']?.alarmAt || item['oi']?.alarmAt) actionCount = item['od']?.alarmAt || item['oi']?.alarmAt;
-          });
-          return commandTran(cmdStringKey, { date_time: dayjs(actionCount).format('YYYY-MM-DD HH:mm'), status: commandTran(status) });
-
-        case CollaCommandName.SetViewFrozenColumnCount:
-          return commandTran(cmdStringKey, { count: op.actions[0]['oi'] });
-
-        case 'UNDO:SetViewFrozenColumnCount':
-          return commandTran(cmdStringKey, { count: op.actions[0]['od'] });
-
-        case CollaCommandName.SetViewAutoSave:
-          op.actions.find((item) => {
-            if (item.p.includes('autoSave')) actionCount = item['oi'] ? 'open' : 'close';
-          });
-          return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
-
-        case CollaCommandName.SetAutoHeadHeight:
-        case CollaCommandName.SetViewLockInfo:
-          actionCount = op.actions[0]['oi'] ? 'open' : 'close';
-          return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
-
-        case CollaCommandName.SetRowHeight:
-          actionCount = StringsCommandName[RowHeightLevel[op.actions[0]['oi']]];
-          return commandTran(cmdStringKey) + ': ' + commandTran(actionCount);
-
-        case CollaCommandName.DeleteField:
-          const newRecordCount = op.actions.filter((item) => item['od'] instanceof Object && !Array.isArray(item['od']));
-          return commandTran(cmdStringKey, { record_count: newRecordCount.length });
-
-        case CollaCommandName.AddWidgetToPanel:
-        case CollaCommandName.DeleteWidget:
-        case CollaCommandName.MoveViews:
-        case CollaCommandName.MoveWidget:
-        case CollaCommandName.ManualSaveView:
-        case CollaCommandName.SetGalleryStyle:
-          return commandTran(cmdStringKey);
-
-        case CollaCommandName.ModifyWidgetPanelName:
-          actionCount = op.actions[0]['oi'];
-          return commandTran(cmdStringKey) + ': ' + actionCount;
-
-        case CollaCommandName.DeleteWidgetPanel:
-          actionCount = op.actions[0]['ld'].name;
-          return commandTran(cmdStringKey) + ': ' + actionCount;
-
-        case CollaCommandName.PasteSetRecords:
-          const alarmCount = op.actions.some((item) => item.p.includes('alarm')) ? 2: 0;
-          const pasteRecordCount = op.actions.length > 1 ? (op.actions.length - alarmCount): 1;
-          return commandTran(cmdStringKey, { record_count: pasteRecordCount });
-
-        default:
-          let metaCount = 0;
-          for(const item of op.actions) {
-            if (item.p.includes('meta')) metaCount++;
-          }
-          const recordCount = op.actions.length > 1 ? (op.actions.length - metaCount) : 1;
-          return commandTran(cmdStringKey, { record_count: recordCount });
-      }
-    })
-    .join('');
+      const recordCount = op.actions.length > 1 ? (op.actions.length - metaCount) : 1;
+      return commandTran(cmdStringKey, { record_count: recordCount });
+  }
+})
+  .join('');

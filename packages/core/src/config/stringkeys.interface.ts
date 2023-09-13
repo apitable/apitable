@@ -5112,6 +5112,7 @@ export type StringKeysMapType = {
   'timemachine_add': 'timemachine_add',
   'timemachine_add_field': 'timemachine_add_field',
   'timemachine_add_record': 'timemachine_add_record',
+  'timemachine_add_widget': 'timemachine_add_widget',
   'timemachine_delete_comment': 'timemachine_delete_comment',
   'timemachine_delete_field': 'timemachine_delete_field',
   'timemachine_delete_record': 'timemachine_delete_record',

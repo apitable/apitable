@@ -76,6 +76,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   const [expandMap, setExpandMap] = useState<Record<number, boolean>>({});
   const currentRevision = useSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
   const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+
   const uuids = useMemo(() => {
     const uuids =
       changesetList &&
@@ -324,7 +325,8 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                       className={styles.listItem}
                       key={`${item.messageId}-${item.revision}`}
                       data-active={index === curPreview}
-                      onClick={() => {
+                      onClick={() =>{ 
+                        onPreviewClick(index);
                         console.log('ops', ops);
                       }}
                     >

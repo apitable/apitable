@@ -43,7 +43,7 @@ export const StringsCommandName = {
   [CollaCommandName.AddWidgetPanel]: Strings.timemachine_add,
   [CollaCommandName.DeleteWidgetPanel]: Strings.timemachine_delete_widget,
   [CollaCommandName.ModifyWidgetPanelName]: Strings.timemachine_modify_widget_panel,
-  [CollaCommandName.AddWidgetToPanel]: Strings.add_widget,
+  [CollaCommandName.AddWidgetToPanel]: Strings.timemachine_add_widget,
   [CollaCommandName.DeleteWidget]: Strings.delete_widget_title,
   [CollaCommandName.MoveWidget]: Strings.timemachine_move_widget,
   [CollaCommandName.ManualSaveView]: Strings.timemachine_manual_save_view,
