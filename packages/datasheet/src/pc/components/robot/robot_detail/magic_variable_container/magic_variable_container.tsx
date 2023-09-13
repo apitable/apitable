@@ -161,7 +161,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     },
   });
   return (
-    <Box backgroundColor={theme.color.fc8} borderRadius="8px" border={`1px solid ${theme.color.fc5}`} ref={ref as any} padding="8px 16px">
+    <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${theme.color.fc5}`} ref={ref as any} padding="8px 16px">
       <TextInput
         type="text"
         ref={searchRef}

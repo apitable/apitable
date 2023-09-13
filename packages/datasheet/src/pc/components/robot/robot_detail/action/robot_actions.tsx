@@ -49,7 +49,7 @@ export const getActionList = (actions?: []): IRobotAction[] => {
     [action.prevActionId]:  action,
   })).reduce((acc: any, item: any) => ({ ...acc, ...item }), {});
 
-  const headOpt: IRobotAction|undefined = actions.find((item: IRobotAction) => item.prevActionId == null);
+  const headOpt: IRobotAction|undefined = actions.find((item: IRobotAction) => item.prevActionId == null || item.prevActionId =='');
   if(!headOpt) {
     return [];
   }

@@ -3,6 +3,7 @@ import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
 import { FunctionComponent, memo } from 'react';
 import * as React from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import styled, { css } from 'styled-components';
 import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
@@ -62,94 +63,98 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
 
   return (
     <Box display="flex" flexDirection={'row'} height={'100%'} position={'relative'}>
-      <VikaSplitPanel
-        size={800}
-        minSize={460}
-        maxSize={930}
-        style={shareStyle}
-        panelLeft={
-          <Left
-            height={'100%'}
-            backgroundColor={colors.bgCommonLower}
-            className={ConstAutomationContentLeft}
-            onClick={(e) => {
-              // @ts-ignore
-              if (e.target?.className?.includes?.(CONST_BG_CLS_NAME)) {
-                if (panel.panelName != PanelName.BasicInfo) {
-                  setPanel((draft) => {
-                    draft.panelName = PanelName.BasicInfo;
-                  });
-                }
-              }
-            }}
-          >
-            <ListWithFooter
-              className={CONST_BG_CLS_NAME}
-              footer={
-                <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
-                  <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
-                  <Box paddingBottom={'24px'}>
-                    <Switch
-                      text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
-                      size={'xl'}
-                      clazz={{
-                        checkedText: styles.checkedText,
-                        unCheckedText: styles.unCheckedText,
-                        unCheckedCircle: styles.unCheckedCircle,
-                        checkedCircle: styles.checkedCircle,
-                        checkedBackground: styles.checkedBackground,
-                        unCheckedBackground: styles.unCheckedBackground,
-                      }}
-                      checked={robot.isActive}
-                      onClick={toggleRobotActive}
-                      loading={loading}
-                      disabled={loading}
-                    />
-                  </Box>
-                </Box>
-              }
-            >
-              <Box width={'400px'} margin={'0 auto'}>
-                <RobotDetailForm />
-              </Box>
-            </ListWithFooter>
-          </Left>
-        }
-        panelRight={
-          <Box className={'flex-auto'} height={'100%'} backgroundColor={colors.bgCommonDefault} overflowY={'auto'}>
-            <Tabs className={styles.tabItem}>
-              <TabPane
-                className={styles.tabPannel}
-                tab={
-                  <Typography variant="body2" color={colors.textBrandDefault}>
-                    {t(Strings.automation)}
-                  </Typography>
-                }
-                key={t(Strings.automation)}
+      <AutoSizer style={{ width: '100%', height: '100%' }}>
+        {({ width }) =>(
+          <VikaSplitPanel
+            size={width - 480}
+            maxSize={width - 320}
+            minSize={width - 800}
+            style={shareStyle}
+            panelLeft={
+              <Left
+                height={'100%'}
+                backgroundColor={colors.bgCommonLower}
+                className={ConstAutomationContentLeft}
+                onClick={(e) => {
+                  // @ts-ignore
+                  if (e.target?.className?.includes?.(CONST_BG_CLS_NAME)) {
+                    if (panel.panelName != PanelName.BasicInfo) {
+                      setPanel((draft) => {
+                        draft.panelName = PanelName.BasicInfo;
+                      });
+                    }
+                  }
+                }}
               >
-                <Side />
-              </TabPane>
-
-              <TabPane
-                tab={
-                  <Box display={'inline-flex'} alignItems={'center'}>
-                    <Typography variant="body2" color={colors.textCommonTertiary}>
-                      {t(Strings.ai_chat)}
-                    </Typography>
-                    <Box height={'20px'} border={'1px'} backgroundColor={colors.bgTagDefault} marginLeft={'8px'} padding={'0 4px'}>
-                      <Typography variant="body4" color={colors.textCommonTertiary}>
-                        {t(Strings.automation_stay_tuned)}
-                      </Typography>
+                <ListWithFooter
+                  className={CONST_BG_CLS_NAME}
+                  footer={
+                    <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
+                      <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
+                      <Box paddingBottom={'24px'}>
+                        <Switch
+                          text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
+                          size={'xl'}
+                          clazz={{
+                            checkedText: styles.checkedText,
+                            unCheckedText: styles.unCheckedText,
+                            unCheckedCircle: styles.unCheckedCircle,
+                            checkedCircle: styles.checkedCircle,
+                            checkedBackground: styles.checkedBackground,
+                            unCheckedBackground: styles.unCheckedBackground,
+                          }}
+                          checked={robot.isActive}
+                          onClick={toggleRobotActive}
+                          loading={loading}
+                          disabled={loading}
+                        />
+                      </Box>
                     </Box>
+                  }
+                >
+                  <Box width={'400px'} margin={'0 auto'}>
+                    <RobotDetailForm />
                   </Box>
-                }
-                key={t(Strings.automation_stay_tuned)}
-                disabled
-              />
-            </Tabs>
-          </Box>
+                </ListWithFooter>
+              </Left>
+            }
+            panelRight={
+              <Box className={'flex-auto'} height={'100%'} backgroundColor={colors.bgCommonDefault} overflowY={'auto'}>
+                <Tabs className={styles.tabItem}>
+                  <TabPane
+                    className={styles.tabPannel}
+                    tab={
+                      <Typography variant="body2" color={colors.textBrandDefault}>
+                        {t(Strings.automation)}
+                      </Typography>
+                    }
+                    key={t(Strings.automation)}
+                  >
+                    <Side />
+                  </TabPane>
+
+                  <TabPane
+                    tab={
+                      <Box display={'inline-flex'} alignItems={'center'}>
+                        <Typography variant="body2" color={colors.textCommonTertiary}>
+                          {t(Strings.ai_chat)}
+                        </Typography>
+                        <Box height={'20px'} border={'1px'} backgroundColor={colors.bgTagDefault} marginLeft={'8px'} padding={'0 4px'}>
+                          <Typography variant="body4" color={colors.textCommonTertiary}>
+                            {t(Strings.automation_stay_tuned)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    }
+                    key={t(Strings.automation_stay_tuned)}
+                    disabled
+                  />
+                </Tabs>
+              </Box>
+            }
+          />)
         }
-      />
+      </AutoSizer>
     </Box>
   );
 });

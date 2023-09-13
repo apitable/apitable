@@ -51,7 +51,7 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
         id={item.key}
         currentIndex={0}
         style={{
-          backgroundColor: getBgColor(),
+          // backgroundColor: getBgColor(),
           borderRadius: '4px',
         }}
         className={isActive ? 'active' : ''}
