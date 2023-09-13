@@ -19,6 +19,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import { Logo } from 'pc/components/common';
@@ -31,6 +32,8 @@ export const ShareFail: React.FC<React.PropsWithChildren<unknown>> = () => {
     Router.replace(Navigation.HOME);
   };
 
+  const theme = useSelector((state) => state.theme);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -41,7 +44,7 @@ export const ShareFail: React.FC<React.PropsWithChildren<unknown>> = () => {
         <meta property="og:description" content={t(Strings.share_fail_og_description_content)} />
       </Head>
       <div className={styles.logo}>
-        <Logo size="large" />
+        <Logo size="large" theme={theme} />
       </div>
       <div className={styles.main}>
         <Image src={IconFail} width={240} height={180} alt="" />
