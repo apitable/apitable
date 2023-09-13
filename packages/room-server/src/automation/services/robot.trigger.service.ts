@@ -53,16 +53,17 @@ export class RobotTriggerService {
   }
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
-    const robotIds = await this.getAllRevolvedRobotIds(resourceIds);
-    if (!robotIds.size) {
-      return Promise.resolve({});
-    }
-    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Array.from(robotIds));
+    // todo add triggers
+    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
+      robotIdToResourceId[item.robotId] = item.resourceId;
+      return robotIdToResourceId;
+    }, {} as { [key: string]: string });
+    const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
     return triggers.reduce((resourceIdToTriggers, item) => {
-      if (item.resourceId) {
-        resourceIdToTriggers[item.resourceId!] = !resourceIdToTriggers[item.resourceId!] ? [] : resourceIdToTriggers[item.resourceId!]!;
-        resourceIdToTriggers[item.resourceId!]!.push(item);
-      }
+      const resourceId = robotIdToResourceId[item.robotId]!;
+      resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
+      resourceIdToTriggers[resourceId]!.push(item);
       return resourceIdToTriggers;
     }, {} as IResourceTriggerGroupVo);
   }
@@ -79,6 +80,7 @@ export class RobotTriggerService {
     return resourceRobotTriggers;
   }
 
+  // @ts-ignore
   private async getAllRevolvedRobotIds(resourceIds: string[] = []) {
     if (resourceIds.length === 0) {
       return new Set<string>();

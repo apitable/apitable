@@ -29,7 +29,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       where: {
         resourceId: In(resourceIds),
         isDeleted: false,
-        isActive: true,
+        isActive: 1,
       },
       select: ['robotId', 'resourceId'],
     });

@@ -5670,7 +5670,7 @@
   "notify_creator_when_there_is_an_error_occurred": "Notify creator when there is an error occurred",
   "automation_not_save_warning_title": "Automation Not Save",
   "automation_not_save_warning_description": "The changes you made have not been saved. Are you sure you want to leave?",
-  "workflow_execute_failed_notify": "<b>${AUTOMATION_NAME}</b> failed to execute at <b>${FINISH_TIME}</b>. Please review the execution history to troubleshoot the issue. If you need any assistance, please contact our customer service team.",
+  "workflow_execute_failed_notify": "<a class=\"automationName\"></a> failed to execute at <a class=\"endAt\"></a>. Please review the execution history to troubleshoot the issue. If you need any assistance, please contact our customer service team.",
   "related_files": "Related files",
   "related_automations_disconnect_title": "Are you sure to disconnect this automation?",
   "hide_unmanageable_files": "Hide unmanageable files",
