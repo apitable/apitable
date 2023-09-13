@@ -16,6 +16,7 @@ const AutomationHistoryPanel: React.FC<{
   const colors = useThemeColors();
   return (
     <StyledModal
+      centered
       contentClassName={style.modalContent}
       footer={null}
       closable={false}

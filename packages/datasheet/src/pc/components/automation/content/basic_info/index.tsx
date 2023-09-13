@@ -58,7 +58,7 @@ export const BaseInfo: FC = () => {
   }
   return (
     <>
-      <Box paddingX={'24px'}>
+      <Box paddingX={'24px'} paddingTop={'4px'}>
         <Typography variant="h7" color={colors.textCommonPrimary} className={style.title}>
           {t(Strings.summarize)}
         </Typography>

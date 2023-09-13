@@ -35,6 +35,7 @@ import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
 import styles from './styles.module.less';
+import {useClickOutside} from "@huse/click-outside";
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
@@ -64,9 +65,9 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
-  useClickAway(() => {
+  useClickOutside(popupRef, () => {
     setOpen(false);
-  }, popupRef);
+  });
 
   useEffect(() => {
     if (!isOpen) {

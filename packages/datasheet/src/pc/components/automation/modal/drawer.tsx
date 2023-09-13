@@ -1,26 +1,20 @@
-import { useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai/index';
 import * as React from 'react';
-import { useCallback, memo } from 'react';
-import styled from 'styled-components';
-import { Modal } from '@apitable/components';
+import style from './styles.module.less';
+import { useCallback } from 'react';
 import { Strings, t } from '@apitable/core';
-import { Modal as ConfirmModal } from 'pc/components/common/modal/modal/modal';
+import { Drawer } from 'pc/shared/components/drawer/drawer';
+import { Modal as ConfirmModal } from '../../common';
 import { useRobotListState } from '../../robot/robot_list';
 import { automationModifiedAtom } from '../controller';
 import { AutomationPanel } from '../index';
-import { DrawerWrapper } from './drawer';
-import style from './styles.module.less';
 
-const StyledModal = styled(Modal)`
-  position: fixed;
-  height: 100%;
-  min-width: 832px;
-  right: 0;
-  top: 0;
-`;
-const AutomationModal: React.FC<{
-  onClose: () => void;
-}> = ({ onClose }) => {
+export const DrawerWrapper: React.FC<React.PropsWithChildren<{
+    onClose: () => void;
+}>> = React.memo(({
+
+  onClose }) => {
+
   const isClosedRef = React.useRef(false);
   const {
     api: { refresh },
@@ -61,27 +55,21 @@ const AutomationModal: React.FC<{
   }, [getCloseable, onClose, refresh]);
 
   return (
-    <StyledModal
-      contentClassName={style.modalContent}
-      closable={false}
-      footer={null}
-      isCloseable={getCloseable}
+    <Drawer
+      zIndex={200}
+      open
+      className={style.modalWrapper}
       width={'90vw'}
-      destroyOnClose
-      bodyStyle={{
-        padding: '0 0',
-        height: '100%',
-        paddingLeft: '0 !important',
-        paddingRight: '0 !important',
-      }}
-      visible
-      title={null}
-      onCancel={
-        handleCloseClick
+      onClose={handleCloseClick}
+      title={
+        null
       }
+      destroyOnClose
+      closable={false}
     >
-      <AutomationPanel onClose={handleCloseClick} />
-    </StyledModal>
+      <AutomationPanel onClose={
+        handleCloseClick
+      } />
+    </Drawer>
   );
-};
-export default memo(DrawerWrapper);
+});

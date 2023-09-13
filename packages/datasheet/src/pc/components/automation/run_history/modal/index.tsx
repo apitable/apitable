@@ -85,7 +85,7 @@ export const RunHistoryDetail = () => {
           <Typography variant="body3" color={colors.textCommonTertiary} >
             {t(Strings.automation_run_history_item_description, {
               RESULT: resultText,
-              NUM: getTime.start?.diff(getTime.end, 'second'),
+              NUM: getTime.end?.diff(getTime.start, 'second'),
               START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
               END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
             })}
@@ -164,7 +164,9 @@ export const HistoryModalContent = () => {
   }, [setCurrentHistoryState, currentHistoryState, items]);
 
   return (
-    <Box height={'500px'} display={'flex'} flexDirection={'row'} ref={rootRef}>
+    <Box height={'588px'}
+      maxHeight={'calc(90vh - 58px)'}
+      display={'flex'} flexDirection={'row'} ref={rootRef}>
       <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
 
         <TaskList list={items} isSummary activeId={currentHistoryState.taskId}/>

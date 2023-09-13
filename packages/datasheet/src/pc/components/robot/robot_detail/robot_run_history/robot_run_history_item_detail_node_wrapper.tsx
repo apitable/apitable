@@ -30,7 +30,7 @@ import {
   ChevronDoubleDownOutlined,
   ChevronDownOutlined
 } from '@apitable/icons';
-import { ItemStatus } from '../../../automation/run_history/list';
+import {ItemStatus, RunItemStatus} from '../../../automation/run_history/list';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import styles from 'style.module.less';
@@ -76,18 +76,18 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
       alignItems="center"
       justifyContent="space-between"
       minHeight={'42px'}
+      width={'100%'}
       overflow="hidden"
       style={{ cursor: 'pointer' }}
-      onClick={() => setShowDetail(!showDetail)}
     >
-      <Box display="flex" position="relative" alignItems="flex-start">
-        <Box display={'flex'} height={'24px'}>
+      <Box display="flex" position="relative" alignItems="flex-start" width={'100%'}>
+        <Box display={'flex'} alignItems={'center'} onClick={() => setShowDetail(!showDetail)} height={'32px'}>
           <span className={cls(styles.arrowIcon)}>
             <IconButton shape={'square'}
               icon={showDetail ? ChevronDownOutlined: ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
           </span>
           <Box marginX={'8px'} display="flex" alignItems="center">
-            <ItemStatus status={status} />
+            <RunItemStatus status={status} />
           </Box>
         </Box>
 
@@ -99,8 +99,8 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
 
         {!isLast && <VerticalLine />}
 
-        <Box flexDirection={'column'}>
-          <Box flexDirection={'row'} alignItems={'center'} display={'flex'}>
+        <Box flexDirection={'column'} width={'100%'}>
+          <Box flexDirection={'row'} alignItems={'center'} display={'flex'} onClick={() => setShowDetail(!showDetail)}>
             <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={32} height={32} />
             <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginLeft: 8 }}>
               {nodeType.name}
@@ -117,7 +117,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
           </Box>
 
           {showDetail && (
-            <Box padding={'16px 16px'} marginLeft={'48px'} marginTop="16px" backgroundColor={colors.bgCommonDefault}>
+            <Box padding={'16px 16px'} width={'100%'} marginLeft={'48px'} marginBottom='16px' marginTop="16px" backgroundColor={colors.bgCommonDefault}>
               {children}
             </Box>
           )}

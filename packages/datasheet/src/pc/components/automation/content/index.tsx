@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
 import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable/components';
@@ -46,7 +46,7 @@ const ShadowBox = styled(Box)<{ theme: string }>`
 `;
 export const CONST_BG_CLS_NAME = 'cls-content-bg';
 
-export const AutomationPanelContent: FunctionComponent<{}> = () => {
+export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
   const { resourceId, currentRobotId, robot } = useRobot();
 
   const colors = useThemeColors();
@@ -63,7 +63,9 @@ export const AutomationPanelContent: FunctionComponent<{}> = () => {
   return (
     <Box display="flex" flexDirection={'row'} height={'100%'} position={'relative'}>
       <VikaSplitPanel
-        size={820}
+        size={800}
+        minSize={460}
+        maxSize={930}
         style={shareStyle}
         panelLeft={
           <Left
@@ -150,4 +152,4 @@ export const AutomationPanelContent: FunctionComponent<{}> = () => {
       />
     </Box>
   );
-};
+});

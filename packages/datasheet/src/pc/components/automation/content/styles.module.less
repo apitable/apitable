@@ -47,17 +47,26 @@
 
 .tabPannel {
   height: 100%;
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 0 !important;
+    }
+  }
 }
 
 .tabItem {
   height: 100%;
 
   :global {
+    .ant-tabs-nav {
+        margin-bottom: 0 !important;
+    }
+
     .ant-tabs .ant-tabs-top {
       height: 100%;
     }
     .ant-tabs-content-holder {
-      height: calc(100% - 46px);
+      height: calc(100% - 30px);
     }
 
     .ant-tabs-content-top{

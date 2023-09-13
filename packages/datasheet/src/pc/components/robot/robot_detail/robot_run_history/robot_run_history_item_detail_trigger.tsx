@@ -71,11 +71,12 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const outputSchema: any = enrichDatasheetTriggerOutputSchema(oldSchema as any, fields, fieldPermissionMap);
 
   return (
-    <Box color={colors.bgCommonDefault}>
+    <Box color={colors.bgCommonDefault} width={'100%'}>
       <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
       <Box
         marginTop="8px"
         marginBottom="16px"
+        width={'100%'}
         padding="0 16px"
         boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`}
         className={styles.historyDetailList}

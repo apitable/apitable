@@ -14,11 +14,12 @@ import {
 } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import {
+  CheckCircleFilled,
   CheckCircleOutlined, CheckFilled,
   DownloadOutlined,
   MoreStandOutlined,
   PlayFilled,
-  PlayOutlined,
+  PlayOutlined, WarnCircleFilled,
   WarnCircleOutlined, WarnFilled
 } from '@apitable/icons';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
@@ -45,8 +46,8 @@ export const RunItemStatus = ({ status }: { status: number }) => {
   return (
     <>
       {status === 3 && <PlayFilled color={colors.textBrandDefault} size={16} />}
-      {status === 1 && <CheckFilled color={colors.textSuccessDefault} size={16} />}
-      {status === 2 && <WarnFilled color={colors.textWarnDefault} size={16} />}
+      {status === 1 && <CheckCircleFilled color={colors.textSuccessDefault} size={16} />}
+      {status === 2 && <WarnCircleFilled color={colors.textWarnDefault} size={16} />}
     </>
   );
 };
