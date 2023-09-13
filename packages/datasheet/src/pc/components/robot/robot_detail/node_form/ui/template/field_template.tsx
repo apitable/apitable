@@ -17,7 +17,7 @@
  */
 
 import { utils } from '@rjsf/core';
-import {Box, Typography, useTheme } from '@apitable/components';
+import { Box, Typography, useTheme } from '@apitable/components';
 import { IFieldTemplateProps } from '../../core/interface';
 
 const { getSchemaType } = utils;
@@ -58,8 +58,8 @@ export const FieldTemplate = (props: IFieldTemplateProps) => {
           {label}
         </Typography>
       )}
-      
-      <Box margin={'4px 0'}>
+
+      <Box padding={'4px 0'}>
         {description}
       </Box>
 

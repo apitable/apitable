@@ -32,20 +32,22 @@ export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export const ItemStatus = ({ status }: { status: number }) => {
   const colors = useThemeColors();
-  return (
-    <>
-      {status === 3 && <PlayOutlined color={colors.textBrandDefault} size={16} />}
-      {status === 1 && <CheckCircleOutlined color={colors.textSuccessDefault} size={16} />}
-      {status === 2 && <WarnCircleOutlined color={colors.textWarnDefault} size={16} />}
-    </>
-  );
+  switch (status) {
+    case 1:
+      return (<CheckCircleOutlined color={colors.textSuccessDefault} size={16}/>);
+    case 2:
+      return (<WarnCircleOutlined color={colors.textWarnDefault} size={16}/>);
+    default: {
+      return (<PlayOutlined color={colors.textBrandDefault} size={16}/>);
+    }
+  }
 };
 
 export const RunItemStatus = ({ status }: { status: number }) => {
   const colors = useThemeColors();
   return (
     <>
-      {status === 3 && <PlayFilled color={colors.textBrandDefault} size={16} />}
+      {status === 0 && <PlayFilled color={colors.textBrandDefault} size={16} />}
       {status === 1 && <CheckCircleFilled color={colors.textSuccessDefault} size={16} />}
       {status === 2 && <WarnCircleFilled color={colors.textWarnDefault} size={16} />}
     </>
