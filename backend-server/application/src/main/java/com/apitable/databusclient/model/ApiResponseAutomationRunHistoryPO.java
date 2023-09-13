@@ -14,14 +14,16 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
-import com.apitable.databusclient.model.AiPO;
+import com.apitable.databusclient.model.AutomationRunHistoryPO;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -50,17 +52,17 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * ApiResponseAiPO
+ * ApiResponseAutomationRunHistoryPO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class ApiResponseAiPO {
+public class ApiResponseAutomationRunHistoryPO {
   public static final String SERIALIZED_NAME_CODE = "code";
   @SerializedName(SERIALIZED_NAME_CODE)
   private Integer code;
 
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
-  private AiPO data;
+  private List<AutomationRunHistoryPO> data;
 
   public static final String SERIALIZED_NAME_MESSAGE = "message";
   @SerializedName(SERIALIZED_NAME_MESSAGE)
@@ -70,10 +72,10 @@ public class ApiResponseAiPO {
   @SerializedName(SERIALIZED_NAME_SUCCESS)
   private Boolean success;
 
-  public ApiResponseAiPO() {
+  public ApiResponseAutomationRunHistoryPO() {
   }
 
-  public ApiResponseAiPO code(Integer code) {
+  public ApiResponseAutomationRunHistoryPO code(Integer code) {
     
     this.code = code;
     return this;
@@ -95,9 +97,17 @@ public class ApiResponseAiPO {
   }
 
 
-  public ApiResponseAiPO data(AiPO data) {
+  public ApiResponseAutomationRunHistoryPO data(List<AutomationRunHistoryPO> data) {
     
     this.data = data;
+    return this;
+  }
+
+  public ApiResponseAutomationRunHistoryPO addDataItem(AutomationRunHistoryPO dataItem) {
+    if (this.data == null) {
+      this.data = new ArrayList<>();
+    }
+    this.data.add(dataItem);
     return this;
   }
 
@@ -106,17 +116,17 @@ public class ApiResponseAiPO {
    * @return data
   **/
   @javax.annotation.Nullable
-  public AiPO getData() {
+  public List<AutomationRunHistoryPO> getData() {
     return data;
   }
 
 
-  public void setData(AiPO data) {
+  public void setData(List<AutomationRunHistoryPO> data) {
     this.data = data;
   }
 
 
-  public ApiResponseAiPO message(String message) {
+  public ApiResponseAutomationRunHistoryPO message(String message) {
     
     this.message = message;
     return this;
@@ -137,7 +147,7 @@ public class ApiResponseAiPO {
   }
 
 
-  public ApiResponseAiPO success(Boolean success) {
+  public ApiResponseAutomationRunHistoryPO success(Boolean success) {
     
     this.success = success;
     return this;
@@ -167,11 +177,11 @@ public class ApiResponseAiPO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ApiResponseAiPO apiResponseAiPO = (ApiResponseAiPO) o;
-    return Objects.equals(this.code, apiResponseAiPO.code) &&
-        Objects.equals(this.data, apiResponseAiPO.data) &&
-        Objects.equals(this.message, apiResponseAiPO.message) &&
-        Objects.equals(this.success, apiResponseAiPO.success);
+    ApiResponseAutomationRunHistoryPO apiResponseAutomationRunHistoryPO = (ApiResponseAutomationRunHistoryPO) o;
+    return Objects.equals(this.code, apiResponseAutomationRunHistoryPO.code) &&
+        Objects.equals(this.data, apiResponseAutomationRunHistoryPO.data) &&
+        Objects.equals(this.message, apiResponseAutomationRunHistoryPO.message) &&
+        Objects.equals(this.success, apiResponseAutomationRunHistoryPO.success);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -193,7 +203,7 @@ public class ApiResponseAiPO {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ApiResponseAiPO {\n");
+    sb.append("class ApiResponseAutomationRunHistoryPO {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
@@ -236,33 +246,43 @@ public class ApiResponseAiPO {
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ApiResponseAiPO
+  * @throws IOException if the JSON Element is invalid with respect to ApiResponseAutomationRunHistoryPO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!ApiResponseAiPO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ApiResponseAiPO is not found in the empty JSON string", ApiResponseAiPO.openapiRequiredFields.toString()));
+        if (!ApiResponseAutomationRunHistoryPO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ApiResponseAutomationRunHistoryPO is not found in the empty JSON string", ApiResponseAutomationRunHistoryPO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!ApiResponseAiPO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ApiResponseAiPO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ApiResponseAutomationRunHistoryPO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ApiResponseAutomationRunHistoryPO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ApiResponseAiPO.openapiRequiredFields) {
+      for (String requiredField : ApiResponseAutomationRunHistoryPO.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `data`
       if (jsonObj.get("data") != null && !jsonObj.get("data").isJsonNull()) {
-        AiPO.validateJsonElement(jsonObj.get("data"));
+        JsonArray jsonArraydata = jsonObj.getAsJsonArray("data");
+        if (jsonArraydata != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("data").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `data` to be an array in the JSON string but got `%s`", jsonObj.get("data").toString()));
+          }
+
+          // validate the optional field `data` (array)
+          for (int i = 0; i < jsonArraydata.size(); i++) {
+            AutomationRunHistoryPO.validateJsonElement(jsonArraydata.get(i));
+          };
+        }
       }
       if (!jsonObj.get("message").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
@@ -273,22 +293,22 @@ public class ApiResponseAiPO {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ApiResponseAiPO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ApiResponseAiPO' and its subtypes
+       if (!ApiResponseAutomationRunHistoryPO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ApiResponseAutomationRunHistoryPO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ApiResponseAiPO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ApiResponseAiPO.class));
+       final TypeAdapter<ApiResponseAutomationRunHistoryPO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ApiResponseAutomationRunHistoryPO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<ApiResponseAiPO>() {
+       return (TypeAdapter<T>) new TypeAdapter<ApiResponseAutomationRunHistoryPO>() {
            @Override
-           public void write(JsonWriter out, ApiResponseAiPO value) throws IOException {
+           public void write(JsonWriter out, ApiResponseAutomationRunHistoryPO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public ApiResponseAiPO read(JsonReader in) throws IOException {
+           public ApiResponseAutomationRunHistoryPO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -299,18 +319,18 @@ public class ApiResponseAiPO {
   }
 
  /**
-  * Create an instance of ApiResponseAiPO given an JSON string
+  * Create an instance of ApiResponseAutomationRunHistoryPO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of ApiResponseAiPO
-  * @throws IOException if the JSON string is invalid with respect to ApiResponseAiPO
+  * @return An instance of ApiResponseAutomationRunHistoryPO
+  * @throws IOException if the JSON string is invalid with respect to ApiResponseAutomationRunHistoryPO
   */
-  public static ApiResponseAiPO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ApiResponseAiPO.class);
+  public static ApiResponseAutomationRunHistoryPO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ApiResponseAutomationRunHistoryPO.class);
   }
 
  /**
-  * Convert an instance of ApiResponseAiPO to an JSON string
+  * Convert an instance of ApiResponseAutomationRunHistoryPO to an JSON string
   *
   * @return JSON string
   */
