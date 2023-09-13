@@ -104,7 +104,7 @@ export const TaskItem: FC<{ activeId?: string, item: IRobotRunHistoryItem; onCli
   const isActive = item.taskId === activeId;
 
   return (
-    <StyledTaskItem display={'flex'} flexDirection={'row'} padding={'8px'} isActive={isActive} onClick={onClick}>
+    <StyledTaskItem display={'flex'} flexDirection={'row'} padding={'8px 0px 8px 8px'} isActive={isActive} onClick={onClick}>
       <Box display={'flex'} flexDirection={'row'} marginRight={'8px'} paddingTop={'4px'}>
         <ItemStatus status={item.status} />
       </Box>

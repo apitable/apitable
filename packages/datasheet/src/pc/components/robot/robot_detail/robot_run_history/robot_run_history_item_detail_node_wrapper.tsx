@@ -30,7 +30,7 @@ import {
   ChevronDoubleDownOutlined,
   ChevronDownOutlined
 } from '@apitable/icons';
-import {ItemStatus, RunItemStatus} from '../../../automation/run_history/list';
+import { ItemStatus, RunItemStatus } from '../../../automation/run_history/list';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import styles from 'style.module.less';
@@ -86,7 +86,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
             <IconButton shape={'square'}
               icon={showDetail ? ChevronDownOutlined: ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
           </span>
-          <Box marginX={'8px'} display="flex" alignItems="center">
+          <Box marginX={'8px'} display="flex" alignItems="center" zIndex={2}>
             <RunItemStatus status={status} />
           </Box>
         </Box>
@@ -117,7 +117,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
           </Box>
 
           {showDetail && (
-            <Box padding={'16px 16px'} width={'100%'} marginLeft={'48px'} marginBottom='16px' marginTop="16px" backgroundColor={colors.bgCommonDefault}>
+            <Box padding={'16px 16px'} borderRadius={'4px'} width={'100%'} marginBottom='16px' marginTop="16px" backgroundColor={colors.bgCommonDefault}>
               {children}
             </Box>
           )}

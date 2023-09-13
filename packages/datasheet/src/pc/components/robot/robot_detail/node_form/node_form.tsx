@@ -64,17 +64,17 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
   const ref = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { description, title, type = 'trigger', children, handleClick, ...restProps } = props;
+  const colors = useCssColors();
 
-  const theme = useTheme();
   // FIXME
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <Box flex={'1 1 auto'} overflow={'auto'}>
-        <Typography variant="h7" color={theme.color.fc1}>
+        <Typography variant="h6" color={colors.textCommonPrimary}>
           {title}
         </Typography>
 
-        <Typography variant="body4" style={{ marginTop: 4 }} color={theme.color.fc3}>
+        <Typography variant="body4" style={{ marginTop: 8 }} color={colors.textCommonTertiary}>
           {description}
         </Typography>
 

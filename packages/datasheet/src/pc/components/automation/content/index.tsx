@@ -81,6 +81,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                     if (panel.panelName != PanelName.BasicInfo) {
                       setPanel((draft) => {
                         draft.panelName = PanelName.BasicInfo;
+                        draft.dataId = undefined;
                       });
                     }
                   }

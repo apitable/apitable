@@ -86,9 +86,6 @@ export const RobotActions = ({
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
-  console.log(`actionList  actionList ${actionList.map(r => r.id).join(",")}`);
-  // @ts-ignore
-  console.log(`actionList  actionList ${actionList.map(r => r.actionId).join(",")}`);
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,

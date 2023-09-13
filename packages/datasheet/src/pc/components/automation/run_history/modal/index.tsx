@@ -97,9 +97,9 @@ export const RunHistoryDetail = () => {
         <TextButton
           prefixIcon={
             isLoadingData ? (
-              <LoadingOutlined color={colors.textCommonTertiary} size={12} />
+              <LoadingOutlined color={colors.textCommonTertiary} size={16} />
             ) : (
-              <RefreshOutlined color={colors.textCommonTertiary} size={12} />
+              <RefreshOutlined color={colors.textCommonTertiary} size={16} />
             )
           }
           onClick={() => {
@@ -112,7 +112,7 @@ export const RunHistoryDetail = () => {
         </TextButton>
 
         <TextButton
-          prefixIcon={<DownloadOutlined color={colors.textCommonTertiary} size={12} />}
+          prefixIcon={<DownloadOutlined color={colors.textCommonTertiary} size={16} />}
           onClick={async() => {
             if (!currentHistoryState?.taskId) return;
 
@@ -164,8 +164,7 @@ export const HistoryModalContent = () => {
   }, [setCurrentHistoryState, currentHistoryState, items]);
 
   return (
-    <Box height={'588px'}
-      maxHeight={'calc(90vh - 58px)'}
+    <Box height={'calc(70vh - 58px)'}
       display={'flex'} flexDirection={'row'} ref={rootRef}>
       <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
 

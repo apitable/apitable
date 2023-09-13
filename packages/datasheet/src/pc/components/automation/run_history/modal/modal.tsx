@@ -34,6 +34,8 @@ const AutomationHistoryPanel: React.FC<{
           display={'flex'}
           alignItems={'center'}
           paddingLeft={'16px'}
+          borderTopLeftRadius={'8px'}
+          borderTopRightRadius={'8px'}
           paddingRight={'16px'}
           justifyContent={'space-between'}
           borderBottom={'1px solid var(--borderCommonDefault)'}
