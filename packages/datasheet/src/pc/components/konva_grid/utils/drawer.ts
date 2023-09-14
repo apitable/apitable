@@ -575,7 +575,9 @@ export class KonvaDrawer {
     const ratio = Math.max(window.devicePixelRatio, 2);
     const url = assertSignatureManager.getAssertSignatureUrl(_url);
     const avatarSrc =
-      isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` : url || '';
+      isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS
+        ? `${url}${url.includes('?') ? '&' : '?'}imageView2/1/w/${size * ratio}/q/100!`
+        : url || '';
     const avatarName = getFirstWordFromString(title);
     const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
     switch (type) {

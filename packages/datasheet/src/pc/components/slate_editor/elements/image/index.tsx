@@ -23,6 +23,7 @@ import { Range, Transforms } from 'slate';
 import { ReactEditor, useFocused, useReadOnly, useSlate } from 'slate-react';
 import { useThemeColors } from '@apitable/components';
 import { DeleteOutlined, LoadingOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { getElementDataset } from 'pc/utils';
 import * as API from '../../api';
 import { updateElementData, updateImage } from '../../commands';
@@ -42,7 +43,8 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
   const colors = useThemeColors();
   const elementData = useMemo(() => element.data || {}, [element.data]);
   const originAlign = useMemo(() => elementData.align || ALIGN.LEFT, [elementData.align]);
-  const { url, name, width: originWidth } = elementData;
+  const { url: _url, name, width: originWidth } = elementData;
+  const url = useGetSignatureAssertByToken(_url || null);
   const focused = useFocused();
   const readOnly = useReadOnly();
   const editor = useSlate() as ReactEditor & IEventBusEditor;
