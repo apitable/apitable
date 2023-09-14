@@ -101,7 +101,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
 
         <Box flexDirection={'column'} width={'100%'}>
           <Box flexDirection={'row'} alignItems={'center'} display={'flex'} onClick={() => setShowDetail(!showDetail)}>
-            <Image src={integrateCdnHost(nodeType.service.logo)} alt={nodeType.service.name} width={32} height={32} />
+            <Image src={integrateCdnHost(nodeType?.service?.logo)} alt={nodeType?.service?.name} width={32} height={32} />
             <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginLeft: 8 }}>
               {nodeType.name}
             </Typography>

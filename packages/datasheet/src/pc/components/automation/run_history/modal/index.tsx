@@ -33,7 +33,7 @@ export const RunHistoryDetail = () => {
   const [currentHistoryState] = useAtom(automationHistoryAtom);
 
   const { reset, isLoadingData } = useGetTaskHistory();
-  const { data } = useRunTaskDetail(currentHistoryState?.taskId ?? '');
+  const { data, isLoading } = useRunTaskDetail(currentHistoryState?.taskId ?? '');
 
   const dataItem = data?.data;
   const colors = useThemeColors();
@@ -84,24 +84,32 @@ export const RunHistoryDetail = () => {
         </Typography>
 
         <Box marginTop={'4px'}>
-          {
-            dataItem == null ? (
-              <Typography variant="body3" color={colors.textCommonTertiary} >
-                {
-                  t(Strings.error)
-                }
-              </Typography>
-            ): (
-              <Typography variant="body3" color={colors.textCommonTertiary} >
-                {t(Strings.automation_run_history_item_description, {
-                  RESULT: resultText,
-                  NUM: getTime.end?.diff(getTime.start, 'second'),
-                  START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
-                  END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
-                })}
-              </Typography>
-            )
-          }
+          <>
+            {
+              !isLoading && (
+                <>
+                  {
+                    dataItem == null ? (
+                      <Typography variant="body3" color={colors.textCommonTertiary} >
+                        {
+                          t(Strings.error)
+                        }
+                      </Typography>
+                    ): (
+                      <Typography variant="body3" color={colors.textCommonTertiary} >
+                        {t(Strings.automation_run_history_item_description, {
+                          RESULT: resultText,
+                          NUM: getTime.end?.diff(getTime.start, 'second'),
+                          START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
+                          END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
+                        })}
+                      </Typography>
+                    )
+                  }
+                </>
+              )
+            }
+          </>
         </Box>
       </Box>
 

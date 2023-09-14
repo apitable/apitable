@@ -22,10 +22,10 @@ import { Strings, t } from '@apitable/core';
 import { nestReq } from '../../api';
 import { useNodeTypeByIds } from '../../hooks';
 import { IRobotHistoryTask } from '../../interface';
+import { useCssColors } from '../trigger/use_css_colors';
 import { RobotRunHistoryActionDetail } from './robot_run_history_item_detail_action';
 import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node_wrapper';
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
-import {useCssColors} from "../trigger/use_css_colors";
 
 interface IRobotRunHistoryItemDetailProps {
   taskId: string;
@@ -33,20 +33,24 @@ interface IRobotRunHistoryItemDetailProps {
 
 export const useRunTaskDetail = (taskId: string) => {
   const taskDetailUrl = `/automation/run-history/${taskId}`;
-  const { data, error } = useSWR(taskDetailUrl, nestReq);
+  const { data, error, isLoading } = useSWR(taskDetailUrl, nestReq);
 
   const taskDetail: IRobotHistoryTask = data?.data?.data;
   return {
+    isLoading,
     data: taskDetail,
     error,
   };
 };
 export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps) => {
   const { taskId } = props;
-  const { data, error } = useRunTaskDetail(taskId);
+  const { data, error, isLoading } = useRunTaskDetail(taskId);
   const taskDetail = data?.data;
   const colors= useCssColors();
   const nodeTypeByIds = useNodeTypeByIds();
+  if(isLoading) {
+    return null;
+  }
   if (error || !taskDetail) {
     return (
       <Box padding="16px" backgroundColor={colors.bgCommonDefault}>
