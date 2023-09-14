@@ -211,7 +211,7 @@
   "ai_prompt_title": "Prompt",
   "ai_prompt_wrong_content": "Please include {context} and {question} in the text.",
   "ai_query_of_number": "Message Credit",
-  "ai_remain_credit_label": "Message Credits Left: ${credit}",
+  "ai_remain_credit_label": "Message Left: ${credit}",
   "ai_retrain": "Retrain",
   "ai_robot_data_source_title": "Datasets",
   "ai_robot_type_QA_desc": "A NLP and machine learning-based Q&A bot quickly and accurately answers various questions and provides real-time information and useful advice to users.",

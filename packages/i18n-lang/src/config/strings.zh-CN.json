@@ -213,7 +213,7 @@
   "ai_prompt_title": "提示词（Prompt）",
   "ai_prompt_wrong_content": "请在文本中包含{context}和{question}。",
   "ai_query_of_number": "算力点",
-  "ai_remain_credit_label": "剩余留言积分：${credit}",
+  "ai_remain_credit_label": "剩余对话次数：${credit}",
   "ai_retrain": "再次训练",
   "ai_robot_data_source_title": "数据集",
   "ai_robot_type_QA_desc": "将AI和企业、个人数据集结合的问答型机器人，可以快速准确地回答各领域、场景下的专业问题。",
