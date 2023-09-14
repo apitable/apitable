@@ -64,13 +64,12 @@ export class NodeShareSettingService {
   async checkNodeShareStatus(nodeId: string): Promise<void> {
     const shareSetting = await this.repository.selectByNodeId(nodeId);
     if (isEmpty(shareSetting) || !shareSetting?.isEnabled) {
+      const parentPaths = await this.nodeRepository.selectParentPathByNodeId(nodeId);
+      if (parentPaths.includes(nodeId)) {
+        return;
+      }
       throw new ServerException(PermissionException.ACCESS_DENIED);
     }
-    const parentPaths = await this.nodeRepository.selectParentPathByNodeId(nodeId);
-    if (parentPaths.includes(shareSetting.nodeId)) {
-      return;
-    }
-    throw new ServerException(PermissionException.ACCESS_DENIED);
   }
 
   /**
