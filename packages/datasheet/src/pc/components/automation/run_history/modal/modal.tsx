@@ -7,8 +7,6 @@ import { HistoryModalContent } from './index';
 import style from './styles.module.less';
 
 const StyledModal = styled(Modal)`
-  background: var(--bgCommonLower, #0d0d0d);
-  border: 1px solid var(--borderCommonDefault);
   overflow: hidden;
 `;
 const AutomationHistoryPanel: React.FC<{
