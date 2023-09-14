@@ -22,10 +22,10 @@ import { Strings, t } from '@apitable/core';
 import { nestReq } from '../../api';
 import { useNodeTypeByIds } from '../../hooks';
 import { IRobotHistoryTask } from '../../interface';
+import { useCssColors } from '../trigger/use_css_colors';
 import { RobotRunHistoryActionDetail } from './robot_run_history_item_detail_action';
 import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node_wrapper';
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
-import {useCssColors} from "../trigger/use_css_colors";
 
 interface IRobotRunHistoryItemDetailProps {
   taskId: string;

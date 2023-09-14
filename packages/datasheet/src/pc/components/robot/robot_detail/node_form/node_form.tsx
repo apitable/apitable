@@ -122,7 +122,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       content: t(Strings.robot_action_delete_confirm_desc),
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
-      onOk: async() => {
+      onOk: async () => {
         const deleteOk = await deleteRobotAction(nodeId);
         if (deleteOk) {
           if (!automationState?.resourceId) {

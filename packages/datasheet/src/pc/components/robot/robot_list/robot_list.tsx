@@ -71,7 +71,7 @@ export const useRobotListState = () => {
       },
       api: {
         getById,
-        refreshItem  : async(
+        refreshItem  : async (
         ) => {
           await mutateRefresh();
           if (state?.resourceId && state?.currentRobotId) {
@@ -84,7 +84,7 @@ export const useRobotListState = () => {
             setAutomationAtom(newState);
           }
         },
-        refresh  : async(
+        refresh  : async (
           data?: {
               resourceId: string;
               robotId: string;
@@ -114,9 +114,9 @@ export const RobotList = memo(() => {
   const permissions = useSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
-  const { state: { data: robotList }} = useRobotListState();
+  const { state: { data: robotList } } = useRobotListState();
 
-  const { state: { error }, api: { refresh }} = useRobotListState();
+  const { state: { error }, api: { refresh } } = useRobotListState();
 
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
@@ -156,7 +156,7 @@ export const RobotList = memo(() => {
               index={index}
               key={robot.robotId}
               robotCardInfo={robot}
-              onNavigate={async() => {
+              onNavigate={async () => {
                 await navigateAutomation(robot.resourceId, robot.robotId);
               }}
               readonly={!canManageRobot}
@@ -168,7 +168,7 @@ export const RobotList = memo(() => {
         <NewItem
           height={64}
           disabled={(!canAddNewRobot) || Boolean(robotLength >= ConfigConstant.MAX_ROBOT_COUNT_PER_DST)}
-          onClick={async() => {
+          onClick={async () => {
             if(!canManageRobot) {
               return;
             }

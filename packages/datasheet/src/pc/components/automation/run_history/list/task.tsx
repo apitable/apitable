@@ -7,7 +7,7 @@ import { TaskItem } from './index';
 
 export const TaskList: FC<{ list: IRobotRunHistoryItem[]; isSummary: boolean,
   activeId?:string
-}> = ({ list = [], isSummary , activeId}) => {
+}> = ({ list = [], isSummary, activeId }) => {
   const [, setHistoryItem] = useAtom(automationHistoryAtom);
 
   return (

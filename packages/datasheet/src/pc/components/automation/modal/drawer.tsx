@@ -1,6 +1,5 @@
 import { useAtomValue } from 'jotai/index';
 import * as React from 'react';
-import style from './styles.module.less';
 import { useCallback } from 'react';
 import { Strings, t } from '@apitable/core';
 import { Drawer } from 'pc/shared/components/drawer/drawer';
@@ -8,6 +7,7 @@ import { Modal as ConfirmModal } from '../../common';
 import { useRobotListState } from '../../robot/robot_list';
 import { automationModifiedAtom } from '../controller';
 import { AutomationPanel } from '../index';
+import style from './styles.module.less';
 
 export const DrawerWrapper: React.FC<React.PropsWithChildren<{
     onClose: () => void;
@@ -20,7 +20,7 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
     api: { refresh },
   } = useRobotListState();
   const isModified = useAtomValue(automationModifiedAtom);
-  const getCloseable = async(): Promise<boolean> => {
+  const getCloseable = async (): Promise<boolean> => {
     if (isClosedRef.current) {
       return true;
     }
@@ -46,7 +46,7 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
     return confirmPromise;
   };
 
-  const handleCloseClick = useCallback(async() => {
+  const handleCloseClick = useCallback(async () => {
     const isClosable = await getCloseable();
     if (isClosable) {
       await refresh();

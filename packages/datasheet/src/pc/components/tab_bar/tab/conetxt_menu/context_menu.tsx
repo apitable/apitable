@@ -123,7 +123,7 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
     return;
   };
 
-  const handleForDeleteView = async(args: any) => {
+  const handleForDeleteView = async (args: any) => {
     const {
       props: { tabIndex },
     } = args;

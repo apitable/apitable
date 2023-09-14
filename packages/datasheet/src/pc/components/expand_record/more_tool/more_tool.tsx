@@ -88,7 +88,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = (prop
     setVisible(false);
   };
 
-  const onSubOrUnsub = async() => {
+  const onSubOrUnsub = async () => {
     if (subscriptions.includes(recordId)) {
       const { data } = await unsubscribeRecordByIds({ datasheetId, mirrorId, recordIds: [recordId] });
 

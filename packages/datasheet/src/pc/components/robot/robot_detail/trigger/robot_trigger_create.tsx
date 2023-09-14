@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useAtom } from 'jotai';
 import { useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { mutate } from 'swr';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import {automationPanelAtom, automationStateAtom, PanelName} from '../../../automation/controller';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
 import { createTrigger } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData } from '../../hooks';
@@ -31,7 +31,6 @@ import { ITriggerType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
-import {useAtom} from "jotai/index";
 
 interface IRobotTriggerCreateProps {
   robotId: string;
@@ -66,7 +65,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   }, [triggerTypes]);
 
   const createRobotTrigger = useMemo(() => {
-    return async(triggerTypeId: string) => {
+    return async (triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;

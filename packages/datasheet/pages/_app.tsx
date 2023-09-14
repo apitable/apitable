@@ -106,7 +106,7 @@ export interface IUserInfoError {
   message: string;
 }
 
-const initWorker = async() => {
+const initWorker = async () => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -216,7 +216,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, [loading]);
 
   useEffect(() => {
-    const getUser = async() => {
+    const getUser = async () => {
       const pathUrl = window.location.pathname;
       const query = new URLSearchParams(window.location.search);
       const spaceId = query.get('spaceId') || getRegResult(pathUrl, spaceIdReg) || '';
@@ -319,10 +319,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   }, []);
 
   useEffect(() => {
-    (function() {
+    (function () {
       const _Worker = window.Worker;
       if (typeof _Worker === 'function') {
-        window.Worker = function(url: string, opts: any) {
+        window.Worker = function (url: string, opts: any) {
           if (url.startsWith('//')) {
             url = `${window.location.protocol}${url}`;
           } else if (url.startsWith('/')) {

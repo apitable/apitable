@@ -25,7 +25,7 @@ export const nestReq = axios.create({
   baseURL: '/nest/v1/',
 });
 
-export const getRobotRunHistoryList = async(url: string): Promise<IRobotRunHistoryList> => {
+export const getRobotRunHistoryList = async (url: string): Promise<IRobotRunHistoryList> => {
   const res = await nestReq.get(url);
   if (res.data.success) {
     return res.data.data;
@@ -33,26 +33,26 @@ export const getRobotRunHistoryList = async(url: string): Promise<IRobotRunHisto
   return [];
 };
 
-export const deleteRobotAction = async(actionId: string) => {
+export const deleteRobotAction = async (actionId: string) => {
   const res = await nestReq.delete(`/automation/actions/${actionId}`);
   return res.data.success;
 };
 
-export const updateRobotName = async(robotId: string, name: string) => {
+export const updateRobotName = async (robotId: string, name: string) => {
   const res = await nestReq.patch(`/automation/robots/${robotId}`, {
     name,
   });
   return res.data.success;
 };
 
-export const updateRobotDescription = async(robotId: string, description: string) => {
+export const updateRobotDescription = async (robotId: string, description: string) => {
   const res = await nestReq.patch(`/automation/robots/${robotId}`, {
     description,
   });
   return res.data.success;
 };
 
-export const updateRobotItem = async(resourceId: string, robotId: string, robot: Partial<IAutomationDatum>) => {
+export const updateRobotItem = async (resourceId: string, robotId: string, robot: Partial<IAutomationDatum>) => {
   const res = await axios.patch(`/automation/${resourceId}/modify/${robotId}`, robot);
   return res.data.success;
 };

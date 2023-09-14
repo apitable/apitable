@@ -126,7 +126,7 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
     });
   };
 
-  const delTemplate = async(templateId: string) => {
+  const delTemplate = async (templateId: string) => {
     if (!templateList) {
       return;
     }

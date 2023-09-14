@@ -84,7 +84,7 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
       });
   };
 
-  const toggleEdit = async() => {
+  const toggleEdit = async () => {
     await ShortcutActionManager.trigger(ShortcutActionName.ToggleEditing);
   };
 

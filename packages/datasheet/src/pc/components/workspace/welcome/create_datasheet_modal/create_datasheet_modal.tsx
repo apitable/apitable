@@ -43,7 +43,7 @@ export const CreateDataSheetModal: FC<React.PropsWithChildren<ICreateDataSheetMo
           dispatch(StoreActions.addNode(data));
           dispatch(StoreActions.setEditNodeId(''));
           if (type === ConfigConstant.NodeType.DATASHEET) {
-            Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
+            Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
           }
         } else {
           setError(message);

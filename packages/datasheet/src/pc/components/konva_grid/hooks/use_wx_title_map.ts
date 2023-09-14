@@ -45,7 +45,7 @@ export const useWxTitleMap = (props: IWxTitleMap = {}) => {
       if (WWOpenData.initCanvas) {
         WWOpenData.initCanvas();
         const items = units.map((item) => ({ type: WecomOpenDataType.UserName, id: item.name }));
-        const fetchData = async() => {
+        const fetchData = async () => {
           const result: { items: { data: string }[] } = await new Promise((resolve, reject) => {
             WWOpenData.prefetch({ items }, (err: any, data: any) => {
               if (err) {

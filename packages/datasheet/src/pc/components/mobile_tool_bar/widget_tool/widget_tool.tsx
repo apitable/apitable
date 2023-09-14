@@ -34,7 +34,7 @@ export const WidgetTool = () => {
     return Boolean(Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType)?.opening);
   });
 
-  const togglePanel = async() => {
+  const togglePanel = async () => {
     await ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
   };
 

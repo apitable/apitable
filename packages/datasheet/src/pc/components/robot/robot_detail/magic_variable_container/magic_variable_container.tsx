@@ -21,9 +21,9 @@ import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
+import { useCssColors } from '../trigger/use_css_colors';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
 import { SchemaPropertyList } from './magic_variable_list';
-import {useCssColors} from "../trigger/use_css_colors";
 
 interface ISchemaMapProps {
   nodeOutputSchemaList: INodeOutputSchema[];

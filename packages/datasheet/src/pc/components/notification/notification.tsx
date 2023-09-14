@@ -65,7 +65,7 @@ export const Notification: FC<React.PropsWithChildren> = () => {
   const { getNotificationPage } = useNotificationRequest();
   const { run: getAllData, loading: firstLoading } = useRequest(
     () =>
-      Api.getNotificationStatistics().then(async(res) => {
+      Api.getNotificationStatistics().then(async (res) => {
         const { success, data } = res.data;
         if (!success) {
           return;

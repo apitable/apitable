@@ -57,7 +57,7 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
 
   const [isMobileDevice, setIsMobileDevice] = useState<boolean>();
 
-  useMount(async() => {
+  useMount(async () => {
     const isDesktop = await browserIsDesktop();
     setIsMobileDevice(!isDesktop);
   });

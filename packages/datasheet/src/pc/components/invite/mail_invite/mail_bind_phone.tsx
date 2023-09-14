@@ -76,7 +76,7 @@ const MailBindPhone: FC<React.PropsWithChildren<unknown>> = () => {
               submitText={t(Strings.confirm_join)}
               mode={ConfigConstant.LoginMode.MAIL}
               footer={parser(t(Strings.old_user_turn_to_home))}
-              config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true }}}
+              config={{ mail: { defaultValue: inviteEmailInfo?.data.inviteEmail, disabled: true } }}
             />
           )}
         </div>

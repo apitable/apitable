@@ -40,7 +40,7 @@ export const BulkDownload: FC<React.PropsWithChildren<IBulkDownloadProps>> = ({ 
     <div className={classNames(styles.download, className)}>
       <div
         className={styles.btn}
-        onClick={async() => {
+        onClick={async () => {
           if (loading) {
             return;
           }

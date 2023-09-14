@@ -104,7 +104,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
    * 4. Batch update roles
    * @returns
    */
-  const openFieldPermission = async() => {
+  const openFieldPermission = async () => {
     if (enabledFieldPermission) {
       return true;
     }
@@ -126,7 +126,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     return true;
   };
 
-  const submitAddRole = async(unitInfos: IUnitValue[], permission: IOption) => {
+  const submitAddRole = async (unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length || !permission) {
       return;
     }
@@ -176,7 +176,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     });
   };
 
-  const editRole = async(unitId: string, role: string) => {
+  const editRole = async (unitId: string, role: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -196,7 +196,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const onRemove = async(unitId: string) => {
+  const onRemove = async (unitId: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -213,11 +213,11 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const fetchRoleList = async() => {
+  const fetchRoleList = async () => {
     await run(datasheetId, field.id);
   };
 
-  const changeFormSheetAccessible = async(checked: boolean) => {
+  const changeFormSheetAccessible = async (checked: boolean) => {
     const res = await DatasheetApi.updateFieldPermissionSetting(datasheetId, field.id, checked);
     const { success, message } = res.data;
     if (!success) {
@@ -240,7 +240,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     };
   };
 
-  const resetPermission = async() => {
+  const resetPermission = async () => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, false);
     const { success, message } = res.data;
     if (!success) {
@@ -251,7 +251,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     fetchRoleList();
   };
 
-  const batchEditRole = async(role: string) => {
+  const batchEditRole = async (role: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -275,7 +275,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const batchDeleteRole = async() => {
+  const batchDeleteRole = async () => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;

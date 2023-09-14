@@ -117,7 +117,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
     return verifyUsername && verifyPassword;
   };
 
-  const signIn = async(data?: string) => {
+  const signIn = async (data?: string) => {
     clearStorage();
     const loginData: api.ISignIn = {
       username: username!,

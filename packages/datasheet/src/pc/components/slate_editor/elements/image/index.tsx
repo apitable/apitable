@@ -52,7 +52,7 @@ const Image = React.memo(({ children, element }: IElementRenderProps<IElement<II
   const [moving, setMoving] = useState(false);
   const [imgDisplayWidth, setImgDisplayWidth] = useState(originWidth);
   const [uploading, setUploading] = useState(false);
-  const startStatus = useRef({ width: 0, triggerHandle: 'right', point: { x: 0, y: 0 }});
+  const startStatus = useRef({ width: 0, triggerHandle: 'right', point: { x: 0, y: 0 } });
   const imgRef = useRef<HTMLImageElement | null>(null);
   const imgWrapRef = useRef<HTMLDivElement | null>(null);
 

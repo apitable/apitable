@@ -45,7 +45,7 @@ export const useRobotController = () => {
   const [, setPanel] = useAtom(automationPanelAtom);
   const { reset } = useRobot();
 
-  const navigateAutomation = async(resourceId: string, robotId: string) => {
+  const navigateAutomation = async (resourceId: string, robotId: string) => {
     const itemDetail = await getResourceAutomationDetail(resourceId, robotId);
     const newState = {
       robot: itemDetail,
@@ -57,7 +57,7 @@ export const useRobotController = () => {
     await setPanel((p) => ({ ...p, panelName: PanelName.BasicInfo }));
   };
 
-  const createNewRobot = async() => {
+  const createNewRobot = async () => {
     reset();
 
     const newRobotId = await createAutomationRobot({

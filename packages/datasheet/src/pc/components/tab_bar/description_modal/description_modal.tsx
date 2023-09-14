@@ -100,7 +100,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (pr
 
   // eslint-disable-next-line
   const save = useCallback(
-    debounce(async(next: IEditorData) => {
+    debounce(async (next: IEditorData) => {
       const html = Serializer.html(next.document);
       if (editorHtml.current === html) return;
       editorHtml.current = html;

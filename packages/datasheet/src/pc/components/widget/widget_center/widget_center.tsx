@@ -69,7 +69,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
   const query = useQuery();
   const showPreview = query.get('widget_preview');
   const fetchPackageList = useCallback(
-    async(type: WidgetReleaseType = WidgetReleaseType.Global, refresh?: boolean) => {
+    async (type: WidgetReleaseType = WidgetReleaseType.Global, refresh?: boolean) => {
       if (!refresh && packageListMap?.[type]) {
         return;
       }

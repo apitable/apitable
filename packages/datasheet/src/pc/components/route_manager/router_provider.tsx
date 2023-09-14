@@ -68,7 +68,7 @@ const RouterProvider = ({ children }: any) => {
   const dispatch = useDispatch();
   const [isDesktopDevice, setIsDesktopDevice] = React.useState<boolean>();
 
-  useMount(async() => {
+  useMount(async () => {
     const isDesktop = await browserIsDesktop();
     setIsDesktopDevice(isDesktop);
   });

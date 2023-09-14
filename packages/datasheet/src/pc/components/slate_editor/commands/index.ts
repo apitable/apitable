@@ -126,7 +126,7 @@ export const wrapLink = (editor: Editor, url: string, text?: string) => {
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
   const textNode = GENERATOR.text({ text: !isCollapsed ? '' : text ?? url });
-  const link = GENERATOR.link({ data: { link: url }}, textNode);
+  const link = GENERATOR.link({ data: { link: url } }, textNode);
 
   if (isCollapsed) {
     Transforms.insertNodes(editor, link);

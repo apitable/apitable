@@ -13,9 +13,9 @@ export const useManageWidgetRenderTask = (widgetId: string) => {
   const { state, dispatch } = useWidgetContext();
   useMount(() => {
     if (!state.widgetRenderMap[widgetId]) {
-      dispatch({ type: WidgetActionType.SET_WIDGET_RENDER_STATUS, payload: { widgetId, status: IWidgetRenderStatus.None }});
+      dispatch({ type: WidgetActionType.SET_WIDGET_RENDER_STATUS, payload: { widgetId, status: IWidgetRenderStatus.None } });
       widgetRenderTask.addWidgetTask(widgetId, (widgetId: string, status: IWidgetRenderStatus) => {
-        dispatch({ type: WidgetActionType.SET_WIDGET_RENDER_STATUS, payload: { widgetId, status }});
+        dispatch({ type: WidgetActionType.SET_WIDGET_RENDER_STATUS, payload: { widgetId, status } });
       });
     }
   });

@@ -5,7 +5,7 @@ import { copyWidget, installToDashboard } from '../widget/widget_center/install_
 import { installedWidgetHandle } from '../widget/widget_panel/widget_panel_header';
 
 export const createWidgetByExistWidgetId = (widgetId: string, dashboardId: string) => {
-  return new Promise(async(resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let widgets;
 
     try {

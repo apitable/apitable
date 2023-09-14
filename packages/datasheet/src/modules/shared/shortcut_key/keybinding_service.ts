@@ -46,7 +46,7 @@ export class KeybindingService {
     window.removeEventListener('keydown', this.keyEventHandle);
   }
 
-  private keyEventHandle = async(e: KeyboardEvent) => {
+  private keyEventHandle = async (e: KeyboardEvent) => {
     const keyEvent = new StandardKeyboardEvent(e);
     const shouldPreventDefault = (await this.dispatch(keyEvent)) !== false;
     if (shouldPreventDefault) {

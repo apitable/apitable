@@ -80,7 +80,7 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
   };
 
   const onJump = (formId: string) => {
-    Router.push(Navigation.WORKBENCH, { params: { spaceId, formId }});
+    Router.push(Navigation.WORKBENCH, { params: { spaceId, formId } });
   };
 
   const renderFormList = () => {

@@ -82,7 +82,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <ArrowUpOutlined />,
               text: t(Strings.org_chart_insert_into_parent),
-              onClick: async({ props: { node }}: any) => {
+              onClick: async ({ props: { node } }: any) => {
                 const parent = node?.data?.parents?.[0] as INode;
                 if (parent) {
                   const { id: preId } = parent;
@@ -101,7 +101,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
                   ]);
                 }
               },
-              hidden: ({ props: { node }}: any) => {
+              hidden: ({ props: { node } }: any) => {
                 if (!fieldEditable || node.data.parents.length === 0) {
                   return true;
                 }
@@ -114,7 +114,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <ArrowDownOutlined />,
               text: t(Strings.org_chart_insert_into_child),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 const newRecordId = addRecord(viewId, rowsCount);
                 onChange([
                   {
@@ -127,7 +127,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
                   toggleNodeCollapse(node.id);
                 }
               },
-              hidden: ({ props: { node }}: any) => {
+              hidden: ({ props: { node } }: any) => {
                 if (!fieldEditable) {
                   return true;
                 }
@@ -142,20 +142,20 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <EyeCloseOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_collapse_node),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 toggleNodeCollapse(node.id);
               },
-              hidden: ({ props: { node }}: any) => {
+              hidden: ({ props: { node } }: any) => {
                 return Boolean(nodeStateMap?.[node.id]?.collapsed || node?.data.linkIds?.length === 0);
               },
             },
             {
               icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_expand_node),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 toggleNodeCollapse(node.id);
               },
-              hidden: ({ props: { node }}: any) => {
+              hidden: ({ props: { node } }: any) => {
                 return !nodeStateMap?.[node.id]?.collapsed;
               },
             },
@@ -164,14 +164,14 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <LinkOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_copy_record_url),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 copyLink(node.id);
               },
             },
             {
               icon: <CopyOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_create_a_node_copy),
-              onClick: async({ props: { node }}: any) => {
+              onClick: async ({ props: { node } }: any) => {
                 const result = await copyRecord(node.id);
                 if (result.result === ExecuteResult.Success) {
                   const newRecordId = result.data && result.data[0];
@@ -199,7 +199,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
                   }
                 }
               },
-              hidden: ({ props: { node }}: any) => {
+              hidden: ({ props: { node } }: any) => {
                 if (!fieldEditable || node.data.parents.length === 0) {
                   return true;
                 }
@@ -212,7 +212,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <ExpandOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_expand_record),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 expandRecordIdNavigate(node.id);
               },
             },
@@ -221,7 +221,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <DeleteOutlined color={colors.thirdLevelText} />,
               text: t(Strings.delete),
-              onClick: ({ props: { node }}: any) => {
+              onClick: ({ props: { node } }: any) => {
                 handleDelete(node.id);
               },
               hidden: () => {

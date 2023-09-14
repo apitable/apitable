@@ -27,11 +27,11 @@ import { useAllColumns } from 'pc/hooks';
 import { automationStateAtom } from '../automation/controller';
 import { activeRobot, deActiveRobot, deleteRobotAction, nestReq } from './api';
 import { getFilterActionTypes } from './helper';
-import {IActionType, INodeType, IRobotAction, ITriggerType} from './interface';
+import { IActionType, INodeType, IRobotAction, ITriggerType } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
+import { getActionList } from './robot_detail/action/robot_actions';
 import { getFields } from './robot_detail/trigger/helper';
 import { useRobotListState } from './robot_list';
-import {getActionList} from "./robot_detail/action/robot_actions";
 
 export const useAllFields = () => {
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
@@ -84,7 +84,7 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
 
   const robot = getById(robotId);
 
-  const toggleRobotActive = useCallback(async() => {
+  const toggleRobotActive = useCallback(async () => {
     if (!robot) {
       return;
     }
@@ -168,7 +168,7 @@ export const useRobot = () => {
       if (!state?.robot) {
         return;
       }
-      setState({ ...state, robot: { ...state.robot, ...data }});
+      setState({ ...state, robot: { ...state.robot, ...data } });
     },
   };
 };

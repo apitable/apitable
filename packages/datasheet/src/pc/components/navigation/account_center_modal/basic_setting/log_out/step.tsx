@@ -49,7 +49,7 @@ export const Step: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const { desktop } = usePlatform();
 
-  const handleVerify = async() => {
+  const handleVerify = async () => {
     if (verifyAccountType === AccountType.MOBILE && (!userData.areaCode || !userData.mobile)) return;
     if (verifyAccountType === AccountType.EMAIL && !userData.email) return;
 

@@ -138,7 +138,7 @@ export const appendRowCallback = (newRecordId: string) => {
   }
 };
 
-export const prependRow = async(): Promise<ICollaCommandExecuteResult<string[]>> => {
+export const prependRow = async (): Promise<ICollaCommandExecuteResult<string[]>> => {
   return await appendRow({ direction: Direction.Up });
 };
 

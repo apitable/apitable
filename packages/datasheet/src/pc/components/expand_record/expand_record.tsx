@@ -98,7 +98,7 @@ const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
 const SubscribeButton = ({ active, onSubOrUnsub }: { active: boolean; onSubOrUnsub: () => void }): JSX.Element => {
   const [updating, setUpdating] = useState(false);
 
-  const _onSubOrUnsub = async() => {
+  const _onSubOrUnsub = async () => {
     setUpdating(true);
 
     await onSubOrUnsub();
@@ -142,7 +142,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
   document.body.appendChild(container);
   const root = createRoot(container);
 
-  const modalClose = async(): Promise<void> => {
+  const modalClose = async (): Promise<void> => {
     dispatch(StoreActions.clearActiveFieldState(datasheetId));
     expandRecordManager.destroyCurrentRef();
     root.unmount();
@@ -169,7 +169,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   recordModalCloseFns.unshift(modalClose);
 
-  const monitorBodyFocus = async(e: KeyboardEvent) => {
+  const monitorBodyFocus = async (e: KeyboardEvent) => {
     if (!focusHolderRef.current) {
       return;
     }
@@ -273,7 +273,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
           customModal = CustomModal.warning({
             title: t(Strings.open_failed),
             content: t(Strings.node_not_exist_content),
-            onOk: async() => {
+            onOk: async () => {
               await modalClose();
               customModal.destroy();
             },
@@ -284,7 +284,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
           customModal = CustomModal.warning({
             title: t(Strings.open_failed),
             content: t(Strings.mirror_resource_dst_been_deleted),
-            onOk: async() => {
+            onOk: async () => {
               await modalClose();
               customModal.destroy();
             },
@@ -297,7 +297,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
         const customModal = CustomModal.error({
           title: t(Strings.open_failed),
           content: t(Strings.error_record_not_exist_now),
-          onOk: async() => {
+          onOk: async () => {
             await modalClose();
             customModal.destroy();
           },
@@ -430,7 +430,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
 
   const [fieldDescCollapseStatusMap, setFieldDescCollapseStatusMap] = useLocalStorageState<IFieldDescCollapseStatus>(
     StorageName.FieldDescCollapseStatus,
-    { defaultValue: {}},
+    { defaultValue: {} },
   );
 
   const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
@@ -438,7 +438,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
-  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {}});
+  const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
   const handleCacheType = useCallback(
     (type: ActivitySelectType) => {
       setCacheType({
@@ -500,7 +500,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
 
   useEffect(() => {
     if (isSideRecordOpen && pageParamsRecordId) {
-      setTimeout(async() => {
+      setTimeout(async () => {
         await ShortcutActionManager.trigger(ShortcutActionName.Focus);
       }, 50);
     }
@@ -584,7 +584,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     }
   };
 
-  const onSubOrUnsub = async() => {
+  const onSubOrUnsub = async () => {
     if (subscriptions.includes(activeRecordId)) {
       const { data } = await unsubscribeRecordByIds({
         datasheetId,

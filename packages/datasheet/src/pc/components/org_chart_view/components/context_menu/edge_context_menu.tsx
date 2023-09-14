@@ -43,7 +43,7 @@ export const EdgeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <DeleteOutlined color={colors.thirdLevelText} />,
               text: t(Strings.org_chart_del_link_relationship),
-              onClick: ({ props: { edge }}: any) => {
+              onClick: ({ props: { edge } }: any) => {
                 const { source, target } = edge;
                 const sourceNode = nodes.find((item) => item.id === source);
                 if (sourceNode) {

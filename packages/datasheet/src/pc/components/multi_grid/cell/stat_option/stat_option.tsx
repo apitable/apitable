@@ -213,7 +213,7 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = (props) =
       action={permission.columnCountEditable ? ['click'] : ['']}
       popup={statOptionList()}
       destroyPopupOnHide
-      popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
+      popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true } }}
       popupStyle={{
         width: '150px',
         zIndex: 2,

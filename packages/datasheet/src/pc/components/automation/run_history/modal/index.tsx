@@ -125,7 +125,7 @@ export const RunHistoryDetail = () => {
 
         <TextButton
           prefixIcon={<DownloadOutlined color={colors.textCommonTertiary} size={16} />}
-          onClick={async() => {
+          onClick={async () => {
             if (!currentHistoryState?.taskId) return;
 
             const result = await getAutomationRunHistoryDetail(currentHistoryState.taskId);

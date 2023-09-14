@@ -139,12 +139,12 @@ const SettingNickname: FC<React.PropsWithChildren<unknown>> = () => {
     Router.push(Navigation.HOME);
   }
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (!nickName) {
       await redirect();
       return;
     }
-    Api.updateUser({ nickName, init: true }).then(async(res) => {
+    Api.updateUser({ nickName, init: true }).then(async (res) => {
       const { success, message, code } = res.data;
       if (success) {
         await redirect();
@@ -212,7 +212,7 @@ const SettingNickname: FC<React.PropsWithChildren<unknown>> = () => {
                   minCount: 1,
                   maxCount: 20,
                 })}
-                ref={function(input) {
+                ref={function (input) {
                   if (input != null) {
                     input.focus();
                     if (nickName.startsWith(t(Strings.planet_dwellers))) {

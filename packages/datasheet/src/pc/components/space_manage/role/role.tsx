@@ -40,7 +40,7 @@ const Role = () => {
   const { isOpen, roles: roleList } = data;
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
 
-  useMount(async() => {
+  useMount(async () => {
     await refreshRoleList();
     setFirstLoading(false);
   });

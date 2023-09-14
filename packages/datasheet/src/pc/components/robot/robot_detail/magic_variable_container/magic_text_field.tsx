@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickOutside } from '@huse/click-outside';
 import { useClickAway } from 'ahooks';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
@@ -35,7 +36,6 @@ import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
 import styles from './styles.module.less';
-import {useClickOutside} from "@huse/click-outside";
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;

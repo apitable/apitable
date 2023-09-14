@@ -27,7 +27,7 @@ import { useRobotListState } from '../robot_list';
 import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
 import { getActionList, RobotActions } from './action/robot_actions';
 import { EditType, RobotTrigger } from './trigger/robot_trigger';
-import {useCssColors} from "./trigger/use_css_colors";
+import { useCssColors } from './trigger/use_css_colors';
 
 const req = axios.create({
   baseURL: '/nest/v1/',

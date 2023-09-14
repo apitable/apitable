@@ -37,7 +37,7 @@ export const BaseInfo: FC = () => {
 
   const [, setHistoryDialog] = useAtom(automationHistoryAtom);
 
-  const handleChangeRobot = async(isActive: boolean) => {
+  const handleChangeRobot = async (isActive: boolean) => {
     if (!robot?.robotId) {
       return;
     }
@@ -221,7 +221,7 @@ export const BaseInfo: FC = () => {
               <Switch
                 size="default"
                 checked={robot.props.failureNotifyEnable}
-                onChange={async(v) => {
+                onChange={async (v) => {
                   updateRobot({
                     props: {
                       ...robot.props,

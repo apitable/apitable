@@ -32,7 +32,7 @@ interface IQuickAppendProps {
 export const QuickAppend: React.FC<React.PropsWithChildren<IQuickAppendProps>> = React.memo((props) => {
   const { top, left, length, hoverRecordId } = props;
 
-  const addNewRecord = async() => {
+  const addNewRecord = async () => {
     await appendRow({ recordId: hoverRecordId, direction: Direction.Up });
   };
   return (

@@ -147,7 +147,7 @@ export const TaskItem: FC<{ activeId?: string, item: IRobotRunHistoryItem; onCli
                       padding={'8px'}
                       display={'inline-flex'}
                       alignItems={'center'}
-                      onClick={async() => {
+                      onClick={async () => {
                         toggle();
                         const result = await getAutomationRunHistoryDetail(item.taskId);
                         handleDownload(result ?? {}, `automation_${item.robotId}_${item.taskId}.json`);

@@ -116,7 +116,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
    * 4. Batch update roles
    * @returns
    */
-  const disableRoleExtend = async() => {
+  const disableRoleExtend = async () => {
     if (!roleMap?.extend) {
       return true;
     }
@@ -138,7 +138,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
   };
 
   // Select member submission events
-  const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
+  const onSubmit = async (unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length) {
       return;
     }
@@ -148,7 +148,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
     if (!res) {
       return;
     }
-    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
+    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async (res) => {
       const { success, message } = res.data;
       if (success) {
         Message.success({ content: t(Strings.permission_add_success) });
@@ -162,7 +162,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
 
   const deleteUnit = (unitId: string) => {
     const isOwn = ownUnitId === unitId;
-    const onOk = async() => {
+    const onOk = async () => {
       const res = await disableRoleExtend();
       if (!res) {
         return;
@@ -185,7 +185,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
     });
   };
 
-  const changeUnitRole = async(unitId: string, role: string) => {
+  const changeUnitRole = async (unitId: string, role: string) => {
     const res = await disableRoleExtend();
     if (!res) {
       return;
@@ -201,7 +201,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
     });
   };
 
-  const batchChangeUnitRole = async(role: string) => {
+  const batchChangeUnitRole = async (role: string) => {
     const res = await disableRoleExtend();
     if (!res) {
       return;
@@ -237,7 +237,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
     });
   };
 
-  const batchDeleteRole = async() => {
+  const batchDeleteRole = async () => {
     const res = await disableRoleExtend();
     if (!res) {
       return;

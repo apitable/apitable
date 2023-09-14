@@ -124,7 +124,7 @@ export const Display: React.FC<React.PropsWithChildren<IDisplay>> = (props) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const close = useCallback(
-    async(e: React.MouseEvent) => {
+    async (e: React.MouseEvent) => {
       if (isMobile) {
         await onMenuVisibleChange(false);
         return;

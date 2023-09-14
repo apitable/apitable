@@ -373,7 +373,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
   }, []);
 
   const onDblClick = useCallback(
-    async(e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number): Promise<void> => {
+    async (e: KonvaEventObject<MouseEvent>, field: IField, rowIndex: number, columnIndex: number): Promise<void> => {
       if (e.evt.button === MouseDownType.Right) return;
       const fieldType = field.type;
       if (DBL_CLICK_DISABLED_TYPES.has(fieldType)) return;

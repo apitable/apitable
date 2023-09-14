@@ -109,7 +109,7 @@ export const MemberOptionList: React.FC<
     refreshMemberList();
   }, [refreshMemberList]);
 
-  const loadOrSearchMember = async(keyword?: string) => {
+  const loadOrSearchMember = async (keyword?: string) => {
     if (!showSearchInput && listData != null) {
       // If remote search is not enabled, the raw data needs to be read from the external incoming complete data,
       // not the data cached within the component

@@ -59,7 +59,7 @@ export const Records: FC<React.PropsWithChildren<IRecordsProps>> = ({ records, t
   const ColConfig = {
     span: showDetail ? 6 : 8,
   };
-  const downloadFail = async() => {
+  const downloadFail = async () => {
     const Excel = await import('exceljs');
     const workbook = new Excel.Workbook();
     const tempWorksheet = workbook.addWorksheet(t(Strings.failed_list));

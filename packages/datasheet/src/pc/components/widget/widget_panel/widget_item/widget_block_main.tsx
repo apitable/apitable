@@ -117,7 +117,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
   }, [widgetId, nodeConnected, dashboardConnected]);
 
   useEffect(() => {
-    eventMessage.onSyncCmdOptions(widgetId, async(res) => {
+    eventMessage.onSyncCmdOptions(widgetId, async (res) => {
       eventMessage.syncCmdOptionsResult(widgetId, await resourceService.instance!.commandManager.execute(res));
     });
 

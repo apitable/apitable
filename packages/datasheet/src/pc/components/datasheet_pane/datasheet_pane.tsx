@@ -221,7 +221,7 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
 
   const { setNewTdbId } = useContext(SideBarContext);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const _createBackupSnapshot = async() => {
+  const _createBackupSnapshot = async () => {
     const res = await createBackupSnapshot(datasheetId);
     if (res.data.success) {
       setNewTdbId?.(res?.data?.data?.tbdId || '');

@@ -61,7 +61,7 @@ export const AutomationPanel: FC<{onClose ?:() => void}> = memo(({ onClose }) =>
       content: t(Strings.robot_delete_confirm_desc),
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
-      onOk: async() => {
+      onOk: async () => {
         if (!currentRobotId) {
           return;
         }

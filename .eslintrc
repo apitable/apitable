@@ -49,7 +49,14 @@
       }
     ],
     // Whether spaces are allowed before the parentheses of the function
-    "space-before-function-paren": ["warn", "never"],
+    "space-before-function-paren": [
+      "warn",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "@typescript-eslint/naming-convention": [
       "warn",
       {
@@ -139,7 +146,7 @@
       "warn",
       "always",
       {
-        "objectsInObjects": false
+        "objectsInObjects": true
       }
     ]
   }

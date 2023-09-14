@@ -247,7 +247,7 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Handling synchronisation messages for node creation
-  const createNodeSync = async(data: INodeChangeSocketData) => {
+  const createNodeSync = async (data: INodeChangeSocketData) => {
     const { parentId } = data.data;
     /**
      * There is no need to synchronise the data if it has not been expanded,
@@ -273,7 +273,7 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Handling synchronisation messages for update nodes
-  const updateNodeSync = async(data: INodeChangeSocketData) => {
+  const updateNodeSync = async (data: INodeChangeSocketData) => {
     const { nodeId } = data.data;
     if (!treeNodesMap[nodeId]) {
       return;
@@ -396,7 +396,7 @@ export const useWorkbenchSideSync = () => {
   };
 
   // Handling messages from moving nodes
-  const moveNodeSync = async(data: INodeChangeSocketData) => {
+  const moveNodeSync = async (data: INodeChangeSocketData) => {
     const { nodeId, parentId, preNodeId } = data.data;
     const dragNode = treeNodesMap[nodeId];
     /**

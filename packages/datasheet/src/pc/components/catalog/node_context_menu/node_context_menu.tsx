@@ -100,7 +100,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
       dispatch(StoreActions.updatePermissionModalNodeId(nodeId));
     };
 
-    const _createBackupSnapshot = async(nodeId: string) => {
+    const _createBackupSnapshot = async (nodeId: string) => {
       const res = await createBackupSnapshot(nodeId);
       if (res.data.success) {
         setNewTdbId?.(res?.data?.data?.tbdId || '');
@@ -360,7 +360,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 openImportModal(targetId);
               }),
             ],
-            [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => Router.push(Navigation.TEMPLATE, { params: { spaceId }}))],
+            [contextItemMap.get(ContextItemKey.CreateFromTemplate)(() => Router.push(Navigation.TEMPLATE, { params: { spaceId } }))],
           ];
           Player.applyFilters(Events.get_context_menu_root_add, data);
         }

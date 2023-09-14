@@ -34,17 +34,17 @@ const App = (props: { shareInfo: Required<IShareInfo> | undefined }) => {
   );
 };
 
-export const getServerSideProps = async(context: NextPageContext) => {
+export const getServerSideProps = async (context: NextPageContext) => {
   axios.defaults.baseURL = getBaseUrl(context);
 
   if (!context.req?.url) {
-    return { props: {}};
+    return { props: {} };
   }
 
   const shareId = getRegResult(context.req.url, shareIdReg);
 
   if (!shareId) {
-    return { props: {}};
+    return { props: {} };
   }
 
   const cookie = context.req?.headers.cookie;

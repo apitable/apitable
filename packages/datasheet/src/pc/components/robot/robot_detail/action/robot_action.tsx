@@ -59,7 +59,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
 
   const [automationState, setAutomationAtom] = useAtom(automationStateAtom );
 
-  const { api: { refresh }} = useRobotListState();
+  const { api: { refresh } } = useRobotListState();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
     if (actionTypeId === action?.typeId) {
       return;
@@ -70,7 +70,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(async() => {
+        changeActionTypeId(action?.id!, actionTypeId).then(async () => {
           await mutate(`/automation/robots/${robotId}/actions`);
 
           if(!automationState?.resourceId) {
@@ -192,7 +192,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     formData={propsFormData}
     serviceLogo={integrateCdnHost(actionType.service.logo)}
     schema={schema}
-    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
+    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' } }}
     nodeOutputSchemaList={prevActionSchemaList}
     widgets={
       {

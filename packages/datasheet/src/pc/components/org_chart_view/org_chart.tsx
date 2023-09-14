@@ -241,7 +241,7 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
       </DropWrapper>
       {unhandledNodes.length === rowsCount && (
         <AddFirstNode
-          onAdd={async() => (await addRecord(viewId, rowsCount))!}
+          onAdd={async () => (await addRecord(viewId, rowsCount))!}
           mode={rowsCount === 0 ? 'add' : 'none'}
           reactFlowInstance={reactFlowInstance}
         />

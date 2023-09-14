@@ -85,7 +85,7 @@ const UpgradeSpace = () => {
             okText: t(Strings.confirm),
             cancelText: t(Strings.cancel),
             zIndex: 1100,
-            onOk: async() => {
+            onOk: async () => {
               if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
               //@ts-ignore
               const planInfoRes = await Api.getSubscript(spaceId);
@@ -109,7 +109,7 @@ const UpgradeSpace = () => {
           }),
           cancelText: t(Strings.cancel),
           zIndex: 1100,
-          onOk: async() => {
+          onOk: async () => {
             const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
             const { url } = res.data;
             location.href = url;
@@ -129,7 +129,7 @@ const UpgradeSpace = () => {
             }),
             cancelText: t(Strings.cancel),
             zIndex: 1100,
-            onOk: async() => {
+            onOk: async () => {
               const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
               const { url } = res.data;
               location.href = url;
@@ -149,7 +149,7 @@ const UpgradeSpace = () => {
           hiddenCancelBtn: false,
           cancelText: t(Strings.cancel),
           zIndex: 1100,
-          onOk: async() => {
+          onOk: async () => {
             if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
             //@ts-ignore
             const planInfoRes = await Api.getSubscript(spaceId);

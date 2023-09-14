@@ -26,7 +26,7 @@ const AutomationModal: React.FC<{
     api: { refresh },
   } = useRobotListState();
   const isModified = useAtomValue(automationModifiedAtom);
-  const getCloseable = async(): Promise<boolean> => {
+  const getCloseable = async (): Promise<boolean> => {
     if (isClosedRef.current) {
       return true;
     }
@@ -52,7 +52,7 @@ const AutomationModal: React.FC<{
     return confirmPromise;
   };
 
-  const handleCloseClick = useCallback(async() => {
+  const handleCloseClick = useCallback(async () => {
     const isClosable = await getCloseable();
     if (isClosable) {
       await refresh();

@@ -123,7 +123,7 @@ export function handleResponse<T>(
               : window.location.href;
             store.dispatch(StoreActions.setUserMe(null));
             store.dispatch(StoreActions.setIsLogin(false));
-            Router.redirect(Navigation.LOGIN, { query: { reference }});
+            Router.redirect(Navigation.LOGIN, { query: { reference } });
           },
         });
       }

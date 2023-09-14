@@ -82,7 +82,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         cancelText: t(Strings.cancel),
         okText: t(Strings.confirm),
         onOk: () => {
-          changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(async() => {
+          changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(async () => {
             await mutate({
               ...trigger!,
               input: null,
@@ -110,7 +110,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     [trigger, mutate, automationState?.resourceId, automationState?.currentRobotId, refresh],
   );
 
-  const { schema, uiSchema = {}} = useMemo(() => {
+  const { schema, uiSchema = {} } = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
       return produce(triggerType.inputJsonSchema, (draft) => {
         const properties = draft.schema.properties as any;

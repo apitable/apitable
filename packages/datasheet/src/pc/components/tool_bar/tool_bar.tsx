@@ -19,7 +19,6 @@
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -66,6 +65,7 @@ import {
   StyleOutlined,
   WidgetOutlined,
 } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -75,6 +75,12 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getEnvVariables, isIframe } from 'pc/utils/env';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
+import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
+import { Share } from '../catalog/share';
+import { Collapse, ICollapseFunc } from '../common/collapse';
+import { ScreenSize } from '../common/component_display';
+import { expandRecordIdNavigate } from '../expand_record';
+import { showKanbanSetting } from '../kanban_view';
 import { getRowHeightIcon } from './change_row_height';
 import { Display } from './display/display';
 import { Find } from './find';
@@ -84,12 +90,6 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
-import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
-import { Share } from '../catalog/share';
-import { Collapse, ICollapseFunc } from '../common/collapse';
-import { ScreenSize } from '../common/component_display';
-import { expandRecordIdNavigate } from '../expand_record';
-import { showKanbanSetting } from '../kanban_view';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -373,7 +373,7 @@ const ToolbarBase = () => {
   }, [setIsFindOpen, sideBarVisible, toggleType, isFindOpen, size, offsetWidth]);
 
   // Mutually exclusive with the right-hand area.
-  const handleToggleRightBar = async(toggleKey: ShortcutActionName) => {
+  const handleToggleRightBar = async (toggleKey: ShortcutActionName) => {
     // Close sidebar.
     if (isSideRecordOpen) {
       store.dispatch(StoreActions.toggleSideRecord(false));

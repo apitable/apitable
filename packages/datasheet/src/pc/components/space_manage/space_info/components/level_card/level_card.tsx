@@ -107,7 +107,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         <Button
           onClick={() => {
             if (type === LevelType.Enterprise && getEnvVariables().IS_APITABLE) {
-              Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' }});
+              Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' } });
               return;
             }
             type === LevelType.Bronze ? window.open(`/space/${space.activeId}/upgrade`, '_blank', 'noopener,noreferrer') : showUpgradeContactUs?.();
@@ -124,7 +124,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
       return (
         <Button
           onClick={() => {
-            Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' }});
+            Router.push(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'upgrade' } });
           }}
           color={colors.black[50]}
           size="small"

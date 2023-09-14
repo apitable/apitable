@@ -38,7 +38,7 @@ export function getFile(url: string) {
   });
 }
 
-export const bulkDownload = async(files: IAttachmentValue[]) => {
+export const bulkDownload = async (files: IAttachmentValue[]) => {
   const JSZip = await import('jszip').then((module) => module.default);
 
   const zip = new JSZip();

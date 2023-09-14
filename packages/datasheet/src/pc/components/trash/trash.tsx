@@ -106,7 +106,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
     setTrashList(trashList.filter((item) => item.nodeId !== nodeId));
   };
 
-  const recoverHandler = async(nodeId: string) => {
+  const recoverHandler = async (nodeId: string) => {
     if (recoverLoading) {
       return;
     }
@@ -140,7 +140,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
       dispatch(StoreActions.datasheetErrorCode(nodeId, null));
       dispatch(StoreActions.getSpaceInfo(spaceId!, true));
       deleteTrashItem(nodeId);
-      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId } });
       Message.success({ content: t(Strings.recover_node_success) });
       return;
     }

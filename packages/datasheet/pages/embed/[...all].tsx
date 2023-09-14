@@ -38,13 +38,13 @@ const App = (props: IEmbedProps) => {
 
 export const getServerSideProps = (context: NextPageContext) => {
   if (!context.req?.url) {
-    return { props: {}};
+    return { props: {} };
   }
 
   const embedId = getRegResult(context.req.url, embedIdReg);
 
   if (!embedId) {
-    return { props: {}};
+    return { props: {} };
   }
 
   const cookie = context.req?.headers.cookie;

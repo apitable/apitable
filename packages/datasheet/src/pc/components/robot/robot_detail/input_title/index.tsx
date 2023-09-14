@@ -14,7 +14,7 @@ export const InputTitle: FC = () => {
   if (!robot) {
     return null;
   }
-  const handleNameChange = async(name: string) => {
+  const handleNameChange = async (name: string) => {
     if (name !== robot.name) {
       const ok = await updateRobotName(robot.robotId, name);
       if (ok) {
@@ -36,7 +36,7 @@ export const EditableInputDescription: FC = () => {
   if (!robot) {
     return null;
   }
-  const handleNameChange = async(value: string) => {
+  const handleNameChange = async (value: string) => {
     const ok = await updateRobotDescription(robot.robotId, value);
     if (ok) {
       updateRobot({

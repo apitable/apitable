@@ -215,7 +215,7 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
   );
 };
 
-export const exportDatasheetBase = async(
+export const exportDatasheetBase = async (
   datasheetId: string,
   exportType: string,
   option: {
@@ -296,7 +296,7 @@ export const exportDatasheetBase = async(
  */
 export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
   store.dispatch(
-    StoreActions.fetchDatasheet(datasheetId, async() => {
+    StoreActions.fetchDatasheet(datasheetId, async () => {
       await exportDatasheetBase(datasheetId, exportType, option);
     }) as any,
   );
@@ -322,7 +322,7 @@ const exportExcel = (workbook: Workbook, fileName: string, isView?: boolean) => 
   });
 };
 
-const exportCSV = async(workbook: Workbook, fileName: string, isView?: boolean) => {
+const exportCSV = async (workbook: Workbook, fileName: string, isView?: boolean) => {
   await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then((buffer) => {
     const blob = new Blob(['\uFEFF' + buffer], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');

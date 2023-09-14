@@ -47,8 +47,8 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
 
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
   const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh }} = useRobotListState();
-  const createNewAction = async(action: {
+  const { api: { refresh } } = useRobotListState();
+  const createNewAction = async (action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;
@@ -122,9 +122,9 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
 
   const automationState= useAtomValue(automationStateAtom);
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
-  const { api: { refresh }} = useRobotListState();
+  const { api: { refresh } } = useRobotListState();
 
-  const createNewAction = async(action: {
+  const createNewAction = async (action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;

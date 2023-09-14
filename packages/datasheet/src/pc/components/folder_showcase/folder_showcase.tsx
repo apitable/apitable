@@ -214,7 +214,7 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
   useEffect(() => {
     if (getChildNodeListLoading) return;
     if (!hasChildren) return setChildrenNodeIdList([]);
-    const fetchNodeList = async() => {
+    const fetchNodeList = async () => {
       const result = await getChildNodeList(folderId);
       if (result) {
         setChildrenNodeIdList(result);

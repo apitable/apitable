@@ -51,7 +51,7 @@ export const LanguageSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const { updateLangReq } = useUserRequest();
   const { run: updateLang } = useRequest(updateLangReq, { manual: true });
 
-  const handleSelected = async(option: any) => {
+  const handleSelected = async (option: any) => {
     const newValue: string = option.value;
     if (newValue === value) {
       return;

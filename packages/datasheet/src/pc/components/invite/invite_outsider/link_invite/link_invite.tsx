@@ -96,7 +96,7 @@ export const LinkInvite = () => {
     });
   };
 
-  const createBtnClick = async(teamId: string) => {
+  const createBtnClick = async (teamId: string) => {
     if (!teamId) {
       Message.warning({ content: t(Strings.placeholder_choose_group) });
       return;
@@ -113,7 +113,7 @@ export const LinkInvite = () => {
     }
   };
 
-  const deleteLink = async(teamId: string) => {
+  const deleteLink = async (teamId: string) => {
     const {
       data: { success, message },
     } = await Api.deleteLink(teamId);

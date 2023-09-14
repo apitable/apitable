@@ -257,7 +257,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
     }
   };
 
-  const onSubscribe = async(recordIds: string[]) => {
+  const onSubscribe = async (recordIds: string[]) => {
     const { data } = await subscribeRecordByIds({ datasheetId, mirrorId, recordIds });
 
     if (data?.success) {
@@ -268,7 +268,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
     }
   };
 
-  const onUnsubscribe = async(recordIds: string[]) => {
+  const onUnsubscribe = async (recordIds: string[]) => {
     const { data } = await unsubscribeRecordByIds({ datasheetId, mirrorId, recordIds });
 
     if (data?.success) {
@@ -327,7 +327,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
         icon: <LinkOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_copy_record_url, { recordShowName }),
         hidden: !onlyOperateOneRecord || !!embedId,
-        onClick: ({ props: { recordId }}: any) => {
+        onClick: ({ props: { recordId } }: any) => {
           copyLink(recordId);
         },
       },
@@ -335,22 +335,22 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
         icon: <DuplicateOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_duplicate_record, { recordShowName }),
         hidden: !onlyOperateOneRecord || !rowCreatable,
-        onClick: ({ props: { recordId }}: any) => copyRecord(recordId),
+        onClick: ({ props: { recordId } }: any) => copyRecord(recordId),
       },
       {
         icon: <ExpandOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_expand_record, { recordShowName }),
         shortcutKey: getShortcutKeyString(ShortcutActionName.ExpandRecord),
         hidden: !onlyOperateOneRecord,
-        onClick: ({ props: { recordId }}: any) => {
+        onClick: ({ props: { recordId } }: any) => {
           expandRecordIdNavigate(recordId);
         },
       },
       {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
-        text: ({ props: { recordId }}: any) => getSubOrUnsubText(recordId),
+        text: ({ props: { recordId } }: any) => getSubOrUnsubText(recordId),
         hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE || !!embedId,
-        onClick: ({ props: { recordId }}: any) => onSubOrUnsub(recordId),
+        onClick: ({ props: { recordId } }: any) => onSubOrUnsub(recordId),
       },
     ],
     [
@@ -358,7 +358,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: getDeleteString(),
         hidden: !rowRemovable,
-        onClick: ({ props: { recordId }}: any) => {
+        onClick: ({ props: { recordId } }: any) => {
           deleteRecord(recordId);
         },
       },
@@ -382,7 +382,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.PrependRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId }}: any) =>
+          onClick: ({ props: { recordId } }: any) =>
             appendRow({
               recordId,
               direction: Direction.Up,
@@ -403,7 +403,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
           ),
           shortcutKey: getShortcutKeyString(ShortcutActionName.AppendRow),
           hidden: !allowInsertRecord,
-          onClick: ({ props: { recordId }}: any) =>
+          onClick: ({ props: { recordId } }: any) =>
             appendRow({
               recordId,
               direction: Direction.Down,

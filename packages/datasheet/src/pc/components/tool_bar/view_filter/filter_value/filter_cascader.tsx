@@ -23,7 +23,7 @@ export const FilterCascader = (props: IFilterCascader) => {
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const loadTreeSnapshot = useCallback(async() => {
+  const loadTreeSnapshot = useCallback(async () => {
     setLoading(true);
     const res = await DatasheetApi.getCascaderSnapshot({
       datasheetId: linkedDatasheetId || datasheetId,

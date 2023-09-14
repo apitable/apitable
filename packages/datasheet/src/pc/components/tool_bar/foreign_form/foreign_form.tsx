@@ -66,7 +66,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
    */
   const uniqueId = `${datasheetId}-${viewId}`;
 
-  const fetchForeignFormList = async() => {
+  const fetchForeignFormList = async () => {
     setLoading(true);
     const formList = await StoreActions.fetchForeignFormList(datasheetId, viewId);
     setFormList(formList || []);
@@ -100,7 +100,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
           />
         }
         destroyPopupOnHide
-        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
+        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true } }}
         popupStyle={{ width: 400 }}
         popupVisible={panelVisible}
         onPopupVisibleChange={(visible) => setPanelVisible(visible)}

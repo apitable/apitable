@@ -64,7 +64,7 @@ export const withVika = <T extends ReactEditor>(inEditor: T) => {
   editor.insertText = (text) => {
     if (text && isUrl(text)) {
       if (isImage(text)) {
-        insertBlockElement(editor, GENERATOR.image({ data: { url: text }}));
+        insertBlockElement(editor, GENERATOR.image({ data: { url: text } }));
       } else {
         wrapLink(editor, text);
       }
@@ -252,7 +252,7 @@ export const withVika = <T extends ReactEditor>(inEditor: T) => {
       try {
         const parent = Node.parent(editor, path) as IElement | null;
         if (parent && !LIST_TYPE_DICT[parent.type]) {
-          Transforms.setNodes(editor, { type: ElementType.PARAGRAPH, data: {}} as Partial<IElement>, { at: path });
+          Transforms.setNodes(editor, { type: ElementType.PARAGRAPH, data: {} } as Partial<IElement>, { at: path });
         }
       } catch (error) {
         console.log(error);
