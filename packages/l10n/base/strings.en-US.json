@@ -5522,6 +5522,7 @@
   "publish": "Publish",
   "share_tips_title": "Publish share link",
   "share_copy_url_link": "Copy link",
+  "share_embed":"Embed",
   "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions.",
   "ai_new_chatbot": "New ChatBot",
   "ai_create_guide_content": "As an AI chatbot, I can answer your questions based on the knowledge I have learned. Before starting the conversation, please select a datasheet as a knowledge base, and I will read all the data in it for learning.",
@@ -5588,6 +5589,7 @@
   "ai_embed_website_iframe_tips": "To add a chatbot to any location on the website, please add this iframe to your HTML code.",
   "ai_embed_website_javascript_tips": "Add a chat wdiget to the bottom right corner of the website, please add this script tag to your html.",
   "ai_setting_title": "Setting",
+  
   "ai_default_idk": "I don't know",
   "ai_typing": "typing...",
   "ai_send_cancel": "send cancel",
