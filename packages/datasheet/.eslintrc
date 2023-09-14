@@ -18,16 +18,12 @@
       "warn",
       {
         "groups": [
-          [
-            "builtin",
-            "external"
-          ],
+          "builtin",
+          "external",
           "internal",
-          [
-            "parent",
-            "sibling",
-            "index"
-          ]
+          "parent",
+          "sibling",
+          "index"
         ],
         "pathGroups": [
           {
@@ -65,9 +61,6 @@
         }
       }
     ],
-    // "import/order": ["warn", {
-    //   "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
-    // }],
     "comma-spacing": [
       "warn",
       {
