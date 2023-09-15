@@ -61,7 +61,6 @@ COPY --from=builder /app/.yarn ./.yarn
 COPY --from=builder /app/.yarnrc.yml /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/packages/datasheet/public ./packages/datasheet/public
 COPY --from=builder /app/packages/datasheet/next.config.js \
-                    /app/packages/datasheet/font-weight-no-number.js \
                     /app/packages/datasheet/package.json \
                     ./packages/datasheet/
 
