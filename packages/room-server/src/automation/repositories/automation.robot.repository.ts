@@ -83,7 +83,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   public selectRobotSimpleInfoByRobotId(robotId: string): Promise<AutomationRobotEntity | undefined> {
-    return this.findOne({ select: ['robotId', 'name', 'resourceId', 'createdBy'], where: { robotId, isDeleted: 0 }});
+    return this.findOne({ select: ['robotId', 'name', 'resourceId', 'createdBy', 'props'], where: { robotId, isDeleted: 0 }});
   }
 
   createRobot(robot: RobotCreateRo, userId: string) {
