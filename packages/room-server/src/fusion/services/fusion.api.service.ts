@@ -682,6 +682,9 @@ export class FusionApiService {
           if (Array.isArray(fieldValue)) {
             fieldValue.forEach(obj => {
               attachmentTokens.push(obj.token);
+              if(obj.preview){
+                attachmentTokens.push(obj.preview);
+              }
             });
           }
         }
@@ -716,6 +719,9 @@ export class FusionApiService {
           if (Array.isArray(fieldValue)) {
             fieldValue.forEach(obj => {
               obj.url = signatureMap.get(obj.token);
+              if(obj.preview){
+                obj.preview = signatureMap.get(obj.preview);
+              }
             });
           }
         }

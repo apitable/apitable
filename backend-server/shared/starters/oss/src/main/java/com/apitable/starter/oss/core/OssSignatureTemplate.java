@@ -23,6 +23,8 @@ import com.qiniu.cdn.CdnManager;
 import com.qiniu.common.QiniuException;
 import java.time.Instant;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OssSignatureTemplate {
 
@@ -43,6 +45,7 @@ public class OssSignatureTemplate {
     }
 
     public String getSignatureUrl(String host, String fileName, Long expires) {
+        fileName  = regexSignatureUrl(fileName);
         // timestamp anti leech
         try {
             Date expireDate = Date.from(Instant.now().plusSeconds(expires));
@@ -52,5 +55,32 @@ public class OssSignatureTemplate {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Regularly signed URL，Adaptation type：https://s1-test.vika.ltd/space/2023/09/14/07c0b82b278b4f7ba305d5704ae6a321?imageView2/0/w/100/h/100
+     * Remove the domain name part and the question mark and its following content in the file name
+     * @param fileName
+     * @return
+     */
+    public String regexSignatureUrl(String fileName) {
+        // Create the first regular expression pattern to match the domain name part
+        String domainRegex = "https://[^/]+/";
+        Pattern pattern = Pattern.compile(domainRegex);
+
+        // Create Matcher object
+        Matcher matcher = pattern.matcher(fileName);
+
+        // Replace the matching domain name part with an empty string
+        String result = matcher.replaceAll("");
+
+        String questionMarkRegex = "\\?.*";
+        pattern = Pattern.compile(questionMarkRegex);
+
+        matcher = pattern.matcher(result);
+
+        // Replace the matching question mark and its following content with an empty string
+        result = matcher.replaceAll("");
+        return result;
     }
 }

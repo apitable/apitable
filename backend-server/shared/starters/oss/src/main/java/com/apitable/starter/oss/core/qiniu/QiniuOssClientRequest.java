@@ -88,6 +88,8 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
     private final boolean autoCreateBucket;
 
+    private final OssSignatureTemplate ossSignatureTemplate;
+
     /**
      * The threshold value of shard upload.
      * Only when the file is greater than this value, it will be uploaded in fragments, otherwise it will be uploaded normally.
@@ -107,7 +109,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private static final int RESUMABLE_UPLOAD_MAX_CONCURRENT_COUNT = 8;
 
     public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain,
-        Callback callback, String uploadUrl, boolean autoCreateBucket) {
+        Callback callback, String uploadUrl, boolean autoCreateBucket, OssSignatureTemplate ossSignatureTemplate) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
@@ -121,6 +123,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         this.autoCreateBucket = autoCreateBucket;
         this.callback = callback;
         this.uploadUrl = uploadUrl;
+        this.ossSignatureTemplate = ossSignatureTemplate;
     }
 
     @Override
@@ -225,6 +228,11 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         try {
             DownloadUrl downloadUrl = new DownloadUrl(downloadDomain, true, key);
             String urlString = downloadUrl.buildURL();
+            if (ossSignatureTemplate != null){
+                // If signature is turned on, you need to call the signature method
+                String host = getUrlPrefix(true, downloadDomain);
+                urlString = ossSignatureTemplate.getSignatureUrl(host, key);
+            }
             InputStream in = URLUtil.getStream(URLUtil.url(urlString));
             function.accept(in);
         }
@@ -341,5 +349,13 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             callBackBody.putAll(putExtra);
         }
         return callBackBody.toString();
+    }
+
+    private String getUrlPrefix(boolean useHttps, String domain) {
+        if (useHttps) {
+            return "https://" + domain;
+        } else {
+            return "http://" + domain;
+        }
     }
 }
