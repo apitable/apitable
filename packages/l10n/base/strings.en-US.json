@@ -5703,5 +5703,6 @@
   "automation_run_fail": "failed",
   "automation_stay_tuned": "Stay tuned",
   "ai_chat": "AI Chat",
-  "automation": "Automation"
+  "automation": "Automation",
+  "freeze_column_reset": "Restore default frozen column"
 }

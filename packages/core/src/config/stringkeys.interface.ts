@@ -1990,6 +1990,7 @@ export type StringKeysMapType = {
   'free_trial': 'free_trial',
   'free_update': 'free_update',
   'freeze_click_when_windows_too_narrow': 'freeze_click_when_windows_too_narrow',
+  'freeze_column_reset': 'freeze_column_reset',
   'freeze_current_column': 'freeze_current_column',
   'freeze_line_tips': 'freeze_line_tips',
   'freeze_tips_when_windows_too_narrow': 'freeze_tips_when_windows_too_narrow',

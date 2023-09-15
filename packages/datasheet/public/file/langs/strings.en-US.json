@@ -1989,6 +1989,7 @@
   "free_trial": "Start trial now",
   "free_update": "Upgrade for free",
   "freeze_click_when_windows_too_narrow": "Adjust column width",
+  "freeze_column_reset": "Restore default frozen column",
   "freeze_current_column": "Freeze to this column",
   "freeze_line_tips": "You can't drag the frozen area. You can adjust the freezing range in field settings.",
   "freeze_tips_when_windows_too_narrow": "The current window is too small so the frozen area can't scroll",

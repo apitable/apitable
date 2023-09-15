@@ -1993,6 +1993,7 @@
   "free_trial": "立即体验",
   "free_update": "免费升级",
   "freeze_click_when_windows_too_narrow": "调整列宽",
+  "freeze_column_reset": "恢复默认冻结列",
   "freeze_current_column": "冻结至此列",
   "freeze_line_tips": "冻结区域暂不支持拖拽，可在列头处调整冻结范围",
   "freeze_tips_when_windows_too_narrow": "当前窗口过小，无法正常滚动",
