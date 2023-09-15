@@ -214,13 +214,6 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
     }
 
     @Override
-    public void editControlRole(Long userId, List<Long> controlRoleIds, String role) {
-        log.info("「{}」 modifies the role of control unit table ID 「{}」 to 「{}」", userId, controlRoleIds, role);
-        boolean flag = SqlHelper.retBool(controlRoleMapper.updateRoleCodeByIds(userId, controlRoleIds, role));
-        ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-    }
-
-    @Override
     public void removeByControlIds(Long userId, List<String> controlIds) {
         log.info("Delete all roles of the specified control unit「{}」", controlIds);
         // Query primary key ID
