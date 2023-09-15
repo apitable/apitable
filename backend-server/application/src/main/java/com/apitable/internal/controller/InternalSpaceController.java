@@ -21,6 +21,7 @@ package com.apitable.internal.controller;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalCreditUsageVo;
 import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
@@ -96,6 +97,18 @@ public class InternalSpaceController {
     public ResponseData<InternalSpaceUsageVo> getSpaceUsages(
         @PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iSpaceService.getInternalSpaceUsageVo(spaceId));
+    }
+
+    /**
+     * Get space used usage information.
+     */
+    @GetResource(path = "/space/{spaceId}/credit/usages", requiredLogin = false)
+    @Operation(summary = "get space credit used usage")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spczJrh2i3tLW")
+    public ResponseData<InternalCreditUsageVo> getCreditUsages(
+        @PathVariable("spaceId") String spaceId) {
+        return ResponseData.success(internalSpaceService.getSpaceCreditUsageVo(spaceId));
     }
 
     /**

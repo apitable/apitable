@@ -19,6 +19,7 @@
 package com.apitable.internal.service;
 
 import com.apitable.internal.ro.SpaceStatisticsRo;
+import com.apitable.internal.vo.InternalCreditUsageVo;
 import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
@@ -36,6 +37,14 @@ public interface InternalSpaceService {
      * @return InternalSpaceSubscriptionVo
      */
     InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId);
+
+    /**
+     * get space credit usage.
+     *
+     * @param spaceId space id
+     * @return InternalCreditUsageVo
+     */
+    InternalCreditUsageVo getSpaceCreditUsageVo(String spaceId);
 
     /**
      * get space api usage in entitlement.

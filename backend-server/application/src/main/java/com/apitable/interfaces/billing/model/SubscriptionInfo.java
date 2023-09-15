@@ -135,4 +135,13 @@ public interface SubscriptionInfo {
     default CapacitySize getTotalCapacity() {
         return new CapacitySize(getFeature().getCapacitySize().getValue());
     }
+
+    /**
+     * return config.
+     *
+     * @return config
+     */
+    default SubscriptionConfig getConfig() {
+        return SubscriptionConfig.create();
+    }
 }

@@ -37,6 +37,12 @@ export class InternalSpaceUsageView {
   usedCredit!: number; // The number of credits in the space
 }
 
+export class InternalSpaceCreditUsageView {
+  maxMessageCredits!: number;
+  usedCredit!: number; // The number of credits in the space
+  allowOverLimit!: boolean;
+}
+
 export class InternalCreateDatasheetVo {
   datasheetId!: string;
   createdAt!: number;
