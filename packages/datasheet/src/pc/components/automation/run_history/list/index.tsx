@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { useAtom } from 'jotai';
 import { FC } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
@@ -15,16 +14,15 @@ import {
 import { Strings, t } from '@apitable/core';
 import {
   CheckCircleFilled,
-  CheckCircleOutlined, CheckFilled,
+  CheckCircleOutlined,
   DownloadOutlined,
   MoreStandOutlined,
   PlayFilled,
   PlayOutlined, WarnCircleFilled,
-  WarnCircleOutlined, WarnFilled
+  WarnCircleOutlined,
 } from '@apitable/icons';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
 import { IRobotRunHistoryItem } from '../../../robot/interface';
-import { automationHistoryAtom } from '../../controller';
 import styles from './styles.module.less';
 import { handleDownload } from './util';
 

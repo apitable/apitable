@@ -28,7 +28,6 @@ import {
   useContextMenu,
   colorVars,
   useThemeColors,
-  Button,
 } from '@apitable/components';
 import { DATASHEET_ID, Strings, t } from '@apitable/core';
 import { CloseOutlined, DeleteOutlined, MoreStandOutlined } from '@apitable/icons';
