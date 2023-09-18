@@ -35,12 +35,12 @@ import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { timeFormatter } from 'pc/utils';
 import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
-import { navigationToConfigUrl } from '../publish';
-import { NoticeTypesConstant } from '../utils';
 import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
 import { HandleMsg } from './handle_msg';
 import styles from './style.module.less';
 import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
+import { navigationToConfigUrl } from '../publish';
+import { NoticeTypesConstant } from '../utils';
 // @ts-ignore
 import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 

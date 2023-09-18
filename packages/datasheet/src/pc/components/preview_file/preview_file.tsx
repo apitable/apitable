@@ -220,11 +220,13 @@ export interface IExpandPreviewModalRef {
   update: (props: IExpandPreviewModalFuncProps) => IExpandPreviewModalRef;
 }
 
-let preCloseModalFn = () => {};
+let preCloseModalFn = () => {
+};
 
 export const expandPreviewModalClose = () => {
   preCloseModalFn();
-  preCloseModalFn = () => {};
+  preCloseModalFn = () => {
+  };
 };
 
 export const expandPreviewModal = (props: IExpandPreviewModalFuncProps): IExpandPreviewModalRef => {
