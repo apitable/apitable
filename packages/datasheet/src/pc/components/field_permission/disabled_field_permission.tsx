@@ -34,7 +34,7 @@ export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabled
   const views = useSelector(Selectors.getViewsList);
   const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
 
-  const openFieldPermission = async() => {
+  const openFieldPermission = async () => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, true);
     const { success, message } = res.data;
 

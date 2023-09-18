@@ -167,7 +167,7 @@ export const WidgetList = () => {
   const isWidgetDev = () => activeMenuWidget?.id === devWidgetId;
   const isWidgetGlobal = () => Boolean(activeMenuWidget?.id && widgetMap[activeMenuWidget.id]?.widget.releaseType === WidgetReleaseType.Global);
 
-  const _copyWidget = async(widgetId: string) => {
+  const _copyWidget = async (widgetId: string) => {
     const nodeId = mirrorId || datasheetId;
     let widgets;
 

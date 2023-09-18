@@ -34,7 +34,7 @@ export const AddRecord: React.FC<React.PropsWithChildren<IAddRecordProps>> = (pr
   const colors = useThemeColors();
   const { recordId, size = 'default' } = props;
 
-  const onClick = async() => {
+  const onClick = async () => {
     const result = await appendRow({ recordId });
     if (result.result === ExecuteResult.Success) {
       const _recordId = result.data && result.data[0];

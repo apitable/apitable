@@ -177,7 +177,7 @@ export function cellValueToImageSrc(
   const defaultSrc = getImageThumbSrc(originSrc, options);
 
   if (isPdf(fileArgument)) {
-    if (isPreview && options && Object.keys(options).length > 1) {
+    if (isPreview && options && Object.keys(options).length >= 1) {
       return getImageThumbSrc(integrateCdnHost(previewToken!), options);
     }
     return originSrc;

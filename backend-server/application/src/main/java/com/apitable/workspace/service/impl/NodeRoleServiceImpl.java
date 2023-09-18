@@ -163,13 +163,14 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     }
 
     @Override
-    public void disableNodeRole(Long userId, Long memberId, String nodeId) {
+    public void disableNodeRole(Long userId, String nodeId) {
         log.info("[{}] close node [{}] Specify permissions", userId, nodeId);
         // delete permission control unit
         iControlService.removeControl(userId, Collections.singletonList(nodeId), false);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addNodeRole(Long userId, String nodeId, String role, List<Long> unitIds) {
         log.info("[{}] add the permission role of organization unit [{}] to node [{}] as [{}]",
             userId, nodeId, unitIds, role);
@@ -187,22 +188,22 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 .collect(Collectors.toMap(ControlRoleEntity::getUnitId, i -> i));
 
         List<Long> addUnitIds = new ArrayList<>();
-        List<Long> updateIds = new ArrayList<>();
+        List<Long> updateUnitIds = new ArrayList<>();
         for (Long unitId : unitIds) {
             if (!unitRoleMap.containsKey(unitId)) {
                 // Does not exist, add the role of this organizational unit
                 addUnitIds.add(unitId);
             } else if (!unitRoleMap.get(unitId).getRoleCode().equals(role)) {
                 // exists and the roles are different, modify the roles of this organizational unit
-                updateIds.add(unitRoleMap.get(unitId).getId());
+                updateUnitIds.add(unitId);
             }
         }
         if (CollUtil.isNotEmpty(addUnitIds)) {
             iControlRoleService.addControlRole(userId, nodeId, addUnitIds, role);
         }
-        if (CollUtil.isNotEmpty(updateIds)) {
+        if (CollUtil.isNotEmpty(updateUnitIds)) {
             // Specify table ID modification to avoid file administrator modification
-            iControlRoleService.editControlRole(userId, updateIds, role);
+            iControlRoleService.editControlRole(userId, nodeId, updateUnitIds, role);
         }
     }
 

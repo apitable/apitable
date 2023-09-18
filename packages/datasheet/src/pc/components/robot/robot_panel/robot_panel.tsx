@@ -29,7 +29,6 @@ import { RobotList } from '../robot_list';
 import { RobotListHead } from './robot_list_head';
 
 const AutomationModal = () => {
-
   const [showModal, setModal] = useAtom(showAtomDetailModalAtom);
   const AutomationModal = dynamic(() => import('../../automation/modal'), {
     ssr: false,
@@ -37,17 +36,18 @@ const AutomationModal = () => {
 
   return (
     <>
-      {
-        showModal && <AutomationModal onClose={() => {
-          setModal(false);
-        }}/>
-      }
+      {showModal && (
+        <AutomationModal
+          onClose={() => {
+            setModal(false);
+          }}
+        />
+      )}
     </>
   );
 };
 
 const RobotBase = () => {
-
   const cacheTheme = useSelector(Selectors.getTheme);
 
   const theme = useTheme();
@@ -73,7 +73,7 @@ const RobotBase = () => {
           >
             <RobotListHead />
           </Box>
-          <Box overflow="auto" padding="16px 8px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
+          <Box overflow="auto" padding="0 8px" backgroundColor={theme.color.fc8} height="calc(100vh - 49px)">
             <RobotList />
           </Box>
         </SWRConfig>

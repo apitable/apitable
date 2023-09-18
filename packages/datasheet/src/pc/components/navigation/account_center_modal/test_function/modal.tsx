@@ -75,7 +75,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = (props) => 
         const url = feature.key === 'robot' && isWecomFunc?.() ? WECOM_ROBOT_URL : feature.url;
         url && applyOpenFunction(url);
       },
-      [FunctionType.NORMAL_PERSIST]: async() => {
+      [FunctionType.NORMAL_PERSIST]: async () => {
         const res = await Api.updateLabsFeatureList('view_manual_save', !status, spaceId!);
         const { message, success } = res.data;
         if (success) {

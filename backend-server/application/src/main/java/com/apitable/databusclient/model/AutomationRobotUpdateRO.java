@@ -51,7 +51,7 @@ import com.apitable.databusclient.JSON;
 /**
  * AutomationRobotUpdateRO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotUpdateRO {
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
@@ -64,6 +64,10 @@ public class AutomationRobotUpdateRO {
   public static final String SERIALIZED_NAME_PROPS = "props";
   @SerializedName(SERIALIZED_NAME_PROPS)
   private String props;
+
+  public static final String SERIALIZED_NAME_UPDATED_BY = "updated_by";
+  @SerializedName(SERIALIZED_NAME_UPDATED_BY)
+  private Long updatedBy;
 
   public AutomationRobotUpdateRO() {
   }
@@ -131,6 +135,28 @@ public class AutomationRobotUpdateRO {
   }
 
 
+  public AutomationRobotUpdateRO updatedBy(Long updatedBy) {
+    
+    this.updatedBy = updatedBy;
+    return this;
+  }
+
+   /**
+   * Get updatedBy
+   * minimum: 0
+   * @return updatedBy
+  **/
+  @javax.annotation.Nonnull
+  public Long getUpdatedBy() {
+    return updatedBy;
+  }
+
+
+  public void setUpdatedBy(Long updatedBy) {
+    this.updatedBy = updatedBy;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -143,7 +169,8 @@ public class AutomationRobotUpdateRO {
     AutomationRobotUpdateRO automationRobotUpdateRO = (AutomationRobotUpdateRO) o;
     return Objects.equals(this.description, automationRobotUpdateRO.description) &&
         Objects.equals(this.name, automationRobotUpdateRO.name) &&
-        Objects.equals(this.props, automationRobotUpdateRO.props);
+        Objects.equals(this.props, automationRobotUpdateRO.props) &&
+        Objects.equals(this.updatedBy, automationRobotUpdateRO.updatedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -152,7 +179,7 @@ public class AutomationRobotUpdateRO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, name, props);
+    return Objects.hash(description, name, props, updatedBy);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -169,6 +196,7 @@ public class AutomationRobotUpdateRO {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    props: ").append(toIndentedString(props)).append("\n");
+    sb.append("    updatedBy: ").append(toIndentedString(updatedBy)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -194,9 +222,11 @@ public class AutomationRobotUpdateRO {
     openapiFields.add("description");
     openapiFields.add("name");
     openapiFields.add("props");
+    openapiFields.add("updated_by");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("updated_by");
   }
 
  /**
@@ -217,6 +247,13 @@ public class AutomationRobotUpdateRO {
       for (Entry<String, JsonElement> entry : entries) {
         if (!AutomationRobotUpdateRO.openapiFields.contains(entry.getKey())) {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AutomationRobotUpdateRO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : AutomationRobotUpdateRO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();

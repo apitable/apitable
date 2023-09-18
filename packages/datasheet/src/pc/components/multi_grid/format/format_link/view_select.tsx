@@ -17,11 +17,10 @@
  */
 
 import { useClickAway } from 'ahooks';
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import RcTrigger from 'rc-trigger';
 import { memo, useRef, useState } from 'react';
-import { WrapperTooltip, useThemeColors } from '@apitable/components';
+import { WrapperTooltip, useThemeColors, Switch } from '@apitable/components';
 import { IViewProperty, t, Strings } from '@apitable/core';
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

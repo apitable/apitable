@@ -112,7 +112,7 @@ export const CustomNodeBase: FC<React.PropsWithChildren<ICustomNodeBase>> = memo
 
   const [entered, setEntered] = useState(false);
 
-  const handleQuickAddClick = async() => {
+  const handleQuickAddClick = async () => {
     const newRecordId = await addRecord(viewId, rowsCount, false);
     onChange([
       {

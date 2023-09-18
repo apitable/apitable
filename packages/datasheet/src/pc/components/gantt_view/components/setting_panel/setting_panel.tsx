@@ -18,7 +18,6 @@
 
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FC, memo, useContext, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
@@ -58,6 +57,7 @@ import {
   WarnCircleOutlined,
   ChevronDownOutlined,
 } from '@apitable/icons';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { ColorGroup } from 'pc/components/common/color_picker/color_group';
@@ -283,8 +283,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
       const newFieldName = isLinkFieldType
         ? t(Strings.field_title_link)
         : styleKey === GanttStyleKeyType.StartFieldId
-        ? t(Strings.gantt_start_field_name)
-        : t(Strings.gantt_end_field_name);
+          ? t(Strings.gantt_start_field_name)
+          : t(Strings.gantt_end_field_name);
       const result = resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.AddFields,
         data: [
@@ -295,8 +295,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               type: isLinkFieldType ? FieldType.Link : FieldType.DateTime,
               property: isLinkFieldType
                 ? {
-                    foreignDatasheetId: datasheetId,
-                  }
+                  foreignDatasheetId: datasheetId,
+                }
                 : DateTimeField.defaultProperty(),
             },
             viewId,

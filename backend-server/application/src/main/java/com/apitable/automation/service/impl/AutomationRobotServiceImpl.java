@@ -320,8 +320,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     }
 
     @Override
-    public boolean update(String robotId, UpdateRobotRO data) {
+    public boolean update(String robotId, Long updater, UpdateRobotRO data) {
         AutomationRobotUpdateRO ro = new AutomationRobotUpdateRO();
+        ro.setUpdatedBy(updater);
         if (null != data.getDescription()) {
             ro.setDescription(data.getDescription());
         }

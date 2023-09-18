@@ -22,11 +22,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Box } from '@apitable/components';
 import { Selectors } from '@apitable/core';
-import {
-  automationPanelAtom,
-  automationStateAtom, PanelName,
-  showAtomDetailModalAtom
-} from '../../automation/controller';
+import { automationPanelAtom, automationStateAtom, PanelName, showAtomDetailModalAtom } from '../../automation/controller';
 import { createAutomationRobot, getResourceAutomationDetail } from '../api';
 import { useRobot } from '../hooks';
 
@@ -35,46 +31,40 @@ export const CONST_MAX_ROBOT_COUNT = 9;
 export const StyledBox = styled(Box)`
   &:hover {
     background-color: var(--bgControlsHover);
-    
+
     border-color: var(--borderBrandActive);
   }
 `;
 
 export const useRobotController = () => {
   const [, setShowAtom] = useAtom(showAtomDetailModalAtom);
-  const [, setAutomationAtom] = useAtom(automationStateAtom );
+  const [, setAutomationAtom] = useAtom(automationStateAtom);
 
   // TODO add as Node
   const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const [, setPanel] = useAtom(automationPanelAtom);
-  const { reset } =useRobot();
+  const { reset } = useRobot();
 
-  const navigateAutomation = async(resourceId: string, robotId: string) => {
+  const navigateAutomation = async (resourceId: string, robotId: string) => {
     const itemDetail = await getResourceAutomationDetail(resourceId, robotId);
     const newState = {
       robot: itemDetail,
-      currentRobotId:  robotId,
+      currentRobotId: robotId,
       resourceId,
     };
     await setAutomationAtom(newState);
     await setShowAtom(true);
-    await setPanel(p => ({ ...p,
-      panelName: PanelName.BasicInfo
-    }));
+    await setPanel((p) => ({ ...p, panelName: PanelName.BasicInfo }));
   };
 
   const createNewRobot = async () => {
-
     reset();
 
     const newRobotId = await createAutomationRobot({
       resourceId: datasheetId!,
-      name: ''
+      name: '',
     });
-    await navigateAutomation(
-      newRobotId.resourceId,
-      newRobotId.robotId,
-    );
+    await navigateAutomation(newRobotId.resourceId, newRobotId.robotId);
   };
   return { createNewRobot, navigateAutomation };
 };

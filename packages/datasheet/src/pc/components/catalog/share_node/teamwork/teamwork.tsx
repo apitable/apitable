@@ -88,7 +88,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
     setInviteEmail(value);
   };
 
-  const sendInviteEmail = async(nvcVal?: string) => {
+  const sendInviteEmail = async (nvcVal?: string) => {
     if (secondVerify) {
       setSecondVerify(null);
     }
@@ -98,7 +98,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
     }
   };
 
-  const sendInviteHandler = async() => {
+  const sendInviteHandler = async () => {
     const isExist = await checkEmail(inviteEmail);
     if (isExist) {
       Message.error({ content: t(Strings.invite_email_already_exist) });

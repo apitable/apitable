@@ -67,7 +67,7 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
       });
     }
 
-    Router.push(Navigation.WORKBENCH, { params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { nodeId: breadInfo.datasheetId, viewId: breadInfo.viewId } });
   }, 5000);
 
   if (!view) {

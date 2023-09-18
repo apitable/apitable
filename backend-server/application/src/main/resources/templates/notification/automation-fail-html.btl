@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>
-      {{AUTOMATION_NAME}} failed to execute at {{FINISH_TIME}}
+      {{AUTOMATION_NAME}} failed to execute at {{END_AT}}
     </title>
     <style>
       @media only screen and (max-width: 620px) {
@@ -186,7 +186,7 @@
                 visibility: hidden;
                 width: 0;
               "
-              >{{AUTOMATION_NAME}} failed to execute at {{FINISH_TIME}}. For more information, please check the run history</span
+              >{{AUTOMATION_NAME}} failed to execute at {{END_AT}}. For more information, please check the run history</span
             >
             <table
               role="presentation"
@@ -275,7 +275,7 @@
                             margin: 0 0 15px 0;
                           "
                         >
-                        {{AUTOMATION_NAME}} failed to execute at {{FINISH_TIME}}. For more information, please check the run history
+                        {{AUTOMATION_NAME}} failed to execute at {{END_AT}}. For more information, please check the run history
                         </p>
                         <table
                         role="presentation"

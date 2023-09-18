@@ -69,6 +69,7 @@ export const ModifyEmailModal: FC<React.PropsWithChildren<IModifyEmailModalProps
   };
 
   const handleEmailCheck = () => {
+    setIdentifyingCode('');
     if (newEmail === '') {
       setErrMsg({ accountErrMsg: t(Strings.error_email_empty) });
       return;

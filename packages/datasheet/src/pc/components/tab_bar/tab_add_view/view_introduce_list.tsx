@@ -120,7 +120,7 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
         action={['hover']}
         popup={popupComponent}
         destroyPopupOnHide
-        popupAlign={{ points: ['tl', 'tr'], offset: [18, 0], overflow: { adjustX: true, adjustY: true }}}
+        popupAlign={{ points: ['tl', 'tr'], offset: [18, 0], overflow: { adjustX: true, adjustY: true } }}
         popupStyle={{
           width: 288,
           position: 'absolute',

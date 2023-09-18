@@ -38,10 +38,38 @@ export class NodeShareSettingService {
 
   /**
    * Check if the node enables sharing, regardless of ancestor nodes.
+   * @deprecated Use `getNodeShareStatus` instead
    */
   async getShareStatusByNodeId(nodeId: string): Promise<boolean> {
     const nodeShareSetting = await this.repository.selectByNodeId(nodeId);
     return !!nodeShareSetting?.isEnabled;
+  }
+
+  /**
+   * Check if the node enables sharing, including ancestor nodes.
+   * @param nodeId node ID
+   */
+  async getNodeShareStatus(nodeId: string): Promise<boolean> {
+    const shareSetting = await this.repository.selectByNodeId(nodeId);
+    if (!shareSetting) {
+      return false;
+    }
+    if (shareSetting.isEnabled) {
+      return true;
+    }
+    const parentPaths = await this.nodeRepository.selectParentPathByNodeId(nodeId);
+    return parentPaths.includes(shareSetting.nodeId);
+  }
+
+  async checkNodeShareStatus(nodeId: string): Promise<void> {
+    const shareSetting = await this.repository.selectByNodeId(nodeId);
+    if (isEmpty(shareSetting) || !shareSetting?.isEnabled) {
+      const parentPaths = await this.nodeRepository.selectParentPathByNodeId(nodeId);
+      if (parentPaths.includes(nodeId)) {
+        return;
+      }
+      throw new ServerException(PermissionException.ACCESS_DENIED);
+    }
   }
 
   /**

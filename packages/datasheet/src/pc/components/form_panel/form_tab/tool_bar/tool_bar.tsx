@@ -86,7 +86,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = (props)
           action={['click']}
           popup={<SettingPanel {...commonProps} />}
           destroyPopupOnHide
-          popupAlign={{ points: ['tr', 'br'], offset: [-8, 10], overflow: { adjustX: true, adjustY: true }}}
+          popupAlign={{ points: ['tr', 'br'], offset: [-8, 10], overflow: { adjustX: true, adjustY: true } }}
           popupStyle={{ width: 240 }}
           popupVisible={isPanelShow}
           onPopupVisibleChange={(visible) => setPanelShow(visible)}

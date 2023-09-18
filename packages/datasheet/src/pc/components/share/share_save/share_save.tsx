@@ -76,7 +76,7 @@ export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = (props) 
           if (env.INVITE_USER_BY_AUTH0) {
             Router.push(Navigation.WORKBENCH);
           } else {
-            Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+            Router.push(Navigation.LOGIN, { query: { reference: window.location.href } });
           }
         },
         onCancel: () => setVisible(false),
@@ -98,7 +98,7 @@ export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = (props) 
       setVisible(false);
     }
 
-    const request = async() => {
+    const request = async () => {
       const res = await Api.spaceList();
       const { success, code, message, data } = res.data;
       if (success) {
@@ -121,7 +121,7 @@ export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = (props) 
     // eslint-disable-next-line
   }, [shareSpace.hasLogin]);
 
-  const saveToSpace = async(spaceId?: string) => {
+  const saveToSpace = async (spaceId?: string) => {
     if (!shareId) return;
     const saveKey = spaceId ? spaceId : radio;
     Message.loading({ content: t(Strings.loading), key: saveKey });
@@ -218,7 +218,7 @@ export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = (props) 
     );
   };
 
-  const createSpace = async(name: string) => {
+  const createSpace = async (name: string) => {
     const res = await Api.createSpace(name);
     const { success, message, code, data } = res.data;
     if (success) {

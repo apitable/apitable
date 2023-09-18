@@ -90,12 +90,12 @@ export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => 
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const handleClick = (categoryId: string) => {
-    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId } });
     isMobile && setSideBarVisible(false);
   };
 
   const jumpOfficialWebsite = () => {
-    Router.newTab(Navigation.HOME, { query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 } });
   };
 
   /**
@@ -123,7 +123,7 @@ export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => 
 
   const jumpTemplate = (categoryCode: string, templateId: string) => {
     triggerTrack(keywords);
-    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId: categoryCode, templateId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId: categoryCode, templateId } });
   };
 
   const clearKeyword = () => {

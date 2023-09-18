@@ -36,7 +36,7 @@ export interface IScrollContextProps {
 }
 
 export const ScrollContext = createContext<IScrollContextProps>({
-  cacheScrollMap: { current: {}},
+  cacheScrollMap: { current: {} },
   changeCacheScroll: () => {},
 } as IScrollContextProps);
 

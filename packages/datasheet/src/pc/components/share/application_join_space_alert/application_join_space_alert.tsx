@@ -79,7 +79,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
         content: t(Strings.require_login_tip),
         okText: t(Strings.go_login),
         onOk: () => {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href } });
         },
         okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },
         type: 'warning',

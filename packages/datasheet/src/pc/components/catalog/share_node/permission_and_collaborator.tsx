@@ -84,7 +84,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
     : [];
 
   // Select member submission events
-  const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
+  const onSubmit = async (unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length) {
       return;
     }
@@ -101,7 +101,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
       return;
     }
 
-    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
+    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async (res) => {
       const { success, message } = res.data;
       if (success) {
         Message.success({ content: t(Strings.permission_add_success) });
@@ -112,7 +112,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
     });
   };
 
-  const disableRoleExtend = async() => {
+  const disableRoleExtend = async () => {
     if (!roleList?.extend) {
       return true;
     }

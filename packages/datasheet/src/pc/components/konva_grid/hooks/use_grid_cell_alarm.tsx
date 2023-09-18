@@ -142,7 +142,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
           })}
           data={NotificationSmallOutlinedPath}
           fill={theme.color.thirdLevelText}
-          onClick={async() => {
+          onClick={async () => {
             clearTooltipInfo();
             await toggleEditing();
             const user = state.user.info;

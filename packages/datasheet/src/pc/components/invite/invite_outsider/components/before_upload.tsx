@@ -44,7 +44,7 @@ export const BeforeUpload: FC<React.PropsWithChildren<IBeforeUpload>> = ({ setFi
     setFile(fileInfo.file as File);
     const fileReader = new FileReader();
     // const isCSV = f.name.split(".").reverse()[0] == "csv";
-    fileReader.onload = async(event) => {
+    fileReader.onload = async (event) => {
       try {
         const result = event.target?.result;
         if (!result) return;
@@ -52,11 +52,11 @@ export const BeforeUpload: FC<React.PropsWithChildren<IBeforeUpload>> = ({ setFi
         const Excel = await import('exceljs');
         const workbook = new Excel.Workbook();
         workbook.xlsx.load(result as ArrayBuffer).then(
-          function() {
+          function () {
             // Storing the acquired data
             const data: IErrorInfo[] = [];
             const worksheet = workbook.getWorksheet(1); //Get the first worksheet
-            worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
               const emailContent = row.values[2];
               const rowName = row.values[1];
               const rowEmail = emailContent && typeof emailContent === 'object' ? emailContent.text : emailContent;
@@ -76,7 +76,7 @@ export const BeforeUpload: FC<React.PropsWithChildren<IBeforeUpload>> = ({ setFi
             setKid(KidType.FileSelected);
             setErr('');
           },
-          function() {
+          function () {
             showFileErr();
           },
         );

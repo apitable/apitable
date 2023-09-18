@@ -18,12 +18,13 @@
 
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
-import React, { PropsWithChildren, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
-import { Box, FloatUiTooltip } from '@apitable/components';
+import { Box } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { getFilterActionTypes, getNodeOutputSchemaList } from '../../helper';
-import { IActionType, IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
+import { getNodeOutputSchemaList } from '../../helper';
+import { useActionTypes } from '../../hooks';
+import { IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
 import { OrTooltip } from '../or_tooltip';
 import { EditType } from '../trigger/robot_trigger';
 import { LinkButton } from './link';
@@ -39,45 +40,47 @@ const req = axios.create({
 });
 
 export const getActionList = (actions?: []): IRobotAction[] => {
-  if(!actions || actions.length === 0) {
+  if (!actions || actions.length === 0) {
     return [];
   }
-  // @ts-ignore
-  const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
-  const actionsById = actions?.reduce((acc: any, item: any) => {
-    acc[item.id] = item;
-    return acc;
-  }, {});
-  // prev => next
-  Object.keys(actionsById).forEach(item => {
-    const action = actionsById[item];
-    if (action.prevActionId) {
-      actionsById[action.prevActionId].nextActionId = action.id;
-    }
-  });
-  const actionList: IRobotAction[] = [actionsById[entryActionId]];
-  Object.keys(actionsById).forEach(item => {
-    const action = actionsById[item];
-    if (action.nextActionId) {
-      actionList.push(actionsById[action.nextActionId]);
-    }
-  });
-  return actionList;
-};
-export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onScrollBottom = () => {} }:
-  {
-    robotId: string;
-    trigger?: IRobotTrigger;
-    triggerTypes: ITriggerType[];
-    actionTypes: IActionType[];
-    onScrollBottom?: () => void;
-  }
-) => {
-  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
-  const filterActionTypes = useMemo(() => {
-    return getFilterActionTypes(actionTypes);
-  }, [actionTypes]);
+  const preActionIdMap:Record<string, IRobotAction> = actions.map((action: IRobotAction) => ({
+    [action.prevActionId]:  action,
+  })).reduce((acc: any, item: any) => ({ ...acc, ...item }), {});
+
+  const headOpt: IRobotAction|undefined = actions.find((item: IRobotAction) => item.prevActionId == null || item.prevActionId =='');
+  if(!headOpt) {
+    return [];
+  }
+  const head : IRobotAction= headOpt!;
+  const findNextAction = (count: number, current : string, resultList: IRobotAction[]): IRobotAction[] => {
+    if(count === 0 ) {
+      return resultList;
+    }
+    const action = preActionIdMap[current];
+
+    if(action) {
+      return findNextAction(count -1, action.id, resultList.concat(action!));
+    }
+    return resultList;
+  };
+
+  return findNextAction(actions.length - 1, head.id, [head]);
+};
+
+export const RobotActions = ({
+  robotId,
+  triggerTypes,
+  trigger,
+  onScrollBottom = () => {},
+}: {
+  robotId: string;
+  trigger?: IRobotTrigger;
+  triggerTypes: ITriggerType[];
+  onScrollBottom?: () => void;
+}) => {
+  const { data: actionTypes } = useActionTypes();
+  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
 
   const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
   const actions = data?.data?.data;
@@ -85,16 +88,6 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
   const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
-  if (!data || error) {
-    return null;
-  }
-  if (!entryActionId) {
-    return (
-      <CreateNewAction robotId={robotId} actionTypes={filterActionTypes} disabled={trigger==null}/>
-    );
-  }
-
-  run();
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -103,54 +96,56 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
     trigger,
   });
 
+  if (!data || error) {
+    return null;
+  }
+  if (!entryActionId) {
+    return (
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null} nodeOutputSchemaList={nodeOutputSchemaList}/>
+    );
+  }
+
+  run();
+
   // Guides the creation of a trigger when there is no trigger
   // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
-    <Box
-      width='100%'
-    >
-      {
-        actionList.map((action, index) =>
-          (
-            <Box key={action.id}>
-              {
-                index > 0 && index < actionList.length && (
-                  <CreateNewActionLineButton
-                    disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
-                    robotId={robotId}
-                    actionTypes={filterActionTypes}
-                    prevActionId={actionList[index - 1].id}
-                  >
-                    <span>
-                      <OrTooltip
-                        options={{
-                          offset: -10
-                        }}
-                        tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
-                        tooltip={t(Strings.automation_action_num_warning, {
-                          value: CONST_MAX_ACTION_COUNT,
-                        })} placement={'top'}>
-                        <LinkButton disabled={
-                          actionList?.length >= CONST_MAX_ACTION_COUNT
-                        }/>
-                      </OrTooltip>
-                    </span>
-                  </CreateNewActionLineButton>
-                )
-              }
-              <RobotAction
-                editType={EditType.entry}
-                index={index + 1}
-                key={index}
-                action={action}
-                actionTypes={actionTypes}
-                nodeOutputSchemaList={nodeOutputSchemaList}
-                robotId={robotId}
-              />
-            </Box>
-          )
-        )
-      }
+    <Box width="100%">
+      {actionList.map((action, index) => (
+        <Box key={`${index}_${actionList[index - 1]?.prevActionId}_${action.id}`}>
+          {index > 0 && index < actionList.length && (
+            <CreateNewActionLineButton
+              disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+              robotId={robotId}
+              actionTypes={actionTypes}
+              nodeOutputSchemaList={nodeOutputSchemaList}
+              prevActionId={actionList[index - 1].id}
+            >
+              <span>
+                <OrTooltip
+                  options={{
+                    offset: -10,
+                  }}
+                  tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
+                  tooltip={t(Strings.automation_action_num_warning, {
+                    value: CONST_MAX_ACTION_COUNT,
+                  })}
+                  placement={'top'}
+                >
+                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT} />
+                </OrTooltip>
+              </span>
+            </CreateNewActionLineButton>
+          )}
+          <RobotAction
+            editType={EditType.entry}
+            index={index + 1}
+            action={action}
+            nodeOutputSchemaList={nodeOutputSchemaList}
+            robotId={robotId}
+          />
+        </Box>
+      ))}
 
       <OrTooltip
         tooltipEnable={
@@ -160,10 +155,11 @@ export const RobotActions = ({ robotId, triggerTypes, actionTypes, trigger, onSc
           value: CONST_MAX_ACTION_COUNT,
         })} placement={'top'}>
         <CreateNewAction
+          nodeOutputSchemaList={nodeOutputSchemaList}
           disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
           robotId={robotId}
-          actionTypes={filterActionTypes}
-          prevActionId={actionList[actionList.length - 1].id}
+          actionTypes={actionTypes}
+          prevActionId={actionList[actionList.length - 1]?.id}
         />
       </OrTooltip>
 

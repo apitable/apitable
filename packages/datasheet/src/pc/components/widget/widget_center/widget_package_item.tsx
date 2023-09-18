@@ -66,7 +66,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
   const cover = useGetSignatureAssertByToken(_cover);
-  const toInstallWidget = async(widgetPackageId: string) => {
+  const toInstallWidget = async (widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     setInstalling(true);
     const widget = await installWidget(widgetPackageId, nodeId, name);

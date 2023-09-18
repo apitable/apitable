@@ -46,7 +46,7 @@ export const ShareLink: React.FC<React.PropsWithChildren<IShareLinkProps>> = (pr
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const previewHandler = () => {
-    Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId }});
+    Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId } });
   };
 
   const copyLinkHandler = () => {

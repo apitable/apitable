@@ -574,8 +574,10 @@ export class KonvaDrawer {
     if (title == null || id == null) return null;
     const ratio = Math.max(window.devicePixelRatio, 2);
     const url = assertSignatureManager.getAssertSignatureUrl(_url);
-    const avatarSrc = isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS ? `${url}?imageView2/1/w/${size * ratio}/q/100!` :
-      (url || '');
+    const avatarSrc =
+      isGzip && url && !getEnvVariables().DISABLED_QINIU_COMPRESSION_PARAMS
+        ? `${url}${url.includes('?') ? '&' : '?'}imageView2/1/w/${size * ratio}/q/100!`
+        : url || '';
     const avatarName = getFirstWordFromString(title);
     const avatarBg = avatarSrc ? colors.defaultBg : createAvatarRainbowColorsArr(cacheTheme)[bgColor ?? 0];
     switch (type) {
@@ -679,13 +681,13 @@ export class KonvaDrawer {
     const cx = (x1 + x2) / 2.0 + Math.cos(psi) * cxp - Math.sin(psi) * cyp;
     const cy = (y1 + y2) / 2.0 + Math.sin(psi) * cxp + Math.cos(psi) * cyp;
 
-    const vMag = function(v: number[]) {
+    const vMag = function (v: number[]) {
       return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
     };
-    const vRatio = function(u: number[], v: number[]) {
+    const vRatio = function (u: number[], v: number[]) {
       return (u[0] * v[0] + u[1] * v[1]) / (vMag(u) * vMag(v));
     };
-    const vAngle = function(u: number[], v: number[]) {
+    const vAngle = function (u: number[], v: number[]) {
       return (u[0] * v[1] < u[1] * v[0] ? -1 : 1) * Math.acos(vRatio(u, v));
     };
     const theta = vAngle([1, 0], [(xp - cxp) / rx, (yp - cyp) / ry]);

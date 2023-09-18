@@ -140,7 +140,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
           localStorage.setItem('share_login_reference', window.location.href);
           Router.push(Navigation.WORKBENCH);
         } else {
-          Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId }});
+          Router.push(Navigation.LOGIN, { query: { reference: window.location.href, spaceId: shareSpace.spaceId } });
         }
       },
       okButtonProps: { id: AutoTestID.GO_LOGIN_BTN },

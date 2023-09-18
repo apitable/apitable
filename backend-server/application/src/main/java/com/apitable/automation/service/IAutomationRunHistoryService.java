@@ -18,13 +18,15 @@
 
 package com.apitable.automation.service;
 
-import com.apitable.databusclient.ApiException;
+import com.apitable.automation.model.AutomationTaskSimpleVO;
+import java.util.List;
 
 /**
  * Automation run history service interface.
  */
 public interface IAutomationRunHistoryService {
 
-    void getRobotRunHistory(String robotId) throws ApiException;
+    List<AutomationTaskSimpleVO> getRobotRunHistory(String robotId, Integer pageSize,
+                                                    Integer pageNum);
 
 }

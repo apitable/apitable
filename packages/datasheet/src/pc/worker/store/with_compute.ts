@@ -131,7 +131,7 @@ const requestResourceFromLocalStore = (datasheetId: string) => {
 };
 
 const generateStatusAction = (datasheetId: string, key: string, status: boolean) => {
-  return { type: ActionConstants.SET_DATASHEET_COMPUTED_STATUS, datasheetId, payload: { [key]: status }};
+  return { type: ActionConstants.SET_DATASHEET_COMPUTED_STATUS, datasheetId, payload: { [key]: status } };
 };
 
 const addComputeId = (datasheetId: string) => {

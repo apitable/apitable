@@ -17,10 +17,10 @@
  */
 
 import type { InputRef } from 'antd';
-import { Switch } from 'antd';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Switch } from '@apitable/components';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from '../../../utils/dom';

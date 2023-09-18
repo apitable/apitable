@@ -17,10 +17,10 @@
  */
 
 // import * as React from 'react';
-import { Slider, Switch } from 'antd';
+import { Slider } from 'antd';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
+import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip, Switch } from '@apitable/components';
 import {
   CollaCommandName,
   ViewType,

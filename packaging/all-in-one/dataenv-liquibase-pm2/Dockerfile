@@ -1,15 +1,15 @@
 FROM apitable/dataenv-pm2:latest
 
-ARG LIQUIBASE_VERSION=4.8.0
-ARG LPM_VERSION=0.1.3
-ARG LB_SHA256=7462b6e92f7077e1858865c403d52f0dce1bd66d03b1fae907815c10825feb33
+ARG LIQUIBASE_VERSION=4.21.1
+ARG LPM_VERSION=0.2.3
+ARG LB_SHA256=c04542865e5ece8b7b1ee9bd6beaefc5315e350620288d6ac1a2d32c3b1f7d8b
 
 RUN set -euxo pipefail; \
   microdnf -y update; \
   microdnf -y install findutils unzip; \
   microdnf clean all; \
   \
-  CORRETTO_VERSION=1.8.0_362.b08-1; \
+  CORRETTO_VERSION=1.8.0_382.b05-1; \
   GNUPGHOME="$(mktemp -d)"; \
   export GNUPGHOME; \
   curl -fL -o corretto.key https://yum.corretto.aws/corretto.key; \

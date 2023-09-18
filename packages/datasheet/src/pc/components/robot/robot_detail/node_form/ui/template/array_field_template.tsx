@@ -18,7 +18,8 @@
 
 import { Button, IconButton } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
+import { AddOutlined, ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
+import { useCssColors } from '../../../trigger/use_css_colors';
 import { IArrayFieldTemplateProps } from '../../core/interface';
 import styles from './style.module.less';
 
@@ -51,6 +52,7 @@ const ArrayFieldItem = (props: IArrayFieldItem) => {
 
 export const ArrayFieldTemplate = (props: IArrayFieldTemplateProps) => {
   const marginTop = props.items.length > 0 ? 8 : 0;
+  const colors = useCssColors();
   return (
     <div>
       {props.items.map((element) => (
@@ -58,8 +60,9 @@ export const ArrayFieldTemplate = (props: IArrayFieldTemplateProps) => {
       ))}
       {props.canAdd && (
         <div style={{ marginTop }}>
-          <Button onClick={props.onAddClick} size="small">
-            + {t(Strings.robot_action_send_web_request_add_header_button)}
+          <Button
+            onClick={props.onAddClick} size="small" prefixIcon={<AddOutlined color={colors.textCommonTertiary} size={16}/>} >
+            {t(Strings.robot_action_send_web_request_add_header_button)}
           </Button>
         </div>
       )}

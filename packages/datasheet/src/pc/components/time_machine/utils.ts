@@ -17,10 +17,21 @@
  */
 
 import dayjs from 'dayjs';
+import { pick } from 'lodash';
 import {
-  IOperation, IJOTAction, IObjectDeleteAction, IObjectReplaceAction, IObjectInsertAction, CollaCommandName, Strings, OTActionName,
-  RowHeightLevel, ViewType, FieldTypeDescriptionMap
+  IOperation,
+  IJOTAction,
+  IObjectDeleteAction,
+  IObjectReplaceAction,
+  IObjectInsertAction,
+  CollaCommandName,
+  Strings,
+  OTActionName,
+  RowHeightLevel,
+  ViewType,
+  FieldTypeDescriptionMap,
 } from '@apitable/core';
+import { ALL_ALARM_SUBTRACT } from 'pc/utils/constant';
 import { commandTran, StringsCommandName } from './interface';
 
 export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
@@ -36,7 +47,7 @@ export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
      * oi Add reference columns, rollback corresponding to the need to od their own reference columns and reference columns of the associated table
      * od Delete reference columns, rollback requires oi own reference columns and reference columns of related tables
      * or operation as above od or oi
-    */
+     */
     const op = (action as IObjectDeleteAction | IObjectReplaceAction).od || (action as IObjectInsertAction).oi;
     if (op && op.property && op.property.foreignDatasheetId) {
       ids.add(op.property.foreignDatasheetId);
@@ -45,7 +56,7 @@ export const getForeignDatasheetIdsByOp = (opList: IOperation[]) => {
   return [...ids];
 };
 
-export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
+export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
   const cmdStringKey: string = StringsCommandName[op.cmd] || op.cmd;
   const countMap = {};
   let actionCount = '';
@@ -57,25 +68,24 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
     } else if (item.n && item.n !== OTActionName.NumberAdd) {
       countMap[item.n] = (countMap[item.n] || 0) + 1;
     }
-    
   }
   for (const nValue in countMap) {
     const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
     actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
-    if(nValue===OTActionName.ObjectInsert){
-      actionCount=countMap[nValue];
+    if (nValue === OTActionName.ObjectInsert) {
+      actionCount = countMap[nValue];
     }
   }
 
   //commandString
   switch (op.cmd) {
     case CollaCommandName.AddRecords:
-      return commandTran(cmdStringKey, { count:actionCount });
+      return commandTran(cmdStringKey, { count: actionCount });
     case CollaCommandName.DeleteRecords:
-      const count=op.actions.filter(item =>item['od']?.recordMeta).length;
+      const count = op.actions.filter((item) => item['od']?.recordMeta).length;
       return commandTran(cmdStringKey, { count });
     case CollaCommandName.AddFields:
-      op.actions.find(item => {
+      op.actions.find((item) => {
         if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {
           actionCount = item['oi'].type;
         }
@@ -95,12 +105,19 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
 
     case 'UNDO:SetDateTimeCellAlarm':
     case CollaCommandName.SetDateTimeCellAlarm:
-      let status='';
-      op.actions.forEach(item=>{
-        item.n?status=item['oi']?'open':'cancel':status=item['oi']?'cancel':'open';
-        if(item['od']?.alarmAt||item['oi']?.alarmAt)actionCount=item['od']?.alarmAt||item['oi']?.alarmAt;
+      let status = 'cancel';
+      op.actions.forEach((item) => {
+        status=item.n?(item['oi']?'open':'cancel'):(item['oi']?'cancel':'open');
+        if((item['oi']||item['od']).time)return actionCount=(item['oi']||item['od']).time;
+        if (item['od']?.alarmAt || item['oi']?.alarmAt){
+          actionCount = dayjs((item['oi']?.alarmAt || item['od']?.alarmAt)).format('YYYY-MM-DD HH:mm');
+        }
+        if((item['oi']||item['od'])?.subtract){
+          actionCount=(item['oi']||item['od'])?.subtract;
+          actionCount=pick(ALL_ALARM_SUBTRACT, actionCount)[actionCount];
+        }
       });
-      return commandTran(cmdStringKey, { date_time: dayjs(actionCount).format('YYYY-MM-DD HH:mm'), status:commandTran(status) });
+      return commandTran(cmdStringKey, { date_time: actionCount, status: commandTran(status) });
 
     case CollaCommandName.SetViewFrozenColumnCount:
       return commandTran(cmdStringKey, { count: op.actions[0]['oi'] });
@@ -109,7 +126,9 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       return commandTran(cmdStringKey, { count: op.actions[0]['od'] });
 
     case CollaCommandName.SetViewAutoSave:
-      op.actions.find(item=>{if(item.p.includes('autoSave'))actionCount=item['oi']?'open':'close';});
+      op.actions.find((item) => {
+        if (item.p.includes('autoSave')) actionCount = item['oi'] ? 'open' : 'close';
+      });
       return commandTran(cmdStringKey) + ':' + commandTran(actionCount);
 
     case CollaCommandName.SetAutoHeadHeight:
@@ -122,13 +141,15 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       return commandTran(cmdStringKey) + ': ' + commandTran(actionCount);
 
     case CollaCommandName.DeleteField:
-      const newRecordCount = op.actions.filter(item => item['od'] instanceof Object && !Array.isArray(item['od']));
+      const newRecordCount = op.actions.filter((item) => item['od'] instanceof Object && !Array.isArray(item['od']));
       return commandTran(cmdStringKey, { record_count: newRecordCount.length });
 
-    case CollaCommandName.MoveViews:
     case CollaCommandName.AddWidgetToPanel:
-    case CollaCommandName.MoveWidget:
     case CollaCommandName.DeleteWidget:
+    case CollaCommandName.MoveViews:
+    case CollaCommandName.MoveWidget:
+    case CollaCommandName.ManualSaveView:
+    case CollaCommandName.SetGalleryStyle:
       return commandTran(cmdStringKey);
 
     case CollaCommandName.ModifyWidgetPanelName:
@@ -139,10 +160,18 @@ export const getOperationInfo = (ops: IOperation[]) => ops.map(op => {
       actionCount = op.actions[0]['ld'].name;
       return commandTran(cmdStringKey) + ': ' + actionCount;
 
-    default:
-      const recordCount = op.actions.length > 1 ? op.actions.length : 1;
-      return commandTran(cmdStringKey, { record_count: recordCount });
-      // return commandTran(cmdStringKey, { record_count: recordCount }) + ' ' + actionCount;
-  }
+    case CollaCommandName.PasteSetRecords:
+      const alarmCount = op.actions.some((item) => item.p.includes('alarm')) ? 2: 0;
+      const pasteRecordCount = op.actions.length > 1 ? (op.actions.length - alarmCount): 1;
+      return commandTran(cmdStringKey, { record_count: pasteRecordCount });
 
-}).join('');
+    default:
+      let metaCount = 0;
+      for(const item of op.actions) {
+        if (item.p.includes('meta')) metaCount++;
+      }
+      const recordCount = op.actions.length > 1 ? (op.actions.length - metaCount) : 1;
+      return commandTran(cmdStringKey, { record_count: recordCount });
+  }
+})
+  .join('');

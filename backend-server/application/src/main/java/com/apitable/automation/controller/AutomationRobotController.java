@@ -19,9 +19,11 @@
 package com.apitable.automation.controller;
 
 import com.apitable.automation.model.AutomationSimpleVO;
+import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.model.AutomationVO;
 import com.apitable.automation.model.UpdateRobotRO;
 import com.apitable.automation.service.IAutomationRobotService;
+import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.support.ResponseData;
@@ -44,6 +46,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Automation robots controller.
  */
 @RestController
-@Tag(name = "Automation robots")
+@Tag(name = "Automation")
 @ApiResource(path = {"/automation"})
 @Slf4j
 public class AutomationRobotController {
@@ -68,6 +73,9 @@ public class AutomationRobotController {
 
     @Resource
     private INodeService iNodeService;
+
+    @Resource
+    private IAutomationRunHistoryService iAutomationRunHistoryService;
 
     /**
      * Get automation robots.
@@ -139,12 +147,46 @@ public class AutomationRobotController {
         // check whether the node has the specified operation permission
         controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        boolean result = iAutomationRobotService.update(robotId, data);
+        boolean result = iAutomationRobotService.update(robotId, userId, data);
         if (result && data.getModifyNodeName()) {
             NodeUpdateOpRo ro = new NodeUpdateOpRo();
             ro.setNodeName(data.getName());
             iNodeService.edit(userId, resourceId, ro);
         }
         return ResponseData.success();
+    }
+
+    /**
+     * Get automation run history.
+     *
+     * @param pageSize   page query parameter
+     * @param pageNum    page query parameter
+     * @param resourceId resource id
+     * @param robotId    robot id
+     * @return {@link ResponseData}
+     */
+    @GetResource(path = "/{resourceId}/roots/{robotId}/run-history", requiredPermission = false)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+        @Parameter(name = "pageNum", description = "Current page number, default: 1", required = true, schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "pageSize", description = "Page size, default: 20", schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "20")
+    })
+    @Operation(summary = "Get automation run history")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<List<AutomationTaskSimpleVO>> getRunHistory(
+        @RequestParam(name = "pageSize", defaultValue = "20")
+        @Valid @Min(1) @Max(200) Integer pageSize,
+        @RequestParam(name = "pageNum", defaultValue = "20") @Valid @Min(1) Integer pageNum,
+        @PathVariable String resourceId,
+        @PathVariable String robotId) {
+        Long userId = SessionContext.getUserId();
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
+        // check whether the node has the specified operation permission
+        controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.READ_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        return ResponseData.success(
+            iAutomationRunHistoryService.getRobotRunHistory(robotId, pageSize, pageNum));
     }
 }

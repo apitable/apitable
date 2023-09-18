@@ -44,7 +44,7 @@ export const ApplyBackupData = () => {
     });
   }, [updater, db]);
 
-  const apply = async(timestamp: number) => {
+  const apply = async (timestamp: number) => {
     const backupData = await db.getItem(String(timestamp));
     try {
       const { changesetMap, opBufferMap } = backupData as any;
@@ -79,7 +79,7 @@ export const ApplyBackupData = () => {
     });
   };
 
-  const exportBackupData = async(timestamp: number) => {
+  const exportBackupData = async (timestamp: number) => {
     const Excel = await import('exceljs');
     const workbook = new Excel.Workbook();
     const tempWorksheet = workbook.addWorksheet('backup');

@@ -87,7 +87,7 @@ export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = (props
         action={['click']}
         popup={<MirrorListInner creatable={creatable} mirrorList={mirrorList} loading={loading} />}
         destroyPopupOnHide
-        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true }}}
+        popupAlign={{ points: ['tr', 'br'], offset: [0, 0], overflow: { adjustX: true, adjustY: true } }}
         popupStyle={{ width: 400 }}
         popupVisible={panelVisible}
         onPopupVisibleChange={(visible) => setPanelVisible(visible)}

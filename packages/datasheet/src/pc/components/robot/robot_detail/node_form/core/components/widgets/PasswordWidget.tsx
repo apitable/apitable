@@ -56,7 +56,7 @@ function PasswordWidget(props: IBaseInputProps & any) {
   const ids = props.id.split('_');
   const placeholderKey = ids[ids.length - 1];
 
-  const _onChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) => {
+  const _onChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
     setInputValue(value === '' ? options.emptyValue : value);
   };
 

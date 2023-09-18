@@ -20,7 +20,6 @@ import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { blackBlue } from '@apitable/components';
 import {
   CellType,
   FieldType,
@@ -32,6 +31,7 @@ import {
   Selectors,
   Strings,
   t,
+  ThemeName
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -53,7 +53,7 @@ import {
   useStats,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
-import { hexToRGB, rgbaToHex } from 'pc/utils';
+import { rgbaToHex } from 'pc/utils';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
 
@@ -117,6 +117,7 @@ export const useGrid = (props: IUseGridProps) => {
   const columnLength = visibleColumns.length;
   const { scrollLeft, isScrolling } = scrollState;
   const [shadowHover, setShadowHover] = useState(false);
+  const themeName = useSelector((state) => state.theme);
 
   /**
    * Field header
@@ -395,19 +396,19 @@ export const useGrid = (props: IUseGridProps) => {
         bottomPlaceholder: null,
       };
     }
-    const finalColor = shadowHover ? blackBlue[700] : blackBlue[600];
+    const finalColor = shadowHover ? colors.borderCommonHover : colors.borderGridVertical;
     const commonProps = {
       x: GRID_ROW_HEAD_WIDTH + frozenColumnWidth + 0.5,
-      stroke: hexToRGB(finalColor, 0.4),
+      stroke: finalColor,
       strokeWidth: 1,
     };
     const shadowProps = frozenShadowVisible
       ? {
-        shadowColor: rgbaToHex(finalColor, 0.6),
-        shadowBlur: 4,
-        shadowOffsetX: 2,
+        shadowColor:  themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
+        shadowBlur: 2,
+        shadowOffsetX: 1,
         shadowForStrokeEnabled: true,
-      }
+      } 
       : {};
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
     const middle = <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />;

@@ -52,7 +52,7 @@ import com.apitable.databusclient.JSON;
 /**
  * BaseDatasheetPackSO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-09-08T12:26:03.751525+08:00[Asia/Shanghai]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class BaseDatasheetPackSO {
   public static final String SERIALIZED_NAME_DATASHEET = "datasheet";
   @SerializedName(SERIALIZED_NAME_DATASHEET)

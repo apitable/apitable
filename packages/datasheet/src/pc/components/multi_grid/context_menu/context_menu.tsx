@@ -47,7 +47,7 @@ interface IContextFieldOwnProps {
   getIdMapByEvent?: (e: MouseEvent) => IdMap; // Provides the ability to allow the caller to pass in recordId and fieldId
   editFieldSetting?: (fieldId: string) => void;
   editFieldDesc?: (fieldId: string) => void;
-  onFrozenColumn?: (fieldId: string) => void;
+  onFrozenColumn?: (fieldId: string, reset: boolean) => void;
 }
 
 export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnProps>> = (props) => {

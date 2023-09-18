@@ -263,7 +263,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     return () => window.removeEventListener('mousemove', move);
   }, [templeVisible, defaultSidePanelSize, menuRef, editNodeId, favoriteEditNodeId]);
 
-  useMount(async() => {
+  useMount(async () => {
     const wizardId = ConfigConstant.WizardIdConstant.AGREE_TERMS_OF_SERVICE;
     await TriggerCommands.set_wizard_completed?.({
       wizardId,

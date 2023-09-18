@@ -106,7 +106,7 @@ export const RecordList: FC<React.PropsWithChildren<IRecordList>> = (props) => {
           };
           return prev;
         },
-        { [item.id]: { handleState: NodeHandleState.Unhandled }},
+        { [item.id]: { handleState: NodeHandleState.Unhandled } },
       );
 
       setNodeStateMap((s) => ({

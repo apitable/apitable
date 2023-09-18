@@ -81,7 +81,7 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
     });
   }, [visibleRecommend, spaceId]);
 
-  const quoteWidget = async(widgetIds: string[]) => {
+  const quoteWidget = async (widgetIds: string[]) => {
     setInstallingWidgetIds(widgetIds);
 
     try {

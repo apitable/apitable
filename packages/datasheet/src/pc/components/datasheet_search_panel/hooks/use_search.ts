@@ -28,7 +28,7 @@ export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
             localDispatch({ searchResult: val });
             return;
           }
-          localDispatch({ searchResult: { folders, files }});
+          localDispatch({ searchResult: { folders, files } });
         }
       });
     }, 500);

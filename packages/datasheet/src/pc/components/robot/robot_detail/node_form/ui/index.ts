@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { memo } from 'react';
 import { withTheme } from '../core';
-import { memo } from "react";
 import { theme } from './theme';
 export const MagicVariableForm = memo(withTheme(theme as any));

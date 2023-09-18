@@ -48,7 +48,7 @@ const PreviewMedia: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = (props
     return Api.getAvInfo(getAvInfoRequestUrl(file));
   };
 
-  const createVideoContainer = async() => {
+  const createVideoContainer = async () => {
     playerRef.current = new Player({
       el: ref.current!,
       url: cellValueToImageSrc(file),

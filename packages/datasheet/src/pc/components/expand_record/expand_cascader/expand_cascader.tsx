@@ -32,7 +32,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const loadTreeSnapshot = useCallback(async() => {
+  const loadTreeSnapshot = useCallback(async () => {
     setLoading(false);
     const res = await DatasheetApi.getCascaderSnapshot({
       datasheetId,

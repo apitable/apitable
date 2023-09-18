@@ -104,7 +104,7 @@ export function getNodeId() {
 }
 
 // Before switching the space station, you need to update the spaceId in the server session
-export const toggleSpace = async(spaceId?: string | null) => {
+export const toggleSpace = async (spaceId?: string | null) => {
   if (!spaceId) {
     return;
   }

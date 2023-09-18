@@ -27,6 +27,7 @@ import { useRobotListState } from '../robot_list';
 import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
 import { getActionList, RobotActions } from './action/robot_actions';
 import { EditType, RobotTrigger } from './trigger/robot_trigger';
+import { useCssColors } from './trigger/use_css_colors';
 
 const req = axios.create({
   baseURL: '/nest/v1/',
@@ -38,46 +39,34 @@ export const RobotDetailForm = () => {
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
   const { robot } = useRobot();
 
-  const { state: { formList }} = useRobotListState();
+  const {
+    state: { formList },
+  } = useRobotListState();
 
   const { data, error } = useSWR(`/automation/robots/${robot?.robotId}/actions`, req);
   const actions = data?.data?.data;
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
+  const colors = useCssColors();
   if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot || error) {
     return null;
   }
 
   return (
     <>
-      <Box paddingTop={'40px'} paddingBottom={'12px'}>
-        <Typography variant="h5">
-          {
-            t(Strings.when)
-          }
+      <Box paddingTop={'40px'} paddingBottom={'16px'}>
+        <Typography variant="h5" color={colors.textCommonPrimary}>{t(Strings.when)}</Typography>
+      </Box>
+
+      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} setTrigger={setTrigger} />
+
+      <Box paddingTop={'40px'} paddingBottom={'16px'}>
+        <Typography variant="h5" color={colors.textCommonPrimary}>
+          {t(Strings.then)} ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
         </Typography>
       </Box>
 
-      <RobotTrigger
-        editType={EditType.entry}
-        robotId={robot.robotId}
-        triggerTypes={triggerTypes}
-        formList={formList}
-        setTrigger={setTrigger}
-      />
-
-      <Box paddingTop={'40px'} paddingBottom={'12px'}>
-        <Typography variant="h5">
-          {t(Strings.then) } ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
-        </Typography>
-      </Box>
-
-      <RobotActions
-        robotId={robot.robotId}
-        trigger={trigger}
-        triggerTypes={triggerTypes}
-        actionTypes={actionTypes}
-      />
+      <RobotActions robotId={robot.robotId} trigger={trigger} triggerTypes={triggerTypes} />
     </>
   );
 };

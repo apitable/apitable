@@ -57,7 +57,7 @@ export const MemberList: FC<React.PropsWithChildren<IMemberList>> = (props) => {
   const onSelect = (data: IMemberInfoInAddressList) => {
     const { memberId } = data;
     setSelectedMemberId(memberId);
-    Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId }});
+    Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId } });
     isMobile && expandMemberInfo();
     dispatch(StoreActions.updateMemberInfo(data));
   };

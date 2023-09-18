@@ -30,7 +30,7 @@ export interface IURLMeta {
   title: string | null;
 }
 
-export const recognizeURLAndSetTitle = async({ url, callback }: ISetURLRecogProps) => {
+export const recognizeURLAndSetTitle = async ({ url, callback }: ISetURLRecogProps) => {
   const res = await Api.getURLMetaBatch([url]);
 
   if (res?.data?.success) {

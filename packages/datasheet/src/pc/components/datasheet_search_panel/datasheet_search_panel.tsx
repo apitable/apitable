@@ -146,7 +146,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
               color={'primary'}
               loading={loading}
               disabled={!state.currentDatasheetId}
-              onClick={async() => {
+              onClick={async () => {
                 try {
                   setLoading(true);
                   await props.onChange({

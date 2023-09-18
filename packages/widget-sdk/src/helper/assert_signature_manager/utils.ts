@@ -1,5 +1,5 @@
 export const splitAssertPath = (url: string) => {
-  const index = ['space', 'public', 'image', 'widget'].map(path => url.indexOf(path)).find(index => index !== -1);
+  const index = ['space', 'public', 'image', 'widget', 'assets'].map((path) => url.indexOf(path)).find((index) => index !== -1);
 
   if (!index || index === -1) {
     return url;
@@ -7,4 +7,3 @@ export const splitAssertPath = (url: string) => {
 
   return url.slice(index);
 };
-

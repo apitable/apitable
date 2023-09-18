@@ -19,7 +19,8 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
-import { Selectors, FieldTypeDescriptionMap, t, Strings, Field } from '@apitable/core';
+import { Field, FieldType, FieldTypeDescriptionMap, Selectors, Strings, t } from '@apitable/core';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { getFieldDocs } from './api_panel_config';
 import styles from './styles.module.less';
@@ -49,9 +50,14 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = (props) => 
     const snapshot = Selectors.getSnapshot(state)!;
     return Selectors.getCellValue(state, snapshot, recordId, fieldId);
   });
+  const isAttachmentField = field.type === FieldType.Attachment;
+  const _attachmentValue = isAttachmentField ? cellValue : null;
+
+  const attachmentValue = useGetSignatureAssertByToken(_attachmentValue);
 
   const fieldDocs = getFieldDocs(field.type);
-  const fieldExample = convertToPrintString(Field.bindModel(field).cellValueToApiStandardValue(cellValue)) || t(Strings[fieldDocs.defaultExampleId!]);
+  const fieldExample =
+    convertToPrintString(Field.bindModel(field).cellValueToApiStandardValue(attachmentValue || cellValue)) || t(Strings[fieldDocs.defaultExampleId!]);
   const fieldInfo = FieldTypeDescriptionMap[field.type];
   const fieldSmallIcon = getFieldTypeIcon(field.type, colors.primaryColor, 16, 16);
   const fieldLargeIcon = getFieldTypeIcon(field.type, colors.black[50], 24, 24);

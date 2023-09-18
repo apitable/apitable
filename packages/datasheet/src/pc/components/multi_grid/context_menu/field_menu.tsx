@@ -17,6 +17,7 @@
  */
 
 import { useMount } from 'ahooks';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -43,6 +44,7 @@ import {
   t,
   ToolBarMenuCardOpenState,
   ViewType,
+  IGridViewProperty
 } from '@apitable/core';
 import {
   ArrowDownOutlined,
@@ -59,7 +61,6 @@ import {
   EyeOpenOutlined,
   LockOutlined,
 } from '@apitable/icons';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -80,7 +81,7 @@ interface IFieldMenuProps {
   fieldId: string;
   editFieldSetting?: (fieldId: string) => void;
   editFieldDesc?: (fieldId: string) => void;
-  onFrozenColumn?: (fieldId: string) => void;
+  onFrozenColumn?: (fieldId: string, reset: boolean) => void;
 }
 
 export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = memo(
@@ -89,6 +90,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
     const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
     const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
     const view = useSelector(Selectors.getCurrentView)!;
+    const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
     const dispatch = useAppDispatch();
     const handleHideField = useHideField(view);
     const handleSortField = useSortField();
@@ -179,11 +181,16 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
     const copyField = getCopyField(field, fieldMap, view.id);
 
     const frozenColumn = (fieldId: string) => {
-      if (onFrozenColumn) {
-        return onFrozenColumn(fieldId);
-      }
-      const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
+      let columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
       if (columnIndex === -1) return;
+
+      const reset = columnIndex + 1 === frozenColumnCount ? true : false;
+
+      if (onFrozenColumn) {
+        return onFrozenColumn(fieldId, reset);
+      }
+
+      columnIndex = reset ? 0 : columnIndex;
 
       executeCommandWithMirror(
         () => {
@@ -412,8 +419,8 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       [
         {
           icon: <FreezeOutlined color={colors.thirdLevelText} />,
-          text: t(Strings.freeze_current_column),
-          hidden: !columnWidthEditable || isGanttView,
+          text: fieldIndex + 1 === frozenColumnCount ? t(Strings.freeze_column_reset) : t(Strings.freeze_current_column),
+          hidden: !columnWidthEditable || isGanttView || (fieldIndex === 0 && frozenColumnCount === 1),
           onClick: () => frozenColumn(fieldId),
           id: 'freeze_column',
         },

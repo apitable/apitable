@@ -5,12 +5,14 @@ FROM apitable/room-server:${IMAGE_TAG} as room-server
 FROM apitable/web-server:${IMAGE_TAG} as web-server
 FROM apitable/init-db:${IMAGE_TAG} as init-db
 
+FROM apitable/databus-server:latest as databus-server
 FROM apitable/init-appdata:latest as init-appdata
 FROM apitable/imageproxy-server:latest as imageproxy-server
 
 FROM apitable/dataenv-liquibase-pm2:latest
 
 COPY --from=backend-server /app/ /app/backend-server/
+COPY --from=databus-server /usr/local/bin/ /app/databus-server/
 COPY --from=room-server /app/ /app/room-server/
 COPY --from=web-server /app/ /app/web-server/
 COPY --from=imageproxy-server /app/ /app/imageproxy-server/
@@ -44,6 +46,7 @@ ENV \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \
     NEST_GRPC_URL=0.0.0.0:3334 \
     SOCKET_GRPC_URL=0.0.0.0:3007 \
+    DATABUS_SERVER_BASE_URL=http://databus-server:8625 \
     \
     OSS_CACHE_TYPE=minio \
     OSS_HOST=assets \
@@ -99,13 +102,13 @@ ENV \
     SMS_ENABLED=false \
     \
     MAIL_ENABLED=false \
-    MAIL_TYPE=smtp \
+    MAIL_FROM= \
     MAIL_HOST= \
     MAIL_PASSWORD= \
     MAIL_PORT= \
     MAIL_SSL_ENABLE=true \
+    MAIL_TYPE=smtp \
     MAIL_USERNAME= \
-    MAIL_FROM= \
     \
     OSS_CLIENT_TYPE=aws \
     OSS_ENABLED=true \
@@ -115,6 +118,6 @@ ENV \
     AWS_ENDPOINT=http://minio:9000 \
     AWS_REGION=us-east-1 \
     \
-    OSS_BUCKET_NAME=assets \
     ASSETS_BUCKET=assets \
-    ASSETS_URL=assets
+    ASSETS_URL=assets \
+    OSS_BUCKET_NAME=assets

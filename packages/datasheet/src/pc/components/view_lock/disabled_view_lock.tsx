@@ -43,7 +43,7 @@ export const DisabledViewLock: React.FC<React.PropsWithChildren<Omit<IViewLockPr
     return Selectors.getDatasheetClient(state)?.operateViewIds?.includes?.(viewId);
   });
 
-  const openViewLock = async() => {
+  const openViewLock = async () => {
     const value = areaRef.current!['resizableTextArea']['textArea']['value'];
     if (isViewModified) {
       const serverViewDate = await requestServerView(datasheetId!, viewId);

@@ -75,6 +75,7 @@ public interface IAutomationRobotService {
      *
      * @param robotId robot id
      * @param data    ro data
+     * @param updater update user id
      */
-    boolean update(String robotId, UpdateRobotRO data);
+    boolean update(String robotId, Long updater, UpdateRobotRO data);
 }

@@ -3,7 +3,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 
 export const installWidget = (widgetPackageId: string, nodeId: string, name?: string) => {
-  return new Promise<IWidget>(async(resolve, reject) => {
+  return new Promise<IWidget>(async (resolve, reject) => {
     const res = await WidgetApi.installWidget(nodeId, widgetPackageId, name);
     const { data, success } = res.data;
     if (success) {
@@ -14,7 +14,7 @@ export const installWidget = (widgetPackageId: string, nodeId: string, name?: st
 };
 
 export const copyWidget = (widgetId: string, resourceId: string): Promise<IWidget[]> => {
-  return new Promise<IWidget[]>(async(resolve, reject) => {
+  return new Promise<IWidget[]>(async (resolve, reject) => {
     const res = await WidgetApi.copyWidgetsToNode(resourceId, [widgetId]);
     const { data, success, message } = res.data;
     if (success) {

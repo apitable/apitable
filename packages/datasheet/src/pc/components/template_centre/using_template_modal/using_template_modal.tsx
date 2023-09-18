@@ -61,7 +61,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
     onCancel('');
   };
 
-  const onOk = async() => {
+  const onOk = async () => {
     if (!templateId) {
       return;
     }
@@ -69,7 +69,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
     const result = await usingTemplate(templateId, nodeId, isContainData);
     if (result && spaceId) {
       dispatch(StoreActions.getSpaceInfo(spaceId!, true));
-      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId }});
+      Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId } });
     }
   };
 
@@ -80,7 +80,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
         resolve();
       });
     }
-    return new Promise<void>(async(resolve) => {
+    return new Promise<void>(async (resolve) => {
       const { data: result } = await Api.getChildNodeList(id);
       const { data } = result;
       setTreeData([...treeData, ...transformNodeTreeData(data)]);

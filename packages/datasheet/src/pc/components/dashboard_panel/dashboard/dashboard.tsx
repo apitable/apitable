@@ -236,7 +236,7 @@ export const Dashboard = () => {
     });
   };
 
-  const _copyWidget = async(widgetId: string) => {
+  const _copyWidget = async (widgetId: string) => {
     try {
       await createWidgetByExistWidgetId(widgetId, dashboardId!);
     } catch (e: any) {

@@ -69,7 +69,7 @@ const AlbumDetail = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<IAlbumDetail | null>(null);
   useEffect(() => {
-    const fetchData = async() => {
+    const fetchData = async () => {
       const albumRlt = await Api.getTemplateAlbum(albumId);
       const recommendRlt = await Api.getTemplateAlbumsRecommend(albumId, 5);
       const { success, data } = albumRlt.data;
@@ -86,7 +86,7 @@ const AlbumDetail = () => {
   }, [albumId]);
 
   const goBack = () => {
-    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId }});
+    Router.push(Navigation.TEMPLATE, { params: { spaceId, categoryId } });
   };
   const handleCopyShare = () => {
     copy2clipBoard(location.href, () => {

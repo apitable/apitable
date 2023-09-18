@@ -122,4 +122,6 @@ public class MailPropConstants {
     public static final String SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT = "subscribedFilePermissionLimit";
 
     public static final String SUBJECT_SUBSCRIBED_ADMIN_LIMIT = "subscribedAdminLimit";
+
+    public static final String SUBJECT_AUTOMATION_ERROR = "automationError";
 }

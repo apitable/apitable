@@ -99,7 +99,7 @@ export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps
     setName(e.target.value);
   };
 
-  const handleOk = async() => {
+  const handleOk = async () => {
     const result = await templateNameValidate(name);
     if (result) {
       Modal.confirm({

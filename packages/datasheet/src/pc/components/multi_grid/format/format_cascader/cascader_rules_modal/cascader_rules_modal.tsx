@@ -87,7 +87,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     updateField();
   };
 
-  const loadData = async(_linkedFields: ILinkedField[], isLoading: boolean, isUpdateLinked?: boolean) => {
+  const loadData = async (_linkedFields: ILinkedField[], isLoading: boolean, isUpdateLinked?: boolean) => {
     isLoading && setCascaderPreviewLoading(true);
     const isNewField = activeFieldState.fieldId === ButtonOperateType.AddField;
     // cascader snapshot is empty while new field or change linked datasheet
@@ -152,7 +152,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     setSelectedNodeIds(_selectedNodeIds);
   };
 
-  const onRefreshConfig = async() => {
+  const onRefreshConfig = async () => {
     // the fields of primary linked datasheet hidden or update permissions should be filter
     const filterLinkedFields = compact(linkedFields).filter((lf) => primaryFullLinkedFields.some((plf) => plf.id === lf.id));
     if (!isEqual(filterLinkedFields, linkedFields)) {
@@ -166,7 +166,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     }
   };
 
-  const onFieldSelect = async(selectedFieldId: string, selectedIndex: number, oldFieldId?: string) => {
+  const onFieldSelect = async (selectedFieldId: string, selectedIndex: number, oldFieldId?: string) => {
     if (selectedFieldId === oldFieldId) return;
     const selectedField = fullLinkedFields.find((linkableField) => linkableField.id === selectedFieldId);
     if (!selectedField) return;
@@ -182,7 +182,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     }
   };
 
-  const onRemoveLinkedField = async(linkedFieldId: string | undefined, index: number) => {
+  const onRemoveLinkedField = async (linkedFieldId: string | undefined, index: number) => {
     if (linkedFields.length === 1) {
       setLinkedFields([undefined]);
       return;
@@ -240,7 +240,7 @@ export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurre
     if (currFieldLinkedFields?.length > 0) {
       setLinkedFields(currFieldLinkedFields);
     }
-    const fetchData = async() => {
+    const fetchData = async () => {
       try {
         const treeSelects = await loadData(currFieldLinkedFields, true, true);
         setPreviewNodesMatrix(treeSelects ? [treeSelects] : []);

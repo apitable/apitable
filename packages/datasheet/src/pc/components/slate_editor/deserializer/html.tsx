@@ -29,7 +29,7 @@ const getNodeDataFromAttr = (el: HTMLElement) => {
 };
 
 const ELEMENT_TAGS = {
-  A: (el: HTMLAnchorElement) => GENERATOR.link({ data: { link: el.getAttribute('href') }}, []),
+  A: (el: HTMLAnchorElement) => GENERATOR.link({ data: { link: el.getAttribute('href') } }, []),
   BLOCKQUOTE: () => GENERATOR.quote({}, []),
   H1: (el: HTMLElement) => GENERATOR.headingOne({ data: getNodeDataFromAttr(el) }, []),
   H2: (el: HTMLElement) => GENERATOR.headingTwo({ data: getNodeDataFromAttr(el) }, []),
@@ -40,7 +40,7 @@ const ELEMENT_TAGS = {
   H7: (el: HTMLElement) => GENERATOR.headingSix({ data: getNodeDataFromAttr(el) }, []),
   H8: (el: HTMLElement) => GENERATOR.headingSix({ data: getNodeDataFromAttr(el) }, []),
   H9: (el: HTMLElement) => GENERATOR.headingSix({ data: getNodeDataFromAttr(el) }, []),
-  IMG: (el: HTMLImageElement) => GENERATOR.image({ data: { url: el.getAttribute('src') ?? '' }}, []),
+  IMG: (el: HTMLImageElement) => GENERATOR.image({ data: { url: el.getAttribute('src') ?? '' } }, []),
   UL: () => GENERATOR.unorderedList({}, []),
   OL: () => GENERATOR.orderedList({}, []),
   LI: (el: HTMLElement) => GENERATOR.listItem({ data: getNodeDataFromAttr(el) }, []),

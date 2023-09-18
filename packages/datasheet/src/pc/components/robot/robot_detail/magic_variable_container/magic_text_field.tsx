@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useClickOutside } from '@huse/click-outside';
 import { useClickAway } from 'ahooks';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
@@ -64,9 +65,9 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
-  useClickAway(() => {
+  useClickOutside(popupRef, () => {
     setOpen(false);
-  }, popupRef);
+  });
 
   useEffect(() => {
     if (!isOpen) {

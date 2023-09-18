@@ -22,7 +22,7 @@ import { KeyCode, KeyCodeUtils, KeyMod, SimpleKeybinding } from './key_codes';
 const KEY_CODE_MAP: { [keyCode: number]: KeyCode } = new Array(230);
 const INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
 
-(function() {
+(function () {
   for (let i = 0; i < INVERSE_KEY_CODE_MAP.length; i++) {
     INVERSE_KEY_CODE_MAP[i] = -1;
   }

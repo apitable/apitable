@@ -24,9 +24,9 @@ const duration = '.3s';
 
 export const SIZE_MAP = {
   small: {
-    height: 14,
-    width: 24,
-    innerSize: 10,
+    height: 16,
+    width: 28,
+    innerSize: 12,
   },
   default: {
     height: 20,

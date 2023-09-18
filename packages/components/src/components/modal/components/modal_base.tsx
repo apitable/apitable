@@ -23,7 +23,7 @@ import { IconButton } from 'components/icon_button';
 import { TextButton } from 'components/text_button';
 import { Typography } from 'components/typography';
 import { getScrollbarWidth, hasScrollbar, stopPropagation } from 'helper';
-import React, { isValidElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../button';
 import { IModalProps } from '../interface';
 import { CloseIconBox, ModalContent, ModalContentWrapper, ModalHeader, ModalMask, ModalWrapper } from '../styled';
@@ -49,6 +49,7 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
     className,
     contentClassName,
     title,
+    renderTitle,
     footer,
     visible,
     closable = true,
@@ -215,19 +216,15 @@ export const ModalBase: React.FC<React.PropsWithChildren<IModalProps>> = (props)
               >
                 {closable && DefaultCloseIcon}
 
-                {title && typeof title ==='string' &&
-                  <ModalHeader>
-                    <Typography variant='h6'>{title}</Typography>
-                  </ModalHeader>
-                }
-
-                {title && isValidElement(title) &&
-                    <>
-                      {
-                        title
-                      }
-                    </>
-                }
+                {renderTitle ? renderTitle : (
+                  <>
+                    {
+                      <ModalHeader>
+                        <Typography variant='h6'>{title}</Typography>
+                      </ModalHeader>
+                    }
+                  </>
+                )}
 
                 <Box padding={'0 24px'} style={bodyStyle}>
                   {props.children}

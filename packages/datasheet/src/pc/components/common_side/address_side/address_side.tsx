@@ -107,7 +107,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   );
 
   const memberClick = (memberId: string) => {
-    Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId }});
+    Router.push(Navigation.MEMBER_DETAIL, { params: { spaceId, memberId } });
     isMobile && expandMemberInfo();
     teamClick(ConfigConstant.ROOT_TEAM_ID);
     dispatch(StoreActions.getMemberInfoData(memberId));

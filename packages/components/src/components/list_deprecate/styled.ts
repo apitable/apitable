@@ -190,7 +190,7 @@ export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disa
 }
 
   ${props => !props.disabled && props.selected && css`
-    background: ${props.theme.color.bgBglessActive};
+    background: ${props.theme.color.bgBrandLightDefault};
   `
 }
 

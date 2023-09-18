@@ -20,7 +20,7 @@ import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace, ISpaceI
 // @ts-ignore
 import { socialPlatPreOperate } from 'enterprise';
 
-export const verifyTeamName = async(_spaceId: string, teamId: string, inputContent: string) => {
+export const verifyTeamName = async (_spaceId: string, teamId: string, inputContent: string) => {
   let questRes = false;
   const {
     data: { success, data },

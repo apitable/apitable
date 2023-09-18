@@ -20,91 +20,91 @@
 // http://robertpenner.com/easing/
 
 export const Easing = {
-  linear: function(t: number) {
+  linear: function (t: number) {
     return t;
   },
 
-  easeIn: function(t: number) {
+  easeIn: function (t: number) {
     return t * t;
   },
 
-  easeOut: function(t: number) {
+  easeOut: function (t: number) {
     return -t * (t - 2);
   },
 
-  easeInOut: function(t: number) {
+  easeInOut: function (t: number) {
     if ((t /= 0.5) < 1) {
       return 0.5 * t * t;
     }
     return -0.5 * (--t * (t - 2) - 1);
   },
 
-  easeInCubic: function(t: number) {
+  easeInCubic: function (t: number) {
     return t * t * t;
   },
 
-  easeOutCubic: function(t: number) {
+  easeOutCubic: function (t: number) {
     return (t = t - 1) * t * t + 1;
   },
 
-  easeInOutCubic: function(t: number) {
+  easeInOutCubic: function (t: number) {
     if ((t /= 0.5) < 1) {
       return 0.5 * t * t * t;
     }
     return 0.5 * ((t -= 2) * t * t + 2);
   },
 
-  easeInQuart: function(t: number) {
+  easeInQuart: function (t: number) {
     return t * t * t * t;
   },
 
-  easeOutQuart: function(t: number) {
+  easeOutQuart: function (t: number) {
     return -((t = t - 1) * t * t * t - 1);
   },
 
-  easeInOutQuart: function(t: number) {
+  easeInOutQuart: function (t: number) {
     if ((t /= 0.5) < 1) {
       return 0.5 * t * t * t * t;
     }
     return -0.5 * ((t -= 2) * t * t * t - 2);
   },
 
-  easeInQuint: function(t: number) {
+  easeInQuint: function (t: number) {
     return t * t * t * t * t;
   },
 
-  easeOutQuint: function(t: number) {
+  easeOutQuint: function (t: number) {
     return (t = t - 1) * t * t * t * t + 1;
   },
 
-  easeInOutQuint: function(t: number) {
+  easeInOutQuint: function (t: number) {
     if ((t /= 0.5) < 1) {
       return 0.5 * t * t * t * t * t;
     }
     return 0.5 * ((t -= 2) * t * t * t * t + 2);
   },
 
-  easeInSine: function(t: number) {
+  easeInSine: function (t: number) {
     return -Math.cos(t * (Math.PI / 2)) + 1;
   },
 
-  easeOutSine: function(t: number) {
+  easeOutSine: function (t: number) {
     return Math.sin(t * (Math.PI / 2));
   },
 
-  easeInOutSine: function(t: number) {
+  easeInOutSine: function (t: number) {
     return -0.5 * (Math.cos(Math.PI * t) - 1);
   },
 
-  easeInExpo: function(t: number) {
+  easeInExpo: function (t: number) {
     return t === 0 ? 0 : Math.pow(2, 10 * (t - 1));
   },
 
-  easeOutExpo: function(t: number) {
+  easeOutExpo: function (t: number) {
     return t === 1 ? 1 : -Math.pow(2, -10 * t) + 1;
   },
 
-  easeInOutExpo: function(t: number) {
+  easeInOutExpo: function (t: number) {
     if (t === 0) {
       return 0;
     }
@@ -117,25 +117,25 @@ export const Easing = {
     return 0.5 * (-Math.pow(2, -10 * --t) + 2);
   },
 
-  easeInCirc: function(t: number) {
+  easeInCirc: function (t: number) {
     if (t >= 1) {
       return t;
     }
     return -(Math.sqrt(1 - t * t) - 1);
   },
 
-  easeOutCirc: function(t: number) {
+  easeOutCirc: function (t: number) {
     return Math.sqrt(1 - (t = t - 1) * t);
   },
 
-  easeInOutCirc: function(t: number) {
+  easeInOutCirc: function (t: number) {
     if ((t /= 0.5) < 1) {
       return -0.5 * (Math.sqrt(1 - t * t) - 1);
     }
     return 0.5 * (Math.sqrt(1 - (t -= 2) * t) + 1);
   },
 
-  easeInElastic: function(t: number) {
+  easeInElastic: function (t: number) {
     let s = 1.70158;
     let p = 0;
     let a = 1;
@@ -157,7 +157,7 @@ export const Easing = {
     return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin(((t - s) * (2 * Math.PI)) / p));
   },
 
-  easeOutElastic: function(t: number) {
+  easeOutElastic: function (t: number) {
     let s = 1.70158;
     let p = 0;
     let a = 1;
@@ -179,7 +179,7 @@ export const Easing = {
     return a * Math.pow(2, -10 * t) * Math.sin(((t - s) * (2 * Math.PI)) / p) + 1;
   },
 
-  easeInOutElastic: function(t: number) {
+  easeInOutElastic: function (t: number) {
     let s = 1.70158;
     let p = 0;
     let a = 1;
@@ -203,17 +203,17 @@ export const Easing = {
     }
     return a * Math.pow(2, -10 * (t -= 1)) * Math.sin(((t - s) * (2 * Math.PI)) / p) * 0.5 + 1;
   },
-  easeInBack: function(t: number) {
+  easeInBack: function (t: number) {
     const s = 1.70158;
     return t * t * ((s + 1) * t - s);
   },
 
-  easeOutBack: function(t: number) {
+  easeOutBack: function (t: number) {
     const s = 1.70158;
     return (t = t - 1) * t * ((s + 1) * t + s) + 1;
   },
 
-  easeInOutBack: function(t: number) {
+  easeInOutBack: function (t: number) {
     let s = 1.70158;
     if ((t /= 0.5) < 1) {
       return 0.5 * (t * t * (((s *= 1.525) + 1) * t - s));
@@ -221,11 +221,11 @@ export const Easing = {
     return 0.5 * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2);
   },
 
-  easeInBounce: function(t: number) {
+  easeInBounce: function (t: number) {
     return 1 - Easing.easeOutBounce(1 - t);
   },
 
-  easeOutBounce: function(t: number) {
+  easeOutBounce: function (t: number) {
     if (t < 1 / 2.75) {
       return 7.5625 * t * t;
     }
@@ -238,7 +238,7 @@ export const Easing = {
     return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
   },
 
-  easeInOutBounce: function(t: number) {
+  easeInOutBounce: function (t: number) {
     if (t < 0.5) {
       return Easing.easeInBounce(t * 2) * 0.5;
     }

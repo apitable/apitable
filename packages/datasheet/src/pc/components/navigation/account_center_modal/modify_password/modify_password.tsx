@@ -71,7 +71,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
     setData({ password: value });
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (!data.identifyingCode.length) {
       setErrMsg({ identifyingCodeErrMsg: t(Strings.message_verification_code_empty) });
       return;

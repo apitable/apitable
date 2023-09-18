@@ -235,7 +235,7 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
   /**
    * Add row operation
    */
-  const addRow = async(recordId: string, areaType: AreaType) => {
+  const addRow = async (recordId: string, areaType: AreaType) => {
     if (areaType === AreaType.None || !permissions.rowCreatable) return;
     const rowCount = visibleRows.length;
     const finalRecordId = groupInfo.length ? recordId : rowCount > 0 ? visibleRows[rowCount - 1].recordId : '';

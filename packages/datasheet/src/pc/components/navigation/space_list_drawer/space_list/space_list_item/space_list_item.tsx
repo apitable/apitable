@@ -60,7 +60,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
   useUpdateEffect(() => {
     if (user) {
       closeSpaceListDrawer();
-      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId: user.spaceId }});
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId: user.spaceId } });
     }
   }, [user.spaceId]);
 
@@ -71,7 +71,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
   const jumpSpaceManagement = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     if (user.spaceId === spaceId) {
-      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId }});
+      Router.push(Navigation.SPACE_MANAGE, { params: { spaceId } });
     } else {
       window.location.href = `${domain}/management?spaceId=${spaceId}`;
     }

@@ -27,7 +27,8 @@ import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { useActionTypes, useRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
-import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { IAutomationDatum, IRobotAction, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { getActionList } from '../robot_detail/action/robot_actions';
 import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
@@ -39,49 +40,60 @@ interface IRobotListItemCardProps {
 
 const StyledBox = styled(Box)`
   &:hover {
-    background-color: var(--bgControlsHover);
+    background-color: var(--bgBglessHover);
+  }
+  &:active {
+    background-color: var(--bgBglessActive);
   }
 `;
 
 interface INodeStep {
-  item ?: IRobotNodeTypeInfo
-  type: 'node' | 'more'
+  item?: IRobotNodeTypeInfo;
+  type: 'node' | 'more';
 }
 
-export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({
-  index, robotCardInfo, onNavigate, readonly
-}) => {
+export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({ index, robotCardInfo, onNavigate, readonly }) => {
   const { name, robotId } = robotCardInfo;
 
   const { data: triggerTypes } = useTriggerTypes();
-  const { data: actionTypes } = useActionTypes();
+  const { originData: actionTypes } = useActionTypes();
+
+  // @ts-ignore
+  const list = getActionList((robotCardInfo.actions ?? []).map( action => ({
+    ...action,
+    id: action.actionId,
+  })))
+    .map((action) => {
+      const triggerType = actionTypes
+        .find((trigger) => trigger.actionTypeId === action.actionTypeId);
+      return {
+        // @ts-ignore
+        nodeTypeId: action.actionId,
+        service: triggerType?.service!,
+        type: IRobotNodeType.Action,
+      };
+    });
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
-    ...robotCardInfo.triggers.map(trigger => {
-      const triggerType = triggerTypes.find(item => trigger.triggerTypeId === item.triggerTypeId);
+    ...robotCardInfo.triggers.map((trigger) => {
+      const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
       return {
         nodeTypeId: trigger.triggerId,
         service: triggerType?.service!,
-        type: IRobotNodeType.Trigger
-      };}),
-    ...robotCardInfo.actions.map(action => {
-      const triggerType = actionTypes.find(trigger => trigger.actionTypeId === action.actionTypeId);
-      return {
-        nodeTypeId: action.actionId,
-        service: triggerType?.service!,
-        type: IRobotNodeType.Action
+        type: IRobotNodeType.Trigger,
       };
     }),
+    ...list
   ];
 
-  const nodeSteps : INodeStep[]= useMemo(() => {
-    const list : INodeStep[]= nodeTypeList.map(item => ({
+  const nodeSteps: INodeStep[] = useMemo(() => {
+    const list: INodeStep[] = nodeTypeList.map((item) => ({
       type: 'node',
-      item: item
+      item: item,
     }));
-    if(list.length > 5) {
+    if (list.length > 5) {
       const left = list.slice(0, 2);
-      const right = list.slice(list.length -2 );
+      const right = list.slice(list.length - 2);
       const t: INodeStep = {
         type: 'more',
       };
@@ -91,90 +103,87 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
   }, [nodeTypeList]);
 
   const theme = useTheme();
-  const readonlyStyle: React.CSSProperties = readonly ? {
-    cursor: 'not-allowed',
-    pointerEvents: 'none',
-    opacity: 0.5,
-  } : { cursor: 'pointer' };
+  const readonlyStyle: React.CSSProperties = readonly
+    ? {
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
+      opacity: 0.5,
+    }
+    : { cursor: 'pointer' };
 
-  const {
-    resourceId,
-    currentRobotId, robot,
-  } = useRobot();
+  const { resourceId, currentRobotId, robot } = useRobot();
   const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
 
   const colors = useThemeColors();
 
   return (
     <StyledBox
-      border={`1px solid ${theme.color.fc5}`}
-      borderRadius='4px'
-      marginTop='16px'
-      background={colors.bgControlsDefault}
+      border={`1px solid ${theme.color.borderCommonDefault}`}
+      borderRadius="4px"
+      marginTop="16px"
+      // background={colors.bgControlsDefault}
       style={readonlyStyle}
     >
-      <Box
-        padding='8px 0'
-        margin='0 8px'
-        onClick={onNavigate}
-      >
-        <Box display='flex' justifyContent='space-between' marginTop='8px' alignItems='center'>
-          <Box
-            width='100%'
-            display='flex'
-            alignItems='center'
-          >
+      <Box padding="8px 0" margin="0 8px" onClick={onNavigate}>
+        <Box display="flex" justifyContent="space-between" marginTop="8px" alignItems="center">
+          <Box width="100%" display="flex" alignItems="center">
             {nodeSteps.map((item, index) => {
               const isLast = index === nodeSteps.length - 1;
-              if (item.type ==='more') {
+              if (item.type === 'more') {
                 return (
                   <>
-                    <Box display='flex' marginRight='8px'>
+                    <Box display="flex" marginRight="8px">
                       <MoreOutlined size={'12px'} color={colors.textCommonTertiary} />
                     </Box>
 
-                    <Box display='flex' marginRight='8px'>
+                    <Box display="flex" marginRight="8px">
                       <ArrowRightOutlined size={'12px'} color={colors.textCommonTertiary} />
                     </Box>
-
                   </>
                 );
               }
-              const nodeType =item.item as IRobotNodeTypeInfo;
-              return <React.Fragment key={index}>
-                <span className={styles.nodeLogo}>
-                  <Image
-                    key={`${nodeType.nodeTypeId}_${index}`}
-                    src={integrateCdnHost(
-                      (nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
-                        getEnvVariables().ROBOT_TRIGGER_ICON! : nodeType.service?.logo ?? ''
-                    )}
-                    alt=''
-                    width={24}
-                    height={24}
-                  />
-                </span>
+              const nodeType = item.item as IRobotNodeTypeInfo;
+              return (
+                <React.Fragment key={index}>
+                  <span className={styles.nodeLogo}>
+                    <Image
+                      key={`${nodeType.nodeTypeId}_${index}`}
+                      src={integrateCdnHost(
+                        nodeType.type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON
+                          ? getEnvVariables().ROBOT_TRIGGER_ICON!
+                          : nodeType.service?.logo ?? '',
+                      )}
+                      alt=""
+                      width={24}
+                      height={24}
+                    />
+                  </span>
 
-                {
-                  !isLast && <Box display='flex' margin='0 8px'>
-                    <ArrowRightOutlined size={'12px'} color={colors.textCommonTertiary} />
-                  </Box>
-                }
-              </React.Fragment>;
+                  {!isLast && (
+                    <Box display="flex" margin="0 8px">
+                      <ArrowRightOutlined size={'12px'} color={colors.textCommonTertiary} />
+                    </Box>
+                  )}
+                </React.Fragment>
+              );
             })}
           </Box>
-          <Switch checked={robotCardInfo!.isActive} size='default' disabled={readonly} loading={loading} onClick={(_value, e) => {
-            stopPropagation(e);
-            toggleRobotActive();
-          }} />
+          <Switch
+            checked={robotCardInfo!.isActive}
+            size="default"
+            disabled={readonly}
+            loading={loading}
+            onClick={(_value, e) => {
+              stopPropagation(e);
+              toggleRobotActive();
+            }}
+          />
         </Box>
       </Box>
 
-      <Box display='flex' alignItems='center' margin={'0 8px'}
-        onClick={onNavigate}
-      >
-        <Box display='flex' alignItems='center' marginBottom={'16px'}>
-          <Typography variant='h8' ellipsis>
+      <Box display="flex" alignItems="center" margin={'0 8px'} onClick={onNavigate}>
+        <Box display="flex" alignItems="center" marginBottom={'16px'}>
+          <Typography variant="h8" ellipsis>
             {name || t(Strings.robot_unnamed)}
           </Typography>
         </Box>

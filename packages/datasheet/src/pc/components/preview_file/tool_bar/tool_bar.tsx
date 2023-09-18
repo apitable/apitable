@@ -178,13 +178,12 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = (props) => {
           },
           {
             component: (
-              <span style={{
-                opacity: scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1,
-              }}>
-                <AddCircleOutlined
-                  size={16}
-                  color={colors.black[50]}
-                />
+              <span
+                style={{
+                  opacity: scale * initActualScale >= MAX_SCALE || initActualScale === -1 ? 0.5 : 1,
+                }}
+              >
+                <AddCircleOutlined size={16} color={colors.black[50]} />
               </span>
             ),
             tip: t(Strings.zoom_in),
