@@ -73,6 +73,8 @@ describe('RobotTriggerServiceTest', () => {
 
   it('given a trigger when get the map about triggers grouped by resource id', async() => {
     jest.spyOn(automationRobotRepository, 'getActiveRobotsByResourceIds').mockResolvedValue([{ resourceId: 'datasheetId', robotId: 'robotId' }]);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue(
+      [{ resourceId: 'datasheetId', robotId: 'robotId' }]);
     jest
       .spyOn(automationTriggerRepository, 'getAllTriggersByRobotIds')
       .mockResolvedValue([
@@ -88,6 +90,7 @@ describe('RobotTriggerServiceTest', () => {
 
   it('given none trigger when get the map about triggers grouped by resource id then should be return empty object', async() => {
     jest.spyOn(automationRobotRepository, 'getActiveRobotsByResourceIds').mockResolvedValue([]);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([]);
     jest.spyOn(automationTriggerRepository, 'getAllTriggersByRobotIds').mockResolvedValue([]);
     jest
       .spyOn(automationTriggerRepository , 'getRobotIdsByResourceIdsAndHasInput')

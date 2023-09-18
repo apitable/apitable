@@ -17,6 +17,7 @@
  */
 
 import { Injectable } from '@nestjs/common';
+import { ResourceRobotDto } from 'automation/dtos/robot.dto';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { ResourceRobotTriggerDto } from '../dtos/trigger.dto';
@@ -53,8 +54,7 @@ export class RobotTriggerService {
   }
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
-    // todo add triggers
-    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const resourceRobotDtos = await this.getActiveRobotsByResourceIds(resourceIds);
     const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
       robotIdToResourceId[item.robotId] = item.resourceId;
       return robotIdToResourceId;
@@ -80,15 +80,10 @@ export class RobotTriggerService {
     return resourceRobotTriggers;
   }
 
-  // @ts-ignore
-  private async getAllRevolvedRobotIds(resourceIds: string[] = []) {
-    if (resourceIds.length === 0) {
-      return new Set<string>();
-    }
-    const robots = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
-    const robotIds = new Set<string>(robots.map(robot => robot.robotId));
-    const triggerRobotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput(resourceIds);
-    triggerRobotIds.forEach(i => robotIds.add(i));
-    return robotIds;
+  private async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
+    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
+    resourceRobotDtos.push(...triggerResourceDtos);
+    return resourceRobotDtos;
   }
 }
