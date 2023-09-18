@@ -40,10 +40,10 @@ interface IRobotListItemCardProps {
 
 const StyledBox = styled(Box)`
   &:hover {
-    background-color: var(--bgControlsActive);
+    background-color: var(--bgBglessHover);
   }
   &:active {
-    background-color: var(--bgControlsHover);
+    background-color: var(--bgBglessActive);
   }
 `;
 

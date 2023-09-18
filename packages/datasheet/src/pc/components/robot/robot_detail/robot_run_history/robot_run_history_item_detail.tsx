@@ -33,20 +33,24 @@ interface IRobotRunHistoryItemDetailProps {
 
 export const useRunTaskDetail = (taskId: string) => {
   const taskDetailUrl = `/automation/run-history/${taskId}`;
-  const { data, error } = useSWR(taskDetailUrl, nestReq);
+  const { data, error, isLoading } = useSWR(taskDetailUrl, nestReq);
 
   const taskDetail: IRobotHistoryTask = data?.data?.data;
   return {
+    isLoading,
     data: taskDetail,
     error,
   };
 };
 export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps) => {
   const { taskId } = props;
-  const { data, error } = useRunTaskDetail(taskId);
+  const { data, error, isLoading } = useRunTaskDetail(taskId);
   const taskDetail = data?.data;
   const colors= useCssColors();
   const nodeTypeByIds = useNodeTypeByIds();
+  if(isLoading) {
+    return null;
+  }
   if (error || !taskDetail) {
     return (
       <Box padding="16px" backgroundColor={colors.bgCommonDefault}>

@@ -3,9 +3,10 @@ import { useAtom } from 'jotai';
 import { FC } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
-import { Avatar, Box, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
+import { Box, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, DatasheetOutlined, GotoOutlined, PlayOutlined, TimeOutlined, UserEditOutlined } from '@apitable/icons';
+import { Avatar, AvatarSize, AvatarType } from '../../../common';
 import { updateRobotItem } from '../../../robot/api';
 import { useDefaultRobotDesc, useRobot } from '../../../robot/hooks';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
@@ -27,6 +28,8 @@ const StyeldRelatedResouece = styled(Box)`
 `;
 
 export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
+const CONST_SHOW_RELATED_FIELS = false;
 
 export const BaseInfo: FC = () => {
   const [state] = useAtom(automationStateAtom);
@@ -116,7 +119,8 @@ export const BaseInfo: FC = () => {
               </Box>
 
               <Box display={'flex'} alignItems={'center'}>
-                {robot?.updatedBy?.avatar && <Avatar size={'xxs'} src={robot?.updatedBy?.avatar} />}
+                <Avatar id={AvatarType.Member.toString()} size={20} title={robot?.updatedBy.nickName} src={robot?.updatedBy?.avatar} />
+
                 <Box display="flex" alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonPrimary}>
                     {robot?.updatedBy.nickName}
@@ -143,55 +147,59 @@ export const BaseInfo: FC = () => {
           </StyledGrip>
         </Box>
 
-        <Box>
-          <Box paddingX={'24px'}>
-            <Typography variant="h7"
-              style={{ marginBottom: '0 !important', marginTop: '12px' }}
-              color={colors.textCommonPrimary}>
-              {t(Strings.related_files)}
-            </Typography>
-          </Box>
+        {
+          CONST_SHOW_RELATED_FIELS && (
+            <Box>
+              <Box paddingX={'24px'}>
+                <Typography variant="h7"
+                  style={{ marginBottom: '0 !important', marginTop: '12px' }}
+                  color={colors.textCommonPrimary}>
+                  {t(Strings.related_files)}
+                </Typography>
+              </Box>
 
-          {robot?.relatedResources?.map((item) => (
-            <Box padding={'0 16px'} key={item.nodeId}>
-              <StyeldRelatedResouece
-                padding={'12px 8px'}
-                display={'flex'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                onClick={() => {
-                  window.open(`/workbench/${item.nodeId}`);
-                }}
-              >
-                <Box display={'inline-flex'} alignItems={'center'}>
-                  <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
+              {robot?.relatedResources?.map((item) => (
+                <Box padding={'0 16px'} key={item.nodeId}>
+                  <StyeldRelatedResouece
+                    padding={'12px 8px'}
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                    onClick={() => {
+                      window.open(`/workbench/${item.nodeId}`);
+                    }}
+                  >
+                    <Box display={'inline-flex'} alignItems={'center'}>
+                      <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
 
-                  <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
-                    <Typography variant="body4" color={colors.textCommonPrimary}>
-                      {item.nodeName}
-                    </Typography>
-                  </Box>
+                      <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
+                        <Typography variant="body4" color={colors.textCommonPrimary}>
+                          {item.nodeName}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <GotoOutlined color={colors.textCommonTertiary} />
+                  </StyeldRelatedResouece>
                 </Box>
+              ))}
 
-                <GotoOutlined color={colors.textCommonTertiary} />
-              </StyeldRelatedResouece>
+              {robot?.relatedResources?.length === 0 && (
+                <Box paddingX={'24px'}>
+                  <Typography variant="body4" color={colors.textCommonTertiary}>
+                    {t(Strings.automation_please_set_a_trigger_first)}
+                  </Typography>
+                </Box>
+              )}
+
             </Box>
-          ))}
 
-          {robot?.relatedResources?.length === 0 && (
-            <Box paddingX={'24px'}>
-              <Typography variant="body4" color={colors.textCommonTertiary}>
-                {t(Strings.automation_please_set_a_trigger_first)}
-              </Typography>
-            </Box>
-          )}
-
-        </Box>
-
+          )
+        }
         <Box>
           <Box justifyContent={'space-between'} alignItems={'center'} display={'flex'} paddingX={'24px'}>
             <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-              <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginBottom: '12px' }}>
+              <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginBottom: '12px', marginTop: '12px' }}>
                 {t(Strings.robot_run_history_title)}
               </Typography>
             </Box>

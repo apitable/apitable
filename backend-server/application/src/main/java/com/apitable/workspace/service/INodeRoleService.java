@@ -50,10 +50,9 @@ public interface INodeRoleService {
      * close the node to specify permissions
      *
      * @param userId user id
-     * @param memberId member id
      * @param nodeId node id
      */
-    void disableNodeRole(Long userId, Long memberId, String nodeId);
+    void disableNodeRole(Long userId, String nodeId);
 
     /**
      * Add an organizational unit to a node to specify a role

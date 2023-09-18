@@ -100,7 +100,7 @@ describe('RobotTriggerTypeServiceTest', () => {
         endpoint: 'form_submitted',
         i18n: {
           en: {
-            $robot_trigger_form_submitted_desc: 'When a form receives a new response, the robot will start working',
+            $robot_trigger_form_submitted_desc: 'When a form receives a new response, the automation will start working',
             $robot_trigger_form_submitted_title: 'Form is submitted',
           },
         },

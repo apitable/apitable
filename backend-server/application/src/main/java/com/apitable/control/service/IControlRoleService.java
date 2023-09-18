@@ -117,15 +117,6 @@ public interface IControlRoleService extends IService<ControlRoleEntity> {
      * Modify control unit role
      *
      * @param userId    User ID
-     * @param controlRoleIds       Table ID List
-     * @param role      Modified role
-     */
-    void editControlRole(Long userId, List<Long> controlRoleIds, String role);
-
-    /**
-     * Modify control unit role
-     *
-     * @param userId    User ID
      * @param controlId Control Unit ID
      * @param unitIds   Org Unit ID List
      * @param role      Modified role

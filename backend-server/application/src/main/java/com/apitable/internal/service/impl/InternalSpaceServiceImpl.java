@@ -21,12 +21,14 @@ package com.apitable.internal.service.impl;
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
 import cn.hutool.core.util.StrUtil;
+import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalCreditUsageVo;
 import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
@@ -62,11 +64,24 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Resource
     private RedisLockRegistry redisLockRegistry;
 
+    @Resource
+    private AiServiceFacade aiServiceFacade;
+
     @Override
     public InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId) {
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
         BillingAssembler assembler = new BillingAssembler();
         return assembler.toVo(subscriptionInfo);
+    }
+
+    @Override
+    public InternalCreditUsageVo getSpaceCreditUsageVo(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        InternalCreditUsageVo vo = new InternalCreditUsageVo();
+        vo.setAllowOverLimit(subscriptionInfo.getConfig().isAllowCreditOverLimit());
+        vo.setMaxMessageCredits(subscriptionInfo.getFeature().getMessageCreditNums().getValue());
+        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId));
+        return vo;
     }
 
     @Override

@@ -121,17 +121,6 @@ public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
     int insertBatch(@Param("entities") List<ControlRoleEntity> entities);
 
     /**
-     * Change the role of the specified table ID
-     *
-     * @param userId    User ID
-     * @param ids       Table ID List
-     * @param role      Modified role
-     * @return Number of execution results
-     */
-    int updateRoleCodeByIds(@Param("userId") Long userId,
-        @Param("ids") List<Long> ids, @Param("role") String role);
-
-    /**
      * Find permissions by permission ID and organization ID
      *
      * @param controlId Permission ID

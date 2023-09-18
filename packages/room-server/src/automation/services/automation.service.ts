@@ -394,23 +394,22 @@ export class AutomationService {
       return;
     }
     const robot = await this.automationRobotRepository.selectRobotSimpleInfoByRobotId(robotId);
-    if (!robot) {
-      return;
-    }
-    const spaceId = (await this.nodeService.selectSpaceIdByNodeId(robot.resourceId))?.spaceId;
-    const message = {
-      nodeId: robot.resourceId,
-      spaceId: spaceId,
-      body: {
-        extras: {
-          robotId,
-          automationName: robot.name || await this.i18n.translate(Strings.robot_unnamed),
-          endAt: Date.now(),
+    if (robot?.props?.failureNotifyEnable) {
+      const spaceId = (await this.nodeService.selectSpaceIdByNodeId(robot.resourceId))?.spaceId;
+      const message = {
+        nodeId: robot.resourceId,
+        spaceId: spaceId,
+        body: {
+          extras: {
+            robotId,
+            automationName: robot.name || await this.i18n.translate(Strings.robot_unnamed),
+            endAt: Date.now(),
+          },
         },
-      },
-      templateId: NoticeTemplatesConstant.workflow_execute_failed_notify,
-      toUserId: [robot.createdBy],
-    };
-    await this.queueSenderService.sendMessage(notificationQueueExchangeName, 'notification.message', message);
+        templateId: NoticeTemplatesConstant.workflow_execute_failed_notify,
+        toUserId: [robot.createdBy],
+      };
+      await this.queueSenderService.sendMessage(notificationQueueExchangeName, 'notification.message', message);
+    }
   }
 }

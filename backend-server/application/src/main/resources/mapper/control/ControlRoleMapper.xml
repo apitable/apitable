@@ -110,17 +110,6 @@
         </foreach>
     </insert>
 
-    <update id="updateRoleCodeByIds">
-        UPDATE ${tablePrefix}control_role
-        SET role_code = #{role}, updated_by = #{userId}
-        WHERE id IN
-        <foreach item="item" index="index" collection="ids" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </update>
-
     <select id="selectDeletedRole" resultType="com.apitable.control.entity.ControlRoleEntity">
         SELECT *
         FROM ${tablePrefix}control_role

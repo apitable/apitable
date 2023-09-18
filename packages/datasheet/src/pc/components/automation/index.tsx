@@ -98,11 +98,7 @@ export const AutomationPanel: FC<{onClose ?:() => void}> = memo(({ onClose }) =>
   }
 
   return (
-    <Box display={'flex'}
-      borderRadius={'4px'}
-      borderStyle={'solid'}
-      borderColor={colors.borderCommonDefault}
-      flexDirection={'column'} width={'100%'} height={'100%'} overflowY={'hidden'}>
+    <Box display={'flex'} flexDirection={'column'} width={'100%'} height={'100%'} overflowY={'hidden'}>
       <Box
         flex={'0 0 72px'}
         backgroundColor={colors.bgCommonDefault}

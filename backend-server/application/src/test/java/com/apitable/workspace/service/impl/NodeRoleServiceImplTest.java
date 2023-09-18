@@ -89,6 +89,35 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testDuplicateAddNodeRoleWithTheRoleBeforeLastSettingTurnedOff() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long userId = userSpace.getUserId();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo nodeOpRo = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String nodeId =
+            iNodeService.createNode(userId, spaceId, nodeOpRo);
+        // open the control permission of the node
+        // now root team unit with management role
+        iNodeRoleService.enableNodeRole(userId, spaceId, nodeId, true);
+        iNodeRoleService.disableNodeRole(userId, nodeId);
+        // reopen the control permission but no implement extend
+        iNodeRoleService.enableNodeRole(userId, spaceId, nodeId, false);
+        Long rootTeamId = iTeamService.getRootTeamId(spaceId);
+        Long unitId = iUnitService.getUnitIdByRefId(rootTeamId);
+        iNodeRoleService.addNodeRole(userSpace.getUserId(), nodeId, Node.EDITOR,
+            CollUtil.newArrayList(unitId));
+        // The second addition actually performs the modification operation.
+        // The role is the role before the last permission setting was turned off.
+        iNodeRoleService.addNodeRole(userSpace.getUserId(), nodeId, Node.MANAGER,
+            CollUtil.newArrayList(unitId));
+    }
+
+    @Test
     void givenNodeControlRolesWhenDeleteNodeRolesThenSuccess() {
         iControlRoleService.addControlRole(1L, "nod", CollUtil.newArrayList(1L, 2L), Node.READER);
         iControlRoleService.addControlRole(1L, "nod", CollUtil.newArrayList(1L), Node.OWNER);

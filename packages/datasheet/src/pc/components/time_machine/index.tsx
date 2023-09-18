@@ -51,7 +51,6 @@ import { Beta } from 'pc/components/robot/robot_panel/robot_list_head';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getEnvVariables } from 'pc/utils/env';
 import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
 import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
@@ -288,72 +287,64 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         <Beta />
         <IconButton shape="square" onClick={() => onClose(false)} icon={CloseOutlined} style={{ position: 'absolute', right: 16 }} />
       </div>
-      {getEnvVariables().IS_APITABLE ? (
-        Boolean(Backup) && (
-          <div className={styles.apitableWarpper}>
-            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
-          </div>
-        )
-      ) : (
-        <Tabs
-          className={styles.tabs}
-          onChange={() => {
-            dispatch(StoreActions.resetDatasheet(PREVIEW_DATASHEET_ID));
-            setCurPreview(undefined);
-          }}
-        >
-          <TabPane tab={t(Strings.time_machine_action_title)} key={TabPaneKeys.ACTION}>
-            <div className={styles.content} ref={contentRef}>
-              {isEmpty ? (
-                <div className={styles.noList}>
-                  <Image src={DataEmpty} width={240} height={180} alt="" />
-                  <p>{t(Strings.rollback_history_empty)}</p>
-                </div>
-              ) : (
-                changesetList.map((item, index) => {
-                  const memberInfo = uuidMap && uuidMap[item.userId!];
-                  const title = memberInfo
-                    ? getSocialWecomUnitName?.({
-                      name: memberInfo?.memberName,
-                      isModified: memberInfo?.isMemberNameModified,
-                      spaceInfo,
-                    }) || memberInfo?.memberName
-                    : '';
-                  const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
-                  return (
-                    <section
-                      className={styles.listItem}
-                      key={`${item.messageId}-${item.revision}`}
-                      data-active={index === curPreview}
-                      onClick={() =>{ 
-                        onPreviewClick(index);
-                        console.log('ops', ops);
-                      }}
-                    >
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <Avatar id={item.userId || ''} title={title} size={24} src={memberInfo?.avatar} />
-                        <div>
-                          <div className={styles.title}>
-                            <span style={{ paddingRight: '4px' }}>{title}</span>
-                            <span>{getOperationInfo(ops)}</span>
-                          </div>
-                          <div className={styles.timestamp}>{dayjs(item.createdAt).format(DATEFORMAT)}</div>
+      <Tabs
+        className={styles.tabs}
+        onChange={() => {
+          dispatch(StoreActions.resetDatasheet(PREVIEW_DATASHEET_ID));
+          setCurPreview(undefined);
+        }}
+      >
+        <TabPane tab={t(Strings.time_machine_action_title)} key={TabPaneKeys.ACTION}>
+          <div className={styles.content} ref={contentRef}>
+            {isEmpty ? (
+              <div className={styles.noList}>
+                <Image src={DataEmpty} width={240} height={180} alt="" />
+                <p>{t(Strings.rollback_history_empty)}</p>
+              </div>
+            ) : (
+              changesetList.map((item, index) => {
+                const memberInfo = uuidMap && uuidMap[item.userId!];
+                const title = memberInfo
+                  ? getSocialWecomUnitName?.({
+                    name: memberInfo?.memberName,
+                    isModified: memberInfo?.isMemberNameModified,
+                    spaceInfo,
+                  }) || memberInfo?.memberName
+                  : '';
+                const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
+                return (
+                  <section
+                    className={styles.listItem}
+                    key={`${item.messageId}-${item.revision}`}
+                    data-active={index === curPreview}
+                    onClick={() =>{
+                      onPreviewClick(index);
+                      console.log('ops', ops);
+                    }}
+                  >
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Avatar id={item.userId || ''} title={title} size={24} src={memberInfo?.avatar} />
+                      <div>
+                        <div className={styles.title}>
+                          <span style={{ paddingRight: '4px' }}>{title}</span>
+                          <span>{getOperationInfo(ops)}</span>
                         </div>
+                        <div className={styles.timestamp}>{dayjs(item.createdAt).format(DATEFORMAT)}</div>
                       </div>
-                    </section>
-                  );
-                })
-              )}
-              {!isEmpty && <div className={styles.bottomTip}>{noMore ? t(Strings.no_more) : t(Strings.data_loading)}</div>}
-            </div>
+                    </div>
+                  </section>
+                );
+              })
+            )}
+            {!isEmpty && <div className={styles.bottomTip}>{noMore ? t(Strings.no_more) : t(Strings.data_loading)}</div>}
+          </div>
+        </TabPane>
+        {Boolean(Backup) && (
+          <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
+            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
           </TabPane>
-          {Boolean(Backup) && (
-            <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
-              <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
-            </TabPane>
-          )}
-        </Tabs>
-      )}
+        )}
+      </Tabs>
 
       <Portal visible={rollbackIng} zIndex={2000}>
         <div className={styles.mask}>
