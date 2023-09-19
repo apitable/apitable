@@ -84,7 +84,7 @@ export const RobotRunHistoryActionDetail = (props: IRobotRunHistoryActionDetail)
 
   const hasError = nodeDetail.errorStacks && nodeDetail.errorStacks.length > 0;
   return (
-    <Box>
+    <Box width={'100%'}>
       <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
       <FormDataRender nodeSchema={nodeType.inputJsonSchema} formData={nodeDetail.input} />
       <StyledTitle hasError={hasError}>{hasError ? t(Strings.robot_run_history_error) : t(Strings.robot_run_history_output)}</StyledTitle>

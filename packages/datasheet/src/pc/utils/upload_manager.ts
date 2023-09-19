@@ -358,7 +358,7 @@ export class UploadManager {
 
   public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
     return new Promise((resolve) => {
-      const request = async(nvcVal?: string) => {
+      const request = async (nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
           file: formData.get('file') as File,

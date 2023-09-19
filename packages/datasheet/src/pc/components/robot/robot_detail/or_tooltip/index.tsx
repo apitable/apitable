@@ -3,15 +3,15 @@ import React, { PropsWithChildren } from 'react';
 import { FloatUiTooltip as Tooltip } from '@apitable/components';
 
 export interface IWrapperTooltip {
-    tooltipEnable?: boolean;
-    tooltip?: string;
+  tooltipEnable?: boolean;
+  tooltip?: string;
 
-    placement?: Placement,
-    className?: string,
-    options?: {
-        offset?: number
-    },
-    arrow?: boolean
+  placement?: Placement;
+  className?: string;
+  options?: {
+    offset?: number;
+  };
+  arrow?: boolean;
 }
 
 export const OrTooltip: React.FC<React.PropsWithChildren<PropsWithChildren<IWrapperTooltip>>> = (props) => {

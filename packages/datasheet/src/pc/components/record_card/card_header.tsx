@@ -101,7 +101,7 @@ export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = (
   }
 
   const coverValue = _coverValue.map((value) => ({
-    ...value as IAttachmentValue,
+    ...(value as IAttachmentValue),
     token: getSignatureUrl((value as IAttachmentValue).token),
   }));
 

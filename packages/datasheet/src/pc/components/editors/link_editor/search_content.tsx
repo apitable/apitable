@@ -251,7 +251,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         const result: {
           recordId: string;
           content: { [fieldId: string]: string | null };
-        } = { recordId: recordId, content: {}};
+        } = { recordId: recordId, content: {} };
         // Search set construction for visible columns only
         foreignColumns.slice(0, 6).forEach((column) => {
           const field = fieldMap[column.fieldId];

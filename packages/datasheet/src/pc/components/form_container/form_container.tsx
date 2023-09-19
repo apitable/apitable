@@ -349,7 +349,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
     return false;
   };
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     if (isEmpty) {
       emptyTip();
       return;
@@ -447,7 +447,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   };
 
   const onJump = () => {
-    Router.newTab(Navigation.HOME, { query: { home: 1 }});
+    Router.newTab(Navigation.HOME, { query: { home: 1 } });
   };
 
   const onFillAgain = () => {

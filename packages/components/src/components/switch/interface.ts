@@ -30,6 +30,8 @@ export interface ISwitchProps extends Omit<React.HTMLAttributes<HTMLButtonElemen
    */
   disabled?: boolean;
   clazz ?: {
+    checkedText?: string,
+    unCheckedText?: string,
     checkedCircle?: string
     unCheckedCircle?: string
     checkedBackground?: string

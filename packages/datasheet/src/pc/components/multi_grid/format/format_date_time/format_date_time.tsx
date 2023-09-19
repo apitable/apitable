@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import { omit } from 'lodash';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import * as React from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
-import { Checkbox, Select, colorVars } from '@apitable/components';
+import { Checkbox, Select, colorVars, Switch } from '@apitable/components';
 import {
   DateFormat,
   TimeFormat,

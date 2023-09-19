@@ -14,7 +14,7 @@ export interface IViewPropertyUpdateProps {
   shareId?: string;
 }
 
-const modifyViewProperty = async(props: IViewPropertyUpdateProps) => {
+const modifyViewProperty = async (props: IViewPropertyUpdateProps) => {
   const { datasheetId, viewId, autoSave, shareId, onClose, isViewLock } = props;
   if (isViewLock) {
     expandViewLock(viewId);
@@ -38,7 +38,7 @@ const modifyViewProperty = async(props: IViewPropertyUpdateProps) => {
   }
 };
 
-const cancelModification = async(props: IViewPropertyUpdateProps) => {
+const cancelModification = async (props: IViewPropertyUpdateProps) => {
   const { datasheetId, viewId, autoSave, shareId, onClose } = props;
   onClose();
   if (autoSave) {

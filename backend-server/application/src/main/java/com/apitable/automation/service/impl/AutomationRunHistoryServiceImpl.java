@@ -18,9 +18,17 @@
 
 package com.apitable.automation.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
+import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.service.IAutomationRunHistoryService;
-import com.apitable.databusclient.ApiException;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
+import com.apitable.databusclient.model.AutomationRunHistoryPO;
+import com.apitable.workspace.enums.IdRulePrefixEnum;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +44,58 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
     private AutomationDaoApiApi automationDaoApiApi;
 
     @Override
-    public void getRobotRunHistory(String robotId) throws ApiException {
-        automationDaoApiApi.daoGetAutomationRunHistory(robotId);
+    public List<AutomationTaskSimpleVO> getRobotRunHistory(String robotId, Integer pageSize,
+                                                           Integer pageNum) {
+        return getAutomationRobotRunHistoryFromDatabus(robotId, pageSize, pageNum);
+    }
+
+    private List<AutomationTaskSimpleVO> getAutomationRobotRunHistoryFromDatabus(String robotId,
+                                                                                 Integer pageSize,
+                                                                                 Integer pageNum) {
+        List<AutomationTaskSimpleVO> results = new ArrayList<>();
+        try {
+            List<AutomationRunHistoryPO> tasks =
+                automationDaoApiApi.daoGetAutomationRunHistory(pageSize, pageNum, robotId)
+                    .getData();
+            if (null == tasks) {
+                return results;
+            }
+            tasks.forEach(task -> {
+                AutomationTaskSimpleVO result = new AutomationTaskSimpleVO();
+                result.setRobotId(task.getRobotId());
+                result.setStatus(task.getStatus());
+                result.setTaskId(task.getTaskId());
+                result.setCreatedAt(LocalDateTimeUtil.parse(task.getCreatedAt()));
+                result.setRobotId(task.getRobotId());
+                // format action execution list
+                if (StrUtil.isNotBlank(task.getActionIds())) {
+                    List<AutomationTaskSimpleVO.ActionExecutionVO> executions = new ArrayList<>();
+                    List<Object> actionIds =
+                        new ArrayList<>(JSONUtil.parseArray(task.getActionIds()));
+                    List<Object> actionTypeIds =
+                        new ArrayList<>(JSONUtil.parseArray(task.getActionTypeIds()));
+                    List<Object> errorMessages =
+                        new ArrayList<>(JSONUtil.parseArray(task.getErrorMessages()));
+                    for (int i = 0; i < actionIds.size(); i++) {
+                        AutomationTaskSimpleVO.ActionExecutionVO execution =
+                            new AutomationTaskSimpleVO.ActionExecutionVO();
+                        // exclude trigger
+                        if (!ObjectUtil.contains(actionIds.get(i),
+                            IdRulePrefixEnum.AUTOMATION_TRIGGER.getIdRulePrefixEnum())) {
+                            execution.setActionId(actionIds.get(i).toString());
+                            execution.setActionTypeId(actionTypeIds.get(i).toString());
+                            execution.setSuccess(null == errorMessages.get(i));
+                            executions.add(execution);
+                        }
+                    }
+                    result.setExecutedActions(executions);
+                }
+                results.add(result);
+            });
+            return results;
+        } catch (Exception e) {
+            log.error("Get automation history error: {}", robotId, e);
+            return results;
+        }
     }
 }

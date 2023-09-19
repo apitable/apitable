@@ -197,7 +197,7 @@ const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
       return;
     }
     if (!timerRef.current && dropPosition === 0) {
-      timerRef.current = setTimeout(function() {
+      timerRef.current = setTimeout(function () {
         dispatch(StoreActions.setExpandedKeys([...expandedKeys, targetNodeId]));
       }, 1000);
     }

@@ -35,7 +35,7 @@ interface IPopupContentProps extends IViewPropertyUpdateProps {
   shareId?: string;
 }
 
-export const changeViewAutoSave = async(autoSave: boolean, datasheetId: string, viewId: string, shareId?: string) => {
+export const changeViewAutoSave = async (autoSave: boolean, datasheetId: string, viewId: string, shareId?: string) => {
   const _autoSave = !autoSave;
   const baseOption = {
     cmd: CollaCommandName.SetViewAutoSave,

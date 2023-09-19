@@ -141,7 +141,7 @@ export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = (p
     formulaColorantEleRef.current!.scrollTop = formulaInputEleRef.current!.scrollTop;
   }, [expression]);
 
-  const onExpressionChange = function(v: string) {
+  const onExpressionChange = function (v: string) {
     parse(v);
     setExpression(v);
   };

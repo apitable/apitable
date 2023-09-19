@@ -236,7 +236,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   }, [updateActiveKey]);
 
   const jumpTrash = () => {
-    Router.push(Navigation.TRASH, { params: { spaceId }});
+    Router.push(Navigation.TRASH, { params: { spaceId } });
   };
 
   const jumpSpaceTemplate = () => {

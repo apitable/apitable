@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
+import { Radio, Space, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Button, Skeleton } from '@apitable/components';
+import { Button, Skeleton, Switch } from '@apitable/components';
 import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { DisabledShareFile } from 'pc/components/catalog/share_node/disabled_share_file/disabled_share_file';

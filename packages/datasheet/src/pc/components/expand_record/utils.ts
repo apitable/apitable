@@ -91,7 +91,7 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
     const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, datasheetId };
     isReplace
       ? Router.replace(Navigation.WORKBENCH, { params, clearQuery: true, query })
-      : Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query, options: { shallow: true }});
+      : Router.push(Navigation.WORKBENCH, { params, clearQuery: true, query, options: { shallow: true } });
   }
 }, 300);
 export const recordModalCloseFns: Array<() => void | Promise<void>> = [];

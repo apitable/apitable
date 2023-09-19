@@ -32,7 +32,7 @@ export const useRoleRequest = (): {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [roles, setRoles] = useState<IRoleItem[]>([]);
 
-  const getRoleList = useCallback(async() => {
+  const getRoleList = useCallback(async () => {
     const res = await Api.getRoleList();
     const { data } = res;
     if (!data.success) {

@@ -58,7 +58,7 @@ export const SelectFolder: React.FC<
   const isMobile = screenIsAtMost(ScreenSize.md);
   const colors = useThemeColors();
 
-  useMount(async() => {
+  useMount(async () => {
     await Api.getRecentlyBrowsedFolder().then((res) => {
       const { data, success, message } = res.data;
       if (!success) {

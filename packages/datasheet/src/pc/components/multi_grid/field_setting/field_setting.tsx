@@ -421,7 +421,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
   }
 
   // If the result of the conversion is a member field, scan the data and load the new member information
-  const checkMemberField = async(checkResult: IField) => {
+  const checkMemberField = async (checkResult: IField) => {
     if (checkResult.type === FieldType.Member) {
       const cellValues = DatasheetActions.getCellValuesByFieldId(store.getState(), snapshot, checkResult.id);
       const stdVals = cellValues

@@ -16,44 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useHover, usePrevious } from 'ahooks';
+import { useHover } from 'ahooks';
 import { useAtom, useAtomValue } from 'jotai';
 import { JSONSchema7 } from 'json-schema';
 import Image from 'next/image';
-import { memo, ReactElement, useEffect, useRef } from 'react';
+import { memo, ReactElement, useRef } from 'react';
 import { mutate } from 'swr';
 import {
   Box,
   Button,
   ContextMenu,
-  IconButton,
   FloatUiTooltip as Tooltip,
+  IconButton,
   Typography,
   useContextMenu,
-  useTheme
+  useTheme,
 } from '@apitable/components';
 import { IJsonSchema, Strings, t, validateMagicForm } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { automationPanelAtom, automationStateAtom } from '../../../automation/controller';
-import { useDeleteRobotAction, useRobot, useTriggerTypes } from '../../hooks';
-import { INodeOutputSchema, INodeSchema, IRobotNodeType } from '../../interface';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import { useDeleteRobotAction, useRobot } from '../../hooks';
+import { INodeOutputSchema, IRobotNodeType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
+import { useCssColors } from '../trigger/use_css_colors';
 import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
 
 type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
-  index: number
-  schema: IJsonSchema
+  index: number;
+  schema: IJsonSchema;
   description?: string;
-  serviceLogo?: string
+  serviceLogo?: string;
   nodeOutputSchemaList?: INodeOutputSchema[];
   nodeId: string;
   title?: string;
   type?: 'trigger' | 'action';
-  children?: ReactElement,
+  children?: ReactElement;
   handleClick?: () => void;
 };
 
@@ -63,49 +64,30 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
   const ref = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { description, title, type = 'trigger', children, handleClick, ...restProps } = props;
+  const colors = useCssColors();
 
-  const theme = useTheme();
   // FIXME
   return (
-    <Box
-      height={'100%'}
-      display={'flex'}
-      flexDirection={'column'}
-      paddingTop="16px"
-    >
+    <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <Box flex={'1 1 auto'} overflow={'auto'}>
-        <Typography variant="h7" color={theme.color.fc1}>
+        <Typography variant="h6" color={colors.textCommonPrimary}>
           {title}
         </Typography>
 
-        <Typography variant="body4" style={{ marginTop: 4 }} color={theme.color.fc3}>
+        <Typography variant="body4" style={{ marginTop: 8 }} color={colors.textCommonTertiary}>
           {description}
         </Typography>
 
-        <MagicVariableForm
-          {...restProps}
-
-          ref={ref}
-          liveValidate
-          style={{ marginTop: -24 }}
-        >
+        <MagicVariableForm {...restProps} ref={ref} liveValidate style={{ marginTop: -24 }}>
           <></>
         </MagicVariableForm>
       </Box>
 
-      <Box
-        flex={'0 0 32px'}
-        marginTop="16px"
-        display="flex"
-        width={'100%'}
-        justifyContent={'center'}
-        flexDirection="row-reverse"
-      >
-        <Box
-          display="flex"
-        >
+      <Box flex={'0 0 32px'} marginTop="16px" display="flex" width={'100%'} justifyContent={'center'} flexDirection="row-reverse">
+        <Box display="flex">
           <Button
             variant="fill"
+            style={{ width: '128px' }}
             size="middle"
             onClick={() => {
               (ref.current as any)?.submit();
@@ -115,7 +97,6 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
             {t(Strings.robot_save_step_button)}
           </Button>
         </Box>
-
       </Box>
     </Box>
   );
@@ -127,9 +108,13 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   const { hasError } = validateMagicForm(restProps.schema as JSONSchema7, restProps.formData);
   const deleteRobotAction = useDeleteRobotAction();
   const { currentRobotId } = useRobot();
+  const [, setAutomationPanel] = useAtom(automationPanelAtom);
 
-  const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh }} = useRobotListState();
+  const automationState = useAtomValue(automationStateAtom);
+  const {
+    api: { refresh },
+  } = useRobotListState();
+  const colors = useCssColors();
 
   const handleDeleteRobotAction = () => {
     Modal.confirm({
@@ -137,12 +122,10 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       content: t(Strings.robot_action_delete_confirm_desc),
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
-      onOk: async() => {
+      onOk: async () => {
         const deleteOk = await deleteRobotAction(nodeId);
-        if(deleteOk) {
-
-          console.log('automationStateautomationStateautomationStateautomationState', automationState);
-          if(!automationState?.resourceId) {
+        if (deleteOk) {
+          if (!automationState?.resourceId) {
             return;
           }
           await refresh({
@@ -150,6 +133,9 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
             robotId: automationState?.currentRobotId!,
           });
           await mutate(`/automation/robots/${currentRobotId}/actions`);
+          setAutomationPanel((draft) => {
+            draft.panelName = PanelName.BasicInfo;
+          });
         }
       },
       onCancel: () => {
@@ -160,7 +146,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   };
 
   const [panelState] = useAtom(automationPanelAtom);
-  const isActive = panelState.dataId === nodeId;
+  const isActive = panelState.dataId === nodeId && panelState?.panelName !== PanelName.BasicInfo;
   const menuId = `robot_${type}_${nodeId}`;
   const menuData = [
     [
@@ -169,50 +155,39 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
         icon: <DeleteOutlined />,
         onClick: handleDeleteRobotAction,
       },
-    ]
+    ],
   ];
   const ref = useRef(null);
   const isHovering = useHover(ref);
   const { show: showMenu } = useContextMenu({
-    id: menuId
+    id: menuId,
   });
 
   return (
     <Box
-      border={
-        !isActive ?
-          `1px solid ${theme.color.lineColor}`:
-          `1px solid ${theme.color.borderBrandDefault}`
-      }
+      border={!isActive ? `1px solid ${theme.color.lineColor}` : `1px solid ${theme.color.borderBrandDefault}`}
       borderRadius="4px"
       ref={ref}
       width="100%"
-      padding="12px"
+      padding="16px"
       onClick={handleClick}
       backgroundColor={theme.color.fc8}
       id={`robot_node_${nodeId}`}
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width="100%"
-      >
-        <Box display="flex" alignItems="center"
-          width="100%"
-          style={{ cursor: 'pointer' }}
-        >
+      <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+        <Box display="flex" alignItems="center" width="100%" style={{ cursor: 'pointer' }}>
           <span
             style={{
               borderRadius: 4,
               display: 'flex',
               alignItems: 'center',
-              marginRight: '16px'
+              marginRight: '16px',
             }}
           >
             <Image
-              src={(type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON) ?
-                      getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'}
+              src={
+                type === IRobotNodeType.Trigger && getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : serviceLogo || '?'
+              }
               width={48}
               height={48}
               alt=""
@@ -220,48 +195,35 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
           </span>
 
           <Box display={'flex'} flexDirection={'column'}>
-            <Typography variant="h7" ellipsis style={{
-              textTransform: 'capitalize'
-            }}>
-              { type == IRobotNodeType.Trigger ? t(Strings.robot_trigger_guide): t(Strings.action)}
+            <Typography
+              variant="body4"
+              ellipsis
+              color={colors.textCommonTertiary}
+              style={{
+                textTransform: 'capitalize',
+              }}
+            >
+              {type == IRobotNodeType.Trigger ? t(Strings.robot_trigger_guide) : t(Strings.action)}
             </Typography>
 
             <Box display={'flex'} flexDirection={'row'}>
               {children}
-              {
-                hasError && <Box
-                  marginLeft="8px"
-                  display="flex"
-                  alignItems="center"
-                >
+              {hasError && (
+                <Box marginLeft="8px" display="flex" alignItems="center">
                   <Tooltip content={t(Strings.robot_config_incomplete_tooltip)}>
-                    <Box
-                      as="span"
-                      marginLeft="4px"
-                      display="flex"
-                      alignItems="center"
-                    >
+                    <Box as="span" marginLeft="4px" display="flex" alignItems="center">
                       <WarnCircleFilled color={theme.color.textWarnDefault} />
                     </Box>
                   </Tooltip>
                 </Box>
-              }
+              )}
             </Box>
           </Box>
         </Box>
-        {
-          type === 'action' && (isHovering ) && <>
-            <IconButton
-              shape="square"
-              icon={MoreStandOutlined}
-              onClick={(e) => showMenu(e)}
-            />
-          </>
-        }
-        <ContextMenu
-          overlay={flatContextData(menuData, true)}
-          menuId={menuId}
-        />
+        {type === 'action' && (isHovering || isActive) && (
+          <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
+        )}
+        <ContextMenu overlay={flatContextData(menuData, true)} menuId={menuId} />
       </Box>
     </Box>
   );

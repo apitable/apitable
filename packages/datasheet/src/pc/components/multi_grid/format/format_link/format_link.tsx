@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import { Dispatch, memo, SetStateAction, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Typography, useThemeColors } from '@apitable/components';
+import { Typography, useThemeColors, Switch } from '@apitable/components';
 import { IField, ILinkField, Selectors, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { LinkJump } from 'pc/components/common';

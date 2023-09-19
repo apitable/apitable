@@ -122,7 +122,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
     inputName.current?.focus();
   });
 
-  const createWidget = async() => {
+  const createWidget = async () => {
     if (!widgetName) {
       return;
     }
@@ -138,7 +138,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
     toInstallWidget(data.packageId);
   };
 
-  const toInstallWidget = async(widgetPackageId: string) => {
+  const toInstallWidget = async (widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     const widget = await installWidget(widgetPackageId, nodeId, widgetName);
     Message.success({

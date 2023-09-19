@@ -41,7 +41,7 @@ export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
               icon: <AddOutlined color={colors.thirdLevelText} />,
               text: t(Strings.add_kanban_group_card),
               hidden: !rowCreatable,
-              onClick: ({ props: { addNewRecord }}: any) => {
+              onClick: ({ props: { addNewRecord } }: any) => {
                 addNewRecord();
               },
             },
@@ -59,14 +59,14 @@ export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
 
                 return false;
               },
-              onClick: ({ props: { setEditing }}: any) => {
+              onClick: ({ props: { setEditing } }: any) => {
                 setEditing(true);
               },
             },
             {
               icon: <EyeOpenOutlined color={colors.thirdLevelText} />,
               text: t(Strings.hide_kanban_grouping),
-              onClick: ({ props: { hideGroup }}: any) => {
+              onClick: ({ props: { hideGroup } }: any) => {
                 hideGroup();
               },
               disabled: isViewLock,
@@ -75,7 +75,7 @@ export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
             {
               icon: <NarrowOutlined color={colors.thirdLevelText} />,
               text: t(Strings.collapse_kanban_group),
-              onClick: ({ props: { collapseGroup }}: any) => {
+              onClick: ({ props: { collapseGroup } }: any) => {
                 collapseGroup();
               },
             },
@@ -95,7 +95,7 @@ export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
 
                 return false;
               },
-              onClick: ({ props: { deleteGroup }}: any) => {
+              onClick: ({ props: { deleteGroup } }: any) => {
                 deleteGroup();
               },
             },

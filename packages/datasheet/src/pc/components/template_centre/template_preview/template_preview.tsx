@@ -55,25 +55,25 @@ export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
     }
     // Current user is logged in
     if (userInfo && userInfo.spaceId && usingTemplate && !spaceId) {
-      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId } });
       return;
     }
     // eslint-disable-next-line
   }, [usingTemplate]);
 
-  const afterLogin = async(data: string, loginMode: ConfigConstant.LoginMode) => {
+  const afterLogin = async (data: string, loginMode: ConfigConstant.LoginMode) => {
     if (data) {
       if (loginMode === ConfigConstant.LoginMode.PHONE) {
-        Router.push(Navigation.INVITATION_VALIDATION, { query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.INVITATION_VALIDATION, { query: { token: data, reference: window.location.href } });
       } else if (loginMode === ConfigConstant.LoginMode.MAIL) {
-        Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href }});
+        Router.push(Navigation.IMPROVING_INFO, { query: { token: data, reference: window.location.href } });
       }
     } else {
       const userInfo = (await getLoginStatus()) as any as IUserInfo;
       if (!userInfo) {
         return;
       }
-      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId }});
+      Router.push(Navigation.TEMPLATE, { params: { categoryId, templateId: usingTemplate, spaceId: userInfo!.spaceId } });
     }
   };
 

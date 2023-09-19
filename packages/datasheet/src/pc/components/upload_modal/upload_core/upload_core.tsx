@@ -257,9 +257,9 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     if (!fileList || uploadList.length === 0) {
       return;
     }
-    const cvIds = fileList.map(item => item.id);
-    setUploadList(state => {
-      return state.filter(item => !cvIds.includes(item.fileId));
+    const cvIds = fileList.map((item) => item.id);
+    setUploadList((state) => {
+      return state.filter((item) => !cvIds.includes(item.fileId));
     });
     // eslint-disable-next-line
   }, [fileList]);
@@ -274,8 +274,8 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     onSave && onSave(fileList);
   };
 
-  const onMove = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
-    const produceCellValue = produce(fileList, draft => {
+  const onMove = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
+    const produceCellValue = produce(fileList, (draft) => {
       moveArrayElement(draft, oldIndex, newIndex);
       return draft;
     });

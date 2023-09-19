@@ -3,7 +3,7 @@ import { ResourceType, Selectors, ViewPropertyFilter } from '@apitable/core';
 import { store } from 'pc/store';
 import { resourceService } from '../../../../resource_service';
 
-export const requestServerView = async(datasheetId: string, viewId: string, shareId?: string) => {
+export const requestServerView = async (datasheetId: string, viewId: string, shareId?: string) => {
   const { success, data, message } = await ViewPropertyFilter.requestViewData(datasheetId!, viewId, shareId);
   const state = store.getState();
   if (success) {

@@ -75,9 +75,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
   const rowHeight = props.rowHeight ? props.rowHeight : RowHeight.Short;
   const uploadManager = resourceService.instance?.uploadManager;
   const [isDragEnter, setDragEnter] = useState(false);
-  const [uploadList, setUploadList] = useState<IUploadFileList>(
-    uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : [],
-  );
+  const [uploadList, setUploadList] = useState<IUploadFileList>(uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : []);
 
   const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
 

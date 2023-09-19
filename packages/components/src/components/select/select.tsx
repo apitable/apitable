@@ -250,7 +250,7 @@ export const Select: FC<React.PropsWithChildren<ISelectProps>> & {
                 renderValue={renderValue}
               /> :
                 <span className={'placeholder ellipsis'}>
-                  {placeholder || 'please select option'}
+                  {placeholder}
                 </span>
             )
             }

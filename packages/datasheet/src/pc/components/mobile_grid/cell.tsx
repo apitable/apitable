@@ -95,7 +95,7 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
     ? Selectors.getCellValue(
       state,
       {
-        meta: { fieldMap: { [field.id]: field }},
+        meta: { fieldMap: { [field.id]: field } },
         recordMap: { [record.id]: record },
       },
       record.id,

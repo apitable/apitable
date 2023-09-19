@@ -20,7 +20,7 @@
 import cx from 'classnames';
 import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
-import {FC, memo, ReactNode, useCallback} from 'react';
+import { FC, memo, ReactNode, useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { mutate } from 'swr';
@@ -30,18 +30,18 @@ import { ChevronDownOutlined } from '@apitable/icons';
 import { Message, Modal } from 'pc/components/common';
 import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
 import styles from '../../../slate_editor/components/select/style.module.less';
-import { changeActionTypeId, updateActionInput } from '../../api';
+import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
-import { useRobotTriggerType } from '../../hooks';
+import { useActionTypes, useRobotTriggerType } from '../../hooks';
 import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { EditType } from '../trigger/robot_trigger';
+import itemStyle from '../trigger/select_styles.module.less';
 
 export interface IRobotActionProps {
   index: number;
-  actionTypes: IActionType[];
   action: IRobotAction;
   robotId: string;
   editType?:EditType
@@ -49,15 +49,17 @@ export interface IRobotActionProps {
 }
 
 export const RobotAction = memo((props: IRobotActionProps) => {
-  const { actionTypes, editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
+  const { editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
   const triggerType = useRobotTriggerType();
-  const actionType = actionTypes.find(item => item.actionTypeId === action.typeId);
+  const { originData: actionTypes } = useActionTypes();
+  const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
 
-  const [panelState] = useAtom(automationPanelAtom);
-  const automationState= useAtomValue(automationStateAtom);
+  const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
 
-  const { api: { refresh }} = useRobotListState();
+  const [automationState, setAutomationAtom] = useAtom(automationStateAtom );
+
+  const { api: { refresh } } = useRobotListState();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
     if (actionTypeId === action?.typeId) {
       return;
@@ -68,7 +70,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(async() => {
+        changeActionTypeId(action?.id!, actionTypeId).then(async () => {
           await mutate(`/automation/robots/${robotId}/actions`);
 
           if(!automationState?.resourceId) {
@@ -78,6 +80,35 @@ export const RobotAction = memo((props: IRobotActionProps) => {
             resourceId: automationState?.resourceId!,
             robotId: robotId,
           });
+
+          const itemDetail = await getResourceAutomationDetail(
+              automationState?.resourceId!,
+              robotId
+          );
+
+          const newState = {
+            robot: itemDetail,
+            currentRobotId:  robotId,
+            resourceId:automationState.resourceId,
+          };
+          setAutomationAtom(newState);
+
+          const data = itemDetail.actions.find(item => item.actionId===action.id);
+          if(!data) {
+            return;
+          }
+          setAutomationPanel(
+            {
+              panelName: PanelName.Action,
+              dataId: action.id,
+              data: {
+                // @ts-ignore
+                robotId: robotId!,
+                editType: EditType.detail,
+                nodeOutputSchemaList: nodeOutputSchemaList,
+                action: { ...data, id: data.actionId, typeId: data.actionTypeId },
+              },
+            });
         });
       },
       onCancel: () => {
@@ -85,9 +116,9 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       },
       type: 'warning',
     });
-  }, [action?.id, action?.typeId, automationState?.resourceId, refresh, robotId]);
-
-  const [, setAutomationPanel] = useAtom(automationPanelAtom );
+  },
+  [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel],
+  );
 
   const dataClick = useCallback(() => {
     if(editType=== EditType.detail) {
@@ -161,7 +192,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     formData={propsFormData}
     serviceLogo={integrateCdnHost(actionType.service.logo)}
     schema={schema}
-    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' }}}
+    uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' } }}
     nodeOutputSchemaList={prevActionSchemaList}
     widgets={
       {
@@ -179,6 +210,10 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       {
         editType === EditType.entry && (
           <SearchSelect
+            clazz={{
+              item: itemStyle.item,
+              icon: itemStyle.icon
+            }}
             options={{
               placeholder: t(Strings.search_field),
               noDataText: t(Strings.empty_data),

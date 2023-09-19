@@ -450,7 +450,7 @@ export const useUserRequest = () => {
   };
 
   // Get Inviteable Member Status
-  const getInviteStatus = async() => {
+  const getInviteStatus = async () => {
     if (!userInfo) {
       return;
     }
@@ -493,7 +493,7 @@ export const useUserRequest = () => {
   };
 
   // Update avatar
-  const customOrOfficialAvatarUpload = async({ file, token }: { file?: File; token?: string }) => {
+  const customOrOfficialAvatarUpload = async ({ file, token }: { file?: File; token?: string }) => {
     if (!file && !token) {
       return;
     }
@@ -504,7 +504,7 @@ export const useUserRequest = () => {
       return uploadAttachToS3({
         file: file,
         fileType: UploadType.UserAvatar,
-      }).then(async(res) => {
+      }).then(async (res) => {
         const { success, data } = res.data;
         if (success) {
           return await updateAvatar(data.token, false);

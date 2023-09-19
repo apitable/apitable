@@ -54,6 +54,7 @@ import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialUserBind;
@@ -206,6 +207,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     private UserLinkServiceFacade userLinkServiceFacade;
 
     @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
+    @Resource
     private PasswordService passwordService;
 
     @Resource
@@ -226,7 +230,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public boolean checkByCodeAndMobile(final String code,
-        final String mobile) {
+                                        final String mobile) {
         String areaCode = StrUtil.prependIfMissing(code, "+");
         UserEntity userEntity = baseMapper.selectByMobile(mobile);
         if (userEntity == null) {
@@ -243,7 +247,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public UserEntity getByCodeAndMobilePhone(final String code,
-        final String mobilePhone) {
+                                              final String mobilePhone) {
         String areaCode = StrUtil.prependIfMissing(code, "+");
         UserEntity userEntity = baseMapper.selectByMobile(mobilePhone);
         if (userEntity == null) {
@@ -394,16 +398,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             ? mobile : StringUtils.substringBefore(email, "@"));
         // Create user with mobile number
         UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .code(areaCode)
-                .mobilePhone(mobile)
-                .nickName(name)
-                .avatar(nullToDefaultAvatar(avatar))
-                .locale(languageManager.getDefaultLanguageTag())
-                .color(color)
-                .email(email)
-                .lastLoginTime(LocalDateTime.now())
-                .build();
+            .uuid(IdUtil.fastSimpleUUID())
+            .code(areaCode)
+            .mobilePhone(mobile)
+            .nickName(name)
+            .avatar(nullToDefaultAvatar(avatar))
+            .locale(languageManager.getDefaultLanguageTag())
+            .color(color)
+            .email(email)
+            .lastLoginTime(LocalDateTime.now())
+            .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         boolean hasSpace = false;
@@ -454,15 +458,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         Integer color = nullToDefaultAvatar(avatar) != null ? null
             : RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE);
         UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .code(areaCode)
-                .mobilePhone(mobile)
-                .nickName(nullToDefaultNickName(nickName, mobile))
-                .locale(languageManager.getDefaultLanguageTag())
-                .avatar(nullToDefaultAvatar(avatar))
-                .color(color)
-                .lastLoginTime(LocalDateTime.now())
-                .build();
+            .uuid(IdUtil.fastSimpleUUID())
+            .code(areaCode)
+            .mobilePhone(mobile)
+            .nickName(nullToDefaultNickName(nickName, mobile))
+            .locale(languageManager.getDefaultLanguageTag())
+            .avatar(nullToDefaultAvatar(avatar))
+            .color(color)
+            .lastLoginTime(LocalDateTime.now())
+            .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         // Create user activity record
@@ -482,13 +486,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email, final String password) {
         UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .email(email)
-                .nickName(StringUtils.substringBefore(email, "@"))
-                .locale(languageManager.getDefaultLanguageTag())
-                .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
-                .lastLoginTime(LocalDateTime.now())
-                .build();
+            .uuid(IdUtil.fastSimpleUUID())
+            .email(email)
+            .nickName(StringUtils.substringBefore(email, "@"))
+            .locale(languageManager.getDefaultLanguageTag())
+            .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
+            .lastLoginTime(LocalDateTime.now())
+            .build();
         if (password != null) {
             entity.setPassword(passwordService.encode(password));
         }
@@ -524,7 +528,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void bindMemberByEmail(final Long userId, final String spaceId,
-        final String email) {
+                                  final String email) {
         log.info("Bind member email");
         // Determine whether the email is unbound and invited
         MemberEntity member =
@@ -582,7 +586,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMobileByUserId(final Long userId, final String code,
-        final String mobile) {
+                                     final String mobile) {
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setCode(code);
@@ -732,7 +736,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public UserInfoVo getCurrentUserInfo(final Long userId,
-        final String spaceId, final Boolean filter) {
+                                         final String spaceId, final Boolean filter) {
         log.info("Get user information and space content");
         // Query the user's basic information
         // Whether the invitation code has been used for rewards
@@ -875,7 +879,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         userActiveSpaceCacheService.delete(user.getId());
         // Logical deletion of space invite link
         List<MemberEntity> members = iMemberService.getByUserId(user.getId());
-        if (members.size() == 0) {
+        if (members.isEmpty()) {
             return;
         }
         List<Long> memberIds = members.stream()
@@ -889,14 +893,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         List<String> spaceIds = members.stream()
             .map(MemberEntity::getSpaceId).collect(Collectors.toList());
         List<SpaceEntity> spaces = iSpaceService.getBySpaceIds(spaceIds);
-        if (spaces.size() == 0) {
+        if (spaces.isEmpty()) {
             return;
         }
         TaskManager.me().execute(() -> this.sendClosingAccountNotify(user, spaces, members));
     }
 
     private void sendClosingAccountNotify(UserEntity user,
-        List<SpaceEntity> spaces, List<MemberEntity> members) {
+                                          List<SpaceEntity> spaces, List<MemberEntity> members) {
         Map<String, String> spaceIdToMemberNameMap = members.stream()
             .collect(Collectors.toMap(MemberEntity::getSpaceId, MemberEntity::getMemberName));
         for (SpaceEntity space : spaces) {
@@ -929,7 +933,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         List<Long> unexpectedMemberIds = unexpectedMembers.stream()
             .map(MemberEntity::getId).collect(Collectors.toList());
         // Logical deletion of abnormal member information
-        if (unexpectedMemberIds.size() > 0) {
+        if (!unexpectedMemberIds.isEmpty()) {
             memberMapper.deleteBatchByIds(unexpectedMemberIds);
         }
         // Restore member information
@@ -952,6 +956,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // Clear the user's nickname, area code,
         // mobile phone and email information
         userMapper.resetUserById(user.getId());
+        // cancel subscription if exists
+        List<String> spaceIds = iMemberService.getSpaceIdByUserIdIgnoreDeleted(user.getId());
+        spaceIds.forEach(spaceId -> {
+            long count = iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
+            if (count == 0) {
+                log.info("Cancel subscription for space [{}]", spaceId);
+                // only one member left, cancel subscription
+                entitlementServiceFacade.cancelSubscription(spaceId);
+            }
+        });
         // Clear the user's information in the member table
         memberMapper.clearMemberInfoByUserId(user.getId());
         // Physically delete
@@ -976,7 +990,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     private boolean inactiveMemberProcess(final Long userId,
-        final List<MemberDTO> inactiveMembers) {
+                                          final List<MemberDTO> inactiveMembers) {
         if (CollUtil.isEmpty(inactiveMembers)) {
             return false;
         }
@@ -1021,7 +1035,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
 
     @Override
     public List<UserLangDTO> getLangByEmails(final String expectedLang,
-        final List<String> emails) {
+                                             final List<String> emails) {
         // Maybe have performance problems, the segmented query is used.
         List<UserLangDTO> userLangs = new ArrayList<>(emails.size());
         int page =
@@ -1134,6 +1148,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void closePausedUser(int limitDays) {
         LocalDateTime endAt =
             ClockManager.me().getLocalDateTimeNow().minusDays(limitDays);

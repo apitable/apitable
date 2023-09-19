@@ -34,12 +34,17 @@ export const SearchSelect: FunctionComponent<{
     value?: string;
     children: ReactElement
     onChange?: (value: IOption) => void;
+    clazz?: {
+        item?: string
+        icon?: string
+    }
     options?: {
+        searchEnabled?: boolean;
         noDataText?: string;
         minWidth?: string;
         placeholder?: string
     }
-}> = ({ list, disabled = false,  onChange, options, children, value }) => {
+}> = ({ list, clazz, disabled = false, onChange, options, children, value }) => {
 
   const [keyword, setKeyword] = React.useState('');
 
@@ -85,17 +90,19 @@ export const SearchSelect: FunctionComponent<{
                 onChange?.(afterFilterOptions[index]!);
               }}
               searchProps={
-                {
+                options?.searchEnabled == true ? {
                   inputRef: inputRef,
                   onSearchChange: inputOnChange,
                   placeholder: options?.placeholder,
-                }
+                }: undefined
               }
               autoHeight
             >
               {
                 afterFilterOptions.map((item, index) => (
                   <OptionItem
+                    className={clazz?.item}
+                    iconClassName={clazz?.icon}
                     key={item.value}
                     onClick={() => {
                       toggle();

@@ -93,7 +93,7 @@ export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = (pr
             <Button
               prefixIcon={<AddOutlined />}
               color="primary"
-              onClick={async() => {
+              onClick={async () => {
                 const id = await onAdd();
                 const position = reactFlowInstance.current!.project({
                   x: bodySize.width / 2 - offsetLeft - (CARD_WIDTH * scale) / 2,

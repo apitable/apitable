@@ -70,7 +70,7 @@ export const LinkJump: FC<React.PropsWithChildren<ILinkJumpProps>> = (props) => 
     }
     foreignFieldId && dispatch(StoreActions.setHighlightFieldId(foreignFieldId, foreignDatasheetId));
     hideOperateBox && hideOperateBox();
-    Router.push(Navigation.WORKBENCH, { params: { nodeId: foreignDatasheetId, viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { nodeId: foreignDatasheetId, viewId } });
   };
 
   return (

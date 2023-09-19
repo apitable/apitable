@@ -81,7 +81,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
     setState({ [key]: value });
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     const { areaCode, account, identifyingCode, password, secondPassword } = state;
     if (password !== secondPassword) {
       setErrMsg({ passwordErrMsg: t(Strings.password_not_identical_err) });

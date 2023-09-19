@@ -110,7 +110,7 @@ export const SignUp: React.FC<ISignUpProps> = (props) => {
     setEmail(e.target.value.replace(/\s/g, ''));
   };
 
-  const signUp = async() => {
+  const signUp = async () => {
     const result = await signUpReq(username!, password!);
     if (!result) {
       return;

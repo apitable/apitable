@@ -4,46 +4,85 @@
   border-style: solid !important;
   border-color: var(--borderCommonDefault) !important;
   background: var(--bgControlsElevateHigh) !important;
+  border-radius: 24px !important
 }
 
 .unCheckedBackground {
+  border-radius: 24px !important;
   border-width: 1px !important;
   border-style: solid !important;
   border-color: var(--borderCommonDefault) !important;
   background: var(--bgControlsElevateHigh) !important;
 }
 
-.checkedCircle {
-  background-color: var(--textSuccessDefault, #3CD6A3) !important;
+
+.checkedText {
+  line-height: 48px;
+  color: var(--textCommonTertiary) !important;
+  margin-left: 14px !important;
+  margin-right: 48px !important;
+}
+
+.unCheckedText {
+  line-height: 48px;
+  color: var(--textCommonTertiary) !important;
+  margin-left: 48px !important;
+  margin-right: 14px !important;
 }
 
 .unCheckedCircle {
+  right: inherit !important;
+  left: 8px !important;
+  top: 8px !important;
+  height: 32px !important;
+  width: 32px !important;
   background-color: var(--textStaticTertiary, rgba(255, 255, 255, 0.60)) !important;
 }
 
+.checkedCircle {
+  left: inherit !important;
+  right: 8px !important;
+  top: 8px !important;
+  height: 32px !important;
+  width: 32px !important;
+  background-color: var(--textSuccessDefault, #3CD6A3) !important;
+}
 
 .tabPannel {
   height: 100%;
+
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 0 !important;
+    }
+  }
 }
 
 .tabItem {
   height: 100%;
 
   :global {
+    .ant-tabs-nav {
+      margin-bottom: 0 !important;
+    }
+
     .ant-tabs .ant-tabs-top {
       height: 100%;
     }
+
     .ant-tabs-content-holder {
-      height: calc(100% - 46px);
+      height: calc(100% - 30px);
     }
 
-    .ant-tabs-content-top{
+    .ant-tabs-content-top {
       height: 100%;
     }
+
     .ant-tabs-tab-btn {
 
       padding-left: 16px;
     }
+
     .ant-tabs-ink-bar {
       visibility: hidden;
     }

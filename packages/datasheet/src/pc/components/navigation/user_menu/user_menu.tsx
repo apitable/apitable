@@ -242,7 +242,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => 
     },
     {
       label: t(Strings.user_feedback),
-      onClick: async() => {
+      onClick: async () => {
         try {
           await (window as any).WebViewJavascriptBridge.callHandler(
             ConfigConstant.JSBridgeMethod.OpenAppFeedback,

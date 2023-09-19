@@ -37,14 +37,14 @@ interface IFormPropContainerProps {
   formProps: IFormProps;
 }
 
-export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = props => {
+export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContainerProps>> = (props) => {
   const { formId, editable, formProps } = props;
   const { description, fullScreen, coverVisible, logoVisible, logoUrl: _logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareId } = useSelector((state) => state.pageParams);
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
-  const title = useSelector(state => Selectors.getForm(state)!.name);
+  const title = useSelector((state) => Selectors.getForm(state)!.name);
   const logoUrl = useGetSignatureAssertByToken(_logoUrl || '');
   const updateProps = (partProps: Partial<IFormProps>) => {
     resourceService.instance!.commandManager.execute({

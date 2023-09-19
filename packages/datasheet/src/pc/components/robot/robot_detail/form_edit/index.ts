@@ -2,8 +2,8 @@ import constate from 'constate';
 import { useState } from 'react';
 
 const useFormState = () => {
-  const [isModified, setIsModified] =useState(false);
-  const [hasError, setHasError] =useState(false);
+  const [isModified, setIsModified] = useState(false);
+  const [hasError, setHasError] = useState(false);
   return {
     setHasError,
     hasError,

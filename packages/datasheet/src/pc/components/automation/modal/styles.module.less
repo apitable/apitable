@@ -10,3 +10,33 @@
   background: var(--bgCommonDefault) !important;
   border: 1px solid var(--borderCommonDefault);
 }
+
+.modalWrapper {
+  :global {
+    .ant-modal-content {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .ant-drawer-content {
+      border-bottom-left-radius: 8px;
+      border-top-left-radius: 8px;
+    }
+
+    .ant-drawer-body {
+      padding: 0 0 !important;
+      border-radius: 8px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: var(--borderCommonDefault);
+    }
+    .ant-modal-body {
+      padding: 0 16px 16px;
+    }
+
+    .ant-modal-header {
+      padding: 16px;
+    }
+
+  }
+}

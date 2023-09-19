@@ -19,7 +19,7 @@ import { IAutomationRobotDetailItem } from './robot_context';
 
 export interface IRobotHistoryTask {
   status: number;
-  data: IRobotRunHistoryDetail
+  data: IRobotRunHistoryDetail;
 }
 
 export interface IRobotRunHistoryDetail {
@@ -78,6 +78,7 @@ export interface IRobotAction {
   id: string;
   prevActionId: string;
   typeId: string;
+  actionTypeId: string;
   input: any;
 }
 
@@ -320,10 +321,6 @@ export interface INodeSchema {
 }
 
 export interface IRobotHeadAddBtn {
-  style?: React.CSSProperties;
-  container?: React.FC<React.PropsWithChildren<any>>;
   toolTips?: any;
-  useTextBtn?: boolean;
   btnStyle?: React.CSSProperties;
-  iconOnly?: boolean;
 }

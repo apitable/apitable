@@ -273,7 +273,7 @@ export class Clipboard {
         notify.open({ message: t(Strings.message_coping), key: NotifyKey.Paste });
         const pasteCellCount = stdValueTable!.body.length * (stdValueTable!.body[0]?.length || 0);
         setTimeout(
-          async() => {
+          async () => {
             const commandResult = (await this.executePaste(
               state,
               view as any,

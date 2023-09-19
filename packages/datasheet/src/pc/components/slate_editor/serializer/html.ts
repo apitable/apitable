@@ -68,7 +68,7 @@ const attrStringify = (data: IElementData): string => {
 };
 
 const blockFactory = (tag: string, element: IElement) => {
-  const { children = [], data = {}} = element;
+  const { children = [], data = {} } = element;
   const childHtml = children.reduce((acc, childNode: any) => {
     if (Text.isText(childNode)) {
       return `${acc}${textStringify(childNode as any)}`;

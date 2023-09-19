@@ -18,7 +18,7 @@
 
 function TextareaWidget(props: any) {
   const { id, options, placeholder, value, required, disabled, readonly, autofocus, onChange, onBlur, onFocus } = props;
-  const _onChange = ({ target: { value }}: any) => {
+  const _onChange = ({ target: { value } }: any) => {
     return onChange(value === '' ? options.emptyValue : value);
   };
   return (

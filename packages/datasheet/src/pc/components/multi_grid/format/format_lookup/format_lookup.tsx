@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isNumber } from 'util';
 // eslint-disable-next-line no-restricted-imports
-import { Select, TextButton, useThemeColors, RadioGroup, Radio } from '@apitable/components';
+import { Select, TextButton, useThemeColors, RadioGroup, Radio, Switch } from '@apitable/components';
 import {
   BasicValueType,
   DateTimeField,

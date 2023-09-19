@@ -65,7 +65,7 @@ export const InputEmail = forwardRef(
     }, [err, secondVerify, setSecondVerify]);
 
     const inputChange = (value: string, key: number) => {
-      setInputArr({ ...inputArr, [key]: { err: '', text: value.replace(/\s/g, '') }});
+      setInputArr({ ...inputArr, [key]: { err: '', text: value.replace(/\s/g, '') } });
     };
 
     const renderInputItems = () => {

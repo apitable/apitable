@@ -237,9 +237,14 @@ export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> =
       </Row>
       {env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() && (
         <Typography className={styles.notFoundTip} variant="body2" align="center">
-          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
-            method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
-          })}>
+          <span
+            className={styles.text}
+            onClick={() =>
+              navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`, {
+                method: isDingtalkFunc?.() ? Method.Push : Method.NewTab,
+              })
+            }
+          >
             {t(Strings.template_not_found)}
           </span>
         </Typography>

@@ -98,7 +98,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
     isRunning ? 1000 : undefined,
   );
 
-  const getIdentifyingCode = async(nvcVal?: string) => {
+  const getIdentifyingCode = async (nvcVal?: string) => {
     if (checkAccount && !checkAccount()) return;
 
     let result: {

@@ -1073,7 +1073,7 @@ export const getStateFromProps = (props: IFormProps<any>, inputFormData: any, st
 
   const getCurrentErrors = () => {
     if (noValidate) {
-      return { errors: [], errorSchema: {}};
+      return { errors: [], errorSchema: {} };
     } else if (!liveValidate) {
       return {
         errors: state.schemaValidationErrors || [],

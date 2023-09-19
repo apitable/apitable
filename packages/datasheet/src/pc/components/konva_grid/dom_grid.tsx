@@ -52,6 +52,11 @@ import { store } from 'pc/store';
 import { ButtonOperateType, checkPointInContainer, getParentNodeByClass, GHOST_RECORD_ID, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
+import { GroupMenu } from './components';
+import { StatMenu } from './components/stat_menu';
+import { StatRightClickMenu } from './components/stat_right_click_menu';
+import { UrlActionContainer } from './components/url_action_container';
+import styles from './style.module.less';
 import { PureEditorContainer } from '../editors';
 import { IContainerEdit } from '../editors/interface';
 import { EXPAND_RECORD, expandRecordIdNavigate } from '../expand_record';
@@ -63,11 +68,6 @@ import { FieldSetting } from '../multi_grid/field_setting';
 import { IElementRectProps, MoveType } from '../multi_grid/hover_line/interface';
 import { QuickAppend } from '../multi_grid/quick_append';
 import { RecordWillMoveTips } from '../multi_grid/record_will_move_tips/record_will_move_tips';
-import { GroupMenu } from './components';
-import { StatMenu } from './components/stat_menu';
-import { StatRightClickMenu } from './components/stat_right_click_menu';
-import { UrlActionContainer } from './components/url_action_container';
-import styles from './style.module.less';
 
 interface IDomGridBaseProps {
   datasheetId: string;
@@ -637,8 +637,11 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     );
   };
 
-  const onFrozenColumn = (fieldId: string) => {
-    const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
+  const onFrozenColumn = (fieldId: string, reset: boolean = false) => {
+    let columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
+    if(reset) {
+      columnIndex = 0;
+    }
     if (columnIndex === -1) return;
     const visibleColumnIndex = visibleColumns.findIndex((column) => column.fieldId === fieldId);
     const columnWidth = Selectors.getColumnWidth(visibleColumns[visibleColumnIndex]);

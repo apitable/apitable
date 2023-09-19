@@ -307,7 +307,7 @@ describe('AttachmentField', () => {
         { cellFormat: CellFormatEnum.JSON, store }
       );
       expect(data![0].token).toBe('space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec');
-      expect(data![0].preview).toBe(oss.host + '/space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec');
+      expect(data![0].preview).toBe(oss.host + '/space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec?imageView2/0');
       expect(data![0].size).toBe(5008519);
       expect(data![0].height).toBe(0);
       expect(data![0].width).toBe(0);

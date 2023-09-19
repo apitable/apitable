@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Switch, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
@@ -29,6 +29,7 @@ import {
   IUseListenTriggerInfo,
   // eslint-disable-next-line no-restricted-imports
   Select,
+  Switch,
   Typography,
   useListenVisualHeight,
   useThemeColors,

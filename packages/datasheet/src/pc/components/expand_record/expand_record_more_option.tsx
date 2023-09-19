@@ -17,13 +17,13 @@
  */
 
 import { useToggle, useClickAway } from 'ahooks';
-import { Menu, Dropdown, Switch } from 'antd';
+import { Menu, Dropdown } from 'antd';
 import classNames from 'classnames';
 import { useContext } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import urlcat from 'urlcat';
-import { IconButton, useThemeColors } from '@apitable/components';
+import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';

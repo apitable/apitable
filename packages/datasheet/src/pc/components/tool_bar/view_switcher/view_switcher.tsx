@@ -377,7 +377,7 @@ export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherPropert
 
   const viewLength = views.length;
 
-  const deleteView = async(e: React.MouseEvent, id: string) => {
+  const deleteView = async (e: React.MouseEvent, id: string) => {
     const view = views.find((view) => view.id === id)!;
     let content = t(Strings.del_view_content, {
       view_name: view.name,

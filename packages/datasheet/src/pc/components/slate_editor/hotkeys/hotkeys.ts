@@ -223,7 +223,7 @@ export const hotkeys = {
                 Transforms.move(editor, { distance: 1, unit: 'line' });
               }
               unwrapNodes();
-              Transforms.setNodes(editor, { type: ElementType.PARAGRAPH, data: {}} as IElement);
+              Transforms.setNodes(editor, { type: ElementType.PARAGRAPH, data: {} } as IElement);
               return false;
             }
           }

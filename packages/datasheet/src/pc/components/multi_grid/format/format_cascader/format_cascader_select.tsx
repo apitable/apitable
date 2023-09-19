@@ -1,12 +1,12 @@
 import { useMount } from 'ahooks';
-import { Switch } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, LinkButton, useThemeColors, Typography } from '@apitable/components';
+import { Button, LinkButton, useThemeColors, Typography, Switch } from '@apitable/components';
 import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
+
 import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 import commonStyles from '../styles.module.less';
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';

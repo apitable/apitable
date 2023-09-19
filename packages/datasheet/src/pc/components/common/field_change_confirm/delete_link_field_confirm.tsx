@@ -163,7 +163,7 @@ export const deleteLinkFieldConfirm = (props: { fieldId: string; datasheetId?: s
   const container = document.createElement('div');
   document.body.appendChild(container);
   const root = createRoot(container);
-  const onClose = async(confirm?: boolean) => {
+  const onClose = async (confirm?: boolean) => {
     if (!datasheetId) {
       await ShortcutActionManager.trigger(ShortcutActionName.Focus);
     }

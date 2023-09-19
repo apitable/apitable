@@ -1,7 +1,0 @@
-{
-  "processors": [],
-  "plugins": ["./font-weight-no-number.js"],
-  "rules": {
-    "plugin/font-weight-no-number": "named-only"
-  }
-}

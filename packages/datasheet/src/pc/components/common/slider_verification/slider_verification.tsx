@@ -55,8 +55,8 @@ export const openSliderVerificationModal = () => {
       </div>
     ),
     width: 388,
-    cancelButtonProps: { style: { display: 'none' }},
-    okButtonProps: { style: { display: 'none' }},
+    cancelButtonProps: { style: { display: 'none' } },
+    okButtonProps: { style: { display: 'none' } },
     closable: true,
     footer: null,
   });

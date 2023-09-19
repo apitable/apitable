@@ -165,7 +165,7 @@ export const useSpaceRequest = () => {
           getUserAndRedirect(data.spaceId);
         }
         dispatch(StoreActions.updateUserInfo({ needCreate: false }));
-        Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId }});
+        Router.push(Navigation.WORKBENCH, { params: { spaceId: data.spaceId } });
       } else {
         dispatch(
           StoreActions.setSpaceErr({

@@ -111,7 +111,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
   const showLabel = tabSize?.width! > HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH;
 
   const jumpHandler = () => {
-    Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId }});
+    Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId } });
   };
 
   const handlePreFill = () => {

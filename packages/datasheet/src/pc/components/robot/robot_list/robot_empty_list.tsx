@@ -33,34 +33,26 @@ import { isWecomFunc } from 'enterprise';
 
 export const RobotEmptyList = () => {
   const theme = useTheme();
-  const {
-    canAddNewRobot,
-  } = useAddNewRobot();
+  const { canAddNewRobot } = useAddNewRobot();
   const isShowRobot = useShowRobot();
 
   const applyOpenTestFunction = useApplyOpenFunction();
 
   const { data: labsFeatureListData } = useRequest(Api.getLabsFeatureList);
-  const themeName = useSelector(state => state.theme);
+  const themeName = useSelector((state) => state.theme);
   const ImageNoRecord = themeName === ThemeName.Light ? ImageNoRecordLight : ImageNoRecordDark;
 
   const { createNewRobot } = useRobotController();
 
   const openTestFunction = () => {
     const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
-    const { url: _url, key } = spaceLabs.find(lab => lab.key === SystemConfig.test_function.robot.feature_key) || {};
+    const { url: _url, key } = spaceLabs.find((lab) => lab.key === SystemConfig.test_function.robot.feature_key) || {};
     const url = key === 'robot' && isWecomFunc?.() ? WECOM_ROBOT_URL : _url;
     url && applyOpenTestFunction(url);
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      margin="0 auto"
-      marginTop="24vh"
-      alignItems="center"
-    >
+    <Box display="flex" flexDirection="column" margin="0 auto" marginTop="24vh" alignItems="center">
       <Image src={ImageNoRecord} alt="" width={200} height={150} />
       <Typography variant="body3" color={theme.color.fc1} style={{ marginTop: 16, width: 212 }}>
         {t(Strings.robot_panel_no_robot_tip)}
@@ -69,13 +61,16 @@ export const RobotEmptyList = () => {
         <Button
           disabled={!canAddNewRobot}
           color="primary"
-          onClick={() => isShowRobot ? canAddNewRobot && createNewRobot() : openTestFunction()}
+          onClick={() => (isShowRobot ? canAddNewRobot && createNewRobot() : openTestFunction())}
           block
         >
           {isShowRobot ? t(Strings.new_automation) : t(Strings.test_function_btnmodal_btntext)}
         </Button>
-        {!isShowRobot &&
-          <Box marginTop="8px" fontSize="12px" lineHeight="18px" color={theme.color.fc3}>{t(Strings.test_function_form_submit_tip)}</Box>}
+        {!isShowRobot && (
+          <Box marginTop="8px" fontSize="12px" lineHeight="18px" color={theme.color.fc3}>
+            {t(Strings.test_function_form_submit_tip)}
+          </Box>
+        )}
       </Box>
     </Box>
   );

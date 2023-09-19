@@ -61,7 +61,7 @@ export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfig
     setOpenCheckModal(true);
   };
 
-  const createToken = async() => {
+  const createToken = async () => {
     if (!user!.email) {
       Modal.confirm({
         title: t(Strings.please_note),
@@ -90,7 +90,7 @@ export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfig
     copy2clipBoard(inputValue, () => Message.success({ content: t(Strings.copy_token_toast) }));
   };
 
-  const onOk = async() => {
+  const onOk = async () => {
     if (!identifyingCode || !user) {
       return;
     }

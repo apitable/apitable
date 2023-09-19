@@ -44,6 +44,14 @@ module.exports = {
     max_restarts: 2147483647,
     restart_delay: 1000
   }, {
+    name: 'databus-server',
+    cwd: '/app/databus-server',
+    script: './databus-server',
+    out_file: '/dev/null',
+    error_file: '/dev/null',
+    max_restarts: 2147483647,
+    restart_delay: 1000
+  }, {
     name: 'room-server',
     cwd: '/app/room-server/packages/room-server',
     env: {

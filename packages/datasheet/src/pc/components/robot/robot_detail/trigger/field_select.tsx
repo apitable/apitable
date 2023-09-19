@@ -16,8 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// eslint-disable-next-line no-restricted-imports
-import { ITheme, Select, useTheme } from '@apitable/components';
+import { ITheme, DropdownSelect as Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
 import {
   UserOutlined,
@@ -100,23 +99,21 @@ export const FieldSelect = ({ disabled, fields, value, onChange }: IFieldSelectP
   const theme = useTheme();
   const options = transformOptions(fields, theme);
   return (
-    <>
-      <Select
-        disabled={disabled}
-        options={options}
-        value={value}
-        onSelected={(option) => {
-          onChange && onChange(option.value);
-        }}
-        // FIXME：Adjusting maxHeight inside the dropdown list and limiting it outside will result in double scrollbars
-        // listStyle={{
-        //   maxHeight: 320,
-        //   overflow: 'scroll',
-        // }}
-        hideSelectedOption={!value}
-        dropdownMatchSelectWidth
-        openSearch={options.length > 7}
-      />
-    </>
+    <Select
+      disabled={disabled}
+      options={options}
+      value={value}
+      onSelected={(option) => {
+        onChange && onChange(option.value);
+      }}
+      // FIXME：Adjusting maxHeight inside the dropdown list and limiting it outside will result in double scrollbars
+      // listStyle={{
+      //   maxHeight: 320,
+      //   overflow: 'scroll',
+      // }}
+      hideSelectedOption={!value}
+      dropdownMatchSelectWidth
+      openSearch={options.length > 7}
+    />
   );
 };

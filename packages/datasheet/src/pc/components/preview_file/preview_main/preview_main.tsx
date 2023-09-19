@@ -94,7 +94,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = (pro
   const isDocType = DOC_MIME_TYPE.includes(mimeType);
   const isPdf = mimeType === 'application/pdf';
 
-  const fetchPreviewUrl = async() => {
+  const fetchPreviewUrl = async () => {
     if (activeFile && (isDocType || isPdf) && officePreviewEnable) {
       const res = await Api.getAttachPreviewUrl(spaceId!, activeFile.token, activeFile.name);
       const { data, message, success } = res.data;

@@ -17,22 +17,11 @@
  */
 
 import { useMount, useToggle } from 'ahooks';
-import { Switch } from 'antd';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, IOption, Skeleton } from '@apitable/components';
-import {
-  ConfigConstant,
-  DatasheetApi,
-  IFieldPermissionRole,
-  IUnitValue,
-  MemberType,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-} from '@apitable/core';
+import { Box, IOption, Skeleton, Switch } from '@apitable/components';
+import { ConfigConstant, DatasheetApi, IFieldPermissionRole, IUnitValue, MemberType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { MembersDetail } from 'pc/components/catalog/permission_settings_plus/permission/members_detail';
 import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
 import { Message } from 'pc/components/common/message/message';
@@ -51,7 +40,7 @@ const defaultSetting = { formSheetAccessible: false };
 export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnablePermissionPlus>> = (props) => {
   const { field } = props;
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
- 
+
   const [setting, setSetting] = useState<{ formSheetAccessible: boolean }>();
   const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
@@ -65,10 +54,11 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   const [pageNo, setPageNo] = useState<number>(1);
   const { getFieldPermissionMemberListPage } = useCatalogTreeRequest();
   const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest(
-    (pageNo) => getFieldPermissionMemberListPage(datasheetId, field.id, pageNo), 
+    (pageNo) => getFieldPermissionMemberListPage(datasheetId, field.id, pageNo),
     {
-      manual: true
-    });
+      manual: true,
+    },
+  );
 
   const { run } = useRequest(DatasheetApi.fetchFieldPermissionRoleList, {
     manual: true,
@@ -99,7 +89,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   }, [pageNo, getCollaboratorReq]);
 
   useEffect(() => {
-    if(collaboratorInfo) {
+    if (collaboratorInfo) {
       setMemberList([...memberList, ...collaboratorInfo.records]);
     }
     // eslint-disable-next-line
@@ -114,7 +104,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
    * 4. Batch update roles
    * @returns
    */
-  const openFieldPermission = async() => {
+  const openFieldPermission = async () => {
     if (enabledFieldPermission) {
       return true;
     }
@@ -136,7 +126,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     return true;
   };
 
-  const submitAddRole = async(unitInfos: IUnitValue[], permission: IOption) => {
+  const submitAddRole = async (unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length || !permission) {
       return;
     }
@@ -186,7 +176,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     });
   };
 
-  const editRole = async(unitId: string, role: string) => {
+  const editRole = async (unitId: string, role: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -206,7 +196,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const onRemove = async(unitId: string) => {
+  const onRemove = async (unitId: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -223,11 +213,11 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const fetchRoleList = async() => {
+  const fetchRoleList = async () => {
     await run(datasheetId, field.id);
   };
 
-  const changeFormSheetAccessible = async(checked: boolean) => {
+  const changeFormSheetAccessible = async (checked: boolean) => {
     const res = await DatasheetApi.updateFieldPermissionSetting(datasheetId, field.id, checked);
     const { success, message } = res.data;
     if (!success) {
@@ -250,7 +240,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     };
   };
 
-  const resetPermission = async() => {
+  const resetPermission = async () => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, false);
     const { success, message } = res.data;
     if (!success) {
@@ -261,7 +251,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     fetchRoleList();
   };
 
-  const batchEditRole = async(role: string) => {
+  const batchEditRole = async (role: string) => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -285,7 +275,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     await fetchRoleList();
   };
 
-  const batchDeleteRole = async() => {
+  const batchDeleteRole = async () => {
     const openFieldPermissionRes = await openFieldPermission();
     if (!openFieldPermissionRes) {
       return;
@@ -384,13 +374,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
         </div>
       )}
       {isMemberDetail && (
-        <MembersDetail
-          data={collaboratorInfo}
-          memberList={memberList}
-          setPageNo={setPageNo}
-          pageNo={pageNo}
-          onCancel={toggleIsMemberDetail}
-        />
+        <MembersDetail data={collaboratorInfo} memberList={memberList} setPageNo={setPageNo} pageNo={pageNo} onCancel={toggleIsMemberDetail} />
       )}
     </div>
   );

@@ -16,13 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Col, Row, Switch } from 'antd';
+import { Col, Row } from 'antd';
 import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors, WrapperTooltip } from '@apitable/components';
+import {
+  Button,
+  IUseListenTriggerInfo,
+  Switch,
+  TextButton,
+  Typography,
+  useListenVisualHeight,
+  useThemeColors,
+  WrapperTooltip,
+} from '@apitable/components';
 import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

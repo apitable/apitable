@@ -58,7 +58,7 @@ export const getPlatformType = () => {
   return ConfigConstant.PlatFormTypes.Web;
 };
 
-export const browserIsDesktop = async() => {
+export const browserIsDesktop = async () => {
   if (process.env.SSR) {
     return false;
   }

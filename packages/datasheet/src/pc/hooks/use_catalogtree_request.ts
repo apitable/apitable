@@ -138,7 +138,7 @@ export const useCatalogTreeRequest = () => {
         const node: INodesMapItem = { ...data, children: [] };
         dispatch(StoreActions.addNode(node));
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
-        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
+        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
       } else {
         if (code === billingErrorCode.OVER_LIMIT) {
           return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
@@ -179,14 +179,14 @@ export const useCatalogTreeRequest = () => {
         if (hasChildren) {
           dispatch(StoreActions.updateUserInfo({ activeNodeId: '', activeViewId: '' }));
           Api.keepTabbar({});
-          Router.push(Navigation.WORKBENCH, { params: { spaceId }});
+          Router.push(Navigation.WORKBENCH, { params: { spaceId } });
         }
         if (treeNodesMap[nodeId].type === ConfigConstant.NodeType.DATASHEET) {
           dispatch(StoreActions.datasheetErrorCode(nodeId!, StatusCode.NODE_DELETED));
           if (activedNodeId === nodeId) {
             Api.keepTabbar({}).then((res) => {
               if (res.data.success) {
-                Router.push(Navigation.WORKBENCH, { params: { spaceId }});
+                Router.push(Navigation.WORKBENCH, { params: { spaceId } });
               }
             });
             return;
@@ -212,7 +212,7 @@ export const useCatalogTreeRequest = () => {
       const { data, success, message, code } = res.data;
       if (success) {
         dispatch(StoreActions.addNodeToMap([data]));
-        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId }});
+        Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         return;
       }
@@ -681,6 +681,6 @@ export const useCatalogTreeRequest = () => {
     updateNodeRecordHistoryReq,
     disableShareReq,
     getCollaboratorListPageReq,
-    getFieldPermissionMemberListPage
+    getFieldPermissionMemberListPage,
   };
 };

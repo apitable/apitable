@@ -80,7 +80,7 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
   const needSearchDatasheetMetaData = secondConfirmType === SecondConfirmType.Form || secondConfirmType === SecondConfirmType.Chat;
 
   // 这个方法是需要调取视图数据，进行表单的预览时会调用的接口，如果不需要预览表单，则不会调用
-  const searchDatasheetMetaData = async(datasheetId: string) => {
+  const searchDatasheetMetaData = async (datasheetId: string) => {
     if (!datasheetId || !needSearchDatasheetMetaData) {
       return;
     }

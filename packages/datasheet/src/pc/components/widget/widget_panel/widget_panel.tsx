@@ -92,7 +92,7 @@ export const WidgetPanel = () => {
   const { opening: isPanelOpening } = useSelector((state) => {
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
-  const onClosePanel = async() => {
+  const onClosePanel = async () => {
     await ShortcutActionManager.trigger(ShortcutActionName.ToggleWidgetPanel);
   };
 

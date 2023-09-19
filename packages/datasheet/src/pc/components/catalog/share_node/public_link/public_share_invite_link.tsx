@@ -227,7 +227,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
 
   const previewHandler = () => {
     if (shareSettings) {
-      Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId }});
+      Router.newTab(Navigation.SHARE_SPACE, { params: { shareId: shareSettings.shareId } });
     }
   };
 

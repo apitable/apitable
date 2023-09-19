@@ -19,6 +19,10 @@
 import { BaseEntity } from 'shared/entities/base.entity';
 import { Column, Entity } from 'typeorm';
 
+export interface IAutomationProps {
+  failureNotifyEnable?: boolean
+}
+
 @Entity('automation_robot')
 export class AutomationRobotEntity extends BaseEntity {
   @Column({
@@ -57,4 +61,11 @@ export class AutomationRobotEntity extends BaseEntity {
     unsigned: true,
   })
   isActive!: boolean;
+
+  @Column('json', {
+    name: 'props',
+    nullable: true,
+    comment: 'automation properties',
+  })
+  props?: IAutomationProps;
 }

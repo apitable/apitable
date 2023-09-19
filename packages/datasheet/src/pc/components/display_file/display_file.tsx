@@ -110,7 +110,7 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = (p
     >
       {showOriginImageThumbnail(curFile) ? (
         <div
-          className={classNames(_isGif && styles.gif, styles.imageWrapper, 'tw-flex tw-items-center tw-overflow-hidden')}
+          className={classNames(_isGif && styles.gif, styles.imageWrapper, 'vk-flex vk-items-center vk-overflow-hidden')}
           style={{
             width: !width ? '100%' : width,
             height: !height ? '100%' : height,

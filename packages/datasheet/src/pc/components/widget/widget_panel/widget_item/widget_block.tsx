@@ -220,7 +220,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<
     if (!connected) {
       return;
     }
-    mainMessage.onSyncCmdOptions(widgetId, async(res) => {
+    mainMessage.onSyncCmdOptions(widgetId, async (res) => {
       mainMessage.syncCmdOptionsResult(widgetId, await resourceService.instance!.commandManager.execute(res));
     });
 

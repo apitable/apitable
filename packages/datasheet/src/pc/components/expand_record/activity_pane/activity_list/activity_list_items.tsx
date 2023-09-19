@@ -146,7 +146,7 @@ export const ActivityListItems: FC<
   };
 
   const loadMore = () => {
-    const getRecordList = async() => {
+    const getRecordList = async () => {
       setAdding(true);
       await getActivityList(resourceId, expandRecordId, ACTIVITY_SELECT_MAP[selectType][0] as ConfigConstant.ActivityListParamsType);
       // Scroll to original position after getting new data

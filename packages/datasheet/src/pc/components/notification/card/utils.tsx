@@ -306,8 +306,8 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
   const content = data.notifyBody.extras?.content;
   const number = data.notifyBody.extras?.number || 0;
   const roleName = data.notifyBody.extras?.roleName;
-  const automationName = data.notifyBody.extras?.automation?.automationName;
-  const automationRunEndAt = data.notifyBody.extras?.automation?.endAt;
+  const automationName = data.notifyBody.extras?.automationName;
+  const automationRunEndAt = data.notifyBody.extras?.endAt;
 
   const parseOptions: HTMLReactParserOptions = {
     replace: ({ attribs }) => {

@@ -113,7 +113,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps>(
 
         {
           text && innerChecked && (
-            <StyledSpan size={size} active={false}>
+            <StyledSpan size={size} active={false} className={clazz?.checkedText}>
               {isBoolean(text) ? innerChecked ? 'Disable': 'Enable': text}
             </StyledSpan>
           )
@@ -122,10 +122,10 @@ export const Switch = React.forwardRef<HTMLButtonElement, ISwitchProps>(
         <SwitchInnerBase checked={innerChecked} >
           {innerChecked ? checkedChildren : unCheckedChildren}
         </SwitchInnerBase>
-          
+
         {
           text && !innerChecked && (
-            <StyledSpan size={size} active>
+            <StyledSpan size={size} active className={clazz?.unCheckedText}>
               {isBoolean(text) ? innerChecked ? 'Disable': 'Enable': text}
             </StyledSpan>
           )

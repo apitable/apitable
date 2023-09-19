@@ -28,6 +28,7 @@ import java.io.IOException;
 
 
 import com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO;
+import com.apitable.databusclient.model.ApiResponseAutomationRunHistoryPO;
 import com.apitable.databusclient.model.ApiResponseAutomationSO;
 import com.apitable.databusclient.model.ApiResponseEmptySO;
 import com.apitable.databusclient.model.AutomationHistoryStatusRO;
@@ -334,6 +335,8 @@ public class AutomationDaoApiApi {
     }
     /**
      * Build call for daoGetAutomationRunHistory
+     * @param pageSize  (required)
+     * @param pageNum  (required)
      * @param robotId robot id (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -344,7 +347,7 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> Get automation run history list </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call daoGetAutomationRunHistoryCall(String robotId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call daoGetAutomationRunHistoryCall(Integer pageSize, Integer pageNum, String robotId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -370,7 +373,16 @@ public class AutomationDaoApiApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+        if (pageSize != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("page_size", pageSize));
+        }
+
+        if (pageNum != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("page_num", pageNum));
+        }
+
         final String[] localVarAccepts = {
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -389,20 +401,33 @@ public class AutomationDaoApiApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call daoGetAutomationRunHistoryValidateBeforeCall(String robotId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call daoGetAutomationRunHistoryValidateBeforeCall(Integer pageSize, Integer pageNum, String robotId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'pageSize' is set
+        if (pageSize == null) {
+            throw new ApiException("Missing the required parameter 'pageSize' when calling daoGetAutomationRunHistory(Async)");
+        }
+
+        // verify the required parameter 'pageNum' is set
+        if (pageNum == null) {
+            throw new ApiException("Missing the required parameter 'pageNum' when calling daoGetAutomationRunHistory(Async)");
+        }
+
         // verify the required parameter 'robotId' is set
         if (robotId == null) {
             throw new ApiException("Missing the required parameter 'robotId' when calling daoGetAutomationRunHistory(Async)");
         }
 
-        return daoGetAutomationRunHistoryCall(robotId, _callback);
+        return daoGetAutomationRunHistoryCall(pageSize, pageNum, robotId, _callback);
 
     }
 
     /**
      * Get automation run history list
      * Get automation run history list
+     * @param pageSize  (required)
+     * @param pageNum  (required)
      * @param robotId robot id (required)
+     * @return ApiResponseAutomationRunHistoryPO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -410,15 +435,18 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> Get automation run history list </td><td>  -  </td></tr>
      </table>
      */
-    public void daoGetAutomationRunHistory(String robotId) throws ApiException {
-        daoGetAutomationRunHistoryWithHttpInfo(robotId);
+    public ApiResponseAutomationRunHistoryPO daoGetAutomationRunHistory(Integer pageSize, Integer pageNum, String robotId) throws ApiException {
+        ApiResponse<ApiResponseAutomationRunHistoryPO> localVarResp = daoGetAutomationRunHistoryWithHttpInfo(pageSize, pageNum, robotId);
+        return localVarResp.getData();
     }
 
     /**
      * Get automation run history list
      * Get automation run history list
+     * @param pageSize  (required)
+     * @param pageNum  (required)
      * @param robotId robot id (required)
-     * @return ApiResponse&lt;Void&gt;
+     * @return ApiResponse&lt;ApiResponseAutomationRunHistoryPO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -426,14 +454,17 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> Get automation run history list </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> daoGetAutomationRunHistoryWithHttpInfo(String robotId) throws ApiException {
-        okhttp3.Call localVarCall = daoGetAutomationRunHistoryValidateBeforeCall(robotId, null);
-        return localVarApiClient.execute(localVarCall);
+    public ApiResponse<ApiResponseAutomationRunHistoryPO> daoGetAutomationRunHistoryWithHttpInfo(Integer pageSize, Integer pageNum, String robotId) throws ApiException {
+        okhttp3.Call localVarCall = daoGetAutomationRunHistoryValidateBeforeCall(pageSize, pageNum, robotId, null);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationRunHistoryPO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
      * Get automation run history list (asynchronously)
      * Get automation run history list
+     * @param pageSize  (required)
+     * @param pageNum  (required)
      * @param robotId robot id (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -444,10 +475,11 @@ public class AutomationDaoApiApi {
         <tr><td> 200 </td><td> Get automation run history list </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call daoGetAutomationRunHistoryAsync(String robotId, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call daoGetAutomationRunHistoryAsync(Integer pageSize, Integer pageNum, String robotId, final ApiCallback<ApiResponseAutomationRunHistoryPO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = daoGetAutomationRunHistoryValidateBeforeCall(robotId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
+        okhttp3.Call localVarCall = daoGetAutomationRunHistoryValidateBeforeCall(pageSize, pageNum, robotId, _callback);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationRunHistoryPO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**

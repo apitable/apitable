@@ -82,18 +82,7 @@ const AvatarHoc = (Component: any) => {
   const bgColorList = createAvatarRainbowColorsArr(themeName);
 
   const FC = (props: IAvatarProps) => {
-    const {
-      src,
-      title,
-      isGzip = true,
-      id,
-      size = AvatarSize.Size32,
-      type = AvatarType.Member,
-      style,
-      defaultIcon,
-      avatarColor,
-      isRole,
-    } = props;
+    const { src, title, isGzip = true, id, size = AvatarSize.Size32, type = AvatarType.Member, style, defaultIcon, avatarColor, isRole } = props;
     const _src = useGetSignatureAssertByToken(src || null) || '';
 
     if (!title || !id) return null;
@@ -110,16 +99,22 @@ const AvatarHoc = (Component: any) => {
             ...style,
           }}
         >
-          {isRole ? <UserRoleOutlined size={size * 0.625} color={colors.textStaticPrimary} />
-            : !_src && <UserGroupOutlined size={size * 0.625} color={colors.textStaticPrimary} />}
+          {isRole ? (
+            <UserRoleOutlined size={size * 0.625} color={colors.textStaticPrimary} />
+          ) : (
+            !_src && <UserGroupOutlined size={size * 0.625} color={colors.textStaticPrimary} />
+          )}
         </Component>
       );
     }
-    const avatarSrc = isGzip && _src ? getImageThumbSrc(integrateCdnHost(_src), {
-      method: CutMethod.CUT,
-      quality: 100,
-      size: size * ratio,
-    }) : _src;
+    const avatarSrc =
+      isGzip && _src
+        ? getImageThumbSrc(integrateCdnHost(_src), {
+          method: CutMethod.CUT,
+          quality: 100,
+          size: size * ratio,
+        })
+        : _src;
     const firstWord = getFirstWordFromString(title);
     const avatarBg = avatarSrc ? colors.defaultBg : avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id);
     if (type === AvatarType.Space) {

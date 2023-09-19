@@ -17,16 +17,17 @@
  */
 
 import { useUnmount } from 'ahooks';
+import { useSetAtom } from 'jotai';
 import _pick from 'lodash/pick';
 import { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import * as React from 'react';
+import { automationModifiedAtom } from 'pc/components/automation/controller';
+import { useFormEdit } from '../../../form_edit';
 import { isObject, mergeObjects } from '../func';
 import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
 import validateFormData, { toErrorList } from '../validate';
 import { default as DefaultErrorList } from './common/ErrorList';
-import { useSetAtom } from "jotai";
-import { automationModifiedAtom } from 'pc/components/automation/controller';
 
 const defaultProps = {
   uiSchema: {},
@@ -88,14 +89,14 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     return data;
   };
 
-  const setAutomationModified = useSetAtom(automationModifiedAtom)
+  const setAutomationModified = useSetAtom(automationModifiedAtom);
 
-  useUnmount(()=> {
+  useUnmount(() => {
     setAutomationModified(false);
   });
 
   const onChange = (formData: any, newErrorSchema: any) => {
-    setAutomationModified(true)
+    setAutomationModified(true);
 
     if (isObject(formData) || Array.isArray(formData)) {
       const newState = getStateFromProps(props, formData, state);

@@ -31,7 +31,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { skipUsageVerification } from 'app.environment';
 import {
-  InternalCreateDatasheetVo,
+  InternalCreateDatasheetVo, InternalSpaceCreditUsageView,
   InternalSpaceInfoVo,
   InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
@@ -82,6 +82,7 @@ export class RestService {
   private DEL_FIELD_PERMISSION = 'internal/datasheet/%(dstId)s/field/permission/disable';
   private SPACE_CAPACITY = 'internal/space/%(spaceId)s/capacity';
   private SPACE_USAGES = 'internal/space/%(spaceId)s/usages';
+  private SPACE_CREDIT_USAGES = 'internal/space/%(spaceId)s/credit/usages';
   private SPACE_SUBSCRIPTION = 'internal/space/%(spaceId)s/subscription';
   private CREATE_DATASHEET_API_URL = 'internal/spaces/%(spaceId)s/datasheets';
   private DELETE_NODE_API_URL = 'internal/spaces/%(spaceId)s/nodes/%(nodeId)s/delete';
@@ -556,6 +557,15 @@ export class RestService {
     return response!.data;
   }
 
+  /**
+   * Obtain the credit usage of the space
+   * @param spaceId space id
+   */
+  async getSpaceCreditUsage(spaceId: string): Promise<InternalSpaceCreditUsageView> {
+    const response = await lastValueFrom(this.httpService.get<InternalSpaceCreditUsageView>(sprintf(this.SPACE_CREDIT_USAGES, { spaceId })));
+    return response!.data;
+  }
+
   public async createDatasheet(spaceId: string, headers: IAuthHeader, creareDatasheetRo: DatasheetCreateRo): Promise<InternalCreateDatasheetVo> {
     const url = sprintf(this.CREATE_DATASHEET_API_URL, { spaceId });
     const response = await lastValueFrom(
@@ -660,7 +670,6 @@ export class RestService {
     await lastValueFrom(this.httpService.post(sprintf(this.SPACE_STATISTICS, { spaceId }), ro));
   }
 
-
   public async getSignatures(keys: string[]): Promise<Array<{ resourceKey: string; url: string }>> {
     const queryParams = new URLSearchParams();
     keys.forEach(key => queryParams.append('resourceKeys', key));
@@ -668,7 +677,7 @@ export class RestService {
     const url = `${this.GET_ASSET_SIGNATURES}?${queryParams.toString()}`;
 
     const response = await lastValueFrom(
-        this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
+      this.httpService.get<Array<{ resourceKey: string; url: string }>>(url),
     );
     return response.data;
   }

@@ -22,7 +22,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, Skeleton } from '@apitable/components';
+import { Box, FloatUiTooltip, Skeleton } from '@apitable/components';
 import { Api, ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { automationStateAtom } from '../../automation/controller';
 import { getResourceAutomationDetail, getResourceAutomations } from '../api';
@@ -31,6 +31,7 @@ import {
   useAddNewRobot, useRobot,
   useTriggerTypes
 } from '../hooks';
+import { OrTooltip } from '../robot_detail/or_tooltip';
 import { RobotListItemCard } from '../robot_list_item';
 import { useRobotController } from './controller';
 import { NewItem } from './new_item';
@@ -70,7 +71,20 @@ export const useRobotListState = () => {
       },
       api: {
         getById,
-        refresh  : async(
+        refreshItem  : async (
+        ) => {
+          await mutateRefresh();
+          if (state?.resourceId && state?.currentRobotId) {
+            const itemDetail = await getResourceAutomationDetail(state?.resourceId, state?.currentRobotId);
+            const newState = {
+              robot: itemDetail,
+              currentRobotId: currentRobotId,
+              resourceId: state.resourceId,
+            };
+            setAutomationAtom(newState);
+          }
+        },
+        refresh  : async (
           data?: {
               resourceId: string;
               robotId: string;
@@ -100,18 +114,21 @@ export const RobotList = memo(() => {
   const permissions = useSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
-  const { state: { data: robotList }} = useRobotListState();
+  const { state: { data: robotList } } = useRobotListState();
 
-  const { state: { error }, api: { refresh }} = useRobotListState();
+  const { state: { error }, api: { refresh } } = useRobotListState();
 
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
 
   const { createNewRobot, navigateAutomation } = useRobotController();
 
-  const { canAddNewRobot } = useAddNewRobot();
+  const {
+    canAddNewRobot,
+    disableTip,
+  } = useAddNewRobot();
 
-  const robot = useRobot();
+  // const robot = useRobot();
   if (error) return null;
   if (triggerTypesLoading || actionTypesLoading || triggerTypes.length === 0 || actionTypes.length === 0) {
     return <Skeleton
@@ -139,7 +156,7 @@ export const RobotList = memo(() => {
               index={index}
               key={robot.robotId}
               robotCardInfo={robot}
-              onNavigate={async() => {
+              onNavigate={async () => {
                 await navigateAutomation(robot.resourceId, robot.robotId);
               }}
               readonly={!canManageRobot}
@@ -147,22 +164,24 @@ export const RobotList = memo(() => {
           );
         })
       }
-      <NewItem
-        height={64}
-        disabled={(!canAddNewRobot) || Boolean(robotLength > CONST_MAX_ROBOT_COUNT)}
-        onClick={async() => {
-          if(!canManageRobot) {
-            return;
-          }
+      <OrTooltip tooltip={disableTip} tooltipEnable={robotLength >= ConfigConstant.MAX_ROBOT_COUNT_PER_DST} >
+        <NewItem
+          height={64}
+          disabled={(!canAddNewRobot) || Boolean(robotLength >= ConfigConstant.MAX_ROBOT_COUNT_PER_DST)}
+          onClick={async () => {
+            if(!canManageRobot) {
+              return;
+            }
 
-          await createNewRobot();
-          await refresh();
-        }}
-      >
-        {
-          t(Strings.new_automation)
-        }
-      </NewItem>
+            await createNewRobot();
+            await refresh();
+          }}
+        >
+          {
+            t(Strings.new_automation)
+          }
+        </NewItem>
+      </OrTooltip>
     </div>
   );
 });
