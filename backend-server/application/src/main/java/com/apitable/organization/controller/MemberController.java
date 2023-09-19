@@ -381,7 +381,7 @@ public class MemberController {
         String spaceId = LoginContext.me().getSpaceId();
         // whether in black list
         blackListServiceFacade.checkSpace(spaceId);
-        iSpaceService.checkSeatOverLimit(spaceId);
+        iSpaceService.checkSeatOverLimit(spaceId, data.getInvite().size());
         Long userId = SessionContext.getUserId();
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);

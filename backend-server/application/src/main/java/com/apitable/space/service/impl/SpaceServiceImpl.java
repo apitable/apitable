@@ -571,7 +571,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-        if (maxSeatNums != -1 && (seatUsage.getTotal() == maxSeatNums)) {
+        if (maxSeatNums != -1 && (seatUsage.getTotal() >= maxSeatNums)) {
             throw new BusinessException(LimitException.OVER_LIMIT);
         }
     }
