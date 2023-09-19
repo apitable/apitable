@@ -134,4 +134,12 @@ public interface NodeShareSettingMapper extends BaseMapper<NodeShareSettingEntit
      * @return Boolean
      */
     Boolean selectIsEnabledByNodeId(@Param("nodeId") String nodeId);
+
+    /**
+     * get share permission.
+     *
+     * @param shareId share id
+     * @return NodeShareSettingEntity
+     */
+    NodeShareSettingEntity selectAllowSaveAndAllowEditByShareId(@Param("shareId") String shareId);
 }

@@ -21,17 +21,19 @@ package com.apitable.automation.controller;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.model.AutomationVO;
+import com.apitable.automation.model.TriggerRO;
+import com.apitable.automation.model.TriggerVO;
 import com.apitable.automation.model.UpdateRobotRO;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationRunHistoryService;
-import com.apitable.control.infrastructure.ControlTemplate;
+import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.internal.service.IPermissionService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
@@ -69,13 +71,16 @@ public class AutomationRobotController {
     private IAutomationRobotService iAutomationRobotService;
 
     @Resource
-    private ControlTemplate controlTemplate;
-
-    @Resource
     private INodeService iNodeService;
 
     @Resource
     private IAutomationRunHistoryService iAutomationRunHistoryService;
+
+    @Resource
+    private IAutomationTriggerService iAutomationTriggerService;
+
+    @Resource
+    private IPermissionService iPermissionService;
 
     /**
      * Get automation robots.
@@ -85,16 +90,15 @@ public class AutomationRobotController {
      */
     @GetResource(path = "/robots", requiredPermission = false)
     @Operation(summary = "Get automation robots")
-    @Parameter(name = "resourceId", description = "resource id", required = true,
-        schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dst****")
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "aut****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),})
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<AutomationSimpleVO>> getResourceRobots(
-        @RequestParam(name = "resourceId") String resourceId) {
-        Long userId = SessionContext.getUserId();
-        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // check whether the node has the specified operation permission
-        controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.READ_NODE,
+        @RequestParam(name = "resourceId") String resourceId,
+        @RequestParam(name = "shareId", required = false) String shareId) {
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         List<AutomationSimpleVO> result = iAutomationRobotService.getRobotsByResourceId(resourceId);
         return ResponseData.success(result);
@@ -103,7 +107,7 @@ public class AutomationRobotController {
     /**
      * get automation detail.
      *
-     * @param robotId robot id
+     * @param robotId    robot id
      * @param resourceId node id
      * @return AutomationVO
      */
@@ -112,15 +116,15 @@ public class AutomationRobotController {
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
         @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
-    public ResponseData<AutomationVO> getNodeRobot(@PathVariable String resourceId,
-                                                   @PathVariable String robotId) {
-        Long userId = SessionContext.getUserId();
-        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // check whether the node has the specified operation permission
-        controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.READ_NODE,
+    public ResponseData<AutomationVO> getNodeRobot(
+        @PathVariable String resourceId,
+        @PathVariable String robotId,
+        @RequestParam(name = "shareId", required = false) String shareId) {
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         return ResponseData.success(iAutomationRobotService.getRobotByRobotId(robotId));
     }
@@ -137,15 +141,17 @@ public class AutomationRobotController {
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
         @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
-    public ResponseData<Void> modifyRobot(@PathVariable String resourceId,
-                                          @PathVariable String robotId,
-                                          @RequestBody UpdateRobotRO data) {
+    public ResponseData<Void> modifyRobot(
+        @PathVariable String resourceId,
+        @PathVariable String robotId,
+        @RequestBody UpdateRobotRO data,
+        @RequestParam(name = "shareId", required = false) String shareId
+    ) {
         Long userId = SessionContext.getUserId();
-        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // check whether the node has the specified operation permission
-        controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.EDIT_NODE,
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         boolean result = iAutomationRobotService.update(robotId, userId, data);
         if (result && data.getModifyNodeName()) {
@@ -170,7 +176,8 @@ public class AutomationRobotController {
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
         @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
         @Parameter(name = "pageNum", description = "Current page number, default: 1", required = true, schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1"),
-        @Parameter(name = "pageSize", description = "Page size, default: 20", schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "20")
+        @Parameter(name = "pageSize", description = "Page size, default: 20", schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "20"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
     @Operation(summary = "Get automation run history")
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
@@ -178,15 +185,44 @@ public class AutomationRobotController {
         @RequestParam(name = "pageSize", defaultValue = "20")
         @Valid @Min(1) @Max(200) Integer pageSize,
         @RequestParam(name = "pageNum", defaultValue = "20") @Valid @Min(1) Integer pageNum,
+        @RequestParam(name = "shareId", required = false) String shareId,
         @PathVariable String resourceId,
         @PathVariable String robotId) {
-        Long userId = SessionContext.getUserId();
-        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // check whether the node has the specified operation permission
-        controlTemplate.checkNodePermission(memberId, resourceId, NodePermission.READ_NODE,
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         return ResponseData.success(
             iAutomationRunHistoryService.getRobotRunHistory(robotId, pageSize, pageNum));
+    }
+
+    /**
+     * Create automation robot trigger.
+     *
+     * @param data       request data
+     * @param resourceId resource id
+     * @param robotId    robot id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/roots/{robotId}/triggers", requiredPermission = false)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
+    })
+    @Operation(summary = "Create automation robot trigger")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<List<TriggerVO>> createTrigger(
+        @PathVariable String resourceId,
+        @PathVariable String robotId,
+        @RequestBody TriggerRO data,
+        @RequestParam(name = "shareId", required = false) String shareId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        return ResponseData.success(
+            iAutomationTriggerService.createByDatabus(robotId, userId, data));
+
     }
 }

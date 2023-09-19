@@ -21,6 +21,8 @@ package com.apitable.automation.service;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.apitable.automation.model.TriggerCopyResultDto;
+import com.apitable.automation.model.TriggerRO;
+import com.apitable.automation.model.TriggerVO;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,16 @@ public interface IAutomationTriggerService {
     List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds);
 
     void create(AutomationTriggerEntity entity);
+
+    /**
+     * Create trigger.
+     *
+     * @param robotId robot id
+     * @param userId  creator's user id
+     * @param data    data
+     * @return TriggerVO
+     */
+    List<TriggerVO> createByDatabus(String robotId, Long userId, TriggerRO data);
 
     TriggerCopyResultDto copy(Long userId, boolean sameSpace,
         Map<String, String> newRobotMap, Map<String, String> newNodeMap);

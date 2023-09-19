@@ -21,7 +21,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,43 +50,80 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * ViewRowSO
+ * ApiRecordDto
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class ViewRowSO {
-  public static final String SERIALIZED_NAME_HIDDEN = "hidden";
-  @SerializedName(SERIALIZED_NAME_HIDDEN)
-  private Boolean hidden;
+public class ApiRecordDto {
+  public static final String SERIALIZED_NAME_CREATED_AT = "createdAt";
+  @SerializedName(SERIALIZED_NAME_CREATED_AT)
+  private Long createdAt;
+
+  public static final String SERIALIZED_NAME_FIELDS = "fields";
+  @SerializedName(SERIALIZED_NAME_FIELDS)
+  private Map<String, String> fields = new HashMap<>();
 
   public static final String SERIALIZED_NAME_RECORD_ID = "recordId";
   @SerializedName(SERIALIZED_NAME_RECORD_ID)
   private String recordId;
 
-  public ViewRowSO() {
+  public static final String SERIALIZED_NAME_UPDATED_AT = "updatedAt";
+  @SerializedName(SERIALIZED_NAME_UPDATED_AT)
+  private Long updatedAt;
+
+  public ApiRecordDto() {
   }
 
-  public ViewRowSO hidden(Boolean hidden) {
+  public ApiRecordDto createdAt(Long createdAt) {
     
-    this.hidden = hidden;
+    this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Get hidden
-   * @return hidden
+   * Get createdAt
+   * @return createdAt
   **/
-  @javax.annotation.Nullable
-  public Boolean getHidden() {
-    return hidden;
+  @javax.annotation.Nonnull
+  public Long getCreatedAt() {
+    return createdAt;
   }
 
 
-  public void setHidden(Boolean hidden) {
-    this.hidden = hidden;
+  public void setCreatedAt(Long createdAt) {
+    this.createdAt = createdAt;
   }
 
 
-  public ViewRowSO recordId(String recordId) {
+  public ApiRecordDto fields(Map<String, String> fields) {
+    
+    this.fields = fields;
+    return this;
+  }
+
+  public ApiRecordDto putFieldsItem(String key, String fieldsItem) {
+    if (this.fields == null) {
+      this.fields = new HashMap<>();
+    }
+    this.fields.put(key, fieldsItem);
+    return this;
+  }
+
+   /**
+   * Get fields
+   * @return fields
+  **/
+  @javax.annotation.Nonnull
+  public Map<String, String> getFields() {
+    return fields;
+  }
+
+
+  public void setFields(Map<String, String> fields) {
+    this.fields = fields;
+  }
+
+
+  public ApiRecordDto recordId(String recordId) {
     
     this.recordId = recordId;
     return this;
@@ -106,6 +144,27 @@ public class ViewRowSO {
   }
 
 
+  public ApiRecordDto updatedAt(Long updatedAt) {
+    
+    this.updatedAt = updatedAt;
+    return this;
+  }
+
+   /**
+   * Get updatedAt
+   * @return updatedAt
+  **/
+  @javax.annotation.Nonnull
+  public Long getUpdatedAt() {
+    return updatedAt;
+  }
+
+
+  public void setUpdatedAt(Long updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -115,33 +174,26 @@ public class ViewRowSO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ViewRowSO viewRowSO = (ViewRowSO) o;
-    return Objects.equals(this.hidden, viewRowSO.hidden) &&
-        Objects.equals(this.recordId, viewRowSO.recordId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    ApiRecordDto apiRecordDto = (ApiRecordDto) o;
+    return Objects.equals(this.createdAt, apiRecordDto.createdAt) &&
+        Objects.equals(this.fields, apiRecordDto.fields) &&
+        Objects.equals(this.recordId, apiRecordDto.recordId) &&
+        Objects.equals(this.updatedAt, apiRecordDto.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hidden, recordId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(createdAt, fields, recordId, updatedAt);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ViewRowSO {\n");
-    sb.append("    hidden: ").append(toIndentedString(hidden)).append("\n");
+    sb.append("class ApiRecordDto {\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("    recordId: ").append(toIndentedString(recordId)).append("\n");
+    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -164,37 +216,42 @@ public class ViewRowSO {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("hidden");
+    openapiFields.add("createdAt");
+    openapiFields.add("fields");
     openapiFields.add("recordId");
+    openapiFields.add("updatedAt");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("createdAt");
+    openapiRequiredFields.add("fields");
     openapiRequiredFields.add("recordId");
+    openapiRequiredFields.add("updatedAt");
   }
 
  /**
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ViewRowSO
+  * @throws IOException if the JSON Element is invalid with respect to ApiRecordDto
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!ViewRowSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ViewRowSO is not found in the empty JSON string", ViewRowSO.openapiRequiredFields.toString()));
+        if (!ApiRecordDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ApiRecordDto is not found in the empty JSON string", ApiRecordDto.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!ViewRowSO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ViewRowSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ApiRecordDto.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ApiRecordDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ViewRowSO.openapiRequiredFields) {
+      for (String requiredField : ApiRecordDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -209,22 +266,22 @@ public class ViewRowSO {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ViewRowSO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ViewRowSO' and its subtypes
+       if (!ApiRecordDto.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ApiRecordDto' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ViewRowSO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ViewRowSO.class));
+       final TypeAdapter<ApiRecordDto> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ApiRecordDto.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<ViewRowSO>() {
+       return (TypeAdapter<T>) new TypeAdapter<ApiRecordDto>() {
            @Override
-           public void write(JsonWriter out, ViewRowSO value) throws IOException {
+           public void write(JsonWriter out, ApiRecordDto value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public ViewRowSO read(JsonReader in) throws IOException {
+           public ApiRecordDto read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -235,18 +292,18 @@ public class ViewRowSO {
   }
 
  /**
-  * Create an instance of ViewRowSO given an JSON string
+  * Create an instance of ApiRecordDto given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of ViewRowSO
-  * @throws IOException if the JSON string is invalid with respect to ViewRowSO
+  * @return An instance of ApiRecordDto
+  * @throws IOException if the JSON string is invalid with respect to ApiRecordDto
   */
-  public static ViewRowSO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ViewRowSO.class);
+  public static ApiRecordDto fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ApiRecordDto.class);
   }
 
  /**
-  * Convert an instance of ViewRowSO to an JSON string
+  * Convert an instance of ApiRecordDto to an JSON string
   *
   * @return JSON string
   */

@@ -23,20 +23,18 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 /**
- * Gets or Sets SymbolAlign
+ * Gets or Sets FieldKeyEnum
  */
-@JsonAdapter(SymbolAlign.Adapter.class)
-public enum SymbolAlign {
+@JsonAdapter(FieldKeyEnum.Adapter.class)
+public enum FieldKeyEnum {
   
-  DEFAULT("Default"),
+  NAME("name"),
   
-  LEFT("Left"),
-  
-  RIGHT("Right");
+  ID("id");
 
   private String value;
 
-  SymbolAlign(String value) {
+  FieldKeyEnum(String value) {
     this.value = value;
   }
 
@@ -49,8 +47,8 @@ public enum SymbolAlign {
     return String.valueOf(value);
   }
 
-  public static SymbolAlign fromValue(String value) {
-    for (SymbolAlign b : SymbolAlign.values()) {
+  public static FieldKeyEnum fromValue(String value) {
+    for (FieldKeyEnum b : FieldKeyEnum.values()) {
       if (b.value.equals(value)) {
         return b;
       }
@@ -58,16 +56,16 @@ public enum SymbolAlign {
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 
-  public static class Adapter extends TypeAdapter<SymbolAlign> {
+  public static class Adapter extends TypeAdapter<FieldKeyEnum> {
     @Override
-    public void write(final JsonWriter jsonWriter, final SymbolAlign enumeration) throws IOException {
+    public void write(final JsonWriter jsonWriter, final FieldKeyEnum enumeration) throws IOException {
       jsonWriter.value(enumeration.getValue());
     }
 
     @Override
-    public SymbolAlign read(final JsonReader jsonReader) throws IOException {
+    public FieldKeyEnum read(final JsonReader jsonReader) throws IOException {
       String value = jsonReader.nextString();
-      return SymbolAlign.fromValue(value);
+      return FieldKeyEnum.fromValue(value);
     }
   }
 }

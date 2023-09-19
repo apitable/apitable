@@ -14,14 +14,17 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
+import com.apitable.databusclient.model.FieldKeyEnum;
+import com.apitable.databusclient.model.FieldUpdateRO;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,60 +52,68 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * ViewRowSO
+ * RecordUpdateRO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class ViewRowSO {
-  public static final String SERIALIZED_NAME_HIDDEN = "hidden";
-  @SerializedName(SERIALIZED_NAME_HIDDEN)
-  private Boolean hidden;
+public class RecordUpdateRO {
+  public static final String SERIALIZED_NAME_FIELD_KEY = "fieldKey";
+  @SerializedName(SERIALIZED_NAME_FIELD_KEY)
+  private FieldKeyEnum fieldKey;
 
-  public static final String SERIALIZED_NAME_RECORD_ID = "recordId";
-  @SerializedName(SERIALIZED_NAME_RECORD_ID)
-  private String recordId;
+  public static final String SERIALIZED_NAME_RECORDS = "records";
+  @SerializedName(SERIALIZED_NAME_RECORDS)
+  private List<FieldUpdateRO> records = new ArrayList<>();
 
-  public ViewRowSO() {
+  public RecordUpdateRO() {
   }
 
-  public ViewRowSO hidden(Boolean hidden) {
+  public RecordUpdateRO fieldKey(FieldKeyEnum fieldKey) {
     
-    this.hidden = hidden;
+    this.fieldKey = fieldKey;
     return this;
   }
 
    /**
-   * Get hidden
-   * @return hidden
-  **/
-  @javax.annotation.Nullable
-  public Boolean getHidden() {
-    return hidden;
-  }
-
-
-  public void setHidden(Boolean hidden) {
-    this.hidden = hidden;
-  }
-
-
-  public ViewRowSO recordId(String recordId) {
-    
-    this.recordId = recordId;
-    return this;
-  }
-
-   /**
-   * Get recordId
-   * @return recordId
+   * Get fieldKey
+   * @return fieldKey
   **/
   @javax.annotation.Nonnull
-  public String getRecordId() {
-    return recordId;
+  public FieldKeyEnum getFieldKey() {
+    return fieldKey;
   }
 
 
-  public void setRecordId(String recordId) {
-    this.recordId = recordId;
+  public void setFieldKey(FieldKeyEnum fieldKey) {
+    this.fieldKey = fieldKey;
+  }
+
+
+  public RecordUpdateRO records(List<FieldUpdateRO> records) {
+    
+    this.records = records;
+    return this;
+  }
+
+  public RecordUpdateRO addRecordsItem(FieldUpdateRO recordsItem) {
+    if (this.records == null) {
+      this.records = new ArrayList<>();
+    }
+    this.records.add(recordsItem);
+    return this;
+  }
+
+   /**
+   * Get records
+   * @return records
+  **/
+  @javax.annotation.Nonnull
+  public List<FieldUpdateRO> getRecords() {
+    return records;
+  }
+
+
+  public void setRecords(List<FieldUpdateRO> records) {
+    this.records = records;
   }
 
 
@@ -115,33 +126,22 @@ public class ViewRowSO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ViewRowSO viewRowSO = (ViewRowSO) o;
-    return Objects.equals(this.hidden, viewRowSO.hidden) &&
-        Objects.equals(this.recordId, viewRowSO.recordId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    RecordUpdateRO recordUpdateRO = (RecordUpdateRO) o;
+    return Objects.equals(this.fieldKey, recordUpdateRO.fieldKey) &&
+        Objects.equals(this.records, recordUpdateRO.records);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hidden, recordId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(fieldKey, records);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ViewRowSO {\n");
-    sb.append("    hidden: ").append(toIndentedString(hidden)).append("\n");
-    sb.append("    recordId: ").append(toIndentedString(recordId)).append("\n");
+    sb.append("class RecordUpdateRO {\n");
+    sb.append("    fieldKey: ").append(toIndentedString(fieldKey)).append("\n");
+    sb.append("    records: ").append(toIndentedString(records)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -164,67 +164,75 @@ public class ViewRowSO {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("hidden");
-    openapiFields.add("recordId");
+    openapiFields.add("fieldKey");
+    openapiFields.add("records");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("recordId");
+    openapiRequiredFields.add("fieldKey");
+    openapiRequiredFields.add("records");
   }
 
  /**
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ViewRowSO
+  * @throws IOException if the JSON Element is invalid with respect to RecordUpdateRO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!ViewRowSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ViewRowSO is not found in the empty JSON string", ViewRowSO.openapiRequiredFields.toString()));
+        if (!RecordUpdateRO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in RecordUpdateRO is not found in the empty JSON string", RecordUpdateRO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!ViewRowSO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ViewRowSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!RecordUpdateRO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `RecordUpdateRO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ViewRowSO.openapiRequiredFields) {
+      for (String requiredField : RecordUpdateRO.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("recordId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `recordId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("recordId").toString()));
+      // ensure the json data is an array
+      if (!jsonObj.get("records").isJsonArray()) {
+        throw new IllegalArgumentException(String.format("Expected the field `records` to be an array in the JSON string but got `%s`", jsonObj.get("records").toString()));
       }
+
+      JsonArray jsonArrayrecords = jsonObj.getAsJsonArray("records");
+      // validate the required field `records` (array)
+      for (int i = 0; i < jsonArrayrecords.size(); i++) {
+        FieldUpdateRO.validateJsonElement(jsonArrayrecords.get(i));
+      };
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ViewRowSO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ViewRowSO' and its subtypes
+       if (!RecordUpdateRO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'RecordUpdateRO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ViewRowSO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ViewRowSO.class));
+       final TypeAdapter<RecordUpdateRO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(RecordUpdateRO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<ViewRowSO>() {
+       return (TypeAdapter<T>) new TypeAdapter<RecordUpdateRO>() {
            @Override
-           public void write(JsonWriter out, ViewRowSO value) throws IOException {
+           public void write(JsonWriter out, RecordUpdateRO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public ViewRowSO read(JsonReader in) throws IOException {
+           public RecordUpdateRO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -235,18 +243,18 @@ public class ViewRowSO {
   }
 
  /**
-  * Create an instance of ViewRowSO given an JSON string
+  * Create an instance of RecordUpdateRO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of ViewRowSO
-  * @throws IOException if the JSON string is invalid with respect to ViewRowSO
+  * @return An instance of RecordUpdateRO
+  * @throws IOException if the JSON string is invalid with respect to RecordUpdateRO
   */
-  public static ViewRowSO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ViewRowSO.class);
+  public static RecordUpdateRO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, RecordUpdateRO.class);
   }
 
  /**
-  * Convert an instance of ViewRowSO to an JSON string
+  * Convert an instance of RecordUpdateRO to an JSON string
   *
   * @return JSON string
   */

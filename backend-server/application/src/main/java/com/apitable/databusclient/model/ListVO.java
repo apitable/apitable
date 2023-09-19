@@ -14,14 +14,16 @@
 package com.apitable.databusclient.model;
 
 import java.util.Objects;
+import com.apitable.databusclient.model.ApiRecordDto;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,35 +51,43 @@ import java.util.Set;
 import com.apitable.databusclient.JSON;
 
 /**
- * NodePermissionStateSO
+ * ListVO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class NodePermissionStateSO {
-  public static final String SERIALIZED_NAME_IS_DELETED = "isDeleted";
-  @SerializedName(SERIALIZED_NAME_IS_DELETED)
-  private Boolean isDeleted;
+public class ListVO {
+  public static final String SERIALIZED_NAME_RECORDS = "records";
+  @SerializedName(SERIALIZED_NAME_RECORDS)
+  private List<ApiRecordDto> records = new ArrayList<>();
 
-  public NodePermissionStateSO() {
+  public ListVO() {
   }
 
-  public NodePermissionStateSO isDeleted(Boolean isDeleted) {
+  public ListVO records(List<ApiRecordDto> records) {
     
-    this.isDeleted = isDeleted;
+    this.records = records;
+    return this;
+  }
+
+  public ListVO addRecordsItem(ApiRecordDto recordsItem) {
+    if (this.records == null) {
+      this.records = new ArrayList<>();
+    }
+    this.records.add(recordsItem);
     return this;
   }
 
    /**
-   * Get isDeleted
-   * @return isDeleted
+   * Get records
+   * @return records
   **/
-  @javax.annotation.Nullable
-  public Boolean getIsDeleted() {
-    return isDeleted;
+  @javax.annotation.Nonnull
+  public List<ApiRecordDto> getRecords() {
+    return records;
   }
 
 
-  public void setIsDeleted(Boolean isDeleted) {
-    this.isDeleted = isDeleted;
+  public void setRecords(List<ApiRecordDto> records) {
+    this.records = records;
   }
 
 
@@ -90,31 +100,20 @@ public class NodePermissionStateSO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    NodePermissionStateSO nodePermissionStateSO = (NodePermissionStateSO) o;
-    return Objects.equals(this.isDeleted, nodePermissionStateSO.isDeleted);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    ListVO listVO = (ListVO) o;
+    return Objects.equals(this.records, listVO.records);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(isDeleted);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(records);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class NodePermissionStateSO {\n");
-    sb.append("    isDeleted: ").append(toIndentedString(isDeleted)).append("\n");
+    sb.append("class ListVO {\n");
+    sb.append("    records: ").append(toIndentedString(records)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -137,55 +136,73 @@ public class NodePermissionStateSO {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("isDeleted");
+    openapiFields.add("records");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("records");
   }
 
  /**
   * Validates the JSON Element and throws an exception if issues found
   *
   * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to NodePermissionStateSO
+  * @throws IOException if the JSON Element is invalid with respect to ListVO
   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!NodePermissionStateSO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in NodePermissionStateSO is not found in the empty JSON string", NodePermissionStateSO.openapiRequiredFields.toString()));
+        if (!ListVO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ListVO is not found in the empty JSON string", ListVO.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!NodePermissionStateSO.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `NodePermissionStateSO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ListVO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ListVO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : ListVO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      // ensure the json data is an array
+      if (!jsonObj.get("records").isJsonArray()) {
+        throw new IllegalArgumentException(String.format("Expected the field `records` to be an array in the JSON string but got `%s`", jsonObj.get("records").toString()));
+      }
+
+      JsonArray jsonArrayrecords = jsonObj.getAsJsonArray("records");
+      // validate the required field `records` (array)
+      for (int i = 0; i < jsonArrayrecords.size(); i++) {
+        ApiRecordDto.validateJsonElement(jsonArrayrecords.get(i));
+      };
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!NodePermissionStateSO.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'NodePermissionStateSO' and its subtypes
+       if (!ListVO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ListVO' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<NodePermissionStateSO> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(NodePermissionStateSO.class));
+       final TypeAdapter<ListVO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ListVO.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<NodePermissionStateSO>() {
+       return (TypeAdapter<T>) new TypeAdapter<ListVO>() {
            @Override
-           public void write(JsonWriter out, NodePermissionStateSO value) throws IOException {
+           public void write(JsonWriter out, ListVO value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public NodePermissionStateSO read(JsonReader in) throws IOException {
+           public ListVO read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -196,18 +213,18 @@ public class NodePermissionStateSO {
   }
 
  /**
-  * Create an instance of NodePermissionStateSO given an JSON string
+  * Create an instance of ListVO given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of NodePermissionStateSO
-  * @throws IOException if the JSON string is invalid with respect to NodePermissionStateSO
+  * @return An instance of ListVO
+  * @throws IOException if the JSON string is invalid with respect to ListVO
   */
-  public static NodePermissionStateSO fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, NodePermissionStateSO.class);
+  public static ListVO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ListVO.class);
   }
 
  /**
-  * Convert an instance of NodePermissionStateSO to an JSON string
+  * Convert an instance of ListVO to an JSON string
   *
   * @return JSON string
   */

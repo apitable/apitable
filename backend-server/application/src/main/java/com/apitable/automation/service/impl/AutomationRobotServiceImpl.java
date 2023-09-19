@@ -250,6 +250,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                 trigger.setTriggerId(i.getTriggerId());
                 trigger.setTriggerTypeId(i.getTriggerTypeId());
                 trigger.setPrevTriggerId(i.getPrevTriggerId());
+                trigger.setRelatedResourceId(i.getResourceId());
                 trigger.setInput(i.getInput());
                 return trigger;
             }).sorted(triggerComparator).collect(Collectors.toList());

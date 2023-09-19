@@ -18,23 +18,19 @@
 
 package com.apitable.internal.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
+import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.NodeRole;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.internal.service.IPermissionService;
 import com.apitable.organization.service.IMemberService;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.context.SessionContext;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.service.IUserService;
@@ -45,11 +41,15 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.INodeShareSettingService;
 import com.apitable.workspace.vo.DatasheetPermissionView;
 import com.apitable.workspace.vo.FieldPermissionView;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * Permission Service Implements
+ * Permission Service Implements.
  */
 @Slf4j
 @Service
@@ -152,6 +152,24 @@ public class PermissionServiceImpl implements IPermissionService {
             views.add(permissionView);
         }
         return views;
+    }
+
+    @Override
+    public void checkPermissionBySessionOrShare(String resourceId, String shareId,
+                                                NodePermission permission,
+                                                Consumer<Boolean> consumer) {
+        if (StrUtil.isNotBlank(shareId)) {
+            // check share permission
+            NodePermission sharePermission =
+                iNodeShareSettingService.getPermissionByShareId(shareId);
+            consumer.accept(sharePermission.equals(permission));
+        } else {
+            Long userId = SessionContext.getUserId();
+            String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+            Long memberId = LoginContext.me().getMemberId(userId, spaceId);
+            // check whether the node has the specified operation permission
+            controlTemplate.checkNodePermission(memberId, resourceId, permission, consumer);
+        }
     }
 
     private DatasheetPermissionView getEmptyPermissionView(Long userId, String uuid, Long memberId, String nodeId, String shareId) {
