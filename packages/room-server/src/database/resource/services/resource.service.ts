@@ -54,7 +54,11 @@ export class ResourceService {
 
   @Span()
   async getHasRobotByResourceIds(resourceIds: string[]) {
-    return await this.automationService.isResourcesHasRobots(resourceIds);
+    const hasRobot = await this.automationService.isResourcesHasRobots(resourceIds);
+    if (!hasRobot) {
+      return await this.automationService.isResourcesHasTriggers(resourceIds);
+    }
+    return hasRobot;
   }
 
   async fetchForeignDatasheetPack(
