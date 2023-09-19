@@ -65,7 +65,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
   const contextMenuRef = useRef<IContextMenuMethods>(null);
   const [selectMemberModal, setSelectMemberModal] = useState(false);
   const listStatus = useRef<WidgetReleaseType[]>([]);
-  const [packageListMap, setPackageListMap] = useState<{ [key in WidgetReleaseType]?: IWidgetPackage[] }>({});
+  const [packageListMap, setPackageListMap] = useState<Record<WidgetReleaseType, IWidgetPackage[]> | {}>({});
   const query = useQuery();
   const showPreview = query.get('widget_preview');
   const fetchPackageList = useCallback(

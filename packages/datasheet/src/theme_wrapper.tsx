@@ -41,7 +41,7 @@ const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      let newSystemTheme = null;
+      let newSystemTheme: null | string = null;
       try {
         newSystemTheme = localStorage.getItem('systemTheme');
       } catch (e) {}

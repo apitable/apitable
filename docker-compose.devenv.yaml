@@ -36,7 +36,7 @@ services:
       - HOME=/tmp
     networks:
       - apitable
-    command: sh -c "yarn install && yarn build:dst:pre && yarn sd"
+    command: sh -c "pnpm install && pnpm run build:dst:pre && pnpm run sd"
 
   room-server:
     image: apitable/devenv:latest
@@ -67,7 +67,7 @@ services:
       - ENABLE_SOCKET=true
     networks:
       - apitable
-    command: sh -c "yarn install && yarn build:pre && yarn start:room-server"
+    command: sh -c "pnpm install && pnpm run build:pre && pnpm run start:room-server"
 
   protoc:
     image: apitable/protoc

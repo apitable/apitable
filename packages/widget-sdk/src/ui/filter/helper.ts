@@ -1,7 +1,7 @@
 import {
   Field, FOperator, IExpressionOperand, IField, IFieldMap, IViewColumn, OperandTypeEnums, OperatorEnums, t, Strings, IExpression
 } from '@apitable/core';
-import produce from 'immer';
+import { produce } from 'immer';
 
 export const getFields = (columns: IViewColumn[], fieldMap: IFieldMap) => {
   return columns.map(column => {
@@ -176,7 +176,7 @@ export const addNewFilter = (filter: IExpression, type: FilterTypeEnums, primary
   };
   const newFilter = getNewFilter();
   if (filter) {
-    return produce(filter, (draft) => {
+    return produce(filter, (draft: { operands: IExpressionOperand[]; }) => {
       draft.operands.push(newFilter);
     });
   }

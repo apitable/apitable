@@ -23,7 +23,8 @@ import { ConfigConstant, Strings, t } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 
-export const SliderVerification: FC<React.PropsWithChildren> = () => {
+export const SliderVerification: FC<React.PropsWithChildren<any>> = () => {
+
   useMount(() => {
     const env = getEnvVariables();
     if (!env.IS_SELFHOST) {

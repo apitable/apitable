@@ -42,7 +42,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
   useClickAway(
     (event) => {
       const targetCls = get(event, 'target.className');
-      if (targetCls && typeof targetCls === 'string' && targetCls.includes('cp-calendar')) {
+      if (targetCls && typeof targetCls === 'string' && (targetCls as string).includes('cp-calendar')) {
         return;
       }
       setOpen(false);

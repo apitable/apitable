@@ -167,7 +167,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
     (event: MouseEvent | TouchEvent) => {
       // Spotlight comments when clicking reply
       const replyClass = get(event, 'target.className');
-      if (replyClass && typeof replyClass === 'string' && replyClass.includes('replyIcon')) {
+      if (replyClass && typeof replyClass === 'string' && (replyClass as string).includes('replyIcon')) {
         editRef.current?.focus(true);
         return;
       }

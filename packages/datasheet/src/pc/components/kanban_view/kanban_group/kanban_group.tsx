@@ -18,8 +18,8 @@
 
 import classNames from 'classnames';
 import { sum } from 'lodash';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as React from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { VariableSizeList } from 'react-window';
@@ -31,11 +31,12 @@ import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useResponsive } from 'pc/hooks';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
-import { GroupHeader } from '../group_header';
-import { useCommand } from '../hooks/use_command';
 import { Card, Row } from './rows';
 import { MARGIN_DISTANCE } from './rows/rows';
 import styles from './styles.module.less';
+import { GroupHeader } from '../group_header';
+import { useCommand } from '../hooks/use_command';
+
 interface IKanbanGroupProps {
   groupId: string;
   height: number;
@@ -129,10 +130,11 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
   });
   const _rowCreatable = useSelector((state) => Selectors.getPermissions(state).rowCreatable);
   const rowCreatable = _rowCreatable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);
-  const keepSort = useSelector((state) => {
-    const sortInfo = Selectors.getActiveViewSortInfo(state);
-    return sortInfo && sortInfo.keepSort;
-  });
+  const keepSort =
+    useSelector((state) => {
+      const sortInfo = Selectors.getActiveViewSortInfo(state);
+      return sortInfo && sortInfo.keepSort;
+    }) || false;
 
   const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
   const showSortBorderRef = useRef(false);

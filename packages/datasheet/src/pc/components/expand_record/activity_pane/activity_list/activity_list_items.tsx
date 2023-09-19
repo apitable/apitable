@@ -173,8 +173,8 @@ export const ActivityListItems: FC<
       const hasDeleteEmoji = has(action, 'ld.commentMsg.emojis');
       if (expandRecordId === recordId) {
         if (hasAddEmoji) {
-          const commentId: string = get(action, 'li.commentId');
-          const curEmojis: ICommentMsg['emojis'] = get(action, 'li.commentMsg.emojis');
+          const commentId = get(action as any, 'li.commentId');
+          const curEmojis: ICommentMsg['emojis'] = get(action as any, 'li.commentMsg.emojis');
           const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
           const newUserIds = get(newEmojis, `${commentId}.${emojiKey}`, []) as string[];
@@ -183,7 +183,7 @@ export const ActivityListItems: FC<
           return;
         }
         if (hasDeleteEmoji) {
-          const commentId: string = get(action, 'ld.commentId');
+          const commentId = get(action as any, 'ld.commentId');
           const curEmojis: ICommentMsg['emojis'] = get(action, 'ld.commentMsg.emojis');
           const [emojiKey, emojiUserIds] = toPairs(curEmojis)[0]!;
           const newEmojis = clone(emojis);
@@ -191,14 +191,15 @@ export const ActivityListItems: FC<
           set(
             newEmojis,
             `${commentId}.${emojiKey}`,
-            newUserIds.filter((id) => id !== emojiUserIds[0]),
+            newUserIds.filter(id => id !== emojiUserIds?.[0]),
           );
           setEmojis(newEmojis);
           return;
         }
         if (hasAddComment && !hasDeleteComment) {
-          const createdAt: number = get(action, 'li.createdAt');
-          const unitId: string = get(action, 'li.unitId');
+          const createdAt = get(action as any, 'li.createdAt');
+
+          const unitId: string = get(action as any, 'li.unitId');
           const userId = unitMap ? unitMap[unitId]?.userId : undefined;
           const addComment = (uid?: string) => {
             setRecordList([
@@ -322,7 +323,7 @@ export const ActivityListItems: FC<
           const { actions } = firstOperation;
           actions.forEach((action) => {
             // Get the od for switching, deleting the first action of the field
-            const firstOd = get(action, 'od');
+            const firstOd = get(action as any, 'od');
             // Add to cache if single, multi-select
             if (
               has(firstOd, 'property.options') ||

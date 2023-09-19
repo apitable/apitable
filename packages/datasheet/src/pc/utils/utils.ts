@@ -5,7 +5,7 @@ export function runInTimeSlicing(gen, frameDelta: number = 25) {
 
   return function next() {
     const start = performance.now();
-    let res = null;
+    let res: any = null;
     do {
       res = gen.next();
     } while (!res.done && performance.now() - start < frameDelta);

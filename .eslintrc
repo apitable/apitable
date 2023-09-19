@@ -37,7 +37,9 @@
       // The maximum number of characters allowed on a single line
       "warn",
       {
-        "code": 150
+        "code": 150,
+        "ignoreComments": true,
+        "ignoreTrailingComments": true
       }
     ],
     "no-console": 0,

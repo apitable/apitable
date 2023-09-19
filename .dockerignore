@@ -16,9 +16,6 @@ Dockerfile.*
 docker-compose.*.yml
 docker-compose.yml
 
-# Yarn
-.yarn/cache
-.yarn/unplugged
 
 # By default all git files
 .git

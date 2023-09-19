@@ -13,7 +13,7 @@ const createContextDefault = (opt?: { needMock?: boolean }) => {
   const { needMock } = opt || {};
   const mockWidgetSdkData = MockWidgetSdkData.simpleDatasheetExample();
 
-  let cmdExecuteMock = null;
+  let cmdExecuteMock;
   if (needMock) {
     cmdExecuteMock = jest.spyOn(utils, 'cmdExecute').mockImplementation((cmdOptions: any) => {
       return createMockCmdExecute({ mockWidgetSdkData })(cmdOptions);
@@ -27,8 +27,8 @@ const createContextDefault = (opt?: { needMock?: boolean }) => {
   return {
     mockWidgetSdkData,
     cmdExecuteMock,
-    datasheet
-  }; 
+    datasheet,
+  };
 };
 
 describe('datasheet modal should return the correct result', () => {
@@ -50,7 +50,7 @@ describe('datasheet modal should return the correct result', () => {
     const recordIds = await datasheet.addRecords([{ valuesMap: {}}]);
     const recordMap = getSnapshot(mockWidgetSdkData.widgetSdkData)!.recordMap;
 
-    expect(recordIds.every(recId => recordMap[recId])).toBe(true);
+    expect(recordIds.every((recId) => recordMap[recId])).toBe(true);
     expect(cmdExecuteMock).toHaveBeenCalled();
     cmdExecuteMock?.mockRestore();
   });
@@ -78,12 +78,14 @@ describe('datasheet modal should return the correct result', () => {
 
     const recordIds = await datasheet.addRecords([{ valuesMap: { [primaryFieldId]: '1111' }}, { valuesMap: { [primaryFieldId]: '1111' }}]);
 
-    await datasheet.setRecords(recordIds.map((recordId, i) => ({
-      id: recordId,
-      valuesMap: {
-        [primaryFieldId]: i.toString()
-      }
-    })));
+    await datasheet.setRecords(
+      recordIds.map((recordId, i) => ({
+        id: recordId,
+        valuesMap: {
+          [primaryFieldId]: i.toString(),
+        },
+      })),
+    );
 
     const result = recordIds.every((recId, i) => {
       const snapshot = getSnapshot(mockWidgetSdkData.widgetSdkData, datasheet.id);
@@ -113,7 +115,7 @@ describe('datasheet modal should return the correct result', () => {
     const recordIds = await datasheet.addRecords([{ valuesMap: {}}]);
     await datasheet.deleteRecords(recordIds);
     const recordMap = getSnapshot(mockWidgetSdkData.widgetSdkData)!.recordMap;
-    expect(recordIds.every(rec => !recordMap[rec])).toBe(true);
+    expect(recordIds.every((rec) => !recordMap[rec])).toBe(true);
     expect(cmdExecuteMock).toHaveBeenCalled();
     cmdExecuteMock?.mockRestore();
   });
@@ -155,13 +157,15 @@ describe('datasheet modal should return the correct result', () => {
     const { mockWidgetSdkData } = createContextDefault();
 
     // No node access.
-    mockWidgetSdkData.dispatch(StoreActions.updateDatasheet(DEFAULT_DATASHEET_ID, {
-      permissions: {
-        ...createMockPermissions(),
-        editable: false,
-        rowCreatable: false,
-      }
-    }));
+    mockWidgetSdkData.dispatch(
+      StoreActions.updateDatasheet(DEFAULT_DATASHEET_ID, {
+        permissions: {
+          ...createMockPermissions(),
+          editable: false,
+          rowCreatable: false,
+        },
+      }),
+    );
     const context = createSimpleContextWrapper({ mockWidgetSdkData });
 
     const primaryFieldId = getPrimaryFieldId(mockWidgetSdkData.widgetSdkData as any, DEFAULT_DATASHEET_ID)!;

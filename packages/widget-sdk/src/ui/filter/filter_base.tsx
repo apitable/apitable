@@ -4,7 +4,7 @@ import {
   OperandTypeEnums, OperatorEnums, Strings, t
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
-import produce from 'immer';
+import { produce } from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ import {
 import { FilterButtonWrap, FilterGroupWrap, GroupWrapperWithButton, SubGroupWrap, OperatorWrap } from './styled';
 import { FilterButton } from './filter_button';
 import { getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot } from 'store';
+import { IWidgetState } from 'interface';
 
 const transformNullFilter = (filter?: IExpression) => {
   return filter == null || isEqual(filter, EmptyNullOperand) ? {
@@ -111,18 +112,18 @@ export const FilterBase = (props: IFilterProps) => {
 
   // Press path to delete.
   const deleteOperandByIndex = (operandIndex: number) => {
-    const _filter = produce(filter, (draft) => {
+    const _filter = produce(filter, (draft: { operands: any[]; }) => {
       draft.operands.splice(operandIndex, 1);
     });
     updateFilter(_filter);
   };
 
-  const snapshot = useSelector(state => {
-    return getSnapshot(state, datasheetId)!;
+  const snapshot = useSelector((state: unknown) => {
+    return getSnapshot(state as IWidgetState, datasheetId)!;
   });
 
-  const fieldPermissionMap = useSelector(state => {
-    return getFieldPermissionMap(state, datasheetId);
+  const fieldPermissionMap = useSelector((state: unknown) => {
+    return getFieldPermissionMap(state as IWidgetState, datasheetId);
   });
 
   // Here are all the fields, with or without permissions.

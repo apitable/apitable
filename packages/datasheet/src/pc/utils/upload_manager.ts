@@ -290,7 +290,12 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  public emitProgress(cellId: string, fileId: string, loaded: number, total: number) {
+  public emitProgress(
+    cellId: string,
+    fileId: string,
+    loaded: number,
+    total: number | undefined,
+  ) {
     if (!this.uploadMap[cellId]) {
       return;
     }

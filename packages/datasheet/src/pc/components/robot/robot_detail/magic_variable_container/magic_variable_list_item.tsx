@@ -103,7 +103,7 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
                 marginLeft="16px"
                 display="flex"
                 alignItems="center"
-                onClick={(e) => {
+                onClick={(e: any) => {
                   if (disabled) return;
                   stopPropagation(e);
                   handleItemClick(item, true);

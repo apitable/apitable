@@ -36,7 +36,7 @@ export const useGetSignatureAssertByToken = <T extends IArg = IArg>(arg1: T): T 
   };
 
   if (Array.isArray(arg1)) {
-    const values = [];
+    const values = [] as any;
     for (const v of arg1) {
       const { token, preview } = getUrlFields(v);
       if (token) {

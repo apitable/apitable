@@ -1,5 +1,4 @@
 const path = require('path');
-const loaderUtils = require('loader-utils');
 const WebpackBar = require('webpackbar');
 
 /**
@@ -141,18 +140,15 @@ module.exports = (config, options) => {
   //         }])
   // }
 
-  if (options.isServer) {
-    config.externals = config.externals.concat(
-      ...[
-        function ({ context, request }, callback) {
-          if (/^@apitable\/databus-wasm-web$/.test(request)) {
-            return callback(null, 'commonjs ' + request);
-          }
-          callback();
-        },
-      ],
-    );
-  }
+  // if(options.isServer) {
+  //     config.externals = config.externals.concat(...[
+  //         function ({context, request}, callback) {
+  //             if (/^@apitable\/databus-wasm-web$/.test(request)) {
+  //                 return callback(null, 'commonjs ' + request);
+  //             }
+  //             callback();
+  //         }])
+  // }
 
   setResolveAlias(config);
 

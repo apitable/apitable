@@ -99,8 +99,11 @@ build: ## build
 build-local:
 	make _pre-check
 	make _build-java
-	make _build-room
-	make _build-web
+	make _build-ts
+
+_build-ts:
+	pnpm install
+	nx run-many -t build --exclude @apitable/datasheet
 
 _pre-check:
 	make _check-web
@@ -110,26 +113,8 @@ _check-lint:
 	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
 	yarn lint:datasheet
 
-_check-web:
-	yarn install && yarn build:pre
-	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
-	yarn check:datasheet
+_check-web: _build-ts
 
-_build-web:
-	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
-	yarn build:dst
-
-_build-java:
-	cd backend-server && ./gradlew build -x test --stacktrace
-
-_build-core: ## build core
-	yarn workspaces focus @apitable/core @apitable/i18n-lang root
-	yarn build:i18n
-	yarn build:core
-
-_build-room: ## build room server
-	yarn workspaces focus @apitable/room-server root
-	yarn build:sr
 
 ################################ test
 
@@ -137,19 +122,19 @@ test: ## do test, unit tests, integration tests and so on.
 	make _test-ut-core-cov
 
 test-e2e: ## start integration tests
-	yarn cy:run
+	pnpm run cy:run
 test-e2e-open: ## start and debug integration tests
-	yarn cy:open
+	pnpm run cy:open
 
 ###### 【core unit test】 ######
 
 _test-ut-core:
-	make _build-core
-	yarn test:core
+	make _build-ts
+	pnpm run test:core
 
 _test-ut-core-cov:
-	make _build-core
-	yarn test:core:cov
+	make _build-ts
+	pnpm run test:core:cov
 
 ###### 【core unit test】 ######
 
@@ -180,13 +165,13 @@ ifeq ($(SIKP_INITDB),false)
 	sleep 20
 	make _test_init_db
 endif
-	make _build-room
+	make _build-ts
 	MYSQL_HOST=127.0.0.1 MYSQL_PORT=3306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
 	DATABASE_TABLE_PREFIX=apitable_ \
 	REDIS_HOST=127.0.0.1 REDIS_PORT=6379 REDIS_DB=4 REDIS_PASSWORD= \
 	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=5672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
 	INSTANCE_COUNT=1 APPLICATION_NAME=NEST_REST_SERVER \
-	yarn test:ut:room
+	pnpm run test:ut:room
 	make _test_clean
 
 test-ut-room-docker:
@@ -201,7 +186,7 @@ test-ut-room-docker:
 		-e MYSQL_HOST=test-mysql \
 		-e REDIS_HOST=test-redis \
 		-e RABBITMQ_HOST=test-rabbitmq \
-		unit-test-room yarn test:ut:room:cov
+		unit-test-room pnpm run test:ut:room:cov
 	@echo "${GREEN}finished unit test, clean up images...${RESET}"
 
 _clean_room_coverage:
@@ -330,18 +315,18 @@ _run-local-backend-server:
 _run-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
-	yarn start:room-server
+	pnpm run start:room-server
 
 _run-perf-local-room-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
-	yarn start:room-server:perf:$$PERF_TYPE
+	pnpm run  start:room-server:perf:$$PERF_TYPE
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	source scripts/export-env.sh $$DEVENV_FILE;\
 	rm -rf packages/datasheet/web_build;\
-	yarn sd
+	pnpm run  sd
 
 _run-docker-databus-server:
 	$(_DATAENV) up databus-server
@@ -385,11 +370,11 @@ devenv-backend-server:
 
 .PHONY: devenv-web-server
 devenv-web-server:
-	$(RUNNER) web-server sh -c "yarn install && yarn sd"
+	$(RUNNER) web-server sh -c "pnpm run  install && pnpm run  sd"
 
 .PHONY: devenv-room-server
 devenv-room-server:
-	$(RUNNER) room-server yarn start:room-server
+	$(RUNNER) room-server pnpm run  start:room-server
 
 
 .PHONY: install
@@ -398,7 +383,7 @@ install: install-local
 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
-	yarn install && yarn build:pre
+	pnpm run  install && pnpm run  build:pre
 	cd backend-server && ./gradlew build -x test --stacktrace
 
 .PHONY: install-docker
@@ -411,11 +396,11 @@ _install-docker-backend-server:
 
 .PHONY: _install-docker-web-server
 _install-docker-web-server:
-	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
+	$(RUNNER) web-server sh -c "pnpm run  install && pnpm run build"
 
 .PHONY: _install-docker-room-server
 _install-docker-room-server:
-	$(RUNNER) room-server sh -c "yarn install && yarn build:pre"
+	$(RUNNER) room-server sh -c "pnpm run  install && pnpm run build"
 
 
 .PHONY:
@@ -520,7 +505,7 @@ settings: ## settings and l10n init
 _l10n: ## l10n apitable-ce
 	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
 	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
-	yarn build:i18n
+	pnpm run build
 
 ### help
 .PHONY: search

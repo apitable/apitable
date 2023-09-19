@@ -107,7 +107,7 @@ export const initSwagger = (app: INestApplication) => {
 
 export const initFastify = async(): Promise<FastifyAdapter> => {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
-  await fastifyAdapter.register(fastifyMultipart);
+  await fastifyAdapter.register(fastifyMultipart as any);
   // register helmet in fastify to avoid conflict with swagger
   let helmetOptions: HelmetOptions = {
     // update script-src to be compatible with swagger
@@ -128,9 +128,9 @@ export const initFastify = async(): Promise<FastifyAdapter> => {
     },
   };
   if (disableHSTS) {
-    helmetOptions = { ...helmetOptions, hsts: false };
+    helmetOptions = { ...helmetOptions, hsts: false } as any;
   }
-  await fastifyAdapter.register(helmet, helmetOptions);
+  await fastifyAdapter.register(helmet as any, helmetOptions);
 
   return fastifyAdapter;
 };
@@ -152,7 +152,7 @@ export const initHttpHook = (app: INestApplication) => {
     request[REQUEST_ID] = generateRandomString();
     if (request.headers.authorization && request.headers.authorization.startsWith(AUTHORIZATION_PREFIX)) {
       const developerService = app.select(DatabaseModule).get(DeveloperService);
-      const apiKey =request.headers.authorization.slice(AUTHORIZATION_PREFIX.length);
+      const apiKey = request.headers.authorization.slice(AUTHORIZATION_PREFIX.length);
       request[USER_HTTP_DECORATE] = await developerService.getUserInfoByApiKey(apiKey);
     }
     if ((request.params as any)['spaceId']) {

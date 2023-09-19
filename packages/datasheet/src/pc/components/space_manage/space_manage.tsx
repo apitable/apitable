@@ -28,7 +28,7 @@ import styles from './style.module.less';
 
 const _SplitPane: any = SplitPane;
 
-const SpaceManage: React.FC<React.PropsWithChildren> = ({ children }) => {
+const SpaceManage: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
   const router = useRouter();
   const { clientWidth } = useResponsive();
   const isMobile = clientWidth <= 800;

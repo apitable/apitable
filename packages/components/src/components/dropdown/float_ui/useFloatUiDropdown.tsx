@@ -17,7 +17,7 @@ const setIndex = (zIndex: number) => {
 };
 
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
-export const useFloatUiDropdown = (options: {
+export const useFloatUiDropdown: any = (options: {
     isOpen: boolean
     setOpen: (v: boolean) => void;
     arrowRef: React.MutableRefObject<any>

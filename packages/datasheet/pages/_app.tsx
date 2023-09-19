@@ -32,7 +32,7 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
@@ -156,15 +156,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
 
-  useLayoutEffect(() => {
-    window.parent.postMessage(
-      {
-        message: 'pageLoaded',
-      },
-      '*',
-    );
-  }, []);
-
   useEffect(() => {
     const handleStart = () => {
       if (loading !== LoadingStatus.None) {
@@ -226,6 +217,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           spaceId,
         },
       });
+      console.log(res);
       let userInfo = JSON.parse(res.data.userInfo);
       setUserData(userInfo);
 

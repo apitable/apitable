@@ -24,7 +24,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { ThemeName } from '@apitable/components';
-import { IShareInfo, Navigation, StoreActions, Strings, t, integrateCdnHost } from '@apitable/core';
+import { integrateCdnHost, IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message';
 // eslint-disable-next-line no-restricted-imports
@@ -37,9 +37,6 @@ import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
 import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
 import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
 import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { FormPanel } from '../form_panel';
-import { ShareMenu } from '../share/share_menu';
 import { IShareSpaceInfo } from './interface';
 import { ShareContent } from './share_content';
 import { ShareContentWrapper } from './share_content_wrapper';
@@ -47,6 +44,9 @@ import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
 import { useMountShare } from './use_mount_share';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { FormPanel } from '../form_panel';
+import { ShareMenu } from '../share/share_menu';
 
 const _SplitPane: any = SplitPane;
 
@@ -176,7 +176,7 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
   const { IS_APITABLE, IS_AITABLE, LONG_DARK_LOGO, LONG_LIGHT_LOGO } = getEnvVariables();
   const LightLogo = IS_AITABLE ? integrateCdnHost(LONG_LIGHT_LOGO!) : IS_APITABLE ? apitableLogoLight : vikaLogoLight;
   const DarkLogo = IS_AITABLE ? integrateCdnHost(LONG_DARK_LOGO!) : IS_APITABLE ? apitableLogoDark : vikaLogoDark;
-  let localSize = null;
+  let localSize: string | null = null;
   try {
     localSize = localStorage.getItem('splitPos');
   } catch (e) {}
