@@ -20,9 +20,10 @@ package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.model.AutomationTriggerDto;
+import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
-import com.apitable.automation.model.TriggerRO;
 import com.apitable.automation.model.TriggerVO;
+import com.apitable.automation.model.UpdateTriggerRO;
 import java.util.List;
 import java.util.Map;
 
@@ -35,18 +36,27 @@ public interface IAutomationTriggerService {
     /**
      * Create trigger.
      *
-     * @param robotId robot id
      * @param userId  creator's user id
      * @param data    data
      * @return TriggerVO
      */
-    List<TriggerVO> createByDatabus(String robotId, Long userId, TriggerRO data);
+    List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data);
+
+    /**
+     * Update trigger.
+     *
+     * @param userId    creator's user id
+     * @param triggerId trigger id
+     * @param data      data
+     * @return TriggerVO
+     */
+    List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data);
 
     TriggerCopyResultDto copy(Long userId, boolean sameSpace,
         Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 
     /**
-     * Update trigger by trigger id
+     * Update trigger by trigger id.
      *
      * @param trigger trigger
      */

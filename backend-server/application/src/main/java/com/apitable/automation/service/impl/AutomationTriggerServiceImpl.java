@@ -29,9 +29,10 @@ import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.mapper.AutomationTriggerMapper;
 import com.apitable.automation.model.AutomationTriggerDto;
+import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
-import com.apitable.automation.model.TriggerRO;
 import com.apitable.automation.model.TriggerVO;
+import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.databusclient.ApiException;
@@ -72,9 +73,8 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         triggerMapper.insert(entity);
     }
 
-    @SuppressWarnings("checkstyle:OperatorWrap")
     @Override
-    public List<TriggerVO> createByDatabus(String robotId, Long userId, TriggerRO data) {
+    public List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data) {
         AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
         ro.setResourceId(data.getRelatedResourceId());
         ro.setUserId(userId);
@@ -84,27 +84,38 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         ro.setLimitCount(Long.valueOf(limitProperties.getAutomationTriggerCount()));
         try {
             ApiResponseAutomationTriggerPO response =
-                automationDaoApiApi.daoCreateAutomationRobotTrigger(robotId, ro);
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
             ExceptionUtil.isFalse(
                 AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
                 AUTOMATION_TRIGGER_LIMIT);
-            List<AutomationTriggerPO> results = response.getData();
-            if (null != results) {
-                return results.stream().map(i -> {
-                    TriggerVO vo = new TriggerVO();
-                    vo.setTriggerId(i.getTriggerId());
-                    vo.setTriggerTypeId(i.getTriggerTypeId());
-                    vo.setRelatedResourceId(i.getResourceId());
-                    vo.setPrevTriggerId(i.getPrevTriggerId());
-                    vo.setInput(i.getInput());
-                    return vo;
-                }).sorted(triggerComparator).collect(toList());
-            }
+            return formatVoFromDatabusResponse(response.getData());
         } catch (ApiException e) {
-            log.error("Robot create trigger: {}", robotId, e);
+            log.error("Robot create trigger: {}", data.getRobotId(), e);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data) {
+        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
+        ro.setResourceId(data.getRelatedResourceId());
+        ro.setUserId(userId);
+        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
+        ro.setPrevTriggerId(data.getPrevTriggerId());
+        ro.setTriggerTypeId(data.getTriggerTypeId());
+        ro.setPrevTriggerId(triggerId);
+        try {
+            ApiResponseAutomationTriggerPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+            return formatVoFromDatabusResponse(response.getData());
+        } catch (ApiException e) {
+            log.error("Robot create trigger: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
     }
@@ -160,4 +171,18 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             trigger.getTriggerTypeId(), trigger.getInput());
     }
 
+    private List<TriggerVO> formatVoFromDatabusResponse(List<AutomationTriggerPO> data) {
+        if (null != data) {
+            return data.stream().map(i -> {
+                TriggerVO vo = new TriggerVO();
+                vo.setTriggerId(i.getTriggerId());
+                vo.setTriggerTypeId(i.getTriggerTypeId());
+                vo.setRelatedResourceId(i.getResourceId());
+                vo.setPrevTriggerId(i.getPrevTriggerId());
+                vo.setInput(i.getInput());
+                return vo;
+            }).sorted(triggerComparator).collect(toList());
+        }
+        return new ArrayList<>();
+    }
 }

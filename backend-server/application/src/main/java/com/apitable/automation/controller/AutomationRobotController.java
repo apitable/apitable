@@ -21,9 +21,10 @@ package com.apitable.automation.controller;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.model.AutomationVO;
-import com.apitable.automation.model.TriggerRO;
+import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerVO;
 import com.apitable.automation.model.UpdateRobotRO;
+import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.automation.service.IAutomationTriggerService;
@@ -200,21 +201,18 @@ public class AutomationRobotController {
      *
      * @param data       request data
      * @param resourceId resource id
-     * @param robotId    robot id
      * @return {@link ResponseData}
      */
-    @PostResource(path = "/{resourceId}/roots/{robotId}/triggers", requiredPermission = false)
+    @PostResource(path = "/{resourceId}/triggers", requiredPermission = false)
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
-        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
         @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
     @Operation(summary = "Create automation robot trigger")
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<TriggerVO>> createTrigger(
         @PathVariable String resourceId,
-        @PathVariable String robotId,
-        @RequestBody TriggerRO data,
+        @RequestBody @Valid CreateTriggerRO data,
         @RequestParam(name = "shareId", required = false) String shareId
     ) {
         Long userId = SessionContext.getUserId();
@@ -222,7 +220,36 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         return ResponseData.success(
-            iAutomationTriggerService.createByDatabus(robotId, userId, data));
+            iAutomationTriggerService.createByDatabus(userId, data));
 
+    }
+
+    /**
+     * Update automation trigger.
+     *
+     * @param data       request data
+     * @param resourceId resource id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/triggers/{triggerId}", requiredPermission = false, method = RequestMethod.PATCH)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "triggerId", description = "trigger id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "atr****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
+    })
+    @Operation(summary = "Update automation robot trigger")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<List<TriggerVO>> updateTrigger(
+        @PathVariable String resourceId,
+        @PathVariable String triggerId,
+        @RequestBody UpdateTriggerRO data,
+        @RequestParam(name = "shareId", required = false) String shareId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        return ResponseData.success(
+            iAutomationTriggerService.updateByDatabus(triggerId, userId, data));
     }
 }

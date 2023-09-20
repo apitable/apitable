@@ -69,6 +69,10 @@ public class AutomationRobotTriggerRO {
   @SerializedName(SERIALIZED_NAME_RESOURCE_ID)
   private String resourceId;
 
+  public static final String SERIALIZED_NAME_TRIGGER_ID = "trigger_id";
+  @SerializedName(SERIALIZED_NAME_TRIGGER_ID)
+  private String triggerId;
+
   public static final String SERIALIZED_NAME_TRIGGER_TYPE_ID = "trigger_type_id";
   @SerializedName(SERIALIZED_NAME_TRIGGER_TYPE_ID)
   private String triggerTypeId;
@@ -111,7 +115,7 @@ public class AutomationRobotTriggerRO {
    * Get limitCount
    * @return limitCount
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public Long getLimitCount() {
     return limitCount;
   }
@@ -164,6 +168,27 @@ public class AutomationRobotTriggerRO {
   }
 
 
+  public AutomationRobotTriggerRO triggerId(String triggerId) {
+    
+    this.triggerId = triggerId;
+    return this;
+  }
+
+   /**
+   * Get triggerId
+   * @return triggerId
+  **/
+  @javax.annotation.Nullable
+  public String getTriggerId() {
+    return triggerId;
+  }
+
+
+  public void setTriggerId(String triggerId) {
+    this.triggerId = triggerId;
+  }
+
+
   public AutomationRobotTriggerRO triggerTypeId(String triggerTypeId) {
     
     this.triggerTypeId = triggerTypeId;
@@ -174,7 +199,7 @@ public class AutomationRobotTriggerRO {
    * Get triggerTypeId
    * @return triggerTypeId
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getTriggerTypeId() {
     return triggerTypeId;
   }
@@ -221,6 +246,7 @@ public class AutomationRobotTriggerRO {
         Objects.equals(this.limitCount, automationRobotTriggerRO.limitCount) &&
         Objects.equals(this.prevTriggerId, automationRobotTriggerRO.prevTriggerId) &&
         Objects.equals(this.resourceId, automationRobotTriggerRO.resourceId) &&
+        Objects.equals(this.triggerId, automationRobotTriggerRO.triggerId) &&
         Objects.equals(this.triggerTypeId, automationRobotTriggerRO.triggerTypeId) &&
         Objects.equals(this.userId, automationRobotTriggerRO.userId);
   }
@@ -231,7 +257,7 @@ public class AutomationRobotTriggerRO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(input, limitCount, prevTriggerId, resourceId, triggerTypeId, userId);
+    return Objects.hash(input, limitCount, prevTriggerId, resourceId, triggerId, triggerTypeId, userId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -249,6 +275,7 @@ public class AutomationRobotTriggerRO {
     sb.append("    limitCount: ").append(toIndentedString(limitCount)).append("\n");
     sb.append("    prevTriggerId: ").append(toIndentedString(prevTriggerId)).append("\n");
     sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
+    sb.append("    triggerId: ").append(toIndentedString(triggerId)).append("\n");
     sb.append("    triggerTypeId: ").append(toIndentedString(triggerTypeId)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
@@ -277,13 +304,12 @@ public class AutomationRobotTriggerRO {
     openapiFields.add("limit_count");
     openapiFields.add("prev_trigger_id");
     openapiFields.add("resource_id");
+    openapiFields.add("trigger_id");
     openapiFields.add("trigger_type_id");
     openapiFields.add("user_id");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("limit_count");
-    openapiRequiredFields.add("trigger_type_id");
     openapiRequiredFields.add("user_id");
   }
 
@@ -324,7 +350,10 @@ public class AutomationRobotTriggerRO {
       if ((jsonObj.get("resource_id") != null && !jsonObj.get("resource_id").isJsonNull()) && !jsonObj.get("resource_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `resource_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resource_id").toString()));
       }
-      if (!jsonObj.get("trigger_type_id").isJsonPrimitive()) {
+      if ((jsonObj.get("trigger_id") != null && !jsonObj.get("trigger_id").isJsonNull()) && !jsonObj.get("trigger_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `trigger_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("trigger_id").toString()));
+      }
+      if ((jsonObj.get("trigger_type_id") != null && !jsonObj.get("trigger_type_id").isJsonNull()) && !jsonObj.get("trigger_type_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `trigger_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("trigger_type_id").toString()));
       }
   }

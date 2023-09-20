@@ -1,17 +1,21 @@
 package com.apitable.automation.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Trigger RO.
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "Trigger RO")
-public class TriggerRO {
+public abstract class TriggerRO {
 
-    @Schema(description = "trigger type id", requiredMode = Schema.RequiredMode.REQUIRED, example = "test")
-    private String triggerTypeId;
+    @Schema(description = "robot id", requiredMode = Schema.RequiredMode.REQUIRED, example = "arb****")
+    private String robotId;
 
     @Schema(description = "trigger input", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "{}")
     private Object input;
