@@ -105,6 +105,9 @@ _build-ts:
 	pnpm install
 	nx run-many -t build --exclude @apitable/datasheet
 
+_build-java:
+	cd backend-server && ./gradlew build -x test --stacktrace
+
 _pre-check:
 	make _check-web
 
