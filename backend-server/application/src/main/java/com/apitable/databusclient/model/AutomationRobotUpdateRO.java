@@ -57,6 +57,14 @@ public class AutomationRobotUpdateRO {
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
   private String description;
 
+  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
+  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
+  private Boolean isActive;
+
+  public static final String SERIALIZED_NAME_IS_DELETED = "is_deleted";
+  @SerializedName(SERIALIZED_NAME_IS_DELETED)
+  private Boolean isDeleted;
+
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name;
@@ -90,6 +98,48 @@ public class AutomationRobotUpdateRO {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+
+  public AutomationRobotUpdateRO isActive(Boolean isActive) {
+    
+    this.isActive = isActive;
+    return this;
+  }
+
+   /**
+   * Get isActive
+   * @return isActive
+  **/
+  @javax.annotation.Nullable
+  public Boolean getIsActive() {
+    return isActive;
+  }
+
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
+  }
+
+
+  public AutomationRobotUpdateRO isDeleted(Boolean isDeleted) {
+    
+    this.isDeleted = isDeleted;
+    return this;
+  }
+
+   /**
+   * Get isDeleted
+   * @return isDeleted
+  **/
+  @javax.annotation.Nullable
+  public Boolean getIsDeleted() {
+    return isDeleted;
+  }
+
+
+  public void setIsDeleted(Boolean isDeleted) {
+    this.isDeleted = isDeleted;
   }
 
 
@@ -168,6 +218,8 @@ public class AutomationRobotUpdateRO {
     }
     AutomationRobotUpdateRO automationRobotUpdateRO = (AutomationRobotUpdateRO) o;
     return Objects.equals(this.description, automationRobotUpdateRO.description) &&
+        Objects.equals(this.isActive, automationRobotUpdateRO.isActive) &&
+        Objects.equals(this.isDeleted, automationRobotUpdateRO.isDeleted) &&
         Objects.equals(this.name, automationRobotUpdateRO.name) &&
         Objects.equals(this.props, automationRobotUpdateRO.props) &&
         Objects.equals(this.updatedBy, automationRobotUpdateRO.updatedBy);
@@ -179,7 +231,7 @@ public class AutomationRobotUpdateRO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, name, props, updatedBy);
+    return Objects.hash(description, isActive, isDeleted, name, props, updatedBy);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -194,6 +246,8 @@ public class AutomationRobotUpdateRO {
     StringBuilder sb = new StringBuilder();
     sb.append("class AutomationRobotUpdateRO {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    isDeleted: ").append(toIndentedString(isDeleted)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    props: ").append(toIndentedString(props)).append("\n");
     sb.append("    updatedBy: ").append(toIndentedString(updatedBy)).append("\n");
@@ -220,6 +274,8 @@ public class AutomationRobotUpdateRO {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("description");
+    openapiFields.add("is_active");
+    openapiFields.add("is_deleted");
     openapiFields.add("name");
     openapiFields.add("props");
     openapiFields.add("updated_by");

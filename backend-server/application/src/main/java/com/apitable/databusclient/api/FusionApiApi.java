@@ -27,8 +27,12 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import com.apitable.databusclient.model.ApiResponseRecordVos;
+import com.apitable.databusclient.model.CellFormatEnum;
+import com.apitable.databusclient.model.FieldKeyEnum;
 import com.apitable.databusclient.model.ListVO;
 import com.apitable.databusclient.model.RecordUpdateRO;
+import com.apitable.databusclient.model.SortRO;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -863,6 +867,16 @@ public class FusionApiApi {
      * Build call for getRecordByDatasheetId
      * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
+     * @param pageSize  (optional)
+     * @param maxRecords  (optional)
+     * @param pageNum  (optional)
+     * @param sort  (optional)
+     * @param recordIds  (optional)
+     * @param viewId  (optional)
+     * @param fields  (optional)
+     * @param filterByFormula  (optional)
+     * @param cellFormat  (optional)
+     * @param fieldKey  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -872,7 +886,7 @@ public class FusionApiApi {
         <tr><td> 200 </td><td> Get Datasheet </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getRecordByDatasheetIdCall(String dstId, String authorization, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getRecordByDatasheetIdCall(String dstId, String authorization, Integer pageSize, Integer maxRecords, Integer pageNum, List<SortRO> sort, List<String> recordIds, String viewId, List<String> fields, String filterByFormula, CellFormatEnum cellFormat, FieldKeyEnum fieldKey, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -898,11 +912,52 @@ public class FusionApiApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+        if (pageSize != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pageSize", pageSize));
+        }
+
+        if (maxRecords != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("maxRecords", maxRecords));
+        }
+
+        if (pageNum != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pageNum", pageNum));
+        }
+
+        if (sort != null) {
+            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "sort", sort));
+        }
+
+        if (recordIds != null) {
+            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "recordIds", recordIds));
+        }
+
+        if (viewId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("viewId", viewId));
+        }
+
+        if (fields != null) {
+            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "fields", fields));
+        }
+
+        if (filterByFormula != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filterByFormula", filterByFormula));
+        }
+
+        if (cellFormat != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("cellFormat", cellFormat));
+        }
+
+        if (fieldKey != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("fieldKey", fieldKey));
+        }
+
         if (authorization != null) {
             localVarHeaderParams.put("Authorization", localVarApiClient.parameterToString(authorization));
         }
 
         final String[] localVarAccepts = {
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -921,7 +976,7 @@ public class FusionApiApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getRecordByDatasheetIdValidateBeforeCall(String dstId, String authorization, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getRecordByDatasheetIdValidateBeforeCall(String dstId, String authorization, Integer pageSize, Integer maxRecords, Integer pageNum, List<SortRO> sort, List<String> recordIds, String viewId, List<String> fields, String filterByFormula, CellFormatEnum cellFormat, FieldKeyEnum fieldKey, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'dstId' is set
         if (dstId == null) {
             throw new ApiException("Missing the required parameter 'dstId' when calling getRecordByDatasheetId(Async)");
@@ -932,7 +987,7 @@ public class FusionApiApi {
             throw new ApiException("Missing the required parameter 'authorization' when calling getRecordByDatasheetId(Async)");
         }
 
-        return getRecordByDatasheetIdCall(dstId, authorization, _callback);
+        return getRecordByDatasheetIdCall(dstId, authorization, pageSize, maxRecords, pageNum, sort, recordIds, viewId, fields, filterByFormula, cellFormat, fieldKey, _callback);
 
     }
 
@@ -941,6 +996,17 @@ public class FusionApiApi {
      * Get multiple records of a datasheet
      * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
+     * @param pageSize  (optional)
+     * @param maxRecords  (optional)
+     * @param pageNum  (optional)
+     * @param sort  (optional)
+     * @param recordIds  (optional)
+     * @param viewId  (optional)
+     * @param fields  (optional)
+     * @param filterByFormula  (optional)
+     * @param cellFormat  (optional)
+     * @param fieldKey  (optional)
+     * @return ApiResponseRecordVos
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -948,8 +1014,9 @@ public class FusionApiApi {
         <tr><td> 200 </td><td> Get Datasheet </td><td>  -  </td></tr>
      </table>
      */
-    public void getRecordByDatasheetId(String dstId, String authorization) throws ApiException {
-        getRecordByDatasheetIdWithHttpInfo(dstId, authorization);
+    public ApiResponseRecordVos getRecordByDatasheetId(String dstId, String authorization, Integer pageSize, Integer maxRecords, Integer pageNum, List<SortRO> sort, List<String> recordIds, String viewId, List<String> fields, String filterByFormula, CellFormatEnum cellFormat, FieldKeyEnum fieldKey) throws ApiException {
+        ApiResponse<ApiResponseRecordVos> localVarResp = getRecordByDatasheetIdWithHttpInfo(dstId, authorization, pageSize, maxRecords, pageNum, sort, recordIds, viewId, fields, filterByFormula, cellFormat, fieldKey);
+        return localVarResp.getData();
     }
 
     /**
@@ -957,7 +1024,17 @@ public class FusionApiApi {
      * Get multiple records of a datasheet
      * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
-     * @return ApiResponse&lt;Void&gt;
+     * @param pageSize  (optional)
+     * @param maxRecords  (optional)
+     * @param pageNum  (optional)
+     * @param sort  (optional)
+     * @param recordIds  (optional)
+     * @param viewId  (optional)
+     * @param fields  (optional)
+     * @param filterByFormula  (optional)
+     * @param cellFormat  (optional)
+     * @param fieldKey  (optional)
+     * @return ApiResponse&lt;ApiResponseRecordVos&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -965,9 +1042,10 @@ public class FusionApiApi {
         <tr><td> 200 </td><td> Get Datasheet </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> getRecordByDatasheetIdWithHttpInfo(String dstId, String authorization) throws ApiException {
-        okhttp3.Call localVarCall = getRecordByDatasheetIdValidateBeforeCall(dstId, authorization, null);
-        return localVarApiClient.execute(localVarCall);
+    public ApiResponse<ApiResponseRecordVos> getRecordByDatasheetIdWithHttpInfo(String dstId, String authorization, Integer pageSize, Integer maxRecords, Integer pageNum, List<SortRO> sort, List<String> recordIds, String viewId, List<String> fields, String filterByFormula, CellFormatEnum cellFormat, FieldKeyEnum fieldKey) throws ApiException {
+        okhttp3.Call localVarCall = getRecordByDatasheetIdValidateBeforeCall(dstId, authorization, pageSize, maxRecords, pageNum, sort, recordIds, viewId, fields, filterByFormula, cellFormat, fieldKey, null);
+        Type localVarReturnType = new TypeToken<ApiResponseRecordVos>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
@@ -975,6 +1053,16 @@ public class FusionApiApi {
      * Get multiple records of a datasheet
      * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
+     * @param pageSize  (optional)
+     * @param maxRecords  (optional)
+     * @param pageNum  (optional)
+     * @param sort  (optional)
+     * @param recordIds  (optional)
+     * @param viewId  (optional)
+     * @param fields  (optional)
+     * @param filterByFormula  (optional)
+     * @param cellFormat  (optional)
+     * @param fieldKey  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -984,10 +1072,11 @@ public class FusionApiApi {
         <tr><td> 200 </td><td> Get Datasheet </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getRecordByDatasheetIdAsync(String dstId, String authorization, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call getRecordByDatasheetIdAsync(String dstId, String authorization, Integer pageSize, Integer maxRecords, Integer pageNum, List<SortRO> sort, List<String> recordIds, String viewId, List<String> fields, String filterByFormula, CellFormatEnum cellFormat, FieldKeyEnum fieldKey, final ApiCallback<ApiResponseRecordVos> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getRecordByDatasheetIdValidateBeforeCall(dstId, authorization, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
+        okhttp3.Call localVarCall = getRecordByDatasheetIdValidateBeforeCall(dstId, authorization, pageSize, maxRecords, pageNum, sort, recordIds, viewId, fields, filterByFormula, cellFormat, fieldKey, _callback);
+        Type localVarReturnType = new TypeToken<ApiResponseRecordVos>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**

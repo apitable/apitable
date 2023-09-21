@@ -103,6 +103,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAutomationTriggerPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseDatasheetPackSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseEmptySO.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseRecordVos.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationActionIntroductionPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationActionPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationHistoryRO.CustomTypeAdapterFactory());
@@ -140,8 +141,10 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.RecordMeta.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.RecordSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.RecordUpdateRO.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.RecordVo.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.SingleSelectProperty.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.SingleTextFieldPropertySO.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.SortRO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.UnitSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ViewColumnSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ViewRowSO.CustomTypeAdapterFactory());

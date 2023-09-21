@@ -35,7 +35,9 @@ import com.apitable.internal.service.IPermissionService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
+import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.service.INodeService;
@@ -89,7 +91,7 @@ public class AutomationRobotController {
      * @param resourceId resource id
      * @return {@link ResponseData}
      */
-    @GetResource(path = "/robots", requiredPermission = false)
+    @GetResource(path = "/robots", requiredPermission = false, requiredLogin = false)
     @Operation(summary = "Get automation robots")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "aut****"),
@@ -112,7 +114,7 @@ public class AutomationRobotController {
      * @param resourceId node id
      * @return AutomationVO
      */
-    @GetResource(path = "/{resourceId}/robots/{robotId}", requiredPermission = false)
+    @GetResource(path = "/{resourceId}/robots/{robotId}", requiredPermission = false, requiredLogin = false)
     @Operation(summary = "Get node automation detail. ")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
@@ -164,6 +166,36 @@ public class AutomationRobotController {
     }
 
     /**
+     * Delete automation robot.
+     *
+     * @param resourceId resource id
+     * @param robotId    robot id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/robots/{robotId}", requiredPermission = false, method = RequestMethod.DELETE)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
+    })
+    @Operation(summary = "Delete automation robot")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<Void> deleteRobot(@PathVariable String resourceId,
+                                          @PathVariable String robotId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, null,
+            NodePermission.MANAGE_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        iAutomationRobotService.deleteRobot(robotId, userId);
+        if (resourceId.startsWith(IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum())) {
+            String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+            Long memberId = LoginContext.me().getMemberId(userId, spaceId);
+            iNodeService.deleteById(spaceId, memberId, resourceId);
+        }
+        return ResponseData.success();
+    }
+
+    /**
      * Get automation run history.
      *
      * @param pageSize   page query parameter
@@ -172,7 +204,7 @@ public class AutomationRobotController {
      * @param robotId    robot id
      * @return {@link ResponseData}
      */
-    @GetResource(path = "/{resourceId}/roots/{robotId}/run-history", requiredPermission = false)
+    @GetResource(path = "/{resourceId}/roots/{robotId}/run-history", requiredPermission = false, requiredLogin = false)
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
         @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "arb****"),
