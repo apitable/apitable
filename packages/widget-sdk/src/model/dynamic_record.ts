@@ -17,7 +17,7 @@ export class DynamicRecord extends Record {
     const field = Selectors.getField(globalState, fieldId, this.datasheetId)!;
     const cellValue = super._getCellValue(fieldId);
 
-    if ((getFieldTypeString(field.type) as any as FieldType) === FieldType.Attachment) {
+    if (cellValue !=null && (getFieldTypeString(field.type) as any as FieldType) === FieldType.Attachment) {
       return cellValue.map((value: IAttachmentValue) => {
         return {
           ...value,
