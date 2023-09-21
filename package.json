@@ -26,6 +26,7 @@
     "build:sr": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/room-server --parallel=3",
     "build:components:doc": "nx build-storybook @apitable/components",
     "build:dst:private": "REACT_APP_DEPLOYMENT_MODELS=PRIVATE PUBLIC_URL=/build nx run @apitable/datasheet:build && rm packages/datasheet/build/static/**/*.map",
+    "build:i18n": "pnpm --filter @apitable/i18n-lang run build",
     "start:prod:room-server": "pnpm --filter @apitable/room-server run start:prod",
     "pm2:nest": "pm2-runtime start packages/room-server/ecosystem.config.js",
     "test": "nx run-many -t test --exclude @apitable/cypress",

@@ -146,8 +146,7 @@
   "ai_api_python_template": "## Initialize SDK [![github]({{ githubIcon }})](https://github.com/openai/openai-python)\n\nAITable's chat completion API is compatible with OpenAI's Python SDK. You can use our service with the same SDK by simply changing the configuration as follows:\n\n```python\nimport openai\n# Setup parameters\nopenai.api_key = \"{{token}}\"\nopenai.api_base = \"{{apiBase}}/fusion/v1/ai/{{aiId}}\"\n```\n\n## Create chat completions\n\n```python\nchat_completion = openai.ChatCompletion.create(model=\"gpt-3.5-turbo\", messages=[{\"role\": \"user\", \"content\": \"Hello world\"}])\n```\n\n## Returned data example\n\n```python\n\n{\n  \"id\": \"aitable_ai_CkZH2zQokhry31j_1693452659\",\n  \"conversation id\": \"CS-0253eb8d-d6c6-4543-88d4-fcb555f52982\",\n  \"actions\": null,\n  \"object\": \"chat.completion\",\n  \"created\": 1693452659,\n  \"model\":\"gpt-3.5-turbo\",\n  \"choices\": [{\n    \"index\": 0,\n    \"message\": {\n      \"role\": \"assistant\",\n      \"content\": \"\\n\\nHello there, how may I assist you today\",\n    },\n    \"finish_reason\": \"stop\"\n  }],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21,\n    \"total cost\": 7.900000000000001e-05,\n    \"result\": \"I am an AI, specifically a language model developed by OpenAI.\"\n  }\n}\n```\n",
   "ai_api_tab_title_1": "創建聊天完成API",
   "ai_assistant": "副駕駛",
-  
-  "ai_bot_model_title": "语言模型",
+  "ai_bot_model_title": "BOT模式",
   "ai_can_train_count": "用量：${count}",
   "ai_chat": "AI Chat",
   "ai_chat_default_prologue": "歡迎登機！我已經準備好了，可以和你聊天了。讓我們好好聊聊吧！",
