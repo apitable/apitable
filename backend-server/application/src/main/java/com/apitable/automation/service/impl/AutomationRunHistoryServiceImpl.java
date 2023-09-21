@@ -18,6 +18,7 @@
 
 package com.apitable.automation.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -84,7 +85,7 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
                             IdRulePrefixEnum.AUTOMATION_TRIGGER.getIdRulePrefixEnum())) {
                             execution.setActionId(actionIds.get(i).toString());
                             execution.setActionTypeId(actionTypeIds.get(i).toString());
-                            execution.setSuccess(null == errorMessages.get(i));
+                            execution.setSuccess(null == CollUtil.get(errorMessages, i));
                             executions.add(execution);
                         }
                     }
