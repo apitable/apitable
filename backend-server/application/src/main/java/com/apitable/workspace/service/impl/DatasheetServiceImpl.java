@@ -54,9 +54,12 @@ import com.apitable.organization.service.IRoleService;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
+import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
@@ -276,7 +279,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     private SnapshotMapRo initialize(final String viewName) {
         // get language
-        Locale currentLang = LocaleContextHolder.getLocale();
+        String lang = LoginContext.me().getLoginUser().getLocale();
+        Locale currentLang = lang == null ? LocaleContextHolder.getLocale()
+            : Locale.forLanguageTag(lang);
         // call the template to get the snapshot
         Map<String, Object> metaMap = MapUtil.newHashMap();
 
