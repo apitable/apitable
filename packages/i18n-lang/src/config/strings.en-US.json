@@ -1324,6 +1324,7 @@
   "decimal": "decimal (1.0)",
   "default": "Default",
   "default_create_ai_chat_bot": "New chatbot",
+  "default_create_automation": "New automation",
   "default_create_dashboard": "New dashboard",
   "default_create_datasheet": "New datasheet",
   "default_create_file": "New file",
