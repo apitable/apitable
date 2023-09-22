@@ -321,7 +321,7 @@ const MockDataForAction = {
       },
       fldpG6fq0XPii: {
         id: 'fldpG6fq0XPii',
-        name: '神奇关联',
+        name: '双向关联',
         type: 7,
         property: {
           foreignDatasheetId: 'dstjL5eP37l5vY8ERJ'

@@ -89,7 +89,7 @@ export class FieldCreateRo {
 
   foreignDatasheetId(): string | null {
     const fieldType = getFieldTypeByString(this.type as any)!;
-    if (fieldType === FieldType.Link && this.property) {
+    if ((fieldType === FieldType.Link || fieldType === FieldType.OneWayLink) && this.property) {
       return this.property['foreignDatasheetId'];
     }
     return null;

@@ -18,20 +18,20 @@
 
 import { memo } from 'react';
 import {
+  assertNever,
   BasicValueType,
   Field,
   FieldType,
-  ILinkField,
-  ILookUpField,
-  RollUpFuncType,
-  ICellValue,
-  ILinkIds,
-  ORIGIN_VALUES_FUNC_SET,
-  LOOKUP_VALUE_FUNC_SET,
-  assertNever,
-  IAttachmentValue,
   handleNullArray,
+  IAttachmentValue,
+  ICellValue,
   IDateTimeField,
+  ILinkField,
+  ILinkIds,
+  ILookUpField,
+  LOOKUP_VALUE_FUNC_SET,
+  ORIGIN_VALUES_FUNC_SET,
+  RollUpFuncType,
 } from '@apitable/core';
 import { IBaseEditorProps } from 'pc/components/editors/interface';
 import { CellCheckbox } from 'pc/components/multi_grid/cell/cell_checkbox';
@@ -132,6 +132,7 @@ export function ExpandLookUpBase(props: IExpandLookUp) {
         />
       );
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return (
         <ExpandLink
           {...props}

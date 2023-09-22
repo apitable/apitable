@@ -11,7 +11,7 @@ import styles from './style.module.less';
 interface ISearchSelectFieldProps {
   datasheetId: string | undefined;
   defaultFieldId: string;
-  fieldType?: FieldType;
+  fieldType?: FieldType[];
   onChange: (targetId: string) => void;
   disabled?: boolean;
 }
@@ -28,7 +28,7 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
   const filter = (item: IViewColumn) => {
     if (fieldType) {
       const field = fieldMap[item.fieldId];
-      return field.type === fieldType;
+      return fieldType.includes(field.type);
     }
     return true;
   };
@@ -37,10 +37,10 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
     const field = fieldMap[fieldId];
 
     return {
-      label: fieldType !== FieldType.Link ? field.name : Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.name!,
+      label: !fieldType?.includes(FieldType.Link) ? field.name : Selectors.getDatasheet(store.getState(), field.property.foreignDatasheetId)?.name!,
       value: field.id,
-      prefixIcon:
-        fieldType !== FieldType.Link ? getFieldTypeIcon(field.type, colors.thirdLevelText) : <DatasheetOutlined color={colors.thirdLevelText} />,
+      prefixIcon: !fieldType?.includes(FieldType.Link) ? getFieldTypeIcon(field.type, colors.thirdLevelText)
+        : <DatasheetOutlined color={colors.thirdLevelText} />,
       disabledTip: t(Strings.view_sort_and_group_disabled),
     };
   });
@@ -49,12 +49,9 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
     onChange(targetId);
   }
 
-  const listStyle =
-    fieldType === FieldType.Link
-      ? {
-        display: 'none',
-      }
-      : {};
+  const listStyle = fieldType?.includes(FieldType.Link) ? {
+    display: 'none'
+  } : {};
 
   return (
     <div>

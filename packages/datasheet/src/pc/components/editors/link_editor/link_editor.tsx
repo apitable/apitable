@@ -24,14 +24,13 @@ import ReactDOM from 'react-dom';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Align } from 'react-window';
 import { useThemeColors, Skeleton } from '@apitable/components';
-import { ConfigConstant, ILinkField, ILinkIds, Selectors, Strings, t } from '@apitable/core';
+import { ConfigConstant, ILinkField, ILinkIds, IOneWayLinkField, Selectors, Strings, t } from '@apitable/core';
 import { CloseCircleOutlined, NarrowOutlined } from '@apitable/icons';
 import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation, KeyCode } from 'pc/utils';
-
 import { SearchControl } from '../../common/search_control/search_control';
 import { TComponent } from '../../common/t_component/t_component';
 import { FocusHolder } from '../focus_holder';
@@ -46,7 +45,7 @@ export enum LinkEditorModalLayout {
 }
 
 export interface ILinkEditorProps extends IBaseEditorProps {
-  field: ILinkField;
+  field: ILinkField | IOneWayLinkField;
   recordId: string;
   style: React.CSSProperties;
   editable: boolean;

@@ -45,10 +45,10 @@ interface IFormFieldProps {
 }
 
 // Field without background colour for mobile
-const _notNeedBgFieldMobile = [FieldType.Attachment, FieldType.Link, FieldType.LookUp];
+const _notNeedBgFieldMobile = [FieldType.Attachment, FieldType.Link, FieldType.OneWayLink, FieldType.LookUp];
 
 // Field without background colour
-const _notNeedBgField = [FieldType.Attachment, FieldType.Link, FieldType.LookUp, FieldType.Rating];
+const _notNeedBgField = [FieldType.Attachment, FieldType.Link, FieldType.OneWayLink, FieldType.LookUp, FieldType.Rating];
 
 // Field without active state
 const _notNeedActiveField = [FieldType.Checkbox, FieldType.Rating, FieldType.Formula];

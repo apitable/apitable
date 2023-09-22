@@ -146,6 +146,7 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     case FieldType.Formula:
       return <CellFormula {...cellProps} />;
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return <CellLink {...cellProps} />;
     case FieldType.LookUp:
       return <CellLookUp {...cellProps} />;

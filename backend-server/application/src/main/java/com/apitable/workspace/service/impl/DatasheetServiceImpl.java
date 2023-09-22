@@ -420,6 +420,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             Object originDstId = Optional.ofNullable(fieldMapRo.getProperty())
                 .orElseGet(JSONObject::new).get("datasheetId");
             switch (type) {
+                case ONE_WAY_LINK:
                 case LINK:
                     LinkFieldProperty property =
                         fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
@@ -695,7 +696,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 List<String> dstIds = new ArrayList<>();
                 metaMapRo.getFieldMap().values().forEach(field -> {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
+                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
+                    || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                         LinkFieldProperty property =
                             fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // whether to filter dst id list
@@ -730,9 +732,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // find the field id of the associated datasheet
             metaMapRo.getFieldMap().values().forEach(field -> {
                 FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
+                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
+                        fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                     LinkFieldProperty property =
-                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     if (linkDstIds.contains(foreignDstId)) {
                         delFieldIds.add(fieldMapRo.getId());
@@ -803,6 +806,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             FieldType type = FieldType.create(fieldMapRo.getType());
             Object originDstId = fieldMapRo.getProperty().get("datasheetId");
             switch (type) {
+                case ONE_WAY_LINK:
                 case LINK:
                     LinkFieldProperty property =
                         fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
@@ -1070,9 +1074,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 for (Object field : metaMapRo.getFieldMap().values()) {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     // determine if there is an associated field
-                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
+                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
+                            fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())
+                    ) {
                         LinkFieldProperty property =
-                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                                fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // Determine whether the associated field is associated with the appearance.
                         if (!dstIdList.contains(property.getForeignDatasheetId())) {
                             foreignFieldNames.add(fieldMapRo.getName());

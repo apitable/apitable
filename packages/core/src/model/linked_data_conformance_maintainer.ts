@@ -18,8 +18,8 @@
 
 import { DatasheetActions } from '../commands_actions/datasheet';
 import { without } from 'lodash';
-import { ILinkField, FieldType, BasicValueType } from 'types/field_types';
-import { Selectors, ISnapshot, IReduxState } from '../exports/store';
+import { BasicValueType, FieldType, ILinkField } from 'types/field_types';
+import { IReduxState, ISnapshot, Selectors } from '../exports/store';
 import { ILinkedActions } from 'command_manager';
 import { handleEmptyCellValue } from './utils';
 
@@ -172,7 +172,7 @@ export class LinkedDataConformanceMaintainer {
 
             const fieldType = snapshot.meta.fieldMap[fieldId] && snapshot.meta.fieldMap[fieldId]!.type;
             // Make sure that the cell is populated only when the foreign key field is indeed the relation field type.
-            const cellValueInLinkedCell = fieldType === FieldType.Link ?
+            const cellValueInLinkedCell = (fieldType === FieldType.Link || fieldType === FieldType.OneWayLink) ?
               Selectors.getCellValue(state, snapshot, recordId, fieldId, undefined, undefined, true) as string[] || [] : [];
             let newLinkedCellValue: string[] | null = without(cellValueInLinkedCell, ...changeIds.del);
             newLinkedCellValue.push(...changeIds.add);

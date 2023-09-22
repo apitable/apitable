@@ -40,7 +40,7 @@ import {
   IDPrefix,
   OrgChartStyleKeyType,
   getUniqName,
-  ISetRecordOptions,
+  ISetRecordOptions, IOneWayLinkField,
 } from '@apitable/core';
 import { ReactFlowProvider } from '@apitable/react-flow';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -106,7 +106,7 @@ export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({ 
   const { style: orgChartStyle, id: viewId } = activeView;
 
   const { linkFieldId, horizontal } = orgChartStyle;
-  const linkField = fieldMap[linkFieldId] as ILinkField;
+  const linkField = fieldMap[linkFieldId] as ILinkField | IOneWayLinkField;
   const linkFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, linkFieldId);
   const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
   const isFieldDeleted = Boolean(linkFieldId && !isCryptoLinkField && !linkField);
@@ -194,7 +194,7 @@ export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({ 
   });
 
   const hasLinkField = activeView.columns.some(
-    (c) => fieldMap[c.fieldId].type === FieldType.Link && fieldMap[c.fieldId].property.foreignDatasheetId === datasheetId,
+    (c) => [FieldType.Link, FieldType.OneWayLink].includes(fieldMap[c.fieldId].type) && fieldMap[c.fieldId].property.foreignDatasheetId === datasheetId,
   );
 
   const setMenuVisible = (visible: boolean) => {

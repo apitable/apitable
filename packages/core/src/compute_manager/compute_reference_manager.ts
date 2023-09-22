@@ -147,7 +147,7 @@ export class ComputeRefManager {
    */
   public computeRefMap(fieldMap: IFieldMap, datasheetId: string, state: IReduxState, shouldSyncCache = true) {
     Object.values(fieldMap)
-      .filter(field => Field.bindContext(field, state).isComputed || field.type === FieldType.Link)
+      .filter(field => Field.bindContext(field, state).isComputed || field.type === FieldType.Link || field.type === FieldType.OneWayLink)
       .forEach((field: IField) => {
         switch (field.type) {
           case FieldType.Formula:
@@ -188,6 +188,7 @@ export class ComputeRefManager {
             break;
           // The link field depends on the first field of the foreign key table
           case FieldType.Link:
+          case FieldType.OneWayLink:
             const linkDstId = field.property.foreignDatasheetId;
             const linkSnapshot = Selectors.getSnapshot(state, linkDstId);
             if (linkSnapshot) {

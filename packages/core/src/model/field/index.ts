@@ -59,7 +59,7 @@ import {
   ILastModifiedByField,
   ISingleTextField,
   IDeniedField,
-  INotSupportField, ICascaderField,
+  INotSupportField, ICascaderField, IOneWayLinkField,
 } from 'types/field_types';
 import { Field } from './field';
 import { EmailField } from './email_field';
@@ -75,6 +75,7 @@ import { SingleTextField } from './single_text_field';
 import { CascaderField } from './cascader_field';
 import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
+import { OneWayLinkField } from './one_way_link_field';
 
 export * from './field';
 export * from './stat';
@@ -112,6 +113,7 @@ export interface IBindFieldModel {
   (field: IDateTimeField, state?: IReduxState, newInstance?: boolean): DateTimeField;
   (field: IAttacheField, state?: IReduxState, newInstance?: boolean): AttachmentField;
   (field: ILinkField, state?: IReduxState, newInstance?: boolean): LinkField;
+  (field: IOneWayLinkField, state?: IReduxState, newInstance?: boolean): OneWayLinkField;
   (field: IURLField, state?: IReduxState, newInstance?: boolean): URLField;
   (field: IEmailField, state?: IReduxState, newInstance?: boolean): EmailField;
   (field: IRatingField, state?: IReduxState, newInstance?: boolean): RatingField;
@@ -202,6 +204,9 @@ export const getFieldClass = (type: FieldType) => {
     }
     case FieldType.Link: {
       return LinkField;
+    }
+    case FieldType.OneWayLink: {
+      return OneWayLinkField;
     }
     case FieldType.URL: {
       return URLField;

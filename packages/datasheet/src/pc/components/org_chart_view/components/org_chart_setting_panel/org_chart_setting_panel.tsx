@@ -77,7 +77,7 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
     }
 
     activeView.columns
-      .filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
+      .filter((column) => [FieldType.Link, FieldType.OneWayLink].includes(fieldMap[column.fieldId].type))
       .forEach((column) => {
         options.push({
           value: column.fieldId,

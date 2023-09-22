@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useMount, useSize, useUnmount } from 'ahooks';
+import { useMount, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
@@ -42,6 +42,7 @@ const fieldSequence: FieldType[] = [
   FieldType.Text,
   FieldType.SingleSelect,
   FieldType.MultiSelect,
+  FieldType.OneWayLink,
   FieldType.Link,
   FieldType.LookUp,
   FieldType.Formula,
@@ -135,7 +136,7 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
       ref={divRef}
       style={style}
     >
-      <div className={styles.icon}>{getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.thirdLevelText, 24, 24)}</div>
+      <div className={styles.icon}>{getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.thirdLevelText, 16, 16)}</div>
       <div className={styles.desc}>
         <div className={styles.title}>{title}</div>
       </div>
@@ -160,17 +161,18 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
   const [keyword, setKeyword] = React.useState('');
   const inputRef = useRef<{ focus(): void }>(null);
 
-  const wrapperWidth = useSize(document.body)?.width;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const itemWidth = isMobile ? (wrapperWidth! - 80) / 3 : '';
-  const itemStyle: React.CSSProperties = {
-    width: itemWidth,
-    height: itemWidth,
-  };
 
   React.useEffect(() => {
     inputRef.current!.focus();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      const selectedItemElement = divRef.current?.querySelector(`.${styles.active}`);
+      selectedItemElement?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, 20);
   }, []);
 
   const setSplitLineStyle = (hidden = true) => {
@@ -233,8 +235,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
       const scrollHeight = scrollRef.current.clientHeight;
       const totalHeight = height - scrollHeight + scrollRef.current.scrollHeight;
       const spaceHeight = clientHeight - 2 * LIMIT;
-      const resultHeight = Math.min(spaceHeight, totalHeight);
-      eleHeight = resultHeight;
+      eleHeight = Math.min(spaceHeight, totalHeight);
       divEle.style.height = eleHeight + 'px';
       parentNode.style.top = `-${diff}px`;
     }
@@ -288,7 +289,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
             <h2>{t(Strings.basis)}</h2>
             <main>
               {basicFieldList.map((item, index, array) => {
-                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} style={itemStyle} />;
+                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} />;
               })}
             </main>
           </section>
@@ -298,7 +299,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
             <h2>{t(Strings.advanced)}</h2>
             <main>
               {advanceFieldList.map((item, index, array) => {
-                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} style={itemStyle} />;
+                return <TypeSelectItem {...props} setInfo={setInfo} index={index} key={index} fieldType={item} fieldList={array} />;
               })}
             </main>
           </section>

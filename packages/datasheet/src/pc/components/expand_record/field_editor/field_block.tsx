@@ -244,6 +244,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
         </ExpandAttachContext.Provider>
       );
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return (
         <ExpandLink
           {...commonProps}

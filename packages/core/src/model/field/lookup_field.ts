@@ -32,7 +32,7 @@ import { IEffectOption, IUpdateOpenMagicLookUpFieldProperty } from 'types/open/o
 import { checkTypeSwitch, filterOperatorAcceptsValue, getNewIds, IDPrefix, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, IViewRow, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone } from 'exports/store/selectors';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone, sortRowsBySortInfo } from 'exports/store/selectors';
 import {
   BasicValueType,
   FieldType,
@@ -43,13 +43,13 @@ import {
   ILinkIds,
   ILookUpField,
   ILookUpProperty,
-  INumberFormatFieldProperty,
+  ILookUpSortInfo,
+  INumberFormatFieldProperty, IOneWayLinkField,
   IStandardValue,
   ITimestamp,
   IUnitIds,
-  RollUpFuncType,
   LookUpLimitType,
-  ILookUpSortInfo,
+  RollUpFuncType,
 } from '../../types/field_types';
 import {
   FilterConjunction,
@@ -70,7 +70,6 @@ import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
-import { sortRowsBySortInfo } from 'exports/store/selectors';
 import {
   IOpenFilterValue,
   IOpenFilterValueBoolean,
@@ -420,13 +419,14 @@ export class LookUpField extends ArrayValueField {
     return Field.bindContext(entityField, this.state).acceptFilterOperators.filter((item) => item !== FOperator.IsRepeat);
   }
 
-  getLinkFields(): ILinkField[] {
+  getLinkFields(): (ILinkField | IOneWayLinkField)[] {
     const snapshot = getSnapshot(this.state, this.field.property.datasheetId);
     const fieldMap = snapshot?.meta.fieldMap;
-    return fieldMap ? (Object.values(fieldMap).filter((field) => field.type === FieldType.Link) as ILinkField[]) : [];
+    return fieldMap ? (Object.values(fieldMap).filter((field) =>
+      [FieldType.Link, FieldType.OneWayLink].includes(field.type)) as (ILinkField | IOneWayLinkField)[]) : [];
   }
 
-  getRelatedLinkField(): ILinkField | undefined {
+  getRelatedLinkField(): ILinkField | IOneWayLinkField | undefined {
     return this.getLinkFields().find((field) => field.id === this.field.property.relatedLinkFieldId);
   }
 
@@ -1251,7 +1251,7 @@ export class LookUpField extends ArrayValueField {
         conjunction: apiFilterInfo.conjunction,
         conditions: apiFilterInfo.conditions.map((cond, i) => ({
           ...cond,
-          fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField>,
+          fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField | FieldType.NotSupport>,
           operator: cond.operator,
           conditionId: conditionIds[i]!,
           value: (filterOperatorAcceptsValue(cond.operator)

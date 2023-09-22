@@ -18,7 +18,7 @@
 
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import * as React from 'react';
-import { ILinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@apitable/core';
+import { ILinkField, IOneWayLinkField, IOrgChartViewStatus, IOrgChartViewStyle, IPermissions, ISetRecordOptions, IViewColumn } from '@apitable/core';
 import { INodesMap, INode, INodeStateMap, IPre, IGhostNodesRef, IBounds } from '../interfaces';
 
 export interface IFlowContext {
@@ -46,7 +46,7 @@ export interface IFlowContext {
   offsetTop: number;
   columns: IViewColumn[];
   permissions: IPermissions;
-  linkField: ILinkField;
+  linkField: ILinkField | IOneWayLinkField;
   rowsCount: number;
   isCryptoLinkField: boolean;
   isFieldDeleted: boolean;

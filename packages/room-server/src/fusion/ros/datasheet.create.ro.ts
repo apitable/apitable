@@ -126,7 +126,7 @@ export class DatasheetCreateRo {
     if (this.fields) {
       this.fields.forEach(field => {
         const fieldType = getFieldTypeByString(field.type as any)!;
-        if (fieldType === FieldType.Link && field.property) {
+        if ((fieldType === FieldType.Link || fieldType === FieldType.OneWayLink) && field.property) {
           foreignDatasheetIds.push(field.property['foreignDatasheetId']);
         }
       });

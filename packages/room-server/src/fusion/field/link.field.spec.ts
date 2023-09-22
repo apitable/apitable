@@ -39,7 +39,7 @@ describe('LinkField', () => {
     fieldClass = new LinkField(recordService);
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: 'Magic link',
+      name: 'Two-way Link',
       type: FieldType.Link,
       property: { foreignDatasheetId: 'string' },
     };

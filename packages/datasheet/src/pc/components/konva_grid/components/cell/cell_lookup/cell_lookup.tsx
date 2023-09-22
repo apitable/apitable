@@ -91,6 +91,7 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = (props)
     case FieldType.Checkbox:
       return <CellPlaceHolder rowHeight={rowHeight} />;
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return <CellLink {...commonProps} />;
     // Text comma splitting
     case FieldType.Number:

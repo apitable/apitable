@@ -54,6 +54,7 @@ export type IOpenFieldProperty = IOpenTextFieldProperty
   | IOpenMemberFieldProperty
   | IOpenDateTimeFieldProperty
   | IOpenAttachmentFieldProperty
+  | IOpenOneWayLinkFieldProperty
   | IOpenMagicLinkFieldProperty
   | IOpenMagicLookUpFieldProperty
   | IOpenFormulaFieldProperty
@@ -154,6 +155,17 @@ export interface IOpenDateTimeFieldProperty {
 }
 
 export type IOpenAttachmentFieldProperty = null;
+
+export interface IOpenOneWayLinkFieldProperty {
+  /** Association table ID */
+  foreignDatasheetId: string;
+  /** The associated field ID of the associated table */
+  brotherFieldId?: string;
+  /** Specify view ID to filter records */
+  limitToViewId?: string;
+  /** Whether to limit the selection to only a single record */
+  limitSingleRecord?: boolean;
+}
 
 export interface IOpenMagicLinkFieldProperty {
   /** Association table ID */

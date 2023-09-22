@@ -116,6 +116,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (p
     case FieldType.MultiSelect:
       return <CellOptions {...cellProps} rowHeightLevel={rowHeightLevel} />;
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return <CellLink {...cellProps} field={field} rowHeightLevel={rowHeightLevel} datasheetId={datasheetId} />;
     case FieldType.Formula:
       return <CellFormula {...cellProps} field={field} recordId={recordId} rowHeightLevel={rowHeightLevel} />;

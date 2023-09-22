@@ -295,7 +295,7 @@ export class FormService {
     // linked datasheet set
     const foreignDatasheetIdMap = Object.values(meta.fieldMap)
       .filter(field => {
-        return field.type === FieldType.Link;
+        return field.type === FieldType.Link || field.type === FieldType.OneWayLink;
       })
       .map(field => {
         const foreignDatasheetId = field.property?.foreignDatasheetId;

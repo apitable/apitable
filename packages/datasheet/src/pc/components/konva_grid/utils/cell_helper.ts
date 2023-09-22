@@ -140,7 +140,8 @@ export class CellHelper extends KonvaDrawer {
     switch (fieldType) {
       case FieldType.SingleSelect:
       case FieldType.MultiSelect:
-      case FieldType.Link: {
+      case FieldType.Link:
+      case FieldType.OneWayLink: {
         return this.setStyle({ fontSize: 12, fontWeight });
       }
       case FieldType.Number:
@@ -221,7 +222,8 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.LastModifiedBy: {
         return this.renderCellMember(renderProps, ctx);
       }
-      case FieldType.Link: {
+      case FieldType.Link:
+      case FieldType.OneWayLink: {
         return this.renderCellLink(renderProps, ctx);
       }
       case FieldType.LookUp: {
@@ -1213,6 +1215,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.LastModifiedBy:
           return this.renderCellMember(realFieldRenderProps, ctx);
         case FieldType.Link:
+        case FieldType.OneWayLink:
           return this.renderCellLink(realFieldRenderProps, ctx);
         case FieldType.Checkbox:
           return this.renderCellMultiCheckbox(realRenderProps, ctx);

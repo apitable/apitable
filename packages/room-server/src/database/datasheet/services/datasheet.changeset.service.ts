@@ -98,7 +98,7 @@ export class DatasheetChangesetService {
       const fieldMap = Selectors.getFieldMap(store.getState(), nodeId);
       Object.values(fieldMap!).map(field => {
         // Is linked field and linked datasheet is deleted, convert this field to multi-line text field
-        if (field.type === FieldType.Link && ro.linkNodeId.includes(field.property.foreignDatasheetId)) {
+        if ((field.type === FieldType.Link || field.type === FieldType.OneWayLink) && ro.linkNodeId.includes(field.property.foreignDatasheetId)) {
           const options = this.commandOption.getSetFieldAttrOptions(nodeId, { ...field, property: null, type: FieldType.Text }, false);
           const { result, changeSets } = this.commandService.execute(options, store);
           if (result && result.result == ExecuteResult.Success) {

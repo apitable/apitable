@@ -325,7 +325,7 @@ export class Field {
     }
     const updateProperty = this.fieldEntity.updateOpenFieldPropertyTransformProperty(property);
     let deleteBrotherField: boolean;
-    // Magic link special fields, need to determine whether to delete the associated fields of the associated table
+    // Two-way Link special fields, need to determine whether to delete the associated fields of the associated table
     if (this.type === FieldType.MagicLink) {
       const { conversion } = property as IUpdateOpenMagicLinkFieldProperty;
       deleteBrotherField = conversion === Conversion.Delete;

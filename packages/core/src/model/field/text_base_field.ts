@@ -118,7 +118,7 @@ export abstract class TextBaseField extends Field {
     }
 
     let segments: ISegment[];
-    if ([FieldType.MultiSelect, FieldType.Link, FieldType.Attachment, FieldType.Member].includes(sourceType)) {
+    if ([FieldType.MultiSelect, FieldType.Link, FieldType.OneWayLink, FieldType.Attachment, FieldType.Member].includes(sourceType)) {
       segments = [{ type: SegmentType.Text, text: data.map(d => d.text).join(', ') }];
     } else if (sourceType === FieldType.Text) {
       segments = data.map(d => ({

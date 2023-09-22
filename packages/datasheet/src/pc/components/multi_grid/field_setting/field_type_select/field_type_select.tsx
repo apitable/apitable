@@ -162,7 +162,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div ref={typeSelectPanelRef}>
-              <AutoLayout boxWidth={318} datasheetId={datasheetId}>
+              <AutoLayout boxWidth={226} datasheetId={datasheetId}>
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

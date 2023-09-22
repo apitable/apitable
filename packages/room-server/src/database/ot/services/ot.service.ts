@@ -546,7 +546,7 @@ export class OtService {
       changedFieldIds = new Set();
 
       for (const fieldId in fieldMap) {
-        if (fieldMap[fieldId]!.type === FieldType.Link) {
+        if (fieldMap[fieldId]!.type === FieldType.Link || fieldMap[fieldId]!.type === FieldType.OneWayLink) {
           linkFieldIds.add(fieldId);
         }
       }
@@ -586,14 +586,14 @@ export class OtService {
           const fieldId = action.p[2] as string;
           // field type change
           if ('od' in action && 'oi' in action && action.od.type !== action.oi.type) {
-            if (action.oi.type === FieldType.Link) {
+            if (action.oi.type === FieldType.Link || action.oi.type === FieldType.OneWayLink) {
               linkFieldIds.delete(fieldId);
-            } else if (action.od.type === FieldType.Link) {
+            } else if (action.od.type === FieldType.Link || action.od.type === FieldType.OneWayLink) {
               linkFieldIds.add(fieldId);
             }
-          } else if (!('od' in action) && 'oi' in action && action.oi.type === FieldType.Link) {
+          } else if (!('od' in action) && 'oi' in action && (action.oi.type === FieldType.Link || action.oi.type === FieldType.OneWayLink)) {
             linkFieldIds.delete(fieldId);
-          } else if ('od' in action && !('oi' in action) && action.od.type === FieldType.Link) {
+          } else if ('od' in action && !('oi' in action) && (action.od.type === FieldType.Link || action.od.type === FieldType.OneWayLink)) {
             linkFieldIds.add(fieldId);
           }
         }
