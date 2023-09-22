@@ -181,6 +181,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     @Override
+    public Long getRevisionByDstId(String dstId) {
+        DatasheetEntity datasheet = getByDstId(dstId);
+        return datasheet != null ? datasheet.getRevision() : null;
+    }
+
+    @Override
     public void batchSave(List<DatasheetEntity> entities) {
         if (CollUtil.isEmpty(entities)) {
             return;

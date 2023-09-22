@@ -18,6 +18,7 @@
 
 package com.apitable.space.service;
 
+import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
@@ -139,6 +140,14 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return SpaceVO List
      */
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
+
+    /**
+     * get space credit info.
+     *
+     * @param spaceId space id
+     * @return CreditInfo
+     */
+    CreditInfo getCredit(String spaceId);
 
     /**
      * get credit usage chart data.

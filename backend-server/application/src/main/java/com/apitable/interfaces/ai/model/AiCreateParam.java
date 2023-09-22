@@ -1,6 +1,5 @@
 package com.apitable.interfaces.ai.model;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +23,4 @@ public class AiCreateParam {
     private AiType type;
 
     private String aiName;
-
-    private List<AiDataSource> dataSources;
 }
