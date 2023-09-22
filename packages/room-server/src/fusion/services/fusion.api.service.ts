@@ -608,11 +608,14 @@ export class FusionApiService {
     }
 
     const updateFieldOperations = await this.getFieldUpdateOps(datasheet, auth);
-
+    let viewIndex = meta.views.findIndex(view => view.id === viewId);
+    if (viewIndex === -1){
+      viewIndex = 0;
+    }
     const result = await datasheet.addRecords(
       {
-        viewId: meta.views[0]!.id,
-        index: meta.views[0]!.rows.length,
+        viewId: meta.views[viewIndex]!.id,
+        index: meta.views[viewIndex]!.rows.length,
         recordValues: body.records.map((record) => record.fields),
         ignoreFieldPermission: true,
       },
