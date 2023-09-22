@@ -25,6 +25,7 @@ import { resourceService } from 'pc/resource_service';
 import { getCellValueThumbSrc, showOriginImageThumbnail } from 'pc/utils';
 import { expandPreviewModal } from '../preview_file';
 import styles from './style.module.less';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 
 interface IDisplayFileProps {
   index: number;
@@ -67,7 +68,8 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = (p
   const PIXEL_RATIO = window.devicePixelRatio || 1;
   const lastIndex = fileList.length - 1;
   const activeIndex = index > lastIndex ? lastIndex : index;
-  const curFile = fileList[activeIndex];
+  const _curFile = fileList[activeIndex];
+  const curFile = useGetSignatureAssertByToken(_curFile);
   const { mobile } = usePlatform();
 
   const onChange = (value: IAttachmentValue[]) => {
