@@ -104,8 +104,8 @@ public class ClockManager implements InitializingBean {
         return this.systemProperties.getTimeZoneId();
     }
 
-    public long convertUnixTimeToSeconds(LocalDateTime dateTime) {
-        return dateTime.atZone(getDefaultTimeZone()).toInstant().getEpochSecond();
+    public long convertUnixTimeToMillis(LocalDateTime dateTime) {
+        return dateTime.atZone(getDefaultTimeZone()).toInstant().toEpochMilli();
     }
 
     @Override

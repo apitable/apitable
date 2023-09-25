@@ -1318,6 +1318,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public List<MemberEntity> getByUserIds(String spaceId, List<Long> userIds) {
+        if (CollUtil.isEmpty(userIds)) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectByUserIds(spaceId, userIds);
+    }
+
+    @Override
     public List<String> getOpenIdByUserIds(List<Long> userIds) {
         if (CollUtil.isEmpty(userIds)) {
             return new ArrayList<>();

@@ -17,16 +17,41 @@ public class CreditInfo {
 
     private BigDecimal usedCredit;
 
+    /**
+     * constructor.
+     *
+     * @param allowOverLimit    allow over limit
+     * @param maxMessageCredits max message credits
+     * @param usedCredit        used credit
+     */
     public CreditInfo(boolean allowOverLimit, Long maxMessageCredits, BigDecimal usedCredit) {
         this.allowOverLimit = allowOverLimit;
         this.maxMessageCredits = maxMessageCredits;
         this.usedCredit = usedCredit;
     }
 
+    /**
+     * remain credit.
+     *
+     * @return remain credit
+     */
     public BigDecimal remainCredit() {
         if (BigDecimal.ZERO.equals(usedCredit)) {
             return BigDecimal.valueOf(maxMessageCredits).setScale(4, HALF_UP);
         }
         return BigDecimal.valueOf(maxMessageCredits).subtract(usedCredit).setScale(4, HALF_UP);
+    }
+
+    /**
+     * can consume.
+     *
+     * @param consumedCredit consumed credit
+     * @return boolean
+     */
+    public boolean canConsume(BigDecimal consumedCredit) {
+        if (this.allowOverLimit) {
+            return true;
+        }
+        return this.remainCredit().compareTo(consumedCredit) >= 0;
     }
 }

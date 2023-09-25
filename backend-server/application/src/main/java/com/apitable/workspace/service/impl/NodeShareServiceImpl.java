@@ -364,9 +364,9 @@ public class NodeShareServiceImpl implements INodeShareService {
     }
 
     @Override
-    public void checkNodeHasShare(String dstId) {
+    public void checkNodeHasShare(String nodeId) {
         log.info("Check whether the number table is shared");
-        List<String> nodes = iNodeService.getPathParentNode(dstId);
+        List<String> nodes = iNodeService.getPathParentNode(nodeId);
         boolean hasShare = false;
         for (String node : nodes) {
             NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(node);
@@ -376,6 +376,30 @@ public class NodeShareServiceImpl implements INodeShareService {
             }
         }
         ExceptionUtil.isTrue(hasShare, PermissionException.NODE_ACCESS_DENIED);
+    }
+
+    @Override
+    public void checkNodeShareStatus(String nodeId) {
+        NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(nodeId);
+        if (setting == null || !setting.getIsEnabled()) {
+            List<String> nodes = iNodeService.getPathParentNode(nodeId);
+            if (nodes.contains(nodeId)) {
+                return;
+            }
+            throw new BusinessException(PermissionException.NODE_ACCESS_DENIED);
+        }
+    }
+
+    @Override
+    public boolean isNodeShared(String nodeId) {
+        NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(nodeId);
+        if (setting == null || !setting.getIsEnabled()) {
+            List<String> nodes = iNodeService.getPathParentNode(nodeId);
+            if (nodes.contains(nodeId)) {
+                return true;
+            }
+        }
+        return setting != null && setting.getIsEnabled();
     }
 
     @Override
