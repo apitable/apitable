@@ -174,6 +174,7 @@ const FieldTypeStringMap = {
   [FieldType.Text]: APIMetaFieldType.Text,
   [FieldType.URL]: APIMetaFieldType.URL,
   [FieldType.Cascader]: APIMetaFieldType.Cascader,
+  [FieldType.OneWayLink]: APIMetaFieldType.OneWayLink,
 };
 
 export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
