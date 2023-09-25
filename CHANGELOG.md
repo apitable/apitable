@@ -1,5 +1,12 @@
 # APITable CHANGELOG
 
+## [v1.2.0-beta](https://github.com/apitable/apitable/releases/tag/v1.2.0-beta) (2023-09-25)
+
+
+### What's more
+
+* sync: hosted cloud ([#1336](https://github.com/apitable/apitable/pull/1336)) @functionChenGuoFeng 
+* chore: gitpod automatic pnpm ([#1337](https://github.com/apitable/apitable/pull/1337)) @functionChenGuoFeng 
 ## [v1.1.0-beta](https://github.com/apitable/apitable/releases/tag/v1.1.0-beta) (2023-09-18)
 
 
