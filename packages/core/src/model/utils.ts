@@ -161,6 +161,7 @@ const FieldTypeStringMap = {
   [FieldType.LastModifiedBy]: APIMetaFieldType.LastModifiedBy,
   [FieldType.LastModifiedTime]: APIMetaFieldType.LastModifiedTime,
   [FieldType.Link]: APIMetaFieldType.MagicLink,
+  [FieldType.Link]: APIMetaFieldType.TwoWayLink,
   [FieldType.LookUp]: APIMetaFieldType.MagicLookUp,
   [FieldType.Member]: APIMetaFieldType.Member,
   [FieldType.MultiSelect]: APIMetaFieldType.MultiSelect,

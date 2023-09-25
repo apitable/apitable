@@ -44,6 +44,7 @@ export enum APIMetaFieldType {
   LastModifiedBy = 'LastModifiedBy',
   Cascader = 'Cascader',
   OneWayLink = 'OneWayLink',
+  TwoWayLink = 'TwoWayLink',
 }
 
 export enum APIMetaViewType {
