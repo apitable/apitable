@@ -39,10 +39,11 @@ import {
   LinkOutlined,
   NumberOutlined,
   EmailOutlined,
-  LinktableOutlined,
   CalendarOutlined,
   TextOutlined,
   CascadeOutlined,
+  OneWayLinkOutlined,
+  TwoWayLinkOutlined,
 } from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 
@@ -53,7 +54,8 @@ const ColumnMultipleFilledPath = SelectMultipleOutlined.toString();
 const ColumnCalendarFilledPath = CalendarOutlined.toString();
 const ColumnAttachmentFilledPath = AttachmentOutlined.toString();
 const ColumnFigureFilledPath = NumberOutlined.toString();
-const ColumnLinktableFilledPath = LinktableOutlined.toString();
+const ColumnTwoWayLinkOutlinedPath = TwoWayLinkOutlined.toString();
+const ColumnOneWayLinkOutlinedPath = OneWayLinkOutlined.toString();
 const ColumnUrlOutlinedPath = LinkOutlined.toString();
 const ColumnEmailFilledPath = EmailOutlined.toString();
 const ColumnPhoneFilledPath = TelephoneOutlined.toString();
@@ -99,7 +101,9 @@ export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((pro
     case FieldType.Number:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnFigureFilledPath} fill={fill} />;
     case FieldType.Link:
-      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnLinktableFilledPath} fill={fill} />;
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnTwoWayLinkOutlinedPath} fill={fill} />;
+    case FieldType.OneWayLink:
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnOneWayLinkOutlinedPath} fill={fill} />;
     case FieldType.URL:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnUrlOutlinedPath} fill={fill} />;
     case FieldType.Email:

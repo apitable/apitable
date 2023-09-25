@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { Selectors, IReduxState, StoreActions, FieldType } from '@apitable/core';
+import { FieldType, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 
 export const getDatasheetOrLoad = (
@@ -33,9 +33,8 @@ export const getDatasheetOrLoad = (
   const datasheetErrorCode = Selectors.getDatasheetErrorCode(state, foreignDatasheetId);
   const fieldMap = datasheet?.snapshot.meta?.fieldMap;
   // check if foreign datasheet has link relationship
-  const isforeignDatasheetIdRelated = fieldMap
-    ? Object.values(fieldMap).some((field) => field.type === FieldType.Link && field.property.foreignDatasheetId === foreignDatasheetId)
-    : true;
+  const isforeignDatasheetIdRelated = fieldMap ? Object.values(fieldMap).some(field =>
+    [FieldType.Link, FieldType.OneWayLink].includes(field.type) && field.property.foreignDatasheetId === foreignDatasheetId) : true;
 
   if (
     isforeignDatasheetIdRelated &&

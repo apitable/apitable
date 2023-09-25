@@ -15,9 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import { SetStateAction, Dispatch } from 'react';
 import * as React from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FieldType, IDateTimeBaseField, IField } from '@apitable/core';
 import { IFieldCascaderErrors } from '../field_setting/check_factory';
 import { FormatCascader } from './format_cascader';
@@ -85,6 +84,7 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
     case FieldType.LastModifiedTime:
       return <FormatDateTime currentField={currentField} setCurrentField={setCurrentField as React.Dispatch<SetStateAction<IDateTimeBaseField>>} />;
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return <FormateLink currentField={currentField} setCurrentField={setCurrentField} hideOperateBox={hideOperateBox} datasheetId={datasheetId} />;
     case FieldType.Formula:
       return <FormatFormula from={from} currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} />;

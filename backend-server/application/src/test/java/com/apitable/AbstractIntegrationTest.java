@@ -24,7 +24,6 @@ import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.auth.service.IAuthService;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.internal.service.IFieldService;
 import com.apitable.internal.service.InternalSpaceService;
 import com.apitable.mock.bean.MockInvitation;
@@ -141,9 +140,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected ITemplateService iTemplateService;
-
-    @Autowired
-    protected EntitlementServiceFacade entitlementServiceFacade;
 
     @Autowired
     protected IAssetCallbackService iAssetCallbackService;

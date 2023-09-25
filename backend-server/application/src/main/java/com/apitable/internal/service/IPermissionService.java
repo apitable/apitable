@@ -18,12 +18,13 @@
 
 package com.apitable.internal.service;
 
-import java.util.List;
-
+import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.workspace.vo.DatasheetPermissionView;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * Permission Service
+ * Permission Service.
  */
 public interface IPermissionService {
 
@@ -36,4 +37,14 @@ public interface IPermissionService {
      * @return DatasheetPermissionViews
      */
     List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId);
+
+    /**
+     * check member permission.
+     *
+     * @param resourceId resource id
+     * @param permission node permission
+     * @param shareId    share id
+     */
+    void checkPermissionBySessionOrShare(String resourceId, String shareId,
+                                         NodePermission permission, Consumer<Boolean> consumer);
 }

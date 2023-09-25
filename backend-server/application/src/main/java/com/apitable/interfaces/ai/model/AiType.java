@@ -12,7 +12,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AiType {
 
-    QA("qa");
+    QA("qa"),
+    CHAT("chat");
 
     private final String value;
 }

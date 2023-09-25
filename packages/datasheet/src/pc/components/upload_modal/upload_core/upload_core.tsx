@@ -235,6 +235,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     return uploadManager.get(cellId);
   });
 
+
   const [cellValue, setCellValue] = useState(() => {
     return (_cellValue || []).flat();
   });
@@ -262,7 +263,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
       return state.filter((item) => !cvIds.includes(item.fileId));
     });
     // eslint-disable-next-line
-  }, [fileList]);
+  }, [JSON.stringify(fileList)]);
 
   function deleteUploadItem(fileId: string) {
     setUploadList((state) => {

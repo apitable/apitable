@@ -72,7 +72,7 @@ sudo apt install make
 
 ## Hangi Oluşturma Aracını kullanıyoruz?
 
-`gradle` / `npm` / `yarn` gibi diğer derleme araçlarını yönlendiren merkezi derleme aracı girişimiz olarak make kullanıyoruz.
+`gradle` / `npm` / `pnpm` gibi diğer derleme araçlarını yönlendiren merkezi derleme aracı girişimiz olarak make kullanıyoruz.
 
 Böylece sadece make komutunu girebilir ve tüm derleme komutlarını görebilirsiniz:
 

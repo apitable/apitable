@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+// import { AxiosResponse } from 'axios';
 import { StatusCode, databus, IApiWrapper, IReduxState, IServerDatasheetPack, StoreActions, IServerDashboardPack } from '@apitable/core';
 
 export class ClientDataLoader implements databus.IDataLoader {
@@ -12,7 +12,7 @@ export class ClientDataLoader implements databus.IDataLoader {
     const state = getState();
 
     dispatch(StoreActions.requestDatasheetPack(datasheetId));
-    let response: AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>;
+    let response: {data: IApiWrapper & { data: IServerDatasheetPack }};
     try {
       response = await StoreActions.fetchDatasheetApi(datasheetId, shareId, templateId, embedId, recordIds);
       if (!response.data.success && state.catalogTree.treeNodesMap[datasheetId]) {

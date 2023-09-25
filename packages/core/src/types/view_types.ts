@@ -158,6 +158,10 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Link,
     value: any,
   };
+  [FieldType.OneWayLink]: {
+    fieldType: FieldType.OneWayLink,
+    value: any,
+  };
   // TODO: The following fields support filter operations
   [FieldType.URL]: {
     fieldType: FieldType.URL,

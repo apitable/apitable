@@ -824,6 +824,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           />
         );
       case FieldType.Link:
+      case FieldType.OneWayLink:
         return (
           <LinkEditor
             style={editorRect}

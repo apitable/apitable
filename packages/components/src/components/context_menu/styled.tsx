@@ -96,10 +96,10 @@ export const StyledMenuItem = styled.div.attrs(applyDefaultTheme)<IContextMenuSt
 
   svg {
     fill: ${props => props.theme.color.textCommonTertiary};
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     font-size: 12px;
-    margin-right: 4px;
+    margin-right: 8px;
     flex-shrink: 0;
   }
 

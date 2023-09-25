@@ -114,6 +114,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
         case FieldType.Rating:
         case FieldType.DateTime:
         case FieldType.Link:
+        case FieldType.OneWayLink:
           finalValue = value;
           break;
         case FieldType.SingleSelect:
@@ -265,6 +266,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
     case FieldType.Cascader:
       return <CascaderEditor ref={ref} {...commonProps} toggleEditing={onClose} editing={isFocus} showSearch={false} />;
     case FieldType.Link:
+    case FieldType.OneWayLink:
       return editable ? (
         <ExpandLink
           ref={ref}

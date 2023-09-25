@@ -78,9 +78,13 @@ const requestFormLocalMap = new Map<string, number>();
 // Temporarily do not break down each scene
 enum Business {
   Wide = 'computing',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   Search = 'computing', // 'searching',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   Group = 'computing', // 'grouping',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   Filter = 'computing', // 'filtering',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   Sort = 'computing', // 'sorting'
 }
 

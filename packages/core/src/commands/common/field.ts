@@ -79,6 +79,7 @@ function changeFieldSetting(
       }
       return actions;
     }
+    case FieldType.OneWayLink:
     case FieldType.Link: {
       // When switching the associated datasheetId, you need to clear the value of the cell
       if (oldField.property.foreignDatasheetId !== (newField as ILinkField).property.foreignDatasheetId) {

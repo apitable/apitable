@@ -250,6 +250,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                 trigger.setTriggerId(i.getTriggerId());
                 trigger.setTriggerTypeId(i.getTriggerTypeId());
                 trigger.setPrevTriggerId(i.getPrevTriggerId());
+                trigger.setRelatedResourceId(i.getResourceId());
                 trigger.setInput(i.getInput());
                 return trigger;
             }).sorted(triggerComparator).collect(Collectors.toList());
@@ -329,6 +330,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         if (StrUtil.isNotBlank(data.getName())) {
             ro.setName(data.getName());
         }
+        if (null != data.getIsActive()) {
+            ro.setIsActive(data.getIsActive());
+        }
         if (null != data.getProps() && null != data.getProps().getFailureNotifyEnable()) {
             UpdateRobotRO.AutomationPropertyRO propertyRO =
                 new UpdateRobotRO.AutomationPropertyRO();
@@ -341,6 +345,18 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         } catch (ApiException e) {
             log.error("Update automation error", e);
             return false;
+        }
+    }
+
+    @Override
+    public void deleteRobot(String robotId, Long updater) {
+        AutomationRobotUpdateRO ro = new AutomationRobotUpdateRO();
+        ro.setUpdatedBy(updater);
+        ro.setIsDeleted(true);
+        try {
+            automationDaoApiApi.daoUpdateAutomationRobot(robotId, ro);
+        } catch (ApiException e) {
+            log.error("Delete automation error", e);
         }
     }
 

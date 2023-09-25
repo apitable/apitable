@@ -45,6 +45,7 @@ import { UnitModule } from 'unit/unit.module';
 import { FusionApiV2Controller } from './fusion.api.v2.controller';
 import { FusionNodeApiService } from './services/fusion.node.api.service';
 import { DeveloperModule } from '../developer/developer.module';
+import {OneWayLinkField} from "./field/one_way_link.field";
 
 @Module({
   imports: [
@@ -84,6 +85,7 @@ import { DeveloperModule } from '../developer/developer.module';
     LastModifiedByField,
     LastModifiedTimeField,
     LinkField,
+    OneWayLinkField,
     LookUpField,
     MemberField,
     MultiSelectField,

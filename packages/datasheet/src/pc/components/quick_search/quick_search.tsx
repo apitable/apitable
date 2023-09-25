@@ -36,7 +36,7 @@ export function clearExpandModal() {
   }
 }
 
-const WrapperWithTheme: React.FC<React.PropsWithChildren> = (props) => {
+const WrapperWithTheme: React.FC<React.PropsWithChildren<any>> = (props) => {
   const cacheTheme = useSelector(Selectors.getTheme);
   return <ThemeProvider theme={cacheTheme}>{props.children}</ThemeProvider>;
 };

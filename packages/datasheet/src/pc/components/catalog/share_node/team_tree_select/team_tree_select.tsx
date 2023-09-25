@@ -100,7 +100,7 @@ export const TeamTreeSelect: FC<React.PropsWithChildren<ITeamTreeSelectProps>> =
       );
       if (item.children?.length) {
         return (
-          <TreeItem nodeId={item.teamId} label={nodeLabel}>
+          <TreeItem nodeId={item.teamId} label={nodeLabel} key={item.teamId}>
             {renderTreeNodes(item.children)}
           </TreeItem>
         );

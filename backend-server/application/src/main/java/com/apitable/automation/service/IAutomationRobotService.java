@@ -78,4 +78,12 @@ public interface IAutomationRobotService {
      * @param updater update user id
      */
     boolean update(String robotId, Long updater, UpdateRobotRO data);
+
+    /**
+     * delete automation robot.
+     *
+     * @param robotId robot id
+     * @param updater updater
+     */
+    void deleteRobot(String robotId, Long updater);
 }

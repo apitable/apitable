@@ -56,7 +56,7 @@ import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
-export const View: React.FC<React.PropsWithChildren> = () => {
+export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const colors = useThemeColors();
   const { currentView, rows, fieldMap } = useSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;

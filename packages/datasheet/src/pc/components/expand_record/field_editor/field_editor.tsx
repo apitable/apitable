@@ -45,7 +45,7 @@ interface IFieldEditorProps {
   colIndex?: number;
 }
 
-const notNeedBgField = [FieldType.Attachment, FieldType.Link];
+const notNeedBgField = [FieldType.Attachment, FieldType.Link, FieldType.OneWayLink];
 
 export type IExpandFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
 

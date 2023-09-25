@@ -18,10 +18,18 @@
 
 import accept from 'attr-accept';
 import mime from 'mime-types';
-import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
-import { browser } from 'modules/shared/browser';
-import { byte2Mb } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
+import {
+  cellValueToImageSrc,
+  getHostOfAttachment,
+  IAttachmentValue,
+  IImageSrcOption,
+  isImage,
+  isPdf,
+  isWebp
+} from '@apitable/core';
+import {browser} from 'modules/shared/browser';
+import {byte2Mb} from 'pc/utils';
+import {getEnvVariables} from 'pc/utils/env';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_placeholder_filled.png'; // img
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt
 import IconZip from 'static/icon/datasheet/attachment/datasheet_img_attachment_compressed_placeholder.png'; // zip
@@ -131,7 +139,7 @@ export function isDocType(file: IFileLikeProps) {
 }
 
 export function renderFileIconUrl(curFile: IFileLikeProps) {
-  const type = isWhatFileType({ name: curFile.name, type: curFile.type });
+  const type = isWhatFileType({name: curFile.name, type: curFile.type});
   switch (type) {
     case FileType.Image: {
       return IconImg;
@@ -180,7 +188,7 @@ export const imageSizeExceeded = (size: number) => {
  * Whether to display thumbnails of the original image, e.g. not after the volume exceeds 20Mb
  */
 export const showOriginImageThumbnail = (file: IAttachmentValue) => {
-  const fileArgument = { name: file.name, type: file.mimeType };
+  const fileArgument = {name: file.name, type: file.mimeType};
   return (isPdf(fileArgument) && file.preview) || (isImage(fileArgument) && !imageSizeExceeded(file.size) && isSupportImage(file.mimeType));
 };
 
@@ -199,7 +207,7 @@ export const getCellValueThumbSrc = (file: IAttachmentValue, option: IImageSrcOp
 
   if (showOriginImageThumbnail(file)) {
     const transformWebpIfNeeded =
-      (isWebp({ name: file.name, type: file.mimeType }) &&
+      (isWebp({name: file.name, type: file.mimeType}) &&
         browser?.satisfies({
           safari: '<14',
         })) ||
@@ -211,7 +219,7 @@ export const getCellValueThumbSrc = (file: IAttachmentValue, option: IImageSrcOp
       formatToJPG: transformWebpIfNeeded ? true : option.formatToJPG,
     });
   } else {
-    imgSrc = renderFileIconUrl({ name: file.name, type: file.mimeType }).src;
+    imgSrc = renderFileIconUrl({name: file.name, type: file.mimeType}).src;
   }
   return imgSrc;
 };
@@ -235,6 +243,13 @@ export function getDownloadSrc(fileInfo: IAttachmentValue) {
 }
 
 export function getAvInfoRequestUrl(fileInfo: IAttachmentValue) {
+  if (fileInfo.token.includes('http')) {
+    const url = new URL(fileInfo.token);
+    if (url.searchParams.size) {
+      return url.href + '&avinfo'
+    }
+    return url.href;
+  }
   const host = getHostOfAttachment(fileInfo.bucket);
   return `${host}${fileInfo.token}?avinfo`;
 }

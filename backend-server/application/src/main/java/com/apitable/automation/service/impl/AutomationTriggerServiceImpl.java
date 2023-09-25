@@ -18,15 +18,29 @@
 
 package com.apitable.automation.service.impl;
 
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_ROBOT_NOT_EXIST;
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_TRIGGER_LIMIT;
+import static com.apitable.automation.model.TriggerSimpleVO.triggerComparator;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.mapper.AutomationTriggerMapper;
 import com.apitable.automation.model.AutomationTriggerDto;
+import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
+import com.apitable.automation.model.TriggerVO;
+import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationTriggerService;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.databusclient.ApiException;
+import com.apitable.databusclient.api.AutomationDaoApiApi;
+import com.apitable.databusclient.model.ApiResponseAutomationTriggerPO;
+import com.apitable.databusclient.model.AutomationRobotTriggerRO;
+import com.apitable.databusclient.model.AutomationTriggerPO;
+import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.ArrayList;
@@ -41,9 +55,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
-
+    @Resource
+    private AutomationDaoApiApi automationDaoApiApi;
     @Resource
     private AutomationTriggerMapper triggerMapper;
+
+    @Resource
+    private LimitProperties limitProperties;
 
     @Override
     public List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds) {
@@ -53,6 +71,53 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     @Override
     public void create(AutomationTriggerEntity entity) {
         triggerMapper.insert(entity);
+    }
+
+    @Override
+    public List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data) {
+        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
+        ro.setResourceId(data.getRelatedResourceId());
+        ro.setUserId(userId);
+        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
+        ro.setPrevTriggerId(data.getPrevTriggerId());
+        ro.setTriggerTypeId(data.getTriggerTypeId());
+        ro.setLimitCount(Long.valueOf(limitProperties.getAutomationTriggerCount()));
+        try {
+            ApiResponseAutomationTriggerPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+            ExceptionUtil.isFalse(
+                AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
+                AUTOMATION_TRIGGER_LIMIT);
+            return formatVoFromDatabusResponse(response.getData());
+        } catch (ApiException e) {
+            log.error("Robot create trigger: {}", data.getRobotId(), e);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data) {
+        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
+        ro.setResourceId(data.getRelatedResourceId());
+        ro.setUserId(userId);
+        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
+        ro.setPrevTriggerId(data.getPrevTriggerId());
+        ro.setTriggerTypeId(data.getTriggerTypeId());
+        ro.setPrevTriggerId(triggerId);
+        try {
+            ApiResponseAutomationTriggerPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+            return formatVoFromDatabusResponse(response.getData());
+        } catch (ApiException e) {
+            log.error("Robot create trigger: {}", data.getRobotId(), e);
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -106,4 +171,18 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             trigger.getTriggerTypeId(), trigger.getInput());
     }
 
+    private List<TriggerVO> formatVoFromDatabusResponse(List<AutomationTriggerPO> data) {
+        if (null != data) {
+            return data.stream().map(i -> {
+                TriggerVO vo = new TriggerVO();
+                vo.setTriggerId(i.getTriggerId());
+                vo.setTriggerTypeId(i.getTriggerTypeId());
+                vo.setRelatedResourceId(i.getResourceId());
+                vo.setPrevTriggerId(i.getPrevTriggerId());
+                vo.setInput(i.getInput());
+                return vo;
+            }).sorted(triggerComparator).collect(toList());
+        }
+        return new ArrayList<>();
+    }
 }

@@ -35,7 +35,6 @@ import {
   NumberOutlined,
   SelectMultipleOutlined,
   CalendarOutlined,
-  LinktableOutlined,
   LinkOutlined,
   UserEditOutlined,
   LongtextOutlined,
@@ -43,6 +42,8 @@ import {
   LookupOutlined,
   StarOutlined,
   CascadeOutlined,
+  OneWayLinkOutlined,
+  TwoWayLinkOutlined
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -52,7 +53,8 @@ const FieldIconMap = {
   [FieldType.MultiSelect]: SelectMultipleOutlined,
   [FieldType.DateTime]: CalendarOutlined,
   [FieldType.Attachment]: AttachmentOutlined,
-  [FieldType.Link]: LinktableOutlined,
+  [FieldType.OneWayLink]: OneWayLinkOutlined,
+  [FieldType.Link]: TwoWayLinkOutlined,
   [FieldType.URL]: LinkOutlined,
   [FieldType.Email]: EmailOutlined,
   [FieldType.Phone]: TelephoneOutlined,

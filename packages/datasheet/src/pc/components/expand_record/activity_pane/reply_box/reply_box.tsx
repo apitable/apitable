@@ -37,8 +37,8 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: I
   const { run: getCommentsByIds, loading: requestLoading } = useRequest(DatasheetApi.getCommentsByIds, { manual: true });
 
   const getReplyComment = (action: number | IJOTAction) => {
-    const commentId = get(action, 'commentMsg.reply.commentId');
-    const isDeleted = get(action, 'commentMsg.reply.isDeleted');
+    const commentId = get(action as any, 'commentMsg.reply.commentId');
+    const isDeleted = get(action as any, 'commentMsg.reply.isDeleted');
 
     if (isDeleted) {
       return {
@@ -69,16 +69,14 @@ export const ReplyBox = ({ action, handleEmoji, datasheetId, expandRecordId }: I
     });
   };
 
-  return (
-    <div className={styles.comment}>
-      <ReplyComment reply={getReplyComment(action)} isStatic />
-      <SlateEditor
-        key={get(action, 'createdAt')}
-        initialValue={get(action, 'commentMsg.content')}
-        emojis={get(emojis, get(action, 'commentId'))}
-        handleEmoji={handleEmoji}
-        readOnly
-      />
-    </div>
-  );
+  return <div className={styles.comment}>
+    <ReplyComment reply={getReplyComment(action)} isStatic />
+    <SlateEditor
+      key={get(action, 'createdAt')}
+      initialValue={get(action, 'commentMsg.content')}
+      emojis={get(emojis, get(action as any, 'commentId'))}
+      handleEmoji={handleEmoji}
+      readOnly
+    />
+  </div>;
 };

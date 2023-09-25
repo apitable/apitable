@@ -38,6 +38,8 @@ import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.user.facade.InvitationServiceFacade;
 import com.apitable.interfaces.user.model.MultiInvitationMetadata;
@@ -88,6 +90,7 @@ import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.constants.MailPropConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
+import com.apitable.shared.exception.LimitException;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.util.CollectionUtil;
 import com.apitable.shared.util.ibatis.ExpandServiceImpl;
@@ -188,6 +191,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private MemberMapper memberMapper;
+
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private InvitationServiceFacade invitationServiceFacade;
@@ -978,12 +984,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             // obtaining statistics
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
+            SubscriptionInfo subscriptionInfo =
+                    entitlementServiceFacade.getSpaceSubscription(spaceId);
+            long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,
             // set the number of rows in the table header,
             // and start reading data at line 4, asynchronous reading.
             UploadDataListener listener =
-                new UploadDataListener(spaceId, this, -1, currentMemberCount)
+                new UploadDataListener(spaceId, this, maxSeatNums, currentMemberCount)
                     .resources(userSpaceDto.getResourceCodes());
             EasyExcel.read(multipartFile.getInputStream(), listener).sheet().headRowNumber(3)
                 .doRead();
@@ -1011,6 +1020,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         } catch (IOException e) {
             log.error("file cannot be read", e);
             throw new BusinessException(OrganizationException.EXCEL_CAN_READ_ERROR);
+        } catch (BusinessException e) {
+            log.error("exceed over limit");
+            throw new BusinessException(LimitException.OVER_LIMIT);
         } catch (Exception e) {
             log.error("fail to parse file", e);
             throw new BusinessException(
@@ -1303,6 +1315,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public void clearOpenIdById(Long memberId) {
         baseMapper.clearOpenIdById(memberId);
+    }
+
+    @Override
+    public List<MemberEntity> getByUserIds(String spaceId, List<Long> userIds) {
+        if (CollUtil.isEmpty(userIds)) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectByUserIds(spaceId, userIds);
     }
 
     @Override

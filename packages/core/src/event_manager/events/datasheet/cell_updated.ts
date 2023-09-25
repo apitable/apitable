@@ -20,7 +20,7 @@ import { getComputeRefManager } from 'compute_manager';
 import { testPath } from 'event_manager/helper';
 import { Field } from 'model';
 import { IReduxState, Selectors } from '../../../exports/store';
-import { FieldType } from 'types';
+import { FieldType, ILinkField } from 'types';
 import { ResourceType } from 'types/resource_types';
 import { IAtomEventType, ICellUpdatedContext } from '../interface';
 import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
@@ -122,7 +122,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
                 }, [] as string[]);
               }
             } else {
-              const brotherFieldId = relatedLinkField.property.brotherFieldId!;
+              const brotherFieldId = (relatedLinkField as ILinkField).property?.brotherFieldId!;
               // 3. The recordIds affected by this cell update
               triggerRecIds = Selectors.getCellValue(state, snapshot, recordId, brotherFieldId);
             }

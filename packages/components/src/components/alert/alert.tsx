@@ -74,7 +74,7 @@ export const Alert = (
           {title && <Typography variant="h7"> {title} </Typography>}
           <Typography variant="body3" color={theme.color.firstLevelText}> {content} </Typography>
         </Box>
-        {closable && <IconButton size={'small'} onClick={handleClose} icon={CloseOutlined} />}
+        {closable && <IconButton size={'small'} onClick={handleClose} shape="square" style={{ borderRadius:4 }} icon={CloseOutlined} />}
       </AlertInnerComponent>
     </AlertWrapper>
   );

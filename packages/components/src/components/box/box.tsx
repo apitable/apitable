@@ -34,7 +34,7 @@ import {
 type IBoxProps = SpaceProps & LayoutProps & ColorProps & FlexboxProps & TypographyProps
   & GridProps & BackgroundProps & BorderProps & PositionProps & ShadowProps;
 
-export const Box = styled.div<IBoxProps>(
+export const Box: any = styled.div<IBoxProps>(
   compose(
     space,
     color,

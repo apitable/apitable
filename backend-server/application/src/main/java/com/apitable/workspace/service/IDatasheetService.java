@@ -43,6 +43,14 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     DatasheetEntity getByDstId(String dstId);
 
     /**
+     * get datasheet revision by datasheet id.
+     *
+     * @param dstId datasheet id
+     * @return revision number
+     */
+    Long getRevisionByDstId(String dstId);
+
+    /**
      * @param entities datasheet
      */
     void batchSave(List<DatasheetEntity> entities);

@@ -1021,6 +1021,16 @@
         AND is_deleted = 0
     </select>
 
+    <select id="selectByUserIds" resultType="com.apitable.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND user_id IN
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectMemberNameByUserIdAndSpaceId" resultType="java.lang.String">
         SELECT member_name
         FROM ${tablePrefix}unit_member

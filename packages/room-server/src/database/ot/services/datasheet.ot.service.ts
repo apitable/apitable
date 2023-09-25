@@ -452,13 +452,13 @@ export class DatasheetOtService {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             break;
-          // Select, paste and fill in link reference and respective undo operations, validate if current column is link field
+          // Select, paste and fill in link reference and respective undo operations, validate if current column is two-way link field or oneway link
           default:
             // Take changeset with priority, avoid pushed after OP is merged, then load database metadata
             if (resultSet.toCreateForeignDatasheetIdMap.has(fieldId) || resultSet.toDeleteForeignDatasheetIdMap.has(fieldId)) {
               break;
             }
-            if (meta?.fieldMap[fieldId]!.type !== FieldType.Link) {
+            if (meta?.fieldMap[fieldId]!.type !== FieldType.Link && meta?.fieldMap[fieldId]!.type !== FieldType.OneWayLink) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
         }
@@ -479,7 +479,7 @@ export class DatasheetOtService {
         } else {
           const meta = await this.getMetaDataByCache(datasheetId, effectMap);
           const field = meta?.fieldMap[relatedLinkFieldId];
-          if (field?.type !== FieldType.Link) {
+          if (field?.type !== FieldType.Link && field?.type !== FieldType.OneWayLink) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
           }
           foreignDatasheetId = field.property.foreignDatasheetId;
@@ -514,7 +514,7 @@ export class DatasheetOtService {
   collectByAddField(cmd: string, action: IObjectInsertAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     const oiData = action.oi as IField;
     resultSet.temporaryFieldMap[oiData.id] = oiData;
-    if (oiData.type === FieldType.Link) {
+    if (oiData.type === FieldType.Link || oiData.type === FieldType.OneWayLink) {
       const mainDstId = resultSet.linkActionMainDstId;
 
       if (!mainDstId) {
@@ -591,9 +591,9 @@ export class DatasheetOtService {
       if (resultSet.linkActionMainDstId !== resultSet.datasheetId) {
         // Since the database deleted link field, link field of linked datasheet is changed to text field,
         // don't check permission
-        if (odData.type == FieldType.Link && odData.property.foreignDatasheetId === resultSet.linkActionMainDstId && oiData.type == FieldType.Text) {
+        if ((odData.type == FieldType.Link || odData.type == FieldType.OneWayLink) && odData.property.foreignDatasheetId === resultSet.linkActionMainDstId && oiData.type == FieldType.Text) {
           skip = true;
-        } else if (oiData.type == FieldType.Link && oiData.property.foreignDatasheetId === resultSet.linkActionMainDstId && cmd.startsWith('UNDO:')) {
+        } else if ((oiData.type == FieldType.Link || oiData.type == FieldType.OneWayLink) && oiData.property.foreignDatasheetId === resultSet.linkActionMainDstId && cmd.startsWith('UNDO:')) {
           // Since the database undo deleting link field, original link field of linked datasheet changes back to link field,
           // don't check permission
           skip = true;
@@ -607,6 +607,7 @@ export class DatasheetOtService {
       resultSet.temporaryFieldMap[oiData.id] = oiData;
       // Deleted field type
       switch (odData.type) {
+        case FieldType.OneWayLink:
         case FieldType.Link:
           const { foreignDatasheetId } = odData.property;
           resultSet.toDeleteForeignDatasheetIdMap.set(odData.id, foreignDatasheetId);
@@ -626,6 +627,7 @@ export class DatasheetOtService {
       }
       // Modified field type
       switch (oiData.type) {
+        case FieldType.OneWayLink:
         case FieldType.Link:
           const { foreignDatasheetId } = oiData.property;
           resultSet.toCreateForeignDatasheetIdMap.set(oiData.id, foreignDatasheetId);
@@ -664,6 +666,16 @@ export class DatasheetOtService {
 
       // Replace linked datasheet
       if (oiData.type === FieldType.Link && odData.type === FieldType.Link) {
+        const oiForeignDatasheetId = oiData.property.foreignDatasheetId;
+        const odForeignDatasheetId = odData.property.foreignDatasheetId;
+        if (oiForeignDatasheetId === odForeignDatasheetId) {
+          return;
+        }
+        resultSet.toCreateForeignDatasheetIdMap.set(oiData.id, oiForeignDatasheetId);
+        resultSet.toDeleteForeignDatasheetIdMap.set(odData.id, odForeignDatasheetId);
+      }
+      // Replace OneWayLink datasheet
+      if (oiData.type === FieldType.OneWayLink && odData.type === FieldType.OneWayLink) {
         const oiForeignDatasheetId = oiData.property.foreignDatasheetId;
         const odForeignDatasheetId = odData.property.foreignDatasheetId;
         if (oiForeignDatasheetId === odForeignDatasheetId) {
@@ -713,7 +725,7 @@ export class DatasheetOtService {
    */
   collectByDeleteField(action: IObjectDeleteAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     const odData = action.od as IField;
-    if (odData.type === FieldType.Link) {
+    if (odData.type === FieldType.Link || odData.type === FieldType.OneWayLink) {
       const mainDstId = resultSet.linkActionMainDstId;
 
       if (!mainDstId) {

@@ -63,6 +63,20 @@ public interface INodeShareService {
     void checkNodeHasShare(String dstId);
 
     /**
+     * Check whether the node is shared.
+     *
+     * @param nodeId node id
+     */
+    void checkNodeShareStatus(String nodeId);
+
+    /**
+     * get shared status of the node.
+     *
+     * @param nodeId node id
+     */
+    boolean isNodeShared(String nodeId);
+
+    /**
      * turn off node sharing
      *
      * @param userId user id
@@ -80,7 +94,7 @@ public interface INodeShareService {
     /**
      * Transfer shared node data to designated space station
      *
-     * @param userId user id
+     * @param userId  user id
      * @param spaceId space id
      * @param shareId shareId
      * @return new node id

@@ -209,7 +209,7 @@ export class DatasheetService {
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     // Check if datasheet has linked datasheet with foreighDatasheetId
     const isExist = Object.values(meta.fieldMap).some((field) => {
-      if (field.type === FieldType.Link) {
+      if (field.type === FieldType.Link || field.type === FieldType.OneWayLink) {
         return field.property.foreignDatasheetId === foreignDatasheetId;
       }
       return false;
@@ -296,7 +296,7 @@ export class DatasheetService {
     const dstIds = new Set<string>();
     for (const fieldId in fieldMap) {
       const field = fieldMap[fieldId]!;
-      if (field.type === FieldType.Link) {
+      if (field.type === FieldType.Link || field.type === FieldType.OneWayLink) {
         dstIds.add(field.property.foreignDatasheetId);
       }
     }

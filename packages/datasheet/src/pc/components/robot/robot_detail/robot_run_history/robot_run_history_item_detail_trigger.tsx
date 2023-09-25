@@ -39,7 +39,11 @@ const FilterWrapper = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
 `;
-export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any; label: string; datasheetId: string }) => {
+export const FilterValueDisplay = ({ filter, label, datasheetId }: {
+  filter: any;
+  label: string;
+  datasheetId: string
+}) => {
   const theme = useTheme();
   if (!filter) return null;
   return (
@@ -48,7 +52,7 @@ export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any
         {label}
       </Typography>
       <FilterWrapper>
-        <RecordMatchesConditionsFilter filter={filter} datasheetId={datasheetId} readonly />
+        <RecordMatchesConditionsFilter filter={filter} datasheetId={datasheetId} readonly/>
       </FilterWrapper>
     </Box>
   );
@@ -86,13 +90,13 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
             const propertyValue = formData[propertyKey];
             const label = retrievedSchema.properties![propertyKey].title || '';
             if (propertyKey === 'filter') {
-              return <FilterValueDisplay label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />;
+              return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />;
             }
-            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />;
+            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue}/>;
           })}
       </Box>
       ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
-      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema />
+      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema/>
       {/* {
       list.map((propertySchema, index) => {
         const propertyValue = nodeDetail.output[propertySchema.key];

@@ -84,8 +84,8 @@ export function upload(params: {
       fileType: UploadType.DstAttachment,
       nodeId: datasheetId,
       axiosConfig: {
-        onUploadProgress: ({ loaded, total }: IUploadProgress) => {
-          onProgress && onProgress({ loaded, total });
+        onUploadProgress: ({ loaded, total }) => {
+          return onProgress && onProgress({ loaded, total });
         },
       },
     });

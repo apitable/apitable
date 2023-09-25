@@ -89,18 +89,14 @@ public enum NodeType {
     DATADOC(99);
 
 
-    private int nodeType;
+    private final int value;
 
-    NodeType(int nodeType) {
-        this.nodeType = nodeType;
+    NodeType(int value) {
+        this.value = value;
     }
 
     public int getNodeType() {
-        return nodeType;
-    }
-
-    public void setNodeType(int nodeType) {
-        this.nodeType = nodeType;
+        return value;
     }
 
     /**
@@ -122,6 +118,6 @@ public enum NodeType {
      * exclude root and folder type.
      */
     public boolean isFileNode() {
-        return nodeType > 1;
+        return value > 1;
     }
 }

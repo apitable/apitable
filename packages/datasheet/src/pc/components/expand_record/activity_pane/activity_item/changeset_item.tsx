@@ -174,7 +174,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
   }
 
   const handleEmoji = (emojiKey: string) => {
-    const comment = get(changeset, 'operations.0.actions.0.li');
+    const comment = get(changeset, 'operations.0.actions.0.li') as any;
     const { commentMsg, commentId } = comment;
     const emojiUsers = get(emojis, `${commentId}.${emojiKey}`, []) as string[];
 
@@ -199,7 +199,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
   const handleReply = () => {
     setFocus(true);
     const unitId = get(changeset, 'operations.0.actions.0.li.unitId');
-    const commentContent = get(changeset, 'operations.0.actions.0.li.commentMsg.content');
+    const commentContent = get(changeset, 'operations.0.actions.0.li.commentMsg.content') as any;
     const commentId = get(changeset, 'operations.0.actions.0.li.commentId');
     setReplyUnitId(unitId);
     setReplyText({
@@ -264,7 +264,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
                         <IconButton
                           onClick={() => {
                             const commentItem = {
-                              comment: get(changeset, 'operations.0.actions.0.li'),
+                              comment: get(changeset, 'operations.0.actions.0.li') as any,
                               expandRecordId,
                               datasheetId,
                               setChooseComment,

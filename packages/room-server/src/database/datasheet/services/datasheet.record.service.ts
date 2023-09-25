@@ -214,8 +214,8 @@ export class DatasheetRecordService {
     changesets = changesets.map(item => {
       if (item.isComment) {
         mentionedRevisions.push(Number(item.revision));
-        const replyComment = get(item, 'operations.0.actions.0.li.commentMsg.reply');
-        if (!isEmpty(replyComment) && replyComment.commentId) {
+        const replyComment:  { commentId?: string } = get(item, 'operations.0.actions.0.li.commentMsg.reply') as unknown as { commentId?: string };
+        if (replyComment && !isEmpty(replyComment) && replyComment.commentId) {
           // record replied comment ID
           replyCommentIds.add(replyComment.commentId);
         }

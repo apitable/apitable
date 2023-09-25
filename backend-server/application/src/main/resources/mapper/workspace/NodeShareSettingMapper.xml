@@ -119,4 +119,11 @@
         FROM ${tablePrefix}node_share_setting
         WHERE node_id = #{nodeId}
     </select>
+
+    <select id="selectAllowSaveAndAllowEditByShareId" resultType="com.apitable.workspace.entity.NodeShareSettingEntity">
+        SELECT allow_save, allow_edit
+        FROM ${tablePrefix}node_share_setting
+        WHERE share_id = #{shareId}
+        AND is_enabled = 1
+    </select>
 </mapper>

@@ -19,7 +19,6 @@
 /* eslint no-undef: 0 */
 const withLess = require('next-with-less');
 const path = require('path');
-const loaderUtils = require('loader-utils');
 const withPlugins = require('next-compose-plugins');
 const withTM = require('next-transpile-modules');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
@@ -37,19 +36,7 @@ const plugins = [
       },
     },
   ],
-  [
-    withTM([
-      '@apitable/components',
-      'antd',
-      'antd-mobile',
-      'rc-pagination',
-      'rc-util',
-      'rc-picker',
-      'rc-notification',
-      '@ant-design/icons',
-      'rc-calendar',
-    ]),
-  ],
+  [withTM(['@apitable/components', 'antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
   [withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })],
 ];
 /** @type {import('next').NextConfig} */

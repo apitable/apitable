@@ -31,6 +31,7 @@ import {
   Field,
   FieldType,
   ILinkField,
+  IOneWayLinkField,
   ILinkIds,
   IReduxState,
   ISegment,
@@ -59,7 +60,7 @@ import { RecordList } from './record_list';
 import style from './style.module.less';
 
 interface ISearchContentProps {
-  field: ILinkField;
+  field: ILinkField | IOneWayLinkField
   searchValue: string;
   cellValue: ILinkIds;
   onlyShowSelected: boolean;

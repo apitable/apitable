@@ -44,6 +44,7 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
@@ -144,6 +145,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -231,6 +233,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private IInvitationService iInvitationService;
+
+    @Value("${BILLING_APITABLE_ENABLED:false}")
+    private Boolean billingApitableEnabled;
+
+    @Value("${SKIP_USAGE_VERIFICATION:false}")
+    private Boolean skipUsageVerification;
 
     @Override
     public SpaceEntity getEntityBySpaceId(String spaceId) {
@@ -545,6 +553,15 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
+    public CreditInfo getCredit(String spaceId) {
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        return new CreditInfo(subscriptionInfo.getConfig().isAllowCreditOverLimit(),
+            subscriptionInfo.getFeature().getMessageCreditNums().getValue(),
+            aiServiceFacade.getUsedCreditCount(spaceId));
+    }
+
+    @Override
     public CreditUsages getCreditUsagesChart(
         String spaceId, ChartTimeDimension chartTimeDimension) {
         List<CreditTransactionChartData> dataCollection =
@@ -565,13 +582,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        // only free space has validation
-        if (!subscriptionInfo.isFree()) {
+        // only free space has validation, or paid space in apitable mode can skip validation.
+        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-        if (maxSeatNums != -1 && (seatUsage.getTotal() == maxSeatNums)) {
+        if (maxSeatNums != -1 && (seatUsage.getTotal() >= maxSeatNums)) {
             throw new BusinessException(LimitException.OVER_LIMIT);
         }
     }
@@ -581,7 +598,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        if (!subscriptionInfo.isFree()) {
+        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
@@ -600,26 +617,39 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public SpaceInfoVO getSpaceInfo(final String spaceId) {
         SpaceEntity entity = getBySpaceId(spaceId);
+        SpaceInfoVO spaceInfoVO = this.transform(entity);
+        if (Boolean.TRUE.equals(skipUsageVerification)) {
+            spaceInfoVO.setSocial(new SpaceSocialConfig());
+            spaceInfoVO.setSeatUsage(new SeatUsage());
+            return spaceInfoVO;
+        }
         SeatUsage seatUsage = getSeatUsage(spaceId);
+        spaceInfoVO.setSeatUsage(seatUsage);
+        spaceInfoVO.setSeats(seatUsage.getMemberCount());
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
+        spaceInfoVO.setDeptNumber(teamCount);
         // admin statistics
         long adminCount = iStaticsService.getAdminTotalCountBySpaceId(spaceId);
+        spaceInfoVO.setAdminNums(adminCount);
         // record statistics
         long recordCount =
             iStaticsService.getDatasheetRecordTotalCountBySpaceId(spaceId);
+        spaceInfoVO.setRecordNums(recordCount);
         // used space statistics
         long capacityUsedSize =
             spaceCapacityCacheService.getSpaceCapacity(spaceId);
+        spaceInfoVO.setCapacityUsedSizes(capacityUsedSize);
         // API usage statistics
         long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId);
+        spaceInfoVO.setApiRequestCountUsage(apiUsage);
         // file control amount
         ControlStaticsDTO controlStaticsDTO =
             iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
-        long nodeRoleNums = controlStaticsDTO != null
-            ? controlStaticsDTO.getNodeRoleCount() : 0L;
-        long fieldRoleNums = controlStaticsDTO != null
-            ? controlStaticsDTO.getFieldRoleCount() : 0L;
+        if (controlStaticsDTO != null) {
+            spaceInfoVO.setNodeRoleNums(controlStaticsDTO.getNodeRoleCount());
+            spaceInfoVO.setFieldRoleNums(controlStaticsDTO.getFieldRoleCount());
+        }
         // node statistics
         List<NodeTypeStaticsDTO> nodeTypeStaticDtos =
             iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
@@ -627,46 +657,33 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             .filter(condition -> NodeType.toEnum(condition.getType())
                 .isFileNode()).mapToLong(NodeTypeStaticsDTO::getTotal)
             .sum();
+        spaceInfoVO.setSheetNums(sheetNums);
         long mirrorNums = nodeTypeStaticDtos.stream()
             .filter(condition ->
                 NodeType.MIRROR == NodeType.toEnum(condition.getType()))
             .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
-        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
+        spaceInfoVO.setMirrorNums(mirrorNums);
         Map<Integer, Integer> typeStaticsMap = nodeTypeStaticDtos.stream()
             .collect(Collectors.toMap(NodeTypeStaticsDTO::getType,
                 NodeTypeStaticsDTO::getTotal));
         long formViewNums =
             typeStaticsMap.containsKey(NodeType.FORM.getNodeType())
                 ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
+        spaceInfoVO.setFormViewNums(formViewNums);
         // table view statistics
         DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
-        SpaceInfoVO vo = SpaceInfoVO.builder().spaceName(entity.getName())
-            .spaceLogo(entity.getLogo()).createTime(entity.getCreatedAt())
-            .deptNumber(teamCount).seats(seatUsage.getMemberCount()).sheetNums(sheetNums)
-            .recordNums(recordCount).adminNums(adminCount)
-            .apiRequestCountUsage(apiUsage)
-            .capacityUsedSizes(capacityUsedSize).nodeRoleNums(nodeRoleNums)
-            .fieldRoleNums(fieldRoleNums).formViewNums(formViewNums)
-            .kanbanViewNums(viewVO.getKanbanViews())
-            .calendarViewNums(viewVO.getCalendarViews())
-            .galleryViewNums(viewVO.getGalleryViews())
-            .ganttViewNums(viewVO.getGanttViews()).mirrorNums(mirrorNums)
-            .usedCredit(usedCredit)
-            .seatUsage(seatUsage)
-            .build();
+        spaceInfoVO.setKanbanViewNums(viewVO.getKanbanViews());
+        spaceInfoVO.setCalendarViewNums(viewVO.getCalendarViews());
+        spaceInfoVO.setGalleryViewNums(viewVO.getGalleryViews());
+        spaceInfoVO.setGanttViewNums(viewVO.getGanttViews());
         // space attachment capacity usage information
         SpaceCapacityUsedInfo spaceCapacityUsedInfo =
             this.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
-        vo.setCurrentBundleCapacityUsedSizes(
+        spaceInfoVO.setCurrentBundleCapacityUsedSizes(
             spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes());
-        vo.setGiftCapacityUsedSizes(
+        spaceInfoVO.setGiftCapacityUsedSizes(
             spaceCapacityUsedInfo.getGiftCapacityUsedSizes());
-        // owner info
-        this.appendOwnerInfo(vo, entity);
-        if (ObjectUtil.isNotNull(entity.getPreDeletionTime())) {
-            vo.setDelTime(entity.getPreDeletionTime()
-                .plusDays(DELETE_SPACE_RETAIN_DAYS));
-        }
+
         // obtain third party information
         SocialConnectInfo socialConnectInfo =
             socialServiceFacade.getConnectInfo(spaceId);
@@ -681,12 +698,30 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                 bindInfo.setContactSyncing(socialConnectInfo.contactSyncing());
             }
         }
-        vo.setSocial(bindInfo);
+        spaceInfoVO.setSocial(bindInfo);
+        // credit
+        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
+        spaceInfoVO.setUsedCredit(usedCredit);
 
         CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
         boolean isEnableChatbot = cacheService.checkIfSpaceEnabledChatbot(spaceId);
-        vo.setIsEnableChatbot(isEnableChatbot);
-        return vo;
+        spaceInfoVO.setIsEnableChatbot(isEnableChatbot);
+        return spaceInfoVO;
+    }
+
+    private SpaceInfoVO transform(SpaceEntity entity) {
+        SpaceInfoVO spaceInfoVO = SpaceInfoVO.builder()
+            .spaceName(entity.getName())
+            .spaceLogo(entity.getLogo())
+            .createTime(entity.getCreatedAt())
+            .build();
+        // owner info
+        this.appendOwnerInfo(spaceInfoVO, entity);
+        if (ObjectUtil.isNotNull(entity.getPreDeletionTime())) {
+            spaceInfoVO.setDelTime(entity.getPreDeletionTime()
+                .plusDays(DELETE_SPACE_RETAIN_DAYS));
+        }
+        return spaceInfoVO;
     }
 
     private void appendOwnerInfo(final SpaceInfoVO vo,

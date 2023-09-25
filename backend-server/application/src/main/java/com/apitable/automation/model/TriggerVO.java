@@ -39,4 +39,7 @@ public class TriggerVO extends TriggerSimpleVO {
     @Schema(description = "Trigger input", type = "java.lang.String", example = "{}")
     @JsonSerialize(nullsUsing = NullObjectSerializer.class, using = StringToJsonObjectSerializer.class)
     private String input;
+
+    @Schema(description = "Trigger resource id", type = "java.lang.String", example = "dst***")
+    private String relatedResourceId;
 }

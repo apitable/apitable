@@ -39,6 +39,9 @@ public enum AutomationException implements BaseException {
 
     AUTOMATION_ERROR(1103, "Server error"),
 
+    AUTOMATION_ROBOT_NOT_EXIST(1104, "The automation not exits"),
+
+    AUTOMATION_TRIGGER_LIMIT(1105, "The number of triggers cannot exceed 3")
     ;
 
     private final Integer code;

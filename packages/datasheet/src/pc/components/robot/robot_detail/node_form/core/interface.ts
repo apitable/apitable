@@ -131,7 +131,7 @@ export type IFieldTemplateProps<T = any> = {
   disabled: boolean;
   displayLabel: boolean;
   fields: IField[];
-  schema: JSONSchema7;
+  schema: any;//JSONSchema7;
   uiSchema: IUiSchema;
   formContext: any;
   formData: T;

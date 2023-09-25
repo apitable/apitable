@@ -35,6 +35,8 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.shared.exception.LimitException;
 import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.organization.dto.UploadDataDTO;
@@ -165,8 +167,9 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
         if (defaultMaxMemberCount == -1) {
             return;
         }
-        if (currentMemberCount + successCount == defaultMaxMemberCount) {
-            throw new ExcelDataValidateException(rowIndex, rowData, "The maximum number of members has been reached");
+        if (currentMemberCount + successCount >= defaultMaxMemberCount) {
+            // Specify exception
+            throw new BusinessException(LimitException.OVER_LIMIT);
         }
     }
 
@@ -265,6 +268,10 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
                     .email(validateException.getRowData().getEmail())
                     .team(validateException.getRowData().getTeam())
                     .message(errorMessage).build());
+        } else if (exception instanceof BusinessException){
+            // If the seat limit is exceeded
+            // specified exception needs to be thrown so that the front-end pop-up window prompts
+            throw new BusinessException(LimitException.OVER_LIMIT);
         }
     }
 

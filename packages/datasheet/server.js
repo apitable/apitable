@@ -23,8 +23,10 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDevelopment, port, hostname: 'localhost' });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
-  const server = express();
+app
+  .prepare()
+  .then(() => {
+    const server = express();
 
   if (isDevelopment) {
     server.use(
@@ -79,11 +81,14 @@ app.prepare().then(() => {
     );
   }
 
-  server.all('*', (req, res) => {
-    return handle(req, res);
-  });
+    server.all('*', (req, res) => {
+      return handle(req, res);
+    });
 
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
+    server.listen(port, () => {
+      console.log(`> Ready on http://localhost:${port}`);
+    });
+  })
+  .catch((e) => {
+    console.log(e);
   });
-});

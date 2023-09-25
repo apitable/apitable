@@ -24,7 +24,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitThis": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noUnusedLocals": false,
@@ -32,15 +32,18 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
-//    "noUncheckedIndexedAccess": true,
+    //    "noUncheckedIndexedAccess": true,
     "noUnusedParameters": false,
     "strictBindCallApply": true,
     "strictFunctionTypes": true
   },
-  "exclude": ["**/node_modules", "**/.*/"],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
+    "**/*.tsx"
   ]
 }

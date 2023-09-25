@@ -580,6 +580,15 @@ public interface IMemberService extends IService<MemberEntity> {
     void clearOpenIdById(Long memberId);
 
     /**
+     * get member info by user id.
+     *
+     * @param spaceId space id
+     * @param userIds user id list
+     * @return MemberEntity List
+     */
+    List<MemberEntity> getByUserIds(String spaceId, List<Long> userIds);
+
+    /**
      * get open ids by user ids.
      *
      * @param userIds userId

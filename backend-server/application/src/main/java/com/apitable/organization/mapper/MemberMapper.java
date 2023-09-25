@@ -893,6 +893,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<String> selectOpenIdByUserIds(@Param("userIds") List<Long> userIds);
 
     /**
+     * query member info by user id list.
+     *
+     * @param userIds user id
+     * @return MemberEntity
+     */
+    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId, @Param("userIds") List<Long> userIds);
+
+    /**
      * query member name by user id and space id.
      *
      * @param spaceId space id

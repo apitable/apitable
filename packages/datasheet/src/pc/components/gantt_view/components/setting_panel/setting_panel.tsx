@@ -49,13 +49,13 @@ import {
 } from '@apitable/core';
 import {
   AddOutlined,
+  ChevronDownOutlined,
   ChevronRightOutlined,
   ClassOutlined,
   CloseOutlined,
   LinktableOutlined,
   QuestionCircleOutlined,
   WarnCircleOutlined,
-  ChevronDownOutlined,
 } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common';
@@ -212,7 +212,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
     }
 
     activeView.columns
-      .filter((column) => fieldMap[column.fieldId].type === FieldType.Link)
+      .filter((column) => [FieldType.Link, FieldType.OneWayLink].includes(fieldMap[column.fieldId].type))
       .forEach((column) => {
         const columnFieldId = column.fieldId;
         options.push({

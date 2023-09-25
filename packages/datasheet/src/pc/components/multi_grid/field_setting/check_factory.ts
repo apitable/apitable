@@ -152,7 +152,7 @@ class CheckFieldOption {
   }
 }
 
-class CheckFieldLink {
+class CheckFieldOneWayLink {
   static checkForeignDatasheetId(curField: ILinkField) {
     if (!curField.property || !curField.property.foreignDatasheetId) {
       return t(Strings.no_foreignDstId);
@@ -175,12 +175,14 @@ class CheckFieldLink {
 
   static checkStream(curField: ILinkField, datasheetId?: string) {
     return compose(
-      CheckFieldLink.checkForeignDatasheet,
-      CheckFieldLink.checkForeignDatasheetId,
+      CheckFieldOneWayLink.checkForeignDatasheet,
+      CheckFieldOneWayLink.checkForeignDatasheetId,
       CheckFieldSettingBase.checkStream,
     )(curField, datasheetId!);
   }
 }
+
+class CheckFieldLink extends CheckFieldOneWayLink {}
 
 class CheckFieldLookUp {
   static checkLookUpEntityField(preResult: string | ILookUpField) {
@@ -263,6 +265,7 @@ export const checkFactory = {
   [FieldType.SingleSelect]: CheckFieldOption.checkStream,
   [FieldType.LookUp]: CheckFieldLookUp.checkStream,
   [FieldType.Link]: CheckFieldLink.checkStream,
+  [FieldType.OneWayLink]: CheckFieldOneWayLink.checkStream,
   [FieldType.Formula]: CheckFieldFormula.checkStream,
   [FieldType.Cascader]: CheckFieldCascader.checkStream,
 };

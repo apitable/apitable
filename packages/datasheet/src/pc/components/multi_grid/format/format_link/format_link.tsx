@@ -15,13 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import classNames from 'classnames';
-import { Dispatch, memo, SetStateAction, useState } from 'react';
 import * as React from 'react';
+import { Dispatch, memo, SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Typography, useThemeColors, Switch } from '@apitable/components';
-import { IField, ILinkField, Selectors, Strings, t } from '@apitable/core';
+import { FieldType, IField, ILinkField, IOneWayLinkField, Selectors, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { LinkJump } from 'pc/components/common';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
@@ -31,7 +30,7 @@ import styles from './styles.module.less';
 import { ViewSelect } from './view_select';
 
 interface IFormateLinkProps {
-  currentField: ILinkField;
+  currentField: ILinkField | IOneWayLinkField;
   setCurrentField: Dispatch<SetStateAction<IField>>;
   hideOperateBox: () => void;
   datasheetId?: string;
@@ -40,6 +39,7 @@ interface IFormateLinkProps {
 export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> = memo((props: IFormateLinkProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, hideOperateBox, datasheetId: propDatasheetId } = props;
+  const isLinkType = currentField.type === FieldType.Link;
   const limitSingleRecord = currentField.property.limitSingleRecord;
   const limitToView = currentField.property.limitToView;
   const foreignDatasheetId = currentField.property.foreignDatasheetId;
@@ -48,7 +48,7 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
   const foreignDatasheet = useSelector((state) => (foreignDatasheetId ? Selectors.getDatasheet(state, foreignDatasheetId) : null));
   const datasheetParentId = useSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
   const foreignFiledName = useSelector((state) =>
-    currentField.property.brotherFieldId ? Selectors.getField(state, currentField.property.brotherFieldId, foreignDatasheetId).name : '',
+    isLinkType ? Selectors.getField(state, currentField.property.brotherFieldId!, foreignDatasheetId).name : '',
   );
   const setLimitSingleRecord = (checked: boolean) => {
     setCurrentField({
@@ -71,13 +71,17 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
   };
 
   const setForeignDatasheetId = (id: string) => {
+    const property = !isLinkType ? {
+      ...currentField.property,
+      foreignDatasheetId: id,
+    } : {
+      ...currentField.property,
+      foreignDatasheetId: id,
+      brotherFieldId: activeDatasheetId === id ? undefined : (currentField as ILinkField).property.brotherFieldId
+    };
     setCurrentField({
       ...currentField,
-      property: {
-        ...currentField.property,
-        foreignDatasheetId: id,
-        brotherFieldId: activeDatasheetId === id ? undefined : currentField.property.brotherFieldId,
-      },
+      property,
     });
   };
 
@@ -117,7 +121,7 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
                 {foreignDatasheet && (
                   <LinkJump
                     foreignDatasheetId={foreignDatasheet.id}
-                    foreignFieldId={currentField.property.brotherFieldId}
+                    foreignFieldId={isLinkType ? currentField.property?.brotherFieldId : undefined}
                     viewId={currentField.property.limitToView}
                     iconColor={colors.thirdLevelText}
                     hideOperateBox={hideOperateBox}
@@ -144,6 +148,7 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
               activeDatasheetId={''}
               setSearchPanelVisible={setSearchPanelVisible}
               onChange={onChange}
+              noCheckPermission={currentField?.type === FieldType.OneWayLink}
             />
           ) : null}
         </div>

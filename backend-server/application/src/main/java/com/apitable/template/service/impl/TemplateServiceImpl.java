@@ -192,6 +192,7 @@ public class TemplateServiceImpl
     public void checkTemplateForeignNode(final Long memberId,
         final String nodeId) {
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
+        List<String> singletonNodeIds = Collections.singletonList(nodeId);
         switch (nodeType) {
             case FOLDER:
                 // Check the permissions of all child descendant nodes
@@ -206,7 +207,7 @@ public class TemplateServiceImpl
                 this.checkFolderTemplate(subNodeIds, memberId);
                 break;
             case DATASHEET:
-                this.checkDatasheetTemplate(Collections.singletonList(nodeId),
+                this.checkDatasheetTemplate(singletonNodeIds,
                     false, TemplateException.NODE_LINK_FOREIGN_NODE);
                 // Check Field Permissions
                 this.checkFieldPermission(memberId, nodeId);
@@ -220,6 +221,11 @@ public class TemplateServiceImpl
             case MIRROR:
                 throw new BusinessException(
                     TemplateException.SINGLE_MIRROR_CREATE_FAIL);
+            case AUTOMATION:
+                // Check automation whether the external data table is referenced
+                iAutomationRobotService.checkAutomationReference(singletonNodeIds,
+                    singletonNodeIds);
+                break;
             default:
                 throw new BusinessException(NOT_ALLOW);
         }

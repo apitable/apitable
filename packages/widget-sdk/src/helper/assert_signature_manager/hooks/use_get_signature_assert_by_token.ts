@@ -27,8 +27,8 @@ export const useGetSignatureAssertByToken = <T extends IArg = IArg>(arg1: T): T 
   }
 
   const getUrlFields = (file: IAttachmentValue) => {
-    const token = createSubscribe(assertSignatureManager.getAssertSignatureUrl(file.token));
-    const preview = file.preview && createSubscribe(assertSignatureManager.getAssertSignatureUrl(file.preview));
+    const token = createSubscribe(assertSignatureManager.getAssertSignatureUrl(file.token)) || '';
+    const preview = file.preview ? createSubscribe(assertSignatureManager.getAssertSignatureUrl(file.preview)) : '';
     return {
       token,
       preview,
@@ -36,7 +36,7 @@ export const useGetSignatureAssertByToken = <T extends IArg = IArg>(arg1: T): T 
   };
 
   if (Array.isArray(arg1)) {
-    const values = [];
+    const values = [] as any;
     for (const v of arg1) {
       const { token, preview } = getUrlFields(v);
       if (token) {

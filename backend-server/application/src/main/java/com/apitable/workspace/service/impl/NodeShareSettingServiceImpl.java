@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.workspace.mapper.NodeShareSettingMapper;
-import com.apitable.workspace.service.INodeShareSettingService;
-import com.apitable.workspace.enums.NodeException;
+import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.workspace.entity.NodeShareSettingEntity;
-
+import com.apitable.workspace.enums.NodeException;
+import com.apitable.workspace.mapper.NodeShareSettingMapper;
+import com.apitable.workspace.service.INodeShareSettingService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,5 +47,18 @@ public class NodeShareSettingServiceImpl extends ServiceImpl<NodeShareSettingMap
         Long userId = baseMapper.selectUpdatedByByShareId(shareId);
         ExceptionUtil.isNotNull(userId, NodeException.SHARE_EXPIRE);
         return userId;
+    }
+
+    @Override
+    public NodePermission getPermissionByShareId(String shareId) {
+        NodeShareSettingEntity entity = baseMapper.selectAllowSaveAndAllowEditByShareId(shareId);
+        ExceptionUtil.isNotNull(entity, NodeException.SHARE_EXPIRE);
+        if (entity.getAllowEdit()) {
+            return NodePermission.EDIT_NODE;
+        }
+        if (entity.getAllowSave()) {
+            return NodePermission.EXPORT_NODE;
+        }
+        return NodePermission.READ_NODE;
     }
 }

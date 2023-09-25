@@ -22,7 +22,7 @@ import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { isNumber } from 'util';
 // eslint-disable-next-line no-restricted-imports
-import { Select, TextButton, useThemeColors, RadioGroup, Radio, Switch } from '@apitable/components';
+import { Radio, RadioGroup, Select, Switch, TextButton, useThemeColors } from '@apitable/components';
 import {
   BasicValueType,
   DateTimeField,
@@ -33,17 +33,17 @@ import {
   IFilterInfo,
   ILookUpField,
   ILookUpProperty,
+  ILookUpSortInfo,
   LookUpField,
+  LookUpLimitType,
   NOT_FORMAT_FUNC_SET,
   RollUpFuncType,
   Selectors,
   StringKeysMapType,
   Strings,
   t,
-  LookUpLimitType,
-  ILookUpSortInfo,
 } from '@apitable/core';
-import { ChevronRightOutlined, WarnCircleFilled, QuestionCircleOutlined, WarnCircleOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, QuestionCircleOutlined, WarnCircleFilled, WarnCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, MobileSelect, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -139,7 +139,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
   const linkFields = Field.bindModel(currentField).getLinkFields();
 
   const fieldMap = useSelector((state) => Selectors.getFieldMap(state, activeDstId));
-  const hasLinkField = Object.values(fieldMap!).some((field) => field.type === FieldType.Link) || false;
+  const hasLinkField = Object.values(fieldMap!).some((field) => [FieldType.Link, FieldType.OneWayLink].includes(field.type)) || false;
 
   const foreignDatasheetReadable = useSelector((state) => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
 
@@ -303,7 +303,7 @@ export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps
               datasheetId={datasheetId}
               defaultFieldId={relatedLinkFieldId}
               onChange={setFieldProperty('relatedLinkFieldId')}
-              fieldType={FieldType.Link}
+              fieldType={[FieldType.Link, FieldType.OneWayLink]}
               disabled={!hasLinkField}
             />
           }

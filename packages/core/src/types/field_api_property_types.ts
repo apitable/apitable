@@ -129,6 +129,12 @@ export type IAPIMetaCreatedTimeFieldProperty = IAPIMetaDateTimeBaseFieldProperty
 
 export type IAPIMetaLastModifiedTimeFieldProperty = IAPIMetaCreatedTimeFieldProperty;
 
+export interface IAPIMetaOneWayLinkFieldProperty {
+  foreignDatasheetId: string;
+  limitToViewId?: string;
+  limitSingleRecord?: boolean;
+}
+
 export interface IAPIMetaLinkFieldProperty {
   foreignDatasheetId: string;
   brotherFieldId?: string;
@@ -209,6 +215,7 @@ export type IAPIMetaFieldProperty =
   | IAPIMetaDateTimeFieldProperty
   | IAPIMetaCreatedTimeFieldProperty
   | IAPIMetaLastModifiedTimeFieldProperty
+  | IAPIMetaOneWayLinkFieldProperty
   | IAPIMetaLinkFieldProperty
   | IAPIMetaLookupFieldProperty
   | IAPIMetaFormulaFieldProperty;

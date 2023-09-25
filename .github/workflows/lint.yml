@@ -31,18 +31,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '16.15.0'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install ESLint
         run: |
-          yarn
+          pnpm install
         # yarn add eslint
         # yarn add @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint
         run: |
-          yarn lint
+          pnpm run lint
         # run: npx eslint .
         #   --config .eslintrc
         #   --ext .js,.jsx,.ts,.tsx

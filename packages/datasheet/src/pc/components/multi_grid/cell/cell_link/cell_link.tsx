@@ -22,7 +22,7 @@ import * as React from 'react';
 import { useContext, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
-import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
+import { Field, ILinkField, IOneWayLinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
@@ -47,7 +47,7 @@ const NO_PERMISSION = Symbol('NO_PERMISSION');
 const MAX_SHOW_LINK_IDS_COUNT = 20;
 
 interface ICellLink extends ICellComponentProps {
-  field: ILinkField;
+  field: ILinkField | IOneWayLinkField;
   keyPrefix?: string;
   rowHeightLevel?: RowHeightLevel;
   datasheetId?: string;

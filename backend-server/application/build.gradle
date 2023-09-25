@@ -21,6 +21,7 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies['configuration-processor']
 
     implementation rootProject.ext.dependencies['spring-web-starter']
+    implementation rootProject.ext.dependencies['spring-webflux-starter']
     implementation rootProject.ext.dependencies['spring-thymeleaf']
     implementation rootProject.ext.dependencies['spring-mail-starter']
     implementation rootProject.ext.dependencies['spring-actuator-starter']
@@ -79,6 +80,8 @@ dependencies {
     testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
     testImplementation rootProject.ext.dependencies['visible-assertions']
     testImplementation rootProject.ext.dependencies['mockito-inline']
+    testImplementation rootProject.ext.dependencies['okhttp3-mockwebserver']
+    testImplementation rootProject.ext.dependencies['reactor-test']
 
     // for clock module
     testImplementation rootProject.ext.dependencies['assertj']

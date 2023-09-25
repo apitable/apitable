@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ResourceRobotDto } from 'automation/dtos/robot.dto';
 import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
 import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { TriggerCreateRo } from '../ros/trigger.create.ro';
@@ -97,5 +98,17 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
       },
     });
     return results.filter(i => i.robotId).map((result) => result.robotId);
+  }
+
+  async selectRobotIdAndResourceIdByResourceIds(resourceIds: string[]): Promise<ResourceRobotDto[]> {
+    const results = await this.find({
+      select: ['robotId', 'resourceId'],
+      where: {
+        resourceId: In(resourceIds),
+        input: Not(IsNull()),
+        isDeleted: false,
+      },
+    });
+    return results as ResourceRobotDto[];
   }
 }

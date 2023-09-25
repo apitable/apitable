@@ -143,7 +143,10 @@ const rewriteI18nForEdition = () => {
 const currentLang = getLanguage().replace('_', '-');
 _global.currentLang = currentLang;
 _global.apitable_i18n = loadLanguage(currentLang);
-require('@apitable/i18n-lang');
+// browser only
+if (typeof window !== 'undefined') {
+  require('@apitable/i18n-lang');
+}
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
 let engI18n: I18N | null = null;

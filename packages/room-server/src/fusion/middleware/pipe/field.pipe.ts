@@ -49,6 +49,7 @@ export class FieldPipe implements PipeTransform {
   ) {
   }
 
+  // no use function
   async transform(value: any, _: ArgumentMetadata): Promise<any> {
     const datasheet = this.request[DATASHEET_HTTP_DECORATE];
     const meta = this.request[DATASHEET_META_HTTP_DECORATE] as IMeta;
@@ -92,7 +93,7 @@ export class FieldPipe implements PipeTransform {
             });
           }
           // collect recordIds if it is link type field
-          if (field.type === FieldType.Link) {
+          if (field.type === FieldType.Link || field.type == FieldType.OneWayLink) {
             const foreignDatasheetId = field.property.foreignDatasheetId;
             const linkRecordIds: string[] = [];
             if (fields[field.id]) {

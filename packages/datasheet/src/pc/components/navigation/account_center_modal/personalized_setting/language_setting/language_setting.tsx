@@ -35,7 +35,7 @@ const _global = global || window;
 
 const options: any[] = [];
 
-Object.keys(_global.languageManifest).forEach((item) => {
+Object.keys(_global.languageManifest || {}).forEach((item) => {
   if (item.indexOf('-') !== -1) {
     options.push({
       label: _global.languageManifest[item],
