@@ -19,7 +19,11 @@
 package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationActionEntity;
+import com.apitable.automation.model.ActionVO;
+import com.apitable.automation.model.CreateActionRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
+import com.apitable.automation.model.UpdateActionRO;
+import java.util.List;
 import java.util.Map;
 
 public interface IAutomationActionService {
@@ -29,4 +33,32 @@ public interface IAutomationActionService {
     void copy(Long userId, Map<String, String> newRobotMap, TriggerCopyResultDto resultDto);
 
     void updateActionTypeIdAndInputByRobotId(String robotId, String actionTypeId, String input);
+
+    /**
+     * Create trigger.
+     *
+     * @param userId creator's user id
+     * @param data   data
+     * @return ActionVO
+     */
+    List<ActionVO> createByDatabus(Long userId, CreateActionRO data);
+
+    /**
+     * Update trigger.
+     *
+     * @param userId   creator's user id
+     * @param actionId action id
+     * @param data     data
+     * @return ActionVO
+     */
+    List<ActionVO> updateByDatabus(String actionId, Long userId, UpdateActionRO data);
+
+    /**
+     * Delete trigger.
+     *
+     * @param robotId  robot id
+     * @param actionId action id
+     * @param userId   operator user id
+     */
+    void deleteByDatabus(String robotId, String actionId, Long userId);
 }

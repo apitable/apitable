@@ -136,4 +136,9 @@ public class LimitProperties {
      * max limit of trigger count.
      */
     private Integer automationTriggerCount = 3;
+
+    /**
+     * max limit of action count.
+     */
+    private Integer automationActionCount = 9;
 }

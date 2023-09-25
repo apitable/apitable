@@ -27,12 +27,14 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import com.apitable.databusclient.model.ApiResponseAutomationActionPO;
 import com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO;
 import com.apitable.databusclient.model.ApiResponseAutomationRunHistoryPO;
 import com.apitable.databusclient.model.ApiResponseAutomationSO;
 import com.apitable.databusclient.model.ApiResponseAutomationTriggerPO;
 import com.apitable.databusclient.model.ApiResponseEmptySO;
 import com.apitable.databusclient.model.AutomationHistoryStatusRO;
+import com.apitable.databusclient.model.AutomationRobotActionRO;
 import com.apitable.databusclient.model.AutomationRobotTriggerRO;
 import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 
@@ -208,6 +210,143 @@ public class AutomationDaoApiApi {
         return localVarCall;
     }
     /**
+     * Build call for daoCreateOrUpdateAutomationRobotAction
+     * @param robotId robot id (required)
+     * @param automationRobotActionRO  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot action successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot action successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call daoCreateOrUpdateAutomationRobotActionCall(String robotId, AutomationRobotActionRO automationRobotActionRO, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = automationRobotActionRO;
+
+        // create path and map variables
+        String localVarPath = "/databus/dao/automations/robots/{robot_id}/actions"
+            .replace("{" + "robot_id" + "}", localVarApiClient.escapeString(robotId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call daoCreateOrUpdateAutomationRobotActionValidateBeforeCall(String robotId, AutomationRobotActionRO automationRobotActionRO, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'robotId' is set
+        if (robotId == null) {
+            throw new ApiException("Missing the required parameter 'robotId' when calling daoCreateOrUpdateAutomationRobotAction(Async)");
+        }
+
+        // verify the required parameter 'automationRobotActionRO' is set
+        if (automationRobotActionRO == null) {
+            throw new ApiException("Missing the required parameter 'automationRobotActionRO' when calling daoCreateOrUpdateAutomationRobotAction(Async)");
+        }
+
+        return daoCreateOrUpdateAutomationRobotActionCall(robotId, automationRobotActionRO, _callback);
+
+    }
+
+    /**
+     * Add or create automation robot action
+     * Add or create automation robot action
+     * @param robotId robot id (required)
+     * @param automationRobotActionRO  (required)
+     * @return ApiResponseAutomationActionPO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot action successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot action successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponseAutomationActionPO daoCreateOrUpdateAutomationRobotAction(String robotId, AutomationRobotActionRO automationRobotActionRO) throws ApiException {
+        ApiResponse<ApiResponseAutomationActionPO> localVarResp = daoCreateOrUpdateAutomationRobotActionWithHttpInfo(robotId, automationRobotActionRO);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Add or create automation robot action
+     * Add or create automation robot action
+     * @param robotId robot id (required)
+     * @param automationRobotActionRO  (required)
+     * @return ApiResponse&lt;ApiResponseAutomationActionPO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot action successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot action successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<ApiResponseAutomationActionPO> daoCreateOrUpdateAutomationRobotActionWithHttpInfo(String robotId, AutomationRobotActionRO automationRobotActionRO) throws ApiException {
+        okhttp3.Call localVarCall = daoCreateOrUpdateAutomationRobotActionValidateBeforeCall(robotId, automationRobotActionRO, null);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationActionPO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Add or create automation robot action (asynchronously)
+     * Add or create automation robot action
+     * @param robotId robot id (required)
+     * @param automationRobotActionRO  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Update automation robot action successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot action successfully </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call daoCreateOrUpdateAutomationRobotActionAsync(String robotId, AutomationRobotActionRO automationRobotActionRO, final ApiCallback<ApiResponseAutomationActionPO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = daoCreateOrUpdateAutomationRobotActionValidateBeforeCall(robotId, automationRobotActionRO, _callback);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationActionPO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
      * Build call for daoCreateOrUpdateAutomationRobotTrigger
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
@@ -217,8 +356,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call daoCreateOrUpdateAutomationRobotTriggerCall(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO, final ApiCallback _callback) throws ApiException {
@@ -284,8 +423,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Add automation robot trigger
-     * Add automation robot trigger
+     * Add or create automation robot trigger
+     * Add or create automation robot trigger
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
      * @return ApiResponseAutomationTriggerPO
@@ -293,8 +432,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponseAutomationTriggerPO daoCreateOrUpdateAutomationRobotTrigger(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws ApiException {
@@ -303,8 +442,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Add automation robot trigger
-     * Add automation robot trigger
+     * Add or create automation robot trigger
+     * Add or create automation robot trigger
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
      * @return ApiResponse&lt;ApiResponseAutomationTriggerPO&gt;
@@ -312,8 +451,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ApiResponseAutomationTriggerPO> daoCreateOrUpdateAutomationRobotTriggerWithHttpInfo(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws ApiException {
@@ -323,8 +462,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Add automation robot trigger (asynchronously)
-     * Add automation robot trigger
+     * Add or create automation robot trigger (asynchronously)
+     * Add or create automation robot trigger
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -333,8 +472,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call daoCreateOrUpdateAutomationRobotTriggerAsync(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO, final ApiCallback<ApiResponseAutomationTriggerPO> _callback) throws ApiException {
@@ -1185,8 +1324,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot name, description, props
-     * Update automation robot name, description, props
+     * Update automation robot
+     * Update automation robot
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @return ApiResponseEmptySO
@@ -1203,8 +1342,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot name, description, props
-     * Update automation robot name, description, props
+     * Update automation robot
+     * Update automation robot
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @return ApiResponse&lt;ApiResponseEmptySO&gt;
@@ -1222,8 +1361,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot name, description, props (asynchronously)
-     * Update automation robot name, description, props
+     * Update automation robot (asynchronously)
+     * Update automation robot
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @param _callback The callback to be executed when the API call finishes
