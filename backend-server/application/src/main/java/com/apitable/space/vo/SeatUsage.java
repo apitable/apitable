@@ -1,5 +1,7 @@
 package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.NullNumberSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 /**
@@ -10,9 +12,17 @@ import lombok.Data;
 @Data
 public class SeatUsage {
 
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long total;
+
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long chatBotCount;
+
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long memberCount;
+
+    public SeatUsage() {
+    }
 
     /**
      * constructor.
