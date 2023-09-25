@@ -145,6 +145,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -232,6 +233,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private IInvitationService iInvitationService;
+
+    @Value("${BILLING_APITABLE_ENABLED:false}")
+    private Boolean billingApitableEnabled;
+
 
     @Override
     public SpaceEntity getEntityBySpaceId(String spaceId) {
@@ -575,8 +580,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        // only free space has validation
-        if (!subscriptionInfo.isFree()) {
+        // only free space has validation, or paid space in apitable mode can skip validation.
+        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
@@ -591,7 +596,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        if (!subscriptionInfo.isFree()) {
+        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
