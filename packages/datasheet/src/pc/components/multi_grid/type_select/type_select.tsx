@@ -136,7 +136,7 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
       ref={divRef}
       style={style}
     >
-      <div className={styles.icon}>{getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.thirdLevelText, 16, 16)}</div>
+      <div className={styles.icon}>{getFieldTypeIcon(fieldType, isActiveFieldType ? colors.primaryColor : colors.textCommonTertiary, 16, 16)}</div>
       <div className={styles.desc}>
         <div className={styles.title}>{title}</div>
       </div>
@@ -276,7 +276,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
     <div className={styles.typeSelect} ref={divRef}>
       {!isMobile && <h1>{t(Strings.select_one_field)}</h1>}
       {props.fieldIndex === 0 && (
-        <div style={{ padding: '0 24px', marginBottom: 8 }}>
+        <div style={{ padding: '0 16px', marginBottom: 8 }}>
           <Typography variant="body4" color={colors.fc3}>
             {t(Strings.tooltip_primary_field_type_select)}
           </Typography>

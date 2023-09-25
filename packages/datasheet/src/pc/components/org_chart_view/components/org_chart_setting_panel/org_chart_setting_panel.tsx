@@ -33,7 +33,9 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, LinktableOutlined, QuestionCircleOutlined } from '@apitable/icons';
+import {
+  AddOutlined, ChevronRightOutlined, ClassOutlined, CloseOutlined, OneWayLinkOutlined, TwoWayLinkOutlined, QuestionCircleOutlined
+} from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
@@ -83,7 +85,8 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
           value: column.fieldId,
           label: fieldMap[column.fieldId].name,
           disabled: (fieldMap[column.fieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
-          prefixIcon: <LinktableOutlined color={colors.thirdLevelText} />,
+          prefixIcon: fieldMap[column.fieldId].type === FieldType.Link ?
+            <TwoWayLinkOutlined color={colors.thirdLevelText} /> : <OneWayLinkOutlined color={colors.thirdLevelText} />,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });

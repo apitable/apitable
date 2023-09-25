@@ -4,7 +4,7 @@
 
 .typeSelect {
   width: 240px;
-  padding: 24px 0;
+  padding: 8px 0 16px;
   display: flex;
   flex-direction: column;
 
@@ -12,7 +12,7 @@
     font-size: 16px;
     color: var(--firstLevelText);
     margin-bottom: 8px;
-    padding: 0 24px;
+    padding: 0 16px;
   }
 
   .typeSelectItem {
@@ -22,7 +22,7 @@
     border-radius: 4px;
     display: flex;
     align-items: center;
-    color: var(--secondLevelText);
+    color: var(--textCommonPrimary);
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
 
@@ -42,6 +42,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      font-size: 14px;
     }
 
     @media (any-hover: hover) {
@@ -105,7 +106,7 @@
 }
 
 .searchInput {
-  margin: 0 24px 16px;
+  margin: 0 16px 16px;
 }
 
 .noSearchTip {

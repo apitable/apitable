@@ -53,8 +53,8 @@ import {
   ChevronRightOutlined,
   ClassOutlined,
   CloseOutlined,
-  LinktableOutlined,
-  QuestionCircleOutlined,
+  OneWayLinkOutlined,
+  QuestionCircleOutlined, TwoWayLinkOutlined,
   WarnCircleOutlined,
 } from '@apitable/icons';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -219,7 +219,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           value: columnFieldId,
           label: fieldMap[columnFieldId].name,
           disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
-          prefixIcon: <LinktableOutlined color={colors.thirdLevelText} />,
+          prefixIcon: fieldMap[column.fieldId].type === FieldType.Link ?
+            <TwoWayLinkOutlined color={colors.thirdLevelText} /> : <OneWayLinkOutlined color={colors.thirdLevelText} /> ,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });
