@@ -155,7 +155,6 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
           isSelectView={secondConfirmType === SecondConfirmType.Form}
           onNodeClick={onNodeClick}
           showMirrorNode={showMirrorNode}
-          hideViewNode={secondConfirmType === SecondConfirmType.Chat}
         />
       )}
       {localState.loading && <Loading className={styles.loading} />}

@@ -242,7 +242,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
 
   useEffect(() => {
     setCellValue(_cellValue);
-  }, [_cellValue]);
+  }, [JSON.stringify(_cellValue)]);
 
   const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
 
