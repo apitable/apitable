@@ -40,32 +40,7 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:java"
-  analyze-ts:
-    name: Analyze (ts)
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.15.0'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8.7.5
-      # Initializes the CodeQL tools for scanning.
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: javascript
-      - run: |
-          make _build-ts
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-        with:
-          category: "/language:javascript"
+
 #  analyze-js-core:
 #    name: Analyze (javascript-core)
 #    runs-on: ubuntu-latest
