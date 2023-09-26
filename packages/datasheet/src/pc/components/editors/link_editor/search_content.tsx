@@ -42,7 +42,7 @@ import {
   Strings,
   t,
   TextBaseField,
-  ViewDerivateBase,
+  ViewDerivateBase, LinkField,
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -127,10 +127,16 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         return;
       }
 
-      if (cellValue && cellValue.includes(recordId)) {
-        value = cellValue.filter((id) => id !== recordId);
+      // filter deleted link record
+      const filterCellValue = cellValue?.filter((id) => {
+        const cellString = (Field.bindModel(field) as LinkField).getLinkedRecordCellString(id);
+        return cellString !== null;
+      });
+
+      if (filterCellValue && filterCellValue.includes(recordId)) {
+        value = filterCellValue.filter((id) => id !== recordId);
       } else {
-        value = cellValue ? cellValue.concat([recordId]) : [recordId];
+        value = filterCellValue ? filterCellValue.concat([recordId]) : [recordId];
       }
       onChange(value.length ? value : null);
     },
