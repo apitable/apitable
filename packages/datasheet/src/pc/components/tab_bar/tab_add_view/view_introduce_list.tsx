@@ -96,16 +96,17 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewTypeList = [ViewType.Grid, ViewType.Gallery, ViewType.Kanban, ViewType.Gantt, ViewType.Calendar, ViewType.OrgChart];
   const embedId = useSelector((state) => state.pageParams.embedId);
-  const nodeTypeList = [ConfigConstant.NodeType.FORM];
   const formCreatable = useSelector((state) => {
     const folderId = Selectors.getDatasheetParentId(state)!;
     const { editable } = Selectors.getPermissions(state);
     const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
     return manageable && editable;
   });
+  const nodeTypeList = formCreatable ? [ConfigConstant.NodeType.FORM] : [];
   const isViewCountOverLimit = useSelector((state) => {
     return Selectors.getViewsList(state).length >= getMaxViewCountPerSheet();
   });
+  const permissions = useSelector(state => Selectors.getPermissions(state));
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,
     minHeight: MIN_HEIGHT,
@@ -174,28 +175,25 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
         );
       })}
 
-      <div className={styles.nodeTypeContainer}>
+      {nodeTypeList.length > 0 && <div className={styles.nodeTypeContainer}>
         {nodeTypeList.map((nodeType, index) => {
-          if (nodeType === ConfigConstant.NodeType.FORM && !formCreatable) {
-            return <></>;
-          }
           return (
-            <TriggerComponent key={index} popupComponent={<NodeIntroduce nodeType={nodeType} />}>
+            <TriggerComponent key={index} popupComponent={<NodeIntroduce nodeType={nodeType}/>}>
               <section
                 className={styles.viewItem}
                 id={DATASHEET_ID.VIEW_CREATOR_FORM}
                 onClick={(e) => addNewNode(e as any as React.MouseEvent, nodeType)}
               >
-                <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16} />
+                <NodeIcon nodeType={nodeType} color={colors.primaryColor} size={16}/>
                 <span>{FormView.getViewIntroduce()!.title}</span>
-                <AddOutlined color={colors.thirdLevelText} />
+                <AddOutlined color={colors.thirdLevelText}/>
               </section>
             </TriggerComponent>
           );
         })}
-      </div>
+      </div>}
 
-      {!embedId && (
+      {!embedId && permissions.manageable && (
         <section
           className={styles.addNewDatasheet}
           onClick={() => ShortcutActionManager.trigger(ShortcutActionName.NewDatasheet)}
