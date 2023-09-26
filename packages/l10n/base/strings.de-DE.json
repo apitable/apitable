@@ -234,7 +234,7 @@
   "ai_setting_title": "Einstellung",
   "ai_settings_similarity_filter": "Ähnlichkeitsfilter",
   "ai_settings_similarity_filter_advanced": "Schwelle zum Ergebnis",
-  "ai_settings_similarity_filter_desc": "Passen Sie an, um den Relevanzgrad der übereinstimmenden Ergebnisse zu filtern. Bitte wählen Sie die entsprechende Option aus.",
+  "ai_settings_similarity_filter_desc": "Die Relevanz des Chatbots beim Abrufen verwandter Kenntnisse. Niedrigere Schwellenwerte können unrelevante Informationen hervorrufen, während höhere Schwellenwerte möglicherweise keine nützlichen Informationen verpassen.",
   "ai_settings_similarity_filter_moderate": "Mäßig",
   "ai_settings_similarity_filter_relaxed": "Entspannt",
   "ai_settings_similarity_filter_strict": "Strikt",

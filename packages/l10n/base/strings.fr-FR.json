@@ -234,7 +234,7 @@
   "ai_setting_title": "Paramètre",
   "ai_settings_similarity_filter": "Filtre de similarité",
   "ai_settings_similarity_filter_advanced": "Seuil de score",
-  "ai_settings_similarity_filter_desc": "Ajustez pour filtrer le niveau de pertinence des résultats correspondants. Veuillez sélectionner l'option appropriée.",
+  "ai_settings_similarity_filter_desc": "Le niveau de pertinence du chatbot lors de la récupération des connaissances connexes. Des seuils plus bas peuvent donner lieu à des informations non pertinentes, tandis que des seuils plus élevés peuvent manquer d'informations utiles.",
   "ai_settings_similarity_filter_moderate": "Modéré",
   "ai_settings_similarity_filter_relaxed": "Détendu",
   "ai_settings_similarity_filter_strict": "Strict",

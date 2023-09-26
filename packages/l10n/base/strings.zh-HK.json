@@ -234,7 +234,7 @@
   "ai_setting_title": "設置",
   "ai_settings_similarity_filter": "相似度過濾器",
   "ai_settings_similarity_filter_advanced": "得分閾值",
-  "ai_settings_similarity_filter_desc": "調整以過濾匹配結果的相關等級。請選擇適當的選項。",
+  "ai_settings_similarity_filter_desc": "聊天機器人在檢索相關知識時的關聯度。較低的閾值可能會導致不相關的資訊，而較高的閾值可能會錯過有用的資訊。",
   "ai_settings_similarity_filter_moderate": "緩和",
   "ai_settings_similarity_filter_relaxed": "輕鬆",
   "ai_settings_similarity_filter_strict": "嚴格的",

@@ -234,7 +234,7 @@
   "ai_setting_title": "Configura Settinges",
   "ai_settings_similarity_filter": "Filtro di somiglianza",
   "ai_settings_similarity_filter_advanced": "Soglia di punteggio",
-  "ai_settings_similarity_filter_desc": "Regola per filtrare il livello di pertinenza dei risultati corrispondenti. Seleziona l'opzione appropriata.",
+  "ai_settings_similarity_filter_desc": "Il livello di rilevanza del chatbot quando si recuperano le conoscenze correlate. Le soglie più basse possono comportare informazioni irrilevanti, mentre soglie più elevate possono mancare informazioni utili.",
   "ai_settings_similarity_filter_moderate": "Moderare",
   "ai_settings_similarity_filter_relaxed": "Rilassato",
   "ai_settings_similarity_filter_strict": "Rigoroso",

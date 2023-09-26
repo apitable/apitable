@@ -235,7 +235,7 @@
   "ai_setting_title": "Ajustes",
   "ai_settings_similarity_filter": "Filtro de similitud",
   "ai_settings_similarity_filter_advanced": "Umbral de puntuación",
-  "ai_settings_similarity_filter_desc": "Ajuste para filtrar el nivel de relevancia de los resultados coincidentes. Por favor seleccione la opción apropiada.",
+  "ai_settings_similarity_filter_desc": "El nivel de relevancia del chatbot cuando se recupera el conocimiento relacionado. Los umbrales más bajos pueden dar lugar a información irrelevante, mientras que los umbrales más elevados pueden pasar por alto la información útil.",
   "ai_settings_similarity_filter_moderate": "Moderado",
   "ai_settings_similarity_filter_relaxed": "Relajado",
   "ai_settings_similarity_filter_strict": "Estricto",

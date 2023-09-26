@@ -234,7 +234,7 @@
   "ai_setting_title": "設ける",
   "ai_settings_similarity_filter": "類似性フィルター",
   "ai_settings_similarity_filter_advanced": "得点閾値",
-  "ai_settings_similarity_filter_desc": "一致する結果の関連性レベルをフィルタリングするために調整します。適切なオプションを選択してください。",
+  "ai_settings_similarity_filter_desc": "チャットロボットが関連知識を検索する際の関連度.より低い閾値は、関連しない情報をもたらす可能性があり、より高い閾値は、有用な情報を逃す可能性がある。",
   "ai_settings_similarity_filter_moderate": "適度",
   "ai_settings_similarity_filter_relaxed": "リラックスした",
   "ai_settings_similarity_filter_strict": "厳しい",

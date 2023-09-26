@@ -220,6 +220,7 @@ export type StringKeysMapType = {
   'ai_robot_type_normal_desc': 'ai_robot_type_normal_desc',
   'ai_robot_type_title': 'ai_robot_type_title',
   'ai_save_and_train': 'ai_save_and_train',
+  'ai_select_data_source': 'ai_select_data_source',
   'ai_send_cancel': 'ai_send_cancel',
   'ai_session_time': 'ai_session_time',
   'ai_setting_change_data_source_tooltip': 'ai_setting_change_data_source_tooltip',

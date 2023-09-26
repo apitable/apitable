@@ -234,7 +234,7 @@
   "ai_setting_title": "установка",
   "ai_settings_similarity_filter": "Фильтр сходства",
   "ai_settings_similarity_filter_advanced": "порог оценки",
-  "ai_settings_similarity_filter_desc": "Отрегулируйте, чтобы отфильтровать уровень релевантности результатов сопоставления. Пожалуйста, выберите подходящий вариант.",
+  "ai_settings_similarity_filter_desc": "уровень актуальности чатбота при извлечении соответствующих знаний. более низкие пороговые значения могут привести к нерелевантной информации, в то время как более высокие пороговые значения могут пропустить полезную информацию.",
   "ai_settings_similarity_filter_moderate": "Умеренный",
   "ai_settings_similarity_filter_relaxed": "Расслабленный",
   "ai_settings_similarity_filter_strict": "Строгий",

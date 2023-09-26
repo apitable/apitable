@@ -234,7 +234,7 @@
   "ai_setting_title": "설치",
   "ai_settings_similarity_filter": "유사성 필터",
   "ai_settings_similarity_filter_advanced": "점수 임계값",
-  "ai_settings_similarity_filter_desc": "일치하는 결과의 관련성 수준을 필터링하도록 조정합니다. 적절한 옵션을 선택하세요.",
+  "ai_settings_similarity_filter_desc": "챗봇이 관련 지식을 검색할 때의 연관도입니다.임계값이 낮으면 관련 없는 정보가 발생할 수 있으며 임계값이 높을수록 유용한 정보를 놓칠 수 있습니다.",
   "ai_settings_similarity_filter_moderate": "보통의",
   "ai_settings_similarity_filter_relaxed": "편안한",
   "ai_settings_similarity_filter_strict": "엄격한",
