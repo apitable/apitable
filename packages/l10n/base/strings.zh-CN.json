@@ -367,6 +367,7 @@
   "api_panel_type_default_example_formula": "在第一行完整填写数据，就可以查看示例了",
   "api_panel_type_default_example_last_modified_by": "{\n    \"uuid\": \"aa3e6af7041c4907ba03889acc0b0cd1\",\n    \"name\": \"Kelvin\",\n    \"avatar\": \"__host__/public/2020/08/03/574bcee4cfc54f6fbb7d686bb237f6f3\"\n}",
   "api_panel_type_default_example_last_modified_time": "1600777860000",
+  "api_panel_type_default_example_one_way_link": "[\n    \"rec8116cdd76088af\",\n    \"rec245db9343f55e8\",\n    \"rec4f3bade67ff565\"\n]",
   "api_panel_type_default_example_link": "[\n    \"rec8116cdd76088af\",\n    \"rec245db9343f55e8\",\n    \"rec4f3bade67ff565\"\n]",
   "api_panel_type_default_example_look_up": "在第一行完整填写数据，就可以查看示例了",
   "api_panel_type_default_example_member": "[\n    {\n        \"id\": \"1291258301781176321\",\n        \"type\": 3,\n        \"name\": \"Jane\",\n        \"avatar\": \"https://s1.aitable.ai/space/2023/02/09/79e112dd10424ac7842256736e4f5568\"\n    }\n]",

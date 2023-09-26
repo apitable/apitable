@@ -371,6 +371,7 @@
   "api_panel_type_default_example_member": "[\n    {\n        \"id\": \"1291258301781176321\",\n        \"type\": 3,\n        \"name\": \"Jane\",\n        \"avatar\": \"https://s1.aitable.ai/space/2023/02/09/79e112dd10424ac7842256736e4f5568\"\n    }\n]",
   "api_panel_type_default_example_multi_select": "[\n    \"选项 A\",\n    \"选项 B\"\n]",
   "api_panel_type_default_example_number": "8",
+  "api_panel_type_default_example_one_way_link": "[\n    \"rec8116cdd76088af\",\n    \"rec245db9343f55e8\",\n    \"rec4f3bade67ff565\"\n]",
   "api_panel_type_default_example_percent": "0.88",
   "api_panel_type_default_example_phone": "138xxxx7240",
   "api_panel_type_default_example_rating": "1",
