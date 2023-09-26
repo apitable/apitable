@@ -63,7 +63,7 @@ export interface ITooltipProps {
   style?: React.CSSProperties;
 }
 
-const CONST_TOOLTIP_INDEX = 1001;
+const CONST_TOOLTIP_INDEX = 1201;
 
 const GlobalStyle: any = createGlobalStyle`
   .tooltip {

@@ -21,7 +21,7 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
   const colors = useThemeColors();
   const columns = useSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
-    return view!.columns as IViewColumn[];
+    return (view?.columns ||  []) as IViewColumn[];
   });
   const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
 

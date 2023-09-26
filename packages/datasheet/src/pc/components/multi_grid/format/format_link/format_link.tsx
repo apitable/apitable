@@ -20,7 +20,7 @@ import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Typography, useThemeColors, Switch } from '@apitable/components';
-import { FieldType, IField, ILinkField, IOneWayLinkField, Selectors, Strings, t } from '@apitable/core';
+import { FieldType, IField, ILinkField, IOneWayLinkField, NotSupportFieldInstance, Selectors, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { LinkJump } from 'pc/components/common';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
@@ -47,9 +47,10 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
   const activeDatasheetId = useSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
   const foreignDatasheet = useSelector((state) => (foreignDatasheetId ? Selectors.getDatasheet(state, foreignDatasheetId) : null));
   const datasheetParentId = useSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
-  const foreignFiledName = useSelector((state) =>
+  const _foreignFiledName = useSelector((state) =>
     isLinkType ? Selectors.getField(state, currentField.property.brotherFieldId!, foreignDatasheetId).name : '',
   );
+  const foreignFiledName = _foreignFiledName === NotSupportFieldInstance.name ? '' : _foreignFiledName;
   const setLimitSingleRecord = (checked: boolean) => {
     setCurrentField({
       ...currentField,

@@ -272,7 +272,49 @@ export enum FieldType {
    */
   Attachment = CoreFieldType.Attachment,
   /**
-   * MagicLink, link to another record.
+   * One way link, link to another record.
+   *
+   * ** Cell read format **
+   *
+   * ``` ts
+   * {
+   *  recordId: string,
+   *  title: string
+   * }[]
+   * ```
+   *
+   * ** Cell write format **
+   *
+   * The currently linked record IDs and their primary cell values from the linked datasheet.
+   *
+   * `recordId[]`
+   *
+   * ** Field property read format **
+   *
+   * ``` ts
+   * {
+   *  foreignDatasheetId: string; // The ID of the datasheet this field links to
+   *  limitToView?: string; // The ID of the view in the linked datasheet to use when showing
+   *  limitSingleRecord?: boolean; // Whether this field prefers to only have a single linked record
+   * }
+   * ```
+   *
+   * ** Field property write format **
+   *
+   * When updating the associated form ID of a magically associated field,
+   * the processing of the associated field corresponding to the associated form.
+   *
+   * ``` ts
+   * {
+   *  foreignDatasheetId: string; // The ID of the datasheet this field links to
+   *  limitToView?: string; // The ID of the view in the linked datasheet to use when showing
+   *  limitSingleRecord?: boolean; // Whether this field prefers to only have a single linked record
+   * }
+   * ```
+   */
+  OneWayLink = CoreFieldType.OneWayLink,
+  /**
+   * Two way link, link to another record.
    * 
    * ** Cell read format **
    * 
@@ -994,5 +1036,6 @@ export enum NumFieldType {
   CreatedBy = 23,
   LastModifiedBy = 24,
   Cascader = 25,
+  OneWayLink = 26,
   DeniedField = 999, // no permission column
 }
