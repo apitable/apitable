@@ -21,12 +21,10 @@ package com.apitable.workspace.observer.remind;
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
-import com.apitable.core.exception.BusinessException;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotifyMailFactory;
 import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
@@ -102,7 +100,11 @@ public class MailRemind extends AbstractRemind {
     @Override
     public void notifyMemberAction(NotifyDataSheetMeta meta) {
         log.info("[remind notification]-user subscribe email remind=>@member");
-        Dict dict = createDict(meta).set("FIELD_NAME", meta.fieldName);
+        Dict dict = createDict(meta);
+        if (null == dict) {
+            return;
+        }
+        dict.set("FIELD_NAME", meta.fieldName);
         if (CollUtil.isEmpty(toEmailWithLang)) {
             return;
         }
@@ -132,8 +134,11 @@ public class MailRemind extends AbstractRemind {
     @Override
     public void notifyCommentAction(NotifyDataSheetMeta meta) {
         log.info("[remind notification]-user subscribe email remind=>comment");
-        Dict dict = createDict(meta)
-                .set("CONTENT", HtmlUtil.unescape(HtmlUtil.filter(meta.extra.getContent())))
+        Dict dict = createDict(meta);
+        if (null == dict) {
+            return;
+        }
+        dict.set("CONTENT", HtmlUtil.unescape(HtmlUtil.filter(meta.extra.getContent())))
                 .set("CREATED_AT", meta.extra.getCreatedAt());
         Dict subjectDict = this.createSubjectDict(meta);
         TaskManager.me().execute(() -> NotifyMailFactory.me()
@@ -142,10 +147,12 @@ public class MailRemind extends AbstractRemind {
     }
 
     /**
-     * create basic parameters for sending messages
+     * create basic parameters for sending messages.
      */
     private Dict createDict(NotifyDataSheetMeta meta) {
-        Assert.notNull(meta.remindParameter, () -> new BusinessException("[remind notification]-incomplete email notification parameters"));
+        if (null == meta.remindParameter) {
+            return null;
+        }
         return Dict.create()
                 .set("MEMBER_NAME", meta.remindParameter.fromMemberName)
                 .set("SPACE_NAME", meta.remindParameter.spaceName)
