@@ -1582,7 +1582,7 @@
   "field_display_time_zone": "Display time zone",
   "field_had_deleted": "This field was deleted",
   "field_head_setting": "Field head setting",
-  "field_help_one_way_link": "https://help.aitable.ai/docs/guide/manual-field-onewaylink",
+  "field_help_one_way_link": "https://help.aitable.ai/docs/guide/manual-field-link",
   "field_help_attachment": "https://help.aitable.ai/docs/guide/manual-field-attachment",
   "field_help_autonumber": "https://help.aitable.ai/docs/guide/manual-autonumber",
   "field_help_cascader": "https://help.aitable.ai/docs/guide/manual-field-cascader",
