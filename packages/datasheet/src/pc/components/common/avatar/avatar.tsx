@@ -49,7 +49,8 @@ export const getAvatarRandomColor = (str: string) => {
   return ColorWheel[index % ColorWheel.length];
 };
 
-export function getFirstWordFromString(str: string='') {
+export function getFirstWordFromString(str: string) {
+  if(!str) return ''
   const word = str.trim();
   if (!word.length) return '';
   const codePoint = word.codePointAt(0);
