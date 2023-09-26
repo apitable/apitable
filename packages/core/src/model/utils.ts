@@ -178,12 +178,43 @@ const FieldTypeStringMap = {
   [FieldType.OneWayLink]: APIMetaFieldType.OneWayLink,
 };
 
+const ReversedFieldTypeStringMap = {
+  [APIMetaFieldType.Attachment]: FieldType.Attachment,
+  [APIMetaFieldType.AutoNumber]: FieldType.AutoNumber,
+  [APIMetaFieldType.Checkbox]: FieldType.Checkbox,
+  [APIMetaFieldType.CreatedBy]: FieldType.CreatedBy,
+  [APIMetaFieldType.CreatedTime]: FieldType.CreatedTime,
+  [APIMetaFieldType.Currency]: FieldType.Currency,
+  [APIMetaFieldType.DateTime]: FieldType.DateTime,
+  [APIMetaFieldType.Email]: FieldType.Email,
+  [APIMetaFieldType.Formula]: FieldType.Formula,
+  [APIMetaFieldType.LastModifiedBy]: FieldType.LastModifiedBy,
+  [APIMetaFieldType.LastModifiedTime]: FieldType.LastModifiedTime,
+  [APIMetaFieldType.MagicLink]: FieldType.Link,
+  [APIMetaFieldType.TwoWayLink]: FieldType.Link,
+  [APIMetaFieldType.MagicLookUp]: FieldType.LookUp,
+  [APIMetaFieldType.Member]: FieldType.Member,
+  [APIMetaFieldType.MultiSelect]: FieldType.MultiSelect,
+  [APIMetaFieldType.NotSupport]: FieldType.NotSupport,
+  [APIMetaFieldType.Number]: FieldType.Number,
+  [APIMetaFieldType.Percent]: FieldType.Percent,
+  [APIMetaFieldType.Phone]: FieldType.Phone,
+  [APIMetaFieldType.Rating]: FieldType.Rating,
+  [APIMetaFieldType.SingleSelect]: FieldType.SingleSelect,
+  [APIMetaFieldType.SingleText]: FieldType.SingleText,
+  [APIMetaFieldType.Text]: FieldType.Text,
+  [APIMetaFieldType.URL]: FieldType.URL,
+  [APIMetaFieldType.Cascader]: FieldType.Cascader,
+  [APIMetaFieldType.OneWayLink]: FieldType.OneWayLink,
+};
+
+
 export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
   return FieldTypeStringMap[fieldType];
 };
 
 export const getFieldTypeByString = (fieldType: APIMetaFieldType): FieldType | undefined => {
-  return Number(Object.keys(FieldTypeStringMap).find(key => FieldTypeStringMap[key] === fieldType));
+  return ReversedFieldTypeStringMap[fieldType];
 };
 
 const MemberTypeStringMap = {
