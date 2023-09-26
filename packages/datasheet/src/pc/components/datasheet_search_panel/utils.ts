@@ -9,6 +9,9 @@ export const getModalTitle = (secondConfirmType?: SecondConfirmType) => {
     case SecondConfirmType.Form: {
       return t(Strings.create_form_panel_title);
     }
+    case SecondConfirmType.AIForm: {
+      return t(Strings.select_form_panel_title);
+    }
     default: {
       return t(Strings.check_link_table);
     }

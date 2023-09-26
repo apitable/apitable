@@ -79,7 +79,7 @@ export const ExpandAttachmentBase: React.ForwardRefRenderFunction<IExpandFieldEd
         getCellValueFn={getCellValueFn}
         className="uploadTabWrapper"
       />
-      {/* The state of focus conflicts with the dragging behaviour of the attachment, so it is 
+      {/* The state of focus conflicts with the dragging behaviour of the attachment, so it is
       only positioned on initial load, after which focus is no longer triggered */}
       {!firstRender.current && (
         <div style={{ height: '0px' }}>

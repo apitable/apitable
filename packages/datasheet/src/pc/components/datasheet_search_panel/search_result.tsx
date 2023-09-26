@@ -26,6 +26,7 @@ import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
+import { ConfigConstant } from "@apitable/core";
 
 interface ISearchResultProps {
   searchResult: { folders: INode[]; files: INode[] } | string;
@@ -95,7 +96,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
         <div className={styles.nodeListContent}>
           {files.map((node) => {
             return (
-              <File key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Datasheet', id)} richContent disable={_checkNodeDisable(node)}>
+              <File nodeType={ConfigConstant.NodeType.DATASHEET} key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Datasheet', id)} richContent disable={_checkNodeDisable(node)}>
                 {node.nodeName}
               </File>
             );

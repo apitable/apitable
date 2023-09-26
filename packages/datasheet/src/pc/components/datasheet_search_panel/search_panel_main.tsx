@@ -33,7 +33,9 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
   });
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const editorRef = useRef<{ focus: () => void } | null>(null);
+  const editorRef = useRef<{
+    focus: () => void;
+  } | null>(null);
 
   const onCancelClick = () => {
     localDispatch({ searchValue: '' });
@@ -145,6 +147,7 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
         />
       ) : (
         <FolderContent
+          secondConfirmType={secondConfirmType}
           nodes={localState.nodes}
           currentViewId={localState.currentViewId}
           currentMirrorId={localState.currentMirrorId}
@@ -155,6 +158,7 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
           isSelectView={secondConfirmType === SecondConfirmType.Form}
           onNodeClick={onNodeClick}
           showMirrorNode={showMirrorNode}
+          hideViewNode={secondConfirmType === SecondConfirmType.Chat}
         />
       )}
       {localState.loading && <Loading className={styles.loading} />}

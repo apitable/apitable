@@ -122,7 +122,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
         className={classNames(styles.searchPanelContainer, {
           [styles.secondConfirmTypeForWidget]: secondConfirmType === SecondConfirmType.Widget,
           [styles.secondConfirmTypeForForm]: secondConfirmType === SecondConfirmType.Form,
-          [styles.secondConfirmTypeForChat]: secondConfirmType === SecondConfirmType.Chat,
+          [styles.secondConfirmTypeForChat]: secondConfirmType === SecondConfirmType.Chat || secondConfirmType === SecondConfirmType.AIForm,
         })}
       >
         {isMobile ? (!viewDataLoaded ? _SearchPanel : null) : _SearchPanel}
@@ -137,7 +137,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
           onChange={onChange}
           secondConfirmType={secondConfirmType}
         />
-        {secondConfirmType === SecondConfirmType.Chat && (
+        {(secondConfirmType === SecondConfirmType.Chat || secondConfirmType === SecondConfirmType.AIForm) && (
           <div className={styles.chatbotCreateButtonGroup}>
             <Button color={'default'} onClick={hidePanel}>
               {t(Strings.cancel)}

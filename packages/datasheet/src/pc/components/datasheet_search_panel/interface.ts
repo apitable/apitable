@@ -23,6 +23,7 @@ export enum SecondConfirmType {
   Widget,
   Form,
   Chat,
+  AIForm
 }
 
 export interface INodeInstalledWidget {

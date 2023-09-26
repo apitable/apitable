@@ -27,7 +27,7 @@ import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/che
 import { ScrollBar } from 'pc/components/scroll_bar';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
-
+import { SecondConfirmType } from './interface';
 export interface IViewNode {
   nodeId: string;
   nodeName: string;
@@ -48,8 +48,9 @@ interface IFolderContentProps {
   isSelectView: boolean;
   showMirrorNode?: boolean;
   noCheckPermission?: boolean;
+  secondConfirmType?: SecondConfirmType
 
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void;
+  onNodeClick(nodeType: 'Mirror' | 'Form' | 'Datasheet' | 'View' | 'Folder', id: string): void;
 
   hideViewNode?: boolean;
 }
@@ -67,6 +68,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
     isSelectView,
     showMirrorNode,
     hideViewNode,
+    secondConfirmType,
   } = props;
   const themeName = useSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
@@ -87,49 +89,66 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
               </Folder>
             );
           }
+          if (secondConfirmType === SecondConfirmType.AIForm) {
+            if (node.type === ConfigConstant.NodeType.FORM) {
+              return (
+                <File
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={!isSelectView && currentDatasheetId === node.nodeId}
+                  onClick={(id) => onNodeClick('Form', id)}
+                  disable={_checkNodeDisable(node as INode)}
+                  nodeType={ConfigConstant.NodeType.FORM}
+                >
+                  {node.nodeName}
+                </File>
+              );
+            }
+          } else {
+            if (node.type === ConfigConstant.NodeType.DATASHEET && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
+              return (
+                <File
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={!isSelectView && currentDatasheetId === node.nodeId}
+                  onClick={(id) => onNodeClick('Datasheet', id)}
+                  disable={_checkNodeDisable(node as INode)}
+                  nodeType={ConfigConstant.NodeType.DATASHEET}
+                >
+                  {node.nodeName}
+                </File>
+              );
+            }
 
-          if (node.type === ConfigConstant.NodeType.DATASHEET && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
-            return (
-              <File
-                key={node.nodeId}
-                id={node.nodeId}
-                active={!isSelectView && currentDatasheetId === node.nodeId}
-                onClick={(id) => onNodeClick('Datasheet', id)}
-                disable={_checkNodeDisable(node as INode)}
-              >
-                {node.nodeName}
-              </File>
-            );
-          }
+            if (node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
+              // TODO
+              return (
+                <File
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={!isSelectView && currentMirrorId === node.nodeId}
+                  onClick={(id) => onNodeClick('Mirror', id)}
+                  disable={_checkNodeDisable(node as INode)}
+                  nodeType={ConfigConstant.NodeType.MIRROR}
+                >
+                  {node.nodeName}
+                </File>
+              );
+            }
 
-          if (node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
-            // TODO
-            return (
-              <File
-                key={node.nodeId}
-                id={node.nodeId}
-                active={!isSelectView && currentMirrorId === node.nodeId}
-                onClick={(id) => onNodeClick('Mirror', id)}
-                disable={_checkNodeDisable(node as INode)}
-                isMirror
-              >
-                {node.nodeName}
-              </File>
-            );
-          }
-
-          if (node.type === ConfigConstant.NodeType.VIEW && !hideViewNode) {
-            return (
-              <View
-                key={node.nodeId}
-                id={node.nodeId}
-                active={currentViewId === node.nodeId}
-                viewType={(node as IViewNode).viewType}
-                onClick={(id) => onNodeClick('View', id)}
-              >
-                {node.nodeName}
-              </View>
-            );
+            if (node.type === ConfigConstant.NodeType.VIEW && !hideViewNode) {
+              return (
+                <View
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={currentViewId === node.nodeId}
+                  viewType={(node as IViewNode).viewType}
+                  onClick={(id) => onNodeClick('View', id)}
+                >
+                  {node.nodeName}
+                </View>
+              );
+            }
           }
           return null;
         })}

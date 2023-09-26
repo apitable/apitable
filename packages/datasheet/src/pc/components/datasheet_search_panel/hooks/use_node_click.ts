@@ -15,8 +15,9 @@ interface IParams {
 export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType }: IParams) => {
   const dispatch = useDispatch();
 
-  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string) => {
+  const onNodeClick = (nodeType: 'Mirror' | 'Form' | 'Datasheet' | 'View' | 'Folder', id: string) => {
     switch (nodeType) {
+      case 'Form':
       case 'Datasheet': {
         _onDatasheetClick(id);
         break;
@@ -101,6 +102,11 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
       case SecondConfirmType.Widget:
         localDispatch({
           loading: true,
+          currentDatasheetId: id,
+        });
+        return;
+      case SecondConfirmType.AIForm:
+        localDispatch({
           currentDatasheetId: id,
         });
         return;

@@ -31,10 +31,11 @@ interface IExpandNumberProps extends IBaseEditorProps {
   editing: boolean;
   className?: string;
   onBlur?: (...args: any) => void;
+  onChange?: (...args: any) => void;
 }
 
 const ExpandNumberBase: React.ForwardRefRenderFunction<IEditor, IExpandNumberProps> = (props, ref) => {
-  const { isFocus, field, cellValue, style, editable, editing, width, height, datasheetId, className, onSave, onBlur } = props;
+  const { isFocus, field, cellValue, style, editable, editing, width, height, datasheetId, className, onSave, onBlur, onChange } = props;
 
   useEffect(() => {
     if (isFocus && editable && typeof ref === 'object') {
@@ -59,6 +60,7 @@ const ExpandNumberBase: React.ForwardRefRenderFunction<IEditor, IExpandNumberPro
         isFromFieldEditor
         onSave={onSave}
         onBlur={onBlur}
+        onChange={onChange}
       />
       {editable && !isFocus && (
         <div className={styles.cellNumber}>
