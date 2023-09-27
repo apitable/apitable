@@ -514,7 +514,7 @@ export function submitQuestionnaire(data: any) {
   return axios({
     method: 'post',
     headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-    url: 'https://e6l40faiq2.execute-api.cn-northwest-1.amazonaws.com.cn/funsion-feeback-form',
+    url: 'https://workfun.aitable.ai/feedback-form',
     data: { data },
   });
 }
@@ -945,7 +945,7 @@ export const addRoleMember = (roleId: string, unitList: { id: string; type: Memb
  * @returns
  */
 export const deleteRoleMember = (roleId: string, unitIds: string[]) => {
-  return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ROLE_MEMBER, { roleId }), { data: { unitIds }});
+  return axios.delete<IApiWrapper>(urlcat(Url.DELETE_ROLE_MEMBER, { roleId }), { data: { unitIds } });
 };
 
 /**
