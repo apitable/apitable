@@ -245,7 +245,7 @@ export function getDownloadSrc(fileInfo: IAttachmentValue) {
 export function getAvInfoRequestUrl(fileInfo: IAttachmentValue) {
   if (fileInfo.token.includes('http')) {
     const url = new URL(fileInfo.token);
-    if (url.searchParams.size) {
+    if (url.search) {
       return url.href + '&avinfo'
     }
     return url.href;

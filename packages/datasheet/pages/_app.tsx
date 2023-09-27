@@ -491,7 +491,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         </>
       )}
       {
-        <Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
+        <Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture as any}>
           <div className={'__next_main'}>
             {!userLoading && (
               <div style={{ opacity: loading !== LoadingStatus.Complete ? 0 : 1 }} onScroll={onScroll}>
