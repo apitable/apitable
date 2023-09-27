@@ -72,7 +72,6 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
   const [uuidMap, setUuidMap] = useState<Record<string, IMemberInfoInAddressList>>();
-  const [expandMap, setExpandMap] = useState<Record<number, boolean>>({});
   const currentRevision = useSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
   const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
 
@@ -150,13 +149,6 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
       setUuidMap(map);
     });
   }, [uuids]);
-
-  const onExpandClick = (index: number) => {
-    setExpandMap({
-      ...expandMap,
-      [index]: !expandMap[index],
-    });
-  };
 
   const executeRollback = useCallback(
     (operations: any) => {

@@ -72,7 +72,7 @@ export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
   for (const nValue in countMap) {
     const count = nValue === OTActionName.ListMove ? countMap[nValue].join('、') : countMap[nValue];
     actionCount += commandTran(Strings[StringsCommandName[nValue]] as string, { count });
-    if (nValue === OTActionName.ObjectInsert) {
+    if (nValue !== OTActionName.ListMove) {
       actionCount = countMap[nValue];
     }
   }
@@ -160,18 +160,20 @@ export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
       actionCount = op.actions[0]['ld'].name;
       return commandTran(cmdStringKey) + ': ' + actionCount;
 
-    case CollaCommandName.PasteSetRecords:
-      const alarmCount = op.actions.some((item) => item.p.includes('alarm')) ? 2: 0;
-      const pasteRecordCount = op.actions.length > 1 ? (op.actions.length - alarmCount): 1;
-      return commandTran(cmdStringKey, { record_count: pasteRecordCount });
-
     default:
       let metaCount = 0;
+      let extraRecord='';
+      let extraRecordCount=0;
       for(const item of op.actions) {
-        if (item.p.includes('meta')) metaCount++;
+        if (['recordMeta', 'alarm', 'meta'].some(str => item.p.includes(str))) metaCount++;
+        if(item.p.length===2&&item.p.includes('recordMap')){
+          metaCount++;
+          extraRecordCount++;
+          extraRecord=' , '+commandTran(StringsCommandName.AddRecords, { count: extraRecordCount });
+        }
       }
-      const recordCount = op.actions.length > 1 ? (op.actions.length - metaCount) : 1;
-      return commandTran(cmdStringKey, { record_count: recordCount });
+      metaCount = (op.actions.length - metaCount) ? (op.actions.length - metaCount) : 1;
+      return commandTran(cmdStringKey, { record_count: metaCount })+extraRecord;
   }
 })
   .join('');
