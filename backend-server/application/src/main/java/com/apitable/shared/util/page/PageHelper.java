@@ -18,17 +18,19 @@
 
 package com.apitable.shared.util.page;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.apitable.base.enums.ParameterException;
+import com.apitable.core.util.ExceptionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -53,7 +55,7 @@ public class PageHelper {
 
 
     public static <T> Page<T> convert(String stringObjectParams) {
-
+        ExceptionUtil.isTrue(JSONUtil.isJsonObj(stringObjectParams), ParameterException.INCORRECT_ARG);
         JSONObject json = JSONUtil.parseObj(stringObjectParams);
 
         int pageNo = 1;
@@ -94,6 +96,8 @@ public class PageHelper {
                 String updateTime = "updateTime";
                 for (int i = 0; i < sorts.length; i++) {
                     String order = orders[i];
+                    ExceptionUtil.isTrue(ReUtil.isMatch("^[a-zA-Z_.]*$", order.trim()),
+                        ParameterException.INCORRECT_ARG);
                     if (createTime.equals(order)) {
                         order = "createdAt";
                     }
