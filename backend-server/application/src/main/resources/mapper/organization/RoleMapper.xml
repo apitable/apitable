@@ -95,6 +95,7 @@
         WHERE space_id = #{spaceId}
           AND is_deleted = 0
           AND role_name LIKE CONCAT('%', #{keyword}, '%')
+        LIMIT 0,50
     </select>
 
     <select id="selectRoleBaseInfoDtoByIds"
