@@ -33,7 +33,7 @@ import {
 import { IReduxState, ISnapshot, Selectors, ViewType } from '../../exports/store';
 import { KanbanStyleKey } from '../../modules/shared/store/constants';
 import { getDatasheet, getSnapshot } from '../../exports/store/selectors';
-import {FieldType, IField, ILinkField, IOneWayLinkField, ISelectField, readonlyFields} from 'types';
+import {FieldType, IField, ILinkField, ISelectField, readonlyFields} from 'types';
 import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
 import { ViewAction } from 'commands_actions/view';
 
@@ -453,12 +453,12 @@ export function createNewBrotherField(state: IReduxState, newField: ILinkField, 
 }
 
 export function clearOldBrotherField(
-  context: ICollaCommandExecuteContext, oldField: ILinkField | IOneWayLinkField, deleteField?: boolean,
+  context: ICollaCommandExecuteContext, oldField: ILinkField, deleteField?: boolean,
 ): ILinkedActions | null {
   const { state: state } = context;
 
   // If the old field is not associated with a sibling field, no additional operations are required
-  if (oldField.type === FieldType.OneWayLink || !oldField.property?.brotherFieldId) {
+  if (!oldField.property?.brotherFieldId) {
     return {
       datasheetId: '',
       actions: [],
