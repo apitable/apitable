@@ -68,7 +68,7 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
     const { viewId } = state.pageParams;
     const collected = data.reduce<IJOTAction[]>((collected, { fieldId, deleteBrotherField }) => {
       const field = snapshot.meta.fieldMap[fieldId]!;
-      if (field.type === FieldType.Link || field.type === FieldType.OneWayLink) {
+      if (field.type === FieldType.Link) {
         const linkedAction = clearOldBrotherField(context, field, deleteBrotherField);
         linkedAction && linkedActions.push(linkedAction);
       }
