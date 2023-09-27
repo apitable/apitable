@@ -42,7 +42,7 @@ import {
   Strings,
   t,
   TextBaseField,
-  ViewDerivateBase, LinkField,
+  ViewDerivateBase,
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -129,8 +129,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
 
       // filter deleted link record
       const filterCellValue = cellValue?.filter((id) => {
-        const cellString = (Field.bindModel(field) as LinkField).getLinkedRecordCellString(id);
-        return cellString !== null;
+        return foreignRows.some(row => row.recordId === id);
       });
 
       if (filterCellValue && filterCellValue.includes(recordId)) {
