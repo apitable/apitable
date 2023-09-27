@@ -1794,7 +1794,7 @@
   "field_desc_member": "你可以在单元格内选择并通知站内的成员",
   "field_desc_multi_select": "你可以在单元格内添加单个或多个预设选项",
   "field_desc_number": "你可以输入数字并设置显示精度",
-  "field_desc_one_way_link": "可以在表中创建单向关联字段，以在两个表之间建立单向关系。",
+  "field_desc_one_way_link": "在单元格中单向关联到指定表的记录",
   "field_desc_percent": "你可以在单元格内输入数字，数字会自动填充百分比符号",
   "field_desc_phone": "你可以在单元格内添加电话号码",
   "field_desc_rating": "你可以在单元格内标记评分",
