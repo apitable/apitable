@@ -38,7 +38,6 @@ import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 // @ts-ignore
 import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
-
 interface IJoinFuncProps {
   fromLocalStorage?: boolean;
 }
@@ -63,6 +62,10 @@ export const useLinkInvite = () => {
           if (res.data.success) {
             Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
+          }else{
+            if (res.data.code === billingErrorCode.OVER_LIMIT) {
+              return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
+            }
           }
         });
       } else {
