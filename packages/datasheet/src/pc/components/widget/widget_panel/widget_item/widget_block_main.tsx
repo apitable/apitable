@@ -1,7 +1,7 @@
 import { useMount, useUnmount } from 'ahooks';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, StoreActions } from '@apitable/core';
+import { getComputeRefManager, Selectors, StoreActions } from '@apitable/core';
 import {
   eventMessage,
   getLanguage,
@@ -111,7 +111,12 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
       throw new Error("Unexpected errors: Can't get the datasheetId bound by the widget");
     }
     const computeRefManager = resourceService.instance.computeRefManager;
-    const foreignDatasheetIds = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManager);
+
+    const  computeRefManagerState = getComputeRefManager(state);
+    const foreignDatasheetIdResource = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManager);
+    const foreignDatasheetIdState = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManagerState);
+
+    const foreignDatasheetIds = Array.from(new Set(foreignDatasheetIdResource.concat(foreignDatasheetIdState)))
     const widgetStore = initWidgetStore(initRootWidgetState(state, widgetId, { foreignDatasheetIds }), widgetId);
     setWidgetStore(widgetStore);
   }, [widgetId, nodeConnected, dashboardConnected]);
