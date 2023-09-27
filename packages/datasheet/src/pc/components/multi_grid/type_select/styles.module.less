@@ -47,7 +47,10 @@
 
     @media (any-hover: hover) {
       &:hover {
-        background-color: var(--bgBrandLightDefault);
+        background-color: var(--bgBglessHover);
+      }
+      &:active {
+        background-color: var(--bgBglessActive);
       }
     }
 
@@ -140,7 +143,7 @@
 .scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 0 8px 12px 8px;
+  padding: 0 8px;
 }
 
 @media screen and(max-width: @w-md) {
