@@ -4060,7 +4060,7 @@
   "rollbacking": "Loading, please wait a moment...",
   "rollup_choose_field": "Select a field from linked datasheet",
   "rollup_choose_table": "Select a linked datasheet ",
-  "rollup_choose_table_description": "You can select the datasheet which linked by Two-way Link in current datasheet. If you couldn't find the datasheet that you want to link, please create a new Two-way Link field first.",
+  "rollup_choose_table_description": "You can select the datasheet which linked by Link in current datasheet. If you couldn't find the datasheet that you want to link, please create a new One-way Link or Two-way Link field first.",
   "rollup_conditions_num": "${ORDER_BY_NUM} sorting conditions and  ${FILTER_NUM} filtering conditions",
   "rollup_field": "Column referenced in the related datasheet",
   "rollup_filter_sort": "Filter and sort the linked field",
