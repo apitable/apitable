@@ -296,13 +296,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
             ) : (
               changesetList.map((item, index) => {
                 const memberInfo = uuidMap && uuidMap[item.userId!];
-                const title = memberInfo
-                  ? getSocialWecomUnitName?.({
+                const title = getSocialWecomUnitName?.({
                     name: memberInfo?.memberName,
                     isModified: memberInfo?.isMemberNameModified,
                     spaceInfo,
-                  }) || memberInfo?.memberName
-                  : '';
+                  }) || '';
                 const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
                 return (
                   <section
@@ -315,7 +313,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                     }}
                   >
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <Avatar id={item.userId || ''} title={title} size={24} src={memberInfo?.avatar} />
+                      <Avatar id={item.userId || ''} title={typeof title==='string'?title:''} size={24} src={memberInfo?.avatar} />
                       <div>
                         <div className={styles.title}>
                           <span style={{ paddingRight: '4px' }}>{title}</span>
