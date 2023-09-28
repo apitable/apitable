@@ -77,6 +77,9 @@ public enum IdRulePrefixEnum {
 
     AI("ai_"),
 
+    AIRAGENT("ag_"),
+
+
     ;
 
     private final String idRulePrefixEnum;

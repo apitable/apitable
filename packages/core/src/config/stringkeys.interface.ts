@@ -1358,6 +1358,7 @@ export type StringKeysMapType = {
   'decimal': 'decimal',
   'default': 'default',
   'default_create_ai_chat_bot': 'default_create_ai_chat_bot',
+  'default_create_airagent': 'default_create_airagent',
   'default_create_automation': 'default_create_automation',
   'default_create_dashboard': 'default_create_dashboard',
   'default_create_datasheet': 'default_create_datasheet',

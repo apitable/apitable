@@ -1358,6 +1358,7 @@
   "decimal": "小数（1.0）",
   "default": "默认",
   "default_create_ai_chat_bot": "新建AI助理",
+  "default_create_airagent": "新建Agent",
   "default_create_automation": "新自动化",
   "default_create_dashboard": "新建仪表盘",
   "default_create_datasheet": "新建表格",
