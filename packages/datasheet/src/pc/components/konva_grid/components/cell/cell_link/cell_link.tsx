@@ -147,6 +147,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height, text, style, id } = item;
+          const isError = text === t(Strings.record_fail_data);
           const renderText = text.replace(/\n|\r/g, ' ');
           let iconBg = 'transparent';
           if (closeIconHoverId === id) {
@@ -163,8 +164,8 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
                 height={height}
                 fill={colors.shadowColor}
                 cornerRadius={4}
-                onClick={() => expand(id)}
-                onTap={() => expand(id)}
+                onClick={() => !isError && expand(id)}
+                onTap={() => !isError && expand(id)}
               />
               <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={renderText} fill={style.color} fontSize={12} />
               {operatingEnable && (

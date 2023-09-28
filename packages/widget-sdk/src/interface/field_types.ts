@@ -356,6 +356,7 @@ export enum FieldType {
    * ```
    */
   MagicLink = CoreFieldType.MagicLink,
+  TwoWayLink= CoreFieldType.TwoWayLink,
   /**
    * A valid URL.
    * 

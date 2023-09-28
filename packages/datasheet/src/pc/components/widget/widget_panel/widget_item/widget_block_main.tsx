@@ -1,7 +1,7 @@
 import { useMount, useUnmount } from 'ahooks';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, StoreActions } from '@apitable/core';
+import { getComputeRefManager, ResourceStashManager, Selectors, StoreActions } from '@apitable/core';
 import {
   eventMessage,
   getLanguage,
@@ -69,12 +69,12 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
     if (!bindDatasheetLoaded) {
       return false;
     }
-    const { templateId, nodeId: pageNodeId } = state.pageParams;
+    const { nodeId: pageNodeId } = state.pageParams;
     // dashboard in
     if (pageNodeId && dashboardReg.test(pageNodeId)) {
       return Selectors.getDashboardPack(state, nodeId)?.connected;
     }
-    return templateId || nodeId !== pageNodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
+    return  nodeId !== pageNodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
 
   useImperativeHandle(ref, () => ({
@@ -106,12 +106,33 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
       return;
     }
     const state = store.getState();
+    const { templateId } = state.pageParams;
     const datasheetId = Selectors.getWidgetSnapshot(state, widgetId)?.datasheetId;
     if (!datasheetId) {
       throw new Error("Unexpected errors: Can't get the datasheetId bound by the widget");
     }
     const computeRefManager = resourceService.instance.computeRefManager;
-    const foreignDatasheetIds = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManager);
+    const stashDatasheetIds = Object.keys(state.datasheetMap);
+    if (stashDatasheetIds.length && templateId) {
+      const activeDstIds = [...stashDatasheetIds];
+      if (Object.keys(state.widgetMap).length) {
+        const widgetDependDstIds = Object.values(state.widgetMap).reduce((ids: string[], widget) => {
+          const id = widget.widget.snapshot.datasheetId;
+          if (id && !ids.includes(id)) {
+            ids.push(id);
+          }
+          return ids;
+        }, []);
+        activeDstIds.push(...widgetDependDstIds);
+      }
+      resourceService.instance.resourceStashManager.calcRefMap(stashDatasheetIds, activeDstIds);
+    }
+
+    const  computeRefManagerState = getComputeRefManager(state);
+    const foreignDatasheetIdResource = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManager);
+    const foreignDatasheetIdState = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManagerState);
+
+    const foreignDatasheetIds = Array.from(new Set(foreignDatasheetIdResource.concat(foreignDatasheetIdState)))
     const widgetStore = initWidgetStore(initRootWidgetState(state, widgetId, { foreignDatasheetIds }), widgetId);
     setWidgetStore(widgetStore);
   }, [widgetId, nodeConnected, dashboardConnected]);

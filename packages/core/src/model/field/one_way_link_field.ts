@@ -6,7 +6,7 @@ import { IReduxState } from '../../exports/store';
 import { ISnapshot } from '../../exports/store/interfaces';
 import { getCellValue, getCurrentView, getDatasheet, getFieldMap, getRowsIndexMap, getSnapshot } from '../../exports/store/selectors';
 import { FOperator, IAPIMetaOneWayLinkFieldProperty, IFilterCondition, IFilterText } from 'types';
-import { BasicValueType, FieldType, IOneWayLinkFieldProperty, IOneWayLinkField, IStandardValue } from 'types/field_types';
+import { BasicValueType, FieldType, IOneWayLinkField, IOneWayLinkFieldProperty, IStandardValue } from 'types/field_types';
 import { ArrayValueField, Field } from './field';
 import { StatType } from './stat';
 import { ILinkFieldOpenValue } from 'types/field_types_open';
@@ -126,6 +126,17 @@ export class OneWayLinkField extends ArrayValueField {
       FOperator.IsNotEmpty,
       FOperator.IsRepeat,
     ];
+  }
+
+  filterRecordIds(value: any): string[] {
+    const snapshot = getSnapshot(this.state, this.field.property.foreignDatasheetId);
+    if (!snapshot) {
+      return [];
+    }
+    if (Array.isArray(value)) {
+      return value.filter(recordId => snapshot.recordMap[recordId]);
+    }
+    return [];
   }
 
   validate(value: any): value is string[] {
@@ -300,10 +311,8 @@ export class OneWayLinkField extends ArrayValueField {
    * @returns {(string[] | null)}
    */
   cellValueToArray(recordIds: string[] | null): string[] | null {
-    if (!this.validate(recordIds)) {
-      return null;
-    }
-    return recordIds.map(recordId => {
+    const _filter = this.filterRecordIds(recordIds);
+    return _filter.map(recordId => {
       return this.getLinkedRecordCellString(recordId) || t(Strings.record_unnamed);
     });
   }
@@ -346,16 +355,13 @@ export class OneWayLinkField extends ArrayValueField {
   }
 
   cellValueToOpenValue(recordIds: string[] | null): ILinkFieldOpenValue[] | null {
-    if (!this.validate(recordIds)) {
-      return null;
-    }
-    const valueArray = recordIds.map(recordId => {
+    const _filter = this.filterRecordIds(recordIds);
+    return _filter.map(recordId => {
       return {
         recordId,
         title: this.getLinkedRecordCellString(recordId) || t(Strings.record_unnamed)
       };
     });
-    return valueArray;
   }
 
   openWriteValueToCellValue(openWriteValue: string[] | ILinkFieldOpenValue[] | null): string[] | null {
