@@ -343,7 +343,13 @@ export class AutomationService {
   }
   async isResourcesHasTriggers(resourceIds: string[]) {
     const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
-    return triggers.length > 0;
+    // todo simplify sql
+    if (triggers.length > 0) {
+      const robotIds = new Set(triggers.map(i => i.robotId));
+      const robots = await this.automationRobotRepository.selectRobotBaseInfoDtoByRobotIds(Array.from(robotIds));
+      return robots.length > 0;
+    }
+    return false;
   }
 
   /**
