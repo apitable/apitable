@@ -54,7 +54,8 @@ export class RobotTriggerService {
   }
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
-    const resourceRobotDtos = await this.getActiveRobotsByResourceIds(resourceIds);
+    // todo add triggers
+    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
     const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
       robotIdToResourceId[item.robotId] = item.resourceId;
       return robotIdToResourceId;
@@ -80,6 +81,7 @@ export class RobotTriggerService {
     return resourceRobotTriggers;
   }
 
+  // @ts-ignore
   private async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
     const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
     const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
