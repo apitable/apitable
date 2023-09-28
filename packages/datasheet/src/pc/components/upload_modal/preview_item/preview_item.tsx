@@ -20,12 +20,13 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IAttachmentValue, IAttacheField, Selectors } from '@apitable/core';
+import { ConfigConstant, IAttacheField, IAttachmentValue, Selectors } from '@apitable/core';
 import { DeleteOutlined, DownloadOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
 import styles from './styles.module.less';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 
 interface IPreviewItemProps {
   datasheetId: string;
@@ -60,10 +61,12 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
 
 export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> = (props) => {
   const { name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId } = props;
-  const file = cellValue.find((item) => item.id === id);
+  const _file = cellValue.find((item) => item.id === id);
+  const file: IAttachmentValue = useGetSignatureAssertByToken(_file as IAttachmentValue);
   const fieldId = field.id;
   const allowDownload = useAllowDownloadAttachment(fieldId, datasheetId);
   const colors = useThemeColors();
+
   function deleteFile(id: string) {
     return cellValue!.filter((item) => item.id !== id);
   }

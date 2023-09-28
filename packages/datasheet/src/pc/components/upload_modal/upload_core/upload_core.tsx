@@ -23,7 +23,6 @@ import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { IAttacheField, IAttachmentValue, moveArrayElement, RowHeightLevel } from '@apitable/core';
-import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ItemTypes } from 'pc/components/gallery_view/constant';
 import { IDragItem } from 'pc/components/gallery_view/interface';
 import withScrolling from 'pc/components/react-dnd-scrolling';
@@ -92,7 +91,13 @@ interface ISortableItem {
 
 const SortableItem = ({ item, id, idx, cellValue, recordId, field, readonly, onSave, datasheetId, onSortEnd, onMove }: ISortableItem) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [, drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>({
+  const [, drop] = useDrop<
+    IDragItem,
+    void,
+    {
+      handlerId: Identifier | null;
+    }
+  >({
     accept: ItemTypes.CARD,
     drop() {
       onSortEnd();
@@ -235,7 +240,6 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     return uploadManager.get(cellId);
   });
 
-
   const [cellValue, setCellValue] = useState(() => {
     return (_cellValue || []).flat();
   });
@@ -244,26 +248,24 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     setCellValue(_cellValue);
   }, [JSON.stringify(_cellValue)]);
 
-  const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
-
   const uploadCoreSize = useMemo(() => {
     if (propsSize) {
       return propsSize;
     }
-    const count = Number(fileList?.length) + uploadList.length;
+    const count = Number(cellValue?.length) + uploadList.length;
     return count > 0 ? UploadCoreSize.Normal : UploadCoreSize.Big;
-  }, [fileList, uploadList, propsSize]);
+  }, [cellValue, uploadList, propsSize]);
 
   useEffect(() => {
-    if (!fileList || uploadList.length === 0) {
+    if (!cellValue || uploadList.length === 0) {
       return;
     }
-    const cvIds = fileList.map((item) => item.id);
+    const cvIds = cellValue.map((item) => item.id);
     setUploadList((state) => {
       return state.filter((item) => !cvIds.includes(item.fileId));
     });
     // eslint-disable-next-line
-  }, [JSON.stringify(fileList)]);
+  }, [JSON.stringify(cellValue)]);
 
   function deleteUploadItem(fileId: string) {
     setUploadList((state) => {
@@ -272,11 +274,11 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
   }
 
   const onSortEnd = () => {
-    onSave && onSave(fileList);
+    onSave && onSave(cellValue);
   };
 
   const onMove = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
-    const produceCellValue = produce(fileList, (draft) => {
+    const produceCellValue = produce(cellValue, (draft) => {
       moveArrayElement(draft, oldIndex, newIndex);
       return draft;
     });
@@ -289,7 +291,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
         <UploadTab
           recordId={recordId}
           fieldId={field.id}
-          cellValue={fileList}
+          cellValue={cellValue}
           uploadList={uploadList}
           setUploadList={setUploadList}
           className={classNames({
@@ -313,7 +315,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
         >
           <ScrollingComponent className={styles.scrollBox}>
             <SortableList
-              cellValue={fileList}
+              cellValue={cellValue}
               onSortEnd={onSortEnd}
               datasheetId={datasheetId}
               recordId={recordId}
