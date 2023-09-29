@@ -143,4 +143,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       },
     });
   }
+
+  selectActiveCountByRobotIds(robotIds: string[]): Promise<number> {
+    return this.count({ where: [{ robotId: In(robotIds), isDeleted: 0, isActive: 1 }] });
+  }
 }

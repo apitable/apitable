@@ -18,11 +18,11 @@
 
 package com.apitable.shared.config;
 
-import cn.hutool.core.util.ArrayUtil;
+import static org.springframework.security.config.Customizer.withDefaults;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.apitable.shared.config.security.CsrfBeforeFilter;
 import com.apitable.shared.util.IgnorePathHelper;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,8 +32,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * <p>
@@ -66,18 +64,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         cookieCsrfTokenRepository.setCookiePath("/");
         cookieCsrfTokenRepository.setCookieHttpOnly(false);
         http.csrf().csrfTokenRepository(cookieCsrfTokenRepository)
-                .ignoringAntMatchers(ArrayUtil.toArray(IgnorePathHelper.getInstant().iterator(), String.class))
-                .ignoringAntMatchers("/internal/**")
-                .ignoringAntMatchers("/actuator/**")
-                .ignoringAntMatchers("/social/**")
-                .ignoringAntMatchers("/wechat/**")
-                .ignoringAntMatchers("/feishu/**")
-                .ignoringAntMatchers("/lark/event/**")
-                .ignoringAntMatchers("/lark/idp/**")
-                .ignoringAntMatchers("/vcode/**")
-                .ignoringAntMatchers("/dingtalk/**")
-                .ignoringAntMatchers("/auth0/**")
-                .ignoringAntMatchers("/idaas/**");
+            .ignoringAntMatchers(
+                ArrayUtil.toArray(IgnorePathHelper.getInstant().iterator(), String.class))
+            .ignoringAntMatchers("/internal/**")
+            .ignoringAntMatchers("/actuator/**")
+            .ignoringAntMatchers("/social/**")
+            .ignoringAntMatchers("/wechat/**")
+            .ignoringAntMatchers("/feishu/**")
+            .ignoringAntMatchers("/lark/event/**")
+            .ignoringAntMatchers("/lark/idp/**")
+            .ignoringAntMatchers("/vcode/**")
+            .ignoringAntMatchers("/dingtalk/**")
+            .ignoringAntMatchers("/auth0/**")
+            .ignoringAntMatchers("/idaas/**")
+            .ignoringAntMatchers("/ai/**");
         http.addFilterBefore(new CsrfBeforeFilter(), CsrfFilter.class);
     }
 }

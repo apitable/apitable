@@ -343,7 +343,12 @@ export class AutomationService {
   }
   async isResourcesHasTriggers(resourceIds: string[]) {
     const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
-    return triggers.length > 0;
+    if (triggers.length > 0) {
+      const robotIds = new Set(triggers.map(i => i.robotId));
+      const number = await this.automationRobotRepository.selectActiveCountByRobotIds(Array.from(robotIds));
+      return number > 0;
+    }
+    return false;
   }
 
   /**
