@@ -18,46 +18,73 @@
 
 // import { Message } from '@apitable/components';
 import cx from 'classnames';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import * as React from 'react';
-import { FC, memo, ReactNode, useCallback } from 'react';
+import {FC, memo, ReactNode, useCallback, useMemo} from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
-import { mutate } from 'swr';
+import useSWR, { mutate } from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Message, Modal } from 'pc/components/common';
-import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import {
+  automationPanelAtom,
+  automationStateAtom,
+  automationTriggerAtom,
+  PanelName
+} from '../../../automation/controller';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
-import { getFilterActionTypes, getNodeTypeOptions, operand2PureValue } from '../../helper';
-import { useActionTypes, useRobotTriggerType } from '../../hooks';
-import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
+import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
+import { useActionTypes, useRobotTriggerType, useTriggerTypes } from '../../hooks';
+import { IRobotAction, ITriggerType } from '../../interface';
 import { useRobotListState } from '../../robot_list';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
+import { getActionList } from "./robot_actions";
+import axios from "axios";
 
 export interface IRobotActionProps {
   index: number;
   action: IRobotAction;
   robotId: string;
   editType?:EditType
-  nodeOutputSchemaList: INodeOutputSchema[];
 }
 
+
+const req = axios.create({
+  baseURL: '/nest/v1/',
+});
 export const RobotAction = memo((props: IRobotActionProps) => {
-  const { editType, action, robotId, nodeOutputSchemaList, index = 0 } = props;
+  const { editType, action = [], robotId, index = 0 } = props;
   const triggerType = useRobotTriggerType();
-  const { originData: actionTypes } = useActionTypes();
+  const { originData: actionTypes, data: aList } = useActionTypes();
   const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
+
+  const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
 
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
 
   const [automationState, setAutomationAtom] = useAtom(automationStateAtom );
+
+
+  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
+  const actions = data?.data?.data;
+
+  const actionList = useMemo(() => getActionList(actions), [actions]);
+
+  const [triggerV] = useAtom(automationTriggerAtom);
+
+  const nodeOutputSchemaList = getNodeOutputSchemaList({
+    actionList,
+    actionTypes: aList,
+    triggerTypes,
+    trigger: triggerV,
+  });
 
   const { api: { refresh } } = useRobotListState();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
@@ -153,6 +180,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
   const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
+
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
   // FIXME: Temporary solution, simple checksum rules should be configurable via json instead of writing code here.
