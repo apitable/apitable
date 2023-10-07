@@ -103,7 +103,7 @@ export const RobotActions = ({
   }
   if (!entryActionId) {
     return (
-      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={triggerV == null} nodeOutputSchemaList={nodeOutputSchemaList}/>
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger == null} nodeOutputSchemaList={nodeOutputSchemaList}/>
     );
   }
 
