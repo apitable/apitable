@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { mutate as mutateSwr } from 'swr';
 import produce from 'immer';
 import { useAtom, useAtomValue } from 'jotai';
 import { isEqual } from 'lodash';
@@ -61,7 +62,7 @@ export enum EditType {
   detail = 'detail',
 }
 const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
-  const { trigger, mutate, editType, triggerTypes, formList, datasheetId, datasheetName } = props;
+  const { trigger, mutate, editType, triggerTypes =[], formList, datasheetId, datasheetName } = props;
   const formData = trigger.input;
   const triggerTypeId = trigger.triggerTypeId;
   const triggerType = triggerTypes.find((t) => t.triggerTypeId === trigger.triggerTypeId);
@@ -89,6 +90,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
               triggerTypeId,
             });
 
+            mutateSwr(`/automation/robots/${automationState?.currentRobotId}/trigger`)
             if (!automationState?.resourceId) {
               return;
             }
@@ -184,6 +186,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
               ...trigger,
               input: formData,
             });
+            mutateSwr(`/automation/robots/${automationState?.currentRobotId}/trigger`)
             Message.success({
               content: t(Strings.robot_save_step_success),
             });

@@ -22,7 +22,6 @@ import useSWR from 'swr';
 import { Box, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';
-import { IRobotTrigger } from '../interface';
 import { useRobotListState } from '../robot_list';
 import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
 import { getActionList, RobotActions } from './action/robot_actions';
@@ -34,7 +33,6 @@ const req = axios.create({
 });
 
 export const RobotDetailForm = () => {
-  const [trigger, setTrigger] = useState<IRobotTrigger>();
   const { loading, data: actionTypes } = useActionTypes();
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
   const { robot } = useRobot();
@@ -52,13 +50,14 @@ export const RobotDetailForm = () => {
     return null;
   }
 
+
   return (
     <>
       <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5" color={colors.textCommonPrimary}>{t(Strings.when)}</Typography>
       </Box>
 
-      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} setTrigger={setTrigger} />
+      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList}  />
 
       <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5" color={colors.textCommonPrimary}>
@@ -66,7 +65,7 @@ export const RobotDetailForm = () => {
         </Typography>
       </Box>
 
-      <RobotActions robotId={robot.robotId} trigger={trigger} triggerTypes={triggerTypes} />
+      <RobotActions robotId={robot.robotId} triggerTypes={triggerTypes} />
     </>
   );
 };

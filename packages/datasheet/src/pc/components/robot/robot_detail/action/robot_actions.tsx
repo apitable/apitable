@@ -24,7 +24,7 @@ import { Box } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { getNodeOutputSchemaList } from '../../helper';
 import { useActionTypes } from '../../hooks';
-import { IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
+import { IRobotAction, ITriggerType } from '../../interface';
 import { OrTooltip } from '../or_tooltip';
 import { EditType } from '../trigger/robot_trigger';
 import { LinkButton } from './link';
@@ -34,6 +34,8 @@ import {
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
+import { automationTriggerAtom } from "../../../automation/controller";
+import { useAtomValue } from "jotai";
 
 const req = axios.create({
   baseURL: '/nest/v1/',
@@ -71,11 +73,9 @@ export const getActionList = (actions?: []): IRobotAction[] => {
 export const RobotActions = ({
   robotId,
   triggerTypes,
-  trigger,
   onScrollBottom = () => {},
 }: {
   robotId: string;
-  trigger?: IRobotTrigger;
   triggerTypes: ITriggerType[];
   onScrollBottom?: () => void;
 }) => {
@@ -89,11 +89,13 @@ export const RobotActions = ({
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
+  const trigger = useAtomValue(automationTriggerAtom)
+
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
     triggerTypes,
-    trigger,
+    trigger: trigger,
   });
 
   if (!data || error) {
@@ -101,7 +103,7 @@ export const RobotActions = ({
   }
   if (!entryActionId) {
     return (
-      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null} nodeOutputSchemaList={nodeOutputSchemaList}/>
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={triggerV == null} nodeOutputSchemaList={nodeOutputSchemaList}/>
     );
   }
 
@@ -141,7 +143,6 @@ export const RobotActions = ({
             editType={EditType.entry}
             index={index + 1}
             action={action}
-            nodeOutputSchemaList={nodeOutputSchemaList}
             robotId={robotId}
           />
         </Box>
