@@ -59,7 +59,7 @@ const req = axios.create({
   baseURL: '/nest/v1/',
 });
 export const RobotAction = memo((props: IRobotActionProps) => {
-  const { editType, action = [], robotId, index = 0 } = props;
+  const { editType, action, robotId, index = 0 } = props;
   const triggerType = useRobotTriggerType();
   const { originData: actionTypes, data: aList } = useActionTypes();
   const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
