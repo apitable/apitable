@@ -577,7 +577,7 @@ importers:
         specifier: ^9.6.12
         version: 9.6.12(react-dom@18.2.0)(react@18.2.0)
       '@apitable/widget-sdk':
-        specifier: '1.1.0'
+        specifier: 1.1.0
         version: link:../widget-sdk
       '@floating-ui/react':
         specifier: 0.24.5
