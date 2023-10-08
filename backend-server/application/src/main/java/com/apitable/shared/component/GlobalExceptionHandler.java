@@ -18,16 +18,17 @@
 
 package com.apitable.shared.component;
 
-import javax.validation.ConstraintViolationException;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
 
 import cn.hutool.core.map.MapUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.beetl.core.BeetlKit;
-
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.context.I18nContext;
-
+import javax.validation.ConstraintViolationException;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.beetl.core.BeetlKit;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
-import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
-
 /**
  * <p>
  * Global Exception Capture in webmvc
@@ -58,22 +57,43 @@ import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERR
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Void> customResponseStatusException(ResponseStatusException exception) {
-        return ResponseEntity.status(exception.getRawStatusCode()).build();
+    public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException exception) {
+        return ResponseEntity.status(exception.getStatus())
+            .body(new ErrorResponse(exception.getStatus().value(), exception.getReason()));
+    }
+
+    /**
+     * error response.
+     */
+    @Getter
+    @Setter
+    static class ErrorResponse {
+
+        private int status;
+        private String errorMessage;
+
+        public ErrorResponse(int status, String errorMessage) {
+            this.status = status;
+            this.errorMessage = errorMessage;
+        }
     }
 
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<Void> businessException(BusinessException ex) {
         // get i18n message
-        String i18nErrorMessage = I18nContext.me().transform(ex.getFixedCode(), LocaleContextHolder.getLocale(), ex.getMessage());
+        String i18nErrorMessage = I18nContext.me()
+            .transform(ex.getFixedCode(), LocaleContextHolder.getLocale(), ex.getMessage());
         if (MapUtil.isNotEmpty(ex.getBody())) {
             i18nErrorMessage = BeetlKit.render(i18nErrorMessage, ex.getBody());
         }
-        return ResponseData.error(ex.getCode() == null || ex.getCode() == 0 ? DEFAULT_ERROR_CODE : ex.getCode(), i18nErrorMessage);
+        return ResponseData.error(
+            ex.getCode() == null || ex.getCode() == 0 ? DEFAULT_ERROR_CODE : ex.getCode(),
+            i18nErrorMessage);
     }
 
-    @ExceptionHandler({ MethodArgumentNotValidException.class, MaxUploadSizeExceededException.class, ConstraintViolationException.class })
+    @ExceptionHandler({MethodArgumentNotValidException.class, MaxUploadSizeExceededException.class,
+        ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<Void> validationBodyException(Exception exception) {
         if (exception instanceof MethodArgumentNotValidException) {
@@ -83,12 +103,10 @@ public class GlobalExceptionHandler {
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());
             }
-        }
-        else if (exception instanceof ConstraintViolationException) {
+        } else if (exception instanceof ConstraintViolationException) {
             ConstraintViolationException e = (ConstraintViolationException) exception;
             return ResponseData.error(e.getLocalizedMessage());
-        }
-        else if (exception instanceof MaxUploadSizeExceededException) {
+        } else if (exception instanceof MaxUploadSizeExceededException) {
             // Upload exceeds the maximum limit exception
             return ResponseData.error(9900, "file too large");
         }
@@ -105,16 +123,13 @@ public class GlobalExceptionHandler {
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());
             }
-        }
-        else if (ex instanceof IllegalArgumentException) {
+        } else if (ex instanceof IllegalArgumentException) {
+            return ResponseData.error(ex.getLocalizedMessage());
+        } else if (ex instanceof HttpRequestMethodNotSupportedException) {
+            return ResponseData.error(ex.getLocalizedMessage());
+        } else if (ex instanceof HttpMessageNotReadableException) {
             return ResponseData.error(ex.getLocalizedMessage());
         }
-        else if (ex instanceof HttpRequestMethodNotSupportedException) {
-            return ResponseData.error(ex.getLocalizedMessage());
-        }
-        else if (ex instanceof HttpMessageNotReadableException) {
-            return ResponseData.error(ex.getLocalizedMessage());
-        }
-        return ResponseData.error();
+        return ResponseData.error(ex.getMessage());
     }
 }
