@@ -43,6 +43,7 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.mapper.NodeDescMapper;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.service.INodeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -92,6 +93,9 @@ public class AutomationRobotController {
     @Resource
     private IAutomationActionService iAutomationActionService;
 
+    @Resource
+    private NodeDescMapper nodeDescMapper;
+
     /**
      * Get automation robots.
      *
@@ -136,7 +140,12 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        return ResponseData.success(iAutomationRobotService.getRobotByRobotId(robotId));
+        AutomationVO vo = iAutomationRobotService.getRobotByRobotId(robotId);
+        if (resourceId.startsWith(IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum())) {
+            vo.setDescription(nodeDescMapper.selectDescriptionByNodeId(resourceId));
+            return ResponseData.success(vo);
+        }
+        return ResponseData.success(vo);
     }
 
     /**
@@ -146,7 +155,7 @@ public class AutomationRobotController {
      * @param robotId    robot id
      * @param data       update data
      */
-    @PostResource(path = "/{resourceId}/modify/{robotId}", method = RequestMethod.PATCH, requiredPermission = false)
+    @PostResource(path = "/{resourceId}/robots/{robotId}", method = RequestMethod.PATCH, requiredPermission = false)
     @Operation(summary = "Update automation info.")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),

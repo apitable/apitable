@@ -107,19 +107,19 @@ describe('RobotActionTypeServiceTest', () => {
     expect(automationService).toBeDefined();
   });
 
-  it('should be check create robot permission no exception', async() => {
+  it('should be check create robot permission no exception', async () => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(0);
     await automationService.checkCreateRobotPermission('resourceId');
   });
 
-  it('should be check create robot permission throw exception', async() => {
+  it('should be check create robot permission throw exception', async () => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(ConfigConstant.MAX_ROBOT_COUNT_PER_DST + 1);
     await expect(async() => await automationService.checkCreateRobotPermission('resourceId')).rejects.toThrow(
       CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT.message,
     );
   });
 
-  it('handleTask should be execute', async() => {
+  it('handleTask should be execute', async () => {
     jest.spyOn(automationRobotRepository, 'getResourceIdByRobotId').mockResolvedValue('datasheetId');
     jest.spyOn(nodeService, 'selectSpaceIdByNodeId').mockResolvedValue({ spaceId: 'spaceId' });
     jest.spyOn(automationRunHistoryRepository, 'create').mockImplementation();
@@ -182,7 +182,42 @@ describe('RobotActionTypeServiceTest', () => {
       },
     };
 
-    await automationService.handleTask('robotId', { input: {}, output: {}});
+    await automationService.handleTask('robotId', { input: {}, output: {} });
     delete services['test'];
+  });
+
+  it('should return true when resource have linked robot', async () => {
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(1);
+    const result = await automationService.isResourcesHasRobots(['resourceId']);
+    expect(result).toEqual(true);
+  });
+
+  it('should return true when trigger have linked robot', async () => {
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([{
+      robotId: 'robotId',
+      resourceId: 'resourceId'
+    }]);
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(1);
+    const result = await automationService.isResourcesHasRobots(['resourceId']);
+    expect(result).toEqual(true);
+  });
+
+  it('should return false when trigger not linked robot -- empty', async () => {
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([]);
+    const result = await automationService.isResourcesHasRobots(['resourceId']);
+    expect(result).toEqual(false);
+  });
+
+  it('should return false when trigger linked robot but robot disable', async () => {
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([{
+      robotId: 'robotId',
+      resourceId: 'resourceId'
+    }]);
+    jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
+    const result = await automationService.isResourcesHasRobots(['resourceId']);
+    expect(result).toEqual(false);
   });
 });

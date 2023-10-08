@@ -80,6 +80,7 @@
         and vom.is_social_name_modified != 0
         and vom.member_name like CONCAT('%', #{memberName}, '%')
         order by vodmr.created_at
+        LIMIT 0,50
     </select>
 
     <select id="selectByNameAndOpenIds" resultMap="searchMemberDto">
@@ -119,6 +120,7 @@
           and voum.is_deleted = 0
           and voum.is_social_name_modified != 0
           and voum.member_name like CONCAT('%', #{likeName}, '%')
+        LIMIT 0,50
     </select>
 
     <select id="selectMemberIdsLikeNameByOpenIds" resultType="java.lang.Long">
@@ -525,6 +527,7 @@
             AND vom.is_active = 1
           </if>
         GROUP BY vom.id
+        LIMIT 0,50
     </select>
 
     <select id="selectLikeMemberNameByOpenIds" resultType="com.apitable.organization.vo.SearchMemberVo">
@@ -1098,6 +1101,7 @@
         WHERE space_id = #{spaceId}
         AND email like CONCAT('%', #{keyword}, '%')
         AND is_deleted = 0
+        LIMIT 0,50
     </select>
 
     <select id="selectTeamIdsByMemberIds" resultType="com.apitable.organization.dto.MemberTeamInfoDTO">
