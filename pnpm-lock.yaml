@@ -562,17 +562,17 @@ importers:
   packages/datasheet:
     dependencies:
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/icons':
-        specifier: '*'
-        version: 1.2.0(react@18.2.0)
+        specifier: workspace:*
+        version: link:../icons
       '@apitable/react-flow':
         specifier: ^9.6.12
         version: 9.6.12(react-dom@18.2.0)(react@18.2.0)
