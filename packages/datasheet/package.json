@@ -22,12 +22,12 @@
     "node": "16.15.0"
   },
   "dependencies": {
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/i18n-lang": "*",
-    "@apitable/icons": "*",
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/i18n-lang": "workspace:*",
+    "@apitable/icons": "workspace:*",
     "@apitable/react-flow": "^9.6.12",
-    "@apitable/widget-sdk": "1.1.0",
+    "@apitable/widget-sdk": "workspace:*",
     "@floating-ui/react": "^0.24.5",
     "@futpib/dagre": "^0.8.5-pre1",
     "@huse/click-outside": "^1.0.1",
