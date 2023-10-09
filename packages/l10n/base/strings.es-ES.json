@@ -2815,7 +2815,6 @@
   "link_common_err": "Oh, el enlace no parece correcto.",
   "link_copy_success": "La URL ha sido copiada",
   "link_data_error": "Errores de datos en las tablas de datos relevantes",
-  "one_way_link_data_error": "Errores de datos en las tablas de datos relevantes",
   "link_delete_succeed": "Enlace eliminado",
   "link_failed": "El enlace público compartido no es válido, posiblemente porque el compartidor lo deshabilitó o el administrador lo prohibió.",
   "link_failed_after_close_share_link": "Después de desactivarlo, el enlace público creado no será válido",

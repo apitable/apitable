@@ -2815,7 +2815,6 @@
   "link_common_err": "Ups, es scheint, dass der Link falsch ist.",
   "link_copy_success": "URL kopiert",
   "link_data_error": "Daten im zugehörigen Datenblatt Fehler",
-  "one_way_link_data_error": "Daten im zugehörigen Datenblatt Fehler",
   "link_delete_succeed": "Link gelöscht",
   "link_failed": "Der Link zur öffentlichen Freigabe ist ungültig, wahrscheinlich weil der Sharer den Link deaktiviert hat oder der Administrator die öffentliche Freigabe verboten hat.",
   "link_failed_after_close_share_link": "Nach Deaktivierung sind erstellte öffentliche Links ungültig",

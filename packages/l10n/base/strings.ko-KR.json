@@ -2815,7 +2815,6 @@
   "link_common_err": "아이고, 링크가 잘못된 것 같아요.",
   "link_copy_success": "URL이 복사됨",
   "link_data_error": "관련 데이터 테이블의 데이터 오류",
-  "one_way_link_data_error": "관련 데이터 테이블의 데이터 오류",
   "link_delete_succeed": "링크 삭제됨",
   "link_failed": "공용 공유 링크가 올바르지 않습니다. 공유자가 링크를 비활성화하거나 관리자가 공용 공유를 비활성화했기 때문일 수 있습니다.",
   "link_failed_after_close_share_link": "사용 안 함으로 설정된 공통 링크는 유효하지 않습니다.",
