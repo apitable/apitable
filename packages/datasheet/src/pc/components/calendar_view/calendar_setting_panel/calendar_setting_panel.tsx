@@ -86,6 +86,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   }, shallowEqual);
   const { CALENDAR_SETTING_HELP_URL } = getEnvVariables();
   const fieldOptions = useMemo(() => {
+    // @ts-ignore
     const options = columns
       .map(({ fieldId }) => {
         const field = fieldMap[fieldId]!;

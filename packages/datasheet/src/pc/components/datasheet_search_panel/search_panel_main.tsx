@@ -58,8 +58,6 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
   });
 
   useEffect(() => {
-    console.log('xxxxxxxxxxxxxxx needSelectView', needSelectView, 'form', form);
-    console.log('localState.currentFormId', localState.currentFormId);
     if (!needSelectView) {
 
       if (datasheet) {
@@ -164,9 +162,8 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
         switchVisible={secondConfirmType !== SecondConfirmType.Form}
       />
       {!localState.showSearch && !embedId && <FolderBreadcrumb parents={localState.parents} onNodeClick={(e, id) => {
-        console.log('b');
         if (e === 'Datasheet') {
-          onNodeSelect({
+          onNodeSelect?.({
             datasheetId: id
           });
         }
@@ -180,7 +177,6 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
           noCheckPermission={noCheckPermission}
           onlyShowAvailable={localState.onlyShowEditableNode}
           onNodeClick={(e, id) => {
-            console.log('onNOdeClick onNOdeClick', e, id);
             if(e==='Form') {
               onNodeSelect?.({
                 formId: id
@@ -207,7 +203,6 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
           noCheckPermission={noCheckPermission}
           isSelectView={secondConfirmType === SecondConfirmType.Form}
           onNodeClick={(e, id) => {
-            console.log('a');
             if(e==='Form') {
               onNodeSelect?.({
                 formId: id

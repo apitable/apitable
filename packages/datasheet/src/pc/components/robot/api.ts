@@ -41,13 +41,13 @@ export const deleteRobotAction = async (resourceId: string, actionId: string, ro
 };
 
 export const updateRobotName = async (resourceId: string, robotId: string, name: string) => {
-  return updateAutomationRobot(resourceId, robotId, {
+  return await updateAutomationRobot(resourceId, robotId, {
     name,
   });
 };
 
 export const updateRobotDescription = async (resourceId: string, robotId: string, description: string) => {
-  return updateAutomationRobot(resourceId, robotId, {
+  return await updateAutomationRobot(resourceId, robotId, {
     description,
   });
 };
@@ -168,8 +168,6 @@ export const updateTriggerInput = (resourceId: string, triggerId: string, input:
     ...data
   });
 };
-
-// /api/v1/automation/{resourceId}/actions
 export const createAction = (
   resourceId: string,
   data: { robotId: string; actionTypeId: string; prevActionId?: string; input?: any }) => {
