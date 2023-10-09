@@ -58,6 +58,9 @@ jobs:
         command: [ test-init-db-docker, test-ut-backend-docker, test-ut-room-docker, _test-ut-core ]
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.7.5
       - name: Running Test
         shell: bash
         run: |
