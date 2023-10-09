@@ -5627,6 +5627,7 @@
   "ai_message_credit_title": "Credit usage",
   "action_execute_error": "Step execute error\nError message:\n${value}\n\nFor details, please refer to https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot",
   "cui_next_text": "Next",
+  "cui_submit_text": "Submit",
   "cui_select_datasheet_description": "Click here to select datasheets",
   "cui_wizard_welcome_message_1": "Hello there! 🌟 Your AI chatbot is ready to roll. But first, let's set the stage with some initial configurations.",
   "cui_wizard_welcome_message_2": "Please choose the type of chatbot you'd like to create: a Chat Bot or a QA Bot.",

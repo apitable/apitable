@@ -1271,6 +1271,7 @@
   "cui_select_datasheet_description": "Click here to select datasheets",
   "cui_select_link_text": "Selected ${links}",
   "cui_select_user_text": "Selected ${users}",
+  "cui_submit_text": "Submit",
   "cui_wizard_select_chatbot_model": "Select bot model",
   "cui_wizard_select_chatbot_model_message": "OK. Now, please select the bot model you'd like to use: GPT-3.5-turbo or other options.",
   "cui_wizard_select_chatbot_type": "Select bot type",
