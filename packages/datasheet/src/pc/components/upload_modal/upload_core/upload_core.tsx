@@ -240,6 +240,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     return uploadManager.get(cellId);
   });
 
+
   const [cellValue, setCellValue] = useState(() => {
     return (_cellValue || []).flat();
   });

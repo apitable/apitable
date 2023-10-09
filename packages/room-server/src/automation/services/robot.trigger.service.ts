@@ -100,4 +100,10 @@ export class RobotTriggerService {
     return resourceRobotTriggers;
   }
 
+  private async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
+    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
+    resourceRobotDtos.push(...triggerResourceDtos);
+    return resourceRobotDtos;
+  }
 }

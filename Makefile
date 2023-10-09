@@ -386,7 +386,7 @@ install: install-local
 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
-	pnpm install && pnpm build:dst:pre
+	pnpm install --no-frozen-lockfile && pnpm run build:dst:pre
 	cd backend-server && ./gradlew build -x test --stacktrace
 
 .PHONY: install-docker

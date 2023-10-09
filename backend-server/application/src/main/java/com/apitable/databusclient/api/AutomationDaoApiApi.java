@@ -356,8 +356,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call daoCreateOrUpdateAutomationRobotTriggerCall(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO, final ApiCallback _callback) throws ApiException {
@@ -432,8 +432,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponseAutomationTriggerPO daoCreateOrUpdateAutomationRobotTrigger(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws ApiException {
@@ -451,8 +451,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ApiResponseAutomationTriggerPO> daoCreateOrUpdateAutomationRobotTriggerWithHttpInfo(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws ApiException {
@@ -472,8 +472,8 @@ public class AutomationDaoApiApi {
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Update automation robot trigger successfully </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Create automation robot trigger successfully </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Update automation robot triggers successfully </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Create automation robot triggers successfully </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call daoCreateOrUpdateAutomationRobotTriggerAsync(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO, final ApiCallback<ApiResponseAutomationTriggerPO> _callback) throws ApiException {
@@ -1324,8 +1324,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot
-     * Update automation robot
+     * Update automation robot name, description, props
+     * Update automation robot name, description, props
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @return ApiResponseEmptySO
@@ -1342,8 +1342,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot
-     * Update automation robot
+     * Update automation robot name, description, props
+     * Update automation robot name, description, props
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @return ApiResponse&lt;ApiResponseEmptySO&gt;
@@ -1361,8 +1361,8 @@ public class AutomationDaoApiApi {
     }
 
     /**
-     * Update automation robot (asynchronously)
-     * Update automation robot
+     * Update automation robot name, description, props (asynchronously)
+     * Update automation robot name, description, props
      * @param robotId robot id (required)
      * @param automationRobotUpdateRO  (required)
      * @param _callback The callback to be executed when the API call finishes

@@ -354,6 +354,10 @@ export class AutomationService {
     }
     return false;
   }
+  async isResourcesHasTriggers(resourceIds: string[]) {
+    const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
+    return triggers.length > 0;
+  }
 
   /**
    * create an execution record before the task is about to run
