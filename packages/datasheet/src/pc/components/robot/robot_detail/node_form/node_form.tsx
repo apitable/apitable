@@ -21,7 +21,6 @@ import { useAtom, useAtomValue } from 'jotai';
 import { JSONSchema7 } from 'json-schema';
 import Image from 'next/image';
 import { memo, ReactElement, useRef } from 'react';
-import { mutate } from 'swr';
 import {
   Box,
   Button,
