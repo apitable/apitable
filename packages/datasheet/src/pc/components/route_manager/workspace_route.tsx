@@ -24,7 +24,7 @@ import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 // @ts-ignore
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { useQuery } from '../../hooks';
-import { AutomationPanel } from '../automation';
+import { AutomationPanel } from '../automation/panel';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
@@ -56,7 +56,7 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
 
   const MainComponent = (): React.ReactElement => {
     if (automationId) {
-      return <AutomationPanel />;
+      return <AutomationPanel resourceId={automationId} />;
     }
     if (activeNodeError) {
       return <NoPermission />;

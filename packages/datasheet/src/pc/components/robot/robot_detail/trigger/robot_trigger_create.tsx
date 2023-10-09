@@ -20,15 +20,14 @@ import { useAtomValue, useAtom } from 'jotai';
 import { useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { mutate } from 'swr';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import { automationPanelAtom, automationStateAtom, PanelName, useAutomationController } from '../../../automation/controller';
+import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { createTrigger } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData } from '../../hooks';
 import { ITriggerType } from '../../interface';
-import { useRobotListState } from '../../robot_list';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
 
@@ -54,9 +53,10 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme)<{ width: 
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
 
+  const permissions = useAutomationResourcePermission();
   const {
     api: { refresh },
-  } = useRobotListState();
+  } = useAutomationController();
   const state = useAtomValue(automationStateAtom);
   const [, setAutomationPanel] = useAtom(automationPanelAtom );
 
@@ -69,16 +69,21 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
-      const triggerRes = await createTrigger(robotId, triggerTypeId, input);
-
-      await mutate(`/automation/robots/${robotId}/trigger`);
-
-      if (!state?.resourceId) {
+      if(!state?.resourceId) {
+        console.error('.resourceId unfound ');
         return;
       }
       if (!state?.currentRobotId) {
+        console.error('currentRobotId unfound ');
         return;
       }
+      const triggerRes = await createTrigger(state?.resourceId,
+        {
+          robotId,
+          triggerTypeId,
+          input
+        });
+
       await refresh({
         resourceId: state.resourceId,
         robotId: state.currentRobotId,
@@ -105,6 +110,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
 
   return (
     <SearchSelect
+      disabled={!permissions.editable}
       clazz={{
         item: itemStyle.item,
         icon: itemStyle.icon,
@@ -119,7 +125,9 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
         handleCreateFormChange(String(item.value));
       }}
     >
-      <NewItem disabled={false}>{t(Strings.add_a_trigger)}</NewItem>
+      <NewItem disabled={
+        !permissions.editable
+      }>{t(Strings.add_a_trigger)}</NewItem>
     </SearchSelect>
   );
 };

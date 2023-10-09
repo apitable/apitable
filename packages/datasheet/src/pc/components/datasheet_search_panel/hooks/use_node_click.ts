@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { Api, StoreActions } from '@apitable/core';
+import { Api, ConfigConstant, StoreActions } from '@apitable/core';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
-import { SecondConfirmType } from '../interface';
+import { ISearchOptions, SecondConfirmType } from '../interface';
 
 interface IParams {
   localState: ISearchPanelState;
@@ -15,9 +15,21 @@ interface IParams {
 export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType }: IParams) => {
   const dispatch = useDispatch();
 
-  const onNodeClick = (nodeType: 'Mirror' | 'Form' | 'Datasheet' | 'View' | 'Folder', id: string) => {
+  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string,) => {
     switch (nodeType) {
-      case 'Form':
+      case 'Form': {
+        if (localState.currentFormId === id) {
+          return;
+        }
+        if (localState.currentDatasheetId === id) {
+          return;
+        }
+        localDispatch({
+          loading: true,
+          currentFormId: id,
+        });
+        break;
+      }
       case 'Datasheet': {
         _onDatasheetClick(id);
         break;
@@ -37,7 +49,7 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
     }
   };
 
-  const fetchFolderData = (folderId: string) => {
+  const fetchFolderData = (folderId: string, options?: ISearchOptions) => {
     localDispatch({
       loading: true,
     });
@@ -52,7 +64,29 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
 
         if (childNodeListRes.data.success) {
           const nodes = childNodeListRes.data.data || [];
+          if(options) {
+            const filteredNodes = nodes.filter(item => {
+              if(item.type === ConfigConstant.NodeType.DATASHEET) {
+                return options.showDatasheet;
+              }
+              if(item.type === ConfigConstant.NodeType.FORM) {
+                return options.showForm;
+              }
+              if(item.type === ConfigConstant.NodeType.MIRROR) {
+                return options.showMirror;
+              }
+              if(item.type === ConfigConstant.NodeType.VIEW) {
+                return options.showView;
+              }
+              if(item.type === ConfigConstant.NodeType.FOLDER) {
+                return true;
+              }
+              return false;
+            });
+            localDispatch({ nodes: filteredNodes, showSearch: false });
+          }
           localDispatch({ nodes, showSearch: false });
+
         }
       })
       .catch()
@@ -114,6 +148,7 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
         localDispatch({
           loading: true,
           currentMeta: null,
+          currentFormId: id,
           currentViewId: '',
         });
         searchDatasheetMetaData(id);

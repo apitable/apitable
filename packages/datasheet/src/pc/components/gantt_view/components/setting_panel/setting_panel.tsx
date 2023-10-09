@@ -220,7 +220,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
           label: fieldMap[columnFieldId].name,
           disabled: (fieldMap[columnFieldId] as ILinkField).property.foreignDatasheetId !== datasheetId,
           prefixIcon: fieldMap[column.fieldId].type === FieldType.Link ?
-            <TwoWayLinkOutlined color={colors.thirdLevelText} /> : <OneWayLinkOutlined color={colors.thirdLevelText} /> ,
+            <TwoWayLinkOutlined color={colors.thirdLevelText} /> : <OneWayLinkOutlined color={colors.thirdLevelText} />,
           disabledTip: t(Strings.org_chart_choose_a_self_link_field),
         });
       });

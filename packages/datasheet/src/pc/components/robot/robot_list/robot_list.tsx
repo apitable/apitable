@@ -16,119 +16,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtom } from 'jotai';
-import { memo, useMemo } from 'react';
+import { useAtomValue } from 'jotai';
 import * as React from 'react';
+import { memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import useSWR from 'swr';
-import { Box, FloatUiTooltip, Skeleton } from '@apitable/components';
-import { Api, ConfigConstant, Selectors, Strings, t } from '@apitable/core';
-import { automationStateAtom } from '../../automation/controller';
-import { getResourceAutomationDetail, getResourceAutomations } from '../api';
-import {
-  useActionTypes,
-  useAddNewRobot, useRobot,
-  useTriggerTypes
-} from '../hooks';
-import { OrTooltip } from '../robot_detail/or_tooltip';
+import { Skeleton } from '@apitable/components';
+import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
+import { automationDrawerVisibleAtom } from '../../automation/controller';
+import { useAutomationNavigateController } from '../../automation/controller/controller';
+import { useAutomationList } from '../../automation/controller/use_robot_list';
+import { OrTooltip } from '../../common/or_tooltip';
+import { useActionTypes, useAddNewRobot, useTriggerTypes } from '../hooks';
 import { RobotListItemCard } from '../robot_list_item';
-import { useRobotController } from './controller';
 import { NewItem } from './new_item';
 import { RobotEmptyList } from './robot_empty_list';
-
-export const CONST_MAX_ROBOT_COUNT = 9;
-
-export const StyledBox = styled(Box)`
-  &:hover {
-    background-color: var(--bgControlsHover);
-    
-    border-color: var(--borderBrandActive);
-  }
-`;
-
-export const useRobotListState = () => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const { data: automationList, error, mutate: mutateRefresh }
-      = useSWR(`getResourceAutomations-${datasheetId}`, () => getResourceAutomations(datasheetId!));
-
-  const { data: formList } = useSWR(`${Api.getRelateNodeByDstId}_${datasheetId}`, () =>
-    Api.getRelateNodeByDstId(datasheetId!, undefined, ConfigConstant.NodeType.FORM));
-
-  const [state, setAutomationAtom] = useAtom(automationStateAtom );
-
-  const currentRobotId = state?.currentRobotId;
-
-  const getById = (robotId: string) => {
-    return automationList?.find(item => item.robotId === robotId);
-  };
-  return useMemo(() => (
-    {
-      state: {
-        formList: formList?.data?.data ?? [],
-        data: automationList,
-        error
-      },
-      api: {
-        getById,
-        refreshItem  : async (
-        ) => {
-          await mutateRefresh();
-          if (state?.resourceId && state?.currentRobotId) {
-            const itemDetail = await getResourceAutomationDetail(state?.resourceId, state?.currentRobotId);
-            const newState = {
-              robot: itemDetail,
-              currentRobotId: currentRobotId,
-              resourceId: state.resourceId,
-            };
-            setAutomationAtom(newState);
-          }
-        },
-        refresh  : async (
-          data?: {
-              resourceId: string;
-              robotId: string;
-            }
-        ) => {
-          await mutateRefresh();
-          if(!state?.resourceId || !state?.currentRobotId) {
-            return;
-          }
-          if(data?.resourceId && data?.robotId) {
-            const itemDetail = await getResourceAutomationDetail(data?.resourceId, data?.robotId);
-            const newState = {
-              robot: itemDetail,
-              currentRobotId:  currentRobotId,
-              resourceId:state.resourceId,
-            };
-            setAutomationAtom(newState);
-          }
-        }
-      }
-    }
-  ), [formList?.data?.data, automationList, error, getById, state?.resourceId, state?.currentRobotId, currentRobotId, setAutomationAtom, mutateRefresh]);
-
-};
 
 export const RobotList = memo(() => {
   const permissions = useSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
-  const { state: { data: robotList } } = useRobotListState();
-
-  const { state: { error }, api: { refresh } } = useRobotListState();
+  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const { state: { error, data: robotList }, api: { refresh } } = useAutomationList();
 
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();
   const { data: actionTypes, loading: actionTypesLoading } = useActionTypes();
 
-  const { createNewRobot, navigateAutomation } = useRobotController();
+  const { createNewRobot, navigateAutomation } = useAutomationNavigateController();
+
+  const showModal = useAtomValue(automationDrawerVisibleAtom);
+
+  useEffect(() => {
+    if (!showModal) {
+      refresh();
+    }
+  }, [refresh, showModal]);
 
   const {
     canAddNewRobot,
     disableTip,
   } = useAddNewRobot();
 
-  // const robot = useRobot();
   if (error) return null;
   if (triggerTypesLoading || actionTypesLoading || triggerTypes.length === 0 || actionTypes.length === 0) {
     return <Skeleton
@@ -173,7 +100,7 @@ export const RobotList = memo(() => {
               return;
             }
 
-            await createNewRobot();
+            await createNewRobot(datasheetId);
             await refresh();
           }}
         >

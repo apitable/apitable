@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isNumber } from 'util';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { isNumber } from 'util';
 // eslint-disable-next-line no-restricted-imports
 import { Radio, RadioGroup, Select, Switch, TextButton, useThemeColors } from '@apitable/components';
 import {

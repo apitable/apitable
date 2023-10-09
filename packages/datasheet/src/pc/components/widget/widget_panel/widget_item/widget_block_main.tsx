@@ -74,7 +74,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
     if (pageNodeId && dashboardReg.test(pageNodeId)) {
       return Selectors.getDashboardPack(state, nodeId)?.connected;
     }
-    return  nodeId !== pageNodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
+    return nodeId !== pageNodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
 
   useImperativeHandle(ref, () => ({
@@ -128,11 +128,11 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
       resourceService.instance.resourceStashManager.calcRefMap(stashDatasheetIds, activeDstIds);
     }
 
-    const  computeRefManagerState = getComputeRefManager(state);
+    const computeRefManagerState = getComputeRefManager(state);
     const foreignDatasheetIdResource = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManager);
     const foreignDatasheetIdState = getDependenceByDstIdsByGlobalResource(state, datasheetId, computeRefManagerState);
 
-    const foreignDatasheetIds = Array.from(new Set(foreignDatasheetIdResource.concat(foreignDatasheetIdState)))
+    const foreignDatasheetIds = Array.from(new Set(foreignDatasheetIdResource.concat(foreignDatasheetIdState)));
     const widgetStore = initWidgetStore(initRootWidgetState(state, widgetId, { foreignDatasheetIds }), widgetId);
     setWidgetStore(widgetStore);
   }, [widgetId, nodeConnected, dashboardConnected]);

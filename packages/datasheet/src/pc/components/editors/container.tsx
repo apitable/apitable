@@ -735,6 +735,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
       }
 
       if (activeView && activeView.type === ViewType.Gantt) {
+        // eslint-disable-next-line no-unsafe-optional-chaining
         const { linkFieldId, endFieldId } = activeView?.style;
         if (!(linkFieldId && endFieldId === field.id)) return;
         const sourceRecordData = {

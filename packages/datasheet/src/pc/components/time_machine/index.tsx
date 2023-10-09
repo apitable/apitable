@@ -297,10 +297,10 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
               changesetList.map((item, index) => {
                 const memberInfo = uuidMap && uuidMap[item.userId!];
                 const title = getSocialWecomUnitName?.({
-                    name: memberInfo?.memberName,
-                    isModified: memberInfo?.isMemberNameModified,
-                    spaceInfo,
-                  }) || '';
+                  name: memberInfo?.memberName,
+                  isModified: memberInfo?.isMemberNameModified,
+                  spaceInfo,
+                }) || '';
                 const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
                 return (
                   <section

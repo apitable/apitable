@@ -32,6 +32,7 @@ import {
   t,
 } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
+import { getFieldTypeIcon } from '../multi_grid/field_setting';
 import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
@@ -80,15 +81,22 @@ export const getNodeOutputSchemaList = (props: {
     schemaList.push({
       id: trigger?.triggerId!,
       title: triggerType.name,
+      // @ts-ignore
+      icon: integrateCdnHost(
+        getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : triggerType?.service?.logo,
+      ),
       schema: triggerType.outputJsonSchema,
     });
   }
   actionList.forEach((action) => {
     const actionType = actionTypes.find((actionType) => actionType.actionTypeId === action.typeId);
+    console.log('acto', actionType);
 
     if (actionType) {
       schemaList.push({
         id: action.id,
+        // @ts-ignore
+        icon: integrateCdnHost(actionType?.service?.logo),
         title: actionType.name,
         // TODO: After integration, remove the judgement here, the three actions that send IM messages do not have outputJsonSchema.
         schema: ['sendWecomMsg', 'sendLarkMsg', 'sendDingtalkMsg'].includes(actionType?.endpoint) ? undefined : actionType.outputJsonSchema,
@@ -103,12 +111,14 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
   const fieldsSchema = {
     title: '列属性',
     type: 'object',
+    icon: undefined,
     properties: {},
   };
   const getFieldCommonSchema = (field: IField) => {
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, field.id) === ConfigConstant.Role.None;
     return {
       title: isCryptoField ? t(Strings.robot_variables_cant_view_field) : field.name,
+      icon: getFieldTypeIcon(field.type),
       disabled: isCryptoField,
     };
   };
@@ -118,6 +128,8 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
       ...fieldOpenValueJsonSchema,
       ...getFieldCommonSchema(field),
     };
+    // @ts-ignore
+    fieldsSchema.icon = getFieldCommonSchema(field).icon;
   });
   return fieldsSchema;
 };

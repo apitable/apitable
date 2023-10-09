@@ -33,12 +33,26 @@ import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
 import { getModalTitle } from './utils';
 
+export interface ISearchShowOption {
+  showForm: boolean
+  showDatasheet: boolean
+  needPermission?: 'manageable' | 'editable'
+  showMirror: boolean
+  showView: boolean
+}
 interface ISearchPanelProps {
   folderId: string;
+  formId?: string;
   activeDatasheetId?: string;
+  options?: ISearchShowOption,
   setSearchPanelVisible: (v: boolean) => void;
+  onNodeSelect?: (data: {
+                   datasheetId?: string;
+  formId?: string;
+                }) => void;
   onChange: (result: {
     datasheetId?: string;
+    formId?: string;
     mirrorId?: string;
     viewId?: string;
     widgetIds?: string[];
@@ -49,6 +63,7 @@ interface ISearchPanelProps {
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType;
   showMirrorNode?: boolean;
+  directClickMode?: boolean
 }
 
 export interface ISearchChangeProps {
@@ -59,19 +74,20 @@ export interface ISearchChangeProps {
 }
 
 const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (props) => {
-  const { activeDatasheetId = '', noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
+  const { activeDatasheetId = '', formId, options, onNodeSelect, directClickMode, noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
   const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {
     currentMeta: null,
     loading: true,
     currentDatasheetId: activeDatasheetId,
+    currentFormId: formId,
     currentFolderId: folderId,
     currentMirrorId: '',
     currentViewId: '',
     showSearch: false,
     parents: [],
     searchValue: '',
-    onlyShowEditableNode: secondConfirmType === SecondConfirmType.Form,
+    onlyShowEditableNode: secondConfirmType === SecondConfirmType.Form || props.options?.needPermission != null,
     nodes: [],
     searchResult: '',
     folderLoaded: false,
@@ -105,6 +121,9 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
   const _SearchPanel = useMemo(() => {
     return (
       <SearchPanelMain
+        options={options}
+        onNodeSelect={onNodeSelect}
+        directClickMode={directClickMode}
         hidePanel={hidePanel}
         noCheckPermission={noCheckPermission}
         showMirrorNode={showMirrorNode}
@@ -166,7 +185,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
         )}
       </div>
     );
-  }, [_SearchPanel, isMobile, props.onChange, secondConfirmType, state.currentDatasheetId, state.currentMeta, state.currentViewId, viewDataLoaded]);
+  }, [_SearchPanel, hidePanel, isMobile, loading, onChange, props, secondConfirmType, state.currentDatasheetId, state.currentMeta, state.currentViewId, state.nodes, viewDataLoaded]);
 
   return (
     <>

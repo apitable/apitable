@@ -23,7 +23,6 @@ import { InfoCircleOutlined, IIconProps, MoreStandOutlined, WarnCircleFilled } f
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
 import { GRID_CELL_VALUE_PADDING, KonvaGridContext, FieldHeadIconType } from 'pc/components/konva_grid';
-import { FieldIcon } from './field_icon';
 import {
   GRID_FIELD_HEAD_HEIGHT,
   GRID_ICON_COMMON_SIZE,
@@ -32,6 +31,7 @@ import {
   FIELD_HEAD_ICON_SIZE_MAP,
   FIELD_HEAD_TEXT_MIN_WIDTH,
 } from '../../constant';
+import { FieldIcon } from './field_icon';
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 interface IFieldHeadProps {

@@ -17,7 +17,6 @@
  */
 
 import { useMount } from 'ahooks';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -61,6 +60,7 @@ import {
   EyeOpenOutlined,
   LockOutlined,
 } from '@apitable/icons';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';

@@ -17,15 +17,14 @@
  */
 
 import * as React from 'react';
-import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { useSelector } from 'react-redux';
+import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
+import { Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { useAddNewRobot, useShowRobot } from '../hooks';
-import { IRobotHeadAddBtn } from '../interface';
-import { OrTooltip } from '../robot_detail/or_tooltip';
-import { useRobotListState } from '../robot_list';
-import { useRobotController } from '../robot_list/controller';
+import { useAutomationNavigateController } from '../../automation/controller/controller';
+import { OrTooltip } from '../../common/or_tooltip';
+import { useAddNewRobot } from '../hooks';
 
 export const Beta = () => {
   const theme = useTheme();
@@ -39,73 +38,19 @@ export const Beta = () => {
 };
 
 export const AddRobotButton = () => {
-  // const theme = useTheme();
+  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const { canAddNewRobot, disableTip } = useAddNewRobot();
-  // const isShowRobot = useShowRobot();
 
-  const { createNewRobot } = useRobotController();
-  // const tooltip = disableTip;
-
-  // const WrapperTooltip: any = canAddNewRobot ? (props?.container || React.Fragment) : Tooltip;
-  // const WrapperTooltipProps = canAddNewRobot ? (props?.toolTips || {}) : { placement: 'bottom-center', content: disableTip };
-  // const boxStyle: React.CSSProperties = props && props.style ? props.style : {};
-
-  // const icon = <AddOutlined color={theme.color.fc1} />;
-
-  // const iconOnly = props?.iconOnly === true;
-
-  // const child = (
-  //   <Typography variant="body3" color={theme.color.fc1}>
-  //     {t(Strings.robot_panel_create_tab)}
-  //   </Typography>
-  // );
-  //
-  // const content = (canAddNewRobot && props?.useTextBtn) ? (
-  //   <Box
-  //     display="flex"
-  //     alignItems="center"
-  //     style={boxStyle}
-  //   >
-  //     <TextButton
-  //       size="small"
-  //       disabled={!canAddNewRobot || !isShowRobot}
-  //       onClick={createNewRobot}
-  //       prefixIcon={icon}
-  //       style={props?.btnStyle}
-  //     >
-  //       <>
-  //         { !iconOnly && child }
-  //       </>
-  //     </TextButton>
-  //   </Box>
-  // ) : (
-  //   <Box
-  //     display="flex"
-  //     alignItems="center"
-  //     justifyContent="space-between"
-  //     padding="5px 8px"
-  //     opacity={canAddNewRobot ? 1 : 0.5}
-  //     style={{ cursor: canAddNewRobot ? 'pointer' : 'not-allowed', ...boxStyle }}
-  //     onClick={() => canAddNewRobot && createNewRobot}
-  //   >
-  //     {icon}
-  //     <>
-  //       { !iconOnly && child }
-  //     </>
-  //   </Box>
-  // );
+  const { createNewRobot } = useAutomationNavigateController();
 
   return (
     <OrTooltip tooltip={disableTip} tooltipEnable={!canAddNewRobot}>
-      <span>
-        <IconButton shape={'square'} disabled={!canAddNewRobot} onClick={canAddNewRobot ? createNewRobot : undefined} icon={AddOutlined} />
-      </span>
+      <IconButton shape={'square'} disabled={!canAddNewRobot} onClick={canAddNewRobot ? () => createNewRobot(datasheetId) : undefined} icon={AddOutlined} />
     </OrTooltip>
   );
 };
 
 export const RobotListHead = () => {
-  const isShowRobot = useShowRobot();
   return (
     <>
       <AddRobotButton />

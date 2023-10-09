@@ -21,6 +21,10 @@ export const nodeTypeList = [
     type: ConfigConstant.NodeType.DATASHEET,
   },
   {
+    name: t(Strings.automation),
+    type: ConfigConstant.NodeType.AUTOMATION,
+  },
+  {
     name: t(Strings.folder),
     type: ConfigConstant.NodeType.FOLDER,
   },

@@ -74,7 +74,7 @@ const FieldIconMap = {
   [FieldType.Cascader]: CascadeOutlined,
 };
 
-export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16) => {
+export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): Element => {
   const FieldIcon = FieldIconMap[type];
   if (!FieldIcon) {
     return <div />;

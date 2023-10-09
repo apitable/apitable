@@ -62,11 +62,11 @@ export const useLinkInvite = () => {
           if (res.data.success) {
             Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
-          }else{
-            if (res.data.code === billingErrorCode.OVER_LIMIT) {
-              return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-            }
           }
+          if (res.data.code === billingErrorCode.OVER_LIMIT) {
+            return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
+          }
+          
         });
       } else {
         Router.push(Navigation.INVITE, {

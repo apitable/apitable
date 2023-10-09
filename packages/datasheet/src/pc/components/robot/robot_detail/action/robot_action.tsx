@@ -16,36 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import { Message } from '@apitable/components';
+import axios from 'axios';
 import cx from 'classnames';
+import produce from 'immer';
 import { useAtom } from 'jotai';
+import { isEqual } from 'lodash';
 import * as React from 'react';
-import {FC, memo, ReactNode, useCallback, useMemo} from 'react';
+import { FC, memo, ReactNode, useCallback, useContext, useMemo } from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
-import useSWR, { mutate } from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { Message, Modal } from 'pc/components/common';
+import { useResponsive } from '../../../../hooks';
+import { useAutomationController } from '../../../automation/controller';
 import {
+  automationLocalMap,
   automationPanelAtom,
   automationStateAtom,
-  automationTriggerAtom,
+  inheritedTriggerAtom,
   PanelName
-} from '../../../automation/controller';
+} from '../../../automation/controller/atoms';
+import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
+import { ScreenSize } from '../../../common/component_display';
+import { ShareContext } from '../../../share';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useActionTypes, useRobotTriggerType, useTriggerTypes } from '../../hooks';
-import { IRobotAction, ITriggerType } from '../../interface';
-import { useRobotListState } from '../../robot_list';
+import { IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
+import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
-import { getActionList } from "./robot_actions";
-import axios from "axios";
+import { getActionList } from '../utils';
 
 export interface IRobotActionProps {
   index: number;
@@ -54,39 +61,39 @@ export interface IRobotActionProps {
   editType?:EditType
 }
 
-
-const req = axios.create({
-  baseURL: '/nest/v1/',
-});
 export const RobotAction = memo((props: IRobotActionProps) => {
   const { editType, action, robotId, index = 0 } = props;
+  const permissions = useAutomationResourcePermission();
   const triggerType = useRobotTriggerType();
   const { originData: actionTypes, data: aList } = useActionTypes();
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.lg);
   const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
   const propsFormData = action.input;
-
-  const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
 
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
 
   const [automationState, setAutomationAtom] = useAtom(automationStateAtom );
 
+  const { shareInfo } = useContext(ShareContext);
 
-  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
-  const actions = data?.data?.data;
+  const actions = (automationState?.robot?.actions ?? []).map(action => ({ ...action,
+    typeId: action.actionTypeId,
+    id: action.actionId }));
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
-  const [triggerV] = useAtom(automationTriggerAtom);
+  const [triggerV] = useAtom(inheritedTriggerAtom);
+  const { data: triggerTypes } = useTriggerTypes();
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes: aList,
-    triggerTypes,
+    triggerTypes: triggerTypes,
     trigger: triggerV,
   });
 
-  const { api: { refresh } } = useRobotListState();
+  const { api: { refresh, refreshItem } } = useAutomationController();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
     if (actionTypeId === action?.typeId) {
       return;
@@ -97,12 +104,14 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: () => {
-        changeActionTypeId(action?.id!, actionTypeId).then(async () => {
-          await mutate(`/automation/robots/${robotId}/actions`);
+        if(!automationState?.resourceId) {
+          return;
+        }
+        changeActionTypeId(automationState?.resourceId, action?.id!, actionTypeId, robotId).then(async () => {
+          setMap(produce(draft => {
+            draft.delete(action.id);
+          }));
 
-          if(!automationState?.resourceId) {
-            return;
-          }
           await refresh({
             resourceId: automationState?.resourceId!,
             robotId: robotId,
@@ -110,19 +119,21 @@ export const RobotAction = memo((props: IRobotActionProps) => {
 
           const itemDetail = await getResourceAutomationDetail(
               automationState?.resourceId!,
-              robotId
+              robotId, {
+                shareId: shareInfo?.shareId
+              }
           );
 
-          const newState = {
-            robot: itemDetail,
-            currentRobotId:  robotId,
-            resourceId:automationState.resourceId,
-          };
-          setAutomationAtom(newState);
+          setAutomationAtom(produce(automationState, draft => {
+            draft.robot = itemDetail;
+          }));
 
           const data = itemDetail.actions.find(item => item.actionId===action.id);
           if(!data) {
             return;
+          }
+          if(isMobile) {
+            setSideBarVisible(false);
           }
           setAutomationPanel(
             {
@@ -144,10 +155,13 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       type: 'warning',
     });
   },
-  [action.id, action?.typeId, automationState?.resourceId, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel],
+  [action.id, action?.typeId, automationState, isMobile, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel, shareInfo?.shareId],
   );
 
   const dataClick = useCallback(() => {
+    if(!permissions.editable) {
+      return;
+    }
     if(editType=== EditType.detail) {
       return;
     }
@@ -157,22 +171,51 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       // @ts-ignore
       data: props
     });
-  }, [action.id, editType, props, setAutomationPanel]);
+  }, [action.id, editType, permissions.editable, props, setAutomationPanel]);
+
+  const [map, setMap] =useAtom(automationLocalMap);
+
+  const formData = map.get(action.id!) ?? action.input;
+
+  const mapFormData = map.get(action.id!);
+  const modified = useMemo(( ) => {
+    return mapFormData != null && !isEqual(action.input, mapFormData);
+  }, [mapFormData, action.input]);
+  const handleUpdate = useCallback((e: IChangeEvent) => {
+    setMap(produce(draft => {
+      draft.set(action.id, e.formData);
+    }));
+  }, [action.id, propsFormData, setMap]);
+
+  if(!formData) {
+    setMap(produce(map, (draft => {
+      draft.set(action.id!, action.input);
+    })));
+  }
   if (!actionType) {
     return null;
   }
 
   const handleActionFormSubmit = (props: any) => {
     const newFormData = props.formData;
+
     if (!shallowEqual(newFormData, propsFormData)) {
-      updateActionInput(action.id, newFormData).then(() => {
-        mutate(`/automation/robots/${robotId}/actions`);
+      if(!automationState?.resourceId) {
+        console.error('resouceId is empty');
+        return;
+      }
+      updateActionInput(automationState?.resourceId, action.id, newFormData, robotId).then(() => {
+        refreshItem();
+
+        setMap(produce(map, (draft => {
+          draft.set(action.id!, newFormData);
+        })));
         Message.success({
           content: t(Strings.robot_save_step_success)
         });
       }).catch(() => {
         Message.error({
-          content: '步骤保存失败'
+          content: t(Strings.error)
         });
       });
     }
@@ -180,7 +223,6 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   // Find the position of the current action in the nodeOutputSchemaList and return only the schema before that
   const currentActionIndex = nodeOutputSchemaList.findIndex(item => item.id === action.id);
   const prevActionSchemaList = nodeOutputSchemaList.slice(0, currentActionIndex);
-
   const actionTypeOptions = getNodeTypeOptions(getFilterActionTypes(actionTypes, action.typeId));
   const { uiSchema, schema } = actionType.inputJsonSchema;
   // FIXME: Temporary solution, simple checksum rules should be configurable via json instead of writing code here.
@@ -207,17 +249,22 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const isActive = panelState.dataId === action.id;
   return <NodeFormItem
     nodeId={action.id}
+    disabled={!permissions.editable}
     type='action'
     index={index}
-    key={action.id}
+    // key={action.id}
     // noValidate
     // noHtml5Validate
+    unsaved={modified}
     title={actionType.name}
     validate={validate}
     handleClick={editType=== EditType.entry ? dataClick: undefined}
     onSubmit={handleActionFormSubmit}
+    onUpdate={
+      handleUpdate
+    }
     description={actionType.description}
-    formData={propsFormData}
+    formData={formData}
     serviceLogo={integrateCdnHost(actionType.service.logo)}
     schema={schema}
     uiSchema={{ ...uiSchema, password: { 'ui:widget': 'PasswordWidget' } }}
@@ -238,6 +285,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       {
         editType === EditType.entry && (
           <SearchSelect
+            disabled={!permissions.editable}
             clazz={{
               item: itemStyle.item,
               icon: itemStyle.icon

@@ -22,11 +22,11 @@ import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IAttacheField, IAttachmentValue, Selectors } from '@apitable/core';
 import { DeleteOutlined, DownloadOutlined } from '@apitable/icons';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
 import styles from './styles.module.less';
-import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 
 interface IPreviewItemProps {
   datasheetId: string;

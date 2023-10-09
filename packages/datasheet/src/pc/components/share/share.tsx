@@ -37,6 +37,9 @@ import apitableLogoDark from 'static/icon/datasheet/APITable_brand_dark.png';
 import apitableLogoLight from 'static/icon/datasheet/APITable_brand_light.png';
 import vikaLogoDark from 'static/icon/datasheet/vika_logo_brand_dark.png';
 import vikaLogoLight from 'static/icon/datasheet/vika_logo_brand_light.png';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { FormPanel } from '../form_panel';
+import { ShareMenu } from '../share/share_menu';
 import { IShareSpaceInfo } from './interface';
 import { ShareContent } from './share_content';
 import { ShareContentWrapper } from './share_content_wrapper';
@@ -44,9 +47,6 @@ import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
 import { useMountShare } from './use_mount_share';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { FormPanel } from '../form_panel';
-import { ShareMenu } from '../share/share_menu';
 
 const _SplitPane: any = SplitPane;
 

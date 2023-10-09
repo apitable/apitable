@@ -157,6 +157,28 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
       const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
       let data: any = [];
       switch (contextMenuType) {
+        case ConfigConstant.ContextMenuType.AUTOMATION: {
+          data = [
+            [
+              contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+              contextItemMap.get(ContextItemKey.Favorite)(() => {
+                updateNodeFavoriteStatus(nodeId);
+              }, nodeFavorite),
+              contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+              contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+            ],
+            [
+              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+              contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+              contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+              contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
+            ],
+            [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
+          ];
+          Player.applyFilters(Events.get_context_menu_file_more, data);
+          break;
+        }
         case ConfigConstant.ContextMenuType.DATASHEET: {
           data = [
             [
@@ -292,13 +314,9 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 openCatalog();
                 addTreeNode(targetId);
               }),
-              ...(CONST_ENABLE_AUTOMATION_NODE
-                ? [
-                  contextItemMap.get(ContextItemKey.AddAutomation)(() => {
-                    addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
-                  }),
-                ]
-                : []),
+              contextItemMap.get(ContextItemKey.AddAutomation)(() => {
+                addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
+              }),
               contextItemMap.get(ContextItemKey.AddForm)(() => {
                 const result = triggerUsageAlert?.(
                   'maxFormViewsInSpace',

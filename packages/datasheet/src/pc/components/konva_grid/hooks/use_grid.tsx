@@ -400,7 +400,7 @@ export const useGrid = (props: IUseGridProps) => {
       x: GRID_ROW_HEAD_WIDTH + frozenColumnWidth + 0.5,
       stroke: colors.borderGridVertical,
       strokeWidth: 1,
-     }
+    };
     const commonProps = {
       x: GRID_ROW_HEAD_WIDTH + frozenColumnWidth + 0.5,
       stroke: finalColor,
@@ -417,13 +417,13 @@ export const useGrid = (props: IUseGridProps) => {
       
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
     const middle = <Group x={0} y={0}>
-        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
-        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
-      </Group>;
+      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
+      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
+    </Group>;
     const bottom = <Group x={0} y={0}>
       <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...baseProps} {...shadowProps} />
       <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />
-      </Group>;
+    </Group>;
     const generatePlaceholder = (y: number, height: number) => (
       <Rect
         name={KONVA_DATASHEET_ID.GRID_FROZEN_SHADOW_LINE}

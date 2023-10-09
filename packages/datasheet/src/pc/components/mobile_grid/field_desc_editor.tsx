@@ -100,7 +100,7 @@ const FieldDescEditor = ({ field, onClose, readOnly }: IFieldDescEditor) => {
     const originPress = button.onClick || noop;
     button.onClick = () => {
       const res = originPress() as any as Promise<void>;
-      if (typeof res != undefined) {
+      if (typeof res != "undefined") {
         res
           .then(() => {
             onClose();

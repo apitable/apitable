@@ -43,3 +43,12 @@ export const useAllColumns = (dstId: string, withNoPermissionField?: boolean) =>
     });
   }, [firstView, fieldPermissionMap, withNoPermissionField]);
 };
+
+export const useAllColumnsOrEmpty = (dstId?: string, withNoPermissionField?: boolean) => {
+  const value = useAllColumns(dstId ?? '', withNoPermissionField);
+  if(!dstId) {
+    return [];
+  }
+
+  return value;
+};

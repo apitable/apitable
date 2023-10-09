@@ -19,15 +19,15 @@
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { Box, Button, Typography, useTheme, ThemeName } from '@apitable/components';
-import { Api, Strings, SystemConfig, t } from '@apitable/core';
+import { Api, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
 import { useRequest } from 'pc/hooks';
 import { WECOM_ROBOT_URL } from 'pc/utils';
 import ImageNoRecordDark from 'static/icon/datasheet/automation_empty_dark.png';
 import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png';
 
+import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { useAddNewRobot, useShowRobot } from '../hooks';
-import { useRobotController } from './controller';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 
@@ -42,8 +42,9 @@ export const RobotEmptyList = () => {
   const themeName = useSelector((state) => state.theme);
   const ImageNoRecord = themeName === ThemeName.Light ? ImageNoRecordLight : ImageNoRecordDark;
 
-  const { createNewRobot } = useRobotController();
+  const { createNewRobot } = useAutomationNavigateController();
 
+  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
   const openTestFunction = () => {
     const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
     const { url: _url, key } = spaceLabs.find((lab) => lab.key === SystemConfig.test_function.robot.feature_key) || {};
@@ -61,7 +62,9 @@ export const RobotEmptyList = () => {
         <Button
           disabled={!canAddNewRobot}
           color="primary"
-          onClick={() => (isShowRobot ? canAddNewRobot && createNewRobot() : openTestFunction())}
+          onClick={() => (isShowRobot ? canAddNewRobot && createNewRobot(
+            datasheetId,
+          ) : openTestFunction())}
           block
         >
           {isShowRobot ? t(Strings.new_automation) : t(Strings.test_function_btnmodal_btntext)}

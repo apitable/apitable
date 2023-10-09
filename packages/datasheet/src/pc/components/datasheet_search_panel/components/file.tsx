@@ -17,9 +17,9 @@
  */
 
 import classNames from 'classnames';
-import { ConfigConstant } from "@apitable/core";
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
+import { ConfigConstant } from '@apitable/core';
 import { DatasheetOutlined, MirrorOutlined, FormOutlined, DashboardOutlined } from '@apitable/icons';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import styles from './style.module.less';
@@ -40,7 +40,6 @@ export const File: React.FC<
   const colors = useThemeColors();
   const { children, disable, id, onClick, richContent, active } = props;
 
-
   const renderIcon = () => {
     switch (props.nodeType) {
       case ConfigConstant.NodeType.DASHBOARD:
@@ -52,7 +51,7 @@ export const File: React.FC<
       default:
         return <DatasheetOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} />;
     }
-  }
+  };
 
   return (
     <WrapperTooltip wrapper={Boolean(disable)} tip={disable ? disable.message : ''} style={{ display: 'block' }}>
@@ -65,6 +64,42 @@ export const File: React.FC<
           onClick={() => !disable && onClick && onClick(id)}
         >
           {renderIcon()}
+
+          {richContent ? (
+            <span className={styles.text} dangerouslySetInnerHTML={{ __html: children as string }} />
+          ) : (
+            <span className={styles.text}>{children}</span>
+          )}
+          {disable && <Budget>{disable.budget}</Budget>}
+        </div>
+      </div>
+    </WrapperTooltip>
+  );
+};
+
+export const FormSearchItem: React.FC<
+    React.PropsWithChildren<{
+        disable?: { budget: string; message: string };
+        active?: boolean;
+        id: string;
+        onClick?: (id: string) => void;
+        richContent?: boolean;
+        isMirror?: boolean;
+    }>
+> = (props) => {
+  const colors = useThemeColors();
+  const { children, disable, id, onClick, richContent, active, isMirror } = props;
+  return (
+    <WrapperTooltip wrapper={Boolean(disable)} tip={disable ? disable.message : ''} style={{ display: 'block' }}>
+      <div className={styles.nodeContainerWrapper}>
+        <div
+          className={classNames(styles.nodeContainer, {
+            [styles.disable]: Boolean(disable),
+            [styles.active]: active,
+          })}
+          onClick={() => !disable && onClick && onClick(id)}
+        >
+          <FormOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} />
 
           {richContent ? (
             <span className={styles.text} dangerouslySetInnerHTML={{ __html: children as string }} />

@@ -31,8 +31,9 @@ const ErrorText = styled.div.attrs(applyDefaultTheme)`
 export const SelectWidget = ({
   options: { enumOptions }, value, onChange, rawErrors, placeholder
 }: WidgetProps) => {
-  const hasError = Boolean(rawErrors?.length);
-  const style = hasError ? { border: '1px solid red', width: '100%' } : { width: '100%' };
+  // const hasError = Boolean(rawErrors?.length);
+  const style = { width: '100%' };
+      // hasError ? { border: '1px solid red', width: '100%' } :
 
   return (
     <>

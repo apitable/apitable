@@ -7,6 +7,7 @@ export interface ISearchPanelState {
   currentDatasheetId: string;
   currentViewId: string;
   showSearch: boolean;
+  currentFormId?: string;
   parents: IParent[];
   searchValue: string;
   onlyShowEditableNode: boolean;

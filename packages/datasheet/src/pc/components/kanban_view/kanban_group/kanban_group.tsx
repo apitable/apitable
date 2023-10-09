@@ -31,11 +31,11 @@ import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useResponsive } from 'pc/hooks';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
+import { GroupHeader } from '../group_header';
+import { useCommand } from '../hooks/use_command';
 import { Card, Row } from './rows';
 import { MARGIN_DISTANCE } from './rows/rows';
 import styles from './styles.module.less';
-import { GroupHeader } from '../group_header';
-import { useCommand } from '../hooks/use_command';
 
 interface IKanbanGroupProps {
   groupId: string;

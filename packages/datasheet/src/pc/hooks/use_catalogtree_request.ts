@@ -43,10 +43,11 @@ import { billingErrorCode, SubscribeUsageTipType, triggerUsageAlert, triggerUsag
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
-  const { spaceId, formId, datasheetId, dashboardId, mirrorId, embedId } = useSelector((state: IReduxState) => {
+  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
-    const { datasheetId, formId, dashboardId, mirrorId, embedId } = state.pageParams;
+    const { datasheetId, formId, automationId, dashboardId, mirrorId, embedId } = state.pageParams;
     return {
+      automationId,
       spaceId,
       formId,
       datasheetId,

@@ -22,6 +22,7 @@ export interface IParams {
   spaceId?: string | null;
   nodeId?: string;
   viewId?: string;
+  automationId?: string;
   recordId?: string;
   shareId?: string;
   categoryId?: string; // Template Category

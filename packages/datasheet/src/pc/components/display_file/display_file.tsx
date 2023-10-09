@@ -20,12 +20,12 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { CollaCommandName, CutMethod, IAttachmentValue, IField, isGif } from '@apitable/core';
+import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { getCellValueThumbSrc, showOriginImageThumbnail } from 'pc/utils';
 import { expandPreviewModal } from '../preview_file';
 import styles from './style.module.less';
-import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 
 interface IDisplayFileProps {
   index: number;

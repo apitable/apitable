@@ -16,25 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { mutate as mutateSwr } from 'swr';
 import produce from 'immer';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { isEqual } from 'lodash';
-import { useCallback, useEffect, useMemo, memo } from 'react';
 import * as React from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import useSWR from 'swr';
 import { SearchSelect } from '@apitable/components';
-import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
+import {
+  EmptyNullOperand,
+  IExpression,
+  integrateCdnHost,
+  IReduxState,
+  OperatorEnums,
+  Selectors,
+  Strings,
+  t
+} from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
-import { automationPanelAtom, automationStateAtom, automationTriggerAtom, PanelName } from '../../../automation/controller';
+import { useResponsive, useSideBarVisible } from '../../../../hooks';
+import {
+  automationLocalMap,
+  automationPanelAtom,
+  automationStateAtom,
+  automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormList,
+  PanelName, useAutomationController
+} from '../../../automation/controller';
+import { getDatasheetId, getFormId } from '../../../automation/controller/hooks/use_robot_fields';
+import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
+import { SelectDst, SelectForm } from '../../../automation/select_dst';
+import { ScreenSize } from '../../../common/component_display';
+import { IFormNodeItem } from '../../../tool_bar/foreign_form/form_list_panel';
 import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
-import { IRobotTrigger, ITriggerType } from '../../interface';
-import { useRobotListState } from '../../robot_list';
+import { AutomationScenario, IRobotTrigger, ITriggerType } from '../../interface';
 import { DropdownTrigger } from '../action/robot_action';
 import { NodeForm, NodeFormInfo } from '../node_form';
+import { literal2Operand } from '../node_form/ui/utils';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
 import itemStyle from './select_styles.module.less';
@@ -43,17 +61,11 @@ interface IRobotTriggerProps {
   robotId: string;
   triggerTypes: ITriggerType[];
   editType?: EditType;
-  formList: IFormNodeItem[];
-  setTrigger?: (trigger: IRobotTrigger) => void;
 }
 
 interface IRobotTriggerBase {
   trigger: IRobotTrigger;
-  mutate: any;
   triggerTypes: ITriggerType[];
-  formList: IFormNodeItem[];
-  datasheetId?: string;
-  datasheetName?: string;
   editType?: EditType;
 }
 
@@ -61,16 +73,68 @@ export enum EditType {
   entry = 'entry',
   detail = 'detail',
 }
+
+const useAutomationLocalStateMap = () => {
+
+  const [localStateMap, setLocalStateMap] =useAtom(automationLocalMap);
+
+  const clear = useCallback((id: string) => {
+    setLocalStateMap(produce(localStateMap, (draft => {
+      draft.delete(id);
+    })));
+  }, [localStateMap, setLocalStateMap]);
+
+  return useMemo(() => ({
+    clear
+  }), [clear]);
+};
 const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
-  const { trigger, mutate, editType, triggerTypes =[], formList, datasheetId, datasheetName } = props;
-  const formData = trigger.input;
+  const { trigger, editType, triggerTypes } = props;
   const triggerTypeId = trigger.triggerTypeId;
   const triggerType = triggerTypes.find((t) => t.triggerTypeId === trigger.triggerTypeId);
+  const [localStateMap, setLocalStateMap] =useAtom(automationLocalMap);
+  const { clear } = useAutomationLocalStateMap();
 
+  const { api: { refreshItem } } = useAutomationController();
+  const formData = localStateMap.get(trigger.triggerId!) ?? trigger.input;
+  if(!formData) {
+    setLocalStateMap(produce(localStateMap, (draft => {
+      draft.set(trigger.triggerId!, trigger.input);
+    })));
+  }
+
+  const mapFormData = localStateMap.get(trigger.triggerId!);
+  const modified = useMemo(( ) => {
+    return mapFormData != null && !isEqual(trigger.input, mapFormData);
+  }, [mapFormData, trigger.input]);
+
+  const { data: formList } = useAtomValue(loadableFormList);
+
+  const triggerDatasheetValue = useAtomValue(automationTriggerDatasheetAtom);
+  const setTriggerDatasheetValue = useSetAtom(automationTriggerDatasheetAtom);
+  let datasheetId = triggerDatasheetValue.id ;
   const automationState = useAtomValue(automationStateAtom);
+  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+
+  if(automationState?.scenario === AutomationScenario.datasheet) {
+    datasheetId = activeDstId;
+  }
+
+  let formId = triggerDatasheetValue.formId;
+  if(automationState?.scenario === AutomationScenario.datasheet) {
+    formId = undefined;
+  }
+
+  const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+  const datasheetName = datasheet?.name;
+
+  const form = useSelector(reduxState => Selectors.getForm(reduxState, formId ), shallowEqual);
+  const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const formName = form?.name;
+
   const {
     api: { refresh },
-  } = useRobotListState();
+  } = useAutomationController();
 
   const handleTriggerTypeChange = useCallback(
     (triggerTypeId: string) => {
@@ -83,20 +147,16 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         cancelText: t(Strings.cancel),
         okText: t(Strings.confirm),
         onOk: () => {
-          changeTriggerTypeId(trigger?.triggerId!, triggerTypeId).then(async () => {
-            await mutate({
-              ...trigger!,
-              input: null,
-              triggerTypeId,
-            });
-
-            mutateSwr(`/automation/robots/${automationState?.currentRobotId}/trigger`)
-            if (!automationState?.resourceId) {
-              return;
-            }
-            if (!automationState?.currentRobotId) {
-              return;
-            }
+          if (!automationState?.resourceId) {
+            console.error('resourceId is empty');
+            return;
+          }
+          if (!automationState?.robot?.robotId) {
+            console.error('robotId is empty');
+            return;
+          }
+          changeTriggerTypeId(automationState?.resourceId, trigger?.triggerId!, triggerTypeId, automationState?.robot?.robotId).then(async () => {
+            clear(trigger.triggerId!);
             await refresh({
               resourceId: automationState?.resourceId!,
               robotId: automationState?.currentRobotId!,
@@ -109,84 +169,214 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         type: 'warning',
       });
     },
-    [trigger, mutate, automationState?.resourceId, automationState?.currentRobotId, refresh],
+    [trigger, automationState?.resourceId, automationState?.currentRobotId, refresh],
   );
 
   const { schema, uiSchema = {} } = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
-      return produce(triggerType.inputJsonSchema, (draft) => {
-        const properties = draft.schema.properties as any;
+      if(automationState?.scenario === AutomationScenario.datasheet) {
+        return produce(triggerType.inputJsonSchema, (draft) => {
+          const properties = draft.schema.properties as any;
 
-        switch (triggerType.endpoint) {
-          case 'form_submitted':
-            properties!.formId.enum = formList.map((f) => f.nodeId);
-            properties!.formId.enumNames = formList.map((f) => f.nodeName);
-            break;
-          case 'record_matches_conditions':
-            properties!.datasheetId.default = datasheetId;
-            properties!.datasheetId.enum = [datasheetId];
-            properties!.datasheetId.enumNames = [datasheetName];
-            // If here is object ui can't be rendered properly, convert to string and handle serialization and deserialization at onchange time.
-            break;
-          case 'record_created':
-            properties!.datasheetId.default = datasheetId;
-            properties!.datasheetId.enum = [datasheetId];
-            properties!.datasheetId.enumNames = [datasheetName];
-            break;
-          default:
-            break;
-        }
-        return draft;
-      });
+          switch (triggerType.endpoint) {
+            case 'form_submitted':
+              properties!.formId.enum = formList.map((f: IFormNodeItem) => f.nodeId);
+              properties!.formId.enumNames = formList.map((f: IFormNodeItem) => f.nodeName);
+              break;
+            case 'record_matches_conditions':
+              properties!.datasheetId.default = datasheetId;
+              properties!.datasheetId.enum = [datasheetId];
+              properties!.datasheetId.enumNames = [datasheetName];
+              // If here is object ui can't be rendered properly, convert to string and handle serialization and deserialization at onchange time.
+              break;
+            case 'record_created':
+              properties!.datasheetId.default = datasheetId;
+              properties!.datasheetId.enum = [datasheetId];
+              properties!.datasheetId.enumNames = [datasheetName];
+              break;
+            default:
+              break;
+          }
+          return draft;
+        });
+
+      }
+
+      return triggerType.inputJsonSchema;
     };
     return getTriggerInputSchema(triggerType!);
-  }, [datasheetId, datasheetName, formList, triggerType]);
+  }, [automationState?.scenario, datasheetId, datasheetName, formList, triggerType]);
 
   const triggerTypeOptions = useMemo(() => {
     return getNodeTypeOptions(triggerTypes);
   }, [triggerTypes]);
+
+  const operands = trigger?.input?.value?.operands ?? [];
+
+  const getDstIdItem = useMemo(( ) => {
+    if(operands.length === 0 ) {
+      return undefined;
+    }
+    const f = operands.findIndex((item: string) => item === 'datasheetId');
+    return operands[f+1].value;
+  }, [operands]);
+
+  const getFormIdItem = useMemo(( ) => {
+    if(operands.length === 0 ) {
+      return undefined;
+    }
+    const f = operands.findIndex((item: string) => item === 'formId');
+    return operands[f+1].value;
+  }, [operands]);
+
+  useEffect(() => {
+    setTriggerDatasheetValue(draft => ({ ...draft,
+      formId: getFormIdItem,
+    }));
+  }, [getFormIdItem, setTriggerDatasheetValue]);
+
+  useEffect(() => {
+    setTriggerDatasheetValue(draft => ({ ...draft,
+      id: getDstIdItem,
+    }));
+  }, [getDstIdItem, setTriggerDatasheetValue]);
+
   const mergedUiSchema = useMemo(() => {
     const isFilterForm = triggerType?.endpoint === 'record_matches_conditions';
-    return isFilterForm
-      ? {
-        ...uiSchema,
-        filter: {
-          'ui:widget': ({ value, onChange }: any) => {
-            const transformedValue =
+    if(automationState?.scenario === AutomationScenario.datasheet) {
+      return isFilterForm
+        ? {
+          ...uiSchema,
+          filter: {
+            'ui:widget': ({ value, onChange }: any) => {
+              const transformedValue =
+                    value == null || isEqual(value, EmptyNullOperand)
+                      ? {
+                        operator: OperatorEnums.And,
+                        operands: [],
+                      }
+                      : value.value;
+              return (
+                <RecordMatchesConditionsFilter
+                  datasheetId={datasheetId!}
+                  filter={transformedValue as IExpression}
+                  onChange={(value) => {
+                    onChange(value);
+                  }}
+                />
+              );
+            },
+          },
+          datasheetId: {
+            'ui:disabled': true,
+          },
+        }
+        : {};
+    }
+
+    return {
+      ...uiSchema,
+      formId: {
+        'ui:widget': ({ value, onChange, onBlur }: any) => {
+          return (
+            <SelectForm value={value?.value} onChange={v => {
+              onChange({
+                type: 'Literal',
+                value: v
+              });
+
+              onChange(literal2Operand(v));
+            }} />
+          );
+        } },
+      datasheetId: {
+        'ui:widget': ({ value, onChange, onBlur }: any) => {
+          return (
+            <SelectDst value={value?.value} onChange={v => {
+              setTriggerDatasheetValue(draft => ({ ...draft,
+                id: v,
+              }));
+              onChange({
+                type: 'Literal',
+                value: v
+              });
+
+              onChange(literal2Operand(v));
+            }} />
+          );
+        } },
+      filter: {
+        'ui:widget': ({ value, onChange }: any) => {
+          const transformedValue =
                 value == null || isEqual(value, EmptyNullOperand)
                   ? {
                     operator: OperatorEnums.And,
                     operands: [],
                   }
                   : value.value;
-            return (
-              <RecordMatchesConditionsFilter
-                datasheetId={datasheetId!}
-                filter={transformedValue as IExpression}
-                onChange={(value) => {
-                  onChange(value);
-                }}
-              />
-            );
-          },
-        },
-        datasheetId: {
-          'ui:disabled': true,
+          const dstId = getDstIdItem ?? triggerDatasheetValue?.id;
+
+          if(!dstId) {
+            return null;
+          }
+
+          return (
+            <RecordMatchesConditionsFilter
+              datasheetId={dstId}
+              filter={transformedValue as IExpression}
+              onChange={(value) => {
+                onChange(value);
+              }}
+            />
+          );
         },
       }
-      : {};
-  }, [datasheetId, triggerType?.endpoint, uiSchema]);
+    };
+  }, [automationState?.scenario, datasheetId, getDstIdItem, setTriggerDatasheetValue, triggerDatasheetValue?.id, triggerType?.endpoint, uiSchema]);
 
   const handleUpdateFormChange = useCallback(
     ({ formData }: any) => {
       if (!shallowEqual(formData, trigger.input)) {
-        updateTriggerInput(trigger.triggerId, formData)
+        if(!automationState?.resourceId) {
+          console.error('resourceId is empty');
+          return;
+        }
+        if(!automationState?.robot?.robotId) {
+          console.error('robotId is empty');
+          return;
+        }
+
+        console.log('formData', formData);
+        const operands = formData?.value?.operands ?? [];
+        console.log('operands', operands);
+        console.log('operands', operands);
+
+        const getDstIdItem = () => {
+          if(operands.length === 0 ) {
+            return undefined;
+          }
+          const f = operands.findIndex((item: string) => item === 'datasheetId');
+          return operands[f+1].value;
+        };
+
+        const getFormIdItem = ( ) => {
+          if(operands.length === 0 ) {
+            return undefined;
+          }
+          const f = operands.findIndex((item: string) => item === 'formId');
+          return operands[f+1].value;
+        };
+
+        const relatedResourceId = getDstIdItem() || getFormIdItem() || '';
+        console.log('relatedResourceId', relatedResourceId);
+        updateTriggerInput(automationState?.resourceId, trigger.triggerId, formData, automationState?.robot?.robotId, {
+          relatedResourceId
+        })
           .then(() => {
-            mutate({
-              ...trigger,
-              input: formData,
-            });
-            mutateSwr(`/automation/robots/${automationState?.currentRobotId}/trigger`)
+            refreshItem();
+            setLocalStateMap(produce(localStateMap, (draft => {
+              draft.set(trigger.triggerId!, formData);
+            })));
             Message.success({
               content: t(Strings.robot_save_step_success),
             });
@@ -198,33 +388,82 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           });
       }
     },
-    [mutate, trigger],
+    [localStateMap, setLocalStateMap, trigger],
   );
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.lg);
 
+  const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
 
   const isActive = panelState.dataId === trigger.triggerId;
 
+  const permissions = useAutomationResourcePermission();
   const NodeItem = editType === EditType.entry ? NodeFormInfo : NodeForm;
   const handleClick = useCallback(() => {
+    if(!permissions.editable) {
+      return;
+    }
+    if(isMobile) {
+      setSideBarVisible(false);
+    }
     setAutomationPanel({
       panelName: PanelName.Trigger,
       dataId: trigger.triggerId,
     });
-  }, [setAutomationPanel, trigger.triggerId]);
+  }, [isMobile, permissions.editable, setAutomationPanel, setSideBarVisible, trigger.triggerId]);
 
-  const memoedHandleClick = useMemo(() => {
+  const memorisedHandleClick = useMemo(() => {
+
     return editType === EditType.entry ? handleClick : undefined;
   }, [editType, handleClick]);
+
+  const handleUpdate = useCallback((e: any) => {
+    setLocalStateMap(produce(draft => {
+      draft.set(trigger.triggerId, e.formData);
+    }));
+  }, [setLocalStateMap, trigger.triggerId]);
+
   return (
     <NodeItem
+      disabled={
+        !permissions.editable
+      }
+      // TODO multiple trigger
       index={0}
-      handleClick={memoedHandleClick}
+      handleClick={memorisedHandleClick}
       nodeId={trigger.triggerId}
       schema={schema}
       formData={formData}
+      unsaved={modified}
+      validateOnMount
       uiSchema={mergedUiSchema}
       onSubmit={handleUpdateFormChange}
+      onUpdate={handleUpdate}
+      validate={(form, errors) => {
+        const formId = getFormId({ input: form } as any);
+        const dstId = getDatasheetId({ input: form } as any);
+        if(formId != null) {
+          if(treeMaps[formId]==null) {
+            return {
+              formId: {
+                __errors: [t(Strings.robot_config_empty_warning)]
+              }
+            };
+          }
+        }
+
+        if(dstId != null) {
+          if(treeMaps[dstId]==null) {
+            return {
+              datasheetId: {
+                __errors: [t(Strings.robot_config_empty_warning)]
+              }
+            };
+          }
+        }
+        return errors;
+      }}
       title={triggerType?.name}
       description={triggerType?.description}
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
@@ -234,6 +473,9 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           item: itemStyle.item,
           icon: itemStyle.icon,
         }}
+        disabled={
+          !permissions.editable
+        }
         options={{
           placeholder: t(Strings.search_field),
           minWidth: '384px',
@@ -246,7 +488,6 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         <span>
           <DropdownTrigger isActive={isActive}>
             <>
-              {/*// TODO update sequence   */}
               {1}. {triggerType?.name}
             </>
           </DropdownTrigger>
@@ -256,26 +497,9 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   );
 });
 
-// trigger component = select prototype dropdown box + input form form.
-export const RobotTrigger = ({ robotId, editType, triggerTypes, formList, setTrigger }: IRobotTriggerProps) => {
-  const [, setTriggerState] = useAtom(automationTriggerAtom);
-  const { data: trigger, error, mutate } = useSWR(`/automation/robots/${robotId}/trigger`, getRobotTrigger);
-  useEffect(() => {
-    if (trigger) {
-      setTrigger?.(trigger);
-      setTriggerState(trigger);
-    }
-  }, [trigger, setTrigger, setTriggerState]);
-
-  const { datasheetId, datasheetName } = useSelector((state) => {
-    const dst = Selectors.getDatasheet(state);
-    return {
-      datasheetId: dst?.id,
-      datasheetName: dst?.name,
-    };
-  }, shallowEqual);
-
-  if (error || !triggerTypes) {
+export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTriggerProps) => {
+  const trigger = useAtomValue(inheritedTriggerAtom);
+  if (!triggerTypes) {
     return null;
   }
 
@@ -288,11 +512,7 @@ export const RobotTrigger = ({ robotId, editType, triggerTypes, formList, setTri
     <RobotTriggerBase
       trigger={trigger}
       editType={editType}
-      mutate={mutate}
       triggerTypes={triggerTypes}
-      formList={formList}
-      datasheetId={datasheetId}
-      datasheetName={datasheetName}
     />
   );
-};
+});

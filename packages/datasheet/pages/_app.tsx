@@ -23,6 +23,7 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
+import { enableMapSet } from 'immer';
 import * as immer from 'immer';
 import { merge } from 'lodash';
 import type { AppProps } from 'next/app';
@@ -83,6 +84,8 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+
+enableMapSet();
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });

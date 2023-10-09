@@ -42,7 +42,6 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
-import { CONST_ENABLE_AUTOMATION_NODE, orDisabled } from '../components/automation/config';
 import { runInTimeSlicing } from './utils';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
@@ -80,17 +79,11 @@ export const nodeConfigData = [
     icon: NodeIcon.Ai,
     name: 'chatbot',
   },
-  ...orDisabled(
-    [
-      {
-        type: ConfigConstant.NodeType.AUTOMATION,
-        icon: NodeIcon.AddAutomation,
-        name: t(Strings.automation),
-      },
-    ],
-
-    CONST_ENABLE_AUTOMATION_NODE,
-  ),
+  {
+    type: ConfigConstant.NodeType.AUTOMATION,
+    icon: NodeIcon.AddAutomation,
+    name: t(Strings.automation),
+  },
 ];
 
 // Check if the url belongs to this site
@@ -425,6 +418,8 @@ export const permissionMenuData = (nodeType: ConfigConstant.NodeType) => {
 /** Get menu by node type */
 export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
   switch (type) {
+    case ConfigConstant.NodeType.AUTOMATION:
+      return ConfigConstant.ContextMenuType.AUTOMATION;
     case ConfigConstant.NodeType.DATASHEET:
       return ConfigConstant.ContextMenuType.DATASHEET;
     case ConfigConstant.NodeType.FORM:
@@ -451,6 +446,8 @@ export const getNodeTypeByNodeId = (nodeId: string): ConfigConstant.NodeType => 
   };
 
   switch (true) {
+    case getReg(nodeTypeReg.AUTOMATION).test(nodeId):
+      return nodeType.AUTOMATION;
     case getReg(nodeTypeReg.FOLDER).test(nodeId):
       return nodeType.FOLDER;
     case getReg(nodeTypeReg.DATASHEET).test(nodeId):

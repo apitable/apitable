@@ -643,6 +643,9 @@
   "bind_email_same": "Please change to a different email address",
   "bind_phone_same": "Please change to a different phone number",
   "bind_resource": "Select a datasheet to link to",
+
+  "bind_form": "Select a form to link to",
+
   "bind_state": "Status: ",
   "bind_time": "Binding date: ",
   "bind_wechat_account": "Bind WeChat account",
@@ -821,6 +824,7 @@
   "check_failed_list": "Check failed list",
   "check_field": "Select a field",
   "check_link_table": "Select a datasheet to link to",
+  "check_link_form": "Select a form to link to",
   "check_more_privileges": "See more privileges",
   "check_network_status": "Please check the network connection",
   "check_order_status": "Paid?${action}",
@@ -2230,7 +2234,8 @@
   "hide_one_field": "Hide field",
   "hide_one_graphic_field": "Hide graphic field",
   "hide_pane": "Hide panel",
-  "hide_unusable_sheet": "Hide uneditable datasheets",
+  "hide_unusable_sheet": "Hide uneditable resource",
+  "hide_unmanaged_sheet": "Hide unmanageable resource",
   "highlight": "Highlight",
   "hint": "Tips",
   "history_view_more": "Show more",
@@ -4119,6 +4124,7 @@
   "search_field": "Search",
   "search_fields": "Search column",
   "search_folder_or_sheet": "Find a folder or datasheet ",
+  "search_folder_or_form": "Find a folder or form ",
   "search_new_admin": "Search",
   "search_node_pleaseholder": "Search for files (${shortcutKey})",
   "search_or_add": "Find or add an option",
@@ -5744,7 +5750,11 @@
   "click_here_to_write_description": "Click here to write description",
   "automation_run_fail": "failed",
   "automation_stay_tuned": "Stay tuned",
+  "automation_field": "Field",
   "ai_chat": "AI Chat",
-  "automation": "Automation",
-  "freeze_column_reset": "Restore default frozen column"
+  "freeze_column_reset": "Restore default frozen column",
+  "there_are_unsaved_content_in_the_current_step": "There are unsaved content in the current step",
+  "the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side": "The current automation workflow has no related files. You can establish a link by adding trigger conditions and actions on the left side",
+  "automation_dst_not_existed": "Relative datasheet doest not exist",
+  "automation": "Automation"
 }

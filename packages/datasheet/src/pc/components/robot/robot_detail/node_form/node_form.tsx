@@ -37,10 +37,11 @@ import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/i
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
-import { useDeleteRobotAction, useRobot } from '../../hooks';
+import { automationPanelAtom, automationStateAtom, PanelName, useAutomationController } from '../../../automation/controller';
+import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
+import { OrEmpty } from '../../../common/or_empty';
+import { useDeleteRobotAction } from '../../hooks';
 import { INodeOutputSchema, IRobotNodeType } from '../../interface';
-import { useRobotListState } from '../../robot_list';
 import { useCssColors } from '../trigger/use_css_colors';
 import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
@@ -50,23 +51,22 @@ type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> 
   schema: IJsonSchema;
   description?: string;
   serviceLogo?: string;
+  onChange ?: (value: string) => void;
   nodeOutputSchemaList?: INodeOutputSchema[];
   nodeId: string;
   title?: string;
   type?: 'trigger' | 'action';
   children?: ReactElement;
   handleClick?: () => void;
+  unsaved?: boolean;
 };
 
-// FIXME: form type
-// Trigger and Action's From form, wrapped in a layer here.
 export const NodeForm = memo((props: INodeFormProps<any>) => {
   const ref = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { description, title, type = 'trigger', children, handleClick, ...restProps } = props;
+  const { description, title, unsaved, type = 'trigger', children, handleClick, ...restProps } = props;
   const colors = useCssColors();
 
-  // FIXME
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
       <Box flex={'1 1 auto'} overflow={'auto'}>
@@ -78,7 +78,7 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
           {description}
         </Typography>
 
-        <MagicVariableForm {...restProps} ref={ref} liveValidate style={{ marginTop: -24 }}>
+        <MagicVariableForm {...restProps} ref={ref} liveValidate noValidate={false} style={{ marginTop: -24 }}>
           <></>
         </MagicVariableForm>
       </Box>
@@ -103,17 +103,16 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
 });
 
 export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
-  const { title, serviceLogo, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
+  const { title, serviceLogo, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
   const theme = useTheme();
   const { hasError } = validateMagicForm(restProps.schema as JSONSchema7, restProps.formData);
   const deleteRobotAction = useDeleteRobotAction();
-  const { currentRobotId } = useRobot();
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
 
   const automationState = useAtomValue(automationStateAtom);
   const {
     api: { refresh },
-  } = useRobotListState();
+  } = useAutomationController();
   const colors = useCssColors();
 
   const handleDeleteRobotAction = () => {
@@ -132,7 +131,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
             resourceId: automationState?.resourceId!,
             robotId: automationState?.currentRobotId!,
           });
-          await mutate(`/automation/robots/${currentRobotId}/actions`);
+          // await mutate(`/automation/robots/${currentRobotId}/actions`);
           setAutomationPanel((draft) => {
             draft.panelName = PanelName.BasicInfo;
           });
@@ -147,6 +146,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
 
   const [panelState] = useAtom(automationPanelAtom);
   const isActive = panelState.dataId === nodeId && panelState?.panelName !== PanelName.BasicInfo;
+  const permissions = useAutomationResourcePermission();
   const menuId = `robot_${type}_${nodeId}`;
   const menuData = [
     [
@@ -175,7 +175,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       id={`robot_node_${nodeId}`}
     >
       <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-        <Box display="flex" alignItems="center" width="100%" style={{ cursor: 'pointer' }}>
+        <Box display="flex" alignItems="center" width="100%" style={{ cursor: props.disabled ? 'not-allowed': 'pointer' }}>
           <span
             style={{
               borderRadius: 4,
@@ -208,7 +208,17 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
 
             <Box display={'flex'} flexDirection={'row'}>
               {children}
-              {hasError && (
+              {
+                unsaved && (
+                  <Box marginLeft="8px" display="flex" alignItems="center">
+                    <Tooltip content={t(Strings.there_are_unsaved_content_in_the_current_step)}>
+                      <Box as="span" marginLeft="4px" display="flex" alignItems="center">
+                        <WarnCircleFilled color={theme.color.textWarnDefault} />
+                      </Box>
+                    </Tooltip>
+                  </Box>)
+              }
+              {hasError && !unsaved && (
                 <Box marginLeft="8px" display="flex" alignItems="center">
                   <Tooltip content={t(Strings.robot_config_incomplete_tooltip)}>
                     <Box as="span" marginLeft="4px" display="flex" alignItems="center">
@@ -220,9 +230,13 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
             </Box>
           </Box>
         </Box>
-        {type === 'action' && (isHovering || isActive) && (
-          <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
-        )}
+        <OrEmpty visible={permissions.editable}>
+          <>
+            {type === 'action' && (isHovering || isActive) && (
+              <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
+            )}
+          </>
+        </OrEmpty>
         <ContextMenu overlay={flatContextData(menuData, true)} menuId={menuId} />
       </Box>
     </Box>

@@ -16,9 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtomValue } from 'jotai';
 import { nanoid } from 'nanoid';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import qs from 'qs';
+import { useCallback, useContext, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { useSelector } from 'react-redux';
 import useSWRInfinite from 'swr/infinite';
@@ -26,20 +28,45 @@ import { Box, Loading, Skeleton, Typography, useTheme } from '@apitable/componen
 import { Strings, t, ThemeName } from '@apitable/core';
 import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
-import { getRobotRunHistoryList } from '../../api';
-import { useRobot } from '../../hooks';
+import { automationStateAtom } from '../../../automation/controller/atoms';
+import { ShareContext } from '../../../share';
+import { checkObject, getRobotApiHistoryList } from '../../api';
+import { RobotRunStatusEnums } from '../../interface';
 import { RobotRunHistoryItem } from './robot_run_history_item';
 import styles from './style.module.less';
 
 export const PAGE_SIZE = 20;
 
+export interface IRunHistoryDatum {
+  robotId: string;
+  taskId: string;
+  createdAt: string;
+  status: RobotRunStatusEnums;
+  executedActions: ExecutedAction[];
+}
+
+export interface ExecutedAction {
+  actionId: string;
+  actionTypeId: string;
+  success: boolean;
+}
+
 export const useGetTaskHistory = () => {
-  const { currentRobotId } = useRobot();
+
+  const { shareInfo } = useContext(ShareContext);
+  const automationState = useAtomValue(automationStateAtom);
+
+  const options = {
+    shareId: shareInfo?.shareId,
+  };
+  const query = checkObject(options) ? qs.stringify(options) : '';
+
   const [key, setKey] = useState(() => nanoid());
   const { data, isLoading, isValidating, error, size, setSize, mutate } = useSWRInfinite(
-    (index) => `/automation/run-history?size=${PAGE_SIZE}&page=${index + 1}&robotId=${currentRobotId}&key=${key}`,
-    getRobotRunHistoryList,
+    (index) => `/automation/${automationState?.resourceId}/roots/${automationState?.currentRobotId}/run-history?pageNum=${index + 1}&pageSize=${PAGE_SIZE}&key=${key}&${query}`,
+    getRobotApiHistoryList
   );
+  console.log('useGetTaskHistory useGetTaskHistory');
 
   const reset = useCallback(() => {
     setKey(nanoid());
@@ -69,69 +96,69 @@ export const useGetTaskHistory = () => {
   };
 };
 
-export const RobotRunHistory = () => {
-  const themeName = useSelector((state) => state.theme);
-  const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
-  const { canLoadMore, items, isEmpty, size, isLoadingInitialData, error, isLoadingMore, isReachingEnd, setSize } = useGetTaskHistory();
-
-  const [sentryRef, { rootRef }] = useInfiniteScroll({
-    loading: isLoadingInitialData,
-    hasNextPage: !isReachingEnd,
-    onLoadMore: () => canLoadMore && setSize(size + 1),
-    disabled: !!error,
-    rootMargin: '0px 0px 32px 0px',
-  });
-  const theme = useTheme();
-  return (
-    <>
-      <Box padding="16px">
-        <Box display="flex" alignItems="start">
-          <Box height="12px" width="2px" backgroundColor={theme.color.fc0} marginRight="4px" marginTop="4px" />
-          <Typography variant="body3" color={theme.color.fc3} className={styles.historyTitle}>
-            <div dangerouslySetInnerHTML={{ __html: t(Strings.robot_run_history_desc) }} />
-          </Typography>
-        </Box>
-        {(error || !items.length) && (
-          <Skeleton
-            count={3}
-            height="52px"
-            type="text"
-            circle={false}
-            style={{
-              marginBottom: 16,
-            }}
-          />
-        )}
-        <Box height="calc(100vh - 150px)" ref={rootRef}>
-          {items.map((item) => (
-            <RobotRunHistoryItem key={item.taskId} item={item} />
-          ))}
-          {isEmpty && <Image src={EmptyResultImage} alt="" />}
-          {isEmpty ? (
-            <Box display="flex" justifyContent="center">
-              <Typography variant="body2" color={theme.color.fc2}>
-                {t(Strings.robot_run_history_no_data)}
-              </Typography>
-            </Box>
-          ) : (
-            <Box ref={sentryRef} display="flex" alignItems="center" justifyContent="center" marginTop="16px">
-              {isLoadingMore && (
-                <Box display="flex">
-                  <Loading />
-                  <Typography component="span" variant="body4" color={theme.color.fc2}>
-                    {t(Strings.loading)}
-                  </Typography>
-                </Box>
-              )}
-              {isReachingEnd && (
-                <Typography component="span" variant="body4" color={theme.color.fc2}>
-                  {t(Strings.robot_run_history_bottom_tip)}
-                </Typography>
-              )}
-            </Box>
-          )}
-        </Box>
-      </Box>
-    </>
-  );
-};
+// export const RobotRunHistory = () => {
+//   const themeName = useSelector((state) => state.theme);
+//   const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
+//   const { canLoadMore, items, isEmpty, size, isLoadingInitialData, error, isLoadingMore, isReachingEnd, setSize } = useGetTaskHistory();
+//
+//   const [sentryRef, { rootRef }] = useInfiniteScroll({
+//     loading: isLoadingInitialData,
+//     hasNextPage: !isReachingEnd,
+//     onLoadMore: () => canLoadMore && setSize(size + 1),
+//     disabled: !!error,
+//     rootMargin: '0px 0px 32px 0px',
+//   });
+//   const theme = useTheme();
+//   return (
+//     <>
+//       <Box padding="16px">
+//         <Box display="flex" alignItems="start">
+//           <Box height="12px" width="2px" backgroundColor={theme.color.fc0} marginRight="4px" marginTop="4px" />
+//           <Typography variant="body3" color={theme.color.fc3} className={styles.historyTitle}>
+//             <div dangerouslySetInnerHTML={{ __html: t(Strings.robot_run_history_desc) }} />
+//           </Typography>
+//         </Box>
+//         {(error || !items.length) && (
+//           <Skeleton
+//             count={3}
+//             height="52px"
+//             type="text"
+//             circle={false}
+//             style={{
+//               marginBottom: 16,
+//             }}
+//           />
+//         )}
+//         <Box height="calc(100vh - 150px)" ref={rootRef}>
+//           {items.map((item) => (
+//             <RobotRunHistoryItem key={item.taskId} item={item} />
+//           ))}
+//           {isEmpty && <Image src={EmptyResultImage} alt="" />}
+//           {isEmpty ? (
+//             <Box display="flex" justifyContent="center">
+//               <Typography variant="body2" color={theme.color.fc2}>
+//                 {t(Strings.robot_run_history_no_data)}
+//               </Typography>
+//             </Box>
+//           ) : (
+//             <Box ref={sentryRef} display="flex" alignItems="center" justifyContent="center" marginTop="16px">
+//               {isLoadingMore && (
+//                 <Box display="flex">
+//                   <Loading />
+//                   <Typography component="span" variant="body4" color={theme.color.fc2}>
+//                     {t(Strings.loading)}
+//                   </Typography>
+//                 </Box>
+//               )}
+//               {isReachingEnd && (
+//                 <Typography component="span" variant="body4" color={theme.color.fc2}>
+//                   {t(Strings.robot_run_history_bottom_tip)}
+//                 </Typography>
+//               )}
+//             </Box>
+//           )}
+//         </Box>
+//       </Box>
+//     </>
+//   );
+// };

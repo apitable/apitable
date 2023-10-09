@@ -21,7 +21,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
-import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';
+import { File, Folder, FormSearchItem, View } from 'pc/components/datasheet_search_panel/components';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import { ScrollBar } from 'pc/components/scroll_bar';
@@ -39,6 +39,13 @@ export interface IViewNode {
 export type ICommonNode = INode | IViewNode;
 
 interface IFolderContentProps {
+  options?: {
+    showForm: boolean
+    showDatasheet: boolean
+    needPermission?: 'manageable' | 'editable'
+    showMirror: boolean
+    showView: boolean
+  },
   nodes: ICommonNode[];
   currentViewId: string;
   currentMirrorId: string;
@@ -50,7 +57,7 @@ interface IFolderContentProps {
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType
 
-  onNodeClick(nodeType: 'Mirror' | 'Form' | 'Datasheet' | 'View' | 'Folder', id: string): void;
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
   hideViewNode?: boolean;
 }
@@ -58,6 +65,7 @@ interface IFolderContentProps {
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
   const {
     nodes,
+    options,
     onNodeClick,
     currentViewId,
     currentMirrorId,
@@ -73,16 +81,48 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
   const themeName = useSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
-  const _checkNodeDisable = (node: INode) => {
+  const showForm= options?.showForm ?? true;
+  const showDatasheet= options?.showDatasheet ?? true;
+  const showMirror= options?.showMirror ?? true;
+  const showView= options?.showView ?? true;
+
+  const _checkNodeDisable = (node: INode,
+    needPermission: 'manageable' | 'editable' |undefined
+  ) => {
     if (noCheckPermission) return;
-    return checkNodeDisable(node);
+    return checkNodeDisable(node, needPermission);
+  };
+
+  const checkVisible = (nodeType: ConfigConstant.NodeType, result : boolean ) => {
+
+    if(!options ) return result;
+
+    switch (nodeType ) {
+      case ConfigConstant.NodeType.FORM: {
+        return result && showForm;
+      }
+      case ConfigConstant.NodeType.DATASHEET: {
+        return result && showDatasheet;
+      }
+      case ConfigConstant.NodeType.MIRROR: {
+        return result && showMirror;
+      }
+      case ConfigConstant.NodeType.VIEW: {
+        return result && showView;
+      }
+      default: {
+        return result;
+      }
+    }
   };
 
   return (
     <div className={styles.folderContent}>
       <ScrollBar>
         {nodes.map((node) => {
-          if (node.type === ConfigConstant.NodeType.FOLDER) {
+          showForm && node.type === ConfigConstant.NodeType.FORM && (!onlyShowEditableNode || !_checkNodeDisable(node as INode, options?.needPermission));
+
+          if (node.type === ConfigConstant.NodeType.FOLDER ) {
             return (
               <Folder key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Folder', id)}>
                 {node.nodeName}
@@ -97,7 +137,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                   id={node.nodeId}
                   active={!isSelectView && currentDatasheetId === node.nodeId}
                   onClick={(id) => onNodeClick('Form', id)}
-                  disable={_checkNodeDisable(node as INode)}
+                  disable={_checkNodeDisable(node as INode, options?.needPermission)}
                   nodeType={ConfigConstant.NodeType.FORM}
                 >
                   {node.nodeName}
@@ -105,14 +145,14 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
               );
             }
           } else {
-            if (node.type === ConfigConstant.NodeType.DATASHEET && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
+            if (node.type === ConfigConstant.NodeType.DATASHEET && checkVisible(node.type, (!onlyShowEditableNode || !_checkNodeDisable(node as INode, options?.needPermission)))) {
               return (
                 <File
                   key={node.nodeId}
                   id={node.nodeId}
                   active={!isSelectView && currentDatasheetId === node.nodeId}
                   onClick={(id) => onNodeClick('Datasheet', id)}
-                  disable={_checkNodeDisable(node as INode)}
+                  disable={_checkNodeDisable(node as INode, options?.needPermission)}
                   nodeType={ConfigConstant.NodeType.DATASHEET}
                 >
                   {node.nodeName}
@@ -120,15 +160,43 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
               );
             }
 
-            if (node.type === ConfigConstant.NodeType.MIRROR && showMirrorNode && (!onlyShowEditableNode || !_checkNodeDisable(node as INode))) {
-              // TODO
+            if (showForm && node.type === ConfigConstant.NodeType.FORM && checkVisible (node.type, !onlyShowEditableNode || !_checkNodeDisable(node as INode, options?.needPermission))) {
+              return (
+                <FormSearchItem
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={!isSelectView && currentDatasheetId === node.nodeId}
+                  onClick={(id) => onNodeClick('Form', id)}
+                  disable={_checkNodeDisable(node as INode, options?.needPermission)}
+                >
+                  {node.nodeName}
+                </FormSearchItem>
+              );
+            }
+
+            if (showDatasheet && node.type === ConfigConstant.NodeType.DATASHEET && checkVisible(node.type, !onlyShowEditableNode || !_checkNodeDisable(node as INode, options?.needPermission))) {
+              return (
+                <File
+                  nodeType={node.type}
+                  key={node.nodeId}
+                  id={node.nodeId}
+                  active={!isSelectView && currentDatasheetId === node.nodeId}
+                  onClick={(id) => onNodeClick('Datasheet', id)}
+                  disable={_checkNodeDisable(node as INode, options?.needPermission)}
+                >
+                  {node.nodeName}
+                </File>
+              );
+            }
+
+            if (showMirror && node.type === ConfigConstant.NodeType.MIRROR && checkVisible(node.type, !onlyShowEditableNode || !_checkNodeDisable(node as INode, options?.needPermission))) {
               return (
                 <File
                   key={node.nodeId}
                   id={node.nodeId}
                   active={!isSelectView && currentMirrorId === node.nodeId}
                   onClick={(id) => onNodeClick('Mirror', id)}
-                  disable={_checkNodeDisable(node as INode)}
+                  disable={_checkNodeDisable(node as INode, options?.needPermission)}
                   nodeType={ConfigConstant.NodeType.MIRROR}
                 >
                   {node.nodeName}
@@ -136,7 +204,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
               );
             }
 
-            if (node.type === ConfigConstant.NodeType.VIEW && !hideViewNode) {
+            if (showView && node.type === ConfigConstant.NodeType.VIEW && !hideViewNode) {
               return (
                 <View
                   key={node.nodeId}
@@ -149,7 +217,9 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 </View>
               );
             }
+            return null;
           }
+
           return null;
         })}
         {!loading && !nodes.length && (

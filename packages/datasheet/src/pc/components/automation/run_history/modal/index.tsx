@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import React, { useEffect, useMemo } from 'react';
@@ -22,10 +23,11 @@ import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
 import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
-import { automationHistoryAtom } from '../../controller';
+import { automationHistoryAtom } from '../../controller/atoms';
 import { CONST_DATETIME_FORMAT } from '../list';
 import { TaskList } from '../list/task';
 import { handleDownload } from '../list/util';
+dayjs.extend(duration);
 
 const CONST_STATUS_SUCCESS = 1;
 const CONST_STATUS_FAIL = 2;
@@ -99,7 +101,12 @@ export const RunHistoryDetail = () => {
                       <Typography variant="body3" color={colors.textCommonTertiary} >
                         {t(Strings.automation_run_history_item_description, {
                           RESULT: resultText,
-                          NUM: getTime.end?.diff(getTime.start, 'second'),
+                          NUM: Math.round(
+                            dayjs.duration(
+                              getTime.end?.diff(getTime.start, 'milliseconds') ?? 0
+                            ).asSeconds()
+                          ),
+
                           START_TIME: getTime.start?.format(CONST_DATETIME_FORMAT) ?? '',
                           END_TIME: getTime.end?.format(CONST_DATETIME_FORMAT) ?? '',
                         })}

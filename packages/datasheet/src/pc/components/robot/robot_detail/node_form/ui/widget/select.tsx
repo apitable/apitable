@@ -22,8 +22,9 @@ import { IWidgetProps } from '../../core/interface';
 import { literal2Operand, operand2Literal } from '../utils';
 
 export const SelectWidget = ({ options: { enumOptions }, value, onChange, rawErrors }: IWidgetProps) => {
-  const hasError = Boolean(rawErrors?.length);
-  const style = hasError ? { border: '1px solid red', width: '100%' } : { width: '100%' };
+  // const hasError = Boolean(rawErrors?.length);
+  const style = { width: '100%' };
+  // hasError ? { border: '1px solid red', width: '100%' } :
 
   return (
     <>
