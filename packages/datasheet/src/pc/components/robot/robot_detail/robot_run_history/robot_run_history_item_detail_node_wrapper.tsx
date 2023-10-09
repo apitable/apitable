@@ -21,16 +21,14 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Box, IconButton, Tooltip, Typography, useTheme, useThemeColors } from '@apitable/components';
+import { Box, IconButton, Tooltip, Typography } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import {
   WarnCircleFilled,
   ChevronRightOutlined,
-  CheckCircleFilled,
-  ChevronDoubleDownOutlined,
   ChevronDownOutlined
 } from '@apitable/icons';
-import { ItemStatus, RunItemStatus } from '../../../automation/run_history/list';
+import { ItemStatus } from 'pc/components/automation/run_history/list/item_status';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import styles from 'style.module.less';
@@ -87,7 +85,7 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
               icon={showDetail ? ChevronDownOutlined: ChevronRightOutlined} className={styles.dropIcon} onClick={() => setShowDetail(!showDetail)} />
           </span>
           <Box marginX={'8px'} display="flex" alignItems="center" zIndex={2}>
-            <RunItemStatus status={status} />
+            <ItemStatus status={status} variant={'filled'} />
           </Box>
         </Box>
 

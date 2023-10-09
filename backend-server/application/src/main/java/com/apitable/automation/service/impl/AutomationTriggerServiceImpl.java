@@ -106,7 +106,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         ro.setInput(JSONUtil.toJsonStr(data.getInput()));
         ro.setPrevTriggerId(data.getPrevTriggerId());
         ro.setTriggerTypeId(data.getTriggerTypeId());
-        ro.setPrevTriggerId(triggerId);
+        ro.setTriggerId(triggerId);
         try {
             ApiResponseAutomationTriggerPO response =
                 automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
@@ -115,9 +115,26 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
                 AUTOMATION_ROBOT_NOT_EXIST);
             return formatVoFromDatabusResponse(response.getData());
         } catch (ApiException e) {
-            log.error("Robot create trigger: {}", data.getRobotId(), e);
+            log.error("Robot update trigger: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void deleteByDatabus(String robotId, String triggerId, Long userId) {
+        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
+        ro.setUserId(userId);
+        ro.setIsDeleted(true);
+        ro.setTriggerId(triggerId);
+        try {
+            ApiResponseAutomationTriggerPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(robotId, ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+        } catch (ApiException e) {
+            log.error("Delete trigger: {}", triggerId, e);
+        }
     }
 
     @Override

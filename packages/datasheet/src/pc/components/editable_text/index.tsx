@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Box, ITypographyProps, TextInput, Typography } from '@apitable/components';
 import { EditOutlined } from '@apitable/icons';
+import EllipsisText from '../ellipsis_text';
 import { useCssColors } from '../robot/robot_detail/trigger/use_css_colors';
 
 const StyledOutlined = styled(EditOutlined)`
@@ -25,10 +26,12 @@ const StyledBox = styled(Box)`
 export const EditableText: FC<
   {
     value?: string;
+    className?: string;
+    editable?: boolean;
     placeholder?: string;
     onChange?: (v: string) => void;
   } & ITypographyProps
-> = ({ value, placeholder, onChange, ...rest }) => {
+> = ({ value, className, placeholder, editable = false, onChange, ...rest }) => {
   const [isEditing, setEditing] = useState(false);
 
   const colors = useCssColors();
@@ -49,12 +52,31 @@ export const EditableText: FC<
     );
   }
   return (
-    <StyledBox onClick={() => setEditing(true)} onDoubleClick={() => setEditing(true)} display={'inline-flex'} alignItems={'center'}>
-      <Typography variant="h6" {...rest}>
-        {value || placeholder}
-      </Typography>
-
-      <StyledOutlined color={colors.textCommonTertiary} />
+    <StyledBox
+      className={className}
+      onClick={() => {
+        if(!editable) {
+          return;
+        }
+        setEditing(true);
+      }
+      }
+      onDoubleClick={() => {
+        if(!editable) {
+          return;
+        }
+        setEditing(true);
+      }} display={'inline-flex'} alignItems={'center'}>
+      <EllipsisText>
+        <Typography variant="h6" {...rest}>
+          {value || placeholder}
+        </Typography>
+      </EllipsisText>
+      {
+        editable && (
+          <StyledOutlined color={colors.textCommonTertiary} />
+        )
+      }
     </StyledBox>
   );
 };

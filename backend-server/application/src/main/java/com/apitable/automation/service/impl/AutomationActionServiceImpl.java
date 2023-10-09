@@ -18,11 +18,27 @@
 
 package com.apitable.automation.service.impl;
 
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_ROBOT_NOT_EXIST;
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_TRIGGER_LIMIT;
+import static com.apitable.automation.model.ActionSimpleVO.actionComparator;
+import static java.util.stream.Collectors.toList;
+
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationActionEntity;
 import com.apitable.automation.mapper.AutomationActionMapper;
+import com.apitable.automation.model.ActionVO;
+import com.apitable.automation.model.CreateActionRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
+import com.apitable.automation.model.UpdateActionRO;
 import com.apitable.automation.service.IAutomationActionService;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.databusclient.ApiException;
+import com.apitable.databusclient.api.AutomationDaoApiApi;
+import com.apitable.databusclient.model.ApiResponseAutomationActionPO;
+import com.apitable.databusclient.model.AutomationActionPO;
+import com.apitable.databusclient.model.AutomationRobotActionRO;
+import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.ArrayList;
@@ -39,6 +55,12 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
 
     @Resource
     private AutomationActionMapper actionMapper;
+
+    @Resource
+    private LimitProperties limitProperties;
+
+    @Resource
+    private AutomationDaoApiApi automationDaoApiApi;
 
     @Override
     public void create(AutomationActionEntity action) {
@@ -89,4 +111,81 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
         String actionTypeId, String input) {
         actionMapper.updateActionTypeIdAndInputByRobotId(robotId, actionTypeId, input);
     }
+
+    @Override
+    public List<ActionVO> createByDatabus(Long userId, CreateActionRO data) {
+        AutomationRobotActionRO ro = new AutomationRobotActionRO();
+        ro.setUserId(userId);
+        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
+        ro.setPrevActionId(data.getPrevActionId());
+        ro.setActionTypeId(data.getActionTypeId());
+        ro.setLimitCount(Long.valueOf(limitProperties.getAutomationActionCount()));
+        try {
+            ApiResponseAutomationActionPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotAction(data.getRobotId(), ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+            ExceptionUtil.isFalse(
+                AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
+                AUTOMATION_TRIGGER_LIMIT);
+            return formatVoFromDatabusResponse(response.getData());
+        } catch (ApiException e) {
+            log.error("Robot create action: {}", data.getRobotId(), e);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<ActionVO> updateByDatabus(String actionId, Long userId, UpdateActionRO data) {
+        AutomationRobotActionRO ro = new AutomationRobotActionRO();
+        ro.setUserId(userId);
+        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
+        ro.setPrevActionId(data.getPrevActionId());
+        ro.setActionTypeId(data.getActionTypeId());
+        ro.setActionId(actionId);
+        try {
+            ApiResponseAutomationActionPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotAction(data.getRobotId(), ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+            return formatVoFromDatabusResponse(response.getData());
+        } catch (ApiException e) {
+            log.error("Robot update action: {}", data.getRobotId(), e);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void deleteByDatabus(String robotId, String actionId, Long userId) {
+        AutomationRobotActionRO ro = new AutomationRobotActionRO();
+        ro.setUserId(userId);
+        ro.setIsDeleted(true);
+        ro.setActionId(actionId);
+        try {
+            ApiResponseAutomationActionPO response =
+                automationDaoApiApi.daoCreateOrUpdateAutomationRobotAction(robotId, ro);
+            ExceptionUtil.isFalse(
+                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
+                AUTOMATION_ROBOT_NOT_EXIST);
+        } catch (ApiException e) {
+            log.error("Delete action: {}", actionId, e);
+        }
+    }
+
+    private List<ActionVO> formatVoFromDatabusResponse(List<AutomationActionPO> data) {
+        if (null != data) {
+            return data.stream().map(i -> {
+                ActionVO vo = new ActionVO();
+                vo.setActionId(i.getActionId());
+                vo.setActionTypeId(i.getActionTypeId());
+                vo.setPrevActionId(i.getPrevActionId());
+                vo.setInput(i.getInput());
+                return vo;
+            }).sorted(actionComparator).collect(toList());
+        }
+        return new ArrayList<>();
+    }
+
 }

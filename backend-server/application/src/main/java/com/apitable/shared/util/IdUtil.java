@@ -73,6 +73,9 @@ public class IdUtil {
             case AUTOMATION:
                 return IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case AIRAGENT:
+                return IdRulePrefixEnum.AIRAGENT.getIdRulePrefixEnum()
+                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             default:
                 return IdRulePrefixEnum.FOD.getIdRulePrefixEnum()
                     + RandomExtendUtil.randomString(ID_FIXED_LENGTH);

@@ -52,9 +52,9 @@ const resumeUserHistory = (path: string) => {
   const state = store.getState();
   const user = state.user.info!;
   const spaceId = state.space.activeId;
-  const { datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId, aiId } = getPageParams(path);
-  const nodeId = datasheetId || folderId || formId || mirrorId || dashboardId || aiId;
+  const { nodeId, datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId, automationId, aiId } = getPageParams(path);
   if (spaceId === user.spaceId) {
+
     if (mirrorId) {
       Router.replace(Navigation.WORKBENCH, {
         params: {

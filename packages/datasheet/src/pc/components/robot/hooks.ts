@@ -16,25 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtom } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
+import { atomsWithQuery } from 'jotai-tanstack-query';
 import { isNil } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';
-import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t, ThemeName } from '@apitable/core';
+import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';
-import { automationStateAtom } from '../automation/controller';
+import { useAutomationController, automationStateAtom } from '../automation/controller';
+import { useAutomationList } from '../automation/controller/use_robot_list';
 import { activeRobot, deActiveRobot, deleteRobotAction, nestReq } from './api';
 import { getFilterActionTypes } from './helper';
-import { IActionType, INodeType, IRobotAction, ITriggerType } from './interface';
+import { IActionType, INodeType, ITriggerType } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
-import { getActionList } from './robot_detail/action/robot_actions';
+import { loadableWithDefault } from './robot_detail/api';
 import { getFields } from './robot_detail/trigger/helper';
-import { useRobotListState } from './robot_list';
+import { getActionList } from './robot_detail/utils';
+import { covertThemeIcon } from './utils';
+
+export const useAllFieldsByDstId = (datasheetId: string) => {
+  const columns = useAllColumns(datasheetId, true);
+  const snapshot = useSelector((state) => {
+    return Selectors.getSnapshot(state, datasheetId);
+  });
+
+  return useMemo(() => {
+    const fieldMap = snapshot?.meta?.fieldMap;
+    if (!fieldMap || !columns) return [];
+    const fields = getFields(columns, fieldMap);
+    return fields;
+  }, [columns, snapshot?.meta?.fieldMap]);
+};
 
 export const useAllFields = () => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
+
+  const value = useAtomValue(automationStateAtom);
+  const datasheetId = value?.resourceId ?? '';
   const columns = useAllColumns(datasheetId, true);
   const snapshot = useSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId);
@@ -52,7 +70,7 @@ export const useAddNewRobot = () => {
   const permissions = useSelector(Selectors.getPermissions);
   const {
     state: { data: robotList },
-  } = useRobotListState();
+  } = useAutomationList();
   const canAddNewRobot = permissions.manageable && robotList && robotList.length < ConfigConstant.MAX_ROBOT_COUNT_PER_DST;
   const disableTip = permissions.manageable ? t(Strings.robot_reach_count_limit) : t(Strings.robot_share_page_create_tip);
   return {
@@ -66,8 +84,8 @@ export const useDeleteRobotAction = () => {
   const currentRobotId = state?.currentRobotId;
   return useCallback(
     (actionId: string) => {
-      if (currentRobotId) {
-        return deleteRobotAction(actionId);
+      if (currentRobotId&& state?.resourceId && state?.robot?.robotId) {
+        return deleteRobotAction(state?.resourceId, actionId, state.robot?.robotId);
       }
       return false;
     },
@@ -78,11 +96,10 @@ export const useDeleteRobotAction = () => {
 export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
 
-  const {
-    api: { getById, refreshItem },
-  } = useRobotListState();
+  const automation = useAtomValue(automationStateAtom);
+  const { api: { refreshItem, refresh } } = useAutomationController();
 
-  const robot = getById(robotId);
+  const robot = automation?.robot;
 
   const toggleRobotActive = useCallback(async () => {
     if (!robot) {
@@ -124,32 +141,42 @@ export const useRobotTriggerType = () => {
   const { data: triggerTypes } = useTriggerTypes();
 
   const [state] = useAtom(automationStateAtom);
-  if (!state?.robot) {
-    return null;
-  }
-  if (state?.robot) {
-    const data = state?.robot;
-    return data.triggers.map((action) => triggerTypes?.find((trigger) => trigger.triggerTypeId === action.triggerTypeId));
-  }
 
-  return null;
+  return useMemo(() => {
+    if (!state?.robot) {
+      return null;
+    }
+    if (state?.robot) {
+      const data = state?.robot;
+      return data.triggers.map((action) => triggerTypes?.find((trigger) => trigger.triggerTypeId === action.triggerTypeId));
+    }
+
+    return null;
+
+  }, [triggerTypes, state]);
 };
 
 export const useRobotActionTypes = () => {
   const [state] = useAtom(automationStateAtom);
   const { data: actionTypes } = useActionTypes();
-  if (!state?.robot) {
-    return null;
-  }
-  const robot = state.robot;
-  // @ts-ignore
-  return getActionList(robot.actions.map(item => ({
-    ...item,
-    id: item.actionId
-  }))).map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
+
+  return useMemo(() => {
+
+    if (!state?.robot) {
+      return null;
+    }
+    const robot = state?.robot;
+    // @ts-ignore
+    return getActionList(robot.actions.map(item => ({
+      ...item,
+      id: item.actionId
+    }))).map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
+  },
+  [actionTypes, state]
+  );
 };
 
-export const useRobot = () => {
+export const useAutomationRobot = () => {
   const [state, setState] = useAtom(automationStateAtom);
   const currentRobotId = state?.currentRobotId;
 
@@ -173,47 +200,54 @@ export const useRobot = () => {
   };
 };
 
-const covertThemeIcon = (data: (ITriggerType | IActionType)[] | undefined, theme: ThemeName) => {
-  return (
-    (data?.map((item) => {
-      return {
-        ...item,
-        service: {
-          ...item.service,
-          logo: (theme === ThemeName.Dark ? item.service.themeLogo?.dark : item.service.themeLogo?.light) || item.service.logo,
-        },
-      };
-    }) as any) || []
-  );
-};
+const fetchTriggerTypesAtom = atom(`/automation/trigger-types?lang=${getLanguage()}`);
+
+const [triggerTypesAtom] = atomsWithQuery((get) => ({
+  queryKey: [`/automation/trigger-types?lang=${getLanguage()}`],
+  queryFn: async ({ queryKey: [url] }) => {
+    const r = await nestReq.get(String(url));
+    return r?.data?.data;
+  },
+}));
+
+const loadableTriggerAtom = loadableWithDefault(triggerTypesAtom, []);
+
+const [actionTypesAtom] = atomsWithQuery((get) => ({
+  queryKey: [`/automation/action-types?lang=${getLanguage()}`],
+  queryFn: async ({ queryKey: [url] }) => {
+    const r = await nestReq.get(String(url));
+    return r?.data?.data;
+  },
+}));
+
+const loadableActionTypesAtom = loadableWithDefault(actionTypesAtom, []);
 
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
-  const { data: triggerTypeData, error: triggerTypeError } = useSWR(`/automation/trigger-types?lang=${getLanguage()}`, nestReq);
   const themeName = useSelector((state) => state.theme);
-  if (!triggerTypeData || triggerTypeError) {
+  const value = useAtomValue(loadableTriggerAtom);
+  if(value.loading) {
     return {
       loading: true,
-      data: triggerTypeData?.data.data,
+      data: []
     };
   }
   return {
     loading: false,
-    data: covertThemeIcon(triggerTypeData.data.data, themeName),
+    data: covertThemeIcon(value.data, themeName),
   };
 };
 
 export const useActionTypes = (): { loading: boolean; originData: IActionType[]; data: IActionType[] } => {
-  const { data: actionTypeData, error: actionTypeError } = useSWR(`/automation/action-types?lang=${getLanguage()}`, nestReq);
   const themeName = useSelector((state) => state.theme);
-
-  if (!actionTypeData || actionTypeError) {
+  const actionTypeData = useAtomValue(loadableActionTypesAtom);
+  const themedList = covertThemeIcon(actionTypeData?.data, themeName);
+  if(actionTypeData.loading) {
     return {
       loading: true,
-      data: getFilterActionTypes(actionTypeData?.data.data),
-      originData: actionTypeData?.data.data,
+      data: [],
+      originData: [],
     };
   }
-  const themedList = covertThemeIcon(actionTypeData?.data.data, themeName);
   return {
     loading: false,
     originData: themedList,
@@ -241,7 +275,8 @@ export const useNodeTypeByIds = () => {
 // For triggers where there is only one option and a default value when the record is created,
 // the trigger is created with the default form information.
 export const useDefaultTriggerFormData = () => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const value = useAtomValue(automationStateAtom);
+  const datasheetId = value?.resourceId ?? '';
   const defaultFormData = {
     type: 'Expression',
     value: {
@@ -260,51 +295,53 @@ export const useDefaultTriggerFormData = () => {
 
 export const useDefaultRobotDesc = () => {
   const robotTriggerType = useRobotTriggerType();
-  const robotActionTypesA = useRobotActionTypes();
-  const robotActionTypes = robotActionTypesA?.filter(Boolean);
+  const robotActionTypesOriginal = useRobotActionTypes();
+  const robotActionTypes = robotActionTypesOriginal?.filter(Boolean);
   const comma = t(Strings.comma);
 
-  const triggerResult = robotTriggerType
-    ?.filter(Boolean)
-    .map((actionType) => actionType!.name)
-    .join(comma);
-
-  if(robotTriggerType != null && (isNil(robotActionTypes) || robotActionTypes?.length === 0)){
-    return t(Strings.automation_description_trigger, {
-      triggerName: triggerResult,
-    });
-  }
-
-  if (robotActionTypes?.length === 1) {
+  return useMemo(() => {
     const triggerResult = robotTriggerType
       ?.filter(Boolean)
       .map((actionType) => actionType!.name)
       .join(comma);
-    const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
-    return t(Strings.automation_description_one, {
-      triggerName: triggerResult,
-      lastAction: lastActionResult,
-    });
-  }
 
-  if (robotTriggerType && Array.isArray(robotActionTypes)) {
-    const triggerResult = robotTriggerType
-      ?.filter(Boolean)
-      .map((actionType) => actionType!.name)
-      .join(comma);
-    const actionResult = robotActionTypes
-      .slice(0, robotActionTypes.length - 1)
-      .map((actionType) => actionType!.name)
-      .join(comma);
-    const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
+    if(robotTriggerType != null && (isNil(robotActionTypes) || robotActionTypes?.length === 0)){
+      return t(Strings.automation_description_trigger, {
+        triggerName: triggerResult,
+      });
+    }
 
-    return t(Strings.automation_description_more, {
-      triggerName: triggerResult,
-      actions: actionResult,
-      lastAction: lastActionResult,
-    });
-  }
-  return '';
+    if (robotActionTypes?.length === 1) {
+      const triggerResult = robotTriggerType
+        ?.filter(Boolean)
+        .map((actionType) => actionType!.name)
+        .join(comma);
+      const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
+      return t(Strings.automation_description_one, {
+        triggerName: triggerResult,
+        lastAction: lastActionResult,
+      });
+    }
+
+    if (robotTriggerType && Array.isArray(robotActionTypes)) {
+      const triggerResult = robotTriggerType
+        ?.filter(Boolean)
+        .map((actionType) => actionType!.name)
+        .join(comma);
+      const actionResult = robotActionTypes
+        .slice(0, robotActionTypes.length - 1)
+        .map((actionType) => actionType!.name)
+        .join(comma);
+      const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
+
+      return t(Strings.automation_description_more, {
+        triggerName: triggerResult,
+        actions: actionResult,
+        lastAction: lastActionResult,
+      });
+    }
+    return '';
+  }, [robotTriggerType, robotActionTypes]);
 };
 
 export const useShowRobot = () => {

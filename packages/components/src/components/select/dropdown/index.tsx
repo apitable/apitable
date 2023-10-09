@@ -196,7 +196,9 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
     <_GlobalStyle />
     <StyledDropdown
       onVisibleChange={
-        setVisible
+        (visible) => {
+          setVisible(visible);
+        }
       }
       setTriggerRef={(element) => {
         triggerRef.current = element;
@@ -268,7 +270,7 @@ DropdownSelect.Option = Option;
 
 export function OptionItem({ item,currentIndex, value , keyword, className,
   onClick,
-                             iconClassName,
+  iconClassName,
 }: {item: IOption, currentIndex: number, iconClassName?: string, className?: string, value: any, keyword: string,onClick: () => void}) {
 
   const {

@@ -17,26 +17,25 @@
  */
 
 import { useAtomValue, useAtom } from 'jotai';
-import { cloneElement, FC, ReactElement, ReactNode } from 'react';
-import { mutate } from 'swr';
+import { ReactElement } from 'react';
 import {
-  Box,
-  ContextMenu,
-  useContextMenu,
   SearchSelect,
 } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { flatContextData } from 'pc/utils';
-import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller';
+import { useAutomationController } from '../../../automation/controller';
+import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller/atoms';
 import { createAction } from '../../api';
-import { IActionType, INodeOutputSchema } from '../../interface';
-import { useRobotListState } from '../../robot_list';
+import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
 
 export const CONST_MAX_ACTION_COUNT = 9;
 
+export const getNextAction = (actionList: IRobotAction[], preActionId ?: string) => {
+  const actionIndex = actionList.findIndex(action => action.actionId === preActionId);
+  return actionList[actionIndex + 1];
+};
 export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled = false, nodeOutputSchemaList }: {
   robotId: string;
   disabled?:boolean;
@@ -47,16 +46,18 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
 
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
   const automationState= useAtomValue(automationStateAtom);
-  const { api: { refresh } } = useRobotListState();
+  const { api: { refresh } } = useAutomationController();
   const createNewAction = async (action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;
     input?: any;
   }) => {
-    const res = await createAction(action);
-    mutate(`/automation/robots/${robotId}/actions`);
-
+    if(!automationState?.resourceId) {
+      console.error('resourceId is empty');
+      return;
+    }
+    const res = await createAction(automationState.resourceId, action);
     if(!automationState?.resourceId) {
       return;
     }
@@ -65,7 +66,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
       robotId: robotId,
     });
 
-    const data = res.data.data;
+    const data = getNextAction(res.data.data, prevActionId);
     setAutomationPanel({
       panelName: PanelName.Action,
       dataId: data.actionId,
@@ -122,7 +123,7 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
 
   const automationState= useAtomValue(automationStateAtom);
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
-  const { api: { refresh } } = useRobotListState();
+  const { api: { refresh } } = useAutomationController();
 
   const createNewAction = async (action: {
     actionTypeId: string;
@@ -131,8 +132,11 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
     input?: any;
   }) => {
 
-    const res = await createAction(action);
-    mutate(`/automation/robots/${robotId}/actions`);
+    if(!automationState?.resourceId) {
+      console.error('resourceId is empty');
+      return;
+    }
+    const res = await createAction(automationState.resourceId, action);
 
     if(!automationState?.resourceId) {
       return;
@@ -142,18 +146,17 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
       robotId: robotId,
     });
 
-    const actionId = res.data.data.actionId;
-    const data = res.data.data;
+    const newAction = getNextAction(res.data.data, prevActionId);
 
     setAutomationPanel({
       panelName: PanelName.Action,
-      dataId: actionId,
+      dataId: newAction.actionId,
       data: {
         // @ts-ignore
         robotId: action.robotId,
         editType: EditType.detail,
         nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...data, id: data.actionId, typeId: data.actionTypeId },
+        action:  { ...newAction, id: newAction.actionId, typeId: newAction.actionTypeId },
       }
     }
     );

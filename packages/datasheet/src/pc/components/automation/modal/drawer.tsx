@@ -1,12 +1,16 @@
-import { useAtomValue } from 'jotai/index';
+import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import { useCallback } from 'react';
 import { Strings, t } from '@apitable/core';
 import { Drawer } from 'pc/shared/components/drawer/drawer';
 import { Modal as ConfirmModal } from '../../common';
-import { useRobotListState } from '../../robot/robot_list';
-import { automationModifiedAtom } from '../controller';
-import { AutomationPanel } from '../index';
+import {
+  automationActionsAtom,
+  automationLocalMap,
+  inheritedTriggerAtom
+} from '../controller/atoms';
+import { AutomationPanel } from '../panel';
+import { checkIfModified } from './step_input_compare';
 import style from './styles.module.less';
 
 export const DrawerWrapper: React.FC<React.PropsWithChildren<{
@@ -16,15 +20,24 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
   onClose }) => {
 
   const isClosedRef = React.useRef(false);
-  const {
-    api: { refresh },
-  } = useRobotListState();
-  const isModified = useAtomValue(automationModifiedAtom);
+
+  const trigger = useAtomValue(inheritedTriggerAtom);
+  const actions = useAtomValue(automationActionsAtom);
+
+  const localMap = useAtomValue(automationLocalMap);
+
   const getCloseable = async (): Promise<boolean> => {
     if (isClosedRef.current) {
       return true;
     }
-    if (!isModified) {
+
+    if(!trigger) {
+      return true;
+    }
+    if (!checkIfModified({
+      trigger: trigger!,
+      actions
+    }, localMap)) {
       return true;
     }
     const confirmPromise = await new Promise<boolean>((resolve) => {
@@ -49,10 +62,9 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
   const handleCloseClick = useCallback(async () => {
     const isClosable = await getCloseable();
     if (isClosable) {
-      await refresh();
       onClose();
     }
-  }, [getCloseable, onClose, refresh]);
+  }, [getCloseable, onClose]);
 
   return (
     <Drawer
@@ -73,3 +85,5 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
     </Drawer>
   );
 });
+
+export default DrawerWrapper;

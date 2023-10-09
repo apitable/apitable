@@ -45,6 +45,7 @@ import {
   OneWayLinkOutlined,
   TwoWayLinkOutlined
 } from '@apitable/icons';
+import {ReactNode} from "react";
 
 const FieldIconMap = {
   [FieldType.Text]: LongtextOutlined,
@@ -74,7 +75,7 @@ const FieldIconMap = {
   [FieldType.Cascader]: CascadeOutlined,
 };
 
-export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16) => {
+export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {
   const FieldIcon = FieldIconMap[type];
   if (!FieldIcon) {
     return <div />;

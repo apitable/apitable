@@ -369,6 +369,9 @@ export class FusionApiService {
         auth,
         loadBasePacks: {
           foreignDstIds: [],
+          options: {
+            loadRecordMeta: true
+          }
         },
       },
       createStore: (dst) => this.createStoreForBaseDstPacks(dst),

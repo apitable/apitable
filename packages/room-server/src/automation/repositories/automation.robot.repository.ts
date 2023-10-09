@@ -83,7 +83,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   }
 
   public selectRobotSimpleInfoByRobotId(robotId: string): Promise<AutomationRobotEntity | undefined> {
-    return this.findOne({ select: ['robotId', 'name', 'resourceId', 'createdBy', 'props'], where: { robotId, isDeleted: 0 }});
+    return this.findOne({ select: ['robotId', 'name', 'resourceId', 'createdBy', 'props'], where: { robotId, isDeleted: 0 } });
   }
 
   createRobot(robot: RobotCreateRo, userId: string) {
@@ -142,5 +142,21 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
         resourceId: resourceId,
       },
     });
+  }
+
+  selectActiveCountByRobotIds(robotIds: string[]): Promise<number> {
+    return this.count({ where: [{ robotId: In(robotIds), isDeleted: 0, isActive: 1 }] });
+  }
+
+  async selectActiveRobotIdsByRobotIds(robotIds: string[]): Promise<string[]> {
+    const result = await this.find({
+      select: ['robotId'],
+      where: {
+        isActive: 1,
+        isDeleted: 0,
+        robotId: In(robotIds),
+      },
+    });
+    return result.map((i) => i.robotId);
   }
 }

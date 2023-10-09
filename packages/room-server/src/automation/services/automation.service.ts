@@ -68,9 +68,8 @@ import { RobotRobotService } from './robot.robot.service';
 export class AutomationService {
   robotRunner: AutomationRobotRunner;
 
-  // @ts-ignore
-  // @ts-ignore
   constructor(
+    // @ts-ignore
     @InjectLogger() private readonly logger: Logger,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationRunHistoryRepository: AutomationRunHistoryRepository,
@@ -339,11 +338,21 @@ export class AutomationService {
   }
 
   async isResourcesHasRobots(resourceIds: string[]) {
-    return await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+    const hasRobots = await this.automationRobotRepository.isResourcesHasRobots(resourceIds);
+    if (!hasRobots) {
+      return await this.isResourcesHasTriggers(resourceIds);
+    }
+    return true;
   }
+
   async isResourcesHasTriggers(resourceIds: string[]) {
     const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
-    return triggers.length > 0;
+    if (triggers.length > 0) {
+      const robotIds = new Set(triggers.map(i => i.robotId));
+      const number = await this.automationRobotRepository.selectActiveCountByRobotIds(Array.from(robotIds));
+      return number > 0;
+    }
+    return false;
   }
 
   /**

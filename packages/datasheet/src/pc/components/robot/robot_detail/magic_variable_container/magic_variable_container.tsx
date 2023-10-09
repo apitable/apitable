@@ -35,19 +35,19 @@ interface ISchemaMapProps {
 export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) => {
   const { nodeOutputSchemaList, insertMagicVariable, setOpen, isJSONField } = props;
   const [schemaExpressionList, setSchemaExpressionList] = useState<ISchemaAndExpressionItem[]>([]);
-  // const [deepIndex, setDeepIndex] = useState<number>(0);
+
   const theme = useTheme();
   const searchRef = useRef<any>();
   const listContainerRef = useRef<any>();
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const colors = useCssColors();
   // Dynamic list of parameters produced according to schema
   let variableList: ISchemaPropertyListItem[] = getCurrentVariableList({
     schemaExpressionList,
     nodeOutputSchemaList,
     isJSONField,
   });
+  const colors= useCssColors();
 
   // List of dynamic parameters after filtering by keyword search
   variableList = variableList.filter((item) => item.label?.includes(searchValue));
@@ -162,6 +162,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       setOpen(false);
     },
   });
+  const currentStep = schemaExpressionList.length;
   return (
     <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
       <TextInput
@@ -176,15 +177,32 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
         prefix={<SearchOutlined color={colors.textCommonPrimary} />}
       />
       <Box margin="8px 0px">
-        <Typography variant="body4" style={{ marginLeft: 8 }}>
-          {t(Strings.robot_variables_select_step)}
+        <Typography variant="body4" style={{ marginLeft: 8 }} color={colors.textCommonTertiary}>
+          <span >
+            {t(Strings.robot_variables_select_step)}
+          </span>
           {schemaExpressionList.map(({ schema }, index) => {
-            return <span key={index}>/{schema?.title}</span>;
+            return <span key={index}>
+              <span style={{ marginLeft: '4px' }}>
+              /&nbsp;
+              </span>
+              <span
+                onClick={() => {
+                  setSchemaExpressionList(l => l.slice(0, index));
+                }}
+                style={{
+                  cursor: 'pointer',
+                  color: colors.textBrandDefault }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
+            </span>;
           })}
         </Typography>
       </Box>
       <Box ref={listContainerRef} maxHeight="300px" overflow="auto">
-        <SchemaPropertyList list={variableList} layout={layout} activeIndex={activeIndex} handleItemClick={handleItemClick} />
+        <SchemaPropertyList list={variableList}
+          currentStep={currentStep}
+          layout={layout} activeIndex={activeIndex} handleItemClick={(node) => {
+            handleItemClick(node);
+          }} />
       </Box>
     </Box>
   );

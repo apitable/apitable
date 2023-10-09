@@ -70,7 +70,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
       if (!lookUpTargetField) {
         // The foreign key data for this table is not loaded.
         const foreignField = fieldMap[field.property.relatedLinkFieldId] as ILinkField;
-        if (foreignField && foreignField.type === FieldType.Link) {
+        if (foreignField && (foreignField.type === FieldType.Link || foreignField.type === FieldType.OneWayLink)) {
           console.log(`2.${index}.1 "${field.name}" the data of the queried table (${foreignField.property.foreignDatasheetId}) is not loaded`);
           linkLookUpField(foreignField.property.foreignDatasheetId, _visitedDst);
         }

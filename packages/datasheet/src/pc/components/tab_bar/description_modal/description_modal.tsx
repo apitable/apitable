@@ -18,6 +18,7 @@
 
 import { Modal } from 'antd';
 import classNames from 'classnames';
+import { useAtom } from 'jotai';
 import { debounce } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -31,6 +32,8 @@ import { useImageUpload } from 'pc/hooks';
 import { store } from 'pc/store';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import { stopPropagation } from '../../../utils/dom';
+import { automationStateAtom } from '../../automation/controller';
+import { useAutomationResourcePermission } from '../../automation/controller/use_automation_permission';
 import styles from './style.module.less';
 
 const SLATE_EDITOR_TYPE = 'slate';
@@ -41,6 +44,7 @@ interface IRenderModalBase {
   activeNodeId: string;
   datasheetName: string | null;
   modalStyle?: React.CSSProperties;
+  onChange?: (value: string) => void;
   isMobile?: boolean;
 }
 
@@ -50,12 +54,26 @@ const getDefaultValue = (desc: INodeDescription | null) => {
   return Deserializer.html(desc.render);
 };
 
+const getJsonValue = (value?: string) => {
+  if (!value) return null;
+  debugger;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
 const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (props) => {
-  const { visible, onClose, activeNodeId, datasheetName, modalStyle, isMobile } = props;
+  const { visible, onClose, activeNodeId, onChange, datasheetName, modalStyle, isMobile } = props;
   const dispatch = useDispatch();
-  const nodeDesc = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
+  const descDst = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
+  const [automationState, setAutomationState] = useAtom(automationStateAtom);
+  const nodeDesc= checkIfAutomationNode(props.activeNodeId) ? getJsonValue(automationState?.robot?.description): descDst;
+
   const [value, setValue] = useState(getDefaultValue(nodeDesc));
-  const permissions = useSelector((state) => Selectors.getPermissions(state));
+  const permissionsOrigin = useSelector((state) => Selectors.getPermissions(state));
+  const permissionAutomations = useAutomationResourcePermission();
+  const permissions= checkIfAutomationNode(props.activeNodeId) ? permissionAutomations : permissionsOrigin;
   const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state)!);
   const { uploadImage } = useImageUpload();
   // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
@@ -109,11 +127,13 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (pr
         data: next.document,
         render: editorHtml.current,
       };
+
       const res = await Api.changeNodeDesc(activeNodeId, JSON.stringify(descStruct));
       const { success, message } = res.data;
       if (success) {
         // Node description saved successfully
         dispatch(StoreActions.recordNodeDesc(datasheetId, JSON.stringify(descStruct)));
+        onChange?.(JSON.stringify(descStruct));
       } else {
         // Node description failed to save, error message, but does not change edit status
         errModal(message);
@@ -214,6 +234,8 @@ interface IDescriptionModal {
   isMobile?: boolean;
   showIcon?: boolean;
   onClick?: () => void;
+  onChange?: (value: string) => void;
+  onVisibleChange?: () => void;
 }
 
 function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
@@ -232,10 +254,23 @@ function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
   return [];
 }
 
+const checkIfAutomationNode=(node: string) => {
+  return node.startsWith('aut');
+};
+/**
+ * share description modal for datasheet and automation
+ * @param props
+ * @constructor
+ */
 export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = (props) => {
-  const { activeNodeId, datasheetName, showIntroduction = true, className, ...rest } = props;
+  const { activeNodeId, datasheetName, showIntroduction = true, onVisibleChange, className, ...rest } = props;
   const [visible, setVisible] = useState(false);
-  const desc = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
+  const [automationState, setAutomationState] = useAtom(automationStateAtom);
+  const descDst= useSelector((state) => {
+    return Selectors.getNodeDesc(state);
+  }, shallowEqual);
+
+  const desc= checkIfAutomationNode(props.activeNodeId) ? getJsonValue(automationState?.robot?.description): descDst;
   const curGuideWizardId = useSelector((state: IReduxState) => state.hooks?.curGuideWizardId);
 
   useEffect(() => {
@@ -262,7 +297,10 @@ export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModa
         <div className={styles.text}>{desc && htmlElmentHasText(desc.render) ? sanitized(desc.render) : t(Strings.edit_node_desc)}</div>
       )}
       {visible && (
-        <RenderModal visible={visible} onClose={() => setVisible(false)} activeNodeId={activeNodeId} datasheetName={datasheetName} {...rest} />
+        <RenderModal visible={visible} onClose={() => {
+          setVisible(false);
+          onVisibleChange?.();
+        }} activeNodeId={activeNodeId} datasheetName={datasheetName} {...rest} />
       )}
     </div>
   );

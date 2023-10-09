@@ -33,7 +33,7 @@ import {
   t,
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
-import { useAllColumns } from 'pc/hooks';
+import { useAllColumnsOrEmpty } from 'pc/hooks';
 import { Select } from '../select';
 import { FieldInput } from './field_input';
 import { FieldSelect } from './field_select';
@@ -82,7 +82,10 @@ const WarningTip = (props: any) => {
  *   + or / and concatenated expressions. It can be a base expression or a grouping expression
  */
 export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFilterProps) => {
-  const { datasheetId, readonly = false, hasParent = false, onChange, depth = 0 } = props;
+
+  const datasheetId = props.datasheetId;
+
+  const { readonly = false, hasParent = false, onChange, depth = 0 } = props;
   // Null expressions converted to null
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const isRoot = !hasParent;
@@ -139,7 +142,8 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
     updateFilter(_filter);
   };
 
-  const columns = useAllColumns(datasheetId);
+  const columns = useAllColumnsOrEmpty(datasheetId);
+
   const snapshot = useSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId)!;
   });
@@ -148,10 +152,11 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   });
 
   // Here are all the fields, with or without permissions
-  const fieldMap = snapshot.meta.fieldMap;
+  const fieldMap = snapshot?.meta?.fieldMap;
 
   const fields = getFields(columns!, fieldMap);
-  const primaryFieldId = fields[0].id;
+  const primaryFieldId = fields?.[0]?.id;
+
   const addNewFilter = useCallback(
     (type: FilterTypeEnums) => {
       const newFilter = _addNewFilter(filter, type, primaryFieldId);
@@ -167,7 +172,7 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
   ];
   if (isBaseExpression) {
     const fieldId = filter.operands[0].value;
-    const field = fieldMap[fieldId];
+    const field = fieldMap?.[fieldId];
     const isDeletedField = field == null;
 
     if (isDeletedField) {

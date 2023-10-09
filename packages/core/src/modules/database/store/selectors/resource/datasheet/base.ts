@@ -273,6 +273,18 @@ export const getNodeDesc = (state: IReduxState, dsId?: string): null | INodeDesc
   if (!datasheet || !datasheet.description) {
     return null;
   }
+  try  {
+    return JSON.parse(datasheet.description);
+  }catch (e) {
+    return null;
+  }
+};
+
+export const getAutomationNodeDesc = (state: IReduxState, dsId?: string): null | INodeDescription => {
+  const datasheet = getDatasheet(state, dsId);
+  if (!datasheet || !datasheet.description) {
+    return null;
+  }
   return JSON.parse(datasheet.description);
 };
 
@@ -295,10 +307,13 @@ export const getViewsList = (state: IReduxState, dsId?: string) => {
 };
 
 export const getNodeId = (state: IReduxState) => {
-  const { datasheetId, folderId, formId, dashboardId, mirrorId,aiId } = state.pageParams;
+  const { datasheetId, automationId, folderId, formId, dashboardId, mirrorId,aiId } = state.pageParams;
   // mirror is special,  url will contain mirrorId and datasheetId at the same time, so mirrorId need to be judged first
   if (mirrorId) {
     return mirrorId;
+  }
+  if (automationId) {
+    return automationId;
   }
   if (datasheetId) {
     return datasheetId;

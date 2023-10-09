@@ -231,15 +231,7 @@ export default function validateFormData(
   if (_validationError) {
     validationError = _validationError;
   }
-  // if (propertyErrors.length) {
-  //   console.error('propertyErrors', propertyErrors);
-  // }
-  // let errors: any = transformAjvErrors(ajv.errors as any);
   let errors: any = transformAjvErrors(propertyErrors as any);
-  // console.warn('! ' + 'ajv.errors', ajv.errors, errors);
-  // Clear errors to prevent persistent errors, see #1104
-
-  // ajv.errors = null;
 
   const noProperMetaSchema =
     validationError &&
@@ -255,9 +247,6 @@ export default function validateFormData(
       },
     ];
   }
-  // if (typeof transformErrors === 'function') {
-  //   errors = transformErrors(errors);
-  // }
 
   let errorSchema = toErrorSchema(errors);
 
@@ -274,11 +263,16 @@ export default function validateFormData(
 
   // customValidate is an additional validation function where ajv's checksum error results are retained
   if (typeof customValidate !== 'function') {
-    // console.log({ errors, errorSchema });
     return { errors, errorSchema };
   }
 
   const errorHandler = customValidate(formData, createErrorHandler(formData));
+
+  const userErrorSchema1 = unwrapErrorHandler({
+    datasheetId: {
+      __errors: ['testxxxxxxxx']
+    }
+  });
   const userErrorSchema = unwrapErrorHandler(errorHandler);
   const newErrorSchema = mergeObjects(errorSchema, userErrorSchema, true);
   // XXX: The errors list produced is not fully compliant with the format
@@ -286,7 +280,6 @@ export default function validateFormData(
   // properties.
   const newErrors = toErrorList(newErrorSchema);
 
-  // console.log('e', newErrorSchema, newErrors);
   return {
     errors: newErrors,
     errorSchema: newErrorSchema,

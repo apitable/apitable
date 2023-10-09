@@ -16,39 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from 'axios';
-import { useMemo, useState } from 'react';
-import useSWR from 'swr';
+import { memo } from 'react';
 import { Box, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';
-import { IRobotTrigger } from '../interface';
-import { useRobotListState } from '../robot_list';
+import { useActionTypes, useAutomationRobot, useTriggerTypes } from '../hooks';
 import { CONST_MAX_ACTION_COUNT } from './action/robot_action_create';
-import { getActionList, RobotActions } from './action/robot_actions';
+import { RobotActions } from './action/robot_actions';
 import { EditType, RobotTrigger } from './trigger/robot_trigger';
 import { useCssColors } from './trigger/use_css_colors';
 
-const req = axios.create({
-  baseURL: '/nest/v1/',
-});
-
-export const RobotDetailForm = () => {
-  const [trigger, setTrigger] = useState<IRobotTrigger>();
+export const RobotDetailForm = memo(() => {
   const { loading, data: actionTypes } = useActionTypes();
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
-  const { robot } = useRobot();
-
-  const {
-    state: { formList },
-  } = useRobotListState();
-
-  const { data, error } = useSWR(`/automation/robots/${robot?.robotId}/actions`, req);
-  const actions = data?.data?.data;
-  const actionList = useMemo(() => getActionList(actions), [actions]);
+  const { robot } = useAutomationRobot();
 
   const colors = useCssColors();
-  if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot || error) {
+  if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot ) {
     return null;
   }
 
@@ -58,15 +41,14 @@ export const RobotDetailForm = () => {
         <Typography variant="h5" color={colors.textCommonPrimary}>{t(Strings.when)}</Typography>
       </Box>
 
-      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} setTrigger={setTrigger} />
+      <RobotTrigger editType={EditType.entry} robotId={robot.robotId} triggerTypes={triggerTypes} />
 
       <Box paddingTop={'40px'} paddingBottom={'16px'}>
         <Typography variant="h5" color={colors.textCommonPrimary}>
-          {t(Strings.then)} ( {actionList?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
+          {t(Strings.then)} ( {robot?.actions?.length ?? 0} / {CONST_MAX_ACTION_COUNT} )
         </Typography>
       </Box>
-
-      <RobotActions robotId={robot.robotId} trigger={trigger} triggerTypes={triggerTypes} />
+      <RobotActions robotId={robot.robotId} triggerTypes={triggerTypes} />
     </>
   );
-};
+});

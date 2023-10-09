@@ -32,11 +32,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
 import { getEnvVariables } from 'pc/utils/env';
-import { SelectUnitSource } from '.';
 import { SearchResult } from '../search_result';
 import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+import { SelectUnitSource } from '.';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;

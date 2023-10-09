@@ -65,15 +65,19 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = (props) => 
 
   return (
     <div className={styles.fieldDocsCard}>
-      <h2 className={styles.fieldName}>
-        {fieldSmallIcon} {field.name} <span className={styles.fieldId}>Field ID: {field.id}</span>
-      </h2>
+      <div className={styles.fieldName}>
+        <>
+          {fieldSmallIcon} {field.name} <span className={styles.fieldId}>Field ID: {field.id}</span>
+        </>
+      </div>
       <div className={styles.splitWrapper}>
         <div className={styles.leftPart}>
           <h4 className={styles.subTitle}>{t(Strings.field_type)}</h4>
           <div className={styles.largeIconWrapper}>
-            {fieldLargeIcon}
-            <div className={styles.title}>{fieldInfo.title}</div>
+            <>
+              {fieldLargeIcon}
+              <div className={styles.title}>{fieldInfo.title}</div>
+            </>
           </div>
           <div className={styles.fieldValueType}>{fieldDocs.valueType}</div>
         </div>

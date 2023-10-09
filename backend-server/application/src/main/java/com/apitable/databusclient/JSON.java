@@ -97,6 +97,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AnyBaseField.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiRecordDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAiPO.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAutomationActionPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAutomationRunHistoryPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.ApiResponseAutomationSO.CustomTypeAdapterFactory());
@@ -108,6 +109,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationActionPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationHistoryRO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationHistoryStatusRO.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationRobotActionRO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationRobotIntroductionPO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationRobotIntroductionSO.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.apitable.databusclient.model.AutomationRobotSO.CustomTypeAdapterFactory());

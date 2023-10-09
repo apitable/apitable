@@ -234,6 +234,11 @@ type FieldValidation = {
   addError: (message: string) => void;
 };
 
+export type FieldDetailValidation = Record<string, {
+  __errors: FieldError[]
+}>;
+export type ValidationResult = FieldValidation | Partial<FieldDetailValidation>;
+
 type FormValidation = FieldValidation & {
   [fieldName: string]: FieldValidation;
 };
@@ -277,12 +282,14 @@ export interface IFormProps<T> {
   liveValidate?: boolean;
   method?: string;
   name?: string;
+  validateOnMount?: boolean;
   noHtml5Validate?: boolean;
   noValidate?: boolean;
   ObjectFieldTemplate?: React.ElementType<IObjectFieldTemplateProps>;
   omitExtraData?: boolean;
   onBlur?: (id: string, value: any) => void;
   onChange?: (e: IChangeEvent<T>, es?: ErrorSchema) => any;
+  onUpdate?: (e: IChangeEvent<T>) => any;
   onError?: (e: any) => any;
   onFocus?: (id: string, value: any) => void;
   onSubmit?: (e: ISubmitEvent<T>, nativeEvent: React.FormEvent<HTMLFormElement>) => any;
@@ -292,7 +299,7 @@ export interface IFormProps<T> {
   target?: string;
   transformErrors?: (errors: AjvError[]) => AjvError[];
   uiSchema?: IUiSchema;
-  validate?: (formData: T, errors: FormValidation) => FormValidation;
+  validate?: (formData: T, errors: FormValidation) => ValidationResult ;
   widgets?: { [name: string]: IWidget };
   nodeOutputSchemaList?: INodeSchema[];
 }

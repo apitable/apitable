@@ -18,13 +18,17 @@
 
 package com.apitable.automation.controller;
 
+import com.apitable.automation.model.ActionVO;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.model.AutomationVO;
+import com.apitable.automation.model.CreateActionRO;
 import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerVO;
+import com.apitable.automation.model.UpdateActionRO;
 import com.apitable.automation.model.UpdateRobotRO;
 import com.apitable.automation.model.UpdateTriggerRO;
+import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.automation.service.IAutomationTriggerService;
@@ -39,6 +43,7 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.mapper.NodeDescMapper;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.service.INodeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,6 +90,12 @@ public class AutomationRobotController {
     @Resource
     private IPermissionService iPermissionService;
 
+    @Resource
+    private IAutomationActionService iAutomationActionService;
+
+    @Resource
+    private NodeDescMapper nodeDescMapper;
+
     /**
      * Get automation robots.
      *
@@ -129,7 +140,12 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        return ResponseData.success(iAutomationRobotService.getRobotByRobotId(robotId));
+        AutomationVO vo = iAutomationRobotService.getRobotByRobotId(robotId);
+        if (resourceId.startsWith(IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum())) {
+            vo.setDescription(nodeDescMapper.selectDescriptionByNodeId(resourceId));
+            return ResponseData.success(vo);
+        }
+        return ResponseData.success(vo);
     }
 
     /**
@@ -139,7 +155,7 @@ public class AutomationRobotController {
      * @param robotId    robot id
      * @param data       update data
      */
-    @PostResource(path = "/{resourceId}/modify/{robotId}", method = RequestMethod.PATCH, requiredPermission = false)
+    @PostResource(path = "/{resourceId}/robots/{robotId}", method = RequestMethod.PATCH, requiredPermission = false)
     @Operation(summary = "Update automation info.")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
@@ -283,5 +299,118 @@ public class AutomationRobotController {
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         return ResponseData.success(
             iAutomationTriggerService.updateByDatabus(triggerId, userId, data));
+    }
+
+    /**
+     * Delete automation trigger.
+     *
+     * @param resourceId resource id
+     * @param triggerId  trigger id
+     * @param robotId    robot id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/triggers/{triggerId}", requiredPermission = false, method = RequestMethod.DELETE)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "triggerId", description = "trigger id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "atr****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "arb****"),
+    })
+    @Operation(summary = "Delete automation trigger")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<Void> deleteTrigger(@PathVariable String resourceId,
+                                            @PathVariable String triggerId,
+                                            @RequestParam(name = "robotId") String robotId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, null,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        iAutomationTriggerService.deleteByDatabus(robotId, triggerId, userId);
+        return ResponseData.success();
+    }
+
+
+    /**
+     * Create automation robot action.
+     *
+     * @param data       request data
+     * @param resourceId resource id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/actions", requiredPermission = false)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
+    })
+    @Operation(summary = "Create automation action")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<List<ActionVO>> createAction(
+        @PathVariable String resourceId,
+        @RequestBody @Valid CreateActionRO data,
+        @RequestParam(name = "shareId", required = false) String shareId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        return ResponseData.success(
+            iAutomationActionService.createByDatabus(userId, data));
+
+    }
+
+    /**
+     * Update automation action.
+     *
+     * @param data       request data
+     * @param resourceId resource id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/actions/{actionId}", requiredPermission = false, method = RequestMethod.PATCH)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "actionId", description = "action id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "atr****"),
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
+    })
+    @Operation(summary = "Update automation action")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<List<ActionVO>> updateAction(
+        @PathVariable String resourceId,
+        @PathVariable String actionId,
+        @RequestBody UpdateActionRO data,
+        @RequestParam(name = "shareId", required = false) String shareId
+    ) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        return ResponseData.success(
+            iAutomationActionService.updateByDatabus(actionId, userId, data));
+    }
+
+    /**
+     * Delete automation action.
+     *
+     * @param resourceId resource id
+     * @param robotId    robot id
+     * @param actionId   action id
+     * @return {@link ResponseData}
+     */
+    @PostResource(path = "/{resourceId}/actions/{actionId}", requiredPermission = false, method = RequestMethod.DELETE)
+    @Parameters({
+        @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
+        @Parameter(name = "actionId", description = "action id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "atr****"),
+        @Parameter(name = "robotId", description = "robot id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "arb****"),
+    })
+    @Operation(summary = "Delete automation action")
+    @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
+    public ResponseData<Void> deleteAction(@PathVariable String resourceId,
+                                           @PathVariable String actionId,
+                                           @RequestParam(name = "robotId") String robotId) {
+        Long userId = SessionContext.getUserId();
+        iPermissionService.checkPermissionBySessionOrShare(resourceId, null,
+            NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        iAutomationActionService.deleteByDatabus(robotId, actionId, userId);
+        return ResponseData.success();
     }
 }

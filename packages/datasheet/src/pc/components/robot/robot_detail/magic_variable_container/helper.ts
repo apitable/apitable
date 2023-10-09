@@ -22,7 +22,7 @@ import { BaseEditor, Selection, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
-  EmptyNullOperand,
+  EmptyNullOperand, FieldType,
   IExpression,
   IExpressionOperand,
   IField,
@@ -35,6 +35,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { getFieldTypeIcon } from '../../../multi_grid/field_setting';
 import { fields2Schema } from '../../helper';
 import { IJsonSchema, INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 
@@ -50,6 +51,8 @@ const functionNameMap = {
 export interface ISchemaPropertyListItem {
   key: string;
   label?: string;
+  icon ?: string | Element|undefined;
+
   schema?: IJsonSchema;
   uiSchema?: any;
   expression: IExpression;
@@ -225,6 +228,7 @@ const getSchemaPropertyList = (props: {
         {
           key: key!,
           label: schema.title,
+          icon: getFieldTypeIcon(schema.type! as unknown as FieldType),
           schema: schema,
           disabled: schema['disabled'],
           expression: _expression,
@@ -263,10 +267,10 @@ export const getCurrentVariableList = (props: {
   isJSONField: boolean;
 }): ISchemaPropertyListItem[] => {
   const { schemaExpressionList, nodeOutputSchemaList, isJSONField = false } = props;
-  // node => children => children
+
   if (schemaExpressionList.length === 0) {
     // The selection list of the first layer is the output of all the predecessor nodes.
-    return nodeOutputSchemaList.map(({ id, title, schema, uiSchema }) => {
+    return nodeOutputSchemaList.map(({ id, title, schema, icon, uiSchema }) => {
       const expression: IExpression = {
         operator: OperatorEnums.GetNodeOutput,
         operands: [
@@ -279,6 +283,7 @@ export const getCurrentVariableList = (props: {
       return {
         key: id,
         label: title,
+        icon: icon,
         schema,
         uiSchema,
         expression,
@@ -319,7 +324,10 @@ export const getGroupedVariableList = (props: { variableList: ISchemaPropertyLis
     .reduce((resList, item) => {
       const listItem = listItemMap[item];
       if (listItem) {
-        resList.push(listItem);
+        resList.push({
+          ...listItem,
+          icon:listItem.icon ?? listItem?.schema?.icon
+        });
       }
       return resList;
     }, [] as any[]);
@@ -489,8 +497,6 @@ export const transformSlateValue = (
   // If it does not contain dynamic parameters, check if the value is null.
   if (!isMagicVariable) {
     const parserString = inputParser.render(res, {});
-    // console.log(parserString, 'parserString');
-    // Treat empty strings as null
     if (parserString.length === 0) {
       return {
         isMagicVariable,
@@ -526,7 +532,7 @@ export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
   });
 };
 
-export const withMagicVariable = (editor: any, triggerId?: string) => {
+export const withMagicVariable = (editor: any) => {
   const { isInline, isVoid, onChange } = editor;
 
   editor.isInline = (element: { type: string }) => {
@@ -547,19 +553,6 @@ export const withMagicVariable = (editor: any, triggerId?: string) => {
     onChange(...params);
   };
 
-  // // @ts-ignore
-  // editor.insertData = data => {
-  //   const html = data.getData('text/html');
-  //
-  //   if (html) {
-  //     const serializedToSlate = htmlToSlate(html, parseConfig);
-  //     const modifiedNodes = modifyTriggerId(triggerId, serializedToSlate);
-  //     Transforms.insertFragment(editor, modifiedNodes);
-  //     return;
-  //   }
-  //   insertData(data);
-  // };
-
   return editor;
 };
 
@@ -578,7 +571,6 @@ export const insertMagicVariable = (data: any, editor: BaseEditor) => {
         // Delete / , insert magic variable
         Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
       }
-      // console.log(lastSelection, 'lastSelection');
       Transforms.insertNodes(editor, [mv]);
       // slate transform moves the cursor to the newly inserted position
       Transforms.move(editor, {
@@ -604,7 +596,7 @@ export const enrichDatasheetTriggerOutputSchema = (
     nodeOutputSchema.uiSchema = {
       layout: [
         {
-          title: t(Strings.robot_variables_select_columns),
+          title: t(Strings.field),
           items: Object.keys(enrichedFieldsSchema.properties!),
         },
         {

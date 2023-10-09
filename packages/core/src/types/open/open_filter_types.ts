@@ -88,6 +88,10 @@ export type IOpenFilterConditionMap = {
 } | {
   [APIMetaFieldType.MagicLink]: IOpenFilterValueMap
 } | {
+  [APIMetaFieldType.TwoWayLink]: IOpenFilterValueMap
+} | {
+  [APIMetaFieldType.OneWayLink]: IOpenFilterValueMap
+} | {
   [APIMetaFieldType.MagicLookUp]: IOpenFilterValueMap
 } | {
   [APIMetaFieldType.Formula]: IOpenFilterValueMap

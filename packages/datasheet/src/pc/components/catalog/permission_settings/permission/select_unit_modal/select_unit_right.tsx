@@ -20,11 +20,11 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { MemberType, Strings, t, IMember, ISpaceInfo, ISpaceBasicInfo, UnitItem } from '@apitable/core';
 import { generateUserInfo } from 'pc/utils';
-import { SelectUnitSource } from '.';
 import styles from './style.module.less';
 import { UnitTag } from './unit_tag';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+import { SelectUnitSource } from '.';
 
 interface ISelectUnitRightProps {
   source?: SelectUnitSource;

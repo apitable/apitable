@@ -52,6 +52,15 @@ public interface IAutomationTriggerService {
      */
     List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data);
 
+    /**
+     * Delete trigger.
+     *
+     * @param robotId   robot id
+     * @param triggerId trigger id
+     * @param userId    operator user id
+     */
+    void deleteByDatabus(String robotId, String triggerId, Long userId);
+
     TriggerCopyResultDto copy(Long userId, boolean sameSpace,
         Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 

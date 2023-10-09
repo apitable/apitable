@@ -31,6 +31,7 @@ import { IResourceTriggerGroupVo } from '../vos/resource.trigger.group.vo';
 @Injectable()
 export class RobotTriggerService {
   constructor(
+    // @ts-ignore
     @InjectLogger() private readonly logger: Logger,
     private readonly automationTriggerTypeRepository: AutomationTriggerTypeRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
@@ -68,6 +69,25 @@ export class RobotTriggerService {
     }, {} as IResourceTriggerGroupVo);
   }
 
+  async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
+    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
+    // get resource from trigger
+    const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
+    if (triggerResourceDtos && triggerResourceDtos.length > 0) {
+      const robotIds = new Set(triggerResourceDtos.map(i => i.robotId));
+      // check the robot status
+      const activeRobotIds = await this.automationRobotRepository.selectActiveRobotIdsByRobotIds(Array.from(robotIds));
+      if (activeRobotIds.length > 0) {
+        for (const trigger of triggerResourceDtos) {
+          if (activeRobotIds.includes(trigger.robotId)) {
+            resourceRobotDtos.push(trigger);
+          }
+        }
+      }
+    }
+    return resourceRobotDtos;
+  }
+
   private async _getResourceConditionalRobotTriggers(resourceId: string, triggerTypeId: string) {
     const resourceRobotTriggers: ResourceRobotTriggerDto[] = [];
     // get the datasheet's robots' id.
@@ -78,12 +98,5 @@ export class RobotTriggerService {
       resourceRobotTriggers.push(...triggers);
     }
     return resourceRobotTriggers;
-  }
-
-  private async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
-    const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
-    const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
-    resourceRobotDtos.push(...triggerResourceDtos);
-    return resourceRobotDtos;
   }
 }

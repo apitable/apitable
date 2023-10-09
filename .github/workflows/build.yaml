@@ -83,9 +83,6 @@ jobs:
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8.7.5
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx

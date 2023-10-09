@@ -72,7 +72,6 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
   const [uuidMap, setUuidMap] = useState<Record<string, IMemberInfoInAddressList>>();
-  const [expandMap, setExpandMap] = useState<Record<number, boolean>>({});
   const currentRevision = useSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
   const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
 
@@ -150,13 +149,6 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
       setUuidMap(map);
     });
   }, [uuids]);
-
-  const onExpandClick = (index: number) => {
-    setExpandMap({
-      ...expandMap,
-      [index]: !expandMap[index],
-    });
-  };
 
   const executeRollback = useCallback(
     (operations: any) => {
@@ -304,13 +296,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
             ) : (
               changesetList.map((item, index) => {
                 const memberInfo = uuidMap && uuidMap[item.userId!];
-                const title = memberInfo
-                  ? getSocialWecomUnitName?.({
-                    name: memberInfo?.memberName,
-                    isModified: memberInfo?.isMemberNameModified,
-                    spaceInfo,
-                  }) || memberInfo?.memberName
-                  : '';
+                const title = getSocialWecomUnitName?.({
+                  name: memberInfo?.memberName,
+                  isModified: memberInfo?.isMemberNameModified,
+                  spaceInfo,
+                }) || '';
                 const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
                 return (
                   <section
@@ -323,7 +313,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                     }}
                   >
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <Avatar id={item.userId || ''} title={title} size={24} src={memberInfo?.avatar} />
+                      <Avatar id={item.userId || ''} title={typeof title==='string'?title:''} size={24} src={memberInfo?.avatar} />
                       <div>
                         <div className={styles.title}>
                           <span style={{ paddingRight: '4px' }}>{title}</span>

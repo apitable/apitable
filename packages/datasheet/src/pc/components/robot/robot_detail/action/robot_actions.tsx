@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useDebounceFn } from 'ahooks';
-import axios from 'axios';
-import React, { useMemo } from 'react';
-import useSWR from 'swr';
+import { useSetAtom, useAtomValue } from 'jotai';
+import React, { useEffect, useMemo } from 'react';
 import { Box } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { automationActionsAtom, automationStateAtom, inheritedTriggerAtom } from '../../../automation/controller';
+import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
+import { OrTooltip } from '../../../common/or_tooltip';
 import { getNodeOutputSchemaList } from '../../helper';
 import { useActionTypes } from '../../hooks';
-import { IRobotAction, IRobotTrigger, ITriggerType } from '../../interface';
-import { OrTooltip } from '../or_tooltip';
+import { ITriggerType } from '../../interface';
 import { EditType } from '../trigger/robot_trigger';
+import { getActionList } from '../utils';
 import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
 import {
@@ -35,87 +36,54 @@ import {
   CreateNewActionLineButton,
 } from './robot_action_create';
 
-const req = axios.create({
-  baseURL: '/nest/v1/',
-});
-
-export const getActionList = (actions?: []): IRobotAction[] => {
-  if (!actions || actions.length === 0) {
-    return [];
-  }
-
-  const preActionIdMap:Record<string, IRobotAction> = actions.map((action: IRobotAction) => ({
-    [action.prevActionId]:  action,
-  })).reduce((acc: any, item: any) => ({ ...acc, ...item }), {});
-
-  const headOpt: IRobotAction|undefined = actions.find((item: IRobotAction) => item.prevActionId == null || item.prevActionId =='');
-  if(!headOpt) {
-    return [];
-  }
-  const head : IRobotAction= headOpt!;
-  const findNextAction = (count: number, current : string, resultList: IRobotAction[]): IRobotAction[] => {
-    if(count === 0 ) {
-      return resultList;
-    }
-    const action = preActionIdMap[current];
-
-    if(action) {
-      return findNextAction(count -1, action.id, resultList.concat(action!));
-    }
-    return resultList;
-  };
-
-  return findNextAction(actions.length - 1, head.id, [head]);
-};
-
 export const RobotActions = ({
   robotId,
   triggerTypes,
-  trigger,
   onScrollBottom = () => {},
 }: {
   robotId: string;
-  trigger?: IRobotTrigger;
   triggerTypes: ITriggerType[];
   onScrollBottom?: () => void;
 }) => {
   const { data: actionTypes } = useActionTypes();
-  const { run } = useDebounceFn(onScrollBottom, { wait: 100 });
+  const robot = useAtomValue(automationStateAtom);
+  const permissions = useAutomationResourcePermission();
+  const actions = (robot?.robot?.actions ?? []).map(action => ({ ...action,
+    typeId: action.actionTypeId,
+    id: action.actionId }));
 
-  const { data, error } = useSWR(`/automation/robots/${robotId}/actions`, req);
-  const actions = data?.data?.data;
-
-  const entryActionId = actions?.find((item: any) => item.prevActionId === null)?.id;
+  const setActions = useSetAtom(automationActionsAtom);
+  useEffect(( ) => {
+    if(actions) {
+      setActions(actions);
+    }
+  }, [actions, setActions]);
+  const entryActionId = actions?.find((item: any) => item.prevActionId == '' || item.prevActionId == null )?.actionId;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
+
+  const trigger = useAtomValue(inheritedTriggerAtom);
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
     triggerTypes,
-    trigger,
+    trigger: trigger,
   });
 
-  if (!data || error) {
-    return null;
-  }
   if (!entryActionId) {
     return (
       <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null} nodeOutputSchemaList={nodeOutputSchemaList}/>
     );
   }
 
-  run();
-
-  // Guides the creation of a trigger when there is no trigger
-  // <NodeForm schema={triggerUpdateForm as any} onSubmit={handleUpdateFormChange} />
   return (
     <Box width="100%">
       {actionList.map((action, index) => (
         <Box key={`${index}_${actionList[index - 1]?.prevActionId}_${action.id}`}>
           {index > 0 && index < actionList.length && (
             <CreateNewActionLineButton
-              disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+              disabled={actionList?.length >= CONST_MAX_ACTION_COUNT || !permissions.editable}
               robotId={robotId}
               actionTypes={actionTypes}
               nodeOutputSchemaList={nodeOutputSchemaList}
@@ -132,7 +100,9 @@ export const RobotActions = ({
                   })}
                   placement={'top'}
                 >
-                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT} />
+                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT
+                      || !permissions.editable
+                  } />
                 </OrTooltip>
               </span>
             </CreateNewActionLineButton>
@@ -141,7 +111,6 @@ export const RobotActions = ({
             editType={EditType.entry}
             index={index + 1}
             action={action}
-            nodeOutputSchemaList={nodeOutputSchemaList}
             robotId={robotId}
           />
         </Box>
@@ -156,7 +125,9 @@ export const RobotActions = ({
         })} placement={'top'}>
         <CreateNewAction
           nodeOutputSchemaList={nodeOutputSchemaList}
-          disabled={actionList?.length >= CONST_MAX_ACTION_COUNT}
+          disabled={actionList?.length >= CONST_MAX_ACTION_COUNT ||
+              !permissions?.editable
+          }
           robotId={robotId}
           actionTypes={actionTypes}
           prevActionId={actionList[actionList.length - 1]?.id}

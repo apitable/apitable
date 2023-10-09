@@ -40,10 +40,14 @@ export interface IUISchemaLayoutGroup {
   title: string;
   items: string[];
 }
-
+export enum AutomationScenario {
+  'datasheet',
+  'node'
+}
 export interface IRobotContext {
   currentRobotId?: string;
   resourceId?: string;
+  scenario: AutomationScenario;
   robot?: IAutomationRobotDetailItem;
 }
 
@@ -76,6 +80,7 @@ export type INodeType = ITriggerType | IActionType;
 
 export interface IRobotAction {
   id: string;
+  actionId: string;
   prevActionId: string;
   typeId: string;
   actionTypeId: string;
@@ -90,6 +95,7 @@ export interface IRobotTrigger {
 
 export interface INodeOutputSchema {
   id: string;
+  icon?: string;
   title: string;
   schema: IJsonSchema | undefined;
   uiSchema?: any;
@@ -201,6 +207,9 @@ export interface IJsonSchema {
    * Title of the schema
    */
   title?: string;
+
+  icon?: string;
+
   /**
    * Schema description
    */
@@ -323,4 +332,10 @@ export interface INodeSchema {
 export interface IRobotHeadAddBtn {
   toolTips?: any;
   btnStyle?: React.CSSProperties;
+}
+
+export enum RobotRunStatusEnums {
+  RUNNING = 0,
+  SUCCESS = 1,
+  ERROR = 2,
 }

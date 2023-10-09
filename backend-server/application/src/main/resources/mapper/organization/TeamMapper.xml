@@ -127,6 +127,7 @@
           and vod.team_name like CONCAT('%', #{teamName}, '%')
         GROUP BY vod.id, vod.sequence
         ORDER BY vod.sequence
+        LIMIT 0,50
     </select>
 
     <select id="existChildrenByParentId" resultType="java.lang.Integer">
@@ -329,6 +330,7 @@
           and vout.space_id = #{spaceId}
           and vout.parent_id != 0
           and vout.team_name like CONCAT('%', #{likeName}, '%')
+        LIMIT 0,50
     </select>
 
     <select id="selectIdBySpaceIdAndNames" resultType="java.lang.Long">

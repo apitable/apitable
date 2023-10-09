@@ -29,6 +29,7 @@ import { IBaseEditorProps, IEditor } from '../interface';
 import styles from './style.module.less';
 
 export interface ICheckboxEditorProps extends IBaseEditorProps {
+  datasheetId: string;
   style: React.CSSProperties;
   editable: boolean;
   editing: boolean;

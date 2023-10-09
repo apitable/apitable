@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { useAtom } from 'jotai';
 import { FC } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
@@ -14,45 +13,18 @@ import {
 } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import {
-  CheckCircleFilled,
-  CheckCircleOutlined, CheckFilled,
   DownloadOutlined,
-  MoreStandOutlined,
-  PlayFilled,
-  PlayOutlined, WarnCircleFilled,
-  WarnCircleOutlined, WarnFilled
+  MoreStandOutlined
 } from '@apitable/icons';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
-import { IRobotRunHistoryItem } from '../../../robot/interface';
-import { automationHistoryAtom } from '../../controller';
+import { useActionTypes } from '../../../robot/hooks';
+import { RobotRunStatusEnums } from '../../../robot/interface';
+import { IRunHistoryDatum } from '../../../robot/robot_detail/robot_run_history';
+import { ItemStatus } from './item_status';
 import styles from './styles.module.less';
 import { handleDownload } from './util';
 
 export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-
-export const ItemStatus = ({ status }: { status: number }) => {
-  const colors = useThemeColors();
-  switch (status) {
-    case 1:
-      return (<CheckCircleOutlined color={colors.textSuccessDefault} size={16}/>);
-    case 2:
-      return (<WarnCircleOutlined color={colors.textWarnDefault} size={16}/>);
-    default: {
-      return (<PlayOutlined color={colors.textBrandDefault} size={16}/>);
-    }
-  }
-};
-
-export const RunItemStatus = ({ status }: { status: number }) => {
-  const colors = useThemeColors();
-  return (
-    <>
-      {status === 0 && <PlayFilled color={colors.textBrandDefault} size={16} />}
-      {status === 1 && <CheckCircleFilled color={colors.textSuccessDefault} size={16} />}
-      {status === 2 && <WarnCircleFilled color={colors.textWarnDefault} size={16} />}
-    </>
-  );
-};
 
 const StyledMenu = styled(Box)`
   &:hover {
@@ -100,15 +72,16 @@ const StyledTaskItem = styled(Box)<{ isActive: boolean }>`
   }
 `;
 
-export const TaskItem: FC<{ activeId?: string, item: IRobotRunHistoryItem; onClick?: () => void; isSummary?: boolean }> = ({ item, activeId, onClick }) => {
+export const TaskItem: FC<{ activeId?: string, item: IRunHistoryDatum; onClick?: () => void; isSummary?: boolean, hideMoreOperation?: boolean }> = ({ item, isSummary, activeId, onClick, hideMoreOperation }) => {
   const colors = useThemeColors();
-  const isSummary = true;
   const isActive = item.taskId === activeId;
+  const { data } = useActionTypes();
+  const failed = item.executedActions.find(r => !r.success);
 
   return (
     <StyledTaskItem display={'flex'} flexDirection={'row'} padding={'8px 0px 8px 8px'} isActive={isActive} onClick={onClick}>
       <Box display={'flex'} flexDirection={'row'} marginRight={'8px'} paddingTop={'4px'}>
-        <ItemStatus status={item.status} />
+        <ItemStatus status={item.status} variant={'outlined'} />
       </Box>
 
       <Box flex={'1'}>
@@ -117,70 +90,67 @@ export const TaskItem: FC<{ activeId?: string, item: IRobotRunHistoryItem; onCli
             {dayjs(item.createdAt).format(CONST_DATETIME_FORMAT)}
           </Typography>
 
-          <Dropdown
-            clazz={{
-              overlay: styles.overlayStyle,
-            }}
-            options={{
-              arrow: false,
-              placement: 'bottom-end',
-              stopPropagation: true,
-            }}
-            trigger={
-              <MoreButton>
-                <IconButton shape="square" icon={MoreStandOutlined} />
-              </MoreButton>
-            }
-          >
-            {({ toggle }: IOverLayProps) => {
-              return (
-                <>
-                  <Box
-                    onClick={stopPropagation}
-                    width={'132px'}
-                    display={'flex'}
-                    flexDirection={'column'}
-                    borderColor={' var(--radiusRadiusDefault, 4px);'}
-                    backgroundColor={'var(--bgCommonHighest, #333)'}
-                  >
-                    <StyledMenu
-                      padding={'8px'}
-                      display={'inline-flex'}
-                      alignItems={'center'}
-                      onClick={async () => {
-                        toggle();
-                        const result = await getAutomationRunHistoryDetail(item.taskId);
-                        handleDownload(result ?? {}, `automation_${item.robotId}_${item.taskId}.json`);
-                      }}
-                    >
-                      <IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />
+          {
+            !hideMoreOperation && (
+              <Dropdown
+                clazz={{
+                  overlay: styles.overlayStyle,
+                }}
+                options={{
+                  arrow: false,
+                  placement: 'bottom-end',
+                  stopPropagation: true,
+                }}
+                trigger={
+                  <MoreButton>
+                    <IconButton shape="square" icon={MoreStandOutlined} />
+                  </MoreButton>
+                }
+              >
+                {({ toggle }: IOverLayProps) => {
+                  return (
+                    <>
+                      <Box
+                        onClick={stopPropagation}
+                        width={'132px'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        borderColor={' var(--radiusRadiusDefault, 4px);'}
+                        backgroundColor={'var(--bgCommonHighest, #333)'}
+                      >
+                        <StyledMenu
+                          padding={'8px'}
+                          display={'inline-flex'}
+                          alignItems={'center'}
+                          onClick={async () => {
+                            toggle();
+                            const result = await getAutomationRunHistoryDetail(item.taskId);
+                            handleDownload(result ?? {}, `automation_${item.robotId}_${item.taskId}.json`);
+                          }}
+                        >
+                          <IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />
 
-                      <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
-                        {t(Strings.download)}
-                      </Typography>
-                    </StyledMenu>
-                  </Box>
-                </>
-              );
-            }}
-          </Dropdown>
+                          <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
+                            {t(Strings.download)}
+                          </Typography>
+                        </StyledMenu>
+                      </Box>
+                    </>
+                  );
+                }}
+              </Dropdown>
+            )
+          }
         </Box>
-
         {!isSummary && (
-          //TODO  wait for backend api
           <Typography variant="body4" color={colors.textCommonTertiary}>
-            {item.status === 1 &&
+            {(item.status === RobotRunStatusEnums.SUCCESS || item.status === RobotRunStatusEnums.RUNNING) &&
               t(Strings.automation_run_history_item_brief_success, {
-                NUM: 1,
+                NUM: item.executedActions.filter(r => r.success).length,
               })}
-            {item.status === 2 &&
+            {item.status === RobotRunStatusEnums.ERROR &&
               t(Strings.automation_run_history_item_brief_fail, {
-                ACTION_NAME: '发送网络请求',
-              })}
-
-            {item.status === 3 &&
-              t(Strings.automation_run_history_item_brief_success, {
-                NUM: '1',
+                ACTION_NAME:   data.find(a => a.actionTypeId === failed?.actionTypeId)?.name ?? ''
               })}
           </Typography>
         )}

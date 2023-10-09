@@ -17,7 +17,8 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
+import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
 import { Box, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
@@ -39,20 +40,19 @@ const FilterWrapper = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
 `;
-export const FilterValueDisplay = ({ filter, label, datasheetId }: {
-  filter: any;
-  label: string;
-  datasheetId: string
-}) => {
+export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any; label: string; datasheetId: string }) => {
   const theme = useTheme();
   if (!filter) return null;
+  if(!datasheetId) {
+    return null;
+  }
   return (
     <Box>
       <Typography variant="body3" color={theme.color.fc1}>
         {label}
       </Typography>
       <FilterWrapper>
-        <RecordMatchesConditionsFilter filter={filter} datasheetId={datasheetId} readonly/>
+        <RecordMatchesConditionsFilter filter={filter} readonly datasheetId={datasheetId} />
       </FilterWrapper>
     </Box>
   );
@@ -60,7 +60,10 @@ export const FilterValueDisplay = ({ filter, label, datasheetId }: {
 
 export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetail) => {
   const { nodeType, nodeDetail } = props;
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
+
+  const datasheetId = nodeDetail?.input?.datasheetId ?? '';
+  const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+
   const fieldPermissionMap = useSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
@@ -70,8 +73,25 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const retrievedSchema = retrieveSchema(nodeSchema.schema as any, nodeSchema.schema, data2Operand(formData));
   const fields = useAllFields();
   const colors = useThemeColors();
-  if (!fieldPermissionMap || !fields) return null;
   const oldSchema = { schema: nodeType.outputJsonSchema };
+
+  if (!fieldPermissionMap || !fields) return (
+
+    <Box color={colors.bgCommonDefault} width={'100%'}>
+      <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
+
+      <Box
+        width={'100%'}
+        boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`}
+        className={styles.historyDetailList}
+      >
+        {!datasheet && (
+          <ReactJson src={nodeDetail.input} collapsed={3} />
+        )}
+      </Box>
+    </Box>
+  );
+
   const outputSchema: any = enrichDatasheetTriggerOutputSchema(oldSchema as any, fields, fieldPermissionMap);
 
   return (
@@ -92,11 +112,11 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
             if (propertyKey === 'filter') {
               return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />;
             }
-            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue}/>;
+            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />;
           })}
       </Box>
       ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
-      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema/>
+      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema />
       {/* {
       list.map((propertySchema, index) => {
         const propertyValue = nodeDetail.output[propertySchema.key];

@@ -16,34 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useHover } from 'ahooks';
-import { useRef } from 'react';
-import { Box, Button, ListDeprecate, stopPropagation, useTheme } from '@apitable/components';
+import Image from 'next/image';
+import { isValidElement, memo, useRef } from 'react';
+import { Box, Button, ListDeprecate, stopPropagation, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ChevronRightOutlined } from '@apitable/icons';
+import { ChevronRightOutlined, NumberOutlined } from '@apitable/icons';
+import { useCssColors } from '../trigger/use_css_colors';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
 
 interface ISchemaPropertyListItemProps {
+  currentStep: number
   item: ISchemaPropertyListItem;
   isActive?: boolean;
   disabled?: boolean;
   handleItemClick: ISchemaPropertyListItemClickFunc;
 }
 
-export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
-  const { item, isActive, disabled, handleItemClick } = props;
-  const theme = useTheme();
+export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps) => {
+  const { item, currentStep, isActive, disabled, handleItemClick } = props;
   const ref = useRef<HTMLDivElement>(null);
-  const isHovering = useHover(ref);
-  const getBgColor = () => {
-    if (isActive) {
-      return theme.color.fc5;
-    }
-    if (isHovering) {
-      return theme.color.highBg;
-    }
-    return theme.color.fc8;
-  };
+  const colors = useCssColors();
+  const imgSize = currentStep === 0 ? 32 : 24;
   return (
     <Box ref={ref} key={item.key} marginBottom="4px">
       <ListDeprecate.Item
@@ -51,14 +44,17 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
         id={item.key}
         currentIndex={0}
         style={{
-          // backgroundColor: getBgColor(),
           borderRadius: '4px',
         }}
         className={isActive ? 'active' : ''}
         onClick={(e) => {
           if (disabled) return;
           stopPropagation(e);
-          handleItemClick(item);
+          if(item.hasChildren) {
+            handleItemClick(item, true);
+          } else {
+            handleItemClick(item);
+          }
         }}
       >
         <Box
@@ -76,7 +72,25 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
               : {}
           }
         >
-          {item.label}
+
+          <Box display={'inline-flex'} alignItems='center'>
+            {
+              item.icon ? (isValidElement(item.icon) ? item.icon :
+                <Image src={String(item.icon)}
+                  width={imgSize}
+                  height={imgSize}
+                  alt=""
+                />)
+                :
+                <NumberOutlined size={16} color={colors.textCommonTertiary}/>
+            }
+
+            <Box marginLeft={'8px'} alignItems={'center'} display={'flex'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {item.label}
+              </Typography>
+            </Box>
+          </Box>
           <Box display="flex" alignItems="center">
             {item.canInsert && (
               <Button
@@ -117,4 +131,4 @@ export const SchemaPropertyListItem = (props: ISchemaPropertyListItemProps) => {
       </ListDeprecate.Item>
     </Box>
   );
-};
+});

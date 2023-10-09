@@ -4,7 +4,9 @@ import { DISABLE_TIP } from 'pc/components/datasheet_search_panel/const';
 /**
  * @description To determine if the current node can be selected, check the node's permissions
  */
-export const checkNodeDisable = (node: INode) => {
+export const checkNodeDisable = (node: INode,
+  needPermission?: 'manageable' | 'editable'
+) => {
   if (node.type === ConfigConstant.NodeType.VIEW) {
     return;
   }

@@ -26,9 +26,10 @@ import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
-import { useActionTypes, useRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
-import { IAutomationDatum, IRobotAction, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
-import { getActionList } from '../robot_detail/action/robot_actions';
+import EllipsisText from '../../ellipsis_text';
+import { useActionTypes, useAutomationRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
+import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { getActionList } from '../robot_detail/utils';
 import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
@@ -111,7 +112,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
     }
     : { cursor: 'pointer' };
 
-  const { resourceId, currentRobotId, robot } = useRobot();
+  const { resourceId, currentRobotId, robot } = useAutomationRobot();
   const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
 
   const colors = useThemeColors();
@@ -121,7 +122,6 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
       border={`1px solid ${theme.color.borderCommonDefault}`}
       borderRadius="4px"
       marginTop="16px"
-      // background={colors.bgControlsDefault}
       style={readonlyStyle}
     >
       <Box padding="8px 0" margin="0 8px" onClick={onNavigate}>
@@ -182,10 +182,12 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
       </Box>
 
       <Box display="flex" alignItems="center" margin={'0 8px'} onClick={onNavigate}>
-        <Box display="flex" alignItems="center" marginBottom={'16px'}>
-          <Typography variant="h8" ellipsis>
-            {name || t(Strings.robot_unnamed)}
-          </Typography>
+        <Box display="flex" alignItems="center" marginBottom={'16px'} width={'100%'}>
+          <EllipsisText>
+            <Typography variant="h8" ellipsis>
+              {name || t(Strings.robot_unnamed)}
+            </Typography>
+          </EllipsisText>
         </Box>
       </Box>
     </StyledBox>

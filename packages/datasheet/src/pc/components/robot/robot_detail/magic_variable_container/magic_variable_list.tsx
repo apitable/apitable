@@ -19,23 +19,26 @@
 import { Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { IUISchemaLayoutGroup } from '../../interface';
+import { useCssColors } from '../trigger/use_css_colors';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
 import { SchemaPropertyListItem } from './magic_variable_list_item';
 
 interface ISchemaPropertyListProps {
   list: ISchemaPropertyListItem[];
+  currentStep: number;
   layout?: IUISchemaLayoutGroup[];
   activeIndex?: number;
   handleItemClick: ISchemaPropertyListItemClickFunc;
 }
 
 export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
-  const { list, activeIndex, handleItemClick, layout } = props;
+  const { list, activeIndex, currentStep, handleItemClick, layout } = props;
   const listItemMap = list.reduce((map, item) => {
     map[item.key] = item;
     return map;
   }, {});
   const theme = useTheme();
+  const colors = useCssColors();
   // Whether there are prototype properties/methods, and if so, group them.
   const hasPrototype = list.some((item) => item.isPrototype);
 
@@ -46,7 +49,7 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
         {list.map((item, index) => {
           const isActive = activeIndex === index;
           const disabled = item.disabled;
-          return <SchemaPropertyListItem isActive={isActive} disabled={disabled} key={item.key} item={item} handleItemClick={handleItemClick} />;
+          return <SchemaPropertyListItem currentStep={currentStep} isActive={isActive} disabled={disabled} key={item.key} item={item} handleItemClick={handleItemClick} />;
         })}
       </>
     );
@@ -78,8 +81,8 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
         return (
           <>
             <Typography
-              variant="h9"
-              color={theme.color.fc3}
+              variant="body4"
+              color={colors.textCommonTertiary}
               style={{
                 marginTop: 8,
                 marginBottom: 4,
@@ -93,7 +96,7 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
               if (!item) return null;
               const isActive = list[activeIndex!]?.key === itemKey;
               const disabled = item.disabled;
-              return <SchemaPropertyListItem isActive={isActive} disabled={disabled} key={item.key} item={item} handleItemClick={handleItemClick} />;
+              return <SchemaPropertyListItem currentStep={currentStep} isActive={isActive} disabled={disabled} key={item.key} item={item} handleItemClick={handleItemClick} />;
             })}
           </>
         );

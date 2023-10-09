@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { isNull } from 'util';
 import classNames from 'classnames';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { isNull } from 'util';
 import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, FieldType, getTextFieldType, ICellValue, IField, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';

@@ -19,7 +19,7 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { INode, Strings, t, ThemeName } from '@apitable/core';
+import { INode, Strings, t, ThemeName, ConfigConstant } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
@@ -31,7 +31,7 @@ interface ISearchResultProps {
   searchResult: { folders: INode[]; files: INode[] } | string;
   onlyShowAvailable: boolean;
 
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder', id: string): void;
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
   noCheckPermission?: boolean;
 }
@@ -95,7 +95,14 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
         <div className={styles.nodeListContent}>
           {files.map((node) => {
             return (
-              <File key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Datasheet', id)} richContent disable={_checkNodeDisable(node)}>
+            // ConfigConstant.NodeType.DATASHEET
+              <File nodeType={node.type} key={node.nodeId} id={node.nodeId} onClick={(id) => {
+                if(node.type === ConfigConstant.NodeType.FORM) {
+                  onNodeClick('Form', id);
+                } else {
+                  onNodeClick('Datasheet', id);
+                }
+              }} richContent disable={_checkNodeDisable(node)}>
                 {node.nodeName}
               </File>
             );

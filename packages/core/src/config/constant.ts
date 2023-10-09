@@ -73,6 +73,10 @@ export const orderedNode = [
     name: t(Strings.file),
   },
   {
+    type: NodeType.AUTOMATION,
+    name: t(Strings.automation),
+  },
+  {
     type: NodeType.FORM,
     name: t(Strings.view_form),
   },
@@ -87,6 +91,7 @@ export enum NodeTypeReg {
   DATASHEET = 'dst',
   FORM = 'fom',
   DASHBOARD = 'dsb',
+  AUTOMATION = 'aut',
   MIRROR = 'mir',
   WIDGET = 'wdt',
 }
@@ -137,6 +142,15 @@ export const permission = {
 };
 
 export const nodePermissionMap = new Map<NodeType, { [key: string]: string }>([
+  [
+    NodeType.AUTOMATION,
+    {
+      [permission.manager]: t(Strings.add_datasheet_manager),
+      [permission.editor]: t(Strings.add_datasheet_editor),
+      [permission.reader]: t(Strings.add_datasheet_reader),
+      [permission.updater]: t(Strings.add_datasheet_updater),
+    },
+  ],
   [
     NodeType.DATASHEET,
     {
@@ -269,6 +283,7 @@ export enum Modules {
 export enum ContextMenuType {
   DEFAULT = 'DEFAULT', // default menu for working directory
   DATASHEET = 'DATASHEET', // right-click table menu for working directory
+  AUTOMATION = 'AUTOMATION', // right-click table menu for working directory
   FORM = 'FORM', // right-click magic form menu for working directory
   DASHBOARD = 'DASHBOARD', // DASHBOARD
   FOLDER = 'FOLDER', // right-click folder menu for working directory

@@ -17,25 +17,22 @@
  */
 
 import { useClickOutside } from '@huse/click-outside';
-import { useClickAway } from 'ahooks';
+import { useAtomValue } from 'jotai/index';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
-import { Selectors } from '@apitable/core';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
-import { MagicVariableElement } from '.';
-import { useAllFields } from '../../hooks';
+import { useAutomationRobotFields, useTriggerDatasheetId } from '../../../automation/controller/hooks/use_robot_fields';
 import { INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
-// import { getSchemaType } from '../node_form/core/utils';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
 import styles from './styles.module.less';
+import { MagicVariableElement } from '.';
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
@@ -50,22 +47,25 @@ type IMagicTextFieldProps = IWidgetProps & {
   triggerType: ITriggerType | null;
 };
 
-export const MagicTextField = (props: IMagicTextFieldProps) => {
-  const { onChange, schema, nodeOutputSchemaList: originalNodeOutputSchemaList } = props;
+export const MagicTextField = memo((props: IMagicTextFieldProps) => {
+  const { onChange, schema } = props;
   const isJSONField = (schema as any)?.format === 'json';
   const [isOpen, setOpen] = useState(false);
   const ref = useRef(null);
+  const isOpenRef = useRef(false);
   const inputRef = useRef<any>();
   const triggerRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
-  const triggerId = originalNodeOutputSchemaList?.[0]?.id;
+  const datasheetId = useTriggerDatasheetId();
 
-  const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor), triggerId)), []);
+  const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor))), []);
 
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
   useClickOutside(popupRef, () => {
+
+    isOpenRef.current=false;
     setOpen(false);
   });
 
@@ -81,9 +81,10 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
 
   const updateFormValue = useCallback(
     (value: any) => {
-      // console.log('1.Form input SlateValue', value);
+      if(isOpenRef.current) {
+        return;
+      }
       const { value: transformedValue } = transformSlateValue(value);
-      // console.log('2.Form input TransformSlateValue', transformedValue, isMagicVariable);
       onChange && onChange(transformedValue);
     },
     [onChange],
@@ -95,6 +96,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
       if (event.key === '/') {
         Transforms.insertText(editor, '/');
         event.preventDefault();
+        isOpenRef.current=true;
         inputRef.current = setTimeout(() => {
           setOpen(true);
         }, 300);
@@ -109,13 +111,8 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     setValue(value);
   };
 
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const fieldPermissionMap = useSelector((state) => {
-    return Selectors.getFieldPermissionMap(state, datasheetId);
-  });
-  const fields = useAllFields();
-  // Two triggers take dynamic parameters to mask five fields when the form is submitted and when the record is created
-  // const disable5Fields = ['form_submitted', 'record_created'].includes(triggerType?.endpoint!);
+  const { fields, fieldPermissionMap } = useAutomationRobotFields(datasheetId!);
+
   const nodeOutputSchemaList = props.nodeOutputSchemaList.map((nodeOutputSchema, index) => {
     // The first one is the trigger, and for now only the fields of the trigger will be enhanced
     if (index === 0) {
@@ -140,6 +137,7 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
     return fixImeInputBug(event, editor);
   };
 
+  // @ts-ignore
   return (
     <Slate editor={editor} value={value as any} onChange={handleEditorChange}>
       <div
@@ -152,14 +150,6 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
           }
         }}
       >
-        {/* <span onClick={(e) => {
-         e.preventDefault();
-         setOpen(true);
-         }}>
-         <IconButton
-         icon={AddOutlined}
-         />
-         </span> */}
         <RcTrigger
           ref={triggerRef}
           getPopupContainer={() => ref.current!}
@@ -178,7 +168,10 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
                 setOpen(false);
               }}
               nodeOutputSchemaList={nodeOutputSchemaList}
-              setOpen={setOpen}
+              setOpen={(isOpen) => {
+                isOpenRef.current=isOpen;
+                setOpen(isOpen);
+              }}
             />
           }
           popupVisible={isOpen}
@@ -202,4 +195,4 @@ export const MagicTextField = (props: IMagicTextFieldProps) => {
       </div>
     </Slate>
   );
-};
+});

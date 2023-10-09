@@ -26,7 +26,7 @@ import styles from './style.module.less';
 export interface IContextmenuItemProps {
   className?: string;
   icon?: NodeIcon | React.ReactElement;
-  name: string;
+  name: string | (() => React.ReactElement);
   shortcutKey?: string;
   arrow?: boolean;
   onClick?: ({ event }: { event: any; triggerEvent: any }) => void;
@@ -50,7 +50,7 @@ export const ContextmenuItem: FC<React.PropsWithChildren<IContextmenuItemProps>>
       {...rest}
     >
       {icon}
-      <div className={styles.name}>{name}</div>
+      <div className={styles.name}>{typeof name === 'string' ? name : name()}</div>
       <div className={styles.shortcutKey}>{shortcutKey}</div>
       {arrow && <RightArrowIcon className={styles.arrow} />}
     </div>

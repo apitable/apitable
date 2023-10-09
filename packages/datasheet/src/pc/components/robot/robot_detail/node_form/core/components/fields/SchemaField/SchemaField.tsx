@@ -17,7 +17,7 @@
  */
 
 import { JSONSchema7 } from 'json-schema';
-import { Fragment } from 'react';
+import { Fragment, memo } from 'react';
 import { mergeObjects } from '../../../func';
 import { ISchemaFieldProps } from '../../../interface';
 import { getDefaultRegistry, getDisplayLabel, isSelect, retrieveSchema, toIdSchema } from '../../../utils';
@@ -26,7 +26,7 @@ import { ErrorList } from './ErrorList';
 import { Help } from './Help';
 import { getFieldComponent } from './helper';
 
-export function SchemaField(props: ISchemaFieldProps) {
+function SchemaField1(props: ISchemaFieldProps) {
   const {
     uiSchema = {},
     formData,
@@ -44,7 +44,6 @@ export function SchemaField(props: ISchemaFieldProps) {
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || (registry as any).FieldTemplate || DefaultTemplate;
   let idSchema: any = props.idSchema || {};
   const schema = retrieveSchema(props.schema, rootSchema, formData);
-  // console.log('SchemaField.retrieveSchema', props.schema, schema);
   idSchema = mergeObjects(toIdSchema(schema, null, rootSchema, formData, idPrefix), idSchema);
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields);
   const DescriptionField = fields.DescriptionField as any;
@@ -56,7 +55,6 @@ export function SchemaField(props: ISchemaFieldProps) {
       schema.readOnly,
   );
   const autofocus = Boolean(props.autofocus || uiSchema['ui:autofocus']);
-  // console.log('SchemaField.schema', schema);
   if (Object.keys(schema).length === 0) {
     return null;
   }
@@ -185,4 +183,6 @@ export function SchemaField(props: ISchemaFieldProps) {
   );
 }
 
+const SchemaField = memo(SchemaField1);
+export { SchemaField };
 export default SchemaField;

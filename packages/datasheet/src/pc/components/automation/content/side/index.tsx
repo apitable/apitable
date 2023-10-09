@@ -3,20 +3,15 @@ import * as React from 'react';
 import { memo } from 'react';
 import { Box } from '@apitable/components';
 import { IRobotActionProps, RobotAction } from 'pc/components/robot/robot_detail/action/robot_action';
-import { useRobot, useTriggerTypes } from '../../../robot/hooks';
+import { useAutomationRobot, useTriggerTypes } from '../../../robot/hooks';
 import { EditType, RobotTrigger } from '../../../robot/robot_detail/trigger/robot_trigger';
-import { useRobotListState } from '../../../robot/robot_list';
 import { automationPanelAtom, PanelName } from '../../controller';
 import { BaseInfo } from '../basic_info';
 
 export const Side = memo(() => {
-  const { robot } = useRobot();
+  const { robot } = useAutomationRobot();
 
   const [panel] = useAtom(automationPanelAtom);
-
-  const {
-    state: { formList },
-  } = useRobotListState();
 
   const { data: triggerTypes } = useTriggerTypes();
 
@@ -38,7 +33,7 @@ export const Side = memo(() => {
     case PanelName.Trigger: {
       return (
         <Box paddingX={'24px'} height={'100%'} paddingBottom={'16px'} paddingTop={'16px'}>
-          <RobotTrigger editType={EditType.detail} robotId={robot.robotId} triggerTypes={triggerTypes} formList={formList} />
+          <RobotTrigger editType={EditType.detail} robotId={robot.robotId} triggerTypes={triggerTypes} />
         </Box>
       );
     }

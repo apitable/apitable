@@ -247,6 +247,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
       } else {
         attachmentRef.current = cellValue as IAttachmentValue[];
       }
+
       return editable ? (
         <ExpandAttachContext.Provider value={{ isFocus }}>
           <ExpandAttachment

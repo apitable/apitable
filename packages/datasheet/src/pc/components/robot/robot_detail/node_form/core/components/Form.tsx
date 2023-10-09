@@ -16,13 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useUnmount } from 'ahooks';
-import { useSetAtom } from 'jotai';
 import _pick from 'lodash/pick';
-import { useEffect, useImperativeHandle, useState, useRef } from 'react';
+import { useEffect, useImperativeHandle, useState, useRef, memo } from 'react';
 import * as React from 'react';
-import { automationModifiedAtom } from 'pc/components/automation/controller';
-import { useFormEdit } from '../../../form_edit';
 import { isObject, mergeObjects } from '../func';
 import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
@@ -33,6 +29,7 @@ const defaultProps = {
   uiSchema: {},
   noValidate: false,
   liveValidate: false,
+  validateOnMount: false,
   disabled: false,
   readonly: false,
   noHtml5Validate: false,
@@ -40,26 +37,26 @@ const defaultProps = {
   omitExtraData: false,
 };
 
-export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
+const Form1 = React.forwardRef((_props: IFormProps<any>, ref) => {
   const props = { ...defaultProps, ..._props };
   const formElementRef = useRef<HTMLFormElement>(null);
   const [newErrorSchema, setNewErrorSchema] = useState<any>();
-  // schema default + formData passed in => initial value
   const [state, setState] = useState<any>(getStateFromProps(props, props.formData));
 
   useEffect(() => {
     const newProps = { ...defaultProps, ..._props };
-    setState(getStateFromProps(newProps, newProps.formData));
-  }, [_props]);
+    setState(getStateFromProps(newProps, newProps.formData,));
+    if(props.validateOnMount) {
+      setNewErrorSchema(getStateFromProps(newProps, newProps.formData,).errorSchema);
+    }
+  }, [_props, props.validateOnMount]);
 
-  // console.log('renderForm', state, props);
   const validate = (
     formData: any,
     schema = props.schema,
     additionalMetaSchemas = props.additionalMetaSchemas,
     customFormats = props.customFormats,
   ) => {
-    // console.log(formData, schema, additionalMetaSchemas, customFormats);
     const { validate, transformErrors } = props;
     const { rootSchema } = getRegistry(props);
     const resolvedSchema = retrieveSchema(schema, rootSchema, formData);
@@ -89,14 +86,7 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     return data;
   };
 
-  const setAutomationModified = useSetAtom(automationModifiedAtom);
-
-  useUnmount(() => {
-    setAutomationModified(false);
-  });
-
   const onChange = (formData: any, newErrorSchema: any) => {
-    setAutomationModified(true);
 
     if (isObject(formData) || Array.isArray(formData)) {
       const newState = getStateFromProps(props, formData, state);
@@ -144,10 +134,12 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
         errors: toErrorList(errorSchema),
       };
     }
-    setState({
+    const newState = {
       ...state,
       ...nextState,
-    });
+    };
+    setState(newState);
+    props?.onUpdate?.(newState);
     setNewErrorSchema(nextState.errorSchema || null);
   };
 
@@ -224,7 +216,6 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     if (props.onSubmit) {
       console.warn(newFormData);
       props.onSubmit({ ...state, formData: newFormData, status: 'submitted' }, event);
-      setAutomationModified?.(false);
     }
   };
 
@@ -275,8 +266,6 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
   }
   const autoComplete = currentAutoComplete ? currentAutoComplete : deprecatedAutocomplete;
 
-  // console.log('errorSchema', errorSchema);
-  // console.log('Form.state', state);
   return (
     <FormTag
       className={className ? className : 'rjsf'}
@@ -322,3 +311,6 @@ export const Form = React.forwardRef((_props: IFormProps<any>, ref) => {
     </FormTag>
   );
 });
+
+const Form = memo(Form1);
+export { Form };

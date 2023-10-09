@@ -79,6 +79,11 @@ public enum NodeType {
     AUTOMATION(10),
 
     /**
+     * airagent. NOTICE: Airagent will not create `node`, here is just for ID Generating
+     */
+    AIRAGENT(11),
+
+    /**
      * static resource file.
      */
     ASSET_FILE(98),

@@ -2,6 +2,8 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { findNode } from '@apitable/core';
+import { AutomationPanelContent } from '../automation/content';
+import { AutomationPanel } from '../automation/panel';
 import { INodeTree } from './interface';
 
 const MirrorRoute = dynamic(() => import('../mirror/mirror_route').then((module) => module.MirrorRoute));
@@ -19,14 +21,16 @@ interface IShareContentProps {
 
 export const ShareContent: React.FC<IShareContentProps> = (props) => {
   const { nodeTree, loading } = props;
-  const { datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state) => state.pageParams);
+  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId } = useSelector((state) => state.pageParams);
   const treeNodesMap = useSelector((state) => state.catalogTree.treeNodesMap);
 
   if (!nodeTree) {
     return null;
   }
 
-  if (mirrorId) {
+  if (automationId) {
+    return <AutomationPanel resourceId={automationId} />;
+  } else if (mirrorId) {
     return <MirrorRoute />;
   } else if (datasheetId) {
     return <DataSheetPane />;

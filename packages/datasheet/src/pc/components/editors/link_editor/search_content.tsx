@@ -127,10 +127,15 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         return;
       }
 
-      if (cellValue && cellValue.includes(recordId)) {
-        value = cellValue.filter((id) => id !== recordId);
+      // filter deleted link record
+      const filterCellValue = cellValue?.filter((id) => {
+        return foreignRows.some(row => row.recordId === id);
+      });
+
+      if (filterCellValue && filterCellValue.includes(recordId)) {
+        value = filterCellValue.filter((id) => id !== recordId);
       } else {
-        value = cellValue ? cellValue.concat([recordId]) : [recordId];
+        value = filterCellValue ? filterCellValue.concat([recordId]) : [recordId];
       }
       onChange(value.length ? value : null);
     },

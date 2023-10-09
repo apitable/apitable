@@ -91,7 +91,7 @@ export class CreateFieldPipe implements PipeTransform {
     if (!linkField) {
       throw ApiException.tipError(ApiTipConstant.api_params_lookup_related_link_field_not_exists, { fieldId: property.relatedLinkFieldId });
     }
-    if (linkField.type !== FieldType.Link) {
+    if (linkField.type !== FieldType.Link && linkField.type !== FieldType.OneWayLink) {
       throw ApiException.tipError(ApiTipConstant.api_params_lookup_related_field_not_link, { fieldId: property.relatedLinkFieldId });
     }
     const dstId = (this.request.params as any).dstId;

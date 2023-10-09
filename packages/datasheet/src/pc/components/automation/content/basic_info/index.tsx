@@ -1,20 +1,33 @@
+import { useMount } from 'ahooks';
 import dayjs from 'dayjs';
-import { useAtom } from 'jotai';
-import { FC } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
 import * as React from 'react';
+import { FC, useMemo } from 'react';
 import styled from 'styled-components';
-import { Box, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, DatasheetOutlined, GotoOutlined, PlayOutlined, TimeOutlined, UserEditOutlined } from '@apitable/icons';
-import { Avatar, AvatarSize, AvatarType } from '../../../common';
-import { updateRobotItem } from '../../../robot/api';
-import { useDefaultRobotDesc, useRobot } from '../../../robot/hooks';
+import { Box, LinkButton, Switch, Typography } from '@apitable/components';
+import { ConfigConstant, Strings, t } from '@apitable/core';
+import {
+  ChevronRightOutlined,
+  GotoOutlined,
+  PlayOutlined,
+  TimeOutlined,
+  UserEditOutlined
+} from '@apitable/icons';
+import { getNodeTypeByNodeId } from '../../../../utils';
+import { NodeIcon } from '../../../catalog/tree/node_icon';
+import { Avatar, AvatarType } from '../../../common';
+import { updateAutomationRobot } from '../../../robot/api';
+import { useDefaultRobotDesc, useAutomationRobot } from '../../../robot/hooks';
+import { AutomationScenario } from '../../../robot/interface';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
 import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
-import { automationHistoryAtom, automationStateAtom } from '../../controller';
+import { automationHistoryAtom, automationStateAtom, automationTriggerAtom } from '../../controller/atoms';
 
+import { getDatasheetId, getFormId } from '../../controller/hooks/use_robot_fields';
+import { useAutomationResourcePermission } from '../../controller/use_automation_permission';
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
+
 const StyledGrip = styled(Box)`
   gap: 16px;
 `;
@@ -29,15 +42,24 @@ const StyeldRelatedResouece = styled(Box)`
 
 export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-const CONST_SHOW_RELATED_FIELS = false;
-
 export const BaseInfo: FC = () => {
   const [state] = useAtom(automationStateAtom);
-  const robot = state?.robot;
-  const { updateRobot } = useRobot();
 
+  const automationTrigger = useAtomValue(automationTriggerAtom);
+  const formId = getFormId(automationTrigger);
+  const datasheetId = getDatasheetId(automationTrigger);
+
+  const robot = state?.robot;
+  const { updateRobot } = useAutomationRobot();
+
+  const relativeFilesVisible = state?.scenario === AutomationScenario.node;
+  const permissions = useAutomationResourcePermission();
   const { items } = useGetTaskHistory();
 
+  const sortedList = useMemo(() =>
+    items.sort((a, b) => dayjs(a.createdAt).isBefore(b.createdAt) ? 1 : -1), [
+    items,
+  ]);
   const [, setHistoryDialog] = useAtom(automationHistoryAtom);
 
   const handleChangeRobot = async (isActive: boolean) => {
@@ -48,7 +70,7 @@ export const BaseInfo: FC = () => {
       return;
     }
 
-    await updateRobotItem(String(state?.resourceId), robot?.robotId, {
+    await updateAutomationRobot(String(state?.resourceId), robot?.robotId, {
       props: { ...robot?.props, failureNotifyEnable: isActive },
     });
   };
@@ -119,11 +141,11 @@ export const BaseInfo: FC = () => {
               </Box>
 
               <Box display={'flex'} alignItems={'center'}>
-                <Avatar id={AvatarType.Member.toString()} size={20} title={robot?.updatedBy.nickName} src={robot?.updatedBy?.avatar} />
+                <Avatar id={AvatarType.Member.toString()} size={20} title={robot?.updatedBy?.nickName} src={robot?.updatedBy?.avatar} />
 
                 <Box display="flex" alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonPrimary}>
-                    {robot?.updatedBy.nickName}
+                    {robot?.updatedBy?.nickName}
                   </Typography>
                 </Box>
               </Box>
@@ -148,7 +170,7 @@ export const BaseInfo: FC = () => {
         </Box>
 
         {
-          CONST_SHOW_RELATED_FIELS && (
+          relativeFilesVisible && (
             <Box>
               <Box paddingX={'24px'}>
                 <Typography variant="h7"
@@ -170,7 +192,11 @@ export const BaseInfo: FC = () => {
                     }}
                   >
                     <Box display={'inline-flex'} alignItems={'center'}>
-                      <DatasheetOutlined size={16} color={colors.textCommonTertiary} />
+                      <span>
+                        <NodeIcon nodeId={item.nodeId} type={
+                          getNodeTypeByNodeId(item.nodeId)
+                        } icon={item?.icon} editable={false} size={16} hasChildren/>
+                      </span>
 
                       <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
                         <Typography variant="body4" color={colors.textCommonPrimary}>
@@ -184,16 +210,14 @@ export const BaseInfo: FC = () => {
                 </Box>
               ))}
 
-              {robot?.relatedResources?.length === 0 && (
-                <Box paddingX={'24px'}>
+              { robot?.relatedResources?.length ===0 && (
+                <Box paddingX={'24px'} marginTop={'12px'}>
                   <Typography variant="body4" color={colors.textCommonTertiary}>
-                    {t(Strings.automation_please_set_a_trigger_first)}
+                    {t(Strings.the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side)}
                   </Typography>
                 </Box>
               )}
-
             </Box>
-
           )
         }
         <Box>
@@ -227,12 +251,16 @@ export const BaseInfo: FC = () => {
 
             <Box display={'flex'} alignItems={'center'} marginLeft={'8px'}>
               <Switch
+                disabled={
+                  !permissions.editable
+                }
                 size="default"
-                checked={robot.props.failureNotifyEnable}
+                checked={robot?.props?.failureNotifyEnable}
                 onChange={async (v) => {
+                  const props = robot.props ?? {};
                   updateRobot({
                     props: {
-                      ...robot.props,
+                      ...props,
                       failureNotifyEnable: v,
                     },
                   });
@@ -245,7 +273,7 @@ export const BaseInfo: FC = () => {
       </Box>
 
       <Box paddingX={'16px'}>
-        <TaskList list={items.slice(0, 10)} isSummary={false} activeId={undefined}/>
+        <TaskList list={sortedList.slice(0, 10)} isSummary={false} activeId={undefined}/>
       </Box>
     </>
   );

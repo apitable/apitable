@@ -57,6 +57,10 @@ public class AutomationRobotTriggerRO {
   @SerializedName(SERIALIZED_NAME_INPUT)
   private String input;
 
+  public static final String SERIALIZED_NAME_IS_DELETED = "is_deleted";
+  @SerializedName(SERIALIZED_NAME_IS_DELETED)
+  private Boolean isDeleted;
+
   public static final String SERIALIZED_NAME_LIMIT_COUNT = "limit_count";
   @SerializedName(SERIALIZED_NAME_LIMIT_COUNT)
   private Long limitCount;
@@ -102,6 +106,27 @@ public class AutomationRobotTriggerRO {
 
   public void setInput(String input) {
     this.input = input;
+  }
+
+
+  public AutomationRobotTriggerRO isDeleted(Boolean isDeleted) {
+    
+    this.isDeleted = isDeleted;
+    return this;
+  }
+
+   /**
+   * Get isDeleted
+   * @return isDeleted
+  **/
+  @javax.annotation.Nullable
+  public Boolean getIsDeleted() {
+    return isDeleted;
+  }
+
+
+  public void setIsDeleted(Boolean isDeleted) {
+    this.isDeleted = isDeleted;
   }
 
 
@@ -243,6 +268,7 @@ public class AutomationRobotTriggerRO {
     }
     AutomationRobotTriggerRO automationRobotTriggerRO = (AutomationRobotTriggerRO) o;
     return Objects.equals(this.input, automationRobotTriggerRO.input) &&
+        Objects.equals(this.isDeleted, automationRobotTriggerRO.isDeleted) &&
         Objects.equals(this.limitCount, automationRobotTriggerRO.limitCount) &&
         Objects.equals(this.prevTriggerId, automationRobotTriggerRO.prevTriggerId) &&
         Objects.equals(this.resourceId, automationRobotTriggerRO.resourceId) &&
@@ -257,7 +283,7 @@ public class AutomationRobotTriggerRO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(input, limitCount, prevTriggerId, resourceId, triggerId, triggerTypeId, userId);
+    return Objects.hash(input, isDeleted, limitCount, prevTriggerId, resourceId, triggerId, triggerTypeId, userId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -272,6 +298,7 @@ public class AutomationRobotTriggerRO {
     StringBuilder sb = new StringBuilder();
     sb.append("class AutomationRobotTriggerRO {\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
+    sb.append("    isDeleted: ").append(toIndentedString(isDeleted)).append("\n");
     sb.append("    limitCount: ").append(toIndentedString(limitCount)).append("\n");
     sb.append("    prevTriggerId: ").append(toIndentedString(prevTriggerId)).append("\n");
     sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
@@ -301,6 +328,7 @@ public class AutomationRobotTriggerRO {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("input");
+    openapiFields.add("is_deleted");
     openapiFields.add("limit_count");
     openapiFields.add("prev_trigger_id");
     openapiFields.add("resource_id");

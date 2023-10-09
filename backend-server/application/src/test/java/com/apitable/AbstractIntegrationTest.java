@@ -264,7 +264,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected UserEntity createUserRandom() {
-        return createUserWithEmailAndPassword(IdWorker.getIdStr() + "@apitable.com");
+        UserEntity user = createUserWithEmailAndPassword(IdWorker.getIdStr() + "@apitable.com");
+        initCallContext(user.getId());
+        return user;
     }
 
     protected UserEntity createUserWithEmail(String email) {

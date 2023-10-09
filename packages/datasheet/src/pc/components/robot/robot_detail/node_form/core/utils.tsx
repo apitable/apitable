@@ -251,7 +251,6 @@ export function getDefaultFormState(_schema: any, formData: any, rootSchema = {}
   const _defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues);
   // The default value is converted to an operand
   const defaults = data2Operand(_defaults);
-  // console.log('defaults', defaults, formData);
   if (formData == null) {
     // No form data? Use schema defaults.
     return defaults;
@@ -1086,9 +1085,10 @@ export const getStateFromProps = (props: IFormProps<any>, inputFormData: any, st
     };
   };
 
+  const { validate: validateOrigin, transformErrors } = props;
   let errors, errorSchema, schemaValidationErrors, schemaValidationErrorSchema;
   if (mustValidate) {
-    const schemaValidation = validate(formData, schema, additionalMetaSchemas as any, customFormats as any);
+    const schemaValidation = validate(formData, schema, validateOrigin, transformErrors as any, additionalMetaSchemas as any, customFormats as any);
     errors = schemaValidation.errors;
     errorSchema = schemaValidation.errorSchema;
     schemaValidationErrors = errors;

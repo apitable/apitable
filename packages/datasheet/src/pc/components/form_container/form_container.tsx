@@ -293,6 +293,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
       const frozenFieldId = currentView.columns[0].fieldId;
       const frozenField = fieldMap[frozenFieldId];
       unitIds.forEach((unitId) => {
+        // eslint-disable-next-line no-unsafe-optional-chaining
         const { fieldId: firstMemberFieldId }: any = formRelMeta.views[0]?.columns.find(({ fieldId }) => {
           const value = formData[fieldId];
           return isArray(value) && value.includes(unitId);

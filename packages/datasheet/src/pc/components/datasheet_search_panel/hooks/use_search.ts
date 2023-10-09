@@ -3,16 +3,18 @@ import throttle from 'lodash/throttle';
 import { useEffect, useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Api, ConfigConstant } from '@apitable/core';
+import { Api, ConfigConstant, INode } from '@apitable/core';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
+import { ISearchShowOption } from '../datasheet_search_panel';
 
 interface IParams {
   folderId: string;
   localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
   localState: ISearchPanelState;
+  options ?: ISearchShowOption
 }
 
-export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
+export const useSearch = ({ localDispatch, folderId, localState, options }: IParams) => {
   const spaceId = useSelector((state) => state.space.activeId!);
   const previousCurrentFolderId = usePrevious(localState.currentFolderId);
 
@@ -22,7 +24,21 @@ export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
         const { data, success } = res.data;
         if (success) {
           const folders = data.filter((node) => node.type === ConfigConstant.NodeType.FOLDER);
-          const files = data.filter((node) => node.type === ConfigConstant.NodeType.DATASHEET);
+          const files: INode[] = [];
+          if(
+            options?.showDatasheet !== false
+          ){
+            const dstFiles= data.filter((node) =>
+              node.type === ConfigConstant.NodeType.DATASHEET);
+            files.push(...dstFiles);
+          }
+          if(
+            options?.showForm
+          ) {
+            const formList= data.filter((node) =>
+              node.type === ConfigConstant.NodeType.FORM);
+            files.push(...formList);
+          }
           localDispatch({ showSearch: true, currentFolderId: folderId });
           if (!folders.length && !files.length) {
             localDispatch({ searchResult: val });
@@ -32,7 +48,7 @@ export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
         }
       });
     }, 500);
-  }, [folderId]);
+  }, [folderId, localDispatch]);
 
   useEffect(() => {
     if (!localState.searchValue) {

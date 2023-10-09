@@ -1,5 +1,6 @@
 server:
   max-http-header-size: ${MAX_HTTP_HEADER_SIZE:32KB}
+  port: ${SERVER_PORT:8081}
 spring:
   main:
     allow-circular-references: true

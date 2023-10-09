@@ -38,6 +38,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables } from 'pc/utils/env';
+import { AutomationPanel } from '../../automation/panel';
 import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage, isEnterprise } from 'enterprise';
@@ -49,7 +50,7 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
   const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
-  const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
+  const { datasheetId, automationId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
 
   const spaceId = useSelector((state) => state.space.activeId);
   const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
@@ -115,7 +116,9 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
     if (!templateDirectory || !templateId) {
       return;
     }
-    if (mirrorId) {
+    if (automationId) {
+      return <AutomationPanel resourceId={automationId} />;
+    } else if (mirrorId) {
       return <MirrorRoute />;
     } else if (datasheetId) {
       return <DataSheetPane />;

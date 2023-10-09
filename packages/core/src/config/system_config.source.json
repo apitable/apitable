@@ -84,6 +84,13 @@
       "descriptionId": "api_panel_type_desc_last_modified_time",
       "valueType": "number | string"
     },
+    "OneWayLink": {
+      "defaultExample": "[\n    \"rec8116cdd76088af\",\n    \"rec245db9343f55e8\",\n    \"rec4f3bade67ff565\"\n]",
+      "defaultExampleId": "api_panel_type_default_example_one_way_link",
+      "description": "由多条已关联记录的ID组成的数组  ",
+      "descriptionId": "api_panel_type_desc_one_way_link",
+      "valueType": "array of record IDs (strings)"
+    },
     "Link": {
       "defaultExample": "[\n    \"rec8116cdd76088af\",\n    \"rec245db9343f55e8\",\n    \"rec4f3bade67ff565\"\n]",
       "defaultExampleId": "api_panel_type_default_example_link",

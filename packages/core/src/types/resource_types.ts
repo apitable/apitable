@@ -28,6 +28,7 @@ export enum ResourceType {
 export enum ResourceIdPrefix {
   Datasheet = 'dst',
   Form = 'fom',
+  Automation = 'aut',
   Dashboard = 'dsb',
   Widget = 'wdt',
   Mirror = 'mir',
