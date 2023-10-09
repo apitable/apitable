@@ -141,7 +141,7 @@ importers:
         version: link:../core
       '@apitable/icons':
         specifier: '*'
-        version: link:../icons
+        version: 1.2.0(react@18.2.0)
       '@apitable/react-contexify':
         specifier: ^5.0.7
         version: 5.0.7(react-dom@18.2.0)(react@18.2.0)
@@ -562,25 +562,25 @@ importers:
   packages/datasheet:
     dependencies:
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/icons':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../icons
       '@apitable/react-flow':
         specifier: ^9.6.12
         version: 9.6.12(react-dom@18.2.0)(react@18.2.0)
       '@apitable/widget-sdk':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../widget-sdk
       '@floating-ui/react':
-        specifier: 0.24.5
+        specifier: ^0.24.5
         version: 0.24.5(react-dom@18.2.0)(react@18.2.0)
       '@futpib/dagre':
         specifier: ^0.8.5-pre1
@@ -1730,7 +1730,7 @@ importers:
         version: link:../core
       '@apitable/icons':
         specifier: '*'
-        version: link:../icons
+        version: 1.2.0(react@18.2.0)
       '@testing-library/react-hooks':
         specifier: ^7.0.1
         version: 7.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -2098,6 +2098,14 @@ packages:
       lodash: 4.17.21
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@apitable/icons@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-g+f6zA49yeDZcfOXK+FlMLUmgIVQxdYkIns/vi/NM+h9jQYN6Fp+w4051a9Q4vS48j4A1g2gwheLj6hnATuqRw==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@apitable/nestjs-redis@1.3.4(@nestjs/microservices@8.1.2)(@nestjs/websockets@8.1.2)(cache-manager@3.6.3)(class-transformer@0.3.1)(class-validator@0.14.0)(debug@4.3.4):
