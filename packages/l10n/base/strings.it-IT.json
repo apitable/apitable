@@ -2815,6 +2815,7 @@
   "link_common_err": "Oops, sembra che il link non sia corretto.",
   "link_copy_success": "URL copiato",
   "link_data_error": "Errore dei dati nel relativo foglio dati",
+  "one_way_link_data_error": "Errore dei dati nel relativo foglio dati",
   "link_delete_succeed": "Link cancellato",
   "link_failed": "Il link di condivisione pubblica non è valido probabilmente perché il sharer ha disabilitato il link o l'amministratore ha proibito la condivisione pubblica",
   "link_failed_after_close_share_link": "Dopo la disabilitazione, i link pubblici creati non saranno validi",

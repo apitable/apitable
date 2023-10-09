@@ -256,7 +256,7 @@ public class AutomationRobotController {
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "aut****"),
         @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
-    @Operation(summary = "Create automation trigger")
+    @Operation(summary = "Create automation robot trigger")
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<TriggerVO>> createTrigger(
         @PathVariable String resourceId,
@@ -285,7 +285,7 @@ public class AutomationRobotController {
         @Parameter(name = "triggerId", description = "trigger id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "atr****"),
         @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),
     })
-    @Operation(summary = "Update automation trigger")
+    @Operation(summary = "Update automation robot trigger")
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<TriggerVO>> updateTrigger(
         @PathVariable String resourceId,

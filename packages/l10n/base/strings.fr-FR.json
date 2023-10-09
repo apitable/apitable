@@ -2815,6 +2815,7 @@
   "link_common_err": "Oups, il semble que le lien soit incorrect.",
   "link_copy_success": "URL copiée",
   "link_data_error": "Données dans la fiche de données associée",
+  "one_way_link_data_error": "Données dans la fiche de données associée",
   "link_delete_succeed": "Lien supprimé",
   "link_failed": "Le lien de partage public est invalide probablement parce que le partageur a désactivé le lien ou le partage public par l'administrateur",
   "link_failed_after_close_share_link": "Après désactivation, les liens publics créés seront invalides",

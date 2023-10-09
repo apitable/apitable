@@ -5,6 +5,7 @@ image:
 tasks:
   - name: install dependency
     init: |
+      npm install -g pnpm
       make install
     command: |
       echo "Happy Coding"

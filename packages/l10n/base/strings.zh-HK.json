@@ -2815,6 +2815,7 @@
   "link_common_err": "咦，這好像不是正確的鏈接～",
   "link_copy_success": "鏈接複製成功",
   "link_data_error": "關聯表的數據錯誤",
+  "one_way_link_data_error": "關聯表的數據錯誤",
   "link_delete_succeed": "鏈接刪除成功",
   "link_failed": "公開鏈接已失效，有可能分享者已關閉鏈接或者管理員已禁止分享",
   "link_failed_after_close_share_link": "關閉後已發布的公開鏈接將會失效",
