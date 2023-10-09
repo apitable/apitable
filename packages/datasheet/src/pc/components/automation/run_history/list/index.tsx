@@ -72,7 +72,7 @@ const StyledTaskItem = styled(Box)<{ isActive: boolean }>`
   }
 `;
 
-export const TaskItem: FC<{ activeId?: string, item: IRunHistoryDatum; onClick?: () => void; isSummary?: boolean }> = ({ item, isSummary, activeId, onClick }) => {
+export const TaskItem: FC<{ activeId?: string, item: IRunHistoryDatum; onClick?: () => void; isSummary?: boolean, hideMoreOperation?: boolean }> = ({ item, isSummary, activeId, onClick, hideMoreOperation }) => {
   const colors = useThemeColors();
   const isActive = item.taskId === activeId;
   const { data } = useActionTypes();
@@ -90,53 +90,57 @@ export const TaskItem: FC<{ activeId?: string, item: IRunHistoryDatum; onClick?:
             {dayjs(item.createdAt).format(CONST_DATETIME_FORMAT)}
           </Typography>
 
-          <Dropdown
-            clazz={{
-              overlay: styles.overlayStyle,
-            }}
-            options={{
-              arrow: false,
-              placement: 'bottom-end',
-              stopPropagation: true,
-            }}
-            trigger={
-              <MoreButton>
-                <IconButton shape="square" icon={MoreStandOutlined} />
-              </MoreButton>
-            }
-          >
-            {({ toggle }: IOverLayProps) => {
-              return (
-                <>
-                  <Box
-                    onClick={stopPropagation}
-                    width={'132px'}
-                    display={'flex'}
-                    flexDirection={'column'}
-                    borderColor={' var(--radiusRadiusDefault, 4px);'}
-                    backgroundColor={'var(--bgCommonHighest, #333)'}
-                  >
-                    <StyledMenu
-                      padding={'8px'}
-                      display={'inline-flex'}
-                      alignItems={'center'}
-                      onClick={async () => {
-                        toggle();
-                        const result = await getAutomationRunHistoryDetail(item.taskId);
-                        handleDownload(result ?? {}, `automation_${item.robotId}_${item.taskId}.json`);
-                      }}
-                    >
-                      <IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />
+          {
+            !hideMoreOperation && (
+              <Dropdown
+                clazz={{
+                  overlay: styles.overlayStyle,
+                }}
+                options={{
+                  arrow: false,
+                  placement: 'bottom-end',
+                  stopPropagation: true,
+                }}
+                trigger={
+                  <MoreButton>
+                    <IconButton shape="square" icon={MoreStandOutlined} />
+                  </MoreButton>
+                }
+              >
+                {({ toggle }: IOverLayProps) => {
+                  return (
+                    <>
+                      <Box
+                        onClick={stopPropagation}
+                        width={'132px'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        borderColor={' var(--radiusRadiusDefault, 4px);'}
+                        backgroundColor={'var(--bgCommonHighest, #333)'}
+                      >
+                        <StyledMenu
+                          padding={'8px'}
+                          display={'inline-flex'}
+                          alignItems={'center'}
+                          onClick={async () => {
+                            toggle();
+                            const result = await getAutomationRunHistoryDetail(item.taskId);
+                            handleDownload(result ?? {}, `automation_${item.robotId}_${item.taskId}.json`);
+                          }}
+                        >
+                          <IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />
 
-                      <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
-                        {t(Strings.download)}
-                      </Typography>
-                    </StyledMenu>
-                  </Box>
-                </>
-              );
-            }}
-          </Dropdown>
+                          <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
+                            {t(Strings.download)}
+                          </Typography>
+                        </StyledMenu>
+                      </Box>
+                    </>
+                  );
+                }}
+              </Dropdown>
+            )
+          }
         </Box>
         {!isSummary && (
           <Typography variant="body4" color={colors.textCommonTertiary}>
