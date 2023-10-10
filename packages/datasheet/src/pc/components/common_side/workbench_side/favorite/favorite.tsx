@@ -76,6 +76,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const renderTreeItem = (children: string[], parentNode: any = null, level = '0') => {
     const leafNodes = new Set([
       ConfigConstant.NodeType.DATASHEET,
+      ConfigConstant.NodeType.AUTOMATION,
       ConfigConstant.NodeType.FORM,
       ConfigConstant.NodeType.DASHBOARD,
       ConfigConstant.NodeType.MIRROR,

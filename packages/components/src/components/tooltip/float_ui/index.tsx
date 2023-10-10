@@ -17,13 +17,16 @@ import {
 import { Typography } from '../../typography';
 import { TooltipBase } from '../tooltip';
 import { useThemeColors } from '../../../hooks';
+import { setIndex } from '../../dropdown';
 interface IProps {
     content: ReactElement | string
     children: ReactElement,
     placement?: Placement,
     className?: string,
     options?: {
-      offset?: number
+      zIndex?: number,
+      offset?: number,
+      initailVisible?: boolean
     },
     arrow?: boolean
 }
@@ -36,7 +39,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
   options,
   arrow: hasArrow = true
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(options?.initailVisible ?? false);
 
   const arrowRef = useRef(null);
 
@@ -46,6 +49,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
     placement,
     whileElementsMounted: autoUpdate,
     middleware: [
+      setIndex(options?.zIndex ?? 1002),
       offset(options?.offset ?? 16),
       ...(
         hasArrow ? (
