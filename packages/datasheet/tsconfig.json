@@ -8,11 +8,11 @@
       "esnext"
     ],
     "paths": {
-      "pc": [
-        "./src/pc"
+      "pc/*": [
+        "./pc/*"
       ],
-      "enterprise": [
-        "./src/modules/enterprise/"
+      "enterprise/*": [
+        "./modules/enterprise/*"
       ]
     },
     "module": "esnext",
