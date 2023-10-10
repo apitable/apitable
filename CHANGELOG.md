@@ -1,6 +1,6 @@
 # APITable CHANGELOG
 
-## [HEAD](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-10-09)
+## [v1.3.0-beta](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta) (2023-10-09)
 
 
 ### Bug fixes
