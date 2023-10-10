@@ -120,7 +120,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
     <div className={styles.select} ref={refSelect}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Dropdown
-          options={{ disabled: isViewLock, autoWidth: true }}
+          options={{ disabled: isViewLock, autoWidth: true, zIndex:1000 }}
           trigger={
             <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
               {!cellValue && placeholder ? (
