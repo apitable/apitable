@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
 import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
-import { FunctionComponent, memo, useContext } from 'react';
+import {FunctionComponent, memo, useContext, useEffect} from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -68,9 +68,19 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.lg);
+  const isXl = screenIsAtMost(ScreenSize.xl);
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const invisible = panel.panelName ==undefined || isMobile;
+  const invisible = panel.panelName == null || isMobile;
 
+  useEffect(() => {
+    if(isXl) {
+      if(sideBarVisible) {
+        setPanel({
+          panelName: undefined
+        });
+      }
+    }
+  }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
   const { shareInfo } = useContext(ShareContext);
   const user = useSelector((state: IReduxState) => state.user);
 

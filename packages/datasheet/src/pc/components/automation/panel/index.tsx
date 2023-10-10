@@ -74,8 +74,12 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const loading = false;
   const { templateId } = useSelector((state: IReduxState) => state.pageParams);
 
+  const { screenIsAtMost } = useResponsive();
+  const isLg = screenIsAtMost(ScreenSize.lg);
+  const isXl = screenIsAtMost(ScreenSize.xl);
+
   useMount(() => {
-    isMobile && setSideBarVisible(false);
+    isXl && setSideBarVisible(false);
     initialize();
   });
 
@@ -96,7 +100,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
       );
       setPanel(
         {
-          panelName: isMobile? undefined: PanelName.BasicInfo
+          panelName: isLg? undefined: PanelName.BasicInfo
         });
 
       if (itemDetail.relatedResources) {
@@ -161,10 +165,8 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const colors = useThemeColors();
   const nodeItem = useAutomationResourceNode();
 
-  const { api: { refreshItem, refresh } } = useAutomationController();
+  const { api: { refreshItem } } = useAutomationController();
   const { setSideBarVisible } = useSideBarVisible();
-  const { screenIsAtMost } = useResponsive();
-  const isMobile = screenIsAtMost(ScreenSize.lg);
 
   const permission = useAutomationResourcePermission();
 
@@ -266,7 +268,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                           return;
                         }
 
-                        isMobile && setSideBarVisible(false);
+                        isLg && setSideBarVisible(false);
                         dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
                       }}
                       text={t(Strings.share)}
