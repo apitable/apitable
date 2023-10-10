@@ -56,7 +56,7 @@ const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
     case ConfigConstant.NodeType.FORM:
       return t(Strings.copy_form_url);
     case ConfigConstant.NodeType.AUTOMATION:
-      return t(Strings.copy_form_url);
+      return t(Strings.copy_automation_url);
     case ConfigConstant.NodeType.DASHBOARD:
       return t(Strings.copy_dashboard_url);
     case ConfigConstant.NodeType.MIRROR:

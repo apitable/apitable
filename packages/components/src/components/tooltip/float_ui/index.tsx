@@ -26,7 +26,7 @@ interface IProps {
     options?: {
       zIndex?: number,
       offset?: number,
-      initailVisible?: boolean
+      initialVisible?: boolean
     },
     arrow?: boolean
 }
@@ -39,7 +39,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
   options,
   arrow: hasArrow = true
 }) => {
-  const [isOpen, setIsOpen] = useState(options?.initailVisible ?? false);
+  const [isOpen, setIsOpen] = useState(options?.initialVisible ?? false);
 
   const arrowRef = useRef(null);
 

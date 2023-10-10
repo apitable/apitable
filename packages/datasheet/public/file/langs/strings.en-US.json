@@ -1206,6 +1206,7 @@
   "convert_tip": "This action may clear up data in some cells. You can undo the action if anything unexpected happens.",
   "cook_islands": "Cook Islands",
   "copy": " Copy",
+  "copy_automation_url": "Copy URL",
   "copy_card_link": "Copy record URL",
   "copy_dashboard_url": "Copy URL",
   "copy_datasheet_url": "Copy URL",

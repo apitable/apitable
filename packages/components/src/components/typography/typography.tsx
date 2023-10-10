@@ -92,7 +92,7 @@ export const Typography: FC<React.PropsWithChildren<ITypographyProps>> = (props)
               content={content}
               options={
                 {
-                  initailVisible: true
+                  initialVisible: false
                 }
               }
             >

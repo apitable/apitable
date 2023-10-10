@@ -1212,6 +1212,7 @@
   "copy_elink_share": "复制 elink 分享链接",
   "copy_failed": "复制失败",
   "copy_folder_url": "复制文件夹的URL",
+  "copy_automation_url": "复制自动化的 URL",
   "copy_form_url": "复制神奇表单的 URL",
   "copy_from_cell": "复制该单元格",
   "copy_link": "复制",

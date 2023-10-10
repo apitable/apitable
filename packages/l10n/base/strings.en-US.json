@@ -1008,6 +1008,7 @@
   "copy_failed": "Copy failed",
   "copy_folder_url": "Copy URL",
   "copy_form_url": "Copy URL",
+  "copy_automation_url": "Copy URL",
   "copy_from_cell": "Copy cell",
   "copy_link": "Copy",
   "copy_link_success": "Copied",

@@ -75,8 +75,7 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const colors = useThemeColors();
   const oldSchema = { schema: nodeType.outputJsonSchema };
 
-  if (!fieldPermissionMap || !fields) return (
-
+  if (!datasheet || !fieldPermissionMap || !fields) return (
     <Box color={colors.bgCommonDefault} width={'100%'}>
       <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
 
