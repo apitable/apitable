@@ -84,7 +84,10 @@ public enum FieldType {
 
     CASCADER(25),
 
-    ONE_WAY_LINK(26);
+    ONE_WAY_LINK(26),
+
+    WORK_DOC(27),
+    ;
 
     private final int fieldType;
 

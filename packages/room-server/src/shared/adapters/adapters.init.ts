@@ -25,7 +25,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { disableHSTS, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
+import { disableHSTS, enableHocuspocus, enableSocket, enableSwagger, isDevMode, PROJECT_DIR } from 'app.environment';
 import { DatabaseModule } from 'database/database.module';
 import { DeveloperService } from 'developer/services/developer.service';
 import { FastifyInstance } from 'fastify';
@@ -50,9 +50,10 @@ import { HelmetOptions } from 'helmet';
 import { NodeRepository } from 'node/repositories/node.repository';
 import path, { join } from 'path';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
-import { SocketConstants } from 'shared/common/constants/socket.module.constants';
+import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { RedisIoAdapter } from 'socket/adapter/redis/redis-io.adapter';
 import { SocketIoService } from 'socket/services/socket-io/socket-io.service';
+import { HocuspocusBaseService } from 'workdoc/services/hocuspocus.base.service';
 import {
   AUTHORIZATION_PREFIX,
   DATASHEET_ENRICH_SELECT_FIELD,
@@ -277,4 +278,13 @@ export const initRedisIoAdapter = (app: INestApplication) => {
   // Reduce the number of connections to redis, there is no need to establish a handshake, just establish a connection
   app.useWebSocketAdapter(new RedisIoAdapter(app, socketIoService));
   return app;
+};
+
+export const initHocuspocus = (app: INestApplication) => {
+  if (!enableHocuspocus) {
+    return;
+  }
+  const hocuspocusBaseService = app.get(HocuspocusBaseService);
+  const server = hocuspocusBaseService.init(GatewayConstants.WORK_DOC_PORT);
+  server.listen();
 };
