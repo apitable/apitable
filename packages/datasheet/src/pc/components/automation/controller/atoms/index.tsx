@@ -79,7 +79,8 @@ const [fetchFormMeta] = atomsWithQuery((get) => ({
     if(!id) {
       return undefined;
     }
-    return await fetchFormPack(String(id!)).then(res => res?.data?.data);
+    return await fetchFormPack(String(id!)).then(res => res?.data?.data ?? {
+    });
   },
 }));
 

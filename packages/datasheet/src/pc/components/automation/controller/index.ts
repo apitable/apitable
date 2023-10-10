@@ -48,7 +48,7 @@ export const useAutomationController = () => {
         }
       }
     }
-  ), [setAutomationAtom, state?.currentRobotId, state?.resourceId]);
+  ), [setAutomationAtom, shareInfo?.shareId, state?.currentRobotId, state?.resourceId]);
 
 };
 export const useResourceFormList = () => {
