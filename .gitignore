@@ -66,6 +66,7 @@ scripts/design_token/__pycache__
 /packages/datasheet/settings/custom
 /packages/datasheet/settings/public
 /packages/datasheet/.env.development
+/packages/datasheet/.env.local
 
 # init-db
 /init-db/bin
