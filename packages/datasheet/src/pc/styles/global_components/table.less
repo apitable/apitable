@@ -1,18 +1,27 @@
 
-
-
-
 .ant-table-thead > tr > th {
   background: transparent;
 }
+
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
   // Border/Common/Default
   border-bottom: 1px solid var(--borderCommonDefault);
   color: var(--textCommonPrimary);
 }
+
 // color: var(--text-common-primary, rgba(255, 255, 255, 0.85));
 
 .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover {
   // Background/Common/Default
   background-color: var(--bgBglessHover);
+}
+
+.ant-table {
+  .ant-table-tbody {
+    font-size: 13px;
+  }
+}
+
+th.ant-table-cell::before {
+  display: none;
 }

@@ -187,6 +187,14 @@ export class DatasheetService {
     }) as Promise<DatasheetPack>;
   }
 
+  fetchForeignDatasheetPackWithoutCheckPermission(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
+    const origin: IFetchDataOriginOptions = { internal: false, main: true };
+    return this.fetchCommonDataPack('form linked datasheet', dstId, auth, origin, false, {
+      ...options,
+      recordIds: options?.recordIds ?? [],
+    }) as Promise<DatasheetPack>;
+  }
+
   /**
    * Fetch linked datasheet data pack.
    * Only loads field data related to primary field if no permission for linked datasheet,
