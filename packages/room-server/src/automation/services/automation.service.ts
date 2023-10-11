@@ -346,6 +346,8 @@ export class AutomationService {
   }
 
   async isResourcesHasTriggers(resourceIds: string[]) {
+    const relNodeIds = await this.nodeService.getRelNodeIdsByMainNodeIds(resourceIds);
+    resourceIds.push(...relNodeIds);
     const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
     if (triggers.length > 0) {
       const robotIds = new Set(triggers.map(i => i.robotId));

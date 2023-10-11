@@ -232,7 +232,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             .updatedAt(robot.getUpdatedAt())
             .recentlyRunCount(robot.getRecentlyRunCount())
             .build();
-        UserSimpleVO user = iUserService.getUserSimpleInfoMap(ListUtil.toList(robot.getUpdatedBy()))
+        String spaceId = iNodeService.getSpaceIdByNodeId(robot.getResourceId());
+        UserSimpleVO user =
+            iUserService.getUserSimpleInfoMap(spaceId, ListUtil.toList(robot.getUpdatedBy()))
             .get(robot.getUpdatedBy());
         vo.setUpdatedBy(user);
         List<NodeSimpleVO> relatedResources =
