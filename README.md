@@ -70,6 +70,8 @@ If you just want to try out APITable[^info], use our cloud-hosted AI version at 
 
 If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
+If you want to try the self-hosted APITable, [🚀 one-click deploy with Dome here](https://app.trydome.io/signup?package=apitable)
+
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 
 If you want to set up your local development environment, read our [🧑‍💻 Developer Guide](./docs/contribute/developer-guide.md)
