@@ -42,7 +42,7 @@
             "position": "after"
           },
           {
-            "pattern": "enterprise",
+            "pattern": "enterprise/**",
             "group": "sibling",
             "position": "after"
           },
