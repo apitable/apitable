@@ -5758,5 +5758,6 @@
   "there_are_unsaved_content_in_the_current_step": "There are unsaved content in the current step",
   "the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side": "The current automation workflow has no related files. You can establish a link by adding trigger conditions and actions on the left side",
   "automation_dst_not_existed": "Relative datasheet doest not exist",
+  "player_step_ui_config_automation_1" : "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
   "automation": "Automation"
 }

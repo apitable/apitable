@@ -2372,6 +2372,24 @@
         "uiConfigId": "player_step_ui_config_111",
         "uiType": "notice"
       },
+      "177": {
+        "next": "下一步",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "uiConfig": "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
+        "uiConfigId": "player_step_ui_config_automation_1",
+        "uiType": "breath"
+      },
       "124": {
         "next": "下一步",
         "nextId": "next_step",
@@ -3424,6 +3442,16 @@
           ]
         },
         "steps": "[[170]]"
+      },
+
+      "117": {
+        "completeIndex": -1,
+        "player": {
+          "action": [
+            "rec4kT7UZkdww"
+          ]
+        },
+        "steps": "[[177]]"
       },
       "115": {
         "completeIndex": -1,
@@ -4781,6 +4809,11 @@
         "commandArgs": "{\"clearAllPrevUi\":true}"
       },
       {
+        "id": "open_guide_wizard(117)",
+        "command": "open_guide_wizard",
+        "commandArgs": "117"
+      },
+      {
         "id": "open_guide_wizard(106)",
         "command": "open_guide_wizard",
         "commandArgs": "106"
@@ -5012,6 +5045,12 @@
         "module": "app",
         "name": "error_logger"
       },
+
+      "guide_use_automation_first_time": {
+        "module": "guide",
+        "name": "use_automation_first_time"
+      },
+
       "app_modal_confirm": {
         "module": "app",
         "name": "modal_confirm"
@@ -5570,6 +5609,20 @@
         "id": "datasheet_dashboard_panel_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(30)]",
         "event": [
           "datasheet_dashboard_panel_shown"
+        ]
+      },
+      {
+        "actions": [
+          "open_guide_wizard(117)"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId"
+        ],
+        "id": "guide_use_automation_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(88)]",
+        "event": [
+          "guide_use_automation_first_time"
         ]
       },
       {

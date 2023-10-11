@@ -3791,6 +3791,7 @@ export type StringKeysMapType = {
   'player_step_ui_config_95': 'player_step_ui_config_95',
   'player_step_ui_config_97': 'player_step_ui_config_97',
   'player_step_ui_config_99': 'player_step_ui_config_99',
+  'player_step_ui_config_automation_1': 'player_step_ui_config_automation_1',
   'player_step_ui_config_notice_0_10_5': 'player_step_ui_config_notice_0_10_5',
   'please': 'please',
   'please_check': 'please_check',

@@ -17,11 +17,12 @@
  */
 
 import { useAtomValue, useAtom } from 'jotai';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { automationPanelAtom, automationStateAtom, PanelName, useAutomationController } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { createTrigger } from '../../api';
@@ -63,6 +64,10 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   const triggerTypeOptions = useMemo(() => {
     return getNodeTypeOptions(triggerTypes);
   }, [triggerTypes]);
+
+  useEffect(() => {
+    TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+  }, []);
 
   const createRobotTrigger = useMemo(() => {
     return async (triggerTypeId: string) => {

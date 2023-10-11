@@ -598,6 +598,7 @@ export interface Events {
     workbench_show_trial_tip:                      AddressShown;
     workbench_shown:                               AddressShown;
     workbench_space_list_shown:                    AddressShown;
+    guide_use_automation_first_time:               AddressShown;
 }
 
 export interface Empty {
