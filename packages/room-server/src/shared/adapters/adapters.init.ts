@@ -285,6 +285,6 @@ export const initHocuspocus = (app: INestApplication) => {
     return;
   }
   const hocuspocusBaseService = app.get(HocuspocusBaseService);
-  const server = hocuspocusBaseService.init(GatewayConstants.WORK_DOC_PORT);
+  const server = hocuspocusBaseService.init(GatewayConstants.DOCUMENT_PORT);
   server.listen();
 };
