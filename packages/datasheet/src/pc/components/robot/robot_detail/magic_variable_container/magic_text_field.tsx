@@ -20,7 +20,7 @@ import { useClickOutside } from '@huse/click-outside';
 import { useAtomValue } from 'jotai/index';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
@@ -63,6 +63,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
+  const refV: MutableRefObject<any> = useRef(null);
   useClickOutside(popupRef, () => {
 
     isOpenRef.current=false;
@@ -108,6 +109,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   );
 
   const handleEditorChange = (value: any) => {
+    refV.current = value;
     setValue(value);
   };
 
@@ -164,8 +166,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
               ref={popupRef}
               isJSONField={isJSONField}
               insertMagicVariable={(data) => {
-                insertMagicVariable(data, editor);
                 setOpen(false);
+                insertMagicVariable(data, editor, () => {
+                  setTimeout(() => {
+                    const { value: transformedValue } = transformSlateValue(refV.current);
+                    onChange && onChange(transformedValue);
+                  }, 20);
+                });
               }}
               nodeOutputSchemaList={nodeOutputSchemaList}
               setOpen={(isOpen) => {

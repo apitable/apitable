@@ -556,7 +556,7 @@ export const withMagicVariable = (editor: any) => {
   return editor;
 };
 
-export const insertMagicVariable = (data: any, editor: BaseEditor) => {
+export const insertMagicVariable = (data: any, editor: BaseEditor, callback: () => void) => {
   setTimeout(() => {
     const mv = {
       type: 'magicVariable',
@@ -578,6 +578,7 @@ export const insertMagicVariable = (data: any, editor: BaseEditor) => {
         unit: 'offset',
       });
     }
+    callback();
   }, 0);
 };
 
