@@ -18,7 +18,7 @@
 
 import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isEqual } from 'lodash';
+import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -47,7 +47,7 @@ import { useAutomationResourcePermission } from '../../../automation/controller/
 import { SelectDst, SelectForm } from '../../../automation/select_dst';
 import { ScreenSize } from '../../../common/component_display';
 import { IFormNodeItem } from '../../../tool_bar/foreign_form/form_list_panel';
-import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
+import { changeTriggerTypeId, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { AutomationScenario, IRobotTrigger, ITriggerType } from '../../interface';
 import { DropdownTrigger } from '../action/robot_action';
@@ -73,6 +73,19 @@ export enum EditType {
   entry = 'entry',
   detail = 'detail',
 }
+
+const customizer = (objValue, othValue) => {
+
+  if(isNil(objValue) && isNil(othValue)) {
+    return true;
+  }
+  const l = pickBy(objValue, identity);
+  const r = pickBy(othValue, identity);
+  if(isEqual(l, r)) {
+    return true;
+  }
+  return undefined;
+};
 
 const useAutomationLocalStateMap = () => {
 
@@ -104,8 +117,9 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }
 
   const mapFormData = localStateMap.get(trigger.triggerId!);
+
   const modified = useMemo(( ) => {
-    return mapFormData != null && !isEqual(trigger.input, mapFormData);
+    return mapFormData != null && !isEqualWith(trigger.input, mapFormData, customizer);
   }, [mapFormData, trigger.input]);
 
   const { data: formList } = useAtomValue(loadableFormList);

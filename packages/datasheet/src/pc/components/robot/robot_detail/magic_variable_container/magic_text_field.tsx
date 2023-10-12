@@ -40,7 +40,6 @@ const DefaultElement = (props: any) => {
 
 type IMagicTextFieldProps = IWidgetProps & {
   nodeOutputSchemaList: INodeOutputSchema[];
-  // addMagicVariableKey: (key: string) => void;
   value: any;
   onChange?: (value: any) => void;
   isOneLine?: boolean;
