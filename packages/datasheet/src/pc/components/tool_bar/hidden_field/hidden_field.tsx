@@ -27,7 +27,6 @@ import {
   Checkbox,
   ISelectValue,
   IUseListenTriggerInfo,
-  // eslint-disable-next-line no-restricted-imports
   Select,
   Switch,
   Typography,
@@ -40,6 +39,9 @@ import {
   CollaCommandName,
   DropDirectionType,
   GalleryStyleKeyType,
+  ICollaCommandOptions,
+  IFieldMap,
+  IFieldPermissionMap,
   IViewColumn,
   KanbanStyleKey,
   NO_COVER_FIELD_ID,
@@ -49,9 +51,6 @@ import {
   Strings,
   t,
   ViewType,
-  IFieldPermissionMap,
-  IFieldMap,
-  ICollaCommandOptions,
 } from '@apitable/core';
 import { DisabledOutlined, DragOutlined, ImageOutlined, InfoCircleOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
@@ -348,13 +347,13 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
             cmd: activeView.type === ViewType.Kanban ? CollaCommandName.SetKanbanStyle : CollaCommandName.SetGalleryStyle,
             viewId: activeView.id,
             styleKey: (activeView.type === ViewType.Kanban ? KanbanStyleKey.IsCoverFit : GalleryStyleKeyType.IsCoverFit) as any,
-            styleValue: !checked,
+            styleValue: checked,
           });
         },
         {
           style: {
             ...activeView.style,
-            [GalleryStyleKeyType.IsCoverFit]: !checked,
+            [GalleryStyleKeyType.IsCoverFit]: checked,
           },
         } as any,
       );
@@ -558,8 +557,8 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
               {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type)
                 ? t(Strings.set_gallery_card_style)
                 : isExclusive && isGanttView
-                  ? t(Strings.set_graphic_field)
-                  : t(Strings.set_field)}
+                ? t(Strings.set_graphic_field)
+                : t(Strings.set_field)}
             </Typography>
             {[ViewType.Gallery, ViewType.Kanban].includes(activeView.type) && (
               <a
@@ -612,7 +611,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                 <div className={styles.switchCoverFit} style={{ marginTop: 8 }}>
                   <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
                     <span className={styles.switchCoverFitCheckbox}>
-                      <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} disabled={isViewLock} />
+                      <Checkbox checked={activeView.style.isCoverFit} onChange={switchCoverFit} size={14} disabled={isViewLock} />
                     </span>
                   </WrapperTooltip>
                   <span style={{ paddingLeft: 4 }}>{t(Strings.gallery_img_stretch)}</span>

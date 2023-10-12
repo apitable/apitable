@@ -21,7 +21,6 @@ import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { CollaCommandName, CutMethod, IAttachmentValue, IField, isGif } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
-import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { getCellValueThumbSrc, showOriginImageThumbnail } from 'pc/utils';
 import { expandPreviewModal } from '../preview_file';
@@ -37,6 +36,7 @@ interface IDisplayFileProps {
   className?: string;
   imageStyle?: React.CSSProperties;
   cutImage?: boolean;
+  isCoverFit?: boolean;
 
   setPreviewIndex?(index: number): void;
 
@@ -64,13 +64,13 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = (p
     editable,
     onSave,
     disabledDownload,
+    isCoverFit,
   } = props;
   const PIXEL_RATIO = window.devicePixelRatio || 1;
   const lastIndex = fileList.length - 1;
   const activeIndex = index > lastIndex ? lastIndex : index;
   const _curFile = fileList[activeIndex];
   const curFile = useGetSignatureAssertByToken(_curFile);
-  const { mobile } = usePlatform();
 
   const onChange = (value: IAttachmentValue[]) => {
     resourceService.instance!.commandManager.execute({
@@ -110,28 +110,31 @@ const DisplayFileBase: React.FC<React.PropsWithChildren<IDisplayFileProps>> = (p
         setPreviewIndex && setPreviewIndex(activeIndex);
       }}
     >
-      {showOriginImageThumbnail(curFile) ? (
-        <div
-          className={classNames(_isGif && styles.gif, styles.imageWrapper, 'vk-flex vk-items-center vk-overflow-hidden')}
-          style={{
-            width: !width ? '100%' : width,
-            height: !height ? '100%' : height,
-            ...imageStyle,
-          }}
-        >
-          <img src={imgSrc} alt="" style={{ width: '100%', height: 'fit-content' }} />
-        </div>
-      ) : (
-        <img
-          src={imgSrc}
-          alt="attachment"
-          style={{
-            maxWidth: '100%',
-            width: mobile ? undefined : 80,
-          }}
-          className={styles.imgWrapper}
-        />
-      )}
+      <div
+        className={classNames(_isGif && styles.gif, styles.imageWrapper, 'vk-flex vk-items-center vk-overflow-hidden vk-justify-center')}
+        style={{
+          width: !width ? '100%' : width,
+          height: !height ? '100%' : height,
+
+          ...imageStyle,
+        }}
+      >
+        {showOriginImageThumbnail(curFile) ? (
+          <img src={imgSrc} alt="" style={{ width: '100%', height: '100%', objectFit: isCoverFit ? 'cover' : 'contain' }} />
+        ) : (
+          <img
+            src={imgSrc}
+            alt="attachment"
+            style={{
+              maxWidth: '100%',
+              width: '100%',
+              height: '100%',
+              objectFit: isCoverFit ? 'cover' : 'contain',
+            }}
+            className={styles.imgWrapper}
+          />
+        )}
+      </div>
     </div>
   );
 };
