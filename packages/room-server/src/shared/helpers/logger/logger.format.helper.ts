@@ -1,8 +1,9 @@
-import { formatError, formatHttpRequest, formatHttpResponse, version } from '@elastic/ecs-helpers';
+import { formatError, formatHttpRequest, formatHttpResponse, stringify, version } from '@elastic/ecs-helpers';
 import { trace } from '@opentelemetry/api';
 import fecha from 'fecha';
 import { isEmpty } from 'lodash';
 import { FormatWrap, TransformableInfo } from 'logform';
+import { MESSAGE } from 'triple-beam';
 import { format } from 'winston';
 
 const reservedFields = {
@@ -82,7 +83,7 @@ function ecsTransform(
     }
   }
 
-  // info[MESSAGE as any] = stringify(ecsFields);
+  info[MESSAGE as any] = stringify(ecsFields);
   return info;
 }
 
