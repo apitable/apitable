@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
-import React, { FC, memo, useContext, useEffect } from 'react';
+import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
@@ -170,6 +170,21 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
 
   const permission = useAutomationResourcePermission();
 
+  const inheritedRole = useMemo(()=> {
+    if(nodeItem?.role) {
+      return nodeItem.role;
+    }
+    if(permission.manageable) {
+      return ConfigConstant.Role.Manager;
+    }
+
+    if(permission.editable) {
+      return ConfigConstant.Role.Editor;
+    }
+
+    return ConfigConstant.Role.Reader;
+
+  }, [nodeItem?.role, permission.editable, permission.manageable]);
   if(automationState?.scenario === AutomationScenario.node) {
     if(!templateId && nodeItem == null) {
       return null;
@@ -228,8 +243,8 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                       {
                         !templateId && (
                           <Box marginX={'4px'}>
-                            <Tag color={TagColors[nodeItem?.role]}>
-                              {ConfigConstant.permissionText[getPermission(nodeItem?.role, { shareInfo: shareInfo })]}
+                            <Tag color={TagColors[inheritedRole]}>
+                              {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
                             </Tag>
                           </Box>
                         )
