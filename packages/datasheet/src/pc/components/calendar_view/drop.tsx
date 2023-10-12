@@ -24,13 +24,13 @@ import { useDrop } from 'react-dnd';
 import { ITask, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
+import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';
 import { CalendarContext } from './calendar_context';
 import { PRE_RECORD, RECORD } from './constants';
 import styles from './styles.module.less';
-import { getPosition } from './utils';
 interface IDrop {
   children: React.ReactElement[];
   date: Date;
@@ -41,7 +41,7 @@ interface IDrop {
 
 const DropBase = ({ children, date, update }: IDrop) => {
   const colors = useThemeColors();
-  const { view, calendarStyle, setRecordModal, isStartDateTimeField, isEndDateTimeField, isMobile, tasks, datasheetId, permissions } =
+  const { view, calendarStyle, isStartDateTimeField, isEndDateTimeField, isMobile, tasks, datasheetId, permissions } =
     useContext(CalendarContext);
   const { startFieldId, endFieldId } = calendarStyle;
   const [showAdd, setShowAdd] = useState(false);
@@ -85,7 +85,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
   );
   const active = isOver || isOverCurrent;
 
-  const addRecord = (e: React.MouseEvent) => {
+  const addRecord = () => {
     const dateValue = dayjs(date).valueOf();
     const cellValue: { [x: string]: number } = {};
     if (isStartDateTimeField) {
@@ -131,14 +131,13 @@ const DropBase = ({ children, date, update }: IDrop) => {
           }
         }
       }
-      const position = getPosition(e);
       /**
        * Delay setting modal Checked row
        * When a modal exists, clicking on the + sign to add a new record will first trigger useClickAway to close the modal,
        * then set the recordId to open the new record modal
        */
       setTimeout(() => {
-        setRecordModal([newRecordId, true, position]);
+        expandRecordIdNavigate(newRecordId);
       }, 0);
     }
   };
