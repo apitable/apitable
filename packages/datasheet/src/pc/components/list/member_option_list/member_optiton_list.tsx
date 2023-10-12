@@ -19,8 +19,8 @@
 import { useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Api,
@@ -37,6 +37,7 @@ import {
   t,
   UnitItem,
 } from '@apitable/core';
+import { useGetMemberStash } from 'modules/space/member_stash/hooks/use_get_member_stash';
 import { memberStash } from 'modules/space/member_stash/member_stash';
 import { InfoCard } from 'pc/components/common/info_card';
 import { expandInviteModal } from 'pc/components/invite';
@@ -85,7 +86,8 @@ export const MemberOptionList: React.FC<
     className,
     searchEmail,
   } = props;
-  const initList = Array.isArray(listData) ? listData : memberStash.getMemberStash();
+  const { loading: memberLoading, memberStashList } = useGetMemberStash();
+  const initList = Array.isArray(listData) ? listData : memberStashList;
   const [memberList, setMemberList] = useState<(IUnitValue | IUserValue)[]>(() => {
     // Whether or not you want to enable remote search, you need to make a backup of the data, especially the local data passed in by the component
     return initList;
@@ -103,7 +105,7 @@ export const MemberOptionList: React.FC<
       return;
     }
     setMemberList(listData);
-  }, [listData]);
+  }, [listData, memberLoading]);
 
   useEffect(() => {
     refreshMemberList();
@@ -261,6 +263,7 @@ export const MemberOptionList: React.FC<
         activeIndex={activeIndex}
         inputStyle={{ padding: 8 }}
         onInputClear={() => setMemberList(initList)}
+        isLoadingData={memberLoading}
         noSearchResult={() => {
           return (
             <span className={styles.noResult}>

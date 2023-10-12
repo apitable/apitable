@@ -78,7 +78,6 @@ export interface ICommonListProps {
   /**
    * @description Callback after inputting content
    * @param {React.ChangeEvent} e
-   * @param {string} keyword
    */
   onSearchChange?(e: React.ChangeEvent | null, keyword: string): void;
 
@@ -110,6 +109,8 @@ export interface ICommonListProps {
   getListContainer?: (children: React.ReactNode) => React.ReactNode;
 
   onInputClear?: () => void;
+
+  isLoadingData?: boolean;
 }
 
 export interface IOptionItemProps extends HTMLAttributes<HTMLDivElement> {
