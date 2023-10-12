@@ -4922,6 +4922,7 @@
   "timemachine_set_calender_style": "modified the calendar view configuration",
   "timemachine_set_org_chart_style": "modified the architecture view configuration",
   "timemachine_set_auto_head_height": "set auto line break",
+  "timemachine_modify_alarm": "modified to",
   "timemachine_modify_view": "modified the view configuration",
   "timemachine_delete_record": "deleted ${count} rows of record(s)",
   "timemachine_delete_widget": "deleted widget",

@@ -5180,6 +5180,7 @@ export type StringKeysMapType = {
   'timemachine_freeze_column_count': 'timemachine_freeze_column_count',
   'timemachine_help_url': 'timemachine_help_url',
   'timemachine_manual_save_view': 'timemachine_manual_save_view',
+  'timemachine_modify_alarm': 'timemachine_modify_alarm',
   'timemachine_modify_view': 'timemachine_modify_view',
   'timemachine_modify_widget_panel': 'timemachine_modify_widget_panel',
   'timemachine_move_row': 'timemachine_move_row',

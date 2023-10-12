@@ -46,6 +46,8 @@ interface IFilterGeneralSelectProps {
   isViewLock?: boolean;
 }
 
+const CONST_INITIAL_DROPDOWN_INDEX = 1000;
+
 export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGeneralSelectProps>> = (props) => {
   const colors = useThemeColors();
   const {
@@ -120,7 +122,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
     <div className={styles.select} ref={refSelect}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Dropdown
-          options={{ disabled: isViewLock, autoWidth: true, zIndex:1000 }}
+          options={{ disabled: isViewLock, autoWidth: true, zIndex:CONST_INITIAL_DROPDOWN_INDEX }}
           trigger={
             <div className={classNames(styles.displayBox, styles.option, { [styles.disabled]: isViewLock })}>
               {!cellValue && placeholder ? (

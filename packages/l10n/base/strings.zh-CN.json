@@ -5179,6 +5179,7 @@
   "timemachine_delete_widget_panel": "删除了小程序面板",
   "timemachine_freeze_column_count": "冻结至第 ${count} 列",
   "timemachine_help_url": "https://help.aitable.ai/docs/guide/manual-timemachine",
+  "timemachine_modify_alarm": "修改为",
   "timemachine_manual_save_view": "同步视图配置",
   "timemachine_modify_view": "修改了视图配置",
   "timemachine_modify_widget_panel": "修改了小程序面板名称",

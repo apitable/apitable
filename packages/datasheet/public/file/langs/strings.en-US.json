@@ -5179,6 +5179,7 @@
   "timemachine_freeze_column_count": "frozen to column ${count}",
   "timemachine_help_url": "https://help.aitable.ai/docs/guide/manual-timemachine",
   "timemachine_manual_save_view": "synced view configuration",
+  "timemachine_modify_alarm": "modified to",
   "timemachine_modify_view": "modified the view configuration",
   "timemachine_modify_widget_panel": "modified widget panel name",
   "timemachine_move_row": "moved ${record_count} row(s)",
