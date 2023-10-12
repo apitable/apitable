@@ -69,7 +69,7 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
     );
   }
 
-  const nodeTypes = taskDetail.executedNodeIds.map((nodeId) => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]);
+  const nodeTypes = taskDetail.executedNodeIds.map((nodeId) => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]).filter(Boolean);
   return (
     <Box flex={'1'} overflowY={'auto'}>
       <Box padding="0px 16px 0px 0">
