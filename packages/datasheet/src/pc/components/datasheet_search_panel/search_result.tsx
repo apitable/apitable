@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { INode, Strings, t, ThemeName, ConfigConstant } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
+import { ISearchOptions } from 'pc/components/datasheet_search_panel/interface';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
@@ -33,11 +34,12 @@ interface ISearchResultProps {
 
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
+  options: ISearchOptions,
   noCheckPermission?: boolean;
 }
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
-  const { searchResult, noCheckPermission, onlyShowAvailable, onNodeClick } = props;
+  const { searchResult, noCheckPermission, options, onlyShowAvailable, onNodeClick } = props;
   const themeName = useSelector((state) => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (typeof searchResult === 'string') {
@@ -80,9 +82,11 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
     );
   };
 
-  const _checkNodeDisable = (node: INode) => {
+  const _checkNodeDisable = (node: INode,
+    needPermission: 'manageable' | 'editable' |undefined
+  ) => {
     if (noCheckPermission) return;
-    return checkNodeDisable(node);
+    return checkNodeDisable(node, needPermission);
   };
 
   const FileList = (files: INode[]) => {
@@ -102,7 +106,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
                 } else {
                   onNodeClick('Datasheet', id);
                 }
-              }} richContent disable={_checkNodeDisable(node)}>
+              }} richContent disable={_checkNodeDisable(node, options?.needPermission)}>
                 {node.nodeName}
               </File>
             );
@@ -113,7 +117,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
   };
 
   const folders = searchResult.folders;
-  const files = onlyShowAvailable ? searchResult.files.filter((node) => !_checkNodeDisable(node)) : searchResult.files;
+  const files = onlyShowAvailable ? searchResult.files.filter((node) => !_checkNodeDisable(node, options.needPermission)) : searchResult.files;
   return (
     <div className={styles.searchResult}>
       {FolderList(folders)}
