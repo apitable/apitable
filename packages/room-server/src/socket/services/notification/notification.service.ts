@@ -34,12 +34,12 @@ export class NotificationService {
   constructor(private readonly grpcClient: GrpcClient) {}
 
   broadcastNotify(message: INotificationRo, client: Socket): boolean {
-    if (isNil(message.toUserId)) {
+    if (isNil(message.toUuid)) {
       this.logger.error('NotNotify:UserMismatch');
       return false;
     }
     try {
-      client.in(SocketConstants.USER_SOCKET_ROOM + message.toUserId).emit(message.event, message);
+      client.in(SocketConstants.USER_SOCKET_ROOM + message.toUuid).emit(message.event, message);
       this.logger.debug(message);
       return true;
     } catch (e) {
