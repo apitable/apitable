@@ -21,6 +21,7 @@ import {
   IFieldPermissionMap,
   IGetRecords,
   IOperation,
+  IRecord,
   IRecordMap,
   IRemoteChangeset,
   IServerDatasheetPack,
@@ -32,6 +33,7 @@ import {
   ResourceType,
 } from '@apitable/core';
 import { NodeInfo } from './node.model';
+import { INamedUser } from '../../../shared/interfaces';
 
 export class ChangesetView implements IRemoteChangeset {
   userId!: string;
@@ -85,4 +87,10 @@ export class DatasheetPack extends FieldPermissionMap implements IServerDatashee
 export class ViewPack implements IViewPack {
   view!: IViewProperty;
   revision!: number;
+}
+
+export class ArchivedRecord {
+  record!: IRecord | undefined;
+  archivedUser!: INamedUser | undefined;
+  archivedAt!: number;
 }

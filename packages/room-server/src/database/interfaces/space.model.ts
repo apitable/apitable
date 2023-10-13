@@ -18,6 +18,7 @@
 
 export class InternalSpaceSubscriptionView {
   maxRowsPerSheet!: number; // The maximum record allowed per datasheet
+  maxArchivedRowsPerSheet!: number; // The maximum archived record allowed per datasheet
   maxRowsInSpace!: number; // The maximum record allowed by the current space
   maxGalleryViewsInSpace!: number; // The maximum number of gallery views allowed in the space
   maxKanbanViewsInSpace!: number; // The maximum number of kanban views allowed in the space

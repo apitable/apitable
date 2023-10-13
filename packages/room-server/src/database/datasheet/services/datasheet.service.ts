@@ -98,8 +98,8 @@ export class DatasheetService {
     const meta = options?.meta ?? (await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException));
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
-      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount)
-      : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount);
+      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount, options.includeArchivedRecords)
+      : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount, options?.includeArchivedRecords);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
     const { mainDstRecordMap, foreignDatasheetMap, units } = await this.datasheetFieldHandler.analyze(dstId, {

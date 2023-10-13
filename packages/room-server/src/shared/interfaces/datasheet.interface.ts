@@ -149,6 +149,9 @@ export interface IFetchDataOptions {
 
   /** If comment count is queried. Default to false */
   includeCommentCount?: boolean;
+
+  /**  Default to false */
+  includeArchivedRecords?: boolean;
 }
 
 export interface IFetchDataPackOptions extends IFetchDataOptions {

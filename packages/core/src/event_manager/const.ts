@@ -50,5 +50,7 @@ export const EventNameClsMap = {
   [OPEventNameEnums.RecordCreated]: datasheetEvent.OPEventRecordCreated,
   [OPEventNameEnums.RecordDeleted]: datasheetEvent.OPEventRecordDeleted,
   [OPEventNameEnums.RecordUpdated]: datasheetEvent.OPEventRecordUpdated,
+  [OPEventNameEnums.RecordArchived]: datasheetEvent.OPEventRecordArchived,
+  [OPEventNameEnums.RecordUnarchived]: datasheetEvent.OPEventRecordUnarchived,
 };
 

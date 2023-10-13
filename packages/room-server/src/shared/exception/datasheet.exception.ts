@@ -42,6 +42,10 @@ export class DatasheetException implements IBaseException {
     305,
     'the usage of this function exceed the 50000 records limit of beta version',
   );
+  static readonly RECORD_ARCHIVE_LIMIT_PER_DATASHEET = new DatasheetException(
+    305,
+    'the usage of this function exceed the 10000 records limit of beta version',
+  );
   static readonly RECORD_ADD_LIMIT_WITHIN_SPACE = new DatasheetException(
     309,
     'the usage of this function exceed the 50000 records limit of beta version',
@@ -56,6 +60,11 @@ export class DatasheetException implements IBaseException {
   static getRECORD_ADD_LIMIT_PER_DATASHEETMsg(specification: number, usage: number) {
     // return new DatasheetException(305, t(Strings.max_rows_per_sheet, { specification, usage }));
     return new DatasheetException(305, JSON.stringify({ key: 'max_rows_per_sheet', specification, usage }));
+  }
+
+  static getRECORD_ARCHIVE_LIMIT_PER_DATASHEETMsg(specification: number, usage: number) {
+    // return new DatasheetException(305, t(Strings.max_archived_rows_per_sheet, { specification, usage }));
+    return new DatasheetException(305, JSON.stringify({ key: 'max_archived_rows_per_sheet', specification, usage }));
   }
 
   static getRECORD_ADD_LIMIT_WITHIN_SPACEMsg(specification: number, usage: number) {

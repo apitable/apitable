@@ -46,6 +46,7 @@ public class BillingAssembler {
         subscriptionVo.setMaxKanbanViewsInSpace(billingPlanFeature.getKanbanViews().getValue());
         subscriptionVo.setMaxRowsInSpace(billingPlanFeature.getRowNums().getValue());
         subscriptionVo.setMaxRowsPerSheet(billingPlanFeature.getRowsPerSheet().getValue());
+        subscriptionVo.setMaxArchivedRowsPerSheet(billingPlanFeature.getArchivedRowsPerSheet().getValue());
         subscriptionVo.setMaxMessageCredits(billingPlanFeature.getMessageCreditNums().getValue());
         subscriptionVo.setAllowEmbed(billingPlanFeature.getAllowEmbed().getValue());
         subscriptionVo.setAllowOrgApi(billingPlanFeature.getAllowOrgApi().getValue());

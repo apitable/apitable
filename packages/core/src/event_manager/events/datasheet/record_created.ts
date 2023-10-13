@@ -40,9 +40,15 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
 
   test({ action, resourceId, op }: IOPBaseContext) {
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId'], ('oi' in action));
-    if (!pass) {
+
+    let success = pass;
+    if (op.cmd !== 'AddRecords' && op.cmd !== 'UNDO:DeleteRecords' && op.cmd!== 'DeleteArchivedRecords') {
+      success = false;
+    }
+
+    if (!success) {
       return {
-        pass: false,
+        pass: success,
         context: null
       };
     }

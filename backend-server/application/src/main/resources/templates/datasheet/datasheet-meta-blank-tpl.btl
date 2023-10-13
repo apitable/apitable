@@ -52,7 +52,8 @@
             "type": 1,
             "displayHiddenColumnWithinMirror": false,
             "autoSave": false
-        }]
+        }],
+        "archivedRecordIds": []
     },
     "recordMap": {
         "${recordId0}": {

@@ -79,6 +79,16 @@ public class SubscriptionFeatures {
         }
 
         /**
+         * ArchiveRowsPerSheet feature.
+         */
+        public static class ArchivedRowsPerSheet extends AbstractNumberPlanFeature {
+
+            public ArchivedRowsPerSheet(Long value) {
+                super(value);
+            }
+        }
+
+        /**
          * RowNums feature.
          */
         public static class RowNums extends AbstractNumberPlanFeature {

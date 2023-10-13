@@ -48,30 +48,52 @@ import {
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { DatasheetRecordAlarmBaseService } from 'database/alarm/datasheet.record.alarm.base.service';
+import {
+  DatasheetRecordAlarmBaseService,
+} from 'database/alarm/datasheet.record.alarm.base.service';
 import { DatasheetEntity } from 'database/datasheet/entities/datasheet.entity';
 import { DatasheetMetaEntity } from 'database/datasheet/entities/datasheet.meta.entity';
-import { DatasheetRecordEntity } from 'database/datasheet/entities/datasheet.record.entity';
+import {
+  DatasheetRecordEntity,
+} from 'database/datasheet/entities/datasheet.record.entity';
 import { RecordCommentEntity } from 'database/datasheet/entities/record.comment.entity';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
-import { DatasheetRecordService } from 'database/datasheet/services/datasheet.record.service';
+import {
+  DatasheetRecordService,
+} from 'database/datasheet/services/datasheet.record.service';
 import { DatasheetService } from 'database/datasheet/services/datasheet.service';
 import { RecordCommentService } from 'database/datasheet/services/record.comment.service';
-import { EffectConstantName, ICommonData, IFieldData, IRestoreRecordInfo } from 'database/ot/interfaces/ot.interface';
+import {
+  EffectConstantName,
+  ICommonData,
+  IFieldData,
+  IRestoreRecordInfo,
+} from 'database/ot/interfaces/ot.interface';
 import produce from 'immer';
 import { chunk, intersection, isEmpty, pick, update } from 'lodash';
 import { InjectLogger } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
-import { CommonException, DatasheetException, OtException, PermissionException, ServerException } from 'shared/exception';
+import {
+  CommonException,
+  DatasheetException,
+  OtException,
+  PermissionException,
+  ServerException,
+} from 'shared/exception';
 import { ExceptionUtil } from 'shared/exception/exception.util';
 import { IdWorker } from 'shared/helpers';
 import { IAuthHeader, IOpAttach, NodePermission } from 'shared/interfaces';
 import { RestService } from 'shared/services/rest/rest.service';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';
-import { DatasheetChangesetEntity } from '../../datasheet/entities/datasheet.changeset.entity';
+import {
+  DatasheetChangesetEntity,
+} from '../../datasheet/entities/datasheet.changeset.entity';
 import { WidgetEntity } from '../../widget/entities/widget.entity';
 import { WidgetService } from '../../widget/services/widget.service';
+import {
+  DatasheetRecordArchiveEntity,
+} from '../../datasheet/entities/datasheet.record.archive.entity';
 
 @Injectable()
 export class DatasheetOtService {
@@ -135,7 +157,9 @@ export class DatasheetOtService {
     return {
       metaActions: [],
       toCreateRecord: new Map<string, IRecordCellValue>(),
+      toUnarchiveRecord: new Map<string, IRecordCellValue>(),
       toDeleteRecordIds: [],
+      toArchiveRecordIds: [],
       cleanFieldMap: new Map<string, FieldType>(),
       cleanRecordCellMap: new Map<string, IFieldData[]>(),
       replaceCellMap: new Map<string, IFieldData[]>(),
@@ -290,12 +314,14 @@ export class DatasheetOtService {
       }
     }
 
-    if (resultSet.toCreateRecord.size) {
+    if (resultSet.toCreateRecord.size || resultSet.toUnarchiveRecord.size) {
       const currentRecordCountInDst = await this.metaService.getRowsNumByDstId(datasheetId);
       const spaceUsages = await this.restService.getSpaceUsage(spaceId);
       const subscribeInfo = await this.restService.getSpaceSubscription(spaceId);
-      const afterCreateCountInDst = Number(currentRecordCountInDst) + Number(resultSet.toCreateRecord.size);
-      const afterCreateCountInSpace = Number(spaceUsages.recordNums) + Number(resultSet.toCreateRecord.size);
+      const afterCreateCountInDst = Number(currentRecordCountInDst) + Number(resultSet.toCreateRecord.size)
+        + Number(resultSet.toUnarchiveRecord.size);
+      const afterCreateCountInSpace = Number(spaceUsages.recordNums) + Number(resultSet.toCreateRecord.size)
+        + Number(resultSet.toUnarchiveRecord.size);
 
       if (subscribeInfo.maxRowsPerSheet >= 0 && afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
         const datasheetEntity = await this.datasheetService.getDatasheet(datasheetId);
@@ -374,6 +400,17 @@ export class DatasheetOtService {
           _value[fieldId] = value[fieldId];
         }
         resultSet.toCreateRecord.set(recordId, _value);
+      }
+    }
+
+    if (resultSet.toArchiveRecordIds.length) {
+      const currentArchivedRecordCountInDst = await this.recordService.getArchivedRecordCount(datasheetId);
+      const subscribeInfo = await this.restService.getSpaceSubscription(spaceId);
+      const afterArchiveCountInDst = Number(currentArchivedRecordCountInDst) + Number(resultSet.toArchiveRecordIds.length);
+
+      if (subscribeInfo.maxArchivedRowsPerSheet >= 0 && afterArchiveCountInDst > subscribeInfo.maxArchivedRowsPerSheet) {
+        throw new ServerException(DatasheetException.getRECORD_ARCHIVE_LIMIT_PER_DATASHEETMsg(subscribeInfo.maxArchivedRowsPerSheet,
+          afterArchiveCountInDst));
       }
     }
 
@@ -1062,8 +1099,9 @@ export class DatasheetOtService {
       if ('ld' in action) {
         this.collectByDeleteWidgetOrWidgetPanels(action, resultSet);
       }
-      if ('li' in action) {
-        this.collectByAddWidgetIds(action, resultSet);
+    } else if (action.p[1] === 'archivedRecordIds') {
+      if (!permission.manageable) {
+        throw new ServerException(PermissionException.OPERATION_DENIED);
       }
     }
   }
@@ -1074,7 +1112,7 @@ export class DatasheetOtService {
   collectByOperateForRow(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     const recordId = action.p[1] as string;
     const autoSubscriptionFields = this.getAutoSubscriptionFields(resultSet.temporaryFieldMap);
-    if ('oi' in action) {
+    if ('oi' in action && (cmd === 'AddRecords' || cmd === 'UNDO:DeleteRecords' || cmd === 'UNDO:DeleteArchivedRecords')) {
       if (!permission.rowCreatable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
@@ -1104,8 +1142,36 @@ export class DatasheetOtService {
       }
       resultSet.toCreateRecord.set(recordId, recordData);
       this.collectRecordSubscriptions(autoSubscriptionFields, recordId, recordData, undefined, resultSet);
+    } else if ('oi' in action && (cmd === 'UnarchiveRecords' || cmd === 'UNDO:ArchiveRecords')) {
+      if (!permission.rowUnarchivable) {
+        throw new ServerException(PermissionException.OPERATION_DENIED);
+      }
+      // Create record (copy record)
+      // Get oi, if multiple records then get 'data', otherwise get original value
+      const oiData = action.oi;
+      if (!oiData) {
+        // Malformed action, oi can not be null or undefined
+        throw new ServerException(CommonException.SERVER_ERROR);
+      }
+      let recordData = 'data' in oiData ? oiData.data : oiData;
+      recordData = { ...recordData };
+      // Filter null cells
+      Object.keys(recordData).forEach((fieldId) => {
+        if (recordData[fieldId] == null) {
+          delete recordData[fieldId];
+          return;
+        }
+        // check permission
+        this.checkCellValPermission(cmd, fieldId, permission, resultSet);
+      });
+      // Recover record after deleting record, clear record deletion collection
+      if (resultSet.toArchiveRecordIds.includes(recordId)) {
+        resultSet.toArchiveRecordIds.splice(resultSet.toArchiveRecordIds.indexOf(recordId), 1);
+        return;
+      }
+      resultSet.toUnarchiveRecord.set(recordId, recordData);
     }
-    if ('od' in action) {
+    if ('od' in action && (cmd === 'DeleteRecords' || cmd === 'UNDO:AddRecords' || cmd === 'DeleteArchivedRecords')) {
       if (!permission.rowRemovable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
@@ -1123,6 +1189,17 @@ export class DatasheetOtService {
       }
       resultSet.toDeleteRecordIds.push(recordId);
       this.collectRecordSubscriptions(autoSubscriptionFields, recordId, undefined, action.od, resultSet);
+    } else if ('od' in action && (cmd === 'ArchiveRecords' || cmd === 'UNDO:UnarchiveRecords')) {
+      if (!permission.rowArchivable) {
+        throw new ServerException(PermissionException.OPERATION_DENIED);
+      }
+      if (resultSet.cleanRecordCellMap.has(recordId)) {
+        resultSet.cleanRecordCellMap.delete(recordId);
+      }
+      if (resultSet.replaceCellMap.has(recordId)) {
+        resultSet.replaceCellMap.delete(recordId);
+      }
+      resultSet.toArchiveRecordIds.push(recordId);
     }
   }
 
@@ -1283,7 +1360,7 @@ export class DatasheetOtService {
     // ===== Comment collection operation END ====
   }
 
-  transaction = async(manager: EntityManager, effectMap: Map<string, any>, commonData: ICommonData, resultSet: { [key: string]: any }) => {
+  transaction = async (manager: EntityManager, effectMap: Map<string, any>, commonData: ICommonData, resultSet: { [key: string]: any }) => {
     const beginTime = +new Date();
     this.logger.info(`[${commonData.dstId}] ====> transaction start......`);
     // ======== Fix comment time BEGIN ========
@@ -1293,6 +1370,10 @@ export class DatasheetOtService {
     // ======== Batch delete record BEGIN ========
     await this.handleBatchDeleteRecord(manager, commonData, resultSet);
     // ======== Batch delete record END ========
+
+    // ======= Batch archive record BEGIN ========
+    await this.handleBatchArchiveRecord(manager, commonData, resultSet);
+    // ======= Batch archive record END ========
 
     // ======== Batch delete widget BEGIN ========
     await this.handleBatchDeleteWidget(manager, commonData, resultSet);
@@ -1309,6 +1390,10 @@ export class DatasheetOtService {
     // ======== Batch create record BEGIN ========
     await this.handleBatchCreateRecord(manager, commonData, effectMap, resultSet);
     // ======== Batch create record END ========
+
+    // ======== Batch unarchive record BEGIN ========
+    await this.handleBatchUnarchiveRecord(manager, commonData, resultSet);
+    // ======== Batch unarchive record END ========
 
     // ======== Batch update cell BEGIN ========
     await this.handleBatchUpdateCell(manager, commonData, effectMap, false, resultSet);
@@ -1526,6 +1611,57 @@ export class DatasheetOtService {
     this.logger.info(`[${dstId}] ====> Finished batch creating record comment......duration: ${endTime - beginTime}ms`);
   }
 
+  private async handleBatchArchiveRecord(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
+    if (resultSet.toArchiveRecordIds.length === 0) {
+      return;
+    }
+    const { userId, dstId } = commonData;
+    if (this.logger.isDebugEnabled()) {
+      this.logger.debug(`[${dstId}] archive record`);
+    }
+
+    const saveArchiveRecordEntities: any[] = [];
+    const beginTime = +new Date();
+    this.logger.info(`[${dstId}] ====> Start batch archive record......`);
+
+    for (const recordId of resultSet.toArchiveRecordIds) {
+      saveArchiveRecordEntities.push({
+        id: IdWorker.nextId().toString(),
+        dstId,
+        recordId,
+        isArchived: true,
+        archivedBy: userId,
+        createdBy: userId,
+        updatedBy: userId,
+      });
+    }
+
+    if (saveArchiveRecordEntities.length > 0) {
+      if (this.logger.isDebugEnabled()) {
+        this.logger.debug(`[${dstId}] Batch archive record`);
+      }
+      const chunkList = chunk(saveArchiveRecordEntities, 3000);
+      for (const entities of chunkList) {
+        await manager
+          .createQueryBuilder()
+          .insert()
+          .into(DatasheetRecordArchiveEntity)
+          .values(entities)
+          .orUpdate({
+            conflict_target: ['dstId', 'recordId'],
+            columns: ['is_archived', 'archived_by', 'archived_at', 'updated_by'],
+            overwrite: ['is_archived', 'archived_by', 'archived_at', 'updated_by'],
+          })
+          // If not set to false, SELECT will be executed after insertion,
+          // efficiency will be seriously impacted.
+          .updateEntity(false)
+          .execute();
+      }
+    }
+    const endTime = +new Date();
+    this.logger.info(`[${dstId}] ====> Finished batch archive record......duration: ${endTime - beginTime}ms`);
+  }
+
   /**
    * Batch delete record
    *
@@ -1560,6 +1696,11 @@ export class DatasheetOtService {
     } else {
       values = { ...baseProps };
     }
+    const archivedValues = {
+      isDeleted: true,
+      updatedBy: userId,
+    };
+
     // Batch operation, split in chunks if exceeds 1000 records
     const gap = 1000;
     if (resultSet.toDeleteRecordIds.length > gap) {
@@ -1573,12 +1714,28 @@ export class DatasheetOtService {
           .where('dst_id = :dstId', { dstId })
           .andWhere('record_id IN(:...ids)', { ids: deletedRecordIds })
           .execute();
+
+        await manager
+          .createQueryBuilder()
+          .update(DatasheetRecordArchiveEntity)
+          .set(archivedValues)
+          .where('dst_id = :dstId', { dstId })
+          .andWhere('record_id IN(:...ids)', { ids: deletedRecordIds })
+          .execute();
       }
     } else {
       await manager
         .createQueryBuilder()
         .update(DatasheetRecordEntity)
         .set(values)
+        .where('dst_id = :dstId', { dstId })
+        .andWhere('record_id IN(:...ids)', { ids: resultSet.toDeleteRecordIds })
+        .execute();
+
+      await manager
+        .createQueryBuilder()
+        .update(DatasheetRecordArchiveEntity)
+        .set(archivedValues)
         .where('dst_id = :dstId', { dstId })
         .andWhere('record_id IN(:...ids)', { ids: resultSet.toDeleteRecordIds })
         .execute();
@@ -2070,6 +2227,44 @@ export class DatasheetOtService {
     }
     const endTime = +new Date();
     this.logger.info(`[${dstId}] ====> Finished batch deleting record comments......duration: ${endTime - beginTime}ms`);
+  }
+
+  private async handleBatchUnarchiveRecord(
+    manager: EntityManager,
+    commonData: ICommonData,
+    // effectMap: Map<string, any>,
+    resultSet: { [key: string]: any },
+  ) {
+    if (!resultSet.toUnarchiveRecord.size) {
+      return;
+    }
+
+    const { userId, dstId } = commonData;
+    if (this.logger.isDebugEnabled()) {
+      this.logger.debug(`[${dstId}] Soft unarchive record`);
+    }
+    const beginTime = +new Date();
+    this.logger.info(`[${dstId}] ====> Start batch unarchiving record......`);
+    const values = {
+      isArchived: false,
+      updatedBy: userId,
+    };
+    const gap = 1000;
+    const times = Math.ceil(resultSet.toUnarchiveRecord.size / gap);
+    const toUnarchiveRecordIds = Array.from(resultSet.toUnarchiveRecord.keys());
+    for (let i = 0; i < times; i++) {
+      const unarchivedRecordIds = toUnarchiveRecordIds.slice(i * gap, (i + 1) * gap);
+
+      await manager
+        .createQueryBuilder()
+        .update(DatasheetRecordArchiveEntity)
+        .set(values)
+        .where('dst_id = :dstId', { dstId })
+        .andWhere('record_id IN(:...ids)', { ids: unarchivedRecordIds })
+        .execute();
+    }
+    const endTime = +new Date();
+    this.logger.info(`[${dstId}] ====> Finished batch unarchiving record......duration: ${endTime - beginTime}ms`);
   }
 
   private async handleCommentEmoji(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
