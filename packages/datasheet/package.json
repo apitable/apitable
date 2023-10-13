@@ -184,7 +184,7 @@
     "@next/bundle-analyzer": "^12.2.2",
     "@svgr/webpack": "^6.2.1",
     "@tailwindcss/typography": "^0.5.9",
-    "@types/classnames": "^2.2.10",
+    "@types/classnames": "2.2.10",
     "@types/dagre": "^0",
     "@types/dom-to-image": "^2.6.2",
     "@types/dot-object": "^2.1.2",

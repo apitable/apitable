@@ -20,6 +20,7 @@ packages/l10n/gen
 packages/l10n/gen/**
 packages/i18n-lang/src/config/strings.origin.json
 packages/datasheet/.env.origin
+packages/air-agent/.env.origin
 
 /blueprint-templates
 
@@ -67,6 +68,9 @@ scripts/design_token/__pycache__
 /packages/datasheet/settings/public
 /packages/datasheet/.env.development
 /packages/datasheet/.env.local
+
+# air-agent
+/packages/air-agent/*
 
 # init-db
 /init-db/bin
