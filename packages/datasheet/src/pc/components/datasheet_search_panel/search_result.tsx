@@ -34,7 +34,7 @@ interface ISearchResultProps {
 
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
-  options: ISearchOptions,
+  options?: ISearchOptions;
   noCheckPermission?: boolean;
 }
 
@@ -82,10 +82,9 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
     );
   };
 
-  const _checkNodeDisable = (node: INode,
-    needPermission: 'manageable' | 'editable' |undefined
-  ) => {
+  const _checkNodeDisable = (node: INode, needPermission: 'manageable' | 'editable' | undefined) => {
     if (noCheckPermission) return;
+    if (!needPermission) return;
     return checkNodeDisable(node, needPermission);
   };
 
@@ -99,14 +98,21 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
         <div className={styles.nodeListContent}>
           {files.map((node) => {
             return (
-            // ConfigConstant.NodeType.DATASHEET
-              <File nodeType={node.type} key={node.nodeId} id={node.nodeId} onClick={(id) => {
-                if(node.type === ConfigConstant.NodeType.FORM) {
-                  onNodeClick('Form', id);
-                } else {
-                  onNodeClick('Datasheet', id);
-                }
-              }} richContent disable={_checkNodeDisable(node, options?.needPermission)}>
+              // ConfigConstant.NodeType.DATASHEET
+              <File
+                nodeType={node.type}
+                key={node.nodeId}
+                id={node.nodeId}
+                onClick={(id) => {
+                  if (node.type === ConfigConstant.NodeType.FORM) {
+                    onNodeClick('Form', id);
+                  } else {
+                    onNodeClick('Datasheet', id);
+                  }
+                }}
+                richContent
+                disable={_checkNodeDisable(node, options?.needPermission)}
+              >
                 {node.nodeName}
               </File>
             );
@@ -117,7 +123,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
   };
 
   const folders = searchResult.folders;
-  const files = onlyShowAvailable ? searchResult.files.filter((node) => !_checkNodeDisable(node, options.needPermission)) : searchResult.files;
+  const files = onlyShowAvailable ? searchResult.files.filter((node) => !_checkNodeDisable(node, options?.needPermission)) : searchResult.files;
   return (
     <div className={styles.searchResult}>
       {FolderList(folders)}
