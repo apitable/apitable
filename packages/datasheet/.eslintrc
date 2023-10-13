@@ -47,7 +47,12 @@
             "position": "after"
           },
           {
-            "pattern": "*.module.less",
+            "pattern": "./*.less",
+            "group": "index",
+            "position": "after"
+          },
+          {
+            "pattern": "./*.module.less",
             "group": "index",
             "position": "after"
           }
