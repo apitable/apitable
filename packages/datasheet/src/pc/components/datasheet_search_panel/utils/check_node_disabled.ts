@@ -12,8 +12,16 @@ export const checkNodeDisable = (node: INode,
   }
   let disable: { budget: string; message: string } | undefined;
 
-  if (!node.permissions.editable) {
-    disable = DISABLE_TIP.permission;
+  if(needPermission == 'manageable') {
+    if (!node.permissions.manageable) {
+      disable = DISABLE_TIP.manageablePermission;
+    }
+  }
+
+  if(needPermission == 'editable') {
+    if (!node.permissions.editable) {
+      disable = DISABLE_TIP.permission;
+    }
   }
 
   if (node.columnLimit) {

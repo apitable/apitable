@@ -257,7 +257,7 @@ export const contextItemMap = new Map<ContextItemKey, any>([
       text: () => {
         return (
           <div className={styles.beta}>
-            <span>{t(Strings.ai_new_chatbot)}</span>
+            <span>{t(Strings.ai_new_agent)}</span>
             <span className={styles.betaTag}>Beta</span>
           </div>
         );

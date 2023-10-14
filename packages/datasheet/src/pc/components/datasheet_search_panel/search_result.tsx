@@ -98,7 +98,6 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
         <div className={styles.nodeListContent}>
           {files.map((node) => {
             return (
-              // ConfigConstant.NodeType.DATASHEET
               <File
                 nodeType={node.type}
                 key={node.nodeId}
