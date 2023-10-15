@@ -19,6 +19,7 @@
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
@@ -39,8 +40,8 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
+import { ArchivedRecords } from 'pc/components/archive_record';
 import { Message, VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
@@ -51,6 +52,7 @@ import { store } from 'pc/store';
 import { exportDatasheetBase } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
+import styles from './style.module.less';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
 import { closeAllExpandRecord } from '../expand_record';
@@ -62,7 +64,6 @@ import { SuspensionPanel } from '../suspension_panel';
 import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
-import styles from './style.module.less';
 // @ts-ignore
 import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
 
@@ -204,6 +205,10 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   const isTimeMachinePanelOpen = useSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
+  });
+  const isArchivedRecordsPanelOpen = useSelector((state) => {
+    const clientState = Selectors.getDatasheetClient(state, datasheetId);
+    return clientState && clientState.isArchivedRecordsPanelOpen;
   });
 
   useMountWidgetPanelShortKeys();
@@ -371,6 +376,9 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
       return DefaultPanelWidth.DevTool;
     }
     if (isTimeMachinePanelOpen) {
+      return DefaultPanelWidth.TimeMachine;
+    }
+    if (isArchivedRecordsPanelOpen) {
       return DefaultPanelWidth.TimeMachine;
     }
     if (isApiPanelOpen) {

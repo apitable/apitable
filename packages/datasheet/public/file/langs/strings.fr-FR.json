@@ -613,6 +613,7 @@
   "apply_template": "Utiliser le modèle",
   "appoint_permission_tip": "Seuls les membres ci-dessous ont accès à ce fichier",
   "apps_support": "Support client de toutes les plates-formes",
+  "archive_row": "Archiver l'enregistrement",
   "archive_record_in_menu": "Dossier d'archive",
   "archive_record_success": "Enregistrements archivés avec succès",
   "archive_records_in_menu": "Archiver ${chose_num} enregistrements",

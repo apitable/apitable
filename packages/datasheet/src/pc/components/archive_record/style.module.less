@@ -1,0 +1,141 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.toolList {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 16px;
+  svg {
+    cursor: pointer;
+  }
+}
+
+.batchHandle {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  align-items: center;
+
+  button {
+    margin-right: 10px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+}
+
+.archivedBy {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 16px;
+  span {
+    margin-right: 10px;
+  }
+}
+
+.cellValue {
+  width: 200px;
+  line-height: 40px;
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+:global {
+
+  .archiveDrawer {
+    .ant-drawer-header {
+      border: none!important;
+    }
+
+    .ant-drawer-close {
+      top: 20px;
+      right: 20px;
+      svg {
+        fill: var(--textCommonPrimary)!important;
+      }
+    }
+
+  } 
+  
+
+  .archivedRecordsTable {
+    .ant-table-cell-fix-right {
+      background-color: var(--defaultBg) !important;
+    }
+
+    .ant-table-row-selected {
+      td {
+        background-color: var(--defaultBg) !important;
+      }
+    }
+
+    .ant-table-tbody {
+      tr {
+
+        th {
+          padding: 0;
+          overflow-wrap: normal!important;
+        }
+
+        td {
+          padding: 0;
+          overflow-wrap: normal!important;
+        }
+      }
+    }
+    
+    .ant-pagination-item-link {
+      background-color: inherit!important;
+    }
+
+    .ant-pagination-item {
+      background-color: inherit!important;
+      border: none!important;
+    }
+
+    .ant-pagination-item-active {
+      background-color: var(--bgBrandLightDefault)!important;
+      a {
+        color: var(--textBrandDefault)!important;
+      }
+    }
+    .ant-select {
+      width: 120px!important;
+    }
+    
+    .ant-select-selector {
+      height: 32px!important;
+      border: none!important;
+    }
+
+    .ant-select-selection-item {
+      line-height: 32px!important;
+    }
+
+    .ant-select-arrow {
+      margin-top: -4px!important;
+    }
+
+    .ant-pagination-options-quick-jumper {
+      margin-left: 20px!important;
+      height: 32px!important;
+      vertical-align: middle!important;
+      line-height: 32px!important;
+      input {
+        height: 32px!important;
+        background-color: var(--bgBrandLightDefault)!important;
+      }
+    }
+
+   
+   
+  }
+}

@@ -613,6 +613,7 @@
   "apply_template": "Использовать шаблоны",
   "appoint_permission_tip": "Доступ к этому документу имеют только следующие члены",
   "apps_support": "Поддержка всех клиентов платформы",
+  "archive_row": "Архивная запись",
   "archive_record_in_menu": "Архив",
   "archive_record_success": "Успешное архивирование",
   "archive_records_in_menu": "Архивировать ${chose_num} записей",

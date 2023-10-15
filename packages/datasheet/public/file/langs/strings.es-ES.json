@@ -613,6 +613,7 @@
   "apply_template": "Usar plantilla",
   "appoint_permission_tip": "Solo los siguientes miembros pueden acceder a este archivo",
   "apps_support": "Soporte cliente de plataforma completa",
+  "archive_row": "Archivar fila",
   "archive_record_in_menu": "Registro de archivo",
   "archive_record_success": "Se han archivado con éxito los registros",
   "archive_records_in_menu": "Archivar ${chose_num} registros",

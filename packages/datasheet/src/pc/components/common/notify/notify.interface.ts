@@ -17,6 +17,7 @@
  */
 
 export enum NotifyKey {
+  ArchiveRecord = 'archiveRecord',
   Export = 'export',
   Paste = 'paste',
   DeleteRecord = 'deleteRecord',

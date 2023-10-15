@@ -613,6 +613,7 @@
   "apply_template": "템플릿 사용",
   "appoint_permission_tip": "다음 구성원만 이 파일에 액세스할 수 있습니다.",
   "apps_support": "전체 플랫폼 클라이언트 지원",
+  "archive_row": "아카이브 레코드",
   "archive_record_in_menu": "아카이브 레코드",
   "archive_record_success": "레코드가 성공적으로 아카이브되었습니다.",
   "archive_records_in_menu": "${chose_num} 레코드 보관",

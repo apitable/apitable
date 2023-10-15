@@ -19,6 +19,9 @@
 import { useMount } from 'ahooks';
 import { isInteger } from 'lodash';
 import difference from 'lodash/difference';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
+import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import path from 'path-browserify';
 import * as React from 'react';
 import { KeyboardEvent, useRef, useCallback } from 'react';
@@ -48,10 +51,8 @@ import {
   DeleteOutlined,
   DuplicateOutlined,
   ExpandOutlined,
+  ArchiveOutlined
 } from '@apitable/icons';
-import { ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
-import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { Message } from 'pc/components/common';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -63,8 +64,9 @@ import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
-import { copy2clipBoard } from '../../../utils/dom';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
+import { copy2clipBoard } from '../../../utils/dom';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
@@ -108,6 +110,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   const afterInputRef = useRef<IInputEditor>(null);
   const selection = useSelector(Selectors.getSelectRanges);
   const subscriptions = useSelector((state) => state.subscriptions)!;
+  const { manageable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -127,6 +130,36 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   useMount(() => {
     wrapperRef.current && wrapperRef.current.focus();
   });
+
+  function archiveRecord(recordId: string) {
+    const data: string[] = [];
+    if (!isCalendar && recordRanges && recordRanges.length) {
+      // Handling the deletion of ticked rows
+      for (const v of recordRanges) {
+        data.push(v);
+      }
+    } else if (!isCalendar && selection && selection.length) {
+      // Handling the deletion of selections
+      for (const v of selection) {
+        const selectRecords = Selectors.getRangeRecords(store.getState(), v);
+        selectRecords && data.push(...selectRecords.map((r) => r.recordId));
+      }
+    } else {
+      // Handling right-click menu deletion
+      data.push(recordId);
+    }
+    // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
+    const { result } = resourceService.instance!.commandManager.execute({
+      cmd: CollaCommandName.ArchiveRecords,
+      data,
+    });
+
+    if (ExecuteResult.Success === result) {
+      Message.success({ content: 'Successfully archived records' });
+
+      dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveRowInfo(datasheetId)]));
+    }
+  }
 
   function deleteRecord(recordId: string) {
     const data: string[] = [];
@@ -164,6 +197,28 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   }
 
   const recordShowName = View.bindModel(view.type).recordShowName;
+
+  function getArchiveString() {
+    const recordShowUnit = View.bindModel(view.type).recordShowUnit;
+    let archiveCount = 0;
+    if (onlyOperateOneRecord) {
+      return t(Strings.menu_archive_record, { recordShowName });
+    }
+
+    if (hasSelection) {
+      const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
+      archiveCount = selectRecords ? selectRecords.length : 0;
+    }
+    if (recordRanges && recordRanges.length) {
+      archiveCount = recordRanges.length;
+    }
+
+    return t(Strings.menu_archive_multi_records, {
+      count: archiveCount,
+      unit: recordShowUnit,
+      recordShowName,
+    });
+  }
 
   function getDeleteString() {
     const recordShowUnit = View.bindModel(view.type).recordShowUnit;
@@ -354,6 +409,20 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
       },
     ],
     [
+      {
+        icon: <ArchiveOutlined color={colors.thirdLevelText} />,
+        text: getArchiveString(),
+        hidden: !rowRemovable || !manageable || Boolean(mirrorId),
+        onClick: ({ props: { recordId } }: any) => {
+          Modal.warning({
+            title: t(Strings.menu_archive_record),
+            content: t(Strings.archive_notice),
+            onOk: () => archiveRecord(recordId),
+            closable: true,
+            hiddenCancelBtn: false,
+          });
+        },
+      },
       {
         icon: <DeleteOutlined color={colors.thirdLevelText} />,
         text: getDeleteString(),

@@ -70,7 +70,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
 
   const foreignView = useGetViewByIdWithDefault(propsField.property.foreignDatasheetId, propsField.property.limitToView);
   const hasLimitToView = Boolean(propsField.property.limitToView && foreignView?.id === propsField.property.limitToView);
-
+  const activedRecordIds = useSelector((state) => Selectors.getActivedRecordIds(store.getState(), propsField.property.foreignDatasheetId), shallowEqual);
   /**
    * In order for the cell to listen to changes in the foreignDatasheet record value, update the view
    */
@@ -173,7 +173,8 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
     return (
       <>
         {linkRecordIds!.map((id, index) => {
-          const text = cellStringList[index];
+          const isAchived = activedRecordIds?.includes(id);
+          const text = isAchived ? 'Archived record' : cellStringList[index];
           const isError = text === ERROR_DATA;
           return (
             <div

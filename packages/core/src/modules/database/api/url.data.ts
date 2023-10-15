@@ -138,3 +138,8 @@ export const RECOVER_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:table
 
 export const PREVIEW_DATASHEET_TABLEBUNDLE = '/nodes/:nodeId/tablebundles/:tablebundleId/preview';
 
+// =============== time machine backup end ==================
+
+
+// =============== archived records  ===============
+export const GET_ARCHIVED_RECORDS = '/datasheets/:dstId/records/archived';

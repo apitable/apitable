@@ -3060,6 +3060,8 @@
   "member_type_field": "成员类型的维格列",
   "members_setting": "成员与小组",
   "mention": "提及",
+  "menu_archive_multi_records": "归档这 ${count} ${unit}${recordShowName}",
+  "menu_archive_record": "归档${recordShowName}",
   "menu_copy_record_url": "复制该${recordShowName} URL",
   "menu_delete_multi_records": "删除这 ${count} ${unit}${recordShowName}",
   "menu_delete_record": "删除${recordShowName}",

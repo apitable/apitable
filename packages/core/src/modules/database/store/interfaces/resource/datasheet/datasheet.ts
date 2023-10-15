@@ -475,6 +475,7 @@ export interface IDatasheetClientState {
   isRobotPanelOpen?: boolean;
   operateViewIds?: string[] | null;
   isTimeMachinePanelOpen?: boolean;
+  isArchivedRecordsPanelOpen?: boolean;
   exportViewId?: string | null;
   // View-derived data, all content obtained by calculation, is uniformly maintained here.
   viewDerivation: { [viewId: string]: IViewDerivation };
@@ -822,7 +823,7 @@ export interface IPageParams {
   nodeId?: string;
   mirrorId?: string;
   embedId?: string;
-  aiId?: string
+  aiId?: string;
 }
 
 export interface ICollaboratorParams {
@@ -1026,12 +1027,12 @@ export interface IAddDatasheetAction {
 }
 
 export interface ISetViewPropertyAction {
-  datasheetId: string,
+  datasheetId: string;
   type: typeof actions.SET_VIEW_PROPERTY;
   payload: {
-    viewId: string,
-    viewProperty: IViewProperty
-  }
+    viewId: string;
+    viewProperty: IViewProperty;
+  };
 }
 
 export interface ISetPageParamsAction {
@@ -1235,7 +1236,7 @@ export interface IRecordAlarm {
   alarmUsers?: IAlarmUser[];
   recordId?: string;
   fieldId?: string;
-  alarmAt?: string
+  alarmAt?: string;
 }
 
 /**

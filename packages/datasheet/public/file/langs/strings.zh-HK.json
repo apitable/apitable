@@ -613,6 +613,7 @@
   "apply_template": "使用模板",
   "appoint_permission_tip": "只有以下成員可以訪問此文件",
   "apps_support": "全平台客戶端支持",
+  "archive_row": "歸檔記錄",
   "archive_record_in_menu": "存檔記錄",
   "archive_record_success": "成功歸檔記錄",
   "archive_records_in_menu": "存檔 ${chose_num} 條記錄",

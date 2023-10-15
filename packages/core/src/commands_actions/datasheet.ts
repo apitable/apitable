@@ -1920,4 +1920,90 @@ export class DatasheetActions {
       oi: newField,
     };
   }
+  /**
+   * add archieve RecordIds 
+   * @param snapshot
+   * @param payload
+   */
+  static addArchivedRecordIds2Action(snapshot: ISnapshot, payload: { recordIds: string[] }): IJOTAction[] | null {
+    const recordIds = payload.recordIds;
+    const archivedRecordIds = snapshot.meta.archivedRecordIds!;
+    if (!recordIds || !recordIds.length) return null;
+
+    const rlt: IJOTAction[] = [];
+    for (let i = 0; i < recordIds.length; i++) { 
+      rlt.push({
+          n: OTActionName.ListInsert,
+          p: ['meta', 'archivedRecordIds', archivedRecordIds.length + i],
+          li: recordIds[i],
+        })
+     }
+    
+    return rlt;
+  }
+
+  /**
+   * Undo archieve recordIds
+   * @Parmas snapshot
+   * @param payload
+   */
+
+  static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any }): IJOTAction[] | null {
+    const { recordsData } = payload;
+    const archivedRecordIds = snapshot.meta.archivedRecordIds!;
+    const rows = snapshot.meta.views[0]!.rows;
+    const views = snapshot.meta.views;
+    if (!recordsData || !recordsData.length) return null;
+
+    const rlt: IJOTAction[] = [];
+
+    for (let i = 0; i < recordsData.length; i++) {
+      const recordIndex = archivedRecordIds.findIndex(recordId => recordId === recordsData[i].id);
+      console.log('recordIndex', recordIndex);
+      if(recordIndex >= 0) {
+        rlt.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'archivedRecordIds', recordIndex],
+          ld: recordsData[i].id,
+        });
+        
+        for(let j = 0; j < views.length; j++) {
+          rlt.push({
+            n: OTActionName.ListInsert,
+            p: ['meta', 'views', j, 'rows', rows.length],
+            li: { recordId: recordsData[i].id },
+          });
+        }
+
+        rlt.push({
+          n: OTActionName.ObjectInsert,
+          p: ['recordMap', recordsData[i].id],
+          oi: recordsData[i],
+        });
+      }
+    }
+
+    return rlt;
+  }
+
+  /**
+   * Delete archieve recordIds
+   */
+  static deleteArchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any }): IJOTAction[] | null { 
+    const { recordsData } = payload;
+   
+    if (!recordsData || !snapshot) return null;
+
+    const rlt: IJOTAction[] = [];
+    for (let i = 0; i < recordsData.length; i++) {
+      
+        rlt.push({
+          n: OTActionName.ObjectDelete,
+          p: ['recordMap', recordsData[i].id],
+          od: recordsData[i],
+        });
+    }
+
+    return rlt;
+  }
 }

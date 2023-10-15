@@ -613,6 +613,7 @@
   "apply_template": "Usa modello",
   "appoint_permission_tip": "Solo i membri qui sotto hanno accesso a questo file",
   "apps_support": "Supporto clienti su tutte le piattaforme",
+  "archive_row": "Archivia record",
   "archive_record_in_menu": "Archivio record",
   "archive_record_success": "Archiviati con successo",
   "archive_records_in_menu": "Archivia ${chose_num} record",

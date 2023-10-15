@@ -613,6 +613,7 @@
   "apply_template": "Vorlage verwenden",
   "appoint_permission_tip": "Nur Mitglieder unten haben Zugriff auf diese Datei",
   "apps_support": "Plattformübergreifender Kundensupport",
+  "archive_row": "Zeile archivieren",
   "archive_record_in_menu": "Datensatz archivieren",
   "archive_record_success": "Erfolgreich archivierte Aufzeichnungen",
   "archive_records_in_menu": " ${chose_num} Datensätze archivieren",

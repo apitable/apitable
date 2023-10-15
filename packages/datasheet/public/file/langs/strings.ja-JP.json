@@ -613,6 +613,7 @@
   "apply_template": "テンプレートの使用",
   "appoint_permission_tip": "このファイルにアクセスできるのは次のメンバーのみです",
   "apps_support": "フルプラットフォームクライアントサポート",
+  "archive_row": "アーカイブレコード",
   "archive_record_in_menu": "アーカイブレコード",
   "archive_record_success": "レコードは正常にアーカイブされました",
   "archive_records_in_menu": "${chose_num} 件のレコードをアーカイブする",
