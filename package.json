@@ -129,7 +129,7 @@
       }
     },
     "overrides": {
-      "glob-parent": ">=5.1.2"
+      "glob-parent": "5.1.2"
     }
   },
   "dependencies": {
