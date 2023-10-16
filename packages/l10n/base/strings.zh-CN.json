@@ -5770,11 +5770,11 @@
   "there_are_unsaved_content_in_the_current_step": "当前步骤存在未保存的配置",
   "zoom_out": "缩小",
   "datasource_selector_search_result_title": "节点",
-  "datasource_selector_search_placeholder": "搜索文件夹或者节点"
+  "datasource_selector_search_placeholder": "搜索文件夹或者节点",
   "archive_delete_record_title": "删除记录",
   "archive_delete_record": "删除归档记录",
   "archived_undo": "撤销归档",
-  "archived_by": "归档者",
+  "archived_by": "归档者",DATABUS_SERVER_BASE_URL
   "archived_time": "归档时间",
   "archived_action": "操作",
   "archived_select_info": "选择了${selected}条记录",
