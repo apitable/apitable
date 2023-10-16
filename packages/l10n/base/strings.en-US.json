@@ -5767,6 +5767,8 @@
   "automation_dst_not_existed": "Relative datasheet doest not exist",
   "player_step_ui_config_automation_1" : "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
   "automation": "Automation",
+  "datasource_selector_search_result_title": "Node",
+  "datasource_selector_search_placeholder": "Search folder or node"
   "archive_delete_record_title": "Delete record",
   "archive_delete_record": "Delete archived records",
   "archived_undo": "Undo Archied",

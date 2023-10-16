@@ -175,8 +175,8 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
         <SearchResult
           searchResult={localState.searchResult}
           noCheckPermission={noCheckPermission}
-          onlyShowAvailable={localState.onlyShowEditableNode}
           options={options}
+          onlyShowAvailable={localState.onlyShowEditableNode}
           onNodeClick={(e, id) => {
             if(e==='Form') {
               onNodeSelect?.({

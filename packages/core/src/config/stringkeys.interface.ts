@@ -1353,6 +1353,8 @@ export type StringKeysMapType = {
   'datasheet_reader_label': 'datasheet_reader_label',
   'datasheet_record_limit': 'datasheet_record_limit',
   'datasheet_record_limit_email_title': 'datasheet_record_limit_email_title',
+  'datasource_selector_search_placeholder': 'datasource_selector_search_placeholder',
+  'datasource_selector_search_result_title': 'datasource_selector_search_result_title',
   'date_after_or_equal': 'date_after_or_equal',
   'date_auto_enable_alarm': 'date_auto_enable_alarm',
   'date_auto_enable_alarm_setting': 'date_auto_enable_alarm_setting',

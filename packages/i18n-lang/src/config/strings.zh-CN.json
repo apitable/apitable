@@ -1356,6 +1356,8 @@
   "datasheet_reader_label": "你仅可查看此表格的内容",
   "datasheet_record_limit": "你管理的「<a class=\"spaceName\"></a>」空间站的「<a class=\"nodeName\"></a>」单张维格表记录数上限为 <a class=\"specification\"></a> 行，当前已创建 <a class=\"usage\"></a> 行，升级可获得更高用量。",
   "datasheet_record_limit_email_title": "「${NODE_NAME}」维格表记录数的用量提醒",
+  "datasource_selector_search_placeholder": "搜索文件夹或者节点",
+  "datasource_selector_search_result_title": "节点",
   "date_after_or_equal": "晚于等于",
   "date_auto_enable_alarm": "填写后自动开启提醒",
   "date_auto_enable_alarm_setting": "设置提醒",

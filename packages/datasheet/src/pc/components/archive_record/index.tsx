@@ -10,6 +10,7 @@ import { IArchivedRecordsProps } from './interface';
 import { useRequest } from 'pc/hooks';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip, Avatar } from 'pc/components/common';
 import styles from './style.module.less';
 import { resourceService } from 'pc/resource_service';
@@ -62,7 +63,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         const cloneRecords = fastCloneDeep(records);
 
         const recordsMap = new Map();
-        cloneRecords.forEach(item => { 
+        cloneRecords.forEach(item => {
           recordsMap.set(item.record.id, item.record);
         });
         setRecordsDataMap(recordsMap);
@@ -79,7 +80,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const cancelArchied = (record) => {
     const data: any[] = [];
     data.push(recordsDataMap.get(record.key));
-   
+
     const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.UnarchiveRecords,
       data,
@@ -90,9 +91,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   }
 
-  const batchCancelArchied = () => { 
+  const batchCancelArchied = () => {
     const data: any[] = [];
-    selectedRowKeys.forEach(key => { 
+    selectedRowKeys.forEach(key => {
       data.push(recordsDataMap.get(key));
     });
     const { result } = resourceService.instance!.commandManager.execute({
@@ -118,9 +119,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   }
 
-  const batchDeleteRecord = () => { 
+  const batchDeleteRecord = () => {
     const data: any[] = [];
-    selectedRowKeys.forEach(key => { 
+    selectedRowKeys.forEach(key => {
       data.push(recordsDataMap.get(key));
     });
     const { result } = resourceService.instance!.commandManager.execute({
@@ -191,7 +192,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }).filter(item => item !== null);
 
     fieldMapColums.unshift(firstColumn);
-    
+
     fieldMapColums.push({
       title: t(Strings.archived_by),
       key: 'archivedUser',
@@ -252,7 +253,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       ),
     });
 
-    
+
 
     return fieldMapColums;
   }, [fieldMap, recordData, archivedRecordIds]);
@@ -329,7 +330,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
           scroll={{ x: window.innerWidth * 0.9 }}
           dataSource={handleRecordsData(fastCloneDeep(recordData))}
           pagination={{
-            ...tablePagination, 
+            ...tablePagination,
             total,
             showQuickJumper: true,
             showSizeChanger: true,

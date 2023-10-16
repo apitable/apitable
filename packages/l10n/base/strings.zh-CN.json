@@ -5769,6 +5769,8 @@
   "the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side": "当前自动化流程没有与之关联的文件，可以通过在左侧添加触发条件和动作来进行关联",
   "there_are_unsaved_content_in_the_current_step": "当前步骤存在未保存的配置",
   "zoom_out": "缩小",
+  "datasource_selector_search_result_title": "节点",
+  "datasource_selector_search_placeholder": "搜索文件夹或者节点"
   "archive_delete_record_title": "删除记录",
   "archive_delete_record": "删除归档记录",
   "archived_undo": "撤销归档",

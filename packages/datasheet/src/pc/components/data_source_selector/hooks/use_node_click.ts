@@ -1,0 +1,93 @@
+import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { StoreActions } from '@apitable/core';
+import { SecondConfirmType } from 'pc/components/datasheet_search_panel';
+import { ISearchPanelState } from '../store/interface/search_panel';
+import { useFetchDatasheetMeta } from './use_fetch_datasheet_meta';
+
+interface IParams {
+  localState: ISearchPanelState;
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
+  needFetchDatasheetMeta: boolean;
+}
+
+export const useNodeClick = ({ localDispatch, localState,needFetchDatasheetMeta }: IParams) => {
+  const dispatch = useDispatch();
+  const { data: datasheetMetaData } = useFetchDatasheetMeta({ localState, localDispatch, needFetchDatasheetMeta });
+
+  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string) => {
+    switch (nodeType) {
+      case 'Form': {
+        _onFormClick(id);
+        break;
+      }
+      case 'Datasheet': {
+        _onDatasheetClick(id);
+        break;
+      }
+      case 'Folder': {
+        _onFolderClick(id);
+        break;
+      }
+      case 'Mirror': {
+        _onMirrorClick(id);
+        break;
+      }
+      case 'View': {
+        _onViewClick(id);
+        break;
+      }
+    }
+  };
+
+  const _onMirrorClick = (id: string) => {
+    if (localState.currentMirrorId !== id) {
+      localDispatch({
+        loading: true,
+      });
+      localDispatch({ currentMirrorId: id });
+      dispatch(StoreActions.fetchMirrorPack(id) as any);
+    }
+  };
+
+  const _onFormClick = (id: string) => {
+    if (localState.currentFormId !== id) {
+      localDispatch({ currentFormId: id });
+    }
+  };
+
+  const _onViewClick = (id: string) => {
+    const hasView = datasheetMetaData?.views.some((view) => view.id === id);
+
+    if (hasView) {
+      localDispatch({
+        currentViewId: id,
+      });
+    }
+  };
+
+  const _onFolderClick = (id: string) => {
+    localDispatch({
+      currentFolderId: id,
+      currentViewId: '',
+      currentDatasheetId: '',
+    });
+  };
+
+  const _onDatasheetClick = (id: string) => {
+    if (localState.currentDatasheetId === id) {
+      return;
+    }
+
+    localDispatch({
+      currentDatasheetId: id,
+      currentViewId: '',
+    });
+
+    dispatch(StoreActions.fetchDatasheet(id) as any);
+  };
+
+  return {
+    onNodeClick,
+  };
+};
