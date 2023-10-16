@@ -36,6 +36,7 @@ import { copy2clipBoard } from 'pc/utils';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import EditorTitleContext from './editor_title_context';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import parser from 'html-react-parser';
 
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;
@@ -177,6 +178,10 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     }
   };
 
+  const getArchiveNotice = (content) => {
+    return <div>{parser(content)}</div>
+  }
+
   const renderMenu = () => (
     <Menu className={styles.moreOptionMenu}>
       <Menu.Item
@@ -215,22 +220,22 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
       </Menu.Item>
 
       {rowRemovable && <Menu.Divider />}
-      {rowRemovable && !mirrorId && (
+      {rowRemovable && !mirrorId && permissions.manageable && (
         <Menu.Item
           key="archive"
           icon={<ArchiveOutlined color={colors.thirdLevelText} />}
           className={styles.moreOptionMenuItemWrapper}
           onClick={() => {
             Modal.warning({
-              title: 'Archive record',
-              content: "You are trying to archive selected data. Once the data is archived it will Editing is is not supported Functions such as date reminders and subscribe records are not supported No longer participate in the calculation of lookup, formula and other fields Are you sure you want to continue?",
+              title: t(Strings.archive_record_in_menu),
+              content: getArchiveNotice(t(Strings.archive_notice)),
               onOk: () => archiveRecord(),
               closable: true,
               hiddenCancelBtn: false,
             });
           }}
         >
-          {t(Strings.archive_row)}
+          {t(Strings.archive_record_in_menu)}
         </Menu.Item>
       )}
       {rowRemovable && (

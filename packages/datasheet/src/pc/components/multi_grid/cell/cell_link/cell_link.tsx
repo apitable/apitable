@@ -183,7 +183,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
                 pointerEvents: (isActive && !isError) ? 'initial' : 'none',
               }}
               key={keyPrefix ? `${keyPrefix}-${index}` : id}
-              onClick={(e) => !isError && expand(e, id)}
+              onClick={(e) => !isError && !isAchived && expand(e, id)}
             >
               {text && typeof text === 'string' ? (
                 <div className={classNames(styles.optionText)}>{text}</div>

@@ -523,7 +523,7 @@ const ToolbarBase = () => {
         showLabel={showIconBarLabel}
       />,
       key: 'archivedRecords',
-      show: !shareId && !mirrorId && !shareId && !templateId,
+      show: !shareId && !mirrorId && !shareId && !templateId && permissions.manageable,
     },
   ];
   const iframeShowTool = shareId ? !isIframe() : true;

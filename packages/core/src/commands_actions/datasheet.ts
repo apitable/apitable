@@ -1933,11 +1933,11 @@ export class DatasheetActions {
     const rlt: IJOTAction[] = [];
     for (let i = 0; i < recordIds.length; i++) { 
       rlt.push({
-          n: OTActionName.ListInsert,
-          p: ['meta', 'archivedRecordIds', archivedRecordIds.length + i],
-          li: recordIds[i],
-        })
-     }
+        n: OTActionName.ListInsert,
+        p: ['meta', 'archivedRecordIds', archivedRecordIds.length + i],
+        li: recordIds[i],
+      });
+    }
     
     return rlt;
   }
@@ -1959,7 +1959,6 @@ export class DatasheetActions {
 
     for (let i = 0; i < recordsData.length; i++) {
       const recordIndex = archivedRecordIds.findIndex(recordId => recordId === recordsData[i].id);
-      console.log('recordIndex', recordIndex);
       if(recordIndex >= 0) {
         rlt.push({
           n: OTActionName.ListDelete,
@@ -1997,11 +1996,11 @@ export class DatasheetActions {
     const rlt: IJOTAction[] = [];
     for (let i = 0; i < recordsData.length; i++) {
       
-        rlt.push({
-          n: OTActionName.ObjectDelete,
-          p: ['recordMap', recordsData[i].id],
-          od: recordsData[i],
-        });
+      rlt.push({
+        n: OTActionName.ObjectDelete,
+        p: ['recordMap', recordsData[i].id],
+        od: recordsData[i],
+      });
     }
 
     return rlt;
