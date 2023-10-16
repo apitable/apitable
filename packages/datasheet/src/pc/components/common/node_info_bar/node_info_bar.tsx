@@ -144,6 +144,8 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
         return ConfigConstant.FolderPermissionTip[permission];
       case ConfigConstant.NodeType.DATASHEET:
         return ConfigConstant.DatasheetPermissionTip[permission];
+      case ConfigConstant.NodeType.AUTOMATION:
+        return ConfigConstant.DatasheetPermissionTip[permission];
       case ConfigConstant.NodeType.FORM:
         return ConfigConstant.FormPermissionTip[permission];
       case ConfigConstant.NodeType.DASHBOARD:

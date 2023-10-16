@@ -16,23 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IPosition } from './calendar_context';
-
-const MODAL_WIDTH = 420;
-
-export const getPosition = (e: React.MouseEvent) => {
-  const rect = (e.target as any).getBoundingClientRect();
-  const position: IPosition = {
-    left: Math.min(rect.left + rect.width + 8, window.innerWidth - MODAL_WIDTH) + 'px',
-  };
-  if (rect.top < window.innerHeight / 2) {
-    position.top = rect.top + rect.height + 8 + 'px';
-  } else {
-    position.bottom = window.innerHeight - rect.top + 'px';
-  }
-  return position;
-};
-
 export const formatString2Date = (value: string) => {
   const str = value.replace(/年| /, '-').replace(/月/, '');
   const parts = str.split('-');

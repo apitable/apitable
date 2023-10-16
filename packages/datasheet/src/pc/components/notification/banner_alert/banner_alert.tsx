@@ -84,6 +84,7 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
   const BANNER_ALERT_ID = config.id || 'BANNER_ALERT';
 
   if (destroyPrev) {
+    // unmount previous alert ui
     const prev = document.getElementById(BANNER_ALERT_ID);
     prev && prev.parentNode && prev.parentNode.removeChild(prev);
   } else {
@@ -119,7 +120,6 @@ export const showBannerAlert = (config: IShowBannerAlert) => {
   }
 
   const start = () => {
-    destroyPrev && destroy();
     render();
     if (duration !== 0) {
       setTimeout(() => {

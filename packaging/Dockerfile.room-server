@@ -70,7 +70,7 @@ EXPOSE 3333
 EXPOSE 3334
 # socket:notification
 EXPOSE 3002
-# socket:datasheet
+# socket:workdoc
 EXPOSE 3006
 # socket:room
 EXPOSE 3005

@@ -34,7 +34,7 @@ const upperCaseFirstWord = (str: string) => {
 };
 
 function getClientReferenceId() {
-  return (window['Rewardful'] && window['Rewardful'].referral) || 'checkout_' + new Date().getTime();
+  return (window['Rewardful'] && window['Rewardful'].referral) || '';
 }
 
 function getStripeCoupon() {

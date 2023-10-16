@@ -21,6 +21,7 @@ package com.apitable.interfaces.billing.model;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
@@ -76,6 +77,11 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public RowsPerSheet getRowsPerSheet() {
         return new RowsPerSheet(-1L);
+    }
+
+    @Override
+    public ArchivedRowsPerSheet getArchivedRowsPerSheet() {
+        return new ArchivedRowsPerSheet(-1L);
     }
 
     @Override

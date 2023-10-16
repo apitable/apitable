@@ -18,24 +18,112 @@
 
 import { ICollaCommandDef } from '../command_manager';
 import {
-  addFields, addRecords, addViews, addWidgetPanel, addWidgetToPanel, changeWidgetInPanelHeight, deleteComment, deleteField, deleteRecord, deleteViews,
-  deleteWidget, deleteWidgetPanel, fillDataToCell, IAddFieldsOptions, IAddRecordsOptions, IAddViewsOptions, IAddWidgetPanel, IAddWidgetToPanel,
-  IChangeWidgetInPanelHeight, IDeleteComment, IDeleteFieldOptions, IDeleteRecordOptions, IDeleteViewsOptions, IDeleteWidgetAction, IDeleteWidgetPanel,
-  IFillDataToCellOptions, IInsertComment, IModifyViewsOptions, IMoveColumnOptions, IMoveRowOptions, IMoveViewsOptions, IMoveWidget, IMoveWidgetPanel,
-  ISetViewFrozenColumnCount, IPasteSetFieldsOptions, IPasteSetRecordsOptions, IRollbackOptions, ISetCalendarStyleOptions, ISetColumnsPropertyOptions,
-  ISetFieldAttrOptions, ISetGalleryStyleOptions, ISetGanttStyleOptions, ISetGroupOptions, ISetKanbanStyleOptions, ISetOrgChartStyleOptions,
-  ISetRecordsOptions, ISetRowHeightOptions, ISetSortInfoOptions, ISetViewFilterOptions, ISetViewLockInfo, IUpdateComment, IFixOneWayLinkDstId,
-  ISetDateTimeCellAlarmOptions, ISetAutoHeadHeightOptions, modifyViews, moveColumn, insertComment,
-  moveRow, moveViews, moveWidget, moveWidgetPanel, pasteSetFields, pasteSetRecords, rollback, setCalendarStyle, setColumnsProperty, setFieldAttr,
-  setGalleryStyle, setGanttStyle, setGroup, setKanbanStyle, setOrgChartStyle, setRecords, setRowHeight, setSortInfo, setViewFilter, setViewLockInfo,
-  updateComment, fixOneWayLinkDstId, setDateTimeCellAlarm, setViewFrozenColumnCount, setAutoHeadHeight
+  addFields,
+  addRecords,
+  addViews,
+  addWidgetPanel,
+  addWidgetToPanel,
+  archiveRecord,
+  unarchiveRecords,
+  deleteArchivedRecords,
+  changeWidgetInPanelHeight,
+  deleteComment,
+  deleteField,
+  deleteRecord,
+  deleteViews,
+  deleteWidget,
+  deleteWidgetPanel,
+  fillDataToCell,
+  IAddFieldsOptions,
+  IAddRecordsOptions,
+  IAddViewsOptions,
+  IAddWidgetPanel,
+  IAddWidgetToPanel,
+  IChangeWidgetInPanelHeight,
+  IDeleteComment,
+  IDeleteFieldOptions,
+  IDeleteRecordOptions,
+  IDeleteViewsOptions,
+  IDeleteWidgetAction,
+  IDeleteWidgetPanel,
+  IFillDataToCellOptions,
+  IInsertComment,
+  IModifyViewsOptions,
+  IMoveColumnOptions,
+  IMoveRowOptions,
+  IMoveViewsOptions,
+  IMoveWidget,
+  IMoveWidgetPanel,
+  ISetViewFrozenColumnCount,
+  IPasteSetFieldsOptions,
+  IPasteSetRecordsOptions,
+  IRollbackOptions,
+  ISetCalendarStyleOptions,
+  ISetColumnsPropertyOptions,
+  ISetFieldAttrOptions,
+  ISetGalleryStyleOptions,
+  ISetGanttStyleOptions,
+  ISetGroupOptions,
+  ISetKanbanStyleOptions,
+  ISetOrgChartStyleOptions,
+  ISetRecordsOptions,
+  ISetRowHeightOptions,
+  ISetSortInfoOptions,
+  ISetViewFilterOptions,
+  ISetViewLockInfo,
+  IUpdateComment,
+  IFixOneWayLinkDstId,
+  ISetDateTimeCellAlarmOptions,
+  ISetAutoHeadHeightOptions,
+  modifyViews,
+  moveColumn,
+  insertComment,
+  moveRow,
+  moveViews,
+  moveWidget,
+  moveWidgetPanel,
+  pasteSetFields,
+  pasteSetRecords,
+  rollback,
+  setCalendarStyle,
+  setColumnsProperty,
+  setFieldAttr,
+  setGalleryStyle,
+  setGanttStyle,
+  setGroup,
+  setKanbanStyle,
+  setOrgChartStyle,
+  setRecords,
+  setRowHeight,
+  setSortInfo,
+  setViewFilter,
+  setViewLockInfo,
+  updateComment,
+  fixOneWayLinkDstId,
+  setDateTimeCellAlarm,
+  setViewFrozenColumnCount,
+  setAutoHeadHeight,
+  IArchiveRecordOptions,
+  IUnarchiveRecordsOptions,
+  IDeleteArchivedRecordsOptions,
 } from './datasheet';
 import {
-  IModifyWidgetPanelName, ISetGlobalStorage, ISetWidgetDepDstId, ISetWidgetName, modifyWidgetPanelName, setGlobalStorage, setWidgetDepDstId,
-  setWidgetName
+  IModifyWidgetPanelName,
+  ISetGlobalStorage,
+  ISetWidgetDepDstId,
+  ISetWidgetName,
+  modifyWidgetPanelName,
+  setGlobalStorage,
+  setWidgetDepDstId,
+  setWidgetName,
 } from './widget';
 import {
-  addWidgetToDashboard, changeDashboardLayout, deleteDashboardWidget, IAddWidgetToDashboard, IChangeDashboardLayout, IDeleteDashboardWidget,
+  addWidgetToDashboard,
+  changeDashboardLayout,
+  deleteDashboardWidget,
+  IAddWidgetToDashboard,
+  IChangeDashboardLayout,
+  IDeleteDashboardWidget,
 } from './dashboard';
 import { IUpdateFormProps, updateFormProps } from './form';
 import { IManualSaveView, manualSaveView } from 'commands/datasheet/manual_save_view';
@@ -46,6 +134,9 @@ export { IInternalFix } from 'commands/common/field';
 export enum CollaCommandName {
   AddFields = 'AddFields',
   AddRecords = 'AddRecords',
+  ArchiveRecords = 'ArchiveRecords',
+  UnarchiveRecords = 'UnarchiveRecords',
+  DeleteArchivedRecords = 'DeleteArchivedRecords',
   SetRecords = 'SetRecords',
   SetFieldAttr = 'SetFieldAttr',
   PasteSetFields = 'PasteSetFields',
@@ -73,13 +164,13 @@ export enum CollaCommandName {
   FillDataToCells = 'FillDataToCells',
   FixConsistency = 'FixConsistency', // special command to fix data consistency issues
   // special command, used for some special records to set data only in the middle layer to fix the data consistency problem
-  SystemSetRecords = 'SystemSetRecords', 
+  SystemSetRecords = 'SystemSetRecords',
   // special command, used for some special fields to set attributes only in the middle layer to fix the data consistency problem
-  SystemSetFieldAttr = 'SystemSetFieldAttr', 
+  SystemSetFieldAttr = 'SystemSetFieldAttr',
   SetKanbanStyle = 'SetKanbanStyle',
   InsertComment = 'InsertComment', // insert a comment into the record
   UpdateComment = 'UpdateComment',
-  DeleteComment = 'DeleteComment',// delete a comment in the record
+  DeleteComment = 'DeleteComment', // delete a comment in the record
   SystemCorrectComment = 'SystemCorrectComment', // special command, correct time in comment
   Rollback = 'Rollback', // snapshot rollback
   // widgetPanel
@@ -123,6 +214,9 @@ export enum CollaCommandName {
 export const COLLA_COMMAND_MAP: { [name: string]: ICollaCommandDef } = {
   [CollaCommandName.AddFields]: addFields,
   [CollaCommandName.AddRecords]: addRecords,
+  [CollaCommandName.ArchiveRecords]: archiveRecord,
+  [CollaCommandName.UnarchiveRecords]: unarchiveRecords,
+  [CollaCommandName.DeleteArchivedRecords]: deleteArchivedRecords,
   [CollaCommandName.SetRecords]: setRecords,
   [CollaCommandName.SetFieldAttr]: setFieldAttr,
   [CollaCommandName.PasteSetFields]: pasteSetFields,
@@ -175,58 +269,62 @@ export const COLLA_COMMAND_MAP: { [name: string]: ICollaCommandDef } = {
   [CollaCommandName.ResetRecords]: resetRecords,
 };
 
-export type ICollaCommandOptions = ISetRecordsOptions |
-  IAddFieldsOptions |
-  ISetFieldAttrOptions |
-  IPasteSetFieldsOptions |
-  IPasteSetRecordsOptions |
-  IAddRecordsOptions |
-  IMoveViewsOptions |
-  IModifyViewsOptions |
-  IDeleteViewsOptions |
-  IAddViewsOptions |
-  IMoveRowOptions |
-  IDeleteRecordOptions |
-  IMoveColumnOptions |
-  IDeleteFieldOptions |
-  ISetSortInfoOptions |
-  ISetRowHeightOptions |
-  ISetAutoHeadHeightOptions |
-  ISetColumnsPropertyOptions |
-  ISetViewFilterOptions |
-  ISetGroupOptions |
-  ISetGalleryStyleOptions |
-  ISetGanttStyleOptions |
-  ISetCalendarStyleOptions |
-  ISetOrgChartStyleOptions |
-  IFillDataToCellOptions |
-  ISetKanbanStyleOptions |
-  IInsertComment |
-  IUpdateComment |
-  IDeleteComment |
-  IAddWidgetPanel |
-  IMoveWidgetPanel |
-  IModifyWidgetPanelName |
-  IDeleteWidgetPanel |
-  ISetGlobalStorage |
-  IAddWidgetToPanel |
-  IDeleteWidgetAction |
-  IChangeWidgetInPanelHeight |
-  ISetWidgetName |
-  IMoveWidget |
-  IAddWidgetToDashboard |
-  IChangeDashboardLayout |
-  IDeleteDashboardWidget |
-  ISetWidgetDepDstId |
-  IRollbackOptions |
-  IUpdateFormProps |
-  IManualSaveView |
-  ISetViewAutoSave |
-  ISetViewLockInfo |
-  IFixOneWayLinkDstId |
-  ISetViewFrozenColumnCount |
-  ISetDateTimeCellAlarmOptions | 
-  IResetRecordsOptions;
+export type ICollaCommandOptions =
+  | ISetRecordsOptions
+  | IAddFieldsOptions
+  | IArchiveRecordOptions
+  | IUnarchiveRecordsOptions
+  | ISetFieldAttrOptions
+  | IPasteSetFieldsOptions
+  | IPasteSetRecordsOptions
+  | IAddRecordsOptions
+  | IMoveViewsOptions
+  | IModifyViewsOptions
+  | IDeleteViewsOptions
+  | IAddViewsOptions
+  | IMoveRowOptions
+  | IDeleteRecordOptions
+  | IMoveColumnOptions
+  | IDeleteFieldOptions
+  | ISetSortInfoOptions
+  | ISetRowHeightOptions
+  | ISetAutoHeadHeightOptions
+  | ISetColumnsPropertyOptions
+  | ISetViewFilterOptions
+  | ISetGroupOptions
+  | ISetGalleryStyleOptions
+  | ISetGanttStyleOptions
+  | ISetCalendarStyleOptions
+  | ISetOrgChartStyleOptions
+  | IFillDataToCellOptions
+  | ISetKanbanStyleOptions
+  | IInsertComment
+  | IUpdateComment
+  | IDeleteComment
+  | IAddWidgetPanel
+  | IMoveWidgetPanel
+  | IModifyWidgetPanelName
+  | IDeleteWidgetPanel
+  | ISetGlobalStorage
+  | IAddWidgetToPanel
+  | IDeleteWidgetAction
+  | IChangeWidgetInPanelHeight
+  | ISetWidgetName
+  | IMoveWidget
+  | IAddWidgetToDashboard
+  | IChangeDashboardLayout
+  | IDeleteDashboardWidget
+  | ISetWidgetDepDstId
+  | IRollbackOptions
+  | IUpdateFormProps
+  | IManualSaveView
+  | ISetViewAutoSave
+  | ISetViewLockInfo
+  | IFixOneWayLinkDstId
+  | ISetViewFrozenColumnCount
+  | ISetDateTimeCellAlarmOptions
+  | IResetRecordsOptions
+  | IDeleteArchivedRecordsOptions;
 
 export * from './datasheet';
 

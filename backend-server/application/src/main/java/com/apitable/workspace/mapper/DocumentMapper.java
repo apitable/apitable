@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,4 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './drag_drop_modal';
+package com.apitable.workspace.mapper;
+
+import org.apache.ibatis.annotations.Param;
+
+public interface DocumentMapper {
+
+    /**
+     * Query space id
+     *
+     * @param name document name
+     * @return SpaceId
+     */
+    String selectSpaceIdByName(@Param("name") String name);
+}

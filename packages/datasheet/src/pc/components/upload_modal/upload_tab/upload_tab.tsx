@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useMount } from 'ahooks';
-import { Tooltip } from 'antd';
+import {useMount} from 'ahooks';
+import {Tooltip} from 'antd';
 import classNames from 'classnames';
-import { uniqBy } from 'lodash';
-import { useContext, useEffect, useRef, useState } from 'react';
+import {uniqBy} from 'lodash';
+import {useContext, useEffect, useRef, useState} from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { useThemeColors } from '@apitable/components';
-import { ConfigConstant, IAttachmentValue, Strings, t } from '@apitable/core';
-import { FileAddOutlined, LinkOutlined, PasteOutlined } from '@apitable/icons';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
-import { resourceService } from 'pc/resource_service';
-import { initNoTraceVerification, UploadManager } from 'pc/utils';
-import { IUploadFileList } from '../upload_core';
-import { UploadPaste } from '../upload_paste/upload_paste';
-import { IUploadZoneItem, UploadZone } from '../upload_zone';
+import {useSelector} from 'react-redux';
+import {useThemeColors} from '@apitable/components';
+import {ConfigConstant, IAttachmentValue, Strings, t} from '@apitable/core';
+import {FileAddOutlined, LinkOutlined, PasteOutlined} from '@apitable/icons';
+import {ComponentDisplay, ScreenSize} from 'pc/components/common/component_display';
+import {ExpandAttachContext} from 'pc/components/expand_record/expand_attachment';
+import {resourceService} from 'pc/resource_service';
+import {initNoTraceVerification, UploadManager} from 'pc/utils';
+import {IUploadFileList} from '../upload_core';
+import {UploadPaste} from '../upload_paste/upload_paste';
+import {IUploadZoneItem, UploadZone} from '../upload_zone';
 import styles from './styles.module.less';
 
 export enum UploadTabType {
@@ -73,29 +73,31 @@ interface IUploadTabProps {
 
 export interface ICommonTabRef {
   focus(): void;
+
   trigger?(): void;
 }
 
 export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (props) => {
   const colors = useThemeColors();
-  const { recordId, fieldId, setUploadList, className, cellValue } = props;
+  const {recordId, fieldId, setUploadList, className, cellValue} = props;
   const uploadManager = resourceService.instance!.uploadManager;
   const tabInfoRef = useRef<ICommonTabRef>(null);
 
-  const { isFocus } = useContext(ExpandAttachContext);
+  const {isFocus} = useContext(ExpandAttachContext);
 
   const [currentTab, setCurrentTab] = useState(UploadTabType.Drag);
   const userInfo = useSelector((state) => state.user.info);
-  const { shareId, formId } = useSelector((state) => state.pageParams);
+  const {shareId, formId, aiId} = useSelector((state) => state.pageParams);
   useMount(() => {
-    if (!shareId || !formId) {
+    if (!shareId || (!formId && !aiId)) {
       return;
     }
     if (userInfo) {
       return;
     }
 
-    initNoTraceVerification(() => {}, ConfigConstant.CaptchaIds.LOGIN);
+    initNoTraceVerification(() => {
+    }, ConfigConstant.CaptchaIds.LOGIN);
   });
 
   useEffect(() => {
@@ -148,7 +150,7 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
                     tabInfoRef.current?.focus();
                   }}
                 >
-                  <Icon size={16} color={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText} />
+                  <Icon size={16} color={showActiveIcon(isActive) ? colors.primaryColor : colors.fourthLevelText}/>
                 </span>
               </Tooltip>
             );
@@ -158,7 +160,7 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
               [styles.activeLine]: true,
               [styles.grayColor]: isFocus === false,
             })}
-            style={{ transform: `translateX(${calcActiveLineOffset()}px)` }}
+            style={{transform: `translateX(${calcActiveLineOffset()}px)`}}
           />
         </nav>
       </ComponentDisplay>
@@ -166,14 +168,16 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
       <div className={styles.uploadTabInfo}>
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           {currentTab === UploadTabType.Drag && (
-            <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue} ref={tabInfoRef} />
+            <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue}
+                        ref={tabInfoRef}/>
           )}
           {currentTab === UploadTabType.Paste && (
-            <UploadPaste onUpload={onUpload} ref={tabInfoRef} fieldId={fieldId} recordId={recordId} cellValue={cellValue} />
+            <UploadPaste onUpload={onUpload} ref={tabInfoRef} fieldId={fieldId} recordId={recordId}
+                         cellValue={cellValue}/>
           )}
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue} ref={tabInfoRef} />
+          <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue} ref={tabInfoRef}/>
         </ComponentDisplay>
       </div>
     </div>

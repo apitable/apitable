@@ -45,17 +45,34 @@ interface IPreviewItemProps {
   setPreviewVisible?: (visible: boolean) => void;
 }
 
+const useGetRole = (currentDatasheetId: string | undefined) => {
+  const {mirrorId, datasheetId} = useSelector(state => state.pageParams)
+  const datasheetRole = useSelector((state) => Selectors.getDatasheet(state, currentDatasheetId))?.role;
+  const mirrorRole = useSelector((state) => Selectors.getMirror(state, mirrorId))?.role;
+
+  // Here the main purpose is to ensure that the card opened through association is using his own role.
+  if (mirrorRole && datasheetId === currentDatasheetId) {
+    return mirrorRole
+  }
+
+  return datasheetRole
+}
+
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
   // Get whether it is read-only user and get download permission for read-only user of space station.
   const allowDownloadAttachment = useSelector((state) => {
     const _allowDownloadAttachment = state.space.spaceFeatures?.allowDownloadAttachment || state.share.allowDownloadAttachment;
     return Boolean(_allowDownloadAttachment);
   });
-  const role = useSelector((state) => Selectors.getDatasheet(state, datasheetId))?.role;
+
+  const role = useGetRole(datasheetId)
   const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state));
   const fieldRole = useSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
+
   if (allowDownloadAttachment) return true;
+
   if (!fieldRole) return !(role === ConfigConstant.Role.Reader);
+
   return fieldRole === ConfigConstant.Role.Editor;
 };
 
@@ -101,12 +118,12 @@ export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> =
         <div className={styles.toolBar}>
           {allowDownload && (
             <div className={styles.iconDownload} onClick={() => download(file!)}>
-              <DownloadOutlined color={colors.black[50]} />
+              <DownloadOutlined color={colors.black[50]}/>
             </div>
           )}
           {!readonly && (
             <div className={styles.iconDelete} onClick={() => onChange(deleteFile(id))}>
-              <DeleteOutlined color={colors.black[50]} />
+              <DeleteOutlined color={colors.black[50]}/>
             </div>
           )}
         </div>

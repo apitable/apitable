@@ -65,6 +65,9 @@ public class NodeManagerRole extends NodeEditorRole {
         permissions.add(NodePermission.EDIT_FIELD_PROPERTY);
         permissions.add(NodePermission.REMOVE_FIELD);
 
+        permissions.add(NodePermission.ARCHIVE_ROW);
+        permissions.add(NodePermission.UNARCHIVE_ROW);
+
         // field permission
         permissions.add(NodePermission.MANAGE_FIELD_PERMISSION);
 

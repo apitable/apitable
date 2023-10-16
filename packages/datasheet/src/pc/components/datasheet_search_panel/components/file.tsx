@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { ConfigConstant } from '@apitable/core';
-import { DatasheetOutlined, MirrorOutlined, FormOutlined, DashboardOutlined } from '@apitable/icons';
+import { DatasheetOutlined, MirrorOutlined, FormOutlined, DashboardOutlined, AutomationOutlined } from '@apitable/icons';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import styles from './style.module.less';
 const Budget: React.FC<React.PropsWithChildren<unknown>> = (props) => {
@@ -42,6 +42,8 @@ export const File: React.FC<
 
   const renderIcon = () => {
     switch (props.nodeType) {
+      case ConfigConstant.NodeType.AUTOMATION:
+        return <AutomationOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} />;
       case ConfigConstant.NodeType.DASHBOARD:
         return <DashboardOutlined className={styles.leftIcon} color={active ? colors.primaryColor : colors.fourthLevelText} />;
       case ConfigConstant.NodeType.FORM:

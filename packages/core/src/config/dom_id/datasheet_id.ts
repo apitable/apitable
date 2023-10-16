@@ -23,7 +23,7 @@ const PREFIX = 'DATASHEET_';
 
 export const VIEW_EXPORT = PREFIX + 'VIEW_EXPORT'; // view export
 
-export const ADD_VIEW_BTN = PREFIX + 'ADD_VIEW_BTN';// New view icon button
+export const ADD_VIEW_BTN = PREFIX + 'ADD_VIEW_BTN'; // New view icon button
 export const FIELD_CONTEXT = PREFIX + 'FIELD_CONTEXT'; // Right-click menu of the Wig table header
 
 export const VIEW_TOOL_BAR = PREFIX + 'TOOL_BAR'; // view toolbar
@@ -40,7 +40,7 @@ export const WIDGET_BTN = PREFIX + 'WIDGET_BTN'; // View Tab Bar - Widget
 export const ROBOT_BTN = PREFIX + 'ROBOT_BTN'; // View Tab Bar - Robot
 export const FORM_LIST_PANEL = PREFIX + 'FORM_LIST_PANEL'; // view tab bar - magic form list
 export const TIME_MACHINE_BTN = PREFIX + 'TIME_MACHINE_BTN'; // View Tab Bar - Time Machine
-
+export const ARCHIVED_RECORDS_BTN = PREFIX + 'ARCHIVED_RECORDS_BTN'; // View Tab Bar - Archived Records
 
 // Wig table content (Wig view)
 export const DOM_CONTAINER = PREFIX + 'DOM_CONTAINER'; // Wig table content (Wig view)
@@ -84,8 +84,6 @@ export const CREATE_ORG_IN_VIEW_LIST = PREFIX + 'CREATE_ORG_IN_VIEW_LIST';
 export const APPLICATION_JOIN_SPACE_BTN = PREFIX + 'APPLICATION_JOIN_SPACE_BTN';
 export const ADD_RECORD_BTN = PREFIX + 'ADD_RECORD_BTN';
 
-
-
 // magic form
 export const FORM_CONTAINER_SETTING = PREFIX + 'FORM_CONTAINER_SETTING'; // Magical form content page - setting button
 
@@ -99,4 +97,4 @@ export const ORG_CHART_RECORD_LIST = PREFIX + 'ORG_CHART_RECORD_LIST'; // Organi
 export const TOOL_BAR_VIEW_SETTING = PREFIX + 'TOOL_BAR_VIEW_SETTING'; // Toolbar - new record
 
 // side record card
-export const SIDE_RECORD_PANEL = PREFIX + 'SIDE_RECORD_PANEL'
+export const SIDE_RECORD_PANEL = PREFIX + 'SIDE_RECORD_PANEL';

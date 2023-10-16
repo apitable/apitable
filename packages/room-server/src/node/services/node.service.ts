@@ -27,7 +27,7 @@ import { DatasheetException, PermissionException, ServerException } from 'shared
 import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
 import { UnitMemberService } from 'unit/services/unit.member.service';
-import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from '../../database/interfaces';
+import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from 'database/interfaces';
 import { NodeRelRepository } from '../repositories/node.rel.repository';
 import { NodeRepository } from '../repositories/node.repository';
 import { NodePermissionService } from './node.permission.service';
@@ -35,6 +35,7 @@ import { NodeShareSettingService } from './node.share.setting.service';
 
 @Injectable()
 export class NodeService {
+
   constructor(
     private readonly memberService: UnitMemberService,
     private readonly nodeDescService: NodeDescriptionService,
@@ -42,6 +43,7 @@ export class NodeService {
     private readonly nodePermissionService: NodePermissionService,
     private readonly nodeRepository: NodeRepository,
     private readonly nodeRelRepository: NodeRelRepository,
+    // @ts-ignore
     @Inject(forwardRef(() => MetaService))
     private readonly resourceMetaService: MetaService,
   ) {}
@@ -244,5 +246,9 @@ export class NodeService {
 
   async selectSpaceIdByNodeId(nodeId: string): Promise<{ spaceId: string } | undefined> {
     return await this.nodeRepository.selectSpaceIdByNodeId(nodeId);
+  }
+
+  async getRelNodeIdsByMainNodeIds(mainNodeIds: string[]): Promise<string[]> {
+    return await this.nodeRelRepository.selectRelNodeIdsByMainNodeIds(mainNodeIds);
   }
 }

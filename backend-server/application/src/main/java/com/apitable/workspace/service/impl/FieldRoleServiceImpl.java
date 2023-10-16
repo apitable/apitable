@@ -18,7 +18,7 @@
 
 package com.apitable.workspace.service.impl;
 
- import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
@@ -108,6 +108,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Field role service implementation.
+ */
 @Service
 @Slf4j
 public class FieldRoleServiceImpl implements IFieldRoleService {
@@ -182,8 +185,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         ExceptionUtil.isNotNull(snapshot, DataSheetException.DATASHEET_NOT_EXIST);
         ExceptionUtil.isNotNull(snapshot.getMeta(), DataSheetException.DATASHEET_NOT_EXIST);
         // check if the field exists
-        ExceptionUtil.isNotEmpty(snapshot.getMeta().getFieldMap(), DataSheetException.FIELD_NOT_EXIST);
-        ExceptionUtil.isTrue(snapshot.getMeta().getFieldMap().containsKey(fieldId), DataSheetException.FIELD_NOT_EXIST);
+        ExceptionUtil.isNotEmpty(snapshot.getMeta().getFieldMap(),
+            DataSheetException.FIELD_NOT_EXIST);
+        ExceptionUtil.isTrue(snapshot.getMeta().getFieldMap().containsKey(fieldId),
+            DataSheetException.FIELD_NOT_EXIST);
         // check whether the field is the first column
         List<View> views = snapshot.getMeta().getViews();
         ExceptionUtil.isNotEmpty(views, DataSheetException.VIEW_NOT_EXIST);
@@ -197,7 +202,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         Optional<Column> column = columns.stream().findFirst();
         ExceptionUtil.isTrue(column.isPresent(), DataSheetException.VIEW_NOT_EXIST);
         String indexFieldId = column.get().getFieldId();
-        ExceptionUtil.isFalse(indexFieldId.equals(fieldId), PermissionException.INDEX_FIELD_NOT_ALLOW_SET);
+        ExceptionUtil.isFalse(indexFieldId.equals(fieldId),
+            PermissionException.INDEX_FIELD_NOT_ALLOW_SET);
     }
 
     @Override
@@ -205,20 +211,23 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         log.info("Check whether the field role change operation is allowed");
         ControlEntity controlEntity = iControlService.getByControlId(controlId);
         ExceptionUtil.isNotNull(controlEntity, PermissionException.FIELD_PERMISSION_NOT_OPEN);
-        List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(controlEntity.getSpaceId());
+        List<Long> admins =
+            iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(controlEntity.getSpaceId());
         if (admins.contains(memberId)) {
             return;
         }
         if (controlEntity.getUpdatedBy() != null) {
-            Long creator = iMemberService.getMemberIdByUserIdAndSpaceId(controlEntity.getUpdatedBy(),
+            Long creator =
+                iMemberService.getMemberIdByUserIdAndSpaceId(controlEntity.getUpdatedBy(),
                     controlEntity.getSpaceId());
             ExceptionUtil.isNotNull(creator, PermissionException.ILLEGAL_CHANGE_FIELD_ROLE);
-            ExceptionUtil.isTrue(creator.equals(memberId), PermissionException.ILLEGAL_CHANGE_FIELD_ROLE);
+            ExceptionUtil.isTrue(creator.equals(memberId),
+                PermissionException.ILLEGAL_CHANGE_FIELD_ROLE);
         }
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public PageInfo<FieldRoleMemberVo> getFieldRoleMembersPageInfo(
         Page<FieldRoleMemberVo> page, String datasheetId, String fieldId) {
         boolean assignMode = this.getFieldRoleEnabledStatus(datasheetId, fieldId);
@@ -260,13 +269,16 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             return fieldCollaboratorVO;
         }
         // load permission attribute configuration
-        ControlSettingEntity controlSetting = iControlSettingService.getByControlId(controlId.toString());
-        fieldCollaboratorVO.setSetting(JSONUtil.toBean(controlSetting.getProps(), FieldRoleSetting.class));
+        ControlSettingEntity controlSetting =
+            iControlSettingService.getByControlId(controlId.toString());
+        fieldCollaboratorVO.setSetting(
+            JSONUtil.toBean(controlSetting.getProps(), FieldRoleSetting.class));
         // 1、space workbench administrator + Owner
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         List<Long> managerMemberIds = new ArrayList<>(admins);
         // owner
-        Long owner = memberMapper.selectIdByUserIdAndSpaceId(controlSetting.getUpdatedBy(), spaceId);
+        Long owner =
+            memberMapper.selectIdByUserIdAndSpaceId(controlSetting.getUpdatedBy(), spaceId);
         if (owner != null) {
             managerMemberIds.add(owner);
         }
@@ -282,7 +294,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             }
             boolean isAdmin = admins.contains(member.getMemberId());
             boolean isOwner = member.getMemberId().equals(owner);
-            FieldRole role = getFieldRole(isAdmin, member, isOwner);
+            FieldRole role = buildFieldRole(isAdmin, member, isOwner);
             role.setUnitRefId(member.getMemberId());
             if (memberToTeamNameMap.containsKey(member.getMemberId())) {
                 role.setTeamData(memberToTeamNameMap.get(member.getMemberId()));
@@ -290,10 +302,13 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             unitIdToFieldRoleMap.put(role.getUnitId(), role);
         }
         // 2、The datasheet field specifies the organizational unit of the role.
-        List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
+        List<ControlRoleUnitDTO> controlRoles =
+            iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
         Map<String, List<ControlRoleUnitDTO>> fieldRoleControlMap = controlRoles.stream()
-                .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
-                .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
+            .sorted(Comparator.comparing(
+                (Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(
+                    t.getRole()).getBits()).reversed())
+            .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
         for (Entry<String, List<ControlRoleUnitDTO>> entry : fieldRoleControlMap.entrySet()) {
             List<Long> teamIds = new ArrayList<>();
             List<Long> memberIds = new ArrayList<>();
@@ -310,11 +325,9 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 UnitType unitType = UnitType.toEnum(control.getUnitType());
                 if (unitType == UnitType.TEAM) {
                     teamIds.add(control.getUnitRefId());
-                }
-                else if (unitType == UnitType.MEMBER) {
+                } else if (unitType == UnitType.MEMBER) {
                     memberIds.add(control.getUnitRefId());
-                }
-                else if (unitType == UnitType.ROLE) {
+                } else if (unitType == UnitType.ROLE) {
                     roleIds.add(control.getUnitRefId());
                 }
                 role.setCanRead(true);
@@ -326,7 +339,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             if (!memberIds.isEmpty()) {
                 List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(memberIds);
                 // handle member's team name, get full hierarchy team name
-                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                    iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
                 for (UnitMemberVo member : memberVos) {
                     appendMemberFieldRole(unitIdToFieldRoleMap, memberToTeamPathInfoMap, member);
                 }
@@ -355,7 +369,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     }
 
     private void appendMemberFieldRole(Map<Long, FieldRole> unitIdToFieldRoleMap,
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap, UnitMemberVo member) {
+                                       Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap,
+                                       UnitMemberVo member) {
         FieldRole role = unitIdToFieldRoleMap.get(member.getUnitId());
         role.setUnitName(member.getMemberName());
         role.setAvatar(member.getAvatar());
@@ -381,7 +396,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void addFieldRole(Long userId, String controlId, List<Long> unitIds, String role) {
-        log.info("Add field role. userId:{},controlId:{},role:{},unitIds:{}", userId, controlId, role, unitIds);
+        log.info("Add field role. userId:{},controlId:{},role:{},unitIds:{}", userId, controlId,
+            role, unitIds);
         // Filter organizational units, modify those that already exist, and add those that do not exist.
         List<ControlRoleEntity> controlRoles = iControlRoleService.getByControlId(controlId);
         // no existing organizational units all new
@@ -390,15 +406,15 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             return;
         }
         Map<Long, String> unitRoleMap = controlRoles.stream()
-                .collect(Collectors.toMap(ControlRoleEntity::getUnitId, ControlRoleEntity::getRoleCode));
+            .collect(
+                Collectors.toMap(ControlRoleEntity::getUnitId, ControlRoleEntity::getRoleCode));
         List<Long> addUnitIds = new ArrayList<>();
         List<Long> updateUnitIds = new ArrayList<>();
         for (Long unitId : unitIds) {
             if (!unitRoleMap.containsKey(unitId)) {
                 // Does not exist, add the role of this organizational unit
                 addUnitIds.add(unitId);
-            }
-            else if (!unitRoleMap.get(unitId).equals(role)) {
+            } else if (!unitRoleMap.get(unitId).equals(role)) {
                 // exists and the roles are different, modify the roles of this organizational unit
                 updateUnitIds.add(unitId);
             }
@@ -413,15 +429,17 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void editFieldRole(Long userId, String controlId, List<Long> unitIds, String role) {
-        log.info("Update the role permission [{}] of the unit [{}] under the field [{}]", controlId, unitIds, role);
+        log.info("Update the role permission [{}] of the unit [{}] under the field [{}]", controlId,
+            unitIds, role);
         // The role of the original organizational unit in the column
-        Map<Long, String> unitIdToRoleCode = iControlRoleService.getUnitIdToRoleCodeMapWithoutOwnerRole(controlId, unitIds);
+        Map<Long, String> unitIdToRoleCode =
+            iControlRoleService.getUnitIdToRoleCodeMapWithoutOwnerRole(controlId, unitIds);
         if (unitIdToRoleCode.keySet().size() != unitIds.size()) {
             throw new BusinessException(PermissionException.FIELD_ROLE_NOT_EXIST);
         }
         List<Long> subUnitIds = unitIds.stream()
-                .filter(unitId -> !role.equals(unitIdToRoleCode.get(unitId)))
-                .collect(toList());
+            .filter(unitId -> !role.equals(unitIdToRoleCode.get(unitId)))
+            .collect(toList());
         // revised
         iControlRoleService.editControlRole(userId, controlId, subUnitIds, role);
     }
@@ -453,16 +471,18 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 iControlSettingService.updateById(updater);
                 log.info("configuration update successful");
             }
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            log.error("update field role prop error", e);
             throw new BusinessException(PermissionException.UPDATE_FIELD_ROLE_SETTING);
         }
     }
 
     @Override
-    public FieldPermissionView getFieldPermissionView(Long memberId, String nodeId, String shareId) {
-        log.info("The member [{}] obtains the field permission of the node [{}] and shares the ID: [{}]", memberId, nodeId, shareId);
+    public FieldPermissionView getFieldPermissionView(Long memberId, String nodeId,
+                                                      String shareId) {
+        log.info(
+            "The member [{}] obtains the field permission of the node [{}] and shares the ID: [{}]",
+            memberId, nodeId, shareId);
         NodeType type = iNodeService.getTypeByNodeId(nodeId);
         String datasheetId;
         switch (type) {
@@ -471,8 +491,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 break;
             case FORM:
             case MIRROR:
-                Map<String, String> formToDatasheetMap = iNodeRelService.getRelNodeToMainNodeMap(Collections.singletonList(nodeId));
-                if (MapUtil.isEmpty(formToDatasheetMap) || !formToDatasheetMap.containsKey(nodeId)) {
+                Map<String, String> formToDatasheetMap =
+                    iNodeRelService.getRelNodeToMainNodeMap(Collections.singletonList(nodeId));
+                if (MapUtil.isEmpty(formToDatasheetMap)
+                    || !formToDatasheetMap.containsKey(nodeId)) {
                     return null;
                 }
                 datasheetId = formToDatasheetMap.get(nodeId);
@@ -480,59 +502,78 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             default:
                 return null;
         }
-        List<String> controlIds = iControlService.getControlIdByControlIdPrefixAndType(datasheetId, ControlType.DATASHEET_FIELD.getVal());
+        List<String> controlIds = iControlService.getControlIdByControlIdPrefixAndType(datasheetId,
+            ControlType.DATASHEET_FIELD.getVal());
         if (controlIds == null || controlIds.isEmpty()) {
             return new FieldPermissionView(nodeId, datasheetId, null);
         }
         Map<String, String> controlIdToFieldIdMap = controlIds.stream()
-                .collect(Collectors.toMap(String::toString, controlId -> controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1)));
+            .collect(Collectors.toMap(String::toString,
+                controlId -> controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1)));
         // load field permissions in sharing
         if (StrUtil.isNotBlank(shareId)) {
             // If the datasheet is not collected, directly return the field with the permission set.
             if (type != NodeType.FORM) {
-                Map<String, FieldPermissionInfo> permissionInfoMap = controlIdToFieldIdMap.values().stream()
-                        .collect(Collectors.toMap(String::toString, fieldId -> FieldPermissionInfo.builder()
+                Map<String, FieldPermissionInfo> permissionInfoMap =
+                    controlIdToFieldIdMap.values().stream()
+                        .collect(Collectors.toMap(String::toString,
+                            fieldId -> FieldPermissionInfo.builder()
                                 .fieldId(fieldId)
                                 .permission(new FieldPermission())
                                 .build()));
                 return new FieldPermissionView(nodeId, datasheetId, permissionInfoMap);
             }
             // collect the datasheet and add the permission configuration attribute of the returned field.
-            List<ControlSettingEntity> controlSettingEntities = iControlSettingService.getBatchByControlIds(controlIds);
-            Map<String, ControlSettingEntity> controlSettingEntityMap = controlSettingEntities.stream()
-                    .collect(Collectors.toMap(ControlSettingEntity::getControlId, Function.identity()));
-            Map<String, FieldPermissionInfo> permissionInfoMap = controlIdToFieldIdMap.entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getValue, entry -> FieldPermissionInfo.builder()
+            List<ControlSettingEntity> controlSettingEntities =
+                iControlSettingService.getBatchByControlIds(controlIds);
+            Map<String, ControlSettingEntity> controlSettingEntityMap =
+                controlSettingEntities.stream()
+                    .collect(
+                        Collectors.toMap(ControlSettingEntity::getControlId, Function.identity()));
+            Map<String, FieldPermissionInfo> permissionInfoMap =
+                controlIdToFieldIdMap.entrySet().stream()
+                    .collect(
+                        Collectors.toMap(Map.Entry::getValue, entry -> FieldPermissionInfo.builder()
                             .fieldId(entry.getValue())
-                            .setting(JSONUtil.toBean(controlSettingEntityMap.get(entry.getKey()).getProps(), FieldRoleSetting.class))
+                            .setting(JSONUtil.toBean(
+                                controlSettingEntityMap.get(entry.getKey()).getProps(),
+                                FieldRoleSetting.class))
                             .permission(new FieldPermission())
                             .build()));
             return new FieldPermissionView(nodeId, datasheetId, permissionInfoMap);
         }
         // in station loading
         // get the permission role set
-        ControlRoleDict roleDict = controlTemplate.fetchFieldRole(memberId, datasheetId, ListUtil.list(true, controlIdToFieldIdMap.values()));
+        ControlRoleDict roleDict = controlTemplate.fetchFieldRole(memberId, datasheetId,
+            ListUtil.list(true, controlIdToFieldIdMap.values()));
         // get permission configuration properties
-        List<ControlSettingEntity> controlSettingEntities = iControlSettingService.getBatchByControlIds(controlIds);
+        List<ControlSettingEntity> controlSettingEntities =
+            iControlSettingService.getBatchByControlIds(controlIds);
         Map<String, String> controlIdToPropsMap = controlSettingEntities.stream()
-                .collect(Collectors.toMap(ControlSettingEntity::getControlId, ControlSettingEntity::getProps));
+            .collect(Collectors.toMap(ControlSettingEntity::getControlId,
+                ControlSettingEntity::getProps));
         Map<String, Long> controlId2Creator = controlSettingEntities.stream()
-                .collect(Collectors.toMap(ControlSettingEntity::getControlId, ControlSettingEntity::getUpdatedBy));
+            .collect(Collectors.toMap(ControlSettingEntity::getControlId,
+                ControlSettingEntity::getUpdatedBy));
         Long userId = memberMapper.selectUserIdByMemberId(memberId);
-        Map<String, FieldPermissionInfo> permissionInfoMap = controlIdToFieldIdMap.entrySet().stream()
+        Map<String, FieldPermissionInfo> permissionInfoMap =
+            controlIdToFieldIdMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getValue, entry -> {
                     FieldPermissionInfo fieldPermissionInfo = new FieldPermissionInfo();
                     fieldPermissionInfo.setFieldId(entry.getValue());
-                    fieldPermissionInfo.setSetting(JSONUtil.toBean(controlIdToPropsMap.get(entry.getKey()), FieldRoleSetting.class));
+                    fieldPermissionInfo.setSetting(
+                        JSONUtil.toBean(controlIdToPropsMap.get(entry.getKey()),
+                            FieldRoleSetting.class));
                     if (roleDict.containsKey(entry.getValue())) {
                         ControlRole role = roleDict.get(entry.getValue());
                         fieldPermissionInfo.setHasRole(true);
                         fieldPermissionInfo.setRole(role.getRoleTag());
                         // Add whether the current user can manage this permission
-                        fieldPermissionInfo.setManageable(role.isAdmin() || controlId2Creator.get(entry.getKey()).equals(userId));
-                        fieldPermissionInfo.setPermission(role.permissionToBean(FieldPermission.class));
-                    }
-                    else {
+                        fieldPermissionInfo.setManageable(
+                            role.isAdmin() || controlId2Creator.get(entry.getKey()).equals(userId));
+                        fieldPermissionInfo.setPermission(
+                            role.permissionToBean(FieldPermission.class));
+                    } else {
                         fieldPermissionInfo.setPermission(new FieldPermission());
                     }
                     return fieldPermissionInfo;
@@ -542,7 +583,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     }
 
     @Override
-    public Map<String, FieldPermissionInfo> getFieldPermissionMap(Long memberId, String nodeId, String shareId) {
+    public Map<String, FieldPermissionInfo> getFieldPermissionMap(Long memberId, String nodeId,
+                                                                  String shareId) {
         FieldPermissionView view = this.getFieldPermissionView(memberId, nodeId, shareId);
         if (view != null) {
             return view.getFieldPermissionMap();
@@ -552,13 +594,14 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public List<String> getPermissionFieldIds(String datasheetId) {
-        List<String> controlIds = iControlService.getControlIdByControlIdPrefixAndType(datasheetId, ControlType.DATASHEET_FIELD.getVal());
+        List<String> controlIds = iControlService.getControlIdByControlIdPrefixAndType(datasheetId,
+            ControlType.DATASHEET_FIELD.getVal());
         if (controlIds == null || controlIds.isEmpty()) {
             return new ArrayList<>();
         }
         return controlIds.stream()
-                .map(controlId -> controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1))
-                .collect(Collectors.toList());
+            .map(controlId -> controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -567,10 +610,13 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             return CollUtil.newHashMap();
         }
         log.info("delete field [{}] permission role [{}]", controlId, unitIds);
-        List<ControlRoleInfo> controlRole = iControlRoleService.getUnitRoleByControlIdAndUnitIds(controlId, unitIds);
+        List<ControlRoleInfo> controlRole =
+            iControlRoleService.getUnitRoleByControlIdAndUnitIds(controlId, unitIds);
         Map<String, List<Long>> roleToUnitIds = controlRole.stream()
-                .collect(groupingBy(ControlRoleInfo::getRole, mapping(ControlRoleInfo::getUnitId, toList())));
-        List<Long> existUnitIds = roleToUnitIds.values().stream().flatMap(Collection::stream).collect(toList());
+            .collect(groupingBy(ControlRoleInfo::getRole,
+                mapping(ControlRoleInfo::getUnitId, toList())));
+        List<Long> existUnitIds =
+            roleToUnitIds.values().stream().flatMap(Collection::stream).collect(toList());
         if (CollUtil.isEmpty(existUnitIds)) {
             return roleToUnitIds;
         }
@@ -581,7 +627,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     private void addExtendFieldRole(Long userId, String dstId, String fldId) {
         String spaceId = iNodeService.getSpaceIdByNodeId(dstId);
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fldId);
-        Map<String, List<Long>> fieldRoleToUnitIdsMap = getDefaultFiledRoleToUnitIdsMap(spaceId, dstId);
+        Map<String, List<Long>> fieldRoleToUnitIdsMap =
+            getDefaultFiledRoleToUnitIdsMap(spaceId, dstId);
         fieldRoleToUnitIdsMap.forEach((role, unitIds) -> {
             // add role
             addFieldRole(userId, controlId.toString(), unitIds, role);
@@ -589,11 +636,13 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     }
 
     private Map<String, List<Long>> getDefaultFiledRoleToUnitIdsMap(String spaceId, String dstId) {
-        Map<String, Set<Long>> nodeRoleToUnitIds = iNodeRoleService.getRoleToUnitIds(false, spaceId, dstId);
+        Map<String, Set<Long>> nodeRoleToUnitIds =
+            iNodeRoleService.getRoleToUnitIds(false, spaceId, dstId);
         Map<String, List<Long>> fieldRoleToUnitIds = new HashMap<>(2);
         if (nodeRoleToUnitIds.containsKey(Node.READER)) {
             Set<Long> readUnitIds = nodeRoleToUnitIds.get(Node.READER);
-            boolean haveOwner = nodeRoleToUnitIds.containsKey(Node.OWNER) && nodeRoleToUnitIds.get(Node.OWNER).stream().findFirst().isPresent();
+            boolean haveOwner = nodeRoleToUnitIds.containsKey(Node.OWNER)
+                && nodeRoleToUnitIds.get(Node.OWNER).stream().findFirst().isPresent();
             if (haveOwner) {
                 Long ownerUnitId = nodeRoleToUnitIds.get(Node.OWNER).stream().findFirst().get();
                 readUnitIds.remove(ownerUnitId);
@@ -603,26 +652,28 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         }
         if (!nodeRoleToUnitIds.isEmpty()) {
             Set<Long> editUnitIds = nodeRoleToUnitIds.values().stream()
-                    .reduce(new HashSet<>(), (result, unitIds) -> {
-                        result.addAll(unitIds);
-                        return result;
-                    });
+                .reduce(new HashSet<>(), (result, unitIds) -> {
+                    result.addAll(unitIds);
+                    return result;
+                });
             fieldRoleToUnitIds.put(Field.EDITOR, CollUtil.newArrayList(editUnitIds));
         }
         return fieldRoleToUnitIds;
     }
 
-    private List<FieldRole> getDefaultFieldRoles(String spcId, String dstId, Map<Long, String> memberRoleMap) {
+    private List<FieldRole> getDefaultFieldRoles(String spcId, String dstId,
+                                                 Map<Long, String> memberRoleMap) {
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spcId);
         // record the corresponding roles of all members
         List<FieldRole> fieldRoles = new ArrayList<>(16);
         List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(admins);
         // handle member's team name, get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(admins, spcId);
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+            iTeamService.batchGetFullHierarchyTeamNames(admins, spcId);
         Set<Long> adminIds = new HashSet<>();
         for (UnitMemberVo member : unitMemberVos) {
             boolean isAdmin = admins.contains(member.getMemberId());
-            FieldRole role = getFieldRole(isAdmin, member, false);
+            FieldRole role = buildFieldRole(isAdmin, member, false);
             role.setUnitRefId(member.getMemberId());
             if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
                 role.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
@@ -636,7 +687,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         return fieldRoles;
     }
 
-    private List<FieldRole> getDefaultExtendRole(String spcId, String dstId, Set<Long> adminIds, Map<Long, String> memberRoleMap) {
+    private List<FieldRole> getDefaultExtendRole(String spcId, String dstId, Set<Long> adminIds,
+                                                 Map<Long, String> memberRoleMap) {
         Map<String, List<Long>> filedRoleToUnitIds = getDefaultFiledRoleToUnitIdsMap(spcId, dstId);
         // editor from node's owner. the member may be admin.
         filedRoleToUnitIds.values().forEach(unitIds -> unitIds.removeAll(adminIds));
@@ -649,7 +701,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 return;
             }
             List<UnitEntity> units = unitMapper.selectByUnitIds(unitIds);
-            List<FieldRole> fieldRoleList = getFieldRoles(units, role, unitTypeToUnitRefIds);
+            List<FieldRole> fieldRoleList = buildFieldRoles(units, role, unitTypeToUnitRefIds);
             fieldRoleList.forEach(fieldRole -> {
                 Long unitId = fieldRole.getUnitId();
                 if (!unitIdToFieldRoleMap.containsKey(unitId)) {
@@ -664,17 +716,18 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         return fieldRoles;
     }
 
-    private void populateFieldRoles(Map<Long, FieldRole> unitIdToFieldRoleMap, Map<UnitType, List<Long>> unitTypeToUnitRefIds, String spcId) {
+    private void populateFieldRoles(Map<Long, FieldRole> unitIdToFieldRoleMap,
+                                    Map<UnitType, List<Long>> unitTypeToUnitRefIds, String spcId) {
         unitTypeToUnitRefIds.forEach((key, unitRefIds) -> {
             if (key == UnitType.MEMBER) {
                 List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(unitRefIds);
                 // handle member's team name, get full hierarchy team name
-                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(unitRefIds, spcId);
+                Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+                    iTeamService.batchGetFullHierarchyTeamNames(unitRefIds, spcId);
                 memberVos.forEach(member -> {
                     appendMemberFieldRole(unitIdToFieldRoleMap, memberToTeamPathInfoMap, member);
                 });
-            }
-            else if (key == UnitType.TEAM) {
+            } else if (key == UnitType.TEAM) {
                 List<UnitTeamVo> teamVos = iOrganizationService.findUnitTeamVo(spcId, unitRefIds);
                 teamVos.forEach(team -> {
                     FieldRole fieldRole = unitIdToFieldRoleMap.get(team.getUnitId());
@@ -682,8 +735,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                     fieldRole.setMemberCount(team.getMemberCount());
                     fieldRole.setUnitRefId(team.getTeamId());
                 });
-            }
-            else if (key == UnitType.ROLE) {
+            } else if (key == UnitType.ROLE) {
                 List<RoleInfoVo> roleVos = iRoleService.getRoleVos(spcId, unitRefIds);
                 roleVos.forEach(role -> {
                     FieldRole fieldRole = unitIdToFieldRoleMap.get(role.getUnitId());
@@ -695,7 +747,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         });
     }
 
-    private List<FieldRole> getFieldRoles(List<UnitEntity> units, String role, Map<UnitType, List<Long>> unitTypeToUnitRefIds) {
+    private List<FieldRole> buildFieldRoles(List<UnitEntity> units, String role,
+                                            Map<UnitType, List<Long>> unitTypeToUnitRefIds) {
         List<FieldRole> fieldRoles = new ArrayList<>();
         units.forEach(unit -> {
             FieldRole fieldRole = new FieldRole();
@@ -704,13 +757,14 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             fieldRole.setUnitType(unit.getUnitType());
             UnitType unitType = UnitType.toEnum(unit.getUnitType());
             fieldRoles.add(fieldRole);
-            List<Long> unitRefIds = unitTypeToUnitRefIds.computeIfAbsent(unitType, key -> new ArrayList<>());
+            List<Long> unitRefIds =
+                unitTypeToUnitRefIds.computeIfAbsent(unitType, key -> new ArrayList<>());
             unitRefIds.add(unit.getUnitRefId());
         });
         return fieldRoles;
     }
 
-    private FieldRole getFieldRole(boolean isAdmin, UnitMemberVo member, boolean isOwner) {
+    private FieldRole buildFieldRole(boolean isAdmin, UnitMemberVo member, boolean isOwner) {
         FieldRole role = new FieldRole();
         role.setRole(Field.EDITOR);
         role.setUnitId(member.getUnitId());
@@ -727,22 +781,22 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         return role;
     }
 
-    private void countMemberRole(Map<Long, String> memberRoleMap, List<UnitEntity> units, String role) {
+    private void countMemberRole(Map<Long, String> memberRoleMap, List<UnitEntity> units,
+                                 String role) {
         Map<Integer, List<Long>> unitTypeToUnitRefIds = units.stream()
-                .collect(groupingBy(UnitEntity::getUnitType, mapping(UnitEntity::getUnitRefId, toList())));
+            .collect(
+                groupingBy(UnitEntity::getUnitType, mapping(UnitEntity::getUnitRefId, toList())));
         unitTypeToUnitRefIds.forEach((unitType, unitRefIds) -> {
             if (UnitType.MEMBER.getType().equals(unitType)) {
                 for (Long memberId : unitRefIds) {
                     memberRoleMap.putIfAbsent(memberId, role);
                 }
-            }
-            else if (UnitType.TEAM.getType().equals(unitType)) {
+            } else if (UnitType.TEAM.getType().equals(unitType)) {
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(unitRefIds);
                 for (Long teamMemberId : teamMemberIds) {
                     memberRoleMap.putIfAbsent(teamMemberId, role);
                 }
-            }
-            else if (UnitType.ROLE.getType().equals(unitType)) {
+            } else if (UnitType.ROLE.getType().equals(unitType)) {
                 List<Long> roleMemberIds = iRoleMemberService.getMemberIdsByRoleIds(unitRefIds);
                 for (Long roleMemberId : roleMemberIds) {
                     memberRoleMap.putIfAbsent(roleMemberId, role);

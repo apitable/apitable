@@ -32,7 +32,8 @@ import {
   IServerDatasheetPack,
   ISetFieldInfoState,
   ISnapshot,
-  IViewDerivation, IViewProperty,
+  IViewDerivation,
+  IViewProperty,
   ModalConfirmKey,
 } from 'exports/store';
 import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
@@ -84,7 +85,8 @@ import {
   SET_ROBOT_PANEL_STATUS,
   SET_SEARCH_KEYWORD,
   SET_SEARCH_RESULT_CURSOR_INDEX,
-  SET_VIEW_DERIVATION, SET_VIEW_PROPERTY,
+  SET_VIEW_DERIVATION,
+  SET_VIEW_PROPERTY,
   SWITCH_ACTIVE_PANEL,
   TOGGLE_CALENDAR_GRID,
   TOGGLE_CALENDAR_GUIDE_STATUS,
@@ -96,6 +98,7 @@ import {
   TOGGLE_ORG_CHART_GUIDE_STATUS,
   TOGGLE_ORG_CHART_SETTING_PANEL,
   TOGGLE_TIME_MACHINE_PANEL,
+  TOGGLE_ARCHIVED_RECORDS_PANEL,
   TOGGLE_WIDGET_PANEL,
   TRIGGER_VIEW_DERIVATION_COMPUTED,
   UPDATE_DATASHEET,
@@ -210,7 +213,7 @@ const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getSta
 };
 
 const checkSortInto = (snapshot: ISnapshot) => {
-  return produce(snapshot, draft => {
+  return produce(snapshot, (draft) => {
     const views = draft.meta.views;
     for (const v of views) {
       if (Array.isArray(v?.sortInfo)) {
@@ -224,7 +227,7 @@ const checkSortInto = (snapshot: ISnapshot) => {
 };
 
 const mergeRecordMap = (snapshot: ISnapshot, recordMap: IRecordMap) => {
-  return produce(snapshot, draft => {
+  return produce(snapshot, (draft) => {
     draft.recordMap = { ...recordMap, ...draft.recordMap };
   });
 };
@@ -306,17 +309,17 @@ export function fetchDatasheet(datasheetId: string, successCb?: () => void, over
     if (!datasheet || datasheet.isPartOfData || overWrite) {
       dispatch(requestDatasheetPack(datasheetId));
       return fetchDatasheetApi(datasheetId, shareId, templateId, embedId, recordIds)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success && state.catalogTree.treeNodesMap[datasheetId]) {
             dispatch(deleteNode({ nodeId: datasheetId, parentId: state.catalogTree.treeNodesMap[datasheetId]!.parentId }));
           }
           return Promise.resolve({ datasheetId, responseBody: response.data, dispatch, getState });
         })
-        .catch(e => {
+        .catch((e) => {
           dispatch(datasheetErrorCode(datasheetId, StatusCode.COMMON_ERR));
           throw e;
         })
-        .then(props => {
+        .then((props) => {
           // recordIds exits means that only part of recordsIds data is needed @boris
           fetchDatasheetPackSuccess({ ...props, isPartOfData: Boolean(recordIds), forceFetch: overWrite });
           props.responseBody.success ? successCb && successCb() : failCb && failCb();
@@ -354,17 +357,17 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
     if (forceFetch || !foreignDatasheet || foreignDatasheet.isPartOfData) {
       dispatch(requestDatasheetPack(foreignDstId));
       return requestMethod(resourceId, foreignDstId)
-        .then(response => {
+        .then((response) => {
           return Promise.resolve({ datasheetId: foreignDstId, responseBody: response.data, dispatch, getState });
         })
-        .catch(e => {
+        .catch((e) => {
           if (state.catalogTree.treeNodesMap[foreignDstId]) {
             dispatch(deleteNode({ nodeId: foreignDstId, parentId: state.catalogTree.treeNodesMap[foreignDstId]!.parentId }));
           }
           dispatch(datasheetErrorCode(foreignDstId, StatusCode.COMMON_ERR));
           throw e;
         })
-        .then(props => {
+        .then((props) => {
           fetchDatasheetPackSuccess({ ...props, forceFetch });
           if (props.responseBody.success) {
             if (!shareId && !embedId && state.pageParams.datasheetId === resourceId) {
@@ -403,7 +406,7 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
     const dataPack = responseBody.data;
     const dispatchActions: AnyAction[] = [];
     if (dataPack.foreignDatasheetMap) {
-      Object.keys(dataPack.foreignDatasheetMap).forEach(foreignDstId => {
+      Object.keys(dataPack.foreignDatasheetMap).forEach((foreignDstId) => {
         const foreignDatasheetPack = dataPack.foreignDatasheetMap![foreignDstId]!;
         const dst = getDatasheet(state, foreignDstId);
         let toMergeRecordMap = undefined;
@@ -430,12 +433,12 @@ export function fetchDatasheetPackSuccess({ datasheetId, responseBody, dispatch,
       if (dataPack.units) {
         // init unityMap, for `member` field use
         const unitMap = {};
-        dataPack.units.filter(unit => unit.unitId).forEach(unit => (unitMap[unit.unitId!] = unit));
+        dataPack.units.filter((unit) => unit.unitId).forEach((unit) => (unitMap[unit.unitId!] = unit));
         dispatch(updateUnitMap(unitMap));
 
         // init UserMap, for `CreatedBy`/`LastModifiedBy` field use
         const userMap = {};
-        dataPack.units.filter(unit => unit.userId).forEach(user => (userMap[user.userId!] = user));
+        dataPack.units.filter((unit) => unit.userId).forEach((user) => (userMap[user.userId!] = user));
         dispatch(updateUserMap(userMap));
       }
     }
@@ -782,6 +785,14 @@ export const toggleTimeMachinePanel = (datasheetId: string, visible?: boolean) =
   };
 };
 
+export const toggleArchivedRecordsPanel = (datasheetId: string, visible?: boolean) => {
+  return {
+    type: TOGGLE_ARCHIVED_RECORDS_PANEL,
+    payload: visible,
+    datasheetId,
+  };
+};
+
 export interface IToggleWidgetPanel {
   type: typeof TOGGLE_WIDGET_PANEL;
 }
@@ -904,9 +915,9 @@ export const setViewDerivation = (datasheetId: string, payload: { viewId: string
 export const setViewProperty = (
   datasheetId: string,
   payload: {
-      viewId: string,
-      viewProperty: IViewProperty
-    }
+    viewId: string;
+    viewProperty: IViewProperty;
+  },
 ) => {
   return {
     datasheetId,

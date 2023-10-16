@@ -27,7 +27,7 @@ export interface INotificationRo {
   readonly fromUser: IBaseUserDto;
   readonly isRead: number;
   readonly id: string;
-  readonly toUserId: string;
+  readonly toUuid: string;
   readonly updatedAt: string;
   event: NotificationTypes;
   socketId: string;

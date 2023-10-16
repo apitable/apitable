@@ -18,15 +18,15 @@
 
 package com.apitable.automation.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,7 +56,7 @@ public class AutomationTriggerEntity implements Serializable {
      * Primary Key
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private BigInteger id;
 
     /**
      * Robot ID (link#xxxx_automation_robot#robot_id)

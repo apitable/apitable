@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
-import React, { FC, memo, useContext, useEffect } from 'react';
+import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
@@ -74,8 +74,12 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const loading = false;
   const { templateId } = useSelector((state: IReduxState) => state.pageParams);
 
+  const { screenIsAtMost } = useResponsive();
+  const isLg = screenIsAtMost(ScreenSize.lg);
+  const isXl = screenIsAtMost(ScreenSize.xl);
+
   useMount(() => {
-    isMobile && setSideBarVisible(false);
+    isXl && setSideBarVisible(false);
     initialize();
   });
 
@@ -96,7 +100,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
       );
       setPanel(
         {
-          panelName: isMobile? undefined: PanelName.BasicInfo
+          panelName: isLg? undefined: PanelName.BasicInfo
         });
 
       if (itemDetail.relatedResources) {
@@ -161,13 +165,26 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const colors = useThemeColors();
   const nodeItem = useAutomationResourceNode();
 
-  const { api: { refreshItem, refresh } } = useAutomationController();
+  const { api: { refreshItem } } = useAutomationController();
   const { setSideBarVisible } = useSideBarVisible();
-  const { screenIsAtMost } = useResponsive();
-  const isMobile = screenIsAtMost(ScreenSize.lg);
 
   const permission = useAutomationResourcePermission();
 
+  const inheritedRole = useMemo(()=> {
+    if(nodeItem?.role) {
+      return nodeItem.role;
+    }
+    if(permission.manageable) {
+      return ConfigConstant.Role.Manager;
+    }
+
+    if(permission.editable) {
+      return ConfigConstant.Role.Editor;
+    }
+
+    return ConfigConstant.Role.Reader;
+
+  }, [nodeItem?.role, permission.editable, permission.manageable]);
   if(automationState?.scenario === AutomationScenario.node) {
     if(!templateId && nodeItem == null) {
       return null;
@@ -226,8 +243,8 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                       {
                         !templateId && (
                           <Box marginX={'4px'}>
-                            <Tag color={TagColors[nodeItem?.role]}>
-                              {ConfigConstant.permissionText[getPermission(nodeItem?.role, { shareInfo: shareInfo })]}
+                            <Tag color={TagColors[inheritedRole]}>
+                              {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
                             </Tag>
                           </Box>
                         )
@@ -266,7 +283,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                           return;
                         }
 
-                        isMobile && setSideBarVisible(false);
+                        isLg && setSideBarVisible(false);
                         dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
                       }}
                       text={t(Strings.share)}

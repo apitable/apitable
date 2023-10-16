@@ -18,7 +18,7 @@
 
 import { NodeRelEntity } from '../entities/node.rel.entity';
 import { NodeRelInfo } from '../../database/interfaces/internal';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 
 @EntityRepository(NodeRelEntity)
 export class NodeRelRepository extends Repository<NodeRelEntity> {
@@ -28,6 +28,13 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       select: ['mainNodeId'],
       where: [{ relNodeId }],
     });
+  }
+
+  public async selectRelNodeIdsByMainNodeIds(mainNodeIds: string[]): Promise<string[]> {
+    return await this.find({
+      select: ['relNodeId'],
+      where: [{ mainNodeId : In(mainNodeIds) }],
+    }).then(res => res.map(res => res.relNodeId));
   }
 
   public async selectRelNodeIdByMainNodeId(mainNodeId: string): Promise<NodeRelEntity[]> {

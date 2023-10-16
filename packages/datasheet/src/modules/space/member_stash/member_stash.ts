@@ -71,6 +71,10 @@ class MemberStash {
     this.stashMap.set(this.currentCacheId, newList);
   }
 
+  public hasCacheId(spaceId: string) {
+    return this.currentCacheId === spaceId;
+  }
+
   private normalizeList(list: IUnitValue[]) {
     const newList = uniqBy(list, 'unitId');
     return newList.splice(0, this.maxListLen);

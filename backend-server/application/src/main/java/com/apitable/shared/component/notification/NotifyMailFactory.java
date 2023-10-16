@@ -96,6 +96,8 @@ import java.util.Properties;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+
+import com.google.common.base.CaseFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -619,7 +621,10 @@ public class NotifyMailFactory {
                 case SUBJECT_AUTOMATION_ERROR:
                     htmlTemplateName = "automation-fail-html.btl";
                     textTemplateName = "automation-fail-text.btl";
+                    break;
                 default:
+                    htmlTemplateName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType) + "-html.btl";
+                    textTemplateName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType) + "-text.btl";
                     break;
             }
             return this;

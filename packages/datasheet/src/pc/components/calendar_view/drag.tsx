@@ -43,7 +43,7 @@ interface IDrag {
 
 const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
   const { startDate, endDate, title } = task;
-  const { columns, setRecordModal, recordModal, currentSearchRecordId, draggable, isCryptoStartField, isCryptoEndField, isMobile, activeCell } =
+  const { columns, currentSearchRecordId, draggable, isCryptoStartField, isCryptoEndField, isMobile, activeCell } =
     useContext(CalendarContext);
 
   const { show } = useContextMenu({
@@ -114,15 +114,6 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
           style={{
             opacity,
             ...listStyle,
-          }}
-          onMouseDown={() => {
-            /**
-             * Close modal when mouse is pressed
-             * Solve the problem of modal not disappearing when dragging
-             */
-            if (!isMobile && recordModal) {
-              setRecordModal(undefined);
-            }
           }}
           onContextMenu={isMobile ? undefined : onContextMenu}
           onClick={() => {

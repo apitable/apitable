@@ -17,6 +17,10 @@
  */
 
 import { isEmpty } from '@nestjs/common/utils/shared.utils';
+import { AxiosResponse } from 'axios';
+import { Observable, lastValueFrom } from 'rxjs';
+import { CommonException, ServerException } from 'shared/exception';
+import { IHttpSuccessResponse } from 'shared/interfaces';
 import { IAuthHeader } from 'shared/interfaces/axios.interfaces';
 
 /**
@@ -68,4 +72,16 @@ export const getRequestLanguage = (headers: any): string => {
     return 'zh-CN';
   }
   return lang.split(',')[0].trim();
+};
+
+export const getResponseData = async (res: Observable<AxiosResponse<any>>): Promise<any> => {
+  const response = await lastValueFrom(res);
+  if (response.status != 200) {
+    throw new ServerException(CommonException.SERVER_ERROR);
+  }
+  const restResponse = response.data as IHttpSuccessResponse<any>;
+  if (!restResponse.success) {
+    throw new Error(restResponse.message);
+  }
+  return restResponse!.data;
 };

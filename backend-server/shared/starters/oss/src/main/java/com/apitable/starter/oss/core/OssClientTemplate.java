@@ -96,7 +96,6 @@ public class OssClientTemplate {
      * @param uploadPolicy  upload policy
      * @return  token
      */
-    @Deprecated
     public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.uploadToken(bucket, key, expires, uploadPolicy);

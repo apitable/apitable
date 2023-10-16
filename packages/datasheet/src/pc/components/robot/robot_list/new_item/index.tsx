@@ -41,6 +41,7 @@ export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ clas
 
   return (
     <StyledBox
+      id={"AUTOMATION_ADD_TRIGGER_BTN"}
       ref={ref}
       tabIndex={-1}
       border={disabled ? `1px dashed ${theme.color.fc5}` : `1px solid ${theme.color.fc5}`}

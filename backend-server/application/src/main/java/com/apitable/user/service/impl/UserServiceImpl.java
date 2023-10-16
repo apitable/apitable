@@ -62,6 +62,7 @@ import com.apitable.interfaces.user.facade.UserLinkServiceFacade;
 import com.apitable.interfaces.user.facade.UserServiceFacade;
 import com.apitable.interfaces.user.model.RewardedUser;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.MemberUserDTO;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
@@ -1179,16 +1180,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     }
 
     @Override
-    public Map<Long, UserSimpleVO> getUserSimpleInfoMap(List<Long> userIds) {
+    public Map<Long, UserSimpleVO> getUserSimpleInfoMap(String spaceId, List<Long> userIds) {
         if (userIds.isEmpty()) {
             return new HashMap<>();
         }
         UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
+        Map<Long, String> members =
+            memberMapper.selectMemberNameByUserIdsAndSpaceIds(spaceId, userIds).stream().collect(
+                Collectors.toMap(MemberUserDTO::getUserId, MemberUserDTO::getMemberName));
         return userMapper.selectByIds(userIds).stream().collect(
             Collectors.toMap(UserEntity::getId, i -> {
+                String memberName = StrUtil.isBlank(members.get(i.getId())) ? i.getNickName() :
+                    members.get(i.getId());
                 UserSimpleVO vo = new UserSimpleVO();
                 vo.setUuid(i.getUuid());
-                vo.setNickName(i.getNickName());
+                vo.setNickName(memberName);
                 vo.setAvatar(i.getAvatar());
                 return vo;
             }));

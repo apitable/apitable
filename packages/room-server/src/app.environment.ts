@@ -36,6 +36,7 @@ export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'tru
 
 // whether or not enable socket. (data collaboration middleware)
 export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
+export const enableHocuspocus = Object.is(process.env.ENABLE_HOCUSPOCUS, 'true');
 
 // project root directory
 export const PROJECT_DIR = __dirname;

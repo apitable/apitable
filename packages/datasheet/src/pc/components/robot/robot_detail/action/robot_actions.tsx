@@ -39,7 +39,6 @@ import {
 export const RobotActions = ({
   robotId,
   triggerTypes,
-  onScrollBottom = () => {},
 }: {
   robotId: string;
   triggerTypes: ITriggerType[];
@@ -73,7 +72,10 @@ export const RobotActions = ({
 
   if (!entryActionId) {
     return (
-      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={trigger==null} nodeOutputSchemaList={nodeOutputSchemaList}/>
+      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={
+        trigger==null ||
+        !permissions?.editable
+      } nodeOutputSchemaList={nodeOutputSchemaList}/>
     );
   }
 

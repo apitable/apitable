@@ -35,6 +35,10 @@ public class InternalSpaceSubscriptionVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRowsPerSheet;
 
+    @Schema(description = "Maximum number of archived rows in a single table (unit: row)")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxArchivedRowsPerSheet;
+
     @Schema(description = "The maximum number of rows of the space station (unit: row)")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRowsInSpace;

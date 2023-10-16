@@ -18,6 +18,7 @@
 
 package com.apitable.asset.service.impl;
 
+import com.apitable.workspace.mapper.DocumentMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +81,9 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
     @Resource
     private AssetCacheService assetCacheService;
 
+    @Resource
+    private DocumentMapper documentMapper;
+
     @Override
     public AssetUploadCertificateVO createPublishAssetPreSignedUrl() {
         String key = StringUtil.buildPath(PUBLIC_PREFIX);
@@ -104,7 +108,9 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
         ExceptionUtil.isTrue(count <= 20, ParameterException.INCORRECT_ARG);
         ExceptionUtil.isNotBlank(nodeId, ParameterException.INCORRECT_ARG);
         // query space, including whether the check node exists
-        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
+        String spaceId = AssetType.DOCUMENT.getValue() == assetType
+            ? documentMapper.selectSpaceIdByName(nodeId)
+            : iNodeService.getSpaceIdByNodeId(nodeId);
 
         List<AssetUploadCertificateVO> vos = new ArrayList<>(count);
         List<AssetEntity> entities = new ArrayList<>(count);

@@ -55,6 +55,8 @@ const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
       return t(Strings.copy_datasheet_url);
     case ConfigConstant.NodeType.FORM:
       return t(Strings.copy_form_url);
+    case ConfigConstant.NodeType.AUTOMATION:
+      return t(Strings.copy_automation_url);
     case ConfigConstant.NodeType.DASHBOARD:
       return t(Strings.copy_dashboard_url);
     case ConfigConstant.NodeType.MIRROR:
@@ -255,7 +257,7 @@ export const contextItemMap = new Map<ContextItemKey, any>([
       text: () => {
         return (
           <div className={styles.beta}>
-            <span>{t(Strings.ai_new_chatbot)}</span>
+            <span>{t(Strings.ai_new_agent)}</span>
             <span className={styles.betaTag}>Beta</span>
           </div>
         );

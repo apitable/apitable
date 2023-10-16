@@ -727,6 +727,8 @@ public class PlayerNotificationServiceImpl
                     notifyUr.append(notifyPath.build(CharsetUtil.CHARSET_UTF_8));
                     dict.set(EMAIL_DATASHEET_URL, notifyUr.toString());
                     dict.set(EMAIL_URL, notifyUr.toString());
+                    dict.set(EMAIL_CREATED_AT,
+                        ClockManager.me().getUtcNow().toInstant().toEpochMilli());
                 }
             }
         } else {

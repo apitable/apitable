@@ -7,7 +7,7 @@ import { useAllFieldsByDstId } from '../../../robot/hooks';
 import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
 import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
 
-export const getDatasheetId = (trigger?: IRobotTrigger) => {
+export const getDatasheetId = (trigger?: Pick<IRobotTrigger, 'input'>) => {
   if (!trigger) {
     return undefined;
   }
@@ -25,7 +25,7 @@ export const getDatasheetId = (trigger?: IRobotTrigger) => {
   return undefined;
 };
 
-export const getFormId = (trigger?: IRobotTrigger) => {
+export const getFormId = (trigger?: Pick<IRobotTrigger, 'input'>) => {
 
   if (!trigger) {
     return undefined;
@@ -41,6 +41,15 @@ export const getFormId = (trigger?: IRobotTrigger) => {
     return operands[f + 1].value;
   }
   return undefined;
+};
+
+export const getRelativedId = (automationTrigger?: Pick<IRobotTrigger, 'input'>) => {
+  if(!automationTrigger) {
+    return null;
+  }
+  const formId = getFormId(automationTrigger);
+  const datasheetId= getDatasheetId(automationTrigger);
+  return formId ?? datasheetId;
 };
 
 export const useTriggerDatasheetId = (): string | undefined => {

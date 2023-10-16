@@ -41,7 +41,10 @@ public enum AssetType implements IBaseEnum {
 
     COVER(3),
 
-    NODE_DESC(4);
+    NODE_DESC(4),
+
+    DOCUMENT(5),
+    ;
 
     private final int value;
 
@@ -60,11 +63,11 @@ public enum AssetType implements IBaseEnum {
     }
 
     public static boolean isSpaceAsset(AssetType type) {
-        return type.equals(DATASHEET) || type.equals(COVER) || type.equals(NODE_DESC);
+        return type.getValue() > SPACE_LOGO.getValue();
     }
 
     public static boolean isPublishAsset(Integer value) {
         AssetType type = AssetType.of(value);
-        return type.equals(USER_AVATAR) || type.equals(SPACE_LOGO);
+        return type.getValue() <= SPACE_LOGO.getValue();
     }
 }

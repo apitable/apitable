@@ -21,12 +21,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlarmDynamicModule } from 'database/alarm/alarm.dynamic.module';
 import { DashboardModule } from 'database/dashboard/dashboard.module';
 import { DatasheetModule } from 'database/datasheet/datasheet.module';
-import { DatasheetWidgetRepository } from 'database/datasheet/repositories/datasheet.widget.repository';
+import {
+  DatasheetWidgetRepository,
+} from 'database/datasheet/repositories/datasheet.widget.repository';
 import { FormModule } from 'database/form/form.module';
 import { MirrorModule } from 'database/mirror/mirror.module';
 import { NodeModule } from 'node/node.module';
 import { ResourceModule } from 'database/resource/resource.module';
-import { SubscriptionDynamicModule } from 'database/subscription/subscription.dynamic.module';
+import {
+  SubscriptionDynamicModule,
+} from 'database/subscription/subscription.dynamic.module';
 import { UserModule } from 'user/user.module';
 import { WidgetModule } from 'database/widget/widget.module';
 import { GrpcModule } from 'grpc/grpc.module';
@@ -38,18 +42,21 @@ import { OtService } from './services/ot.service';
 import { ResourceChangeHandler } from './services/resource.change.handler';
 import { WidgetOtService } from './services/widget.ot.service';
 import { RobotEventModule } from 'database/robot/robot.event.module';
+import {
+  DatasheetRecordArchiveRepository,
+} from '../datasheet/repositories/datasheet.record.archive.repository';
 
 @Module({
   imports: [
-    forwardRef(()=>GrpcModule),
-    forwardRef(()=>NodeModule),
-    DatasheetModule, 
-    forwardRef(()=>ResourceModule), 
-    WidgetModule, 
-    forwardRef(()=>FormModule), 
-    MirrorModule, 
+    forwardRef(() => GrpcModule),
+    forwardRef(() => NodeModule),
+    DatasheetModule,
+    forwardRef(() => ResourceModule),
+    WidgetModule,
+    forwardRef(() => FormModule),
+    MirrorModule,
     RobotEventModule,
-    forwardRef(()=>DashboardModule), 
+    forwardRef(() => DashboardModule),
     UserModule,
     AlarmDynamicModule.forRoot(),
     SubscriptionDynamicModule.forRoot(),
@@ -66,6 +73,7 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
     FormOtService,
     WidgetOtService,
     ResourceChangeHandler,
+    DatasheetRecordArchiveRepository,
   ],
   exports: [
     OtService,
@@ -75,6 +83,7 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
     FormOtService,
     WidgetOtService,
     ResourceChangeHandler,
-  ]
+  ],
 })
-export class OtModule {}
+export class OtModule {
+}

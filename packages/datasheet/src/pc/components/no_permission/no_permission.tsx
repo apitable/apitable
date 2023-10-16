@@ -31,8 +31,8 @@ import restrictedAccessLight from 'static/icon/datasheet/restricted_access_light
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
-// @ts-ignore
-import { ServiceQrCode } from 'enterprise';
+// // @ts-ignore
+// import { ServiceQrCode } from 'enterprise';
 
 export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ desc }) => {
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
@@ -66,7 +66,7 @@ export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ d
                 <>
                   <Image src={integrateCdnHost(t(Strings.no_permission_img_url))} width={340} height={190} alt="" />
                   <div className={styles.imgContentQRcode}>
-                    <ServiceQrCode />
+                    {/*<ServiceQrCode />*/}
                   </div>
                 </>
               ) : (

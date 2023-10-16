@@ -25,7 +25,7 @@ import { useContainer } from 'class-validator';
 import * as immer from 'immer';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
-import { initFastify, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
+import { initFastify, initHocuspocus, initHttpHook, initRedisIoAdapter, initRoomGrpc, initSentry, initSocketGrpc, initSwagger } from 'shared/adapters/adapters.init';
 import { APPLICATION_NAME, BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
 import { GlobalExceptionFilter } from 'shared/filters';
 import { HttpResponseInterceptor } from 'shared/interceptor';
@@ -75,6 +75,8 @@ async function bootstrap() {
   // grpc
   initRoomGrpc(logger, app);
   initSocketGrpc(logger, app);
+
+  initHocuspocus(app);
 
   await app.startAllMicroservices();
   // eslint-disable-next-line react-hooks/rules-of-hooks

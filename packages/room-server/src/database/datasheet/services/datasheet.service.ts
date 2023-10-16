@@ -98,8 +98,8 @@ export class DatasheetService {
     const meta = options?.meta ?? (await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException));
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
-      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount)
-      : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount);
+      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount, options.includeArchivedRecords)
+      : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount, options?.includeArchivedRecords);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
     const { mainDstRecordMap, foreignDatasheetMap, units } = await this.datasheetFieldHandler.analyze(dstId, {
@@ -181,6 +181,14 @@ export class DatasheetService {
    */
   fetchSubmitFormForeignDatasheetPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions, shareId?: string): Promise<DatasheetPack> {
     const origin: IFetchDataOriginOptions = shareId ? { internal: false, main: true, shareId } : { internal: true, main: true, form: true };
+    return this.fetchCommonDataPack('form linked datasheet', dstId, auth, origin, false, {
+      ...options,
+      recordIds: options?.recordIds ?? [],
+    }) as Promise<DatasheetPack>;
+  }
+
+  fetchForeignDatasheetPackWithoutCheckPermission(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
+    const origin: IFetchDataOriginOptions = { internal: false, main: true };
     return this.fetchCommonDataPack('form linked datasheet', dstId, auth, origin, false, {
       ...options,
       recordIds: options?.recordIds ?? [],

@@ -17,12 +17,30 @@
  */
 
 import type { IMeta } from '@apitable/core';
-import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  Param,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from 'user/services/user.service';
-import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
-import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
+import {
+  DatasheetException,
+  PermissionException,
+  ServerException,
+} from 'shared/exception';
+import {
+  ResourceDataInterceptor,
+} from 'database/resource/middleware/resource.data.interceptor';
 import type { CommentReplyDto } from '../dtos/comment.reply.dto';
-import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
+import {
+  DatasheetRecordSubscriptionBaseService,
+} from 'database/subscription/datasheet.record.subscription.base.service';
 import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 import { NodeService } from 'node/services/node.service';
@@ -31,6 +49,7 @@ import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
 import { MetaService } from 'database/resource/services/meta.service';
+import { IApiPaginateRo } from '../../../shared/interfaces';
 
 /**
  * Datasheet APIs
@@ -46,7 +65,8 @@ export class DatasheetController {
     private readonly datasheetRecordService: DatasheetRecordService,
     private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
     private readonly resourceMetaService: MetaService,
-  ) {}
+  ) {
+  }
 
   @Get('datasheets/:dstId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
@@ -169,4 +189,12 @@ export class DatasheetController {
     await this.nodeService.checkNodePermission(dstId, { cookie });
     await this.datasheetRecordSubscriptionService.unsubscribeDatasheetRecords(userId, dstId, data.recordIds);
   }
+
+  @Get('datasheets/:dstId/records/archived')
+  async getArchivedRecords(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: IApiPaginateRo){
+    const { userId } = await this.userService.getMe({ cookie });
+    await this.nodeService.checkUserForNode(userId, dstId);
+    return await this.datasheetRecordService.getArchivedRecords(dstId, query);
+  }
+
 }

@@ -22,6 +22,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+
 import {
   Button,
   Checkbox,
@@ -40,6 +41,9 @@ import {
   CollaCommandName,
   DropDirectionType,
   GalleryStyleKeyType,
+  ICollaCommandOptions,
+  IFieldMap,
+  IFieldPermissionMap,
   IViewColumn,
   KanbanStyleKey,
   NO_COVER_FIELD_ID,
@@ -49,9 +53,6 @@ import {
   Strings,
   t,
   ViewType,
-  IFieldPermissionMap,
-  IFieldMap,
-  ICollaCommandOptions,
 } from '@apitable/core';
 import { DisabledOutlined, DragOutlined, ImageOutlined, InfoCircleOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
@@ -348,13 +349,13 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
             cmd: activeView.type === ViewType.Kanban ? CollaCommandName.SetKanbanStyle : CollaCommandName.SetGalleryStyle,
             viewId: activeView.id,
             styleKey: (activeView.type === ViewType.Kanban ? KanbanStyleKey.IsCoverFit : GalleryStyleKeyType.IsCoverFit) as any,
-            styleValue: !checked,
+            styleValue: checked,
           });
         },
         {
           style: {
             ...activeView.style,
-            [GalleryStyleKeyType.IsCoverFit]: !checked,
+            [GalleryStyleKeyType.IsCoverFit]: checked,
           },
         } as any,
       );
@@ -612,7 +613,7 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
                 <div className={styles.switchCoverFit} style={{ marginTop: 8 }}>
                   <WrapperTooltip wrapper={isViewLock} tip={t(Strings.view_lock_setting_desc)}>
                     <span className={styles.switchCoverFitCheckbox}>
-                      <Checkbox checked={!activeView.style.isCoverFit} onChange={switchCoverFit} size={14} disabled={isViewLock} />
+                      <Checkbox checked={activeView.style.isCoverFit} onChange={switchCoverFit} size={14} disabled={isViewLock} />
                     </span>
                   </WrapperTooltip>
                   <span style={{ paddingLeft: 4 }}>{t(Strings.gallery_img_stretch)}</span>

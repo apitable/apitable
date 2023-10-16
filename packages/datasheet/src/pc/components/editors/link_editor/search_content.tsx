@@ -24,15 +24,15 @@ import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Align, FixedSizeList } from 'react-window';
-import { Button, LinkButton, useThemeColors, ThemeName } from '@apitable/components';
+import { Button, LinkButton, ThemeName, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
   ExecuteResult,
   Field,
   FieldType,
   ILinkField,
-  IOneWayLinkField,
   ILinkIds,
+  IOneWayLinkField,
   IReduxState,
   ISegment,
   IViewRow,
@@ -127,8 +127,8 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         return;
       }
 
-      // filter deleted link record
-      const filterCellValue = cellValue?.filter((id) => {
+      // filter one way link record
+      const filterCellValue = field.type === FieldType.Link ? cellValue : cellValue?.filter((id) => {
         return foreignRows.some(row => row.recordId === id);
       });
 

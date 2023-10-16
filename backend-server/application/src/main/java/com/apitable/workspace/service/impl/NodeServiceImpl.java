@@ -1148,7 +1148,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case AUTOMATION:
                 AutomationCopyOptions automationCopyOptions =
                     AutomationCopyOptions.builder().sameSpace(true).overriddenName(name).build();
-                iAutomationRobotService.copy(userId, Collections.singletonList(opRo.getNodeId()),
+                iAutomationRobotService.copy(userId,
+                    Collections.singletonList(opRo.getNodeId()),
                     automationCopyOptions, newNodeMap);
                 return copyEffect;
             default:
@@ -1258,7 +1259,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case AUTOMATION:
                 AutomationCopyOptions automationCopyOptions =
                     AutomationCopyOptions.builder().overriddenName(name).build();
-                iAutomationRobotService.copy(userId, Collections.singletonList(sourceNodeId),
+                iAutomationRobotService.copy(userId,
+                    Collections.singletonList(sourceNodeId),
                     automationCopyOptions, newNodeMap);
                 break;
             default:
