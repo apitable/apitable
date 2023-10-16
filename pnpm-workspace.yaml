@@ -1,2 +1,5 @@
 packages:
   - 'packages/*'
+
+overrides:
+  'glob-parent': '>=5.1.2'
