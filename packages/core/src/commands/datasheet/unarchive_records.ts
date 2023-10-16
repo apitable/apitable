@@ -6,13 +6,11 @@ import { DatasheetActions } from 'model';
 import { IJOTAction } from 'engine/ot';
 import { ResourceType } from 'types';
 
-
 export interface IUnarchiveRecordsOptions { 
   cmd: CollaCommandName.UnarchiveRecords;
   data: any[];
   datasheetId?: string;
 }
-
 
 export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = { 
   undoable: false,
@@ -27,7 +25,6 @@ export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = {
     }
     
     const actions: IJOTAction[] = [];
-
     
     // 删除meta中的archivedRecordIds
     const unarchiveRecordsActions = DatasheetActions.unarchivedRecords2Action(snapshot, { recordsData: data });
@@ -35,10 +32,8 @@ export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = {
     if(unarchiveRecordsActions) {
       unarchiveRecordsActions.forEach(action => { 
         actions.push(action);
-       });
+      });
     }
-    
-    console.log('actions----->', actions);
 
     return {
       result: ExecuteResult.Success,
@@ -47,4 +42,4 @@ export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = {
       actions,
     };
   }
-}
+};

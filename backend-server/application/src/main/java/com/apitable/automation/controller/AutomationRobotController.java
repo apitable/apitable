@@ -18,6 +18,7 @@
 
 package com.apitable.automation.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.apitable.automation.model.ActionVO;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationTaskSimpleVO;
@@ -173,7 +174,8 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         boolean result = iAutomationRobotService.update(robotId, userId, data);
-        if (result && data.getModifyNodeName()) {
+        if (result && StrUtil.isNotBlank(data.getName())
+            && resourceId.startsWith(IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum())) {
             NodeUpdateOpRo ro = new NodeUpdateOpRo();
             ro.setNodeName(data.getName());
             iNodeService.edit(userId, resourceId, ro);

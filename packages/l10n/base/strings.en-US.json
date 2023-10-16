@@ -5766,5 +5766,15 @@
   "the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side": "The current automation workflow has no related files. You can establish a link by adding trigger conditions and actions on the left side",
   "automation_dst_not_existed": "Relative datasheet doest not exist",
   "player_step_ui_config_automation_1" : "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
-  "automation": "Automation"
+  "automation": "Automation",
+  "datasource_selector_search_result_title": "Node",
+  "datasource_selector_search_placeholder": "Search folder or node"
+  "archive_delete_record_title": "Delete record",
+  "archive_delete_record": "Delete archived records",
+  "archived_undo": "Undo Archied",
+  "archived_by": "Archied by",
+  "archived_time": "Archied time",
+  "archived_action": "Action",
+  "archived_select_info": "Selected${selected}items",
+  "archive_notice": "<p>You are trying to archive selected data. Once the data is archived it will</p> <p>1. Editing is is not supported</p><p>2. Functions such as date reminders and subscribe records are not supported</p><p>3. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue?</p>"
 }

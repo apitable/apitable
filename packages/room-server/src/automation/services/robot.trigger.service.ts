@@ -97,8 +97,10 @@ export class RobotTriggerService {
     const resourceRobotTriggers: ResourceRobotTriggerDto[] = [];
     // get the datasheet's robots' id.
     const datasheetRobots = await this.automationRobotRepository.selectRobotIdByResourceId(resourceId);
-    const robotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput([formId]);
+    let robotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput([formId]);
     robotIds.push(...datasheetRobots.map(i => i.robotId));
+    // filter active robot
+    robotIds = await this.automationRobotRepository.selectActiveRobotIdsByRobotIds(robotIds);
     for (const robotId of robotIds) {
       // get the special trigger type's robot's triggers.
       const triggers = await this.automationTriggerRepository.getTriggerByRobotIdAndTriggerTypeId(robotId, triggerTypeId);

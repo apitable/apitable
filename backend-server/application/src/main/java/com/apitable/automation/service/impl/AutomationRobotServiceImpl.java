@@ -47,6 +47,7 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.databusclient.ApiException;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
 import com.apitable.databusclient.model.AutomationActionIntroductionPO;
+import com.apitable.databusclient.model.AutomationRobotCopyRO;
 import com.apitable.databusclient.model.AutomationRobotIntroductionPO;
 import com.apitable.databusclient.model.AutomationRobotIntroductionSO;
 import com.apitable.databusclient.model.AutomationRobotSO;
@@ -57,10 +58,12 @@ import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserSimpleVO;
+import com.apitable.workspace.enums.NodeException;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -120,7 +123,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         for (AutomationRobotEntity robot : robots) {
             String robotId = IdUtil.createAutomationRobotId();
             AutomationRobotEntity entity = AutomationRobotEntity.builder()
-                .id(IdWorker.getId())
+                .id(BigInteger.valueOf(IdWorker.getId()))
                 .resourceId(newNodeMap.get(robot.getResourceId()))
                 .robotId(robotId)
                 .name(Optional.ofNullable(options.getOverriddenName()).orElse(robot.getName()))
@@ -139,6 +142,29 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         TriggerCopyResultDto resultDto =
             iAutomationTriggerService.copy(userId, options.isSameSpace(), newRobotMap, newNodeMap);
         iAutomationActionService.copy(userId, newRobotMap, resultDto);
+    }
+
+    @Override
+    public void copyByDatabus(Long userId, List<String> resourceIds, AutomationCopyOptions options,
+                              Map<String, String> newNodeMap) {
+        if (CollUtil.isEmpty(resourceIds)) {
+            return;
+        }
+        List<AutomationRobotCopyRO> robots = new ArrayList<>();
+        for (String resourceId : resourceIds) {
+            AutomationRobotCopyRO robot = new AutomationRobotCopyRO();
+            robot.setAutomationName(options.getOverriddenName());
+            robot.setResourceId(newNodeMap.get(resourceId));
+            robot.setOriginalResourceId(resourceId);
+            robot.setUserId(userId);
+            robots.add(robot);
+        }
+        try {
+            automationDaoApiApi.daoCopyAutomationRobot(robots);
+        } catch (ApiException e) {
+            log.error("Copy automation error:{}", resourceIds, e);
+            throw new BusinessException(NodeException.NODE_COPY_FOLDER_ERROR);
+        }
     }
 
     @Override

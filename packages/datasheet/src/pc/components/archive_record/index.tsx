@@ -3,13 +3,14 @@ import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import classnames from 'classnames';
 import React, { useEffect, useState, useMemo } from 'react';
 import { Button } from '@apitable/components';
-import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field } from '@apitable/core';
-import { ListOutlined, RestoreOutlined, DeleteOutlined } from '@apitable/icons';
+import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
+import { RestoreOutlined, DeleteOutlined, ArchiveOutlined } from '@apitable/icons';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { IArchivedRecordsProps } from './interface';
 import { useRequest } from 'pc/hooks';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip, Avatar } from 'pc/components/common';
 import styles from './style.module.less';
 import { resourceService } from 'pc/resource_service';
@@ -20,10 +21,12 @@ const handleRecordsData = (recordsData) => {
   const data = recordsData.map(item => {
       const { record, archivedUser, archivedAt } = item;
       const recordData = record.data;
-      recordData.key = record.id;
-      recordData.archivedUser = archivedUser;
-      recordData.archivedTime = archivedAt;
-      return recordData;
+      return {
+        ...recordData,
+        key: record.id,
+        archivedUser: archivedUser,
+        archivedTime: archivedAt
+      };
   });
   return data;
 }
@@ -32,7 +35,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const { className, showLabel = true, isHide } = props;
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
-  const [tableParams, setTableParams] = useState( {
+  const [tableParams, setTableParams] = useState({
     pageNum: 1,
     pageSize: 10,
   });
@@ -45,7 +48,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const archivedRecordIds = useSelector((state) => Selectors.getSnapshot(state)!.meta.archivedRecordIds)!;
-  
+  const visibleColumns = useSelector((state) => Selectors.getVisibleColumns(state, datasheetId))!;
+  const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+
   const { run: getArchivedRecords, loading: archivedRecordsLoading } = useRequest(() => DatasheetApi.getArchivedRecords(datasheetId, tableParams), {
     manual: true,
     onSuccess(res) {
@@ -58,13 +63,11 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         const cloneRecords = fastCloneDeep(records);
 
         const recordsMap = new Map();
-        cloneRecords.forEach(item => { 
+        cloneRecords.forEach(item => {
           recordsMap.set(item.record.id, item.record);
         });
         setRecordsDataMap(recordsMap);
-        
       }
-      // 错误信息提示
      }
   });
 
@@ -77,7 +80,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const cancelArchied = (record) => {
     const data: any[] = [];
     data.push(recordsDataMap.get(record.key));
-   
+
     const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.UnarchiveRecords,
       data,
@@ -88,9 +91,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   }
 
-  const batchCancelArchied = () => { 
+  const batchCancelArchied = () => {
     const data: any[] = [];
-    selectedRowKeys.forEach(key => { 
+    selectedRowKeys.forEach(key => {
       data.push(recordsDataMap.get(key));
     });
     const { result } = resourceService.instance!.commandManager.execute({
@@ -116,9 +119,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   }
 
-  const batchDeleteRecord = () => { 
+  const batchDeleteRecord = () => {
     const data: any[] = [];
-    selectedRowKeys.forEach(key => { 
+    selectedRowKeys.forEach(key => {
       data.push(recordsDataMap.get(key));
     });
     const { result } = resourceService.instance!.commandManager.execute({
@@ -131,23 +134,67 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   }
 
+  const showArchivedCellValue = (cellValue, key) => {
+    switch (fieldMap[key].type) {
+    case FieldType.Text:
+    case FieldType.URL:
+    case FieldType.Email:
+    case FieldType.Phone:
+    case FieldType.SingleText:
+    case FieldType.DateTime:
+    case FieldType.CreatedTime:
+    case FieldType.LastModifiedTime:
+    case FieldType.Number:
+    case FieldType.SingleSelect:
+    case FieldType.MultiSelect:
+    case FieldType.Member:
+    case FieldType.CreatedBy:
+    case FieldType.LastModifiedBy:
+    case FieldType.Rating:
+    case FieldType.Formula:
+    case FieldType.Checkbox:
+      return Field.bindModel(fieldMap[key]).cellValueToString(cellValue);
+    case FieldType.Currency:
+    case FieldType.Percent:
+    case FieldType.AutoNumber:
+    case FieldType.Cascader:
+    case FieldType.Link:
+    case FieldType.OneWayLink:
+    case FieldType.LookUp:
+    case FieldType.Attachment:
+      return cellValue;
+    default:
+      return cellValue;
+    }
+  }
+
   const columns: ColumnsType<any> = useMemo(() => {
+    let firstColumn = {};
     const fieldMapColums: ColumnsType = Object.keys(fieldMap).map((key) => {
       const { name, id } = fieldMap[key];
-      return {
+      const fieldSetting: any = {
         title: name,
         key: id,
         dataIndex: id,
         width: 200,
         render: (cellValue) => (
           <div className={styles.cellValue}>
-              {Field.bindModel(fieldMap[key]).cellValueToString(cellValue)}
+              {showArchivedCellValue(cellValue, key)}
           </div>
         ),
       }
-    });
+      if(key === visibleColumns[0].fieldId) {
+        fieldSetting.fixed = 'left';
+        firstColumn = fieldSetting;
+        return null;
+      }
+      return fieldSetting;
+    }).filter(item => item !== null);
+
+    fieldMapColums.unshift(firstColumn);
+
     fieldMapColums.push({
-      title: 'Archied by',
+      title: t(Strings.archived_by),
       key: 'archivedUser',
       dataIndex: 'archivedUser',
       width: 200,
@@ -160,7 +207,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
 
     fieldMapColums.push({
-      title: 'Archied time',
+      title: t(Strings.archived_time),
       key: 'archivedTime',
       dataIndex: 'archivedTime',
       width: 200,
@@ -172,13 +219,13 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
 
     fieldMapColums.push({
-      title: 'Action',
+      title: t(Strings.archived_action),
       key: 'action',
       fixed: 'right',
       width: 80,
       render: (_, record) => (
           <div className={styles.toolList}>
-            <Tooltip title="Undo Archied">
+            <Tooltip title={t(Strings.archived_undo)}>
               <RestoreOutlined
                 onClick={() => {
                   Modal.warning({
@@ -191,10 +238,10 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
                 }}
               />
             </Tooltip>
-            <Tooltip title="Delete record">
+            <Tooltip title={t(Strings.archive_delete_record_title)}>
               <DeleteOutlined onClick={() => {
                  Modal.danger({
-                  title: 'Delete archived records',
+                  title: t(Strings.archive_delete_record),
                   content: t(Strings.delete_archived_records_warning_description),
                   onOk: () => deleteRecord(record),
                   closable: true,
@@ -206,7 +253,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       ),
     });
 
-    
+
 
     return fieldMapColums;
   }, [fieldMap, recordData, archivedRecordIds]);
@@ -233,6 +280,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       pageNum: pagination.current || 1,
       pageSize: pagination.pageSize || 10,
     });
+    setSelectedRowKeys([]);
   };
 
   const hasSelected = selectedRowKeys.length > 0;
@@ -241,14 +289,15 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     <>
       <ToolItem
         key="archivedRecords"
-        icon={<ListOutlined size={16} />}
+        icon={<ArchiveOutlined size={16} />}
         showLabel={isHide || showLabel}
         className={classnames(className)}
         text={t(Strings.archived_records)}
         onClick={showDrawer}
         id={DATASHEET_ID.ARCHIVED_RECORDS_BTN}
+        disabled={!permissions.editable}
       />
-      <Drawer className='archiveDrawer' title={t(Strings.archived_record)} placement="right" onClose={onDrawerClose} width={window.innerWidth * 0.9} open={open}>
+      <Drawer className='archiveDrawer' title={t(Strings.archived_records)} placement="right" onClose={onDrawerClose} width={window.innerWidth * 0.9} open={open}>
         { hasSelected &&  <div className={styles.batchHandle}>
           <Button onClick={() => {
              Modal.warning({
@@ -261,14 +310,14 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
           }} variant="fill"  size="small" prefixIcon={<RestoreOutlined currentColor />}> {t(Strings.unarchive)} </Button>
           <Button variant="fill" onClick={() => {
              Modal.danger({
-              title: 'Delete archived records',
+              title: t(Strings.archive_delete_record),
               content: t(Strings.delete_archived_records_warning_description),
               onOk: () => batchDeleteRecord(),
               closable: true,
               hiddenCancelBtn: false,
             });
           }}  size="small" prefixIcon={<DeleteOutlined currentColor />}> {t(Strings.delete_record)} </Button>
-          <p>{`Selected ${selectedRowKeys.length} items`}</p>
+          <p>{t(Strings.archived_select_info,{ select: selectedRowKeys.length})}</p>
         </div>
         }
         <Table
@@ -281,7 +330,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
           scroll={{ x: window.innerWidth * 0.9 }}
           dataSource={handleRecordsData(fastCloneDeep(recordData))}
           pagination={{
-            ...tablePagination, 
+            ...tablePagination,
             total,
             showQuickJumper: true,
             showSizeChanger: true,

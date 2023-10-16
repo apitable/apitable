@@ -43,6 +43,7 @@ import com.apitable.databusclient.model.AutomationTriggerPO;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +152,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         List<AutomationTriggerEntity> entities = new ArrayList<>(triggers.size());
         for (AutomationTriggerEntity trigger : triggers) {
             AutomationTriggerEntity entity = AutomationTriggerEntity.builder()
-                .id(IdWorker.getId())
+                .id(BigInteger.valueOf(IdWorker.getId()))
                 .robotId(newRobotMap.get(trigger.getRobotId()))
                 .triggerTypeId(trigger.getTriggerTypeId())
                 .triggerId(newTriggerMap.get(trigger.getTriggerId()))

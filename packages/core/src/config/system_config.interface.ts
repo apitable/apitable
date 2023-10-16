@@ -543,6 +543,7 @@ export interface Events {
     _:                                             Empty;
     address_shown:                                 AddressShown;
     app_error_logger:                              AddressShown;
+    guide_use_automation_first_time:               AddressShown;
     app_modal_confirm:                             AddressShown;
     app_set_user_id:                               AddressShown;
     app_tracker:                                   AddressShown;
@@ -598,7 +599,6 @@ export interface Events {
     workbench_show_trial_tip:                      AddressShown;
     workbench_shown:                               AddressShown;
     workbench_space_list_shown:                    AddressShown;
-    guide_use_automation_first_time:               AddressShown;
 }
 
 export interface Empty {

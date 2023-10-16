@@ -23,12 +23,12 @@ import * as React from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
-import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { CollaCommandName, ConfigConstant, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { RuntimeEnv } from '@apitable/widget-sdk';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { SearchPanel } from 'pc/components/datasheet_search_panel';
+import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
 import { expandRecordInCenter } from 'pc/components/expand_record';
 import { expandRecordPicker } from 'pc/components/record_picker';
 import { WidgetHeader } from 'pc/components/widget/widget_panel/widget_item/widget_header';
@@ -50,6 +50,7 @@ import { WidgetBlockMain } from './widget_block_main';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
 import { EmbedContext } from 'enterprise';
+import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -255,13 +256,18 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = (
             ))}
         </div>
         {searchPanelVisible && !readonly && (
-          <SearchPanel
-            folderId={rootNodeId}
-            activeDatasheetId={''}
-            setSearchPanelVisible={setSearchPanelVisible}
+          <DataSourceSelectorForNode
+            onHide={() => {
+              setSearchPanelVisible(false);
+            }}
+            permissionRequired={'manageable'}
             onChange={setDepDatasheetId}
-            noCheckPermission
-            showMirrorNode
+            nodeTypes={[ConfigConstant.NodeType.DATASHEET, ConfigConstant.NodeType.MIRROR]}
+            defaultNodeIds={{
+              folderId: rootNodeId,
+              datasheetId: '',
+            }}
+            requiredData={['datasheetId', 'mirrorId']}
           />
         )}
       </div>

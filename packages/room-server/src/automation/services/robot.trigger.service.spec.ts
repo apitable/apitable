@@ -122,6 +122,8 @@ describe('RobotTriggerServiceTest', () => {
       .mockResolvedValue([{ triggerId: 'triggerId', triggerTypeId: 'triggerTypeId', input: {}, robotId: 'robotId' }] as ResourceRobotTriggerDto[]);
     jest.spyOn(automationTriggerRepository , 'getRobotIdsByResourceIdsAndHasInput').mockResolvedValue([]);
     jest.spyOn(nodeService , 'getRelNodeIdsByMainNodeIds').mockResolvedValue([]);
+    jest.spyOn(automationRobotRepository, 'selectActiveRobotIdsByRobotIds').mockResolvedValue(['robotId']);
+
     const resourceRobotTriggerDtos =
       await robotTriggerService.getTriggersByResourceAndEventType('datasheetId', 'formId', EventTypeEnums.FormSubmitted);
     expect(resourceRobotTriggerDtos).toBeDefined();

@@ -67,6 +67,7 @@ import { isWindowsOS } from 'pc/utils/os';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
 import { copy2clipBoard } from '../../../utils/dom';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import parser from 'html-react-parser';
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
@@ -376,6 +377,10 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   const IconInsertBefore = insertDirection === 'horizontal' ? ArrowLeftOutlined : ArrowUpOutlined;
   const IconInsertAfter = insertDirection === 'horizontal' ? ArrowRightOutlined : ArrowDownOutlined;
 
+  const getArchiveNotice = (content) => {
+    return <div>{parser(content)}</div>
+  }
+
   let data: Partial<IContextMenuItemProps>[][] = [
     [
       {
@@ -416,7 +421,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
         onClick: ({ props: { recordId } }: any) => {
           Modal.warning({
             title: t(Strings.menu_archive_record),
-            content: t(Strings.archive_notice),
+            content: getArchiveNotice(t(Strings.archive_notice)),
             onOk: () => archiveRecord(recordId),
             closable: true,
             hiddenCancelBtn: false,

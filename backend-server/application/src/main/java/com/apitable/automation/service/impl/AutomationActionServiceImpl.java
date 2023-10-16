@@ -41,6 +41,7 @@ import com.apitable.databusclient.model.AutomationRobotActionRO;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
         List<AutomationActionEntity> entities = new ArrayList<>(actions.size());
         for (AutomationActionEntity action : actions) {
             AutomationActionEntity entity = AutomationActionEntity.builder()
-                .id(IdWorker.getId())
+                .id(BigInteger.valueOf(IdWorker.getId()))
                 .robotId(newRobotMap.get(action.getRobotId()))
                 .actionTypeId(action.getActionTypeId())
                 .actionId(newActionMap.get(action.getActionId()))
