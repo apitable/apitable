@@ -77,7 +77,7 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
 };
 
 export const PreviewItem: React.FC<React.PropsWithChildren<IPreviewItemProps>> = (props) => {
-  const {name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId} = props;
+  const { name, cellValue, id, index, readonly, style, onSave, setPreviewIndex, recordId, field, datasheetId } = props;
   const _file = cellValue.find((item) => item.id === id);
   const file: IAttachmentValue = useGetSignatureAssertByToken(_file as IAttachmentValue);
   const fieldId = field.id;

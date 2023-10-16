@@ -37,7 +37,7 @@ describe('RobotTriggerServiceTest', () => {
   let automationTriggerRepository: AutomationTriggerRepository;
   let automationServiceRepository: AutomationServiceRepository;
   let automationRobotRepository: AutomationRobotRepository;
-  
+
   beforeEach(async () => {
     moduleFixture = await Test.createTestingModule({
       imports: [
@@ -59,7 +59,7 @@ describe('RobotTriggerServiceTest', () => {
         },
       ],
     }).compile();
-    
+
     automationTriggerTypeRepository = moduleFixture.get<AutomationTriggerTypeRepository>(AutomationTriggerTypeRepository);
     automationTriggerRepository = moduleFixture.get<AutomationTriggerRepository>(AutomationTriggerRepository);
     automationServiceRepository = moduleFixture.get<AutomationServiceRepository>(AutomationServiceRepository);

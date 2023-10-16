@@ -2815,7 +2815,6 @@
   "link_common_err": "あら、リンクが正しくないようです。",
   "link_copy_success": "URLがコピーされました",
   "link_data_error": "関連データテーブルのデータエラー",
-  "one_way_link_data_error": "関連データテーブルのデータエラー",
   "link_delete_succeed": "リンクが削除されました",
   "link_failed": "共有者がリンクを無効にしているか、管理者が共有を禁止しているため、共有リンクが無効です。",
   "link_failed_after_close_share_link": "無効にすると、作成されたパブリックリンクは無効になります",

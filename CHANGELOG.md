@@ -1,5 +1,23 @@
 # APITable CHANGELOG
 
+## [v1.3.0-beta](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta) (2023-10-09)
+
+
+### Bug fixes
+
+* fix: widget-sdk pkg with js files ([#1362](https://github.com/apitable/apitable/pull/1362)) @Kilian 
+* fix: project startup error @JaneSu 
+* fix: project startup error ([#1370](https://github.com/apitable/apitable/pull/1370)) @Aria 
+
+### What's more
+
+* ci: test ci @JaneSu 
+* ci: test ci @JaneSu 
+* ci: test ci @JaneSu 
+* ci: test ci @JaneSu 
+* ci: test ci @JaneSu 
+* ci: test ci ([#1366](https://github.com/apitable/apitable/pull/1366)) @Aria 
+* sync: hosted cloud ([#1367](https://github.com/apitable/apitable/pull/1367)) @Robot Ye Chen 
 ## [v1.2.0-beta](https://github.com/apitable/apitable/releases/tag/v1.2.0-beta) (2023-09-25)
 
 
