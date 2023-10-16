@@ -65,13 +65,13 @@
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
-    "@swc/core": "^1.3.93",
+    "@swc/core": "^1.3.86",
     "@swc/jest": "^0.2.29",
-    "@types/dot-object": "^2.1.3",
-    "@types/lru-cache": "^7.10.10",
-    "@types/node": "^20.8.6",
-    "@typescript-eslint/eslint-plugin": "^6.7.5",
-    "@typescript-eslint/parser": "^6.7.5",
+    "@types/dot-object": "^2.1.2",
+    "@types/lru-cache": "^7.10.9",
+    "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
     "apitable": "latest",
     "babel-eslint": "10.1.0",
     "chalk": "^5.3.0",
@@ -79,7 +79,7 @@
     "dot-object": "^2.1.4",
     "dotenv": "16.3.1",
     "dotenv-expand": "10.0.0",
-    "eslint": "8.49.0",
+    "eslint": "^8.49.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-loader": "4.0.2",
     "eslint-plugin-flowtype": "8.0.3",
@@ -94,7 +94,7 @@
     "nx": "latest",
     "prettier": "^3.0.3",
     "pretty-quick": "^3.1.3",
-    "quicktype": "^23.0.76",
+    "quicktype": "^23.0.75",
     "svgo": "^3.0.2",
     "ts-node": "^10.9.1",
     "ts-pnp": "1.2.0",
@@ -127,9 +127,6 @@
           "node-gyp": "*"
         }
       }
-    },
-    "overrides": {
-      "glob-parent": ">=5.1.2"
     }
   },
   "dependencies": {
