@@ -5774,7 +5774,7 @@
   "archive_delete_record_title": "删除记录",
   "archive_delete_record": "删除归档记录",
   "archived_undo": "撤销归档",
-  "archived_by": "归档者",DATABUS_SERVER_BASE_URL
+  "archived_by": "归档者",
   "archived_time": "归档时间",
   "archived_action": "操作",
   "archived_select_info": "选择了${selected}条记录",
