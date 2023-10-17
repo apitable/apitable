@@ -119,13 +119,14 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                 }}
               >
                 <ListWithFooter
+                  padding={'0 24px'}
                   className={CONST_BG_CLS_NAME}
                   footer={
-                    <OrEmpty visible={user.isLogin && (permissions.editable || shareInfo?.allowEdit) }>
                       <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
                         <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
                         <Box paddingBottom={'24px'}>
                           <Switch
+                            disabled={loading||!(user.isLogin && (permissions.editable || shareInfo?.allowEdit))}
                             text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
                             size={'xl'}
                             loadingIcon={<></>}
@@ -140,11 +141,9 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                             checked={robot.isActive}
                             onClick={toggleRobotActive}
                             loading={loading}
-                            disabled={loading}
                           />
                         </Box>
                       </Box>
-                    </OrEmpty>
                   }
                 >
                   <Box width={'400px'} margin={'0 auto'}>

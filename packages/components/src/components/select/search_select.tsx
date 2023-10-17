@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce';
-import React, { FunctionComponent, ReactElement, useRef } from 'react';
+import React, {forwardRef, FunctionComponent, ReactElement, useRef} from 'react';
 import styled, { css } from 'styled-components';
-import { ListDropdown } from './dropdown/list_dropdown';
+import {IDropdownControl, ListDropdown} from './dropdown/list_dropdown';
 import { ListDeprecate } from '../list_deprecate';
 import { OptionItem } from './dropdown';
 import { IOption } from './interface';
@@ -28,7 +28,7 @@ export const optionsFilter = (item: IOption | null, keyword: string) => {
   return true;
 };
 
-export const SearchSelect: FunctionComponent<{
+interface ISearchSelectProps {
     list: IOption[];
     disabled?: boolean;
     value?: string;
@@ -44,7 +44,9 @@ export const SearchSelect: FunctionComponent<{
         minWidth?: string;
         placeholder?: string
     }
-}> = ({ list, clazz, disabled = false, onChange, options, children, value }) => {
+}
+
+export const SearchSelect: FunctionComponent<ISearchSelectProps>= forwardRef<IDropdownControl, ISearchSelectProps>(({ list, clazz, disabled = false, onChange, options, children, value }, ref) => {
 
   const [keyword, setKeyword] = React.useState('');
 
@@ -61,6 +63,7 @@ export const SearchSelect: FunctionComponent<{
   const inputRef = useRef<HTMLInputElement>(null);
   return (
     <ListDropdown
+      ref={ref}
       onVisibleChange={() => {
         setKeyword('');
       }}
@@ -116,5 +119,5 @@ export const SearchSelect: FunctionComponent<{
       }
     </ListDropdown>
   );
-};
+});
 

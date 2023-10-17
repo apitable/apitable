@@ -23,6 +23,7 @@ export interface IDropdownControl {
     close: () => void;
     open: () => void;
     toggle: (open: Boolean) => void;
+  resetIndex:(index: number | null) => void;
 }
 
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
@@ -67,10 +68,15 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
     setOpen(false);
   }, [setOpen]);
 
-  useImperativeHandle(ref, () => ({ open, toggle, close }));
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(options?.selectedIndex ?? null);
+  const resetIndex = useCallback(() => {
+    setSelectedIndex(options?.selectedIndex ?? null);
+  }, [setSelectedIndex, options?.selectedIndex]);
+
 
   const theme = useProviderTheme();
-  
+
   const arrowRef = useRef (null);
 
   const triggerEl = isValidElement(trigger) ? trigger :
@@ -78,9 +84,8 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
       visible: isOpen,
       toggle,
     });
-  
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(options?.selectedIndex ?? null);
+
+  useImperativeHandle(ref, () => ({ open, toggle, close, resetIndex }));
 
   const elementsRef = React.useRef<Array<HTMLElement | null>>([]);
   const { refs, floatingStyles, context } = useFloatUiDropdown({
@@ -124,7 +129,7 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
     }),
     [activeIndex, selectedIndex, getItemProps, handleSelect]
   );
-    
+
   const headingId = useId();
 
   const setRef = (v: ReferenceType|null) => {

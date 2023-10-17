@@ -122,7 +122,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
     }).catch((e) => {
       console.log(e);
     });
-  }, [dispatch, resourceId, setAutomationState, setPanel, shareInfo]);
+  }, [dispatch, isLg, resourceId, setAutomationState, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
     Modal.confirm({
@@ -253,20 +253,21 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                   )
                 }
 
-                {/*<Tooltip title={<>getPermissionTip()</>}>*/}
-                {/*className={styles.tag}*/}
-                {/*</Tooltip>*/}
               </Box>
 
-              {
-                automationState?.scenario !== AutomationScenario.node ? (
-                  <EditableInputDescription />
-                ): (
-                  <DescriptionModal
-                    onVisibleChange={refreshItem}
-                    activeNodeId={automationState?.resourceId!} datasheetName={nodeItem?.nodeName ?? automationState?.robot?.name ?? ''} showIntroduction showIcon={false} />
-                )
-              }
+              <OrEmpty visible={!isLg}>
+                <>
+                  {
+                    automationState?.scenario !== AutomationScenario.node ? (
+                      <EditableInputDescription />
+                    ): (
+                      <DescriptionModal
+                        onVisibleChange={refreshItem}
+                        activeNodeId={automationState?.resourceId!} datasheetName={nodeItem?.nodeName ?? automationState?.robot?.name ?? ''} showIntroduction showIcon={false} />
+                    )
+                  }
+                </>
+              </OrEmpty>
             </Box>
 
             <Box display="flex" alignItems="center">

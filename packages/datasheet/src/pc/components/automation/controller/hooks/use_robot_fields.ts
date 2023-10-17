@@ -1,8 +1,8 @@
 import { useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Selectors, StoreActions } from '@apitable/core';
-import { useAppDispatch } from '../../../../hooks/use_app_dispatch';
+import {IReduxState, Selectors, StoreActions} from '@apitable/core';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAllFieldsByDstId } from '../../../robot/hooks';
 import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
 import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
@@ -87,7 +87,7 @@ export const useTriggerDatasheetId = (): string | undefined => {
 };
 
 export const useAutomationRobotFields = (dstId: string) => {
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useSelector((state: IReduxState) => {
     return Selectors.getFieldPermissionMap(state, dstId);
   });
   const fields = useAllFieldsByDstId(dstId);

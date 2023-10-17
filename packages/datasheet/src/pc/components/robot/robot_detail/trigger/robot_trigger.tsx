@@ -20,9 +20,9 @@ import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { SearchSelect } from '@apitable/components';
+import { IDropdownControl, SearchSelect } from '@apitable/components';
 import {
   EmptyNullOperand,
   IExpression,
@@ -34,6 +34,7 @@ import {
   t
 } from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
+import { OrEmpty } from 'pc/components/common/or_empty';
 import { useResponsive, useSideBarVisible } from '../../../../hooks';
 import {
   automationLocalMap,
@@ -139,6 +140,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
+  const ref = useRef<IDropdownControl>();
   const {
     api: { refresh },
   } = useAutomationController();
@@ -171,6 +173,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           });
         },
         onCancel: () => {
+          ref.current?.resetIndex();
           return;
         },
         type: 'warning',
@@ -463,6 +466,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
       <SearchSelect
+        ref={ref}
         clazz={{
           item: itemStyle.item,
           icon: itemStyle.icon,
@@ -480,7 +484,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         value={triggerTypeId}
       >
         <span>
-          <DropdownTrigger isActive={isActive}>
+          <DropdownTrigger isActive={isActive} editable={permissions.editable}>
             <>
               {1}. {triggerType?.name}
             </>
@@ -493,12 +497,16 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
 export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTriggerProps) => {
   const trigger = useAtomValue(inheritedTriggerAtom);
+  const permissions = useAutomationResourcePermission();
   if (!triggerTypes) {
     return null;
   }
 
   if (!trigger) {
-    return <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />;
+    return (
+      <OrEmpty visible={permissions?.editable}>
+        <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
+      </OrEmpty>);
   }
 
   // The default value of the rich input form, the trigger, is officially controllable.
