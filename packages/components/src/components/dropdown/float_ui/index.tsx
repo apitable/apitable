@@ -18,6 +18,7 @@ import {
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { useFloatUiDropdown } from './useFloatUiDropdown';
+export { setIndex } from './useFloatUiDropdown';
 import { Middleware } from '@floating-ui/dom';
 
 type IDropdownTriggerProps = { visible: boolean, toggle?: () => void };
@@ -55,7 +56,6 @@ export interface IDropdownControl {
 }
 
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
-
 export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
   const { trigger, children, onVisibleChange, options= {
     zIndex: CONST_INITIAL_DROPDOWN_INDEX

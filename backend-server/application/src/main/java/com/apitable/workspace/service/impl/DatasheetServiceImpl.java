@@ -510,6 +510,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         fieldMapRo.getProperty().set("uuids", Collections.singletonList(uuid));
                     }
                     break;
+                case WORK_DOC:
+                    delFieldIds.add(fieldMapRo.getId());
+                    break;
                 default:
                     break;
             }

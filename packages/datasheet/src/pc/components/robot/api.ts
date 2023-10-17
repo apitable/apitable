@@ -18,8 +18,7 @@
 
 import axios from 'axios';
 import qs from 'qs';
-import { mutate } from 'swr';
-import { IAutomationDatum, IRobotHistoryTask, IRobotRunHistoryList, IRobotTrigger } from './interface';
+import { IAutomationDatum, IRobotHistoryTask, IRobotTrigger } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 import { IRunHistoryDatum } from './robot_detail/robot_run_history';
 
@@ -130,11 +129,6 @@ export const deleteRobot = (resourceId: string, robotId: string) => {
     }
     return false;
   });
-};
-
-export const refreshRobotList = (resourceId: string) => {
-  const thisResourceRobotUrl = `/automation/robots?resourceId=${resourceId}`;
-  return mutate(thisResourceRobotUrl);
 };
 
 interface ICreateTrigger {

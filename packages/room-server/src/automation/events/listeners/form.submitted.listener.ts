@@ -34,6 +34,7 @@ export class FormSubmittedListener {
   private readonly options: IEventListenerOptions;
 
   constructor(
+    // @ts-ignore
     @InjectLogger() private readonly logger: Logger,
     private readonly automationService: AutomationService,
     private readonly robotTriggerService: RobotTriggerService,
@@ -51,7 +52,7 @@ export class FormSubmittedListener {
     const eventContext = event.context;
     const resourceId = eventContext.datasheetId;
     if (!resourceId) return;
-    const triggers = await this.robotTriggerService.getTriggersByResourceAndEventType(resourceId, EventTypeEnums.FormSubmitted);
+    const triggers = await this.robotTriggerService.getTriggersByResourceAndEventType(resourceId, eventContext.formId, EventTypeEnums.FormSubmitted);
     if (triggers.length === 0) {
       return;
     }

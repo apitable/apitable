@@ -457,3 +457,21 @@ export const getNodeViewWithoutFilterInfo = (snapshot: ISnapshot, viewId: string
     filterInfo: originView?.filterInfo
   } as IViewProperty;
 };
+
+
+/**
+ * get a achived record ids ,
+ * @param state
+ * @param id
+ * @returns
+ */
+export const getActivedRecordIds = (state: IReduxState, id?: string | void) => {
+  const datasheetId = id || state.pageParams?.datasheetId;
+  if (!datasheetId) {
+    return;
+  }
+  const datasheetPack = state.datasheetMap[datasheetId]?.datasheet;
+
+
+  return datasheetPack?.snapshot.meta.archivedRecordIds;
+};

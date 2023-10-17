@@ -50,13 +50,12 @@ import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { VikaSplitPanel } from '../common';
 import { ScreenSize } from '../common/component_display/enum';
 import { AddRecord } from '../mobile_grid/add_record';
-import { CalendarContext, IRecordModal } from './calendar_context';
+import { CalendarContext } from './calendar_context';
 import { CalendarMonthPicker } from './calendar_month_picker';
 import { CalendarSettingPanel } from './calendar_setting_panel';
 import { CALENDAR_RECORD_MENU, DEFAULT_FIELD_HEIGHT, DEFAULT_TITLE_HEIGHT, FieldTypeHeight } from './constants';
 import { CreateFieldModal } from './create_field_modal';
 import { Drag } from './drag';
-import { DragDropModal } from './drag_drop_modal';
 import { Drop } from './drop';
 import { RecordList } from './record_list';
 import styles from './styles.module.less';
@@ -335,9 +334,6 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     });
   };
 
-  const [recordModal, setRecordModal] = React.useState<IRecordModal>();
-  const isVisible = recordModal && recordModal[1];
-
   const defaultDate = useMemo(() => {
     const searchStartDatetime = currentSearchRecordId && getCellValue(currentSearchRecordId, startFieldId);
     const searchEndDatetime = currentSearchRecordId && getCellValue(currentSearchRecordId, endFieldId);
@@ -371,8 +367,6 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   return (
     <CalendarContext.Provider
       value={{
-        setRecordModal,
-        recordModal,
         currentSearchRecordId,
         fieldMap,
         columns,
@@ -470,7 +464,6 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
           panelRight={panelRight}
         />
         {dateTypeAccessibleFields.length === 0 && <CreateFieldModal />}
-        {isVisible && <DragDropModal recordId={recordModal && recordModal[0]} style={recordModal![2]} />}
         {isMobile && rowCreatable && ReactDOM.createPortal(<AddRecord size="large" />, document.getElementById(DATASHEET_ID.ADD_RECORD_BTN)!)}
       </div>
     </CalendarContext.Provider>

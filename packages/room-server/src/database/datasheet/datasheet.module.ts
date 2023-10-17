@@ -43,6 +43,7 @@ import { DatasheetRecordSourceService } from './services/datasheet.record.source
 import { DatasheetService } from './services/datasheet.service';
 import { RecordCommentService } from './services/record.comment.service';
 import { DatasheetWidgetService } from './services/datasheet.widget.service';
+import { DatasheetRecordArchiveRepository } from './repositories/datasheet.record.archive.repository';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { DatasheetWidgetService } from './services/datasheet.widget.service';
       DatasheetChangesetSourceRepository,
       DatasheetMetaRepository,
       DatasheetRecordRepository,
+      DatasheetRecordArchiveRepository,
       DatasheetRecordSourceRepository,
       DatasheetRepository,
       DatasheetWidgetRepository,

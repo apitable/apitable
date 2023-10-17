@@ -1,4 +1,4 @@
-(function(){
+(function () {
   if (typeof globalThis === 'undefined') {
     if (typeof self !== 'undefined') {
       window.globalThis = self;
@@ -10,5 +10,4 @@
       throw new Error('Unable to locate global `this`');
     }
   }
-
 })();

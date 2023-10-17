@@ -19,9 +19,6 @@ public class UpdateRobotRO {
     private AutomationPropertyRO props;
 
 
-    @Schema(description = "Whether to modify the node name synchronously", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "false")
-    private Boolean modifyNodeName = false;
-
     @Schema(description = "Robot whether active", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "true")
     private Boolean isActive;
 

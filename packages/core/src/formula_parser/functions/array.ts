@@ -82,9 +82,9 @@ export class ArrayJoin extends ArrayFunc {
     const { value, node } = valuesParam;
     const separator = (separatorParam && separatorParam.value) || ', ';
 
-    if (node.valueType === BasicValueType.Array) {
+    if (value && node.valueType === BasicValueType.Array) {
       const { field, context } = node as ValueOperandNode;
-      if (Field.bindContext(field, context.state).isComputed) {
+      if (context && Field.bindContext(field, context.state).isComputed) {
         const v = (Field.bindContext(field, context.state) as any).arrayValueToArrayStringValueArray(value);
         return v?.join(separator);
       }

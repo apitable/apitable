@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ReactNode } from 'react';
 import { colorVars } from '@apitable/components';
 import { FieldType } from '@apitable/core';
 import {
@@ -45,7 +46,6 @@ import {
   OneWayLinkOutlined,
   TwoWayLinkOutlined
 } from '@apitable/icons';
-import {ReactNode} from "react";
 
 const FieldIconMap = {
   [FieldType.Text]: LongtextOutlined,

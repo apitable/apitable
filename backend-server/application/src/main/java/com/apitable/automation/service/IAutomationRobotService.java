@@ -41,6 +41,17 @@ public interface IAutomationRobotService {
     void copy(Long userId, List<String> resourceIds,
               AutomationCopyOptions options, Map<String, String> newNodeMap);
 
+    /**
+     * copy automation.
+     *
+     * @param userId      user id
+     * @param resourceIds resource ids
+     * @param options     options
+     * @param newNodeMap  new node map
+     */
+    void copyByDatabus(Long userId, List<String> resourceIds,
+                       AutomationCopyOptions options, Map<String, String> newNodeMap);
+
     void updateNameByResourceId(String resourceId, String name);
 
     void updateByRobotId(AutomationRobotEntity robot);

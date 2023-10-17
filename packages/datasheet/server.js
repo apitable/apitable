@@ -79,6 +79,15 @@ app
         cookieDomainRewrite: '',
       }),
     );
+
+      server.use(
+          createProxyMiddleware('/document', {
+              target: process.env.API_PROXY || process.env.API_DOCUMENT_SERVER_ROOM || 'http://127.0.0.1:3006',
+              ws: true,
+              changeOrigin: true,
+              cookieDomainRewrite: '',
+          }),
+      );
   }
 
     server.all('*', (req, res) => {

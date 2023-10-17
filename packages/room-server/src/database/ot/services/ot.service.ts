@@ -163,7 +163,7 @@ export class OtService {
    *
    * @param nodeId node ID.
    */
-  private getNodeRole = async(
+  private getNodeRole = async (
     nodeId: string,
     auth: IAuthHeader,
     shareId?: string,
@@ -175,6 +175,10 @@ export class OtService {
     switch (sourceType) {
       case SourceTypeEnum.FORM:
         // Datasheet resource OP resulted from form submitting, use permission of form
+        const { userId, uuid } = await this.userService.getMeNullable(auth.cookie!);
+        if (!shareId && !userId) {
+          return { hasRole: true, role: ConfigConstant.permission.editor, ...DEFAULT_EDITOR_PERMISSION };
+        }
         const fieldPermissionMap = await this.restService.getFieldPermission(auth, roomId!, shareId);
         const defaultPermission = { fieldPermissionMap, hasRole: true, role: ConfigConstant.permission.editor, ...DEFAULT_EDITOR_PERMISSION };
         const { fillAnonymous } = await this.resourceMetaService.selectMetaByResourceId(roomId!);
@@ -183,7 +187,6 @@ export class OtService {
           return defaultPermission;
         }
         // Fill in user info
-        const { userId, uuid } = await this.userService.getMe(auth);
         return { userId, uuid, ...defaultPermission };
       case SourceTypeEnum.MIRROR:
         if (nodeId !== sourceDatasheetId) {
@@ -268,7 +271,7 @@ export class OtService {
         `room:[${message.roomId}] ====> parseChanges Finished, duration: ${parseEndTime - beginTime}ms. General transaction start......`,
       );
       // ======== multiple-resource operation transaction BEGIN ========
-      await getManager().transaction(async(manager: EntityManager) => {
+      await getManager().transaction(async (manager: EntityManager) => {
         for (const { transaction, effectMap, commonData, resultSet } of transactions) {
           await transaction(manager, effectMap, commonData, resultSet);
           let remoteChangeset = effectMap.get(EffectConstantName.RemoteChangeset);

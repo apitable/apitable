@@ -130,6 +130,6 @@ public class GlobalExceptionHandler {
         } else if (ex instanceof HttpMessageNotReadableException) {
             return ResponseData.error(ex.getLocalizedMessage());
         }
-        return ResponseData.error(ex.getMessage());
+        return ResponseData.error();
     }
 }

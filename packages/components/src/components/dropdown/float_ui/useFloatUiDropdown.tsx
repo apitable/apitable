@@ -4,7 +4,7 @@ import { IDropdownProps } from './index';
 
 const DROP_DOWN_OFFSET = 11;
 
-const setIndex = (zIndex: number) => {
+export const setIndex = (zIndex: number) => {
   return {
     name: 'setIndexPlugin',
     fn(state: MiddlewareState) {
@@ -58,6 +58,6 @@ export const useFloatUiDropdown: any = (options: {
     ].concat(options?.middleware ?? []),
     whileElementsMounted: autoUpdate
   });
-  
+
   return { refs, floatingStyles, context };
 };

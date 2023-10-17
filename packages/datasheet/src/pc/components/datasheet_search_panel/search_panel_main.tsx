@@ -175,6 +175,7 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
         <SearchResult
           searchResult={localState.searchResult}
           noCheckPermission={noCheckPermission}
+          options={options}
           onlyShowAvailable={localState.onlyShowEditableNode}
           onNodeClick={(e, id) => {
             if(e==='Form') {
@@ -216,7 +217,7 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
             onNodeClick(e, id);
           }}
           showMirrorNode={showMirrorNode}
-          hideViewNode={secondConfirmType === SecondConfirmType.Chat}
+          // hideViewNode={secondConfirmType === SecondConfirmType.Chat}
         />
       )}
       {localState.loading && <Loading className={styles.loading} />}

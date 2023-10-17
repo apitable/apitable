@@ -75,8 +75,7 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const colors = useThemeColors();
   const oldSchema = { schema: nodeType.outputJsonSchema };
 
-  if (!fieldPermissionMap || !fields) return (
-
+  if (!datasheet || !fieldPermissionMap || !fields) return (
     <Box color={colors.bgCommonDefault} width={'100%'}>
       <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
 
@@ -117,14 +116,6 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
       </Box>
       ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
       <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema />
-      {/* {
-      list.map((propertySchema, index) => {
-        const propertyValue = nodeDetail.output[propertySchema.key];
-        if (!propertyValue) return null;
-        return <KeyValueDisplay label={propertySchema.title} value={propertyValue} />;
-      })
-    } */}
-      {/* </Typography> */}
     </Box>
   );
 };

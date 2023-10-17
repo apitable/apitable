@@ -107,3 +107,26 @@ jobs:
           cp -pr gateway/ packaging/all-in-one/all-in-one/
           eval "$(./scripts/semver-ci.sh)"
           make buildpush-docker target=all-in-one
+
+  # https://github.com/apitable/apitable/issues/1379
+  build-push-experimental: ## build and push to docker registry
+    needs: build-push
+    runs-on: ubuntu-latest
+    #if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    strategy:
+      matrix:
+        target: [ web-server-experimental ]
+    env:
+      APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build APITable and Push
+        run: |
+          eval "$(./scripts/semver-ci.sh)"
+          make buildpush-docker target=${{ matrix.target }}

@@ -90,8 +90,6 @@ export const getNodeOutputSchemaList = (props: {
   }
   actionList.forEach((action) => {
     const actionType = actionTypes.find((actionType) => actionType.actionTypeId === action.typeId);
-    console.log('acto', actionType);
-
     if (actionType) {
       schemaList.push({
         id: action.id,

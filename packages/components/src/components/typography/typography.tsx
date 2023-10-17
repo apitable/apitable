@@ -17,7 +17,7 @@
  */
 
 import React, { FC, useRef, useEffect, useState } from 'react';
-import { Tooltip } from '../tooltip';
+import { FloatUiTooltip } from '../tooltip';
 import { IEllipsis, ITypographyProps } from './interface';
 import { TypographyBase } from './styled';
 import classNames from 'classnames';
@@ -88,13 +88,16 @@ export const Typography: FC<React.PropsWithChildren<ITypographyProps>> = (props)
       <>
         {
           Boolean(content) ?
-            <Tooltip
-              visible={typeof ellipsis !== 'boolean' ? ellipsis.visible : undefined}
-              zIndex={tooltipsZIndex}
+            <FloatUiTooltip
               content={content}
+              options={
+                {
+                  initialVisible: false
+                }
+              }
             >
               {textNode}
-            </Tooltip> :
+            </FloatUiTooltip>:
             textNode
         }
       </>

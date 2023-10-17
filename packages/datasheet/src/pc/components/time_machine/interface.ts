@@ -82,6 +82,7 @@ export const StringsCommandName = {
   Medium: Strings.row_height_medium,
   Tall: Strings.row_height_tall,
   ExtraTall: Strings.row_height_extra_tall,
+  ModifyAlarm: Strings.timemachine_modify_alarm,
   [ViewType.Calendar]: Strings.calendar_view,
   [ViewType.Form]: Strings.form_view,
   [ViewType.Gallery]: Strings.gallery_view,

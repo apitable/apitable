@@ -57,3 +57,6 @@ export * from 'commands/datasheet/set_view_lock_info';
 export * from './fix_one_way_link_dstId';
 export * from './set_view_frozen_column_count';
 export * from './set_date_time_cell_alarm';
+export * from './archive_record';
+export * from './unarchive_records';
+export * from './delete_archived_record';

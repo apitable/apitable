@@ -445,6 +445,7 @@
   "apply_template": "استخدام قالب",
   "appoint_permission_tip": "فقط الأعضاء التالية يمكن الوصول إلى هذا الملف",
   "apps_support": "كامل منصة دعم العملاء",
+  "archive_row": "حفظ السجل",
   "archive_record_in_menu": "حفظ السجلات",
   "archive_record_success": "سجل الأرشيف بنجاح",
   "archive_records_in_menu": "أرشيف $ { اختيار u num } سجل",

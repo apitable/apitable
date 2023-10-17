@@ -58,6 +58,7 @@ describe('RobotActionTypeServiceTest', () => {
           provide: NodeService,
           useValue: {
             selectSpaceIdByNodeId: jest.fn(),
+            getRelNodeIdsByMainNodeIds: jest.fn(),
           },
         },
         {
@@ -206,12 +207,14 @@ describe('RobotActionTypeServiceTest', () => {
   it('should return false when trigger not linked robot -- empty', async () => {
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
     jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([]);
+    jest.spyOn(nodeService, 'getRelNodeIdsByMainNodeIds').mockResolvedValue([]);
     const result = await automationService.isResourcesHasRobots(['resourceId']);
     expect(result).toEqual(false);
   });
 
   it('should return false when trigger linked robot but robot disable', async () => {
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
+    jest.spyOn(nodeService, 'getRelNodeIdsByMainNodeIds').mockResolvedValue([]);
     jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([{
       robotId: 'robotId',
       resourceId: 'resourceId'

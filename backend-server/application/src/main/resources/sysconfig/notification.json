@@ -1170,6 +1170,32 @@
       "to_tag": "members",
       "url": "/workbench"
     },
+    "subscribed_record_unarchived": {
+      "can_jump": true,
+      "format_string": "subscribed_record_unarchived",
+      "id": "subscribed_record_unarchived",
+      "is_browser": true,
+      "is_mail": true,
+      "is_mobile": true,
+      "is_notification": true,
+      "mail_template_subject": "subscribedRecordUnarchived",
+      "notifications_type": "record",
+      "to_tag": "members",
+      "url": "/workbench"
+    },
+    "subscribed_record_archived": {
+      "can_jump": true,
+      "format_string": "subscribed_record_archived",
+      "id": "subscribed_record_archived",
+      "is_browser": true,
+      "is_mail": true,
+      "is_mobile": true,
+      "is_notification": true,
+      "mail_template_subject": "subscribedRecordArchived",
+      "notifications_type": "record",
+      "to_tag": "members",
+      "url": "/workbench"
+    },
     "subscribed_record_commented": {
       "can_jump": true,
       "format_string": "subscribed_record_commented",

@@ -488,6 +488,8 @@ export enum WizardIdConstant {
   VIKABY_UPDATE_LOGS_HISTORY = 67,
   AGREE_TERMS_OF_SERVICE = Number(getCustomConfig().LOGIN_AGREE_TERMS_OF_SERVICE_WIZARD_ID),
 
+  AUTOMATION_TRIGGER = 117,
+
   // org chart view
   ORG_VIEW_CREATE = 78, // Click the "Create Schema View button" -> show the video "How to use Schema View"
   ORG_VIEW_PANEL = 79, // In the schema view, the right panel is highlighted, prompting to add cards to the canvas

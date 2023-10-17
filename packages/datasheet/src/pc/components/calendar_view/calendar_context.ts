@@ -29,19 +29,7 @@ import {
   ICell,
 } from '@apitable/core';
 
-export type IPosition = {
-  left?: string;
-  right?: string;
-  top?: string;
-  bottom?: string;
-};
-
-export type IRecordModal = [string, boolean, IPosition];
-
 export interface ICalendarContext {
-  // Left-click shortcut to calendar view records
-  setRecordModal: (recordMes?: IRecordModal) => void;
-  recordModal?: IRecordModal;
   // Cached data
   fieldMap: IFieldMap;
   columns: ICalendarViewColumn[];

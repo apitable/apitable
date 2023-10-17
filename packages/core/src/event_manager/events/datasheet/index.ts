@@ -21,6 +21,8 @@ import { OPEventFieldUpdated } from './field_updated';
 import { OPEventRecordCreated } from './record_created';
 import { OPEventRecordDeleted } from './record_deleted';
 import { OPEventRecordCommentUpdated, OPEventRecordMetaUpdated, OPEventRecordUpdated } from './record_updated';
+import { OPEventRecordUnarchived } from './record_unarchived';
+import { OPEventRecordArchived } from './record_archived';
 
 export const datasheetEvent = {
   // Cell
@@ -35,4 +37,6 @@ export const datasheetEvent = {
   OPEventRecordCommentUpdated,
   OPEventRecordMetaUpdated,
   OPEventRecordCreated,
+  OPEventRecordUnarchived,
+  OPEventRecordArchived,
 };

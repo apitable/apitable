@@ -368,5 +368,6 @@
   "UPDATE_ROLE_NAME_ERROR": "修改角色名称失败",
   "CREATE_ROLE_ERROR": "创建角色失败",
   "DUPLICATION_ROLE_NAME": "该角色名称已存在",
+  "player_step_ui_config_automation_1" : "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
   "ROOT_NODE_OP_DENIED": "空间站管理员已经限制了在根目录增删文件，所以你无法进行此操作"
 }

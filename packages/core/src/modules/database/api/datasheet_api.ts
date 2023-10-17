@@ -41,7 +41,6 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
 export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
-  console.log({ baseURL });
 
   if (getBrowserDatabusApiEnabled()) {
     if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
@@ -482,3 +481,11 @@ export const previewDatasheetTablebundle = (nodeId: string, tablebundleId: strin
   return axios.get<IApiWrapper & { data: { snapshot: ISnapshot } }>(
     urlcat(Url.PREVIEW_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
 };
+
+// get archived records data
+export const getArchivedRecords = (dstId: string, pageParams: any) => {
+  return axios.get<IApiWrapper & { data: any }>(urlcat(Url.GET_ARCHIVED_RECORDS, { dstId }), {
+    baseURL,
+    params: pageParams,
+  });
+ };

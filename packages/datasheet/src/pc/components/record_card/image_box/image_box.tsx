@@ -55,6 +55,7 @@ export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
   recordId,
   field,
   showOneImage,
+                                                                              isCoverFit
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const permissions = useSelector((state) => Selectors.getPermissions(state));
@@ -90,6 +91,7 @@ export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
         recordId={recordId}
         field={field}
         editable={editable}
+        isCoverFit={isCoverFit}
       />
       <div className={styles.bottomWrapper} />
       {showImages.length > 1 && (

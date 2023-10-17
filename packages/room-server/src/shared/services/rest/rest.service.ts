@@ -521,6 +521,7 @@ export class RestService {
       this.logger.log(`skipSpaceSubscription:${spaceId}`);
       return {
         maxRowsPerSheet: -1,
+        maxArchivedRowsPerSheet: -1,
         maxRowsInSpace: -1,
         maxGalleryViewsInSpace: -1,
         maxKanbanViewsInSpace: -1,

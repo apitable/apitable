@@ -146,7 +146,12 @@ public enum NodePermission implements PermissionDefinition {
     /**
      * whether to edit view option
      */
-    EDIT_VIEW_OPTION_SAVE("viewOptionSaveEditable", 1, 1L << 28);
+    EDIT_VIEW_OPTION_SAVE("viewOptionSaveEditable", 1, 1L << 28),
+
+    ARCHIVE_ROW("rowArchivable", 1, 1L << 29),
+
+    UNARCHIVE_ROW("rowUnarchivable", 1, 1L<<30),
+    ;
 
     /**
      * unique code

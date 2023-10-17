@@ -150,6 +150,8 @@ export interface IDatasheetPermission {
   fieldRemovable: boolean;
   rowCreatable: boolean;
   rowRemovable: boolean;
+  rowArchivable: boolean;
+  rowUnarchivable: boolean;
   cellEditable: boolean;
   descriptionEditable: boolean;
   fieldPermissionManageable: boolean;

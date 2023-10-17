@@ -77,9 +77,10 @@ const [fetchFormMeta] = atomsWithQuery((get) => ({
   queryKey: ['automation_fetchFormPack_formId', get(formIdAtom)],
   queryFn: async ({ queryKey: [, id] }) => {
     if(!id) {
-      return undefined;
+      return {};
     }
-    return await fetchFormPack(String(id!)).then(res => res?.data?.data);
+    return await fetchFormPack(String(id!)).then(res => res?.data?.data ?? {
+    });
   },
 }));
 

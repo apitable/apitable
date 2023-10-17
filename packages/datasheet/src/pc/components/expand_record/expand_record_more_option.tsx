@@ -25,19 +25,18 @@ import { useSelector } from 'react-redux';
 import urlcat from 'urlcat';
 import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
-import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined } from '@apitable/icons';
+import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined, ArchiveOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import styles from 'pc/components/expand_record/style.module.less';
 import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
-
 import { resourceService } from 'pc/resource_service';
-
 import { copy2clipBoard } from 'pc/utils';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
-
 import EditorTitleContext from './editor_title_context';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import parser from 'html-react-parser';
 
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;
@@ -62,7 +61,7 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
   const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
   const curMirrorId = useSelector((state) => mirrorId || state.pageParams.mirrorId);
   const showHistorySwitch = permissions.manageable && !curMirrorId;
-
+  
   const isEmbed = useSelector((state) => Boolean(state.pageParams.embedId));
 
   const { updateNodeRecordHistoryReq } = useCatalogTreeRequest();
@@ -87,6 +86,21 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     },
     () => document.querySelector(`.${styles.moreOptionMenu}`),
   ]);
+
+  const archiveRecord = () => {
+    const { result } = resourceService.instance!.commandManager.execute({
+      cmd: CollaCommandName.ArchiveRecords,
+      data: [expandRecordId],
+      datasheetId: datasheetId,
+    });
+
+    if (ExecuteResult.Success === result) {
+      Message.success({ content: 'Successfully archived records' });
+    }
+
+    toggleMenu();
+    modalClose();
+  };
 
   const deleteRecord = () => {
     const { result } = resourceService.instance!.commandManager.execute({
@@ -164,6 +178,10 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     }
   };
 
+  const getArchiveNotice = (content) => {
+    return <div>{parser(content)}</div>
+  }
+
   const renderMenu = () => (
     <Menu className={styles.moreOptionMenu}>
       <Menu.Item
@@ -202,6 +220,24 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
       </Menu.Item>
 
       {rowRemovable && <Menu.Divider />}
+      {rowRemovable && !mirrorId && permissions.manageable && (
+        <Menu.Item
+          key="archive"
+          icon={<ArchiveOutlined color={colors.thirdLevelText} />}
+          className={styles.moreOptionMenuItemWrapper}
+          onClick={() => {
+            Modal.warning({
+              title: t(Strings.archive_record_in_menu),
+              content: getArchiveNotice(t(Strings.archive_notice)),
+              onOk: () => archiveRecord(),
+              closable: true,
+              hiddenCancelBtn: false,
+            });
+          }}
+        >
+          {t(Strings.archive_record_in_menu)}
+        </Menu.Item>
+      )}
       {rowRemovable && (
         <Menu.Item
           key="delete"

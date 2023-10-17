@@ -18,7 +18,7 @@
 
 import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isEqual } from 'lodash';
+import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -42,12 +42,12 @@ import {
   automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormList,
   PanelName, useAutomationController
 } from '../../../automation/controller';
-import { getDatasheetId, getFormId } from '../../../automation/controller/hooks/use_robot_fields';
+import { getDatasheetId, getFormId, getRelativedId } from '../../../automation/controller/hooks/use_robot_fields';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { SelectDst, SelectForm } from '../../../automation/select_dst';
 import { ScreenSize } from '../../../common/component_display';
 import { IFormNodeItem } from '../../../tool_bar/foreign_form/form_list_panel';
-import { changeTriggerTypeId, getRobotTrigger, updateTriggerInput } from '../../api';
+import { changeTriggerTypeId, updateTriggerInput } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { AutomationScenario, IRobotTrigger, ITriggerType } from '../../interface';
 import { DropdownTrigger } from '../action/robot_action';
@@ -73,6 +73,19 @@ export enum EditType {
   entry = 'entry',
   detail = 'detail',
 }
+
+const customizer = (objValue, othValue) => {
+
+  if(isNil(objValue) && isNil(othValue)) {
+    return true;
+  }
+  const l = pickBy(objValue, identity);
+  const r = pickBy(othValue, identity);
+  if(isEqual(l, r)) {
+    return true;
+  }
+  return undefined;
+};
 
 const useAutomationLocalStateMap = () => {
 
@@ -104,8 +117,9 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }
 
   const mapFormData = localStateMap.get(trigger.triggerId!);
+
   const modified = useMemo(( ) => {
-    return mapFormData != null && !isEqual(trigger.input, mapFormData);
+    return mapFormData != null && !isEqualWith(trigger.input, mapFormData, customizer);
   }, [mapFormData, trigger.input]);
 
   const { data: formList } = useAtomValue(loadableFormList);
@@ -120,17 +134,10 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     datasheetId = activeDstId;
   }
 
-  let formId = triggerDatasheetValue.formId;
-  if(automationState?.scenario === AutomationScenario.datasheet) {
-    formId = undefined;
-  }
-
   const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
   const datasheetName = datasheet?.name;
 
-  const form = useSelector(reduxState => Selectors.getForm(reduxState, formId ), shallowEqual);
   const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const formName = form?.name;
 
   const {
     api: { refresh },
@@ -169,7 +176,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         type: 'warning',
       });
     },
-    [trigger, automationState?.resourceId, automationState?.currentRobotId, refresh],
+    [trigger?.triggerTypeId, trigger.triggerId, automationState?.resourceId, automationState?.robot?.robotId, automationState?.currentRobotId, clear, refresh],
   );
 
   const { schema, uiSchema = {} } = useMemo(() => {
@@ -211,23 +218,13 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     return getNodeTypeOptions(triggerTypes);
   }, [triggerTypes]);
 
-  const operands = trigger?.input?.value?.operands ?? [];
-
   const getDstIdItem = useMemo(( ) => {
-    if(operands.length === 0 ) {
-      return undefined;
-    }
-    const f = operands.findIndex((item: string) => item === 'datasheetId');
-    return operands[f+1].value;
-  }, [operands]);
+    return getDatasheetId({ input: formData });
+  }, [formData]);
 
   const getFormIdItem = useMemo(( ) => {
-    if(operands.length === 0 ) {
-      return undefined;
-    }
-    const f = operands.findIndex((item: string) => item === 'formId');
-    return operands[f+1].value;
-  }, [operands]);
+    return getFormId({ input: formData });
+  }, [formData]);
 
   useEffect(() => {
     setTriggerDatasheetValue(draft => ({ ...draft,
@@ -277,30 +274,20 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     return {
       ...uiSchema,
       formId: {
-        'ui:widget': ({ value, onChange, onBlur }: any) => {
+        'ui:widget': ({ value, onChange }: any) => {
           return (
             <SelectForm value={value?.value} onChange={v => {
-              onChange({
-                type: 'Literal',
-                value: v
-              });
-
               onChange(literal2Operand(v));
             }} />
           );
         } },
       datasheetId: {
-        'ui:widget': ({ value, onChange, onBlur }: any) => {
+        'ui:widget': ({ value, onChange }: any) => {
           return (
             <SelectDst value={value?.value} onChange={v => {
               setTriggerDatasheetValue(draft => ({ ...draft,
                 id: v,
               }));
-              onChange({
-                type: 'Literal',
-                value: v
-              });
-
               onChange(literal2Operand(v));
             }} />
           );
@@ -346,10 +333,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           return;
         }
 
-        console.log('formData', formData);
         const operands = formData?.value?.operands ?? [];
-        console.log('operands', operands);
-        console.log('operands', operands);
 
         const getDstIdItem = () => {
           if(operands.length === 0 ) {
@@ -368,7 +352,6 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         };
 
         const relatedResourceId = getDstIdItem() || getFormIdItem() || '';
-        console.log('relatedResourceId', relatedResourceId);
         updateTriggerInput(automationState?.resourceId, trigger.triggerId, formData, automationState?.robot?.robotId, {
           relatedResourceId
         })
@@ -388,7 +371,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           });
       }
     },
-    [localStateMap, setLocalStateMap, trigger],
+    [automationState?.resourceId, automationState?.robot?.robotId, localStateMap, refreshItem, setLocalStateMap, trigger.input, trigger.triggerId],
   );
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.lg);
@@ -419,10 +402,21 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }, [editType, handleClick]);
 
   const handleUpdate = useCallback((e: any) => {
+    const previous = getRelativedId({ input: formData } );
+    const current = getRelativedId({ input: e.formData } );
+
+    const removeFiltered = produce(e.formData, draft => {
+      draft.value.operands.splice( 2);
+    });
     setLocalStateMap(produce(draft => {
+      if (previous !== current) {
+        draft.set(trigger.triggerId, removeFiltered);
+        return;
+      }
+
       draft.set(trigger.triggerId, e.formData);
     }));
-  }, [setLocalStateMap, trigger.triggerId]);
+  }, [formData, setLocalStateMap, trigger.triggerId]);
 
   return (
     <NodeItem

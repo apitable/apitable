@@ -238,6 +238,8 @@ export const generateMockState = (fieldMap: IFieldMap): IReduxState => ({
           fieldRemovable: false,
           rowCreatable: false,
           rowRemovable: false,
+          rowArchivable: false,
+          rowUnarchivable: false,
           cellEditable: false,
           fieldPermissionManageable: false,
           viewLayoutEditable: false,

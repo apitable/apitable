@@ -19,6 +19,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Loading } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { PopStructureContext } from 'pc/components/editors/pop_structure/context';
@@ -57,6 +58,7 @@ export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & {
     inputStyle,
     getListContainer,
     onInputClear,
+    isLoadingData,
   } = props;
   const { restHeight } = useContext(PopStructureContext);
   const [listHeight, setListHeight] = useState(MAX_HEIGHT);
@@ -261,7 +263,13 @@ export const CommonList: React.FC<React.PropsWithChildren<ICommonListProps>> & {
         </div>
       )}
       {/* List section */}
-      {(showNoDataTip || showNoSearchResult) && <span className={styles.noResult}>{showNoDataTip ? _noDataTip : _noSearchResultTip}</span>}
+      {isLoadingData ? (
+        <div className={'vk-my-2'}>
+          <Loading />
+        </div>
+      ) : (
+        (showNoDataTip || showNoSearchResult) && <span className={styles.noResult}>{showNoDataTip ? _noDataTip : _noSearchResultTip}</span>
+      )}
       {Boolean(childrenCount) && (
         <div>
           <div

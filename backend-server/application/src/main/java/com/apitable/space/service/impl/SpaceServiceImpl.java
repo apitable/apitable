@@ -44,11 +44,12 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
-import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
+import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -554,8 +555,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Override
     public CreditInfo getCredit(String spaceId) {
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = new DefaultSubscriptionInfo();
+        if (StrUtil.isNotBlank(spaceId)) {
+            subscriptionInfo =
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
+        }
         return new CreditInfo(subscriptionInfo.getConfig().isAllowCreditOverLimit(),
             subscriptionInfo.getFeature().getMessageCreditNums().getValue(),
             aiServiceFacade.getUsedCreditCount(spaceId));
