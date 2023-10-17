@@ -1,5 +1,22 @@
 # APITable CHANGELOG
 
+## [v1.3.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta.2) (2023-10-17)
+
+
+### Bug fixes
+
+* fix: Update CHANGELOG.md ([#1374](https://github.com/apitable/apitable/pull/1374)) @robot518 
+* fix: room-server use pnpm command ([#1384](https://github.com/apitable/apitable/pull/1384)) @cloud0072 
+* fix: record_archive db changelog ([#1388](https://github.com/apitable/apitable/pull/1388)) @chalme 
+* fix: change update ([#1389](https://github.com/apitable/apitable/pull/1389)) @chalme 
+* fix: archived crash @laboonly 
+* fix: Tooltip components import path @laboonly 
+* fix: archived crash ([#1392](https://github.com/apitable/apitable/pull/1392)) @laboonly 
+
+### What's more
+
+* sync: hosted cloud ([#1385](https://github.com/apitable/apitable/pull/1385)) @JoverZhang 
+* chore: make web server arm64 build as experimental ([#1390](https://github.com/apitable/apitable/pull/1390)) @networkhermit 
 ## [v1.3.0-beta](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta) (2023-10-09)
 
 
