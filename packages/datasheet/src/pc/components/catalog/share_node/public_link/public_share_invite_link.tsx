@@ -36,7 +36,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
-import { useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { automationReg, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
@@ -49,6 +49,13 @@ export interface IPublicShareLinkProps {
   nodeId: string;
 }
 
+export const autIdReg = /(aut\w{8,})/;
+
+export const getRegResult = (path: string, reg: RegExp) => {
+  const r = path.match(reg);
+  return r ? r[1] : undefined;
+};
+
 export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkProps>> = ({ nodeId }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -58,6 +65,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
   const isAI = nodeId.startsWith('ai_');
 
+  const automationId = getRegResult('/'+nodeId, autIdReg);
   const hideShareCodeModal = useCallback(() => {
     setWidgetEmbedVisible(false);
   }, []);
@@ -189,7 +197,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
     handleUpdateShare({ [option.value]: true });
   };
 
-  const Permission: IDoubleOptions[] = [
+  let Permission: IDoubleOptions[] = [
     {
       value: 'onlyRead',
       label: t(Strings.can_view),
@@ -207,6 +215,23 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       disabled: Boolean(isShareMirror),
     },
   ];
+  if(automationId != null) {
+    Permission= [
+      {
+        value: 'onlyRead',
+        label: t(Strings.can_view),
+        subLabel: t(Strings.share_only_desc),
+      },
+      {
+        value: 'canBeStored',
+        label: t(Strings.can_duplicate),
+        subLabel: t(Strings.share_and_save_desc),
+        disabled: Boolean(isShareMirror),
+      },
+    ];
+  }
+  console.log('automationId', automationId)
+  console.log('Permission', Permission)
 
   let value = '';
   if (shareSettings) {

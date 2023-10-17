@@ -198,11 +198,11 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   return (
     <Box display={'flex'} flexDirection={'column'} width={'100%'} height={'100%'} overflowY={'hidden'}>
 
-      <OrEmpty visible={isLg &&  automationState?.scenario === AutomationScenario.node } >
+      <OrEmpty visible={isLg && automationState?.scenario === AutomationScenario.node } >
         <MobileToolBar />
       </OrEmpty>
 
-      <OrEmpty visible={!isLg ||  automationState?.scenario !== AutomationScenario.node } >
+      <OrEmpty visible={!isLg || automationState?.scenario !== AutomationScenario.node } >
         <Box
           flex={'0 0 72px'}
           backgroundColor={colors.bgCommonDefault}
@@ -241,13 +241,11 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                   {
                     automationState?.scenario === AutomationScenario.node && (
                       <>
-                        {
-                          permission.editable && (
-                            <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={
-                              nodeItem.nodeFavorite
-                            }/>
-                          )
-                        }
+                        <OrEmpty visible={shareInfo?.shareId == null}>
+                          <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={
+                            nodeItem.nodeFavorite
+                          }/>
+                        </OrEmpty>
                         {
                           !templateId && (
                             <Box marginX={'4px'}>
