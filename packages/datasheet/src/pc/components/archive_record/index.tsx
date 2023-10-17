@@ -1,35 +1,34 @@
 import { Drawer, Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
 import { RestoreOutlined, DeleteOutlined, ArchiveOutlined } from '@apitable/icons';
-import { ToolItem } from 'pc/components/tool_bar/tool_item';
-import { IArchivedRecordsProps } from './interface';
-import { useRequest } from 'pc/hooks';
-import { useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-// eslint-disable-next-line no-restricted-imports
-import { Tooltip, Avatar } from 'pc/components/common';
-import styles from './style.module.less';
-import { resourceService } from 'pc/resource_service';
+import { Tooltip, Avatar, Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { Message } from 'pc/components/common';
+import { ToolItem } from 'pc/components/tool_bar/tool_item';
+import { useRequest } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
+import { IArchivedRecordsProps } from './interface';
+// eslint-disable-next-line no-restricted-imports
+import styles from './style.module.less';
 
 const handleRecordsData = (recordsData) => {
   const data = recordsData.map(item => {
-      const { record, archivedUser, archivedAt } = item;
-      const recordData = record.data;
-      return {
-        ...recordData,
-        key: record.id,
-        archivedUser: archivedUser,
-        archivedTime: archivedAt
-      };
+    const { record, archivedUser, archivedAt } = item;
+    const recordData = record.data;
+    return {
+      ...recordData,
+      key: record.id,
+      archivedUser: archivedUser,
+      archivedTime: archivedAt
+    };
   });
   return data;
-}
+};
 
 export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsProps>> = (props) => {
   const { className, showLabel = true, isHide } = props;
@@ -39,7 +38,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     pageNum: 1,
     pageSize: 10,
   });
-  const [tablePagination] = useState<TablePaginationConfig>({})
+  const [tablePagination] = useState<TablePaginationConfig>({});
 
   const [recordData, setRecordData] = useState<any[]>([]);
   const [recordsDataMap, setRecordsDataMap] = useState(new Map());
@@ -68,14 +67,13 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         });
         setRecordsDataMap(recordsMap);
       }
-     }
+    }
   });
 
   useEffect(() => {
     if(!open) return;
     getArchivedRecords();
   }, [tableParams, archivedRecordIds, open]);
-
 
   const cancelArchied = (record) => {
     const data: any[] = [];
@@ -89,7 +87,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       Message.success({ content: t(Strings.restore_success) });
       getArchivedRecords();
     }
-  }
+  };
 
   const batchCancelArchied = () => {
     const data: any[] = [];
@@ -104,7 +102,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       Message.success({ content: t(Strings.restore_success) });
       getArchivedRecords();
     }
-  }
+  };
 
   const deleteRecord = (record) => {
     const data: any[] = [];
@@ -117,7 +115,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       Message.success({ content: 'Deleted successfully' });
       getArchivedRecords();
     }
-  }
+  };
 
   const batchDeleteRecord = () => {
     const data: any[] = [];
@@ -132,41 +130,39 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       Message.success({ content: 'Deleted successfully' });
       getArchivedRecords();
     }
-  }
+  };
 
   const showArchivedCellValue = (cellValue, key) => {
     switch (fieldMap[key].type) {
-    case FieldType.Text:
-    case FieldType.URL:
-    case FieldType.Email:
-    case FieldType.Phone:
-    case FieldType.SingleText:
-    case FieldType.DateTime:
-    case FieldType.CreatedTime:
-    case FieldType.LastModifiedTime:
-    case FieldType.Number:
-    case FieldType.SingleSelect:
-    case FieldType.MultiSelect:
-    case FieldType.Member:
-    case FieldType.CreatedBy:
-    case FieldType.LastModifiedBy:
-    case FieldType.Rating:
-    case FieldType.Formula:
-    case FieldType.Checkbox:
-      return Field.bindModel(fieldMap[key]).cellValueToString(cellValue);
-    case FieldType.Currency:
-    case FieldType.Percent:
-    case FieldType.AutoNumber:
-    case FieldType.Cascader:
-    case FieldType.Link:
-    case FieldType.OneWayLink:
-    case FieldType.LookUp:
-    case FieldType.Attachment:
-      return cellValue;
-    default:
-      return cellValue;
+      case FieldType.Text:
+      case FieldType.URL:
+      case FieldType.Email:
+      case FieldType.Phone:
+      case FieldType.SingleText:
+      case FieldType.DateTime:
+      case FieldType.CreatedTime:
+      case FieldType.LastModifiedTime:
+      case FieldType.Number:
+      case FieldType.SingleSelect:
+      case FieldType.MultiSelect:
+      case FieldType.Member:
+      case FieldType.CreatedBy:
+      case FieldType.LastModifiedBy:
+      case FieldType.Rating:
+      case FieldType.Formula:
+      case FieldType.Checkbox:
+        return Field.bindModel(fieldMap[key]).cellValueToString(cellValue);
+      case FieldType.Currency:
+      case FieldType.Percent:
+      case FieldType.AutoNumber:
+      case FieldType.Link:
+      case FieldType.LookUp:
+      case FieldType.Attachment:
+        return JSON.stringify(cellValue);
+      default:
+        return JSON.stringify(cellValue);
     }
-  }
+  };
 
   const columns: ColumnsType<any> = useMemo(() => {
     let firstColumn = {};
@@ -179,10 +175,10 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         width: 200,
         render: (cellValue) => (
           <div className={styles.cellValue}>
-              {showArchivedCellValue(cellValue, key)}
+            {showArchivedCellValue(cellValue, key)}
           </div>
         ),
-      }
+      };
       if(key === visibleColumns[0].fieldId) {
         fieldSetting.fixed = 'left';
         firstColumn = fieldSetting;
@@ -224,40 +220,37 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       fixed: 'right',
       width: 80,
       render: (_, record) => (
-          <div className={styles.toolList}>
-            <Tooltip title={t(Strings.archived_undo)}>
-              <RestoreOutlined
-                onClick={() => {
-                  Modal.warning({
-                    title: t(Strings.unarchive),
-                    content: t(Strings.unarchive_notice),
-                    onOk: () => cancelArchied(record),
-                    closable: true,
-                    hiddenCancelBtn: false,
-                  });
-                }}
-              />
-            </Tooltip>
-            <Tooltip title={t(Strings.archive_delete_record_title)}>
-              <DeleteOutlined onClick={() => {
-                 Modal.danger({
-                  title: t(Strings.archive_delete_record),
-                  content: t(Strings.delete_archived_records_warning_description),
-                  onOk: () => deleteRecord(record),
+        <div className={styles.toolList}>
+          <Tooltip title={t(Strings.archived_undo)}>
+            <RestoreOutlined
+              onClick={() => {
+                Modal.warning({
+                  title: t(Strings.archived_undo),
+                  content: t(Strings.archived_undo),
+                  onOk: () => cancelArchied(record),
                   closable: true,
                   hiddenCancelBtn: false,
                 });
-              }} />
-            </Tooltip>
-          </div>
+              }}
+            />
+          </Tooltip>
+          <Tooltip title={t(Strings.archive_delete_record_title)}>
+            <DeleteOutlined onClick={() => {
+              Modal.danger({
+                title: t(Strings.archive_delete_record),
+                content: t(Strings.delete_archived_records_warning_description),
+                onOk: () => deleteRecord(record),
+                closable: true,
+                hiddenCancelBtn: false,
+              });
+            }} />
+          </Tooltip>
+        </div>
       ),
     });
 
-
-
     return fieldMapColums;
   }, [fieldMap, recordData, archivedRecordIds]);
-
 
   const showDrawer = () => {
     setOpen(true);
@@ -298,26 +291,26 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         disabled={!permissions.editable}
       />
       <Drawer className='archiveDrawer' title={t(Strings.archived_records)} placement="right" onClose={onDrawerClose} width={window.innerWidth * 0.9} open={open}>
-        { hasSelected &&  <div className={styles.batchHandle}>
+        { hasSelected && <div className={styles.batchHandle}>
           <Button onClick={() => {
-             Modal.warning({
-              title: t(Strings.unarchive),
-              content: t(Strings.unarchive_notice),
+            Modal.warning({
+              title: t(Strings.archived_undo),
+              content: t(Strings.archived_undo),
               onOk: () => batchCancelArchied(),
               closable: true,
               hiddenCancelBtn: false,
             });
-          }} variant="fill"  size="small" prefixIcon={<RestoreOutlined currentColor />}> {t(Strings.unarchive)} </Button>
+          }} variant="fill" size="small" prefixIcon={<RestoreOutlined currentColor />}> {t(Strings.archived_undo)} </Button>
           <Button variant="fill" onClick={() => {
-             Modal.danger({
+            Modal.danger({
               title: t(Strings.archive_delete_record),
               content: t(Strings.delete_archived_records_warning_description),
               onOk: () => batchDeleteRecord(),
               closable: true,
               hiddenCancelBtn: false,
             });
-          }}  size="small" prefixIcon={<DeleteOutlined currentColor />}> {t(Strings.delete_record)} </Button>
-          <p>{t(Strings.archived_select_info,{ select: selectedRowKeys.length})}</p>
+          }} size="small" prefixIcon={<DeleteOutlined currentColor />}> {t(Strings.delete_record)} </Button>
+          <p>{t(Strings.archived_select_info, { selected: selectedRowKeys.length })}</p>
         </div>
         }
         <Table
@@ -343,8 +336,4 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     </>
   );
 };
-
-
-
-
 
