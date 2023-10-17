@@ -58,6 +58,7 @@ export const nodeNameMap = new Map<NodeType, string>([
   [NodeType.DATASHEET, t(Strings.datasheet)],
   [NodeType.FORM, t(Strings.form)],
   [NodeType.VIEW, t(Strings.view)],
+  [NodeType.AUTOMATION, t(Strings.automation)],
   [NodeType.TRASH, t(Strings.trash)],
   [NodeType.MIRROR, t(Strings.mirror)],
   [NodeType.DASHBOARD, t(Strings.dashboard)],

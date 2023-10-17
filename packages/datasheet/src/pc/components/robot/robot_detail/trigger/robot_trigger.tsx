@@ -466,6 +466,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
       <SearchSelect
+        // @ts-ignore
         ref={ref}
         clazz={{
           item: itemStyle.item,

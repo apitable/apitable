@@ -23,7 +23,7 @@ export interface IDropdownControl {
     close: () => void;
     open: () => void;
     toggle: (open: Boolean) => void;
-    resetIndex:(index: number | null) => void;
+    resetIndex:() => void;
 }
 
 const CONST_INITIAL_DROPDOWN_INDEX = 1002;
