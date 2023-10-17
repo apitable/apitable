@@ -361,6 +361,7 @@
   "FOLDER_DASHBOARD_LINK_FOREIGN_NODE": "The table referenced by the 「${FOREIGN_WIDGET_NAME}」 widget in the 「${NODE_NAME}」 dashboard in the current folder is not in the current folder。There is an association in the folder and the situation outside the folder cannot be saved as a template",
   "FOLDER_MIRROR_LINK_FOREIGN_NODE": "The original table connected by the 「${NODE_NAME}」 mirror in the current folder is not in the current folder。There is an association in the folder and the situation outside the folder cannot be saved as a template",
   "NODE_LINK_FOREIGN_NODE": "The ${FOREIGN_FIELD_NAMES} column in the current table is associated with other tables。This situation cannot be saved as a template",
+  "FOLDER_AUTOMATION_LINK_FOREIGN_NODE": "The '{NODE_NAME}' table referenced by the '{AUTOMATION_NAME}' automation in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template",
   "SPACE_EXIST_ROLES": "The role already exists on the space",
   "ROLE_EXIST_ROLE_MEMBER": "Members exist under this role",
   "ADD_ROLE_MEMBER_ERROR": "Failed to add members",

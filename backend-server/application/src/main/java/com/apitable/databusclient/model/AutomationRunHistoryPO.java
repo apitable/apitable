@@ -65,9 +65,9 @@ public class AutomationRunHistoryPO {
   @SerializedName(SERIALIZED_NAME_CREATED_AT)
   private String createdAt;
 
-  public static final String SERIALIZED_NAME_ERROR_MESSAGES = "errorMessages";
-  @SerializedName(SERIALIZED_NAME_ERROR_MESSAGES)
-  private String errorMessages;
+  public static final String SERIALIZED_NAME_ERROR_STACKS = "errorStacks";
+  @SerializedName(SERIALIZED_NAME_ERROR_STACKS)
+  private String errorStacks;
 
   public static final String SERIALIZED_NAME_ROBOT_ID = "robotId";
   @SerializedName(SERIALIZED_NAME_ROBOT_ID)
@@ -147,24 +147,24 @@ public class AutomationRunHistoryPO {
   }
 
 
-  public AutomationRunHistoryPO errorMessages(String errorMessages) {
+  public AutomationRunHistoryPO errorStacks(String errorStacks) {
     
-    this.errorMessages = errorMessages;
+    this.errorStacks = errorStacks;
     return this;
   }
 
    /**
-   * Get errorMessages
-   * @return errorMessages
+   * Get errorStacks
+   * @return errorStacks
   **/
   @javax.annotation.Nullable
-  public String getErrorMessages() {
-    return errorMessages;
+  public String getErrorStacks() {
+    return errorStacks;
   }
 
 
-  public void setErrorMessages(String errorMessages) {
-    this.errorMessages = errorMessages;
+  public void setErrorStacks(String errorStacks) {
+    this.errorStacks = errorStacks;
   }
 
 
@@ -245,7 +245,7 @@ public class AutomationRunHistoryPO {
     return Objects.equals(this.actionIds, automationRunHistoryPO.actionIds) &&
         Objects.equals(this.actionTypeIds, automationRunHistoryPO.actionTypeIds) &&
         Objects.equals(this.createdAt, automationRunHistoryPO.createdAt) &&
-        Objects.equals(this.errorMessages, automationRunHistoryPO.errorMessages) &&
+        Objects.equals(this.errorStacks, automationRunHistoryPO.errorStacks) &&
         Objects.equals(this.robotId, automationRunHistoryPO.robotId) &&
         Objects.equals(this.status, automationRunHistoryPO.status) &&
         Objects.equals(this.taskId, automationRunHistoryPO.taskId);
@@ -257,7 +257,7 @@ public class AutomationRunHistoryPO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(actionIds, actionTypeIds, createdAt, errorMessages, robotId, status, taskId);
+    return Objects.hash(actionIds, actionTypeIds, createdAt, errorStacks, robotId, status, taskId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -274,7 +274,7 @@ public class AutomationRunHistoryPO {
     sb.append("    actionIds: ").append(toIndentedString(actionIds)).append("\n");
     sb.append("    actionTypeIds: ").append(toIndentedString(actionTypeIds)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    sb.append("    errorMessages: ").append(toIndentedString(errorMessages)).append("\n");
+    sb.append("    errorStacks: ").append(toIndentedString(errorStacks)).append("\n");
     sb.append("    robotId: ").append(toIndentedString(robotId)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
@@ -303,7 +303,7 @@ public class AutomationRunHistoryPO {
     openapiFields.add("actionIds");
     openapiFields.add("actionTypeIds");
     openapiFields.add("createdAt");
-    openapiFields.add("errorMessages");
+    openapiFields.add("errorStacks");
     openapiFields.add("robotId");
     openapiFields.add("status");
     openapiFields.add("taskId");
@@ -353,8 +353,8 @@ public class AutomationRunHistoryPO {
       if (!jsonObj.get("createdAt").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `createdAt` to be a primitive type in the JSON string but got `%s`", jsonObj.get("createdAt").toString()));
       }
-      if ((jsonObj.get("errorMessages") != null && !jsonObj.get("errorMessages").isJsonNull()) && !jsonObj.get("errorMessages").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `errorMessages` to be a primitive type in the JSON string but got `%s`", jsonObj.get("errorMessages").toString()));
+      if ((jsonObj.get("errorStacks") != null && !jsonObj.get("errorStacks").isJsonNull()) && !jsonObj.get("errorStacks").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `errorStacks` to be a primitive type in the JSON string but got `%s`", jsonObj.get("errorStacks").toString()));
       }
       if (!jsonObj.get("robotId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `robotId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("robotId").toString()));

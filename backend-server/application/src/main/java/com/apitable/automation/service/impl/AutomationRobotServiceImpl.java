@@ -317,12 +317,12 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         List<String> referenceResourceIds = triggers.stream()
             .map(AutomationTriggerDto::getResourceId)
             .filter(StrUtil::isNotBlank).collect(Collectors.toList());
-        Collection<String> disjunction = CollUtil.disjunction(referenceResourceIds, subNodeIds);
-        if (CollUtil.isEmpty(disjunction)) {
+        Collection<String> subtract = CollUtil.subtract(referenceResourceIds, subNodeIds);
+        if (CollUtil.isEmpty(subtract)) {
             return;
         }
         Optional<AutomationTriggerDto> trigger = triggers.stream()
-            .filter(i -> i.getResourceId().equals(CollUtil.getFirst(disjunction)))
+            .filter(i -> i.getResourceId().equals(CollUtil.getFirst(subtract)))
             .findFirst();
         if (!trigger.isPresent()) {
             return;
