@@ -21,7 +21,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="V1.1-20231017-001" author="chalme" labels="datasheet">
+    <changeSet id="V1.3-20231017-001" author="chalme" labels="datasheet">
         <comment>create record_archive table</comment>
         <sql>
             CREATE TABLE IF NOT EXISTS ${table.prefix}datasheet_record_archive
