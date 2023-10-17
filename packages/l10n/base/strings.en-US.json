@@ -5778,5 +5778,6 @@
   "archived_select_info": "Selected${selected}items",
   "archive_notice": "<p>You are trying to archive selected data. Once the data is archived it will</p> <p>1. Editing is is not supported</p><p>2. Functions such as date reminders and subscribe records are not supported</p><p>3. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue?</p>",
   "ArchiveRecords": "Archive Records",
-  "UnarchiveRecord": "UnarchiveRecord"
+  "UnarchiveRecord": "Restore",
+  "unarchive_notice": "The current record is being unarchived. Once unarchived, it will appear again in tables and search results and will start to be recalculated. Continue?"
 }

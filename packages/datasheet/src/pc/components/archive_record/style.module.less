@@ -53,6 +53,7 @@
   .archiveDrawer {
     .ant-drawer-header {
       border: none!important;
+      padding: 20px 24px;
     }
 
     .ant-drawer-close {
@@ -61,6 +62,10 @@
       svg {
         fill: var(--textCommonPrimary)!important;
       }
+    }
+
+    .ant-drawer-body {
+      padding-top: 4px!important;
     }
 
   } 
@@ -75,9 +80,18 @@
       background-color: var(--defaultBg) !important;
     }
 
+    .ant-table-row {
+      &:hover {
+        td {
+          background-color: var(--bgBglessSolidHover) !important;
+        }
+      }
+    }
+
     .ant-table-row-selected {
       td {
-        background-color: var(--defaultBg) !important;
+        background-color: var(--bgBrandLightDefaultSolid) !important;
+        border-bottom: 1px solid var(--borderCommonDefault);
       }
     }
 
@@ -92,6 +106,17 @@
         td {
           padding: 0;
           overflow-wrap: normal!important;
+        }
+      }
+    }
+
+    .ant-table-thead {
+      tr {
+        th {
+          background-color: var(--bgCommonLower)!important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -135,11 +160,8 @@
       line-height: 32px!important;
       input {
         height: 32px!important;
-        background-color: var(--bgBrandLightDefault)!important;
+        background-color: var(--bgControlsDefault)!important;
       }
     }
-
-   
-   
   }
 }

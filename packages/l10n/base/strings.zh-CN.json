@@ -5780,5 +5780,6 @@
   "archived_select_info": "选择了${selected}条记录",
   "archive_notice": "<p>你正在尝试归档选定的数据。一旦数据被归档它将</p><p>1. 不支持通过任何方式进行编辑</p><p>2. 不支持日期提醒、关注记录等功能</p><p>3. 不再参与神奇引用、公式等字段的计算</p><p>确定要继续吗？</p>",
   "ArchiveRecords": "归档了记录",
-  "UnarchiveRecord": "取消归档了记录"
+  "unarchiveRecord": "取消归档",
+  "unarchive_notice": "正在取消归档当前记录，取消后将再次显示在表格和搜索结果中，并开始重新纳入计算，是否继续？"
 }
