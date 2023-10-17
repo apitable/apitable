@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 export type StringKeysMapType = {
   'ANNUAL': 'ANNUAL',
+  'ArchiveRecords': 'ArchiveRecords',
   'BIANNUAL': 'BIANNUAL',
   'CNY': 'CNY',
   'DAYS': 'DAYS',
@@ -11,6 +12,7 @@ export type StringKeysMapType = {
   'Public_Beta_Period': 'Public_Beta_Period',
   'QR_code_invalid': 'QR_code_invalid',
   'Standalone_Capacity': 'Standalone_Capacity',
+  'UnarchiveRecord': 'UnarchiveRecord',
   'WEEKS': 'WEEKS',
   'access_to_space_station_editors': 'access_to_space_station_editors',
   'account_ass_manage': 'account_ass_manage',

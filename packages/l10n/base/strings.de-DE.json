@@ -1,5 +1,6 @@
 {
   "ANNUAL": "JAHRLICH",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "BIJAHRLICH",
   "CNY": "CNY",
   "DAYS": "Tag",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Öffentliche Beta-Periode",
   "QR_code_invalid": "QR-Code ist ungültig",
   "Standalone_Capacity": "Unabhängige Zusatzkapazitäten",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Woche",
   "access_to_space_station_editors": "Geben Sie das zu bearbeitende Leerzeichen ein",
   "account_ass_manage": "Kontobindung",
@@ -4402,7 +4404,6 @@
   "search_field": "Suche",
   "search_fields": "Spalte suchen",
   "search_folder_or_form": "Suche nach Ordnern oder Formularen",
-  "search_folder_or_form": "Find a folder or form ",
   "search_folder_or_sheet": "Dateien suchen",
   "search_new_admin": "Suche",
   "search_node_pleaseholder": "Nach Dateien suchen (${shortcutKey})",

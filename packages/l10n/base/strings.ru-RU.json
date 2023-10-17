@@ -1,5 +1,6 @@
 {
   "ANNUAL": "Ежегодно",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "Два раза в год",
   "CNY": "Компания CNY",
   "DAYS": "День",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Общий период",
   "QR_code_invalid": "Ошибка QR - кода",
   "Standalone_Capacity": "Независимая дополнительная емкость",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Чжоу",
   "access_to_space_station_editors": "Введите пространство для редактирования",
   "account_ass_manage": "Связка счетов",

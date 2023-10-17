@@ -1,5 +1,6 @@
 {
   "ANNUAL": "Cada año",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "Dos veces al año",
   "CNY": "CNY",
   "DAYS": "Durante el día",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Período de medición pública",
   "QR_code_invalid": "El Código QR no es válido",
   "Standalone_Capacity": "Capacidad adicional independiente",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Semana",
   "access_to_space_station_editors": "Introduzca el espacio a editar",
   "account_ass_manage": "Vinculación de cuentas",
@@ -4800,7 +4802,7 @@
   "space_guide_step_one_tip": "Consejo: puede cambiar el nombre y el logotipo del espacio en la \"gestión del espacio\" en el futuro",
   "space_guide_success_tip": "Your Space is all set🎉～<br/> \nPlease fasten your seat belt and get started!🚀",
   "space_has_been_deleted": "Se ha eliminado el espacio \"'a class =\" spacename \"> < a > espacio.",
-  "space_has_been_recover": "Se ha restaurado el espacio \"('a class =' Space name ') / / a > espacio.",
+  "space_has_been_recover": "Se ha restaurado el espacio \"('a class =' Space name') / / a > espacio.",
   "space_id": "Id espacial",
   "space_info": "Resumen",
   "space_info_del_confirm1": "1. eliminar este espacio compartido eliminará los siguientes datos:",

@@ -1,5 +1,6 @@
 {
   "ANNUAL": "ANNUALE",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "BIANNUALE",
   "CNY": "Città di New York",
   "DAYS": "Giorno",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Periodo beta pubblico",
   "QR_code_invalid": "Il codice QR non è valido",
   "Standalone_Capacity": "Capacità aggiuntiva indipendente",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Settimana",
   "access_to_space_station_editors": "Inserisci lo spazio da modificare",
   "account_ass_manage": "Obbligazione del conto",

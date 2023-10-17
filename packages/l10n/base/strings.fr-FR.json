@@ -1,5 +1,6 @@
 {
   "ANNUAL": "ANNUEL",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "BIANNUEL",
   "CNY": "La société CNY",
   "DAYS": "Jour",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Période de bêta publique",
   "QR_code_invalid": "Le code QR est invalide",
   "Standalone_Capacity": "Capacité d'extension indépendante",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Semaine",
   "access_to_space_station_editors": "Entrez l'espace à modifier",
   "account_ass_manage": "Liaison du compte",

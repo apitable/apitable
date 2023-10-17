@@ -1,5 +1,6 @@
 {
   "ANNUAL": "毎年",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "年に2回",
   "CNY": "CNY社",
   "DAYS": "昼",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "公測期間",
   "QR_code_invalid": "無効なQRコード",
   "Standalone_Capacity": "独立追加容量",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "周",
   "access_to_space_station_editors": "編集するスペースを入力",
   "account_ass_manage": "アカウントバインド",

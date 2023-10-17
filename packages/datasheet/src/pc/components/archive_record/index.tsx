@@ -162,9 +162,9 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     case FieldType.OneWayLink:
     case FieldType.LookUp:
     case FieldType.Attachment:
-      return cellValue;
+      return JSON.stringify(cellValue);
     default:
-      return cellValue;
+      return JSON.stringify(cellValue);
     }
   }
 
@@ -192,7 +192,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }).filter(item => item !== null);
 
     fieldMapColums.unshift(firstColumn);
-
+    
     fieldMapColums.push({
       title: t(Strings.archived_by),
       key: 'archivedUser',

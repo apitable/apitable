@@ -1,5 +1,6 @@
 {
   "ANNUAL": "年付",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "半年付",
   "CNY": "人民幣",
   "DAYS": "天",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "公測期",
   "QR_code_invalid": "二維碼已失效",
   "Standalone_Capacity": "獨立附加容量",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "週",
   "access_to_space_station_editors": "進入空間站編輯",
   "account_ass_manage": "帳號關聯管理",

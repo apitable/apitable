@@ -1,5 +1,6 @@
 {
   "ANNUAL": "매년",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "1년에 두 번",
   "CNY": "CNY 회사",
   "DAYS": "낮",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "공개 테스트 기간",
   "QR_code_invalid": "잘못된 QR코드",
   "Standalone_Capacity": "개별 추가 용량",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "주",
   "access_to_space_station_editors": "편집할 공간 입력",
   "account_ass_manage": "계정 바인딩",

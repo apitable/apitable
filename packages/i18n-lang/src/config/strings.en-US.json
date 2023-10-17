@@ -1,5 +1,6 @@
 {
   "ANNUAL": "ANNUAL",
+  "ArchiveRecords": "Archive Records",
   "BIANNUAL": "BIANNUAL",
   "CNY": "CNY",
   "DAYS": "Day",
@@ -10,6 +11,7 @@
   "Public_Beta_Period": "Public Beta Period",
   "QR_code_invalid": "QR code is invalid",
   "Standalone_Capacity": "Independent add-on capacity",
+  "UnarchiveRecord": "UnarchiveRecord",
   "WEEKS": "Week",
   "access_to_space_station_editors": "Enter the space to edit",
   "account_ass_manage": "Account binding",
@@ -618,7 +620,6 @@
   "archive_notice": "<p>You are trying to archive selected data. Once the data is archived it will</p> <p>1. Editing is is not supported</p><p>2. Functions such as date reminders and subscribe records are not supported</p><p>3. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue?</p>",
   "archive_record_in_menu": "Archive record",
   "archive_record_success": "Successfully archived records",
-  "archive_records_drawer_description": "Here are the archived records, which will not be obtained by tools such as filtering, grouping and statistics",
   "archive_records_in_menu": "Archive ${chose_num} records",
   "archive_records_success": "${chose_num} record(s) successfully archived",
   "archived_action": "Action",
