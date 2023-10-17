@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
 import { RestoreOutlined, DeleteOutlined, ArchiveOutlined } from '@apitable/icons';
-import { Tooltip, Avatar, Message } from 'pc/components/common';
+// eslint-disable-next-line no-restricted-imports
+import { Avatar, Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { useRequest } from 'pc/hooks';
@@ -36,7 +37,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const [total, setTotal] = useState(0);
   const [tableParams, setTableParams] = useState({
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 20,
   });
   const [tablePagination] = useState<TablePaginationConfig>({});
 
@@ -179,6 +180,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         key: id,
         dataIndex: id,
         width: 200,
+        ellipsis: true,
         render: (cellValue) => (
           <div className={styles.cellValue}>
             {showArchivedCellValue(cellValue, key)}
@@ -228,28 +230,32 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       render: (_, record) => (
         <div className={styles.toolList}>
           <Tooltip title={t(Strings.archived_undo)}>
-            <RestoreOutlined
-              onClick={() => {
-                Modal.warning({
-                  title: t(Strings.unarchiveRecord),
-                  content: t(Strings.unarchive_notice),
-                  onOk: () => cancelArchied(record),
+            <span>
+              <RestoreOutlined
+                onClick={() => {
+                  Modal.warning({
+                    title: t(Strings.archived_undo),
+                    content: t(Strings.unarchive_notice),
+                    onOk: () => cancelArchied(record),
+                    closable: true,
+                    hiddenCancelBtn: false,
+                  });
+                }}
+              />
+            </span>
+          </Tooltip>
+          <Tooltip title={t(Strings.archive_delete_record_title)}>
+            <span>
+              <DeleteOutlined onClick={() => {
+                Modal.danger({
+                  title: t(Strings.archive_delete_record),
+                  content: t(Strings.delete_archived_records_warning_description),
+                  onOk: () => deleteRecord(record),
                   closable: true,
                   hiddenCancelBtn: false,
                 });
-              }}
-            />
-          </Tooltip>
-          <Tooltip title={t(Strings.archive_delete_record_title)}>
-            <DeleteOutlined onClick={() => {
-              Modal.danger({
-                title: t(Strings.archive_delete_record),
-                content: t(Strings.delete_archived_records_warning_description),
-                onOk: () => deleteRecord(record),
-                closable: true,
-                hiddenCancelBtn: false,
-              });
-            }} />
+              }} />
+            </span>
           </Tooltip>
         </div>
       ),
@@ -307,13 +313,13 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         <div className={styles.batchHandle}>
           <Button disabled={!hasSelected} onClick={() => {
             Modal.warning({
-              title: t(Strings.unarchiveRecord),
+              title: t(Strings.archived_undo),
               content: t(Strings.unarchive_notice),
               onOk: () => batchCancelArchied(),
               closable: true,
               hiddenCancelBtn: false,
             });
-          }} variant="fill" size="small" prefixIcon={<RestoreOutlined currentColor />}> {t(Strings.unarchiveRecord)} </Button>
+          }} variant="fill" size="small" prefixIcon={<RestoreOutlined currentColor />}> {t(Strings.archived_undo)} </Button>
           <Button disabled={!hasSelected} variant="fill" onClick={() => {
             Modal.danger({
               title: t(Strings.archive_delete_record),

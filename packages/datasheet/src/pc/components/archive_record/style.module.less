@@ -3,11 +3,17 @@
 
 .toolList {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   padding: 0 16px;
+  span {
+    margin-right: 16px;
+  }
   svg {
     cursor: pointer;
+    &:hover {
+      fill: var(--textBrandDefault);
+    }
   }
 }
 
@@ -92,6 +98,7 @@
       td {
         background-color: var(--bgBrandLightDefaultSolid) !important;
         border-bottom: 1px solid var(--borderCommonDefault);
+        border-color: var(--borderCommonDefault);
       }
     }
 
@@ -110,17 +117,6 @@
       }
     }
 
-    .ant-table-thead {
-      tr {
-        th {
-          background-color: var(--bgCommonLower)!important;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
-    }
-    
     .ant-pagination-item-link {
       background-color: inherit!important;
     }
@@ -161,6 +157,11 @@
       input {
         height: 32px!important;
         background-color: var(--bgControlsDefault)!important;
+      }
+    }
+    .ant-spin-blur {
+      &:after {
+        opacity: 0!important;
       }
     }
   }
