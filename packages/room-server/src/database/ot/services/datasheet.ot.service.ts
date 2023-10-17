@@ -1615,10 +1615,15 @@ export class DatasheetOtService {
     if (resultSet.toArchiveRecordIds.length === 0) {
       return;
     }
-    const { userId, dstId } = commonData;
+    const { userId, dstId, revision } = commonData;
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${dstId}] archive record`);
     }
+    const recordUpdateProp = {
+      revisionHistory: () => `CONCAT_WS(',', revision_history, ${revision})`,
+      revision,
+      updatedBy: userId,
+    };
 
     const saveArchiveRecordEntities: any[] = [];
     const beginTime = +new Date();
@@ -1639,6 +1644,17 @@ export class DatasheetOtService {
     if (saveArchiveRecordEntities.length > 0) {
       if (this.logger.isDebugEnabled()) {
         this.logger.debug(`[${dstId}] Batch archive record`);
+      }
+
+      const updateChunkList = chunk(resultSet.toArchiveRecordIds, 3000);
+      for (const entities of updateChunkList) {
+        await manager
+          .createQueryBuilder()
+          .update(DatasheetRecordEntity)
+          .set(recordUpdateProp)
+          .where('dst_id = :dstId', { dstId })
+          .andWhere('record_id IN(:...ids)', { ids: entities })
+          .execute();
       }
       const chunkList = chunk(saveArchiveRecordEntities, 3000);
       for (const entities of chunkList) {
@@ -2239,7 +2255,7 @@ export class DatasheetOtService {
       return;
     }
 
-    const { userId, dstId } = commonData;
+    const { userId, dstId, revision } = commonData;
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${dstId}] Soft unarchive record`);
     }
@@ -2247,6 +2263,12 @@ export class DatasheetOtService {
     this.logger.info(`[${dstId}] ====> Start batch unarchiving record......`);
     const values = {
       isArchived: false,
+      updatedBy: userId,
+    };
+
+    const recordUpdateProp = {
+      revisionHistory: () => `CONCAT_WS(',', revision_history, ${revision})`,
+      revision,
       updatedBy: userId,
     };
     const gap = 1000;
@@ -2259,6 +2281,14 @@ export class DatasheetOtService {
         .createQueryBuilder()
         .update(DatasheetRecordArchiveEntity)
         .set(values)
+        .where('dst_id = :dstId', { dstId })
+        .andWhere('record_id IN(:...ids)', { ids: unarchivedRecordIds })
+        .execute();
+
+      await manager
+        .createQueryBuilder()
+        .update(DatasheetRecordEntity)
+        .set(recordUpdateProp)
         .where('dst_id = :dstId', { dstId })
         .andWhere('record_id IN(:...ids)', { ids: unarchivedRecordIds })
         .execute();
