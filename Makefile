@@ -136,7 +136,6 @@ _test-ut-core:
 	pnpm run test:core
 
 _test-ut-core-cov:
-	make _build-ts
 	pnpm run test:core:cov
 
 ###### 【core unit test】 ######
