@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
-import { StoreActions } from '@apitable/core';
-import { SecondConfirmType } from 'pc/components/datasheet_search_panel';
 import { ISearchPanelState } from '../store/interface/search_panel';
 import { useFetchDatasheetMeta } from './use_fetch_datasheet_meta';
 
@@ -11,8 +8,7 @@ interface IParams {
   needFetchDatasheetMeta: boolean;
 }
 
-export const useNodeClick = ({ localDispatch, localState,needFetchDatasheetMeta }: IParams) => {
-  const dispatch = useDispatch();
+export const useNodeClick = ({ localDispatch, localState, needFetchDatasheetMeta }: IParams) => {
   const { data: datasheetMetaData } = useFetchDatasheetMeta({ localState, localDispatch, needFetchDatasheetMeta });
 
   const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string) => {
@@ -46,7 +42,6 @@ export const useNodeClick = ({ localDispatch, localState,needFetchDatasheetMeta 
         loading: true,
       });
       localDispatch({ currentMirrorId: id });
-      dispatch(StoreActions.fetchMirrorPack(id) as any);
     }
   };
 
@@ -83,8 +78,6 @@ export const useNodeClick = ({ localDispatch, localState,needFetchDatasheetMeta 
       currentDatasheetId: id,
       currentViewId: '',
     });
-
-    dispatch(StoreActions.fetchDatasheet(id) as any);
   };
 
   return {

@@ -1,13 +1,15 @@
+import { useState } from 'react';
+import { Button } from '@apitable/components';
 import { ConfigConstant, IPermissions, Strings, t } from '@apitable/core';
+import { Loading } from 'pc/components/common';
 import { LoaderContext } from 'pc/components/data_source_selector/context/loader_context';
+import { useFetchExtraData } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/hooks/use_fetch_extra_data';
 import { useResponsive } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
 import { DataSourceSelectorBase } from '../../data_source_selector/data_source_selector';
 import { DataSourceSelectorWrapper } from '../../data_source_selector/data_source_selector_wrapper';
 import { IOnChange, IOnChangeParams, ISearchPanelProps } from '../../data_source_selector/interface';
 import styles from './style.module.less';
-import { Button } from '@apitable/components';
-import { useState } from 'react';
 
 interface IDataSourceSelectorForAIProps {
   onChange: IOnChange<IOnChangeParams>;
@@ -28,6 +30,7 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
   requiredData = ['datasheetId'],
 }) => {
   const [result, setResult] = useState<IOnChangeParams>();
+  const { fetchExtraData, isLoadingExtraData } = useFetchExtraData();
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -35,6 +38,16 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
 
   const _onChange = (result: IOnChangeParams) => {
     setResult(result);
+  };
+
+  const onSubmit = async () => {
+    if (result?.datasheetId || result?.mirrorId) {
+      await fetchExtraData({
+        datasheetId: result?.datasheetId,
+        mirrorId: result?.mirrorId,
+      });
+    }
+    onChange(result || {});
   };
 
   const title = nodeTypes.includes(ConfigConstant.NodeType.FORM) ? t(Strings.check_link_form) : t(Strings.check_link_table);
@@ -60,9 +73,9 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
             headerConfig={
               isPc
                 ? {
-                    title: title,
-                    onHide,
-                  }
+                  title: title,
+                  onHide,
+                }
                 : undefined
             }
             requiredData={requiredData}
@@ -71,16 +84,11 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
             <Button color={'default'} onClick={onHide}>
               {t(Strings.cancel)}
             </Button>
-            <Button
-              color={'primary'}
-              disabled={!result}
-              onClick={() => {
-                onChange(result || {});
-              }}
-            >
+            <Button color={'primary'} disabled={!result} onClick={onSubmit}>
               {t(Strings.submit)}
             </Button>
           </div>
+          {isLoadingExtraData && <Loading className={'vk-absolute vk-top-0 vk-left-0 vk-right-0 vk-bottom-0'} />}
         </div>
       </DataSourceSelectorWrapper>
     </LoaderContext.Provider>
