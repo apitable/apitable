@@ -458,7 +458,7 @@
   "archive_records_success": "${chose_num} record(s) successfully archived",
   "archived_failure": "Transferring failed",
   "archived_operator_description": "${archived_operator} archived ${archived_num} record(s)",
-  "archived_records": "Archived records",
+  "archived_records": "Archived Box",
   "archived_successfully": "Transferred",
   "argentina": "Argentina",
   "armenia": "Armenia",
@@ -2788,6 +2788,7 @@
   "max_remain_trash_days": "This space supports viewing historical files within ${specification} days, upgrade to view more historical files ",
   "max_rows_in_space": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
   "max_rows_per_sheet": "The maximum number of records in one datasheet is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
+  "max_archived_rows_per_sheet": "Operation failed. The number of archives has reached the upper limit. Please try to upgrade the space or delete some archived records.",
   "max_seats": "The maximum number of seats in the space is ${specification}, and ${usage} are currently invited, and you can upgrade to get higher usage.",
   "max_sheet_nums": "The maximum number of file nodes to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
   "max_value": "Maximum",
@@ -5777,7 +5778,9 @@
   "archived_action": "Action",
   "archived_select_info": "Selected${selected}items",
   "archive_notice": "<p>You are trying to archive selected data. Once the data is archived it will</p> <p>1. Editing is is not supported</p><p>2. Functions such as date reminders and subscribe records are not supported</p><p>3. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue?</p>",
-  "ArchiveRecords": "Archive Records",
-  "UnarchiveRecord": "Restore",
+  "ArchiveRecords": "archived ${record_count} record(s)",
+  "UnarchiveRecord": "unarchived ${record_count} record(s)",
+  "archive_record_in_activity": " archived this record",
+  "unarchive_record_in_activity": " unarchived this record",
   "unarchive_notice": "The current record is being unarchived. Once unarchived, it will appear again in tables and search results and will start to be recalculated. Continue?"
 }
