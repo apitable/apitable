@@ -55,7 +55,6 @@ export interface IHeadConfig {
 
 export interface ISearchPanelProps<R extends IOnChangeParams = IOnChangeParams> {
   headerConfig?: IHeadConfig;
-  noCheckPermission?: boolean;
   onChange: IOnChange<R>;
   // allowNodeType?: IAllowNodeType;
   filterPermissionForNode?: 'editable';

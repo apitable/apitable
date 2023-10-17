@@ -12,15 +12,15 @@ interface IParams {
 export const useFetchFolderData = ({ localState, localDispatch }: IParams) => {
   const { data: parentData, isValidating: isParentVlidating } = useFetchParent({ folderId: localState.currentFolderId });
   const { data: childrenData, isValidating: isChildrenValidating } = useFetchChildren({ folderId: localState.currentFolderId });
-  const { nodeFilterLoader } = useLoader();
-  
+  const { nodeTypeFilterLoader } = useLoader();
+
   useEffect(() => {
     localDispatch({ parents: parentData });
   }, [parentData, localDispatch]);
 
   useEffect(() => {
     const nodes = childrenData || [];
-    localDispatch({ nodes: nodeFilterLoader(nodes), showSearch: false });
+    localDispatch({ nodes: nodeTypeFilterLoader(nodes), showSearch: false });
   }, [childrenData, localDispatch]);
 
   return {

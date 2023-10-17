@@ -21,25 +21,30 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ConfigConstant, INode, Strings, t, ThemeName } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
+import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
-import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
 interface ISearchResultProps {
-  searchResult: { folders: INode[]; files: INode[] } | string;
+  searchResult:
+    | {
+        folders: INode[];
+        files: INode[];
+      }
+    | string;
   onlyShowAvailable: boolean;
 
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
-
-  noCheckPermission?: boolean;
 }
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
-  const { searchResult, noCheckPermission, onlyShowAvailable, onNodeClick } = props;
+  const { searchResult, onlyShowAvailable, onNodeClick } = props;
   const themeName = useSelector((state) => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
+  const { nodeVisibleFilterLoader, nodeStatusLoader } = useLoader();
+
   if (typeof searchResult === 'string') {
     return (
       <div className={styles.searchEmpty}>
@@ -80,11 +85,6 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
     );
   };
 
-  const _checkNodeDisable = (node: INode) => {
-    if (noCheckPermission) return;
-    return checkNodeDisable(node);
-  };
-
   const FileList = (files: INode[]) => {
     if (!files.length) {
       return null;
@@ -108,7 +108,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
                   }
                 }}
                 richContent
-                disable={_checkNodeDisable(node)}
+                disable={nodeStatusLoader(node)}
               >
                 {node.nodeName}
               </File>
@@ -120,7 +120,8 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
   };
 
   const folders = searchResult.folders;
-  const files = onlyShowAvailable ? searchResult.files.filter((node) => !_checkNodeDisable(node)) : searchResult.files;
+  const files = onlyShowAvailable ? nodeVisibleFilterLoader(searchResult.files) : searchResult.files;
+  
   return (
     <div className={styles.searchResult}>
       {FolderList(folders)}

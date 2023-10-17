@@ -2481,6 +2481,7 @@ export type StringKeysMapType = {
   'hide_fields_not_go': 'hide_fields_not_go',
   'hide_graphic_field_tips_in_gantt': 'hide_graphic_field_tips_in_gantt',
   'hide_kanban_grouping': 'hide_kanban_grouping',
+  'hide_node_permission_resource': 'hide_node_permission_resource',
   'hide_one_field': 'hide_one_field',
   'hide_one_graphic_field': 'hide_one_graphic_field',
   'hide_pane': 'hide_pane',

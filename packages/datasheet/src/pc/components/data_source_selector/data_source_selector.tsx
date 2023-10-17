@@ -19,7 +19,6 @@ import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
 
 export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
-  noCheckPermission,
   defaultNodeIds,
   requiredData,
   onChange,
@@ -42,7 +41,9 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   });
   const colors = useThemeColors();
   const { embedId } = useSelector((state) => state.pageParams);
-  const editorRef = useRef<{ focus: () => void } | null>(null);
+  const editorRef = useRef<{
+    focus: () => void;
+      } | null>(null);
 
   const needNodeMetaData = requiredData.includes('viewId') || requiredData.includes('meta');
 
@@ -117,19 +118,14 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
         onSwitcherChange={(val) => localDispatch({ onlyShowEditableNode: val })}
         onCancelClick={onCancelClick}
         placeholder={t(Strings.datasource_selector_search_placeholder)}
-        checkboxText={t(Strings.hide_unusable_sheet)}
+        checkboxText={t(Strings.hide_node_permission_resource)}
         checked={localState.onlyShowEditableNode}
         value={localState.searchValue}
-        switchVisible={false}
+        switchVisible
       />
       {!localState.showSearch && !embedId && <FolderBreadcrumb parents={localState.parents} onNodeClick={onNodeClick} />}
       {localState.showSearch ? (
-        <SearchResult
-          searchResult={localState.searchResult}
-          noCheckPermission={noCheckPermission}
-          onlyShowAvailable={localState.onlyShowEditableNode}
-          onNodeClick={onNodeClick}
-        />
+        <SearchResult searchResult={localState.searchResult} onlyShowAvailable={localState.onlyShowEditableNode} onNodeClick={onNodeClick} />
       ) : (
         <FolderContent
           nodes={localState.nodes}
@@ -138,8 +134,8 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
           currentDatasheetId={localState.currentDatasheetId}
           currentFormId={localState.currentFormId}
           loading={localState.loading}
-          noCheckPermission={noCheckPermission}
           onNodeClick={onNodeClick}
+          onlyShowAvailable={localState.onlyShowEditableNode}
         />
       )}
       {isLoading && <Loading className={styles.loading} />}

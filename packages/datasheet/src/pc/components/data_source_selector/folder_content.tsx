@@ -21,12 +21,12 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
+import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { ScrollBar } from 'pc/components/scroll_bar';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { File, Folder, View } from './components';
 import styles from './style.module.less';
-import { checkNodeDisable } from './utils/check_node_disabled';
 
 export interface IViewNode {
   nodeId: string;
@@ -45,7 +45,7 @@ interface IFolderContentProps {
   currentDatasheetId: string;
   currentFormId: string;
   loading: boolean;
-  noCheckPermission?: boolean;
+  onlyShowAvailable: boolean;
 
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
@@ -53,29 +53,17 @@ interface IFolderContentProps {
 }
 
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
-  const {
-    nodes,
-    onNodeClick,
-    currentViewId,
-    currentMirrorId,
-    loading,
-    noCheckPermission,
-    currentDatasheetId,
-    hideViewNode,
-    currentFormId,
-  } = props;
+  const { nodes, onlyShowAvailable, onNodeClick, currentViewId, currentMirrorId, loading, currentDatasheetId, hideViewNode, currentFormId } = props;
   const themeName = useSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
+  const { nodeVisibleFilterLoader, nodeStatusLoader } = useLoader();
 
-  const _checkNodeDisable = (node: INode) => {
-    if (noCheckPermission) return;
-    return checkNodeDisable(node);
-  };
+  const _nodes = onlyShowAvailable ? nodeVisibleFilterLoader(nodes as INode[]) : nodes;
 
   return (
     <div className={styles.folderContent}>
       <ScrollBar>
-        {nodes.map((node) => {
+        {_nodes.map((node) => {
           if (node.type === ConfigConstant.NodeType.FOLDER) {
             return (
               <Folder key={node.nodeId} id={node.nodeId} onClick={(id) => onNodeClick('Folder', id)}>
@@ -84,14 +72,14 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
             );
           }
 
-          if (node.type === ConfigConstant.NodeType.DATASHEET && !_checkNodeDisable(node as INode)) {
+          if (node.type === ConfigConstant.NodeType.DATASHEET) {
             return (
               <File
                 key={node.nodeId}
                 id={node.nodeId}
                 active={currentDatasheetId === node.nodeId}
                 onClick={(id) => onNodeClick('Datasheet', id)}
-                disable={_checkNodeDisable(node as INode)}
+                disable={nodeStatusLoader(node as INode)}
                 nodeType={node.type}
               >
                 {node.nodeName}
@@ -106,7 +94,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 id={node.nodeId}
                 active={currentFormId === node.nodeId}
                 onClick={(id) => onNodeClick('Form', id)}
-                disable={_checkNodeDisable(node as INode)}
+                disable={nodeStatusLoader(node as INode)}
                 nodeType={node.type}
               >
                 {node.nodeName}
@@ -114,7 +102,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
             );
           }
 
-          if (node.type === ConfigConstant.NodeType.MIRROR &&  !_checkNodeDisable(node as INode)) {
+          if (node.type === ConfigConstant.NodeType.MIRROR) {
             // TODO
             return (
               <File
@@ -122,7 +110,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 id={node.nodeId}
                 active={currentMirrorId === node.nodeId}
                 onClick={(id) => onNodeClick('Mirror', id)}
-                disable={_checkNodeDisable(node as INode)}
+                disable={nodeStatusLoader(node as INode)}
                 nodeType={node.type}
               >
                 {node.nodeName}
@@ -138,7 +126,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 active={currentViewId === node.nodeId}
                 viewType={(node as IViewNode).viewType}
                 onClick={(id) => {
-                  onNodeClick('View', id)
+                  onNodeClick('View', id);
                 }}
               >
                 {node.nodeName}
@@ -147,7 +135,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
           }
           return null;
         })}
-        {!loading && !nodes.length && (
+        {!loading && !_nodes.length && (
           <div className={styles.emptyFolder}>
             <div className={styles.emptyImg}>
               <Image src={EmptyFolderImg} alt={t(Strings.folder_content_empty)} width={200} height={150} />

@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Button } from '@apitable/components';
-import { ConfigConstant, IPermissions, Strings, t } from '@apitable/core';
+import { ConfigConstant, INode, IPermissions, Strings, t } from '@apitable/core';
 import { Loading } from 'pc/components/common';
 import { LoaderContext } from 'pc/components/data_source_selector/context/loader_context';
 import { useFetchExtraData } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/hooks/use_fetch_extra_data';
+import { nodeStatusLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_status_loader';
+import { nodeTypeFilterLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_type_filter_loader';
+import { nodeVisibleFilterLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_visible_filter_loader';
 import { useResponsive } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
 import { DataSourceSelectorBase } from '../../data_source_selector/data_source_selector';
@@ -55,13 +58,18 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
   return (
     <LoaderContext.Provider
       value={{
-        nodeFilterLoader: (nodes) => {
+        nodeTypeFilterLoader: (nodes) => {
           return nodes.filter((node) => {
-            const _nodeTypes = [ConfigConstant.NodeType.FOLDER, ...nodeTypes];
-            const allowNodeType = _nodeTypes.includes(node.type);
-            const allowPermission = node['permissions'] ? Boolean(node['permissions'][permissionRequired]) : true;
-            return allowNodeType && allowPermission;
+            return nodeTypeFilterLoader(node, nodeTypes);
           });
+        },
+        nodeVisibleFilterLoader: (nodes) => {
+          return nodes.filter((node) => {
+            return nodeVisibleFilterLoader(node, permissionRequired);
+          });
+        },
+        nodeStatusLoader: (node: INode) => {
+          return nodeStatusLoader(node, permissionRequired);
         },
       }}
     >
