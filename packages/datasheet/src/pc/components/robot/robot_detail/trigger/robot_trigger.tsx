@@ -173,7 +173,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           });
         },
         onCancel: () => {
-          ref.current?.resetIndex();
+          ref.current?.resetIndex?.();
           return;
         },
         type: 'warning',
