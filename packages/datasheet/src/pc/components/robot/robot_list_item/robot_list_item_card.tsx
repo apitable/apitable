@@ -177,7 +177,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
             loading={loading}
             onClick={ async (_value, e) => {
               stopPropagation(e);
-              await toggleRobotActive(_value);
+              await toggleRobotActive(robotCardInfo!.isActive);
               await refresh();
             }}
           />
