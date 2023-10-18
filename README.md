@@ -46,6 +46,11 @@
     <a target="_blank" href="https://apitable.betteruptime.com/">
         <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
     </a>
+    <br>
+    <!-- Deploy to Dome-->
+    <a target="_blank" href="https://app.trydome.io/signup?package=apitable">
+        <img src="https://trydome.io/dome-badge.svg" />
+    </a>
 </p>
 
 <p align="center">
