@@ -140,6 +140,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   const datasheetName = datasheet?.name;
 
   const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const datasheetMaps = useSelector((state: IReduxState) => state.datasheetMap);
 
   const ref = useRef<IDropdownControl>();
   const {
@@ -435,6 +436,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       index={0}
       handleClick={memorisedHandleClick}
       nodeId={trigger.triggerId}
+      key={trigger.triggerId}
       schema={schema}
       formData={formData}
       unsaved={modified}
@@ -456,7 +458,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         }
 
         if(dstId != null) {
-          if(treeMaps[dstId]==null) {
+          if(datasheetMaps[dstId] == null) {
             return {
               datasheetId: {
                 __errors: [t(Strings.robot_config_empty_warning)]

@@ -252,7 +252,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     disabled={!permissions.editable}
     type='action'
     index={index}
-    // key={action.id}
+    key={action.actionId}
     // noValidate
     // noHtml5Validate
     unsaved={modified}
