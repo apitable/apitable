@@ -80,7 +80,6 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
       }
     }
   }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
-  const { shareInfo } = useContext(ShareContext);
   const user = useSelector((state: IReduxState) => state.user);
 
   if (!robot) {
@@ -138,7 +137,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                             unCheckedBackground: styles.unCheckedBackground,
                           }}
                           checked={robot.isActive}
-                          onClick={toggleRobotActive}
+                          onClick={() => toggleRobotActive(robot.isActive)}
                           loading={loading}
                         />
                       </Box>
