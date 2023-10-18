@@ -5,7 +5,7 @@ import { ConfigConstant, IReduxState, Selectors, Strings, t } from '@apitable/co
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
 import { RelatedResource } from '../../robot/robot_context';
-import { automationStateAtom } from '../controller';
+import { automationStateAtom, loadableFormItemAtom, loadableFormMeta, selectFormMeta } from '../controller';
 import { SelectTrigger } from './select_trigger';
 
 export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined) => void }> = memo(({ value, onChange }) => {
@@ -72,12 +72,20 @@ export const SelectForm: FC<{ value: string; onChange: (dstId: string | undefine
   const [visible, setVisible] = useState(false);
 
   const form = useSelector((state: IReduxState) => Selectors.getForm(state, value), shallowEqual);
+
+  const formMeta = useAtomValue(loadableFormItemAtom);
+
   const stateValue = useAtomValue(automationStateAtom);
   const node = treeMaps[value];
-  const name =
+
+  let name =
     shareId != null
       ? stateValue?.robot?.relatedResources?.find((item: RelatedResource) => item.nodeId === value)?.nodeName
-      : form?.name ?? node?.nodeName;
+      : (formMeta?.data as any)?.form?.name ?? node?.nodeName;
+  if(form) {
+    name = form.name;
+  }
+
   return (
     <>
       <SelectTrigger

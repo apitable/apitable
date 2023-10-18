@@ -40,7 +40,7 @@ import {
   automationLocalMap,
   automationPanelAtom,
   automationStateAtom,
-  automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormList,
+  automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormItemAtom, loadableFormList,
   PanelName, useAutomationController
 } from '../../../automation/controller';
 import { getDatasheetId, getFormId, getRelativedId } from '../../../automation/controller/hooks/use_robot_fields';
@@ -111,6 +111,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const { api: { refreshItem } } = useAutomationController();
   const formData = localStateMap.get(trigger.triggerId!) ?? trigger.input;
+
   if(!formData) {
     setLocalStateMap(produce(localStateMap, (draft => {
       draft.set(trigger.triggerId!, trigger.input);
@@ -279,9 +280,12 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       formId: {
         'ui:widget': ({ value, onChange }: any) => {
           return (
-            <SelectForm value={value?.value} onChange={v => {
-              onChange(literal2Operand(v));
-            }} />
+              <SelectForm value={value?.value} onChange={v => {
+                setTriggerDatasheetValue(draft => ({ ...draft,
+                  formId: v,
+                }));
+                onChange(literal2Operand(v));
+              }} />
           );
         } },
       datasheetId: {
@@ -404,6 +408,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     return editType === EditType.entry ? handleClick : undefined;
   }, [editType, handleClick]);
 
+  const formMeta = useAtomValue(loadableFormItemAtom);
   const handleUpdate = useCallback((e: any) => {
     const previous = getRelativedId({ input: formData } );
     const current = getRelativedId({ input: e.formData } );
@@ -441,7 +446,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         const formId = getFormId({ input: form } as any);
         const dstId = getDatasheetId({ input: form } as any);
         if(formId != null) {
-          if(treeMaps[formId]==null) {
+          if(treeMaps[formId] == null && (!formMeta.loading && (formMeta?.data as any)?.form ==null)) {
             return {
               formId: {
                 __errors: [t(Strings.robot_config_empty_warning)]
