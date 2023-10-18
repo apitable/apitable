@@ -52,7 +52,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
           <MobileBar />
         </ComponentDisplay>
       }
-      {hasChildren ? (!getEnvVariables().IS_AITABLE ? <ChatWelcome /> : <Guide/>) : <CreateDatasheet />}
+      {hasChildren ? (getEnvVariables().IS_AITABLE ? <ChatWelcome /> : <Guide/>) : <CreateDatasheet />}
     </>
   );
 };
