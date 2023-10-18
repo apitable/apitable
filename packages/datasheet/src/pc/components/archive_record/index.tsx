@@ -2,6 +2,7 @@ import { Drawer, Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
+import { produce } from 'immer';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
@@ -16,6 +17,11 @@ import { resourceService } from 'pc/resource_service';
 import { IArchivedRecordsProps } from './interface';
 // eslint-disable-next-line no-restricted-imports
 import styles from './style.module.less';
+
+interface ITableParams { 
+  pageNum: number,
+  pageSize: number
+}
 
 const handleRecordsData = (recordsData) => {
   const data = recordsData.map(item => {
@@ -35,11 +41,10 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const { className, showLabel = true, isHide } = props;
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
-  const [tableParams, setTableParams] = useState({
+  const [tableParams, setTableParams] = useState<ITableParams>({
     pageNum: 1,
     pageSize: 20,
   });
-  const [tablePagination] = useState<TablePaginationConfig>({});
 
   const [recordData, setRecordData] = useState<any[]>([]);
   const [recordsDataMap, setRecordsDataMap] = useState(new Map());
@@ -47,7 +52,6 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
   const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const archivedRecordIds = useSelector((state) => Selectors.getSnapshot(state)!.meta.archivedRecordIds)!;
   const visibleColumns = useSelector((state) => Selectors.getVisibleColumns(state, datasheetId))!;
   const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId));
 
@@ -74,7 +78,20 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   useEffect(() => {
     if(!open) return;
     getArchivedRecords();
-  }, [tableParams, archivedRecordIds, open]);
+  }, [tableParams, open]);
+
+  const updateRecordData = (records: any[]) => {
+    const newRecords = produce(recordData, draft => { 
+      records.forEach(record => { 
+        const index = draft.findIndex(item => item.record.id === record.id); 
+        if(index !== -1) { 
+          draft.splice(index, 1); 
+        } 
+      }); 
+    });
+    setRecordData(newRecords);
+    setTotal(total - records.length);
+  };
 
   const cancelArchied = (record) => {
     const data: any[] = [];
@@ -86,8 +103,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
     if(result === 'Success') {
       Message.success({ content: t(Strings.restore_success) });
-      getArchivedRecords();
-      setSelectedRowKeys([]);
+      updateRecordData(data);
     }
   };
 
@@ -102,8 +118,8 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
     if(result === 'Success') {
       Message.success({ content: t(Strings.restore_success) });
-      getArchivedRecords();
       setSelectedRowKeys([]);
+      updateRecordData(data);
     }
   };
 
@@ -116,8 +132,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
     if(result === 'Success') {
       Message.success({ content: 'Deleted successfully' });
-      getArchivedRecords();
-      setSelectedRowKeys([]);
+      updateRecordData(data);
     }
   };
 
@@ -132,8 +147,8 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
     if(result === 'Success') {
       Message.success({ content: 'Deleted successfully' });
-      getArchivedRecords();
       setSelectedRowKeys([]);
+      updateRecordData(data);
     }
   };
 
@@ -161,11 +176,12 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       case FieldType.Percent:
       case FieldType.AutoNumber:
       case FieldType.Cascader:
-      case FieldType.Link:
       case FieldType.OneWayLink:
       case FieldType.LookUp:
       case FieldType.Attachment:
         return JSON.stringify(cellValue);
+      case FieldType.Link:
+        return null;
       default:
         return JSON.stringify(cellValue);
     }
@@ -262,7 +278,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     });
 
     return fieldMapColums;
-  }, [fieldMap, recordData, archivedRecordIds]);
+  }, [fieldMap, recordData]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -283,7 +299,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   ) => {
     setTableParams({
       pageNum: pagination.current || 1,
-      pageSize: pagination.pageSize || 10,
+      pageSize: pagination.pageSize || 20,
     });
     setSelectedRowKeys([]);
   };
@@ -338,14 +354,15 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
           }}
           loading={archivedRecordsLoading}
           columns={columns}
-          scroll={{ x: window.innerWidth * 0.9, y: window.innerHeight - 258 }}
+          scroll={{ x: window.innerWidth * 0.9, y: window.innerHeight - 234 }}
           dataSource={handleRecordsData(fastCloneDeep(recordData))}
           pagination={{
-            ...tablePagination,
             total,
             showQuickJumper: true,
             showSizeChanger: true,
             showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} total`,
+            current: tableParams.pageNum,
+            pageSize: tableParams.pageSize,
           }}
           onChange={handleTableChange}
           className='archivedRecordsTable'

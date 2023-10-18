@@ -117,7 +117,7 @@ export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: st
   for (const fieldId of linkFieldIds) {
     const { foreignDatasheetId, brotherFieldId } = fieldMap[fieldId]!.property as ILinkFieldProperty;
     const {
-      snapshot: { recordMap: foreignRecordMap, meta: foreignMeta },
+      snapshot: { recordMap: foreignRecordMap },
     } = getDatasheet(state, foreignDatasheetId)!;
 
     // check recordIds that are missing in link cells in foreign datasheet
@@ -129,10 +129,6 @@ export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: st
       }
       for (const linkedRecordId of cellValue) {
         const foreignRecord = foreignRecordMap[linkedRecordId];
-
-        const foreignMetaArchivedrcordIds = foreignMeta.archivedRecordIds;
-
-        if(foreignMetaArchivedrcordIds?.includes(linkedRecordId)) continue;
 
         if (!foreignRecord) {
           addRedundantRecordId(mainDstId, recordId, fieldId, linkedRecordId);

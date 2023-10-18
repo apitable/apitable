@@ -6,13 +6,11 @@ import { DatasheetActions } from 'model';
 import { IJOTAction } from 'engine/ot';
 import { ResourceType } from 'types';
 
-
 export interface IDeleteArchivedRecordsOptions { 
   cmd: CollaCommandName.DeleteArchivedRecords;
   data: any[];
   datasheetId?: string;
 }
-
 
 export const deleteArchivedRecords: ICollaCommandDef<IDeleteArchivedRecordsOptions> = { 
   undoable: false,
@@ -27,18 +25,14 @@ export const deleteArchivedRecords: ICollaCommandDef<IDeleteArchivedRecordsOptio
     }
     
     const actions: IJOTAction[] = [];
-
-    
     
     const unarchiveRecordsActions = DatasheetActions.deleteArchivedRecords2Action(snapshot, { recordsData: data });
 
     if(unarchiveRecordsActions) {
       unarchiveRecordsActions.forEach(action => { 
         actions.push(action);
-       });
+      });
     }
-    
-    console.log('actions----->', actions);
 
     return {
       result: ExecuteResult.Success,
@@ -47,4 +41,4 @@ export const deleteArchivedRecords: ICollaCommandDef<IDeleteArchivedRecordsOptio
       actions,
     };
   }
-}
+};

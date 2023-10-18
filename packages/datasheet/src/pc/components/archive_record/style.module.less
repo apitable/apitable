@@ -72,6 +72,7 @@
 
     .ant-drawer-body {
       padding-top: 4px!important;
+      padding-bottom: 0!important;
     }
 
   } 
@@ -79,26 +80,34 @@
 
   .archivedRecordsTable {
     .ant-table-cell-fix-right {
-      background-color: var(--defaultBg) !important;
+      background-color: var(--defaultBg)!important;
     }
 
     .ant-table-cell-fix-left {
-      background-color: var(--defaultBg) !important;
+      background-color: var(--defaultBg)!important;
     }
 
     .ant-table-row {
       &:hover {
         td {
-          background-color: var(--bgBglessSolidHover) !important;
+          background-color: var(--bgBglessSolidHover)!important;
+        }
+      }
+    }
+
+    .ant-table-thead {
+      tr {
+        th {
+          background-color: var(--bgCommonLower)!important;
         }
       }
     }
 
     .ant-table-row-selected {
       td {
-        background-color: var(--bgBrandLightDefaultSolid) !important;
-        border-bottom: 1px solid var(--borderCommonDefault);
-        border-color: var(--borderCommonDefault);
+        background-color: var(--bgBrandLightDefaultSolid)!important;
+        border-bottom: 1px solid var(--borderCommonDefault)!important;
+        border-color: var(--borderCommonDefault)!important;
       }
     }
 

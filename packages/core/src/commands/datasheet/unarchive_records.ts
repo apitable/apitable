@@ -4,7 +4,7 @@ import { CollaCommandName } from 'commands';
 import { Selectors } from '../../exports/store';
 import { DatasheetActions } from 'model';
 import { IJOTAction } from 'engine/ot';
-import { ResourceType } from 'types';
+import { FieldType, ResourceType } from 'types';
 
 export interface IUnarchiveRecordsOptions { 
   cmd: CollaCommandName.UnarchiveRecords;
@@ -26,8 +26,15 @@ export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = {
     
     const actions: IJOTAction[] = [];
     
-    // 删除meta中的archivedRecordIds
-    const unarchiveRecordsActions = DatasheetActions.unarchivedRecords2Action(snapshot, { recordsData: data });
+    const linkFieldIds: string[] = [];
+    for (const fieldId in snapshot.meta.fieldMap) {
+      const field = snapshot.meta.fieldMap[fieldId]!;
+      if (field.type === FieldType.Link) {
+        linkFieldIds.push(fieldId);
+      }
+    }
+    
+    const unarchiveRecordsActions = DatasheetActions.unarchivedRecords2Action(snapshot, { recordsData: data, linkFields: linkFieldIds });
 
     if(unarchiveRecordsActions) {
       unarchiveRecordsActions.forEach(action => { 
