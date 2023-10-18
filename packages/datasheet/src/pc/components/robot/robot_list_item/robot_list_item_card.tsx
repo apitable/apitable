@@ -24,6 +24,7 @@ import { Box, Switch, Typography, useTheme, useThemeColors } from '@apitable/com
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
 import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
+import { useAutomationList } from 'pc/components/automation/controller/use_robot_list';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import EllipsisText from '../../ellipsis_text';
@@ -114,6 +115,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
 
   const { resourceId, currentRobotId, robot } = useAutomationRobot();
   const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
+  const { api: { refresh } } = useAutomationList();
 
   const colors = useThemeColors();
 
@@ -173,9 +175,10 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
             size="default"
             disabled={readonly}
             loading={loading}
-            onClick={(_value, e) => {
+            onClick={ async (_value, e) => {
               stopPropagation(e);
-              toggleRobotActive();
+              await toggleRobotActive();
+              await refresh();
             }}
           />
         </Box>
