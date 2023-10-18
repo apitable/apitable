@@ -1099,10 +1099,6 @@ export class DatasheetOtService {
       if ('ld' in action) {
         this.collectByDeleteWidgetOrWidgetPanels(action, resultSet);
       }
-    } else if (action.p[1] === 'archivedRecordIds') {
-      if (!permission.manageable) {
-        throw new ServerException(PermissionException.OPERATION_DENIED);
-      }
     }
   }
 
@@ -2194,6 +2190,16 @@ export class DatasheetOtService {
             revision,
             isDeleted: false,
             recordMeta: recordInfo.recordMeta,
+            updatedBy: userId,
+          })
+          .where('dst_id = :dstId', { dstId })
+          .andWhere('record_id = :recordId', { recordId })
+          .execute();
+        await manager
+          .createQueryBuilder()
+          .update(DatasheetRecordArchiveEntity)
+          .set({
+            isDeleted: false,
             updatedBy: userId,
           })
           .where('dst_id = :dstId', { dstId })
