@@ -130,6 +130,7 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
   const { state, datasheetId, recordData, recordId } = props;
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
   const eventFields: { [key: string]: BasicOpenValueType | null } = {};
+  const fieldTypeMap = new Map<string, number>();
   const newFields = { ...recordData };
   Object.keys(snapshot?.meta.fieldMap).forEach(fieldId => {
     const field = snapshot.meta.fieldMap[fieldId]!;
@@ -142,12 +143,14 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
       cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       newFields[fieldId] = cellValue;
     }
+    fieldTypeMap.set(fieldId, field.type);
     eventFields[fieldId] = field.type === FieldType.Formula
       ? Field.bindContext(field, state).cellValueToString(cellValue)
       : Field.bindContext(field, state).cellValueToOpenValue(cellValue);
   });
   return {
     fields: newFields,
+    fieldTypeMap,
     eventFields
   };
 };

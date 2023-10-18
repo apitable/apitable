@@ -19,9 +19,32 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import path from 'path';
 import * as fs from 'fs';
+import { DocumentBaseService } from './services/document.base.service';
 import { HocuspocusBaseService, HocuspocusService } from './services/hocuspocus.base.service';
 
 @Module({
+  providers: [
+    {
+      provide: HocuspocusBaseService,
+      useClass: HocuspocusService
+    },
+    {
+      provide: DocumentBaseService,
+      useClass: class DefaultDocumentService extends DocumentBaseService {
+      }
+    },
+  ],
+  exports: [
+    {
+      provide: HocuspocusBaseService,
+      useClass: HocuspocusService
+    },
+    {
+      provide: DocumentBaseService,
+      useClass: class DefaultDocumentService extends DocumentBaseService {
+      }
+    },
+  ],
 })
 export class WorkDocDynamicModule {
 
@@ -35,24 +58,18 @@ export class WorkDocDynamicModule {
       };
     }
     return { 
-      module: WorkDocModule,
+      module: WorkDocDynamicModule,
     }; 
   }
 
 }
 
 @Module({
-  providers: [
-    {
-      provide: HocuspocusBaseService,
-      useClass: HocuspocusService
-    },
+  imports: [
+    WorkDocDynamicModule.forRoot(),
   ],
   exports: [
-    {
-      provide: HocuspocusBaseService,
-      useClass: HocuspocusService
-    },
+    WorkDocDynamicModule.forRoot(),
   ],
 })
 export class WorkDocModule {
