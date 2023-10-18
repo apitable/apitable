@@ -22,14 +22,14 @@ import cn.hutool.json.JSON;
 
 /**
  * <p>
- * client
+ * client.
  * </p>
  *
  */
 public interface SocketClientOperations {
 
     /**
-     * send message
+     * send message.
      *
      * @param event   event
      * @param message message body
