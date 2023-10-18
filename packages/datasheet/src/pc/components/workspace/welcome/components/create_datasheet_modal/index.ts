@@ -16,4 +16,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './create_datasheet_modal';
+export * from 'pc/components/workspace/welcome/components/create_datasheet_modal/create_datasheet_modal';
