@@ -131,7 +131,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       data,
     });
     if(result === 'Success') {
-      Message.success({ content: 'Deleted successfully' });
+      Message.success({ content: t(Strings.delete_archive_record_success) });
       updateRecordData(data);
     }
   };
@@ -146,7 +146,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       data,
     });
     if(result === 'Success') {
-      Message.success({ content: 'Deleted successfully' });
+      Message.success({ content: t(Strings.delete_archive_record_success) });
       setSelectedRowKeys([]);
       updateRecordData(data);
     }

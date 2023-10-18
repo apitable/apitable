@@ -11,7 +11,7 @@ export interface IArchiveRecordOptions {
 }
 
 export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
-  undoable: true,
+  undoable: false,
 
   execute: (context, options) => {
     const { state: state, ldcMaintainer } = context;

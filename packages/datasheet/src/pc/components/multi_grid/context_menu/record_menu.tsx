@@ -17,6 +17,7 @@
  */
 
 import { useMount } from 'ahooks';
+import parser from 'html-react-parser';
 import { isInteger } from 'lodash';
 import difference from 'lodash/difference';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -54,6 +55,7 @@ import {
   ArchiveOutlined
 } from '@apitable/icons';
 import { Message } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -64,10 +66,8 @@ import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
-import { IInputEditor, InputMenuItem } from './input_menu_item';
 import { copy2clipBoard } from '../../../utils/dom';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import parser from 'html-react-parser';
+import { IInputEditor, InputMenuItem } from './input_menu_item';
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
@@ -156,7 +156,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
     });
 
     if (ExecuteResult.Success === result) {
-      Message.success({ content: 'Successfully archived records' });
+      Message.success({ content: t(Strings.archive_record_success) });
 
       dispatch(batchActions([StoreActions.clearSelection(datasheetId), StoreActions.clearActiveRowInfo(datasheetId)]));
     }
@@ -378,8 +378,8 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   const IconInsertAfter = insertDirection === 'horizontal' ? ArrowRightOutlined : ArrowDownOutlined;
 
   const getArchiveNotice = (content) => {
-    return <div>{parser(content)}</div>
-  }
+    return <div>{parser(content)}</div>;
+  };
 
   let data: Partial<IContextMenuItemProps>[][] = [
     [
