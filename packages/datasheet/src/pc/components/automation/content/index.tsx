@@ -11,7 +11,6 @@ import { IReduxState, Strings, t } from '@apitable/core';
 import { VikaSplitPanel } from 'pc/components/common';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
-import { OrEmpty } from '../../common/or_empty';
 import { useAutomationRobot, useToggleRobotActive } from '../../robot/hooks';
 import { RobotDetailForm } from '../../robot/robot_detail';
 import { ShareContext } from '../../share';

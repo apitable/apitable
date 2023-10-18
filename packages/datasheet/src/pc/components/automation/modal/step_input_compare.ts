@@ -1,4 +1,5 @@
-import { isEqual } from 'lodash';
+import { isEqualWith } from 'lodash';
+import { customizer } from 'pc/components/robot/robot_detail/trigger/robot_trigger';
 import { IRobotAction, IRobotTrigger } from '../../robot/interface';
 
 export const checkIfModified = (remote: {
@@ -7,7 +8,7 @@ export const checkIfModified = (remote: {
 }, local: Map<string, IRobotTrigger | IRobotAction>) => {
 
   if (local.get(remote.trigger.triggerId)) {
-    const isModifiedAction = !isEqual(remote.trigger.input, local.get(remote.trigger.triggerId));
+    const isModifiedAction = !isEqualWith(remote.trigger.input, local.get(remote.trigger.triggerId), customizer);
     if (isModifiedAction) {
       return true;
     }
@@ -17,7 +18,7 @@ export const checkIfModified = (remote: {
     if (!local.get(action.actionId)) {
       return false;
     }
-    return !isEqual(action.input, local.get(action.actionId));
+    return !isEqualWith(action.input, local.get(action.actionId), customizer);
   });
 
 };

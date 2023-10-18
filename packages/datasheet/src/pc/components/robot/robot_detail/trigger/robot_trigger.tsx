@@ -75,7 +75,7 @@ export enum EditType {
   detail = 'detail',
 }
 
-const customizer = (objValue, othValue) => {
+export const customizer = (objValue, othValue) => {
 
   if(isNil(objValue) && isNil(othValue)) {
     return true;
