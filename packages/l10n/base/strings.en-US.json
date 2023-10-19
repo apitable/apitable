@@ -300,6 +300,7 @@
   "api_param_property_error": "Invalid [${property}]",
   "api_param_rating_field_type_error": "field:{field} Rating field value must be a number",
   "api_param_record_not_exists": "The record specified by the recordId does not exist",
+  "api_param_record_archived": "The operation cannot be performed because the necessary records are archived. Please unarchive them and try again",
   "api_param_robot_btn_type_error": "the parameter robotBtn must be a boolean type",
   "api_param_select_field_value_type_error": "field:{field} Single Select field value must be string",
   "api_param_share_btn_type_error": "the parameter shareBtn must be a boolean type",

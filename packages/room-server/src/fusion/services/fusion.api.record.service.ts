@@ -46,6 +46,13 @@ export class FusionApiRecordService {
     }
   }
 
+  public async validateArchivedRecordIncludes(dstId: string, recordIds: string[], error: ApiTipId) {
+    const archivedRecordIds = await this.recordService.getArchivedIdsByDstIdAndRecordIds(dstId, recordIds);
+    if (archivedRecordIds.size) {
+      throw ApiException.tipError(error, { recordId: Array.from(archivedRecordIds).join(', ') });
+    }
+  }
+
   public getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<IRecordMap> {
     return this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);
   }

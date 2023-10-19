@@ -178,6 +178,10 @@ export class DatasheetRecordService {
     return dbRecordIds;
   }
 
+  async getArchivedIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<Set<String>> {
+    return await this.recordArchiveRepo.getArchivedRecordIdsByDstIdAndRecordIds(dstId, recordIds);
+  }
+
   async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false): Promise<IRecordMap> {
     const records = ignoreDeleted
       ? await this.recordRepo.selectRecordsDataByDstIdIgnoreDeleted(dstId)

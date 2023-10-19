@@ -457,6 +457,7 @@
   "api_param_property_error": "[${property}]不正确",
   "api_param_rating_field_type_error": "field:{field} 评分字段的值必须是数字",
   "api_param_record_not_exists": "recordId 指定的记录不存在",
+  "api_param_record_archived": "操作的记录中包含已归档记录，无法进行操作，请取消归档后重试",
   "api_param_robot_btn_type_error": "参数 robotBtn 只接受 boolean 类型的值",
   "api_param_select_field_value_type_error": "field:{field} 单选字段必须是字符串",
   "api_param_sequence_type_error": "参数sequence的值必须是数字",

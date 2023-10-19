@@ -458,6 +458,7 @@ export type StringKeysMapType = {
   'api_param_phone_field_type_error': 'api_param_phone_field_type_error',
   'api_param_property_error': 'api_param_property_error',
   'api_param_rating_field_type_error': 'api_param_rating_field_type_error',
+  'api_param_record_archived': 'api_param_record_archived',
   'api_param_record_not_exists': 'api_param_record_not_exists',
   'api_param_robot_btn_type_error': 'api_param_robot_btn_type_error',
   'api_param_select_field_value_type_error': 'api_param_select_field_value_type_error',
