@@ -3,6 +3,7 @@ import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
 import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   Box,
   ContextMenu,
@@ -59,6 +60,12 @@ import AutomationHistoryPanel from '../run_history/modal/modal';
 import styles from '../style.module.less';
 
 export const MenuID = 'MoreAction';
+
+const StyleIcon = styled(Box)`
+  &:hover{
+    background-color: var(--shadowColor);
+  }
+`;
 
 export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> = memo(({ onClose, resourceId }) => {
   const { show } = useContextMenu({ id: MenuID });
@@ -229,12 +236,13 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                 <Box display={'inline-flex'} alignItems={'center'} flexDirection={'row'}>
                   {
                     automationState?.scenario === AutomationScenario.node && (
-                      <Box width={'23px'} height={'23px'} display={'flex'} alignItems={'center'}
+                      <StyleIcon width={'23px'} height={'23px'} display={'flex'} alignItems={'center'}
+                        marginRight={'2px'}
                         style={{ cursor: 'pointer' }}>
                         <NodeIcon nodeId={automationState?.resourceId ?? ''} type={
                           ConfigConstant.NodeType.AUTOMATION
-                        } icon={nodeItem?.icon} editable={permission.manageable} size={16} hasChildren/>
-                      </Box>
+                        } icon={nodeItem?.icon} editable={permission.manageable} size={20} hasChildren/>
+                      </StyleIcon>
                     )
                   }
                   <InputTitle/>

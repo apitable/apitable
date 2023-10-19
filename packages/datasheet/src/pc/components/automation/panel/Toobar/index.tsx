@@ -31,7 +31,6 @@ import {
 } from 'pc/components/automation/controller/use_automation_permission';
 import { OrEmpty } from 'pc/components/common/or_empty';
 import { AutomationScenario } from 'pc/components/robot/interface';
-import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { useSideBarVisible } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import styles from './style.module.less';

@@ -18,6 +18,7 @@
 
 import Image from 'next/image';
 import { isValidElement, memo, useRef } from 'react';
+import styled from 'styled-components';
 import { Box, Button, ListDeprecate, stopPropagation, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, NumberOutlined } from '@apitable/icons';
@@ -31,6 +32,20 @@ interface ISchemaPropertyListItemProps {
   disabled?: boolean;
   handleItemClick: ISchemaPropertyListItemClickFunc;
 }
+
+const StyledButton = styled(Button)`
+`;
+
+const RowItem= styled(Box)`
+  ${StyledButton} {
+    visibility: hidden;
+  }
+  &:hover {
+    ${StyledButton} {
+      visibility: visible;
+    }
+  }
+`
 
 export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps) => {
   const { item, currentStep, isActive, disabled, handleItemClick } = props;
@@ -57,7 +72,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           }
         }}
       >
-        <Box
+        <RowItem
           display="flex"
           flexDirection="row"
           alignItems="center"
@@ -93,7 +108,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           </Box>
           <Box display="flex" alignItems="center">
             {item.canInsert && (
-              <Button
+              <StyledButton
                 size="small"
                 color="primary"
                 style={{
@@ -110,7 +125,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
                 }}
               >
                 {t(Strings.robot_variables_insert_button)}
-              </Button>
+              </StyledButton>
             )}
             {item.hasChildren && (
               <Box
@@ -127,7 +142,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
               </Box>
             )}
           </Box>
-        </Box>
+        </RowItem>
       </ListDeprecate.Item>
     </Box>
   );
