@@ -21,7 +21,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Box, IconButton, Tooltip, Typography } from '@apitable/components';
+import { Box, IconButton, FloatUiTooltip as Tooltip, Typography } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import {
   WarnCircleFilled,
