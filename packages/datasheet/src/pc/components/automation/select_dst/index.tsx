@@ -103,6 +103,7 @@ export const SelectForm: FC<{ value: string; onChange: (dstId: string | undefine
           permissionRequired={'manageable'}
           onChange={({ formId }) => {
             if (value === formId) {
+              setVisible(false);
               return;
             }
             onChange(formId);

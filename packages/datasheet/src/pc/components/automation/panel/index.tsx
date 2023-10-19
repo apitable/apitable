@@ -237,6 +237,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                   {
                     automationState?.scenario === AutomationScenario.node && (
                       <StyleIcon width={'23px'} height={'23px'} display={'flex'} alignItems={'center'}
+                        borderRadius={'2px'}
                         marginRight={'2px'}
                         style={{ cursor: 'pointer' }}>
                         <NodeIcon nodeId={automationState?.resourceId ?? ''} type={

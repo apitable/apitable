@@ -55,6 +55,8 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
 
   const title = nodeTypes.includes(ConfigConstant.NodeType.FORM) ? t(Strings.check_link_form) : t(Strings.check_link_table);
 
+  const disabled = result == null || Object.keys(result).length === 0;
+
   return (
     <LoaderContext.Provider
       value={{
@@ -92,7 +94,7 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
             <Button color={'default'} onClick={onHide}>
               {t(Strings.cancel)}
             </Button>
-            <Button color={'primary'} disabled={!result} onClick={onSubmit}>
+            <Button color={'primary'} disabled={disabled} onClick={onSubmit}>
               {t(Strings.submit)}
             </Button>
           </div>

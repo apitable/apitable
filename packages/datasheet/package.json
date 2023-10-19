@@ -10,7 +10,7 @@
     "dev": "NODE_ENV=development node --max-old-space-size=6000 server.js",
     "build": "rm -rf ./web_build &&  NODE_OPTIONS=--max-old-space-size=4096 next build",
     "test": "next test",
-    "check:lint": "tsc --noEmit && yarn lint",
+    "check:lint": "tsc --noEmit && pnpm lint",
     "check": "tsc --noEmit",
     "check:watch": "tsc --noEmit --watch",
     "lint": "next lint --dir ./src  --dir ./utils --dir ./pages",

@@ -36,7 +36,7 @@ interface ISchemaPropertyListItemProps {
 const StyledButton = styled(Button)`
 `;
 
-const RowItem= styled(Box)`
+const RowItem= styled(ListDeprecate.Item)`
   ${StyledButton} {
     visibility: hidden;
   }
@@ -54,7 +54,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
   const imgSize = currentStep === 0 ? 32 : 24;
   return (
     <Box ref={ref} key={item.key} marginBottom="4px">
-      <ListDeprecate.Item
+      <RowItem
         key={item.key}
         id={item.key}
         currentIndex={0}
@@ -72,7 +72,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           }
         }}
       >
-        <RowItem
+        <Box
           display="flex"
           flexDirection="row"
           alignItems="center"
@@ -142,8 +142,8 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
               </Box>
             )}
           </Box>
-        </RowItem>
-      </ListDeprecate.Item>
+        </Box>
+      </RowItem>
     </Box>
   );
 });
