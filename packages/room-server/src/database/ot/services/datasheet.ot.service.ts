@@ -1180,7 +1180,7 @@ export class DatasheetOtService {
         resultSet.replaceCellMap.delete(recordId);
       }
       resultSet.toArchiveRecordIds.push(recordId);
-    } if ('od' in action) {
+    } else if ('od' in action) {
       if (!permission.rowRemovable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }

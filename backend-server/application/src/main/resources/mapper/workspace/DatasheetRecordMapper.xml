@@ -137,6 +137,6 @@
     <select id="selectArchivedRecordIdsByDstId" resultType="java.lang.String">
         SELECT record_id
         FROM ${tablePrefix}datasheet_record_archive
-        WHERE dst_id = #{dstId} AND is_deleted = 0
+        WHERE dst_id = #{dstId} AND is_deleted = 0 AND is_archived = 1
     </select>
 </mapper>
