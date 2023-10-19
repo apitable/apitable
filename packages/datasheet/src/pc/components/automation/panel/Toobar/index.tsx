@@ -19,11 +19,11 @@
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import {
-  Box, TextButton,
+  Box, IconButton, TextButton,
   useThemeColors
 } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
-import { BookOutlined, ListOutlined, ShareOutlined } from '@apitable/icons';
+import { BookOutlined, CloseOutlined, ListOutlined, ShareOutlined } from '@apitable/icons';
 import { automationStateAtom } from 'pc/components/automation/controller';
 import {
   useAutomationResourceNode,
@@ -47,7 +47,7 @@ export const MobileToolBar: React.FC<React.PropsWithChildren<{ title?: string }>
   const dispatch = useAppDispatch();
 
   return (
-    <Box height={'44px'} display={'flex'} alignItems={'center'}>
+    <Box height={'44px'} display={'flex'} alignItems={'center'} padding={'0 8px'} justifyContent={'space-between'}>
       <div
         onClick={() => {
           setSideBarVisible && setSideBarVisible(true);
@@ -57,39 +57,44 @@ export const MobileToolBar: React.FC<React.PropsWithChildren<{ title?: string }>
         <ListOutlined size={16} color={colors.black[50]} />
       </div>
 
-      <OrEmpty
-        visible={permission.sharable && automationState?.scenario === AutomationScenario.node}>
-        {
-          nodeItem && (
-            <ToolItem
-              showLabel
-              icon={<ShareOutlined size={16} color={nodeItem.nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
-              onClick={() => {
-                if (!automationState?.resourceId || automationState?.scenario !== AutomationScenario.node) {
-                  return;
-                }
+      <Box >
 
-                setSideBarVisible(false);
-                dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
-              }}
-              text={t(Strings.share)}
-              disabled={!permission.sharable}
-              isActive={nodeItem.nodeShared}
-              className={styles.toolbarItem}
-            />
-          )
-        }
-      </OrEmpty>
+        <OrEmpty
+          visible={permission.sharable && automationState?.scenario === AutomationScenario.node}>
+          {
+            nodeItem && (
+              <IconButton
+                component="button"
+                shape="square"
+                icon={() => <ShareOutlined size={16} color={nodeItem.nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
+                onClick={() => {
+                  if (!automationState?.resourceId || automationState?.scenario !== AutomationScenario.node) {
+                    return;
+                  }
 
-      <OrEmpty visible={automationState?.scenario === AutomationScenario.node}>
-        <TextButton
-          onClick={() => {
-            window.open(t(Strings.robot_help_url));
-          }}
-          prefixIcon={<BookOutlined currentColor/>} size="small">
-          {t(Strings.help)}
-        </TextButton>
-      </OrEmpty>
+                  setSideBarVisible(false);
+                  dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
+                }}
+                disabled={!permission.sharable}
+                style={{ marginLeft: 8 }}
+              />
+            )
+          }
+        </OrEmpty>
+
+        <OrEmpty visible={automationState?.scenario === AutomationScenario.node}>
+          <IconButton
+            component="button"
+            shape="square"
+            icon={() => <BookOutlined color={colors.secondLevelText} size={16}/>}
+            onClick={() => {
+              window.open(t(Strings.robot_help_url));
+            }}
+            style={{ marginLeft: 8 }}
+          />
+        </OrEmpty>
+      </Box>
+
     </Box>
   );
 };

@@ -144,8 +144,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                     </Box>
                   }
                 >
-                  <Box width={'400px'} margin={'0 auto'}>
-
+                  <Box width={isXl ? 'inherit': '400px'} margin={'0 auto'}>
                     <RobotDetailForm />
                   </Box>
                 </ListWithFooter>
