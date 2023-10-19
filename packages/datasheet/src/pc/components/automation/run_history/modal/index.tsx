@@ -101,7 +101,7 @@ export const RunHistoryDetail = () => {
                       <Typography variant="body3" color={colors.textCommonTertiary} >
                         {t(Strings.automation_run_history_item_description, {
                           RESULT: resultText,
-                          NUM: Math.round(
+                          NUM: Math.ceil(
                             dayjs.duration(
                               getTime.end?.diff(getTime.start, 'milliseconds') ?? 0
                             ).asSeconds()
