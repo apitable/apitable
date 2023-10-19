@@ -4209,7 +4209,7 @@
   "robot_rename": "Rename Automation",
   "robot_required_error": "This field is required",
   "robot_return": "Back",
-  "robot_run_history_bottom_tip": "The end",
+  "robot_run_history_bottom_tip": "No more, only last 2 calendar months shown",
   "robot_run_history_desc": "You have access to all run history during the public beta <a href='https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot' target=\\\"_blank\\\">Trouble shooting</a>",
   "robot_run_history_error": "Error",
   "robot_run_history_fail": "Failed",

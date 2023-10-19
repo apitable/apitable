@@ -4207,7 +4207,7 @@
   "robot_rename": "重命名機器人",
   "robot_required_error": "請填寫必填項",
   "robot_return": "返回",
-  "robot_run_history_bottom_tip": "沒有更多了",
+  "robot_run_history_bottom_tip": "到底部了，只展示最近兩個自然月的歷史",
   "robot_run_history_desc": "你可以看到該機器人所有的運行歷史 <a href='https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot' target=\\\"_blank\\\">如何排查問題</a>",
   "robot_run_history_error": "錯誤",
   "robot_run_history_fail": "運行失敗",

@@ -4213,7 +4213,7 @@
   "robot_rename": "重命名自动化",
   "robot_required_error": "请填写必填项",
   "robot_return": "返回",
-  "robot_run_history_bottom_tip": "没有更多了",
+  "robot_run_history_bottom_tip": "到底部了，仅展示最近两个自然月的历史",
   "robot_run_history_desc": "你可以看到该自动化所有的运行历史 <a href='https://help.aitable.ai/docs/guide/manual-automation-robot#how-to-troubleshoot' target=\\\"_blank\\\">如何排查问题</a>",
   "robot_run_history_error": "错误",
   "robot_run_history_fail": "运行失败",
