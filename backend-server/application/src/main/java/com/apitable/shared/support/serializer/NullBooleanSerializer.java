@@ -26,11 +26,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * <p>
- * Empty Boolean serialization
+ * Empty Boolean serialization.
  * </p>
  *
  * @author Chambers
- * @date 2019/12/31
  */
 public class NullBooleanSerializer extends JsonSerializer<Boolean> {
 
