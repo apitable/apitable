@@ -146,10 +146,10 @@ export const nodePermissionMap = new Map<NodeType, { [key: string]: string }>([
   [
     NodeType.AUTOMATION,
     {
-      [permission.manager]: t(Strings.add_datasheet_manager),
-      [permission.editor]: t(Strings.add_datasheet_editor),
-      [permission.reader]: t(Strings.add_datasheet_reader),
-      [permission.updater]: t(Strings.add_datasheet_updater),
+      [permission.manager]: t(Strings.automation_manager_label),
+      [permission.editor]: t(Strings.automation_editor_label),
+      [permission.updater]: t(Strings.automation_updater_label),
+      [permission.reader]: t(Strings.automation_reader_label),
     },
   ],
   [

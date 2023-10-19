@@ -5783,5 +5783,9 @@
   "archive_record_in_activity": " archived this record",
   "unarchive_record_in_activity": " unarchived this record",
   "unarchive_notice": "The current record is being unarchived. Once unarchived, it will appear again in tables and search results and will start to be recalculated. Continue?",
+  "automation_manager_label": "Can perform all actions on the automation",
+  "automation_editor_label": "Can edit steps in automation and viewing the run history of the automation",
+  "automation_updater_label": "Can view the run history of the automation",
+  "automation_reader_label": "Can view the run history of the automation",
   "delete_archive_record_success": "Successfully deleted archived record"
 }

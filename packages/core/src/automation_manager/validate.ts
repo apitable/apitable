@@ -25,7 +25,7 @@ import { Strings, t } from '../exports/i18n';
  */
 
 export const validateMagicFormWithCustom = (rootSchema: JSONSchema7, formData: any,
-  validate?: (formData: any, errors: any) => ValidationResult|undefined
+  validate?: (formData: any, errors: any) => ValidationResult
 ) => {
   const data = validateMagicForm(rootSchema, formData);
   if(validate == null) {
