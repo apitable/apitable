@@ -40,7 +40,7 @@ export class OPEventRecordUnarchived extends IAtomEventType<IRecordUnarchived> {
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId'], ('oi' in action));
 
     let success = pass;
-    if (op.cmd !== 'UnarchiveRecords' && op.cmd !== 'UNDO:ArchiveRecords') {
+    if (op.cmd !== 'UnarchiveRecords') {
       success = false;
     }
 

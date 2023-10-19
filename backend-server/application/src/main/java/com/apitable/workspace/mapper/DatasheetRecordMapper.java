@@ -118,4 +118,12 @@ public interface DatasheetRecordMapper extends BaseMapper<DatasheetRecordEntity>
      * @return DataSheetRecordGroupDto
      */
     List<DataSheetRecordGroupDTO> selectGroupDtoByDstIds(@Param("list") Collection<String> dstIds);
+
+    /**
+     * get archived record ids
+     *
+     * @param dstId datasheet id
+     * @return archived record ids
+     */
+    Set<String> selectArchivedRecordIdsByDstId(@Param("dstId") String dstId);
 }
