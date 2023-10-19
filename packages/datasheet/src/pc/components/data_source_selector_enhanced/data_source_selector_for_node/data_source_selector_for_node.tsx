@@ -96,7 +96,9 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
               {t(Strings.submit)}
             </Button>
           </div>
-          {isLoadingExtraData && <Loading className={'vk-absolute vk-top-0 vk-left-0 vk-right-0 vk-bottom-0'} />}
+          {isLoadingExtraData && (
+            <Loading className={'vk-absolute vk-top-0 vk-left-0 vk-right-0 vk-bottom-0 vk-bg-transparent vk-backdrop-blur-[1px]'} />
+          )}
         </div>
       </DataSourceSelectorWrapper>
     </LoaderContext.Provider>
