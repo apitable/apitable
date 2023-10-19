@@ -212,9 +212,11 @@ export const Notification: FC<React.PropsWithChildren<any>> = () => {
                 {unReadNoticeList.length > 0 && (
                   <div className={styles.cardWrapper}>
                     <QueueAnim ease="easeInQuint" duration={500} onEnd={(e) => noticeListRended(e, TabKey.Unprocessed)}>
-                      {unReadNoticeList.map((item) => (
-                        <Card key={item.id} data={item} />
-                      ))}
+                      {unReadNoticeList.map((item) => {
+                        if(['subscribed_record_archived', 'subscribed_record_unarchived'].includes(item.templateId)) return null;
+                        return (
+                          <Card key={item.id} data={item} />
+                        );})}
                     </QueueAnim>
                   </div>
                 )}

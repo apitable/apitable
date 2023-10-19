@@ -3,21 +3,21 @@ import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Button } from '@apitable/components';
+import { Button, Box, IconButton } from '@apitable/components';
 import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
-import { RestoreOutlined, DeleteOutlined, ArchiveOutlined } from '@apitable/icons';
+import { RestoreOutlined, DeleteOutlined, ArchiveOutlined, QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import { IArchivedRecordsProps } from './interface';
 // eslint-disable-next-line no-restricted-imports
 import styles from './style.module.less';
-
 interface ITableParams { 
   pageNum: number,
   pageSize: number
@@ -26,14 +26,18 @@ interface ITableParams {
 const handleRecordsData = (recordsData) => {
   const data = recordsData.map(item => {
     const { record, archivedUser, archivedAt } = item;
-    const recordData = record.data;
-    return {
-      ...recordData,
-      key: record.id,
-      archivedUser: archivedUser,
-      archivedTime: archivedAt
-    };
-  });
+    if(record && record.data) {
+      const recordData = record.data;
+      return {
+        ...recordData,
+        key: record.id,
+        archivedUser: archivedUser,
+        archivedTime: archivedAt
+      };
+    } 
+    return null;
+    
+  }).filter(item => item !== null);
   return data;
 };
 
@@ -54,7 +58,6 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const visibleColumns = useSelector((state) => Selectors.getVisibleColumns(state, datasheetId))!;
   const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId));
-
   const { run: getArchivedRecords, loading: archivedRecordsLoading } = useRequest(() => DatasheetApi.getArchivedRecords(datasheetId, tableParams), {
     manual: true,
     onSuccess(res) {
@@ -220,7 +223,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       width: 200,
       render: (archivedUser) => (
         <div className={styles.archivedBy}>
-          <Avatar id={archivedUser.id} title={archivedUser.nikeName} src={archivedUser.avatar} />
+          <Avatar size={24} id={archivedUser.id} title={archivedUser.nikeName} src={archivedUser.avatar} />
           <span>{archivedUser.nikeName}</span>
         </div>
       )
@@ -306,6 +309,25 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
 
   const hasSelected = selectedRowKeys.length > 0;
 
+  const TitleComponents = useCallback(() => {
+    return(
+      <div className={styles.header}>
+        <p>{t(Strings.archived_records)} </p>
+        <Tooltip title={t(Strings.robot_panel_help_tooltip)}>
+          <Box display="flex" alignItems="center">
+            <IconButton
+              shape="square"
+              icon={QuestionCircleOutlined}
+              onClick={() => {
+                window.open(getEnvVariables().ARCHIVED_HELP_LINK); 
+              }}
+            />
+          </Box>
+        </Tooltip>
+      </div>
+    );
+  }, []);
+
   return (
     <>
       <ToolItem
@@ -320,12 +342,13 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       />
       <Drawer 
         className='archiveDrawer' 
-        title={t(Strings.archived_records)} 
+        title={<TitleComponents />} 
         placement="right" 
         onClose={onDrawerClose} 
         width={window.innerWidth * 0.9} 
         open={open}
       >
+        
         <div className={styles.batchHandle}>
           <Button disabled={!hasSelected} onClick={() => {
             Modal.warning({

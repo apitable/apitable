@@ -33,6 +33,15 @@
 
 }
 
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  p {
+    margin: 0;
+  }
+}
+
 .archivedBy {
   display: flex;
   justify-content: flex-start;
@@ -93,6 +102,14 @@
           background-color: var(--bgBglessSolidHover)!important;
         }
       }
+    }
+
+    .ant-table-container table > thead > tr:first-child th:first-child {
+      border-top-left-radius: 0!important;
+    }
+
+    .ant-table-container table > thead > tr:first-child th:last-child {
+      border-top-right-radius: 0!important;
     }
 
     .ant-table-thead {
