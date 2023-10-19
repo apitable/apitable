@@ -4,10 +4,11 @@ import classnames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Tooltip } from '@apitable/components';
+import { Button } from '@apitable/components';
 import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
 import { RestoreOutlined, DeleteOutlined, ArchiveOutlined } from '@apitable/icons';
-import { Avatar, Message } from 'pc/components/common';
+// eslint-disable-next-line no-restricted-imports
+import { Avatar, Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { useRequest } from 'pc/hooks';
