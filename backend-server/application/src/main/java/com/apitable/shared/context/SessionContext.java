@@ -18,62 +18,57 @@
 
 package com.apitable.shared.context;
 
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
+import com.apitable.auth.enums.AuthException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.HttpContextUtil;
+import com.apitable.shared.constants.ParamsConstants;
+import com.apitable.shared.constants.SessionAttrConstants;
+import com.apitable.shared.holder.UserHolder;
+import java.util.Collections;
+import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
-
-import com.apitable.shared.constants.ParamsConstants;
-import com.apitable.shared.constants.SessionAttrConstants;
-import com.apitable.auth.enums.AuthException;
-import com.apitable.shared.holder.UserHolder;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.HttpContextUtil;
-import com.apitable.core.util.SpringContextHolder;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.data.redis.RedisIndexedSessionRepository;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-
-import java.util.*;
 
 /**
  * <p>
- * Session context util
+ * Session context util.
  * </p>
  *
  * @author Shawn Deng
  */
+@Slf4j
 public class SessionContext {
-
-    private static final RedisIndexedSessionRepository sessionRepository;
-
-    private static final DefaultCookieSerializer cookieSerializer;
 
     private static final List<String> SUPPORTED_URLS;
 
     static {
-        sessionRepository = SpringContextHolder.getBean(RedisIndexedSessionRepository.class);
-        cookieSerializer = SpringContextHolder.getBean(DefaultCookieSerializer.class);
-
         SUPPORTED_URLS = Collections.singletonList("/internal/node");
-
     }
 
+    /**
+     * set external id to session.
+     *
+     * @param userId     user id
+     * @param externalId external id
+     */
     public static void setExternalId(Long userId, String externalId) {
         HttpSession session = getSession(true);
-        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, userId.toString());
+        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME,
+            userId.toString());
         session.setAttribute(SessionAttrConstants.LOGIN_USER_ID, userId);
         session.setAttribute(SessionAttrConstants.EXTERNAL_ID, externalId);
         UserHolder.set(userId);
     }
 
     /**
-     * get http user id from http request parameter
-     * Only the agreed api can be called
+     * get http user id from http request parameter.
+     * Only the agreed api can be called.
      */
     public static Long getUserIdFromRequest() {
         HttpServletRequest request = HttpContextUtil.getRequest();
@@ -84,7 +79,8 @@ public class SessionContext {
         if (userIdStr != null) {
             try {
                 return Long.parseLong(userIdStr);
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
+                log.error("get user id from request error", e);
             }
         }
         return null;
@@ -92,17 +88,17 @@ public class SessionContext {
 
 
     /**
-     * Whether url supports getting user id from query parameter
+     * Whether url supports getting user id from query parameter.
      *
      * @param url api url
      */
     private static boolean isSupportIdInParameter(String prefix, String url) {
         return url != null && SUPPORTED_URLS.stream()
-                .anyMatch(s -> url.startsWith(prefix + s));
+            .anyMatch(s -> url.startsWith(prefix + s));
     }
 
     /**
-     * get the user id in the session
+     * get the user id in the session.
      *
      * @return UserId
      */
@@ -124,19 +120,20 @@ public class SessionContext {
     }
 
     /**
-     * set user id to session
+     * set user id to session.
      *
      * @param userId user id
      */
     public static void setUserId(Long userId) {
         HttpSession session = getSession(true);
-        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, userId.toString());
+        session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME,
+            userId.toString());
         session.setAttribute(SessionAttrConstants.LOGIN_USER_ID, userId);
         UserHolder.set(userId);
     }
 
     /**
-     * Get the UserId in the session without throwing an exception
+     * Get the UserId in the session without throwing an exception.
      *
      * @return UserId
      */
@@ -157,7 +154,7 @@ public class SessionContext {
     }
 
     /**
-     * set user id and wechat open id to session
+     * set user id and wechat open id to session.
      *
      * @param userId         user id
      * @param wechatMemberId wechat open id
@@ -165,7 +162,8 @@ public class SessionContext {
     public static void setId(Long userId, Long wechatMemberId) {
         HttpSession session = getSession(true);
         if (userId != null) {
-            session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, userId.toString());
+            session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME,
+                userId.toString());
             session.setAttribute(SessionAttrConstants.LOGIN_USER_ID, userId);
         }
         if (wechatMemberId != null) {
@@ -174,7 +172,7 @@ public class SessionContext {
     }
 
     /**
-     * get the wechat user id in the session
+     * get the wechat user id in the session.
      *
      * @return wechatMemberId
      */
@@ -188,7 +186,7 @@ public class SessionContext {
     }
 
     /**
-     * set dingtalk user id to session
+     * set dingtalk user id to session.
      *
      * @param userId   dingtalk user id
      * @param userName dingtalk user name
@@ -205,7 +203,7 @@ public class SessionContext {
     }
 
     /**
-     * get dingtalk user information in a session
+     * get dingtalk user information in a session.
      *
      * @return String user id
      */
@@ -219,7 +217,7 @@ public class SessionContext {
     }
 
     /**
-     * get the dingtalk user name in the session
+     * get the dingtalk user name in the session.
      *
      * @return dingtalk user name
      */
@@ -232,6 +230,11 @@ public class SessionContext {
         return (String) value;
     }
 
+    /**
+     * clean session.
+     *
+     * @param request HttpServletRequest
+     */
     public static void cleanContext(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -248,12 +251,13 @@ public class SessionContext {
     }
 
     /**
-     * remove cookie
+     * remove cookie.
      *
      * @param response   HttpServletResponse
      * @param cookieName cookie name
      */
-    public static void removeCookie(HttpServletResponse response, String cookieName, String cookiePath) {
+    public static void removeCookie(HttpServletResponse response, String cookieName,
+                                    String cookiePath) {
         if (null == response || StrUtil.isBlank(cookieName)) {
             return;
         }
