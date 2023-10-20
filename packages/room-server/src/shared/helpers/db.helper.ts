@@ -16,10 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export * from './snowflake';
-export * as FusionHelper from './fusion.helper';
-export * as SystemHelper from './system.helper';
-export * as HttpHelper from './http.helper';
-export * as GrpcHelper from './grpc.helper';
-export * as SocketHelper from './socket.helper';
-export * as DBHelper from './db.helper';
+import { In, ObjectLiteral, Repository } from 'typeorm';
+
+export async function batchQueryByRecordIdIn<T extends ObjectLiteral>(
+  repository: Repository<T>,
+  select: string[],
+  recordIds: string[],
+  whereConditions: ObjectLiteral,
+  batchSize = 1000,
+) {
+  const totalRecords = recordIds.length;
+  let offset = 0;
+  let records: any[] = [];
+
+  while (offset < totalRecords) {
+    const batchRecordIds = recordIds.slice(offset, offset + batchSize);
+
+    const batchRecords = await repository.find({
+      select,
+      where: { recordId: In(batchRecordIds), ...whereConditions },
+    });
+
+    records = records.concat(batchRecords);
+
+    offset += batchSize;
+  }
+
+  return records;
+}
