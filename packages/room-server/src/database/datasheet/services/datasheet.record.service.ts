@@ -119,7 +119,7 @@ export class DatasheetRecordService {
       recordIds,
       { dstId, isDeleted },
     );
-    if (includeArchivedRecords) {
+    if (!includeArchivedRecords) {
       const archivedRecordIds = await this.recordArchiveRepo.getArchivedRecordIdsByDstIdAndRecordIds(dstId, recordIds);
       if (archivedRecordIds && archivedRecordIds.size > 0) {
         records = records.filter(record => !archivedRecordIds.has(record.recordId));
