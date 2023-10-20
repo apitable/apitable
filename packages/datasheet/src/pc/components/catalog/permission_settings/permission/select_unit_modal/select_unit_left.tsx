@@ -276,7 +276,7 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
           ? getSocialWecomUnitName?.({
             name: _item.originName || _item.memberName,
             isModified: _item.isMemberNameModified,
-            spaceInfo,
+            spaceInfo: spaceInfo!,
           }) ||
             _item.originName ||
             _item.memberName

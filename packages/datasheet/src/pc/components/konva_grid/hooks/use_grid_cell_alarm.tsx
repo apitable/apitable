@@ -124,7 +124,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
   const row = linearRows[pointRowIndex];
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
   const pointField = fieldMap[pointFieldId];
-  if (permissions.editable && AlarmIcon && !isScrolling && row?.type === CellType.Record && pointField?.type === FieldType.DateTime) {
+  if (permissions.editable && Boolean(AlarmIcon) && !isScrolling && row?.type === CellType.Record && pointField?.type === FieldType.DateTime) {
     const pointCellValue = Selectors.getCellValue(state, snapshot, pointRecordId, pointFieldId);
     const alarm = Selectors.getDateTimeCellAlarm(snapshot, pointRecordId, pointFieldId);
     if (pointCellValue && !alarm) {
