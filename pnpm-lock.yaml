@@ -3133,7 +3133,7 @@ packages:
       '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
       eslint: 8.49.0
       eslint-visitor-keys: 2.1.0
-      semver: 6.3.1
+      semver: registry.npmmirror.com/semver@6.3.1
     dev: true
 
   /@babel/generator@7.22.15:
@@ -3414,7 +3414,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
-      '@babel/core': 7.22.20
+      '@babel/core': registry.npmmirror.com/@babel/core@7.22.20
       '@babel/helper-environment-visitor': registry.npmmirror.com/@babel/helper-environment-visitor@7.22.20
       '@babel/helper-member-expression-to-functions': 7.22.15
       '@babel/helper-optimise-call-expression': 7.22.5
@@ -4049,7 +4049,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/core': 7.22.20
+      '@babel/core': registry.npmmirror.com/@babel/core@7.22.20
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
@@ -4876,7 +4876,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/core': 7.22.20
+      '@babel/core': registry.npmmirror.com/@babel/core@7.22.20
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.22.20)
@@ -4908,7 +4908,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/core': 7.22.20
+      '@babel/core': registry.npmmirror.com/@babel/core@7.22.20
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
@@ -5006,7 +5006,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/core': 7.22.20
+      '@babel/core': registry.npmmirror.com/@babel/core@7.22.20
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
@@ -5896,7 +5896,7 @@ packages:
     engines: {node: '>=v14'}
     dependencies:
       '@commitlint/types': 17.4.4
-      chalk: 4.1.2
+      chalk: registry.npmmirror.com/chalk@4.1.2
     dev: true
 
   /@commitlint/is-ignored@17.7.0:
@@ -5926,7 +5926,7 @@ packages:
       '@commitlint/resolve-extends': 17.6.7
       '@commitlint/types': 17.4.4
       '@types/node': 20.4.7
-      chalk: 4.1.2
+      chalk: registry.npmmirror.com/chalk@4.1.2
       cosmiconfig: 8.3.4(typescript@5.2.2)
       cosmiconfig-typescript-loader: 4.4.0(@types/node@20.4.7)(cosmiconfig@8.3.4)(ts-node@10.9.1)(typescript@4.8.2)
       lodash.isplainobject: 4.0.6
@@ -5960,7 +5960,7 @@ packages:
     dependencies:
       '@commitlint/top-level': 17.4.0
       '@commitlint/types': 17.4.4
-      fs-extra: 11.1.1
+      fs-extra: registry.npmmirror.com/fs-extra@11.1.1
       git-raw-commits: 2.0.11
       minimist: 1.2.8
     dev: true
@@ -6004,7 +6004,7 @@ packages:
     resolution: {integrity: sha512-amRN8tRLYOsxRr6mTnGGGvB5EmW/4DDjLMgiwK3CCVEmN6Sr/6xePGEpWaspKkckILuUORCwe6VfDBw6uj4axQ==}
     engines: {node: '>=v14'}
     dependencies:
-      chalk: 4.1.2
+      chalk: registry.npmmirror.com/chalk@4.1.2
     dev: true
 
   /@cspotcode/source-map-support@0.8.1:
@@ -12358,9 +12358,9 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.49.0
       graphemer: 1.4.0
-      ignore: 5.2.4
+      ignore: registry.npmmirror.com/ignore@5.2.4
       natural-compare-lite: 1.4.0
-      semver: 7.5.4
+      semver: registry.npmmirror.com/semver@7.5.4
       tsutils: 3.21.0(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12442,7 +12442,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.62.0
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@5.2.2)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: registry.npmmirror.com/debug@4.3.4(supports-color@8.1.1)
       eslint: 8.49.0
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12592,7 +12592,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.5.4
+      semver: registry.npmmirror.com/semver@7.5.4
       ts-api-utils: 1.0.2(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12632,7 +12632,7 @@ packages:
       '@typescript-eslint/types': 6.7.2
       '@typescript-eslint/typescript-estree': 6.7.2(typescript@5.2.2)
       eslint: 8.49.0
-      semver: 7.5.4
+      semver: registry.npmmirror.com/semver@7.5.4
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -13002,7 +13002,7 @@ packages:
     peerDependencies:
       ajv: ^6.9.1
     dependencies:
-      ajv: 6.12.6
+      ajv: registry.npmmirror.com/ajv@6.12.6
 
   /ajv-keywords@5.1.0(ajv@8.12.0):
     resolution: {integrity: sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==}
@@ -18078,12 +18078,12 @@ packages:
       has: 1.0.3
       is-core-module: 2.13.0
       is-glob: 4.0.3
-      minimatch: registry.npmmirror.com/minimatch@3.1.2
+      minimatch: 3.1.2
       object.fromentries: 2.0.7
       object.groupby: 1.0.1
       object.values: 1.1.7
-      semver: registry.npmmirror.com/semver@6.3.1
-      tsconfig-paths: registry.npmmirror.com/tsconfig-paths@3.14.2
+      semver: 6.3.1
+      tsconfig-paths: 3.14.2
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -18514,7 +18514,7 @@ packages:
       human-signals: 4.3.1
       is-stream: 3.0.0
       merge-stream: 2.0.0
-      npm-run-path: 5.1.0
+      npm-run-path: registry.npmmirror.com/npm-run-path@5.1.0
       onetime: 6.0.0
       signal-exit: 3.0.7
       strip-final-newline: 3.0.0
@@ -19434,15 +19434,6 @@ packages:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
-
-  /fs-extra@11.1.1:
-    resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
-    engines: {node: '>=14.14'}
-    dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs@4.2.11
-      jsonfile: registry.npmmirror.com/jsonfile@6.1.0
-      universalify: registry.npmmirror.com/universalify@2.0.0
     dev: true
 
   /fs-extra@5.0.0:
@@ -21692,7 +21683,7 @@ packages:
       pretty-format: registry.npmmirror.com/pretty-format@29.6.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1(@swc/core@1.3.86)(@types/node@20.6.2)(typescript@5.2.2)
+      ts-node: 10.9.1(@swc/core@1.3.86)(@types/node@14.18.58)(typescript@4.8.2)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -24240,7 +24231,7 @@ packages:
       array-differ: 3.0.0
       array-union: 2.1.0
       arrify: 2.0.1
-      minimatch: 3.1.2
+      minimatch: registry.npmmirror.com/minimatch@3.1.2
     dev: true
 
   /multistream@2.1.1:
@@ -24782,13 +24773,6 @@ packages:
     dependencies:
       path-key: registry.npmmirror.com/path-key@3.1.1
 
-  /npm-run-path@5.1.0:
-    resolution: {integrity: sha512-sJOdmRGrY2sjNTRMbSvluQqg+8X7ZK61yvzBEIDhz4f8z1TZFYABsqjjCBd/0PUNE9M6QDgHJXQkGUEm7Q+l9Q==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      path-key: registry.npmmirror.com/path-key@4.0.0
-    dev: true
-
   /npm@6.14.18:
     resolution: {integrity: sha512-p3SjqSchSuNQUqbJBgwdv0L3O6bKkaSfQrQzJsskNpNKLg0g37c5xTXFV0SqTlX9GWvoGxBELVJMRWq0J8oaLA==}
     engines: {node: 6 >=6.2.0 || 8 || >=9.3.0}
@@ -25305,12 +25289,6 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /p-limit@2.3.0:
-    resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
-    engines: {node: '>=6'}
-    dependencies:
-      p-try: 2.2.0
-
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -25329,7 +25307,7 @@ packages:
     resolution: {integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==}
     engines: {node: '>=8'}
     dependencies:
-      p-limit: 2.3.0
+      p-limit: registry.npmmirror.com/p-limit@2.3.0
 
   /p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
@@ -26678,7 +26656,7 @@ packages:
       cross-fetch: 4.0.0
       is-url: 1.2.4
       js-base64: 3.7.5
-      lodash: 4.17.21
+      lodash: registry.npmmirror.com/lodash@4.17.21
       pako: 1.0.11
       pluralize: 8.0.0
       readable-stream: 4.4.2
@@ -29017,7 +28995,7 @@ packages:
     engines: {node: '>= 8.9.0'}
     dependencies:
       '@types/json-schema': 7.0.12
-      ajv: 6.12.6
+      ajv: registry.npmmirror.com/ajv@6.12.6
       ajv-keywords: 3.5.2(ajv@6.12.6)
     dev: true
 
@@ -39166,6 +39144,15 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       path-key: registry.npmmirror.com/path-key@3.1.1
+    dev: true
+
+  registry.npmmirror.com/npm-run-path@5.1.0:
+    resolution: {integrity: sha512-sJOdmRGrY2sjNTRMbSvluQqg+8X7ZK61yvzBEIDhz4f8z1TZFYABsqjjCBd/0PUNE9M6QDgHJXQkGUEm7Q+l9Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/npm-run-path/-/npm-run-path-5.1.0.tgz}
+    name: npm-run-path
+    version: 5.1.0
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      path-key: registry.npmmirror.com/path-key@4.0.0
     dev: true
 
   registry.npmmirror.com/number-allocator@1.0.14:
