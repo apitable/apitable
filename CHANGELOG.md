@@ -1,5 +1,22 @@
 # APITable CHANGELOG
 
+## [v1.3.0-beta.3](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-10-24)
+
+
+### What's more
+
+* docs: add one-click-deploy link @jbgh 
+* add Dome one-click badge @jbgh 
+* docs: add one-click-deploy link ([#1378](https://github.com/apitable/apitable/pull/1378)) @paylm 
+* sync: hosted cloud ([#1407](https://github.com/apitable/apitable/pull/1407)) @shawndenggh 
+## [v1.3.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta.2) (2023-10-24)
+
+
+### Bug fixes
+
+* fix: archived tooltip path error @laboonly 
+* fix: archived tooltip path error ([#1399](https://github.com/apitable/apitable/pull/1399)) @laboonly 
+* fix: archived tooltip path error ([#1400](https://github.com/apitable/apitable/pull/1400)) @laboonly 
 ## [v1.3.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta.1) (2023-10-17)
 
 
