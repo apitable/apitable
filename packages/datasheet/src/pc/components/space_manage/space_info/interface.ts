@@ -38,7 +38,7 @@ export enum LevelType {
 }
 
 export const needHideUnLimitedSpaceLevel = {
-  [LevelType.Bronze]: true,
+  [LevelType.Bronze]: false,
   [LevelType.DingtalkBase]: true,
   [LevelType.WecomeBase]: true,
   [LevelType.FeishuBase]: true,

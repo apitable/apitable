@@ -63,5 +63,5 @@ const HomeBase: FC<React.PropsWithChildren<unknown>> = () => {
 };
 
 export const Home = () => {
-  return EnterpriseHome && !getEnvVariables().USE_CE_LOGIN_PAGE ? <EnterpriseHome /> : <HomeBase />;
+  return Boolean(EnterpriseHome) && !getEnvVariables().USE_CE_LOGIN_PAGE ? <EnterpriseHome /> : <HomeBase />;
 };
