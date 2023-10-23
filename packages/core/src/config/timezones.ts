@@ -66,13 +66,19 @@ export const getUtcOptionList = () => {
 export const getClientTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
   const clientTimeZone = getTimeZone();
-  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(clientTimeZone))!;
+  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(clientTimeZone));
+  if (!currentTimeZoneData) {
+    return '';
+  }
   const { offset } = currentTimeZoneData;
   return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;
 };
 
 export const formatTimeZone =(timeZone: string) => {
-  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(timeZone))!;
+  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(timeZone));
+  if (!currentTimeZoneData) {
+    return '';
+  }
   const { offset } = currentTimeZoneData;
   return `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})`;
 };
