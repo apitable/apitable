@@ -101,3 +101,5 @@ eslint-results.sarif
 
 # openapi generated
 /backend-server/application/.openapi-generator/
+
+.nx

@@ -107,6 +107,7 @@ export const getAPINodeType = (nodeType: ConfigConstant.NodeType) => {
     [ConfigConstant.NodeType.FORM]: NodeTypeEnum.Form,
     [ConfigConstant.NodeType.DASHBOARD]: NodeTypeEnum.Dashboard,
     [ConfigConstant.NodeType.MIRROR]: NodeTypeEnum.Mirror,
+    [ConfigConstant.NodeType.AUTOMATION]: NodeTypeEnum.Automation,
   };
   return NODE_TYPE_MAP[nodeType] || 'ERROR NODE TYPE';
 };
@@ -129,6 +130,7 @@ export const getAPINodeTypeId = (nodeType: NodeTypeEnum): number => {
     [NodeTypeEnum.Form]: ConfigConstant.NodeType.FORM,
     [NodeTypeEnum.Dashboard]: ConfigConstant.NodeType.DASHBOARD,
     [NodeTypeEnum.Mirror]: ConfigConstant.NodeType.MIRROR,
+    [NodeTypeEnum.Automation]: ConfigConstant.NodeType.AUTOMATION,
   };
   return NODE_TYPE_MAP[nodeType];
 };

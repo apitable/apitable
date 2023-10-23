@@ -31,7 +31,7 @@ import {
   useContextMenu,
   useTheme,
 } from '@apitable/components';
-import { IJsonSchema, Strings, t, validateMagicForm } from '@apitable/core';
+import { IJsonSchema, Strings, t, validateMagicFormWithCustom } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { flatContextData } from 'pc/utils';
@@ -104,7 +104,8 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
 export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   const { title, serviceLogo, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
   const theme = useTheme();
-  const { hasError } = validateMagicForm(restProps.schema as JSONSchema7, restProps.formData);
+  // @ts-ignore
+  const { hasError } = validateMagicFormWithCustom(restProps.schema as JSONSchema7, restProps.formData, restProps?.validate);
   const deleteRobotAction = useDeleteRobotAction();
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
 

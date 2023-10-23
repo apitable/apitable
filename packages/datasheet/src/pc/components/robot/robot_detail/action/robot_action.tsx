@@ -252,7 +252,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     disabled={!permissions.editable}
     type='action'
     index={index}
-    // key={action.id}
+    key={action.actionId}
     // noValidate
     // noHtml5Validate
     unsaved={modified}
@@ -297,7 +297,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
             }}
             list={actionTypeOptions} onChange={(item ) => handleActionTypeChange(String(item.value))} value={action.typeId} >
             <span>
-              <DropdownTrigger isActive={isActive}>
+              <DropdownTrigger isActive={isActive} editable={permissions.editable}>
                 <>
                   {index + 1}. {String(actionType.name)}
                 </>
@@ -313,7 +313,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
 const StyledSpan = styled(Box)`
   align-items: center
 `;
-export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean}>= ({ children, isActive }) => {
+export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean, editable: boolean}>= ({ children, isActive , editable}) => {
 
   const colors = useThemeColors();
 
@@ -321,10 +321,14 @@ export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean}>= ({ 
     <StyledSpan display={'inline-flex'} alignItems={'center'} color={isActive ? colors.textBrandDefault:colors.textCommonPrimary }>
       {children}
 
-      <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
-        <ChevronDownOutlined
-          color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
-      </Box>
+      {
+        editable && (
+              <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
+                <ChevronDownOutlined
+                    color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
+              </Box>
+          )
+      }
     </StyledSpan>
   );
 };

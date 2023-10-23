@@ -112,6 +112,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
   const mirrorId = useSelector((state) => state.pageParams.mirrorId);
   const permission = useSelector((state) => Selectors.getPermissions(state, datasheetId, fieldId));
   const nodeId = useSelector((state) => state.pageParams.nodeId);
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
 
   const allowDownload = useAllowDownloadAttachment(fieldId);
   const dispatch = useDispatch();
@@ -246,7 +247,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
                 />
               </Tooltip>
             </div>
-          )}
+          )}P
 
           {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
             <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>
@@ -262,7 +263,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
             fieldId={fieldId}
             setOpenAlarm={setOpenAlarm}
             includeTime={field.property.includeTime}
-            timeZone={field.property.timeZone}
+            timeZone={field.property.timeZone || userTimeZone}
             cellValue={cellValue}
           />
         )}

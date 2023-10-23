@@ -35,7 +35,7 @@ export class OPEventRecordArchived extends IAtomEventType<IRecordArchive> {
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId'], action.n === 'OD');
 
     let success = pass;
-    if (op.cmd !== 'ArchiveRecords' && op.cmd !== 'UNDO:UnarchiveRecords') {
+    if (op.cmd !== 'ArchiveRecords') {
       success = false;
     }
 

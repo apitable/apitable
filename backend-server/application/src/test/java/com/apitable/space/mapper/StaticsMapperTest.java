@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.workspace.mapper.DatasheetMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,9 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
     StaticsMapper staticsMapper;
+
+    @Autowired
+    DatasheetMapper datasheetMapper;
 
     @Test
     @Sql({"/sql/space-member-role-rel-data.sql", "/sql/space-role-resource-rel-data.sql"})
@@ -64,6 +68,14 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testCountRecordsBySpaceId() {
         Long count = staticsMapper.countRecordsBySpaceId("spc41");
+        assertThat(count).isEqualTo(3);
+    }
+
+    @Test
+    @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
+    void testCountRecordsByDstIds() {
+        List<String> dstIds = datasheetMapper.selectDstIdBySpaceId("spc41");
+        Long count = staticsMapper.countRecordsByDstIds(dstIds);
         assertThat(count).isEqualTo(3);
     }
 

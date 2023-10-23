@@ -120,6 +120,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   );
   const { record, field, selectionRange, selection, activeCell, scrollLeft, scrollTop, rectCalculator } = props;
   const collaborators = useSelector((state) => Selectors.collaboratorSelector(state));
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
   const snapshot = useSelector((state) => Selectors.getSnapshot(state)!);
   const cellValue = useSelector((state) => {
     if (field && !Field.bindModel(field).isComputed && record) {
@@ -697,7 +698,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         if (!curAlarm?.subtract || (subtractMatch[2] !== 'm' && subtractMatch[2] !== 'h')) {
           const noChange = curAlarm?.alarmAt && !curAlarm?.time;
           if (!noChange && cellValue) {
-            const timeZone = (field as IDateTimeField).property.timeZone;
+            const timeZone = (field as IDateTimeField).property.timeZone || userTimeZone;
             let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
             if (subtractMatch) {
               alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
@@ -723,7 +724,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetRecords,
           datasheetId,
-          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
+          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : undefined,
           data: [
             {
               recordId: record.id,

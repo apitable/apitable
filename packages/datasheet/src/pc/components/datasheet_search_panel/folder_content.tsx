@@ -82,10 +82,18 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
   const themeName = useSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
-  const showForm = options?.showForm ?? true;
+  const showForm = options?.showForm ?? false;
+
   const showDatasheet = options?.showDatasheet ?? true;
-  const showMirror = options?.showMirror ?? true;
-  const showView = options?.showView ?? true;
+  let showMirror = options?.showMirror ?? false;
+  if(showMirrorNode != null && options?.showMirror !=null) {
+    showMirror =showMirrorNode;
+  }
+
+  let showView = options?.showView ?? false;
+  if(hideViewNode !=null && options?.showView != null) {
+    showView = !hideViewNode;
+  }
 
   const _checkNodeDisable = (node: INode, needPermission: 'manageable' | 'editable' | undefined) => {
     if (noCheckPermission) return;

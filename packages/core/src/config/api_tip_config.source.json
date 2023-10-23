@@ -516,6 +516,14 @@
         "message": "api_param_record_not_exists",
         "statusCode": 200
       },
+      "api_param_record_archived": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_param_record_archived",
+        "isRecordTimes": true,
+        "message": "api_param_record_archived",
+        "statusCode": 200
+      },
       "api_param_robot_btn_type_error": {
         "code": 400,
         "id": "api_param_robot_btn_type_error",

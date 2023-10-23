@@ -56,4 +56,12 @@ public interface DatasheetMapper extends BaseMapper<DatasheetEntity> {
      * @return DatasheetEntity
      */
     DatasheetEntity selectByDstId(@Param("nodeId") String nodeId);
+
+    /**
+     * query space dst id.
+     *
+     * @param spaceId space id
+     * @return list of dst id
+     */
+    List<String> selectDstIdBySpaceId(@Param("spaceId") String spaceId);
 }

@@ -19,6 +19,7 @@
 import { useToggle, useClickAway } from 'ahooks';
 import { Menu, Dropdown } from 'antd';
 import classNames from 'classnames';
+import parser from 'html-react-parser';
 import { useContext } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -27,6 +28,7 @@ import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined, ArchiveOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import styles from 'pc/components/expand_record/style.module.less';
@@ -35,8 +37,6 @@ import { resourceService } from 'pc/resource_service';
 import { copy2clipBoard } from 'pc/utils';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import EditorTitleContext from './editor_title_context';
-import { Modal } from 'pc/components/common/modal/modal/modal';
-import parser from 'html-react-parser';
 
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;
@@ -95,7 +95,7 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
     });
 
     if (ExecuteResult.Success === result) {
-      Message.success({ content: 'Successfully archived records' });
+      Message.success({ content: t(Strings.archive_record_success) });
     }
 
     toggleMenu();
@@ -179,8 +179,8 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
   };
 
   const getArchiveNotice = (content) => {
-    return <div>{parser(content)}</div>
-  }
+    return <div>{parser(content)}</div>;
+  };
 
   const renderMenu = () => (
     <Menu className={styles.moreOptionMenu}>

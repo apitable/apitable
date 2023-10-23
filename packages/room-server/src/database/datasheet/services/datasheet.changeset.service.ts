@@ -301,7 +301,8 @@ export class DatasheetChangesetService {
             (action.p[1] == recordId && action.p[2] == 'data' && fieldIds.includes(action.p[3]!.toString())) ||
             (action.p[1] == recordId && action.p[2] == 'comments') ||
             // Only record creation with default values contains oi.data
-            (action.p[0] == 'recordMap' && action.p[1] == recordId && 'oi' in action && action.oi?.data && Object.keys(action.oi.data).length)
+            (action.p[0] == 'recordMap' && action.p[1] == recordId && 'oi' in action && action.oi?.data && Object.keys(action.oi.data).length) ||
+            (action.p[0] == 'recordMap' && action.p[1] == recordId && 'od' in action)
           );
         });
         if (actions.length) {

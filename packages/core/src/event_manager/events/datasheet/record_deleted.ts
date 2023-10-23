@@ -35,7 +35,7 @@ export class OPEventRecordDeleted extends IAtomEventType<IRecordDelete> {
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId'], action.n === 'OD');
 
     let success = pass;
-    if (op.cmd !== 'DeleteRecords' && op.cmd !== 'UNDO:AddRecords' && op.cmd !== "DeleteArchivedRecords") {
+    if (op.cmd === 'ArchiveRecords') {
       success = false;
     }
     return {

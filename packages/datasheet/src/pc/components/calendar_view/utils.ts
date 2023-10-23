@@ -23,10 +23,3 @@ export const formatString2Date = (value: string) => {
   const month = parts[1].padStart(2, '0');
   return `${year}-${month}`;
 };
-
-export const isClickDragDropModal = (e: MouseEvent) => {
-  const modalElement = document.querySelector('.dragDropModal');
-  const moveElement = document.querySelector('.isMove');
-  if ((modalElement && modalElement.contains(e.target as HTMLElement)) || (moveElement && moveElement.contains(e.target as HTMLElement))) return true;
-  return false;
-};

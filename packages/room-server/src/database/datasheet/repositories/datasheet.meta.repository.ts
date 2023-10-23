@@ -41,21 +41,29 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
   /**
    * @returns only contains fieldMap and views.
    */
-  selectMetaWithViewByDstIdAndViewId(dstId: string, viewId: string): Promise<{ metadata: IMeta } | undefined> {
-    return this.createQueryBuilder('vdm')
-      .select(
-        `JSON_OBJECT(
-          'fieldMap',
-            vdm.meta_data->'$.fieldMap',
-          'views',
-            JSON_ARRAY(JSON_EXTRACT(vdm.meta_data, TRIM(TRAILING '.id' FROM
-              JSON_UNQUOTE(JSON_SEARCH(vdm.meta_data, 'one', :viewId, null, '$.views[*].id'))))))`,
-        'metadata',
-      )
-      .where('vdm.dst_id = :dstId', { dstId })
-      .andWhere('vdm.is_deleted = 0')
-      .setParameter('viewId', viewId)
-      .getRawOne<{ metadata: IMeta }>();
+  async selectMetaWithViewByDstIdAndViewId(dstId: string, viewId: string): Promise<{ metadata: IMeta } | undefined> {
+    const entity = await this.findOne({
+      select: ['metaData'],
+      where: {
+        dstId,
+        isDeleted: false
+      }
+    });
+    if (entity) {
+      const metadata = entity.metaData;
+      if (metadata) {
+        const view = metadata.views.find((v) => v.id === viewId);
+        if (view) {
+          return {
+            metadata: {
+              fieldMap: metadata.fieldMap,
+              views: [view]
+            }
+          };
+        }
+      }
+    }
+    return undefined;
   }
 
   /**

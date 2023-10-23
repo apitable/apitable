@@ -363,24 +363,30 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       if (curTimezone === null) {
         updateUserTimeZone(timeZone);
       } else if (curTimezone && curTimezone !== timeZone) {
-        // update timeZone while client timeZone change
-        updateUserTimeZone(timeZone, () => {
-          Modal.warning({
-            title: t(Strings.notify_time_zone_change_title),
-            content: t(Strings.notify_time_zone_change_desc, { time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})` }),
-            maskClosable: false,
-            onOk: () => {
+        const curOffset = getTimeZoneOffsetByUtc(curTimezone)!;
+        Modal.warning({
+          title: t(Strings.notify_time_zone_change_title),
+          content: t(Strings.notify_time_zone_change_content, {
+            client_time_zone: `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})`,
+            user_time_zone: `UTC${curOffset > 0 ? '+' : ''}${curOffset}(${curTimezone})`,
+          }),
+          onOk: () => {
+            // update timeZone while client timeZone change
+            updateUserTimeZone(timeZone, () => {
               window.location.reload();
-            },
-          });
+            });
+          },
+          closable: true,
+          hiddenCancelBtn: false,
+          onCancel: () => {
+            localStorage.setItem('timeZoneCheck', 'close');
+          }
         });
       }
     };
+    const timeZoneCheck = localStorage.getItem('timeZoneCheck');
+    if (timeZoneCheck === 'close') return;
     checkTimeZoneChange();
-    const interval = setInterval(checkTimeZoneChange, 15 * 1000);
-    return () => {
-      clearInterval(interval);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curTimezone]);
 

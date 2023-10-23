@@ -228,7 +228,7 @@ export class FormService {
     try {
       const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
       const thisRecord = Selectors.getRecord(interStore.getState(), recordId, dstId);
-      const { eventFields } = transformOpFields({
+      const { fieldTypeMap, eventFields } = transformOpFields({
         recordData: thisRecord!.data,
         state: interStore.getState(),
         datasheetId: dstId,
@@ -245,6 +245,7 @@ export class FormService {
           url: getRecordUrl(dstId, recordId),
           fields: eventFields
         },
+        fieldTypeMap,
         formId: formId,
         // Flattened new structure
         datasheetId: dstId,

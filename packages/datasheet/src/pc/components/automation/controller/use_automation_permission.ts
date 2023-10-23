@@ -21,20 +21,22 @@ export const useAutomationResourcePermission = (): INodePermissions=> {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.lg);
   const mirrorCreatable = useSelector((state: IReduxState) => {
+    const defaultValue= state.catalogTree.treeNodesMap[stateValue?.resourceId!]?.permissions || {
+      manageable: false,
+      editable: false,
+      readable: true,
+      descriptionEditable: false,
+    };
     if(isMobile) {
       return {
+        ...defaultValue,
         manageable: false,
         editable: false,
         readable: true,
         descriptionEditable: false,
       };
     }
-    return state.catalogTree.treeNodesMap[stateValue?.resourceId!]?.permissions || {
-      manageable: false,
-      editable: false,
-      readable: true,
-      descriptionEditable: false,
-    };
+    return defaultValue;
   });
 
   return mirrorCreatable as INodePermissions;

@@ -29,7 +29,6 @@ import { Injectable } from '@nestjs/common';
 import { get, isEmpty, keyBy, orderBy } from 'lodash';
 import { Store } from 'redux';
 import { RecordHistoryTypeEnum } from 'shared/enums/record.history.enum';
-import { In } from 'typeorm';
 import { UnitInfoDto } from '../../../unit/dtos/unit.info.dto';
 import { DatasheetRecordRepository } from '../repositories/datasheet.record.repository';
 import { ChangesetBaseDto } from '../dtos/changeset.base.dto';
@@ -45,6 +44,7 @@ import {
 import { IApiPaginateRo, IPaginateInfo } from 'shared/interfaces';
 import { ArchivedRecord } from '../../interfaces';
 import { UserService } from '../../../user/services/user.service';
+import { DBHelper } from 'shared/helpers';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -59,10 +59,22 @@ export class DatasheetRecordService {
 
   @Span()
   async getRecordsByDstId(dstId: string, includeCommentCount = true, includeArchivedRecords = false): Promise<IRecordMap> {
-    let records = await this.recordRepo.find({
-      select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
-      where: { dstId, isDeleted: false },
-    });
+    // We do not expect to query all the records of dstId at once,
+    // which will cause excessive memory usage. We expect to use paging to load the records of dstId.
+    const counts = await this.recordRepo.count({ dstId, isDeleted: false });
+    // Use paging to load records of dstId
+    const pageSize = 2000;
+    const pageCount = Math.ceil(counts / pageSize);
+    let records: DatasheetRecordEntity[] = [];
+    for (let i = 0; i < pageCount; i++) {
+      const tmpRecords = await this.recordRepo.find({
+        select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
+        where: { dstId, isDeleted: false },
+        skip: i * pageSize,
+        take: pageSize,
+      });
+      records = records.concat(tmpRecords);
+    }
     let commentCountMap = {};
     if (includeCommentCount) {
       commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
@@ -91,10 +103,12 @@ export class DatasheetRecordService {
     if (recordIds && recordIds.length === 0) {
       return {};
     }
-    let records = await this.recordRepo.find({
-      select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
-      where: { recordId: In(recordIds), dstId, isDeleted },
-    });
+    let records = await DBHelper.batchQueryByRecordIdIn(
+      this.recordRepo,
+      ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
+      recordIds,
+      { dstId, isDeleted },
+    );
     let commentCountMap = {};
     if (includeCommentCount) {
       commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
@@ -111,11 +125,13 @@ export class DatasheetRecordService {
 
   @Span()
   async getBasicRecordsByRecordIds(dstId: string, recordIds: string[], isDeleted = false, includeArchivedRecords = false): Promise<IRecordMap> {
-    let records = await this.recordRepo.find({
-      select: ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
-      where: { recordId: In(recordIds), dstId, isDeleted },
-    });
-    if (includeArchivedRecords) {
+    let records = await DBHelper.batchQueryByRecordIdIn(
+      this.recordRepo,
+      ['recordId', 'data', 'createdAt', 'updatedAt', 'recordMeta'],
+      recordIds,
+      { dstId, isDeleted },
+    );
+    if (!includeArchivedRecords) {
       const archivedRecordIds = await this.recordArchiveRepo.getArchivedRecordIdsByDstIdAndRecordIds(dstId, recordIds);
       if (archivedRecordIds && archivedRecordIds.size > 0) {
         records = records.filter(record => !archivedRecordIds.has(record.recordId));
@@ -165,7 +181,13 @@ export class DatasheetRecordService {
   }
 
   async getIdsByDstIdAndRecordIds(dstId: string, recordIds: string[], includeArchivedRecords = false): Promise<string[] | null> {
-    let dbRecordIds = await this.recordRepo.selectIdsByDstIdAndRecordIds(dstId, recordIds);
+    const records = await DBHelper.batchQueryByRecordIdIn(
+      this.recordRepo,
+      ['recordId'],
+      recordIds,
+      { dstId, isDeleted: false },
+    );
+    let dbRecordIds = records.map(entity => entity.recordId);
     if (!dbRecordIds) {
       return dbRecordIds;
     }
@@ -176,6 +198,10 @@ export class DatasheetRecordService {
       }
     }
     return dbRecordIds;
+  }
+
+  async getArchivedIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<Set<String>> {
+    return await this.recordArchiveRepo.getArchivedRecordIdsByDstIdAndRecordIds(dstId, recordIds);
   }
 
   async getBaseRecordMap(dstId: string, includeCommentCount = false, ignoreDeleted = false, loadRecordMeta = false): Promise<IRecordMap> {
@@ -262,7 +288,9 @@ export class DatasheetRecordService {
     changesets = changesets.map(item => {
       if (item.isComment) {
         mentionedRevisions.push(Number(item.revision));
-        const replyComment:  { commentId?: string } = get(item, 'operations.0.actions.0.li.commentMsg.reply') as unknown as { commentId?: string };
+        const replyComment: {
+          commentId?: string
+        } = get(item, 'operations.0.actions.0.li.commentMsg.reply') as unknown as { commentId?: string };
         if (replyComment && !isEmpty(replyComment) && replyComment.commentId) {
           // record replied comment ID
           replyCommentIds.add(replyComment.commentId);

@@ -73,6 +73,14 @@ public interface StaticsMapper {
     Long countRecordsBySpaceId(@Param("spaceId") String spaceId);
 
     /**
+     * Count the rows of all tables in the space.
+     *
+     * @param dstIds dst id
+     * @return total
+     */
+    Long countRecordsByDstIds(@Param("dstIds") List<String> dstIds);
+
+    /**
      * Statistics of API usage in the space.
      *
      * @param spaceId space id

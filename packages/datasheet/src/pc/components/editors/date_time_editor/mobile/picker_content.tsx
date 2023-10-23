@@ -21,8 +21,9 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
-import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone, getTimeZone } from '@apitable/core';
+import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone, getTimeZone, Selectors } from '@apitable/core';
 import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
 import style from './style.module.less';
 
@@ -96,6 +97,8 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
     disabled,
   } = props;
 
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+
   const alarmRealTime = useMemo(() => {
     let alarmDate = dayjs(value);
     const subtractMatch = alarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
@@ -109,7 +112,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
   const getDefaultValue = () => {
     let abbr = '';
     if (includeTimeZone) {
-      const tz = timeZone || getTimeZone();
+      const tz = timeZone || userTimeZone || getTimeZone();
       abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
     if (value) {

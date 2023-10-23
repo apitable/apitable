@@ -97,7 +97,6 @@ build: ## build
 	make build-local
 
 build-local:
-	make _pre-check
 	make _build-java
 	make _build-ts
 
@@ -108,16 +107,14 @@ _build-ts:
 _build-java:
 	cd backend-server && ./gradlew build -x test --stacktrace
 
-_pre-check:
-	make _check-web
-
 _check-lint:
 	yarn install && yarn build:pre
 	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
 	yarn lint:datasheet
 
-_check-web: _build-ts
-
+_build-core:
+	pnpm install
+	nx run @apitable/core:build
 
 ################################ test
 
@@ -136,7 +133,6 @@ _test-ut-core:
 	pnpm run test:core
 
 _test-ut-core-cov:
-	make _build-ts
 	pnpm run test:core:cov
 
 ###### 【core unit test】 ######

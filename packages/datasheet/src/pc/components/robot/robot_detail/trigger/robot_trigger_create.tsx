@@ -66,7 +66,8 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes }: IRobotTriggerC
   }, [triggerTypes]);
 
   useEffect(() => {
-    TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+    // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+    setTimeout(() => Player.doTrigger(Events.guide_use_automation_first_time), 1000);
   }, []);
 
   const createRobotTrigger = useMemo(() => {

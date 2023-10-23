@@ -20,6 +20,7 @@ import { useSetAtom, useAtomValue } from 'jotai';
 import React, { useEffect, useMemo } from 'react';
 import { Box } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { OrEmpty } from 'pc/components/common/or_empty';
 import { automationActionsAtom, automationStateAtom, inheritedTriggerAtom } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { OrTooltip } from '../../../common/or_tooltip';
@@ -118,24 +119,27 @@ export const RobotActions = ({
         </Box>
       ))}
 
-      <OrTooltip
-        tooltipEnable={
-          actionList?.length >= CONST_MAX_ACTION_COUNT
-        }
-        tooltip={t(Strings.automation_action_num_warning, {
-          value: CONST_MAX_ACTION_COUNT,
-        })} placement={'top'}>
-        <CreateNewAction
-          nodeOutputSchemaList={nodeOutputSchemaList}
-          disabled={actionList?.length >= CONST_MAX_ACTION_COUNT ||
-              !permissions?.editable
-          }
-          robotId={robotId}
-          actionTypes={actionTypes}
-          prevActionId={actionList[actionList.length - 1]?.id}
-        />
-      </OrTooltip>
+      <OrEmpty visible={permissions?.editable}>
 
+        <OrTooltip
+          tooltipEnable={
+            actionList?.length >= CONST_MAX_ACTION_COUNT
+          }
+          tooltip={t(Strings.automation_action_num_warning, {
+            value: CONST_MAX_ACTION_COUNT,
+          })} placement={'top'}>
+          <CreateNewAction
+            nodeOutputSchemaList={nodeOutputSchemaList}
+            disabled={actionList?.length >= CONST_MAX_ACTION_COUNT ||
+              !permissions?.editable
+            }
+            robotId={robotId}
+            actionTypes={actionTypes}
+            prevActionId={actionList[actionList.length - 1]?.id}
+          />
+        </OrTooltip>
+
+      </OrEmpty>
     </Box >
   );
 };

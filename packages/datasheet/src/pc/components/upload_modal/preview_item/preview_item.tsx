@@ -52,11 +52,11 @@ const useGetRole = (currentDatasheetId: string | undefined) => {
 
   // Here the main purpose is to ensure that the card opened through association is using his own role.
   if (mirrorRole && datasheetId === currentDatasheetId) {
-    return mirrorRole
+    return mirrorRole;
   }
 
-  return datasheetRole
-}
+  return datasheetRole;
+};
 
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
   // Get whether it is read-only user and get download permission for read-only user of space station.

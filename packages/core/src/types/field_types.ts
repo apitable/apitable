@@ -521,6 +521,11 @@ export enum LinkFieldSet {
   Add = 'add',
 }
 
+export interface IWorkdocValue {
+  documentId: string;
+  title: string;
+}
+
 export interface IAttachmentValue {
   /** id is used as follow key, currently same as attachmentToken */
   id: string;
@@ -650,6 +655,7 @@ export enum FieldType {
   LastModifiedBy = 24,
   Cascader = 25,
   OneWayLink = 26,
+  // Workdoc = 27,
   DeniedField = 999, // no permission column
 }
 

@@ -1,12 +1,12 @@
+import { usePrevious } from 'ahooks';
+import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
-import throttle from 'lodash/throttle';
-import { Api, ConfigConstant, INode } from '@apitable/core';
-import { ISearchPanelState } from '../store/interface/search_panel';
 import { useSelector } from 'react-redux';
-import { usePrevious } from 'ahooks';
+import { Api, ConfigConstant, INode } from '@apitable/core';
+import { IViewNode } from 'pc/components/data_source_selector/folder_content';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
-import {IViewNode} from "pc/components/data_source_selector/folder_content";
+import { ISearchPanelState } from '../store/interface/search_panel';
 
 interface IParams {
   folderId: string;
@@ -17,25 +17,28 @@ interface IParams {
 export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
   const spaceId = useSelector((state) => state.space.activeId!);
   const previousCurrentFolderId = usePrevious(localState.currentFolderId);
-  const { nodeFilterLoader } = useLoader();
+  const { nodeTypeFilterLoader } = useLoader();
 
   const search = useMemo(() => {
     return throttle((spaceId: string, val: string) => {
       Api.searchNode(spaceId, val.trim()).then((res) => {
         const { data, success } = res.data;
         if (success) {
-          const nodes = nodeFilterLoader(data);
-          const {folders,files} = nodes.reduce<{ folders: (INode| IViewNode)[]; files: (INode| IViewNode)[] }>(
-            (collect, node) => {
-              if (node.type === ConfigConstant.NodeType.FOLDER) {
-                collect.folders.push(node);
-              }else{
-                collect.files.push(node)
-              }
-              return collect
-            },
-            { folders: [], files: [] },
-          );
+          const nodes = nodeTypeFilterLoader(data);
+          const { folders, files } = nodes.reduce<{
+            folders: (INode | IViewNode)[];
+            files: (INode | IViewNode)[];
+              }>(
+              (collect, node) => {
+                if (node.type === ConfigConstant.NodeType.FOLDER) {
+                  collect.folders.push(node);
+                } else {
+                  collect.files.push(node);
+                }
+                return collect;
+              },
+              { folders: [], files: [] },
+              );
 
           localDispatch({ showSearch: true, currentFolderId: folderId });
           if (!folders.length && !files.length) {

@@ -83,9 +83,23 @@ export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
   switch (op.cmd) {
     case CollaCommandName.AddRecords:
       return commandTran(cmdStringKey, { count: actionCount });
+
     case CollaCommandName.DeleteRecords:
       const count = op.actions.filter((item) => item['od']?.recordMeta).length;
       return commandTran(cmdStringKey, { count });
+
+    case CollaCommandName.UnarchiveRecords:
+      const recordCount = op.actions.filter((item) => item['oi']?.recordMeta).length;
+      return commandTran(cmdStringKey, { record_count: recordCount });
+
+    case CollaCommandName.ArchiveRecords:
+      const recordCounts = op.actions.filter((item) => item['od']?.recordMeta).length;
+      return commandTran(cmdStringKey, { record_count: recordCounts });
+
+    case CollaCommandName.DeleteArchivedRecords:
+      const deleteCounts = op.actions.filter((item) => item['od']?.recordMeta).length;
+      return commandTran(cmdStringKey, { record_count: deleteCounts });
+
     case CollaCommandName.AddFields:
       op.actions.find((item) => {
         if (item['oi'] instanceof Object && !Array.isArray(item['oi'])) {

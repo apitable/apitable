@@ -40,11 +40,10 @@ export const getActionList = (actions?: IRobotAction[]): IRobotAction[] => {
     const action = preActionIdMap[current];
 
     if(action) {
-      return findNextAction(count -1, action.id, resultList.concat(action!));
+      return findNextAction(count -1, action.id ?? action.actionId, resultList.concat(action!));
     }
     return resultList;
   };
 
-  return findNextAction(actions.length - 1, head.id, [head]);
+  return findNextAction(actions.length - 1, head.id ?? head.actionId, [head]);
 };
-

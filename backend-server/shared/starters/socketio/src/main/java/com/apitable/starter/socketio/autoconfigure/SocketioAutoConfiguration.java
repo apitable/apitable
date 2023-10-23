@@ -18,17 +18,15 @@
 
 package com.apitable.starter.socketio.autoconfigure;
 
+import cn.hutool.core.util.StrUtil;
+import com.apitable.starter.socketio.core.SocketClientTemplate;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.apitable.starter.socketio.core.SocketClientTemplate;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -38,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * autoconfiguration of socketio
+ * autoconfiguration of socketio.
  * </p>
  *
  * @author zoe zheng
@@ -57,6 +55,11 @@ public class SocketioAutoConfiguration {
         this.socketioProperties = socketioProperties;
     }
 
+    /**
+     * socket client.
+     *
+     * @return socket client
+     */
     @Bean
     @ConditionalOnMissingBean
     public SocketClientTemplate socketClient() {
@@ -66,6 +69,10 @@ public class SocketioAutoConfiguration {
     }
 
     private Socket createInstance(SocketioProperties.Client client) {
+        if (StrUtil.isBlank(client.getUrl())) {
+            LOGGER.info("socket server url is null, socket client can not initialize");
+            return null;
+        }
         Socket socket = null;
         try {
             IO.Options options = new IO.Options();
@@ -79,13 +86,16 @@ public class SocketioAutoConfiguration {
             // Unified connection parameters for connection authentication
             options.query = "userId=java_" + InetAddress.getLocalHost();
             socket = IO.socket(client.getUrl(), options);
-            socket.on(Socket.EVENT_CONNECTING, objects -> LOGGER.info("connecting {}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_TIMEOUT, objects -> LOGGER.info("connect timeout :{}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_ERROR, objects -> LOGGER.info("connect fail: {}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT, objects -> LOGGER.info("connect success: {}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECTING,
+                objects -> LOGGER.info("connecting {}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT_TIMEOUT,
+                objects -> LOGGER.info("connect timeout :{}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT_ERROR,
+                objects -> LOGGER.info("connect fail: {}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT,
+                objects -> LOGGER.info("connect success: {}", client.getUrl()));
             socket.connect();
-        }
-        catch (UnknownHostException | URISyntaxException e) {
+        } catch (UnknownHostException | URISyntaxException e) {
             LOGGER.error("Socket Server Connecting Failure, SocketClient Can not Execute", e);
         }
         return socket;

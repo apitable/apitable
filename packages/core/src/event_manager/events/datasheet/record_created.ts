@@ -42,7 +42,7 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId'], ('oi' in action));
 
     let success = pass;
-    if (op.cmd !== 'AddRecords' && op.cmd !== 'UNDO:DeleteRecords' && op.cmd!== 'DeleteArchivedRecords') {
+    if (op.cmd === 'UnarchiveRecords') {
       success = false;
     }
 

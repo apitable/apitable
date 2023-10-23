@@ -77,7 +77,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
       valid: true,
       routeAddress: '/overview',
     },
-    Log && {
+    Boolean(Log) && {
       title: t(Strings.space_log_title),
       key: 'log',
       icon: <LogOutlined />,

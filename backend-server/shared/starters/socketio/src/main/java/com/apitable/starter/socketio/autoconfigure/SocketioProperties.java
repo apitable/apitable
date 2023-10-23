@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * socketio properties
+ * socketio properties.
  * </p>
  *
  * @author zoe zheng
@@ -31,7 +31,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SocketioProperties {
 
     /**
-     * client config
+     * client config.
      */
     private Client client;
 
@@ -43,29 +43,33 @@ public class SocketioProperties {
         this.client = client;
     }
 
+    /**
+     * client config.
+     */
     public static class Client {
+
         /**
-         * url
+         * server url.
          */
         private String url;
 
         /**
-         * path
+         * path.
          */
         private String path;
 
         /**
-         * Times of reconnection
+         * Times of reconnection.
          */
         private int reconnectionAttempts = 2;
 
         /**
-         * Reconnect interval (ms)
+         * Reconnect interval (ms).
          */
         private int reconnectionDelay = 1000;
 
         /**
-         * Connection timeout (ms)
+         * Connection timeout (ms).
          */
         private int timeout = 1000;
 

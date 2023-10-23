@@ -28,7 +28,6 @@ import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.player.vo.NotificationDetailVo;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.notification.EventType;
-import com.apitable.shared.component.notification.INotificationFactory;
 import com.apitable.shared.listener.event.NotificationCreateEvent;
 import com.apitable.starter.socketio.core.SocketClientTemplate;
 import com.apitable.user.mapper.UserMapper;
@@ -68,12 +67,6 @@ public class NotificationCreateListener implements
      */
     @Resource
     private UserMapper userMapper;
-
-    /**
-     * Notification Factory.
-     */
-    @Resource
-    private INotificationFactory notificationFactory;
 
     /**
      * Notification Create Event.

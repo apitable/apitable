@@ -18,6 +18,7 @@
 
 import Image from 'next/image';
 import { isValidElement, memo, useRef } from 'react';
+import styled from 'styled-components';
 import { Box, Button, ListDeprecate, stopPropagation, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, NumberOutlined } from '@apitable/icons';
@@ -32,6 +33,20 @@ interface ISchemaPropertyListItemProps {
   handleItemClick: ISchemaPropertyListItemClickFunc;
 }
 
+const StyledButton = styled(Button)`
+`;
+
+const RowItem= styled(ListDeprecate.Item)`
+  ${StyledButton} {
+    visibility: hidden;
+  }
+  &:hover {
+    ${StyledButton} {
+      visibility: visible;
+    }
+  }
+`
+
 export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps) => {
   const { item, currentStep, isActive, disabled, handleItemClick } = props;
   const ref = useRef<HTMLDivElement>(null);
@@ -39,7 +54,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
   const imgSize = currentStep === 0 ? 32 : 24;
   return (
     <Box ref={ref} key={item.key} marginBottom="4px">
-      <ListDeprecate.Item
+      <RowItem
         key={item.key}
         id={item.key}
         currentIndex={0}
@@ -93,7 +108,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           </Box>
           <Box display="flex" alignItems="center">
             {item.canInsert && (
-              <Button
+              <StyledButton
                 size="small"
                 color="primary"
                 style={{
@@ -110,7 +125,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
                 }}
               >
                 {t(Strings.robot_variables_insert_button)}
-              </Button>
+              </StyledButton>
             )}
             {item.hasChildren && (
               <Box
@@ -128,7 +143,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
             )}
           </Box>
         </Box>
-      </ListDeprecate.Item>
+      </RowItem>
     </Box>
   );
 });

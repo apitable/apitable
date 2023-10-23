@@ -1099,10 +1099,6 @@ export class DatasheetOtService {
       if ('ld' in action) {
         this.collectByDeleteWidgetOrWidgetPanels(action, resultSet);
       }
-    } else if (action.p[1] === 'archivedRecordIds') {
-      if (!permission.manageable) {
-        throw new ServerException(PermissionException.OPERATION_DENIED);
-      }
     }
   }
 
@@ -1112,7 +1108,36 @@ export class DatasheetOtService {
   collectByOperateForRow(cmd: string, action: IJOTAction, permission: NodePermission, resultSet: { [key: string]: any }) {
     const recordId = action.p[1] as string;
     const autoSubscriptionFields = this.getAutoSubscriptionFields(resultSet.temporaryFieldMap);
-    if ('oi' in action && (cmd === 'AddRecords' || cmd === 'UNDO:DeleteRecords' || cmd === 'UNDO:DeleteArchivedRecords')) {
+
+    if ('oi' in action && (cmd === 'UnarchiveRecords')) {
+      if (!permission.rowUnarchivable) {
+        throw new ServerException(PermissionException.OPERATION_DENIED);
+      }
+      // Create record (copy record)
+      // Get oi, if multiple records then get 'data', otherwise get original value
+      const oiData = action.oi;
+      if (!oiData) {
+        // Malformed action, oi can not be null or undefined
+        throw new ServerException(CommonException.SERVER_ERROR);
+      }
+      let recordData = 'data' in oiData ? oiData.data : oiData;
+      recordData = { ...recordData };
+      // Filter null cells
+      Object.keys(recordData).forEach((fieldId) => {
+        if (recordData[fieldId] == null) {
+          delete recordData[fieldId];
+          return;
+        }
+        // check permission
+        this.checkCellValPermission(cmd, fieldId, permission, resultSet);
+      });
+      // Recover record after deleting record, clear record deletion collection
+      if (resultSet.toArchiveRecordIds.includes(recordId)) {
+        resultSet.toArchiveRecordIds.splice(resultSet.toArchiveRecordIds.indexOf(recordId), 1);
+        return;
+      }
+      resultSet.toUnarchiveRecord.set(recordId, recordData);
+    } else if ('oi' in action) {
       if (!permission.rowCreatable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
@@ -1142,36 +1167,20 @@ export class DatasheetOtService {
       }
       resultSet.toCreateRecord.set(recordId, recordData);
       this.collectRecordSubscriptions(autoSubscriptionFields, recordId, recordData, undefined, resultSet);
-    } else if ('oi' in action && (cmd === 'UnarchiveRecords' || cmd === 'UNDO:ArchiveRecords')) {
-      if (!permission.rowUnarchivable) {
+    }
+
+    if ('od' in action && (cmd === 'ArchiveRecords')) {
+      if (!permission.rowArchivable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
-      // Create record (copy record)
-      // Get oi, if multiple records then get 'data', otherwise get original value
-      const oiData = action.oi;
-      if (!oiData) {
-        // Malformed action, oi can not be null or undefined
-        throw new ServerException(CommonException.SERVER_ERROR);
+      if (resultSet.cleanRecordCellMap.has(recordId)) {
+        resultSet.cleanRecordCellMap.delete(recordId);
       }
-      let recordData = 'data' in oiData ? oiData.data : oiData;
-      recordData = { ...recordData };
-      // Filter null cells
-      Object.keys(recordData).forEach((fieldId) => {
-        if (recordData[fieldId] == null) {
-          delete recordData[fieldId];
-          return;
-        }
-        // check permission
-        this.checkCellValPermission(cmd, fieldId, permission, resultSet);
-      });
-      // Recover record after deleting record, clear record deletion collection
-      if (resultSet.toArchiveRecordIds.includes(recordId)) {
-        resultSet.toArchiveRecordIds.splice(resultSet.toArchiveRecordIds.indexOf(recordId), 1);
-        return;
+      if (resultSet.replaceCellMap.has(recordId)) {
+        resultSet.replaceCellMap.delete(recordId);
       }
-      resultSet.toUnarchiveRecord.set(recordId, recordData);
-    }
-    if ('od' in action && (cmd === 'DeleteRecords' || cmd === 'UNDO:AddRecords' || cmd === 'DeleteArchivedRecords')) {
+      resultSet.toArchiveRecordIds.push(recordId);
+    } else if ('od' in action) {
       if (!permission.rowRemovable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
@@ -1189,17 +1198,6 @@ export class DatasheetOtService {
       }
       resultSet.toDeleteRecordIds.push(recordId);
       this.collectRecordSubscriptions(autoSubscriptionFields, recordId, undefined, action.od, resultSet);
-    } else if ('od' in action && (cmd === 'ArchiveRecords' || cmd === 'UNDO:UnarchiveRecords')) {
-      if (!permission.rowArchivable) {
-        throw new ServerException(PermissionException.OPERATION_DENIED);
-      }
-      if (resultSet.cleanRecordCellMap.has(recordId)) {
-        resultSet.cleanRecordCellMap.delete(recordId);
-      }
-      if (resultSet.replaceCellMap.has(recordId)) {
-        resultSet.replaceCellMap.delete(recordId);
-      }
-      resultSet.toArchiveRecordIds.push(recordId);
     }
   }
 
@@ -1615,10 +1613,15 @@ export class DatasheetOtService {
     if (resultSet.toArchiveRecordIds.length === 0) {
       return;
     }
-    const { userId, dstId } = commonData;
+    const { userId, dstId, revision } = commonData;
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${dstId}] archive record`);
     }
+    const recordUpdateProp = {
+      revisionHistory: () => `CONCAT_WS(',', revision_history, ${revision})`,
+      revision,
+      updatedBy: userId,
+    };
 
     const saveArchiveRecordEntities: any[] = [];
     const beginTime = +new Date();
@@ -1639,6 +1642,17 @@ export class DatasheetOtService {
     if (saveArchiveRecordEntities.length > 0) {
       if (this.logger.isDebugEnabled()) {
         this.logger.debug(`[${dstId}] Batch archive record`);
+      }
+
+      const updateChunkList = chunk(resultSet.toArchiveRecordIds, 3000);
+      for (const entities of updateChunkList) {
+        await manager
+          .createQueryBuilder()
+          .update(DatasheetRecordEntity)
+          .set(recordUpdateProp)
+          .where('dst_id = :dstId', { dstId })
+          .andWhere('record_id IN(:...ids)', { ids: entities })
+          .execute();
       }
       const chunkList = chunk(saveArchiveRecordEntities, 3000);
       for (const entities of chunkList) {
@@ -2183,6 +2197,16 @@ export class DatasheetOtService {
           .where('dst_id = :dstId', { dstId })
           .andWhere('record_id = :recordId', { recordId })
           .execute();
+        await manager
+          .createQueryBuilder()
+          .update(DatasheetRecordArchiveEntity)
+          .set({
+            isDeleted: false,
+            updatedBy: userId,
+          })
+          .where('dst_id = :dstId', { dstId })
+          .andWhere('record_id = :recordId', { recordId })
+          .execute();
       }
       // As all changes in middle layer need to be synced to client, here effect change is performed => meta
       // filter LastModifiedBy related and not to be deleted Field
@@ -2239,7 +2263,7 @@ export class DatasheetOtService {
       return;
     }
 
-    const { userId, dstId } = commonData;
+    const { userId, dstId, revision } = commonData;
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${dstId}] Soft unarchive record`);
     }
@@ -2247,6 +2271,12 @@ export class DatasheetOtService {
     this.logger.info(`[${dstId}] ====> Start batch unarchiving record......`);
     const values = {
       isArchived: false,
+      updatedBy: userId,
+    };
+
+    const recordUpdateProp = {
+      revisionHistory: () => `CONCAT_WS(',', revision_history, ${revision})`,
+      revision,
       updatedBy: userId,
     };
     const gap = 1000;
@@ -2259,6 +2289,14 @@ export class DatasheetOtService {
         .createQueryBuilder()
         .update(DatasheetRecordArchiveEntity)
         .set(values)
+        .where('dst_id = :dstId', { dstId })
+        .andWhere('record_id IN(:...ids)', { ids: unarchivedRecordIds })
+        .execute();
+
+      await manager
+        .createQueryBuilder()
+        .update(DatasheetRecordEntity)
+        .set(recordUpdateProp)
         .where('dst_id = :dstId', { dstId })
         .andWhere('record_id IN(:...ids)', { ids: unarchivedRecordIds })
         .execute();

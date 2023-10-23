@@ -17,6 +17,7 @@
  */
 
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
@@ -31,6 +32,10 @@ interface ISchemaMapProps {
   setOpen: (open: boolean) => void;
   isJSONField: boolean;
 }
+
+const StyledTextInput= styled(TextInput)`
+    border-bottom-color: var(--borderCommonDefault) !important;
+  `;
 
 export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) => {
   const { nodeOutputSchemaList, insertMagicVariable, setOpen, isJSONField } = props;
@@ -165,7 +170,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   const currentStep = schemaExpressionList.length;
   return (
     <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
-      <TextInput
+      <StyledTextInput
         type="text"
         ref={searchRef}
         // autoFocus
@@ -178,7 +183,13 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       />
       <Box margin="8px 0px">
         <Typography variant="body4" style={{ marginLeft: 8 }} color={colors.textCommonTertiary}>
-          <span >
+          <span style={{
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+            setSchemaExpressionList([]);
+          }}
+          >
             {t(Strings.robot_variables_select_step)}
           </span>
           {schemaExpressionList.map(({ schema }, index) => {
@@ -188,11 +199,13 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
               </span>
               <span
                 onClick={() => {
-                  setSchemaExpressionList(l => l.slice(0, index));
+                  setSchemaExpressionList(l => l.slice(0, index +1));
                 }}
                 style={{
                   cursor: 'pointer',
-                  color: colors.textBrandDefault }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
+                  color: index === schemaExpressionList.length -1 ? colors.textBrandDefault:
+                    colors.textCommonTertiary
+                }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
             </span>;
           })}
         </Typography>

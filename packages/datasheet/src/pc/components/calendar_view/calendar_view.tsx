@@ -59,7 +59,6 @@ import { Drag } from './drag';
 import { Drop } from './drop';
 import { RecordList } from './record_list';
 import styles from './styles.module.less';
-import { isClickDragDropModal } from './utils';
 
 interface ICalendarViewProps {
   height: number;
@@ -170,8 +169,8 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     // eslint-disable-next-line
   }, [view?.id]);
 
-  const onGlobalMouseDown = (e: MouseEvent) => {
-    if (isClickDragDropModal(e) || !activeCell) return;
+  const onGlobalMouseDown = () => {
+    if (!activeCell) return;
     dispatch(StoreActions.clearSelection(datasheetId));
     dispatch(StoreActions.clearActiveRowInfo(datasheetId));
   };

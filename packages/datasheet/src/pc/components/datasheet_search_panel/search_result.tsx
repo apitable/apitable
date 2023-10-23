@@ -84,7 +84,6 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
 
   const _checkNodeDisable = (node: INode, needPermission: 'manageable' | 'editable' | undefined) => {
     if (noCheckPermission) return;
-    if (!needPermission) return;
     return checkNodeDisable(node, needPermission);
   };
 
