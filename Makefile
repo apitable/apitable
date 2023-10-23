@@ -102,7 +102,7 @@ build-local:
 
 _build-ts:
 	pnpm install
-	nx run-many -t build
+	nx run-many -t build --exclude @apitable/datasheet
 
 _build-java:
 	cd backend-server && ./gradlew build -x test --stacktrace
