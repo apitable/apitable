@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
 import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
-import {FunctionComponent, memo, useContext, useEffect} from 'react';
+import { FunctionComponent, memo, useContext, useEffect } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -11,7 +11,6 @@ import { IReduxState, Strings, t } from '@apitable/core';
 import { VikaSplitPanel } from 'pc/components/common';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
-import { OrEmpty } from '../../common/or_empty';
 import { useAutomationRobot, useToggleRobotActive } from '../../robot/hooks';
 import { RobotDetailForm } from '../../robot/robot_detail';
 import { ShareContext } from '../../share';
@@ -81,7 +80,6 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
       }
     }
   }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
-  const { shareInfo } = useContext(ShareContext);
   const user = useSelector((state: IReduxState) => state.user);
 
   if (!robot) {
@@ -119,36 +117,34 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                 }}
               >
                 <ListWithFooter
+                  padding={'0 24px'}
                   className={CONST_BG_CLS_NAME}
                   footer={
-                    <OrEmpty visible={user.isLogin && (permissions.editable || shareInfo?.allowEdit) }>
-                      <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
-                        <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
-                        <Box paddingBottom={'24px'}>
-                          <Switch
-                            text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
-                            size={'xl'}
-                            loadingIcon={<></>}
-                            clazz={{
-                              checkedText: styles.checkedText,
-                              unCheckedText: styles.unCheckedText,
-                              unCheckedCircle: styles.unCheckedCircle,
-                              checkedCircle: styles.checkedCircle,
-                              checkedBackground: styles.checkedBackground,
-                              unCheckedBackground: styles.unCheckedBackground,
-                            }}
-                            checked={robot.isActive}
-                            onClick={toggleRobotActive}
-                            loading={loading}
-                            disabled={loading}
-                          />
-                        </Box>
+                    <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
+                      <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
+                      <Box paddingBottom={'24px'}>
+                        <Switch
+                          disabled={loading||!(user.isLogin && permissions.editable)}
+                          text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
+                          size={'xl'}
+                          loadingIcon={<></>}
+                          clazz={{
+                            checkedText: styles.checkedText,
+                            unCheckedText: styles.unCheckedText,
+                            unCheckedCircle: styles.unCheckedCircle,
+                            checkedCircle: styles.checkedCircle,
+                            checkedBackground: styles.checkedBackground,
+                            unCheckedBackground: styles.unCheckedBackground,
+                          }}
+                          checked={robot.isActive}
+                          onClick={() => toggleRobotActive(robot.isActive)}
+                          loading={loading}
+                        />
                       </Box>
-                    </OrEmpty>
+                    </Box>
                   }
                 >
-                  <Box width={'400px'} margin={'0 auto'}>
-
+                  <Box width={isXl ? 'inherit': '400px'} margin={'0 auto'}>
                     <RobotDetailForm />
                   </Box>
                 </ListWithFooter>

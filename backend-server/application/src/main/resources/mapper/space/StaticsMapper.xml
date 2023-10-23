@@ -153,4 +153,14 @@
         WHERE space_id = #{spaceId}
           AND statistics_time BETWEEN #{startTime} AND #{endTime}
     </select>
+
+    <select id="countRecordsByDstIds" resultType="java.lang.Long">
+        SELECT SUM(JSON_LENGTH(meta_data -> '$.views[0].rows[*].recordId'))
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="dstIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
 </mapper>

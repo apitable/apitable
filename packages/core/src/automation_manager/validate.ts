@@ -16,13 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { JSONSchema7 } from 'json-schema';
+import { JSONSchema7, ValidationResult } from 'json-schema';
 import { getLiteralOperandValue, getObjectOperandProperty, getOperandValueType, isLiteralOperand, isOperandNullValue } from './utils';
 import { Strings, t } from '../exports/i18n';
 
 /**
  * override the validate method of rjsf to support expression.
  */
+
+export const validateMagicFormWithCustom = (rootSchema: JSONSchema7, formData: any,
+  validate?: (formData: any, errors: any) => ValidationResult
+) => {
+  const data = validateMagicForm(rootSchema, formData);
+  if(validate == null) {
+    return data;
+  }
+
+  const resCustomValidator = validate?.(formData, data.errors);
+
+  if(!resCustomValidator) {
+    return data;
+  }
+
+  if(Array.isArray(resCustomValidator) && resCustomValidator.length === 0) {
+    return data;
+  }
+  return {
+    ...data,
+    hasError: true,
+  };
+};
+
 export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
   let validationError: any = null;
   const propertyErrors: any[] = [];

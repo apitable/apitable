@@ -136,7 +136,7 @@
           background-color: var(--bgCommonHigh);
         }
         &.highlight {
-          background-color: var(--warnLight);
+          background: linear-gradient(0deg, var(--bgWarnLightDefault) 0%, var(--bgWarnLightDefault) 100%), var(--bgCommonDefault);
         }
       }
       .task {
@@ -149,7 +149,7 @@
           right: 8px;
         }
         &.isMove .list {
-          background-color: var(--bgWarnLightDefault);
+          border: 1px solid var(--deepPurple_500);
         }
       }
     }

@@ -25,6 +25,7 @@ import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.s
 import { WinstonModule } from 'nest-winston';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
+import { DocumentBaseService } from 'workdoc/services/document.base.service';
 
 describe('FormSubmittedListener', () => {
   let moduleFixture: TestingModule;
@@ -55,6 +56,12 @@ describe('FormSubmittedListener', () => {
         },
         {
           provide: TriggerEventHelper,
+          useValue: {
+            renderInput: jest.fn(),
+          },
+        },
+        {
+          provide: DocumentBaseService,
           useValue: {
             renderInput: jest.fn(),
           },

@@ -20,6 +20,7 @@ import classNames from 'classnames';
 import { omit } from 'lodash';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Checkbox, Select, colorVars, Switch } from '@apitable/components';
 import {
@@ -33,8 +34,7 @@ import {
   ILastModifiedTimeFieldProperty,
   ILastModifiedTimeField,
   getUtcOptionList,
-  getClientTimeZone,
-  IDateTimeBaseFieldProperty,
+  IDateTimeBaseFieldProperty, Selectors, formatTimeZone,
 } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -70,6 +70,7 @@ const optionTimeFormatData = [
 export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const { currentField, setCurrentField } = props;
   const [isModalShow, setModalShow] = useState(false);
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
   const handleDateFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,
@@ -247,13 +248,13 @@ export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> 
                 onSelected={handleTimeZoneChange}
                 renderValue={(option) => {
                   if (!option.value) {
-                    return `${option.label}: ${getClientTimeZone()}`;
+                    return `${option.label}: ${formatTimeZone(userTimeZone)}`;
                   }
                   return option.label;
                 }}
                 options={[
                   {
-                    label: t(Strings.follow_system_time_zone),
+                    label: t(Strings.follow_user_time_zone),
                     value: '',
                   },
                   ...getUtcOptionList(),

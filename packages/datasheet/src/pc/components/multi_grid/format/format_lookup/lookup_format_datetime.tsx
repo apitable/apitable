@@ -21,8 +21,20 @@ import { omit } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 // eslint-disable-next-line no-restricted-imports
+import { useSelector } from 'react-redux';
+// eslint-disable-next-line no-restricted-imports
 import { Checkbox, colorVars, Select, Switch } from '@apitable/components';
-import { DateFormat, getClientTimeZone, getUtcOptionList, IDateTimeFieldProperty, IField, Strings, t, TimeFormat } from '@apitable/core';
+import {
+  DateFormat,
+  formatTimeZone,
+  getUtcOptionList,
+  IDateTimeFieldProperty,
+  IField,
+  Selectors,
+  Strings,
+  t,
+  TimeFormat,
+} from '@apitable/core';
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
@@ -53,6 +65,7 @@ const optionData4Time = [
 export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const formatting = props.currentField.property.formatting as IDateTimeFieldProperty;
   const { includeTime, dateFormat, timeFormat, timeZone = '', includeTimeZone } = formatting || {};
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
 
   const handleDateFormatChange = (value: DateFormat) => {
     props.setCurrentField({
@@ -163,7 +176,7 @@ export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateT
               onSelected={handleTimeZoneChange}
               renderValue={(option) => {
                 if (!option.value) {
-                  return `${option.label} ${getClientTimeZone()}`;
+                  return `${option.label} ${formatTimeZone(userTimeZone)}`;
                 }
                 return option.label;
               }}

@@ -1,0 +1,87 @@
+# Install dependencies only when needed
+FROM apitable/nodepy:16.15.0-alpine AS deps
+
+RUN npm install -g pnpm
+
+WORKDIR /workspace-install
+
+COPY ./pnpm-workspace.yaml ./package.json ./pnpm-lock.yaml ./
+
+# air-agent dependencies packages
+COPY packages/components/package.json ./packages/components/
+COPY packages/core/package.json ./packages/core/
+COPY packages/databus-wasm-web/package.json ./packages/databus-wasm-web/
+COPY packages/databus-wasm-nodejs/package.json ./packages/databus-wasm-nodejs/
+COPY packages/i18n-lang/package.json ./packages/i18n-lang/
+COPY packages/icons/package.json ./packages/icons/
+
+# air-agent main
+COPY packages/air-agent/package.json ./packages/air-agent/
+
+RUN pnpm install
+
+# stage builder
+FROM apitable/nodepy:16.15.0-alpine AS builder
+
+ARG SEMVER_FULL="v0.0.0-alpha"
+ARG NEXT_ASSET_PREFIX=""
+ARG NEXT_PUBLIC_ASSET_PREFIX=""
+ENV SEMVER_FULL=${SEMVER_FULL}
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+COPY ./pnpm-workspace.yaml  ./package.json ./pnpm-lock.yaml ./nx.json ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
+COPY packages/ ./packages/
+
+COPY --from=deps /workspace-install/node_modules ./node_modules
+COPY --from=deps /workspace-install/packages/air-agent/node_modules ./packages/air-agent/node_modules
+COPY --from=deps /workspace-install/packages/components/node_modules ./packages/components/node_modules
+COPY --from=deps /workspace-install/packages/core/node_modules ./packages/core/node_modules
+COPY --from=deps /workspace-install/packages/icons/node_modules ./packages/icons/node_modules
+COPY --from=deps /workspace-install/packages/i18n-lang/node_modules ./packages/i18n-lang/node_modules
+
+RUN set -eux; \
+    sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/air-agent/.env; \
+    sed -i~ 's~^NEXT_ASSET_PREFIX=.*~NEXT_ASSET_PREFIX='${NEXT_ASSET_PREFIX}'~' packages/air-agent/.env; \
+    sed -i~ 's~^NEXT_PUBLIC_ASSET_PREFIX=.*~NEXT_PUBLIC_ASSET_PREFIX='${NEXT_PUBLIC_ASSET_PREFIX}'~' packages/air-agent/.env
+
+RUN pnpm --version
+
+RUN pnpm run build:air-agent:pre
+
+RUN pnpm run build:air-agent
+
+# stage runner
+FROM apitable/nodepy:16.15.0-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV production
+
+# Uncomment the following line in case you want to disable telemetry during runtime.
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/pnpm-workspace.yaml /app/package.json /app/pnpm-lock.yaml ./
+COPY --from=builder /app/packages/air-agent/public ./packages/air-agent/public
+COPY --from=builder /app/packages/air-agent/next.config.js \
+                    /app/packages/air-agent/package.json \
+                    ./packages/air-agent/
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/packages/air-agent/web_build/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/packages/air-agent/web_build/static ./packages/air-agent/web_build/static
+
+WORKDIR /app/packages/air-agent
+
+USER nextjs
+
+EXPOSE 8080
+
+ENV PORT 8080
+
+CMD [ "node", "server.js" ]

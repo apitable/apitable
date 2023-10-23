@@ -17,7 +17,10 @@
  */
 
 import { EntityRepository, In, Repository } from 'typeorm';
-import { DatasheetRecordArchiveEntity } from '../entities/datasheet.record.archive.entity';
+import {
+  DatasheetRecordArchiveEntity,
+} from '../entities/datasheet.record.archive.entity';
+import { chunk } from 'lodash';
 
 @EntityRepository(DatasheetRecordArchiveEntity)
 export class DatasheetRecordArchiveRepository extends Repository<DatasheetRecordArchiveEntity> {
@@ -41,12 +44,27 @@ export class DatasheetRecordArchiveRepository extends Repository<DatasheetRecord
   }
 
   async getArchivedRecordIdsByDstIdAndRecordIds(dstId: string, recordIds: string[]): Promise<Set<String>> {
-    return await this.find({
-      where: { dstId, recordId: In(recordIds), isArchived: true, isDeleted: false },
-      select: ['recordId'],
-    }).then(entities => {
-      return new Set(entities.map(entity => entity.recordId));
-    });
+    let dbMethod = async (dstId: string, recordIds: string[]) => {
+      let entities = await this.find({
+        where: { dstId, recordId: In(recordIds), isArchived: true, isDeleted: false },
+        select: ['recordId'],
+      });
+      return entities.map(entity => entity.recordId);
+    };
+
+    let batchRecordIds = chunk(recordIds, 1000);
+
+    let promise = [];
+    for (let batchRecordId of batchRecordIds) {
+      promise.push(dbMethod(dstId, batchRecordId));
+    }
+
+    let promiseResult = await Promise.all(promise);
+
+    let results = promiseResult.reduce((pre: String[], cur) => {
+      return pre.concat(cur);
+    }, []);
+    return new Set<String>(results);
   }
 
   async countRowsByDstId(dstId: string): Promise<number> {

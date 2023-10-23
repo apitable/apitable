@@ -75,6 +75,7 @@ export interface Tips {
     api_param_phone_field_type_error:                     APIAddRowFailedWrongLengthOfValueClass;
     api_param_rating_field_type_error:                    APIAddRowFailedWrongLengthOfValueClass;
     api_param_record_not_exists:                          APIAddRowFailedWrongLengthOfValueClass;
+    api_param_record_archived:                            APIAddRowFailedWrongLengthOfValueClass;
     api_param_robot_btn_type_error:                       APIAddRowFailedWrongLengthOfValueClass;
     api_param_select_field_value_type_error:              APIAddRowFailedWrongLengthOfValueClass;
     api_param_share_btn_type_error:                       APIAddRowFailedWrongLengthOfValueClass;

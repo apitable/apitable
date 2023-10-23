@@ -2,13 +2,12 @@ import * as React from 'react';
 import { useEffect, useReducer, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
-import { Selectors, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import { NarrowOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { SearchResult } from 'pc/components/data_source_selector/components/search_result/search_result';
 import { useNodeClick } from 'pc/components/data_source_selector/hooks/use_node_click';
 import { useSearch } from 'pc/components/data_source_selector/hooks/use_search';
 import { ISearchPanelProps } from 'pc/components/data_source_selector/interface';
-import { insertViewNode } from 'pc/components/data_source_selector/utils/insert_view_nodes';
 import { ButtonPlus, Loading, Tooltip } from '../common';
 import { SearchControl } from '../common/search_control';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
@@ -20,7 +19,6 @@ import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
 
 export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
-  noCheckPermission,
   defaultNodeIds,
   requiredData,
   onChange,
@@ -43,13 +41,9 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   });
   const colors = useThemeColors();
   const { embedId } = useSelector((state) => state.pageParams);
-  const mirror = useSelector((state) => {
-    return localState.currentMirrorId ? Selectors.getMirror(state, localState.currentMirrorId) : undefined;
-  });
-  const datasheet = useSelector((state) => {
-    return localState.currentDatasheetId ? Selectors.getDatasheet(state, localState.currentDatasheetId) : undefined;
-  });
-  const editorRef = useRef<{ focus: () => void } | null>(null);
+  const editorRef = useRef<{
+    focus: () => void;
+      } | null>(null);
 
   const needNodeMetaData = requiredData.includes('viewId') || requiredData.includes('meta');
 
@@ -75,10 +69,10 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   useEffect(() => {
     const baseData = {
       viewId: localState.currentViewId,
-      datasheetId: datasheet?.id,
+      datasheetId: localState.currentDatasheetId,
       meta: datasheetMetaData,
       nodeName: localState.nodes.find((node) => node.nodeId === localState.currentDatasheetId)?.nodeName,
-      mirrorId: mirror?.id,
+      mirrorId: localState.currentMirrorId,
       formId: localState.currentFormId,
     };
 
@@ -91,7 +85,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
 
     onChange(result);
     // eslint-disable-next-line
-  }, [datasheet, mirror, localState.currentViewId, localState.nodes, localState.currentFormId]);
+  }, [localState.currentDatasheetId, localState.currentMirrorId, localState.currentViewId, localState.nodes, localState.currentFormId]);
 
   const { onNodeClick } = useNodeClick({ localDispatch, localState, needFetchDatasheetMeta: !!needNodeMetaData });
 
@@ -124,19 +118,14 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
         onSwitcherChange={(val) => localDispatch({ onlyShowEditableNode: val })}
         onCancelClick={onCancelClick}
         placeholder={t(Strings.datasource_selector_search_placeholder)}
-        checkboxText={t(Strings.hide_unusable_sheet)}
+        checkboxText={t(Strings.hide_node_permission_resource)}
         checked={localState.onlyShowEditableNode}
         value={localState.searchValue}
-        switchVisible={false}
+        switchVisible
       />
       {!localState.showSearch && !embedId && <FolderBreadcrumb parents={localState.parents} onNodeClick={onNodeClick} />}
       {localState.showSearch ? (
-        <SearchResult
-          searchResult={localState.searchResult}
-          noCheckPermission={noCheckPermission}
-          onlyShowAvailable={localState.onlyShowEditableNode}
-          onNodeClick={onNodeClick}
-        />
+        <SearchResult searchResult={localState.searchResult} onlyShowAvailable={localState.onlyShowEditableNode} onNodeClick={onNodeClick} />
       ) : (
         <FolderContent
           nodes={localState.nodes}
@@ -145,8 +134,8 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
           currentDatasheetId={localState.currentDatasheetId}
           currentFormId={localState.currentFormId}
           loading={localState.loading}
-          noCheckPermission={noCheckPermission}
           onNodeClick={onNodeClick}
+          onlyShowAvailable={localState.onlyShowEditableNode}
         />
       )}
       {isLoading && <Loading className={styles.loading} />}

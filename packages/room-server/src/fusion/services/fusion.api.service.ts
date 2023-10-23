@@ -433,6 +433,7 @@ export class FusionApiService {
   public async updateRecords(dstId: string, body: RecordUpdateRo, viewId: string): Promise<ListVo> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
     const updateRecordsProfiler = this.logger.startTimer();
+    await this.fusionApiRecordService.validateArchivedRecordIncludes(dstId, body.getRecordIds(), ApiTipConstant.api_param_record_archived);
     await this.fusionApiRecordService.validateRecordExists(dstId, body.getRecordIds(), ApiTipConstant.api_param_record_not_exists);
 
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
@@ -744,6 +745,7 @@ export class FusionApiService {
    */
   public async deleteRecord(dstId: string, recordIds: string[]): Promise<boolean> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
+    await this.fusionApiRecordService.validateArchivedRecordIncludes(dstId, recordIds, ApiTipConstant.api_param_record_archived);
     await this.fusionApiRecordService.validateRecordExists(dstId, recordIds, ApiTipConstant.api_param_record_not_exists);
     const auth = { token: this.request.headers.authorization };
     const datasheet = await this.databusService.getDatasheet(dstId, {

@@ -22,6 +22,7 @@ import {
   SearchSelect,
 } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { getActionList } from 'pc/components/robot/robot_detail/utils';
 import { useAutomationController } from '../../../automation/controller';
 import { automationPanelAtom, automationStateAtom, PanelName } from '../../../automation/controller/atoms';
 import { createAction } from '../../api';
@@ -66,7 +67,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
       robotId: robotId,
     });
 
-    const data = getNextAction(res.data.data, prevActionId);
+    const data = getNextAction(getActionList(res.data.data), prevActionId);
     setAutomationPanel({
       panelName: PanelName.Action,
       dataId: data.actionId,
@@ -146,7 +147,7 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
       robotId: robotId,
     });
 
-    const newAction = getNextAction(res.data.data, prevActionId);
+    const newAction = getNextAction(getActionList(res.data.data), prevActionId);
 
     setAutomationPanel({
       panelName: PanelName.Action,

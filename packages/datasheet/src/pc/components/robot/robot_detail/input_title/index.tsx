@@ -43,9 +43,9 @@ export const InputTitle: FC = () => {
     }else {
       setValue(automationName);
     }
-  }, [automationState?.scenario, dispatch, nodeItem?.nodeId, nodeItem?.nodeName, nodeItem?.type, templateId]);
+  }, [automationName, automationState?.scenario, dispatch, nodeItem.nodeId, nodeItem?.nodeName, nodeItem.type, templateId]);
 
-  const { editable } = useAutomationResourcePermission();
+  const { manageable } = useAutomationResourcePermission();
   if (!robot) {
     return null;
   }
@@ -72,7 +72,7 @@ export const InputTitle: FC = () => {
 
   return (
     <WidthEditableText
-      editable={editable}
+      editable={manageable}
       onChange={handleNameChange} color={colors.textCommonPrimary} placeholder={t(Strings.robot_unnamed)}
       value={value}/>
   );

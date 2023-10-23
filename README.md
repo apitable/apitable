@@ -46,6 +46,11 @@
     <a target="_blank" href="https://apitable.betteruptime.com/">
         <img src="https://betteruptime.com/status-badges/v1/monitor/a1a9.svg" />
     </a>
+    <br>
+    <!-- Deploy to Dome-->
+    <a target="_blank" href="https://app.trydome.io/signup?package=apitable">
+        <img src="https://trydome.io/dome-badge.svg" />
+    </a>
 </p>
 
 <p align="center">
@@ -69,6 +74,8 @@
 If you just want to try out APITable[^info], use our cloud-hosted AI version at [aitable.ai](https://aitable.ai).
 
 If you want to demo this APITable open-source project, click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
+
+If you want to try the self-hosted APITable, [🚀 one-click deploy with Dome here](https://app.trydome.io/signup?package=apitable)
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
 

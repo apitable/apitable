@@ -30,6 +30,7 @@ import com.apitable.databusclient.model.AutomationRunHistoryPO;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -75,8 +76,10 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
                         new ArrayList<>(JSONUtil.parseArray(task.getActionIds()));
                     List<Object> actionTypeIds =
                         new ArrayList<>(JSONUtil.parseArray(task.getActionTypeIds()));
-                    List<Object> errorMessages =
-                        new ArrayList<>(JSONUtil.parseArray(task.getErrorMessages()));
+                    List<List<Object>> errorMessages =
+                        new ArrayList<>(
+                            JSONUtil.parseArray(task.getErrorStacks())).stream().map(
+                            JSONUtil::parseArray).collect(Collectors.toList());
                     for (int i = 0; i < actionIds.size(); i++) {
                         AutomationTaskSimpleVO.ActionExecutionVO execution =
                             new AutomationTaskSimpleVO.ActionExecutionVO();
@@ -85,7 +88,7 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
                             IdRulePrefixEnum.AUTOMATION_TRIGGER.getIdRulePrefixEnum())) {
                             execution.setActionId(actionIds.get(i).toString());
                             execution.setActionTypeId(actionTypeIds.get(i).toString());
-                            execution.setSuccess(null == CollUtil.get(errorMessages, i));
+                            execution.setSuccess(CollUtil.get(errorMessages, i).isEmpty());
                             executions.add(execution);
                         }
                     }

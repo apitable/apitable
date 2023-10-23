@@ -62,6 +62,7 @@ import { Field, OtherTypeUnitId, StatType } from '../model/field';
 import { ICellValue } from '../model/record';
 import { getViewClass } from '../model/views';
 import { ViewFilterDerivate } from 'compute_manager/view_derivate';
+import { produce } from 'immer';
 
 // TODO: all fields should be checked, not only the first one
 function validateFilterInfo(filterInfo?: IFilterInfo) {
@@ -1920,68 +1921,47 @@ export class DatasheetActions {
       oi: newField,
     };
   }
-  /**
-   * add archieve RecordIds 
-   * @param snapshot
-   * @param payload
-   */
-  static addArchivedRecordIds2Action(snapshot: ISnapshot, payload: { recordIds: string[] }): IJOTAction[] | null {
-    const recordIds = payload.recordIds;
-    const archivedRecordIds = snapshot.meta.archivedRecordIds!;
-    if (!recordIds || !recordIds.length) return null;
-
-    const rlt: IJOTAction[] = [];
-    for (let i = 0; i < recordIds.length; i++) { 
-      rlt.push({
-        n: OTActionName.ListInsert,
-        p: ['meta', 'archivedRecordIds', archivedRecordIds.length + i],
-        li: recordIds[i],
-      });
-    }
-    
-    return rlt;
-  }
-
+ 
   /**
    * Undo archieve recordIds
    * @Parmas snapshot
    * @param payload
    */
 
-  static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any }): IJOTAction[] | null {
-    const { recordsData } = payload;
-    const archivedRecordIds = snapshot.meta.archivedRecordIds!;
+  static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any, linkFields: string[] }): IJOTAction[] | null {
+    const { recordsData, linkFields } = payload;
+    
+    if (!recordsData || !recordsData.length || !snapshot) return null;
     const rows = snapshot.meta.views[0]!.rows;
-    const views = snapshot.meta.views;
-    if (!recordsData || !recordsData.length) return null;
-
+    const views = snapshot.meta.views;    
     const rlt: IJOTAction[] = [];
 
     for (let i = 0; i < recordsData.length; i++) {
-      const recordIndex = archivedRecordIds.findIndex(recordId => recordId === recordsData[i].id);
-      if(recordIndex >= 0) {
-        rlt.push({
-          n: OTActionName.ListDelete,
-          p: ['meta', 'archivedRecordIds', recordIndex],
-          ld: recordsData[i].id,
-        });
         
-        for(let j = 0; j < views.length; j++) {
-          rlt.push({
-            n: OTActionName.ListInsert,
-            p: ['meta', 'views', j, 'rows', rows.length],
-            li: { recordId: recordsData[i].id },
-          });
-        }
-
+      for(let j = 0; j < views.length; j++) {
         rlt.push({
-          n: OTActionName.ObjectInsert,
-          p: ['recordMap', recordsData[i].id],
-          oi: recordsData[i],
+          n: OTActionName.ListInsert,
+          p: ['meta', 'views', j, 'rows', rows.length],
+          li: { recordId: recordsData[i].id },
         });
       }
-    }
 
+      const newRecord = produce(recordsData[i], (draft: any) => {
+        Object.keys(draft.data).forEach(key => {
+          if(linkFields.includes(key)) {
+            draft.data[key] = [];
+          }
+        });
+      });
+
+      rlt.push({
+        n: OTActionName.ObjectInsert,
+        p: ['recordMap', recordsData[i].id],
+        oi: newRecord,
+      });
+      
+    }
+    
     return rlt;
   }
 
@@ -1992,10 +1972,9 @@ export class DatasheetActions {
     const { recordsData } = payload;
    
     if (!recordsData || !snapshot) return null;
-
+    
     const rlt: IJOTAction[] = [];
     for (let i = 0; i < recordsData.length; i++) {
-      
       rlt.push({
         n: OTActionName.ObjectDelete,
         p: ['recordMap', recordsData[i].id],

@@ -192,7 +192,9 @@ export const BaseInfo: FC = () => {
                     }}
                   >
                     <Box display={'inline-flex'} alignItems={'center'}>
-                      <span>
+                      <span style={{
+                        cursor: 'pointer',
+                      }}>
                         <NodeIcon nodeId={item.nodeId} type={
                           getNodeTypeByNodeId(item.nodeId)
                         } icon={item?.icon} editable={false} size={16} hasChildren/>

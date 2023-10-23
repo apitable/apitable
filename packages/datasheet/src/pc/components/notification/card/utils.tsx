@@ -20,6 +20,8 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import Calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
+// @ts-ignore
+import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import { isArray } from 'lodash';
 import { FC } from 'react';
@@ -44,8 +46,8 @@ import { UserCardTrigger } from 'pc/components/common';
 import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
-// @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
+import { store } from 'pc/store';
+import { getUserTimeZone } from '@apitable/core/dist/modules/user/store/selectors/user';
 
 const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
@@ -267,11 +269,13 @@ export const getMsgText = (data: INoticeDetail) => {
   }
 };
 
-const timeZone = getTimeZone();
-const abbr = getTimeZoneAbbrByUtc(timeZone)!;
 
 // spaceName is the space to which the current notification belongs
 export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBodyOptions) => {
+  const state = store.getState();
+  const userTimeZone = getUserTimeZone(state);
+  const timeZone = userTimeZone || getTimeZone();
+  const abbr = getTimeZoneAbbrByUtc(timeZone)!;
   const pureString = options ? options.pureString : false;
   const spaceInfo = options ? options.spaceInfo : null;
 

@@ -225,5 +225,6 @@ export const getEnvVars = () => {
     AUTH0_ENABLED: process.env.AUTH0_ENABLED === 'true',
     OSS_SIGNATURE_ENABLED: process.env.OSS_SIGNATURE_ENABLED === 'true',
     AI_API_HELP_URL: process.env.AI_API_HELP_URL,
+    ARCHIVED_HELP_LINK: process.env.ARCHIVED_HELP_LINK,
   };
 };

@@ -31,6 +31,8 @@ export const CollaCommandTran = {
   [CollaCommandName.MoveRow]: t(Strings.command_move_row),
   [CollaCommandName.DeleteRecords]: t(Strings.command_delete_record),
   [CollaCommandName.FixConsistency]: t(Strings.command_fix_consistency),
+  [CollaCommandName.ArchiveRecords]: t(Strings.archive_record_in_activity),
+  [CollaCommandName.UnarchiveRecords]: t(Strings.unarchive_record_in_activity),
   'UNDO:SetRecords': t(Strings.command_undo_set_record),
   'UNDO:AddRecords': t(Strings.command_undo_add_record),
   'UNDO:SetFieldAttr': t(Strings.command_undo_set_field_attr),

@@ -20,9 +20,9 @@ import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { SearchSelect } from '@apitable/components';
+import { IDropdownControl, SearchSelect } from '@apitable/components';
 import {
   EmptyNullOperand,
   IExpression,
@@ -34,12 +34,13 @@ import {
   t
 } from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
+import { OrEmpty } from 'pc/components/common/or_empty';
 import { useResponsive, useSideBarVisible } from '../../../../hooks';
 import {
   automationLocalMap,
   automationPanelAtom,
   automationStateAtom,
-  automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormList,
+  automationTriggerDatasheetAtom, inheritedTriggerAtom, loadableFormItemAtom, loadableFormList,
   PanelName, useAutomationController
 } from '../../../automation/controller';
 import { getDatasheetId, getFormId, getRelativedId } from '../../../automation/controller/hooks/use_robot_fields';
@@ -74,7 +75,7 @@ export enum EditType {
   detail = 'detail',
 }
 
-const customizer = (objValue, othValue) => {
+export const customizer = (objValue, othValue) => {
 
   if(isNil(objValue) && isNil(othValue)) {
     return true;
@@ -110,6 +111,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const { api: { refreshItem } } = useAutomationController();
   const formData = localStateMap.get(trigger.triggerId!) ?? trigger.input;
+
   if(!formData) {
     setLocalStateMap(produce(localStateMap, (draft => {
       draft.set(trigger.triggerId!, trigger.input);
@@ -138,7 +140,9 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   const datasheetName = datasheet?.name;
 
   const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const datasheetMaps = useSelector((state: IReduxState) => state.datasheetMap);
 
+  const ref = useRef<IDropdownControl>();
   const {
     api: { refresh },
   } = useAutomationController();
@@ -171,6 +175,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           });
         },
         onCancel: () => {
+          ref.current?.resetIndex?.();
           return;
         },
         type: 'warning',
@@ -276,9 +281,12 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       formId: {
         'ui:widget': ({ value, onChange }: any) => {
           return (
-            <SelectForm value={value?.value} onChange={v => {
-              onChange(literal2Operand(v));
-            }} />
+              <SelectForm value={value?.value} onChange={v => {
+                setTriggerDatasheetValue(draft => ({ ...draft,
+                  formId: v,
+                }));
+                onChange(literal2Operand(v));
+              }} />
           );
         } },
       datasheetId: {
@@ -401,6 +409,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     return editType === EditType.entry ? handleClick : undefined;
   }, [editType, handleClick]);
 
+  const formMeta = useAtomValue(loadableFormItemAtom);
   const handleUpdate = useCallback((e: any) => {
     const previous = getRelativedId({ input: formData } );
     const current = getRelativedId({ input: e.formData } );
@@ -427,6 +436,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       index={0}
       handleClick={memorisedHandleClick}
       nodeId={trigger.triggerId}
+      key={trigger.triggerId}
       schema={schema}
       formData={formData}
       unsaved={modified}
@@ -438,7 +448,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         const formId = getFormId({ input: form } as any);
         const dstId = getDatasheetId({ input: form } as any);
         if(formId != null) {
-          if(treeMaps[formId]==null) {
+          if(treeMaps[formId] == null && (!formMeta.loading && (formMeta?.data as any)?.form ==null)) {
             return {
               formId: {
                 __errors: [t(Strings.robot_config_empty_warning)]
@@ -448,7 +458,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         }
 
         if(dstId != null) {
-          if(treeMaps[dstId]==null) {
+          if(datasheetMaps[dstId] == null) {
             return {
               datasheetId: {
                 __errors: [t(Strings.robot_config_empty_warning)]
@@ -463,6 +473,8 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       serviceLogo={integrateCdnHost(triggerType!.service.logo)}
     >
       <SearchSelect
+        // @ts-ignore
+        ref={ref}
         clazz={{
           item: itemStyle.item,
           icon: itemStyle.icon,
@@ -480,7 +492,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         value={triggerTypeId}
       >
         <span>
-          <DropdownTrigger isActive={isActive}>
+          <DropdownTrigger isActive={isActive} editable={permissions.editable}>
             <>
               {1}. {triggerType?.name}
             </>
@@ -493,12 +505,16 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
 export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTriggerProps) => {
   const trigger = useAtomValue(inheritedTriggerAtom);
+  const permissions = useAutomationResourcePermission();
   if (!triggerTypes) {
     return null;
   }
 
   if (!trigger) {
-    return <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />;
+    return (
+      <OrEmpty visible={permissions?.editable}>
+        <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} />
+      </OrEmpty>);
   }
 
   // The default value of the rich input form, the trigger, is officially controllable.

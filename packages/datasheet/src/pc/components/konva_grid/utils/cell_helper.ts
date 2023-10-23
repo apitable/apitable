@@ -1004,7 +1004,6 @@ export class CellHelper extends KonvaDrawer {
     const isLoading = Selectors.getDatasheetLoading(state, foreignDatasheetId);
     const datasheetClient = Selectors.getDatasheetClient(state, foreignDatasheetId);
     const snapshot = datasheet && datasheet.snapshot;
-    const archivedRecordIds = datasheet && datasheet.snapshot.meta.archivedRecordIds;
 
     const emptyRecords: string[] = [];
 
@@ -1015,12 +1014,6 @@ export class CellHelper extends KonvaDrawer {
         return {
           recordId,
           text: ERROR_DATA,
-        };
-      }
-      if(archivedRecordIds?.includes(recordId)) {
-        return {
-          recordId,
-          text: 'Archived record',
         };
       }
 

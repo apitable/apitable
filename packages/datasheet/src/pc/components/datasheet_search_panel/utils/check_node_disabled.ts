@@ -22,8 +22,13 @@ export const checkNodeDisable = (node: INode, needPermission?: 'manageable' | 'e
     }
   }
 
+  if (!node.permissions.editable) {
+    disable = DISABLE_TIP.permission;
+  }
+
   if (node.columnLimit) {
     disable = DISABLE_TIP.fieldLimit;
   }
   return disable;
+
 };

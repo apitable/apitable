@@ -89,36 +89,30 @@ export const useDeleteRobotAction = () => {
       }
       return false;
     },
-    [currentRobotId],
+    [currentRobotId, state?.resourceId, state?.robot?.robotId],
   );
 };
 
 export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
 
-  const automation = useAtomValue(automationStateAtom);
-  const { api: { refreshItem, refresh } } = useAutomationController();
-
-  const robot = automation?.robot;
-
-  const toggleRobotActive = useCallback(async () => {
-    if (!robot) {
-      return;
-    }
-    if (robot.isActive) {
+  const { api: { refreshItem } } = useAutomationController();
+  //
+  const toggleRobotActive = useCallback(async (isActive: boolean) => {
+    if (isActive) {
       setLoading(true);
       const ok = await deActiveRobot(robotId);
 
       setLoading(false);
       if (ok) {
-        refreshItem();
+        await refreshItem();
       }
     } else {
       setLoading(true);
       const ok = await activeRobot(robotId);
       setLoading(false);
       if (ok) {
-        refreshItem();
+        await refreshItem();
 
         Message.success({
           content: t(Strings.automation_enabled),
@@ -129,7 +123,7 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
         });
       }
     }
-  }, [robot, robotId, refreshItem]);
+  }, [robotId, refreshItem]);
 
   return {
     toggleRobotActive,

@@ -57,7 +57,6 @@ export const useGetTaskHistory = () => {
     (index) => `/automation/${automationState?.resourceId}/roots/${automationState?.currentRobotId}/run-history?pageNum=${index + 1}&pageSize=${PAGE_SIZE}&key=${key}&${query}`,
     getRobotApiHistoryList
   );
-  console.log('useGetTaskHistory useGetTaskHistory');
 
   const reset = useCallback(() => {
     setKey(nanoid());

@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithImmer } from 'jotai-immer';
 import { atomsWithQuery } from 'jotai-tanstack-query';
-import { Api, ConfigConstant } from '@apitable/core';
+import {Api, ConfigConstant, IServerFormPack} from '@apitable/core';
 import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
 import { INodeSchema, IRobotAction, IRobotContext, IRobotTrigger } from '../../../robot/interface';
 import { loadableWithDefault } from '../../../robot/robot_detail/api';
@@ -63,6 +63,17 @@ const automationPanelAtom = atomWithImmer<{
   panelName: PanelName.BasicInfo,
 });
 
+const [selectFormMeta] = atomsWithQuery((get) => ({
+  queryKey: ['automation_fetchFormPack_formIdMeta', get(automationTriggerDatasheetAtom).formId],
+  queryFn: async ({ queryKey: [, id] }) => {
+    if(!id) {
+      return {};
+    }
+    return await fetchFormPack(String(id!)).then(res => res?.data?.data ?? {
+    });
+  },
+}));
+
 const [formListAtom] = atomsWithQuery((get) => ({
   queryKey: ['automation_ConfigConstant.NodeType.FORM', get(formListDstIdAtom)],
   queryFn: async ({ queryKey: [, id] }) => {
@@ -80,11 +91,12 @@ const [fetchFormMeta] = atomsWithQuery((get) => ({
       return {};
     }
     return await fetchFormPack(String(id!)).then(res => res?.data?.data ?? {
-    });
+    } as IServerFormPack);
   },
 }));
 
 export const loadableFormMeta = loadableWithDefault(fetchFormMeta, undefined);
 export const loadableFormList = loadableWithDefault(formListAtom, []);
 
+export const loadableFormItemAtom = loadableWithDefault(selectFormMeta, []);
 export { automationLocalMap, automationStateAtom, automationDrawerVisibleAtom, automationHistoryAtom, automationPanelAtom, automationTriggerAtom, automationTriggerDatasheetAtom };

@@ -141,12 +141,17 @@ public class DatasheetRecordServiceImpl
         if (CollUtil.isEmpty(voList)) {
             return;
         }
+
+        Set<String> archivedRecordIds = baseMapper.selectArchivedRecordIdsByDstId(oldDstId);
         Set<String> delFieldIds = CollUtil.unionDistinct(nodeCopyDTO.getDelFieldIds(),
             nodeCopyDTO.getLinkFieldIds());
         List<String> autoNumberFieldIds = nodeCopyDTO.getAutoNumberFieldIds();
         JSONObject recordMeta = this.getInitRecordMeta(userId);
         List<DatasheetRecordEntity> list = new ArrayList<>(voList.size());
         voList.forEach(vo -> {
+            if (archivedRecordIds.contains(vo.getId())) {
+                return;
+            }
             JSONObject data = vo.getData();
             // delete specified field data
             if (CollUtil.isNotEmpty(delFieldIds) && !data.isEmpty()) {

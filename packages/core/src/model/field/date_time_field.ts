@@ -26,6 +26,7 @@ import { ICellValue } from 'model/record';
 import dayjs from 'dayjs';
 import { IOpenDateTimeFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenDateTimeFieldProperty } from 'types/open/open_field_write_types';
+import { getUserTimeZone } from 'exports/store/selectors';
 
 export class DateTimeField extends DateTimeBaseField {
   constructor(public override field: IDateTimeField, public override state: IReduxState) {
@@ -103,7 +104,7 @@ export class DateTimeField extends DateTimeBaseField {
   }
 
   get timeZone() {
-    return this.field.property.timeZone;
+    return this.field.property.timeZone || getUserTimeZone(this.state);
   }
 
   override get openFieldProperty(): IOpenDateTimeFieldProperty {

@@ -273,7 +273,7 @@ export const getNodeDesc = (state: IReduxState, dsId?: string): null | INodeDesc
   if (!datasheet || !datasheet.description) {
     return null;
   }
-  try  {
+  try {
     return JSON.parse(datasheet.description);
   }catch (e) {
     return null;
@@ -456,22 +456,4 @@ export const getNodeViewWithoutFilterInfo = (snapshot: ISnapshot, viewId: string
     ...temporaryView,
     filterInfo: originView?.filterInfo
   } as IViewProperty;
-};
-
-
-/**
- * get a achived record ids ,
- * @param state
- * @param id
- * @returns
- */
-export const getActivedRecordIds = (state: IReduxState, id?: string | void) => {
-  const datasheetId = id || state.pageParams?.datasheetId;
-  if (!datasheetId) {
-    return;
-  }
-  const datasheetPack = state.datasheetMap[datasheetId]?.datasheet;
-
-
-  return datasheetPack?.snapshot.meta.archivedRecordIds;
 };
