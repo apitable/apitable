@@ -247,7 +247,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
                 />
               </Tooltip>
             </div>
-          )}P
+          )}
 
           {showAlarm && field.type === FieldType.DateTime && isMobile && Boolean(cellValue) && (
             <LinkButton underline={false} onClick={() => setOpenAlarm(true)}>

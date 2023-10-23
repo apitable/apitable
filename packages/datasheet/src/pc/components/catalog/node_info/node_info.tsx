@@ -108,7 +108,7 @@ const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = (props)
         </li>
         <li>
           <div className={styles.label}>{t(Strings.node_info_created_time)}</div>
-          <div className={styles.value}>{nodeInfo.creator.time ? dayjs(nodeInfo.creator.time).format(timeFormat) : '-'}</div>
+          <div className={styles.value}>{nodeInfo.creator.time ? dayjs.tz(nodeInfo.creator.time).format(timeFormat) : '-'}</div>
         </li>
       </ul>
     );

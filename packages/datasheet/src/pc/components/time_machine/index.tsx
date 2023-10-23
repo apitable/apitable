@@ -319,7 +319,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
                           <span style={{ paddingRight: '4px' }}>{title}</span>
                           <span>{getOperationInfo(ops)}</span>
                         </div>
-                        <div className={styles.timestamp}>{dayjs(item.createdAt).format(DATEFORMAT)}</div>
+                        <div className={styles.timestamp}>{dayjs.tz(item.createdAt).format(DATEFORMAT)}</div>
                       </div>
                     </div>
                   </section>

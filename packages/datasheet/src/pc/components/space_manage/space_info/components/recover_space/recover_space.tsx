@@ -127,7 +127,7 @@ export const RecoverSpace = () => {
         <div className={styles.wrapper}>
           <Image style={{ maxWidth: 'calc(100% - 150px)' }} src={DeleteIcon} alt={t(Strings.delete_space)} />
           <div className={styles.tip}>
-            {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
+            {dayjs.tz(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
           </div>
           <div className={styles.subTip}>{t(Strings.tip_del_success)}</div>
           <Button color="primary" block onClick={handleClick} size="large" prefixIcon={<UndoFilled color="currentColor" />}>
@@ -149,7 +149,7 @@ export const RecoverSpace = () => {
           {t(Strings.restore_space)}
         </Button>
         <div className={styles.tip}>
-          {dayjs(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
+          {dayjs.tz(delDate).format('YYYY-MM-DD HH:mm')} {t(Strings.restore_space_confirm_delete)}
         </div>
         <TextButton color="danger" block onClick={delNow} size="large">
           {t(Strings.delete_now)}

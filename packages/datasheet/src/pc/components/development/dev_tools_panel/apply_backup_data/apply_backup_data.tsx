@@ -83,7 +83,7 @@ export const ApplyBackupData = () => {
     const Excel = await import('exceljs');
     const workbook = new Excel.Workbook();
     const tempWorksheet = workbook.addWorksheet('backup');
-    tempWorksheet.columns = [{ header: dayjs(timestamp).format('YYYY-MM-DD hh:mm:ss') }];
+    tempWorksheet.columns = [{ header: dayjs.tz(timestamp).format('YYYY-MM-DD hh:mm:ss') }];
     tempWorksheet.addRows([[await db.getItem(String(timestamp))]]);
     await workbook.csv.writeBuffer({ encoding: 'UTF-8' }).then((buffer) => {
       const blob = new Blob([buffer], { type: 'text/csv' });
@@ -115,7 +115,7 @@ export const ApplyBackupData = () => {
       {backupTimeList.map((timestamp, index) => {
         return (
           <div key={index} style={{ marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant={'body2'}>{dayjs(timestamp).format('YYYY-MM-DD hh:mm:ss')}</Typography>
+            <Typography variant={'body2'}>{dayjs.tz(timestamp).format('YYYY-MM-DD hh:mm:ss')}</Typography>
             <div>
               <Button
                 size={'small'}

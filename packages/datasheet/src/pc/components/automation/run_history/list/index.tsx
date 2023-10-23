@@ -87,7 +87,7 @@ export const TaskItem: FC<{ activeId?: string, item: IRunHistoryDatum; onClick?:
       <Box flex={'1'}>
         <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
           <Typography variant="body2" color={colors.textCommonPrimary}>
-            {dayjs(item.createdAt).format(CONST_DATETIME_FORMAT)}
+            {dayjs.tz(item.createdAt).format(CONST_DATETIME_FORMAT)}
           </Typography>
 
           {

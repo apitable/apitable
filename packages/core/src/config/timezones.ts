@@ -303,7 +303,7 @@ export const TIMEZONES = [
     value: 'Eastern Standard Time',
     abbr: 'EST',
     offset: -5,
-    isdst: false,
+    isdst: true,
     text: '(UTC-05:00) Eastern Time (US & Canada)',
     utc: [
       'America/Detroit',
@@ -328,7 +328,7 @@ export const TIMEZONES = [
     value: 'Eastern Daylight Time',
     abbr: 'EDT',
     offset: -4,
-    isdst: true,
+    isdst: false,
     text: '(UTC-04:00) Eastern Daylight Time (US & Canada)',
     utc: [
       'America/Detroit',

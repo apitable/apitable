@@ -58,15 +58,15 @@ const DropBase = ({ children, date, update }: IDrop) => {
           if (task) {
             let { startDate, endDate } = task;
             // diff ignores units of time below the day when the unit is a day
-            const formatDate = dayjs(date).format('YYYY/MM/DD');
-            const formatDiff = dayjs(startDate ? startDate : endDate).format('YYYY/MM/DD');
-            const diffDay = dayjs(formatDate).diff(dayjs(formatDiff), 'day');
+            const formatDate = dayjs.tz(date).format('YYYY/MM/DD');
+            const formatDiff = dayjs.tz(startDate ? startDate : endDate).format('YYYY/MM/DD');
+            const diffDay = dayjs.tz(formatDate).diff(dayjs.tz(formatDiff), 'day');
             if (diffDay > 0) {
-              endDate = dayjs(endDate).add(diffDay, 'day').toDate();
-              startDate = dayjs(startDate).add(diffDay, 'day').toDate();
+              endDate = dayjs.tz(endDate).add(diffDay, 'day').toDate();
+              startDate = dayjs.tz(startDate).add(diffDay, 'day').toDate();
             } else if (diffDay < 0) {
-              endDate = dayjs(endDate).subtract(-diffDay, 'day').toDate();
-              startDate = dayjs(startDate).subtract(-diffDay, 'day').toDate();
+              endDate = dayjs.tz(endDate).subtract(-diffDay, 'day').toDate();
+              startDate = dayjs.tz(startDate).subtract(-diffDay, 'day').toDate();
             }
             update(task.id, startDate, endDate);
           } else if (isStartDateTimeField) {
@@ -86,7 +86,7 @@ const DropBase = ({ children, date, update }: IDrop) => {
   const active = isOver || isOverCurrent;
 
   const addRecord = () => {
-    const dateValue = dayjs(date).valueOf();
+    const dateValue = dayjs.tz(date).valueOf();
     const cellValue: { [x: string]: number } = {};
     if (isStartDateTimeField) {
       cellValue[startFieldId] = dateValue;

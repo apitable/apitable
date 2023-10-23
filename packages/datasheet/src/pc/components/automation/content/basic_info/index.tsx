@@ -57,7 +57,7 @@ export const BaseInfo: FC = () => {
   const { items } = useGetTaskHistory();
 
   const sortedList = useMemo(() =>
-    items.sort((a, b) => dayjs(a.createdAt).isBefore(b.createdAt) ? 1 : -1), [
+    items.sort((a, b) => dayjs.tz(a.createdAt).isBefore(b.createdAt) ? 1 : -1), [
     items,
   ]);
   const [, setHistoryDialog] = useAtom(automationHistoryAtom);
@@ -163,7 +163,7 @@ export const BaseInfo: FC = () => {
               </Box>
 
               <Typography variant="body4" color={colors.textCommonPrimary}>
-                {dayjs(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
+                {dayjs.tz(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
               </Typography>
             </Box>
           </StyledGrip>

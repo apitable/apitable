@@ -59,8 +59,8 @@ export const RunHistoryDetail = () => {
     const end = dataItem.nodeByIds[nodes[nodes.length - 1]].endAt;
 
     return {
-      start: dayjs(start),
-      end: dayjs(end),
+      start: dayjs.tz(start),
+      end: dayjs.tz(end),
     };
   }, [dataItem, nodes]);
 
