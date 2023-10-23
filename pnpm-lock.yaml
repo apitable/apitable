@@ -18752,7 +18752,7 @@ packages:
     dependencies:
       '@mrmlnc/readdir-enhanced': 2.2.1
       '@nodelib/fs.stat': 1.1.3
-      glob-parent: 3.1.0
+      glob-parent: 5.1.2
       is-glob: 4.0.3
       merge2: 1.4.1
       micromatch: 3.1.10
@@ -36454,7 +36454,7 @@ packages:
       anymatch: 2.0.0
       async-each: 1.0.6
       braces: 2.3.2
-      glob-parent: 3.1.0
+      glob-parent: 5.1.2
       inherits: registry.npmmirror.com/inherits@2.0.4
       is-binary-path: 1.0.1
       is-glob: 4.0.3
