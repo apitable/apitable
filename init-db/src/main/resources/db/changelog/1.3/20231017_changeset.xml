@@ -1,0 +1,45 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V1.3-20231017-001" author="chalme" labels="datasheet">
+        <comment>create record_archive table</comment>
+        <sql>
+            CREATE TABLE IF NOT EXISTS ${table.prefix}datasheet_record_archive
+            (
+                id          bigint unsigned not null comment 'Primary key',
+                dst_id      varchar(50)                         not null comment 'Datasheet ID(link#xxxx_datasheet#dst_id)',
+                record_id   varchar(50)                         not null comment 'Data record ID(link#xxxx_datasheet_record#record_id)',
+                is_archived tinyint unsigned default 0 null comment 'Archive tag(0:no,1:yes)',
+                is_deleted  tinyint unsigned default 0 null comment 'Delete tag(0:no,1:yes)',
+                archived_by bigint null comment 'Archive User',
+                archived_at timestamp default CURRENT_TIMESTAMP null comment 'Archive Time',
+                created_by  bigint null comment 'Create User',
+                updated_by  bigint null comment 'Update User',
+                created_at  timestamp default CURRENT_TIMESTAMP not null comment 'Created Time',
+                updated_at  timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment 'Updated Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `uk_dst_id_record_id` (`dst_id`, `record_id`) USING BTREE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Datasheet Record Archive';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

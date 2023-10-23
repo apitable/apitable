@@ -95,6 +95,7 @@ export interface IMeta {
   fieldMap: IFieldMap;
   views: IViewProperty[];
   widgetPanels?: IWidgetPanel[];
+  archivedRecordIds?: string[];
 }
 
 export interface IRecordCellValue {

@@ -132,6 +132,7 @@
     }
   },
   "dependencies": {
+    "glob-parent": "5.1.2",
     "react": "18.2.0"
   }
 }
