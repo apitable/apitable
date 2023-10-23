@@ -89,7 +89,7 @@ export const useDeleteRobotAction = () => {
       }
       return false;
     },
-    [currentRobotId],
+    [currentRobotId, state?.resourceId, state?.robot?.robotId],
   );
 };
 
