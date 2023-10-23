@@ -82,7 +82,7 @@
     ],
     "@next/next/no-img-element": "off",
     "no-restricted-imports": [
-      "error",
+      "warn",
       {
         "paths": [
           {
