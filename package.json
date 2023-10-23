@@ -132,7 +132,12 @@
     }
   },
   "dependencies": {
+    "@babel/traverse": "7.23.2",
+    "axios": "0.21.2",
+    "follow-redirects": "1.14.8",
     "glob-parent": "5.1.2",
-    "react": "18.2.0"
+    "react": "18.2.0",
+    "semver": "7.5.4",
+    "ws": "8.14.2"
   }
 }
