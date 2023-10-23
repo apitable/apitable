@@ -59,10 +59,22 @@ export class DatasheetRecordService {
 
   @Span()
   async getRecordsByDstId(dstId: string, includeCommentCount = true, includeArchivedRecords = false): Promise<IRecordMap> {
-    let records = await this.recordRepo.find({
-      select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
-      where: { dstId, isDeleted: false },
-    });
+    // We do not expect to query all the records of dstId at once,
+    // which will cause excessive memory usage. We expect to use paging to load the records of dstId.
+    const counts = await this.recordRepo.count({ dstId, isDeleted: false });
+    // Use paging to load records of dstId
+    const pageSize = 2000;
+    const pageCount = Math.ceil(counts / pageSize);
+    let records: DatasheetRecordEntity[] = [];
+    for (let i = 0; i < pageCount; i++) {
+      const tmpRecords = await this.recordRepo.find({
+        select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
+        where: { dstId, isDeleted: false },
+        skip: i * pageSize,
+        take: pageSize,
+      });
+      records = records.concat(tmpRecords);
+    }
     let commentCountMap = {};
     if (includeCommentCount) {
       commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
@@ -169,7 +181,7 @@ export class DatasheetRecordService {
   }
 
   async getIdsByDstIdAndRecordIds(dstId: string, recordIds: string[], includeArchivedRecords = false): Promise<string[] | null> {
-    let records = await DBHelper.batchQueryByRecordIdIn(
+    const records = await DBHelper.batchQueryByRecordIdIn(
       this.recordRepo,
       ['recordId'],
       recordIds,
@@ -276,7 +288,9 @@ export class DatasheetRecordService {
     changesets = changesets.map(item => {
       if (item.isComment) {
         mentionedRevisions.push(Number(item.revision));
-        const replyComment:  { commentId?: string } = get(item, 'operations.0.actions.0.li.commentMsg.reply') as unknown as { commentId?: string };
+        const replyComment: {
+          commentId?: string
+        } = get(item, 'operations.0.actions.0.li.commentMsg.reply') as unknown as { commentId?: string };
         if (replyComment && !isEmpty(replyComment) && replyComment.commentId) {
           // record replied comment ID
           replyCommentIds.add(replyComment.commentId);

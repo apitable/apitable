@@ -43,6 +43,7 @@ export class DatasheetMetaService {
   }
 
   /**
+   * @param dstId datasheet id
    * @param viewId If omitted, load the first view.
    * @returns only contains fieldMap and views.
    */

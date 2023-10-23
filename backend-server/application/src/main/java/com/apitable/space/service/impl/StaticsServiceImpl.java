@@ -43,6 +43,7 @@ import com.apitable.space.dto.NodeTypeStaticsDTO;
 import com.apitable.space.mapper.StaticsMapper;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.workspace.enums.ViewType;
+import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.text.SimpleDateFormat;
@@ -80,6 +81,9 @@ public class StaticsServiceImpl implements IStaticsService {
 
     @Resource
     private StaticsMapper staticsMapper;
+
+    @Resource
+    private DatasheetMapper datasheetMapper;
 
     @Resource
     private RedisTemplate<String, Long> redisTemplate;
@@ -239,7 +243,15 @@ public class StaticsServiceImpl implements IStaticsService {
         if (null != recordCount) {
             return recordCount;
         }
-        recordCount = SqlTool.retCount(staticsMapper.countRecordsBySpaceId(spaceId));
+        List<String> dstIds = datasheetMapper.selectDstIdBySpaceId(spaceId);
+        if (CollUtil.isEmpty(dstIds)) {
+            return 0L;
+        }
+        recordCount = 0L;
+        List<List<String>> dstIdList = CollUtil.split(dstIds, 1000);
+        for (List<String> item : dstIdList) {
+            recordCount += SqlTool.retCount(staticsMapper.countRecordsByDstIds(item));
+        }
         // save in cache
         redisTemplate.opsForValue()
             .setIfAbsent(RedisConstants.getGeneralStaticsOfRecordKey(spaceId), recordCount, 1L,
