@@ -38,7 +38,6 @@ import { MouseDownType } from '../../../../multi_grid';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
 import { IRenderContentBase } from '../interface';
-import { useSelector, shallowEqual } from 'react-redux';
 
 const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
@@ -63,7 +62,6 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const [closeIconHoverId, setCloseIconHoverId] = useState<null | string>(null);
   const [closeIconDownId, setCloseIconDownId] = useState<null | string>(null);
   const { renderContent } = renderData;
-  const activedRecordIds = useSelector(() => Selectors.getActivedRecordIds(store.getState(), field.property.foreignDatasheetId), shallowEqual);
 
   async function onClick(e: { evt: { button: MouseDownType } }) {
     if (e.evt.button === MouseDownType.Right) {
@@ -149,7 +147,6 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
           const { x, y, width, height, text, style, id } = item;
-          const isAchived = activedRecordIds?.includes(id);
           const isError = text === t(Strings.record_fail_data);
           const renderText = text.replace(/\n|\r/g, ' ');
           let iconBg = 'transparent';
@@ -167,8 +164,8 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
                 height={height}
                 fill={colors.shadowColor}
                 cornerRadius={4}
-                onClick={() => !isError && !isAchived && expand(id)}
-                onTap={() => !isError && !isAchived &&  expand(id)}
+                onClick={() => !isError && expand(id)}
+                onTap={() => !isError && expand(id)}
               />
               <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={renderText} fill={style.color} fontSize={12} />
               {operatingEnable && (
