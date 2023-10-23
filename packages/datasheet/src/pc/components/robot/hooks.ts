@@ -89,7 +89,7 @@ export const useDeleteRobotAction = () => {
       }
       return false;
     },
-    [currentRobotId],
+    [currentRobotId, state?.resourceId, state?.robot?.robotId],
   );
 };
 
@@ -342,3 +342,4 @@ export const useShowRobot = () => {
   const isRobotFeatureOn = useSelector((state) => Selectors.labsFeatureOpen(state, SystemConfig.test_function.robot.feature_key));
   return isRobotFeatureOn || isPrivateDeployment(); // Privatization unconditionally opens the robot portal
 };
+
