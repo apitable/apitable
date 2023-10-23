@@ -32,9 +32,9 @@ enum OptionType {
 }
 
 const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEditorProps> = (props, ref) => {
-  const { field, editable, onClose, onSave, commandFn, curAlarm, disabled } = props;
+  const { field, editable, onClose, onSave, commandFn, curAlarm, disabled, userTimeZone } = props;
 
-  const { dateFormat, timeZone, includeTimeZone } = Field.bindModel(field);
+  const { dateFormat, timeZone = userTimeZone, includeTimeZone } = Field.bindModel(field);
 
   const mode = field.property.includeTime ? 'minute' : 'day';
 

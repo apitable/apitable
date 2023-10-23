@@ -27,11 +27,11 @@ export const isValidTimezone = (timezone: string) => {
 export const getTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return isValidTimezone(timeZone) ? timeZone : 'Asia/Shanghai';
+  return isValidTimezone(timeZone) ? timeZone : '';
 };
 
 export const getTimeZoneOffsetByUtc = (utc: string) => {
-  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(utc));
+  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(utc));
   return currentTimeZoneData?.offset;
 };
 
@@ -66,9 +66,15 @@ export const getUtcOptionList = () => {
 export const getClientTimeZone = () => {
   // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js#L143
   const clientTimeZone = getTimeZone();
-  const currentTimeZoneData = TIMEZONES.find((tz: ITimeZone) => tz.utc.includes(clientTimeZone))!;
+  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(clientTimeZone))!;
   const { offset } = currentTimeZoneData;
   return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;
+};
+
+export const formatTimeZone =(timeZone: string) => {
+  const currentTimeZoneData = TIMEZONES.find(tz => tz.utc.includes(timeZone))!;
+  const { offset } = currentTimeZoneData;
+  return `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})`;
 };
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
@@ -225,9 +231,10 @@ export const TIMEZONES = [
     value: 'Central Standard Time',
     abbr: 'CDT',
     offset: -5,
-    isdst: true,
+    // isdst: true,
     text: '(UTC-06:00) Central Time (US & Canada)',
     utc: [
+      'America/Chicago',
       'America/Indiana/Knox',
       'America/Indiana/Tell_City',
       'America/Matamoros',
@@ -1286,16 +1293,6 @@ export const TIMEZONES = [
     text: '(UTC+08:00) Irkutsk',
     utc: [
       'Asia/Irkutsk'
-    ]
-  },
-  {
-    value: 'Central Standard Time',
-    abbr: 'CDT',
-    offset: 8,
-    isdst: false,
-    text: '(UTC-06:00) Central Time (US & Canada)',
-    utc: [
-      'America/Chicago'
     ]
   },
   {

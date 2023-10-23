@@ -105,6 +105,7 @@ export interface IDateTimeEditorProps extends IBaseEditorProps {
   curAlarm?: WithOptional<IRecordAlarmClient, 'id'>;
   setCurAlarm?: (val?: WithOptional<IRecordAlarmClient, 'id'>) => void;
   disabled?: boolean;
+  userTimeZone?: string;
 }
 
 const DATE_COMPONENT_HEIGHT = 264;
@@ -152,7 +153,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       });
       return;
     }
-    const { dateFormat, timeZone } = Field.bindModel(this.props.field);
+    const { dateFormat, timeZone = this.props.userTimeZone } = Field.bindModel(this.props.field);
     const timeFormat = 'HH:mm';
     this.timestamp = timestamp;
     const dateTime = dayjs(timestamp);
@@ -169,7 +170,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
   onDateValueChange = (date: dayjs.Dayjs | null, dateValue: string, displayDateStr: string, isSetTime?: boolean) => {
     const { timeValue, timeOpen } = this.state;
-    const { timeZone } = Field.bindModel(this.props.field);
+    const { timeZone = this.props.userTimeZone } = Field.bindModel(this.props.field);
     if (date) {
       this.timestamp = date.valueOf();
     } else {
@@ -248,11 +249,11 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   format2StandardDate = (dateStr: string): ITimestamp | null => str2timestamp(dateStr);
 
   getInputValue() {
-    const { field } = this.props;
+    const { field, userTimeZone } = this.props;
     const { property } = field;
     const { dateValue } = this.state;
     let { timeValue } = this.state;
-    const { timeFormat, timeZone } = Field.bindModel(this.props.field);
+    const { timeFormat, timeZone = userTimeZone } = Field.bindModel(this.props.field);
     if (!dateValue && !timeValue) {
       return null;
     }
@@ -425,8 +426,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       previousMonth: '',
       nextMonth: '',
     };
-    const { field, recordId, datasheetId } = this.props;
-    const { dateFormat, timeFormat, includeTimeZone, timeZone } = Field.bindModel(field);
+    const { field, recordId, datasheetId, userTimeZone } = this.props;
+    const { dateFormat, timeFormat, includeTimeZone, timeZone = userTimeZone } = Field.bindModel(field);
 
     const { timeValue, dateValue, displayDateStr, dateOpen, timeOpen, point, isIllegal } = this.state;
     const { editable, showAlarm } = this.props;
@@ -571,6 +572,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 
 const DateTimeEditorHoc: React.ForwardRefRenderFunction<DateTimeEditorBase, IDateTimeEditorProps> = (props, ref) => {
   const snapshot = useSelector(Selectors.getSnapshot);
+  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
   const alarm = props.recordId ? Selectors.getDateTimeCellAlarmForClient(snapshot!, props.recordId, props.field.id) : undefined;
   const previousAlarm = usePrevious(alarm);
   const [curAlarm, setCurAlarm] = useState<WithOptional<IRecordAlarmClient, 'id'> | undefined>();
@@ -597,11 +599,11 @@ const DateTimeEditorHoc: React.ForwardRefRenderFunction<DateTimeEditorBase, IDat
   return (
     <div style={{ flex: 1, width: '100%' }}>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-        <DateTimeEditorBase {...props} ref={ref} curAlarm={curAlarm} setCurAlarm={setCurAlarm} />
+        <DateTimeEditorBase {...props} ref={ref} curAlarm={curAlarm} setCurAlarm={setCurAlarm} userTimeZone={userTimeZone} />
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <DatePickerMobile {...props} curAlarm={curAlarm} ref={ref} />
+        <DatePickerMobile {...props} curAlarm={curAlarm} ref={ref} userTimeZone={userTimeZone} />
       </ComponentDisplay>
     </div>
   );
