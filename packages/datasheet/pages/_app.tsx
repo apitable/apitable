@@ -222,12 +222,17 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         },
       });
       console.log(res);
-      let userInfo = JSON.parse(res.data.userInfo);
-      if (userInfo.timeZone) {
-        dayjs.tz.setDefault(userInfo.timeZone);
-        console.log('set default timezone', userInfo.timeZone);
+      let userInfo: IUserInfo | undefined;
+      try {
+        userInfo = JSON.parse(res.data.userInfo);
+        if (userInfo?.timeZone) {
+          dayjs.tz.setDefault(userInfo.timeZone);
+          console.log('set default timezone', userInfo.timeZone);
+        }
+        userInfo && setUserData(userInfo);
+      } catch (e) {
+        console.error(e);
       }
-      setUserData(userInfo);
 
       const { nodeId } = getPageParams(pathUrl || '');
       let userInfoError: IUserInfoError | undefined;
