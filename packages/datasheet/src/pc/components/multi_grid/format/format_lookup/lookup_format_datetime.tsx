@@ -27,7 +27,6 @@ import { Checkbox, colorVars, Select, Switch } from '@apitable/components';
 import {
   DateFormat,
   formatTimeZone,
-  getClientTimeZone,
   getUtcOptionList,
   IDateTimeFieldProperty,
   IField,

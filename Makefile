@@ -97,20 +97,23 @@ build: ## build
 	make build-local
 
 build-local:
+	make _pre-check
 	make _build-java
 	make _build-ts
 
 _build-ts:
 	pnpm install
-	nx run-many -t build
+	nx run-many -t build --exclude @apitable/datasheet
 
 _build-java:
 	cd backend-server && ./gradlew build -x test --stacktrace
 
-_check-lint:
-	yarn install && yarn build:pre
-	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
-	yarn lint:datasheet
+_pre-check:
+	make _check-web
+
+_check-web:
+	pnpm install && pnpm build:dst:pre
+	pnpm lint:datasheet
 
 _build-core:
 	pnpm install

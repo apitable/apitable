@@ -13,7 +13,7 @@
     "start:i18n": "nx start @apitable/i18n-lang",
     "start:datasheet": "cd packages/datasheet && pnpm run dev",
     "check:datasheet": "yarn workspace @apitable/datasheet check",
-    "lint:datasheet": "yarn workspace @apitable/datasheet check:lint",
+    "lint:datasheet": "nx check:lint @apitable/datasheet",
     "start:widget-sdk": "nx start @apitable/widget-sdk",
     "start:room-server": "nx start:dev @apitable/room-server ",
     "start:socket-server": "nx start:socket:dev @apitable/room-server",
