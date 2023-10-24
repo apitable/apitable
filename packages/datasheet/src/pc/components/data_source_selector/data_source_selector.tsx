@@ -60,7 +60,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   });
   const isLoading = isFetchDatasheetMeta || isFetchFolderData;
 
-  useSearch({ localDispatch, folderId: localState.currentFolderId, localState });
+  useSearch({ localDispatch, localState });
 
   useFocusEffect(() => {
     editorRef.current && editorRef.current.focus();
