@@ -57,6 +57,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
       <RowItem
         key={item.key}
         id={item.key}
+        active={isActive}
         currentIndex={0}
         style={{
           borderRadius: '4px',
