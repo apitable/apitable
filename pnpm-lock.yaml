@@ -275,6 +275,9 @@ importers:
 
   packages/air-agent:
     dependencies:
+      '@apitable/ai':
+        specifier: '*'
+        version: link:../ai
       '@apitable/components':
         specifier: '*'
         version: link:../components
