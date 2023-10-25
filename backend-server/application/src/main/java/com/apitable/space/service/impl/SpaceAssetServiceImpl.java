@@ -93,7 +93,8 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     @Override
     public void edit(Long id, Integer cite, Integer type) {
         log.info("edit space asset");
-        SpaceAssetEntity entity = SpaceAssetEntity.builder().id(id).cite(cite).type(type).build();
+        SpaceAssetEntity entity = SpaceAssetEntity.builder()
+            .id(id).cite(cite).type(type).isDeleted(false).build();
         boolean flag = this.updateById(entity);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }

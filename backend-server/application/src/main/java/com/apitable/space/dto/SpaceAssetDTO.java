@@ -30,4 +30,6 @@ public class SpaceAssetDTO {
     private Integer type;
 
     private String assetChecksum;
+
+    private Boolean isDeleted;
 }

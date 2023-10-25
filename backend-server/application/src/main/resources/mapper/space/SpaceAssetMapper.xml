@@ -42,9 +42,9 @@
     </select>
 
     <select id="selectDto" resultType="com.apitable.space.dto.SpaceAssetDTO">
-        SELECT id, cite, type
+        SELECT id, cite, type, is_deleted
         FROM ${tablePrefix}space_asset
-        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId} AND is_deleted = 0
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId}
     </select>
 
     <select id="selectDtoByAssetIdsAndType" resultType="com.apitable.space.dto.SpaceAssetDTO">
