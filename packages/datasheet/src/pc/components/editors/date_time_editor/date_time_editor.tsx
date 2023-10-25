@@ -176,7 +176,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     } else {
       this.shouldUseOriginTime = true;
     }
-    const ignoreSetTime = isSetTime ? false : !timeOpen && !timeValue;
+    const ignoreSetTime = isSetTime ? false : !timeOpen && (timeValue === '00:00' || !timeValue);
 
     let curTimeValue = timeValue;
     if (date && !ignoreSetTime) {
