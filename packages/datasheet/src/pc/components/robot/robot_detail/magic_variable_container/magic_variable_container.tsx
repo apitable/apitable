@@ -213,8 +213,8 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       <Box ref={listContainerRef} maxHeight="300px" overflow="auto">
         <SchemaPropertyList list={variableList}
           currentStep={currentStep}
-          layout={layout} activeIndex={activeIndex} handleItemClick={(node) => {
-            handleItemClick(node);
+          layout={layout} activeIndex={activeIndex} handleItemClick={(node, gotoChildren) => {
+            handleItemClick(node, gotoChildren);
           }} />
       </Box>
     </Box>
