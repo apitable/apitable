@@ -60,7 +60,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
           align={{
             offset: [-8, 31],
           }}
-          value={dayjs(formatString2Date(showValue))}
+          value={dayjs.tz(formatString2Date(showValue))}
           onChange={(val) => {
             setDate(val);
             setOpen(!open);
@@ -80,7 +80,7 @@ export const CalendarMonthPicker = (props: ICalendarMonthPicker) => {
           editable
           visible={open}
           onChange={(val) => {
-            setDate(dayjs(val));
+            setDate(dayjs.tz(val));
             setOpen(!open);
           }}
           dateFormat={FORMAT_DATE}

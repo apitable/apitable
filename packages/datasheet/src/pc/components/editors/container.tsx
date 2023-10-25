@@ -699,11 +699,11 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           const noChange = curAlarm?.alarmAt && !curAlarm?.time;
           if (!noChange && cellValue) {
             const timeZone = (field as IDateTimeField).property.timeZone || userTimeZone;
-            let alarmAt = timeZone ? dayjs(cellValue).tz(timeZone) : dayjs(cellValue);
+            let alarmAt = timeZone ? dayjs.tz(cellValue).tz(timeZone) : dayjs.tz(cellValue);
             if (subtractMatch) {
               alarmAt = alarmAt.subtract(Number(subtractMatch[1]), subtractMatch[2]);
             }
-            const time = curAlarm?.time || (timeZone ? dayjs(curAlarm?.alarmAt).tz(timeZone) : dayjs(curAlarm?.alarmAt)).format('HH:mm');
+            const time = curAlarm?.time || (timeZone ? dayjs.tz(curAlarm?.alarmAt).tz(timeZone) : dayjs.tz(curAlarm?.alarmAt)).format('HH:mm');
             alarmAt = dayjs.tz(`${alarmAt.format('YYYY-MM-DD')} ${time}`, timeZone);
             formatCurAlarm = {
               ...omit(formatCurAlarm, 'time'),

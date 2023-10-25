@@ -71,7 +71,7 @@ export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, mi
               tick={{ fill: color.textCommonPrimary }}
               // tickLine={{ stroke: 'red' }}
               // tickFormatter={(timeStr) => {
-              //   return dayjs(timeStr).format('YYYY-MM-DD');
+              //   return dayjs.tz(timeStr).format('YYYY-MM-DD');
               // }}
               stroke={color.borderCommonDefault}
             />

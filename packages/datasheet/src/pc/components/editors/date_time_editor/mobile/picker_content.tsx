@@ -100,7 +100,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
   const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
 
   const alarmRealTime = useMemo(() => {
-    let alarmDate = dayjs(value);
+    let alarmDate = dayjs.tz(value);
     const subtractMatch = alarm?.subtract?.match(/^([0-9]+)(\w{1,2})$/);
 
     if (subtractMatch) {
@@ -116,7 +116,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
       abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
     if (value) {
-      const dateTime = timeZone ? dayjs(value).tz(timeZone) : dayjs(value);
+      const dateTime = timeZone ? dayjs.tz(value).tz(timeZone) : dayjs.tz(value);
       return `${dateTime.format(mode == 'day' ? dateFormat : dateTimeFormat)}${abbr}`;
     }
     return `${mode == 'day' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase()}${abbr}`;
@@ -124,7 +124,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
 
   const diff = timeZone ? diffTimeZone(timeZone) : 0;
 
-  const diffDate = dayjs(value).valueOf() - diff;
+  const diffDate = dayjs.tz(value).valueOf() - diff;
 
   return (
     <div className={style.mobileDatePicker}>
@@ -143,7 +143,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
         min={new Date(DateRange.MinTimeStamp)}
         max={new Date(DateRange.MaxTimeStamp)}
         precision={mode}
-        value={dayjs(diffDate).toDate()}
+        value={dayjs.tz(diffDate).toDate()}
         visible={editable && visible}
         onClose={() => {
           setVisible(false);

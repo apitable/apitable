@@ -217,7 +217,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
           disabledDate={props.disabledDate}
           disabledTime={disabledTime}
           locale={locale}
-          defaultValue={dayjs(value ? value : undefined)}
+          defaultValue={dayjs.tz(value ? value : undefined)}
           dateInputPlaceholder={placeholder}
           prefixCls={prefixCls}
           className={classNames(calendarClassName, {

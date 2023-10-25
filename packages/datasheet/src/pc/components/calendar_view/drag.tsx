@@ -81,8 +81,8 @@ const DragBase = ({ id, listStyle, task, disabled, isMore }: IDrag) => {
 
   const isCurrentSearchCell = currentSearchRecordId === id;
 
-  const formatStartDate = startDate ? dayjs(startDate).format(FORMAT_DATE) : '';
-  const formatEndDate = endDate ? dayjs(endDate).format(FORMAT_DATE) : '';
+  const formatStartDate = startDate ? dayjs.tz(startDate).format(FORMAT_DATE) : '';
+  const formatEndDate = endDate ? dayjs.tz(endDate).format(FORMAT_DATE) : '';
 
   const DragItem = () => {
     const itemArray = (isMobile ? columns.slice(0, 1) : columns).map((column) => <RecordItem key={column.fieldId} column={column} id={id} />);

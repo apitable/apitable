@@ -84,6 +84,7 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import dayjs from 'dayjs';
 
 enableMapSet();
 
@@ -221,8 +222,17 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         },
       });
       console.log(res);
-      let userInfo = JSON.parse(res.data.userInfo);
-      setUserData(userInfo);
+      let userInfo: IUserInfo | undefined;
+      try {
+        userInfo = JSON.parse(res.data.userInfo);
+        if (userInfo?.timeZone) {
+          dayjs.tz.setDefault(userInfo.timeZone);
+          console.log('set default timezone', userInfo.timeZone);
+        }
+        userInfo && setUserData(userInfo);
+      } catch (e) {
+        console.error(e);
+      }
 
       const { nodeId } = getPageParams(pathUrl || '');
       let userInfoError: IUserInfoError | undefined;
