@@ -15,7 +15,7 @@ COPY packages/databus-wasm-nodejs/package.json ./packages/databus-wasm-nodejs/
 COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 COPY packages/icons/package.json ./packages/icons/
 COPY packages/widget-sdk/package.json ./packages/widget-sdk/
-COPY packages/ai/package.json ./packages/ai/
+COPY packages/ai-components/package.json ./packages/ai-components/
 
 # datasheet main
 COPY packages/datasheet/package.json ./packages/datasheet/
