@@ -16,17 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.workspace.mapper;
+package com.apitable.interfaces.document.facade;
 
-import org.apache.ibatis.annotations.Param;
+/**
+ * document service facade.
+ */
+public interface DocumentServiceFacade {
 
-public interface DocumentMapper {
-
-    /**
-     * Query space id
-     *
-     * @param name document name
-     * @return SpaceId
-     */
-    String selectSpaceIdByName(@Param("name") String name);
+    String getSpaceIdByDocumentName(String documentName);
 }
