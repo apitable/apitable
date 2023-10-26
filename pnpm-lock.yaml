@@ -277,7 +277,7 @@ importers:
     dependencies:
       '@apitable/ai':
         specifier: '*'
-        version: link:../ai
+        version: link:../ai-components
       '@apitable/components':
         specifier: '*'
         version: link:../components
