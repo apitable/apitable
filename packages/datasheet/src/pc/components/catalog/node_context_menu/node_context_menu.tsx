@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
@@ -36,6 +35,7 @@ import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
+import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;
