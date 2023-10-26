@@ -20,6 +20,8 @@ package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageWidgetNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageAutomationRunNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
@@ -102,6 +104,17 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public ApiCallNums getApiCallNums() {
         return new ApiCallNums(-1L);
+    }
+
+
+    @Override
+    public MessageWidgetNums getMessageWidgetNums() {
+        return new MessageWidgetNums(-1L);
+    }
+
+    @Override
+    public MessageAutomationRunNums getMessageAutomationRunNums() {
+        return new MessageAutomationRunNums(-1L);
     }
 
     @Override

@@ -57,6 +57,7 @@ import { AutomationRobotRepository } from '../repositories/automation.robot.repo
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { RobotRobotService } from './robot.robot.service';
+import { RestService } from "shared/services/rest/rest.service";
 
 /**
  * handle robot execution scheduling
@@ -77,6 +78,7 @@ export class AutomationService {
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
     private readonly nodeService: NodeService,
+    private readonly restService: RestService,
     private readonly queueSenderService: QueueSenderBaseService,
     private readonly i18n: I18nService
   ) {
@@ -239,6 +241,14 @@ export class AutomationService {
     //   return;
     // }
     const taskId = IdWorker.nextId().toString(); // TODO: use uuid
+    const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
+    const maxAutomationRunsNums = automationRunsMessage.maxAutomationRunNums;
+    const automationRunNums = automationRunsMessage.automationRunNums;
+    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums){
+      // The number of space station automation runs exceeds the limit and an excess record is generated.
+      await this.createRunOverLimitHistory(robotId, taskId, spaceId);
+      return;
+    }
     // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);
     try {
@@ -257,6 +267,7 @@ export class AutomationService {
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
   }
+
 
   @RabbitSubscribe({
     exchange: automationExchangeName,
@@ -368,6 +379,24 @@ export class AutomationService {
       robotId,
       spaceId,
       status: RunHistoryStatusEnum.RUNNING,
+      data,
+    });
+    await this.automationRunHistoryRepository.insert(newRunHistory);
+  }
+
+  /**
+   * Create an overage record
+   * @param robotId
+   * @param taskId
+   * @param spaceId
+   * @param data context
+   */
+  private async createRunOverLimitHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
+    const newRunHistory = this.automationRunHistoryRepository.create({
+      taskId,
+      robotId,
+      spaceId,
+      status: RunHistoryStatusEnum.EXCESS,
       data,
     });
     await this.automationRunHistoryRepository.insert(newRunHistory);

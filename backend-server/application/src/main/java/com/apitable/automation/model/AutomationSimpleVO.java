@@ -74,4 +74,7 @@ public class AutomationSimpleVO {
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean failureNotifyEnable;
     }
+
+    @Schema(description = "Automation run num is over limit")
+    private Boolean isOverLimit;
 }

@@ -34,6 +34,8 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
+import { RestService } from "shared/services/rest/rest.service";
+import {InternalSpaceAutomationRunsMessageView} from "../../database/interfaces";
 
 describe('RobotActionTypeServiceTest', () => {
   let moduleFixture: TestingModule;
@@ -44,6 +46,7 @@ describe('RobotActionTypeServiceTest', () => {
   let automationTriggerRepository: AutomationTriggerRepository;
   let automationService: AutomationService;
   let robotService: RobotRobotService;
+  let restService: RestService;
 
   beforeEach(async() => {
     moduleFixture = await Test.createTestingModule({
@@ -74,6 +77,12 @@ describe('RobotActionTypeServiceTest', () => {
           },
         },
         {
+          provide: RestService,
+          useValue: {
+            getSpaceAutomationRunsMessage: jest.fn(),
+          },
+        },
+        {
           provide: I18nService,
           useValue: {
             translate: jest.fn(),
@@ -93,6 +102,7 @@ describe('RobotActionTypeServiceTest', () => {
     automationTriggerRepository = moduleFixture.get<AutomationTriggerRepository>(AutomationTriggerRepository);
     automationService = moduleFixture.get<AutomationService>(AutomationService);
     robotService = moduleFixture.get<RobotRobotService>(RobotRobotService);
+    restService = moduleFixture.get<RestService>(RestService);
   });
 
   afterEach(async() => {
@@ -106,6 +116,7 @@ describe('RobotActionTypeServiceTest', () => {
     expect(automationActionRepository).toBeDefined();
     expect(automationTriggerRepository).toBeDefined();
     expect(automationService).toBeDefined();
+    expect(restService).toBeDefined();
   });
 
   it('should be check create robot permission no exception', async () => {
@@ -171,6 +182,11 @@ describe('RobotActionTypeServiceTest', () => {
       status: 0,
       createdAt: new Date(),
     } as AutomationRunHistoryEntity);
+    jest.spyOn(restService, 'getSpaceAutomationRunsMessage').mockResolvedValue({
+      maxAutomationRunNums: 100,
+      automationRunNums: 50, // The number of automation run in the space
+      allowOverLimit: false,
+    } as InternalSpaceAutomationRunsMessageView);
     jest.spyOn(automationRunHistoryRepository, 'insert').mockImplementation();
 
     services['test'] = {

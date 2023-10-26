@@ -25,6 +25,8 @@ export class InternalSpaceSubscriptionView {
   maxGanttViewsInSpace!: number; // The maximum quantity of the allowable Gantt view in the space
   maxCalendarViewsInSpace!: number; // The maximum number of calendar views allowed in the space
   maxMessageCredits!: number; // The maximum number of chatBot credits allowed in the space
+  maxWidgetNums!: number; // The maximum number of widgets allowed in the space
+  maxAutomationRunsNums!: number; // The maximum number of automation runs allowed in the space
   allowEmbed!: boolean; // Is it possible to call enterprise-level api?
   allowOrgApi!: boolean;
 }
@@ -41,6 +43,12 @@ export class InternalSpaceUsageView {
 export class InternalSpaceCreditUsageView {
   maxMessageCredits!: number;
   usedCredit!: number; // The number of credits in the space
+  allowOverLimit!: boolean;
+}
+
+export class InternalSpaceAutomationRunsMessageView {
+  maxAutomationRunNums!: number;
+  automationRunNums!: number; // The number of automation run in the space
   allowOverLimit!: boolean;
 }
 

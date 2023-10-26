@@ -22,22 +22,11 @@ import com.apitable.databusclient.Pair;
 import com.apitable.databusclient.ProgressRequestBody;
 import com.apitable.databusclient.ProgressResponseBody;
 
+import com.apitable.databusclient.model.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 
-
-import com.apitable.databusclient.model.ApiResponseAutomationActionPO;
-import com.apitable.databusclient.model.ApiResponseAutomationRobotIntroductionSO;
-import com.apitable.databusclient.model.ApiResponseAutomationRunHistoryPO;
-import com.apitable.databusclient.model.ApiResponseAutomationSO;
-import com.apitable.databusclient.model.ApiResponseAutomationTriggerPO;
-import com.apitable.databusclient.model.ApiResponseEmptySO;
-import com.apitable.databusclient.model.AutomationHistoryStatusRO;
-import com.apitable.databusclient.model.AutomationRobotActionRO;
-import com.apitable.databusclient.model.AutomationRobotCopyRO;
-import com.apitable.databusclient.model.AutomationRobotTriggerRO;
-import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -1631,6 +1620,130 @@ public class AutomationDaoApiApi {
 
         okhttp3.Call localVarCall = daoUpdateAutomationRunHistoryStatusValidateBeforeCall(taskId, automationHistoryStatusRO, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Build call for daoGetRobotRunsBySpaceId
+     * @param spaceId  space id (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> get automation robot running times </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call daoGetRobotRunsBySpaceIdCall(String spaceId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/databus/dao/automations/robots/runs/{space_id}"
+                .replace("{" + "space_id" + "}", localVarApiClient.escapeString(spaceId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call daoGetRobotRunsBySpaceIdValidateBeforeCall(String spaceId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'spaceId' is set
+        if (spaceId == null) {
+            throw new ApiException("Missing the required parameter 'spaceId' when calling daoGetRobotRunsBySpaceId(Async)");
+        }
+
+        return daoGetRobotRunsBySpaceIdCall(spaceId, _callback);
+
+    }
+
+    /**
+     * Get automation robot running times.
+     * Get automation robot running times.
+     * @param spaceId  space id (required)
+     * @return ApiResponseAutomationRobotRunNumsSO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> get automation robot running times </td><td>  -  </td></tr>
+    </table>
+     */
+    public ApiResponseAutomationRobotRunNumsSO daoGetRobotRunsBySpaceId(String spaceId) throws ApiException {
+        ApiResponse<ApiResponseAutomationRobotRunNumsSO> localVarResp = daoGetRobotRunsBySpaceIdWithHttpInfo(spaceId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get automation robot running times.
+     * Get automation robot running times.
+     * @param spaceId  space id (required)
+     * @return ApiResponse&lt;ApiResponseAutomationRobotRunNumsSO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> get automation robot running times </td><td>  -  </td></tr>
+    </table>
+     */
+    public ApiResponse<ApiResponseAutomationRobotRunNumsSO> daoGetRobotRunsBySpaceIdWithHttpInfo(String spaceId) throws ApiException {
+        okhttp3.Call localVarCall = daoGetRobotRunsBySpaceIdValidateBeforeCall(spaceId, null);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotRunNumsSO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get automation robot running times. (asynchronously)
+     * Get automation robot running times.
+     * @param spaceId  space id (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+    <table summary="Response Details" border="1">
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> get automation robot running times </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call daoGetRobotRunsBySpaceIdAsync(String spaceId, final ApiCallback<ApiResponseAutomationRobotRunNumsSO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = daoGetRobotRunsBySpaceIdValidateBeforeCall(spaceId, _callback);
+        Type localVarReturnType = new TypeToken<ApiResponseAutomationRobotRunNumsSO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 }

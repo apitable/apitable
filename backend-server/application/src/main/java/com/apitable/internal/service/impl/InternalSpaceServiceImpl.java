@@ -21,6 +21,7 @@ package com.apitable.internal.service.impl;
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
 import cn.hutool.core.util.StrUtil;
+import com.apitable.automation.service.impl.AutomationRobotServiceImpl;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
@@ -28,11 +29,7 @@ import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
-import com.apitable.internal.vo.InternalCreditUsageVo;
-import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
-import com.apitable.internal.vo.InternalSpaceApiUsageVo;
-import com.apitable.internal.vo.InternalSpaceInfoVo;
-import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
+import com.apitable.internal.vo.*;
 import com.apitable.space.enums.LabsFeatureEnum;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.IStaticsService;
@@ -67,6 +64,9 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Resource
     private AiServiceFacade aiServiceFacade;
 
+    @Resource
+    private AutomationRobotServiceImpl automationRobotService;
+
     @Override
     public InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId) {
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
@@ -83,6 +83,17 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId));
         return vo;
     }
+
+    @Override
+    public InternalSpaceAutomationRunMessageV0 getAutomationRunMessageV0(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        InternalSpaceAutomationRunMessageV0 vo = new InternalSpaceAutomationRunMessageV0();
+        long count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
+        vo.setMaxAutomationRunNums(subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue());
+        vo.setAutomationRunNums(count);
+        return vo;
+    }
+
 
     @Override
     public InternalSpaceApiUsageVo getSpaceEntitlementApiUsageVo(String spaceId) {

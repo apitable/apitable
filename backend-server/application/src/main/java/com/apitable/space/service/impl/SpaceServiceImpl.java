@@ -39,6 +39,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.apitable.asset.service.IAssetService;
+import com.apitable.automation.service.impl.AutomationRobotServiceImpl;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
@@ -125,6 +126,7 @@ import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
+import com.apitable.widget.mapper.WidgetMapper;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
@@ -234,6 +236,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private IInvitationService iInvitationService;
+
+    @Resource
+    private WidgetMapper widgetMapper;
+
+    @Resource
+    private AutomationRobotServiceImpl automationRobotService;
 
     @Value("${BILLING_APITABLE_ENABLED:false}")
     private Boolean billingApitableEnabled;
@@ -593,7 +601,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         if (maxSeatNums != -1 && (seatUsage.getTotal() >= maxSeatNums)) {
-            throw new BusinessException(LimitException.OVER_LIMIT);
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
 
@@ -608,7 +616,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SeatUsage seatUsage = getSeatUsage(spaceId);
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         if (maxSeatNums != -1 && (seatUsage.getTotal() + addedSeatNums > maxSeatNums)) {
-            throw new BusinessException(LimitException.OVER_LIMIT);
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
 
@@ -630,6 +638,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SeatUsage seatUsage = getSeatUsage(spaceId);
         spaceInfoVO.setSeatUsage(seatUsage);
         spaceInfoVO.setSeats(seatUsage.getMemberCount());
+        // widget statistics
+        long widgetCount = widgetMapper.selectCountBySpaceId(spaceId);
+        spaceInfoVO.setWidgetNums(widgetCount);
+        // robot runs statistics
+        long automationRunsNums = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
+        spaceInfoVO.setAutomationRunsNums(automationRunsNums);
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
         spaceInfoVO.setDeptNumber(teamCount);

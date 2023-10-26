@@ -166,4 +166,11 @@
         FROM ${tablePrefix}widget
         WHERE widget_id = #{widgetId}
     </select>
+
+    <select id="selectCountBySpaceId" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM ${tablePrefix}widget
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+    </select>
 </mapper>
