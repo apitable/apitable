@@ -206,8 +206,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             return vos;
         }
         // Query the space ID it belongs to
-        String spaceId = datasheetMapper.selectSpaceIdByDstId(resourceId);
-        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 = internalSpaceService.getAutomationRunMessageV0(spaceId);
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 =
+            internalSpaceService.getAutomationRunMessageV0(spaceId);
         Long maxAutomationRunNums = automationRunMessageV0.getMaxAutomationRunNums();
         Long automationRunNums = automationRunMessageV0.getAutomationRunNums();
         boolean isOverLimit = false;
