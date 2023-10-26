@@ -24,7 +24,7 @@
     "build:ai-components": "node build.js",
     "build:dst:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/icons @apitable/components @apitable/widget-sdk --parallel=5 && pnpm build:ai-components",
     "build:dst": "nx run --verbose @apitable/datasheet:build",
-    "build:air-agent:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/icons @apitable/core @apitable/components @apitable/ai --parallel=2",
+    "build:air-agent:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/icons @apitable/core @apitable/components --parallel=5 && pnpm build:ai-components",
     "build:air-agent": "nx run --verbose @apitable/air-agent:build",
     "build:sr": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/room-server --parallel=3",
     "build:components:doc": "nx build-storybook @apitable/components",
