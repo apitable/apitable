@@ -410,7 +410,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </Popup>
           </ComponentDisplay>
         </div>
-        {env.IS_ENTERPRISE && (
+        {env.IS_ENTERPRISE && !env.IS_SELFHOST && (
           <Tooltip title={t(Strings.contact_us)} placement="right">
             <div className={styles.iconWrap} onClick={() => contactUs()}>
               <LivechatFilled className={styles.icon} size={32} />
