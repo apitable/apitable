@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
@@ -28,14 +29,13 @@ import { SideBarContext } from 'pc/context';
 import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useRootManageable, useSideBarVisible } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { copy2clipBoard, exportDatasheet, exportMirror, flatContextData } from 'pc/utils';
-import { isMobileApp, getReleaseVersion } from 'pc/utils/env';
+import { isMobileApp, getReleaseVersion, getEnvVariables } from 'pc/utils/env';
 import { CONST_ENABLE_AUTOMATION_NODE } from '../../automation/config';
 import { SecondConfirmType } from '../../datasheet_search_panel';
 import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
-import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;
@@ -334,9 +334,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 ? contextItemMap.get(ContextItemKey.addAi)(() => {
                   if (!spaceInfo?.isEnableChatbot) {
                     const version = getReleaseVersion();
-                    if (version !== 'development') {
-                      window.open(getAIOpenFormUrl());
-                      return;
+                    const env = getEnvVariables();
+                    if (!env.ENV.includes('apitable') || version !== 'development') {
+                      if (version !== 'development') {
+                        window.open(getAIOpenFormUrl());
+                        return;
+                      }
                     }
                   }
                   const result = triggerUsageAlert?.(
