@@ -56,25 +56,25 @@ interface INodeStep {
 }
 
 export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({ index, robotCardInfo, onNavigate, readonly }) => {
-  const { name, robotId } = robotCardInfo;
+  const { name, robotId, isOverLimit } = robotCardInfo;
   const { data: triggerTypes } = useTriggerTypes();
   const { originData: actionTypes } = useActionTypes();
 
   // @ts-ignore
-  const list = getActionList((robotCardInfo.actions ?? []).map( action => ({
-    ...action,
-    id: action.actionId,
-  })))
-    .map((action) => {
-      const triggerType = actionTypes
-        .find((trigger) => trigger.actionTypeId === action.actionTypeId);
-      return {
-        // @ts-ignore
-        nodeTypeId: action.actionId,
-        service: triggerType?.service!,
-        type: IRobotNodeType.Action,
-      };
-    });
+  const list = getActionList(
+    (robotCardInfo.actions ?? []).map((action) => ({
+      ...action,
+      id: action.actionId,
+    })),
+  ).map((action) => {
+    const triggerType = actionTypes.find((trigger) => trigger.actionTypeId === action.actionTypeId);
+    return {
+      // @ts-ignore
+      nodeTypeId: action.actionId,
+      service: triggerType?.service!,
+      type: IRobotNodeType.Action,
+    };
+  });
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
     ...getTriggerList(robotCardInfo.triggers).slice(0, 1).map((trigger) => {
@@ -188,13 +188,15 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
               {name || t(Strings.robot_unnamed)}
             </Typography>
           </EllipsisText>
-          <Tooltip content={t(Strings.automation_run_failure_tip)}>
-            <div className={'vk-border-[1px] vk-rounded-sm vk-border-solid vk-px-1'} style={{ borderColor: colors.borderDangerDefault }}>
-              <Typography variant={'body4'} color={colors.textDangerDefault}>
-                {t(Strings.automation_run_failure)}
-              </Typography>
-            </div>
-          </Tooltip>
+          {isOverLimit && (
+            <Tooltip content={t(Strings.automation_run_failure_tip)}>
+              <div className={'vk-border-[1px] vk-rounded-sm vk-border-solid vk-px-1'} style={{ borderColor: colors.borderDangerDefault }}>
+                <Typography variant={'body4'} color={colors.textDangerDefault}>
+                  {t(Strings.automation_run_failure)}
+                </Typography>
+              </div>
+            </Tooltip>
+          )}
         </Box>
       </Box>
     </StyledBox>

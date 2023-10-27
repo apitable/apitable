@@ -119,6 +119,7 @@ export interface IAutomationDatum {
   name: string;
   description: string;
   isActive: boolean;
+  isOverLimit: boolean;
   updatedBy: number;
   updatedAt: number;
   props: Props;
@@ -128,7 +129,7 @@ export interface IAutomationDatum {
 
 export type Action = IRobotAction;
 
-export type Trigger= IRobotTrigger;
+export type Trigger = IRobotTrigger;
 
 export interface Props {
   failureNotifyEnable: boolean;
