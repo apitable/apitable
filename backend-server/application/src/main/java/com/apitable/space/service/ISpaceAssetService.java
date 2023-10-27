@@ -100,16 +100,4 @@ public interface ISpaceAssetService extends IService<SpaceAssetEntity> {
      */
     Map<String, SpaceAssetDTO> getSpaceAssetMapByAssetIdsAndType(String spaceId,
             String nodeId, AssetType assetType, List<Long> assetIds);
-
-    /**
-     * @param entities SpaceAssetEntity
-     * @return create successful or not
-     */
-    boolean createBatch(List<SpaceAssetEntity> entities);
-
-    /**
-     * @param entities SpaceAssetEntity
-     * @return update successful or not
-     */
-    boolean updateBatchById(List<SpaceAssetEntity> entities);
 }

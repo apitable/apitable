@@ -26,6 +26,7 @@ import { ApiResponse } from 'fusion/vos/api.response';
 import { Any } from 'grpc/generated/google/protobuf/any';
 import { Value } from 'grpc/generated/google/protobuf/struct';
 import {
+  DocumentAssetStatisticResult, DocumentAssetStatisticRo,
   GetActiveCollaboratorsVo, protobufPackage, UserRoomChangeRo, UserRoomChangeVo, WatchRoomRo, WatchRoomVo,
 } from 'grpc/generated/serving/RoomServingService';
 import { GrpcSocketService } from 'grpc/services/grpc.socket.service';
@@ -35,6 +36,7 @@ import { SpanAddTag } from 'shared/decorator/tracing.extend.decorator';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { GrpcExceptionFilter } from 'shared/filters/grpc.exception.filter';
 import { Logger } from 'winston';
+import { DocumentBaseService } from 'workdoc/services/document.base.service';
 
 /**
  * grpc works for internal service
@@ -47,7 +49,14 @@ export class GrpcController {
     private readonly otService: OtService,
     private readonly nodeService: NodeService,
     private readonly grpcSocketService: GrpcSocketService,
+    private readonly documentBaseService: DocumentBaseService,
   ) {}
+
+  @GrpcMethod('RoomServingService', 'documentAssetStatistic')
+  async documentAssetStatistic(ro: DocumentAssetStatisticRo): Promise<DocumentAssetStatisticResult> {
+    const data = await this.documentBaseService.documentAssetStatistic(ro);
+    return ApiResponse.success(data);
+  }
 
   @GrpcMethod('RoomServingService', 'copyNodeEffectOt')
   async copyNodeEffectOt(data: INodeCopyRo): Promise<ApiResponse<boolean>> {

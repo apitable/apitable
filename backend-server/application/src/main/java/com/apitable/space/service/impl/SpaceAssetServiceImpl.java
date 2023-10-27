@@ -108,35 +108,39 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     @Override
     public void copyBatch(Map<String, String> newNodeMap, String destSpaceId) {
         log.info("Copy space attachment resources referenced by nodes in batches");
-        if (MapUtil.isNotEmpty(newNodeMap)) {
-            List<NodeAssetDTO> assetDtoList = baseMapper.selectNodeAssetDto(CollUtil.newArrayList(newNodeMap.keySet()));
-            this.processNodeAssets(newNodeMap, destSpaceId, assetDtoList);
+        if (MapUtil.isEmpty(newNodeMap)) {
+            return;
         }
+        List<NodeAssetDTO> assetDtoList =
+            baseMapper.selectNodeAssetDto(CollUtil.newArrayList(newNodeMap.keySet()));
+        this.processNodeAssets(newNodeMap, destSpaceId, assetDtoList);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void processNodeAssets(Map<String, String> newNodeMap, String destSpaceId, List<NodeAssetDTO> assetDtoList) {
+    public void processNodeAssets(Map<String, String> newNodeMap,
+        String destSpaceId, List<NodeAssetDTO> assetDtoList) {
         log.info("handles spatial attachment resources of nodes");
-        if (CollUtil.isNotEmpty(assetDtoList)) {
-            List<SpaceAssetEntity> entities = new ArrayList<>();
-            assetDtoList.forEach(asset -> {
-                SpaceAssetEntity entity = SpaceAssetEntity.builder()
-                        .id(IdWorker.getId())
-                        .spaceId(destSpaceId)
-                        .nodeId(newNodeMap.get(asset.getNodeId()))
-                        .assetId(asset.getAssetId())
-                        .assetChecksum(asset.getChecksum())
-                        .type(asset.getType())
-                        .sourceName(asset.getSourceName())
-                        .cite(asset.getCite())
-                        .fileSize(asset.getFileSize())
-                        .isTemplate(Optional.ofNullable(asset.getIsTemplate()).orElse(false))
-                        .build();
-                entities.add(entity);
-            });
-            this.saveEntities(entities);
+        if (CollUtil.isEmpty(assetDtoList)) {
+            return;
         }
+        List<SpaceAssetEntity> entities = new ArrayList<>();
+        assetDtoList.forEach(asset -> {
+            SpaceAssetEntity entity = SpaceAssetEntity.builder()
+                .id(IdWorker.getId())
+                .spaceId(destSpaceId)
+                .nodeId(newNodeMap.get(asset.getNodeId()))
+                .assetId(asset.getAssetId())
+                .assetChecksum(asset.getChecksum())
+                .type(asset.getType())
+                .sourceName(asset.getSourceName())
+                .cite(asset.getCite())
+                .fileSize(asset.getFileSize())
+                .isTemplate(Optional.ofNullable(asset.getIsTemplate()).orElse(false))
+                .build();
+            entities.add(entity);
+        });
+        this.saveEntities(entities);
     }
 
     @Override
@@ -190,10 +194,14 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
                         .isTemplate(item.getIsTemplate()).build());
             }
         });
-        boolean updateFlag = updateBatchById(updateEntities);
-        ExceptionUtil.isTrue(updateFlag, DataSheetException.ATTACH_CITE_FAIL);
-        boolean insertFlag = createBatch(addEntities);
-        ExceptionUtil.isTrue(insertFlag, DataSheetException.ATTACH_CITE_FAIL);
+        if (CollUtil.isNotEmpty(updateEntities)) {
+            boolean updateFlag = updateBatchById(updateEntities, updateEntities.size());
+            ExceptionUtil.isTrue(updateFlag, DataSheetException.ATTACH_CITE_FAIL);
+        }
+        if (CollUtil.isNotEmpty(addEntities)) {
+            boolean insertFlag = SqlHelper.retBool(baseMapper.insertBatch(addEntities));
+            ExceptionUtil.isTrue(insertFlag, DataSheetException.ATTACH_CITE_FAIL);
+        }
         // delete a reference to a space resource（physically-deleted）
         if (delSpaceAssetId.size() > 0) {
             boolean flag = SqlHelper.retBool(baseMapper.deleteBatchByIds(delSpaceAssetId));
@@ -209,24 +217,6 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
         List<SpaceAssetDTO> spaceAssetDTOList =
                 baseMapper.selectDtoByAssetIdsAndType(spaceId, nodeId, assetType.getValue(), assetIds);
         return spaceAssetDTOList.stream().collect(Collectors.toMap(SpaceAssetDTO::getAssetChecksum, c -> c));
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean createBatch(List<SpaceAssetEntity> entities) {
-        if (CollUtil.isNotEmpty(entities)) {
-            return SqlHelper.retBool(baseMapper.insertBatch(entities));
-        }
-        return true;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean updateBatchById(List<SpaceAssetEntity> entities) {
-        if (CollUtil.isNotEmpty(entities)) {
-            return updateBatchById(entities, entities.size());
-        }
-        return true;
     }
 
     /**

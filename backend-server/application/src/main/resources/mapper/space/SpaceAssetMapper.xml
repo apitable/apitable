@@ -59,6 +59,18 @@
         FOR UPDATE
     </select>
 
+    <select id="selectSpaceAssetDTO"
+            resultType="com.apitable.space.dto.SpaceAssetDTO">
+        SELECT id, node_id, asset_id, cite
+        FROM ${tablePrefix}space_asset
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectNodeAssetDto"
             resultType="com.apitable.space.dto.NodeAssetDTO">
         SELECT node_id,

@@ -18,6 +18,8 @@
 
 package com.apitable.shared.grpc;
 
+import com.apitable.integration.grpc.DocumentAssetStatisticResult;
+import com.apitable.integration.grpc.DocumentAssetStatisticRo;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
@@ -67,5 +69,10 @@ public class GrpcClientServiceImpl implements IGrpcClientService {
             }
             return BasicResult.newBuilder().setCode(ERROR_CODE).setSuccess(false).setMessage(e.getMessage()).build();
         }
+    }
+
+    @Override
+    public DocumentAssetStatisticResult documentAssetStatistic(DocumentAssetStatisticRo ro) {
+        return simpleStub.documentAssetStatistic(ro);
     }
 }
