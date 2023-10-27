@@ -21,10 +21,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Events, IReduxState, Player, Selectors } from '@apitable/core';
-// @ts-ignore
-import { ChatPage } from 'enterprise';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
-import { AutomationPanel } from '../automation/panel';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
@@ -32,6 +29,8 @@ import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
 import { Welcome } from '../workspace/welcome';
 // @ts-ignore
+import { ChatPage } from 'enterprise';
+import {AutomationPanelWrapper} from "pc/components/automation/modal/automation_panel_wrapper";
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useSelector((state) => Selectors.getNodeId(state));
@@ -55,8 +54,7 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
 
   const MainComponent = (): React.ReactElement => {
     if (automationId) {
-      console.log({ automationId });
-      return <AutomationPanel resourceId={automationId} />;
+      return <AutomationPanelWrapper automationId={automationId} />;
     }
     if (activeNodeError) {
       return <NoPermission />;

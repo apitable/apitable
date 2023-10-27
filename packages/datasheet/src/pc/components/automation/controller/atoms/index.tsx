@@ -24,6 +24,14 @@ const automationTriggerDatasheetAtom = atomWithImmer<{
 });
 
 const automationStateAtom = atomWithImmer<IRobotContext | undefined>(undefined);
+
+export const automationCacheAtom = atomWithImmer< {
+  map?: Map<string, IRobotTrigger | IRobotAction>,
+  id?:string,
+  panel?: IAutomationPanel
+}>({
+
+});
 export const automationCurrentTriggerId = atomWithImmer<string | undefined>(undefined);
 
 export interface ILocalAutomation {
@@ -49,7 +57,8 @@ const automationHistoryAtom = atomWithImmer<{
   dialogVisible: false,
 });
 
-const automationPanelAtom = atomWithImmer<{
+interface IAutomationPanel {
+
   panelName?: PanelName;
   dataId?: string;
   data?: {
@@ -61,7 +70,8 @@ const automationPanelAtom = atomWithImmer<{
     description?: string;
     serviceLogo?: string;
   };
-}>({
+}
+const automationPanelAtom = atomWithImmer<IAutomationPanel>({
   panelName: PanelName.BasicInfo,
 });
 

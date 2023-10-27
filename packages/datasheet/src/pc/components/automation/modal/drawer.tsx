@@ -4,10 +4,7 @@ import { useCallback } from 'react';
 import { Strings, t } from '@apitable/core';
 import { Drawer } from 'pc/shared/components/drawer/drawer';
 import { Modal as ConfirmModal } from '../../common';
-import {
-  automationActionsAtom,
-  automationLocalMap, automationTriggersAtom,
-} from '../controller/atoms';
+import { automationActionsAtom, automationLocalMap, automationTriggersAtom } from '../controller/atoms';
 import { AutomationPanel } from '../panel';
 import { checkIfModified } from './step_input_compare';
 import style from './styles.module.less';

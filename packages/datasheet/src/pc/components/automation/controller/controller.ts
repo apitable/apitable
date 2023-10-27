@@ -32,7 +32,7 @@ import {
   automationLocalMap,
   automationTriggerDatasheetAtom,
   formListDstIdAtom,
-  getResourceAutomationDetailIntegrated
+  getResourceAutomationDetailIntegrated, automationCacheAtom
 } from './index';
 export const useAutomationNavigateController = () => {
   const [, setShowAtom] = useAtom(automationDrawerVisibleAtom);
@@ -48,6 +48,8 @@ export const useAutomationNavigateController = () => {
   const setDataSheet = useSetAtom(automationTriggerDatasheetAtom);
 
   const { shareInfo } = useContext(ShareContext);
+
+  const [cache, setCache] = useAtom(automationCacheAtom);
   const navigateDatasheetAutomation = async (resourceId: string, robotId: string) => {
     const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, robotId, {
       shareId: shareInfo?.shareId
@@ -84,7 +86,9 @@ export const useAutomationNavigateController = () => {
   };
 
   const setAutomationLocalState = useSetAtom(automationLocalMap);
+
   const initialize = useCallback(() => {
+
     setAutomationLocalState(new Map());
   }, [setAutomationLocalState]);
 
