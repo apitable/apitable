@@ -35,7 +35,6 @@ import { NodeFavoriteStatus } from '../../common/node_favorite_status';
 import { OrEmpty } from '../../common/or_empty';
 import {
   deleteRobot,
-  getResourceAutomationDetail,
   getResourceAutomations,
 } from '../../robot/api';
 import { useAutomationRobot } from '../../robot/hooks';
@@ -51,7 +50,7 @@ import {
   automationDrawerVisibleAtom,
   automationHistoryAtom,
   automationPanelAtom,
-  automationStateAtom,
+  automationStateAtom, getResourceAutomationDetailIntegrated,
   PanelName, useAutomationController
 } from '../controller';
 import { useAutomationNavigateController } from '../controller/controller';
@@ -99,7 +98,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
       shareId: shareInfo?.shareId,
     }).then(async (res) => {
       const firstItem = res[0];
-      const itemDetail = await getResourceAutomationDetail(
+      const itemDetail = await getResourceAutomationDetailIntegrated(
         resourceId,
         firstItem.robotId,
         {

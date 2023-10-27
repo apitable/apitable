@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtomValue, useSetAtom } from 'jotai';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
+import { automationCurrentTriggerId } from 'pc/components/automation/controller';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
@@ -40,6 +42,8 @@ const StyledTextInput= styled(TextInput)`
 export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) => {
   const { nodeOutputSchemaList, insertMagicVariable, setOpen, isJSONField } = props;
   const [schemaExpressionList, setSchemaExpressionList] = useState<ISchemaAndExpressionItem[]>([]);
+
+  const setCurrrentTrigger = useSetAtom(automationCurrentTriggerId);
 
   const theme = useTheme();
   const searchRef = useRef<any>();
@@ -122,6 +126,11 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   );
 
   const handleItemClick = (listItem: ISchemaPropertyListItem, goIntoChildren?: boolean) => {
+
+    if(currentStep === 0 ) {
+      setCurrrentTrigger(listItem.key);
+    }
+
     if (listItem.disabled) {
       return;
     }
@@ -139,7 +148,22 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     // searchRef.current?.focus();
   };
   const listUISchema = schemaExpressionList.length > 0 ? schemaExpressionList[schemaExpressionList.length - 1].uiSchema : undefined;
-  const layout: IUISchemaLayoutGroup[] | undefined = listUISchema?.layout;
+
+  let layout: IUISchemaLayoutGroup[] | undefined = listUISchema?.layout;
+  if(schemaExpressionList.length===0) {
+    layout = [
+      {
+        title:
+            t(Strings.robot_trigger_guide),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('atr')).map(r => r.id),
+      },
+      {
+        title:
+            t(Strings.action),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('acc')).map(r => r.id),
+      }
+    ];
+  }
   variableList = getGroupedVariableList({ schemaExpressionList, variableList });
 
   const { index: activeIndex } = useSelectIndex({
@@ -168,6 +192,13 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     },
   });
   const currentStep = schemaExpressionList.length;
+
+  let placeHolder : string|undefined= undefined;
+
+  if(currentStep === 0 && variableList.length === 0) {
+    placeHolder = t(Strings.automation_variabel_empty);
+  }
+
   return (
     <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
       <StyledTextInput
@@ -181,40 +212,45 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
         placeholder={t(Strings.search)}
         prefix={<SearchOutlined color={colors.textCommonPrimary} />}
       />
-      <Box margin="8px 0px">
-        <Typography variant="body4" style={{ marginLeft: 8 }} color={colors.textCommonTertiary}>
-          <span style={{
+      {
+        !(currentStep === 0 && variableList.length === 0) && (
+          <Box margin="8px 0px">
+            <Typography variant="body4" style={{ marginLeft: 8 }} color={colors.textCommonTertiary}>
+              <span style={{
                 cursor: 'pointer',
               }}
               onClick={() => {
-            setSchemaExpressionList([]);
-          }}
-          >
-            {t(Strings.robot_variables_select_step)}
-          </span>
-          {schemaExpressionList.map(({ schema }, index) => {
-            return <span key={index}>
-              <span style={{ marginLeft: '4px' }}>
-              /&nbsp;
+                setSchemaExpressionList([]);
+              }}
+              >
+                {t(Strings.robot_variables_select_step)}
               </span>
-              <span
-                onClick={() => {
-                  setSchemaExpressionList(l => l.slice(0, index +1));
-                }}
-                style={{
-                  cursor: 'pointer',
-                  color: index === schemaExpressionList.length -1 ? colors.textBrandDefault:
-                    colors.textCommonTertiary
-                }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
-            </span>;
-          })}
-        </Typography>
-      </Box>
+              {schemaExpressionList.map(({ schema }, index) => {
+                return <span key={index}>
+                  <span style={{ marginLeft: '4px' }}>
+              /&nbsp;
+                  </span>
+                  <span
+                    onClick={() => {
+                      setSchemaExpressionList(l => l.slice(0, index +1));
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      color: index === schemaExpressionList.length -1 ? colors.textBrandDefault:
+                        colors.textCommonTertiary
+                    }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
+                </span>;
+              })}
+            </Typography>
+          </Box>
+        )
+      }
       <Box ref={listContainerRef} maxHeight="300px" overflow="auto">
         <SchemaPropertyList list={variableList}
           currentStep={currentStep}
-          layout={layout} activeIndex={activeIndex} handleItemClick={(node) => {
-            handleItemClick(node);
+          placeHolder={placeHolder}
+          layout={layout} activeIndex={activeIndex} handleItemClick={(node, goToChildren) => {
+            handleItemClick(node, goToChildren);
           }} />
       </Box>
     </Box>

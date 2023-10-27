@@ -20,7 +20,7 @@ import { useAtom, useSetAtom } from 'jotai';
 import { useCallback, useContext } from 'react';
 import { useResponsive } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
-import { createAutomationRobot, getResourceAutomationDetail } from '../../robot/api';
+import { createAutomationRobot } from '../../robot/api';
 import { useAutomationRobot } from '../../robot/hooks';
 import { AutomationScenario, IRobotContext } from '../../robot/interface';
 import { ShareContext } from '../../share';
@@ -28,7 +28,11 @@ import {
   automationPanelAtom,
   automationStateAtom,
   PanelName,
-  automationDrawerVisibleAtom, automationLocalMap, automationTriggerDatasheetAtom, formListDstIdAtom
+  automationDrawerVisibleAtom,
+  automationLocalMap,
+  automationTriggerDatasheetAtom,
+  formListDstIdAtom,
+  getResourceAutomationDetailIntegrated
 } from './index';
 export const useAutomationNavigateController = () => {
   const [, setShowAtom] = useAtom(automationDrawerVisibleAtom);
@@ -45,7 +49,7 @@ export const useAutomationNavigateController = () => {
 
   const { shareInfo } = useContext(ShareContext);
   const navigateDatasheetAutomation = async (resourceId: string, robotId: string) => {
-    const itemDetail = await getResourceAutomationDetail(resourceId, robotId, {
+    const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, robotId, {
       shareId: shareInfo?.shareId
     });
     const newState : IRobotContext= {

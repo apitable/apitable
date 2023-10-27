@@ -89,7 +89,9 @@ export interface IRobotAction {
 
 export interface IRobotTrigger {
   triggerId: string;
+  prevTriggerId: string;
   triggerTypeId: string;
+  relatedResourceId?: string;
   input: any;
 }
 
@@ -98,6 +100,7 @@ export interface INodeOutputSchema {
   icon?: string;
   title: string;
   schema: IJsonSchema | undefined;
+  description?: string;
   uiSchema?: any;
 }
 
@@ -121,18 +124,9 @@ export interface IAutomationDatum {
   actions: Action[];
 }
 
-export interface Action {
-  actionId: string;
-  actionTypeId: string;
-  nextActionId: string;
-  prevActionId: string;
-}
+export type Action = IRobotAction;
 
-export interface Trigger {
-  triggerId: string;
-  triggerTypeId?: any;
-  prevTriggerId: string;
-}
+export type Trigger= IRobotTrigger;
 
 export interface Props {
   failureNotifyEnable: boolean;

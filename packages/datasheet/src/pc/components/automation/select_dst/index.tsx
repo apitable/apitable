@@ -16,7 +16,7 @@ export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined
   value,
   onChange
 }) => {
-  const datasheet = useSelector((a) => Selectors.getDatasheet(a, value), shallowEqual);
+  const datasheet = useSelector((a: IReduxState) => Selectors.getDatasheet(a, value), shallowEqual);
   const { rootId } = useSelector((state: IReduxState) => state.catalogTree);
 
   const [visible, setVisible] = useState(false);
@@ -25,6 +25,8 @@ export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined
   const { shareId } = useSelector((state: IReduxState) => state.pageParams);
   const name =
         shareId != null ? stateValue?.robot?.relatedResources?.find((item: RelatedResource) => item.nodeId === value)?.nodeName : datasheet?.name;
+
+  const { isLoading, data } = useFolderId(value);
   return (
     <>
       <SelectTrigger
@@ -37,9 +39,9 @@ export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined
         label={name}
       />
 
-      {visible && (
+      {visible && !isLoading && (
         <SearchPanel
-          folderId={rootId}
+          folderId={(data?.parentId) ? data?.parentId : rootId}
           options={{
             showForm: false,
             showDatasheet: true,
@@ -79,7 +81,7 @@ export const useFolderId = (formId: string) => {
   });
   return {
     isLoading: isLoading,
-    data: data?.data?.data[0] as INode
+    data: data?.data?.data?.[0] as INode
   };
 };
 

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { IRobotAction, IRobotTrigger } from 'pc/components/robot/interface';
 
 export interface UpdatedBy {
   uuid: string;
@@ -40,21 +41,8 @@ export interface Props {
   failureNotifyEnable: boolean;
 }
 
-export interface Trigger {
-  triggerId: string;
-  triggerTypeId: string;
-  prevTriggerId: string;
-  input: string;
-}
-
-export interface Action {
-  actionId: string;
-  actionTypeId: string;
-  nextActionId: string;
-  prevActionId: string;
-  input: string;
-}
-
+export type Trigger = IRobotTrigger;
+export type Action = IRobotAction;
 export interface RelatedResource {
   nodeId: string;
   nodeName: string;

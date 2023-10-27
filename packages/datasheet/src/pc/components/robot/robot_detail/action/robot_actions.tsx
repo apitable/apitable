@@ -18,21 +18,25 @@
 
 import { useSetAtom, useAtomValue } from 'jotai';
 import React, { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 import { Box } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { IReduxState, Strings, t } from '@apitable/core';
+import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
+import { CONST_MAX_ACTION_COUNT } from 'pc/components/automation/config';
+import {getTriggerDatasheetId, IFetchedDatasheet} from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { OrEmpty } from 'pc/components/common/or_empty';
-import { automationActionsAtom, automationStateAtom, inheritedTriggerAtom } from '../../../automation/controller';
+import { automationActionsAtom, automationStateAtom } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { OrTooltip } from '../../../common/or_tooltip';
 import { getNodeOutputSchemaList } from '../../helper';
 import { useActionTypes } from '../../hooks';
 import { ITriggerType } from '../../interface';
 import { EditType } from '../trigger/robot_trigger';
-import { getActionList } from '../utils';
+import { getActionList, getTriggerList } from '../utils';
 import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
 import {
-  CONST_MAX_ACTION_COUNT,
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
@@ -62,19 +66,26 @@ export const RobotActions = ({
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
-  const trigger = useAtomValue(inheritedTriggerAtom);
+  const triggers = getTriggerList(robot?.robot?.triggers ?? []);
+  const { data: dataList1 } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
+  });
 
+  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+
+  const triggerDataSheetIds : IFetchedDatasheet[] = (dataList1 ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
     triggerTypes,
-    trigger: trigger,
+    triggers,
+    triggerDataSheetIds,
+    dataSheetMap,
   });
 
   if (!entryActionId) {
     return (
       <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={
-        trigger==null ||
+        triggers.length==0 ||
         !permissions?.editable
       } nodeOutputSchemaList={nodeOutputSchemaList}/>
     );

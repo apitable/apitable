@@ -3196,6 +3196,7 @@
   "option_configuration_silver_palette": "Silver plan exclusive",
   "option_name_repeat": "Duplicate option",
   "or": "or",
+  "robot_trigger_or": " or ",
   "order_price": "Order Price",
   "ordered_list": "Numbered list",
   "ordinary_members": "Member",
@@ -5754,6 +5755,12 @@
   "automation_default_tips": "Choose a trigger to start your automation",
   "automation_description_trigger": "When ${triggerName}",
   "automation_description_one": "When ${triggerName}, then ${lastAction}",
+
+  "automation_variable_datasheet": "Get data from ${NODE_NAME}",
+  "automation_variable_trigger_one": "From ${Trigger_Name}",
+  "automation_variable_trigger_many": "From ${Trigger_Multiple} and ${Trigger_Last}",
+  "automation_variabel_empty": "There is no data that can be used in the pre-step, please adjust and try again.",
+
   "automation_description_more": "When ${triggerName}, ${actions} and finally  ${lastAction}",
   "robot_variables_select_step": "Pre-step",
   "new_automation": "New automation",

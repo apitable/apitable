@@ -21,18 +21,32 @@ import { useAtomValue } from 'jotai/index';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { memo, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
+import useSWR from 'swr';
+import { Selectors } from '@apitable/core';
+import {
+  automationCurrentTriggerId,
+  automationStateAtom,
+  automationTriggerAtom
+} from 'pc/components/automation/controller';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
-import { useAutomationRobotFields, useTriggerDatasheetId } from '../../../automation/controller/hooks/use_robot_fields';
-import { INodeOutputSchema, ITriggerType } from '../../interface';
+import { useQuery } from 'pc/hooks';
+import {
+  getTriggerDatasheetId,
+  useAutomationFieldInfo,
+  useAutomationRobotFields,
+  useTriggerDatasheetId
+} from '../../../automation/controller/hooks/use_robot_fields';
+import { INodeOutputSchema, IRobotTrigger, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
-import styles from './styles.module.less';
 import { MagicVariableElement } from '.';
+import styles from './styles.module.less';
 
 const DefaultElement = (props: any) => {
   return <p {...props.attributes}>{props.children}</p>;
@@ -55,13 +69,14 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const inputRef = useRef<any>();
   const triggerRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
-  const datasheetId = useTriggerDatasheetId();
 
   const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor))), []);
 
+  const state = useAtomValue(automationStateAtom);
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
+  const triggerList = state?.robot?.triggers ?? [];
   const refV: MutableRefObject<any> = useRef(null);
   useClickOutside(popupRef, () => {
 
@@ -112,12 +127,27 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
     setValue(value);
   };
 
+  const automationCurrentTriggerIdValue = useAtomValue(automationCurrentTriggerId);
+
+  const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
+
+  const datasheetId = useTriggerDatasheetId(activeDatasheetId);
+
   const { fields, fieldPermissionMap } = useAutomationRobotFields(datasheetId!);
 
+  const triggers = state?.robot?.triggers ?? [];
+  const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {
+  });
+
+  const dataLis = dataList ?? [];
+
+  const l = useAutomationFieldInfo(triggers, dataLis);
+
   const nodeOutputSchemaList = props.nodeOutputSchemaList.map((nodeOutputSchema, index) => {
-    // The first one is the trigger, and for now only the fields of the trigger will be enhanced
-    if (index === 0) {
-      return enrichDatasheetTriggerOutputSchema(nodeOutputSchema, fields, fieldPermissionMap!);
+    const item = l[index];
+
+    if (nodeOutputSchema?.id.startsWith('atr') && item && item?.fields?.length && item.fieldPermissionMap) {
+      return enrichDatasheetTriggerOutputSchema(nodeOutputSchema, item.fields, item.fieldPermissionMap!);
     }
     return nodeOutputSchema;
   });

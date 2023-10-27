@@ -779,6 +779,7 @@
   "automation_description_more": "当${triggerName}，${actions}，最后${lastAction}",
   "automation_description_one": "当${triggerName}，${lastAction}",
   "automation_description_trigger": "当${triggerName}",
+  "automation_description_trigger_multiple": "当${triggerName}",
   "automation_detail": "详情",
   "automation_disabled": "自动化已停用",
   "automation_enabled": "自动化已开启",
@@ -4228,6 +4229,7 @@
   "robot_trigger_guide": "触发条件",
   "robot_trigger_match_condition_and": "并且",
   "robot_trigger_match_condition_or": "或者",
+  "robot_trigger_or": "或者",
   "robot_trigger_match_condition_when": "当",
   "robot_trigger_record_created_config_1": "选择维格表",
   "robot_trigger_record_created_config_1_desc": "指定在哪张维格表有记录创建时，触发自动化开始运行（目前只支持选择当前表）",
@@ -5794,5 +5796,11 @@
   "automation_editor_label": "支持编辑自动化中的步骤和查看该自动化的运行历史",
   "automation_updater_label": "可以查看该自动化的运行历史",
   "automation_reader_label": "可以查看该自动化的运行历史",
+
+  "automation_variable_datasheet": "从 ${NODE_NAME} 获取数据",
+  "automation_variable_trigger_one": "来自 ${Trigger_Name}",
+  "automation_variable_trigger_many": "来自 ${Trigger_Multiple} 和 ${Trigger_Last}",
+  "automation_variabel_empty": "前置步骤中没有可以引用的数据，请调整后重试",
+
   "delete_archive_record_success": "已删除归档记录"
 }
