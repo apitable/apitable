@@ -23,8 +23,21 @@ import { useCards } from './cards';
 import styles from './style.module.less';
 
 export const Sm = (props: ILayoutProps) => {
-  const { AdCard, CapacityCard, ApiCard, FileCard, RecordCard, MemberCard, ViewsCard, OthersCard, InfoCard, LevelCard, CreditCard, CreditCostCard } =
-    useCards(props);
+  const {
+    AdCard,
+    AutomationCard,
+    CapacityCard,
+    ApiCard,
+    FileCard,
+    RecordCard,
+    MemberCard,
+    ViewsCard,
+    OthersCard,
+    InfoCard,
+    LevelCard,
+    CreditCard,
+    CreditCostCard,
+  } = useCards(props);
 
   return (
     <div className={styles.lg}>
@@ -45,8 +58,9 @@ export const Sm = (props: ILayoutProps) => {
           <ViewsCard minHeight={372} />
         </Block>
         <Block flex={27}>
-          <AdCard />
+          <AutomationCard minHeight={372} />
         </Block>
+
       </Block>
       <Block isWrap vertical>
         <Block flex={16}>
@@ -67,7 +81,9 @@ export const Sm = (props: ILayoutProps) => {
         <Block flex={27}>
           <OthersCard minHeight={372} />
         </Block>
-        <Block flex={27} visible={false} />
+        <Block flex={27}>
+          <AdCard minHeight={372}/>
+        </Block>
       </Block>
     </div>
   );

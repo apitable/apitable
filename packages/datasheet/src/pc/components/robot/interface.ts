@@ -40,10 +40,12 @@ export interface IUISchemaLayoutGroup {
   title: string;
   items: string[];
 }
+
 export enum AutomationScenario {
   'datasheet',
-  'node'
+  'node',
 }
+
 export interface IRobotContext {
   currentRobotId?: string;
   resourceId?: string;
@@ -332,4 +334,5 @@ export enum RobotRunStatusEnums {
   RUNNING = 0,
   SUCCESS = 1,
   ERROR = 2,
+  LIMIT = 4,
 }

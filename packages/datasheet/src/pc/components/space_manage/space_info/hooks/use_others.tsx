@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { FolderNormalFilled, LockFilled, DeleteFilled, UserAdminFilled } from '@apitable/icons';
+import { DeleteFilled, FolderNormalFilled, LockFilled, UserAdminFilled } from '@apitable/icons';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
 
@@ -52,6 +52,15 @@ export const useOthers = ({ spaceInfo, subscription }: IHooksParams): IMultiLine
         name: t(Strings.admins_per_space),
         icon: <UserAdminFilled color={colors.black[500]} />,
         percent: calcPercent(spaceInfo?.adminNums, subscription?.maxAdminNums),
+        showProgress: false,
+      },
+      {
+        unit: t(Strings.unit_ge),
+        total: subscription?.maxWidgetNums,
+        used: spaceInfo?.widgetNums,
+        name: t(Strings.widget_per_space),
+        icon: <UserAdminFilled color={colors.black[500]} />,
+        percent: calcPercent(spaceInfo?.widgetNums, subscription?.maxWidgetNums),
         showProgress: false,
       },
       {

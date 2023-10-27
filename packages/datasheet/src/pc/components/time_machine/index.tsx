@@ -43,6 +43,8 @@ import {
   ThemeName,
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
+// @ts-ignore
+import { Backup, getSocialWecomUnitName } from 'enterprise';
 import { Avatar, Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -55,10 +57,8 @@ import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
 import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
 import { TabPaneKeys } from './interface';
-import styles from './style.module.less';
 import { getForeignDatasheetIdsByOp, getOperationInfo } from './utils';
-// @ts-ignore
-import { getSocialWecomUnitName, Backup } from 'enterprise';
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 
@@ -104,9 +104,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         const csl = res.data.data.reverse();
         console.log('Load changesetList: ', csl);
         const nextCsl = changesetList.concat(csl);
-        setChangesetList(nextCsl.filter(item =>
-          item.operations.filter((op) => !op.cmd.startsWith('System')).length > 0
-        ));
+        setChangesetList(nextCsl.filter((item) => item.operations.filter((op) => !op.cmd.startsWith('System')).length > 0));
       })
       .finally(() => {
         setFetching(false);
@@ -296,24 +294,25 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
             ) : (
               changesetList.map((item, index) => {
                 const memberInfo = uuidMap && uuidMap[item.userId!];
-                const title = getSocialWecomUnitName?.({
-                  name: memberInfo?.memberName,
-                  isModified: memberInfo?.isMemberNameModified,
-                  spaceInfo,
-                }) || '';
+                const title =
+                  getSocialWecomUnitName?.({
+                    name: memberInfo?.memberName,
+                    isModified: memberInfo?.isMemberNameModified,
+                    spaceInfo,
+                  }) || '';
                 const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
                 return (
                   <section
                     className={styles.listItem}
                     key={`${item.messageId}-${item.revision}`}
                     data-active={index === curPreview}
-                    onClick={() =>{
+                    onClick={() => {
                       onPreviewClick(index);
                       console.log('ops', ops);
                     }}
                   >
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <Avatar id={item.userId || ''} title={typeof title==='string'?title:''} size={24} src={memberInfo?.avatar} />
+                      <Avatar id={item.userId || ''} title={typeof title === 'string' ? title : ''} size={24} src={memberInfo?.avatar} />
                       <div>
                         <div className={styles.title}>
                           <span style={{ paddingRight: '4px' }}>{title}</span>
@@ -331,7 +330,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         </TabPane>
         {Boolean(Backup) && (
           <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
-            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
+            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview!} />
           </TabPane>
         )}
       </Tabs>

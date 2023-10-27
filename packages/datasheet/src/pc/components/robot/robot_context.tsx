@@ -28,6 +28,7 @@ export interface IAutomationRobotDetailItem {
   name: string;
   description: string;
   isActive: boolean;
+  isOverLimit: boolean;
   recentlyRunCount?: number;
   updatedBy: UpdatedBy;
   updatedAt: string;
