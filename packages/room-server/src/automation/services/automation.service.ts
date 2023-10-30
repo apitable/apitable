@@ -24,15 +24,17 @@ import {
   IActionType,
   IRobot,
   IRobotTask,
-  NoticeTemplatesConstant, Strings,
+  NoticeTemplatesConstant,
+  Strings,
   validateMagicForm,
 } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
-import { InjectLogger } from 'shared/common';
+import { InjectLogger, SPACE_AUTOMATION_RUN_COUNT_KEY } from 'shared/common';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
 import { UnreachableCaseError } from 'shared/errors';
 import { CommonException, PermissionException, ServerException } from 'shared/exception';
@@ -45,6 +47,7 @@ import {
   notificationQueueExchangeName,
 } from 'shared/services/queue/queue.module';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
+import { RestService } from 'shared/services/rest/rest.service';
 import { In } from 'typeorm';
 import * as services from '../actions';
 import { customActionMap } from '../actions/decorators/automation.action.decorator';
@@ -57,7 +60,6 @@ import { AutomationRobotRepository } from '../repositories/automation.robot.repo
 import { AutomationRunHistoryRepository } from '../repositories/automation.run.history.repository';
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { RobotRobotService } from './robot.robot.service';
-import { RestService } from "shared/services/rest/rest.service";
 
 /**
  * handle robot execution scheduling
@@ -80,7 +82,8 @@ export class AutomationService {
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
     private readonly queueSenderService: QueueSenderBaseService,
-    private readonly i18n: I18nService
+    private readonly i18n: I18nService,
+    private readonly redisService: RedisService,
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
@@ -169,6 +172,10 @@ export class AutomationService {
       data: context.context,
     });
     await this.automationRunHistoryRepository.insert(newRunHistory);
+    // save space monthly task run count
+    if (robotTask.status != RunHistoryStatusEnum.EXCESS) {
+      await this.increaseSpaceAutomationTaskRunCount(spaceId);
+    }
   }
 
   /**
@@ -244,9 +251,9 @@ export class AutomationService {
     const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
     const maxAutomationRunsNums = automationRunsMessage.maxAutomationRunNums;
     const automationRunNums = automationRunsMessage.automationRunNums;
-    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums){
+    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums) {
       // The number of space station automation runs exceeds the limit and an excess record is generated.
-      await this.createRunOverLimitHistory(robotId, taskId, spaceId);
+      await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
       return;
     }
     // 1. create run history
@@ -267,7 +274,6 @@ export class AutomationService {
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
   }
-
 
   @RabbitSubscribe({
     exchange: automationExchangeName,
@@ -359,7 +365,7 @@ export class AutomationService {
   async isResourcesHasTriggers(resourceIds: string[]) {
     const triggers = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
     if (triggers.length > 0) {
-      const robotIds = new Set(triggers.map(i => i.robotId));
+      const robotIds = new Set(triggers.map((i) => i.robotId));
       const number = await this.automationRobotRepository.selectActiveCountByRobotIds(Array.from(robotIds));
       return number > 0;
     }
@@ -371,35 +377,22 @@ export class AutomationService {
    * @param robotId
    * @param taskId
    * @param spaceId
+   * @param status run status
    * @param data context
    */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
+  private async createRunHistory(robotId: string, taskId: string, spaceId: string, status = RunHistoryStatusEnum.RUNNING, data?: any) {
     const newRunHistory = this.automationRunHistoryRepository.create({
       taskId,
       robotId,
       spaceId,
-      status: RunHistoryStatusEnum.RUNNING,
+      status,
       data,
     });
     await this.automationRunHistoryRepository.insert(newRunHistory);
-  }
-
-  /**
-   * Create an overage record
-   * @param robotId
-   * @param taskId
-   * @param spaceId
-   * @param data context
-   */
-  private async createRunOverLimitHistory(robotId: string, taskId: string, spaceId: string, data?: any) {
-    const newRunHistory = this.automationRunHistoryRepository.create({
-      taskId,
-      robotId,
-      spaceId,
-      status: RunHistoryStatusEnum.EXCESS,
-      data,
-    });
-    await this.automationRunHistoryRepository.insert(newRunHistory);
+    // save space monthly task run count
+    if (status != RunHistoryStatusEnum.EXCESS) {
+      await this.increaseSpaceAutomationTaskRunCount(spaceId);
+    }
   }
 
   /**
@@ -444,7 +437,7 @@ export class AutomationService {
         body: {
           extras: {
             robotId,
-            automationName: robot.name || await this.i18n.translate(Strings.robot_unnamed),
+            automationName: robot.name || (await this.i18n.translate(Strings.robot_unnamed)),
             endAt: Date.now(),
           },
         },
@@ -452,6 +445,15 @@ export class AutomationService {
         toUserId: [robot.createdBy],
       };
       await this.queueSenderService.sendMessage(notificationQueueExchangeName, 'notification.message', message);
+    }
+  }
+
+  private async increaseSpaceAutomationTaskRunCount(spaceId: string) {
+    const redisClient = this.redisService.getClient();
+    const spaceTaskRunCountKey = SPACE_AUTOMATION_RUN_COUNT_KEY(spaceId);
+    const keyExists = await redisClient.exists(spaceTaskRunCountKey);
+    if (keyExists) {
+      await redisClient.incr(spaceTaskRunCountKey);
     }
   }
 }

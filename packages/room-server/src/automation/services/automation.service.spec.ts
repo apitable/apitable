@@ -17,6 +17,7 @@
  */
 
 import { ConfigConstant } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
@@ -24,6 +25,8 @@ import { I18nService } from 'nestjs-i18n';
 import { NodeService } from 'node/services/node.service';
 import { LoggerConfigService } from 'shared/services/config/logger.config.service';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
+import { RestService } from 'shared/services/rest/rest.service';
+import { InternalSpaceAutomationRunsMessageView } from '../../database/interfaces';
 import { CommonException } from '../../shared/exception';
 import * as services from '../actions';
 import { ResponseStatusCodeEnums } from '../actions/enum/response.status.code.enums';
@@ -34,8 +37,6 @@ import { AutomationRunHistoryRepository } from '../repositories/automation.run.h
 import { AutomationTriggerRepository } from '../repositories/automation.trigger.repository';
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
-import { RestService } from "shared/services/rest/rest.service";
-import {InternalSpaceAutomationRunsMessageView} from "../../database/interfaces";
 
 describe('RobotActionTypeServiceTest', () => {
   let moduleFixture: TestingModule;
@@ -48,7 +49,9 @@ describe('RobotActionTypeServiceTest', () => {
   let robotService: RobotRobotService;
   let restService: RestService;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
+    // @ts-ignore
+    // @ts-ignore
     moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
@@ -88,6 +91,16 @@ describe('RobotActionTypeServiceTest', () => {
             translate: jest.fn(),
           },
         },
+        {
+          provide: RedisService,
+          useValue: {
+            getClient: () => {
+              return {
+                exists: jest.fn(),
+              };
+            },
+          },
+        },
         AutomationRobotRepository,
         AutomationRunHistoryRepository,
         AutomationActionRepository,
@@ -105,7 +118,7 @@ describe('RobotActionTypeServiceTest', () => {
     restService = moduleFixture.get<RestService>(RestService);
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await moduleFixture.close();
   });
 
@@ -126,7 +139,7 @@ describe('RobotActionTypeServiceTest', () => {
 
   it('should be check create robot permission throw exception', async () => {
     jest.spyOn(automationRobotRepository, 'getRobotCountByResourceId').mockResolvedValue(ConfigConstant.MAX_ROBOT_COUNT_PER_DST + 1);
-    await expect(async() => await automationService.checkCreateRobotPermission('resourceId')).rejects.toThrow(
+    await expect(async () => await automationService.checkCreateRobotPermission('resourceId')).rejects.toThrow(
       CommonException.ROBOT_CREATE_OVER_MAX_COUNT_LIMIT.message,
     );
   });
@@ -211,10 +224,12 @@ describe('RobotActionTypeServiceTest', () => {
 
   it('should return true when trigger have linked robot', async () => {
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
-    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([{
-      robotId: 'robotId',
-      resourceId: 'resourceId'
-    }]);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([
+      {
+        robotId: 'robotId',
+        resourceId: 'resourceId',
+      },
+    ]);
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(1);
     const result = await automationService.isResourcesHasRobots(['resourceId']);
     expect(result).toEqual(true);
@@ -231,10 +246,12 @@ describe('RobotActionTypeServiceTest', () => {
   it('should return false when trigger linked robot but robot disable', async () => {
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
     jest.spyOn(nodeService, 'getRelNodeIdsByMainNodeIds').mockResolvedValue([]);
-    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([{
-      robotId: 'robotId',
-      resourceId: 'resourceId'
-    }]);
+    jest.spyOn(automationTriggerRepository, 'selectRobotIdAndResourceIdByResourceIds').mockResolvedValue([
+      {
+        robotId: 'robotId',
+        resourceId: 'resourceId',
+      },
+    ]);
     jest.spyOn(automationRobotRepository, 'count').mockResolvedValue(0);
     const result = await automationService.isResourcesHasRobots(['resourceId']);
     expect(result).toEqual(false);

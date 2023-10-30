@@ -73,6 +73,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -211,10 +212,8 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             internalSpaceService.getAutomationRunMessageV0(spaceId);
         Long maxAutomationRunNums = automationRunMessageV0.getMaxAutomationRunNums();
         Long automationRunNums = automationRunMessageV0.getAutomationRunNums();
-        boolean isOverLimit = false;
-        if(maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums){
-            isOverLimit = true;
-        }
+        boolean isOverLimit =
+            maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums;
         List<AutomationRobotIntroductionPO> robots = result.getRobots();
         Map<String, List<AutomationActionIntroductionPO>> actionMap =
             result.getActions().stream()
@@ -419,10 +418,12 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     @Override
     public long getRobotRunsCountBySpaceId(String spaceId) {
         try {
-            return automationDaoApiApi.daoGetRobotRunsBySpaceId(spaceId).getData().getRecentlyRunCount();
+            return Objects.requireNonNull(
+                    automationDaoApiApi.daoGetRobotRunsBySpaceId(spaceId).getData())
+                .getRecentlyRunCount();
         } catch (Exception e) {
             log.error("Get robot runs count by spaceId error", e);
-            return 0l;
+            return 0L;
         }
     }
 
