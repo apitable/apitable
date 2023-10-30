@@ -97,6 +97,7 @@ build: ## build
 	make build-local
 
 build-local:
+	make _pre-check
 	make _build-java
 	make _build-ts
 
