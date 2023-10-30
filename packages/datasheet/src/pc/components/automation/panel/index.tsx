@@ -35,7 +35,6 @@ import { NodeFavoriteStatus } from '../../common/node_favorite_status';
 import { OrEmpty } from '../../common/or_empty';
 import {
   deleteRobot,
-  getResourceAutomationDetail,
   getResourceAutomations,
 } from '../../robot/api';
 import { useAutomationRobot } from '../../robot/hooks';
@@ -48,10 +47,11 @@ import { DescriptionModal } from '../../tab_bar/description_modal';
 import { ToolItem } from '../../tool_bar/tool_item';
 import { AutomationPanelContent } from '../content';
 import {
+  automationCacheAtom,
   automationDrawerVisibleAtom,
   automationHistoryAtom,
   automationPanelAtom,
-  automationStateAtom,
+  automationStateAtom, getResourceAutomationDetailIntegrated,
   PanelName, useAutomationController
 } from '../controller';
 import { useAutomationNavigateController } from '../controller/controller';
@@ -86,9 +86,12 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const isLg = screenIsAtMost(ScreenSize.lg);
   const isXl = screenIsAtMost(ScreenSize.xl);
 
+  const [cache, setCache] = useAtom(automationCacheAtom);
   useMount(() => {
     isXl && setSideBarVisible(false);
-    initialize();
+    if(cache.id !== resourceId) {
+      initialize();
+    }
   });
 
   useEffect(() => {
@@ -99,17 +102,25 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
       shareId: shareInfo?.shareId,
     }).then(async (res) => {
       const firstItem = res[0];
-      const itemDetail = await getResourceAutomationDetail(
+      const itemDetail = await getResourceAutomationDetailIntegrated(
         resourceId,
         firstItem.robotId,
         {
           shareId: shareInfo?.shareId
         }
       );
-      setPanel(
-        {
-          panelName: isLg? undefined: PanelName.BasicInfo
-        });
+      if(cache.id !== resourceId) {
+        setPanel(
+          {
+            panelName: isLg? undefined: PanelName.BasicInfo
+          });
+      }else {
+        if(cache.panel) {
+          setPanel(cache.panel);
+        }
+      }
+
+      setCache({});
 
       if (itemDetail.relatedResources) {
         itemDetail.relatedResources.forEach(resource => {

@@ -165,4 +165,12 @@ public class SpaceInfoVO {
 
     @Schema(description = "Seat usage")
     private SeatUsage seatUsage;
+
+    @Schema(description = "Number of widget", example = "5")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long widgetNums;
+
+    @Schema(description = "Automation Runs Count", example = "5")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long automationRunsNums;
 }

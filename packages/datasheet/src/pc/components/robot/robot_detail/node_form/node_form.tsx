@@ -44,6 +44,7 @@ import { INodeOutputSchema, IRobotNodeType } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
+import {deleteRobotAction, deleteTrigger} from "pc/components/robot/api";
 
 type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
   index: number;
@@ -122,7 +123,13 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
       onOk: async () => {
-        const deleteOk = await deleteRobotAction(nodeId);
+        let deleteOk;
+        if(type === 'trigger') {
+          deleteOk = await deleteTrigger(automationState?.resourceId!, nodeId, automationState?.robot?.robotId!);
+        }else {
+          deleteOk = await deleteRobotAction(nodeId);
+        }
+
         if (deleteOk) {
           if (!automationState?.resourceId) {
             return;
@@ -232,7 +239,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
         </Box>
         <OrEmpty visible={permissions.editable}>
           <>
-            {type === 'action' && (isHovering || isActive) && (
+            {(isHovering || isActive) && (
               <IconButton shape="square" icon={MoreStandOutlined} onClick={(e) => showMenu(e)} />
             )}
           </>

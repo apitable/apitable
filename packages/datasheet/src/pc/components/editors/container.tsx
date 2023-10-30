@@ -724,7 +724,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetRecords,
           datasheetId,
-          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
+          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : undefined,
           data: [
             {
               recordId: record.id,

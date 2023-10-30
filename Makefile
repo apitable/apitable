@@ -111,13 +111,13 @@ _build-java:
 _pre-check:
 	make _check-web
 
-_check-lint:
-	yarn install && yarn build:pre
-	yarn workspaces focus @apitable/core @apitable/i18n-lang @apitable/icons @apitable/components @apitable/widget-sdk @apitable/datasheet root
-	yarn lint:datasheet
+_check-web:
+	pnpm install && pnpm build:dst:pre
+	pnpm lint:datasheet
 
-_check-web: _build-ts
-
+_build-core:
+	pnpm install
+	nx run @apitable/core:build
 
 ################################ test
 

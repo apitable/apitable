@@ -1022,7 +1022,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             throw new BusinessException(OrganizationException.EXCEL_CAN_READ_ERROR);
         } catch (BusinessException e) {
             log.error("exceed over limit");
-            throw new BusinessException(LimitException.OVER_LIMIT);
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         } catch (Exception e) {
             log.error("fail to parse file", e);
             throw new BusinessException(

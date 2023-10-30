@@ -128,7 +128,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
 
   const optionData = permissionMenuData(data.type);
 
-  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo);
+  const invitable = spaceFeatures?.invitable && !isSocialPlatformEnabled?.(spaceInfo!);
 
   if (loading) {
     return (

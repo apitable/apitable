@@ -1,6 +1,6 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
 
 .formContainer {
   height: 100%;
@@ -82,6 +82,16 @@
           height: 20px;
           display: inline-block;
           vertical-align: middle;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         .addIcon {
@@ -124,7 +134,7 @@
 
       &::before,
       &::after {
-        content: "";
+        content: '';
         width: 100px;
         height: 1px;
         position: absolute;

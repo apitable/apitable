@@ -54,11 +54,14 @@ import com.apitable.databusclient.model.AutomationRobotSO;
 import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 import com.apitable.databusclient.model.AutomationSO;
 import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
+import com.apitable.internal.service.impl.InternalSpaceServiceImpl;
+import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.enums.NodeException;
+import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
@@ -70,6 +73,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -97,6 +101,12 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
 
     @Resource
     private IUserService iUserService;
+
+    @Resource
+    private DatasheetMapper datasheetMapper;
+
+    @Resource
+    private InternalSpaceServiceImpl internalSpaceService;
 
     @Override
     public List<AutomationRobotDto> getRobotListByResourceId(String resourceId) {
@@ -196,6 +206,14 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         if (null == result) {
             return vos;
         }
+        // Query the space ID it belongs to
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 =
+            internalSpaceService.getAutomationRunMessageV0(spaceId);
+        Long maxAutomationRunNums = automationRunMessageV0.getMaxAutomationRunNums();
+        Long automationRunNums = automationRunMessageV0.getAutomationRunNums();
+        boolean isOverLimit =
+            maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums;
         List<AutomationRobotIntroductionPO> robots = result.getRobots();
         Map<String, List<AutomationActionIntroductionPO>> actionMap =
             result.getActions().stream()
@@ -210,6 +228,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                     .description(robot.getDescription())
                     .resourceId(robot.getResourceId())
                     .isActive(robot.getIsActive())
+                    .isOverLimit(isOverLimit)
                     .build();
             // get robot triggers.
             List<TriggerSimpleVO> triggers =
@@ -259,6 +278,14 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             .recentlyRunCount(robot.getRecentlyRunCount())
             .build();
         String spaceId = iNodeService.getSpaceIdByNodeId(robot.getResourceId());
+        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 = internalSpaceService.getAutomationRunMessageV0(spaceId);
+        Long maxAutomationRunNums = automationRunMessageV0.getMaxAutomationRunNums();
+        Long automationRunNums = automationRunMessageV0.getAutomationRunNums();
+        boolean isOverLimit = false;
+        if(maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums){
+            isOverLimit = true;
+        }
+        vo.setIsOverLimit(isOverLimit);
         UserSimpleVO user =
             iUserService.getUserSimpleInfoMap(spaceId, ListUtil.toList(robot.getUpdatedBy()))
             .get(robot.getUpdatedBy());
@@ -385,6 +412,18 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             automationDaoApiApi.daoUpdateAutomationRobot(robotId, ro);
         } catch (ApiException e) {
             log.error("Delete automation error", e);
+        }
+    }
+
+    @Override
+    public long getRobotRunsCountBySpaceId(String spaceId) {
+        try {
+            return Objects.requireNonNull(
+                    automationDaoApiApi.daoGetRobotRunsBySpaceId(spaceId).getData())
+                .getRecentlyRunCount();
+        } catch (Exception e) {
+            log.error("Get robot runs count by spaceId error", e);
+            return 0L;
         }
     }
 

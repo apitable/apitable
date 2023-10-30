@@ -110,7 +110,7 @@ export function init() {
       const curStepInfo = triggeredGuideInfo[curGuideWizardId];
       if (typeof curStepInfo.steps !== 'object' || curStepInfo.steps.length === curStepInfo.triggeredSteps.length) return;
       const nextStepIds = curStepInfo.steps[curStepInfo.triggeredSteps.length];
-      const hasByEvents = nextStepIds.find((stepId: string) => {
+      const hasByEvents = nextStepIds.find((stepId) => {
         const stepInfo = Steps[stepId];
         return stepInfo && 'byEvent' in stepInfo && stepInfo.byEvent && stepInfo.byEvent[0] === eventId;
       });

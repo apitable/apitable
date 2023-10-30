@@ -42,9 +42,9 @@
     </select>
 
     <select id="selectDto" resultType="com.apitable.space.dto.SpaceAssetDTO">
-        SELECT id, cite, type
+        SELECT id, cite, type, is_deleted
         FROM ${tablePrefix}space_asset
-        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId} AND is_deleted = 0
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId}
     </select>
 
     <select id="selectDtoByAssetIdsAndType" resultType="com.apitable.space.dto.SpaceAssetDTO">
@@ -57,6 +57,18 @@
         </foreach>
         AND is_deleted = 0
         FOR UPDATE
+    </select>
+
+    <select id="selectSpaceAssetDTO"
+            resultType="com.apitable.space.dto.SpaceAssetDTO">
+        SELECT id, node_id, asset_id, cite
+        FROM ${tablePrefix}space_asset
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
     </select>
 
     <select id="selectNodeAssetDto"

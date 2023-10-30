@@ -55,6 +55,7 @@ import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.AiCreateParam;
 import com.apitable.interfaces.ai.model.AiType;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
+import com.apitable.interfaces.document.facade.DocumentServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
@@ -245,6 +246,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private IAutomationRobotService iAutomationRobotService;
+
+    @Resource
+    private DocumentServiceFacade documentServiceFacade;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -1027,6 +1031,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             // if node is ai chat bot, auto delete
             aiServiceFacade.deleteAi(nodeIds);
             iAutomationRobotService.updateIsDeletedByResourceIds(userId, nodeIds, true);
+            documentServiceFacade.remove(userId, nodeIds);
         }
         for (NodeEntity node : nodes) {
             Lock lock = redisLockRegistry.obtain(node.getParentId());

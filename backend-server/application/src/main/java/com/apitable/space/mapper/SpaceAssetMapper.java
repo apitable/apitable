@@ -73,6 +73,14 @@ public interface SpaceAssetMapper extends BaseMapper<SpaceAssetEntity> {
      * @param nodeIds node ids
      * @return Assets
      */
+    List<SpaceAssetDTO> selectSpaceAssetDTO(@Param("nodeIds") Collection<String> nodeIds);
+
+    /**
+     * Obtain information about the attachment resources of a node
+     *
+     * @param nodeIds node ids
+     * @return Assets
+     */
     List<NodeAssetDTO> selectNodeAssetDto(@Param("list") List<String> nodeIds);
 
     /**

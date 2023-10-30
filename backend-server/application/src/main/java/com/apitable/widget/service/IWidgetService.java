@@ -98,4 +98,9 @@ public interface IWidgetService {
     String getSpaceIdByWidgetId(String widgetId);
 
     void checkWidgetReference(List<String> subNodeIds, List<String> widgetIds);
+
+    /**
+     * @param spaceId space id
+     */
+    void checkWidgetOverLimit(String spaceId);
 }

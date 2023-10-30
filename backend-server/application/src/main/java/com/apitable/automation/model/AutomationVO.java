@@ -79,4 +79,7 @@ public class AutomationVO {
     @Schema(description = "Automation related resource list")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeSimpleVO> relatedResources;
+
+    @Schema(description = "Automation run num is over limit")
+    private Boolean isOverLimit;
 }

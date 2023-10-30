@@ -19,6 +19,8 @@
 package com.apitable.shared.grpc;
 
 import com.apitable.integration.grpc.BasicResult;
+import com.apitable.integration.grpc.DocumentAssetStatisticResult;
+import com.apitable.integration.grpc.DocumentAssetStatisticRo;
 import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
 
@@ -41,4 +43,13 @@ public interface IGrpcClientService {
      * @return BasicResult
      */
     BasicResult nodeDeleteChangeset(NodeDeleteRo ro);
+
+    /**
+     * Document asset statistic request
+     *
+     * @param ro DocumentAssetStatisticRo
+     * @return DocumentAssetStatisticResult
+     * @author Chambers
+     */
+    DocumentAssetStatisticResult documentAssetStatistic(DocumentAssetStatisticRo ro);
 }

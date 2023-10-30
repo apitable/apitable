@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <!--
  APITable <https://github.com/apitable/apitable>
  Copyright (C) 2022 APITable Ltd. <https://apitable.com>
@@ -17,11 +17,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.apitable.workspace.mapper.DocumentMapper">
-    <select id="selectSpaceIdByName" resultType="java.lang.String">
-        SELECT space_id
-        FROM ${tablePrefix}document
-        WHERE name = #{name}
-    </select>
-</mapper>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="/db/changelog/1.3/20231017_changeset.xml"/>
+</databaseChangeLog>

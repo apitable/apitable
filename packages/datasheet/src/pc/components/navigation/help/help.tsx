@@ -126,7 +126,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       text: t(Strings.help_partner_program),
       id: NAV_ID.USER_PARTNER_PROGRAM,
       onClick: () => navigationToUrl(`${window.location.origin}/partners/`),
-      hidden: !(getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE),
+      hidden: !(getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE) || getEnvVariables().IS_SELFHOST,
     },
   ];
 

@@ -148,6 +148,8 @@ export interface ISpaceBasicInfo {
     chatBotCount: number;
     memberCount: number;
   };
+  automationRunsNums: number;
+  widgetNums: number;
 }
 
 export interface IApp {
@@ -155,7 +157,7 @@ export interface IApp {
   status: boolean;
 }
 
-export type ISocialPlatformType = 1 | 2 | 3;
+export type ISocialPlatformType = 1 | 2 | 3 | 10;
 
 export interface ISpaceListAction {
   type: typeof actions.SET_SPACE_LIST;

@@ -63,6 +63,14 @@ public class InternalSpaceSubscriptionVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMessageCredits;
 
+    @Schema(description = "Maximum number of widget of the space station")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxWidgetNums;
+
+    @Schema(description = "Maximum number of automation runs of the space station")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxAutomationRunsNums;
+
     @Schema(description = "allow use embed", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEmbed;

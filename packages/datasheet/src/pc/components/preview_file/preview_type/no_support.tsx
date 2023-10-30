@@ -80,12 +80,12 @@ export const NoSupport: FC<React.PropsWithChildren<INoSupportProps>> = (props) =
           {Notice[type].error}
         </Typography>
 
-        {Marketing && Notice[type].tip && (
+        {Boolean(Marketing) && Notice[type].tip && (
           <Typography variant="body4" className={styles.tip}>
             {Notice[type].tip}
           </Typography>
         )}
-        {Marketing && isMainAdmin && getEnvVariables().INTEGRATIONS_YOZOSOFT_VISIBLE && (
+        {Boolean(Marketing) && isMainAdmin && getEnvVariables().INTEGRATIONS_YOZOSOFT_VISIBLE && (
           <div className={styles.btnGroup}>
             {!isMobile && (
               <Button

@@ -18,26 +18,16 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Api,
-  IInviteEmailInfo,
-  IInviteLinkInfo,
-  IInviteMemberList,
-  IReduxState,
-  Navigation,
-  StatusCode,
-  StoreActions,
-  Strings,
-  t,
-} from '@apitable/core';
+import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState, Navigation, StatusCode, StoreActions } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
+
 // @ts-ignore
-import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
+
 interface IJoinFuncProps {
   fromLocalStorage?: boolean;
 }
@@ -63,10 +53,6 @@ export const useLinkInvite = () => {
             Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
           }
-          if (res.data.code === billingErrorCode.OVER_LIMIT) {
-            return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-          }
-          
         });
       } else {
         Router.push(Navigation.INVITE, {
@@ -164,9 +150,6 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
           setInvitedCount(invite.length);
           setErr('');
         } else {
-          if (code === billingErrorCode.OVER_LIMIT) {
-            return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-          }
           if (secondStepVerify(code)) {
             return;
           }

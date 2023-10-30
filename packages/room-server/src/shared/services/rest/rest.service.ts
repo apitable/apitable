@@ -32,6 +32,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { skipUsageVerification } from 'app.environment';
 import {
   InternalCreateDatasheetVo, InternalSpaceCreditUsageView,
+  InternalSpaceAutomationRunsMessageView,
   InternalSpaceInfoVo,
   InternalSpaceStatisticsRo,
   InternalSpaceSubscriptionView,
@@ -83,6 +84,7 @@ export class RestService {
   private SPACE_CAPACITY = 'internal/space/%(spaceId)s/capacity';
   private SPACE_USAGES = 'internal/space/%(spaceId)s/usages';
   private SPACE_CREDIT_USAGES = 'internal/space/%(spaceId)s/credit/usages';
+  private SPACE_AUTOMATION_RUNS_MESSAGE = 'internal/space/%(spaceId)s/automation/run/message';
   private SPACE_SUBSCRIPTION = 'internal/space/%(spaceId)s/subscription';
   private CREATE_DATASHEET_API_URL = 'internal/spaces/%(spaceId)s/datasheets';
   private DELETE_NODE_API_URL = 'internal/spaces/%(spaceId)s/nodes/%(nodeId)s/delete';
@@ -528,6 +530,8 @@ export class RestService {
         maxGanttViewsInSpace: -1,
         maxCalendarViewsInSpace: -1,
         maxMessageCredits: 0,
+        maxWidgetNums: -1,
+        maxAutomationRunsNums: -1,
         allowEmbed: true,
         allowOrgApi: true,
       };
@@ -564,6 +568,11 @@ export class RestService {
    */
   async getSpaceCreditUsage(spaceId: string): Promise<InternalSpaceCreditUsageView> {
     const response = await lastValueFrom(this.httpService.get<InternalSpaceCreditUsageView>(sprintf(this.SPACE_CREDIT_USAGES, { spaceId })));
+    return response!.data;
+  }
+
+  public async getSpaceAutomationRunsMessage(spaceId: string): Promise<InternalSpaceAutomationRunsMessageView> {
+    const response = await lastValueFrom(this.httpService.get<InternalSpaceAutomationRunsMessageView>(sprintf(this.SPACE_AUTOMATION_RUNS_MESSAGE, { spaceId })));
     return response!.data;
   }
 

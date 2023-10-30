@@ -11,6 +11,12 @@
       "pc/*": [
         "./pc/*"
       ],
+      "enterprise": [
+        "./modules/enterprise"
+      ],
+      "api/*": [
+        "./modules/api/*"
+      ],
       "enterprise/*": [
         "./modules/enterprise/*"
       ]

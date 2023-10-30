@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,24 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IErrorListProps } from '../../interface';
+package com.apitable.interfaces.document;
 
-export default function ErrorList(props: IErrorListProps) {
-  const { errors } = props;
-  return (
-    <div className="panel panel-danger errors">
-      <div className="panel-heading">
-        <h3 className="panel-title">Errors</h3>
-      </div>
-      <ul className="list-group">
-        {errors.map((error: any, i: number) => {
-          return (
-            <li key={i} className="list-group-item text-danger">
-              {error.stack}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
+import com.apitable.interfaces.document.facade.DefaultDocumentServiceFacadeImpl;
+import com.apitable.interfaces.document.facade.DocumentServiceFacade;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * document context config.
+ */
+@Configuration(proxyBeanMethods = false)
+public class DocumentContextConfig {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DocumentServiceFacade defaultDocumentServiceFacade() {
+        return new DefaultDocumentServiceFacadeImpl();
+    }
 }

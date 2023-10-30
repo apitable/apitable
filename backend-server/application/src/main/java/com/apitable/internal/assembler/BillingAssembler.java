@@ -48,6 +48,8 @@ public class BillingAssembler {
         subscriptionVo.setMaxRowsPerSheet(billingPlanFeature.getRowsPerSheet().getValue());
         subscriptionVo.setMaxArchivedRowsPerSheet(billingPlanFeature.getArchivedRowsPerSheet().getValue());
         subscriptionVo.setMaxMessageCredits(billingPlanFeature.getMessageCreditNums().getValue());
+        subscriptionVo.setMaxWidgetNums(billingPlanFeature.getMessageWidgetNums().getValue());
+        subscriptionVo.setMaxAutomationRunsNums(billingPlanFeature.getMessageAutomationRunNums().getValue());
         subscriptionVo.setAllowEmbed(billingPlanFeature.getAllowEmbed().getValue());
         subscriptionVo.setAllowOrgApi(billingPlanFeature.getAllowOrgApi().getValue());
         return subscriptionVo;

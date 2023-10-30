@@ -21,13 +21,7 @@ package com.apitable.internal.controller;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.SpaceStatisticsRo;
 import com.apitable.internal.service.InternalSpaceService;
-import com.apitable.internal.vo.InternalCreditUsageVo;
-import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
-import com.apitable.internal.vo.InternalSpaceApiUsageVo;
-import com.apitable.internal.vo.InternalSpaceCapacityVo;
-import com.apitable.internal.vo.InternalSpaceInfoVo;
-import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
-import com.apitable.internal.vo.InternalSpaceUsageVo;
+import com.apitable.internal.vo.*;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
@@ -109,6 +103,18 @@ public class InternalSpaceController {
     public ResponseData<InternalCreditUsageVo> getCreditUsages(
         @PathVariable("spaceId") String spaceId) {
         return ResponseData.success(internalSpaceService.getSpaceCreditUsageVo(spaceId));
+    }
+
+    /**
+     * Get space used usage information.
+     */
+    @GetResource(path = "/space/{spaceId}/automation/run/message", requiredLogin = false)
+    @Operation(summary = "get space automation run message")
+    @Parameter(name = "spaceId", description = "space id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spczJrh2i3tLW")
+    public ResponseData<InternalSpaceAutomationRunMessageV0> getAutomationRunMessage(
+            @PathVariable("spaceId") String spaceId) {
+        return ResponseData.success(internalSpaceService.getAutomationRunMessageV0(spaceId));
     }
 
     /**
