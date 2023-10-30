@@ -18,7 +18,43 @@
 
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Role, Selectors } from '@apitable/core';
+import { IReduxState, Role, Selectors } from '@apitable/core';
+
+/**
+ *
+ * @param dstId
+ * @param withNoPermissionField
+ */
+export const getAllColumnsFp = (state: IReduxState, dstId: string, withNoPermissionField?: boolean) => {
+  const snapshot = Selectors.getSnapshot(state, dstId);
+  const fieldPermissionMap = Selectors.getFieldPermissionMap(state, dstId);
+  const firstView = snapshot?.meta.views[0];
+  return firstView?.columns.filter((col) => {
+    if (withNoPermissionField) {
+      return true;
+    }
+    const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId);
+    return fieldRole !== Role.None;
+  });
+};
+
+/**
+ *
+ * @param dstId
+ * @param withNoPermissionField
+ */
+export const useAllColumnsFp1 = (state: IReduxState, dstId: string, withNoPermissionField?: boolean) => {
+  const snapshot = Selectors.getSnapshot(state, dstId);
+  const fieldPermissionMap = Selectors.getFieldPermissionMap(state, dstId);
+  const firstView = snapshot?.meta.views[0];
+  return firstView?.columns.filter((col) => {
+    if (withNoPermissionField) {
+      return true;
+    }
+    const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId);
+    return fieldRole !== Role.None;
+  });
+};
 
 /**
  *

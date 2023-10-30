@@ -31,8 +31,6 @@ import { NewItem } from '../../robot_list/new_item';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
 
-export const CONST_MAX_ACTION_COUNT = 9;
-
 export const getNextAction = (actionList: IRobotAction[], preActionId ?: string) => {
   const actionIndex = actionList.findIndex(action => action.actionId === preActionId);
   return actionList[actionIndex + 1];

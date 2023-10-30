@@ -19,16 +19,11 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import path from 'path';
 import * as fs from 'fs';
-import { DocumentBaseService } from './services/document.base.service';
-import { HocuspocusBaseService, HocuspocusService } from './services/hocuspocus.base.service';
+import { DocumentBaseService } from './document.base.service';
 
 @Module({
   providers: [
     {
-      provide: HocuspocusBaseService,
-      useClass: HocuspocusService
-    },
-    {
       provide: DocumentBaseService,
       useClass: class DefaultDocumentService extends DocumentBaseService {
       }
@@ -36,42 +31,26 @@ import { HocuspocusBaseService, HocuspocusService } from './services/hocuspocus.
   ],
   exports: [
     {
-      provide: HocuspocusBaseService,
-      useClass: HocuspocusService
-    },
-    {
       provide: DocumentBaseService,
       useClass: class DefaultDocumentService extends DocumentBaseService {
       }
     },
   ],
 })
-export class WorkDocDynamicModule {
+export class DocumentServiceDynamicModule {
 
   static forRoot(): DynamicModule {
-    const enterpriseModulePath = path.join(__dirname, '../enterprise/workdoc');
+    const enterpriseModulePath = path.join(__dirname, '../../enterprise/workdoc');
     const isEnterpriseLevel: boolean = fs.existsSync(enterpriseModulePath);
     if (isEnterpriseLevel) {
-      const { WorkDocEnterpriseModule } = require(`${enterpriseModulePath}/workdoc.enterprise.module`);
+      const { DocumentEnterpriseModule } = require(`${enterpriseModulePath}/document.enterprise.module`);
       return {
-        module: WorkDocEnterpriseModule,
+        module: DocumentEnterpriseModule,
       };
     }
     return { 
-      module: WorkDocDynamicModule,
+      module: DocumentServiceDynamicModule,
     }; 
   }
-
-}
-
-@Module({
-  imports: [
-    WorkDocDynamicModule.forRoot(),
-  ],
-  exports: [
-    WorkDocDynamicModule.forRoot(),
-  ],
-})
-export class WorkDocModule {
 
 }

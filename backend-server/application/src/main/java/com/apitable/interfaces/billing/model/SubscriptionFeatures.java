@@ -207,6 +207,25 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        /**
+         * Automation Nums feature.
+         */
+        public static class MessageAutomationRunNums extends AbstractNumberPlanFeature {
+
+            public MessageAutomationRunNums(Long value) {
+                super(value);
+            }
+        }
+        /**
+         * Widget Nums feature.
+         */
+        public static class MessageWidgetNums extends AbstractNumberPlanFeature {
+
+            public MessageWidgetNums(Long value) {
+                super(value);
+            }
+        }
     }
 
     /**

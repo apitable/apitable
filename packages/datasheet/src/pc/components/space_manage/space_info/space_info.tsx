@@ -21,6 +21,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
+// @ts-ignore
+import { isSocialPlatformEnabled, subscribeUsageCheck, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { ScrollBar } from 'pc/components/scroll_bar';
@@ -30,8 +32,6 @@ import { SpaceContext } from './context';
 import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert, subscribeUsageCheck, isSocialPlatformEnabled } from 'enterprise';
 
 export const SpaceInfo = () => {
   const { spaceInfo, spaceFeatures, subscription, spaceId } = useSelector(
@@ -97,8 +97,8 @@ export const SpaceInfo = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   useEffect(() => {
-    Api.getSpaceAdList().then((res) => {
-      const data = res.data;
+    Api.getSpaceAdList().then((res: any) => {
+      const data = res;
       const lang = getLanguage();
       const isZh = /^zh/i.test(lang);
       if (!isZh) {

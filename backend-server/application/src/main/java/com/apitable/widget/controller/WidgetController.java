@@ -264,6 +264,8 @@ public class WidgetController {
         controlTemplate.checkNodePermission(memberId, widget.getNodeId(),
             NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+        // Check the number of running installations
+        iWidgetService.checkWidgetOverLimit(spaceId);
         // create widget
         String widgetId = iWidgetService.create(userId, spaceId, widget);
         return ResponseData.success(iWidgetService.getWidgetPack(widgetId));
@@ -289,6 +291,8 @@ public class WidgetController {
         controlTemplate.checkNodePermission(memberId, nodeId,
             NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+        // Check the number of running installations
+        iWidgetService.checkWidgetOverLimit(spaceId);
         // copy widget
         Collection<String> widgetIds = iWidgetService.copyWidget(userId,
             spaceId, nodeId, widgetRo.getWidgetIds());

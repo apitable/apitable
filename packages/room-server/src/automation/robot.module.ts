@@ -44,7 +44,7 @@ import { RobotRobotService } from './services/robot.robot.service';
 import { RobotServiceDynamicModule } from './services/robot.service.dynamic.module';
 import { RobotTriggerService } from './services/robot.trigger.service';
 import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
-import { WorkDocModule } from 'workdoc/workdoc.module';
+import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.dynamic.module';
 
 @Module({
   imports: [
@@ -60,7 +60,7 @@ import { WorkDocModule } from 'workdoc/workdoc.module';
     NodeModule,
     UserModule,
     RobotServiceDynamicModule.forRoot(),
-    WorkDocModule,
+    DocumentServiceDynamicModule.forRoot(),
   ],
   controllers: [
     RobotController,

@@ -85,7 +85,7 @@ const DatePickerMobileBase: React.ForwardRefRenderFunction<IEditor, IDateTimeEdi
       }
       if (timeZone && option !== OptionType.BACKTONOW) {
         const diff = diffTimeZone(timeZone);
-        _val = dayjs(dayjs(_val).valueOf() + diff).toDate();
+        _val = dayjs.tz(dayjs.tz(_val).valueOf() + diff).toDate();
       }
 
       setValue(_val);

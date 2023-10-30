@@ -19,11 +19,12 @@
 import Image from 'next/image';
 import { isValidElement, memo, useRef } from 'react';
 import styled from 'styled-components';
-import { Box, Button, ListDeprecate, stopPropagation, Typography, useTheme } from '@apitable/components';
+import { Box, Button, ListDeprecate, stopPropagation, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, NumberOutlined } from '@apitable/icons';
 import { useCssColors } from '../trigger/use_css_colors';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
+
 
 interface ISchemaPropertyListItemProps {
   currentStep: number
@@ -35,31 +36,42 @@ interface ISchemaPropertyListItemProps {
 
 const StyledButton = styled(Button)`
 `;
+const StyledTypography = styled(Typography)`
+  padding-top: 0;
+  `;
 
 const RowItem= styled(ListDeprecate.Item)`
   ${StyledButton} {
     visibility: hidden;
   }
+  height:  inherit !important;
+  padding: 8px 0;
+  
   &:hover {
     ${StyledButton} {
       visibility: visible;
     }
   }
-`
+`;
 
 export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps) => {
   const { item, currentStep, isActive, disabled, handleItemClick } = props;
   const ref = useRef<HTMLDivElement>(null);
   const colors = useCssColors();
   const imgSize = currentStep === 0 ? 32 : 24;
+
+  console.log('SchemaPropertyListItem', item);
+
   return (
     <Box ref={ref} key={item.key} marginBottom="4px">
       <RowItem
         key={item.key}
         id={item.key}
+        active={isActive}
         currentIndex={0}
         style={{
           borderRadius: '4px',
+          height: 'inherit !important'
         }}
         className={isActive ? 'active' : ''}
         onClick={(e) => {
@@ -100,11 +112,19 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
                 <NumberOutlined size={16} color={colors.textCommonTertiary}/>
             }
 
-            <Box marginLeft={'8px'} alignItems={'center'} display={'flex'}>
-              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary} >
                 {item.label}
               </Typography>
+              {
+                item.description && (
+                  <StyledTypography variant={'body4'} color={colors.textCommonTertiary}>
+                    {item.description}
+                  </StyledTypography>
+                )
+              }
             </Box>
+
           </Box>
           <Box display="flex" alignItems="center">
             {item.canInsert && (

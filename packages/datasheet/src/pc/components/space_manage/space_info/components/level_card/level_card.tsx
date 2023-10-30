@@ -70,7 +70,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
     if (expiration <= 0) {
       return t(Strings.without_day);
     }
-    return dayjs(typeof expiration === 'number' ? expiration * 1000 : expiration).format('YYYY-MM-DD');
+    return dayjs.tz(typeof expiration === 'number' ? expiration * 1000 : expiration).format('YYYY-MM-DD');
   }, [expiration]);
 
   const style: React.CSSProperties = useMemo(() => {

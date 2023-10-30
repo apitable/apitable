@@ -11,6 +11,7 @@ export const ItemStatus = ({ status, variant = 'outlined' }: { status: RobotRunS
       case RobotRunStatusEnums.SUCCESS:
         return <CheckCircleOutlined color={colors.textSuccessDefault} size={16} />;
       case RobotRunStatusEnums.ERROR:
+      case RobotRunStatusEnums.LIMIT:
         return <WarnCircleOutlined color={colors.textWarnDefault} size={16} />;
       case RobotRunStatusEnums.RUNNING:
         return <PlayOutlined color={colors.textBrandDefault} size={16} />;
@@ -24,7 +25,9 @@ export const ItemStatus = ({ status, variant = 'outlined' }: { status: RobotRunS
     <>
       {status === RobotRunStatusEnums.RUNNING && <PlayFilled color={colors.textBrandDefault} size={16} />}
       {status === RobotRunStatusEnums.SUCCESS && <CheckCircleFilled color={colors.textSuccessDefault} size={16} />}
-      {status === RobotRunStatusEnums.ERROR && <WarnCircleFilled color={colors.textWarnDefault} size={16} />}
+      {(status === RobotRunStatusEnums.ERROR || status === RobotRunStatusEnums.LIMIT) && (
+        <WarnCircleFilled color={colors.textWarnDefault} size={16} />
+      )}
     </>
   );
 };

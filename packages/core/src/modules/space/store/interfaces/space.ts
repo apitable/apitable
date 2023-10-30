@@ -148,6 +148,8 @@ export interface ISpaceBasicInfo {
     chatBotCount: number;
     memberCount: number;
   };
+  automationRunsNums: number;
+  widgetNums: number;
 }
 
 export interface IApp {

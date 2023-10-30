@@ -34,6 +34,7 @@ import { store } from 'pc/store';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+import {copyWidgetsToNode} from "api/widget/api";
 
 interface ISentToDashboardProps {
   widgetId: string;
@@ -68,7 +69,7 @@ const SentToDashboard: React.FC<React.PropsWithChildren<ISentToDashboardProps>> 
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   async function copyWidget(dashboardId: string) {
-    const copyData = await WidgetApi.copyWidgetsToNode(dashboardId, [widgetId]);
+    const copyData = await copyWidgetsToNode(dashboardId, [widgetId]);
     setButtonLoading(false);
     const { success, message, data } = copyData.data;
     if (success) {

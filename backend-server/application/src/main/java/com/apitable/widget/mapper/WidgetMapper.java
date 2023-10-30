@@ -104,4 +104,11 @@ public interface WidgetMapper {
      * @return space id
      */
     String selectSpaceIdByWidgetIdIncludeDeleted(@Param("widgetId") String widgetId);
+
+    /**
+     * Query all widget num of the space
+     * @param spaceId
+     * @return
+     */
+    Long selectCountBySpaceId(@Param("spaceId") String spaceId);
 }

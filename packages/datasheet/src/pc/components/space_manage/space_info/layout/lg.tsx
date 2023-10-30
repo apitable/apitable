@@ -23,8 +23,21 @@ import { useCards } from './cards';
 import styles from './style.module.less';
 
 export const Lg = (props: ILayoutProps) => {
-  const { AdCard, CapacityCard, ApiCard, FileCard, RecordCard, MemberCard, ViewsCard, OthersCard, InfoCard, LevelCard, CreditCard, CreditCostCard } =
-    useCards(props);
+  const {
+    AdCard,
+    CapacityCard,
+    AutomationCard,
+    ApiCard,
+    FileCard,
+    RecordCard,
+    MemberCard,
+    ViewsCard,
+    OthersCard,
+    InfoCard,
+    LevelCard,
+    CreditCard,
+    CreditCostCard,
+  } = useCards(props);
 
   return (
     <div className={styles.lg} style={{ height: '100%' }}>
@@ -36,21 +49,12 @@ export const Lg = (props: ILayoutProps) => {
           <CreditCard minHeight={372} />
         </Block>
         <Block flex={27}>
-          <ApiCard minHeight={372} />
-          {/*<AdCard minHeight={372} />*/}
+          <AutomationCard minHeight={372} />
+        </Block>
+        <Block flex={27}>
+          <AdCard minHeight={372} />
         </Block>
       </Block>
-      {/*<Block isWrap vertical>*/}
-      {/*  <Block flex={16}>*/}
-      {/*    <LevelCard minHeight={176} />*/}
-      {/*  </Block>*/}
-      {/*  <Block flex={27}>*/}
-      {/*    <CapacityCard />*/}
-      {/*  </Block>*/}
-      {/*  <Block flex={27}>*/}
-      {/*    <ApiCard minHeight={372} />*/}
-      {/*  </Block>*/}
-      {/*</Block>*/}
       <Block isWrap vertical flex={2}>
         <Block flex={16} isWrap>
           <Block flex={1}>
@@ -76,13 +80,13 @@ export const Lg = (props: ILayoutProps) => {
         </Block>
         <Block flex={16} isWrap>
           <Block flex={16}>
+            <ApiCard minHeight={372} />
+          </Block>
+          <Block flex={16}>
             <ViewsCard />
           </Block>
           <Block flex={16}>
             <OthersCard minHeight={372} />
-          </Block>
-          <Block flex={16}>
-            <AdCard minHeight={372} />
           </Block>
         </Block>
       </Block>

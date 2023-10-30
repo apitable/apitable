@@ -20,8 +20,10 @@ import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { Box, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
+import { getTriggerDatasheetId, getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { useAllFields } from '../../hooks';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { enrichDatasheetTriggerOutputSchema } from '../magic_variable_container/helper';
@@ -32,18 +34,22 @@ import { FormDataRender } from './form_data_render';
 import styles from './style.module.less';
 
 interface IRobotRunHistoryTriggerDetail {
-  nodeType: INodeType;
-  nodeDetail: IRobotRunHistoryDetail['nodeByIds'][string];
+    nodeType: INodeType;
+    nodeDetail: IRobotRunHistoryDetail['nodeByIds'][string];
 }
 
 const FilterWrapper = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
 `;
-export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any; label: string; datasheetId: string }) => {
+export const FilterValueDisplay = ({ filter, label, datasheetId }: {
+    filter: any;
+    label: string;
+    datasheetId: string
+}) => {
   const theme = useTheme();
   if (!filter) return null;
-  if(!datasheetId) {
+  if (!datasheetId) {
     return null;
   }
   return (
@@ -52,7 +58,7 @@ export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any
         {label}
       </Typography>
       <FilterWrapper>
-        <RecordMatchesConditionsFilter filter={filter} readonly datasheetId={datasheetId} />
+        <RecordMatchesConditionsFilter filter={filter} readonly datasheetId={datasheetId}/>
       </FilterWrapper>
     </Box>
   );
@@ -61,7 +67,12 @@ export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any
 export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetail) => {
   const { nodeType, nodeDetail } = props;
 
-  const datasheetId = nodeDetail?.input?.datasheetId ?? '';
+  const datasheetId1 = nodeDetail?.input?.datasheetId;
+  const formId = nodeDetail?.input?.formId;
+  const resourceId = datasheetId1 ?? formId;
+  const { data: dataList1 } = useSWR(['getRobotMagicDatasheetByResourceId', resourceId], () => getTriggerDstId(resourceId), {});
+
+  const datasheetId = dataList1 ?? '';
   const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
 
   const fieldPermissionMap = useSelector((state) => {
@@ -85,7 +96,7 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
         className={styles.historyDetailList}
       >
         {!datasheet && (
-          <ReactJson src={nodeDetail.input} collapsed={3} />
+          <ReactJson src={nodeDetail.input} collapsed={3}/>
         )}
       </Box>
     </Box>
@@ -105,17 +116,18 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
         className={styles.historyDetailList}
       >
         {retrievedSchema.type === 'object' &&
-          Object.keys(retrievedSchema.properties!).map((propertyKey) => {
-            const propertyValue = formData[propertyKey];
-            const label = retrievedSchema.properties![propertyKey].title || '';
-            if (propertyKey === 'filter') {
-              return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />;
-            }
-            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />;
-          })}
+                    Object.keys(retrievedSchema.properties!).map((propertyKey) => {
+                      const propertyValue = formData[propertyKey];
+                      const label = retrievedSchema.properties![propertyKey].title || '';
+                      if (propertyKey === 'filter') {
+                        return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter}
+                          datasheetId={datasheetId}/>;
+                      }
+                      return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue}/>;
+                    })}
       </Box>
-      ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
-      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema />
+            ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
+      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema/>
     </Box>
   );
 };

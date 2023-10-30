@@ -1,11 +1,10 @@
-import { useMount } from 'ahooks';
 import dayjs from 'dayjs';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { Box, LinkButton, Switch, Typography } from '@apitable/components';
-import { ConfigConstant, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import {
   ChevronRightOutlined,
   GotoOutlined,
@@ -18,12 +17,10 @@ import { NodeIcon } from '../../../catalog/tree/node_icon';
 import { Avatar, AvatarType } from '../../../common';
 import { updateAutomationRobot } from '../../../robot/api';
 import { useDefaultRobotDesc, useAutomationRobot } from '../../../robot/hooks';
-import { AutomationScenario } from '../../../robot/interface';
 import { useGetTaskHistory } from '../../../robot/robot_detail/robot_run_history';
 import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
-import { automationHistoryAtom, automationStateAtom, automationTriggerAtom } from '../../controller/atoms';
+import { automationHistoryAtom, automationStateAtom } from '../../controller/atoms';
 
-import { getDatasheetId, getFormId } from '../../controller/hooks/use_robot_fields';
 import { useAutomationResourcePermission } from '../../controller/use_automation_permission';
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
@@ -34,6 +31,7 @@ const StyledGrip = styled(Box)`
 
 const StyeldRelatedResouece = styled(Box)`
   cursor: pointer;
+
   &:hover {
     border-radius: var(--radiusRadiusDefault, 4px);
     background: var(--bgBglessHover, rgba(51, 51, 51, 0.06));
@@ -42,22 +40,18 @@ const StyeldRelatedResouece = styled(Box)`
 
 export const CONST_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
+const relativeFilesVisible = true;
 export const BaseInfo: FC = () => {
   const [state] = useAtom(automationStateAtom);
-
-  const automationTrigger = useAtomValue(automationTriggerAtom);
-  const formId = getFormId(automationTrigger);
-  const datasheetId = getDatasheetId(automationTrigger);
 
   const robot = state?.robot;
   const { updateRobot } = useAutomationRobot();
 
-  const relativeFilesVisible = state?.scenario === AutomationScenario.node;
   const permissions = useAutomationResourcePermission();
   const { items } = useGetTaskHistory();
 
   const sortedList = useMemo(() =>
-    items.sort((a, b) => dayjs(a.createdAt).isBefore(b.createdAt) ? 1 : -1), [
+    items.sort((a, b) => dayjs.tz(a.createdAt).isBefore(b.createdAt) ? 1 : -1), [
     items,
   ]);
   const [, setHistoryDialog] = useAtom(automationHistoryAtom);
@@ -115,7 +109,7 @@ export const BaseInfo: FC = () => {
           <StyledGrip padding={'0 24px'} gridGap={'16px'} display={'flex'} flexDirection="column">
             <Box display={'flex'} justifyContent={'space-between'}>
               <Box display={'inline-flex'}>
-                <PlayOutlined size={16} color={colors.textCommonTertiary} />
+                <PlayOutlined size={16} color={colors.textCommonTertiary}/>
 
                 <Box alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonTertiary}>
@@ -131,7 +125,7 @@ export const BaseInfo: FC = () => {
 
             <Box display={'flex'} justifyContent={'space-between'}>
               <Box display={'inline-flex'}>
-                <UserEditOutlined size={16} color={colors.textCommonTertiary} />
+                <UserEditOutlined size={16} color={colors.textCommonTertiary}/>
 
                 <Box alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonTertiary}>
@@ -141,7 +135,8 @@ export const BaseInfo: FC = () => {
               </Box>
 
               <Box display={'flex'} alignItems={'center'}>
-                <Avatar id={AvatarType.Member.toString()} size={20} title={robot?.updatedBy?.nickName} src={robot?.updatedBy?.avatar} />
+                <Avatar id={AvatarType.Member.toString()} size={20} title={robot?.updatedBy?.nickName}
+                  src={robot?.updatedBy?.avatar}/>
 
                 <Box display="flex" alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonPrimary}>
@@ -153,7 +148,7 @@ export const BaseInfo: FC = () => {
 
             <Box display={'flex'} justifyContent={'space-between'}>
               <Box display={'inline-flex'}>
-                <TimeOutlined size={16} color={colors.textCommonTertiary} />
+                <TimeOutlined size={16} color={colors.textCommonTertiary}/>
 
                 <Box alignItems={'center'} marginLeft={'8px'}>
                   <Typography variant="body4" color={colors.textCommonTertiary}>
@@ -163,7 +158,7 @@ export const BaseInfo: FC = () => {
               </Box>
 
               <Typography variant="body4" color={colors.textCommonPrimary}>
-                {dayjs(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
+                {dayjs.tz(robot?.updatedAt ?? new Date()).format(CONST_DATETIME_FORMAT)}
               </Typography>
             </Box>
           </StyledGrip>
@@ -207,12 +202,12 @@ export const BaseInfo: FC = () => {
                       </Box>
                     </Box>
 
-                    <GotoOutlined color={colors.textCommonTertiary} />
+                    <GotoOutlined color={colors.textCommonTertiary}/>
                   </StyeldRelatedResouece>
                 </Box>
               ))}
 
-              { robot?.relatedResources?.length ===0 && (
+              {robot?.relatedResources?.length === 0 && (
                 <Box paddingX={'24px'} marginTop={'12px'}>
                   <Typography variant="body4" color={colors.textCommonTertiary}>
                     {t(Strings.the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side)}
@@ -225,14 +220,15 @@ export const BaseInfo: FC = () => {
         <Box>
           <Box justifyContent={'space-between'} alignItems={'center'} display={'flex'} paddingX={'24px'}>
             <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-              <Typography variant="h7" color={colors.textCommonPrimary} style={{ marginBottom: '12px', marginTop: '12px' }}>
+              <Typography variant="h7" color={colors.textCommonPrimary}
+                style={{ marginBottom: '12px', marginTop: '12px' }}>
                 {t(Strings.robot_run_history_title)}
               </Typography>
             </Box>
 
             {items.length > 0 && (
               <LinkButton
-                suffixIcon={<ChevronRightOutlined size={16} color={colors.textCommonTertiary} />}
+                suffixIcon={<ChevronRightOutlined size={16} color={colors.textCommonTertiary}/>}
                 underline={false}
                 onClick={() => {
                   setHistoryDialog((d) => ({
@@ -241,12 +237,14 @@ export const BaseInfo: FC = () => {
                   }));
                 }}
               >
-                <Typography variant={'body3'} color={colors.textCommonTertiary}>{t(Strings.automation_more)}</Typography>
+                <Typography variant={'body3'}
+                  color={colors.textCommonTertiary}>{t(Strings.automation_more)}</Typography>
               </LinkButton>
             )}
           </Box>
 
-          <Box display={'flex'} alignItems={'center'} flexDirection={'row'} paddingBottom={'5px'} paddingX={'24px'}>
+          <Box display={'flex'} alignItems={'center'} flexDirection={'row'} paddingBottom={'5px'}
+            paddingX={'24px'}>
             <Typography variant={'body4'} color={colors.textCommonTertiary}>
               {t(Strings.notify_creator_when_there_is_an_error_occurred)}
             </Typography>

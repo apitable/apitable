@@ -23,7 +23,7 @@ import { isObject, mergeObjects } from '../func';
 import { IFormProps } from '../interface';
 import { getFieldNames, getRegistry, getStateFromProps, retrieveSchema, toPathSchema } from '../utils';
 import validateFormData, { toErrorList } from '../validate';
-import { default as DefaultErrorList } from './common/ErrorList';
+import { default as DefaultErrorList } from './common/DefaultErrorList';
 
 const defaultProps = {
   uiSchema: {},

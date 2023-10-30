@@ -1,6 +1,6 @@
 {
   "name": "@apitable/widget-sdk",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "description": "apitable widget sdk",
   "engines": {
     "node": ">=8.x"
@@ -44,7 +44,7 @@
     "ahooks": "^3.5.0",
     "antd": "4.23.5",
     "attr-accept": "^2.1.0",
-    "axios": "0.21.2",
+    "axios": "0.21.4",
     "bowser": "^2.11.0",
     "dayjs": "^1.11.7",
     "emoji-mart": "^3.0.0",

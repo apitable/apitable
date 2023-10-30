@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import axios from 'axios';
 import useSWR from 'swr';
 import { Box, useTheme, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { nestReq } from '../../api';
 import { useNodeTypeByIds } from '../../hooks';
 import { IRobotHistoryTask } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
@@ -27,8 +27,12 @@ import { RobotRunHistoryActionDetail } from './robot_run_history_item_detail_act
 import { RobotRunHistoryNodeWrapper } from './robot_run_history_item_detail_node_wrapper';
 import { RobotRunHistoryTriggerDetail } from './robot_run_history_item_detail_trigger';
 
+const nestReq = axios.create({
+  baseURL: '/nest/v1/',
+});
+
 interface IRobotRunHistoryItemDetailProps {
-  taskId: string;
+    taskId: string;
 }
 
 export const useRunTaskDetail = (taskId: string) => {
@@ -46,9 +50,9 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
   const { taskId } = props;
   const { data, error, isLoading } = useRunTaskDetail(taskId);
   const taskDetail = data?.data;
-  const colors= useCssColors();
+  const colors = useCssColors();
   const nodeTypeByIds = useNodeTypeByIds();
-  if(isLoading) {
+  if (isLoading) {
     return null;
   }
   if (error || !taskDetail) {
@@ -70,6 +74,7 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
   }
 
   const nodeTypes = taskDetail.executedNodeIds.map((nodeId) => nodeTypeByIds[taskDetail.nodeByIds[nodeId].typeId]).filter(Boolean);
+  const trigger = nodeTypes[0];
   return (
     <Box flex={'1'} overflowY={'auto'}>
       <Box padding="0px 16px 0px 0">
@@ -86,9 +91,9 @@ export const RobotRunHistoryItemDetail = (props: IRobotRunHistoryItemDetailProps
               nodeDetail={nodeDetail}
             >
               {isTrigger ? (
-                <RobotRunHistoryTriggerDetail nodeType={nodeType} nodeDetail={nodeDetail} />
+                <RobotRunHistoryTriggerDetail nodeType={nodeType} nodeDetail={nodeDetail}/>
               ) : (
-                <RobotRunHistoryActionDetail nodeType={nodeType} nodeDetail={nodeDetail} />
+                <RobotRunHistoryActionDetail nodeType={nodeType} nodeDetail={nodeDetail}/>
               )}
             </RobotRunHistoryNodeWrapper>
           );

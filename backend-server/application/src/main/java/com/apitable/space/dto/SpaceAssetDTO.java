@@ -29,5 +29,11 @@ public class SpaceAssetDTO {
 
     private Integer type;
 
+    private String nodeId;
+
+    private Long assetId;
+
     private String assetChecksum;
+
+    private Boolean isDeleted;
 }

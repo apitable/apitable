@@ -61,6 +61,7 @@ const setResolveAlias = (config) => {
   config.resolve.alias['react-dom'] = path.resolve(__dirname, '../../', 'node_modules', 'react-dom');
   config.resolve.alias = {
     ...config.resolve.alias,
+    api: path.resolve(__dirname, './src/modules/api'),
     pc: path.resolve(__dirname, './src/pc'),
     static: path.resolve(__dirname, './public/static'),
     enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : path.resolve(__dirname, './src/noop'),

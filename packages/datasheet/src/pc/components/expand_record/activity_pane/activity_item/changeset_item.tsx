@@ -115,7 +115,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
 
   const selfUserId = useSelector((state) => state.user.info?.userId);
   const isSelf = selfUserId === userId;
-  const relativeTime = dayjs(Number(createdAt)).fromNow();
+  const relativeTime = dayjs.tz(Number(createdAt)).fromNow();
 
   const allowDeleteComment = useSelector((state) => {
     const spacePermissions = state.spacePermissionManage.spaceResource?.permissions;
@@ -299,7 +299,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
                   )}
                 </div>
                 <div className={styles.activityInfo}>
-                  <Tooltip title={dayjs(Number(createdAt)).format('YYYY-MM-DD HH:mm:ss')}>
+                  <Tooltip title={dayjs.tz(Number(createdAt)).format('YYYY-MM-DD HH:mm:ss')}>
                     <span className={styles.relativeTime}>{relativeTime}</span>
                   </Tooltip>
                 </div>

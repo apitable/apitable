@@ -34,12 +34,12 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
-// @ts-ignore
-import { billingErrorCode, SubscribeUsageTipType, triggerUsageAlert, triggerUsageAlertUniversal } from 'enterprise';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
@@ -141,9 +141,6 @@ export const useCatalogTreeRequest = () => {
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
       } else {
-        if (code === billingErrorCode.OVER_LIMIT) {
-          return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-        }
         if (code === StatusCode.NODE_NOT_EXIST) {
           return;
         }
@@ -216,9 +213,6 @@ export const useCatalogTreeRequest = () => {
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         return;
-      }
-      if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Message.error({ content: message });
     });

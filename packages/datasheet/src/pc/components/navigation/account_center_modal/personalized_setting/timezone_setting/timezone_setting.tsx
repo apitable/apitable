@@ -46,7 +46,7 @@ const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
 
 const options = [
   {
-    label: `${t(Strings.follow_client_time_zone)}${getClientTimeZone()}`,
+    label: `${t(Strings.follow_client_time_zone)} ${getClientTimeZone()}`,
     value: getTimeZone(),
   },
   ...getUtcOptionList()

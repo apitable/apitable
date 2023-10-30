@@ -286,8 +286,9 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                                 && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue()
                                 : null;
-                            iSpaceAssetService.edit(assetDto.getId(),
-                                assetDto.getCite() + 1, type);
+                            int cite = Boolean.TRUE.equals(assetDto.getIsDeleted())
+                                ? 1 : assetDto.getCite() + 1;
+                            iSpaceAssetService.edit(assetDto.getId(), cite, type);
                         } else {
                             iSpaceAssetService.saveAssetInSpace(
                                 body.getSpaceId(), body.getNodeId(),

@@ -20,7 +20,10 @@ package com.apitable.internal.service.impl;
 
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import com.apitable.automation.service.impl.AutomationRobotServiceImpl;
+import com.apitable.core.constants.RedisConstants;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
@@ -31,6 +34,7 @@ import com.apitable.internal.service.InternalSpaceService;
 import com.apitable.internal.vo.InternalCreditUsageVo;
 import com.apitable.internal.vo.InternalSpaceApiRateLimitVo;
 import com.apitable.internal.vo.InternalSpaceApiUsageVo;
+import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 import com.apitable.space.enums.LabsFeatureEnum;
@@ -40,9 +44,12 @@ import com.apitable.space.vo.LabsFeatureVo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import javax.annotation.Resource;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +74,12 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Resource
     private AiServiceFacade aiServiceFacade;
 
+    @Resource
+    private AutomationRobotServiceImpl automationRobotService;
+
+    @Resource
+    RedisTemplate<String, Object> redisTemplate;
+
     @Override
     public InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId) {
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
@@ -83,6 +96,25 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId));
         return vo;
     }
+
+    @Override
+    public InternalSpaceAutomationRunMessageV0 getAutomationRunMessageV0(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        InternalSpaceAutomationRunMessageV0 vo = new InternalSpaceAutomationRunMessageV0();
+        String redisKey = RedisConstants.getSpaceAutomationRunCountKey(spaceId);
+        long count;
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(redisKey))) {
+            BoundValueOperations<String, Object> valueOps = redisTemplate.boundValueOps(redisKey);
+            count = NumberUtil.parseLong(Objects.requireNonNull(valueOps.get()).toString());
+        } else {
+            count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
+            redisTemplate.boundValueOps(redisKey).setIfAbsent(count, 31, TimeUnit.DAYS);
+        }
+        vo.setMaxAutomationRunNums(subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue());
+        vo.setAutomationRunNums(count);
+        return vo;
+    }
+
 
     @Override
     public InternalSpaceApiUsageVo getSpaceEntitlementApiUsageVo(String spaceId) {

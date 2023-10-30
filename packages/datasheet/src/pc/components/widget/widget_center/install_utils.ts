@@ -1,21 +1,25 @@
-import { CollaCommandName, ExecuteResult, IWidget, ResourceType, StoreActions, WidgetApi } from '@apitable/core';
+import { CollaCommandName, ExecuteResult, IWidget, ResourceType, StoreActions } from '@apitable/core';
+import { widgetApi } from 'api/index';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 
 export const installWidget = (widgetPackageId: string, nodeId: string, name?: string) => {
   return new Promise<IWidget>(async (resolve, reject) => {
-    const res = await WidgetApi.installWidget(nodeId, widgetPackageId, name);
-    const { data, success } = res.data;
-    if (success) {
-      resolve(data);
+    try {
+      const res = await widgetApi.installWidget(nodeId, widgetPackageId, name);
+      const { data, success } = res.data;
+      if (success) {
+        resolve(data);
+      }
+    } catch (e) {
+      reject();
     }
-    reject();
   });
 };
 
 export const copyWidget = (widgetId: string, resourceId: string): Promise<IWidget[]> => {
   return new Promise<IWidget[]>(async (resolve, reject) => {
-    const res = await WidgetApi.copyWidgetsToNode(resourceId, [widgetId]);
+    const res = await widgetApi.copyWidgetsToNode(resourceId, [widgetId]);
     const { data, success, message } = res.data;
     if (success) {
       resolve(data);

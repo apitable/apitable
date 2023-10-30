@@ -65,6 +65,7 @@ import { Steps } from './steps';
 import styles from './styles.module.less';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise';
+import { createWidget } from 'api/widget/api';
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -122,12 +123,12 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
     inputName.current?.focus();
   });
 
-  const createWidget = async () => {
+  const _createWidget = async () => {
     if (!widgetName) {
       return;
     }
     setWidgetCreating(true);
-    const res = await WidgetApi.createWidget(
+    const res = await createWidget(
       JSON.stringify({
         'en-US': widgetName,
         'zh-CN': widgetName,
@@ -227,7 +228,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
           ))}
         </div>
         <div className={styles.buttonWrap}>
-          <Button color="primary" loading={widgetCreating} block disabled={!isValid} onClick={createWidget}>
+          <Button color="primary" loading={widgetCreating} block disabled={!isValid} onClick={_createWidget}>
             {t(Strings.create_widget)}
           </Button>
         </div>

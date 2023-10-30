@@ -3,7 +3,7 @@
   "collaborators": [
     "Kelly Peilin Chan <kelly@vikadata.com>"
   ],
-  "version": "1.2.0",
+  "version": "1.4.0",
   "files": [
     "databus_wasm_bg.wasm",
     "databus_wasm.js",

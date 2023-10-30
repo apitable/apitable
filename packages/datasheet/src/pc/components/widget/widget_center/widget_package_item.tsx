@@ -69,18 +69,22 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const toInstallWidget = async (widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     setInstalling(true);
-    const widget = await installWidget(widgetPackageId, nodeId, name);
-    setInstalling(false);
-    Message.success({
-      content: t(Strings.add_widget_success),
-    });
-    if (installPosition === InstallPosition.WidgetPanel) {
-      await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet);
+    try {
+      const widget = await installWidget(widgetPackageId, nodeId, name);
+      setInstalling(false);
+      Message.success({
+        content: t(Strings.add_widget_success),
+      });
+      if (installPosition === InstallPosition.WidgetPanel) {
+        await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet);
+        onModalClose(widget.id);
+        return;
+      }
+      await installToDashboard(widget, nodeId);
       onModalClose(widget.id);
-      return;
+    } catch (e) {
+      setInstalling(false);
     }
-    await installToDashboard(widget, nodeId);
-    onModalClose(widget.id);
   };
 
   // Check before installing the widget, distinguish between the space station and the official different interactions.

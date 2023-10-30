@@ -31,8 +31,6 @@ import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
-// @ts-ignore
-import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
@@ -76,8 +74,6 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
           params: { invitePath: 'link/login' },
           query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId },
         });
-      } else if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       } else {
         window.location.reload();
       }
