@@ -1779,9 +1779,6 @@ importers:
 
   packages/i18n-lang:
     devDependencies:
-      jest:
-        specifier: ^29.6.2
-        version: 29.6.4(@types/node@20.6.2)(ts-node@10.9.1)
       typescript:
         specifier: 4.8.2
         version: 4.8.2
